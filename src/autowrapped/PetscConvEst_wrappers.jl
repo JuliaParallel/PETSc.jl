@@ -1,5 +1,21 @@
 """
 	PetscConvEstComputeError(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{PetscReal}) 
+Compute per
+
+Collective
+
+Input Parameters:
+- `ce` - the `PetscConvEst` object
+- `r`  - the refinement level
+- `dm` - the `DM` on which `u` is defined (may be `NULL`)
+- `u`  - the computed solution
+
+Output Parameter:
+- `errors` - array of length `Nf` (number of fields in the DS) filled with the error in each field
+
+Level: developer
+
+-seealso: `PetscConvEst`, `PetscConvEstComputeInitialGuess()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstComputeError"))
@@ -23,6 +39,21 @@ end
 
 """
 	PetscConvEstComputeInitialGuess(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec) 
+Fill `u` with the initial guess to use on refinement level `r` of a convergence
+
+Collective
+
+Input Parameters:
+- `ce` - the `PetscConvEst` object
+- `r`  - the refinement level
+- `dm` - the `DM` on which `u` is defined (may be `NULL`)
+
+Output Parameter:
+- `u` - the initial-guess vector
+
+Level: developer
+
+-seealso: `PetscConvEst`, `PetscConvEstComputeError()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstComputeInitialGuess"))
@@ -371,6 +402,17 @@ end
 
 """
 	PetscConvEstUseTS(petsclib::PetscLibType,ce::PetscConvEst, checkTemporal::PetscBool) 
+Configure a `PetscConvEst` object to use a `TS` solver for a convergence study
+
+Not Collective
+
+Input Parameters:
+- `ce`            - the convergence estimator
+- `checkTemporal` - `PETSC_TRUE` to run a temporal convergence study (refining the time step), `PETSC_FALSE` to run a spatial convergence study (refining the mesh)
+
+Level: intermediate
+
+-seealso: [](ch_ts), `PetscConvEst`, `TS`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("TS/PetscConvEstUseTS"))

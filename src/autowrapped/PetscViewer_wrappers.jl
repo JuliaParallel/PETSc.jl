@@ -9,7 +9,7 @@ Input Parameters:
 - `name` - name of file
 - `type` - type of file
 -seealso: `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerHDF5Open()`,
-`VecView()`, `MatView()`, `VecLoad()`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`
+`VecView()`, `MatView()`, `VecLoad()`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`,
 `MatLoad()`, `PetscFileMode`, `PetscViewer`
 
 # External Links
@@ -245,7 +245,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIRead()`, `PETSCVIEWERASCII`
+-seealso: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIRead()`, `PETSCVIEWERASCII`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerPushFormat()`, `PETSC_VIEWER_STDOUT_`, `PETSC_VIEWER_STDERR_`,
 `PETSC_VIEWER_STDOUT_WORLD`, `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIGetStdout()`, `PetscViewerASCIIGetStderr()`
 
@@ -471,7 +471,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`
+-seealso: [](sec_viewers), `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -1343,7 +1343,7 @@ Input Parameters:
 - `skip`   - `PETSC_TRUE` means do not write header
 
 Options Database Key:
-- `-viewer_binary_skip_header <true or false>` - true means do not write header
+- `-viewer_binary_skip_header (true|false)` - true means do not write header
 
 Level: advanced
 
@@ -1419,7 +1419,7 @@ Input Parameters:
 - `skip`   - `PETSC_TRUE` means do not use the options from the options database
 
 Options Database Key:
-- `-viewer_binary_skip_options <true or false>` - true means do not use the options from the options database
+- `-viewer_binary_skip_options (true|false)` - true means do not use the options from the options database
 
 Level: advanced
 
@@ -1458,7 +1458,7 @@ Input Parameters:
 - `use`    - `PETSC_TRUE` means MPI-IO will be used
 
 Options Database Key:
-- `-viewer_binary_mpiio` - <true or false> flag for using MPI-IO
+- `-viewer_binary_mpiio (true|false)` - flag for using MPI-IO
 
 Level: advanced
 
@@ -1537,7 +1537,7 @@ Input Parameters:
 Level: beginner
 
 -seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
-`VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`, `PetscDataType`
+`VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`, `PetscDataType`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
 # External Links
@@ -1650,7 +1650,6 @@ Output Parameter:
 Level: intermediate
 
 -seealso: `PETSCVIEWERCGNS`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionInfo()`
-
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionIndex"))
@@ -1842,7 +1841,6 @@ Input Parameters:
 Level: intermediate
 
 -seealso: `PETSCVIEWERCGNS`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionInfo()`
-
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCGNSSetSolutionIndex"))
@@ -2082,7 +2080,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`,
+-seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawClear"))
@@ -2267,6 +2265,19 @@ end
 
 """
 	drawtype::PetscDrawType = PetscViewerDrawGetDrawType(petsclib::PetscLibType,v::PetscViewer) 
+Get the underlying `PetscDrawType` used by a `PETSCVIEWERDRAW` viewer.
+
+Not Collective
+
+Input Parameter:
+- `v` - the `PETSCVIEWERDRAW` viewer
+
+Output Parameter:
+- `drawtype` - the `PetscDrawType` currently in use
+
+Level: advanced
+
+-seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawSetDrawType()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDrawType"))
@@ -2304,7 +2315,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`,
+-seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetHold"))
@@ -2342,7 +2353,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`,
+-seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetPause"))
@@ -2367,17 +2378,30 @@ end
 end 
 
 """
-	PetscViewerDrawGetTitle(petsclib::PetscLibType,v::PetscViewer, title::String) 
+	title::Ptr{Cchar} = PetscViewerDrawGetTitle(petsclib::PetscLibType,v::PetscViewer) 
+Get the default title used for `PetscDraw` windows created by a `PETSCVIEWERDRAW` viewer.
+
+Not Collective; No Fortran Support
+
+Input Parameter:
+- `v` - the `PETSCVIEWERDRAW` viewer
+
+Output Parameter:
+- `title` - the window title (owned by the viewer; do not free)
+
+Level: intermediate
+
+-seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawSetTitle()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetTitle"))
 """
-function PetscViewerDrawGetTitle(petsclib::PetscLibType, v::PetscViewer, title::String)
+function PetscViewerDrawGetTitle(petsclib::PetscLibType, v::PetscViewer)
     error("PetscViewerDrawGetTitle: no generated method for these argument types")
 end
 
-@for_petsc function PetscViewerDrawGetTitle(petsclib::$UnionPetscLib, v::PetscViewer, title::String )
-	title_ = Ref{Ptr{Cchar}}(title isa Ptr ? title : pointer(title))
+@for_petsc function PetscViewerDrawGetTitle(petsclib::$UnionPetscLib, v::PetscViewer )
+	title_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PetscViewerDrawGetTitle, $petsc_library),
@@ -2386,8 +2410,9 @@ end
                v, title_,
               )
 
+	title = title_[]
 
-	return nothing
+	return title
 end 
 
 """
@@ -2410,11 +2435,11 @@ Output Parameter:
 - `viewer` - the `PetscViewer`
 
 Options Database Keys:
-- `-draw_type`          - use x or null
-- `-nox`                - Disables all x-windows output
-- `-display <name>`     - Specifies name of machine for the X display
-- `-geometry <x,y,w,h>` - allows setting the window location and size
-- `-draw_pause <pause>` - Sets time (in seconds) that the
+- `-draw_type`        - use x or null
+- `-nox`              - Disables all x-windows output
+- `-display name`     - Specifies name of machine for the X display
+- `-geometry x,y,w,h` - allows setting the window location and size
+- `-draw_pause pause` - Sets time (in seconds) that the
 program pauses after `PetscDrawPause()` has been called
 (0 is default, -1 implies until user input).
 
@@ -2447,6 +2472,18 @@ end
 
 """
 	PetscViewerDrawResize(petsclib::PetscLibType,v::PetscViewer, w::Cint, h::Cint) 
+Set the default width and height (in pixels) for `PetscDraw` windows created by a `PETSCVIEWERDRAW` viewer.
+
+Logically Collective
+
+Input Parameters:
+- `v` - the `PETSCVIEWERDRAW` viewer
+- `w` - the new default window width in pixels; values less than 1 are ignored
+- `h` - the new default window height in pixels; values less than 1 are ignored
+
+Level: intermediate
+
+-seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawResize"))
@@ -2508,6 +2545,17 @@ end
 
 """
 	PetscViewerDrawSetDrawType(petsclib::PetscLibType,v::PetscViewer, drawtype::PetscDrawType) 
+Set the underlying `PetscDrawType` used by a `PETSCVIEWERDRAW` viewer.
+
+Logically Collective
+
+Input Parameters:
+- `v`        - the `PETSCVIEWERDRAW` viewer
+- `drawtype` - the `PetscDrawType` (e.g. `PETSC_DRAW_X`, `PETSC_DRAW_IMAGE`, `PETSC_DRAW_NULL`)
+
+Level: advanced
+
+-seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawGetDrawType()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawSetDrawType"))
@@ -2541,7 +2589,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`,
+-seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetHold"))
@@ -2565,6 +2613,23 @@ end
 
 """
 	PetscViewerDrawSetInfo(petsclib::PetscLibType,v::PetscViewer, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
+Record the default display, title, position, and size to use for `PetscDraw` windows
+created by a `PETSCVIEWERDRAW` viewer.
+
+Logically Collective
+
+Input Parameters:
+- `v`       - the `PETSCVIEWERDRAW` viewer
+- `display` - the X display name, or `NULL` for the local machine
+- `title`   - the window title, or `NULL`
+- `x`       - the horizontal screen coordinate of the upper left corner (unused; retained for API symmetry)
+- `y`       - the vertical screen coordinate of the upper left corner (unused; retained for API symmetry)
+- `w`       - the default window width in pixels; values less than 1 are ignored
+- `h`       - the default window height in pixels; values less than 1 are ignored
+
+Level: intermediate
+
+-seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetTitle()`, `PetscViewerDrawResize()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetInfo"))
@@ -2598,7 +2663,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`,
+-seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetPause"))
@@ -2622,6 +2687,17 @@ end
 
 """
 	PetscViewerDrawSetTitle(petsclib::PetscLibType,v::PetscViewer, title::String) 
+Set the default title used for `PetscDraw` windows created by a `PETSCVIEWERDRAW` viewer.
+
+Logically Collective
+
+Input Parameters:
+- `v`     - the `PETSCVIEWERDRAW` viewer
+- `title` - the window title, or `NULL` for no title
+
+Level: intermediate
+
+-seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawGetTitle()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetTitle"))
@@ -3477,6 +3553,20 @@ end
 
 """
 	mcnt::PetscInt = PetscViewerFlowControlEndMain(petsclib::PetscLibType,viewer::PetscViewer) 
+Finish a flow
+
+Collective
+
+Input Parameter:
+- `viewer` - the binary viewer
+
+Input/Output Parameter:
+- `mcnt` - the flow-control counter; reset to 0 and broadcast to signal completion
+
+Level: developer
+
+-seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlStepWorker()`,
+`PetscViewerFlowControlEndWorker()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFlowControlEndMain"))
@@ -3502,6 +3592,20 @@ end
 
 """
 	mcnt::PetscInt = PetscViewerFlowControlEndWorker(petsclib::PetscLibType,viewer::PetscViewer) 
+Wait on a worker MPI process for the main MPI process to signal completion of a flow
+
+Collective
+
+Input Parameter:
+- `viewer` - the binary viewer
+
+Input/Output Parameter:
+- `mcnt` - the flow-control counter; updated with values broadcast from the main MPI process until it becomes 0
+
+Level: developer
+
+-seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`,
+`PetscViewerFlowControlStepWorker()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFlowControlEndWorker"))
@@ -3527,6 +3631,21 @@ end
 
 """
 	mcnt::PetscInt,cnt::PetscInt = PetscViewerFlowControlStart(petsclib::PetscLibType,viewer::PetscViewer) 
+Begin a flow
+
+Collective
+
+Input Parameter:
+- `viewer` - the binary viewer
+
+Output Parameters:
+- `mcnt` - the current flow-control counter on the main MPI process
+- `cnt`  - the flow-control window size (also read from the viewer)
+
+Level: developer
+
+-seealso: `PetscViewer`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`, `PetscViewerFlowControlStepWorker()`,
+`PetscViewerFlowControlEndWorker()`, `PetscViewerBinaryGetFlowControl()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFlowControlStart"))
@@ -3554,6 +3673,22 @@ end
 
 """
 	mcnt::PetscInt = PetscViewerFlowControlStepMain(petsclib::PetscLibType,viewer::PetscViewer, i::PetscInt, cnt::PetscInt) 
+Advance the flow
+
+Collective
+
+Input Parameters:
+- `viewer` - the binary viewer
+- `i`      - the current MPI rank being served
+- `cnt`    - the flow-control window size returned by `PetscViewerFlowControlStart()`
+
+Input/Output Parameter:
+- `mcnt` - the running flow-control counter; incremented and broadcast when `i` reaches it
+
+Level: developer
+
+-seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlEndMain()`, `PetscViewerFlowControlStepWorker()`,
+`PetscViewerFlowControlEndWorker()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFlowControlStepMain"))
@@ -3579,6 +3714,21 @@ end
 
 """
 	mcnt::PetscInt = PetscViewerFlowControlStepWorker(petsclib::PetscLibType,viewer::PetscViewer, rank::PetscMPIInt) 
+Wait on a worker MPI process until the flow
+
+Collective
+
+Input Parameters:
+- `viewer` - the binary viewer
+- `rank`   - the calling MPI process rank
+
+Input/Output Parameter:
+- `mcnt` - the flow-control counter; updated with values broadcast from the main MPI process until it exceeds `rank`
+
+Level: developer
+
+-seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`,
+`PetscViewerFlowControlEndWorker()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFlowControlStepWorker"))
@@ -3653,12 +3803,12 @@ Output Parameter:
 - `viewer` - the `PetscViewer` object
 
 Options Database Keys:
-- `-glvis_precision <precision>` - Sets number of digits for floating point values
-- `-glvis_size <width,height>`   - Sets the window size (in pixels)
-- `-glvis_pause <pause>`         - Sets time (in seconds) that the program pauses after each visualization
+- `-glvis_precision precision` - Sets number of digits for floating point values
+- `-glvis_size width,height`   - Sets the window size (in pixels)
+- `-glvis_pause pause`         - Sets time (in seconds) that the program pauses after each visualization
 (0 is default, -1 implies every visualization)
-- `-glvis_keys`                  - Additional keys to configure visualization
-- `-glvis_exec`                  - Additional commands to configure visualization
+- `-glvis_keys`                - Additional keys to configure visualization
+- `-glvis_exec`                - Additional commands to configure visualization
 
 Level: beginner
 
@@ -3687,7 +3837,7 @@ end
 end 
 
 """
-	PetscViewerGLVisSetFields(petsclib::PetscLibType,viewer::PetscViewer, nf::PetscInt, fec_type::String, dim::Vector{PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::external) 
+	PetscViewerGLVisSetFields(petsclib::PetscLibType,viewer::PetscViewer, nf::PetscInt, fec_type::String, dim::Vector{PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::Ptr{Cvoid}) 
 Sets the required information to visualize different fields from a vector.
 
 Logically Collective
@@ -3700,7 +3850,7 @@ Input Parameters:
 - `g2l`        - User routine to compute the local field vectors to be visualized; PetscObject is used in place of Vec on the prototype
 - `Vfield`     - array of work vectors, one for each field
 - `ctx`        - User context to store the relevant data to apply g2lfields
-- `destroyctx` - Destroy function for userctx
+- `destroyctx` - Destroy function for ctx
 
 Level: intermediate
 
@@ -3709,17 +3859,17 @@ Level: intermediate
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisSetFields"))
 """
-function PetscViewerGLVisSetFields(petsclib::PetscLibType, viewer::PetscViewer, nf::Integer, fec_type::String, dim::AbstractVector{<:Number}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::external)
+function PetscViewerGLVisSetFields(petsclib::PetscLibType, viewer::PetscViewer, nf::Integer, fec_type::String, dim::AbstractVector{<:Number}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::Ptr{Cvoid})
     error("PetscViewerGLVisSetFields: no generated method for these argument types")
 end
 
-@for_petsc function PetscViewerGLVisSetFields(petsclib::$UnionPetscLib, viewer::PetscViewer, nf::$PetscInt, fec_type::String, dim::Vector{$PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::external )
+@for_petsc function PetscViewerGLVisSetFields(petsclib::$UnionPetscLib, viewer::PetscViewer, nf::$PetscInt, fec_type::String, dim::Vector{$PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::Ptr{Cvoid} )
 	fec_type_ = Ref{Ptr{Cchar}}(fec_type isa Ptr ? fec_type : pointer(fec_type))
 
     @chk ccall(
                (:PetscViewerGLVisSetFields, $petsc_library),
                PetscErrorCode,
-               (PetscViewer, $PetscInt, Ptr{Ptr{Cchar}}, Ptr{$PetscInt}, external, Ptr{PetscObject}, Ptr{Cvoid}, external),
+               (PetscViewer, $PetscInt, Ptr{Ptr{Cchar}}, Ptr{$PetscInt}, external, Ptr{PetscObject}, Ptr{Cvoid}, Ptr{Cvoid}),
                viewer, nf, fec_type_, dim, g2l, Vfield, ctx, destroyctx,
               )
 
@@ -3928,7 +4078,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewerType`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`
+-seealso: [](sec_viewers), `PetscViewerType`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGetType"))
@@ -4080,7 +4230,7 @@ Output Parameter:
 - `version` - The storage format version
 
 Options Database Keys:
-- `-dm_plex_view_hdf5_storage_version <num>` - Overrides the storage format version
+- `-dm_plex_view_hdf5_storage_version num` - Overrides the storage format version
 
 Level: advanced
 
@@ -4126,7 +4276,7 @@ Output Parameter:
 - `version` - The storage format version
 
 Options Database Keys:
-- `-dm_plex_view_hdf5_storage_version <num>` - Overrides the storage format version
+- `-dm_plex_view_hdf5_storage_version num` - Overrides the storage format version
 
 Level: advanced
 
@@ -4756,28 +4906,28 @@ end
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5PathIsRelative(petsclib::PetscLibType,path::String, emptyIsRelative::PetscBool) 
+	rel::PetscBool = PetscViewerHDF5PathIsRelative(petsclib::PetscLibType,path::String, emptyIsRelative::PetscBool) 
 
 # External Links
-$(_doc_external("Viewer/PetscViewerHDF5PathIsRelative"))
+$(_doc_external("Sys/PetscViewerHDF5PathIsRelative"))
 """
 function PetscViewerHDF5PathIsRelative(petsclib::PetscLibType, path::String, emptyIsRelative::PetscBool)
     error("PetscViewerHDF5PathIsRelative: no generated method for these argument types")
 end
 
 @for_petsc function PetscViewerHDF5PathIsRelative(petsclib::$UnionPetscLib, path::String, emptyIsRelative::PetscBool )
-	has_ = Ref{PetscBool}()
+	rel_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PetscViewerHDF5PathIsRelative, $petsc_library),
                PetscErrorCode,
                (Ptr{Cchar}, PetscBool, Ptr{PetscBool}),
-               path, emptyIsRelative, has_,
+               path, emptyIsRelative, rel_,
               )
 
-	has = has_[]
+	rel = rel_[]
 
-	return has
+	return rel
 end 
 
 """
@@ -4973,7 +5123,8 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadAttribute()` `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+-seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
+`PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5ReadObjectAttribute"))
@@ -5613,12 +5764,12 @@ Output Parameter:
 - `v` - The Mathematica viewer
 
 Options Database Keys:
-- `-viewer_math_linkhost <machine>` - The host machine for the kernel
-- `-viewer_math_linkname <name>`    - The full link name for the connection
-- `-viewer_math_linkport <port>`    - The port for the connection
-- `-viewer_math_mode <mode>`        - The mode, e.g. Launch, Connect
-- `-viewer_math_type <type>`        - The plot type, e.g. Triangulation, Vector
-- `-viewer_math_graphics <output>`  - The output type, e.g. Motif, PS, PSFile
+- `-viewer_math_linkhost machine` - The host machine for the kernel
+- `-viewer_math_linkname name`    - The full link name for the connection
+- `-viewer_math_linkport port`    - The port for the connection
+- `-viewer_math_mode mode`        - The mode, e.g. Launch, Connect
+- `-viewer_math_type type`        - The plot type, e.g. Triangulation, Vector
+- `-viewer_math_graphics output`  - The output type, e.g. Motif, PS, PSFile
 
 Level: intermediate
 
@@ -5648,6 +5799,22 @@ end
 
 """
 	i::Cint,j::Cint,a::PetscReal = PetscViewerMathematicaPutCSRMatrix(petsclib::PetscLibType,viewer::PetscViewer, m::Cint, n::Cint) 
+Send a sparse matrix in CSR format to a Mathematica kernel as a
+LinearAlgebraCSRMatrix bound to a symbol in the kernel's namespace.
+
+Not Collective
+
+Input Parameters:
+- `viewer` - the `PETSCVIEWERMATHEMATICA` viewer
+- `m`      - the number of rows
+- `n`      - the number of columns
+- `i`      - CSR row pointers of length `m + 1`
+- `j`      - CSR column indices
+- `a`      - CSR nonzero values
+
+Level: developer
+
+-seealso: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutMatrix()`, `PetscViewerMathematicaSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaPutCSRMatrix"))
@@ -5677,6 +5844,20 @@ end
 
 """
 	a::PetscReal = PetscViewerMathematicaPutMatrix(petsclib::PetscLibType,viewer::PetscViewer, m::Cint, n::Cint) 
+Send a dense matrix to a Mathematica kernel as a two
+bound to a symbol in the kernel's namespace.
+
+Not Collective
+
+Input Parameters:
+- `viewer` - the `PETSCVIEWERMATHEMATICA` viewer
+- `m`      - the number of rows
+- `n`      - the number of columns
+- `a`      - the matrix values, in column-major order, of length `m` * `n`
+
+Level: developer
+
+-seealso: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutCSRMatrix()`, `PetscViewerMathematicaSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaPutMatrix"))
@@ -5811,7 +5992,7 @@ Input Parameters:
 - `comm` - MPI communicator
 - `name` - name of file
 - `type` - type of file
--seealso: `PETSCVIEWERMATLAB`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`
+-seealso: `PETSCVIEWERMATLAB`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`
 
 # External Links
@@ -5875,6 +6056,18 @@ end
 
 """
 	PetscViewerMatlabPutVariable(petsclib::PetscLibType,viewer::PetscViewer, name::String, mat::Ptr{Cvoid}) 
+Write a raw MATLAB `mxArray` variable into a `PETSCVIEWERMATLAB` file under a chosen name.
+
+Not Collective; only processor zero writes the variable
+
+Input Parameters:
+- `viewer` - the `PETSCVIEWERMATLAB` viewer
+- `name`   - the MATLAB variable name
+- `mat`    - the `mxArray *` variable to write (cast to `void *`)
+
+Level: advanced
+
+-seealso: `PetscViewer`, `PETSCVIEWERMATLAB`, `PetscViewerMatlabPutArray()`, `PetscViewerMatlabGetArray()`, `PetscViewerMatlabOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMatlabPutVariable"))
@@ -5904,11 +6097,11 @@ Collective
 
 Input Parameters:
 - `viewer` - the viewer in which to display the line graphs, it not a `PETSCVIEWERDRAW` it will set to that `PetscViewerType`
-- `host`   - the host to open the window on, 'NULL' indicates the local host
+- `host`   - the host to open the window on, `NULL` indicates the local host
 - `title`  - the title at the top of the window
 - `metric` - the label above the graph
 - `l`      - the number of curves
-- `names`  - the names of each curve to be used in displaying the legend. May be 'NULL'
+- `names`  - the names of each curve to be used in displaying the legend. May be `NULL`
 - `x`      - horizontal screen coordinate of the upper left corner of window, or use `PETSC_DECIDE`
 - `y`      - vertical screen coordinate of the upper left corner of window, or use `PETSC_DECIDE`
 - `m`      - window width in pixels, or may use `PETSC_DECIDE` or `PETSC_DRAW_FULL_SIZE`, `PETSC_DRAW_HALF_SIZE`,`PETSC_DRAW_THIRD_SIZE`, `PETSC_DRAW_QUARTER_SIZE`
@@ -6096,7 +6289,7 @@ Input Parameters:
 - `pyname`  - full dotted Python name [package].module[.{class|function}]
 
 Options Database Key:
-- `-viewer_python_type <pyname>`  - python class
+- `-viewer_python_type pyname`  - python class
 
 Level: intermediate
 
@@ -6320,9 +6513,9 @@ Output Parameter:
 - `lab` - the `PetscViewer`
 
 Options Database Keys:
-- `-saws_port <port number>` - port number where you are running SAWs client
-- `-xxx_view saws`           - publish the object xxx
-- `-xxx_saws_block`          - blocks the program at the end of a critical point (for `KSP` and `SNES` it is the end of a solve) until
+- `-saws_port port number` - port number where you are running SAWs client
+- `-xxx_view saws`         - publish the object xxx
+- `-xxx_saws_block`        - blocks the program at the end of a critical point (for `KSP` and `SNES` it is the end of a solve) until
 the user unblocks the problem with an external tool that access the object with SAWS
 
 Level: advanced
@@ -6429,7 +6622,7 @@ Input Parameters:
 - `type`   - for example, `PETSCVIEWERASCII`
 
 Options Database Key:
-- `-viewer_type  <type>` - Sets the type; use -help for a list of available methods (for instance, ascii)
+- `-viewer_type  type` - Sets the type; use -help for a list of available methods (for instance, ascii)
 
 Level: advanced
 
@@ -6507,8 +6700,8 @@ Options Database Keys:
 For use with  `PETSC_VIEWER_SOCKET_WORLD`, `PETSC_VIEWER_SOCKET_SELF`,
 `PETSC_VIEWER_SOCKET_()` or if
 `NULL` is passed for machine or PETSC_DEFAULT is passed for port
-- `-viewer_socket_machine <machine>` - the machine where the socket is available
-- `-viewer_socket_port <port>`       - the socket to connect to
+- `-viewer_socket_machine machine` - the machine where the socket is available
+- `-viewer_socket_port port`       - the socket to connect to
 
 Environmental variables:
 - `PETSC_VIEWER_SOCKET_MACHINE`   - machine name

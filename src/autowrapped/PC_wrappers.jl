@@ -39,7 +39,7 @@ end
 end 
 
 """
-	Nsub::PetscInt,is::Ptr{IS},is_local::Ptr{IS} = PCASMCreateSubdomains2D(petsclib::PetscLibType,m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, dof::PetscInt, overlap::PetscInt) 
+	Nsub::PetscInt,is::Ptr{IS},is_local::Ptr{IS} = PCASMCreateSubdomains2D(petsclib::PetscLibType,m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, dof::PetscInt, overlap::PetscInt) 
 Creates the index sets for the overlapping Schwarz
 preconditioner, `PCASM`, for a two-dimensional problem on a regular grid.
 
@@ -66,11 +66,11 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMCreateSubdomains2D"))
 """
-function PCASMCreateSubdomains2D(petsclib::PetscLibType, m::Integer, n::Integer, M::Integer, N::Integer, dof::Integer, overlap::Integer)
+function PCASMCreateSubdomains2D(petsclib::PetscLibType, m::Integer, n::Integer, M_M::Integer, M_N::Integer, dof::Integer, overlap::Integer)
     error("PCASMCreateSubdomains2D: no generated method for these argument types")
 end
 
-@for_petsc function PCASMCreateSubdomains2D(petsclib::$UnionPetscLib, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
+@for_petsc function PCASMCreateSubdomains2D(petsclib::$UnionPetscLib, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
 	Nsub_ = Ref{$PetscInt}()
 	is_ = Ref{Ptr{IS}}()
 	is_local_ = Ref{Ptr{IS}}()
@@ -79,7 +79,7 @@ end
                (:PCASMCreateSubdomains2D, $petsc_library),
                PetscErrorCode,
                ($PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
-               m, n, M, N, dof, overlap, Nsub_, is_, is_local_,
+               m, n, M_M, M_N, dof, overlap, Nsub_, is_, is_local_,
               )
 
 	Nsub = Nsub_[]
@@ -141,7 +141,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCASM`, `PCASMSetDMSubdomains()`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`
+-seealso: [](ch_ksp), `PCASM`, `PCASMSetDMSubdomains()`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`,
 `PCASMCreateSubdomains2D()`, `PCASMSetLocalSubdomains()`, `PCASMGetLocalSubdomains()`
 
 # External Links
@@ -308,7 +308,7 @@ Output Parameters:
 Level: advanced
 
 -seealso: [](ch_ksp), `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`,
-`PCASMCreateSubdomains2D()`,
+`PCASMCreateSubdomains2D()`
 
 # External Links
 $(_doc_external("PC/PCASMGetSubKSP"))
@@ -422,11 +422,11 @@ Input Parameters:
 - `flg` - boolean indicating whether to use subdomains defined by the `DM`
 
 Options Database Key:
-- `-pc_asm_dm_subdomains <bool>` - use subdomains defined by the `DM` with `DMCreateDomainDecomposition()`
+- `-pc_asm_dm_subdomains (true|false)` - use subdomains defined by the `DM` with `DMCreateDomainDecomposition()`
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCASM`, `PCASMGetDMSubdomains()`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`
+-seealso: [](ch_ksp), `PCASM`, `PCASMGetDMSubdomains()`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`,
 `PCASMCreateSubdomains2D()`, `PCASMSetLocalSubdomains()`, `PCASMGetLocalSubdomains()`
 
 # External Links
@@ -465,7 +465,7 @@ the values of the `is` array are copied so you can free the array (not the `IS` 
 (not the `IS` in the array) after this call
 
 Options Database Key:
-- `-pc_asm_local_blocks <blks>` - Sets number of local blocks
+- `-pc_asm_local_blocks blks` - Sets number of local blocks
 
 Level: advanced
 
@@ -535,7 +535,7 @@ Input Parameters:
 - `ovl` - the amount of overlap between subdomains (ovl >= 0, default value = 1)
 
 Options Database Key:
-- `-pc_asm_overlap <ovl>` - Sets overlap
+- `-pc_asm_overlap ovl` - Sets overlap
 
 Level: intermediate
 
@@ -608,7 +608,7 @@ Input Parameters:
 - `sub_mat_type` - the `MatType`
 
 Options Database Key:
-- `-pc_asm_sub_mat_type  <sub_mat_type>` - Sets the matrix type used for subsolves, for example, seqaijviennacl.
+- `-pc_asm_sub_mat_type sub_mat_type` - Sets the matrix type used for subsolves, for example, seqaijviennacl.
 If you specify a base name like aijviennacl, the corresponding sequential type is assumed.
 
 -seealso: [](ch_ksp), `PCASM`, `PCASMGetSubMatType()`, `PCSetType()`, `VecSetType()`, `MatType`, `Mat`
@@ -649,7 +649,7 @@ the values of the `is` array are copied so you can free the array (not the `IS` 
 The values of the `is_local` array are copied so you can free the array (not the `IS` in the array) after this call
 
 Options Database Key:
-- `-pc_asm_blocks <blks>` - Sets total blocks
+- `-pc_asm_blocks blks` - Sets total blocks
 
 Level: advanced
 
@@ -720,7 +720,9 @@ Input Parameters:
 - `pc`     - the `PC` preconditioner context
 - `prefix` - the prefix string to prepend to all `PC` option requests
 
--seealso: [](ch_ksp), `PC`, `PCSetFromOptions`, `PCSetOptionsPrefix()`, `PCGetOptionsPrefix()`
+Level: advanced
+
+-seealso: [](ch_ksp), `PC`, `PCSetFromOptions()`, `PCSetOptionsPrefix()`, `PCGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PC/PCAppendOptionsPrefix"))
@@ -1545,7 +1547,7 @@ Input Parameters:
 - `k`  - coarsening ratio (H/h at the coarser level)
 
 Options Database Key:
-- `-pc_bddc_coarsening_ratio <int>` - Set the coarsening ratio used in multi-level coarsening
+- `-pc_bddc_coarsening_ratio k` - Set the coarsening ratio used in multi-level coarsening
 
 Level: intermediate
 
@@ -1795,7 +1797,7 @@ Input Parameters:
 - `levels` - the maximum number of levels
 
 Options Database Key:
-- `-pc_bddc_levels <int>` - Set maximum number of levels for multilevel
+- `-pc_bddc_levels levels` - Set maximum number of levels for multilevel
 
 Level: intermediate
 
@@ -2181,7 +2183,7 @@ Input Parameters:
 - `lens`   - [optional] integer array containing size of each block
 
 Options Database Key:
-- `-pc_bjacobi_local_blocks <blocks>` - Sets the number of local blocks
+- `-pc_bjacobi_local_blocks blocks` - Sets the number of local blocks
 
 Level: intermediate
 
@@ -2220,7 +2222,7 @@ Input Parameters:
 - `lens`   - [optional] integer array containing the size of each block
 
 Options Database Key:
-- `-pc_bjacobi_blocks <blocks>` - Sets the number of global blocks
+- `-pc_bjacobi_blocks blocks` - Sets the number of global blocks
 
 Level: intermediate
 
@@ -2441,7 +2443,7 @@ Input Parameters:
 - `type` - `PC_COMPOSITE_ADDITIVE` (default), `PC_COMPOSITE_MULTIPLICATIVE`, `PC_COMPOSITE_SPECIAL`
 
 Options Database Key:
-- `-pc_composite_type <type: one of multiplicative, additive, special>` - Sets composite preconditioner type
+- `-pc_composite_type (multiplicative|additive|symmetric_multiplicative|special)` - Sets composite preconditioner type
 
 Level: advanced
 
@@ -2506,6 +2508,18 @@ end
 
 """
 	PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType,pc::PC, alpha_mat::AbstractPetscMat) 
+Sets the matrix `alpha_mat` used in place of a scalar \\alpha I term for the special composite preconditioner, `PC_COMPOSITE_SPECIAL`, for M + R + S
+
+Logically Collective
+
+Input Parameters:
+- `pc`        - the preconditioner context
+- `alpha_mat` - the matrix `M`
+
+Level: developer
+
+-seealso: [](ch_ksp), `PCCOMPOSITE`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`, `PC_COMPOSITE_SPECIAL`, `PCCompositeType`,
+`PCCompositeSetType()`, `PCCompositeSpecialSetAlpha()`
 
 # External Links
 $(_doc_external("PC/PCCompositeSpecialSetAlphaMat"))
@@ -2726,8 +2740,8 @@ Input Parameters:
 - `fact` - correction factor
 
 Options Database Keys:
-- `-pc_deflation_correction        <false>` - if true apply coarse problem correction
-- `-pc_deflation_correction_factor <1.0>`   - sets coarse problem correction factor
+- `-pc_deflation_correction        (true|false)` - if true apply coarse problem correction
+- `-pc_deflation_correction_factor fact`         - sets coarse problem correction factor
 
 -seealso: [](ch_ksp), `PCDEFLATION`, `PCDeflationSetLevels()`, `PCDeflationSetReductionFactor()`
 
@@ -2764,7 +2778,7 @@ Input Parameters:
 - `flg` - default `PETSC_FALSE`
 
 Options Database Key:
-- `-pc_deflation_init_only <false>` - if true computes only the special guess
+- `-pc_deflation_init_only (true|false)` - if true computes only the special guess
 
 Level: intermediate
 
@@ -2801,7 +2815,7 @@ Input Parameters:
 - `max` - maximum deflation level
 
 Options Database Key:
-- `-pc_deflation_max_lvl <0>` - maximum number of levels for multilevel deflation
+- `-pc_deflation_max_lvl max` - maximum number of levels for multilevel deflation
 
 Level: intermediate
 
@@ -2872,7 +2886,7 @@ Input Parameters:
 - `red` - reduction factor (or `PETSC_DETERMINE`)
 
 Options Database Key:
-- `-pc_deflation_reduction_factor <\\-1>` - reduction factor on bottom level coarse problem for `PCDEFLATION`
+- `-pc_deflation_reduction_factor red` - reduction factor on bottom level coarse problem for `PCDEFLATION`
 
 -seealso: [](ch_ksp), `PCTELESCOPE`, `PCDEFLATION`, `PCDeflationSetLevels()`
 
@@ -2943,8 +2957,8 @@ Input Parameters:
 - `size` - size of the space to compute (or `PETSC_DEFAULT`)
 
 Options Database Keys:
-- `-pc_deflation_compute_space      <haar>` - compute `PCDeflationSpaceType` deflation space
-- `-pc_deflation_compute_space_size <1>`    - size of the deflation space
+- `-pc_deflation_compute_space      type` - compute `PCDeflationSpaceType` deflation space
+- `-pc_deflation_compute_space_size size` - size of the deflation space
 
 -seealso: [](ch_ksp), `PCDeflationSetLevels()`, `PCDEFLATION`
 
@@ -3091,7 +3105,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: , `PCEISENSTAT`, `PCEisenstatGetOmega()`
+-seealso: `PCEISENSTAT`, `PCEisenstatGetOmega()`
 
 # External Links
 $(_doc_external("PC/PCEisenstatGetNoDiagonalScaling"))
@@ -3129,7 +3143,7 @@ Output Parameter:
 - `omega` - relaxation coefficient (0 < omega < 2)
 
 Options Database Key:
-- `-pc_eisenstat_omega <omega>` - Sets omega
+- `-pc_eisenstat_omega omega` - Sets omega
 
 -seealso: [](ch_ksp), `PCEISENSTAT`, `PCSORGetOmega()`, `PCEisenstatSetOmega()`
 
@@ -3206,7 +3220,7 @@ Input Parameters:
 - `omega` - relaxation coefficient (0 < omega < 2)
 
 Options Database Key:
-- `-pc_eisenstat_omega <omega>` - Sets omega
+- `-pc_eisenstat_omega omega` - Sets omega
 
 Level: intermediate
 
@@ -3243,7 +3257,7 @@ Input Parameters:
 - `type` - either `PC_EXOTIC_FACE` or `PC_EXOTIC_WIREBASKET` (defaults to face)
 
 Options Database Keys:
-- `-pc_exotic_type <face,wirebasket>` - use a coarse grid point for each face, or edge and vertex
+- `-pc_exotic_type (face|wirebasket)` - use a coarse grid point for each face, or edge and vertex
 
 -seealso: [](ch_ksp), `PCEXOTIC`, `PCExoticType()`
 
@@ -3584,7 +3598,7 @@ Input Parameters:
 - `rtol` - diagonal entries smaller than this in absolute value are considered zero
 
 Options Database Key:
-- `-pc_factor_nonzeros_along_diagonal <tol>` - perform the reordering with the given tolerance
+- `-pc_factor_nonzeros_along_diagonal tol` - perform the reordering with the given tolerance
 
 Level: intermediate
 
@@ -3622,7 +3636,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` to turn on, `PETSC_FALSE` to turn off
 
 Options Database Key:
-- `-pc_factor_diagonal_fill <bool>` - allow the diagonal fill
+- `-pc_factor_diagonal_fill (true|false)` - allow the diagonal fill
 
 -seealso: [](ch_ksp), `PCILU`, `PCICC`, `PCFactorGetAllowDiagonalFill()`
 
@@ -3659,7 +3673,7 @@ Input Parameters:
 - `dtcol` - 0.0 implies no pivoting, 1.0 complete pivoting (slower, requires more memory but more stable)
 
 Options Database Key:
-- `-pc_factor_pivoting <dtcol>` - perform the pivoting with the given tolerance
+- `-pc_factor_pivoting dtcol` - perform the pivoting with the given tolerance
 
 Level: intermediate
 
@@ -3700,7 +3714,7 @@ Input Parameters:
 depends on the number of nonzeros in row of original matrix
 
 Options Database Key:
-- `-pc_factor_drop_tolerance <dt,dtcol,maxrowcount>` - Sets drop tolerance
+- `-pc_factor_drop_tolerance dt,dtcol,maxrowcount` - Sets drop tolerance
 
 Level: intermediate
 
@@ -3738,7 +3752,7 @@ Input Parameters:
 - `fill` - amount of expected fill
 
 Options Database Key:
-- `-pc_factor_fill <fill>` - Sets fill amount
+- `-pc_factor_fill fill` - Sets fill amount
 
 Level: intermediate
 
@@ -3775,7 +3789,7 @@ Input Parameters:
 - `levels` - number of levels of fill
 
 Options Database Key:
-- `-pc_factor_levels <levels>` - Sets fill level
+- `-pc_factor_levels levels` - Sets fill level
 
 Level: intermediate
 
@@ -3813,7 +3827,7 @@ Input Parameters:
 - `ordering` - the matrix ordering name, for example, `MATORDERINGND` or `MATORDERINGRCM`
 
 Options Database Key:
-- `-pc_factor_mat_ordering_type <nd,rcm,...,external>` - Sets ordering routine
+- `-pc_factor_mat_ordering_type ordering` - Sets the ordering routine
 
 Level: intermediate
 
@@ -3850,7 +3864,7 @@ Input Parameters:
 - `stype` - for example, `MATSOLVERSUPERLU`, `MATSOLVERSUPERLU_DIST`, `MATSOLVERMUMPS`
 
 Options Database Key:
-- `-pc_factor_mat_solver_type <stype>` - petsc, superlu, superlu_dist, mumps, cusparse
+- `-pc_factor_mat_solver_type stype` - petsc, superlu, superlu_dist, mumps, cusparse
 
 Level: intermediate
 
@@ -3889,7 +3903,7 @@ Input Parameters:
 - `pivot` - `PETSC_TRUE` or `PETSC_FALSE`
 
 Options Database Key:
-- `-pc_factor_pivot_in_blocks <true,false>` - Pivot inside matrix dense blocks for `MATBAIJ` and `MATSBAIJ`
+- `-pc_factor_pivot_in_blocks (true|false)` - Pivot inside matrix dense blocks for `MATBAIJ` and `MATSBAIJ`
 
 Level: intermediate
 
@@ -4004,7 +4018,7 @@ Input Parameters:
 - `shiftamount` - amount of shift or `PETSC_DECIDE` for the default
 
 Options Database Key:
-- `-pc_factor_shift_amount <shiftamount>` - Sets shift amount or -1 for the default
+- `-pc_factor_shift_amount shiftamount` - Sets shift amount or -1 for the default
 
 Level: intermediate
 
@@ -4042,7 +4056,7 @@ Input Parameters:
 - `shifttype` - type of shift; one of `MAT_SHIFT_NONE`, `MAT_SHIFT_NONZERO`, `MAT_SHIFT_POSITIVE_DEFINITE`, `MAT_SHIFT_INBLOCKS`
 
 Options Database Key:
-- `-pc_factor_shift_type <shifttype>` - Sets shift type; use '-help' for a list of available types
+- `-pc_factor_shift_type shifttype` - Sets shift type; see `MatFactorShiftType`
 
 Level: intermediate
 
@@ -4075,6 +4089,8 @@ set the options for that particular factorization object.
 
 Input Parameter:
 - `pc` - the preconditioner context
+
+Level: intermediate
 
 -seealso: [](ch_ksp), `PCCHOLESKY`, `PCLU`, `PCFactorSetMatSolverType()`, `PCFactorGetMatrix()`
 
@@ -4109,7 +4125,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` to enable, `PETSC_FALSE` to disable
 
 Options Database Key:
-- `-pc_factor_in_place <true,false>` - Activate/deactivate in-place factorization
+- `-pc_factor_in_place (true|false)` - Activate/deactivate in-place factorization
 
 -seealso: [](ch_ksp), `PC`, `Mat`, `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `PCFactorGetUseInPlace()`
 
@@ -4144,7 +4160,7 @@ Input Parameters:
 - `zero` - all pivots smaller than this will be considered zero
 
 Options Database Key:
-- `-pc_factor_zeropivot <zero>` - Sets tolerance for what is considered a zero pivot
+- `-pc_factor_zeropivot zero` - Sets tolerance for what is considered a zero pivot
 
 Level: intermediate
 
@@ -4339,8 +4355,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitGetIS()`, `PCFieldSplitSetIS()`,
-
+-seealso: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitGetIS()`, `PCFieldSplitSetIS()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetISByIndex"))
@@ -4766,7 +4781,7 @@ Input Parameters:
 - `flg` - boolean indicating whether to use field splits defined by the `DM`
 
 Options Database Key:
-- `-pc_fieldsplit_dm_splits <bool>` - use the field splits defined by the `DM`
+- `-pc_fieldsplit_dm_splits (true|false)` - use the field splits defined by the `DM`
 
 Level: intermediate
 
@@ -4805,7 +4820,7 @@ Output Parameter:
 - `flg` - boolean indicating whether to detect fields or not
 
 Options Database Key:
-- `-pc_fieldsplit_detect_saddle_point <bool>` - detect and use the saddle point
+- `-pc_fieldsplit_detect_saddle_point (true|false)` - detect and use the saddle point
 
 Level: intermediate
 
@@ -4884,7 +4899,7 @@ Input Parameters:
 of the matrix and `fields_col` provides the column indices for that block
 
 Options Database Key:
-- `-pc_fieldsplit_%d_fields <a,b,..>` - indicates the fields to be used in the `%d`'th split
+- `-pc_fieldsplit_%d_fields a,b,...` - indicates the fields to be used in the `%d`'th split
 
 Level: intermediate
 
@@ -4923,7 +4938,7 @@ Input Parameters:
 - `delay` - the delay window in the lower bound estimate
 
 Options Database Key:
-- `-pc_fieldsplit_gkb_delay <delay>` - default is 5
+- `-pc_fieldsplit_gkb_delay delay` - default is 5
 
 Level: intermediate
 
@@ -4960,7 +4975,7 @@ Input Parameters:
 - `maxit` - the maximum number of iterations
 
 Options Database Key:
-- `-pc_fieldsplit_gkb_maxit <maxit>` - default is 100
+- `-pc_fieldsplit_gkb_maxit maxit` - default is 100
 
 Level: intermediate
 
@@ -4998,7 +5013,7 @@ Input Parameters:
 - `nu` - the shift parameter
 
 Options Database Key:
-- `-pc_fieldsplit_gkb_nu <nu>` - default is 1
+- `-pc_fieldsplit_gkb_nu nu` - default is 1
 
 Level: intermediate
 
@@ -5035,7 +5050,7 @@ Input Parameters:
 - `tolerance` - the solver tolerance
 
 Options Database Key:
-- `-pc_fieldsplit_gkb_tol <tolerance>` - default is 1e-5
+- `-pc_fieldsplit_gkb_tol tolerance` - default is 1e-5
 
 Level: intermediate
 
@@ -5108,7 +5123,7 @@ Input Parameters:
 - `flg` - boolean flag indicating whether or not to use Amat to extract the off-diagonal blocks from
 
 Options Database Key:
-- `-pc_fieldsplit_off_diag_use_amat <bool>` - use the Amat to extract the off-diagonal blocks
+- `-pc_fieldsplit_off_diag_use_amat (true|false)` - use the Amat to extract the off-diagonal blocks
 
 Level: intermediate
 
@@ -5145,7 +5160,7 @@ Input Parameters:
 - `ftype` - which blocks of factorization to retain, `PC_FIELDSPLIT_SCHUR_FACT_FULL` is default
 
 Options Database Key:
-- `-pc_fieldsplit_schur_fact_type <diag,lower,upper,full>` - default is `full`
+- `-pc_fieldsplit_schur_fact_type (diag|lower|upper|full)` - default is `full`
 
 Level: intermediate
 
@@ -5187,8 +5202,8 @@ Input Parameters:
 - `pre`   - matrix to use for preconditioning, or `NULL`
 
 Options Database Keys:
-- `-pc_fieldsplit_schur_precondition <self,selfp,user,a11,full>` - default is `a11`. See notes for meaning of various arguments
-- `-fieldsplit_1_pc_type <pctype>`                               - the preconditioner algorithm that is used to construct the preconditioner from the operator
+- `-pc_fieldsplit_schur_precondition (self|selfp|user|a11|full)` - default is `a11`. See notes for meaning of various arguments
+- `-fieldsplit_1_pc_type pctype`                                 - the preconditioner algorithm that is used to construct the preconditioner from the operator
 
 Level: intermediate
 
@@ -5226,7 +5241,7 @@ Input Parameters:
 - `scale` - scaling factor for the Schur complement
 
 Options Database Key:
-- `-pc_fieldsplit_schur_scale <scale>` - default is -1.0
+- `-pc_fieldsplit_schur_scale scale` - default is -1.0
 
 Level: intermediate
 
@@ -5264,7 +5279,7 @@ Input Parameters:
 `PC_COMPOSITE_GKB`
 
 Options Database Key:
-- `-pc_fieldsplit_type <one of multiplicative, additive, symmetric_multiplicative, special, schur>` - Sets fieldsplit preconditioner type
+- `-pc_fieldsplit_type (multiplicative|additive|symmetric_multiplicative|special|schur)` - Sets fieldsplit preconditioner type
 
 Level: intermediate
 
@@ -5330,7 +5345,7 @@ Input Parameters:
 - `n`  - number of HEM matching passed to construct ASM subdomains
 
 Options Database Key:
-- `-pc_gamg_asm_hem <n>` - set the number of HEM matching passed
+- `-pc_gamg_asm_hem n` - set the number of HEM matching passed
 
 Level: intermediate
 
@@ -5359,7 +5374,7 @@ end
 """
 	PCGAMGASMSetUseAggs(petsclib::PetscLibType,pc::PC, flg::PetscBool) 
 Have the `PCGAMG` smoother on each level use `PCASM` where the aggregates defined by the coarsening process are
-the subdomains for the additive Schwarz preconditioner used as the smoother
+used as the subdomains for the additive Schwarz preconditioner smoother
 
 Collective
 
@@ -5368,7 +5383,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` to use aggregates, `PETSC_FALSE` to not
 
 Options Database Key:
-- `-pc_gamg_asm_use_agg <true,false>` - use aggregates to define the additive Schwarz subdomains
+- `-pc_gamg_asm_use_agg (true|false)` - use aggregates to define the additive Schwarz subdomains
 
 Level: intermediate
 
@@ -5443,7 +5458,7 @@ Input Parameters:
 - `type` - the interpolation to use, see `PCGAMGClassicalType()`
 
 Options Database Key:
-- `-pc_gamg_classical_type <direct,standard>` - set type of classical AMG prolongation
+- `-pc_gamg_classical_type (direct|standard)` - set type of classical AMG prolongation
 
 Level: intermediate
 
@@ -5602,7 +5617,7 @@ end
 
 """
 	PCGAMGMISkSetAggressive(petsclib::PetscLibType,pc::PC, n::PetscInt) 
-Number (k) distance in MIS coarsening (>2 is 'aggressive')
+Number (k) distance in MIS coarsening (> 2 is aggressive)
 
 Logically Collective
 
@@ -5611,11 +5626,12 @@ Input Parameters:
 - `n`  - 1 or more (default = 2)
 
 Options Database Key:
-- `-pc_gamg_aggressive_mis_k <n,default=2>` - the flag
+- `-pc_gamg_aggressive_mis_k n` - the distance to use
 
 Level: intermediate
 
--seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`, `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
+-seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`,
+`PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
 
 # External Links
 $(_doc_external("PC/PCGAMGMISkSetAggressive"))
@@ -5648,11 +5664,12 @@ Input Parameters:
 - `b`  - default false
 
 Options Database Key:
-- `-pc_gamg_mis_k_minimum_degree_ordering <bool,default=false>` - the flag
+- `-pc_gamg_mis_k_minimum_degree_ordering (true|false)` - use the minimum degree ordering
 
 Level: intermediate
 
--seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`, `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGSetLowMemoryFilter()`
+-seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetThreshold()`,
+`PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`, `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGSetLowMemoryFilter()`
 
 # External Links
 $(_doc_external("PC/PCGAMGMISkSetMinDegreeOrdering"))
@@ -5714,14 +5731,15 @@ Logically Collective
 
 Input Parameters:
 - `pc` - the preconditioner context
-- `n`  - 0, 1 or more
+- `n`  - 0, 1 or more, the default is 1
 
 Options Database Key:
-- `-pc_gamg_aggressive_coarsening <n,default = 1>` - the flag
+- `-pc_gamg_aggressive_coarsening n` - the number of coarsenings to do aggressively
 
 Level: intermediate
 
--seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGMISkSetAggressive()`, `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
+-seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGMISkSetAggressive()`,
+`PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetAggressiveLevels"))
@@ -5745,7 +5763,7 @@ end
 
 """
 	PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType,pc::PC, b::PetscBool) 
-Use graph square, A^T A, for aggressive coarsening. Coarsening is slower than the alternative (MIS
+Use graph square (A^T A) for aggressive coarsening. Coarsening is slower than the alternative (MIS
 
 Logically Collective
 
@@ -5754,7 +5772,7 @@ Input Parameters:
 - `b`  - default true
 
 Options Database Key:
-- `-pc_gamg_aggressive_square_graph <bool,default=true>` - the flag
+- `-pc_gamg_aggressive_square_graph (true|false)` - whether to use the graph square to aggressively coarsen
 
 Level: intermediate
 
@@ -5791,7 +5809,7 @@ Input Parameters:
 - `n`  - maximum number of equations to aim for
 
 Options Database Key:
-- `-pc_gamg_coarse_eq_limit <limit>` - set the limit
+- `-pc_gamg_coarse_eq_limit limit` - set the limit
 
 Level: intermediate
 
@@ -5829,7 +5847,7 @@ Input Parameters:
 - `flg` - `PCGAMGLayoutType` type, either `PCGAMG_LAYOUT_COMPACT` or `PCGAMG_LAYOUT_SPREAD`
 
 Options Database Key:
-- `-pc_gamg_coarse_grid_layout_type` - place the coarse grids with natural ordering
+- `-pc_gamg_coarse_grid_layout_type (compact|spread)` - place the coarse grids with natural ordering
 
 Level: intermediate
 
@@ -5866,7 +5884,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` to pin coarse grids to the CPU
 
 Options Database Key:
-- `-pc_gamg_cpu_pin_coarse_grids` - pin the coarse grids to the CPU
+- `-pc_gamg_cpu_pin_coarse_grids (true|false)` - pin the coarse grids to the CPU
 
 Level: intermediate
 
@@ -5904,7 +5922,7 @@ Input Parameters:
 - `emin` - min eigenvalue
 
 Options Database Key:
-- `-pc_gamg_eigenvalues <emin,emax>` - estimates of the eigenvalues
+- `-pc_gamg_eigenvalues emin,emax` - estimates of the eigenvalues
 
 Level: intermediate
 
@@ -5941,7 +5959,7 @@ Input Parameters:
 - `b`  - default true
 
 Options Database Key:
-- `-pc_gamg_graph_symmetrize <bool,default=true>` - the flag
+- `-pc_gamg_graph_symmetrize (true|false)` - symmetrize the graph
 
 Level: intermediate
 
@@ -6017,7 +6035,7 @@ Input Parameters:
 - `b`  - default false
 
 Options Database Key:
-- `-pc_gamg_low_memory_threshold_filter <bool,default=false>` - the flag
+- `-pc_gamg_low_memory_threshold_filter (true|false)` - use the low memory filter
 
 Level: intermediate
 
@@ -6052,10 +6070,10 @@ Logically Collective
 
 Input Parameters:
 - `pc` - the preconditioner context
-- `n`  - the number of smooths
+- `n`  - the number of smooths, default is 1
 
 Options Database Key:
-- `-pc_gamg_agg_nsmooths <nsmooth, default=1>` - the flag
+- `-pc_gamg_agg_nsmooths nsmooth` - number of smoothing steps to use
 
 Level: intermediate
 
@@ -6092,7 +6110,7 @@ Input Parameters:
 - `n`  - the maximum number of levels to use
 
 Options Database Key:
-- `-pc_mg_levels <n>` - set the maximum number of levels to allow
+- `-pc_mg_levels n` - set the maximum number of levels to allow
 
 Level: intermediate
 
@@ -6129,7 +6147,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` to not force coarse grid onto one processor
 
 Options Database Key:
-- `-pc_gamg_parallel_coarse_grid_solver` - use a parallel coarse grid solver
+- `-pc_gamg_parallel_coarse_grid_solver (true|false)` - use a parallel coarse grid solver
 
 Level: intermediate
 
@@ -6166,7 +6184,7 @@ Input Parameters:
 - `n`  - the number of equations
 
 Options Database Key:
-- `-pc_gamg_process_eq_limit <limit>` - set the limit
+- `-pc_gamg_process_eq_limit limit` - set the limit
 
 Level: intermediate
 
@@ -6194,7 +6212,7 @@ end
 
 """
 	PCGAMGSetRankReductionFactors(petsclib::PetscLibType,pc::PC, v::Vector{PetscInt}, n::PetscInt) 
-Set a manual schedule for MPI rank reduction on coarse grids
+Set a manual schedule for MPI process reduction on coarse grids
 
 Collective
 
@@ -6204,7 +6222,7 @@ Input Parameters:
 - `n`  - number of values provided in array
 
 Options Database Key:
-- `-pc_gamg_rank_reduction_factors <factors>` - provide the schedule
+- `-pc_gamg_rank_reduction_factors r0,r1,...` - provide the schedule
 
 Level: intermediate
 
@@ -6232,7 +6250,7 @@ end
 
 """
 	PCGAMGSetRecomputeEstEig(petsclib::PetscLibType,pc::PC, b::PetscBool) 
-Set flag for Chebyshev smoothers to recompute the eigen estimates when a new matrix is used
+Set flag for Chebyshev smoothers to recompute the eigenvalue estimates when a new matrix is used
 
 Collective
 
@@ -6241,7 +6259,7 @@ Input Parameters:
 - `b`  - flag, default is `PETSC_TRUE`
 
 Options Database Key:
-- `-pc_gamg_recompute_esteig <true>` - use the eigen estimate
+- `-pc_gamg_recompute_esteig (true|false)` - recompute the eigenvalue estimate
 
 Level: advanced
 
@@ -6269,7 +6287,7 @@ end
 
 """
 	PCGAMGSetRepartition(petsclib::PetscLibType,pc::PC, n::PetscBool) 
-Repartition the degrees of freedom across the processors on the coarser grids when reducing the number of MPI ranks to use
+Repartition the degrees of freedom across the processors on the coarser grids when reducing the number of MPI processes used
 
 Collective
 
@@ -6278,7 +6296,7 @@ Input Parameters:
 - `n`  - `PETSC_TRUE` or `PETSC_FALSE`
 
 Options Database Key:
-- `-pc_gamg_repartition <true,false>` - turn on the repartitioning
+- `-pc_gamg_repartition (true|false)` - turn on the repartitioning
 
 Level: intermediate
 
@@ -6306,7 +6324,7 @@ end
 
 """
 	PCGAMGSetReuseInterpolation(petsclib::PetscLibType,pc::PC, n::PetscBool) 
-Reuse prolongation when rebuilding a `PCGAMG` algebraic multigrid preconditioner
+Reuse prolongation when rebuilding a `PCGAMG` algebraic multigrid preconditioner when the matrix has changed
 
 Collective
 
@@ -6315,7 +6333,7 @@ Input Parameters:
 - `n`  - `PETSC_TRUE` or `PETSC_FALSE`
 
 Options Database Key:
-- `-pc_gamg_reuse_interpolation <true,false>` - reuse the previous interpolation
+- `-pc_gamg_reuse_interpolation (true|false)` - reuse the previous interpolation
 
 Level: intermediate
 
@@ -6349,15 +6367,16 @@ Not Collective
 
 Input Parameters:
 - `pc` - the preconditioner context
-- `v`  - array of threshold values for finest n levels; 0.0 means keep all nonzero entries in the graph; negative means keep even zero entries in the graph
+- `v`  - array of threshold values for finest `n` levels; 0.0 means keep all nonzero entries in the graph; negative means keep even zero entries in the graph
 - `n`  - number of threshold values provided in array
 
 Options Database Key:
-- `-pc_gamg_threshold <threshold>` - the threshold to drop edges
+- `-pc_gamg_threshold l0,l1,...` - the thresholds to drop edges
 
 Level: intermediate
 
--seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`, `PCGAMGSetMinDegreeOrderingMISk()`, `PCGAMGSetThresholdScale()`
+-seealso: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), [](ch_ksp), `PCGAMG`, `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`,
+`PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetThresholdScale()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetThreshold"))
@@ -6390,7 +6409,7 @@ Input Parameters:
 - `v`  - the threshold value reduction, usually < 1.0
 
 Options Database Key:
-- `-pc_gamg_threshold_scale <v>` - set the relative threshold reduction on each level
+- `-pc_gamg_threshold_scale v` - set the relative threshold reduction on each level
 
 Level: advanced
 
@@ -6427,7 +6446,7 @@ Input Parameters:
 - `type` - `PCGAMGAGG`, `PCGAMGGEO`, or `PCGAMGCLASSICAL`
 
 Options Database Key:
-- `-pc_gamg_type <agg,geo,classical>` - type of algebraic multigrid to apply - only agg is supported
+- `-pc_gamg_type (agg|geo|classical)` - type of algebraic multigrid to apply - only agg is supported
 
 Level: intermediate
 
@@ -6455,7 +6474,7 @@ end
 
 """
 	PCGAMGSetUseSAEstEig(petsclib::PetscLibType,pc::PC, b::PetscBool) 
-Use the eigen estimate from smoothed aggregation for the Chebyshev smoother during the solution process
+Use the eigenvalue estimate from smoothed aggregation for the Chebyshev smoother during the solution process
 
 Collective
 
@@ -6464,7 +6483,7 @@ Input Parameters:
 - `b`  - flag
 
 Options Database Key:
-- `-pc_gamg_use_sa_esteig <true,false>` - use the eigen estimate
+- `-pc_gamg_use_sa_esteig (true|false)` - use the eigen estimate
 
 Level: advanced
 
@@ -6491,7 +6510,7 @@ end
 end 
 
 """
-	n::PetscInt,iis::Ptr{IS} = PCGASMCreateSubdomains(petsclib::PetscLibType,A::AbstractPetscMat, N::PetscInt) 
+	M_n::PetscInt,iis::Ptr{IS} = PCGASMCreateSubdomains(petsclib::PetscLibType,A::AbstractPetscMat, N::PetscInt) 
 Creates `n` index sets defining `n` nonoverlapping subdomains on this MPI process for the `PCGASM` additive
 Schwarz preconditioner for a any problem based on its matrix.
 
@@ -6517,20 +6536,20 @@ function PCGASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, N::
 end
 
 @for_petsc function PCGASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
-	n_ = Ref{$PetscInt}()
+	M_n_ = Ref{$PetscInt}()
 	iis_ = Ref{Ptr{IS}}()
 
     @chk ccall(
                (:PCGASMCreateSubdomains, $petsc_library),
                PetscErrorCode,
                (CMat, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{CIS}}),
-               A, N, n_, iis_,
+               A, N, M_n_, iis_,
               )
 
-	n = n_[]
+	M_n = M_n_[]
 	iis = iis_[]
 
-	return n,iis
+	return M_n,iis
 end 
 
 """
@@ -6641,7 +6660,7 @@ Output Parameters:
 Level: advanced
 
 -seealso: [](ch_ksp), `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMSetOverlap()`,
-`PCGASMCreateSubdomains2D()`,
+`PCGASMCreateSubdomains2D()`
 
 # External Links
 $(_doc_external("PC/PCGASMGetSubKSP"))
@@ -6772,7 +6791,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCGASM`, `PCGASMSetUseDMSubdomains()`, `PCGASMSetOverlap()`
+-seealso: [](ch_ksp), `PCGASM`, `PCGASMSetUseDMSubdomains()`, `PCGASMSetOverlap()`,
 `PCGASMCreateSubdomains2D()`
 
 # External Links
@@ -6810,7 +6829,7 @@ Input Parameters:
 - `ovl` - the amount of overlap between subdomains (ovl >= 0, default value = 0)
 
 Options Database Key:
-- `-pc_gasm_overlap <overlap>` - Sets overlap
+- `-pc_gasm_overlap overlap` - Sets overlap
 
 Level: intermediate
 
@@ -6924,7 +6943,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ksp), `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMSetOverlap()`
+-seealso: [](ch_ksp), `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMSetOverlap()`,
 `PCGASMCreateSubdomains2D()`
 
 # External Links
@@ -6997,7 +7016,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCGASM`, `PCGASMGetUseDMSubdomains()`, `PCGASMSetSubdomains()`, `PCGASMSetOverlap()`
+-seealso: [](ch_ksp), `PCGASM`, `PCGASMGetUseDMSubdomains()`, `PCGASMSetSubdomains()`, `PCGASMSetOverlap()`,
 `PCGASMCreateSubdomains2D()`
 
 # External Links
@@ -7173,7 +7192,7 @@ end
 end 
 
 """
-	PCGetApplicationContext(petsclib::PetscLibType,pc::PC, ctx::PeCtx) 
+	ctx::Ptr{Cvoid} = PCGetApplicationContext(petsclib::PetscLibType,pc::PC) 
 Gets the user
 
 Not Collective
@@ -7182,7 +7201,7 @@ Input Parameter:
 - `pc` - `PC` context
 
 Output Parameter:
-- `ctx` - user context
+- `ctx` - application context
 
 Level: intermediate
 
@@ -7191,21 +7210,23 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetApplicationContext"))
 """
-function PCGetApplicationContext(petsclib::PetscLibType, pc::PC, ctx::PeCtx)
+function PCGetApplicationContext(petsclib::PetscLibType, pc::PC)
     error("PCGetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function PCGetApplicationContext(petsclib::$UnionPetscLib, pc::PC, ctx::PeCtx )
+@for_petsc function PCGetApplicationContext(petsclib::$UnionPetscLib, pc::PC )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PCGetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (PC, PeCtx),
-               pc, ctx,
+               (PC, Ptr{Cvoid}),
+               pc, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -7530,7 +7551,7 @@ end
 """
 	prefix::Ptr{Cchar} = PCGetOptionsPrefix(petsclib::PetscLibType,pc::PC) 
 Gets the prefix used for searching for all
-PC options in the database.
+`PC` options in the database.
 
 Not Collective
 
@@ -7542,7 +7563,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PC`, `PCSetFromOptions`, `PCSetOptionsPrefix()`, `PCAppendOptionsPrefix()`
+-seealso: [](ch_ksp), `PC`, `PCSetFromOptions()`, `PCSetOptionsPrefix()`, `PCAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("PC/PCGetOptionsPrefix"))
@@ -7619,7 +7640,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PC`, `PCType`, `PCSetType()`
+-seealso: [](ch_ksp), `PC`, `PCType`, `PCSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("PC/PCGetType"))
@@ -7645,9 +7666,9 @@ end
 
 """
 	flg::PetscBool = PCGetUseAmat(petsclib::PetscLibType,pc::PC) 
-Gets a flag to indicate that when the preconditioner needs to apply (part of) the
-operator during the preconditioning process it applies the Amat provided to `TSSetRHSJacobian()`,
-`TSSetIJacobian()`, `SNESSetJacobian()`, `KSPSetOperators()` or `PCSetOperators()` not the Pmat.
+Gets the flag that indicates that when the preconditioner needs to apply (part of) the
+operator during the preconditioning process it applies the `Amat` provided to `TSSetRHSJacobian()`,
+`TSSetIJacobian()`, `SNESSetJacobian()`, `KSPSetOperators()` or `PCSetOperators()` not the `Pmat`.
 
 Logically Collective
 
@@ -7655,7 +7676,7 @@ Input Parameter:
 - `pc` - the `PC` preconditioner context
 
 Output Parameter:
-- `flg` - `PETSC_TRUE` to use the Amat, `PETSC_FALSE` to use the Pmat (default is false)
+- `flg` - `PETSC_TRUE` to use the `Amat`, `PETSC_FALSE` to use the `Pmat`
 
 Level: intermediate
 
@@ -7694,7 +7715,7 @@ Input Parameters:
 - `component` - which component `PC` will coarsen
 
 Options Database Key:
-- `-pc_hmg_coarsening_component <i>` - Which component is chosen for the subspace-based coarsening algorithm
+- `-pc_hmg_coarsening_component i` - Which component is chosen for the subspace-based coarsening algorithm
 
 Level: beginner
 
@@ -7732,7 +7753,7 @@ Input Parameters:
 - `type` - `PCHYPRE` or `PCGAMG` coarsening algorithm
 
 Options Database Key:
-- `-hmg_inner_pc_type <hypre, gamg>` - What method is used to coarsen matrix
+- `-hmg_inner_pc_type (hypre|gamg)` - What method is used to coarsen matrix
 
 Level: beginner
 
@@ -7769,7 +7790,7 @@ Input Parameters:
 - `reuse` - `PETSC_TRUE` indicates that `PCHMG` will reuse the interpolations
 
 Options Database Key:
-- `-pc_hmg_reuse_interpolation <true | false>` - Whether or not to reuse the interpolations. If true, it potentially save the compute time.
+- `-pc_hmg_reuse_interpolation (true|false)` - Whether or not to reuse the interpolations. If true, it potentially save the compute time.
 
 Level: beginner
 
@@ -7806,7 +7827,7 @@ Input Parameters:
 - `subspace` - `PETSC_TRUE` indicates that `PCHMG` will use the subspace coarsening
 
 Options Database Key:
-- `-pc_hmg_use_subspace_coarsening  <true | false>` - Whether or not to use subspace coarsening (that is, coarsen a submatrix).
+- `-pc_hmg_use_subspace_coarsening  (true|false)` - Whether or not to use subspace coarsening (that is, coarsen a submatrix).
 
 Level: beginner
 
@@ -7843,7 +7864,7 @@ Input Parameters:
 - `usematmaij` - `PETSC_TRUE` (default) to use `MATMAIJ` for interpolations.
 
 Options Database Key:
-- `-pc_hmg_use_matmaij` - <true | false >
+- `-pc_hmg_use_matmaij (true|false)` - use `MATMAIJ` for interpolations
 
 Level: beginner
 
@@ -8888,7 +8909,7 @@ Output Parameter:
 - `flg` - the boolean flag
 
 Options Database Key:
-- `-pc_jacobi_fixdiagonal <bool>` - Fix 0 terms on diagonal by using 1
+- `-pc_jacobi_fixdiagonal (true|false)` - Fix 0 terms on diagonal by using 1
 
 Level: intermediate
 
@@ -9042,7 +9063,7 @@ Input Parameters:
 - `flg` - the boolean flag
 
 Options Database Key:
-- `-pc_jacobi_fixdiagonal <bool>` - check for zero values on the diagonal
+- `-pc_jacobi_fixdiagonal (true|false)` - check for zero values on the diagonal
 
 -seealso: [](ch_ksp), `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiGetFixDiagonal()`, `PCJacobiSetUseAbs()`
 
@@ -9078,7 +9099,7 @@ Input Parameters:
 - `scale` - scaling
 
 Options Database Key:
-- `-pc_jacobi_rowl1_scale <real>` - use absolute values
+- `-pc_jacobi_rowl1_scale scale` - scaling of off diagonal values
 
 Level: intermediate
 
@@ -9116,7 +9137,7 @@ Input Parameters:
 - `type` - `PC_JACOBI_DIAGONAL`, `PC_JACOBI_ROWL1`, `PC_JACOBI_ROWMAX`, `PC_JACOBI_ROWSUM`
 
 Options Database Key:
-- `-pc_jacobi_type <diagonal,rowl1,rowmax,rowsum>` - the type of diagonal matrix to use for Jacobi
+- `-pc_jacobi_type [diagonal, rowl1, rowmax, rowsum]` - the type of diagonal matrix to use for Jacobi
 
 Level: intermediate
 
@@ -9154,7 +9175,7 @@ Input Parameters:
 - `flg` - whether to use absolute values or not
 
 Options Database Key:
-- `-pc_jacobi_abs <bool>` - use absolute values
+- `-pc_jacobi_abs (true|false)` - use absolute values
 
 -seealso: [](ch_ksp), `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiGetUseAbs()`
 
@@ -9456,7 +9477,7 @@ Input Parameter:
 - `pc` - the multigrid context
 
 Output Parameter:
-- `name` - one of 'cusparse', 'hypre'
+- `name` - one of `cusparse`, `hypre`
 
 Level: intermediate
 
@@ -9492,10 +9513,10 @@ Logically Collective
 
 Input Parameters:
 - `pc`   - the hypre context
-- `name` - one of 'cusparse', 'hypre'
+- `name` - one of `cusparse`, `hypre`
 
 Options Database Key:
-- `-pc_mg_galerkin_mat_product_algorithm <cusparse,hypre>` - Type of sparse matrix-matrix product to use in hypre
+- `-pc_mg_galerkin_mat_product_algorithm (cusparse|hypre)` - Type of sparse matrix-matrix product to use in hypre
 
 Level: intermediate
 
@@ -9714,7 +9735,7 @@ end
 
 """
 	galerkin::PCMGGalerkinType = PCMGGetGalerkin(petsclib::PetscLibType,pc::PC) 
-Checks if Galerkin multigrid is being used, i.e. A_i
+Checks if Galerkin multigrid is being used, i.e. A_{i
 
 Not Collective
 
@@ -9726,7 +9747,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCMG`, `PCMGSetGalerkin()`, `PCMGGalerkinType`
+-seealso: [](ch_ksp), `PCMG`, `PCMGSetGalerkin()`, `PCMGGalerkinType`, `PC_MG_GALERKIN_BOTH`, `PC_MG_GALERKIN_PMAT`, `PC_MG_GALERKIN_MAT`, `PC_MG_GALERKIN_NONE`, `PC_MG_GALERKIN_EXTERNAL`
 
 # External Links
 $(_doc_external("PC/PCMGGetGalerkin"))
@@ -9758,8 +9779,8 @@ Input Parameter:
 - `pc` - the preconditioner context
 
 Output Parameters:
-- `gc` - grid complexity = sum_i(n_i) / n_0
-- `oc` - operator complexity = sum_i(nnz_i) / nnz_0
+- `gc` - grid complexity, \\frac{\\sum_i n_i}{n_0}, where n_0 is the number of unknowns on the finest grid
+- `oc` - operator complexity, \\frac{\\sum_i nnz_i}{nnz_0}, where nnz_0 is the number of nonzeros on the finest grid
 
 Level: advanced
 
@@ -10118,7 +10139,8 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PCMGType`, `PCMG`, `PCMGGetLevels()`, `PCMGSetLevels()`, `PCMGSetType()`
+-seealso: [](ch_ksp), `PCMGType`, `PCMG`, `PCMGGetLevels()`, `PCMGSetLevels()`, `PCMGSetType()`,
+`PC_MG_MULTIPLICATIVE`, `PC_MG_ADDITIVE`, `PC_MG_FULL`, `PC_MG_KASKADE`
 
 # External Links
 $(_doc_external("PC/PCMGGetType"))
@@ -10234,7 +10256,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PCMGSetCycleTypeOnLevel()`, `PCMGSetCycleType()`, `PCMGCycleType`, `PCMGType`
+-seealso: [](ch_ksp), `PCMGSetCycleTypeOnLevel()`, `PCMGSetCycleType()`, `PCMGCycleType`, `PCMGType`, `PC_MG_MULTIPLICATIVE`
 
 # External Links
 $(_doc_external("PC/PCMGMultiplicativeSetCycles"))
@@ -10268,7 +10290,8 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PCMGCoarseSpaceConstructorFn`, `PCMG`, `PCMGGetCoarseSpaceConstructor()`, `PCRegister()`
+-seealso: [](ch_ksp), `PCMGCoarseSpaceConstructorFn`, `PCMG`, `PCMGGetCoarseSpaceConstructor()`, `PCRegister()`,
+`PCMGSetAdaptCoarseSpaceType()`, `PCMG_ADAPT_EIGENVECTOR`, `PCMG_ADAPT_GENERALIZED_EIGENVECTOR`
 
 # External Links
 $(_doc_external("PC/PCMGRegisterCoarseSpaceConstructor"))
@@ -10377,7 +10400,7 @@ Input Parameters:
 - `cr` - flag for compatible relaxation
 
 Options Database Key:
-- `-pc_mg_adapt_cr` - Turn on compatible relaxation
+- `-pc_mg_adapt_cr (true|false)` - Turn on compatible relaxation
 
 Level: intermediate
 
@@ -10405,9 +10428,8 @@ end
 
 """
 	PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType,pc::PC, ctype::PCMGCoarseSpaceType) 
-Set the type of adaptive coarse space.
-
-Adapts or creates the interpolator based upon a vector space which should be accurately captured by the next coarser mesh, and thus accurately interpolated.
+Set the type of adaptive coarse space. Adapts or creates the interpolator based upon a vector space which should be accurately
+captured by the next coarser mesh, and thus accurately interpolated.
 
 Logically Collective
 
@@ -10416,12 +10438,14 @@ Input Parameters:
 - `ctype` - the type of coarse space
 
 Options Database Keys:
-- `-pc_mg_adapt_interp_n <int>`             - The number of modes to use
-- `-pc_mg_adapt_interp_coarse_space <type>` - The type of coarse space: none, `polynomial`, `harmonic`, `eigenvector`, `generalized_eigenvector`, `gdsw`
+- `-pc_mg_adapt_interp_n nmodes`                                                                         - The number of modes to use
+- `-pc_mg_adapt_interp_coarse_space (none|polynomial|harmonic|eigenvector|generalized_eigenvector|gdsw)` - The type of coarse space to use
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCMG`, `PCMGCoarseSpaceType`, `PCMGGetAdaptCoarseSpaceType()`, `PCMGSetGalerkin()`, `PCMGSetAdaptInterpolation()`, `DM`
+-seealso: [](ch_ksp), `PCMG`, `PCMGCoarseSpaceType`, `PCMGGetAdaptCoarseSpaceType()`, `PCMGSetGalerkin()`, `PCMGSetAdaptInterpolation()`, `DM`,
+`PCMG_ADAPT_NONE`, `PCMG_ADAPT_POLYNOMIAL`, `PCMG_ADAPT_HARMONIC`, `PCMG_ADAPT_EIGENVECTOR`, `PCMG_ADAPT_GENERALIZED_EIGENVECTOR`,
+`PCMG_ADAPT_GDSW`
 
 # External Links
 $(_doc_external("PC/PCMGSetAdaptCoarseSpaceType"))
@@ -10453,11 +10477,6 @@ Input Parameters:
 - `pc`    - the multigrid context
 - `adapt` - flag for adaptation of the interpolator
 
-Options Database Keys:
-- `-pc_mg_adapt_interp`                     - Turn on adaptation
-- `-pc_mg_adapt_interp_n <int>`             - The number of modes to use, should be divisible by dimension
-- `-pc_mg_adapt_interp_coarse_space <type>` - The type of coarse space: polynomial, harmonic, eigenvector, generalized_eigenvector
-
 Level: intermediate
 
 -seealso: [](ch_ksp), `PCMG`, `PCMGGetAdaptInterpolation()`, `PCMGSetGalerkin()`, `PCMGGetAdaptCoarseSpaceType()`, `PCMGSetAdaptCoarseSpaceType()`
@@ -10484,7 +10503,7 @@ end
 
 """
 	PCMGSetCycleType(petsclib::PetscLibType,pc::PC, n::PCMGCycleType) 
-Sets the type cycles to use.  Use `PCMGSetCycleTypeOnLevel()` for more
+Sets the type of cycles to use.  Use `PCMGSetCycleTypeOnLevel()` for more
 complicated cycling.
 
 Logically Collective
@@ -10494,11 +10513,11 @@ Input Parameters:
 - `n`  - either `PC_MG_CYCLE_V` or `PC_MG_CYCLE_W`
 
 Options Database Key:
-- `-pc_mg_cycle_type <v,w>` - provide the cycle desired
+- `-pc_mg_cycle_type (v|w)` - provide the cycle desired
 
 Level: advanced
 
--seealso: [](ch_ksp), `PCMG`, `PCMGSetCycleTypeOnLevel()`, `PCMGType`, `PCMGCycleType`
+-seealso: [](ch_ksp), `PCMG`, `PCMGSetCycleTypeOnLevel()`, `PCMGType`, `PCMGCycleType`, `PC_MG_CYCLE_V`, `PC_MG_CYCLE_W`
 
 # External Links
 $(_doc_external("PC/PCMGSetCycleType"))
@@ -10566,7 +10585,7 @@ Input Parameter:
 - `pc` - the preconditioner context
 
 Options Database Key:
-- `-pc_mg_distinct_smoothup <bool>` - use distinct smoothing objects
+- `-pc_mg_distinct_smoothup (true|false)` - use distinct smoothing objects
 
 Level: advanced
 
@@ -10595,7 +10614,7 @@ end
 """
 	PCMGSetGalerkin(petsclib::PetscLibType,pc::PC, use::PCMGGalerkinType) 
 Causes the coarser grid matrices to be computed from the
-finest grid via the Galerkin process: A_i-1 = r_i * A_i * p_i
+finest grid via the Galerkin process: A_{i-1} = r_i * A_i * p_i.
 
 Logically Collective
 
@@ -10604,11 +10623,11 @@ Input Parameters:
 - `use` - one of `PC_MG_GALERKIN_BOTH`, `PC_MG_GALERKIN_PMAT`, `PC_MG_GALERKIN_MAT`, or `PC_MG_GALERKIN_NONE`
 
 Options Database Key:
-- `-pc_mg_galerkin <both,pmat,mat,none>` - set the matrices to form via the Galerkin process
+- `-pc_mg_galerkin (both|pmat|mat|none)` - set the matrices to form via the Galerkin process
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCMG`, `PCMGGetGalerkin()`, `PCMGGalerkinType`
+-seealso: [](ch_ksp), `PCMG`, `PCMGGetGalerkin()`, `PCMGGalerkinType`, `PC_MG_GALERKIN_BOTH`, `PC_MG_GALERKIN_PMAT`, `PC_MG_GALERKIN_MAT`, `PC_MG_GALERKIN_NONE`
 
 # External Links
 $(_doc_external("PC/PCMGSetGalerkin"))
@@ -10718,7 +10737,7 @@ you must pass `MPI_COMM_NULL`. Use comms = `NULL` to specify that all processes
 should participate in each level of problem.
 
 Options Database Key:
-- `-pc_mg_levels <levels>` - set the number of levels to use
+- `-pc_mg_levels levels` - set the number of levels to use
 
 Level: intermediate
 
@@ -10759,7 +10778,7 @@ Input Parameters:
 - `n`  - the number of smoothing steps
 
 Options Database Key:
-- `-mg_levels_ksp_max_it <n>` - Sets number of pre and post-smoothing steps
+- `-mg_levels_ksp_max_it n` - Sets number of pre and post-smoothing steps
 
 Level: advanced
 
@@ -11039,7 +11058,7 @@ end
 
 """
 	PCMGSetType(petsclib::PetscLibType,pc::PC, form::PCMGType) 
-Determines the form of multigrid to use, either
+Determines the type of multigrid to use, either
 multiplicative, additive, full, or the Kaskade algorithm.
 
 Logically Collective
@@ -11049,11 +11068,12 @@ Input Parameters:
 - `form` - multigrid form, one of `PC_MG_MULTIPLICATIVE`, `PC_MG_ADDITIVE`, `PC_MG_FULL`, `PC_MG_KASKADE`
 
 Options Database Key:
-- `-pc_mg_type <form>` - Sets <form>, one of multiplicative, additive, full, kaskade
+- `-pc_mg_type (multiplicative|additive|full|kaskade)` - Sets the type
 
 Level: advanced
 
--seealso: [](ch_ksp), `PCMGType`, `PCMG`, `PCMGGetLevels()`, `PCMGSetLevels()`, `PCMGGetType()`, `PCMGCycleType`
+-seealso: [](ch_ksp), `PCMGType`, `PCMG`, `PCMGGetLevels()`, `PCMGSetLevels()`, `PCMGGetType()`, `PCMGCycleType`,
+`PC_MG_MULTIPLICATIVE`, `PC_MG_ADDITIVE`, `PC_MG_FULL`, `PC_MG_KASKADE`
 
 # External Links
 $(_doc_external("PC/PCMGSetType"))
@@ -11149,21 +11169,31 @@ end
 end 
 
 """
-	PCMPIServerAddressesDestroy(petsclib::PetscLibType,ctx::Ptr{Ptr{Cvoid}}) 
+	PCMPIServerAddressesDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
+Destroys a `PCMPIServerAddresses` context, unmapping its shared
+
+Logically Collective
+
+Input Parameter:
+- `ctx` - pointer to the `PCMPIServerAddresses` structure to free
+
+Level: developer
+
+-seealso: `PCMPI`, `PetscShmgetMapAddresses()`, `PetscShmgetUnmapAddresses()`, `PetscObjectContainerCompose()`
 
 # External Links
 $(_doc_external("Sys/PCMPIServerAddressesDestroy"))
 """
-function PCMPIServerAddressesDestroy(petsclib::PetscLibType, ctx::Ptr{Ptr{Cvoid}})
+function PCMPIServerAddressesDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid})
     error("PCMPIServerAddressesDestroy: no generated method for these argument types")
 end
 
-@for_petsc function PCMPIServerAddressesDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Ptr{Cvoid}} )
+@for_petsc function PCMPIServerAddressesDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCMPIServerAddressesDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{Ptr{Cvoid}},),
+               (Ptr{Cvoid},),
                ctx,
               )
 
@@ -11513,7 +11543,6 @@ Input Parameters:
 - `type` - the local preconditioner type, one of
 -seealso: [](ch_ksp), `PCPARMS`, `PCPARMSSetGlobal()`, `PCPARMSSetNonsymPerm()`
 
-
 # External Links
 $(_doc_external("PC/PCPARMSSetLocal"))
 """
@@ -11652,30 +11681,105 @@ end
 end 
 
 """
-	PCPatchGetCellNumbering(petsclib::PetscLibType,pc::PC, cellNumbering::PetscSection) 
+	cellNumbering::PetscSection = PCPatchGetCellNumbering(petsclib::PetscLibType,pc::PC) 
+Get the `PetscSection` that provides the numbering of the cells used to define patches in a `PCPATCH` preconditioner
+
+Not Collective
+
+Input Parameter:
+- `pc` - the `PCPATCH` preconditioner
+
+Output Parameter:
+- `cellNumbering` - the `PetscSection` giving the cell numbering
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchSetCellNumbering()`, `PetscSection`
 
 # External Links
 $(_doc_external("PC/PCPatchGetCellNumbering"))
 """
-function PCPatchGetCellNumbering(petsclib::PetscLibType, pc::PC, cellNumbering::PetscSection)
+function PCPatchGetCellNumbering(petsclib::PetscLibType, pc::PC)
     error("PCPatchGetCellNumbering: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetCellNumbering(petsclib::$UnionPetscLib, pc::PC, cellNumbering::PetscSection )
+@for_petsc function PCPatchGetCellNumbering(petsclib::$UnionPetscLib, pc::PC )
+	cellNumbering_ = Ref{PetscSection}()
 
     @chk ccall(
                (:PCPatchGetCellNumbering, $petsc_library),
                PetscErrorCode,
                (PC, Ptr{PetscSection}),
-               pc, cellNumbering,
+               pc, cellNumbering_,
               )
 
+	cellNumbering = cellNumbering_[]
 
-	return nothing
+	return cellNumbering
+end 
+
+"""
+	ctype::PCPatchConstructType = PCPatchGetConstructType(petsclib::PetscLibType,pc::PC, noname::Ptr{Cvoid}) 
+Get the strategy currently used to construct patches for a `PCPATCH` preconditioner
+
+Not Collective
+
+Input Parameter:
+- `pc` - the `PCPATCH` preconditioner
+
+Output Parameters:
+- `ctype` - the `PCPatchConstructType`
+- `func`  - the callback that builds the patches when `ctype` is `PC_PATCH_USER` or `PC_PATCH_PYTHON`; otherwise unchanged
+- `ctx`   - the application context associated with `func`; otherwise unchanged
+
+Calling sequence of `func`:
+- `pc`                - the `PCPATCH` preconditioner
+- `npatch`            - number of patches
+- `patches`           - the `IS` that define each patch
+- `patchIterationSet` - how the patches are iterated over
+- `ctx`               - optional application context
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchSetConstructType()`, `PCPatchConstructType`
+
+# External Links
+$(_doc_external("PC/PCPatchGetConstructType"))
+"""
+function PCPatchGetConstructType(petsclib::PetscLibType, pc::PC, noname::Ptr{Cvoid})
+    error("PCPatchGetConstructType: no generated method for these argument types")
+end
+
+@for_petsc function PCPatchGetConstructType(petsclib::$UnionPetscLib, pc::PC, noname::Ptr{Cvoid} )
+	ctype_ = Ref{PCPatchConstructType}()
+
+    @chk ccall(
+               (:PCPatchGetConstructType, $petsc_library),
+               PetscErrorCode,
+               (PC, Ptr{PCPatchConstructType}, Ptr{Cvoid}),
+               pc, ctype_, noname,
+              )
+
+	ctype = ctype_[]
+
+	return ctype
 end 
 
 """
 	flg::PetscBool = PCPatchGetPartitionOfUnity(petsclib::PetscLibType,pc::PC) 
+Get whether the patch contributions are weighted by a partition of unity when combining local solves
+
+Not Collective
+
+Input Parameter:
+- `pc` - the `PCPATCH` preconditioner
+
+Output Parameter:
+- `flg` - `PETSC_TRUE` if local patch updates are weighted by a partition of unity, `PETSC_FALSE` if they are summed directly
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchSetPartitionOfUnity()`
 
 # External Links
 $(_doc_external("PC/PCPatchGetPartitionOfUnity"))
@@ -11701,6 +11805,19 @@ end
 
 """
 	flg::PetscBool = PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType,pc::PC) 
+Get whether element tensors are precomputed once and reused when assembling each patch matrix
+
+Not Collective
+
+Input Parameter:
+- `pc` - the `PCPATCH` preconditioner
+
+Output Parameter:
+- `flg` - `PETSC_TRUE` if the element tensors are precomputed, `PETSC_FALSE` if they are recomputed for each patch
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchSetPrecomputeElementTensors()`, `PCPatchSetSaveOperators()`
 
 # External Links
 $(_doc_external("PC/PCPatchGetPrecomputeElementTensors"))
@@ -11726,6 +11843,19 @@ end
 
 """
 	flg::PetscBool = PCPatchGetSaveOperators(petsclib::PetscLibType,pc::PC) 
+Get whether the per
+
+Not Collective
+
+Input Parameter:
+- `pc` - the `PCPATCH` preconditioner
+
+Output Parameter:
+- `flg` - `PETSC_TRUE` if the assembled sub-matrices are stored, `PETSC_FALSE` if they are rebuilt on demand
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchSetSaveOperators()`, `PCPatchSetPrecomputeElementTensors()`
 
 # External Links
 $(_doc_external("PC/PCPatchGetSaveOperators"))
@@ -11750,32 +11880,61 @@ end
 end 
 
 """
-	npatch::PetscInt = PCPatchGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
+	npatch::PetscInt,ksp::Ptr{PetscKSP} = PCPatchGetSubKSP(petsclib::PetscLibType,pc::PC) 
+Get the per
+
+Not Collective
+
+Input Parameter:
+- `pc` - the `PCPATCH` preconditioner
+
+Output Parameters:
+- `npatch` - number of local patches (may be `NULL`)
+- `ksp`    - newly allocated array of length `npatch` holding the per-patch `KSP` objects; the caller must free the array with `PetscFree()`
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `KSP`, `PCASMGetSubKSP()`
 
 # External Links
 $(_doc_external("PC/PCPatchGetSubKSP"))
 """
-function PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+function PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC)
     error("PCPatchGetSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
+@for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	npatch_ = Ref{$PetscInt}()
+	ksp_ = Ref{Ptr{PetscKSP}}()
 
     @chk ccall(
                (:PCPatchGetSubKSP, $petsc_library),
                PetscErrorCode,
                (PC, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
-               pc, npatch_, ksp,
+               pc, npatch_, ksp_,
               )
 
 	npatch = npatch_[]
+	ksp = ksp_[]
 
-	return npatch
+	return npatch,ksp
 end 
 
 """
 	sub_mat_type::MatType = PCPatchGetSubMatType(petsclib::PetscLibType,pc::PC) 
+Get the `MatType` used to store the per
+
+Not Collective
+
+Input Parameter:
+- `pc` - the `PCPATCH` preconditioner
+
+Output Parameter:
+- `sub_mat_type` - the `MatType` used for the per-patch sub-matrices
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchSetSubMatType()`, `MatType`
 
 # External Links
 $(_doc_external("PC/PCPatchGetSubMatType"))
@@ -11801,6 +11960,17 @@ end
 
 """
 	PCPatchSetCellNumbering(petsclib::PetscLibType,pc::PC, cellNumbering::PetscSection) 
+Set the `PetscSection` that provides a numbering of the cells used to define patches in a `PCPATCH` preconditioner
+
+Logically Collective
+
+Input Parameters:
+- `pc`            - the `PCPATCH` preconditioner
+- `cellNumbering` - the `PetscSection` giving the cell numbering; its reference count is incremented
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchGetCellNumbering()`, `PetscSection`
 
 # External Links
 $(_doc_external("PC/PCPatchSetCellNumbering"))
@@ -11831,7 +12001,7 @@ Logically Collective
 Input Parameters:
 - `pc`   - The `PC`
 - `func` - The callback function
-- `ctx`  - The user context
+- `ctx`  - The application context
 
 Calling sequence of `func`:
 - `pc`               - The `PC`
@@ -11842,7 +12012,7 @@ Calling sequence of `func`:
 - `n`                - The size of `dofsArray`
 - `dofsArray`        - The dofmap for the dofs to be solved for
 - `dofsArrayWithAll` - The dofmap for all dofs on the patch
-- `ctx`              - The user context
+- `ctx`              - The application context
 
 Level: advanced
 
@@ -11869,15 +12039,15 @@ end
 end 
 
 """
-	PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType,pc::PC, func::external, ctx::Ptr{Cvoid}) 
-Set the callback function used to compute facet integrals for patch residuals
+	PCPatchSetComputeFunctionExteriorFacets(petsclib::PetscLibType,pc::PC, func::external, ctx::Ptr{Cvoid}) 
+Set the callback function used to compute exterior facet integrals for patch residuals
 
 Logically Collective
 
 Input Parameters:
 - `pc`   - The `PC`
 - `func` - The callback function
-- `ctx`  - The user context
+- `ctx`  - The application context
 
 Calling sequence of `func`:
 - `pc`               - The `PC`
@@ -11888,7 +12058,53 @@ Calling sequence of `func`:
 - `n`                - The size of `dofsArray`
 - `dofsArray`        - The dofmap for the dofs to be solved for
 - `dofsArrayWithAll` - The dofmap for all dofs on the patch
-- `ctx`              - The user context
+- `ctx`              - The application context
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPatchSetComputeFunction()`, `PCPatchSetComputeFunctionInteriorFacets()`, `PCPatchSetComputeOperatorExteriorFacets()`, `PCPatchSetDiscretisationInfo()`
+
+# External Links
+$(_doc_external("PC/PCPatchSetComputeFunctionExteriorFacets"))
+"""
+function PCPatchSetComputeFunctionExteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+    error("PCPatchSetComputeFunctionExteriorFacets: no generated method for these argument types")
+end
+
+@for_petsc function PCPatchSetComputeFunctionExteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PCPatchSetComputeFunctionExteriorFacets, $petsc_library),
+               PetscErrorCode,
+               (PC, external, Ptr{Cvoid}),
+               pc, func, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType,pc::PC, func::external, ctx::Ptr{Cvoid}) 
+Set the callback function used to compute facet integrals for patch residuals
+
+Logically Collective
+
+Input Parameters:
+- `pc`   - The `PC`
+- `func` - The callback function
+- `ctx`  - The application context
+
+Calling sequence of `func`:
+- `pc`               - The `PC`
+- `point`            - The point
+- `x`                - The input solution (not used in linear problems)
+- `f`                - The patch residual vector
+- `facetIS`          - An array of the facet numbers
+- `n`                - The size of `dofsArray`
+- `dofsArray`        - The dofmap for the dofs to be solved for
+- `dofsArrayWithAll` - The dofmap for all dofs on the patch
+- `ctx`              - The application context
 
 Level: advanced
 
@@ -11923,7 +12139,7 @@ Logically Collective
 Input Parameters:
 - `pc`   - The `PC`
 - `func` - The callback function
-- `ctx`  - The user context
+- `ctx`  - The application context
 
 Calling sequence of `func`:
 - `pc`               - The `PC`
@@ -11934,7 +12150,7 @@ Calling sequence of `func`:
 - `n`                - The size of `dofsArray`
 - `dofsArray`        - The dofmap for the dofs to be solved for
 - `dofsArrayWithAll` - The dofmap for all dofs on the patch
-- `ctx`              - The user context
+- `ctx`              - The application context
 
 Level: advanced
 
@@ -11961,15 +12177,15 @@ end
 end 
 
 """
-	PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType,pc::PC, func::external, ctx::Ptr{Cvoid}) 
-Set the callback function used to compute facet integrals for patch matrices
+	PCPatchSetComputeOperatorExteriorFacets(petsclib::PetscLibType,pc::PC, func::external, ctx::Ptr{Cvoid}) 
+Set the callback function used to compute exterior facet integrals for patch matrices
 
 Logically Collective
 
 Input Parameters:
 - `pc`   - The `PC`
 - `func` - The callback function
-- `ctx`  - The user context
+- `ctx`  - The application context
 
 Calling sequence of `func`:
 - `pc`               - The `PC`
@@ -11980,7 +12196,53 @@ Calling sequence of `func`:
 - `n`                - The size of `dofsArray`
 - `dofsArray`        - The dofmap for the dofs to be solved for
 - `dofsArrayWithAll` - The dofmap for all dofs on the patch
-- `ctx`              - The user context
+- `ctx`              - The application context
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPatchSetComputeOperator()`, `PCPatchSetComputeOperatorInteriorFacets()`, `PCPatchSetComputeFunctionExteriorFacets()`, `PCPatchSetDiscretisationInfo()`
+
+# External Links
+$(_doc_external("PC/PCPatchSetComputeOperatorExteriorFacets"))
+"""
+function PCPatchSetComputeOperatorExteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+    error("PCPatchSetComputeOperatorExteriorFacets: no generated method for these argument types")
+end
+
+@for_petsc function PCPatchSetComputeOperatorExteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PCPatchSetComputeOperatorExteriorFacets, $petsc_library),
+               PetscErrorCode,
+               (PC, external, Ptr{Cvoid}),
+               pc, func, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType,pc::PC, func::external, ctx::Ptr{Cvoid}) 
+Set the callback function used to compute facet integrals for patch matrices
+
+Logically Collective
+
+Input Parameters:
+- `pc`   - The `PC`
+- `func` - The callback function
+- `ctx`  - The application context
+
+Calling sequence of `func`:
+- `pc`               - The `PC`
+- `point`            - The point
+- `x`                - The input solution (not used in linear problems)
+- `mat`              - The patch matrix
+- `facetIS`          - An array of the facet numbers
+- `n`                - The size of `dofsArray`
+- `dofsArray`        - The dofmap for the dofs to be solved for
+- `dofsArrayWithAll` - The dofmap for all dofs on the patch
+- `ctx`              - The application context
 
 Level: advanced
 
@@ -12008,6 +12270,26 @@ end
 
 """
 	PCPatchSetConstructType(petsclib::PetscLibType,pc::PC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid}) 
+Set the way patches are constructed for a `PCPATCH` preconditioner
+
+Logically Collective
+
+Input Parameters:
+- `pc`    - the `PCPATCH` preconditioner
+- `ctype` - the `PCPatchConstructType` selecting the patch construction strategy (e.g. `PC_PATCH_STAR`, `PC_PATCH_VANKA`, `PC_PATCH_PARDECOMP`, `PC_PATCH_USER`, `PC_PATCH_PYTHON`)
+- `func`  - user callback that builds the patches, used only when `ctype` is `PC_PATCH_USER` or `PC_PATCH_PYTHON`; may be `NULL` otherwise
+- `ctx`   - optional application context passed to `func`
+
+Calling sequence of `func`:
+- `pc`                - the `PCPATCH` preconditioner
+- `npatch`            - number of patches
+- `patches`           - the `IS` that define each patch
+- `patchIterationSet` - how the patches are iterated over
+- `ctx`               - optional application context
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchGetConstructType()`, `PCPatchConstructType`
 
 # External Links
 $(_doc_external("PC/PCPatchSetConstructType"))
@@ -12030,42 +12312,61 @@ end
 end 
 
 """
-	bs::PetscInt,nodesPerCell::PetscInt,subspaceOffsets::PetscInt,ghostBcNodes::PetscInt,globalBcNodes::PetscInt = PCPatchSetDiscretisationInfo(petsclib::PetscLibType,pc::PC, nsubspaces::PetscInt, dms::AbstractPetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) 
+	PCPatchSetDiscretisationInfo(petsclib::PetscLibType,pc::PC, nsubspaces::PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{PetscInt}, nodesPerCell::Vector{PetscInt}, cellNodeMap::PetscInt, subspaceOffsets::Vector{PetscInt}, numGhostBcs::PetscInt, ghostBcNodes::Vector{PetscInt}, numGlobalBcs::PetscInt, globalBcNodes::Vector{PetscInt}) 
+Provide the per
+
+Logically Collective
+
+Input Parameters:
+- `pc`              - the `PCPATCH` preconditioner
+- `nsubspaces`      - the number of discretisation subspaces (e.g. fields)
+- `dms`             - array of length `nsubspaces` of `DM`s, one per subspace, from which the local sections and section `PetscSF`s are obtained
+- `bs`              - array of length `nsubspaces` giving the block size of each subspace
+- `nodesPerCell`    - array of length `nsubspaces` giving the number of nodes per cell for each subspace
+- `cellNodeMap`     - array of length `nsubspaces`; entry `i` is a cell-to-node map (array) of length `(cEnd - cStart) * nodesPerCell[i]`
+- `subspaceOffsets` - array of length `nsubspaces + 1` giving the starting global dof offset of each subspace
+- `numGhostBcs`     - number of ghost (off-process) boundary-condition dofs
+- `ghostBcNodes`    - array of length `numGhostBcs` of the ghost boundary-condition dof indices
+- `numGlobalBcs`    - number of global boundary-condition dofs
+- `globalBcNodes`   - array of length `numGlobalBcs` of the global boundary-condition dof indices
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchSetComputeOperator()`, `PCPatchSetComputeFunction()`
 
 # External Links
 $(_doc_external("PC/PCPatchSetDiscretisationInfo"))
 """
-function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::Integer, dms::AbstractPetscDM, cellNodeMap::Integer, numGhostBcs::Integer, numGlobalBcs::Integer)
+function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::Integer, dms::Vector{<:AbstractPetscDM}, bs::AbstractVector{<:Number}, nodesPerCell::AbstractVector{<:Number}, cellNodeMap::Integer, subspaceOffsets::AbstractVector{<:Number}, numGhostBcs::Integer, ghostBcNodes::AbstractVector{<:Number}, numGlobalBcs::Integer, globalBcNodes::AbstractVector{<:Number})
     error("PCPatchSetDiscretisationInfo: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::PC, nsubspaces::$PetscInt, dms::AbstractPetscDM, cellNodeMap::$PetscInt, numGhostBcs::$PetscInt, numGlobalBcs::$PetscInt )
-	dms_ = Ref(dms.ptr)
-	bs_ = Ref{$PetscInt}()
-	nodesPerCell_ = Ref{$PetscInt}()
-	subspaceOffsets_ = Ref{$PetscInt}()
-	ghostBcNodes_ = Ref{$PetscInt}()
-	globalBcNodes_ = Ref{$PetscInt}()
+@for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::PC, nsubspaces::$PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{$PetscInt}, nodesPerCell::Vector{$PetscInt}, cellNodeMap::$PetscInt, subspaceOffsets::Vector{$PetscInt}, numGhostBcs::$PetscInt, ghostBcNodes::Vector{$PetscInt}, numGlobalBcs::$PetscInt, globalBcNodes::Vector{$PetscInt} )
 
     @chk ccall(
                (:PCPatchSetDiscretisationInfo, $petsc_library),
                PetscErrorCode,
                (PC, $PetscInt, Ptr{CDM}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}),
-               pc, nsubspaces, dms_, bs_, nodesPerCell_, cellNodeMap, subspaceOffsets_, numGhostBcs, ghostBcNodes_, numGlobalBcs, globalBcNodes_,
+               pc, nsubspaces, dms, bs, nodesPerCell, cellNodeMap, subspaceOffsets, numGhostBcs, ghostBcNodes, numGlobalBcs, globalBcNodes,
               )
 
-	dms.ptr = dms_[]
-	bs = bs_[]
-	nodesPerCell = nodesPerCell_[]
-	subspaceOffsets = subspaceOffsets_[]
-	ghostBcNodes = ghostBcNodes_[]
-	globalBcNodes = globalBcNodes_[]
 
-	return bs,nodesPerCell,subspaceOffsets,ghostBcNodes,globalBcNodes
+	return nothing
 end 
 
 """
 	PCPatchSetPartitionOfUnity(petsclib::PetscLibType,pc::PC, flg::PetscBool) 
+Set whether the patch contributions should be weighted by a partition of unity when combining local solves
+
+Logically Collective
+
+Input Parameters:
+- `pc`  - the `PCPATCH` preconditioner
+- `flg` - `PETSC_TRUE` to weight local patch updates by a partition of unity, `PETSC_FALSE` to sum them directly
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchGetPartitionOfUnity()`
 
 # External Links
 $(_doc_external("PC/PCPatchSetPartitionOfUnity"))
@@ -12089,6 +12390,17 @@ end
 
 """
 	PCPatchSetPrecomputeElementTensors(petsclib::PetscLibType,pc::PC, flg::PetscBool) 
+Set whether element tensors should be precomputed once and reused when assembling each patch matrix
+
+Logically Collective
+
+Input Parameters:
+- `pc`  - the `PCPATCH` preconditioner
+- `flg` - `PETSC_TRUE` to precompute the element tensors, `PETSC_FALSE` to recompute them for each patch
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchGetPrecomputeElementTensors()`, `PCPatchSetSaveOperators()`
 
 # External Links
 $(_doc_external("PC/PCPatchSetPrecomputeElementTensors"))
@@ -12112,6 +12424,17 @@ end
 
 """
 	PCPatchSetSaveOperators(petsclib::PetscLibType,pc::PC, flg::PetscBool) 
+Set whether the per
+
+Logically Collective
+
+Input Parameters:
+- `pc`  - the `PCPATCH` preconditioner
+- `flg` - `PETSC_TRUE` to store the assembled sub-matrices for each patch, `PETSC_FALSE` to rebuild them on demand
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchGetSaveOperators()`, `PCPatchSetPrecomputeElementTensors()`
 
 # External Links
 $(_doc_external("PC/PCPatchSetSaveOperators"))
@@ -12135,6 +12458,17 @@ end
 
 """
 	PCPatchSetSubMatType(petsclib::PetscLibType,pc::PC, sub_mat_type::MatType) 
+Set the `MatType` used to store the per
+
+Logically Collective
+
+Input Parameters:
+- `pc`           - the `PCPATCH` preconditioner
+- `sub_mat_type` - the `MatType` to use for the per-patch sub-matrices (e.g. `MATDENSE`, `MATSEQAIJ`)
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PCPATCH`, `PCPatchGetSubMatType()`, `MatType`
 
 # External Links
 $(_doc_external("PC/PCPatchSetSubMatType"))
@@ -12274,7 +12608,7 @@ Input Parameters:
 - `pyname`  - full dotted Python name [package].module[.{class|function}]
 
 Options Database Key:
-- `-pc_python_type <pyname>`  - python class
+- `-pc_python_type pyname`  - python class
 
 Level: intermediate
 
@@ -12602,8 +12936,8 @@ Output Parameters:
 - `its`  - number of parallel iterations to use; each parallel iteration has lits local iterations
 
 Options Database Keys:
-- `-pc_sor_its <its>`   - Sets number of iterations
-- `-pc_sor_lits <lits>` - Sets number of local iterations
+- `-pc_sor_its its`   - Sets number of iterations
+- `-pc_sor_lits lits` - Sets number of local iterations
 
 Level: intermediate
 
@@ -12647,7 +12981,7 @@ Output Parameter:
 - `omega` - relaxation coefficient (0 < omega < 2).
 
 Options Database Key:
-- `-pc_sor_omega <omega>` - Sets omega
+- `-pc_sor_omega omega` - Sets omega
 
 Level: intermediate
 
@@ -12724,8 +13058,8 @@ Input Parameters:
 - `its`  - number of parallel iterations to use; each parallel iteration has lits local iterations
 
 Options Database Keys:
-- `-pc_sor_its <its>`   - Sets number of iterations
-- `-pc_sor_lits <lits>` - Sets number of local iterations
+- `-pc_sor_its its`   - Sets number of iterations
+- `-pc_sor_lits lits` - Sets number of local iterations
 
 Level: intermediate
 
@@ -12763,7 +13097,7 @@ Input Parameters:
 - `omega` - relaxation coefficient (0 < omega < 2).
 
 Options Database Key:
-- `-pc_sor_omega <omega>` - Sets omega
+- `-pc_sor_omega omega` - Sets omega
 
 Level: intermediate
 
@@ -13085,7 +13419,7 @@ Logically Collective
 
 Input Parameters:
 - `pc`  - the `PC` context
-- `ctx` - optional user context
+- `ctx` - optional application context
 
 Level: advanced
 
@@ -13393,7 +13727,7 @@ end
 """
 	PCSetOperators(petsclib::PetscLibType,pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets the matrix associated with the linear system and
-a (possibly) different one associated with the preconditioner.
+a (possibly) different one from which the preconditioner will be constructed.
 
 Logically Collective
 
@@ -13402,7 +13736,7 @@ Input Parameters:
 - `Amat` - the matrix that defines the linear system
 - `Pmat` - the matrix to be used in constructing the preconditioner, usually the same as Amat.
 
-Level: intermediate
+Level: advanced
 
 -seealso: [](ch_ksp), `PC`, `PCGetOperators()`, `MatZeroEntries()`
 
@@ -13437,7 +13771,9 @@ Input Parameters:
 - `pc`     - the `PC` preconditioner context
 - `prefix` - the prefix string to prepend to all `PC` option requests
 
--seealso: [](ch_ksp), `PC`, `PCSetFromOptions`, `PCAppendOptionsPrefix()`, `PCGetOptionsPrefix()`
+Level: advanced
+
+-seealso: [](ch_ksp), `PC`, `PCSetFromOptions()`, `PCAppendOptionsPrefix()`, `PCGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PC/PCSetOptionsPrefix"))
@@ -13541,7 +13877,7 @@ Input Parameters:
 - `type` - a known method, see `PCType` for possible values
 
 Options Database Key:
-- `-pc_type <type>` - Sets `PC` type
+- `-pc_type type` - Sets `PC` type
 
 -seealso: [](ch_ksp), `KSPSetType()`, `PCType`, `PCRegister()`, `PCCreate()`, `KSPGetPC()`
 
@@ -13636,17 +13972,17 @@ end
 """
 	PCSetUseAmat(petsclib::PetscLibType,pc::PC, flg::PetscBool) 
 Sets a flag to indicate that when the preconditioner needs to apply (part of) the
-operator during the preconditioning process it applies the Amat provided to `TSSetRHSJacobian()`,
-`TSSetIJacobian()`, `SNESSetJacobian()`, `KSPSetOperators()` or `PCSetOperators()` not the Pmat.
+operator during the preconditioning process it applies the `Amat` provided to `TSSetRHSJacobian()`,
+`TSSetIJacobian()`, `SNESSetJacobian()`, `KSPSetOperators()` or `PCSetOperators()` not the `Pmat`.
 
 Logically Collective
 
 Input Parameters:
 - `pc`  - the `PC` preconditioner context
-- `flg` - `PETSC_TRUE` to use the Amat, `PETSC_FALSE` to use the Pmat (default is false)
+- `flg` - `PETSC_TRUE` to use the `Amat`, `PETSC_FALSE` to use the `Pmat` (default is `PETSC_FALSE`)
 
 Options Database Key:
-- `-pc_use_amat <true,false>` - use the amat argument to `KSPSetOperators()` or `PCSetOperators()` to apply the operator
+- `-pc_use_amat (true|false)` - use the `Amat` argument to `KSPSetOperators()` or `PCSetOperators()` to apply the operator
 
 Level: intermediate
 
@@ -14267,7 +14603,7 @@ Calling sequence of `setup`:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetApply()`, `PCShellSetContext()`, , `PCShellGetContext()`
+-seealso: [](ch_ksp), `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetApply()`, `PCShellSetContext()`, `PCShellGetContext()`
 
 # External Links
 $(_doc_external("PC/PCShellSetSetUp"))
@@ -14824,6 +15160,9 @@ Input Parameters:
 - `A`    - the `PC` context
 - `obj`  - Optional object that provides the options prefix
 - `name` - command line option name
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: developer
 

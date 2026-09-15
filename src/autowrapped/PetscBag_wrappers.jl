@@ -14,8 +14,8 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -51,8 +51,8 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -77,7 +77,7 @@ end
 end 
 
 """
-	PetscBagGetData(petsclib::PetscLibType,bag::PetscBag, data::PeCtx) 
+	data::Ptr{Cvoid} = PetscBagGetData(petsclib::PetscLibType,bag::PetscBag) 
 Gives back the user
 can be used for storing user-data-structure
 
@@ -92,28 +92,30 @@ defining the bag
 
 Level: intermediate
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
 # External Links
 $(_doc_external("Bag/PetscBagGetData"))
 """
-function PetscBagGetData(petsclib::PetscLibType, bag::PetscBag, data::PeCtx)
+function PetscBagGetData(petsclib::PetscLibType, bag::PetscBag)
     error("PetscBagGetData: no generated method for these argument types")
 end
 
-@for_petsc function PetscBagGetData(petsclib::$UnionPetscLib, bag::PetscBag, data::PeCtx )
+@for_petsc function PetscBagGetData(petsclib::$UnionPetscLib, bag::PetscBag )
+	data_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PetscBagGetData, $petsc_library),
                PetscErrorCode,
-               (PetscBag, PeCtx),
-               bag, data,
+               (PetscBag, Ptr{Cvoid}),
+               bag, data_,
               )
 
+	data = data_[]
 
-	return nothing
+	return data
 end 
 
 """
@@ -130,8 +132,8 @@ Input Parameter:
 Output Parameter:
 - `name` - the name assigned to the bag
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -170,7 +172,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagSetName()`, `PetscBagCreate()`, `PetscBagGetData()`
+-seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagSetName()`, `PetscBagCreate()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -207,8 +209,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagView()`, `PetscBagGetData()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagView()`, `PetscBagGetData()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -246,8 +248,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -285,8 +287,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -325,8 +327,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`
 
 # External Links
@@ -364,8 +366,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt64()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt64()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -403,8 +405,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -442,8 +444,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -481,8 +483,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -520,8 +522,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -559,7 +561,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagSetFromOptions()`,
 `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -599,8 +601,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -634,8 +636,8 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -671,8 +673,8 @@ Input Parameters:
 - `name` - the name assigned to the bag
 - `help` - help message for bag
 
--seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -708,7 +710,7 @@ Input Parameters:
 - `bag` - the bag of values
 - `pre` - the prefix to prepend all Bag item names with.
 
--seealso: `PetscBag`, `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`
+-seealso: `PetscBag`, `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -743,8 +745,8 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`, `PetscBagRegisterEnum()`
+-seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`,
+`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`, `PetscBagRegisterEnum()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`
 
 # External Links
@@ -768,34 +770,37 @@ end
 end 
 
 """
-	PetscBagViewFromOptions(petsclib::PetscLibType,bag::PetscBag, bobj, optionname::String) 
+	PetscBagViewFromOptions(petsclib::PetscLibType,bag::PetscBag, bobj, name::String) 
 Processes command line options to determine if/how a `PetscBag` is to be viewed.
 
 Collective
 
 Input Parameters:
-- `bag`        - the object
-- `bobj`       - optional other object that provides prefix (if `NULL` then the prefix in obj is used)
-- `optionname` - option to activate viewing
+- `bag`  - the object
+- `bobj` - optional other object that provides prefix (if `NULL` then the prefix in obj is used)
+- `name` - option to activate viewing
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 
--seealso: `PetscBagCreate()`, `PetscBag`, `PetscViewer`
+-seealso: `PetscBagCreate()`, `PetscBag`, `PetscViewer`, `PetscBagView()`, `PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("Bag/PetscBagViewFromOptions"))
 """
-function PetscBagViewFromOptions(petsclib::PetscLibType, bag::PetscBag, bobj, optionname::String)
+function PetscBagViewFromOptions(petsclib::PetscLibType, bag::PetscBag, bobj, name::String)
     error("PetscBagViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function PetscBagViewFromOptions(petsclib::$UnionPetscLib, bag::PetscBag, bobj, optionname::String )
+@for_petsc function PetscBagViewFromOptions(petsclib::$UnionPetscLib, bag::PetscBag, bobj, name::String )
 
     @chk ccall(
                (:PetscBagViewFromOptions, $petsc_library),
                PetscErrorCode,
                (PetscBag, PetscObject, Ptr{Cchar}),
-               bag, bobj, optionname,
+               bag, bobj, name,
               )
 
 

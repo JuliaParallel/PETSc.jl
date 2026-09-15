@@ -50,9 +50,6 @@ const ISLocalToGlobalMapping = Ptr{_n_ISLocalToGlobalMapping}
 mutable struct _n_KSPGuess end
 const KSPGuess = Ptr{_n_KSPGuess}
 
-mutable struct _n_MPIU_Count end
-const MPIU_Count = Ptr{_n_MPIU_Count}
-
 mutable struct _n_MPI_Group end
 const MPI_Group = Ptr{_n_MPI_Group}
 
@@ -80,12 +77,6 @@ const MatTransposeColoring = Ptr{_n_MatTransposeColoring}
 mutable struct _n_PCRiCchardsonConvergedReason end
 const PCRiCchardsonConvergedReason = Ptr{_n_PCRiCchardsonConvergedReason}
 
-mutable struct _n_PeCtx end
-const PeCtx = Ptr{_n_PeCtx}
-
-mutable struct _n_PetscBLASInt end
-const PetscBLASInt = Ptr{_n_PetscBLASInt}
-
 mutable struct _n_PetscBag end
 const PetscBag = Ptr{_n_PetscBag}
 
@@ -100,6 +91,9 @@ const PetscContainer = Ptr{_n_PetscContainer}
 
 mutable struct _n_PetscConvEst end
 const PetscConvEst = Ptr{_n_PetscConvEst}
+
+mutable struct _n_PetscDA end
+const PetscDA = Ptr{_n_PetscDA}
 
 mutable struct _n_PetscDLHandle end
 const PetscDLHandle = Ptr{_n_PetscDLHandle}
@@ -266,6 +260,9 @@ const TaoLineSearch = Ptr{_n_TaoLineSearch}
 mutable struct _n_TaoMonitorDrawCtx end
 const TaoMonitorDrawCtx = Ptr{_n_TaoMonitorDrawCtx}
 
+mutable struct _n_TaoTerm end
+const TaoTerm = Ptr{_n_TaoTerm}
+
 mutable struct _n_VecTagger end
 const VecTagger = Ptr{_n_VecTagger}
 
@@ -275,11 +272,29 @@ const Vecs = Ptr{_n_Vecs}
 mutable struct _n_ViennaCLVector end
 const ViennaCLVector = Ptr{_n_ViennaCLVector}
 
+mutable struct _n_cublasHandle_t end
+const cublasHandle_t = Ptr{_n_cublasHandle_t}
+
+mutable struct _n_cudaStream_t end
+const cudaStream_t = Ptr{_n_cudaStream_t}
+
+mutable struct _n_cusolverDnHandle_t end
+const cusolverDnHandle_t = Ptr{_n_cusolverDnHandle_t}
+
 mutable struct _n_hCsize_t end
 const hCsize_t = Ptr{_n_hCsize_t}
 
 mutable struct _n_hid_t end
 const hid_t = Ptr{_n_hid_t}
+
+mutable struct _n_hipStream_t end
+const hipStream_t = Ptr{_n_hipStream_t}
+
+mutable struct _n_hipblasHandle_t end
+const hipblasHandle_t = Ptr{_n_hipblasHandle_t}
+
+mutable struct _n_hipsolverHandle_t end
+const hipsolverHandle_t = Ptr{_n_hipsolverHandle_t}
 
 mutable struct _n_hypre_ParCSRMatrix end
 const hypre_ParCSRMatrix = Ptr{_n_hypre_ParCSRMatrix}

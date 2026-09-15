@@ -120,7 +120,7 @@ Input Parameters:
 - `use_pinv` - set to `PETSC_TRUE` when using pseudoinverse
 
 Options Database Key:
-- `-ksp_bcgsl_pinv <true,false>` - use pseudoinverse
+- `-ksp_bcgsl_pinv (true|false)` - use pseudoinverse
 
 Level: intermediate
 
@@ -185,7 +185,7 @@ end
 end 
 
 """
-	V::PetscVec = KSPBuildResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec) 
+	KSPBuildResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Builds the residual in a vector provided.
 
 Collective
@@ -205,27 +205,27 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPBuildResidual"))
 """
-function KSPBuildResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec)
+function KSPBuildResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildResidual: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec )
-	V_ = Ref{CVec}()
+@for_petsc function KSPBuildResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
+	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
                (:KSPBuildResidual, $petsc_library),
                PetscErrorCode,
                (CKSP, CVec, CVec, Ptr{CVec}),
-               ksp, t, v, V_,
+               ksp, t, v, M_V_,
               )
 
-	V = PetscVec(V_[], petsclib)
+	M_V.ptr = M_V_[]
 
-	return V
+	return nothing
 end 
 
 """
-	V::PetscVec = KSPBuildResidualDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec) 
+	KSPBuildResidualDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Default code to compute the residual.
 
 Collecive on ksp
@@ -245,27 +245,27 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPBuildResidualDefault"))
 """
-function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec)
+function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildResidualDefault: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildResidualDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec )
-	V_ = Ref{CVec}()
+@for_petsc function KSPBuildResidualDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
+	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
                (:KSPBuildResidualDefault, $petsc_library),
                PetscErrorCode,
                (CKSP, CVec, CVec, Ptr{CVec}),
-               ksp, t, v, V_,
+               ksp, t, v, M_V_,
               )
 
-	V = PetscVec(V_[], petsclib)
+	M_V.ptr = M_V_[]
 
-	return V
+	return nothing
 end 
 
 """
-	V::PetscVec = KSPBuildSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec) 
+	KSPBuildSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Builds the approximate solution in a vector provided.
 
 Collective
@@ -285,46 +285,60 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPBuildSolution"))
 """
-function KSPBuildSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec)
+function KSPBuildSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildSolution: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec )
-	V_ = Ref{CVec}()
+@for_petsc function KSPBuildSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec )
+	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
                (:KSPBuildSolution, $petsc_library),
                PetscErrorCode,
                (CKSP, CVec, Ptr{CVec}),
-               ksp, v, V_,
+               ksp, v, M_V_,
               )
 
-	V = PetscVec(V_[], petsclib)
+	M_V.ptr = M_V_[]
 
-	return V
+	return nothing
 end 
 
 """
-	KSPBuildSolutionDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec) 
+	KSPBuildSolutionDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+Default code to build/move the solution.
+
+Collective
+
+Input Parameters:
+- `ksp` - iterative context
+- `v`   - pointer to the user's vector
+
+Output Parameter:
+- `V` - pointer to a vector containing the solution
+
+Level: advanced
+
+-seealso: [](ch_ksp), `KSP`, `KSPGetSolution()`, `KSPBuildResidualDefault()`
 
 # External Links
 $(_doc_external("KSP/KSPBuildSolutionDefault"))
 """
-function KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec)
+function KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildSolutionDefault: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildSolutionDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec )
-	V_ = Ref(V.ptr)
+@for_petsc function KSPBuildSolutionDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec )
+	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
                (:KSPBuildSolutionDefault, $petsc_library),
                PetscErrorCode,
                (CKSP, CVec, Ptr{CVec}),
-               ksp, v, V_,
+               ksp, v, M_V_,
               )
 
-	V.ptr = V_[]
+	M_V.ptr = M_V_[]
 
 	return nothing
 end 
@@ -513,11 +527,11 @@ Input Parameters:
 - `flg` - turn on or off the single reduction
 
 Options Database Key:
-- `-ksp_cg_single_reduction <bool>` - Merge inner products into single `MPI_Allreduce()`
+- `-ksp_cg_single_reduction (true|false)` - Merge inner products into single `MPI_Allreduce()`
 
 Level: intermediate
 
--seealso: [](ch_ksp), [](sec_pipelineksp), `KSP`, `KSPCG`, `KSPGMRES`, `KSPPIPECG`, `KSPPIPECR`, `and KSPGROPPCG`
+-seealso: [](ch_ksp), [](sec_pipelineksp), `KSP`, `KSPCG`, `KSPGMRES`, `KSPPIPECG`, `KSPPIPECR`, `KSPGROPPCG`
 
 # External Links
 $(_doc_external("KSP/KSPCGUseSingleReduction"))
@@ -624,7 +638,7 @@ Input Parameters:
 - `use` - `PETSC_TRUE` to use noisy
 
 Options Database Key:
-- `-ksp_chebyshev_esteig_noisy <true,false>` - Use noisy right-hand side for estimate
+- `-ksp_chebyshev_esteig_noisy (true|false)` - Use noisy right-hand side for estimate
 
 Level: intermediate
 
@@ -702,7 +716,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`,
+-seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`
 
 # External Links
 $(_doc_external("KSP/KSPChebyshevSetEigenvalues"))
@@ -735,7 +749,7 @@ Input Parameters:
 - `kind` - The kind of Chebyshev polynomial to use, see `KSPChebyshevKind`, one of `KSP_CHEBYSHEV_FIRST`, `KSP_CHEBYSHEV_FOURTH`, or `KSP_CHEBYSHEV_OPT_FOURTH`
 
 Options Database Key:
-- `-ksp_chebyshev_kind <kind>` - which kind of Chebyshev polynomial to use
+- `-ksp_chebyshev_kind (first|fourth|opt_fourth)` - which kind of Chebyshev polynomial to use
 
 Level: intermediate
 
@@ -771,7 +785,7 @@ Collective
 Input Parameters:
 - `ksp` - the linear solver `KSP` context.
 - `pc`  - the preconditioner context
-- `vec` - a vector that will be initialized with Inf to indicate lack of convergence
+- `vec` - a vector that will be initialized with infinity to indicate lack of convergence
 
 Level: developer
 
@@ -1149,7 +1163,7 @@ end
 end 
 
 """
-	KSPConvergedDefaultDestroy(petsclib::PetscLibType,ctx::Ptr{Ptr{Cvoid}}) 
+	KSPConvergedDefaultDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
 Frees the space used by the `KSPConvergedDefault()` function context
 
 Not Collective
@@ -1165,16 +1179,16 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultDestroy"))
 """
-function KSPConvergedDefaultDestroy(petsclib::PetscLibType, ctx::Ptr{Ptr{Cvoid}})
+function KSPConvergedDefaultDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid})
     error("KSPConvergedDefaultDestroy: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedDefaultDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Ptr{Cvoid}} )
+@for_petsc function KSPConvergedDefaultDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPConvergedDefaultDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{Ptr{Cvoid}},),
+               (Ptr{Cvoid},),
                ctx,
               )
 
@@ -1193,7 +1207,7 @@ Input Parameters:
 - `flg` - boolean flag
 
 Options Database Key:
-- `-ksp_converged_maxits <bool>` - Declare convergence if the maximum number of iterations is reached
+- `-ksp_converged_maxits (true|false)` - Declare convergence if the maximum number of iterations is reached
 
 Level: intermediate
 
@@ -1231,7 +1245,7 @@ Input Parameters:
 - `ksp` - iterative context
 
 Options Database Key:
-- `-ksp_converged_use_initial_residual_norm <bool>` - Use initial residual norm for computing relative convergence
+- `-ksp_converged_use_initial_residual_norm (true|false)` - Use initial residual norm for computing relative convergence
 
 Level: intermediate
 
@@ -1259,7 +1273,7 @@ end
 
 """
 	KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
-makes the default convergence test use min(|| B*(b
+makes the default convergence test use \\min(|| B*(b
 In the case of right preconditioner or if `KSPSetNormType`(ksp,`KSP_NORM_UNPRECONDITIONED`)
 is used there is no B in the above formula.
 
@@ -1269,7 +1283,7 @@ Input Parameters:
 - `ksp` - iterative context
 
 Options Database Key:
-- `-ksp_converged_use_min_initial_residual_norm <bool>` - Use minimum of initial residual norm and b for computing relative convergence
+- `-ksp_converged_use_min_initial_residual_norm (true|false)` - Use minimum of initial residual norm and b for computing relative convergence
 
 Level: intermediate
 
@@ -1407,7 +1421,7 @@ end
 
 """
 	KSPConvergedReasonViewFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
-Processes command line options to determine if/how a `KSPReason` is to be viewed.
+Processes command line options to determine if/how a `KSPConvergedReason` is to be viewed.
 
 Collective
 
@@ -1439,7 +1453,7 @@ end
 end 
 
 """
-	KSPConvergedReasonViewSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, f::Ptr{Cvoid}, vctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid}) 
+	KSPConvergedReasonViewSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function that is to be used at the
 end of the linear solver to display the convergence reason of the linear solver.
 
@@ -1448,9 +1462,8 @@ Logically Collective
 Input Parameters:
 - `ksp`               - the `KSP` context
 - `f`                 - the `ksp` converged reason view function, see `KSPConvergedReasonViewFn`
-- `vctx`              - [optional] user-defined context for private data for the
-`KSPConvergedReason` view routine (use `NULL` if no context is desired)
-- `reasonviewdestroy` - [optional] routine that frees `vctx` (may be `NULL`), see `PetscCtxDestroyFn` for the calling sequence
+- `ctx`               - [optional] context for private data for the `KSPConvergedReason` view routine (use `NULL` if context is not needed)
+- `reasonviewdestroy` - [optional] routine that frees `ctx` (may be `NULL`), see `PetscCtxDestroyFn` for the calling sequence
 
 Options Database Keys:
 - `-ksp_converged_reason`             - sets a default `KSPConvergedReasonView()`
@@ -1464,17 +1477,17 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewSet"))
 """
-function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, f::Ptr{Cvoid}, vctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid})
+function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid})
     error("KSPConvergedReasonViewSet: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedReasonViewSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, f::Ptr{Cvoid}, vctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid} )
+@for_petsc function KSPConvergedReasonViewSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPConvergedReasonViewSet, $petsc_library),
                PetscErrorCode,
                (CKSP, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               ksp, f, vctx, reasonviewdestroy,
+               ksp, f, ctx, reasonviewdestroy,
               )
 
 
@@ -1658,6 +1671,16 @@ end
 
 """
 	KSPDestroyDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+Destroys an iterative context variable for methods with no separate context.  Preferred calling sequence `KSPDestroy()`.
+
+Collective
+
+Input Parameter:
+- `ksp` - the iterative context
+
+Level: advanced
+
+-seealso: [](ch_ksp), `KSP`, `KSPDestroy()`
 
 # External Links
 $(_doc_external("KSP/KSPDestroyDefault"))
@@ -1804,11 +1827,11 @@ Input Parameters:
 - `mmax` - the maximum number of previous directions to orthogonalize against
 
 Options Database Key:
-- `-ksp_fcg_mmax <N>` - maximum number of search directions
+- `-ksp_fcg_mmax N` - maximum number of search directions
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGetMmax()`
+-seealso: [](ch_ksp), `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCDTruncationType`, `KSPFCGSetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGGetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPFCGSetMmax"))
@@ -1841,7 +1864,7 @@ Input Parameters:
 - `nprealloc` - the number of vectors to preallocate
 
 Options Database Key:
-- `-ksp_fcg_nprealloc <N>` - number of directions to preallocate
+- `-ksp_fcg_nprealloc N` - number of directions to preallocate
 
 Level: advanced
 
@@ -1869,14 +1892,14 @@ end
 
 """
 	KSPFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
-specify how many of its stored previous directions `KSPFCG` uses during orthoganalization
+specify how many of its stored previous directions `KSPFCG` uses during orthogonalization
 
 Logically Collective
 
 Input Parameters:
 - `ksp`        - the Krylov space context
 - `truncstrat` - the choice of strategy
--seealso: [](ch_ksp), `KSPFCDTruncationType`, `KSPFCGGetTruncationType()`, `KSPFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`,
+-seealso: [](ch_ksp), `KSPFCG`, `KSPFCDTruncationType`, `KSPFCGGetTruncationType()`, `KSPFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`,
 `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
@@ -2040,116 +2063,6 @@ end
 end 
 
 """
-	KSPFGMRESModifyPCKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
-modifies the attributes of the `KSPFGMRES` preconditioner, see [](sec_flexibleksp).
-
-Input Parameters:
-- `ksp`       - the ksp context being used.
-- `total_its` - the total number of `KSPFGMRES` iterations that have occurred.
-- `loc_its`   - the number of `KSPFGMRES` iterations since last restart.
-- `res_norm`  - the current residual norm.
-- `ctx`       - context, not used in this routine
-
-Level: intermediate
-
--seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFlexibleModifyPCFn`, `KSPFGMRESSetModifyPC()`
-
-# External Links
-$(_doc_external("KSP/KSPFGMRESModifyPCKSP"))
-"""
-function KSPFGMRESModifyPCKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
-    error("KSPFGMRESModifyPCKSP: no generated method for these argument types")
-end
-
-@for_petsc function KSPFGMRESModifyPCKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
-
-    @chk ccall(
-               (:KSPFGMRESModifyPCKSP, $petsc_library),
-               PetscErrorCode,
-               (CKSP, $PetscInt, $PetscInt, $PetscReal, Ptr{Cvoid}),
-               ksp, total_its, loc_its, res_norm, ctx,
-              )
-
-
-	return nothing
-end 
-
-"""
-	KSPFGMRESModifyPCNoChange(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
-this is the default used by `KSPFMGMRES`
-
-Input Parameters:
-- `ksp`       - the ksp context being used.
-- `total_its` - the total number of `KSPFGMRES` iterations that have occurred.
-- `loc_its`   - the number of `KSPFGMRES` iterations since last restart.
-- `res_norm`  - the current residual norm.
-- `ctx`       - context variable, unused in this routine
-
-Level: intermediate
-
--seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFlexibleModifyPCFn`, `KSPFGMRESSetModifyPC()`, `KSPFGMRESModifyPCKSP()`
-
-# External Links
-$(_doc_external("KSP/KSPFGMRESModifyPCNoChange"))
-"""
-function KSPFGMRESModifyPCNoChange(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
-    error("KSPFGMRESModifyPCNoChange: no generated method for these argument types")
-end
-
-@for_petsc function KSPFGMRESModifyPCNoChange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
-
-    @chk ccall(
-               (:KSPFGMRESModifyPCNoChange, $petsc_library),
-               PetscErrorCode,
-               (CKSP, $PetscInt, $PetscInt, $PetscReal, Ptr{Cvoid}),
-               ksp, total_its, loc_its, res_norm, ctx,
-              )
-
-
-	return nothing
-end 
-
-"""
-	KSPFGMRESSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
-Sets the routine used by `KSPFGMRES` to modify the preconditioner. [](sec_flexibleksp)
-
-Logically Collective
-
-Input Parameters:
-- `ksp`     - iterative context obtained from `KSPCreate()`
-- `fcn`     - function to modify the `PC`, see `KSPFlexibleModifyPCFn`
-- `ctx`     - optional context
-- `destroy` - optional context destroy routine
-
-Options Database Keys:
-- `-ksp_fgmres_modifypcnochange` - do not change the `PC`
-- `-ksp_fgmres_modifypcksp`      - changes the inner KSP solver tolerances
-
-Level: intermediate
-
--seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`, `KSPFGMRESModifyPCNoChange()`, `KSPFGMRESModifyPCKSP()`
-
-# External Links
-$(_doc_external("KSP/KSPFGMRESSetModifyPC"))
-"""
-function KSPFGMRESSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
-    error("KSPFGMRESSetModifyPC: no generated method for these argument types")
-end
-
-@for_petsc function KSPFGMRESSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
-
-    @chk ccall(
-               (:KSPFGMRESSetModifyPC, $petsc_library),
-               PetscErrorCode,
-               (CKSP, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               ksp, fcn, ctx, destroy,
-              )
-
-
-	return nothing
-end 
-
-"""
 	KSPFinalizePackage(petsclib::PetscLibType) 
 This function destroys everything in the `KSP` package. It is
 called from `PetscFinalize()`.
@@ -2178,6 +2091,76 @@ end
 end 
 
 """
+	KSPFlexibleModifyPCKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
+modifies the attributes of the `PCKSP` preconditioner, see [](sec_flexibleksp).
+
+Input Parameters:
+- `ksp`       - the ksp context being used.
+- `total_its` - the total number of `KSP` iterations that have occurred.
+- `loc_its`   - the number of `KSP` iterations since last restart.
+- `res_norm`  - the current residual norm.
+- `ctx`       - context, unused in this routine
+
+Level: intermediate
+
+-seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`
+
+# External Links
+$(_doc_external("KSP/KSPFlexibleModifyPCKSP"))
+"""
+function KSPFlexibleModifyPCKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
+    error("KSPFlexibleModifyPCKSP: no generated method for these argument types")
+end
+
+@for_petsc function KSPFlexibleModifyPCKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:KSPFlexibleModifyPCKSP, $petsc_library),
+               PetscErrorCode,
+               (CKSP, $PetscInt, $PetscInt, $PetscReal, Ptr{Cvoid}),
+               ksp, total_its, loc_its, res_norm, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	KSPFlexibleModifyPCNoChange(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
+this is the default used by the flexible Krylov methods
+
+Input Parameters:
+- `ksp`       - the ksp context being used.
+- `total_its` - the total number of `KSP` iterations that have occurred.
+- `loc_its`   - the number of `KSP` iterations since last restart.
+- `res_norm`  - the current residual norm.
+- `ctx`       - context variable, unused in this routine
+
+Level: intermediate
+
+-seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`, `KSPFlexibleModifyPCKSP()`
+
+# External Links
+$(_doc_external("KSP/KSPFlexibleModifyPCNoChange"))
+"""
+function KSPFlexibleModifyPCNoChange(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
+    error("KSPFlexibleModifyPCNoChange: no generated method for these argument types")
+end
+
+@for_petsc function KSPFlexibleModifyPCNoChange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:KSPFlexibleModifyPCNoChange, $petsc_library),
+               PetscErrorCode,
+               (CKSP, $PetscInt, $PetscInt, $PetscReal, Ptr{Cvoid}),
+               ksp, total_its, loc_its, res_norm, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
 	KSPFlexibleSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Sets the routine used by flexible `KSP` methods to modify the preconditioner. [](sec_flexibleksp)
 
@@ -2191,7 +2174,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFGMRESModifyPCNoChange()`, `KSPFGMRESModifyPCKSP()`
+-seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleModifyPCNoChange()`, `KSPFlexibleModifyPCKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPFlexibleSetModifyPC"))
@@ -2252,42 +2235,6 @@ end
 end 
 
 """
-	KSPGCRSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fnc::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
-Sets the routine used by `KSPGCR` to modify the preconditioner for each iteration
-
-Logically Collective
-
-Input Parameters:
-- `ksp`      - iterative context obtained from `KSPCreate()`
-- `function` - user defined function to modify the preconditioner, see `KSPFlexibleModifyPCFn`
-- `ctx`      - user provided context for the modify preconditioner function
-- `destroy`  - the function to use to destroy the user provided application context.
-
-Level: intermediate
-
--seealso: [](ch_ksp), `KSP`, `KSPGCR`, `KSPFlexibleModifyPCFn`, `KSPFGMRESModifyPCFn`, [](sec_flexibleksp)
-
-# External Links
-$(_doc_external("KSP/KSPGCRSetModifyPC"))
-"""
-function KSPGCRSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fnc::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
-    error("KSPGCRSetModifyPC: no generated method for these argument types")
-end
-
-@for_petsc function KSPGCRSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fnc::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
-
-    @chk ccall(
-               (:KSPGCRSetModifyPC, $petsc_library),
-               PetscErrorCode,
-               (CKSP, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               ksp, fnc, ctx, destroy,
-              )
-
-
-	return nothing
-end 
-
-"""
 	KSPGCRSetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP, restart::PetscInt) 
 Sets number of iterations at which `KSPGCR` restarts.
 
@@ -2298,7 +2245,7 @@ Input Parameters:
 - `restart` - integer restart value
 
 Options Database Key:
-- `-ksp_gcr_restart <restart>` - the number of stored vectors to orthogonalize against
+- `-ksp_gcr_restart restart` - the number of stored vectors to orthogonalize against
 
 Level: intermediate
 
@@ -2412,8 +2359,8 @@ Input Parameters:
 - `it`  - one less than the current GMRES restart iteration, i.e. the size of the Krylov space
 
 Options Database Keys:
-- `-ksp_gmres_classicalgramschmidt`                                             - Activates `KSPGMRESClassicalGramSchmidtOrthogonalization()`
-- `-ksp_gmres_cgs_refinement_type <refine_never,refine_ifneeded,refine_always>` - determine if iterative refinement is
+- `-ksp_gmres_classicalgramschmidt (true|false)`                                - Activates `KSPGMRESClassicalGramSchmidtOrthogonalization()`
+- `-ksp_gmres_cgs_refinement_type (refine_never|refine_ifneeded|refine_always)` - determine if iterative refinement is
 used to increase the stability of the classical Gram-Schmidt  orthogonalization.
 
 Level: intermediate
@@ -2479,6 +2426,47 @@ end
 	type = type_[]
 
 	return type
+end 
+
+"""
+	KSPGMRESGetOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, noname::Ptr{Cvoid}) 
+Gets the orthogonalization routine used by `KSPGMRES` and `KSPFGMRES`.
+
+Not Collective
+
+Input Parameter:
+- `ksp` - iterative context obtained from `KSPCreate()`
+
+Output Parameter:
+- `fcn` - orthogonalization function
+
+Calling sequence of `fcn`:
+- `ksp` - the solver context
+- `it`  - the current iteration
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `KSPGMRESSetRestart()`, `KSPGMRESSetPreAllocateVectors()`, `KSPGMRESSetCGSRefinementType()`, `KSPGMRESSetOrthogonalization()`,
+`KSPGMRESModifiedGramSchmidtOrthogonalization()`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESGetCGSRefinementType()`
+
+# External Links
+$(_doc_external("KSP/KSPGMRESGetOrthogonalization"))
+"""
+function KSPGMRESGetOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, noname::Ptr{Cvoid})
+    error("KSPGMRESGetOrthogonalization: no generated method for these argument types")
+end
+
+@for_petsc function KSPGMRESGetOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:KSPGMRESGetOrthogonalization, $petsc_library),
+               PetscErrorCode,
+               (CKSP, Ptr{Cvoid}),
+               ksp, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -2560,19 +2548,19 @@ end
 end 
 
 """
-	KSPGMRESMonitorKrylov(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fgnorm::PetscReal, dummy::Ptr{Cvoid}) 
+	KSPGMRESMonitorKrylov(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fgnorm::PetscReal, Viewers::Ptr{Cvoid}) 
 Calls `VecView()` to monitor each new direction in the `KSPGMRES` accumulated Krylov space.
 
 Collective
 
 Input Parameters:
-- `ksp`    - the `KSP` context
-- `its`    - iteration number
-- `fgnorm` - 2-norm of residual (or gradient)
-- `dummy`  - a collection of viewers created with `PetscViewersCreate()`
+- `ksp`     - the `KSP` context
+- `its`     - iteration number
+- `fgnorm`  - 2-norm of residual (or gradient)
+- `Viewers` - a collection of viewers created with `PetscViewersCreate()`
 
 Options Database Key:
-- `-ksp_gmres_krylov_monitor <bool>` - Plot the Krylov directions
+- `-ksp_gmres_krylov_monitor (true|false)` - Plot the Krylov directions
 
 Level: intermediate
 
@@ -2581,17 +2569,17 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESMonitorKrylov"))
 """
-function KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::Integer, fgnorm::Real, dummy::Ptr{Cvoid})
+function KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::Integer, fgnorm::Real, Viewers::Ptr{Cvoid})
     error("KSPGMRESMonitorKrylov: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESMonitorKrylov(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fgnorm::$PetscReal, dummy::Ptr{Cvoid} )
+@for_petsc function KSPGMRESMonitorKrylov(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fgnorm::$PetscReal, Viewers::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPGMRESMonitorKrylov, $petsc_library),
                PetscErrorCode,
                (CKSP, $PetscInt, $PetscReal, Ptr{Cvoid}),
-               ksp, its, fgnorm, dummy,
+               ksp, its, fgnorm, Viewers,
               )
 
 
@@ -2609,7 +2597,7 @@ Input Parameters:
 - `tol` - the tolerance
 
 Options Database Key:
-- `-ksp_gmres_breakdown_tolerance <positive real value>` - set tolerance for determining divergence breakdown
+- `-ksp_gmres_breakdown_tolerance tol` - set tolerance for determining divergence breakdown
 
 Level: intermediate
 
@@ -2670,16 +2658,16 @@ end
 
 """
 	KSPGMRESSetHapTol(petsclib::PetscLibType,ksp::AbstractPetscKSP, tol::PetscReal) 
-Sets the tolerance for detecting a happy ending in GMRES (`KSPGMRES`, `KSPFGMRES` and `KSPLGMRES` and others)
+Sets the tolerance for detecting a happy breakdown in GMRES (`KSPGMRES`, `KSPFGMRES` and `KSPLGMRES` and others)
 
 Logically Collective
 
 Input Parameters:
 - `ksp` - the Krylov space solver context
-- `tol` - the tolerance for detecting a happy ending
+- `tol` - the tolerance for detecting a happy breakdown
 
 Options Database Key:
-- `-ksp_gmres_haptol <positive real value>` - set tolerance for determining happy breakdown
+- `-ksp_gmres_haptol tol` - set tolerance for determining happy breakdown
 
 Level: intermediate
 
@@ -2800,7 +2788,7 @@ Input Parameters:
 - `restart` - integer restart value, this corresponds to the number of iterations of GMRES to perform before restarting
 
 Options Database Key:
-- `-ksp_gmres_restart <positive integer>` - integer restart value
+- `-ksp_gmres_restart restart` - integer restart value
 
 Level: intermediate
 
@@ -2860,7 +2848,7 @@ end
     @chk ccall(
                (:KSPGetAndClearConvergenceTest, $petsc_library),
                PetscErrorCode,
-               (CKSP, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CKSP, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
                ksp, converge_, ctx_, destroy_,
               )
 
@@ -2872,7 +2860,7 @@ end
 end 
 
 """
-	KSPGetApplicationContext(petsclib::PetscLibType,ksp::AbstractPetscKSP, ctx::PeCtx) 
+	ctx::Ptr{Cvoid} = KSPGetApplicationContext(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the user
 
 Not Collective
@@ -2881,7 +2869,7 @@ Input Parameter:
 - `ksp` - `KSP` context
 
 Output Parameter:
-- `ctx` - a pointer to the user context
+- `ctx` - a pointer to the application context
 
 Level: intermediate
 
@@ -2890,21 +2878,23 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetApplicationContext"))
 """
-function KSPGetApplicationContext(petsclib::PetscLibType, ksp::AbstractPetscKSP, ctx::PeCtx)
+function KSPGetApplicationContext(petsclib::PetscLibType, ksp::AbstractPetscKSP)
     error("KSPGetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ctx::PeCtx )
+@for_petsc function KSPGetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:KSPGetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (CKSP, PeCtx),
-               ksp, ctx,
+               (CKSP, Ptr{Cvoid}),
+               ksp, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -3179,7 +3169,7 @@ end
     @chk ccall(
                (:KSPGetConvergenceTest, $petsc_library),
                PetscErrorCode,
-               (CKSP, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CKSP, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
                ksp, converge_, ctx_, destroy_,
               )
 
@@ -3550,7 +3540,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPMatSolve()`, `KSPSetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matmatmult_Bbn`
+-seealso: [](ch_ksp), `KSPMatSolve()`, `KSPSetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matproduct_batch_size`
 
 # External Links
 $(_doc_external("KSP/KSPGetMatSolveBatchSize"))
@@ -4217,7 +4207,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPType`, `KSP`, `KSPSetType()`
+-seealso: [](ch_ksp), `KSPType`, `KSP`, `KSPSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("KSP/KSPGetType"))
@@ -4693,7 +4683,7 @@ Collective
 Input Parameters:
 - `viewer` - The `PetscViewer`
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The `PetscViewerAndFormat`
@@ -4878,7 +4868,7 @@ Input Parameters:
 Level: beginner
 
 Options Database Key:
-- `-ksp_minres_radius <real>` - maximum allowed solution norm
+- `-ksp_minres_radius radius` - maximum allowed solution norm
 
 -seealso: [](ch_ksp), `KSP`, `KSPMINRES`, `KSPMINRESSetUseQLP()`
 
@@ -5090,7 +5080,7 @@ Input Parameters:
 - `ctx`   - context used by monitor
 
 Options Database Key:
-- `-sub_ksp_dynamic_tolerance <coef>` - coefficient of dynamic tolerance for inner solver, default is 1.0
+- `-sub_ksp_dynamic_tolerance coef` - coefficient of dynamic tolerance for inner solver, default is 1.0
 
 Level: advanced
 
@@ -5126,7 +5116,7 @@ Output Parameter:
 - `ctx` - a void pointer
 
 Options Database Key:
-- `-sub_ksp_dynamic_tolerance <coef>` - coefficient of dynamic tolerance for inner solver, default is 1.0
+- `-sub_ksp_dynamic_tolerance coef` - coefficient of dynamic tolerance for inner solver, default is 1.0
 
 Level: advanced
 
@@ -5155,7 +5145,7 @@ end
 end 
 
 """
-	KSPMonitorDynamicToleranceDestroy(petsclib::PetscLibType,ctx::Ptr{Ptr{Cvoid}}) 
+	KSPMonitorDynamicToleranceDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
 Destroy the monitor context used in `KSPMonitorDynamicTolerance()`
 
 Input Parameter:
@@ -5168,16 +5158,16 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicToleranceDestroy"))
 """
-function KSPMonitorDynamicToleranceDestroy(petsclib::PetscLibType, ctx::Ptr{Ptr{Cvoid}})
+function KSPMonitorDynamicToleranceDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid})
     error("KSPMonitorDynamicToleranceDestroy: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorDynamicToleranceDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Ptr{Cvoid}} )
+@for_petsc function KSPMonitorDynamicToleranceDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorDynamicToleranceDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{Ptr{Cvoid}},),
+               (Ptr{Cvoid},),
                ctx,
               )
 
@@ -5196,7 +5186,7 @@ Output Parameters:
 - `coeff` - the coefficient, default is 1.0
 
 Options Database Key:
-- `-sub_ksp_dynamic_tolerance <coef>` - coefficient of dynamic tolerance for inner solver, default is 1.0
+- `-sub_ksp_dynamic_tolerance coef` - coefficient of dynamic tolerance for inner solver, default is 1.0
 
 Level: advanced
 
@@ -5350,7 +5340,7 @@ Collective
 Input Parameters:
 - `viewer` - The `PetscViewer`
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The viewer context
@@ -5383,6 +5373,19 @@ end
 
 """
 	KSPMonitorLGRange(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, monctx::Ptr{Cvoid}) 
+Prints line graphs summarizing the residual norm, the fraction of elements that dominate the residual, and the convergence factor at each iteration of the `KSP` solver
+
+Collective
+
+Input Parameters:
+- `ksp`    - iterative context
+- `n`      - iteration number
+- `rnorm`  - the 2-norm of the residual (or an approximation)
+- `monctx` - a `PetscViewer` (typically of type `PETSCVIEWERDRAW`) containing the line graphs to update
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `PETSCVIEWERDRAW`, `PetscDrawLG`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorLGRange"))
@@ -5532,7 +5535,7 @@ Collective
 Input Parameters:
 - `viewer` - The `PetscViewer` of type `PETSCVIEWERDRAW`
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The viewer context
@@ -5740,7 +5743,7 @@ end
 end 
 
 """
-	KSPMonitorSAWsDestroy(petsclib::PetscLibType,ctx::Ptr{Ptr{Cvoid}}) 
+	KSPMonitorSAWsDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
 destroy a monitor context created with `KSPMonitorSAWsCreate()`
 
 Collective
@@ -5755,16 +5758,16 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWsDestroy"))
 """
-function KSPMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Ptr{Ptr{Cvoid}})
+function KSPMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid})
     error("KSPMonitorSAWsDestroy: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSAWsDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Ptr{Cvoid}} )
+@for_petsc function KSPMonitorSAWsDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorSAWsDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{Ptr{Cvoid}},),
+               (Ptr{Cvoid},),
                ctx,
               )
 
@@ -5859,7 +5862,7 @@ Collective
 Input Parameters:
 - `viewer` - The `PetscViewer`
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The viewer context
@@ -5950,12 +5953,12 @@ Input Parameters:
 - `ksp`  - `KSP` object you wish to monitor
 - `opt`  - the command line option for this monitor
 - `name` - the monitor type one is seeking
-- `ctx`  - An optional user context for the monitor, or `NULL`
+- `ctx`  - An optional application context for the monitor, or `NULL`
 
 Level: developer
 
 -seealso: [](ch_ksp), `KSPMonitorRegister()`, `KSPMonitorSet()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -6030,7 +6033,7 @@ Collective
 Input Parameters:
 - `viewer` - The PetscViewer
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The viewer context
@@ -6187,7 +6190,7 @@ Collective
 Input Parameters:
 - `viewer` - The `PetscViewer`
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The viewer context
@@ -6307,7 +6310,7 @@ Collective
 Input Parameters:
 - `viewer` - The `PetscViewer` of type `PETSCVIEWERDRAW`
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The viewer context
@@ -6507,7 +6510,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+-seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetTruncationType"))
@@ -6542,7 +6545,7 @@ Input Parameters:
 - `mmax` - the maximum number of previous directions to orthogonalize against
 
 Options Database Key:
-- `-ksp_pipefcg_mmax <N>` - maximum number of previous directions
+- `-ksp_pipefcg_mmax N` - maximum number of previous directions
 
 Level: intermediate
 
@@ -6579,7 +6582,7 @@ Input Parameters:
 - `nprealloc` - the number of vectors to preallocate
 
 Options Database Key:
-- `-ksp_pipefcg_nprealloc <N>` - the number of vectors to preallocate
+- `-ksp_pipefcg_nprealloc N` - the number of vectors to preallocate
 
 Level: advanced
 
@@ -6607,7 +6610,7 @@ end
 
 """
 	KSPPIPEFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
-specify how many of its stored previous directions `KSPPIPEFCG` uses during orthoganalization
+specify how many of its stored previous directions `KSPPIPEFCG` uses during orthogonalization
 
 Logically Collective
 
@@ -6647,7 +6650,7 @@ Input Parameters:
 - `shift` - the shift
 
 Options Database Key:
-- `-ksp_pipefgmres_shift <shift>` - set the shift parameter
+- `-ksp_pipefgmres_shift shift` - set the shift parameter
 
 Level: intermediate
 
@@ -6760,7 +6763,7 @@ Input Parameter:
 
 Output Parameter:
 - `truncstrat` - the strategy type
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType`, `KSPPIPEGCRTruncationType`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+-seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetTruncationType"))
@@ -6833,7 +6836,7 @@ Input Parameters:
 - `mmax` - the maximum number of previous directions to orthogonalize against
 
 Options Database Key:
-- `-ksp_pipegcr_mmax <mmax>` - maximum number of previous directions
+- `-ksp_pipegcr_mmax mmax` - maximum number of previous directions
 
 Level: intermediate
 
@@ -6860,42 +6863,6 @@ end
 end 
 
 """
-	KSPPIPEGCRSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fnc::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
-Sets the routine used by `KSPPIPEGCR` to modify the preconditioner at each iteration
-
-Logically Collective
-
-Input Parameters:
-- `ksp`      - iterative context obtained from `KSPCreate()`
-- `function` - user defined function to modify the preconditioner, see `KSPFlexibleModifyPCFn`
-- `ctx`      - user provided context for the modify preconditioner function
-- `destroy`  - the function to use to destroy the user provided application context.
-
-Level: intermediate
-
--seealso: [](ch_ksp), `KSPFlexibleSetModifyPC()`, `KSPFlexibleModifyPCFn`, `KSPPIPEGCR`
-
-# External Links
-$(_doc_external("KSP/KSPPIPEGCRSetModifyPC"))
-"""
-function KSPPIPEGCRSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fnc::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
-    error("KSPPIPEGCRSetModifyPC: no generated method for these argument types")
-end
-
-@for_petsc function KSPPIPEGCRSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fnc::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
-
-    @chk ccall(
-               (:KSPPIPEGCRSetModifyPC, $petsc_library),
-               PetscErrorCode,
-               (CKSP, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               ksp, fnc, ctx, destroy,
-              )
-
-
-	return nothing
-end 
-
-"""
 	KSPPIPEGCRSetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPPIPEGCR`
 
@@ -6908,7 +6875,7 @@ Input Parameters:
 Level: advanced
 
 Options Database Key:
-- `-ksp_pipegcr_nprealloc <N>` - number of vectors to preallocate
+- `-ksp_pipegcr_nprealloc N` - number of vectors to preallocate
 
 -seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRGetNprealloc()`
 
@@ -6941,7 +6908,7 @@ Logically Collective
 Input Parameters:
 - `ksp`        - the Krylov space context
 - `truncstrat` - the choice of strategy
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRTruncationType`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+-seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPFCDTruncationType`, `KSPPIPEGCRGetTruncationType()`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetTruncationType"))
@@ -6976,7 +6943,7 @@ Input Parameters:
 Level: intermediate
 
 Options Database Key:
-- `-ksp_pipegcr_unroll_w <bool>` - use unrolling
+- `-ksp_pipegcr_unroll_w (true|false)` - use unrolling
 
 -seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPPIPEGCRSetNprealloc()`, `KSPPIPEGCRGetUnrollW()`
 
@@ -7049,7 +7016,7 @@ Input Parameters:
 - `pyname`  - full dotted Python name [package].module[.{class|function}]
 
 Options Database Key:
-- `-ksp_python_type <pyname>`  - python class
+- `-ksp_python_type pyname`  - python class
 
 Level: intermediate
 
@@ -7163,7 +7130,7 @@ Input Parameters:
 - `delta` - the trust region radius (Infinity is the default)
 
 Options Database Key:
-- `-ksp_qcg_trustregionradius <delta>` - trust region radius
+- `-ksp_qcg_trustregionradius delta` - trust region radius
 
 Level: advanced
 
@@ -7333,7 +7300,7 @@ Input Parameters:
 - `scale` - the damping factor
 
 Options Database Key:
-- `-ksp_richardson_scale <scale>` - Set the scale factor
+- `-ksp_richardson_scale scale` - Set the scale factor
 
 Level: intermediate
 
@@ -7405,7 +7372,7 @@ Logically Collective
 
 Input Parameters:
 - `ksp` - the `KSP` context
-- `ctx` - user context
+- `ctx` - application context
 
 Level: intermediate
 
@@ -7694,7 +7661,7 @@ Input Parameters:
 - `flg` - the Boolean value
 
 Options Database Key:
-- `-ksp_converged_neg_curve <bool>` - Declare convergence if negative curvature is detected
+- `-ksp_converged_neg_curve (true|false)` - Declare convergence if negative curvature is detected
 
 Level: advanced
 
@@ -7791,14 +7758,15 @@ end
 end 
 
 """
-	KSPSetDMActive(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
-Indicates the `DM` should be used to generate the linear system matrix and right
+	KSPSetDMActive(petsclib::PetscLibType,ksp::AbstractPetscKSP, active::KSPDMActive, flg::PetscBool) 
+Indicates the `DM` should be used to generate the linear system matrix, the right
 
 Logically Collective
 
 Input Parameters:
-- `ksp` - the `KSP`
-- `flg` - use the `DM`
+- `ksp`    - the `KSP`
+- `active` - one of `KSP_DMACTIVE_OPERATOR`, `KSP_DMACTIVE_RHS`, or `KSP_DMACTIVE_INITIAL_GUESS`
+- `flg`    - use the `DM`
 
 Level: intermediate
 
@@ -7807,17 +7775,17 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetDMActive"))
 """
-function KSPSetDMActive(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetDMActive(petsclib::PetscLibType, ksp::AbstractPetscKSP, active::KSPDMActive, flg::PetscBool)
     error("KSPSetDMActive: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, active::KSPDMActive, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetDMActive, $petsc_library),
                PetscErrorCode,
-               (CKSP, PetscBool),
-               ksp, flg,
+               (CKSP, KSPDMActive, PetscBool),
+               ksp, active, flg,
               )
 
 
@@ -7945,7 +7913,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` indicates you want the error generated
 
 Options Database Key:
-- `-ksp_error_if_not_converged <true,false>` - generate an error and stop the program
+- `-ksp_error_if_not_converged (true|false)` - generate an error and stop the program
 
 Level: intermediate
 
@@ -7988,15 +7956,13 @@ if residual norm decreases by this factor than convergence is declared
 - `-ksp_atol abstol`                                                        - absolute tolerance used in default convergence test, i.e. if residual
 norm is less than this then convergence is declared
 - `-ksp_divtol tol`                                                         - if residual norm increases by this factor than divergence is declared
-- `-ksp_max_it`                                                             - maximum number of linear iterations
-- `-ksp_min_it`                                                             - minimum number of linear iterations to use, defaults to zero
-
-- `-ksp_reuse_preconditioner <true,false>`                                  - reuse the previously computed preconditioner
-
+- `-ksp_max_it maxits`                                                      - maximum number of linear iterations
+- `-ksp_min_it minits`                                                      - minimum number of linear iterations to use, defaults to zero
+- `-ksp_reuse_preconditioner (true|false)`                                  - reuse the previously computed preconditioner
 - `-ksp_converged_use_initial_residual_norm`                                - see `KSPConvergedDefaultSetUIRNorm()`
 - `-ksp_converged_use_min_initial_residual_norm`                            - see `KSPConvergedDefaultSetUMIRNorm()`
 - `-ksp_converged_maxits`                                                   - see `KSPConvergedDefaultSetConvergedMaxits()`
-- `-ksp_norm_type <none,preconditioned,unpreconditioned,natural>`           - see `KSPSetNormType()`
+- `-ksp_norm_type (none|preconditioned|unpreconditioned|natural)`           - see `KSPSetNormType()`
 - `-ksp_check_norm_iteration it`                                            - do not compute residual norm until iteration number it (does compute at 0th iteration)
 works only for `KSPBCGS`, `KSPIBCGS`, and `KSPCG`
 - `-ksp_lag_norm`                                                           - compute the norm of the residual for the ith iteration on the i+1 iteration;
@@ -8004,7 +7970,7 @@ this means that one can use the norm of the residual for convergence test WITHOU
 an extra `MPI_Allreduce()` limiting global synchronizations.
 This will require 1 more iteration of the solver than usual.
 - `-ksp_guess_type`                                                         - Type of initial guess generator for repeated linear solves
-- `-ksp_fischer_guess <model,size>`                                         - uses the Fischer initial guess generator for repeated linear solves
+- `-ksp_fischer_guess model,size`                                           - uses the Fischer initial guess generator for repeated linear solves
 - `-ksp_constant_null_space`                                                - assume the operator (matrix) has the constant vector in its null space
 - `-ksp_test_null_space`                                                    - tests the null space set with `MatSetNullSpace()` to see if it truly is a null space
 - `-ksp_knoll`                                                              - compute initial guess by applying the preconditioner to the right-hand side
@@ -8012,7 +7978,7 @@ This will require 1 more iteration of the solver than usual.
 - `-ksp_monitor`                                                            - print residual norm at each iteration
 - `-ksp_monitor draw::draw_lg`                                              - plot residual norm at each iteration, see `KSPMonitorResidual()`
 - `-ksp_monitor_true_residual`                                              - print the true l2 residual norm at each iteration, see `KSPMonitorTrueResidual()`
-- `-all_ksp_monitor <optional filename>`                                    - print residual norm at each iteration for ALL KSP solves, regardless of their prefix. This is
+- `-all_ksp_monitor optional_filename`                                      - print residual norm at each iteration for ALL KSP solves, regardless of their prefix. This is
 useful for `PCFIELDSPLIT`, `PCMG`, etc that have inner solvers and
 you wish to track the convergence of all the solvers
 - `-ksp_monitor_solution [ascii binary or draw][:filename][:format option]` - plot solution at each iteration
@@ -8128,7 +8094,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` indicates the guess is non-zero, `PETSC_FALSE` indicates the guess is zero
 
 Options Database Key:
-- `-ksp_initial_guess_nonzero <true,false>` - use nonzero initial guess
+- `-ksp_initial_guess_nonzero (true|false)` - use nonzero initial guess
 
 Level: beginner
 
@@ -8204,7 +8170,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPMatSolve()`, `KSPGetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matmatmult_Bbn`
+-seealso: [](ch_ksp), `KSPMatSolve()`, `KSPGetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matproduct_batch_size`
 
 # External Links
 $(_doc_external("KSP/KSPSetMatSolveBatchSize"))
@@ -8237,7 +8203,7 @@ Input Parameters:
 - `minit` - minimum number of iterations to use
 
 Options Database Key:
-- `-ksp_min_it <minits>` - Sets `minit`
+- `-ksp_min_it minit` - Sets `minit`
 
 Level: intermediate
 
@@ -8588,7 +8554,7 @@ Input Parameters:
 - `flag` - `PETSC_TRUE` to reuse the current preconditioner, or `PETSC_FALSE` to construct a new preconditioner
 
 Options Database Key:
-- `-ksp_reuse_preconditioner <true,false>` - reuse the previously computed preconditioner
+- `-ksp_reuse_preconditioner (true|false)` - reuse the previously computed preconditioner
 
 Level: intermediate
 
@@ -8701,10 +8667,10 @@ Input Parameters:
 - `maxits` - maximum number of iterations to use
 
 Options Database Keys:
-- `-ksp_atol <abstol>`   - Sets `abstol`
-- `-ksp_rtol <rtol>`     - Sets `rtol`
-- `-ksp_divtol <dtol>`   - Sets `dtol`
-- `-ksp_max_it <maxits>` - Sets `maxits`
+- `-ksp_atol abstol`   - Sets `abstol`
+- `-ksp_rtol rtol`     - Sets `rtol`
+- `-ksp_divtol dtol`   - Sets `dtol`
+- `-ksp_max_it maxits` - Sets `maxits`
 
 Level: intermediate
 
@@ -8741,7 +8707,7 @@ Input Parameters:
 - `type` - a known method
 
 Options Database Key:
-- `-ksp_type  <method>` - Sets the method; see `KSPGType` or use `-help` for a list  of available methods (for instance, cg or gmres)
+- `-ksp_type type` - Sets the method; see `KSPType`
 
 Level: intermediate
 
@@ -8884,7 +8850,7 @@ Input Parameters:
 - `size`  - size of subspace used to generate initial guess
 
 Options Database Key:
-- `-ksp_fischer_guess <model,size>` - uses the Fischer initial guess generator for repeated linear solves
+- `-ksp_fischer_guess model,size` - uses the Fischer initial guess generator for repeated linear solves
 
 Level: advanced
 
@@ -8967,6 +8933,8 @@ Options Database Keys:
 - `-ksp_view_preconditioned_operator_explicit` - computes the product of the preconditioner and matrix as an explicit matrix and views it
 - `-ksp_converged_reason`                      - print reason for converged or diverged, also prints number of iterations
 - `-ksp_view_final_residual`                   - print 2-norm of true linear system residual at the end of the solution process
+- `-ksp_view_final_residual_vec`               - print true linear system residual vector at the end of the solution process;
+`-ksp_view_final_residual` must to be called first to enable this option
 - `-ksp_error_if_not_converged`                - stop the program as soon as an error is detected in a `KSPSolve()`
 - `-ksp_view_pre`                              - print the ksp data structure before the system solution
 - `-ksp_view`                                  - print the ksp data structure at the end of the system solution
@@ -8999,7 +8967,7 @@ end
 
 """
 	KSPSolveTranspose(petsclib::PetscLibType,ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec) 
-Solves a linear system with the transpose of the matrix associated with the `KSP` object,  A^T x = b.
+Solves a linear system with the transpose of the matrix associated with the `KSP` object, A^T x = b.
 
 Collective
 
@@ -9122,6 +9090,9 @@ Input Parameters:
 - `A`    - Krylov solver context
 - `obj`  - Optional object that provides the options prefix used to query the options database
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

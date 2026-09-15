@@ -340,10 +340,17 @@ Collective
 
 Input Parameters:
 - `tao`  - the Tao solver context
-- `J`    - user-created regularizer constraint Jacobian matrix
-- `Jpre` - user-created regularizer Jacobian constraint matrix for constructing the preconditioner, often this is `J`
-- `func` - function pointer for the regularizer constraint Jacobian update function
-- `ctx`  - user context for the regularizer Hessian
+- `J`    - user-created misfit constraint Jacobian matrix
+- `Jpre` - user-created misfit Jacobian constraint matrix for constructing the preconditioner, often this is `J`
+- `func` - function pointer for the misfit constraint Jacobian update function
+- `ctx`  - application context for the regularizer constraint Jacobian
+
+Calling sequence of func:
+- `tao`  - the `Tao` context
+- `u`    - in current input solution
+- `J`    - the contribution to the misfit constraint Jacobian
+- `Jpre` - the contribution to matrix from which to construct a preconditioner for the misfit constraint Jacobian
+- `ctx`  - the optional application context
 
 Level: advanced
 
@@ -415,7 +422,14 @@ Input Parameters:
 - `H`    - user-created matrix for the Hessian of the misfit term
 - `Hpre` - user-created matrix for the preconditioner of Hessian of the misfit term
 - `func` - function pointer for the misfit Hessian evaluation
-- `ctx`  - user context for the misfit Hessian
+- `ctx`  - application context for the misfit Hessian
+
+Calling sequence of func:
+- `tao`  - the `Tao` context
+- `u`    - in current input solution
+- `H`    - output, the contribution to the Hessian matrix
+- `Hpre` - an optional contribution to an alternative matrix with which the preconditioner is to be constructed
+- `ctx`  - the optional application context
 
 Level: advanced
 
@@ -450,7 +464,14 @@ Collective
 Input Parameters:
 - `tao`  - the `Tao` context
 - `func` - function pointer for the misfit value and gradient evaluation
-- `ctx`  - user context for the misfit
+- `ctx`  - application context for the misfit
+
+Calling sequence of func:
+- `tao` - the `Tao` context
+- `u`   - in current input solution
+- `f`   - the contribution to the objective function
+- `g`   - the contribution to the gradient
+- `ctx` - the optional application context
 
 Level: advanced
 
@@ -555,7 +576,14 @@ Input Parameters:
 - `J`    - user-created regularizer constraint Jacobian matrix
 - `Jpre` - user-created regularizer Jacobian constraint matrix for constructing the preconditioner, often this is `J`
 - `func` - function pointer for the regularizer constraint Jacobian update function
-- `ctx`  - user context for the regularizer Hessian
+- `ctx`  - application context for the regularizer constraint Jacobian
+
+Calling sequence of func:
+- `tao`  - the `Tao` context
+- `u`    - in current input solution
+- `J`    - the contribution to the constraint Jacobian
+- `Jpre` - the contribution to matrix from which to construct a preconditioner for the constraint Jacobian
+- `ctx`  - the optional application context
 
 Level: advanced
 
@@ -591,9 +619,16 @@ Collective
 Input Parameters:
 - `tao`  - the `Tao` context
 - `H`    - user-created matrix for the Hessian of the regularization term
-- `Hpre` - user-created matrix for the preconditioner of Hessian of the regularization term
+- `Hpre` - user-created matrix for building the preconditioner of the Hessian of the regularization term
 - `func` - function pointer for the regularizer Hessian evaluation
-- `ctx`  - user context for the regularizer Hessian
+- `ctx`  - application context for the regularizer Hessian
+
+Calling sequence of func:
+- `tao`  - the `Tao` context
+- `u`    - in current input solution
+- `H`    - output, the contribution to the Hessian matrix
+- `Hpre` - an optional contribution to an alternative matrix with which the preconditioner is to be constructed
+- `ctx`  - the optional application context
 
 Level: advanced
 
@@ -628,7 +663,14 @@ Collective
 Input Parameters:
 - `tao`  - the Tao context
 - `func` - function pointer for the regularizer value and gradient evaluation
-- `ctx`  - user context for the regularizer
+- `ctx`  - application context for the regularizer
+
+Calling sequence of func:
+- `tao` - the `Tao` context
+- `u`   - in current input solution
+- `f`   - the contribution to the objective function
+- `g`   - the contribution to the gradient
+- `ctx` - the optional application context
 
 Level: advanced
 
@@ -665,7 +707,7 @@ Input Parameters:
 - `type` - regularizer type
 
 Options Database Key:
-- `-tao_admm_regularizer_type <admm_regularizer_user,admm_regularizer_soft_thresh>` - select the regularizer
+- `-tao_admm_regularizer_type (regularizer_user|regularizer_soft_thresh)` - select the regularizer
 
 Level: intermediate
 
@@ -1077,6 +1119,45 @@ end
 end 
 
 """
+	TaoAddTerm(petsclib::PetscLibType,tao::AbstractTao, prefix::String, scale::PetscReal, term::TaoTerm, params::AbstractPetscVec, map::AbstractPetscMat) 
+Add a `term` to the objective function. If `Tao` is empty,
+`term` will be the objective of `Tao`.
+
+Collective
+
+Input Parameters:
+- `tao`    - a `Tao` solver context
+- `prefix` - the prefix used for configuring the new term (if `NULL`, the index of the term will be used as a prefix, e.g. "0_", "1_", etc.)
+- `scale`  - scaling coefficient for the new term
+- `term`   - the real-valued function defining the new term
+- `params` - (optional) parameters for the new term.  It is up to each implementation of `TaoTerm` to determine how it behaves when parameters are omitted.
+- `map`    - (optional) a map from the `tao` solution space to the `term` solution space; if `NULL` the map is assumed to be the identity
+
+Level: beginner
+
+-seealso: [](ch_tao), `Tao`, `TaoTerm`, `TAOTERMSUM`, `TaoGetTerm()`
+
+# External Links
+$(_doc_external("Tao/TaoAddTerm"))
+"""
+function TaoAddTerm(petsclib::PetscLibType, tao::AbstractTao, prefix::String, scale::Real, term::TaoTerm, params::AbstractPetscVec, map::AbstractPetscMat)
+    error("TaoAddTerm: no generated method for these argument types")
+end
+
+@for_petsc function TaoAddTerm(petsclib::$UnionPetscLib, tao::AbstractTao, prefix::String, scale::$PetscReal, term::TaoTerm, params::AbstractPetscVec, map::AbstractPetscMat )
+
+    @chk ccall(
+               (:TaoAddTerm, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{Cchar}, $PetscReal, TaoTerm, CVec, CMat),
+               tao, prefix, scale, term, params, map,
+              )
+
+
+	return nothing
+end 
+
+"""
 	TaoAppendOptionsPrefix(petsclib::PetscLibType,tao::AbstractTao, p::String) 
 Appends to the prefix used for searching for all Tao options in the database.
 
@@ -1399,13 +1480,13 @@ Input Parameters:
 - `tao`  - the `Tao` context
 - `Hreg` - user-created matrix for the Hessian of the regularization term
 - `func` - function pointer for the regularizer Hessian evaluation
-- `ctx`  - user context for the regularizer Hessian
+- `ctx`  - application context for the regularizer Hessian
 
 Calling sequence:
 - `tao`  - the `Tao` context
 - `u`    - the location at which to compute the Hessian
 - `Hreg` - user-created matrix for the Hessian of the regularization term
-- `ctx`  - user context for the regularizer Hessian
+- `ctx`  - application context for the regularizer Hessian
 
 Level: advanced
 
@@ -1439,14 +1520,14 @@ function into the algorithm.
 Input Parameters:
 - `tao`  - the Tao context
 - `func` - function pointer for the regularizer value and gradient evaluation
-- `ctx`  - user context for the regularizer
+- `ctx`  - application context for the regularizer
 
 Calling sequence:
 - `tao` - the `Tao` context
 - `u`   - the location at which to compute the objective and gradient
 - `val` - location to store objective function value
 - `g`   - location to store gradient
-- `ctx` - user context for the regularizer Hessian
+- `ctx` - application context for the regularizer Hessian
 
 Level: advanced
 
@@ -1760,9 +1841,9 @@ Output Parameters:
 - `Hpre` - matrix used to construct the preconditioner, usually the same as `H`
 
 Options Database Keys:
-- `-tao_test_hessian`                   - compare the user provided Hessian with one compute via finite differences to check for errors
-- `-tao_test_hessian <numerical value>` - display entries in the difference between the user provided Hessian and finite difference Hessian that are greater than a certain value to help users detect errors
-- `-tao_test_hessian_view`              - display the user provided Hessian, the finite difference Hessian and the difference between them to help users detect the location of errors in the user provided Hessian
+- `-tao_test_hessian`                 - compare the user provided Hessian with one compute via finite differences to check for errors
+- `-tao_test_hessian numerical value` - display entries in the difference between the user provided Hessian and finite difference Hessian that are greater than a certain value to help users detect errors
+- `-tao_test_hessian_view`            - display the user provided Hessian, the finite difference Hessian and the difference between them to help users detect the location of errors in the user provided Hessian
 
 Level: developer
 
@@ -2266,12 +2347,12 @@ Output Parameter:
 - `G` - Gradient Vector
 
 Options Database Key:
-- `-tao_fd_gradient`      - activates TaoDefaultComputeGradient()
-- `-tao_fd_delta <delta>` - change in X used to calculate finite differences
+- `-tao_fd_gradient`    - activates TaoDefaultComputeGradient()
+- `-tao_fd_delta delta` - change in X used to calculate finite differences
 
 Level: advanced
 
--seealso: `Tao`, `TaoSetGradient()`
+-seealso: `Tao`, `TaoSetGradient()`, `TaoTermComputeGradientFD()`
 
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeGradient"))
@@ -2376,6 +2457,22 @@ end
 
 """
 	TaoDefaultComputeHessianMFFD(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Computes the Hessian using finite differences with `MATMFFD`.
+
+Collective
+
+Input Parameters:
+- `tao` - the `Tao` context
+- `X`   - compute Hessian at this point
+- `ctx` - ignored
+
+Output Parameters:
+- `H` - Hessian matrix of type `MATMFFD`
+- `B` - should be `NULL` or equal to `H`
+
+Level: advanced
+
+-seealso: `Tao`, `MATMFFD`, `MatCreateMFFD()`, `TaoTermCreateHessianMFFD()`
 
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeHessianMFFD"))
@@ -2592,7 +2689,7 @@ end
 end 
 
 """
-	TaoGetApplicationContext(petsclib::PetscLibType,tao::AbstractTao, ctx::PeCtx) 
+	ctx::Ptr{Cvoid} = TaoGetApplicationContext(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the user
 
 Not Collective
@@ -2601,7 +2698,7 @@ Input Parameter:
 - `tao` - the `Tao` context
 
 Output Parameter:
-- `ctx` - a pointer to the user context
+- `ctx` - a pointer to the application context
 
 Level: intermediate
 
@@ -2610,21 +2707,23 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetApplicationContext"))
 """
-function TaoGetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx::PeCtx)
+function TaoGetApplicationContext(petsclib::PetscLibType, tao::AbstractTao)
     error("TaoGetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function TaoGetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::PeCtx )
+@for_petsc function TaoGetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:TaoGetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (CTao, PeCtx),
-               tao, ctx,
+               (CTao, Ptr{Cvoid}),
+               tao, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -2642,7 +2741,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoConvergedReasons`,`TaoGetTolerances()`, `TaoSetTolerances()`, `TaoSetConstraintTolerances()`
+-seealso: [](ch_tao), `Tao`, `TaoConvergedReason`, `TaoGetTolerances()`, `TaoSetTolerances()`, `TaoSetConstraintTolerances()`
 
 # External Links
 $(_doc_external("Tao/TaoGetConstraintTolerances"))
@@ -2874,6 +2973,52 @@ end
 end 
 
 """
+	ci::PetscVec = TaoGetEqualityConstraintsRoutine(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the function used to compute equality constraints.
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `ci`   - the vector to internally hold the constraint computation
+- `func` - the bounds computation routine
+- `ctx`  - the (optional) user-defined context
+
+Calling sequence of `func`:
+- `tao` - the `Tao` solver
+- `x`   - point to evaluate equality constraints
+- `ci`  - vector of equality constraints evaluated at x
+- `ctx` - the (optional) user-defined function context
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoSolve()`, `TaoGetObjective()`, `TaoGetGradient()`, `TaoGetHessian()`, `TaoGetObjectiveAndGradient()`, `TaoGetInequalityConstraintsRoutine()`
+
+# External Links
+$(_doc_external("Tao/TaoGetEqualityConstraintsRoutine"))
+"""
+function TaoGetEqualityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetEqualityConstraintsRoutine: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetEqualityConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+	ci_ = Ref{CVec}()
+
+    @chk ccall(
+               (:TaoGetEqualityConstraintsRoutine, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CVec}, Ptr{Cvoid}),
+               tao, ci_, noname,
+              )
+
+	ci = PetscVec(ci_[], petsclib)
+
+	return ci
+end 
+
+"""
 	fmin::PetscReal = TaoGetFunctionLowerBound(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the bound on the solution objective value.
 When an approximate solution with an objective value below this number
@@ -2911,6 +3056,52 @@ end
 	fmin = fmin_[]
 
 	return fmin
+end 
+
+"""
+	g::PetscVec = TaoGetGradient(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the gradient evaluation routine for the function being optimized
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `g`    - the vector to internally hold the gradient computation
+- `func` - the gradient function
+- `ctx`  - user-defined context for private data for the gradient evaluation routine
+
+Calling sequence of `func`:
+- `tao` - the optimizer
+- `x`   - input vector
+- `g`   - gradient value (output)
+- `ctx` - [optional] user-defined function context
+
+Level: beginner
+
+-seealso: [](ch_tao), `Tao`, `TaoSetObjective()`, `TaoSetHessian()`, `TaoSetObjectiveAndGradient()`, `TaoSetGradient()`
+
+# External Links
+$(_doc_external("Tao/TaoGetGradient"))
+"""
+function TaoGetGradient(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetGradient: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetGradient(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+	g_ = Ref{CVec}()
+
+    @chk ccall(
+               (:TaoGetGradient, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CVec}, Ptr{Cvoid}),
+               tao, g_, noname,
+              )
+
+	g = PetscVec(g_[], petsclib)
+
+	return g
 end 
 
 """
@@ -2952,6 +3143,97 @@ end
 end 
 
 """
+	H::PetscMat,Hpre::PetscMat = TaoGetHessian(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the function to compute the Hessian as well as the location to store the matrix.
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `H`    - Matrix used for the hessian
+- `Hpre` - Matrix that will be used to construct the preconditioner, can be the same as `H`
+- `func` - Hessian evaluation routine
+- `ctx`  - user-defined context for private data for the Hessian evaluation routine
+
+Calling sequence of `func`:
+- `tao`  - the `Tao`  context
+- `x`    - input vector
+- `H`    - Hessian matrix
+- `Hpre` - matrix used to construct the preconditioner, usually the same as `H`
+- `ctx`  - [optional] user-defined Hessian context
+
+Level: beginner
+
+-seealso: [](ch_tao), `Tao`, `TaoType`, `TaoGetObjective()`, `TaoGetGradient()`, `TaoGetObjectiveAndGradient()`, `TaoSetHessian()`, `TaoGetHessianMatrices()`
+
+# External Links
+$(_doc_external("Tao/TaoGetHessian"))
+"""
+function TaoGetHessian(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetHessian: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetHessian(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+	H_ = Ref{CMat}()
+	Hpre_ = Ref{CMat}()
+
+    @chk ccall(
+               (:TaoGetHessian, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CMat}, Ptr{CMat}, Ptr{Cvoid}),
+               tao, H_, Hpre_, noname,
+              )
+
+	H = PetscMat(H_[], petsclib)
+	Hpre = PetscMat(Hpre_[], petsclib)
+
+	return H,Hpre
+end 
+
+"""
+	H::PetscMat,Hpre::PetscMat = TaoGetHessianMatrices(petsclib::PetscLibType,tao::AbstractTao) 
+Get the matrices that store the Hessian matrix and its (optional) approximation that is used to construct the preconditioner
+
+Not collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `H`    - the Hessian matrix
+- `Hpre` - approximation to the Hessian matrix used to construct the preconditioner (often `H`)
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoType`, `TaoGetObjective()`, `TaoGetGradient()`, `TaoGetObjectiveAndGradient()`, `TaoSetHessian()`, `TaoGetHessian()`
+
+# External Links
+$(_doc_external("Tao/TaoGetHessianMatrices"))
+"""
+function TaoGetHessianMatrices(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetHessianMatrices: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetHessianMatrices(petsclib::$UnionPetscLib, tao::AbstractTao )
+	H_ = Ref{CMat}()
+	Hpre_ = Ref{CMat}()
+
+    @chk ccall(
+               (:TaoGetHessianMatrices, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CMat}, Ptr{CMat}),
+               tao, H_, Hpre_,
+              )
+
+	H = PetscMat(H_[], petsclib)
+	Hpre = PetscMat(Hpre_[], petsclib)
+
+	return H,Hpre
+end 
+
+"""
 	IL::PetscVec,IU::PetscVec = TaoGetInequalityBounds(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the upper and lower bounds set via `TaoSetInequalityBounds()`
 
@@ -2990,6 +3272,52 @@ end
 	IU = PetscVec(IU_[], petsclib)
 
 	return IL,IU
+end 
+
+"""
+	ci::PetscVec = TaoGetInequalityConstraintsRoutine(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the function used to compute inequality constraints.
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `ci`   - the vector to internally hold the constraint computation
+- `func` - the bounds computation routine
+- `ctx`  - the (optional) user-defined context
+
+Calling sequence of `func`:
+- `tao` - the `Tao` solver
+- `x`   - point to evaluate inequality constraints
+- `ci`  - vector of inequality constraints evaluated at x
+- `ctx` - the (optional) user-defined function context
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoSolve()`, `TaoGetObjective()`, `TaoGetGradient()`, `TaoGetHessian()`, `TaoGetObjectiveAndGradient()`, `TaoGetEqualityConstraintsRoutine()`
+
+# External Links
+$(_doc_external("Tao/TaoGetInequalityConstraintsRoutine"))
+"""
+function TaoGetInequalityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetInequalityConstraintsRoutine: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetInequalityConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+	ci_ = Ref{CVec}()
+
+    @chk ccall(
+               (:TaoGetInequalityConstraintsRoutine, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CVec}, Ptr{Cvoid}),
+               tao, ci_, noname,
+              )
+
+	ci = PetscVec(ci_[], petsclib)
+
+	return ci
 end 
 
 """
@@ -3065,6 +3393,106 @@ end
 	iter = iter_[]
 
 	return iter
+end 
+
+"""
+	J::PetscMat,Jpre::PetscMat = TaoGetJacobianEqualityRoutine(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the function used to compute equality constraint Jacobian.
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `J`    - the matrix to internally hold the constraint computation
+- `Jpre` - the matrix used to construct the preconditioner
+- `func` - Jacobian evaluation routine
+- `ctx`  - the (optional) user-defined context
+
+Calling sequence of `func`:
+- `tao`  - the `Tao` context
+- `x`    - input vector
+- `J`    - Jacobian matrix
+- `Jpre` - matrix used to construct the preconditioner, usually the same as `J`
+- `ctx`  - [optional] user-defined Jacobian context
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoComputeJacobianEquality()`, `TaoSetJacobianEqualityRoutine()`
+
+# External Links
+$(_doc_external("Tao/TaoGetJacobianEqualityRoutine"))
+"""
+function TaoGetJacobianEqualityRoutine(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetJacobianEqualityRoutine: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetJacobianEqualityRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+	J_ = Ref{CMat}()
+	Jpre_ = Ref{CMat}()
+
+    @chk ccall(
+               (:TaoGetJacobianEqualityRoutine, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CMat}, Ptr{CMat}, Ptr{Cvoid}),
+               tao, J_, Jpre_, noname,
+              )
+
+	J = PetscMat(J_[], petsclib)
+	Jpre = PetscMat(Jpre_[], petsclib)
+
+	return J,Jpre
+end 
+
+"""
+	J::PetscMat,Jpre::PetscMat = TaoGetJacobianInequalityRoutine(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the function used to compute inequality constraint Jacobian.
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `J`    - the matrix to internally hold the constraint computation
+- `Jpre` - the matrix used to construct the preconditioner
+- `func` - Jacobian evaluation routine
+- `ctx`  - the (optional) user-defined context
+
+Calling sequence of `func`:
+- `tao`  - the `Tao` context
+- `x`    - input vector
+- `J`    - Jacobian matrix
+- `Jpre` - matrix used to construct the preconditioner, usually the same as `J`
+- `ctx`  - [optional] user-defined Jacobian context
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoComputeJacobianInequality()`, `TaoSetJacobianInequalityRoutine()`
+
+# External Links
+$(_doc_external("Tao/TaoGetJacobianInequalityRoutine"))
+"""
+function TaoGetJacobianInequalityRoutine(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetJacobianInequalityRoutine: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetJacobianInequalityRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+	J_ = Ref{CMat}()
+	Jpre_ = Ref{CMat}()
+
+    @chk ccall(
+               (:TaoGetJacobianInequalityRoutine, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CMat}, Ptr{CMat}, Ptr{Cvoid}),
+               tao, J_, Jpre_, noname,
+              )
+
+	J = PetscMat(J_[], petsclib)
+	Jpre = PetscMat(Jpre_[], petsclib)
+
+	return J,Jpre
 end 
 
 """
@@ -3296,6 +3724,96 @@ end
 end 
 
 """
+	TaoGetObjective(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the function evaluation routine for the function to be minimized
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `func` - the objective function
+- `ctx`  - the user-defined context for private data for the function evaluation
+
+Calling sequence of `func`:
+- `tao` - the optimizer
+- `x`   - input vector
+- `f`   - function value
+- `ctx` - [optional] user-defined function context
+
+Level: beginner
+
+-seealso: [](ch_tao), `Tao`, `TaoSetGradient()`, `TaoSetHessian()`, `TaoSetObjective()`
+
+# External Links
+$(_doc_external("Tao/TaoGetObjective"))
+"""
+function TaoGetObjective(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetObjective: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetObjective(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:TaoGetObjective, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{Cvoid}),
+               tao, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	g::PetscVec = TaoGetObjectiveAndGradient(petsclib::PetscLibType,tao::AbstractTao, noname::Ptr{Cvoid}) 
+Gets the combined objective function and gradient evaluation routine for the function to be optimized
+
+Not Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Output Parameters:
+- `g`    - the vector to internally hold the gradient computation
+- `func` - the gradient function
+- `ctx`  - user-defined context for private data for the gradient evaluation routine
+
+Calling sequence of `func`:
+- `tao` - the optimizer
+- `x`   - input vector
+- `f`   - objective value (output)
+- `g`   - gradient value (output)
+- `ctx` - [optional] user-defined function context
+
+Level: beginner
+
+-seealso: [](ch_tao), `Tao`, `TaoSolve()`, `TaoSetObjective()`, `TaoSetGradient()`, `TaoSetHessian()`, `TaoSetObjectiveAndGradient()`
+
+# External Links
+$(_doc_external("Tao/TaoGetObjectiveAndGradient"))
+"""
+function TaoGetObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao, noname::Ptr{Cvoid})
+    error("TaoGetObjectiveAndGradient: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetObjectiveAndGradient(petsclib::$UnionPetscLib, tao::AbstractTao, noname::Ptr{Cvoid} )
+	g_ = Ref{CVec}()
+
+    @chk ccall(
+               (:TaoGetObjectiveAndGradient, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{CVec}, Ptr{Cvoid}),
+               tao, g_, noname,
+              )
+
+	g = PetscVec(g_[], petsclib)
+
+	return g
+end 
+
+"""
 	p::Ptr{Cchar} = TaoGetOptionsPrefix(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the prefix used for searching for all
 Tao options in the database
@@ -3505,6 +4023,55 @@ end
 end 
 
 """
+	scale::PetscReal,term::TaoTerm,params::PetscVec,map::PetscMat = TaoGetTerm(petsclib::PetscLibType,tao::AbstractTao) 
+Get the entire objective function of the `Tao` as a
+single `TaoTerm` in the form \\alpha f(Ax; p), where \\alpha is a scaling
+coefficient, f is a `TaoTerm`, A is an (optional) map and p are the parameters of f.
+
+Not collective
+
+Input Parameter:
+- `tao` - a `Tao` context
+
+Output Parameters:
+- `scale`  - the scale of the term
+- `term`   - a `TaoTerm` for the real-valued function defining the objective
+- `params` - the vector of parameters for `term`, or `NULL` if no parameters were specified for `term`
+- `map`    - a map from the solution space of `tao` to the solution space of `term`, if `NULL` then the map is the identity
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoTerm`, `TAOTERMSUM`, `TaoAddTerm()`
+
+# External Links
+$(_doc_external("Tao/TaoGetTerm"))
+"""
+function TaoGetTerm(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetTerm: no generated method for these argument types")
+end
+
+@for_petsc function TaoGetTerm(petsclib::$UnionPetscLib, tao::AbstractTao )
+	scale_ = Ref{$PetscReal}()
+	term_ = Ref{TaoTerm}()
+	params_ = Ref{CVec}()
+	map_ = Ref{CMat}()
+
+    @chk ccall(
+               (:TaoGetTerm, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{$PetscReal}, Ptr{TaoTerm}, Ptr{CVec}, Ptr{CMat}),
+               tao, scale_, term_, params_, map_,
+              )
+
+	scale = scale_[]
+	term = term_[]
+	params = PetscVec(params_[], petsclib)
+	map = PetscMat(map_[], petsclib)
+
+	return scale,term,params,map
+end 
+
+"""
 	gatol::PetscReal,grtol::PetscReal,gttol::PetscReal = TaoGetTolerances(petsclib::PetscLibType,tao::AbstractTao) 
 gets the current values of some tolerances used for the convergence testing of `TaoSolve()`
 
@@ -3602,7 +4169,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoType`, `TaoSetType()`
+-seealso: [](ch_tao), `Tao`, `TaoType`, `TaoSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Tao/TaoGetType"))
@@ -3740,9 +4307,9 @@ end
 """
 	flg::PetscBool = TaoIsGradientDefined(petsclib::PetscLibType,tao::AbstractTao) 
 Checks to see if the user has
-declared an objective-only routine.  Useful for determining when
+declared a gradient-only routine.  Useful for determining when
 it is appropriate to call `TaoComputeGradient()` or
-`TaoComputeGradientAndGradient()`
+`TaoComputeObjectiveAndGradient()`
 
 Not Collective
 
@@ -3750,7 +4317,7 @@ Input Parameter:
 - `tao` - the `Tao` context
 
 Output Parameter:
-- `flg` - `PETSC_TRUE` if function routine is set by user, `PETSC_FALSE` otherwise
+- `flg` - `PETSC_TRUE` if the objective `TaoTerm` has this routine, `PETSC_FALSE` otherwise
 
 Level: developer
 
@@ -3782,8 +4349,7 @@ end
 	flg::PetscBool = TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType,tao::AbstractTao) 
 Checks to see if the user has
 declared a joint objective/gradient routine.  Useful for determining when
-it is appropriate to call `TaoComputeObjective()` or
-`TaoComputeObjectiveAndGradient()`
+it is appropriate to call `TaoComputeObjectiveAndGradient()`
 
 Not Collective
 
@@ -3791,7 +4357,7 @@ Input Parameter:
 - `tao` - the `Tao` context
 
 Output Parameter:
-- `flg` - `PETSC_TRUE` if function routine is set by user, `PETSC_FALSE` otherwise
+- `flg` - `PETSC_TRUE` if the objective `TaoTerm` has this routine `PETSC_FALSE` otherwise
 
 Level: developer
 
@@ -3832,7 +4398,7 @@ Input Parameter:
 - `tao` - the `Tao` context
 
 Output Parameter:
-- `flg` - `PETSC_TRUE` if function routine is set by user, `PETSC_FALSE` otherwise
+- `flg` - `PETSC_TRUE` if the `Tao` has this routine `PETSC_FALSE` otherwise
 
 Level: developer
 
@@ -4150,7 +4716,7 @@ end
 end 
 
 """
-	TaoMonitorConstraintNorm(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorConstraintNorm(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 same as `TaoMonitorDefault()` except
 it prints the norm of the constraint function.
 
@@ -4158,7 +4724,7 @@ Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - `PetscViewer` context or `NULL`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor_constraint_norm` - monitor the constraints
@@ -4170,17 +4736,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorConstraintNorm"))
 """
-function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorConstraintNorm: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorConstraintNorm(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorConstraintNorm(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorConstraintNorm, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4188,14 +4754,14 @@ end
 end 
 
 """
-	TaoMonitorDefault(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorDefault(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 Default routine for monitoring progress of `TaoSolve()`
 
 Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - `PetscViewer` context or `NULL`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor` - turn on default monitoring
@@ -4207,17 +4773,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorDefault"))
 """
-function TaoMonitorDefault(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorDefault(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorDefault: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorDefault(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorDefault(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorDefault, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4225,14 +4791,14 @@ end
 end 
 
 """
-	TaoMonitorDefaultShort(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorDefaultShort(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 Routine for monitoring progress of `TaoSolve()` that displays fewer digits than `TaoMonitorDefault()`
 
 Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - `PetscViewer` context of type `PETSCVIEWERASCII`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor_short` - turn on default short monitoring
@@ -4244,17 +4810,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorDefaultShort"))
 """
-function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorDefaultShort: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorDefaultShort(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorDefaultShort(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorDefaultShort, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4262,14 +4828,14 @@ end
 end 
 
 """
-	TaoMonitorGlobalization(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorGlobalization(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 Default routine for monitoring progress of `TaoSolve()` with extra detail on the globalization method.
 
 Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - `PetscViewer` context or `NULL`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor_globalization` - turn on monitoring with globalization information
@@ -4281,17 +4847,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGlobalization"))
 """
-function TaoMonitorGlobalization(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorGlobalization(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorGlobalization: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorGlobalization(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorGlobalization(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorGlobalization, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4299,14 +4865,14 @@ end
 end 
 
 """
-	TaoMonitorGradient(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorGradient(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 Views the gradient at each iteration of `TaoSolve()`
 
 Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - `PetscViewer` context or `NULL`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor_gradient` - view the gradient at each iteration
@@ -4318,17 +4884,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGradient"))
 """
-function TaoMonitorGradient(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorGradient(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorGradient: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorGradient(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorGradient(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorGradient, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4373,14 +4939,14 @@ end
 end 
 
 """
-	TaoMonitorResidual(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorResidual(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 Views the least
 
 Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - the `PetscViewer` context or `NULL`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor_ls_residual` - view the residual at each iteration
@@ -4392,17 +4958,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorResidual"))
 """
-function TaoMonitorResidual(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorResidual(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorResidual: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorResidual(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorResidual(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorResidual, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4429,7 +4995,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoSolve()`, `TaoMonitorDefault()`, `TaoMonitorCancel()`, `TaoSetDestroyRoutine()`, `TaoView()`, `PetscCtxDestroyFn`
+-seealso: [](ch_tao), `Tao`, `TaoSolve()`, `TaoMonitorDefault()`, `TaoMonitorCancel()`, `TaoView()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("Tao/TaoMonitorSet"))
@@ -4452,14 +5018,57 @@ end
 end 
 
 """
-	TaoMonitorSolution(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorSetFromOptions(petsclib::PetscLibType,tao::AbstractTao, name::String, help::String, manual::String, monitor::external) 
+Sets a monitor function and viewer appropriate for the type indicated by the user
+
+Collective
+
+Input Parameters:
+- `tao`     - `Tao` object you wish to monitor
+- `name`    - the monitor type one is seeking
+- `help`    - message indicating what monitoring is done
+- `manual`  - manual page for the monitor
+- `monitor` - the monitor function, this must use a `PetscViewerFormat` as its context
+
+Level: developer
+
+-seealso: [](ch_tao), `Tao`, `TaoMonitorSet()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Tao/TaoMonitorSetFromOptions"))
+"""
+function TaoMonitorSetFromOptions(petsclib::PetscLibType, tao::AbstractTao, name::String, help::String, manual::String, monitor::external)
+    error("TaoMonitorSetFromOptions: no generated method for these argument types")
+end
+
+@for_petsc function TaoMonitorSetFromOptions(petsclib::$UnionPetscLib, tao::AbstractTao, name::String, help::String, manual::String, monitor::external )
+
+    @chk ccall(
+               (:TaoMonitorSetFromOptions, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, external),
+               tao, name, help, manual, monitor,
+              )
+
+
+	return nothing
+end 
+
+"""
+	TaoMonitorSolution(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 Views the solution at each iteration of `TaoSolve()`
 
 Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - `PetscViewer` context or `NULL`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor_solution` - view the solution
@@ -4471,17 +5080,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorSolution"))
 """
-function TaoMonitorSolution(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorSolution(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorSolution: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorSolution(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorSolution(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorSolution, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4527,14 +5136,14 @@ end
 end 
 
 """
-	TaoMonitorStep(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	TaoMonitorStep(petsclib::PetscLibType,tao::AbstractTao, vf::Vector{PetscViewerAndFormat}) 
 Views the step
 
 Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - `PetscViewer` context or `NULL`
+- `vf`  - `PetscViewerAndFormat` context
 
 Options Database Key:
 - `-tao_monitor_step` - view the step vector at each iteration
@@ -4546,17 +5155,17 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorStep"))
 """
-function TaoMonitorStep(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+function TaoMonitorStep(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{PetscViewerAndFormat})
     error("TaoMonitorStep: no generated method for these argument types")
 end
 
-@for_petsc function TaoMonitorStep(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoMonitorStep(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:TaoMonitorStep, $petsc_library),
                PetscErrorCode,
-               (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               (CTao, Ptr{PetscViewerAndFormat}),
+               tao, vf,
               )
 
 
@@ -4649,7 +5258,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `TaoCreate()`, `TaoSetType()`, `TaoPYTHON`, `PetscPythonInitialize()`, `TaoPythonSetType()`
+-seealso: `TaoCreate()`, `TaoSetType()`, `TAOPYTHON`, `PetscPythonInitialize()`, `TaoPythonSetType()`
 
 # External Links
 $(_doc_external("Tao/TaoPythonGetType"))
@@ -4684,7 +5293,7 @@ Input Parameters:
 - `pyname`  - full dotted Python name [package].module[.{class|function}]
 
 Options Database Key:
-- `-tao_python_type <pyname>`  - python class
+- `-tao_python_type pyname`  - python class
 
 Level: intermediate
 
@@ -4718,7 +5327,10 @@ Not Collective, No Fortran Support
 
 Input Parameters:
 - `sname` - name of a new user-defined solver
-- `func`  - routine to Create method context
+- `func`  - routine to create `TaoType` specific method context
+
+Calling sequence of `func`:
+- `tao` - the `Tao` object to be created
 
 -seealso: [](ch_tao), `Tao`, `TaoSetType()`, `TaoRegisterAll()`, `TaoRegisterDestroy()`
 
@@ -4816,7 +5428,7 @@ Logically Collective
 
 Input Parameters:
 - `tao` - the `Tao` context
-- `ctx` - the user context
+- `ctx` - the application context
 
 Level: intermediate
 
@@ -4854,8 +5466,8 @@ Input Parameters:
 - `crtol` - relative constraint tolerance, constraint norm must be less than `crtol` for used for `gatol`, `gttol` convergence criteria
 
 Options Database Keys:
-- `-tao_catol <catol>` - Sets catol
-- `-tao_crtol <crtol>` - Sets crtol
+- `-tao_catol catol` - Sets catol
+- `-tao_crtol crtol` - Sets crtol
 
 Level: intermediate
 
@@ -5008,8 +5620,7 @@ Logically Collective
 Input Parameters:
 - `tao`  - the `Tao` object
 - `conv` - the routine to test for convergence
-- `ctx`  - [optional] context for private data for the convergence routine
-(may be `NULL`)
+- `ctx`  - [optional] context for private data for the convergence routine (may be `NULL`)
 
 Calling sequence of `conv`:
 - `tao` - the `Tao` object
@@ -5091,15 +5702,15 @@ Input Parameter:
 - `tao` - the `Tao` solver context
 
 Options Database Keys:
-- `-tao_type <type>`             - The algorithm that Tao uses (lmvm, nls, etc.)
-- `-tao_gatol <gatol>`           - absolute error tolerance for ||gradient||
-- `-tao_grtol <grtol>`           - relative error tolerance for ||gradient||
-- `-tao_gttol <gttol>`           - reduction of ||gradient|| relative to initial gradient
-- `-tao_max_it <max>`            - sets maximum number of iterations
-- `-tao_max_funcs <max>`         - sets maximum number of function evaluations
-- `-tao_fmin <fmin>`             - stop if function value reaches fmin
-- `-tao_steptol <tol>`           - stop if trust region radius less than <tol>
-- `-tao_trust0 <t>`              - initial trust region radius
+- `-tao_type type`               - The algorithm that Tao uses (lmvm, nls, etc.). See `TAOType`
+- `-tao_gatol gatol`             - absolute error tolerance for ||gradient||
+- `-tao_grtol grtol`             - relative error tolerance for ||gradient||
+- `-tao_gttol gttol`             - reduction of ||gradient|| relative to initial gradient
+- `-tao_max_it max`              - sets maximum number of iterations
+- `-tao_max_funcs max`           - sets maximum number of function evaluations
+- `-tao_fmin fmin`               - stop if function value reaches fmin
+- `-tao_steptol tol`             - stop if trust region radius less than `tol`
+- `-tao_trust0 radius`           - initial trust region radius
 - `-tao_view_solution`           - view the solution at the end of the optimization process
 - `-tao_monitor`                 - prints function value and residual norm at each iteration
 - `-tao_monitor_short`           - same as `-tao_monitor`, but truncates very small values
@@ -5115,9 +5726,10 @@ Options Database Keys:
 - `-tao_monitor_cancel`          - cancels all monitors (except those set with command line)
 - `-tao_fd_gradient`             - use gradient computed with finite differences
 - `-tao_fd_hessian`              - use hessian computed with finite differences
-- `-tao_mf_hessian`              - use matrix-free Hessian computed with finite differences
+- `-tao_mf_hessian`              - use matrix-free Hessian computed with finite differences. No `TaoTerm` support
 - `-tao_view`                    - prints information about the Tao after solving
 - `-tao_converged_reason`        - prints the reason Tao stopped iterating
+- `-tao_add_terms`               - takes a comma-separated list of up to 16 options prefixes, a `TaoTerm` will be created for each and added to the objective function
 
 Level: beginner
 
@@ -5156,7 +5768,7 @@ Input Parameters:
 - `fmin` - the tolerance
 
 Options Database Key:
-- `-tao_fmin <fmin>` - sets the minimum function value
+- `-tao_fmin fmin` - sets the minimum function value
 
 Level: intermediate
 
@@ -5282,7 +5894,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_tao), `Tao`, `TaoTypes`, `TaoSetObjective()`, `TaoSetGradient()`, `TaoSetObjectiveAndGradient()`, `TaoGetHessian()`
+-seealso: [](ch_tao), `Tao`, `TaoType`, `TaoSetObjective()`, `TaoSetGradient()`, `TaoSetObjectiveAndGradient()`, `TaoGetHessian()`
 
 # External Links
 $(_doc_external("Tao/TaoSetHessian"))
@@ -5392,7 +6004,7 @@ Input Parameters:
 - `radius` - the trust region radius
 
 Options Database Key:
-- `-tao_trust0 <t0>` - sets initial trust region radius
+- `-tao_trust0 radius` - sets initial trust region radius
 
 Level: intermediate
 
@@ -5778,7 +6390,7 @@ Input Parameters:
 - `nfcn` - the maximum number of function evaluations (>=0), use `PETSC_UNLIMITED` to have no bound
 
 Options Database Key:
-- `-tao_max_funcs <nfcn>` - sets the maximum number of function evaluations
+- `-tao_max_funcs nfcn` - sets the maximum number of function evaluations
 
 Level: intermediate
 
@@ -5815,7 +6427,7 @@ Input Parameters:
 - `maxits` - the maximum number of iterates (>=0), use `PETSC_UNLIMITED` to have no bound
 
 Options Database Key:
-- `-tao_max_it <its>` - sets the maximum number of iterations
+- `-tao_max_it its` - sets the maximum number of iterations
 
 Level: intermediate
 
@@ -5975,7 +6587,7 @@ Input Parameters:
 - `recycle` - boolean flag
 
 Options Database Key:
-- `-tao_recycle_history <true,false>` - reuse the history
+- `-tao_recycle_history (true|false)` - reuse the history
 
 Level: intermediate
 
@@ -6172,9 +6784,9 @@ Input Parameters:
 - `gttol` - stop if norm of gradient is reduced by this factor
 
 Options Database Keys:
-- `-tao_gatol <gatol>` - Sets gatol
-- `-tao_grtol <grtol>` - Sets grtol
-- `-tao_gttol <gttol>` - Sets gttol
+- `-tao_gatol gatol` - Sets gatol
+- `-tao_grtol grtol` - Sets grtol
+- `-tao_gttol gttol` - Sets gttol
 
 Stopping Criteria:
 -seealso: [](ch_tao), `Tao`, `TaoConvergedReason`, `TaoGetTolerances()`
@@ -6244,8 +6856,7 @@ Input Parameters:
 - `type` - a known method
 
 Options Database Key:
-- `-tao_type <type>` - Sets the method; use -help for a list
-of available methods (for instance, "-tao_type lmvm" or "-tao_type tron")
+- `-tao_type type` - Sets the method; see `TaoType`
 
 Level: intermediate
 
@@ -6537,6 +7148,8 @@ end
 Calculates soft thresholding routine with input vector
 and given lower and upper bound and returns it to output vector.
 
+Collective
+
 Input Parameters:
 - `in` - input vector to be thresholded
 - `lb` - lower bound
@@ -6602,6 +7215,23 @@ end
 
 """
 	TaoTestGradient(petsclib::PetscLibType,tao::AbstractTao, x::AbstractPetscVec, g1::AbstractPetscVec) 
+Compare the user
+the options database, and print the difference.
+
+Collective
+
+Input Parameters:
+- `tao` - the `Tao` context
+- `x`   - the point at which to evaluate the gradient
+- `g1`  - the user-supplied gradient at `x`
+
+Options Database Keys:
+- `-tao_test_gradient`      - enable the comparison
+- `-tao_test_gradient_view` - display the user-supplied gradient, the finite-difference gradient, and their difference
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoTestHessian()`, `TaoComputeGradient()`
 
 # External Links
 $(_doc_external("Tao/TaoTestGradient"))
@@ -6625,6 +7255,21 @@ end
 
 """
 	TaoTestHessian(petsclib::PetscLibType,tao::AbstractTao) 
+Compare the user
+the options database, and print the difference.
+
+Collective
+
+Input Parameter:
+- `tao` - the `Tao` context
+
+Options Database Keys:
+- `-tao_test_hessian threshold` - enable the comparison, optionally overriding the reporting threshold (default `1e-5`)
+- `-tao_test_hessian_view`      - display the user-supplied Hessian, the finite-difference Hessian, and their difference
+
+Level: intermediate
+
+-seealso: [](ch_tao), `Tao`, `TaoTestGradient()`, `TaoComputeHessian()`
 
 # External Links
 $(_doc_external("Tao/TaoTestHessian"))
@@ -6732,6 +7377,9 @@ Input Parameters:
 - `A`    - the  `Tao` context
 - `obj`  - Optional object that provides the prefix for the options database
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

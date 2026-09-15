@@ -1,14 +1,77 @@
 """
-	tot::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDouble(petsclib::PetscLibType,tmp::PetscLogDouble) 
+	PetscAbortErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+Error handler that calls abort on error.
+This routine is very useful when running in the debugger, because the
+user can look directly at the stack frames and the variables where the error occurred
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `comm` - communicator over which error occurred
+- `line` - the line number of the error (usually indicated by `__LINE__` in the calling routine)
+- `fun`  - the function name of the calling routine
+- `file` - the file in which the error was detected (usually indicated by `__FILE__` in the calling routine)
+- `mess` - an error text string, usually this is just printed to the screen
+- `n`    - the generic error number
+- `p`    - `PETSC_ERROR_INITIAL` indicates this is the first time the error handler is being called while `PETSC_ERROR_REPEAT` indicates it was previously called
+- `ctx`  - error handler context
+
+Options Database Keys:
+- `-on_error_abort`                                 - Activates aborting when an error is encountered
+- `-start_in_debugger [(noxterm)],[(lldb|gdb|...)]` - Starts all processes in the debugger and uses `PetscAbortErrorHandler()`. By default on Linux the
+debugger is gdb and on macOS it is lldb. On Linux it opens a new xterm and on macOS it opens a new
+Terminal for the debugger unless `noxterm` is given
+- `-display name`                                   - Uses the X-Windows display name to open the xterms
+
+Level: developer
+
+-seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHander()`, `PetscTraceBackErrorHandler()`,
+`PetscAttachDebuggerErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscReturnErrorHandler()`, `PetscEmacsClientErrorHandler()`,
+`PetscErrorType`, `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`
+
+# External Links
+$(_doc_external("Sys/PetscAbortErrorHandler"))
+"""
+function PetscAbortErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid})
+    error("PetscAbortErrorHandler: no generated method for these argument types")
+end
+
+@for_petsc function PetscAbortErrorHandler(petsclib::$UnionPetscLib, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscAbortErrorHandler, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Cint, Ptr{Cchar}, Ptr{Cchar}, PetscErrorCode, PetscErrorType, Ptr{Cchar}, Ptr{Cvoid}),
+               comm, line, fun, file, n, p, mess, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	tot::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDouble(petsclib::PetscLibType,value::PetscLogDouble) 
+Atomically add a `PetscLogDouble` value to both a global counter and its per
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `tot`    - pointer to the global counter to update
+- `tot_th` - pointer to the per-thread counter to update
+- `value`  - the value to add to both counters
+
+Level: developer
+
+-seealso: `PetscAddLogDoubleCnt()`, `PetscLogFlops()`, `PetscLogDouble`
 
 # External Links
 $(_doc_external("Log/PetscAddLogDouble"))
 """
-function PetscAddLogDouble(petsclib::PetscLibType, tmp::PetscLogDouble)
+function PetscAddLogDouble(petsclib::PetscLibType, value::PetscLogDouble)
     error("PetscAddLogDouble: no generated method for these argument types")
 end
 
-@for_petsc function PetscAddLogDouble(petsclib::$UnionPetscLib, tmp::PetscLogDouble )
+@for_petsc function PetscAddLogDouble(petsclib::$UnionPetscLib, value::PetscLogDouble )
 	tot_ = Ref{PetscLogDouble}()
 	tot_th_ = Ref{PetscLogDouble}()
 
@@ -16,7 +79,7 @@ end
                (:PetscAddLogDouble, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscLogDouble}, Ptr{PetscLogDouble}, PetscLogDouble),
-               tot_, tot_th_, tmp,
+               tot_, tot_th_, value,
               )
 
 	tot = tot_[]
@@ -26,16 +89,30 @@ end
 end 
 
 """
-	cnt::PetscLogDouble,tot::PetscLogDouble,cnt_th::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDoubleCnt(petsclib::PetscLibType,tmp::PetscLogDouble) 
+	cnt::PetscLogDouble,tot::PetscLogDouble,cnt_th::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDoubleCnt(petsclib::PetscLibType,value::PetscLogDouble) 
+Atomically update both a count pair and a size pair of `PetscLogDouble` counters (global and per
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `cnt`    - pointer to the global count counter to increment by one
+- `tot`    - pointer to the global size counter to update
+- `cnt_th` - pointer to the per-thread count counter to increment by one
+- `tot_th` - pointer to the per-thread size counter to update
+- `value`  - the size value to add to the size counters
+
+Level: developer
+
+-seealso: `PetscAddLogDouble()`, `PetscLogFlops()`, `PetscLogDouble`
 
 # External Links
 $(_doc_external("Log/PetscAddLogDoubleCnt"))
 """
-function PetscAddLogDoubleCnt(petsclib::PetscLibType, tmp::PetscLogDouble)
+function PetscAddLogDoubleCnt(petsclib::PetscLibType, value::PetscLogDouble)
     error("PetscAddLogDoubleCnt: no generated method for these argument types")
 end
 
-@for_petsc function PetscAddLogDoubleCnt(petsclib::$UnionPetscLib, tmp::PetscLogDouble )
+@for_petsc function PetscAddLogDoubleCnt(petsclib::$UnionPetscLib, value::PetscLogDouble )
 	cnt_ = Ref{PetscLogDouble}()
 	tot_ = Ref{PetscLogDouble}()
 	cnt_th_ = Ref{PetscLogDouble}()
@@ -45,7 +122,7 @@ end
                (:PetscAddLogDoubleCnt, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscLogDouble}, Ptr{PetscLogDouble}, Ptr{PetscLogDouble}, Ptr{PetscLogDouble}, PetscLogDouble),
-               cnt_, tot_, cnt_th_, tot_th_, tmp,
+               cnt_, tot_, cnt_th_, tot_th_, value,
               )
 
 	cnt = cnt_[]
@@ -63,11 +140,11 @@ Attaches the debugger to the running process.
 Not Collective
 
 Options Database Keys:
-- `-start_in_debugger [noxterm,lldb or gdb]` - Set debugger debug_terminal xterm or Terminal (for Apple)
-- `-display name`                            - XDisplay to open xterm in
-- `-debugger_ranks m,n`                      - Which MPI ranks on which to start the debugger, defaults to all
-- `-stop_for_debugger`                       - Print a message on how to attach the process with a debugger and then wait for the user to attach
-- `-debugger_pause <secs>`                   - Wait <secs> before attaching the debugger. This is useful for slow connections
+- `-start_in_debugger [(noxterm)],[(lldb|gdb|...)]` - Set debugger debug_terminal xterm or Terminal (for Apple)
+- `-display name`                                   - XDisplay to open xterm in
+- `-debugger_ranks m,n`                             - Which MPI ranks on which to start the debugger, defaults to all
+- `-stop_for_debugger`                              - Print a message on how to attach the process with a debugger and then wait for the user to attach
+- `-debugger_pause secs`                            - Wait secs before attaching the debugger. This is useful for slow connections
 that take a long time for the Terminal window or xterm to start up.
 
 Level: advanced
@@ -87,6 +164,49 @@ end
                (:PetscAttachDebugger, $petsc_library),
                PetscErrorCode,
                (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscAttachDebuggerErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, num::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+Error handler that attaches
+a debugger to a running process when an error is detected.
+This routine is useful for examining variables, etc.
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `comm` - communicator over which error occurred
+- `line` - the line number of the error (usually indicated by `__LINE__` in the calling routine)
+- `fun`  - the function name of the calling routine
+- `file` - the file in which the error was detected (usually indicated by `__FILE__` in the calling routine)
+- `mess` - an error text string, usually just printed to the screen
+- `num`  - the generic error number
+- `p`    - `PETSC_ERROR_INITIAL` if error just detected, otherwise `PETSC_ERROR_REPEAT`
+- `ctx`  - error handler context
+
+Level: developer
+
+-seealso: `PetscSetDebuggerFromString()`, `PetscSetDebugger()`, `PetscSetDefaultDebugger()`, `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscTraceBackErrorHandler()`,
+`PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscEmacsClientErrorHandler()`, `PetscReturnErrorHandler()`, `PetscSetDebugTerminal()`
+
+# External Links
+$(_doc_external("Sys/PetscAttachDebuggerErrorHandler"))
+"""
+function PetscAttachDebuggerErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, num::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid})
+    error("PetscAttachDebuggerErrorHandler: no generated method for these argument types")
+end
+
+@for_petsc function PetscAttachDebuggerErrorHandler(petsclib::$UnionPetscLib, comm::MPI_Comm, line::Cint, fun::String, file::String, num::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscAttachDebuggerErrorHandler, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Cint, Ptr{Cchar}, Ptr{Cchar}, PetscErrorCode, PetscErrorType, Ptr{Cchar}, Ptr{Cvoid}),
+               comm, line, fun, file, num, p, mess, ctx,
               )
 
 
@@ -157,7 +277,7 @@ Input Parameter:
 - `nt` - the number of threads
 
 Options Database Key:
-- `-blas_num_threads <nt>` - set the number of threads when PETSc is initialized
+- `-blas_num_threads nt` - set the number of threads when PETSc is initialized
 
 Level: intermediate
 
@@ -349,6 +469,18 @@ end
 
 """
 	PetscBTView(petsclib::PetscLibType,m::PetscCount, bt::PetscBT, viewer::PetscViewer) 
+View the contents of a `PetscBT` (bit array) on a `PetscViewer`, one line per bit
+
+Collective on `viewer`; No Fortran Support
+
+Input Parameters:
+- `m`      - the number of bits in the array to print
+- `bt`     - the `PetscBT`
+- `viewer` - the `PetscViewer` to print to, or `NULL` to use `PETSC_VIEWER_STDOUT_SELF`
+
+Level: developer
+
+-seealso: `PetscBT`, `PetscBTCreate()`, `PetscBTLookup()`, `PetscViewer`
 
 # External Links
 $(_doc_external("Viewer/PetscBTView"))
@@ -476,7 +608,7 @@ end
 end 
 
 """
-	dummy::Cint = PetscBinaryRead(petsclib::PetscLibType,fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType) 
+	dummy::PetscInt = PetscBinaryRead(petsclib::PetscLibType,fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType) 
 Reads from a binary file.
 
 Not Collective
@@ -498,17 +630,17 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscBinaryRead"))
 """
-function PetscBinaryRead(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType)
+function PetscBinaryRead(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType)
     error("PetscBinaryRead: no generated method for these argument types")
 end
 
-@for_petsc function PetscBinaryRead(petsclib::$UnionPetscLib, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType )
-	dummy_ = Ref{Cint}()
+@for_petsc function PetscBinaryRead(petsclib::$UnionPetscLib, fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType )
+	dummy_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscBinaryRead, $petsc_library),
                PetscErrorCode,
-               (Cint, Ptr{Cvoid}, Cint, Ptr{Cint}, PetscDataType),
+               (Cint, Ptr{Cvoid}, PetscCount, Ptr{$PetscInt}, PetscDataType),
                fd, p, n, dummy_, type,
               )
 
@@ -601,7 +733,7 @@ end
 end 
 
 """
-	PetscBinaryWrite(petsclib::PetscLibType,fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType) 
+	PetscBinaryWrite(petsclib::PetscLibType,fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType) 
 Writes to a binary file.
 
 Not Collective
@@ -620,16 +752,16 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscBinaryWrite"))
 """
-function PetscBinaryWrite(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType)
+function PetscBinaryWrite(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType)
     error("PetscBinaryWrite: no generated method for these argument types")
 end
 
-@for_petsc function PetscBinaryWrite(petsclib::$UnionPetscLib, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType )
+@for_petsc function PetscBinaryWrite(petsclib::$UnionPetscLib, fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType )
 
     @chk ccall(
                (:PetscBinaryWrite, $petsc_library),
                PetscErrorCode,
-               (Cint, Ptr{Cvoid}, Cint, PetscDataType),
+               (Cint, Ptr{Cvoid}, PetscCount, PetscDataType),
                fd, p, n, type,
               )
 
@@ -756,6 +888,18 @@ end
 
 """
 	PetscByteSwap(petsclib::PetscLibType,data::Ptr{Cvoid}, pdtype::PetscDataType, count::PetscCount) 
+Reverse the byte order of an array of values of a given `PetscDataType`, in place
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `data`   - the array of values to byte-swap in place
+- `pdtype` - the `PetscDataType` of the values (e.g. `PETSC_INT`, `PETSC_REAL`, `PETSC_SCALAR`)
+- `count`  - number of values in `data`
+
+Level: developer
+
+-seealso: `PetscDataType`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWrite()`
 
 # External Links
 $(_doc_external("Sys/PetscByteSwap"))
@@ -800,6 +944,52 @@ end
 	b = b_[]
 
 	return b
+end 
+
+"""
+	PetscCUBLASGetHandle(petsclib::PetscLibType,handle::cublasHandle_t) 
+
+# External Links
+$(_doc_external("Sys/PetscCUBLASGetHandle"))
+"""
+function PetscCUBLASGetHandle(petsclib::PetscLibType, handle::cublasHandle_t)
+    error("PetscCUBLASGetHandle: no generated method for these argument types")
+end
+
+@for_petsc function PetscCUBLASGetHandle(petsclib::$UnionPetscLib, handle::cublasHandle_t )
+
+    @chk ccall(
+               (:PetscCUBLASGetHandle, $petsc_library),
+               PetscErrorCode,
+               (Ptr{cublasHandle_t},),
+               handle,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscCUSOLVERDnGetHandle(petsclib::PetscLibType,handle::cusolverDnHandle_t) 
+
+# External Links
+$(_doc_external("Sys/PetscCUSOLVERDnGetHandle"))
+"""
+function PetscCUSOLVERDnGetHandle(petsclib::PetscLibType, handle::cusolverDnHandle_t)
+    error("PetscCUSOLVERDnGetHandle: no generated method for these argument types")
+end
+
+@for_petsc function PetscCUSOLVERDnGetHandle(petsclib::$UnionPetscLib, handle::cusolverDnHandle_t )
+
+    @chk ccall(
+               (:PetscCUSOLVERDnGetHandle, $petsc_library),
+               PetscErrorCode,
+               (Ptr{cusolverDnHandle_t},),
+               handle,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -1333,7 +1523,7 @@ Not Collective, No Fortran Support
 
 Input Parameters:
 - `name` - name of library
-- `mode` - options on how to open library
+- `mode` - options on how to open library, see `PetscDLMode`
 
 Output Parameter:
 - `handle` - opaque pointer to be used with `PetscDLSym()`
@@ -1341,7 +1531,8 @@ Output Parameter:
 Level: developer
 
 -seealso: `PetscDLClose()`, `PetscDLSym()`, `PetscDLAddr()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
-`PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`, `PetscDLLibrarySym()`
+`PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`, `PetscDLLibrarySym()`,
+`PetscDLMode`, `PetscDLHandle`
 
 # External Links
 $(_doc_external("Sys/PetscDLOpen"))
@@ -1376,12 +1567,12 @@ Input Parameters:
 - `symbol` - name of symbol
 
 Output Parameter:
-- `value` - pointer to the function, `NULL` if not found
+- `value` - returns pointer to the function, `NULL` if not found
 
 Level: developer
 
 -seealso: `PetscDLClose()`, `PetscDLOpen()`, `PetscDLAddr()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
-`PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`, `PetscDLLibrarySym()`
+`PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`, `PetscDLLibrarySym()`, `PetscDLHandle`
 
 # External Links
 $(_doc_external("Sys/PetscDLSym"))
@@ -1524,7 +1715,7 @@ end
 end 
 
 """
-	PetscDTAltVInteriorPattern(petsclib::PetscLibType,N::PetscInt, k::PetscInt, indices::Ptr{Cvoid}) 
+	PetscDTAltVInteriorPattern(petsclib::PetscLibType,N::PetscInt, k::PetscInt, noname::Ptr{Cvoid}) 
 compute the sparsity and sign pattern of the interior product matrix computed in `PetscDTAltVInteriorMatrix()`
 
 Input Parameters:
@@ -1543,17 +1734,17 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVInteriorPattern"))
 """
-function PetscDTAltVInteriorPattern(petsclib::PetscLibType, N::Integer, k::Integer, indices::Ptr{Cvoid})
+function PetscDTAltVInteriorPattern(petsclib::PetscLibType, N::Integer, k::Integer, noname::Ptr{Cvoid})
     error("PetscDTAltVInteriorPattern: no generated method for these argument types")
 end
 
-@for_petsc function PetscDTAltVInteriorPattern(petsclib::$UnionPetscLib, N::$PetscInt, k::$PetscInt, indices::Ptr{Cvoid} )
+@for_petsc function PetscDTAltVInteriorPattern(petsclib::$UnionPetscLib, N::$PetscInt, k::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDTAltVInteriorPattern, $petsc_library),
                PetscErrorCode,
                ($PetscInt, $PetscInt, Ptr{Cvoid}),
-               N, k, indices,
+               N, k, noname,
               )
 
 
@@ -2164,7 +2355,6 @@ Output Parameters:
 Level: intermediate
 
 -seealso: `PetscDTGaussQuadrature()`, `PetscGaussLobattoLegendreCreateType`
-
 
 # External Links
 $(_doc_external("DT/PetscDTGaussLobattoLegendreQuadrature"))
@@ -2850,6 +3040,23 @@ end
 
 """
 	sol::PetscReal = PetscDTTanhSinhIntegrate(petsclib::PetscLibType,func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) 
+Approximate \\int_a^b f(x)\\,dx to a requested precision using adaptive tanh
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `func`   - the integrand callback (`func(x, ctx, &value)` evaluates the integrand at point `x`)
+- `a`      - lower limit of integration
+- `b`      - upper limit of integration
+- `digits` - target number of correct decimal digits
+- `ctx`    - optional application context passed to `func`
+
+Output Parameter:
+- `sol` - the approximate value of the integral
+
+Level: developer
+
+-seealso: `PetscDTTanhSinhIntegrateMPFR()`, `PetscDTGaussQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhIntegrate"))
@@ -2875,6 +3082,23 @@ end
 
 """
 	sol::PetscReal = PetscDTTanhSinhIntegrateMPFR(petsclib::PetscLibType,func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) 
+High
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `func`   - the integrand callback (`func(x, ctx, &value)` evaluates the integrand at point `x`)
+- `a`      - lower limit of integration
+- `b`      - upper limit of integration
+- `digits` - target number of correct decimal digits (also drives the working MPFR precision)
+- `ctx`    - optional application context passed to `func`
+
+Output Parameter:
+- `sol` - the approximate value of the integral
+
+Level: developer
+
+-seealso: `PetscDTTanhSinhIntegrate()`, `PetscDTGaussQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhIntegrateMPFR"))
@@ -2979,143 +3203,41 @@ end
 end 
 
 """
-	ptype::PetscDataType,found::PetscBool = PetscDataTypeFromString(petsclib::PetscLibType,name::String) 
-Gets the enum value of a PETSc datatype represented as a string
+	name::String = PetscDemangleSymbol(petsclib::PetscLibType,mangledName::String) 
+Convert a C++
 
 Not Collective
 
 Input Parameter:
-- `name` - the PETSc datatype name (for example, "double" or "real")
-
-Output Parameters:
-- `ptype` - the enum value, only valid if found is `PETSC_TRUE`
-- `found` - the string matches one of the data types
-
-Level: advanced
-
--seealso: `PetscDataType`, `PetscDataTypeToMPIDataType()`, `PetscDataTypeGetSize()`
-
-# External Links
-$(_doc_external("Sys/PetscDataTypeFromString"))
-"""
-function PetscDataTypeFromString(petsclib::PetscLibType, name::String)
-    error("PetscDataTypeFromString: no generated method for these argument types")
-end
-
-@for_petsc function PetscDataTypeFromString(petsclib::$UnionPetscLib, name::String )
-	ptype_ = Ref{PetscDataType}()
-	found_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscDataTypeFromString, $petsc_library),
-               PetscErrorCode,
-               (Ptr{Cchar}, Ptr{PetscDataType}, Ptr{PetscBool}),
-               name, ptype_, found_,
-              )
-
-	ptype = ptype_[]
-	found = found_[]
-
-	return ptype,found
-end 
-
-"""
-	size::Csize_t = PetscDataTypeGetSize(petsclib::PetscLibType,ptype::PetscDataType) 
-Gets the size (in bytes) of a PETSc datatype
-
-Not Collective
-
-Input Parameter:
-- `ptype` - the PETSc datatype name (for example `PETSC_DOUBLE`)
+- `mangledName` - the mangled symbol name (typically obtained from `dladdr()`)
 
 Output Parameter:
-- `size` - the size in bytes (for example the size of `PETSC_DOUBLE` is 8)
+- `name` - newly-allocated, null-terminated demangled name; caller must `PetscFree()` it
 
-Level: advanced
+Level: developer
 
--seealso: `PetscDataType`, `PetscDataTypeToMPIDataType()`
-
-# External Links
-$(_doc_external("Sys/PetscDataTypeGetSize"))
-"""
-function PetscDataTypeGetSize(petsclib::PetscLibType, ptype::PetscDataType)
-    error("PetscDataTypeGetSize: no generated method for these argument types")
-end
-
-@for_petsc function PetscDataTypeGetSize(petsclib::$UnionPetscLib, ptype::PetscDataType )
-	size_ = Ref{Csize_t}()
-
-    @chk ccall(
-               (:PetscDataTypeGetSize, $petsc_library),
-               PetscErrorCode,
-               (PetscDataType, Ptr{Csize_t}),
-               ptype, size_,
-              )
-
-	size = size_[]
-
-	return size
-end 
-
-"""
-	htype::hid_t = PetscDataTypeToHDF5DataType(petsclib::PetscLibType,ptype::PetscDataType) 
-Converts the PETSc name of a datatype to its HDF5 name.
-
-Not Collective
-
-Input Parameter:
-- `ptype` - the PETSc datatype name (for example `PETSC_DOUBLE`)
-
-Output Parameter:
-- `htype` - the HDF5  datatype
-
-Level: advanced
-
--seealso: [](sec_viewers), `PetscDataType`, `PetscHDF5DataTypeToPetscDataType()`
-
-# External Links
-$(_doc_external("Viewer/PetscDataTypeToHDF5DataType"))
-"""
-function PetscDataTypeToHDF5DataType(petsclib::PetscLibType, ptype::PetscDataType)
-    error("PetscDataTypeToHDF5DataType: no generated method for these argument types")
-end
-
-@for_petsc function PetscDataTypeToHDF5DataType(petsclib::$UnionPetscLib, ptype::PetscDataType )
-	htype_ = Ref{hid_t}()
-
-    @chk ccall(
-               (:PetscDataTypeToHDF5DataType, $petsc_library),
-               PetscErrorCode,
-               (PetscDataType, Ptr{hid_t}),
-               ptype, htype_,
-              )
-
-	htype = htype_[]
-
-	return htype
-end 
-
-"""
-	PetscDemangleSymbol(petsclib::PetscLibType,mangledName::String, name::Cchar) 
+-seealso: `PetscStackView()`, `PetscStackPrint()`
 
 # External Links
 $(_doc_external("Sys/PetscDemangleSymbol"))
 """
-function PetscDemangleSymbol(petsclib::PetscLibType, mangledName::String, name::Cchar)
+function PetscDemangleSymbol(petsclib::PetscLibType, mangledName::String)
     error("PetscDemangleSymbol: no generated method for these argument types")
 end
 
-@for_petsc function PetscDemangleSymbol(petsclib::$UnionPetscLib, mangledName::String, name::Cchar )
+@for_petsc function PetscDemangleSymbol(petsclib::$UnionPetscLib, mangledName::String )
+	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PetscDemangleSymbol, $petsc_library),
                PetscErrorCode,
                (Ptr{Cchar}, Ptr{Ptr{Cchar}}),
-               mangledName, name,
+               mangledName, name_,
               )
 
+	name = unsafe_string(name_[])
 
-	return nothing
+	return name
 end 
 
 """
@@ -3258,6 +3380,52 @@ end
 end 
 
 """
+	PetscEmacsClientErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+Error handler that uses the emacsclient program to
+load the file where the error occurred. Then calls the "previous" error handler.
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `comm` - communicator over which error occurred
+- `line` - the line number of the error (usually indicated by `__LINE__` in the calling routine)
+- `file` - the file in which the error was detected (usually indicated by `__FILE__` in the calling routine)
+- `fun`  - the function name of the calling routine
+- `mess` - an error text string, usually just printed to the screen
+- `n`    - the generic error number
+- `p`    - `PETSC_ERROR_INITIAL` indicates this is the first time the error handler is being called while `PETSC_ERROR_REPEAT` indicates it was previously called
+- `ctx`  - error handler context
+
+Options Database Key:
+- `-on_error_emacs machinename` - will contact machinename to open the Emacs client there
+
+Level: developer
+
+-seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+`PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscTraceBackErrorHandler()`, `PetscReturnErrorHandler()`,
+`PetscErrorType`, `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`
+
+# External Links
+$(_doc_external("Sys/PetscEmacsClientErrorHandler"))
+"""
+function PetscEmacsClientErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid})
+    error("PetscEmacsClientErrorHandler: no generated method for these argument types")
+end
+
+@for_petsc function PetscEmacsClientErrorHandler(petsclib::$UnionPetscLib, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscEmacsClientErrorHandler, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Cint, Ptr{Cchar}, Ptr{Cchar}, PetscErrorCode, PetscErrorType, Ptr{Cchar}, Ptr{Cvoid}),
+               comm, line, fun, file, n, p, mess, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
 	PetscEnd(petsclib::PetscLibType) 
 Calls `PetscFinalize()` and then ends the program. This is useful if one
 wishes a clean exit somewhere deep in the program.
@@ -3330,7 +3498,58 @@ end
 end 
 
 """
+	text::Ptr{Cchar},specific::Ptr{Cchar} = PetscErrorMessage(petsclib::PetscLibType,errnum::PetscErrorCode) 
+Returns the text string associated with a PETSc error code.
+
+Not Collective, No Fortran Support
+
+Input Parameter:
+- `errnum` - the error code
+
+Output Parameters:
+- `text`     - the error message (`NULL` if not desired)
+- `specific` - the specific error message that was set with `SETERRQ()` or
+`PetscError()`. (`NULL` if not desired)
+
+Level: developer
+
+-seealso: `PetscErrorCode`, `PetscPushErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+`PetscError()`, `SETERRQ()`, `PetscCall()`, `PetscAbortErrorHandler()`,
+`PetscTraceBackErrorHandler()`
+
+# External Links
+$(_doc_external("Sys/PetscErrorMessage"))
+"""
+function PetscErrorMessage(petsclib::PetscLibType, errnum::PetscErrorCode)
+    error("PetscErrorMessage: no generated method for these argument types")
+end
+
+@for_petsc function PetscErrorMessage(petsclib::$UnionPetscLib, errnum::PetscErrorCode )
+	text_ = Ref{Ptr{Cchar}}()
+	specific_ = Ref{Ptr{Cchar}}()
+
+    @chk ccall(
+               (:PetscErrorMessage, $petsc_library),
+               PetscErrorCode,
+               (PetscErrorCode, Ptr{Ptr{Cchar}}, Ptr{Ptr{Cchar}}),
+               errnum, text_, specific_,
+              )
+
+	text = text_[]
+	specific = specific_[]
+
+	return text,specific
+end 
+
+"""
 	PetscErrorPrintfInitialize(petsclib::PetscLibType) 
+Cache the architecture, host name, user name, program name and date so that PETSc's error
+
+Collective
+
+Level: developer
+
+-seealso: `PetscErrorPrintf`, `PetscTraceBackErrorHandler()`, `PetscPushErrorHandler()`
 
 # External Links
 $(_doc_external("Sys/PetscErrorPrintfInitialize"))
@@ -3571,13 +3790,13 @@ of the program. Automatically calls `MPI_Finalize()` if the user had not called 
 Collective on `PETSC_COMM_WORLD`
 
 Options Database Keys:
-- `-options_view`                    - Calls `PetscOptionsView()`
-- `-options_left`                    - Prints unused options that remain in the database
-- `-objects_dump [all]`              - Prints list of objects allocated by the user that have not been freed, the option all cause all outstanding objects to be listed
-- `-mpidump`                         - Calls PetscMPIDump()
-- `-malloc_dump <optional filename>` - Calls `PetscMallocDump()`, displays all memory allocated that has not been freed
-- `-memory_view`                     - Prints total memory usage
-- `-malloc_view <optional filename>` - Prints list of all memory allocated and in what functions
+- `-options_view`           - Calls `PetscOptionsView()` to display all options in the database
+- `-options_left`           - Prints unused options that remain in the database (default value is `true`)
+- `-objects_dump [all]`     - Prints list of objects allocated by the user that have not been freed, the option all cause all outstanding objects to be listed
+- `-mpidump`                - Calls PetscMPIDump()
+- `-malloc_dump [filename]` - Calls `PetscMallocDump()`, displays all memory allocated that has not been freed
+- `-memory_view`            - Prints total memory usage
+- `-malloc_view [filename]` - Prints list of all memory allocated and in what functions
 
 Level: beginner
 
@@ -3943,6 +4162,22 @@ end
 
 """
 	PetscFormatRealArray(petsclib::PetscLibType,buf::String, len::Csize_t, fmt::String, n::PetscInt, x::Vector{PetscReal}) 
+Format an array of `PetscReal` values as a comma
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `len` - the length of the output buffer in bytes
+- `fmt` - the `printf`-style format string applied to each element (e.g. `"%g"`)
+- `n`   - number of values in `x`
+- `x`   - array of `PetscReal` values to format
+
+Output Parameter:
+- `buf` - the formatted, null-terminated string
+
+Level: developer
+
+-seealso: `PetscSNPrintf()`, `PetscViewerASCIIPrintf()`
 
 # External Links
 $(_doc_external("Sys/PetscFormatRealArray"))
@@ -4370,34 +4605,64 @@ end
 end 
 
 """
-	nodes::PetscReal,weights::PetscReal = PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType,n::PetscInt, AA::PetscReal) 
+	nodes::PetscReal,weights::PetscReal,AA::Ptr{PetscReal} = PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType,n::PetscInt) 
+Build the elemental mass matrix for a single 1D Gauss
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `n`       - number of GLL nodes
+- `nodes`   - the GLL quadrature nodes
+- `weights` - the GLL quadrature weights
+
+Output Parameter:
+- `AA` - newly allocated `n` x `n` mass matrix as `PetscReal **`
+
+Level: beginner
+
+-seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementMassDestroy()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementMassCreate"))
 """
-function PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType, n::Integer, AA::Real)
+function PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType, n::Integer)
     error("PetscGaussLobattoLegendreElementMassCreate: no generated method for these argument types")
 end
 
-@for_petsc function PetscGaussLobattoLegendreElementMassCreate(petsclib::$UnionPetscLib, n::$PetscInt, AA::$PetscReal )
+@for_petsc function PetscGaussLobattoLegendreElementMassCreate(petsclib::$UnionPetscLib, n::$PetscInt )
 	nodes_ = Ref{$PetscReal}()
 	weights_ = Ref{$PetscReal}()
+	AA_ = Ref{Ptr{$PetscReal}}()
 
     @chk ccall(
                (:PetscGaussLobattoLegendreElementMassCreate, $petsc_library),
                PetscErrorCode,
                ($PetscInt, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{Ptr{$PetscReal}}),
-               n, nodes_, weights_, AA,
+               n, nodes_, weights_, AA_,
               )
 
 	nodes = nodes_[]
 	weights = weights_[]
+	AA = AA_[]
 
-	return nodes,weights
+	return nodes,weights,AA
 end 
 
 """
 	nodes::PetscReal,weights::PetscReal = PetscGaussLobattoLegendreElementMassDestroy(petsclib::PetscLibType,n::PetscInt, AA::PetscReal) 
+Free a 1D GLL elemental mass matrix created with `PetscGaussLobattoLegendreElementMassCreate()`
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `n`       - number of GLL nodes (ignored)
+- `nodes`   - the GLL quadrature nodes (ignored)
+- `weights` - the GLL quadrature weights (ignored)
+- `AA`      - the mass matrix to free; `*AA` is set to `NULL` on return
+
+Level: beginner
+
+-seealso: `PetscGaussLobattoLegendreElementMassCreate()`, `PetscDTGaussLobattoLegendreQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementMassDestroy"))
@@ -4610,6 +4875,52 @@ end
 end 
 
 """
+	PetscGetCurrentCUDAStream(petsclib::PetscLibType,stream::cudaStream_t) 
+
+# External Links
+$(_doc_external("Sys/PetscGetCurrentCUDAStream"))
+"""
+function PetscGetCurrentCUDAStream(petsclib::PetscLibType, stream::cudaStream_t)
+    error("PetscGetCurrentCUDAStream: no generated method for these argument types")
+end
+
+@for_petsc function PetscGetCurrentCUDAStream(petsclib::$UnionPetscLib, stream::cudaStream_t )
+
+    @chk ccall(
+               (:PetscGetCurrentCUDAStream, $petsc_library),
+               PetscErrorCode,
+               (Ptr{cudaStream_t},),
+               stream,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscGetCurrentHIPStream(petsclib::PetscLibType,stream::hipStream_t) 
+
+# External Links
+$(_doc_external("Sys/PetscGetCurrentHIPStream"))
+"""
+function PetscGetCurrentHIPStream(petsclib::PetscLibType, stream::hipStream_t)
+    error("PetscGetCurrentHIPStream: no generated method for these argument types")
+end
+
+@for_petsc function PetscGetCurrentHIPStream(petsclib::$UnionPetscLib, stream::hipStream_t )
+
+    @chk ccall(
+               (:PetscGetCurrentHIPStream, $petsc_library),
+               PetscErrorCode,
+               (Ptr{hipStream_t},),
+               stream,
+              )
+
+
+	return nothing
+end 
+
+"""
 	PetscGetDate(petsclib::PetscLibType,date::String, len::Csize_t) 
 Gets the current date.
 
@@ -4656,8 +4967,8 @@ Output Parameter:
 - `display` - the display string
 
 Options Database Keys:
-- `-display <display>` - sets the display to use
-- `-x_virtual`         - forces use of a X virtual display Xvfb that will not display anything but -draw_save will still work. Xvfb is automatically
+- `-display display` - sets the display to use
+- `-x_virtual`       - forces use of a X virtual display Xvfb that will not display anything but -draw_save will still work. Xvfb is automatically
 started up in PetscSetDisplay() with this option
 
 Level: advanced
@@ -4844,6 +5155,8 @@ Input Parameter:
 Output Parameter:
 - `type` - The `PetscMemType` of the pointer
 
+Level: intermediate
+
 -seealso: `PetscMemType`, `PetscDeviceMalloc()`, `PetscDeviceCalloc()`, `PetscDeviceFree()`,
 `PetscDeviceArrayCopy()`, `PetscDeviceArrayZero()`
 
@@ -5027,11 +5340,6 @@ Input Parameters:
 Output Parameter:
 - `dir` - directory name
 
-Options Database Keys:
-- `-shared_tmp`     - indicates the directory is known to be shared among the MPI processes
-- `-not_shared_tmp` - indicates the directory is known to be not shared among the MPI processes
-- `-tmp tmpdir`     - name of the directory you wish to use as tmp
-
 Environmental Variables:
 - `PETSC_SHARED_TMP`     - indicates the directory is known to be shared among the MPI processes
 - `PETSC_NOT_SHARED_TMP` - indicates the directory is known to be not shared among the MPI processes
@@ -5063,19 +5371,19 @@ end
 
 """
 	PetscGetUserName(petsclib::PetscLibType,name::String, nlen::Csize_t) 
-Returns the name of the user.
+Get the login name of the user running the program on the current MPI process
 
 Not Collective
 
 Input Parameter:
-- `nlen` - length of name
+- `nlen` - length of the `name` buffer
 
 Output Parameter:
-- `name` - contains user name. Must be long enough to hold the name
+- `name` - on output, holds the user name (null-terminated)
 
 Level: developer
 
--seealso: `PetscGetHostName()`
+-seealso: `PetscGetHostName()`, `PetscGetProgramName()`
 
 # External Links
 $(_doc_external("Sys/PetscGetUserName"))
@@ -5560,7 +5868,7 @@ end
 	PetscHDF5IntCast(petsclib::PetscLibType,a::PetscInt, b::hCsize_t) 
 
 # External Links
-$(_doc_external("Viewer/PetscHDF5IntCast"))
+$(_doc_external("Sys/PetscHDF5IntCast"))
 """
 function PetscHDF5IntCast(petsclib::PetscLibType, a::Integer, b::hCsize_t)
     error("PetscHDF5IntCast: no generated method for these argument types")
@@ -5573,6 +5881,52 @@ end
                PetscErrorCode,
                ($PetscInt, Ptr{hCsize_t}),
                a, b,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscHIPBLASGetHandle(petsclib::PetscLibType,handle::hipblasHandle_t) 
+
+# External Links
+$(_doc_external("Sys/PetscHIPBLASGetHandle"))
+"""
+function PetscHIPBLASGetHandle(petsclib::PetscLibType, handle::hipblasHandle_t)
+    error("PetscHIPBLASGetHandle: no generated method for these argument types")
+end
+
+@for_petsc function PetscHIPBLASGetHandle(petsclib::$UnionPetscLib, handle::hipblasHandle_t )
+
+    @chk ccall(
+               (:PetscHIPBLASGetHandle, $petsc_library),
+               PetscErrorCode,
+               (Ptr{hipblasHandle_t},),
+               handle,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscHIPSOLVERGetHandle(petsclib::PetscLibType,handle::hipsolverHandle_t) 
+
+# External Links
+$(_doc_external("Sys/PetscHIPSOLVERGetHandle"))
+"""
+function PetscHIPSOLVERGetHandle(petsclib::PetscLibType, handle::hipsolverHandle_t)
+    error("PetscHIPSOLVERGetHandle: no generated method for these argument types")
+end
+
+@for_petsc function PetscHIPSOLVERGetHandle(petsclib::$UnionPetscLib, handle::hipsolverHandle_t )
+
+    @chk ccall(
+               (:PetscHIPSOLVERGetHandle, $petsc_library),
+               PetscErrorCode,
+               (Ptr{hipsolverHandle_t},),
+               handle,
               )
 
 
@@ -5771,7 +6125,7 @@ Input Parameter:
 - `classid` - The object class, e.g., `MAT_CLASSID`, `SNES_CLASSID`, etc.
 
 Options Database Key:
-- `-info [filename][:[~]<list,of,classnames>[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
+- `-info [filename][:[~]list,of,classnames[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
 
 Level: developer
 
@@ -5840,7 +6194,7 @@ Input Parameter:
 - `classid` - The object class,  e.g., `MAT_CLASSID`, `SNES_CLASSID`, etc.
 
 Options Database Key:
-- `-info [filename][:[~]<list,of,classnames>[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
+- `-info [filename][:[~]list,of,classnames[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
 
 Level: developer
 
@@ -6069,7 +6423,7 @@ Input Parameters:
 - `classIDs`   - Array containing all of the `PetscClassId`s associated with `classname`
 
 Options Database Key:
-- `-info [filename][:[~]<list,of,classnames>[:[~]self]]` - specify which informative messages are printed, see `PetscInfo()`.
+- `-info [filename][:[~]list,of,classnames[:[~]self]]` - specify which informative messages are printed, see `PetscInfo()`.
 
 Level: developer
 
@@ -6175,7 +6529,7 @@ Input Parameter:
 - `commSelfFlag` - Enum value indicating method with which to filter `PetscInfo()` based on the size of the communicator of the object calling `PetscInfo()`
 
 Options Database Key:
-- `-info [filename][:[~]<list,of,classnames>[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
+- `-info [filename][:[~]list,of,classnames[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
 
 Level: advanced
 
@@ -6211,7 +6565,7 @@ Input Parameter:
 - `options` - Options database, use `NULL` for default global database
 
 Options Database Key:
-- `-info [filename][:[~]<list,of,classnames>[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
+- `-info [filename][:[~]list,of,classnames[:[~]self]]` - specify which informative messages are printed, See `PetscInfo()`.
 
 Level: advanced
 
@@ -6261,30 +6615,27 @@ then do this. If ALL processes in the job are using `PetscInitialize()` and `Pet
 if different subcommunicators of the job are doing different things with PETSc.
 
 Options Database Keys:
-- `-help [intro]`                                       - prints help method for each option; if `intro` is given the program stops after printing the introductory help message
-- `-start_in_debugger [noxterm,dbx,xdb,gdb,...]`        - Starts program in debugger
-- `-on_error_attach_debugger [noxterm,dbx,xdb,gdb,...]` - Starts debugger when error detected
-- `-on_error_emacs <machinename>`                       - causes `emacsclient` to jump to error file if an error is detected
-- `-on_error_abort`                                     - calls `abort()` when error detected (no traceback)
-- `-on_error_mpiabort`                                  - calls `MPI_abort()` when error detected
-- `-error_output_stdout`                                - prints PETSc error messages to `stdout` instead of the default `stderr`
-- `-error_output_none`                                  - does not print the error messages (but handles errors in the same way as if this was not called)
-- `-debugger_ranks [rank1,rank2,...]`                   - Indicates MPI ranks to start in debugger
-- `-debugger_pause [sleeptime] (in seconds)`            - Pauses debugger, use if it takes a long time for the debugger to start up on your system
-- `-stop_for_debugger`                                  - Print message on how to attach debugger manually to
+- `-help [intro]`                                          - prints help method for each option; if `intro` is given the program stops after printing the introductory help message
+- `-start_in_debugger [(noxterm)],[(gdb|lldb|...)]`        - Starts program in debugger
+- `-on_error_attach_debugger [(noxterm)],[(gdb|lldb|...)]` - Starts debugger when error detected
+- `-on_error_emacs machinename`                            - causes `emacsclient` to jump to error file if an error is detected
+- `-on_error_abort`                                        - calls `abort()` when error detected (no traceback)
+- `-on_error_mpiabort`                                     - calls `MPI_abort()` when error detected
+- `-error_output_stdout`                                   - prints PETSc error messages to `stdout` instead of the default `stderr`
+- `-error_output_none`                                     - does not print the error messages (but handles errors in the same way as if this was not called)
+- `-debugger_ranks rank1,rank2,...`                        - Indicates MPI ranks to start in debugger
+- `-debugger_pause secs`                                   - Pauses debugger, use if it takes a long time for the debugger to start up on your system, `sleeptime` is number of seconds to sleep
+- `-stop_for_debugger`                                     - Print message on how to attach debugger manually to
 process and wait (`-debugger_pause`) seconds for attachment
-- `-malloc_dump`                                        - prints a list of all unfreed memory at the end of the run
-- `-malloc_test`                                        - like `-malloc_dump` `-malloc_debug`, only active for debugging build, ignored in optimized build. Often set in `PETSC_OPTIONS` environmental variable
-- `-malloc_view`                                        - show a list of all allocated memory during `PetscFinalize()`
-- `-malloc_view_threshold <t>`                          - only list memory allocations of size greater than t with `-malloc_view`
-- `-malloc_requested_size`                              - malloc logging will record the requested size rather than (possibly large) size after alignment
-- `-fp_trap`                                            - Stops on floating point exceptions
-- `-no_signal_handler`                                  - Indicates not to trap error signals
-- `-shared_tmp`                                         - indicates `/tmp` directory is known to be shared by all processors
-- `-not_shared_tmp`                                     - indicates each processor has own `/tmp`
-- `-tmp`                                                - alternative directory to use instead of `/tmp`
-- `-python <exe>`                                       - Initializes Python, and optionally takes a Python executable name
-- `-mpiuni-allow-multiprocess-launch`                   - allow `mpiexec` to launch multiple independent MPI-Uni jobs, otherwise a sanity check error is invoked to prevent misuse of MPI-Uni
+- `-malloc_dump`                                           - prints a list of all unfreed memory at the end of the run
+- `-malloc_test`                                           - like `-malloc_dump` `-malloc_debug`, only active for debugging build, ignored in optimized build. Often set in `PETSC_OPTIONS` environmental variable
+- `-malloc_view [filename]`                                - show a list of all allocated memory during `PetscFinalize()`
+- `-malloc_view_threshold t`                               - only list memory allocations of size greater than t with `-malloc_view`
+- `-malloc_requested_size`                                 - malloc logging will record the requested size rather than (possibly large) size after alignment
+- `-fp_trap`                                               - Stops on floating point exceptions
+- `-no_signal_handler`                                     - Indicates not to trap error signals
+- `-python exe`                                            - Initializes Python, and optionally takes a Python executable name
+- `-mpiuni-allow-multiprocess-launch`                      - allow `mpiexec` to launch multiple independent MPI-Uni jobs, otherwise a sanity check error is invoked to prevent misuse of MPI-Uni
 
 Options Database Keys for Option Database:
 - `-skip_petscrc`           - skip the default option files `~/.petscrc`, `.petscrc`, `petscrc`
@@ -6299,7 +6650,7 @@ See `PetscOptionsMonitorSet()` to do monitoring programmatically.
 
 Options Database Keys for Profiling:
 See Users-Manual: ch_profiling for details.
-- `-info [filename][:[~]<list,of,classnames>[:[~]self]]` - Prints verbose information. See `PetscInfo()`.
+- `-info [filename][:[~]c1,c2,...[:[~]self]]`            - Prints verbose information for classes c1, c2, etc. See `PetscInfo()`.
 - `-log_sync`                                            - Enable barrier synchronization for all events. This option is useful to debug imbalance within each event,
 however it slows things down and gives a distorted view of the overall runtime.
 - `-log_trace [filename]`                                - Print traces of all PETSc calls to the screen (useful to determine where a program
@@ -6307,7 +6658,9 @@ hangs without running in the debugger).  See `PetscLogTraceBegin()`.
 - `-log_view [:filename:format][,[:filename:format]...]` - Prints summary of flop and timing information to screen or file, see `PetscLogView()` (up to 4 viewers)
 - `-log_view_memory`                                     - Includes in the summary from -log_view the memory used in each event, see `PetscLogView()`.
 - `-log_view_gpu_time`                                   - Includes in the summary from -log_view the time used in each GPU kernel, see `PetscLogView().
-- `-log_exclude: <vec,mat,pc,ksp,snes>`                  - excludes subset of object classes from logging
+- `-log_view_gpu_energy`                                 - Includes in the summary from -log_view the energy (estimated with power*gtime) consumed in each GPU kernel, see `PetscLogView()`.
+- `-log_view_gpu_energy_meter`                           - Includes in the summary from -log_view the energy (readings from meters) consumed in each GPU kernel, see `PetscLogView()`.
+- `-log_exclude: c1,c2,...`                              - excludes subset of object classes from logging, for example vec,ksp would exclude the `Vec` and `KSP` classes
 - `-log [filename]`                                      - Logs profiling information in a dump file, see `PetscLogDump()`.
 - `-log_all [filename]`                                  - Same as `-log`.
 - `-log_mpe [filename]`                                  - Creates a logfile viewable by the utility Jumpshot (in MPICH distribution)
@@ -6320,12 +6673,12 @@ hangs without running in the debugger).  See `PetscLogTraceBegin()`.
 - `-check_pointer_intensity 0,1,2`                       - if pointers are checked for validity (debug version only), using 0 will result in faster code
 
 Options Database Keys for SAWs:
-- `-saws_port <portnumber>`        - port number to publish SAWs data, default is 8080
-- `-saws_port_auto_select`         - have SAWs select a new unique port number where it publishes the data, the URL is printed to the screen
+- `-saws_port portnumber`        - port number to publish SAWs data, default is 8080
+- `-saws_port_auto_select`       - have SAWs select a new unique port number where it publishes the data, the URL is printed to the screen
 this is useful when you are running many jobs that utilize SAWs at the same time
-- `-saws_log <filename>`           - save a log of all SAWs communication
-- `-saws_https <certificate file>` - have SAWs use HTTPS instead of HTTP
-- `-saws_root <directory>`         - allow SAWs to have access to the given directory to search for requested resources and files
+- `-saws_log filename`           - save a log of all SAWs communication
+- `-saws_https certificate_file` - have SAWs use HTTPS instead of HTTP
+- `-saws_root directory`         - allow SAWs to have access to the given directory to search for requested resources and files
 
 Environmental Variables:
 - `PETSC_TMP`                     - alternative directory to use instead of `/tmp`
@@ -6943,7 +7296,7 @@ rates, and object creation and should not slow programs down too much.
 Logically Collective on `PETSC_COMM_WORLD`
 
 Options Database Key:
-- `-log_view [viewertype:filename:viewerformat]` - Prints summary of flop and timing (profiling) information to the
+- `-log_view [viewertype[:filename[:viewerformat]]]` - Prints summary of flop and timing (profiling) information to the
 screen (for PETSc configured with `--with-log=1` (which is the default)).
 This option must be provided before `PetscInitialize()`.
 
@@ -6970,8 +7323,7 @@ end
 
 """
 	PetscLogDump(petsclib::PetscLibType,sname::String) 
-Dumps logs of objects to a file. This file is intended to
-be read by bin/petscview. This program no longer exists.
+Dumps logs of objects to a file. There is currently no utility to read the dump file.
 
 Collective on `PETSC_COMM_WORLD`
 
@@ -7732,6 +8084,120 @@ end
 	state = state_[]
 
 	return state
+end 
+
+"""
+	PetscLogGpuEnergy(petsclib::PetscLibType) 
+turn on the logging of GPU energy (estimated with power*gtime) for GPU kernels
+
+Options Database Key:
+- `-log_view_gpu_energy` - provide the GPU energy consumption (estimated with power*gtime) for all events in the `-log_view` output
+
+Level: advanced
+
+-seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeter()`
+
+# External Links
+$(_doc_external("Log/PetscLogGpuEnergy"))
+"""
+function PetscLogGpuEnergy(petsclib::PetscLibType)
+    error("PetscLogGpuEnergy: no generated method for these argument types")
+end
+
+@for_petsc function PetscLogGpuEnergy(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscLogGpuEnergy, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscLogGpuEnergyMeter(petsclib::PetscLibType) 
+turn on the logging of GPU energy (readings from energy meters) for GPU kernels
+
+Options Database Key:
+- `-log_view_gpu_energy_meter` - provide the GPU energy (readings from energy meters) consumption for all events in the `-log_view` output
+
+Level: advanced
+
+-seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeterEnd()`, `PetscLogGpuEnergyMeterBegin()`
+
+# External Links
+$(_doc_external("Log/PetscLogGpuEnergyMeter"))
+"""
+function PetscLogGpuEnergyMeter(petsclib::PetscLibType)
+    error("PetscLogGpuEnergyMeter: no generated method for these argument types")
+end
+
+@for_petsc function PetscLogGpuEnergyMeter(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscLogGpuEnergyMeter, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscLogGpuEnergyMeterBegin(petsclib::PetscLibType) 
+Start energy meter for device
+
+Level: intermediate
+
+-seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeterEnd()`, `PetscLogGpuEnergyMeter()`
+
+# External Links
+$(_doc_external("Log/PetscLogGpuEnergyMeterBegin"))
+"""
+function PetscLogGpuEnergyMeterBegin(petsclib::PetscLibType)
+    error("PetscLogGpuEnergyMeterBegin: no generated method for these argument types")
+end
+
+@for_petsc function PetscLogGpuEnergyMeterBegin(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscLogGpuEnergyMeterBegin, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscLogGpuEnergyMeterEnd(petsclib::PetscLibType) 
+Stop energy meter for device
+
+Level: intermediate
+
+-seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeterBegin()`
+
+# External Links
+$(_doc_external("Log/PetscLogGpuEnergyMeterEnd"))
+"""
+function PetscLogGpuEnergyMeterEnd(petsclib::PetscLibType)
+    error("PetscLogGpuEnergyMeterEnd: no generated method for these argument types")
+end
+
+@for_petsc function PetscLogGpuEnergyMeterEnd(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscLogGpuEnergyMeterEnd, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
 end 
 
 """
@@ -8664,9 +9130,14 @@ Options Database Keys:
 - `-log_view :filename.py:ascii_info_detail` - Saves logging information from each process as a Python file
 - `-log_view :filename.xml:ascii_xml`        - Saves a summary of the logging information in a nested format (see below for how to view it)
 - `-log_view :filename.txt:ascii_flamegraph` - Saves logging information in a format suitable for visualising as a Flame Graph (see below for how to view it)
+- `-log_view :filename.csv:ascii_csv`        - Saves logging information as a comma-separated values file
 - `-log_view_memory`                         - Also display memory usage in each event
 - `-log_view_gpu_time`                       - Also display time in each event for GPU kernels (Note this may slow the computation)
-- `-log_all`                                 - Saves a file Log.rank for each MPI rank with details of each step of the computation
+- `-log_view_gpu_energy`                     - Also display energy (estimated with power*gtime) in Joules for GPU kernels
+- `-log_view_gpu_energy_meter`               - [Experimental] Also display energy (readings from energy meters) in Joules for GPU kernels.
+This option is ignored if `-log_view_gpu_energy` is provided.
+- `-log_all`                                 - Saves a file `Log.rank` for each MPI process with details of each step of the computation, where
+`rank` is the MPI rank of each process
 - `-log_trace [filename]`                    - Displays a trace of what each process is doing
 
 Level: beginner
@@ -8761,6 +9232,47 @@ end
 	flg = flg_[]
 
 	return flg
+end 
+
+"""
+	PetscMPIAbortErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+Calls `PETSCABORT()` and exits.
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `comm` - communicator over which error occurred
+- `line` - the line number of the error (indicated by `__LINE__`)
+- `fun`  - the function name
+- `file` - the file in which the error was detected (indicated by `__FILE__`)
+- `mess` - an error text string, usually just printed to the screen
+- `n`    - the generic error number
+- `p`    - `PETSC_ERROR_INITIAL` if error just detected, otherwise `PETSC_ERROR_REPEAT`
+- `ctx`  - error handler context
+
+Level: developer
+
+-seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+`PetscAbortErrorHandler()`, `PetscTraceBackErrorHandler()`, `PetscEmacsClientErrorHandler()`, `PetscReturnErrorHandler()`
+
+# External Links
+$(_doc_external("Sys/PetscMPIAbortErrorHandler"))
+"""
+function PetscMPIAbortErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid})
+    error("PetscMPIAbortErrorHandler: no generated method for these argument types")
+end
+
+@for_petsc function PetscMPIAbortErrorHandler(petsclib::$UnionPetscLib, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscMPIAbortErrorHandler, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Cint, Ptr{Cchar}, Ptr{Cchar}, PetscErrorCode, PetscErrorType, Ptr{Cchar}, Ptr{Cvoid}),
+               comm, line, fun, file, n, p, mess, ctx,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -8878,7 +9390,7 @@ Input/Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscTimSortWithArray()`, `PetscSortMPIIntWithArray()`, `PetscSortMPIIntWithPermutation()`
+-seealso: `PetscTimSortWithArray()`, `PetscSortMPIIntWithArray()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscMPIIntSortSemiOrderedWithArray"))
@@ -8942,7 +9454,7 @@ Input Parameter:
 - `fp` - file pointer.  If `fp` is `NULL`, `stdout` is assumed.
 
 Options Database Key:
-- `-malloc_dump <optional filename>` - Print summary of unfreed memory during call to `PetscFinalize()`, writing to filename if given
+- `-malloc_dump optional filename` - Print summary of unfreed memory during call to `PetscFinalize()`, writing to filename if given
 
 Level: intermediate
 
@@ -9127,7 +9639,7 @@ Input Parameter:
 - `flg` - `PETSC_TRUE` to log the requested memory size
 
 Options Database Key:
-- `-malloc_requested_size <bool>` - Sets this flag
+- `-malloc_requested_size (true|false)` - Sets this flag
 
 Level: developer
 
@@ -9227,6 +9739,28 @@ end
 end 
 
 """
+	PetscMallocResetCUDAHost(petsclib::PetscLibType) 
+
+# External Links
+$(_doc_external("Sys/PetscMallocResetCUDAHost"))
+"""
+function PetscMallocResetCUDAHost(petsclib::PetscLibType)
+    error("PetscMallocResetCUDAHost: no generated method for these argument types")
+end
+
+@for_petsc function PetscMallocResetCUDAHost(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscMallocResetCUDAHost, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
 	PetscMallocResetDRAM(petsclib::PetscLibType) 
 Reset the changes made by `PetscMallocSetDRAM()`
 
@@ -9284,6 +9818,28 @@ end
                PetscErrorCode,
                (external, external, external),
                imalloc, ifree, iralloc,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscMallocSetCUDAHost(petsclib::PetscLibType) 
+
+# External Links
+$(_doc_external("Sys/PetscMallocSetCUDAHost"))
+"""
+function PetscMallocSetCUDAHost(petsclib::PetscLibType)
+    error("PetscMallocSetCUDAHost: no generated method for these argument types")
+end
+
+@for_petsc function PetscMallocSetCUDAHost(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscMallocSetCUDAHost, $petsc_library),
+               PetscErrorCode,
+               (),
               )
 
 
@@ -9369,10 +9925,10 @@ Input Parameters:
 - `initializenan` - initializes all memory with `NaN` to catch use of uninitialized floating point arrays
 
 Options Database Keys:
-- `-malloc_debug <true or false>` - turns on or off debugging
-- `-malloc_test`                  - turns on all debugging if PETSc was configured with debugging including `-malloc_dump`, otherwise ignored
-- `-malloc_view_threshold t`      - log only allocations larger than t
-- `-malloc_dump <filename>`       - print a list of all memory that has not been freed, in `PetscFinalize()`
+- `-malloc_debug (true|false)` - turns on or off debugging
+- `-malloc_test`               - turns on all debugging if PETSc was configured with debugging including `-malloc_dump`, otherwise ignored
+- `-malloc_view_threshold t`   - log only allocations larger than t
+- `-malloc_dump filename`      - print a list of all memory that has not been freed, in `PetscFinalize()`
 
 Level: developer
 
@@ -9408,7 +9964,7 @@ Output Parameter:
 - `logging` - `PETSC_TRUE` if logging is active
 
 Options Database Key:
-- `-malloc_view <optional filename>` - Activates `PetscMallocView()`
+- `-malloc_view optional filename` - Activates `PetscMallocView()`
 
 Level: advanced
 
@@ -9520,7 +10076,7 @@ Input Parameter:
 - `fp` - file pointer; or `NULL`
 
 Options Database Key:
-- `-malloc_view <optional filename>` - Activates `PetscMallocView()` in `PetscFinalize()`
+- `-malloc_view optional filename` - Activates `PetscMallocView()` in `PetscFinalize()`
 
 Level: advanced
 
@@ -9556,7 +10112,7 @@ Output Parameter:
 - `logging` - `PETSC_TRUE` if logging is active
 
 Options Database Key:
-- `-malloc_view <optional filename>` - Activates `PetscMallocView()`
+- `-malloc_view optional filename` - Activates `PetscMallocView()`
 
 Level: advanced
 
@@ -9594,9 +10150,9 @@ Input Parameter:
 - `logmin` - minimum allocation size to log, or `PETSC_DEFAULT` to log all memory allocations
 
 Options Database Keys:
-- `-malloc_view <optional filename>` - Activates `PetscMallocView()` in `PetscFinalize()`
-- `-malloc_view_threshold <min>`     - Sets a minimum size if `-malloc_view` is used
-- `-log_view_memory`                 - view the memory usage also with the -log_view option
+- `-malloc_view optional filename` - Activates `PetscMallocView()` in `PetscFinalize()`
+- `-malloc_view_threshold min`     - Sets a minimum size if `-malloc_view` is used
+- `-log_view_memory`               - view the memory usage also with the -log_view option
 
 Level: advanced
 
@@ -9873,6 +10429,16 @@ end
 
 """
 	PetscMemoryTrace(petsclib::PetscLibType,label::String) 
+Print the current and high
+
+Collective on `PETSC_COMM_WORLD`; No Fortran Support
+
+Input Parameter:
+- `label` - short string used to tag the printed line so successive calls can be distinguished
+
+Level: developer
+
+-seealso: `PetscMemoryGetCurrentUsage()`, `PetscMallocGetCurrentUsage()`, `PetscMallocDump()`
 
 # External Links
 $(_doc_external("Sys/PetscMemoryTrace"))
@@ -10198,6 +10764,28 @@ end
 	identical = identical_[]
 
 	return identical
+end 
+
+"""
+	PetscNvshmemFinalize(petsclib::PetscLibType) 
+
+# External Links
+$(_doc_external("Vec/PetscNvshmemFinalize"))
+"""
+function PetscNvshmemFinalize(petsclib::PetscLibType)
+    error("PetscNvshmemFinalize: no generated method for these argument types")
+end
+
+@for_petsc function PetscNvshmemFinalize(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscNvshmemFinalize, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
 end 
 
 """
@@ -10609,7 +11197,7 @@ Input Parameter:
 - `machine` - machine to run command on or `NULL` for the current machine
 
 Options Database Key:
-- `-popen_machine <machine>` - run the process on this machine
+- `-popen_machine machine` - run the process on this machine
 
 Level: intermediate
 
@@ -10775,49 +11363,93 @@ end
 end 
 
 """
-	PetscPostIrecvInt(petsclib::PetscLibType,comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::PetscInt, r_waits::MPI_Request) 
+	rbuf::Ptr{PetscInt},r_waits::Ptr{MPI_Request} = PetscPostIrecvInt(petsclib::PetscLibType,comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}) 
+Allocate the receive buffers for an irregular all
+
+Collective; No Fortran Support
+
+Input Parameters:
+- `comm`     - the `MPI_Comm` to communicate over
+- `tag`      - MPI tag for the irecvs
+- `nrecvs`   - number of receives to post
+- `onodes`   - array of length `nrecvs` of source ranks
+- `olengths` - array of length `nrecvs` of message lengths (in `PetscInt`s)
+
+Output Parameters:
+- `rbuf`    - allocated array of length `nrecvs` of pointers to the receive buffers (in contiguous storage)
+- `r_waits` - allocated array of length `nrecvs` of `MPI_Request`s for the posted irecvs
+
+Level: developer
+
+-seealso: `PetscPostIrecvScalar()`, `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths()`
 
 # External Links
 $(_doc_external("Sys/PetscPostIrecvInt"))
 """
-function PetscPostIrecvInt(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::Integer, r_waits::MPI_Request)
+function PetscPostIrecvInt(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt})
     error("PetscPostIrecvInt: no generated method for these argument types")
 end
 
-@for_petsc function PetscPostIrecvInt(petsclib::$UnionPetscLib, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::$PetscInt, r_waits::MPI_Request )
+@for_petsc function PetscPostIrecvInt(petsclib::$UnionPetscLib, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt} )
+	rbuf_ = Ref{Ptr{$PetscInt}}()
+	r_waits_ = Ref{Ptr{MPI_Request}}()
 
     @chk ccall(
                (:PetscPostIrecvInt, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, PetscMPIInt, PetscMPIInt, Ptr{PetscMPIInt}, Ptr{PetscMPIInt}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{MPI_Request}}),
-               comm, tag, nrecvs, onodes, olengths, rbuf, r_waits,
+               comm, tag, nrecvs, onodes, olengths, rbuf_, r_waits_,
               )
 
+	rbuf = rbuf_[]
+	r_waits = r_waits_[]
 
-	return nothing
+	return rbuf,r_waits
 end 
 
 """
-	PetscPostIrecvScalar(petsclib::PetscLibType,comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::PetscScalar, r_waits::MPI_Request) 
+	rbuf::Ptr{PetscScalar},r_waits::Ptr{MPI_Request} = PetscPostIrecvScalar(petsclib::PetscLibType,comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}) 
+Allocate the receive buffers for an irregular all
+
+Collective; No Fortran Support
+
+Input Parameters:
+- `comm`     - the `MPI_Comm` to communicate over
+- `tag`      - MPI tag for the irecvs
+- `nrecvs`   - number of receives to post
+- `onodes`   - array of length `nrecvs` of source ranks
+- `olengths` - array of length `nrecvs` of message lengths (in `PetscScalar`s)
+
+Output Parameters:
+- `rbuf`    - allocated array of length `nrecvs` of pointers to the receive buffers (in contiguous storage)
+- `r_waits` - allocated array of length `nrecvs` of `MPI_Request`s for the posted irecvs
+
+Level: developer
+
+-seealso: `PetscPostIrecvInt()`, `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths()`
 
 # External Links
 $(_doc_external("Sys/PetscPostIrecvScalar"))
 """
-function PetscPostIrecvScalar(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::Number, r_waits::MPI_Request)
+function PetscPostIrecvScalar(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt})
     error("PetscPostIrecvScalar: no generated method for these argument types")
 end
 
-@for_petsc function PetscPostIrecvScalar(petsclib::$UnionPetscLib, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::$PetscScalar, r_waits::MPI_Request )
+@for_petsc function PetscPostIrecvScalar(petsclib::$UnionPetscLib, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt} )
+	rbuf_ = Ref{Ptr{$PetscScalar}}()
+	r_waits_ = Ref{Ptr{MPI_Request}}()
 
     @chk ccall(
                (:PetscPostIrecvScalar, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, PetscMPIInt, PetscMPIInt, Ptr{PetscMPIInt}, Ptr{PetscMPIInt}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{MPI_Request}}),
-               comm, tag, nrecvs, onodes, olengths, rbuf, r_waits,
+               comm, tag, nrecvs, onodes, olengths, rbuf_, r_waits_,
               )
 
+	rbuf = rbuf_[]
+	r_waits = r_waits_[]
 
-	return nothing
+	return rbuf,r_waits
 end 
 
 """
@@ -11128,8 +11760,8 @@ Calling sequence of `handler`:
 - `ctx`  - the error handler context
 
 Options Database Keys:
-- `-on_error_attach_debugger <noxterm,lldb or gdb>` - starts up the debugger if an error occurs
-- `-on_error_abort`                                 - aborts the program if an error occurs
+- `-on_error_attach_debugger [noxterm,][(gdb|lldb)]` - starts up the debugger if an error occurs
+- `-on_error_abort`                                  - aborts the program if an error occurs
 
 Level: intermediate
 
@@ -11261,7 +11893,7 @@ Input Parameters:
 - `pylib`  - full path to the Python dynamic library, or `NULL`.
 
 Options Database Key:
-- `-python <exe>` - Initializes Python, and optionally takes a Python executable name
+- `-python exe` - Initializes Python, and optionally takes a Python executable name
 
 Level: intermediate
 
@@ -11344,14 +11976,16 @@ end
 
 """
 	PetscRMTree(petsclib::PetscLibType,dir::String) 
-delete a directory and all of its children
+Recursively delete a directory tree on the current MPI process
+
+Not Collective
 
 Input Parameter:
-- `dir` - the name of the directory
+- `dir` - path of the directory to delete
 
-Level: advanced
+Level: developer
 
--seealso: `PetscMkdtemp()`, `PetscMkdir()`
+-seealso: `PetscMkdir()`, `PetscTestDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscRMTree"))
@@ -11556,7 +12190,7 @@ end
 	PetscRegisterFinalizeAll(petsclib::PetscLibType) 
 Runs all the finalize functions set with `PetscRegisterFinalize()`
 
-Not Collective unless registered functions are collective
+Not Collective except for registered functions that are collective
 
 Level: developer
 
@@ -11575,6 +12209,48 @@ end
                (:PetscRegisterFinalizeAll, $petsc_library),
                PetscErrorCode,
                (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscReturnErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+Error handler that causes a return without printing an error message.
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `comm` - communicator over which error occurred
+- `line` - the line number of the error (usually indicated by `__LINE__` in the calling routine)
+- `fun`  - the function name
+- `file` - the file in which the error was detected (usually indicated by `__FILE__` in the calling routine)
+- `mess` - an error text string, usually just printed to the screen
+- `n`    - the generic error number
+- `p`    - `PETSC_ERROR_INITIAL` indicates this is the first time the error handler is being called while `PETSC_ERROR_REPEAT` indicates it was previously called
+- `ctx`  - error handler context
+
+Level: developer
+
+-seealso: `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscError()`, `PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscTraceBackErrorHandler()`,
+`PetscAttachDebuggerErrorHandler()`, `PetscEmacsClientErrorHandler()`,
+`PetscErrorType`, `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`
+
+# External Links
+$(_doc_external("Sys/PetscReturnErrorHandler"))
+"""
+function PetscReturnErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid})
+    error("PetscReturnErrorHandler: no generated method for these argument types")
+end
+
+@for_petsc function PetscReturnErrorHandler(petsclib::$UnionPetscLib, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscReturnErrorHandler, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Cint, Ptr{Cchar}, Ptr{Cchar}, PetscErrorCode, PetscErrorType, Ptr{Cchar}, Ptr{Cvoid}),
+               comm, line, fun, file, n, p, mess, ctx,
               )
 
 
@@ -11959,6 +12635,13 @@ end
 
 """
 	PetscSetDisplay(petsclib::PetscLibType) 
+Determine and set PETSc's X11 display string from the `
+
+Collective; No Fortran Support
+
+Level: developer
+
+-seealso: `PetscGetDisplay()`, `PetscDraw`, `PETSC_DRAW_X`
 
 # External Links
 $(_doc_external("Sys/PetscSetDisplay"))
@@ -12047,6 +12730,16 @@ end
 
 """
 	PetscSetProgramName(petsclib::PetscLibType,name::String) 
+Set the program name reported by `PetscGetProgramName()`
+
+Not Collective
+
+Input Parameter:
+- `name` - the program name to record
+
+Level: developer
+
+-seealso: `PetscGetProgramName()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscSetProgramName"))
@@ -12168,6 +12861,8 @@ end
 frees any shared memory that was allocated by `PetscShmgetAllocateArray()` but
 not deallocated with `PetscShmgetDeallocateArray()`
 
+Not Collective
+
 Level: developer
 
 -seealso: `PetscShmgetAllocateArray()`, `PetscShmgetDeallocateArray()`, `PetscShmgetUnmapAddresses()`
@@ -12193,7 +12888,7 @@ end
 
 """
 	addr::Ptr{Cvoid} = PetscShmgetAllocateArray(petsclib::PetscLibType,sz::Csize_t, asz::Csize_t) 
-allocates shared memory accessible by all MPI processes in the server
+allocates shared memory that will later be made accessible by all MPI processes in the server
 
 Not Collective, only called on the first MPI process
 
@@ -12232,7 +12927,7 @@ end
 
 """
 	PetscShmgetDeallocateArray(petsclib::PetscLibType,addr::Union{Ptr, AbstractArray{Cvoid}}) 
-deallocates shared memory accessible by all MPI processes in the server
+deallocates shared memory accessible by all MPI processes in the server obtained with `PetscShmgetAllocateArray()`
 
 Not Collective, only called on the first MPI process
 
@@ -12268,6 +12963,8 @@ end
 	addres::Ptr{Cvoid} = PetscShmgetMapAddresses(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, baseaddres::Ptr{Ptr{Cvoid}}) 
 given shared address on the first MPI process determines the
 addresses on the other MPI processes that map to the same physical memory
+
+Collective
 
 Input Parameters:
 - `comm`       - the `MPI_Comm` to scatter the address
@@ -12305,10 +13002,12 @@ end
 
 """
 	PetscShmgetUnmapAddresses(petsclib::PetscLibType,n::PetscInt, addres::Ptr{Ptr{Cvoid}}) 
-given shared addresses on a MPI process unlink it
+unlinks given shared addresses on a MPI process that is not of `PetscGlobalRank` 0
+
+Not Collective
 
 Input Parameters:
-- `n`      - the number of addresses, each obtained on MPI process zero by `PetscShmgetAllocateArray()`
+- `n`      - the number of addresses, each obtained originally on MPI `PetscGlobalRank` zero by `PetscShmgetAllocateArray()`
 - `addres` - the addresses
 
 Level: developer
@@ -13540,7 +14239,7 @@ end
 end 
 
 """
-	n::PetscInt,N::PetscInt = PetscSplitOwnership(petsclib::PetscLibType,comm::MPI_Comm) 
+	n::PetscInt,M_N::PetscInt = PetscSplitOwnership(petsclib::PetscLibType,comm::MPI_Comm) 
 Given a global (or local) length determines a local
 (or global) length via a simple formula
 
@@ -13564,23 +14263,23 @@ end
 
 @for_petsc function PetscSplitOwnership(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	n_ = Ref{$PetscInt}()
-	N_ = Ref{$PetscInt}()
+	M_N_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscSplitOwnership, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               comm, n_, N_,
+               comm, n_, M_N_,
               )
 
 	n = n_[]
-	N = N_[]
+	M_N = M_N_[]
 
-	return n,N
+	return n,M_N
 end 
 
 """
-	n::PetscInt,N::PetscInt = PetscSplitOwnershipBlock(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt) 
+	n::PetscInt,M_N::PetscInt = PetscSplitOwnershipBlock(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt) 
 Given a global (or local) length determines a local
 (or global) length via a simple formula. Splits so each processors local size
 is divisible by the block size.
@@ -13606,23 +14305,23 @@ end
 
 @for_petsc function PetscSplitOwnershipBlock(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt )
 	n_ = Ref{$PetscInt}()
-	N_ = Ref{$PetscInt}()
+	M_N_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscSplitOwnershipBlock, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               comm, bs, n_, N_,
+               comm, bs, n_, M_N_,
               )
 
 	n = n_[]
-	N = N_[]
+	M_N = M_N_[]
 
-	return n,N
+	return n,M_N
 end 
 
 """
-	n::PetscInt,N::PetscInt = PetscSplitOwnershipEqual(petsclib::PetscLibType,comm::MPI_Comm) 
+	n::PetscInt,M_N::PetscInt = PetscSplitOwnershipEqual(petsclib::PetscLibType,comm::MPI_Comm) 
 Given a global (or local) length determines a local
 (or global) length via a simple formula, trying to have all local lengths equal
 
@@ -13646,19 +14345,19 @@ end
 
 @for_petsc function PetscSplitOwnershipEqual(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	n_ = Ref{$PetscInt}()
-	N_ = Ref{$PetscInt}()
+	M_N_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscSplitOwnershipEqual, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               comm, n_, N_,
+               comm, n_, M_N_,
               )
 
 	n = n_[]
-	N = N_[]
+	M_N = M_N_[]
 
-	return n,N
+	return n,M_N
 end 
 
 """
@@ -14916,6 +15615,50 @@ end
 	v = v_[]
 
 	return v
+end 
+
+"""
+	PetscTraceBackErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+Default error handler routine that generates a traceback on error detection.
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `comm` - communicator over which error occurred
+- `line` - the line number of the error (usually indicated by `__LINE__` in the calling routine)
+- `fun`  - the function name
+- `file` - the file in which the error was detected (usually indicated by `__FILE__` in the calling routine)
+- `mess` - an error text string, usually just printed to the screen
+- `n`    - the generic error number
+- `p`    - `PETSC_ERROR_INITIAL` if this is the first call the error handler, otherwise `PETSC_ERROR_REPEAT`
+- `ctx`  - error handler context
+
+Options Database Keys:
+- `-error_output_stdout` - output the error messages to `stdout` instead of the default `stderr`
+- `-error_output_none`   - do not output the error messages
+
+-seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+`PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscReturnErrorHandler()`, `PetscEmacsClientErrorHandler()`,
+`PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`, `PetscErrorType`
+
+# External Links
+$(_doc_external("Sys/PetscTraceBackErrorHandler"))
+"""
+function PetscTraceBackErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid})
+    error("PetscTraceBackErrorHandler: no generated method for these argument types")
+end
+
+@for_petsc function PetscTraceBackErrorHandler(petsclib::$UnionPetscLib, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscTraceBackErrorHandler, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Cint, Ptr{Cchar}, Ptr{Cchar}, PetscErrorCode, PetscErrorType, Ptr{Cchar}, Ptr{Cvoid}),
+               comm, line, fun, file, n, p, mess, ctx,
+              )
+
+
+	return nothing
 end 
 
 """

@@ -186,6 +186,9 @@ Input Parameters:
 - `sname`    - name of a new benchmark
 - `function` - routine to create benchmark
 
+Calling sequence of function:
+- `bm` - the `PetscBench` to be created
+
 Level: advanced
 
 -seealso: `PetscBenchInitializePackage()`, `PetscBenchCreate()`, `PetscBench`, `PetscBenchType`, `PetscBenchSetType()`, `PetscBenchGetType()`
@@ -392,7 +395,7 @@ Input Parameters:
 - `type` - a known method
 
 Options Database Key:
-- `-bm_type <type>` - Sets `PetscBench` type
+- `-bm_type type` - Sets `PetscBench` type
 
 Level: advanced
 
@@ -489,35 +492,38 @@ end
 end 
 
 """
-	PetscBenchViewFromOptions(petsclib::PetscLibType,bm::PetscBench, bobj, optionname::String) 
+	PetscBenchViewFromOptions(petsclib::PetscLibType,bm::PetscBench, bobj, name::String) 
 Processes command line options to determine if/how a `PetscBench` is to be viewed.
 
 Collective
 
 Input Parameters:
-- `bm`         - the object
-- `bobj`       - optional other object that provides prefix (if `NULL` then the prefix in `bm` is used)
-- `optionname` - option to activate viewing
+- `bm`   - the object
+- `bobj` - optional other object that provides prefix (if `NULL` then the prefix in `bm` is used)
+- `name` - option to activate viewing
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: advanced
 
 -seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
-`PetscBenchSetSize()`, `PetscBenchGetSize()`
+`PetscBenchSetSize()`, `PetscBenchGetSize()`, `PetscObjectViewFromOptions()`, `PetscViewer`, `PetscBenchView()`
 
 # External Links
 $(_doc_external("BM/PetscBenchViewFromOptions"))
 """
-function PetscBenchViewFromOptions(petsclib::PetscLibType, bm::PetscBench, bobj, optionname::String)
+function PetscBenchViewFromOptions(petsclib::PetscLibType, bm::PetscBench, bobj, name::String)
     error("PetscBenchViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function PetscBenchViewFromOptions(petsclib::$UnionPetscLib, bm::PetscBench, bobj, optionname::String )
+@for_petsc function PetscBenchViewFromOptions(petsclib::$UnionPetscLib, bm::PetscBench, bobj, name::String )
 
     @chk ccall(
                (:PetscBenchViewFromOptions, $petsc_library),
                PetscErrorCode,
                (PetscBench, PetscObject, Ptr{Cchar}),
-               bm, bobj, optionname,
+               bm, bobj, name,
               )
 
 

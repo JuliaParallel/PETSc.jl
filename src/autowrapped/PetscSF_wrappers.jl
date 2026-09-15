@@ -11,7 +11,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFComposeInverse()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFComposeInverse()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCompose"))
@@ -48,7 +48,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFCreateInverseSF()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFCreateInverseSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComposeInverse"))
@@ -74,7 +74,7 @@ end
 
 """
 	degree::Ptr{PetscInt} = PetscSFComputeDegreeBegin(petsclib::PetscLibType,sf::PetscSF) 
-begin computation of degree for each root vertex, to be completed with `PetscSFComputeDegreeEnd()`
+begin computation of the degree of each root vertex, to be completed with `PetscSFComputeDegreeEnd()`
 
 Collective
 
@@ -82,11 +82,11 @@ Input Parameter:
 - `sf` - star forest
 
 Output Parameter:
-- `degree` - degree of each root vertex
+- `degree` - degree (the number of leaves) of each root vertex
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeEnd()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeEnd()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeDegreeBegin"))
@@ -124,7 +124,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeBegin()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeBegin()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeDegreeEnd"))
@@ -157,7 +157,7 @@ Collective
 
 Input Parameters:
 - `sf`     - star forest
-- `degree` - degree of each root vertex, computed with `PetscSFComputeDegreeBegin()`/`PetscSFComputeDegreeEnd()`
+- `degree` - degree of each root vertex, computed with `PetscSFComputeDegreeBegin()` and `PetscSFComputeDegreeEnd()`
 
 Output Parameters:
 - `nMultiRoots`             - (optional) number of multi-roots (roots of multi-`PetscSF`)
@@ -165,7 +165,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFComputeDegreeBegin()`, `PetscSFComputeDegreeEnd()`, `PetscSFGetMultiSF()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFComputeDegreeBegin()`, `PetscSFComputeDegreeEnd()`, `PetscSFGetMultiSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeMultiRootOriginalNumbering"))
@@ -193,7 +193,7 @@ end
 
 """
 	newsf::PetscSF = PetscSFConcatenate(petsclib::PetscLibType,comm::MPI_Comm, nsfs::PetscInt, sfs::Vector{PetscSF}, rootMode::PetscSFConcatenateRootMode, leafOffsets::Vector{PetscInt}) 
-concatenate multiple `PetscSF` into one
+concatenate multiple `PetscSF` into a new `PetscSF`
 
 Input Parameters:
 - `comm`        - the communicator
@@ -207,7 +207,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFConcatenateRootMode`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFConcatenateRootMode`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFConcatenate"))
@@ -244,14 +244,12 @@ Output Parameter:
 - `sf` - new star forest context
 
 Options Database Key:
-- `-sf_type basic`                 - Use MPI persistent Isend/Irecv for communication (Default)
-- `-sf_type window`                - Use MPI-3 one-sided window for communication
-- `-sf_type neighbor`              - Use MPI-3 neighborhood collectives for communication
-- `-sf_neighbor_persistent <bool>` - If true, use MPI-4 persistent neighborhood collectives for communication (used along with -sf_type neighbor)
+- `-sf_type (basic|window|neighbor)`     - Use MPI persistent Isend/Irecv, or MPI-3 one-sided window, or MPI-3 neighborhood collectives for communication
+- `-sf_neighbor_persistent (true|false)` - Use MPI-4 persistent neighborhood collectives for communication (used along with `-sf_type neighbor`)
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFSetType`, `PetscSFSetGraph()`, `PetscSFSetGraphWithPattern()`, `PetscSFDestroy()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetType`, `PetscSFSetGraph()`, `PetscSFSetGraphWithPattern()`, `PetscSFDestroy()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreate"))
@@ -282,24 +280,24 @@ Create `PetscSF` by matching root and leaf indices
 Collective
 
 Input Parameters:
-- `layout`           - `PetscLayout` defining the global index space and the rank that brokers each index
-- `numRootIndices`   - size of rootIndices
-- `rootIndices`      - `PetscInt` array of global indices of which this process requests ownership
-- `rootLocalIndices` - root local index permutation (NULL if no permutation)
-- `rootLocalOffset`  - offset to be added to root local indices
-- `numLeafIndices`   - size of leafIndices
-- `leafIndices`      - `PetscInt` array of global indices with which this process requires data associated
-- `leafLocalIndices` - leaf local index permutation (NULL if no permutation)
-- `leafLocalOffset`  - offset to be added to leaf local indices
+- `layout`           - `PetscLayout` defining the global index space and the MPI rank that brokers each index
+- `numRootIndices`   - size of `rootIndices`
+- `rootIndices`      - array of global indices of which this process requests ownership
+- `rootLocalIndices` - root local index permutation (`NULL` if no permutation)
+- `rootLocalOffset`  - offset to be added to `rootLocalIndices`
+- `numLeafIndices`   - size of `leafIndices`
+- `leafIndices`      - array of global indices with which this process requires data associated
+- `leafLocalIndices` - leaf local index permutation (`NULL` if no permutation)
+- `leafLocalOffset`  - offset to be added to `leafLocalIndices`
 
 Output Parameters:
-- `sfA` - star forest representing the communication pattern from the layout space to the leaf space (NULL if not needed)
+- `sfA` - star forest representing the communication pattern from the layout space to the leaf space (`NULL` if not needed)
 - `sf`  - star forest representing the communication pattern from the root space to the leaf space
 
 Level: advanced
 
 Example 1:
--seealso: `PetscSF`, `PetscSFCreate()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateByMatchingIndices"))
@@ -333,15 +331,15 @@ Collective
 
 Input Parameters:
 - `sf`        - original star forest
-- `nselected` - number of selected leaves on this process
-- `selected`  - indices of the selected leaves on this process
+- `nselected` - number of selected leaves on this MPI process
+- `selected`  - indices of the selected leaves on this MPI process
 
 Output Parameter:
 - `newsf` - new star forest
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFCreateEmbeddedRootSF()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreateEmbeddedRootSF()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedLeafSF"))
@@ -373,15 +371,15 @@ Collective
 
 Input Parameters:
 - `sf`        - original star forest
-- `nselected` - number of selected roots on this process
-- `selected`  - indices of the selected roots on this process
+- `nselected` - number of selected roots on this MPI process
+- `selected`  - indices of the selected roots on this MPI process
 
 Output Parameter:
 - `esf` - new star forest
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedRootSF"))
@@ -406,35 +404,8 @@ end
 end 
 
 """
-	selected::PetscInt,esf::PetscSF = PetscSFCreateEmbeddedSF(petsclib::PetscLibType,sf::PetscSF, nselected::PetscInt) 
-
-# External Links
-$(_doc_external("Vec/PetscSFCreateEmbeddedSF"))
-"""
-function PetscSFCreateEmbeddedSF(petsclib::PetscLibType, sf::PetscSF, nselected::Integer)
-    error("PetscSFCreateEmbeddedSF: no generated method for these argument types")
-end
-
-@for_petsc function PetscSFCreateEmbeddedSF(petsclib::$UnionPetscLib, sf::PetscSF, nselected::$PetscInt )
-	selected_ = Ref{$PetscInt}()
-	esf_ = Ref{PetscSF}()
-
-    @chk ccall(
-               (:PetscSFCreateEmbeddedSF, $petsc_library),
-               PetscErrorCode,
-               (PetscSF, $PetscInt, Ptr{$PetscInt}, Ptr{PetscSF}),
-               sf, nselected, selected_, esf_,
-              )
-
-	selected = selected_[]
-	esf = esf_[]
-
-	return selected,esf
-end 
-
-"""
 	sf::PetscSF = PetscSFCreateFromLayouts(petsclib::PetscLibType,rmap::PetscLayout, lmap::PetscLayout) 
-Creates a parallel star forest mapping two `PetscLayout` objects
+Creates a parallel star forest mapping between two `PetscLayout` objects
 
 Collective
 
@@ -447,7 +418,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFCreate()`, `PetscLayoutCreate()`, `PetscSFSetGraphLayout()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscLayout`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscLayoutCreate()`, `PetscSFSetGraphLayout()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateFromLayouts"))
@@ -473,7 +444,7 @@ end
 
 """
 	isf::PetscSF = PetscSFCreateInverseSF(petsclib::PetscLibType,sf::PetscSF) 
-given a `PetscSF` in which all vertices have degree 1, creates the inverse map
+given a `PetscSF` in which all roots have degree 1 (exactly one leaf), creates the inverse map
 
 Collective
 
@@ -485,7 +456,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFSetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateInverseSF"))
@@ -525,7 +496,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFCreate()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateRemoteOffsets"))
@@ -558,7 +529,7 @@ Collective
 Input Parameters:
 - `sf`            - The `PetscSF`
 - `rootSection`   - Data layout of remote points for outgoing data (this is usually the serial section)
-- `remoteOffsets` - Offsets for point data on remote processes (these are offsets from the root section), or NULL
+- `remoteOffsets` - Offsets for point data on remote processes (these are offsets from the root section), or `NULL`
 - `leafSection`   - Data layout of local points for incoming data  (this is the distributed section)
 
 Output Parameter:
@@ -566,7 +537,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFCreate()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFDistributeSection()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateSectionSF"))
@@ -607,7 +578,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateStridedSF"))
@@ -642,7 +613,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFReset()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFReset()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDestroy"))
@@ -681,7 +652,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFCreate()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFCreateSectionSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDistributeSection"))
@@ -720,7 +691,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFSetType()`, `PetscSFSetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFSetType()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDuplicate"))
@@ -876,7 +847,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFGetWindow()`, `PetscSFRestoreWindow()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetWindow()`, `PetscSFRestoreWindow()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetGroups"))
@@ -912,12 +883,12 @@ Input Parameter:
 - `sf` - star forest
 
 Output Parameters:
-- `minleaf` - minimum active leaf on this process. Returns 0 if there are no leaves.
-- `maxleaf` - maximum active leaf on this process. Returns -1 if there are no leaves.
+- `minleaf` - minimum active leaf on this MPI process. Returns 0 if there are no leaves.
+- `maxleaf` - maximum active leaf on this MPI process. Returns -1 if there are no leaves.
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetLeafRange"))
@@ -945,7 +916,7 @@ end
 
 """
 	niranks::PetscMPIInt,iranks::Ptr{PetscMPIInt},ioffset::Ptr{PetscInt},irootloc::Ptr{PetscInt} = PetscSFGetLeafRanks(petsclib::PetscLibType,sf::PetscSF) 
-Get leaf ranks referencing roots on this process
+Get leaf MPI ranks referencing roots on this process
 
 Not Collective
 
@@ -953,14 +924,14 @@ Input Parameter:
 - `sf` - star forest
 
 Output Parameters:
-- `niranks`  - number of leaf ranks referencing roots on this process
-- `iranks`   - [`niranks`] array of ranks
-- `ioffset`  - [`niranks`+1] offset in `irootloc` for each rank
-- `irootloc` - [`ioffset`[`niranks`]] concatenated array holding local indices of roots referenced by each leaf rank
+- `niranks`  - number of leaf MPI processes referencing roots on this process
+- `iranks`   - [`niranks`] array of MPI ranks
+- `ioffset`  - [`niranks`+1] offset in `irootloc` for each MPI process
+- `irootloc` - [`ioffset`[`niranks`]] concatenated array holding local indices of roots referenced by each leaf MPI process
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFGetRootRanks()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetLeafRanks"))
@@ -1000,11 +971,11 @@ Input Parameter:
 - `sf` - star forest that may contain roots with 0 or with more than 1 vertex
 
 Output Parameter:
-- `multi` - star forest with split roots, such that each root has degree exactly 1
+- `multi` - star forest with split roots, such that each root has degree exactly 1 (has one leaf)
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`, `PetscSFComputeMultiRootOriginalNumbering()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`, `PetscSFComputeMultiRootOriginalNumbering()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetMultiSF"))
@@ -1029,31 +1000,6 @@ end
 end 
 
 """
-	nranks::PetscMPIInt = PetscSFGetRanks(petsclib::PetscLibType,sf::PetscSF, ranks::PetscMPIInt, roffset::PetscInt, rmine::PetscInt, rremote::PetscInt) 
-
-# External Links
-$(_doc_external("Vec/PetscSFGetRanks"))
-"""
-function PetscSFGetRanks(petsclib::PetscLibType, sf::PetscSF, ranks::PetscMPIInt, roffset::Integer, rmine::Integer, rremote::Integer)
-    error("PetscSFGetRanks: no generated method for these argument types")
-end
-
-@for_petsc function PetscSFGetRanks(petsclib::$UnionPetscLib, sf::PetscSF, ranks::PetscMPIInt, roffset::$PetscInt, rmine::$PetscInt, rremote::$PetscInt )
-	nranks_ = Ref{PetscMPIInt}()
-
-    @chk ccall(
-               (:PetscSFGetRanks, $petsc_library),
-               PetscErrorCode,
-               (PetscSF, Ptr{PetscMPIInt}, Ptr{Ptr{PetscMPIInt}}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
-               sf, nranks_, ranks, roffset, rmine, rremote,
-              )
-
-	nranks = nranks_[]
-
-	return nranks
-end 
-
-"""
 	rsf::PetscSF = PetscSFGetRanksSF(petsclib::PetscLibType,sf::PetscSF) 
 gets the `PetscSF` to perform communications with root ranks
 
@@ -1063,11 +1009,11 @@ Input Parameter:
 - `sf` - star forest
 
 Output Parameter:
-- `rsf` - the star forest with a single root per process to perform communications
+- `rsf` - the star forest with a single root per MPI process to perform communications
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetRootRanks()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetRanksSF"))
@@ -1093,7 +1039,7 @@ end
 
 """
 	nranks::PetscMPIInt,ranks::Ptr{PetscMPIInt},roffset::Ptr{PetscInt},rmine::Ptr{PetscInt},rremote::Ptr{PetscInt} = PetscSFGetRootRanks(petsclib::PetscLibType,sf::PetscSF) 
-Get root ranks and number of vertices referenced by leaves on this process
+Get the root MPI ranks and number of vertices referenced by leaves on this process
 
 Not Collective
 
@@ -1101,15 +1047,15 @@ Input Parameter:
 - `sf` - star forest
 
 Output Parameters:
-- `nranks`  - number of ranks referenced by local part
-- `ranks`   - [`nranks`] array of ranks
-- `roffset` - [`nranks`+1] offset in `rmine`/`rremote` for each rank
-- `rmine`   - [`roffset`[`nranks`]] concatenated array holding local indices referencing each remote rank, or `NULL`
-- `rremote` - [`roffset`[`nranks`]] concatenated array holding remote indices referenced for each remote rank, or `NULL`
+- `nranks`  - number of MPI processes referenced by local part
+- `ranks`   - [`nranks`] array of MPI ranks
+- `roffset` - [`nranks`+1] offset in `rmine` and `rremote` for each MPI process
+- `rmine`   - [`roffset`[`nranks`]] concatenated array holding local indices referencing each remote MPI process, or `NULL`
+- `rremote` - [`roffset`[`nranks`]] concatenated array holding remote indices referenced for each remote MPI process, or `NULL`
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFGetLeafRanks()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetLeafRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetRootRanks"))
@@ -1194,7 +1140,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFSetType()`, `PetscSFCreate()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetType()`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetType"))
@@ -1255,14 +1201,14 @@ Collective
 
 Input Parameters:
 - `sfa` - default `PetscSF`
-- `sfb` - additional edges to add/replace edges in sfa
+- `sfb` - additional edges to add/replace edges in `sfa`
 
 Output Parameter:
 - `merged` - new `PetscSF` with combined edges
 
 Level: intermediate
 
--seealso: `PetscSFCompose()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFMerge"))
@@ -1329,7 +1275,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFDestroy()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFDestroy()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFReset"))
@@ -1361,21 +1307,19 @@ Input Parameter:
 - `sf` - star forest
 
 Options Database Keys:
-- `-sf_type`                      - implementation type, see `PetscSFSetType()`
-- `-sf_rank_order`                - sort composite points for gathers and scatters in rank order, gathers are non-deterministic otherwise
-- `-sf_use_default_stream`        - Assume callers of `PetscSF` computed the input root/leafdata with the default CUDA stream. `PetscSF` will also
+- `-sf_type (basic|window|neighbor)` - implementation type, see `PetscSFSetType()`
+- `-sf_rank_order (true|false)`      - sort composite points for gathers and scatters in MPI rank order, gathers are non-deterministic otherwise
+- `-sf_use_default_stream`           - Assume callers of `PetscSF` computed the input root/leafdata with the default CUDA stream. `PetscSF` will also
 use the default stream to process data. Therefore, no stream synchronization is needed between `PetscSF` and its caller (default: true).
 If true, this option only works with `-use_gpu_aware_mpi 1`.
-- `-sf_use_stream_aware_mpi`      - Assume the underlying MPI is CUDA-stream aware and `PetscSF` won't sync streams for send/recv buffers passed to MPI (default: false).
+- `-sf_use_stream_aware_mpi`         - Assume the underlying MPI is CUDA-stream aware and `PetscSF` won't sync streams for send/recv buffers passed to MPI (default: false).
 If true, this option only works with `-use_gpu_aware_mpi 1`.
-
-- `-sf_backend <cuda,hip,kokkos>` - Select the device backend`PetscSF` uses. Currently `PetscSF` has these backends: cuda - hip and Kokkos.
-On CUDA (HIP) devices, one can choose cuda (hip) or kokkos with the default being kokkos. On other devices,
-the only available is kokkos.
+- `-sf_backend (cuda|hip|kokkos)`    - Select the device backend `PetscSF` uses. On CUDA (HIP) devices, one can choose `cuda` (`hip`) or `kokkos` with the default being `kokkos`.
+On other devices, the only available is `kokkos`.
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFCreate()`, `PetscSFSetType()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetFromOptions"))
@@ -1405,18 +1349,16 @@ Collective
 
 Input Parameters:
 - `sf`         - star forest
-- `nroots`     - number of root vertices on the current process (these are possible targets for other process to attach leaves)
-- `nleaves`    - number of leaf vertices on the current process, each of these references a root on any process
-- `ilocal`     - locations of leaves in leafdata buffers, pass `NULL` for contiguous storage (locations must be >= 0, enforced
-during setup in debug mode)
+- `nroots`     - number of root vertices on the current MPI process (these are possible targets for other process to attach leaves)
+- `nleaves`    - number of leaf vertices on the current MPI process, each of these references a root on any process
+- `ilocal`     - locations of leaves in leafdata buffers (locations must be >= 0, enforced during setup in debug mode), pass `NULL` for contiguous storage (same as passing (0, 1, 2, ..., nleaves-1))
 - `localmode`  - copy mode for `ilocal`
-- `iremote`    - remote locations of root vertices for each leaf on the current process, length is 2 `nleaves'
-(locations must be >= 0, enforced during setup in debug mode)
+- `iremote`    - remote locations of root vertices for each leaf on the current process, length is `nleaves' (locations must be >= 0, enforced during setup in debug mode)
 - `remotemode` - copy mode for `iremote`
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`, `PetscSFSetGraphWithPattern()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraph"))
@@ -1476,48 +1418,46 @@ end
 end 
 
 """
-	ilocal::PetscInt = PetscSFSetGraphLayout(petsclib::PetscLibType,sf::PetscSF, layout::PetscLayout, nleaves::PetscInt, localmode::PetscCopyMode, gremote::Vector{PetscInt}) 
-Set a parallel star forest via global indices and a `PetscLayout`
+	PetscSFSetGraphLayout(petsclib::PetscLibType,sf::PetscSF, layout::PetscLayout, nleaves::PetscInt, ilocal::Vector{PetscInt}, localmode::PetscCopyMode, gremote::Vector{PetscInt}) 
+Set a `PetscSF` communication pattern using global indices and a `PetscLayout`
 
 Collective
 
 Input Parameters:
 - `sf`        - star forest
-- `layout`    - `PetscLayout` defining the global space for roots
-- `nleaves`   - number of leaf vertices on the current process, each of these references a root on any process
-- `ilocal`    - locations of leaves in leafdata buffers, pass NULL for contiguous storage
-- `localmode` - copy mode for ilocal
-- `gremote`   - root vertices in global numbering corresponding to leaves in ilocal
+- `layout`    - `PetscLayout` defining the global space for roots, i.e. which roots are owned by each MPI process
+- `nleaves`   - number of leaf vertices on the current process, each of these references a root on any MPI process
+- `ilocal`    - locations of leaves in leafdata buffers, pass `NULL` for contiguous storage, that is the locations are in [0,`nleaves`)
+- `localmode` - copy mode for `ilocal`
+- `gremote`   - root vertices in global numbering corresponding to the leaves
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFGetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphLayout"))
 """
-function PetscSFSetGraphLayout(petsclib::PetscLibType, sf::PetscSF, layout::PetscLayout, nleaves::Integer, localmode::PetscCopyMode, gremote::AbstractVector{<:Number})
+function PetscSFSetGraphLayout(petsclib::PetscLibType, sf::PetscSF, layout::PetscLayout, nleaves::Integer, ilocal::AbstractVector{<:Number}, localmode::PetscCopyMode, gremote::AbstractVector{<:Number})
     error("PetscSFSetGraphLayout: no generated method for these argument types")
 end
 
-@for_petsc function PetscSFSetGraphLayout(petsclib::$UnionPetscLib, sf::PetscSF, layout::PetscLayout, nleaves::$PetscInt, localmode::PetscCopyMode, gremote::Vector{$PetscInt} )
-	ilocal_ = Ref{$PetscInt}()
+@for_petsc function PetscSFSetGraphLayout(petsclib::$UnionPetscLib, sf::PetscSF, layout::PetscLayout, nleaves::$PetscInt, ilocal::Vector{$PetscInt}, localmode::PetscCopyMode, gremote::Vector{$PetscInt} )
 
     @chk ccall(
                (:PetscSFSetGraphLayout, $petsc_library),
                PetscErrorCode,
                (PetscSF, PetscLayout, $PetscInt, Ptr{$PetscInt}, PetscCopyMode, Ptr{$PetscInt}),
-               sf, layout, nleaves, ilocal_, localmode, gremote,
+               sf, layout, nleaves, ilocal, localmode, gremote,
               )
 
-	ilocal = ilocal_[]
 
-	return ilocal
+	return nothing
 end 
 
 """
 	PetscSFSetGraphSection(petsclib::PetscLibType,sf::PetscSF, localSection::PetscSection, globalSection::PetscSection) 
-Sets the `PetscSF` graph encoding the parallel dof overlap based upon the `PetscSection` describing the data layout.
+Sets the `PetscSF` graph (communication pattern) encoding the parallel dof overlap based upon the `PetscSection` describing the data layout.
 
 Input Parameters:
 - `sf`            - The `PetscSF`
@@ -1526,7 +1466,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFSetGraph()`, `PetscSFSetGraphLayout()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFSetGraphLayout()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphSection"))
@@ -1556,12 +1496,12 @@ Collective
 
 Input Parameters:
 - `sf`      - The `PetscSF`
-- `map`     - Layout of roots over all processes (insignificant when pattern is `PETSCSF_PATTERN_ALLTOALL`)
+- `map`     - Layout of roots over all processes (not used when pattern is `PETSCSF_PATTERN_ALLTOALL`)
 - `pattern` - One of `PETSCSF_PATTERN_ALLGATHER`, `PETSCSF_PATTERN_GATHER`, `PETSCSF_PATTERN_ALLTOALL`
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphWithPattern"))
@@ -1591,11 +1531,11 @@ Logically Collective
 
 Input Parameters:
 - `sf`  - star forest
-- `flg` - `PETSC_TRUE` to sort, `PETSC_FALSE` to skip sorting (lower setup cost, but non-deterministic)
+- `flg` - `PETSC_TRUE` to sort, `PETSC_FALSE` to skip sorting (false has a lower setup cost, but is non-deterministic)
 
 Level: advanced
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetRankOrder"))
@@ -1626,7 +1566,7 @@ Collective
 Input Parameters:
 - `sf`   - the `PetscSF` context
 - `type` - a known method
--seealso: `PetscSF`, `PetscSFType`, `PetscSFCreate()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetType"))
@@ -1659,7 +1599,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFSetFromOptions()`, `PetscSFSetType()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetFromOptions()`, `PetscSFSetType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetUp"))
@@ -1683,7 +1623,7 @@ end
 
 """
 	PetscSFSetUpRanks(petsclib::PetscLibType,sf::PetscSF, dgroup::MPI_Group) 
-Set up data structures associated with ranks; this is for internal use by `PetscSF` implementations.
+Set up data structures associated with MPI ranks; this is for internal use by `PetscSF` implementations.
 
 Collective
 
@@ -1693,7 +1633,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFGetRootRanks()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetUpRanks"))
@@ -1727,7 +1667,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscSF`, `PetscViewer`, `PetscSFCreate()`, `PetscSFSetGraph()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscViewer`, `PetscSFCreate()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFView"))
@@ -1760,9 +1700,12 @@ Input Parameters:
 - `obj`  - Optional object that provides the prefix for the option names
 - `name` - command line option
 
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
+
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFView`, `PetscObjectViewFromOptions()`, `PetscSFCreate()`
+-seealso: [](sec_petscsf), `PetscSF`, `PetscSFView`, `PetscObjectViewFromOptions()`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFViewFromOptions"))
@@ -1909,7 +1852,7 @@ Input Parameters:
 - `flavor` - flavor type
 
 Options Database Key:
-- `-sf_window_flavor <flavor>` - sets the flavor type CREATE, DYNAMIC, ALLOCATE or SHARED (see `PetscSFWindowFlavorType`)
+- `-sf_window_flavor flavor` - sets the flavor type CREATE, DYNAMIC, ALLOCATE or SHARED (see `PetscSFWindowFlavorType`)
 
 Level: advanced
 
@@ -1980,7 +1923,7 @@ Input Parameters:
 - `sync` - synchronization type
 
 Options Database Key:
-- `-sf_window_sync <sync>` - sets the synchronization type FENCE, LOCK, or ACTIVE (see `PetscSFWindowSyncType`)
+- `-sf_window_sync sync` - sets the synchronization type FENCE, LOCK, or ACTIVE (see `PetscSFWindowSyncType`)
 
 Level: advanced
 

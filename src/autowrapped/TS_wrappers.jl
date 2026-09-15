@@ -332,11 +332,11 @@ Input Parameters:
 - `fastslow` - `PETSC_TRUE` enables the `TSARKIMEX` solver for a fast-slow system where the RHS is split component-wise.
 
 Options Database Key:
-- `-ts_arkimex_fastslowsplit` - <true,false>
+- `-ts_arkimex_fastslowsplit (true|false)` - enables the `TSARKIMEX` solver for a fast-slow system where the RHS is split component-wise
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEX`, `TSARKIMEXGetFastSlowSplit()`
+-seealso: [](ch_ts), `TSARKIMEX`, `TSARKIMEXGetFastSlowSplit()`, `TSRHSSplitSetIS()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXSetFastSlowSplit"))
@@ -367,6 +367,9 @@ Logically Collective
 Input Parameters:
 - `ts`  - timestepping context
 - `flg` - `PETSC_TRUE` for fully implicit
+
+Options Database Key:
+- `-ts_arkimex_fully_implicit (true|false)` - Solve both parts of the equation implicitly
 
 Level: intermediate
 
@@ -403,12 +406,12 @@ Input Parameters:
 - `arktype` - type of `TSARKIMEX` scheme
 
 Options Database Key:
-- `-ts_arkimex_type <1bee,a2,l2,ars122,2c,2d,2e,prssp2,3,bpr3,ars443,4,5>` - set `TSARKIMEX` scheme type
+- `-ts_arkimex_type (1bee|a2|l2|ars122|2c|2d|2e|prssp2|3|bpr3|ars443|4|5)` - set `TSARKIMEX` scheme type, see `TSARKIMEXType`
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEXGetType()`, `TSARKIMEX`, `TSARKIMEXType`, `TSARKIMEX1BEE`, `TSARKIMEXA2`, `TSARKIMEXL2`, `TSARKIMEXARS122`, `TSARKIMEX2C`, `TSARKIMEX2D`, `TSARKIMEX2E`, `TSARKIMEXPRSSP2`,
-`TSARKIMEX3`, `TSARKIMEXBPR3`, `TSARKIMEXARS443`, `TSARKIMEX4`, `TSARKIMEX5`
+-seealso: [](ch_ts), `TSARKIMEXGetType()`, `TSARKIMEX`, `TSARKIMEXType`, `TSARKIMEX1BEE`, `TSARKIMEXA2`, `TSARKIMEXL2`, `TSARKIMEXARS122`, `TSARKIMEX2C`, `TSARKIMEX2D`,
+`TSARKIMEX2E`, `TSARKIMEXPRSSP2`, `TSARKIMEX3`, `TSARKIMEXBPR3`, `TSARKIMEXARS443`, `TSARKIMEX4`, `TSARKIMEX5`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXSetType"))
@@ -543,7 +546,7 @@ Input Parameters:
 step of -1, this is at the final time which may have been interpolated to)
 - `time`    - current time
 - `v`       - current iterate
-- `numcost` - number of cost functionos
+- `numcost` - number of cost functions
 - `lambda`  - sensitivities to initial conditions
 - `mu`      - sensitivities to parameters
 - `vf`      - the viewer and format
@@ -623,8 +626,7 @@ Logically Collective
 Input Parameters:
 - `ts`              - the `TS` context obtained from `TSCreate()`
 - `adjointmonitor`  - monitoring routine
-- `adjointmctx`     - [optional] user-defined context for private data for the monitor routine
-(use `NULL` if no context is desired)
+- `adjointmctx`     - [optional] context for private data for the monitor routine (use `NULL` if no context is desired)
 - `adjointmdestroy` - [optional] routine that frees monitor context (may be `NULL`), see `PetscCtxDestroyFn` for its calling sequence
 
 Calling sequence of `adjointmonitor`:
@@ -633,7 +635,7 @@ Calling sequence of `adjointmonitor`:
 a step of -1, this is at the final time which may have been interpolated to)
 - `time`        - current time
 - `u`           - current iterate
-- `numcost`     - number of cost functionos
+- `numcost`     - number of cost functions
 - `lambda`      - sensitivities to initial conditions
 - `mu`          - sensitivities to parameters
 - `adjointmctx` - [optional] adjoint monitoring context
@@ -676,10 +678,25 @@ Input Parameters:
 - `monitor`      - the monitor function, its context must be a `PetscViewerAndFormat`
 - `monitorsetup` - a function that is called once ONLY if the user selected this monitor that may set additional features of the `TS` or `PetscViewer` objects
 
+Calling sequence of `monitor`:
+- `ts`      - the `TS` context
+- `step`    - iteration number (after the final time step the monitor routine is called with
+a step of -1, this is at the final time which may have been interpolated to)
+- `time`    - current time
+- `u`       - current iterate
+- `numcost` - number of cost functions
+- `lambda`  - sensitivities to initial conditions
+- `mu`      - sensitivities to parameters
+- `vf`      - the `PetscViewer` and format the monitor is using
+
+Calling sequence of `monitorsetup`:
+- `ts` - the `TS` object being monitored
+- `vf` - the `PetscViewer` and format the monitor is using
+
 Level: developer
 
 -seealso: [](ch_ts), `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -817,7 +834,7 @@ Input Parameters:
 - `PetscOptionsObject` - the options context
 
 Options Database Keys:
-- `-ts_adjoint_solve <yes,no>`     - After solving the ODE/DAE solve the adjoint problem (requires `-ts_save_trajectory`)
+- `-ts_adjoint_solve (yes|no)`     - After solving the ODE/DAE solve the adjoint problem (requires `-ts_save_trajectory`)
 - `-ts_adjoint_monitor`            - print information at each adjoint time step
 - `-ts_adjoint_monitor_draw_sensi` - monitor the sensitivity of the first cost function wrt initial conditions (lambda[0]) graphically
 
@@ -924,7 +941,7 @@ Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
 
 Options Database Key:
-- `-ts_adjoint_view_solution <viewerinfo>` - views the first gradient with respect to the initial values
+- `-ts_adjoint_view_solution viewerinfo` - views the first gradient with respect to the initial values
 
 Level: intermediate
 
@@ -1044,10 +1061,10 @@ Input Parameters:
 - `beta`    - algorithmic parameter
 
 Options Database Keys:
-- `-ts_alpha_alpha_m <alpha_m>` - set alpha_m
-- `-ts_alpha_alpha_f <alpha_f>` - set alpha_f
-- `-ts_alpha_gamma   <gamma>`   - set gamma
-- `-ts_alpha_beta    <beta>`    - set beta
+- `-ts_alpha_alpha_m alpha_m` - set alpha_m
+- `-ts_alpha_alpha_f alpha_f` - set alpha_f
+- `-ts_alpha_gamma   gamma`   - set gamma
+- `-ts_alpha_beta    beta`    - set beta
 
 Level: advanced
 
@@ -1119,7 +1136,7 @@ Input Parameters:
 - `radius` - the desired spectral radius
 
 Options Database Key:
-- `-ts_alpha_radius <radius>` - set the desired spectral radius
+- `-ts_alpha_radius radius` - set the desired spectral radius
 
 Level: intermediate
 
@@ -1202,9 +1219,9 @@ Input Parameters:
 - `gamma`   - algorithmic parameter
 
 Options Database Keys:
-- `-ts_alpha_alpha_m <alpha_m>` - set alpha_m
-- `-ts_alpha_alpha_f <alpha_f>` - set alpha_f
-- `-ts_alpha_gamma   <gamma>`   - set gamma
+- `-ts_alpha_alpha_m alpha_m` - set alpha_m
+- `-ts_alpha_alpha_f alpha_f` - set alpha_f
+- `-ts_alpha_gamma   gamma`   - set gamma
 
 Level: advanced
 
@@ -1242,7 +1259,7 @@ Input Parameters:
 - `radius` - the desired spectral radius
 
 Options Database Key:
-- `-ts_alpha_radius <radius>` - set alpha radius
+- `-ts_alpha_radius radius` - set alpha radius
 
 Level: intermediate
 
@@ -1352,7 +1369,7 @@ Input Parameters:
 - `order` - order of the method
 
 Options Database Key:
-- `-ts_bdf_order <order>` - select the order
+- `-ts_bdf_order order` - select the order
 
 Level: intermediate
 
@@ -1574,7 +1591,7 @@ Input Parameters:
 - `bsymptype` - type of the symplectic scheme
 
 Options Database Key:
-- `-ts_basicsymplectic_type <scheme>` - select the scheme
+- `-ts_basicsymplectic_type scheme` - select the scheme
 
 Level: intermediate
 
@@ -2165,7 +2182,7 @@ Input Parameters:
 - `U`     - state vector
 - `Udot`  - time derivative of state vector
 - `shift` - shift to apply, see note below
-- `ctx`   - an optional user context
+- `ctx`   - an optional application context
 
 Output Parameters:
 - `J` - Jacobian matrix (not altered in this routine)
@@ -2795,7 +2812,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSSetType()`, `TSSetUp()`, `TSDestroy()`, `TSSetProblemType()`
+-seealso: [](ch_ts), `TS`, `SNES`, `TSSetType()`, `TSSetUp()`, `TSDestroy()`, `TSSetProblemType()`, `TSSetTimeStep()`
 
 # External Links
 $(_doc_external("TS/TSCreate"))
@@ -3050,6 +3067,67 @@ end
 end 
 
 """
+	TSDiscGradGetFormulation(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+Get the construction method for S, F, and grad F from the
+formulation u_t = S \\nabla F for `TSDISCGRAD`
+
+Not Collective
+
+Input Parameter:
+- `ts` - timestepping context
+
+Output Parameters:
+- `Sfunc` - constructor for the S matrix from the formulation
+- `Ffunc` - functional F from the formulation
+- `Gfunc` - constructor for the gradient of F from the formulation
+- `ctx`   - the application context
+
+Calling sequence of `Sfunc`:
+- `ts`   - the integrator
+- `time` - the current time
+- `u`    - the solution
+- `S`    - the S-matrix from the formulation
+- `ctx`  - the application context
+
+Calling sequence of `Ffunc`:
+- `ts`   - the integrator
+- `time` - the current time
+- `u`    - the solution
+- `F`    - the computed function from the formulation
+- `ctx`  - the application context
+
+Calling sequence of `Gfunc`:
+- `ts`   - the integrator
+- `time` - the current time
+- `u`    - the solution
+- `G`    - the gradient of the computed function from the formulation
+- `ctx`  - the application context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `TSDISCGRAD`, `TSDiscGradSetFormulation()`
+
+# External Links
+$(_doc_external("TS/TSDiscGradGetFormulation"))
+"""
+function TSDiscGradGetFormulation(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid})
+    error("TSDiscGradGetFormulation: no generated method for these argument types")
+end
+
+@for_petsc function TSDiscGradGetFormulation(petsclib::$UnionPetscLib, ts::AbstractTS, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:TSDiscGradGetFormulation, $petsc_library),
+               PetscErrorCode,
+               (CTS, Ptr{Cvoid}),
+               ts, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	dgtype::TSDGType = TSDiscGradGetType(petsclib::PetscLibType,ts::AbstractTS) 
 Checks for which discrete gradient to use in formulation for `TSDISCGRAD`
 
@@ -3106,21 +3184,21 @@ Calling sequence of `Sfunc`:
 - `time` - the current time
 - `u`    - the solution
 - `S`    - the S-matrix from the formulation
-- `ctx`  - the user context
+- `ctx`  - the application context
 
 Calling sequence of `Ffunc`:
 - `ts`   - the integrator
 - `time` - the current time
 - `u`    - the solution
 - `F`    - the computed function from the formulation
-- `ctx`  - the user context
+- `ctx`  - the application context
 
 Calling sequence of `Gfunc`:
 - `ts`   - the integrator
 - `time` - the current time
 - `u`    - the solution
 - `G`    - the gradient of the computed function from the formulation
-- `ctx`  - the user context
+- `ctx`  - the application context
 
 Level: intermediate
 
@@ -3157,11 +3235,11 @@ Input Parameters:
 - `dgtype` - Discrete gradient type <none, gonzalez, average>
 
 Options Database Key:
-- `-ts_discgrad_type <type>` - flag to choose discrete gradient type
+- `-ts_discgrad_type (gonzalez|average|none)` - flag to choose discrete gradient type
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSDISCGRAD`
+-seealso: [](ch_ts), `TSDISCGRAD`, `TSDGType`
 
 # External Links
 $(_doc_external("TS/TSDiscGradSetType"))
@@ -3305,7 +3383,7 @@ Output Parameters:
 - `normr` - weighted norm, a value of 1.0 means that the error meets the relative tolerance set by the user
 
 Options Database Key:
-- `-ts_adapt_wnormtype <wnormtype>` - 2, INFINITY
+- `-ts_adapt_wnormtype wnormtype` - 2, INFINITY
 
 Level: developer
 
@@ -3355,7 +3433,7 @@ Output Parameters:
 - `normr` - weighted norm, a value of 1.0 means that the error meets the relative tolerance set by the user
 
 Options Database Key:
-- `-ts_adapt_wnormtype <wnormtype>` - 2, INFINITY
+- `-ts_adapt_wnormtype wnormtype` - 2, INFINITY
 
 Level: developer
 
@@ -3785,6 +3863,8 @@ end
 	accept::PetscBool = TSFunctionDomainError(petsclib::PetscLibType,ts::AbstractTS, stagetime::PetscReal, Y::AbstractPetscVec) 
 Checks if the current state is valid
 
+Collective
+
 Input Parameters:
 - `ts`        - the `TS` context
 - `stagetime` - time of the simulation
@@ -3914,7 +3994,7 @@ end
 end 
 
 """
-	TSGLEERegister(petsclib::PetscLibType,name::TSGLEEType, order::PetscInt, s::PetscInt, r::PetscInt, gamma::PetscReal, A::Vector{PetscReal}, B::Vector{PetscReal}, U::Vector{PetscReal}, V::Vector{PetscReal}, S::Vector{PetscReal}, F::Vector{PetscReal}, c::Vector{PetscReal}, Fembed::Vector{PetscReal}, Ferror::Vector{PetscReal}, Serror::Vector{PetscReal}, pinterp::PetscInt, binterp::Vector{PetscReal}) 
+	TSGLEERegister(petsclib::PetscLibType,name::TSGLEEType, order::PetscInt, s::PetscInt, r::PetscInt, gamma::PetscReal, A::Vector{PetscReal}, B::Vector{PetscReal}, U::Vector{PetscReal}, V::Vector{PetscReal}, M_S::Vector{PetscReal}, F::Vector{PetscReal}, c::Vector{PetscReal}, Fembed::Vector{PetscReal}, Ferror::Vector{PetscReal}, Serror::Vector{PetscReal}, pinterp::PetscInt, binterp::Vector{PetscReal}) 
 register a new `TSGLEE` scheme by providing the entries in the Butcher tableau
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
@@ -3945,17 +4025,17 @@ Level: advanced
 # External Links
 $(_doc_external("TS/TSGLEERegister"))
 """
-function TSGLEERegister(petsclib::PetscLibType, name::TSGLEEType, order::Integer, s::Integer, r::Integer, gamma::Real, A::AbstractVector{<:Number}, B::AbstractVector{<:Number}, U::AbstractVector{<:Number}, V::AbstractVector{<:Number}, S::AbstractVector{<:Number}, F::AbstractVector{<:Number}, c::AbstractVector{<:Number}, Fembed::AbstractVector{<:Number}, Ferror::AbstractVector{<:Number}, Serror::AbstractVector{<:Number}, pinterp::Integer, binterp::AbstractVector{<:Number})
+function TSGLEERegister(petsclib::PetscLibType, name::TSGLEEType, order::Integer, s::Integer, r::Integer, gamma::Real, A::AbstractVector{<:Number}, B::AbstractVector{<:Number}, U::AbstractVector{<:Number}, V::AbstractVector{<:Number}, M_S::AbstractVector{<:Number}, F::AbstractVector{<:Number}, c::AbstractVector{<:Number}, Fembed::AbstractVector{<:Number}, Ferror::AbstractVector{<:Number}, Serror::AbstractVector{<:Number}, pinterp::Integer, binterp::AbstractVector{<:Number})
     error("TSGLEERegister: no generated method for these argument types")
 end
 
-@for_petsc function TSGLEERegister(petsclib::$UnionPetscLib, name::TSGLEEType, order::$PetscInt, s::$PetscInt, r::$PetscInt, gamma::$PetscReal, A::Vector{$PetscReal}, B::Vector{$PetscReal}, U::Vector{$PetscReal}, V::Vector{$PetscReal}, S::Vector{$PetscReal}, F::Vector{$PetscReal}, c::Vector{$PetscReal}, Fembed::Vector{$PetscReal}, Ferror::Vector{$PetscReal}, Serror::Vector{$PetscReal}, pinterp::$PetscInt, binterp::Vector{$PetscReal} )
+@for_petsc function TSGLEERegister(petsclib::$UnionPetscLib, name::TSGLEEType, order::$PetscInt, s::$PetscInt, r::$PetscInt, gamma::$PetscReal, A::Vector{$PetscReal}, B::Vector{$PetscReal}, U::Vector{$PetscReal}, V::Vector{$PetscReal}, M_S::Vector{$PetscReal}, F::Vector{$PetscReal}, c::Vector{$PetscReal}, Fembed::Vector{$PetscReal}, Ferror::Vector{$PetscReal}, Serror::Vector{$PetscReal}, pinterp::$PetscInt, binterp::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSGLEERegister, $petsc_library),
                PetscErrorCode,
                (TSGLEEType, $PetscInt, $PetscInt, $PetscInt, $PetscReal, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{$PetscReal}, $PetscInt, Ptr{$PetscReal}),
-               name, order, s, r, gamma, A, B, U, V, S, F, c, Fembed, Ferror, Serror, pinterp, binterp,
+               name, order, s, r, gamma, A, B, U, V, M_S, F, c, Fembed, Ferror, Serror, pinterp, binterp,
               )
 
 
@@ -4194,7 +4274,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEType`, `TSGLLERegisterAll()`
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEType`, `TSGLLERegisterAll()`, `TSGLLESetType()`
 
 # External Links
 $(_doc_external("TS/TSGLLERegister"))
@@ -4227,7 +4307,7 @@ Input Parameters:
 - `type` - the type
 
 Options Database Key:
-- `-ts_gl_accept_type <type>` - sets the method used to determine whether to accept or reject a step
+- `-ts_gl_accept_type (always)` - sets the method used to determine whether to accept or reject a step
 
 Level: intermediate
 
@@ -4261,14 +4341,15 @@ Collective
 
 Input Parameters:
 - `ts`   - the `TS` context
-- `type` - a method
+- `type` - a method, currently only `TSGLLE_IRKS` is available
 
 Options Database Key:
-- `-ts_gl_type <type>` - sets the method, use -help for a list of available method (e.g. irks)
+- `-ts_gl_type (irks)` - sets the method
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGLLEType`, `TSGLLE`
+-seealso: [](ch_ts), `TS`, `TSGLLEType`, `TSGLLE`, `TSGLLERegister()`, `TSGLLE_IRKS`, `TSGLLEGetAcceptType()`,
+`TSGLLESetAcceptType()`, `TSGLLEAcceptType()`
 
 # External Links
 $(_doc_external("TS/TSGLLESetType"))
@@ -4339,7 +4420,7 @@ Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
 
 Output Parameter:
-- `ctx` - a pointer to the user context
+- `ctx` - a pointer to the application context
 
 Level: intermediate
 
@@ -4440,6 +4521,87 @@ end
 	cfltime = cfltime_[]
 
 	return cfltime
+end 
+
+"""
+	TSGetComputeExactError(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+Get the function used to automatically compute the exact error for the timestepping.
+
+Not collective
+
+Input Parameter:
+- `ts` - time stepping context
+
+Output Parameter:
+- `exactError` - The function which computes the solution error
+
+Calling sequence of `exactError`:
+- `ts` - The timestepping context
+- `u`  - The approximate solution vector
+- `e`  - The vector in which the error is stored
+
+Level: advanced
+
+-seealso: [](ch_ts), `TS`, `TSComputeExactError()`
+
+# External Links
+$(_doc_external("TS/TSGetComputeExactError"))
+"""
+function TSGetComputeExactError(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid})
+    error("TSGetComputeExactError: no generated method for these argument types")
+end
+
+@for_petsc function TSGetComputeExactError(petsclib::$UnionPetscLib, ts::AbstractTS, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:TSGetComputeExactError, $petsc_library),
+               PetscErrorCode,
+               (CTS, Ptr{Cvoid}),
+               ts, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	TSGetComputeInitialCondition(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+Get the function used to automatically compute an initial condition for the timestepping.
+
+Not collective
+
+Input Parameter:
+- `ts` - time stepping context
+
+Output Parameter:
+- `initCondition` - The function which computes an initial condition
+
+Calling sequence of `initCondition`:
+- `ts` - The timestepping context
+- `u`  - The input vector in which the initial condition is stored
+
+Level: advanced
+
+-seealso: [](ch_ts), `TS`, `TSSetComputeInitialCondition()`, `TSComputeInitialCondition()`
+
+# External Links
+$(_doc_external("TS/TSGetComputeInitialCondition"))
+"""
+function TSGetComputeInitialCondition(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid})
+    error("TSGetComputeInitialCondition: no generated method for these argument types")
+end
+
+@for_petsc function TSGetComputeInitialCondition(petsclib::$UnionPetscLib, ts::AbstractTS, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:TSGetComputeInitialCondition, $petsc_library),
+               PetscErrorCode,
+               (CTS, Ptr{Cvoid}),
+               ts, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -4841,7 +5003,7 @@ end
     @chk ccall(
                (:TSGetI2Function, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CTS, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                ts, r_, fun_, ctx_,
               )
 
@@ -4887,7 +5049,7 @@ end
     @chk ccall(
                (:TSGetI2Jacobian, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CTS, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                ts, J_, P_, jac_, ctx_,
               )
 
@@ -4932,7 +5094,7 @@ end
     @chk ccall(
                (:TSGetIFunction, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CTS, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                ts, r_, func_, ctx_,
               )
 
@@ -4978,7 +5140,7 @@ end
     @chk ccall(
                (:TSGetIJacobian, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CTS, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                ts, Amat_, Pmat_, f_, ctx_,
               )
 
@@ -4988,6 +5150,55 @@ end
 	ctx = ctx_[]
 
 	return Amat,Pmat,f,ctx
+end 
+
+"""
+	Amat::PetscMat = TSGetIJacobianP(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+Gets the function that computes the Jacobian of  F w.r.t. the parameters p where F(Udot,U,p,t) = G(U,p,t) , as well as the location to store the matrix.
+
+Logically Collective
+
+Input Parameter:
+- `ts` - `TS` context obtained from `TSCreate()`
+
+Output Parameters:
+- `Amat` - JacobianP matrix
+- `func` - the function that computes the JacobianP
+- `ctx`  - [optional] function context
+
+Calling sequence of `func`:
+- `ts`    - the `TS` context
+- `t`     - current timestep
+- `U`     - input vector (current ODE solution)
+- `Udot`  - time derivative of state vector
+- `shift` - shift to apply, see the note in `TSSetIJacobian()`
+- `A`     - output matrix
+- `ctx`   - [optional] function context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TSSetRHSJacobianP()`, `TS`, `TSSetIJacobianP()`, `TSGetRHSJacobianP()`
+
+# External Links
+$(_doc_external("Sensitivity/TSGetIJacobianP"))
+"""
+function TSGetIJacobianP(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid})
+    error("TSGetIJacobianP: no generated method for these argument types")
+end
+
+@for_petsc function TSGetIJacobianP(petsclib::$UnionPetscLib, ts::AbstractTS, noname::Ptr{Cvoid} )
+	Amat_ = Ref{CMat}()
+
+    @chk ccall(
+               (:TSGetIJacobianP, $petsc_library),
+               PetscErrorCode,
+               (CTS, Ptr{CMat}, Ptr{Cvoid}),
+               ts, Amat_, noname,
+              )
+
+	Amat = PetscMat(Amat_[], petsclib)
+
+	return Amat
 end 
 
 """
@@ -5158,7 +5369,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSEvent`, `TSSetEventHandler()`
+-seealso: [](ch_ts), [](sec_ts_event), `TSEvent`, `TSSetEventHandler()`
 
 # External Links
 $(_doc_external("TS/TSGetNumEvents"))
@@ -5366,7 +5577,7 @@ end
     @chk ccall(
                (:TSGetRHSFunction, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CTS, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                ts, r_, func_, ctx_,
               )
 
@@ -5396,7 +5607,6 @@ Level: intermediate
 
 -seealso: [](ch_ts), `TS`, `TSGetTimeStep()`, `TSGetMatrices()`, `TSGetTime()`, `TSGetStepNumber()`
 
-
 # External Links
 $(_doc_external("TS/TSGetRHSJacobian"))
 """
@@ -5413,7 +5623,7 @@ end
     @chk ccall(
                (:TSGetRHSJacobian, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CTS, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                ts, Amat_, Pmat_, func_, ctx_,
               )
 
@@ -5437,7 +5647,7 @@ Input Parameter:
 Output Parameters:
 - `Amat` - JacobianP matrix
 - `func` - function
-- `ctx`  - [optional] user-defined function context
+- `ctx`  - [optional] function context
 
 Level: intermediate
 
@@ -5458,7 +5668,7 @@ end
     @chk ccall(
                (:TSGetRHSJacobianP, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CTS, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                ts, Amat_, func_, ctx_,
               )
 
@@ -5512,7 +5722,7 @@ end
 Returns the `SNES` (nonlinear solver) associated with
 a `TS` (timestepper) context. Valid only for nonlinear problems.
 
-Not Collective, but snes is parallel if ts is parallel
+Not Collective, but `snes` is parallel if `ts` is parallel
 
 Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
@@ -6151,7 +6361,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSType`, `TSSetType()`
+-seealso: [](ch_ts), `TS`, `TSType`, `TSSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("TS/TSGetType"))
@@ -6455,7 +6665,7 @@ Input Parameters:
 - `nstages` - number of stages of `TSIRK` scheme
 
 Options Database Key:
-- `-ts_irk_nstages <int>` - set number of stages
+- `-ts_irk_nstages int` - set number of stages
 
 Level: intermediate
 
@@ -6492,7 +6702,7 @@ Input Parameters:
 - `irktype` - type of `TSIRK` scheme
 
 Options Database Key:
-- `-ts_irk_type <gauss>` - set irk type
+- `-ts_irk_type gauss` - set irk type
 
 Level: intermediate
 
@@ -6527,13 +6737,13 @@ Not Collective
 Input Parameters:
 - `ts`           - timestepping context
 - `nstages`      - number of stages, this is the dimension of the matrices below
-- `A`            - stage coefficients (dimension nstages*nstages, row-major)
-- `b`            - step completion table (dimension nstages)
-- `c`            - abscissa (dimension nstages)
-- `binterp`      - coefficients of the interpolation formula (dimension nstages)
-- `A_inv`        - inverse of A (dimension nstages*nstages, row-major)
-- `A_inv_rowsum` - row sum of the inverse of A (dimension nstages)
-- `I_s`          - identity matrix (dimension nstages*nstages)
+- `A`            - stage coefficients (dimension `nstages` * `nstages`, row-major)
+- `b`            - step completion table (dimension `nstages`)
+- `c`            - abscissa (dimension `nstages`)
+- `binterp`      - coefficients of the interpolation formula (dimension `nstages`), optional (use `NULL` to skip)
+- `A_inv`        - inverse of `A` (dimension `nstages` * `nstages`, row-major), optional (use `NULL` to skip)
+- `A_inv_rowsum` - row sum of the inverse of `A` (dimension `nstages`), optional (use `NULL` to skip)
+- `I_s`          - identity matrix (dimension `nstages` * `nstages`), optional (use `NULL` to skip)
 
 Level: advanced
 
@@ -6843,7 +7053,7 @@ Input Parameters:
 - `mprktype` - type of `TSMPRK` scheme
 
 Options Database Key:
-- `-ts_mprk_type` - <pm2,p2,p3> - select the specific scheme
+- `-ts_mprk_type (pm2|p2|p3)` - select the specific scheme
 
 Level: intermediate
 
@@ -6940,6 +7150,20 @@ end
 
 """
 	TSMonitorDMDARay(petsclib::PetscLibType,ts::AbstractTS, steps::PetscInt, time::PetscReal, u::AbstractPetscVec, mctx::Ptr{Cvoid}) 
+Monitors the solution of a `DMDA`
+
+Collective
+
+Input Parameters:
+- `ts`    - the `TS` context
+- `steps` - the current time-step number
+- `time`  - the current time
+- `u`     - the current solution (unused; the current `TS` solution is fetched)
+- `mctx`  - the `TSMonitorDMDARayCtx` context
+
+Level: developer
+
+-seealso: [](ch_ts), `TS`, `DMDA`, `TSMonitorSet()`, `TSMonitorLGDMDARay()`, `TSMonitorDMDARayDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDMDARay"))
@@ -6962,21 +7186,31 @@ end
 end 
 
 """
-	TSMonitorDMDARayDestroy(petsclib::PetscLibType,mctx::Ptr{Ptr{Cvoid}}) 
+	TSMonitorDMDARayDestroy(petsclib::PetscLibType,mctx::Ptr{Cvoid}) 
+Destroys the context created for the `
+
+Collective
+
+Input Parameter:
+- `mctx` - pointer to the `TSMonitorDMDARayCtx` context
+
+Level: developer
+
+-seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDMDARay()`, `TSMonitorLGDMDARay()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDMDARayDestroy"))
 """
-function TSMonitorDMDARayDestroy(petsclib::PetscLibType, mctx::Ptr{Ptr{Cvoid}})
+function TSMonitorDMDARayDestroy(petsclib::PetscLibType, mctx::Ptr{Cvoid})
     error("TSMonitorDMDARayDestroy: no generated method for these argument types")
 end
 
-@for_petsc function TSMonitorDMDARayDestroy(petsclib::$UnionPetscLib, mctx::Ptr{Ptr{Cvoid}} )
+@for_petsc function TSMonitorDMDARayDestroy(petsclib::$UnionPetscLib, mctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSMonitorDMDARayDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{Ptr{Cvoid}},),
+               (Ptr{Cvoid},),
                mctx,
               )
 
@@ -7025,7 +7259,7 @@ end
 end 
 
 """
-	TSMonitorDrawError(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid}) 
+	TSMonitorDrawError(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by calling
 `VecView()` for the error at each timestep
 
@@ -7036,7 +7270,7 @@ Input Parameters:
 - `step`  - current time-step
 - `ptime` - current time
 - `u`     - solution at current time
-- `dummy` - either a viewer or `NULL`
+- `Ctx`   - either a viewer or `NULL`
 
 Options Database Key:
 - `-ts_monitor_draw_error` - Monitor error graphically, requires user to have provided `TSSetSolutionFunction()`
@@ -7048,17 +7282,17 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSMonitorDrawError"))
 """
-function TSMonitorDrawError(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, dummy::Ptr{Cvoid})
+function TSMonitorDrawError(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, Ctx::Ptr{Cvoid})
     error("TSMonitorDrawError: no generated method for these argument types")
 end
 
-@for_petsc function TSMonitorDrawError(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid} )
+@for_petsc function TSMonitorDrawError(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSMonitorDrawError, $petsc_library),
                PetscErrorCode,
                (CTS, $PetscInt, $PetscReal, CVec, Ptr{Cvoid}),
-               ts, step, ptime, u, dummy,
+               ts, step, ptime, u, Ctx,
               )
 
 
@@ -7066,7 +7300,7 @@ end
 end 
 
 """
-	TSMonitorDrawSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid}) 
+	TSMonitorDrawSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by calling
 `VecView()` for the solution at each timestep
 
@@ -7077,7 +7311,7 @@ Input Parameters:
 - `step`  - current time-step
 - `ptime` - current time
 - `u`     - the solution at the current time
-- `dummy` - either a viewer or `NULL`
+- `ctx`   - either a viewer or `NULL`
 
 Options Database Keys:
 - `-ts_monitor_draw_solution`         - draw the solution at each time-step
@@ -7090,17 +7324,17 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSMonitorDrawSolution"))
 """
-function TSMonitorDrawSolution(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, dummy::Ptr{Cvoid})
+function TSMonitorDrawSolution(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("TSMonitorDrawSolution: no generated method for these argument types")
 end
 
-@for_petsc function TSMonitorDrawSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid} )
+@for_petsc function TSMonitorDrawSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSMonitorDrawSolution, $petsc_library),
                PetscErrorCode,
                (CTS, $PetscInt, $PetscReal, CVec, Ptr{Cvoid}),
-               ts, step, ptime, u, dummy,
+               ts, step, ptime, u, ctx,
               )
 
 
@@ -7108,7 +7342,7 @@ end
 end 
 
 """
-	TSMonitorDrawSolutionFunction(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid}) 
+	TSMonitorDrawSolutionFunction(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by calling
 `VecView()` for the solution provided by `TSSetSolutionFunction()` at each timestep
 
@@ -7119,7 +7353,7 @@ Input Parameters:
 - `step`  - current time-step
 - `ptime` - current time
 - `u`     - solution at current time
-- `dummy` - either a viewer or `NULL`
+- `Ctx`   - either a viewer or `NULL`
 
 Options Database Key:
 - `-ts_monitor_draw_solution_function` - Monitor error graphically, requires user to have provided `TSSetSolutionFunction()`
@@ -7131,17 +7365,17 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSMonitorDrawSolutionFunction"))
 """
-function TSMonitorDrawSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, dummy::Ptr{Cvoid})
+function TSMonitorDrawSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, Ctx::Ptr{Cvoid})
     error("TSMonitorDrawSolutionFunction: no generated method for these argument types")
 end
 
-@for_petsc function TSMonitorDrawSolutionFunction(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid} )
+@for_petsc function TSMonitorDrawSolutionFunction(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSMonitorDrawSolutionFunction, $petsc_library),
                PetscErrorCode,
                (CTS, $PetscInt, $PetscReal, CVec, Ptr{Cvoid}),
-               ts, step, ptime, u, dummy,
+               ts, step, ptime, u, Ctx,
               )
 
 
@@ -7149,7 +7383,7 @@ end
 end 
 
 """
-	TSMonitorDrawSolutionPhase(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid}) 
+	TSMonitorDrawSolutionPhase(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by plotting the solution as a phase diagram
 
 Collective
@@ -7159,7 +7393,7 @@ Input Parameters:
 - `step`  - current time-step
 - `ptime` - current time
 - `u`     - the solution at the current time
-- `dummy` - either a viewer or `NULL`
+- `ctx`   - either a viewer or `NULL`
 
 Level: intermediate
 
@@ -7168,17 +7402,17 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSMonitorDrawSolutionPhase"))
 """
-function TSMonitorDrawSolutionPhase(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, dummy::Ptr{Cvoid})
+function TSMonitorDrawSolutionPhase(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("TSMonitorDrawSolutionPhase: no generated method for these argument types")
 end
 
-@for_petsc function TSMonitorDrawSolutionPhase(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid} )
+@for_petsc function TSMonitorDrawSolutionPhase(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSMonitorDrawSolutionPhase, $petsc_library),
                PetscErrorCode,
                (CTS, $PetscInt, $PetscReal, CVec, Ptr{Cvoid}),
-               ts, step, ptime, u, dummy,
+               ts, step, ptime, u, ctx,
               )
 
 
@@ -7353,10 +7587,10 @@ Input Parameters:
 - `dctx`  - the `TSMonitorSPCtx` object that contains all the options for the monitoring, this is created with `TSMonitorHGCtxCreate()`
 
 Options Database Keys:
-- `-ts_monitor_hg_swarm <n>`             - Monitor the solution every n steps, or -1 for plotting only the final solution
-- `-ts_monitor_hg_swarm_species <num>`   - Number of species to histogram
-- `-ts_monitor_hg_swarm_bins <num>`      - Number of histogram bins
-- `-ts_monitor_hg_swarm_velocity <bool>` - Plot in velocity space, as opposed to coordinate space
+- `-ts_monitor_hg_swarm n`                     - Monitor the solution every n steps, or -1 for plotting only the final solution
+- `-ts_monitor_hg_swarm_species num`           - Number of species to histogram
+- `-ts_monitor_hg_swarm_bins num`              - Number of histogram bins
+- `-ts_monitor_hg_swarm_velocity (true|false)` - Plot in velocity space, as opposed to coordinate space
 
 Level: intermediate
 
@@ -7384,6 +7618,20 @@ end
 
 """
 	TSMonitorLGDMDARay(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Monitors the solution of a `DMDA`
+
+Collective
+
+Input Parameters:
+- `ts`    - the `TS` context
+- `step`  - the current time-step number
+- `ptime` - the current time
+- `u`     - the current solution
+- `ctx`   - the `TSMonitorDMDARayCtx` context, which contains the ray scatter and an embedded `TSMonitorLGCtx`
+
+Level: developer
+
+-seealso: [](ch_ts), `TS`, `DMDA`, `TSMonitorSet()`, `TSMonitorDMDARay()`, `TSMonitorDMDARayDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGDMDARay"))
@@ -7406,7 +7654,7 @@ end
 end 
 
 """
-	TSMonitorLGError(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid}) 
+	TSMonitorLGError(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by plotting each component of the error
 in a time based line graph
 
@@ -7417,7 +7665,7 @@ Input Parameters:
 - `step`  - current time-step
 - `ptime` - current time
 - `u`     - current solution
-- `dummy` - `TSMonitorLGCtx` object created with `TSMonitorLGCtxCreate()`
+- `Ctx`   - `TSMonitorLGCtx` object created with `TSMonitorLGCtxCreate()`
 
 Options Database Key:
 - `-ts_monitor_lg_error` - create a graphical monitor of error history
@@ -7429,17 +7677,17 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSMonitorLGError"))
 """
-function TSMonitorLGError(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, dummy::Ptr{Cvoid})
+function TSMonitorLGError(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, Ctx::Ptr{Cvoid})
     error("TSMonitorLGError: no generated method for these argument types")
 end
 
-@for_petsc function TSMonitorLGError(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dummy::Ptr{Cvoid} )
+@for_petsc function TSMonitorLGError(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSMonitorLGError, $petsc_library),
                PetscErrorCode,
                (CTS, $PetscInt, $PetscReal, CVec, Ptr{Cvoid}),
-               ts, step, ptime, u, dummy,
+               ts, step, ptime, u, Ctx,
               )
 
 
@@ -7486,6 +7734,20 @@ end
 
 """
 	TSMonitorLGKSPIterations(petsclib::PetscLibType,ts::AbstractTS, n::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
+Monitors the number of linear (`KSP`) iterations used per time step in a line
+
+Collective
+
+Input Parameters:
+- `ts`     - the `TS` context
+- `n`      - iteration number (a negative value indicates an interpolated solution and is ignored)
+- `ptime`  - current time
+- `v`      - current solution
+- `monctx` - the `TSMonitorLGCtx` object that contains all the options for the monitoring, created with `TSMonitorLGCtxCreate()`
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGSNESIterations()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGKSPIterations"))
@@ -7509,6 +7771,20 @@ end
 
 """
 	TSMonitorLGSNESIterations(petsclib::PetscLibType,ts::AbstractTS, n::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
+Monitors the number of nonlinear (`SNES`) iterations used per time step in a line
+
+Collective
+
+Input Parameters:
+- `ts`     - the `TS` context
+- `n`      - iteration number (a negative value indicates an interpolated solution and is ignored)
+- `ptime`  - current time
+- `v`      - current solution
+- `monctx` - the `TSMonitorLGCtx` object that contains all the options for the monitoring, created with `TSMonitorLGCtxCreate()`
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGKSPIterations()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGSNESIterations"))
@@ -7576,9 +7852,14 @@ Input Parameters:
 - `destroy`   - function to destroy the optional context, see `PetscCtxDestroyFn` for its calling sequence
 - `tctx`      - optional context used by transform function
 
+Calling sequence of `transform`:
+- `tctx` - context used by the transform function
+- `u`    - the input solution vector
+- `w`    - the output transformed vector
+
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`, `TSMonitorLGCtxSetTransform()`, `PetscCtxDestroyFn`
+-seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorLGCtxSetTransform()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGSetTransform"))
@@ -7717,6 +7998,23 @@ end
 
 """
 	TSMonitorSPEig(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
+Monitors the eigenvalues of the linearized right
+
+Collective
+
+Input Parameters:
+- `ts`     - the `TS` context
+- `step`   - the current time-step number (a negative value indicates an interpolated solution and is ignored)
+- `ptime`  - the current time
+- `v`      - the current solution
+- `monctx` - the `TSMonitorSPEigCtx` context, created with `TSMonitorSPEigCtxCreate()`
+
+Options Database Key:
+- `-ts_monitor_sp_eig` - plot eigenvalues of linearized right-hand side
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorSPEigCtxCreate()`, `TSMonitorSPEigCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPEig"))
@@ -7750,10 +8048,10 @@ Input Parameters:
 - `dctx`  - the `TSMonitorSPCtx` object that contains all the options for the monitoring, this is created with `TSMonitorSPCtxCreate()`
 
 Options Database Keys:
-- `-ts_monitor_sp_swarm <n>`                  - Monitor the solution every n steps, or -1 for plotting only the final solution
-- `-ts_monitor_sp_swarm_retain <n>`           - Retain n old points so we can see the history, or -1 for all points
-- `-ts_monitor_sp_swarm_multi_species <bool>` - Color each species differently
-- `-ts_monitor_sp_swarm_phase <bool>`         - Plot in phase space, as opposed to coordinate space
+- `-ts_monitor_sp_swarm n`                          - Monitor the solution every n steps, or -1 for plotting only the final solution
+- `-ts_monitor_sp_swarm_retain n`                   - Retain n old points so we can see the history, or -1 for all points
+- `-ts_monitor_sp_swarm_multi_species (true|false)` - Color each species differently
+- `-ts_monitor_sp_swarm_phase (true|false)`         - Plot in phase space, as opposed to coordinate space
 
 Level: intermediate
 
@@ -7803,7 +8101,7 @@ Level: intermediate
 
 -seealso: [](ch_ts), `TSMonitorDefault()`, `TSMonitorCancel()`, `TSDMSwarmMonitorMoments()`, `TSMonitorExtreme()`, `TSMonitorDrawSolution()`,
 `TSMonitorDrawSolutionPhase()`, `TSMonitorDrawSolutionFunction()`, `TSMonitorDrawError()`, `TSMonitorSolution()`, `TSMonitorSolutionVTK()`,
-`TSMonitorLGSolution()`, `TSMonitorLGError()`, `TSMonitorSPSwarmSolution()`, `TSMonitorError()`, `TSMonitorEnvelope()`,  `PetscCtxDestroyFn`
+`TSMonitorLGSolution()`, `TSMonitorLGError()`, `TSMonitorSPSwarmSolution()`, `TSMonitorError()`, `TSMonitorEnvelope()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("TS/TSMonitorSet"))
@@ -7839,10 +8137,21 @@ Input Parameters:
 - `monitor`      - the monitor function, this must use a `PetscViewerFormat` as its context
 - `monitorsetup` - a function that is called once ONLY if the user selected this monitor that may set additional features of the `TS` or `PetscViewer` objects
 
+Calling sequence of `monitor`:
+- `ts`   - the `TS` to monitor
+- `step` - the current time-step
+- `time` - the current time
+- `u`    - the current solution
+- `vf`   - the `PetscViewer` and format to monitor with
+
+Calling sequence of `monitorsetup`:
+- `ts` - the `TS` to monitor
+- `vf` - the `PetscViewer` and format to monitor with
+
 Level: developer
 
 -seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -7884,7 +8193,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorSolutionSetup()`,
+-seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorSolutionSetup()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSolution"))
@@ -8324,42 +8633,47 @@ end
 end 
 
 """
-	dt::PetscReal = TSPseudoComputeTimeStep(petsclib::PetscLibType,ts::AbstractTS) 
-Computes the next timestep for a currently running
-pseudo-timestepping process.
+	residual::PetscVec,fnorm::PetscReal = TSPseudoComputeFunction(petsclib::PetscLibType,ts::AbstractTS, solution::AbstractPetscVec) 
+Compute nonlinear residual for pseudo
+
+This computes the residual for \\dot U = 0, i.e. F(U, 0) for the IFunction.
 
 Collective
 
-Input Parameter:
-- `ts` - timestep context
+Input Parameters:
+- `ts`       - the timestep context
+- `solution` - the solution vector
 
 Output Parameter:
-- `dt` - newly computed timestep
+- `residual` - the nonlinear residual
+- `fnorm`    - the norm of the nonlinear residual
 
-Level: developer
+Level: advanced
 
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoTimeStepDefault()`, `TSPseudoSetTimeStep()`
+-seealso: [](ch_ts), `TSPSEUDO`
 
 # External Links
-$(_doc_external("TS/TSPseudoComputeTimeStep"))
+$(_doc_external("TS/TSPseudoComputeFunction"))
 """
-function TSPseudoComputeTimeStep(petsclib::PetscLibType, ts::AbstractTS)
-    error("TSPseudoComputeTimeStep: no generated method for these argument types")
+function TSPseudoComputeFunction(petsclib::PetscLibType, ts::AbstractTS, solution::AbstractPetscVec)
+    error("TSPseudoComputeFunction: no generated method for these argument types")
 end
 
-@for_petsc function TSPseudoComputeTimeStep(petsclib::$UnionPetscLib, ts::AbstractTS )
-	dt_ = Ref{$PetscReal}()
+@for_petsc function TSPseudoComputeFunction(petsclib::$UnionPetscLib, ts::AbstractTS, solution::AbstractPetscVec )
+	residual_ = Ref{CVec}()
+	fnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
-               (:TSPseudoComputeTimeStep, $petsc_library),
+               (:TSPseudoComputeFunction, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{$PetscReal}),
-               ts, dt_,
+               (CTS, CVec, Ptr{CVec}, Ptr{$PetscReal}),
+               ts, solution, residual_, fnorm_,
               )
 
-	dt = dt_[]
+	residual = PetscVec(residual_[], petsclib)
+	fnorm = fnorm_[]
 
-	return dt
+	return residual,fnorm
 end 
 
 """
@@ -8373,7 +8687,7 @@ Input Parameter:
 - `ts` - the timestep context
 
 Options Database Key:
-- `-ts_pseudo_increment_dt_from_initial_dt <true,false>` - use the initial dt to determine increment
+- `-ts_pseudo_increment_dt_from_initial_dt (true|false)` - use the initial dt to determine increment
 
 Level: advanced
 
@@ -8411,7 +8725,7 @@ Input Parameters:
 - `maxdt` - the maximum time step, use a non-positive value to deactivate
 
 Options Database Key:
-- `-ts_pseudo_max_dt <increment>` - set pseudo max dt
+- `-ts_pseudo_max_dt increment` - set pseudo max dt
 
 Level: advanced
 
@@ -8490,7 +8804,7 @@ Input Parameters:
 - `inc` - the scaling factor >= 1.0
 
 Options Database Key:
-- `-ts_pseudo_increment <increment>` - set pseudo increment
+- `-ts_pseudo_increment increment` - set pseudo increment
 
 Level: advanced
 
@@ -8599,91 +8913,6 @@ end
 end 
 
 """
-	dt::PetscReal,flag::PetscBool = TSPseudoVerifyTimeStep(petsclib::PetscLibType,ts::AbstractTS, update::AbstractPetscVec) 
-Verifies whether the last timestep was acceptable.
-
-Collective
-
-Input Parameters:
-- `ts`     - timestep context
-- `update` - latest solution vector
-
-Output Parameters:
-- `dt`   - newly computed timestep (if it had to shrink)
-- `flag` - indicates if current timestep was ok
-
-Level: advanced
-
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoSetVerifyTimeStep()`, `TSPseudoVerifyTimeStepDefault()`
-
-# External Links
-$(_doc_external("TS/TSPseudoVerifyTimeStep"))
-"""
-function TSPseudoVerifyTimeStep(petsclib::PetscLibType, ts::AbstractTS, update::AbstractPetscVec)
-    error("TSPseudoVerifyTimeStep: no generated method for these argument types")
-end
-
-@for_petsc function TSPseudoVerifyTimeStep(petsclib::$UnionPetscLib, ts::AbstractTS, update::AbstractPetscVec )
-	dt_ = Ref{$PetscReal}()
-	flag_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:TSPseudoVerifyTimeStep, $petsc_library),
-               PetscErrorCode,
-               (CTS, CVec, Ptr{$PetscReal}, Ptr{PetscBool}),
-               ts, update, dt_, flag_,
-              )
-
-	dt = dt_[]
-	flag = flag_[]
-
-	return dt,flag
-end 
-
-"""
-	newdt::PetscReal,flag::PetscBool = TSPseudoVerifyTimeStepDefault(petsclib::PetscLibType,ts::AbstractTS, update::AbstractPetscVec, dtctx::Ptr{Cvoid}) 
-Default code to verify the quality of the last timestep.
-
-Collective, No Fortran Support
-
-Input Parameters:
-- `ts`     - the timestep context
-- `dtctx`  - unused timestep context
-- `update` - latest solution vector
-
-Output Parameters:
-- `newdt` - the timestep to use for the next step
-- `flag`  - flag indicating whether the last time step was acceptable
-
-Level: advanced
-
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoSetVerifyTimeStep()`, `TSPseudoVerifyTimeStep()`
-
-# External Links
-$(_doc_external("TS/TSPseudoVerifyTimeStepDefault"))
-"""
-function TSPseudoVerifyTimeStepDefault(petsclib::PetscLibType, ts::AbstractTS, update::AbstractPetscVec, dtctx::Ptr{Cvoid})
-    error("TSPseudoVerifyTimeStepDefault: no generated method for these argument types")
-end
-
-@for_petsc function TSPseudoVerifyTimeStepDefault(petsclib::$UnionPetscLib, ts::AbstractTS, update::AbstractPetscVec, dtctx::Ptr{Cvoid} )
-	newdt_ = Ref{$PetscReal}()
-	flag_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:TSPseudoVerifyTimeStepDefault, $petsc_library),
-               PetscErrorCode,
-               (CTS, CVec, Ptr{Cvoid}, Ptr{$PetscReal}, Ptr{PetscBool}),
-               ts, update, dtctx, newdt_, flag_,
-              )
-
-	newdt = newdt_[]
-	flag = flag_[]
-
-	return newdt,flag
-end 
-
-"""
 	pyname::Ptr{Cchar} = TSPythonGetType(petsclib::PetscLibType,ts::AbstractTS) 
 Get the type of a `TS` object implemented in Python.
 
@@ -8732,7 +8961,7 @@ Input Parameters:
 - `pyname`  - full dotted Python name [package].module[.{class|function}]
 
 Options Database Key:
-- `-ts_python_type <pyname>`  - python class
+- `-ts_python_type pyname`  - python class
 
 Level: intermediate
 
@@ -8918,7 +9147,7 @@ end
 Returns the `SNES` (nonlinear solver) associated with
 a `TS` (timestepper) context when RHS splits are used.
 
-Not Collective, but snes is parallel if ts is parallel
+Not Collective, but `snes` is parallel if `ts` is parallel
 
 Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
@@ -9047,7 +9276,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSIFunctionFn`, `IS`, `TSRHSSplitSetIS()`, `TSARKIMEX`
+-seealso: [](ch_ts), `TS`, `TSIFunctionFn`, `IS`, `TSRHSSplitSetIS()`, `TSARKIMEX`, `TSARKIMEXSetFastSlowSplit()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetIFunction"))
@@ -9085,7 +9314,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSRHSSplitSetIFunction`, `TSIJacobianFn`, `IS`, `TSRHSSplitSetIS()`
+-seealso: [](ch_ts), `TS`, `TSRHSSplitSetIFunction`, `TSIJacobianFn`, `IS`, `TSRHSSplitSetIS()`, `TSARKIMEXSetFastSlowSplit()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetIJacobian"))
@@ -9120,7 +9349,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `IS`, `TSRHSSplitGetIS()`
+-seealso: [](ch_ts), `TS`, `IS`, `TSRHSSplitGetIS()`, `TSARKIMEXSetFastSlowSplit()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetIS"))
@@ -9329,12 +9558,12 @@ Input Parameter:
 
 Output Parameters:
 - `s`       - number of stages, this is the dimension of the matrices below
-- `A`       - stage coefficients (dimension s*s, row-major)
-- `b`       - step completion table (dimension s)
-- `c`       - abscissa (dimension s)
-- `bembed`  - completion table for embedded method (dimension s; NULL if not available)
-- `p`       - Order of the interpolation scheme, equal to the number of columns of binterp
-- `binterp` - Coefficients of the interpolation formula (dimension s*p)
+- `A`       - stage coefficients (dimension `s*s`, row-major)
+- `b`       - step completion table (dimension `s`)
+- `c`       - abscissa (dimension `s`)
+- `bembed`  - completion table for embedded method (dimension `s`; `NULL` if not available)
+- `p`       - Order of the interpolation scheme, equal to the number of columns of `binterp`
+- `binterp` - Coefficients of the interpolation formula (dimension `s*p`)
 - `FSAL`    - whether or not the scheme has the First Same As Last property
 
 Level: developer
@@ -9445,7 +9674,7 @@ end
 
 """
 	TSRKRegister(petsclib::PetscLibType,name::TSRKType, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembed::Vector{PetscReal}, p::PetscInt, binterp::Vector{PetscReal}) 
-register an `TSRK` scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
+Register an `TSRK` scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
 
@@ -9453,12 +9682,12 @@ Input Parameters:
 - `name`    - identifier for method
 - `order`   - approximation order of method
 - `s`       - number of stages, this is the dimension of the matrices below
-- `A`       - stage coefficients (dimension s*s, row-major)
-- `b`       - step completion table (dimension s; NULL to use last row of A)
-- `c`       - abscissa (dimension s; NULL to use row sums of A)
-- `bembed`  - completion table for embedded method (dimension s; NULL if not available)
-- `p`       - Order of the interpolation scheme, equal to the number of columns of binterp
-- `binterp` - Coefficients of the interpolation formula (dimension s*p; NULL to reuse b with p=1)
+- `A`       - stage coefficients (dimension `s*s`, row-major)
+- `b`       - step completion table (dimension `s`; `NULL` to use last row of `A`)
+- `c`       - abscissa (dimension `s`; `NULL` to use row sums of `A`)
+- `bembed`  - completion table for embedded method (dimension `s`; `NULL` if not available)
+- `p`       - order of the interpolation scheme, equal to the number of columns of `binterp`
+- `binterp` - coefficients of the interpolation formula (dimension `s*p`; `NULL` to reuse `b` with p=1)
 
 Level: advanced
 
@@ -9521,10 +9750,10 @@ Logically Collective
 
 Input Parameters:
 - `ts`            - timestepping context
-- `use_multirate` - `PETSC_TRUE` enables the multirate `TSRK` method, sets the basic method to be RK2A and sets the ratio between slow stepsize and fast stepsize to be 2
+- `use_multirate` - `PETSC_TRUE` enables the multirate `TSRK` method, sets the basic method to be `TSRK2A` and sets the ratio between slow stepsize and fast stepsize to be 2
 
 Options Database Key:
-- `-ts_rk_multirate` - <true,false>
+- `-ts_rk_multirate (true|false)` - enable the multirate RK method
 
 Level: intermediate
 
@@ -9561,7 +9790,7 @@ Input Parameters:
 - `rktype` - type of `TSRK` scheme
 
 Options Database Key:
-- `-ts_rk_type` - <1fe,2a,3,3bs,4,5f,5dp,5bs>
+- `-ts_rk_type (1fe|2a|2b|3|3bs|4|5f|5dp|5bs|6vr|7vr|8vr)` - the type
 
 Level: intermediate
 
@@ -9596,6 +9825,9 @@ Not Collective, No Fortran Support
 Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine itself
+
+Calling sequence of `function`:
+- `ts` - the `TS` being setup for the new `TSType` being registered
 
 Level: advanced
 
@@ -10305,8 +10537,8 @@ Input Parameters:
 - `nstages` - number of stages
 
 Options Database Keys:
-- `-ts_ssp_type <rks2>`               - Type of `TSSSP` method (one of) rks2 rks3 rk104
-- `-ts_ssp_nstages<rks2: 5, rks3: 9>` - Number of stages
+- `-ts_ssp_type (rks2|rks3|rk104)` - Type of `TSSSP` method, see `TSSSPType`
+- `-ts_ssp_num_stages nstages`     - number of stages
 
 Level: beginner
 
@@ -10343,8 +10575,8 @@ Input Parameters:
 - `ssptype` - type of scheme to use
 
 Options Database Keys:
-- `-ts_ssp_type <rks2>`               - Type of `TSSSP` method (one of) rks2 rks3 rk104
-- `-ts_ssp_nstages<rks2: 5, rks3: 9>` - Number of stages
+- `-ts_ssp_type (rks2|rks3|rk104)` - Type of `TSSSP` method, see `TSSSPType`
+- `-ts_ssp_num_stages nstages`     - Number of stages
 
 Level: beginner
 
@@ -10371,7 +10603,7 @@ end
 end 
 
 """
-	TSSetApplicationContext(petsclib::PetscLibType,ts::AbstractTS, ctx::PeCtx) 
+	TSSetApplicationContext(petsclib::PetscLibType,ts::AbstractTS, ctx::Ptr{Cvoid}) 
 Sets an optional user
 `TS` callbacks with `TSGetApplicationContext()`
 
@@ -10379,7 +10611,7 @@ Logically Collective
 
 Input Parameters:
 - `ts`  - the `TS` context obtained from `TSCreate()`
-- `ctx` - user context
+- `ctx` - application context
 
 Level: intermediate
 
@@ -10388,16 +10620,16 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSSetApplicationContext"))
 """
-function TSSetApplicationContext(petsclib::PetscLibType, ts::AbstractTS, ctx::PeCtx)
+function TSSetApplicationContext(petsclib::PetscLibType, ts::AbstractTS, ctx::Ptr{Cvoid})
     error("TSSetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function TSSetApplicationContext(petsclib::$UnionPetscLib, ts::AbstractTS, ctx::PeCtx )
+@for_petsc function TSSetApplicationContext(petsclib::$UnionPetscLib, ts::AbstractTS, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSSetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (CTS, PeCtx),
+               (CTS, Ptr{Cvoid}),
                ts, ctx,
               )
 
@@ -10741,7 +10973,7 @@ Input Parameters:
 - `time_points` - array of the time points, must be increasing
 
 Options Database Key:
-- `-ts_eval_times <t0,...tn>` - Sets the evaluation times
+- `-ts_eval_times t0,...,tn` - Sets the evaluation times
 
 Level: intermediate
 
@@ -10804,16 +11036,16 @@ Calling sequence of `postevent`:
 - `ctx`          - the context passed as the final argument to `TSSetEventHandler()`
 
 Options Database Keys:
-- `-ts_event_tol <tol>`                       - tolerance for zero crossing check of indicator functions
-- `-ts_event_monitor`                         - print choices made by event handler
-- `-ts_event_recorder_initial_size <recsize>` - initial size of event recorder
-- `-ts_event_post_event_step <dt1>`           - first time step after event
-- `-ts_event_post_event_second_step <dt2>`    - second time step after event
-- `-ts_event_dt_min <dt>`                     - minimum time step considered for TSEvent
+- `-ts_event_tol tol`                       - tolerance for zero crossing check of indicator functions
+- `-ts_event_monitor`                       - print choices made by event handler
+- `-ts_event_recorder_initial_size recsize` - initial size of event recorder
+- `-ts_event_post_event_step dt1`           - first time step after event
+- `-ts_event_post_event_second_step dt2`    - second time step after event
+- `-ts_event_dt_min dt`                     - minimum time step considered for TSEvent
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSEvent`, `TSCreate()`, `TSSetTimeStep()`, `TSSetConvergedReason()`
+-seealso: [](ch_ts), [](sec_ts_event), `TSEvent`, `TSCreate()`, `TSSetTimeStep()`, `TSSetConvergedReason()`
 
 # External Links
 $(_doc_external("TS/TSSetEventHandler"))
@@ -10847,11 +11079,11 @@ Input Parameters:
 - `vtol` - array of tolerances or `NULL`, used in preference to `tol` if present
 
 Options Database Key:
-- `-ts_event_tol <tol>` - tolerance for event (indicator function) zero crossing
+- `-ts_event_tol tol` - tolerance for event (indicator function) zero crossing
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSEvent`, `TSSetEventHandler()`
+-seealso: [](ch_ts), [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`
 
 # External Links
 $(_doc_external("TS/TSSetEventTolerances"))
@@ -10954,29 +11186,29 @@ Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
 
 Options Database Keys:
-- `-ts_type <type>`                                                    - EULER, BEULER, SUNDIALS, PSEUDO, CN, RK, THETA, ALPHA, GLLE,  SSP, GLEE, BSYMP, IRK, see `TSType`
+- `-ts_type type`                                                      - see `TSType`
 - `-ts_save_trajectory`                                                - checkpoint the solution at each time-step
-- `-ts_max_time <time>`                                                - maximum time to compute to
-- `-ts_time_span <t0,...tf>`                                           - sets the time span, solutions are computed and stored for each indicated time, init_time and max_time are set
-- `-ts_eval_times <t0,...tn>`                                          - time points where solutions are computed and stored for each indicated time
-- `-ts_max_steps <steps>`                                              - maximum time-step number to execute until (possibly with nonzero starting value)
-- `-ts_run_steps <steps>`                                              - maximum number of time steps for TSSolve to take on each call
-- `-ts_init_time <time>`                                               - initial time to start computation
-- `-ts_final_time <time>`                                              - final time to compute to (deprecated: use `-ts_max_time`)
-- `-ts_dt <dt>`                                                        - initial time step
-- `-ts_exact_final_time <stepover,interpolate,matchstep>`              - whether to stop at the exact given final time and how to compute the solution at that time
-- `-ts_max_snes_failures <maxfailures>`                                - Maximum number of nonlinear solve failures allowed
-- `-ts_max_reject <maxrejects>`                                        - Maximum number of step rejections before step fails
-- `-ts_error_if_step_fails <true,false>`                               - Error if no step succeeds
-- `-ts_rtol <rtol>`                                                    - relative tolerance for local truncation error
-- `-ts_atol <atol>`                                                    - Absolute tolerance for local truncation error
+- `-ts_max_time time`                                                  - maximum time to compute to
+- `-ts_time_span t0,...,tf`                                            - sets the time span, solutions are computed and stored for each indicated time, init_time and max_time are set
+- `-ts_eval_times t0,...,tn`                                           - time points where solutions are computed and stored for each indicated time
+- `-ts_max_steps steps`                                                - maximum time-step number to execute until (possibly with nonzero starting value)
+- `-ts_run_steps steps`                                                - maximum number of time steps for `TSSolve()` to take on each call
+- `-ts_init_time time`                                                 - initial time to start computation
+- `-ts_final_time time`                                                - final time to compute to (deprecated: use `-ts_max_time`)
+- `-ts_time_step dt`                                                   - initial time step (only a suggestion, the actual initial time step used differ)
+- `-ts_exact_final_time (stepover,interpolate,matchstep)`              - whether to stop at the exact given final time and how to compute the solution at that time
+- `-ts_max_snes_failures maxfailures`                                  - Maximum number of nonlinear solve failures allowed
+- `-ts_max_step_rejections maxrejects`                                 - Maximum number of step rejections before step fails
+- `-ts_error_if_step_fails (true|false)`                               - Error if no step succeeds
+- `-ts_rtol rtol`                                                      - relative tolerance for local truncation error
+- `-ts_atol atol`                                                      - Absolute tolerance for local truncation error
 - `-ts_rhs_jacobian_test_mult -mat_shell_test_mult_view`               - test the Jacobian at each iteration against finite difference with RHS function
 - `-ts_rhs_jacobian_test_mult_transpose`                               - test the Jacobian at each iteration against finite difference with RHS function
-- `-ts_adjoint_solve <yes,no>`                                         - After solving the ODE/DAE solve the adjoint problem (requires `-ts_save_trajectory`)
+- `-ts_adjoint_solve (true|false)`                                     - After solving the ODE/DAE solve the adjoint problem (requires `-ts_save_trajectory`)
 - `-ts_fd_color`                                                       - Use finite differences with coloring to compute IJacobian
 - `-ts_monitor`                                                        - print information at each timestep
 - `-ts_monitor_cancel`                                                 - Cancel all monitors
-- `-ts_monitor_wall_clock_time`                                        - Monitor wall-clock time, KSP iterations, and SNES iterations per step
+- `-ts_monitor_wall_clock_time`                                        - Monitor wall-clock time, `KSP` iterations, and `SNES` iterations per step
 - `-ts_monitor_lg_solution`                                            - Monitor solution graphically
 - `-ts_monitor_lg_error`                                               - Monitor error graphically
 - `-ts_monitor_error`                                                  - Monitors norm of error
@@ -10986,13 +11218,13 @@ Options Database Keys:
 - `-ts_monitor_lg_ksp_iterations`                                      - Monitor number nonlinear iterations for each timestep graphically
 - `-ts_monitor_sp_eig`                                                 - Monitor eigenvalues of linearized operator graphically
 - `-ts_monitor_draw_solution`                                          - Monitor solution graphically
-- `-ts_monitor_draw_solution_phase  <xleft,yleft,xright,yright>`       - Monitor solution graphically with phase diagram, requires problem with exactly 2 degrees of freedom
+- `-ts_monitor_draw_solution_phase  xleft,yleft,xright,yright`         - Monitor solution graphically with phase diagram, requires problem with exactly 2 degrees of freedom
 - `-ts_monitor_draw_error`                                             - Monitor error graphically, requires use to have provided TSSetSolutionFunction()
 - `-ts_monitor_solution [ascii binary draw][:filename][:viewerformat]` - monitors the solution at each timestep
-- `-ts_monitor_solution_interval <interval>`                           - output once every interval (default=1) time steps. Use -1 to only output at the end of the simulation
+- `-ts_monitor_solution_interval interval`                             - output once every interval (default=1) time steps. Use -1 to only output at the end of the simulation
 - `-ts_monitor_solution_skip_initial`                                  - skip writing of initial condition
-- `-ts_monitor_solution_vtk <filename.vts,filename.vtu>`               - Save each time step to a binary file, use filename-%%03" PetscInt_FMT ".vts (filename-%%03" PetscInt_FMT ".vtu)
-- `-ts_monitor_solution_vtk_interval <interval>`                       - output once every interval (default=1) time steps. Use -1 to only output at the end of the simulation
+- `-ts_monitor_solution_vtk filename.vts,filename.vtu`                 - Save each time step to a binary file, use filename-%%03" PetscInt_FMT ".vts (filename-%%03" PetscInt_FMT ".vtu)
+- `-ts_monitor_solution_vtk_interval interval`                         - output once every interval (default=1) time steps. Use -1 to only output at the end of the simulation
 - `-ts_monitor_envelope`                                               - determine maximum and minimum value of each component of the solution over the solution time
 
 Level: beginner
@@ -11022,6 +11254,8 @@ end
 """
 	TSSetFunctionDomainError(petsclib::PetscLibType,ts::AbstractTS, func::external) 
 Set a function that tests if the current state vector is valid
+
+Logically collective
 
 Input Parameters:
 - `ts`   - the `TS` context
@@ -11170,21 +11404,22 @@ end
 end 
 
 """
-	TSSetIHessianProduct(petsclib::PetscLibType,ts::AbstractTS, ihp1::AbstractPetscVec, ihessianproductfunc1::external, ihp2::AbstractPetscVec, ihessianproductfunc2::external, ihp3::AbstractPetscVec, ihessianproductfunc3::external, ihp4::AbstractPetscVec, ihessianproductfunc4::external, ctx::Ptr{Cvoid}) 
+	TSSetIHessianProduct(petsclib::PetscLibType,ts::AbstractTS, ihp1::Vector{<:AbstractPetscVec}, ihessianproductfunc1::external, ihp2::Vector{<:AbstractPetscVec}, ihessianproductfunc2::external, ihp3::Vector{<:AbstractPetscVec}, ihessianproductfunc3::external, ihp4::Vector{<:AbstractPetscVec}, ihessianproductfunc4::external, ctx::Ptr{Cvoid}) 
 Sets the function that computes the vector
 
 Logically Collective
 
 Input Parameters:
-- `ts`   - `TS` context obtained from `TSCreate()`
-- `ihp1` - an array of vectors storing the result of vector-Hessian-vector product for F_UU
-- `hessianproductfunc1` - vector-Hessian-vector product function for F_UU
-- `ihp2` - an array of vectors storing the result of vector-Hessian-vector product for F_UP
-- `hessianproductfunc2` - vector-Hessian-vector product function for F_UP
-- `ihp3` - an array of vectors storing the result of vector-Hessian-vector product for F_PU
-- `hessianproductfunc3` - vector-Hessian-vector product function for F_PU
-- `ihp4` - an array of vectors storing the result of vector-Hessian-vector product for F_PP
-- `hessianproductfunc4` - vector-Hessian-vector product function for F_PP
+- `ts`                   - `TS` context obtained from `TSCreate()`
+- `ihp1`                 - an array of vectors storing the result of vector-Hessian-vector product for F_{UU}
+- `ihessianproductfunc1` - vector-Hessian-vector product function for F_{UU}
+- `ihp2`                 - an array of vectors storing the result of vector-Hessian-vector product for F_{UP}
+- `ihessianproductfunc2` - vector-Hessian-vector product function for F_{UP}
+- `ihp3`                 - an array of vectors storing the result of vector-Hessian-vector product for F_{PU}
+- `ihessianproductfunc3` - vector-Hessian-vector product function for F_{PU}
+- `ihp4`                 - an array of vectors storing the result of vector-Hessian-vector product for F_{PP}
+- `ihessianproductfunc4` - vector-Hessian-vector product function for F_{PP}
+- `ctx`                  - [optional] function context
 
 Calling sequence of `ihessianproductfunc1`:
 - `ts`  - the `TS` context
@@ -11193,7 +11428,7 @@ Calling sequence of `ihessianproductfunc1`:
 - `Vl`  - an array of input vectors to be left-multiplied with the Hessian
 - `Vr`  - input vector to be right-multiplied with the Hessian
 - `VHV` - an array of output vectors for vector-Hessian-vector product
-- `ctx` - [optional] user-defined function context
+- `ctx` - [optional] function context
 
 Level: intermediate
 
@@ -11202,27 +11437,19 @@ Level: intermediate
 # External Links
 $(_doc_external("Sensitivity/TSSetIHessianProduct"))
 """
-function TSSetIHessianProduct(petsclib::PetscLibType, ts::AbstractTS, ihp1::AbstractPetscVec, ihessianproductfunc1::external, ihp2::AbstractPetscVec, ihessianproductfunc2::external, ihp3::AbstractPetscVec, ihessianproductfunc3::external, ihp4::AbstractPetscVec, ihessianproductfunc4::external, ctx::Ptr{Cvoid})
+function TSSetIHessianProduct(petsclib::PetscLibType, ts::AbstractTS, ihp1::Vector{<:AbstractPetscVec}, ihessianproductfunc1::external, ihp2::Vector{<:AbstractPetscVec}, ihessianproductfunc2::external, ihp3::Vector{<:AbstractPetscVec}, ihessianproductfunc3::external, ihp4::Vector{<:AbstractPetscVec}, ihessianproductfunc4::external, ctx::Ptr{Cvoid})
     error("TSSetIHessianProduct: no generated method for these argument types")
 end
 
-@for_petsc function TSSetIHessianProduct(petsclib::$UnionPetscLib, ts::AbstractTS, ihp1::AbstractPetscVec, ihessianproductfunc1::external, ihp2::AbstractPetscVec, ihessianproductfunc2::external, ihp3::AbstractPetscVec, ihessianproductfunc3::external, ihp4::AbstractPetscVec, ihessianproductfunc4::external, ctx::Ptr{Cvoid} )
-	ihp1_ = Ref(ihp1.ptr)
-	ihp2_ = Ref(ihp2.ptr)
-	ihp3_ = Ref(ihp3.ptr)
-	ihp4_ = Ref(ihp4.ptr)
+@for_petsc function TSSetIHessianProduct(petsclib::$UnionPetscLib, ts::AbstractTS, ihp1::Vector{<:AbstractPetscVec}, ihessianproductfunc1::external, ihp2::Vector{<:AbstractPetscVec}, ihessianproductfunc2::external, ihp3::Vector{<:AbstractPetscVec}, ihessianproductfunc3::external, ihp4::Vector{<:AbstractPetscVec}, ihessianproductfunc4::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSSetIHessianProduct, $petsc_library),
                PetscErrorCode,
                (CTS, Ptr{CVec}, external, Ptr{CVec}, external, Ptr{CVec}, external, Ptr{CVec}, external, Ptr{Cvoid}),
-               ts, ihp1_, ihessianproductfunc1, ihp2_, ihessianproductfunc2, ihp3_, ihessianproductfunc3, ihp4_, ihessianproductfunc4, ctx,
+               ts, ihp1, ihessianproductfunc1, ihp2, ihessianproductfunc2, ihp3, ihessianproductfunc3, ihp4, ihessianproductfunc4, ctx,
               )
 
-	ihp1.ptr = ihp1_[]
-	ihp2.ptr = ihp2_[]
-	ihp3.ptr = ihp3_[]
-	ihp4.ptr = ihp4_[]
 
 	return nothing
 end 
@@ -11276,7 +11503,7 @@ Input Parameters:
 - `ts`   - `TS` context obtained from `TSCreate()`
 - `Amat` - JacobianP matrix
 - `func` - function
-- `ctx`  - [optional] user-defined function context
+- `ctx`  - [optional] function context
 
 Calling sequence of `func`:
 - `ts`    - the `TS` context
@@ -11285,7 +11512,7 @@ Calling sequence of `func`:
 - `Udot`  - time derivative of state vector
 - `shift` - shift to apply, see the note in `TSSetIJacobian()`
 - `A`     - output matrix
-- `ctx`   - [optional] user-defined function context
+- `ctx`   - [optional] function context
 
 Level: intermediate
 
@@ -11347,7 +11574,7 @@ end
 
 """
 	TSSetMaxSNESFailures(petsclib::PetscLibType,ts::AbstractTS, fails::PetscInt) 
-Sets the maximum number of failed `SNES` solves
+Sets the maximum number of failed `SNES` solves allowed before `TSSolve()` is ended with a `TSConvergedReason` of `TS_DIVERGED_NONLINEAR_SOLVE`
 
 Not Collective
 
@@ -11360,7 +11587,8 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `SNESGetConvergedReason()`, `TSGetConvergedReason()`
+-seealso: [](ch_ts), `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `SNESGetConvergedReason()`,
+`TSGetConvergedReason()`, `TS_DIVERGED_NONLINEAR_SOLVE`, `TSConvergedReason`
 
 # External Links
 $(_doc_external("TS/TSSetMaxSNESFailures"))
@@ -11384,7 +11612,7 @@ end
 
 """
 	TSSetMaxStepRejections(petsclib::PetscLibType,ts::AbstractTS, rejects::PetscInt) 
-Sets the maximum number of step rejections before a time step fails
+Sets the maximum number of step rejections allowed in a single time
 
 Not Collective
 
@@ -11393,11 +11621,12 @@ Input Parameters:
 - `rejects` - maximum number of rejected steps, pass `PETSC_UNLIMITED` for unlimited
 
 Options Database Key:
-- `-ts_max_reject` - Maximum number of step rejections before a step fails
+- `-ts_max_step_rejections` - Maximum number of step rejections before a step fails
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxSNESFailures()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `TSSetErrorIfStepFails()`, `TSGetConvergedReason()`
+-seealso: [](ch_ts), `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxSNESFailures()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `TSSetErrorIfStepFails()`,
+`TSGetConvergedReason()`, `TSSolve()`, `TS_DIVERGED_STEP_REJECTED`
 
 # External Links
 $(_doc_external("TS/TSSetMaxStepRejections"))
@@ -11430,7 +11659,7 @@ Input Parameters:
 - `maxsteps` - maximum number of steps to use
 
 Options Database Key:
-- `-ts_max_steps <maxsteps>` - Sets maxsteps
+- `-ts_max_steps maxsteps` - Sets maxsteps
 
 Level: intermediate
 
@@ -11467,7 +11696,7 @@ Input Parameters:
 - `maxtime` - final time to step to
 
 Options Database Key:
-- `-ts_max_time <maxtime>` - Sets maxtime
+- `-ts_max_time maxtime` - Sets maxtime
 
 Level: intermediate
 
@@ -11577,11 +11806,11 @@ Input Parameters:
 - `dt2` - second post event step
 
 Options Database Key:
-- `-ts_event_post_event_second_step <dt2>` - second time step after the event
+- `-ts_event_post_event_second_step dt2` - second time step after the event
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventStep()`
+-seealso: [](ch_ts), [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPostEventSecondStep"))
@@ -11614,11 +11843,11 @@ Input Parameters:
 - `dt1` - first post event step
 
 Options Database Key:
-- `-ts_event_post_event_step <dt1>` - first time step after the event
+- `-ts_event_post_event_step dt1` - first time step after the event
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventSecondStep()`
+-seealso: [](ch_ts), [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventSecondStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPostEventStep"))
@@ -11867,22 +12096,22 @@ end
 """
 	TSSetRHSHessianProduct(petsclib::PetscLibType,ts::AbstractTS, rhshp1::Vector{<:AbstractPetscVec}, rhshessianproductfunc1::external, rhshp2::Vector{<:AbstractPetscVec}, rhshessianproductfunc2::external, rhshp3::Vector{<:AbstractPetscVec}, rhshessianproductfunc3::external, rhshp4::Vector{<:AbstractPetscVec}, rhshessianproductfunc4::external, ctx::Ptr{Cvoid}) 
 Sets the function that computes the vector
-product. The Hessian is the second-order derivative of G (RHSFunction) w.r.t. the state
+product. The Hessian is the second-order derivative of `G` (RHSFunction) w.r.t. the state
 variable.
 
 Logically Collective
 
 Input Parameters:
-- `ts`     - `TS` context obtained from `TSCreate()`
-- `rhshp1` - an array of vectors storing the result of vector-Hessian-vector product for G_UU
-- `hessianproductfunc1` - vector-Hessian-vector product function for G_UU
-- `rhshp2` - an array of vectors storing the result of vector-Hessian-vector product for G_UP
-- `hessianproductfunc2` - vector-Hessian-vector product function for G_UP
-- `rhshp3` - an array of vectors storing the result of vector-Hessian-vector product for G_PU
-- `hessianproductfunc3` - vector-Hessian-vector product function for G_PU
-- `rhshp4` - an array of vectors storing the result of vector-Hessian-vector product for G_PP
-- `hessianproductfunc4` - vector-Hessian-vector product function for G_PP
-- `ctx`    - [optional] user-defined function context
+- `ts`                     - `TS` context obtained from `TSCreate()`
+- `rhshp1`                 - an array of vectors storing the result of vector-Hessian-vector product for G_{UU}
+- `rhshessianproductfunc1` - vector-Hessian-vector product function for G_{UU}
+- `rhshp2`                 - an array of vectors storing the result of vector-Hessian-vector product for G_{UP}
+- `rhshessianproductfunc2` - vector-Hessian-vector product function for G_{UP}
+- `rhshp3`                 - an array of vectors storing the result of vector-Hessian-vector product for G_{PU}
+- `rhshessianproductfunc3` - vector-Hessian-vector product function for G_{PU}
+- `rhshp4`                 - an array of vectors storing the result of vector-Hessian-vector product for G_{PP}
+- `rhshessianproductfunc4` - vector-Hessian-vector product function for G_{PP}
+- `ctx`                    - [optional] function context
 
 Calling sequence of `rhshessianproductfunc1`:
 - `ts`  - the `TS` context
@@ -11891,7 +12120,7 @@ Calling sequence of `rhshessianproductfunc1`:
 - `Vl`  - an array of input vectors to be left-multiplied with the Hessian
 - `Vr`  - input vector to be right-multiplied with the Hessian
 - `VHV` - an array of output vectors for vector-Hessian-vector product
-- `ctx` - [optional] user-defined function context
+- `ctx` - [optional] function context
 
 Level: intermediate
 
@@ -11966,7 +12195,7 @@ Input Parameters:
 - `ts`   - `TS` context obtained from `TSCreate()`
 - `Amat` - JacobianP matrix
 - `func` - function
-- `ctx`  - [optional] user-defined function context
+- `ctx`  - [optional] function context
 
 Level: intermediate
 
@@ -12057,7 +12286,7 @@ Input Parameters:
 - `runsteps` - maximum number of steps to take in each call to `TSSolve()`;
 
 Options Database Key:
-- `-ts_run_steps <runsteps>` - Sets runsteps
+- `-ts_run_steps runsteps` - Sets runsteps
 
 Level: intermediate
 
@@ -12127,12 +12356,12 @@ Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
 
 Options Database Keys:
-- `-ts_save_trajectory`      - saves the trajectory to a file
-- `-ts_trajectory_type type` - set trajectory type
+- `-ts_save_trajectory`                                         - saves the trajectory to a file
+- `-ts_trajectory_type (basic|singlefile|memory|visualization)` - set trajectory type
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSTrajectory`, `TSGetTrajectory()`, `TSAdjointSolve()`
+-seealso: [](ch_ts), `TS`, `TSTrajectoryType`, `TSTrajectory`, `TSGetTrajectory()`, `TSAdjointSolve()`
 
 # External Links
 $(_doc_external("TS/TSSetSaveTrajectory"))
@@ -12345,7 +12574,7 @@ Input Parameters:
 - `span_times` - array of the time points, must be increasing. The first element and the last element are the initial time and the final time respectively.
 
 Options Database Key:
-- `-ts_time_span <t0,...tf>` - Sets the time span
+- `-ts_time_span t0,...,tf` - Sets the time span
 
 Level: intermediate
 
@@ -12373,14 +12602,16 @@ end
 
 """
 	TSSetTimeStep(petsclib::PetscLibType,ts::AbstractTS, time_step::PetscReal) 
-Allows one to reset the timestep at any time,
-useful for simple pseudo-timestepping codes.
+Allows one to reset the timestep at any time.
 
 Logically Collective
 
 Input Parameters:
 - `ts`        - the `TS` context obtained from `TSCreate()`
 - `time_step` - the size of the timestep
+
+Options Database Key:
+- `-ts_time_step dt` - provide the initial time step
 
 Level: intermediate
 
@@ -12420,8 +12651,8 @@ Input Parameters:
 - `vrtol` - vector of relative tolerances or `NULL`, used in preference to `rtol` if present
 
 Options Database Keys:
-- `-ts_rtol <rtol>` - relative tolerance for local truncation error
-- `-ts_atol <atol>` - Absolute tolerance for local truncation error
+- `-ts_rtol rtol` - relative tolerance for local truncation error
+- `-ts_atol atol` - Absolute tolerance for local truncation error
 
 Level: beginner
 
@@ -12493,7 +12724,7 @@ Input Parameters:
 - `type` - A known method
 
 Options Database Key:
-- `-ts_type <type>` - Sets the method; use -help for a list of available methods (for instance, euler)
+- `-ts_type type` - Sets the method; see `TSType`
 
 Level: intermediate
 
@@ -12563,7 +12794,7 @@ Input Parameters:
 - `use_splitrhsfunction` - `PETSC_TRUE` indicates that the split RHSFunction will be used
 
 Options Database Key:
-- `-ts_use_splitrhsfunction` - <true,false>
+- `-ts_use_splitrhsfunction (true|false)` - use the split RHS function for multirate solvers
 
 Level: intermediate
 
@@ -12597,7 +12828,7 @@ Collective
 
 Input Parameters:
 - `ts` - the `TS` context obtained from `TSCreate()`
-- `u`  - the solution vector  (can be null if `TSSetSolution()` was used and `TSSetExactFinalTime`(ts,`TS_EXACTFINALTIME_MATCHSTEP`) was not used,
+- `u`  - the solution vector  (can be `NULL` if `TSSetSolution()` was used and `TSSetExactFinalTime`(ts,`TS_EXACTFINALTIME_MATCHSTEP`) was not used,
 otherwise it must contain the initial conditions and will contain the solution at the final requested time
 
 Level: beginner
@@ -12858,7 +13089,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSSundialsSetType()`, `TSSundialsSetTolerance()`,
+-seealso: [](ch_ts), `TSSundialsSetType()`, `TSSundialsSetTolerance()`
 
 # External Links
 $(_doc_external("TS/TSSundialsSetMaxTimeStep"))
@@ -12962,7 +13193,7 @@ Input Parameters:
 - `ts`    - the time-step context
 - `mindt` - lowest time step if positive, negative to deactivate
 
--seealso: [](ch_ts), `TSSundialsSetType()`, `TSSundialsSetTolerance()`,
+-seealso: [](ch_ts), `TSSundialsSetType()`, `TSSundialsSetTolerance()`
 
 # External Links
 $(_doc_external("TS/TSSundialsSetMinTimeStep"))
@@ -13183,7 +13414,7 @@ Input Parameters:
 - `flg` - `PETSC_TRUE` to use the endpoint variant
 
 Options Database Key:
-- `-ts_theta_endpoint <flg>` - use the endpoint variant
+- `-ts_theta_endpoint flg` - use the endpoint variant
 
 Level: intermediate
 
@@ -13220,7 +13451,7 @@ Input Parameters:
 - `theta` - stage abscissa
 
 Options Database Key:
-- `-ts_theta_theta <theta>` - set theta
+- `-ts_theta_theta theta` - set theta
 
 Level: intermediate
 
@@ -13326,6 +13557,9 @@ Input Parameters:
 - `ts`   - the `TS` context
 - `obj`  - Optional object that provides the prefix for the options database keys
 - `name` - command line option string to be passed by user
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

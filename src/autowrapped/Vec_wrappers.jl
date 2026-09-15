@@ -165,7 +165,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `Vec`, `VecExp()`, `VecSqrtAbs()`, `VecReciprocal()`, `VecLog()`
+-seealso: `Vec`, `VecExp()`, `VecSqrtAbs()`, `VecReciprocal()`, `VecLog()`, `VecPointwiseSign()`
 
 # External Links
 $(_doc_external("Vec/VecAbs"))
@@ -266,17 +266,13 @@ Input Parameter:
 - `vec` - the vector
 
 Options Database Keys:
-- `-vec_view`                 - Prints vector in `PETSC_VIEWER_DEFAULT` format
-- `-vec_view ::ascii_matlab`  - Prints vector in `PETSC_VIEWER_ASCII_MATLAB` format to stdout
-- `-vec_view matlab:filename` - Prints vector in MATLAB .mat file to filename (requires PETSc configured with --with-matlab)
-- `-vec_view draw`            - Activates vector viewing using drawing tools
-- `-display <name>`           - Sets display name (default is host)
-- `-draw_pause <sec>`         - Sets number of seconds to pause after display
-- `-vec_view socket`          - Activates vector viewing using a socket
+- `-vec_view [viewertype][:...]`      - Display the vector. See `VecViewFromOptions()`/`PetscObjectViewFromOptions()` for the possible arguments
+- `-vecstash_view [viewertype][:...]` - Display the vector stash. See `VecStashViewFromOptions()`/`PetscObjectViewFromOptions()` for the possible arguments
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecSetValues()`
+-seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecSetValues()`, `VecViewFromOptions()`, `VecStashViewFromOptions()`,
+`PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("Vec/VecAssemblyEnd"))
@@ -610,7 +606,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhost(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
+	vv::PetscVec = VecCreateGhost(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
 Creates a parallel vector with ghost padding on each processor.
 
 Collective
@@ -632,22 +628,21 @@ Level: advanced
 `VecCreateGhostWithArray()`, `VecCreateMPIWithArray()`, `VecGhostUpdateEnd()`,
 `VecCreateGhostBlock()`, `VecCreateGhostBlockWithArray()`, `VecMPISetGhost()`
 
-
 # External Links
 $(_doc_external("Vec/VecCreateGhost"))
 """
-function VecCreateGhost(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number})
+function VecCreateGhost(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number})
     error("VecCreateGhost: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateGhost(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt} )
+@for_petsc function VecCreateGhost(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt} )
 	vv_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateGhost, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CVec}),
-               comm, n, N, nghost, ghosts, vv_,
+               comm, n, M_N, nghost, ghosts, vv_,
               )
 
 	vv = PetscVec(vv_[], petsclib)
@@ -656,7 +651,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhostBlock(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
+	vv::PetscVec = VecCreateGhostBlock(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
 Creates a parallel vector with ghost padding on each processor.
 The indicing of the ghost points is done with blocks.
 
@@ -676,24 +671,24 @@ Output Parameter:
 Level: advanced
 
 -seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateMPI()`,
-`VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`, `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`
+`VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`, `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`,
 `VecCreateGhostWithArray()`, `VecCreateMPIWithArray()`, `VecCreateGhostBlockWithArray()`
 
 # External Links
 $(_doc_external("Vec/VecCreateGhostBlock"))
 """
-function VecCreateGhostBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number})
+function VecCreateGhostBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, M_N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number})
     error("VecCreateGhostBlock: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateGhostBlock(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt} )
+@for_petsc function VecCreateGhostBlock(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, M_N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt} )
 	vv_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateGhostBlock, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CVec}),
-               comm, bs, n, N, nghost, ghosts, vv_,
+               comm, bs, n, M_N, nghost, ghosts, vv_,
               )
 
 	vv = PetscVec(vv_[], petsclib)
@@ -702,7 +697,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhostBlockWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
+	vv::PetscVec = VecCreateGhostBlockWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
 Creates a parallel vector with ghost padding on each processor;
 the caller allocates the array space. Indices in the ghost region are based on blocks.
 
@@ -729,18 +724,18 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecCreateGhostBlockWithArray"))
 """
-function VecCreateGhostBlockWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number}, array::AbstractVector{<:Number})
+function VecCreateGhostBlockWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, M_N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number}, array::AbstractVector{<:Number})
     error("VecCreateGhostBlockWithArray: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateGhostBlockWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt}, array::Vector{$PetscScalar} )
+@for_petsc function VecCreateGhostBlockWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, M_N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt}, array::Vector{$PetscScalar} )
 	vv_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateGhostBlockWithArray, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{CVec}),
-               comm, bs, n, N, nghost, ghosts, array, vv_,
+               comm, bs, n, M_N, nghost, ghosts, array, vv_,
               )
 
 	vv = PetscVec(vv_[], petsclib)
@@ -749,7 +744,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhostWithArray(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
+	vv::PetscVec = VecCreateGhostWithArray(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
 Creates a parallel vector with ghost padding on each processor;
 the caller allocates the array space.
 
@@ -775,18 +770,18 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecCreateGhostWithArray"))
 """
-function VecCreateGhostWithArray(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number}, array::AbstractVector{<:Number})
+function VecCreateGhostWithArray(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer, nghost::Integer, ghosts::AbstractVector{<:Number}, array::AbstractVector{<:Number})
     error("VecCreateGhostWithArray: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateGhostWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt}, array::Vector{$PetscScalar} )
+@for_petsc function VecCreateGhostWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt, nghost::$PetscInt, ghosts::Vector{$PetscInt}, array::Vector{$PetscScalar} )
 	vv_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateGhostWithArray, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{CVec}),
-               comm, n, N, nghost, ghosts, array, vv_,
+               comm, n, M_N, nghost, ghosts, array, vv_,
               )
 
 	vv = PetscVec(vv_[], petsclib)
@@ -834,7 +829,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateMPI(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	v::PetscVec = VecCreateMPI(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a parallel vector.
 
 Collective
@@ -856,18 +851,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecCreateMPI"))
 """
-function VecCreateMPI(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function VecCreateMPI(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("VecCreateMPI: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateMPI(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function VecCreateMPI(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	v_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateMPI, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CVec}),
-               comm, n, N, v_,
+               comm, n, M_N, v_,
               )
 
 	v = PetscVec(v_[], petsclib)
@@ -876,23 +871,23 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateMPIKokkosWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, N::PetscInt, darray::Vector{PetscScalar}) 
+	v::PetscVec = VecCreateMPIKokkosWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, darray::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecCreateMPIKokkosWithArray"))
 """
-function VecCreateMPIKokkosWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, N::Integer, darray::AbstractVector{<:Number})
+function VecCreateMPIKokkosWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, M_N::Integer, darray::AbstractVector{<:Number})
     error("VecCreateMPIKokkosWithArray: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateMPIKokkosWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, N::$PetscInt, darray::Vector{$PetscScalar} )
+@for_petsc function VecCreateMPIKokkosWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, M_N::$PetscInt, darray::Vector{$PetscScalar} )
 	v_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateMPIKokkosWithArray, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
-               comm, bs, n, N, darray, v_,
+               comm, bs, n, M_N, darray, v_,
               )
 
 	v = PetscVec(v_[], petsclib)
@@ -901,16 +896,16 @@ end
 end 
 
 """
-	array::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, N::PetscInt) 
+	array::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt) 
 
 # External Links
 $(_doc_external("Vec/VecCreateMPIViennaCLWithArray"))
 """
-function VecCreateMPIViennaCLWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, N::Integer)
+function VecCreateMPIViennaCLWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, M_N::Integer)
     error("VecCreateMPIViennaCLWithArray: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateMPIViennaCLWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, N::$PetscInt )
+@for_petsc function VecCreateMPIViennaCLWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, M_N::$PetscInt )
 	array_ = Ref{ViennaCLVector}()
 	vv_ = Ref{CVec}()
 
@@ -918,7 +913,7 @@ end
                (:VecCreateMPIViennaCLWithArray, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{ViennaCLVector}, Ptr{CVec}),
-               comm, bs, n, N, array_, vv_,
+               comm, bs, n, M_N, array_, vv_,
               )
 
 	array = array_[]
@@ -928,16 +923,16 @@ end
 end 
 
 """
-	viennaclvec::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, N::PetscInt, cpuarray::Vector{PetscScalar}) 
+	viennaclvec::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, cpuarray::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecCreateMPIViennaCLWithArrays"))
 """
-function VecCreateMPIViennaCLWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, N::Integer, cpuarray::AbstractVector{<:Number})
+function VecCreateMPIViennaCLWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, M_N::Integer, cpuarray::AbstractVector{<:Number})
     error("VecCreateMPIViennaCLWithArrays: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateMPIViennaCLWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, N::$PetscInt, cpuarray::Vector{$PetscScalar} )
+@for_petsc function VecCreateMPIViennaCLWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, M_N::$PetscInt, cpuarray::Vector{$PetscScalar} )
 	viennaclvec_ = Ref{ViennaCLVector}()
 	vv_ = Ref{CVec}()
 
@@ -945,7 +940,7 @@ end
                (:VecCreateMPIViennaCLWithArrays, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{ViennaCLVector}, Ptr{CVec}),
-               comm, bs, n, N, cpuarray, viennaclvec_, vv_,
+               comm, bs, n, M_N, cpuarray, viennaclvec_, vv_,
               )
 
 	viennaclvec = viennaclvec_[]
@@ -955,7 +950,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateMPIWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, N::PetscInt, array::Vector{PetscScalar}) 
+	vv::PetscVec = VecCreateMPIWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, array::Vector{PetscScalar}) 
 Creates a parallel, array
 where the user provides the array space to store the vector values.
 
@@ -979,18 +974,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecCreateMPIWithArray"))
 """
-function VecCreateMPIWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, N::Integer, array::AbstractVector{<:Number})
+function VecCreateMPIWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, M_N::Integer, array::AbstractVector{<:Number})
     error("VecCreateMPIWithArray: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateMPIWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, N::$PetscInt, array::Vector{$PetscScalar} )
+@for_petsc function VecCreateMPIWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, M_N::$PetscInt, array::Vector{$PetscScalar} )
 	vv_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateMPIWithArray, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
-               comm, bs, n, N, array, vv_,
+               comm, bs, n, M_N, array, vv_,
               )
 
 	vv = PetscVec(vv_[], petsclib)
@@ -1015,7 +1010,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VECNEST`,  [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `MatCreateNest()`, `DMSetVecType()`
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `MatCreateNest()`, `DMSetVecType()`
 
 # External Links
 $(_doc_external("Vec/VecCreateNest"))
@@ -1224,7 +1219,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateShared(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	v::PetscVec = VecCreateShared(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a parallel vector that uses shared memory.
 
 Collective
@@ -1245,18 +1240,18 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecCreateShared"))
 """
-function VecCreateShared(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function VecCreateShared(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("VecCreateShared: no generated method for these argument types")
 end
 
-@for_petsc function VecCreateShared(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function VecCreateShared(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	v_ = Ref{CVec}()
 
     @chk ccall(
                (:VecCreateShared, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CVec}),
-               comm, n, N, v_,
+               comm, n, M_N, v_,
               )
 
 	v = PetscVec(v_[], petsclib)
@@ -1349,8 +1344,6 @@ Output Parameter:
 
 Level: intermediate
 
-Notes for Users of Complex Numbers:
-For complex vectors, `VecDot()` computes
 -seealso: [](ch_vectors), `Vec`, `VecMDot()`, `VecTDot()`, `VecNorm()`, `VecDotBegin()`, `VecDotEnd()`, `VecDotRealPart()`
 
 # External Links
@@ -1465,7 +1458,6 @@ Level: advanced
 
 -seealso: `Vec`, `VecDot()`, `VecNorm()`, `VecDotBegin()`, `VecNormBegin()`, `VecDotEnd()`, `VecNormEnd()`
 
-
 # External Links
 $(_doc_external("Vec/VecDotNorm2"))
 """
@@ -1576,7 +1568,7 @@ end
 end 
 
 """
-	V::Ptr{PetscVec} = VecDuplicateVecs(petsclib::PetscLibType,v::AbstractPetscVec, m::PetscInt) 
+	M_V::Ptr{PetscVec} = VecDuplicateVecs(petsclib::PetscLibType,v::AbstractPetscVec, m::PetscInt) 
 Creates several vectors of the same type as an existing vector.
 
 Collective
@@ -1601,18 +1593,18 @@ function VecDuplicateVecs(petsclib::PetscLibType, v::AbstractPetscVec, m::Intege
 end
 
 @for_petsc function VecDuplicateVecs(petsclib::$UnionPetscLib, v::AbstractPetscVec, m::$PetscInt )
-	V_ = Ref{Ptr{PetscVec}}()
+	M_V_ = Ref{Ptr{PetscVec}}()
 
     @chk ccall(
                (:VecDuplicateVecs, $petsc_library),
                PetscErrorCode,
                (CVec, $PetscInt, Ptr{Ptr{CVec}}),
-               v, m, V_,
+               v, m, M_V_,
               )
 
-	V = V_[]
+	M_V = M_V_[]
 
-	return V
+	return M_V
 end 
 
 """
@@ -1732,7 +1724,6 @@ Output Parameter:
 Level: beginner
 
 -seealso: `Vec`, `VecLog()`, `VecAbs()`, `VecSqrtAbs()`, `VecReciprocal()`
-
 
 # External Links
 $(_doc_external("Vec/VecExp"))
@@ -2680,7 +2671,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArrayWriteAndMemType()`, `VecGetArrayReadAndMemType()`, `VecGetArrayAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`,
+-seealso: [](ch_vectors), `Vec`, `VecRestoreArrayWriteAndMemType()`, `VecGetArrayReadAndMemType()`, `VecGetArrayAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
 $(_doc_external("Vec/VecGetArrayWriteAndMemType"))
@@ -3386,7 +3377,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`
+-seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Vec/VecGetType"))
@@ -3866,7 +3857,7 @@ end
 
 """
 	VecImaginaryPart(petsclib::PetscLibType,v::AbstractPetscVec) 
-Replaces a complex vector with its imginary part
+Replaces a complex vector with its imaginary part
 
 Collective
 
@@ -4051,18 +4042,33 @@ end
 end 
 
 """
-	line::Cint = VecLockGetLocation(petsclib::PetscLibType,x::AbstractPetscVec, file::String, func::String) 
+	file::Ptr{Cchar},func::Ptr{Cchar},line::Cint = VecLockGetLocation(petsclib::PetscLibType,x::AbstractPetscVec) 
+Return the source code location where a `Vec` was most recently read
+
+Not Collective
+
+Input Parameter:
+- `x` - the vector
+
+Output Parameters:
+- `file` - the source file name of the most recent `VecLockReadPush()`, or `NULL` if none is active
+- `func` - the function name of the most recent `VecLockReadPush()`, or `NULL` if none is active
+- `line` - the source line number of the most recent `VecLockReadPush()`, or 0 if none is active
+
+Level: developer
+
+-seealso: `Vec`, `VecLockGet()`, `VecLockReadPush()`, `VecLockReadPop()`, `VecGetArray()`
 
 # External Links
 $(_doc_external("Vec/VecLockGetLocation"))
 """
-function VecLockGetLocation(petsclib::PetscLibType, x::AbstractPetscVec, file::String, func::String)
+function VecLockGetLocation(petsclib::PetscLibType, x::AbstractPetscVec)
     error("VecLockGetLocation: no generated method for these argument types")
 end
 
-@for_petsc function VecLockGetLocation(petsclib::$UnionPetscLib, x::AbstractPetscVec, file::String, func::String )
-	file_ = Ref{Ptr{Cchar}}(file isa Ptr ? file : pointer(file))
-	func_ = Ref{Ptr{Cchar}}(func isa Ptr ? func : pointer(func))
+@for_petsc function VecLockGetLocation(petsclib::$UnionPetscLib, x::AbstractPetscVec )
+	file_ = Ref{Ptr{Cchar}}()
+	func_ = Ref{Ptr{Cchar}}()
 	line_ = Ref{Cint}()
 
     @chk ccall(
@@ -4072,9 +4078,11 @@ end
                x, file_, func_, line_,
               )
 
+	file = file_[]
+	func = func_[]
 	line = line_[]
 
-	return line
+	return file,func,line
 end 
 
 """
@@ -4193,7 +4201,6 @@ Level: beginner
 
 -seealso: `Vec`, `VecExp()`, `VecAbs()`, `VecSqrtAbs()`, `VecReciprocal()`
 
-
 # External Links
 $(_doc_external("Vec/VecLog"))
 """
@@ -4265,7 +4272,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecMAXPBY()`,`VecAYPX()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`, `VecDuplicateVecs()`
+-seealso: [](ch_vectors), `Vec`, `VecMAXPBY()`, `VecAYPX()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`, `VecDuplicateVecs()`
 
 # External Links
 $(_doc_external("Vec/VecMAXPY"))
@@ -4764,7 +4771,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `VECNEST`,  [](ch_vectors), `Vec`, `VecType`, `VecNestGetSubVec()`, `VecNestGetSubVecs()`
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSubVec()`, `VecNestGetSubVecs()`
 
 # External Links
 $(_doc_external("Vec/VecNestGetSize"))
@@ -4803,7 +4810,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `VECNEST`,  [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVecs()`
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVecs()`
 
 # External Links
 $(_doc_external("Vec/VecNestGetSubVec"))
@@ -4842,7 +4849,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `VECNEST`,  [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestGetSubVecsRead()`
 
 # External Links
 $(_doc_external("Vec/VecNestGetSubVecs"))
@@ -4869,6 +4876,129 @@ end
 end 
 
 """
+	N::PetscInt,sx::Ptr{PetscVec} = VecNestGetSubVecsRead(petsclib::PetscLibType,X::AbstractPetscVec) 
+Access the subvecs of a `VECNEST` vector for read
+
+Logically collective
+
+Input Parameter:
+- `X` - nest vector
+
+Output Parameters:
+- `N`  - number of nested vecs
+- `sx` - array of read-locked vectors
+
+Level: advanced
+
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestRestoreSubVecsRead()`
+
+# External Links
+$(_doc_external("Vec/VecNestGetSubVecsRead"))
+"""
+function VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec)
+    error("VecNestGetSubVecsRead: no generated method for these argument types")
+end
+
+@for_petsc function VecNestGetSubVecsRead(petsclib::$UnionPetscLib, X::AbstractPetscVec )
+	N_ = Ref{$PetscInt}()
+	sx_ = Ref{Ptr{PetscVec}}()
+
+    @chk ccall(
+               (:VecNestGetSubVecsRead, $petsc_library),
+               PetscErrorCode,
+               (CVec, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
+               X, N_, sx_,
+              )
+
+	N = N_[]
+	sx = sx_[]
+
+	return N,sx
+end 
+
+"""
+	subparams::PetscVec = VecNestGetTaoTermSumParameters(petsclib::PetscLibType,params::AbstractPetscVec, index::PetscInt) 
+A wrapper around `VecNestGetSubVec()` for `TAOTERMSUM`.
+
+Not collective
+
+Input Parameters:
+- `params` - a `VECNEST` that has one nested vector for each term of a `TAOTERMSUM`
+- `index`  - the index of a term
+
+Output Parameter:
+- `subparams` - the parameters of the internal terms of `TAOTERMSUM`. (may be `NULL`)
+
+Level: intermediate
+
+-seealso: [](sec_tao_term),
+`TaoTerm`,
+`TAOTERMSUM`,
+`TaoTermSumParametersPack()`,
+`TaoTermSumParametersUnpack()`,
+`VECNEST`,
+`VecNestGetSubVec()`
+
+# External Links
+$(_doc_external("TaoTerm/VecNestGetTaoTermSumParameters"))
+"""
+function VecNestGetTaoTermSumParameters(petsclib::PetscLibType, params::AbstractPetscVec, index::Integer)
+    error("VecNestGetTaoTermSumParameters: no generated method for these argument types")
+end
+
+@for_petsc function VecNestGetTaoTermSumParameters(petsclib::$UnionPetscLib, params::AbstractPetscVec, index::$PetscInt )
+	subparams_ = Ref{CVec}()
+
+    @chk ccall(
+               (:VecNestGetTaoTermSumParameters, $petsc_library),
+               PetscErrorCode,
+               (CVec, $PetscInt, Ptr{CVec}),
+               params, index, subparams_,
+              )
+
+	subparams = PetscVec(subparams_[], petsclib)
+
+	return subparams
+end 
+
+"""
+	VecNestRestoreSubVecsRead(petsclib::PetscLibType,X::AbstractPetscVec, N::PetscInt, sx::Union{Ptr, AbstractArray{PetscVec}}) 
+Restore access the subvecs of a `VECNEST` vector obtained with `VecNestGetSubVecsRead()`
+
+Logically collective
+
+Input Parameters:
+- `X`  - nest vector
+- `N`  - number of nested vecs
+- `sx` - array of read-locked vectors
+
+Level: advanced
+
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestGetSubVecsRead()`
+
+# External Links
+$(_doc_external("Vec/VecNestRestoreSubVecsRead"))
+"""
+function VecNestRestoreSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec, N::Integer, sx::Union{Ptr, AbstractArray{PetscVec}})
+    error("VecNestRestoreSubVecsRead: no generated method for these argument types")
+end
+
+@for_petsc function VecNestRestoreSubVecsRead(petsclib::$UnionPetscLib, X::AbstractPetscVec, N::$PetscInt, sx::Union{Ptr, AbstractArray{PetscVec}} )
+	N_ = Ref{$PetscInt}(N)
+	sx_ = Ref{Ptr{CVec}}(sx isa Ptr ? sx : pointer(sx))
+
+    @chk ccall(
+               (:VecNestRestoreSubVecsRead, $petsc_library),
+               PetscErrorCode,
+               (CVec, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
+               X, N_, sx_,
+              )
+
+
+	return nothing
+end 
+
+"""
 	VecNestSetSubVec(petsclib::PetscLibType,X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) 
 Set a single component vector in a nest vector at specified index.
 
@@ -4881,7 +5011,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `VECNEST`,  [](ch_vectors), `Vec`, `VecType`, `VecNestSetSubVecs()`, `VecNestGetSubVec()`
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestSetSubVecs()`, `VecNestGetSubVec()`
 
 # External Links
 $(_doc_external("Vec/VecNestSetSubVec"))
@@ -4917,7 +5047,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `VECNEST`,  [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`
+-seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`
 
 # External Links
 $(_doc_external("Vec/VecNestSetSubVecs"))
@@ -5171,7 +5301,7 @@ Allows one to replace the array in a vector with an
 array provided by the user. This is useful to avoid copying an array
 into a vector.
 
-Logically Collective; No Fortran Support
+Logically Collective
 
 Input Parameters:
 - `vec`   - the vector
@@ -5380,6 +5510,43 @@ end
                PetscErrorCode,
                (CVec, CVec, CVec),
                w, x, y,
+              )
+
+
+	return nothing
+end 
+
+"""
+	VecPointwiseSign(petsclib::PetscLibType,y::AbstractPetscVec, x::AbstractPetscVec, sign_type::VecSignMode) 
+Computes the component
+
+Logically Collective
+
+Input Parameters:
+- `x`         - the input vector
+- `sign_type` - `VecSignMode` indicating how the function should map zero values.
+
+Output Parameter:
+- `y` - the sign vector of `x`
+
+Level: beginner
+
+-seealso: [](ch_vectors), `Vec`, `VecSignMode`
+
+# External Links
+$(_doc_external("Vec/VecPointwiseSign"))
+"""
+function VecPointwiseSign(petsclib::PetscLibType, y::AbstractPetscVec, x::AbstractPetscVec, sign_type::VecSignMode)
+    error("VecPointwiseSign: no generated method for these argument types")
+end
+
+@for_petsc function VecPointwiseSign(petsclib::$UnionPetscLib, y::AbstractPetscVec, x::AbstractPetscVec, sign_type::VecSignMode )
+
+    @chk ccall(
+               (:VecPointwiseSign, $petsc_library),
+               PetscErrorCode,
+               (CVec, CVec, VecSignMode),
+               y, x, sign_type,
               )
 
 
@@ -6743,8 +6910,11 @@ Collective
 
 Input Parameters:
 - `A`    - the vector
-- `obj`  - optional object that provides the options prefix for this viewing, use 'NULL' to use the prefix of `A`
+- `obj`  - optional object that provides the options prefix for this viewing, use `NULL` to use the prefix of `A`
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 
@@ -6782,7 +6952,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscDrawLGCreate()`, `VecView()`
+-seealso: [](ch_vectors), `Vec`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscDrawLGCreate()`, `VecView()`,
 `PetscViewerSocketOpen()`, `PetscViewerBinaryOpen()`, `VecLoad()`, `PetscViewerCreate()`,
 `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`, `PetscViewerHDF5SetTimestep()`
 

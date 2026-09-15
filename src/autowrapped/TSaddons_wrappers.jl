@@ -15,7 +15,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidateAdd"))
@@ -48,7 +48,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptCreate()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidatesClear"))
@@ -88,7 +88,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidatesGet"))
@@ -137,7 +137,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSAdapt`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptCheckStage"))
@@ -179,7 +179,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`
 
 # External Links
 $(_doc_external("TS/TSAdaptChoose"))
@@ -221,7 +221,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptDestroy()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCreate"))
@@ -256,15 +256,15 @@ Input Parameters:
 - `name`  - filter name
 
 Options Database Key:
-- `-ts_adapt_dsp_filter <name>` - Sets predefined controller by name; use -help for a list of available controllers
+- `-ts_adapt_dsp_filter name` - Sets predefined controller by name; use -help for a list of available controllers
 
 Filter names:
-- `basic`                       - similar to `TSADAPTBASIC` but with different criteria for step rejections.
-- `PI30, PI42, PI33, PI34`      - PI controllers.
-- `PC11, PC47, PC36`            - predictive controllers.
-- `H0211, H211b, H211PI`        - digital filters with orders dynamics=2, adaptivity=1, filter=1.
-- `H0312, H312b, H312PID`       - digital filters with orders dynamics=3, adaptivity=1, filter=2.
-- `H0321, H321`                 - digital filters with orders dynamics=3, adaptivity=2, filter=1.
+- `basic`                     - similar to `TSADAPTBASIC` but with different criteria for step rejections.
+- `PI30, PI42, PI33, PI34`    - PI controllers.
+- `PC11, PC47, PC36`          - predictive controllers.
+- `H0211, H211b, H211PI`      - digital filters with orders dynamics=2, adaptivity=1, filter=1.
+- `H0312, H312b, H312PID`     - digital filters with orders dynamics=3, adaptivity=1, filter=2.
+- `H0321, H321`               - digital filters with orders dynamics=3, adaptivity=2, filter=1.
 
 Level: intermediate
 
@@ -301,7 +301,7 @@ Input Parameters:
 - `kkD`   - Derivative parameter
 
 Options Database Key:
-- `-ts_adapt_dsp_pid <kkI,kkP,kkD>` - Sets PID controller parameters
+- `-ts_adapt_dsp_pid kkI,kkP,kkD` - Sets PID controller parameters
 
 Level: intermediate
 
@@ -329,6 +329,16 @@ end
 
 """
 	TSAdaptDestroy(petsclib::PetscLibType,adapt::Union{TSAdapt, Ref{TSAdapt}}) 
+Destroys a `TSAdapt` context
+
+Collective
+
+Input Parameter:
+- `adapt` - the `TSAdapt` context obtained from `TSGetAdapt()` or `TSAdaptCreate()`
+
+Level: intermediate
+
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSGetAdapt()`
 
 # External Links
 $(_doc_external("TS/TSAdaptDestroy"))
@@ -394,7 +404,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetClip"))
@@ -435,7 +445,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptSetMaxIgnore()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetMaxIgnore()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetMaxIgnore"))
@@ -474,7 +484,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptSetSafety()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetSafety()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetSafety"))
@@ -514,7 +524,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetClip()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetClip()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetScaleSolveFailed"))
@@ -553,7 +563,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptSetStepLimits()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetStepLimits()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetStepLimits"))
@@ -593,7 +603,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `TSAdapt`, `TSAdaptType`, `TSAdaptSetType()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptType`, `TSAdaptSetType()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetType"))
@@ -806,7 +816,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSAdaptRegisterAll()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdaptRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSAdaptRegister"))
@@ -839,7 +849,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSGetAdapt()`, `TSAdapt`, `TSAdaptCreate()`, `TSAdaptDestroy()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSGetAdapt()`, `TSAdapt`, `TSAdaptCreate()`, `TSAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSAdaptReset"))
@@ -877,7 +887,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetAlwaysAccept"))
@@ -918,7 +928,7 @@ Calling sequence:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetCheckStage"))
@@ -952,11 +962,11 @@ Input Parameters:
 - `high`  - admissible increase factor
 
 Options Database Key:
-- `-ts_adapt_clip <low>,<high>` - to set admissible time step decrease and increase factors
+- `-ts_adapt_clip low,high` - to set admissible time step decrease and increase factors
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetClip()`, `TSAdaptSetScaleSolveFailed()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetClip()`, `TSAdaptSetScaleSolveFailed()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetClip"))
@@ -989,20 +999,20 @@ Input Parameters:
 - `PetscOptionsObject` - object created by `PetscOptionsBegin()`
 
 Options Database Keys:
-- `-ts_adapt_type <type>`                - algorithm to use for adaptivity
-- `-ts_adapt_always_accept`              - always accept steps regardless of error/stability goals
-- `-ts_adapt_safety <safety>`            - safety factor relative to target error/stability goal
-- `-ts_adapt_reject_safety <safety>`     - extra safety factor to apply if the last step was rejected
-- `-ts_adapt_clip <low,high>`            - admissible time step decrease and increase factors
-- `-ts_adapt_dt_min <min>`               - minimum timestep to use
-- `-ts_adapt_dt_max <max>`               - maximum timestep to use
-- `-ts_adapt_scale_solve_failed <scale>` - scale timestep by this factor if a solve fails
-- `-ts_adapt_wnormtype <2 or infinity>`  - type of norm for computing error estimates
-- `-ts_adapt_time_step_increase_delay`   - number of timesteps to delay increasing the time step after it has been decreased due to failed solver
+- `-ts_adapt_type (basic|dsp|none|cfl|glee|history)` - algorithm to use for adaptivity
+- `-ts_adapt_always_accept (true|false)`             - always accept steps regardless of error/stability goals
+- `-ts_adapt_safety safety`                          - safety factor relative to target error/stability goal
+- `-ts_adapt_reject_safety safety`                   - extra safety factor to apply if the last step was rejected
+- `-ts_adapt_clip low,high`                          - admissible time step decrease and increase factors
+- `-ts_adapt_dt_min min`                             - minimum timestep to use
+- `-ts_adapt_dt_max max`                             - maximum timestep to use
+- `-ts_adapt_scale_solve_failed scale`               - scale timestep by this factor if a solve fails
+- `-ts_adapt_wnormtype (2|infinity)`                 - type of norm for computing error estimates
+- `-ts_adapt_time_step_increase_delay steps`         - number of timesteps to delay increasing the time step after it has been decreased due to failed solver
 
 Level: advanced
 
--seealso: [](ch_ts), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptSetAlwaysAccept()`, `TSAdaptSetSafety()`,
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptSetAlwaysAccept()`, `TSAdaptSetSafety()`,
 `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetStepLimits()`, `TSAdaptSetMonitor()`
 
 # External Links
@@ -1037,11 +1047,11 @@ Input Parameters:
 - `max_ignore` - threshold for solution components that are ignored during error estimation
 
 Options Database Key:
-- `-ts_adapt_max_ignore <max_ignore>` - to set the threshold
+- `-ts_adapt_max_ignore max_ignore` - to set the threshold
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptGetMaxIgnore()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetMaxIgnore()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetMaxIgnore"))
@@ -1078,7 +1088,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetMonitor"))
@@ -1102,6 +1112,17 @@ end
 
 """
 	TSAdaptSetOptionsPrefix(petsclib::PetscLibType,adapt::TSAdapt, prefix::String) 
+Sets the prefix used for searching for `TSAdapt` options in the options database
+
+Logically Collective
+
+Input Parameters:
+- `adapt`  - the `TSAdapt` context, most likely obtained with `TSGetAdapt()`
+- `prefix` - the prefix to prepend to all option names
+
+Level: advanced
+
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetOptionsPrefix"))
@@ -1135,12 +1156,12 @@ Input Parameters:
 - `reject_safety` - extra safety factor to apply if the last step was rejected
 
 Options Database Keys:
-- `-ts_adapt_safety <safety>`               - to set safety factor
-- `-ts_adapt_reject_safety <reject_safety>` - to set reject safety factor
+- `-ts_adapt_safety safety`               - to set safety factor
+- `-ts_adapt_reject_safety reject_safety` - to set reject safety factor
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptGetSafety()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetSafety()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetSafety"))
@@ -1173,11 +1194,11 @@ Input Parameters:
 - `scale` - scale
 
 Options Database Key:
-- `-ts_adapt_scale_solve_failed <scale>` - to set scale step by this factor if solve fails
+- `-ts_adapt_scale_solve_failed scale` - to set scale step by this factor if solve fails
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetScaleSolveFailed()`, `TSAdaptGetClip()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetScaleSolveFailed()`, `TSAdaptGetClip()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetScaleSolveFailed"))
@@ -1211,12 +1232,12 @@ Input Parameters:
 - `hmax`  - maximum time step
 
 Options Database Keys:
-- `-ts_adapt_dt_min <min>` - to set minimum time step
-- `-ts_adapt_dt_max <max>` - to set maximum time step
+- `-ts_adapt_dt_min min` - to set minimum time step
+- `-ts_adapt_dt_max max` - to set maximum time step
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdapt`, `TSAdaptGetStepLimits()`, `TSAdaptChoose()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetStepLimits()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetStepLimits"))
@@ -1254,7 +1275,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSAdapt`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetTimeStepIncreaseDelay"))
@@ -1287,11 +1308,11 @@ Input Parameters:
 - `type`  - one of the `TSAdaptType`
 
 Options Database Key:
-- `-ts_adapt_type <basic or dsp or none>` - to set the adapter type
+- `-ts_adapt_type (basic|dsp|none|cfl|glee|history)` - to set the adapter type
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGetAdapt()`, `TSAdaptDestroy()`, `TSAdaptType`, `TSAdaptGetType()`
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSGetAdapt()`, `TSAdaptDestroy()`, `TSAdaptType`, `TSAdaptGetType()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetType"))
@@ -1315,6 +1336,20 @@ end
 
 """
 	TSAdaptView(petsclib::PetscLibType,adapt::TSAdapt, viewer::PetscViewer) 
+Prints the `TSAdapt` data structure.
+
+Collective
+
+Input Parameters:
+- `adapt`  - the `TSAdapt` context obtained from `TSGetAdapt()`
+- `viewer` - visualization context
+
+Options Database Key:
+- `-ts_view` - calls `TSView()` at end of `TSStep()`
+
+Level: advanced
+
+-seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSView()`, `PetscViewer`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("TS/TSAdaptView"))
@@ -1338,6 +1373,28 @@ end
 
 """
 	next_sc::PetscInt,next_h::PetscReal,finish::PetscBool = TSGLLEAdaptChoose(petsclib::PetscLibType,adapt::TSGLLEAdapt, n::PetscInt, orders::Vector{PetscInt}, errors::Vector{PetscReal}, cost::Vector{PetscReal}, cur::PetscInt, h::PetscReal, tleft::PetscReal) 
+Choose the next scheme and step size using a `TSGLLEAdapt` step
+
+Logically Collective
+
+Input Parameters:
+- `adapt`  - the `TSGLLEAdapt` context
+- `n`      - the number of candidate schemes
+- `orders` - the orders of accuracy of the candidate schemes
+- `errors` - the error estimates for each candidate scheme
+- `cost`   - the relative cost of each candidate scheme
+- `cur`    - the index of the currently active scheme
+- `h`      - the last step size that was taken
+- `tleft`  - the amount of remaining integration time
+
+Output Parameters:
+- `next_sc` - the index of the scheme to use next
+- `next_h`  - the step size to take next
+- `finish`  - `PETSC_TRUE` if `next_h` was truncated to `tleft` because the end of the interval has been reached
+
+Level: developer
+
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptSetType()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptChoose"))
@@ -1367,6 +1424,19 @@ end
 
 """
 	inadapt::TSGLLEAdapt = TSGLLEAdaptCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+Create a `TSGLLEAdapt` step
+
+Collective
+
+Input Parameter:
+- `comm` - the MPI communicator
+
+Output Parameter:
+- `inadapt` - the newly created `TSGLLEAdapt` context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`, `TSGLLEAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptCreate"))
@@ -1392,6 +1462,16 @@ end
 
 """
 	TSGLLEAdaptDestroy(petsclib::PetscLibType,adapt::Union{TSGLLEAdapt, Ref{TSGLLEAdapt}}) 
+Destroys a `TSGLLEAdapt` context
+
+Collective
+
+Input Parameter:
+- `adapt` - the `TSGLLEAdapt` context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptDestroy"))
@@ -1506,6 +1586,20 @@ end
 
 """
 	TSGLLEAdaptSetFromOptions(petsclib::PetscLibType,adapt::TSGLLEAdapt, PetscOptionsObject::PetscOptionItems) 
+Sets options from the options database for a `TSGLLEAdapt` context
+
+Collective
+
+Input Parameters:
+- `adapt`              - the `TSGLLEAdapt` context
+- `PetscOptionsObject` - the `PetscOptionItems` used to process options
+
+Options Database Key:
+- `-ts_adapt_type (none|size|both)` - algorithm to use for adaptivity
+
+Level: advanced
+
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptSetFromOptions"))
@@ -1529,6 +1623,17 @@ end
 
 """
 	TSGLLEAdaptSetOptionsPrefix(petsclib::PetscLibType,adapt::TSGLLEAdapt, prefix::String) 
+Sets the prefix used for searching for `TSGLLEAdapt` options in the options database
+
+Logically Collective
+
+Input Parameters:
+- `adapt`  - the `TSGLLEAdapt` context
+- `prefix` - the prefix to prepend to all option names
+
+Level: advanced
+
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetFromOptions()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptSetOptionsPrefix"))
@@ -1552,6 +1657,17 @@ end
 
 """
 	TSGLLEAdaptSetType(petsclib::PetscLibType,adapt::TSGLLEAdapt, type::TSGLLEAdaptType) 
+Sets the type of a `TSGLLEAdapt` step
+
+Logically Collective
+
+Input Parameters:
+- `adapt` - the `TSGLLEAdapt` context
+- `type`  - the name of the adaptivity scheme, e.g. `TSGLLEADAPT_NONE`, `TSGLLEADAPT_SIZE`, `TSGLLEADAPT_BOTH`
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptType`, `TSGLLEAdaptRegister()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptSetType"))
@@ -1575,6 +1691,17 @@ end
 
 """
 	TSGLLEAdaptView(petsclib::PetscLibType,adapt::TSGLLEAdapt, viewer::PetscViewer) 
+Views a `TSGLLEAdapt` step
+
+Collective
+
+Input Parameters:
+- `adapt`  - the `TSGLLEAdapt` context
+- `viewer` - the `PetscViewer` used to view the object
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `PetscViewer`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptView"))
@@ -1753,6 +1880,29 @@ end
 
 """
 	ctx::TSMonitorHGCtx = TSMonitorHGCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt, Ns::PetscInt, Nb::PetscInt, velocity::PetscBool) 
+Creates a `TSMonitorHGCtx` histogram monitor context for use with `DMSWARM` particle visualizations
+
+Collective
+
+Input Parameters:
+- `comm`     - the MPI communicator to use
+- `host`     - the X display to open, or `NULL` for the local machine
+- `label`    - the title to put in the title bar
+- `x`        - the x screen coordinates of the upper left coordinate of the window
+- `y`        - the y screen coordinates of the upper left coordinate of the window
+- `m`        - the screen width in pixels
+- `n`        - the screen height in pixels
+- `howoften` - if positive then determines the frequency of the plotting, if -1 then only at the final time
+- `Ns`       - the number of species to histogram
+- `Nb`       - the number of histogram bins
+- `velocity` - `PETSC_TRUE` to plot histograms in velocity space, `PETSC_FALSE` for coordinate space
+
+Output Parameter:
+- `ctx` - the newly created histogram monitor context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorHGSwarmSolution()`, `TSMonitorHGCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorHGCtxCreate"))
@@ -1778,6 +1928,16 @@ end
 
 """
 	TSMonitorHGCtxDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorHGCtx, Ref{TSMonitorHGCtx}}) 
+Destroys a `TSMonitorHGCtx` that was created with `TSMonitorHGCtxCreate()`
+
+Not Collective
+
+Input Parameter:
+- `ctx` - the histogram monitor context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorHGCtxCreate()`, `TSMonitorHGSwarmSolution()`
 
 # External Links
 $(_doc_external("TS/TSMonitorHGCtxDestroy"))
@@ -1827,7 +1987,7 @@ Options Database Keys:
 - `-ts_monitor_lg_error`           - monitor the error
 - `-ts_monitor_lg_ksp_iterations`  - monitor the number of `KSP` iterations needed for each timestep
 - `-ts_monitor_lg_snes_iterations` - monitor the number of `SNES` iterations needed for each timestep
-- `-lg_use_markers <true,false>`   - mark the data points (at each time step) on the plot; default is true
+- `-lg_use_markers (true|false)`   - mark the data points (at each time step) on the plot; default is true
 
 Level: intermediate
 
@@ -1895,6 +2055,26 @@ end
 
 """
 	ctx::TSMonitorLGCtxNetwork = TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType,ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
+Creates a `TSMonitorLGCtxNetwork` context with one line
+
+Collective
+
+Input Parameters:
+- `ts`       - the `TS` context whose `DM` is a `DMNETWORK`
+- `host`     - the X display to open, or `NULL` for the local machine
+- `label`    - the title to put in the title bar
+- `x`        - the x screen coordinates of the upper left coordinate of the window
+- `y`        - the y screen coordinates of the upper left coordinate of the window
+- `m`        - the screen width in pixels
+- `n`        - the screen height in pixels
+- `howoften` - if positive then determines the frequency of the plotting, if -1 then only at the final time
+
+Output Parameter:
+- `ctx` - the newly created network line-graph monitor context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `DMNETWORK`, `TSMonitorSet()`, `TSMonitorLGCtxNetworkSolution()`, `TSMonitorLGCtxNetworkDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxNetworkCreate"))
@@ -2038,6 +2218,11 @@ Input Parameters:
 - `destroy`   - function to destroy the optional context, see `PetscCtxDestroyFn` for its calling sequence
 - `ctx`       - optional context used by transform function
 
+Calling sequence of `transform`:
+- `tctx` - context used by the transform function
+- `u`    - the input solution vector
+- `w`    - the output transformed vector
+
 Level: intermediate
 
 -seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`, `TSMonitorLGSetTransform()`, `PetscCtxDestroyFn`
@@ -2098,6 +2283,29 @@ end
 
 """
 	ctx::TSMonitorSPCtx = TSMonitorSPCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt, retain::PetscInt, phase::PetscBool, multispecies::PetscBool) 
+Creates a `TSMonitorSPCtx` scatter
+
+Collective
+
+Input Parameters:
+- `comm`         - the MPI communicator to use
+- `host`         - the X display to open, or `NULL` for the local machine
+- `label`        - the title to put in the title bar
+- `x`            - the x screen coordinates of the upper left coordinate of the window
+- `y`            - the y screen coordinates of the upper left coordinate of the window
+- `m`            - the screen width in pixels
+- `n`            - the screen height in pixels
+- `howoften`     - if positive then determines the frequency of the plotting, if -1 then only at the final time
+- `retain`       - the number of old points to retain in the plot, or 0 to clear, or -1 to retain all
+- `phase`        - `PETSC_TRUE` to plot in phase space rather than coordinate space
+- `multispecies` - `PETSC_TRUE` to color particles by species
+
+Output Parameter:
+- `ctx` - the newly created scatter plot monitor context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorSPSwarmSolution()`, `TSMonitorSPCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPCtxCreate"))
@@ -2123,6 +2331,16 @@ end
 
 """
 	TSMonitorSPCtxDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorSPCtx, Ref{TSMonitorSPCtx}}) 
+Destroys a `TSMonitorSPCtx` that was created with `TSMonitorSPCtxCreate()`
+
+Not Collective
+
+Input Parameter:
+- `ctx` - the scatter plot monitor context
+
+Level: intermediate
+
+-seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorSPCtxCreate()`, `TSMonitorSPSwarmSolution()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPCtxDestroy"))
@@ -2550,7 +2768,7 @@ Input Parameters:
 - `tj_memory_type` - Revolve or CAMS
 
 Options Database Key:
-- `-ts_trajectory_memory_type <tj_memory_type>` - petsc, revolve, cams
+- `-ts_trajectory_memory_type tj_memory_type` - petsc, revolve, cams
 
 Level: intermediate
 
@@ -2833,9 +3051,9 @@ Input Parameters:
 - `ts` - the `TS` context
 
 Options Database Keys:
-- `-ts_trajectory_type <type>`             - basic, memory, singlefile, visualization
-- `-ts_trajectory_keep_files <true,false>` - keep the files generated by the code after the program ends. This is true by default for singlefile and visualization
-- `-ts_trajectory_monitor`                 - print `TSTrajectory` information
+- `-ts_trajectory_type (basic|singlefile|memory|visualization)` - how to manage the trajectory
+- `-ts_trajectory_keep_files (true|false)`                      - keep the files generated by the code after the program ends. This is true by default for singlefile and visualization
+- `-ts_trajectory_monitor`                                      - print `TSTrajectory` information
 
 Level: developer
 
@@ -3114,7 +3332,7 @@ end
 end 
 
 """
-	TSTrajectorySetTransform(petsclib::PetscLibType,tj::TSTrajectory, transform::external, destroy::external, tctx::Ptr{Cvoid}) 
+	TSTrajectorySetTransform(petsclib::PetscLibType,tj::TSTrajectory, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid}) 
 Solution vector will be transformed by provided function before being saved to disk
 
 Collective
@@ -3132,16 +3350,16 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSTrajectorySetTransform"))
 """
-function TSTrajectorySetTransform(petsclib::PetscLibType, tj::TSTrajectory, transform::external, destroy::external, tctx::Ptr{Cvoid})
+function TSTrajectorySetTransform(petsclib::PetscLibType, tj::TSTrajectory, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid})
     error("TSTrajectorySetTransform: no generated method for these argument types")
 end
 
-@for_petsc function TSTrajectorySetTransform(petsclib::$UnionPetscLib, tj::TSTrajectory, transform::external, destroy::external, tctx::Ptr{Cvoid} )
+@for_petsc function TSTrajectorySetTransform(petsclib::$UnionPetscLib, tj::TSTrajectory, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:TSTrajectorySetTransform, $petsc_library),
                PetscErrorCode,
-               (TSTrajectory, external, external, Ptr{Cvoid}),
+               (TSTrajectory, external, Ptr{Cvoid}, Ptr{Cvoid}),
                tj, transform, destroy, tctx,
               )
 
@@ -3161,11 +3379,11 @@ Input Parameters:
 - `type` - a known method
 
 Options Database Key:
-- `-ts_trajectory_type <type>` - Sets the method; use -help for a list of available methods (for instance, basic)
+- `-ts_trajectory_type (basic|singlefile|memory|visualization)` - Sets the trajectory type
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TS`, `TSTrajectoryCreate()`, `TSTrajectorySetFromOptions()`, `TSTrajectoryDestroy()`, `TSTrajectoryGetType()`
+-seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryType`, `TS`, `TSTrajectoryCreate()`, `TSTrajectorySetFromOptions()`, `TSTrajectoryDestroy()`, `TSTrajectoryGetType()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetType"))
@@ -3340,6 +3558,9 @@ Input Parameters:
 - `A`    - the `TSTrajectory` context
 - `obj`  - Optional object that provides prefix used for option name
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

@@ -1187,7 +1187,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogStateClassGetInfo()` `PetscLogStateGetClassFromName()`, `PetscLogStateGetClassFromClassId()`
+-seealso: [](ch_profiling), `PetscLogStateClassGetInfo()`, `PetscLogStateGetClassFromName()`, `PetscLogStateGetClassFromClassId()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateClassRegister"))

@@ -142,6 +142,13 @@ end
 
 """
 	PetscOptionsCreateDefault(petsclib::PetscLibType) 
+Creates the default global options database if it does not already exist
+
+Logically collective
+
+Level: developer
+
+-seealso: `PetscOptionsDestroyDefault()`, `PetscOptionsCreate()`, `PetscOptionsPush()`, `PetscOptionsPop()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsCreateDefault"))
@@ -182,7 +189,7 @@ Output Parameters:
 Level: intermediate
 
 -seealso: [](sec_viewers), `PetscViewerDestroy()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -301,6 +308,13 @@ end
 
 """
 	PetscOptionsDestroyDefault(petsclib::PetscLibType) 
+Destroys the default global options database
+
+Logically collective
+
+Level: developer
+
+-seealso: `PetscOptionsCreateDefault()`, `PetscOptionsDestroy()`, `PetscOptionsPush()`, `PetscOptionsPop()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsDestroyDefault"))
@@ -378,7 +392,8 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscOptionsAllUsed()`, `PetscOptionsView()`, `PetscOptionsPush()`, `PetscOptionsPop()`
+-seealso: `PetscOptionsAllUsed()`, `PetscOptionsView()`, `PetscOptionsPush()`, `PetscOptionsPop()`,
+`PetscOptionsLeftGet()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsGetAll"))
@@ -655,7 +670,7 @@ Output Parameters:
 Level: beginner
 
 -seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -707,7 +722,7 @@ Output Parameters:
 Level: beginner
 
 -seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetEnum()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetEnum()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`, `PetscOptionsName()`,
 `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`, `PetscOptionsStringArray()`, `PetscOptionsRealArray()`,
 `PetscOptionsScalar()`, `PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
@@ -756,7 +771,7 @@ Output Parameters:
 Level: beginner
 
 -seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -854,7 +869,7 @@ Output Parameters:
 Level: beginner
 
 -seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -1190,6 +1205,22 @@ end
 
 """
 	set::PetscBool = PetscOptionsGetVec(petsclib::PetscLibType,options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) 
+Gets a `Vec` from the options database as an array of real values
+
+Collective
+
+Input Parameters:
+- `options` - the options database, or `NULL` for the default global one
+- `prefix`  - an option prefix, or `NULL`
+- `key`     - the option name (must include the leading `-`)
+
+Output Parameters:
+- `v`   - the vector to fill in on option match; unchanged if the option is not found
+- `set` - `PETSC_TRUE` if the option was found (may be `NULL`)
+
+Level: intermediate
+
+-seealso: `Vec`, `PetscOptionsGetRealArray()`, `PetscOptionsGetInt()`, `PetscOptionsGetReal()`, `VecView()`
 
 # External Links
 $(_doc_external("Vec/PetscOptionsGetVec"))
@@ -1356,8 +1387,8 @@ Also checks ~/.petscrc, .petscrc and petscrc.
 Use -skip_petscrc in the code specific file (or command line) to skip ~/.petscrc, .petscrc and petscrc files.
 
 Options Database Keys:
-- `-options_file <filename>`      - read options from a file
-- `-options_file_yaml <filename>` - read options from a YAML file
+- `-options_file filename`      - read options from a file
+- `-options_file_yaml filename` - read options from a YAML file
 
 Level: advanced
 
@@ -1629,6 +1660,13 @@ end
 
 """
 	PetscOptionsLeftError(petsclib::PetscLibType) 
+Prints a warning listing any options in the default database that were never used
+
+Not Collective
+
+Level: developer
+
+-seealso: `PetscOptionsLeft()`, `PetscOptionsAllUsed()`, `PetscOptionsView()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsLeftError"))
@@ -1787,8 +1825,8 @@ of "" indicates the option is in the database but has no value.
 - `mctx`   - optional monitoring context, as set by `PetscOptionsMonitorSet()`
 
 Options Database Keys:
-- `-options_monitor <viewer>` - turn on default monitoring of changes to the options database
-- `-options_monitor_cancel`   - turn off any option monitors except the default monitor obtained with `-options_monitor`
+- `-options_monitor viewer` - turn on default monitoring of changes to the options database
+- `-options_monitor_cancel` - turn off any option monitors except the default monitor obtained with `-options_monitor`
 
 Level: intermediate
 
@@ -1916,8 +1954,8 @@ Input Parameters:
 - `prefix`  - The string to append to the existing prefix
 
 Options Database Keys:
-- `-prefix_push <some_prefix_>` - push the given prefix
-- `-prefix_pop`                 - pop the last prefix
+- `-prefix_push some_prefix_` - push the given prefix
+- `-prefix_pop`               - pop the last prefix
 
 Level: advanced
 
@@ -2129,6 +2167,19 @@ end
 
 """
 	a::PetscBool = PetscOptionsStringToBool(petsclib::PetscLibType,value::String) 
+Converts a string to a `PetscBool`
+
+Not Collective
+
+Input Parameter:
+- `value` - the string to convert; may be `NULL` or `""`
+
+Output Parameter:
+- `a` - the resulting `PetscBool`
+
+Level: developer
+
+-seealso: `PetscOptionsStringToInt()`, `PetscOptionsStringToReal()`, `PetscOptionsStringToScalar()`, `PetscOptionsGetBool()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToBool"))
@@ -2154,6 +2205,19 @@ end
 
 """
 	a::PetscInt = PetscOptionsStringToInt(petsclib::PetscLibType,name::String) 
+Converts a string to an integer value. Handles special cases such as "default" and "decide"
+
+Not Collective
+
+Input Parameter:
+- `name` - the string to convert
+
+Output Parameter:
+- `a` - the resulting `PetscInt` value
+
+Level: developer
+
+-seealso: `PetscOptionsStringToReal()`, `PetscOptionsStringToScalar()`, `PetscOptionsStringToBool()`, `PetscOptionsGetInt()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToInt"))
@@ -2179,6 +2243,19 @@ end
 
 """
 	a::PetscReal = PetscOptionsStringToReal(petsclib::PetscLibType,name::String) 
+Converts a string to a `PetscReal` value. Handles special cases like `default` and `decide`
+
+Not Collective
+
+Input Parameter:
+- `name` - the string to convert
+
+Output Parameter:
+- `a` - the resulting `PetscReal` value
+
+Level: developer
+
+-seealso: `PetscOptionsStringToInt()`, `PetscOptionsStringToScalar()`, `PetscOptionsStringToBool()`, `PetscOptionsGetReal()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToReal"))
@@ -2204,6 +2281,19 @@ end
 
 """
 	a::PetscScalar = PetscOptionsStringToScalar(petsclib::PetscLibType,name::String) 
+Converts a string to a `PetscScalar` value; when PETSc is built with complex scalars, parses an optional imaginary part
+
+Not Collective
+
+Input Parameter:
+- `name` - the string to convert
+
+Output Parameter:
+- `a` - the resulting `PetscScalar` value
+
+Level: developer
+
+-seealso: `PetscOptionsStringToInt()`, `PetscOptionsStringToReal()`, `PetscOptionsStringToBool()`, `PetscOptionsGetScalar()`
 
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToScalar"))

@@ -49,14 +49,14 @@ Input/Output Parameters:
 - `Y`     - The current search direction, on output the direction determined by the linesearch, i.e. `Xnew = Xold - lambda*Y`
 
 Options Database Keys:
-- `-snes_linesearch_type`                - basic (or equivalently none), bt, secant, cp, nleqerr, bisection, shell
-- `-snes_linesearch_monitor [:filename]` - Print progress of line searches
-- `-snes_linesearch_damping`             - The linesearch damping parameter, default is 1.0 (no damping)
-- `-snes_linesearch_norms`               - Turn on/off the linesearch norms computation (SNESLineSearchSetComputeNorms())
-- `-snes_linesearch_keeplambda`          - Keep the previous `lambda` as the initial guess
-- `-snes_linesearch_max_it`              - The number of iterations for iterative line searches
+- `-snes_linesearch_type (none|basic|bt|secant|cp|nleqerr|bisection|shell)` - Line search type, see `SNESLineSearchType`
+- `-snes_linesearch_monitor [:filename]`                                    - Print progress of line searches
+- `-snes_linesearch_damping damping`                                        - The linesearch damping parameter, default is 1.0 (no damping)
+- `-snes_linesearch_norms (true|false)`                                     - Turn on/off the linesearch norms computation (SNESLineSearchSetComputeNorms())
+- `-snes_linesearch_keeplambda (true|false)`                                - Keep the previous `lambda` as the initial guess
+- `-snes_linesearch_max_it it`                                              - The number of iterations for iterative line searches
 
-Level: intermediate
+Level: advanced
 
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchGetLambda()`, `SNESLineSearchPreCheck()`, `SNESLineSearchPostCheck()`, `SNESSolve()`, `SNESComputeFunction()`, `SNESLineSearchSetComputeNorms()`,
 `SNESLineSearchType`, `SNESLineSearchSetType()`
@@ -159,7 +159,7 @@ Input Parameter:
 - `linesearch` - the line search context
 
 Options Database Key:
-- `-snes_linesearch_norms` - turn norm computation on or off
+- `-snes_linesearch_norms (true|false)` - turn norm computation on or off
 
 Level: intermediate
 
@@ -341,7 +341,7 @@ Input Parameter:
 - `linesearch` - the line search context
 
 Output Parameter:
-- `lambda` - The last `lambda` (scaling of the solution udpate) computed during `SNESLineSearchApply()`
+- `lambda` - The last `lambda` (scaling of the solution update) computed during `SNESLineSearchApply()`
 
 Level: advanced
 
@@ -489,14 +489,84 @@ end
 end 
 
 """
-	result::SNESLineSearchReason = SNESLineSearchGetReason(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	SNESLineSearchGetPostCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, noname::Ptr{Cvoid}) 
+Gets the post
+
+Input Parameter:
+- `linesearch` - the `SNESLineSearch` context
+
+Output Parameters:
+- `func` - [optional] function evaluation routine, see for the calling sequence `SNESLineSearchSetPostCheck()`
+- `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
+
+Level: intermediate
+
+-seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchGetPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchPostCheck()`, `SNESLineSearchSetPreCheck()`
+
+# External Links
+$(_doc_external("SNES/SNESLineSearchGetPostCheck"))
+"""
+function SNESLineSearchGetPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, noname::Ptr{Cvoid})
+    error("SNESLineSearchGetPostCheck: no generated method for these argument types")
+end
+
+@for_petsc function SNESLineSearchGetPostCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:SNESLineSearchGetPostCheck, $petsc_library),
+               PetscErrorCode,
+               (SNESLineSearch, Ptr{Cvoid}),
+               linesearch, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	SNESLineSearchGetPreCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, noname::Ptr{Cvoid}) 
+Gets the pre
+
+Input Parameter:
+- `linesearch` - the `SNESLineSearch` context
+
+Output Parameters:
+- `func` - [optional] function evaluation routine,  for calling sequence see `SNESLineSearchSetPreCheck()`
+- `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
+
+Level: intermediate
+
+-seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`
+
+# External Links
+$(_doc_external("SNES/SNESLineSearchGetPreCheck"))
+"""
+function SNESLineSearchGetPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, noname::Ptr{Cvoid})
+    error("SNESLineSearchGetPreCheck: no generated method for these argument types")
+end
+
+@for_petsc function SNESLineSearchGetPreCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:SNESLineSearchGetPreCheck, $petsc_library),
+               PetscErrorCode,
+               (SNESLineSearch, Ptr{Cvoid}),
+               linesearch, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	reason::SNESLineSearchReason = SNESLineSearchGetReason(petsclib::PetscLibType,linesearch::SNESLineSearch) 
 Gets the success/failure status of the last line search application
 
 Input Parameter:
 - `linesearch` - the line search context
 
 Output Parameter:
-- `result` - The success or failure status
+- `reason` - The success or failure status
 
 Level: developer
 
@@ -510,18 +580,18 @@ function SNESLineSearchGetReason(petsclib::PetscLibType, linesearch::SNESLineSea
 end
 
 @for_petsc function SNESLineSearchGetReason(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
-	result_ = Ref{SNESLineSearchReason}()
+	reason_ = Ref{SNESLineSearchReason}()
 
     @chk ccall(
                (:SNESLineSearchGetReason, $petsc_library),
                PetscErrorCode,
                (SNESLineSearch, Ptr{SNESLineSearchReason}),
-               linesearch, result_,
+               linesearch, reason_,
               )
 
-	result = result_[]
+	reason = reason_[]
 
-	return result
+	return reason
 end 
 
 """
@@ -629,7 +699,8 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`, `SNESLineSearchSetType()`
+-seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`, `SNESLineSearchSetType()`,
+`PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetType"))
@@ -886,7 +957,7 @@ Calling sequence of `monitorsetup`:
 Level: advanced
 
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetMonitor()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -1055,8 +1126,8 @@ Output Parameter:
 - `changed` - flag indicating that `Y` was modified
 
 Options Database Keys:
-- `-snes_linesearch_precheck_picard`       - activate this routine
-- `-snes_linesearch_precheck_picard_angle` - angle
+- `-snes_linesearch_precheck_picard (true|false)` - activate this routine
+- `-snes_linesearch_precheck_picard_angle angle`  - the angle to use
 
 Level: advanced
 
@@ -1163,7 +1234,7 @@ Input Parameters:
 - `flg`        - indicates whether or not to compute norms
 
 Options Database Key:
-- `-snes_linesearch_norms <true>` - Turns on/off computation of the norms for basic (none) `SNESLINESEARCHBASIC` line search
+- `-snes_linesearch_norms (true|false)` - Turns on/off computation of the norms for basic (none) `SNESLINESEARCHBASIC` line search
 
 Level: intermediate
 
@@ -1198,7 +1269,7 @@ Input Parameters:
 - `damping`    - The damping parameter
 
 Options Database Key:
-- `-snes_linesearch_damping <damping>` - the damping value
+- `-snes_linesearch_damping damping` - the damping value
 
 Level: intermediate
 
@@ -1272,21 +1343,21 @@ Input Parameter:
 - `linesearch` - a `SNESLineSearch` line search context
 
 Options Database Keys:
-- `-snes_linesearch_type <type>`                                      - basic (or equivalently none), `bt`, `secant`, `cp`, `nleqerr`, `bisection`, `shell`
-- `-snes_linesearch_order <order>`                                    - 1, 2, 3.  Most types only support certain orders (`bt` supports 1, 2 or 3)
-- `-snes_linesearch_norms`                                            - Turn on/off the linesearch norms for the basic linesearch typem (`SNESLineSearchSetComputeNorms()`)
-- `-snes_linesearch_minlambda`                                        - The minimum `lambda`
-- `-snes_linesearch_maxlambda`                                        - The maximum `lambda`
-- `-snes_linesearch_rtol`                                             - Relative tolerance for iterative line searches
-- `-snes_linesearch_atol`                                             - Absolute tolerance for iterative line searches
-- `-snes_linesearch_ltol`                                             - Change in `lambda` tolerance for iterative line searches
-- `-snes_linesearch_max_it`                                           - The number of iterations for iterative line searches
-- `-snes_linesearch_monitor [:filename]`                              - Print progress of line searches
-- `-snes_linesearch_monitor_solution_update [viewer:filename:format]` - view each update tried by line search routine
-- `-snes_linesearch_damping`                                          - The linesearch damping parameter
-- `-snes_linesearch_keeplambda`                                       - Keep the previous `lambda` as the initial guess.
-- `-snes_linesearch_precheck_picard`                                  - Use precheck that speeds up convergence of picard method
-- `-snes_linesearch_precheck_picard_angle`                            - Angle used in Picard precheck method
+- `-snes_linesearch_type (none|basic|bt|secant|cp|nleqerr|bisection|shell)` - Line search type, see `SNESLineSearchType`
+- `-snes_linesearch_order order`                                            - 1, 2, 3.  Most types only support certain orders (`bt` supports 1, 2 or 3)
+- `-snes_linesearch_norms (true|false)`                                     - Turn on/off the linesearch norms for the basic linesearch typem (`SNESLineSearchSetComputeNorms()`)
+- `-snes_linesearch_minlambda minlambda`                                    - The minimum `lambda`
+- `-snes_linesearch_maxlambda maxlambda`                                    - The maximum `lambda`
+- `-snes_linesearch_rtol rtol`                                              - Relative tolerance for iterative line searches
+- `-snes_linesearch_atol atol`                                              - Absolute tolerance for iterative line searches
+- `-snes_linesearch_ltol ltol`                                              - Change in `lambda` tolerance for iterative line searches
+- `-snes_linesearch_max_it max_it`                                          - The number of iterations for iterative line searches
+- `-snes_linesearch_monitor [:filename]`                                    - Print progress of line searches
+- `-snes_linesearch_monitor_solution_update [viewer:filename:format]`       - view each update tried by line search routine
+- `-snes_linesearch_damping damping`                                        - The linesearch damping parameter
+- `-snes_linesearch_keeplambda (true|false)`                                - Keep the previous `lambda` as the initial guess.
+- `-snes_linesearch_precheck_picard (true|false)`                           - Use precheck that speeds up convergence of picard method
+- `-snes_linesearch_precheck_picard_angle angle`                            - Angle used in Picard precheck method
 
 Level: intermediate
 
@@ -1435,7 +1506,7 @@ Values for `order`:
 - `3 or `SNES_LINESEARCH_ORDER_CUBIC`  - cubic order
 
 Options Database Key:
-- `-snes_linesearch_order <order>` - 1, 2, 3.  Most types only support certain orders (`SNESLINESEARCHBT` supports 2 or 3)
+- `-snes_linesearch_order order` - 1, 2, 3.  Most types only support certain orders (`SNESLINESEARCHBT` supports 2 or 3)
 
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetOrder()`, `SNESLineSearchSetDamping()`
 
@@ -1530,7 +1601,6 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchGetPreCheck()`,
 `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`
 
-
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetPreCheck"))
 """
@@ -1552,33 +1622,33 @@ end
 end 
 
 """
-	SNESLineSearchSetReason(petsclib::PetscLibType,linesearch::SNESLineSearch, result::SNESLineSearchReason) 
-Sets the success/failure status of the line search application
+	SNESLineSearchSetReason(petsclib::PetscLibType,linesearch::SNESLineSearch, reason::SNESLineSearchReason) 
+Sets the success/failure reason of the line search application
 
 Logically Collective; No Fortran Support
 
 Input Parameters:
 - `linesearch` - the line search context
-- `result`     - The success or failure status
+- `reason`     - The success or failure reason
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchReason`, `SNESLineSearchGetSResult()`
+-seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchReason`, `SNESLineSearchGetSResult()`, `SNESSetFunctionDomainError()`, `SNESSetFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetReason"))
 """
-function SNESLineSearchSetReason(petsclib::PetscLibType, linesearch::SNESLineSearch, result::SNESLineSearchReason)
+function SNESLineSearchSetReason(petsclib::PetscLibType, linesearch::SNESLineSearch, reason::SNESLineSearchReason)
     error("SNESLineSearchSetReason: no generated method for these argument types")
 end
 
-@for_petsc function SNESLineSearchSetReason(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, result::SNESLineSearchReason )
+@for_petsc function SNESLineSearchSetReason(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, reason::SNESLineSearchReason )
 
     @chk ccall(
                (:SNESLineSearchSetReason, $petsc_library),
                PetscErrorCode,
                (SNESLineSearch, SNESLineSearchReason),
-               linesearch, result,
+               linesearch, reason,
               )
 
 
@@ -1675,7 +1745,7 @@ Input Parameters:
 - `type`       - The type of line search to be used, see `SNESLineSearchType`
 
 Options Database Key:
-- `-snes_linesearch_type <type>` - basic (or equivalently none), bt, secant, cp, nleqerr, bisection, shell
+- `-snes_linesearch_type (none|basic|bt|secant|cp|nleqerr|bisection|shell)` - Line search type to use, see `SNESLineSearchType`
 
 Level: intermediate
 
@@ -1875,7 +1945,7 @@ end
     @chk ccall(
                (:SNESLineSearchShellGetApply, $petsc_library),
                PetscErrorCode,
-               (SNESLineSearch, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (SNESLineSearch, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                linesearch, func_, ctx_,
               )
 

@@ -1,5 +1,17 @@
 """
 	PetscHeapAdd(petsclib::PetscLibType,h::PetscHeap, id::PetscInt, val::PetscInt) 
+Insert an item into a `PetscHeap`.
+
+Not Collective
+
+Input Parameters:
+- `h`   - the `PetscHeap`
+- `id`  - the item identifier
+- `val` - the value used for heap ordering
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapPop()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapAdd"))
@@ -23,6 +35,19 @@ end
 
 """
 	heap::PetscHeap = PetscHeapCreate(petsclib::PetscLibType,maxsize::PetscInt) 
+Creates a `PetscHeap` object, a simple min
+
+Not Collective
+
+Input Parameter:
+- `maxsize` - the maximum number of items the heap can hold at once
+
+Output Parameter:
+- `heap` - the newly created `PetscHeap` object
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapAdd()`, `PetscHeapPop()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapView()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapCreate"))
@@ -48,6 +73,16 @@ end
 
 """
 	PetscHeapDestroy(petsclib::PetscLibType,heap::Union{PetscHeap, Ref{PetscHeap}}) 
+Destroys a `PetscHeap` created with `PetscHeapCreate()`.
+
+Not Collective
+
+Input Parameter:
+- `heap` - the `PetscHeap` to destroy; set to `NULL` on return
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapCreate()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapDestroy"))
@@ -72,6 +107,20 @@ end
 
 """
 	id::PetscInt,val::PetscInt = PetscHeapPeek(petsclib::PetscLibType,h::PetscHeap) 
+Return the minimum item of a `PetscHeap` without removing it.
+
+Not Collective
+
+Input Parameter:
+- `h` - the `PetscHeap`
+
+Output Parameters:
+- `id`  - identifier of the minimum item, or `-1` if the heap is empty
+- `val` - value of the minimum item, or `PETSC_INT_MIN` if the heap is empty
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapPeek"))
@@ -99,6 +148,20 @@ end
 
 """
 	id::PetscInt,val::PetscInt = PetscHeapPop(petsclib::PetscLibType,h::PetscHeap) 
+Remove and return the minimum item from a `PetscHeap`.
+
+Not Collective
+
+Input Parameter:
+- `h` - the `PetscHeap`
+
+Output Parameters:
+- `id`  - identifier of the popped item, or `-1` if the heap is empty
+- `val` - value of the popped item, or `PETSC_INT_MIN` if the heap is empty
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapPop"))
@@ -126,6 +189,18 @@ end
 
 """
 	PetscHeapStash(petsclib::PetscLibType,h::PetscHeap, id::PetscInt, val::PetscInt) 
+Set aside an item in a `PetscHeap` for later insertion via `PetscHeapUnstash()`.
+
+Not Collective
+
+Input Parameters:
+- `h`   - the `PetscHeap`
+- `id`  - the item identifier
+- `val` - the value used for heap ordering
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapStash"))
@@ -149,6 +224,16 @@ end
 
 """
 	PetscHeapUnstash(petsclib::PetscLibType,h::PetscHeap) 
+Reinsert all items previously stashed with `PetscHeapStash()` into the heap.
+
+Not Collective
+
+Input Parameter:
+- `h` - the `PetscHeap`
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapStash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapUnstash"))
@@ -172,6 +257,17 @@ end
 
 """
 	PetscHeapView(petsclib::PetscLibType,h::PetscHeap, viewer::PetscViewer) 
+View the contents of a `PetscHeap`, including any stashed items.
+
+Not Collective
+
+Input Parameters:
+- `h`      - the `PetscHeap`
+- `viewer` - a `PetscViewer`, or `NULL` to use `PETSC_VIEWER_STDOUT_SELF`
+
+Level: developer
+
+-seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapView"))

@@ -11,15 +11,15 @@ Output Parameter:
 - `guess` - location to put the `KSPGuess` context
 
 Options Database Keys:
-- `-ksp_guess_type  <method>`      - Turns on generation of initial guesses and sets the method; use -help for a list of available methods
-- `-ksp_guess_view <viewer>`       - view the `KSPGuess` object
-- `-ksp_guess_fischer_model <a,b>` - set details for the Fischer models
-- `-ksp_guess_fischer_monitor`     - monitor the fischer models
-- `-ksp_guess_fischer_tol <tol>`   - set the tolerance for the Fischer models
-- `-ksp_guess_pod_size <size>`     - Number of snapshots
-- `-ksp_guess_pod_monitor true`    - monitor the pod initial guess processing
-- `-ksp_guess_pod_tol <tol>`       - Tolerance to retain eigenvectors
-- `-ksp_guess_pod_Ainner true`     - Use the operator as inner product (must be SPD)
+- `-ksp_guess_type type`               - Turns on generation of initial guesses and sets the method; see `KSPGuessType`
+- `-ksp_guess_view viewer`             - view the `KSPGuess` object
+- `-ksp_guess_fischer_model a,b`       - set details for the Fischer models
+- `-ksp_guess_fischer_monitor`         - monitor the fischer models
+- `-ksp_guess_fischer_tol tol`         - set the tolerance for the Fischer models
+- `-ksp_guess_pod_size size`           - Number of snapshots
+- `-ksp_guess_pod_monitor`             - monitor the pod initial guess processing
+- `-ksp_guess_pod_tol tol`             - Tolerance to retain eigenvectors
+- `-ksp_guess_pod_Ainner (true|false)` - Use the operator as inner product (must be SPD)
 
 Level: developer
 
@@ -93,7 +93,7 @@ Input Parameters:
 - `size`  - size of subspace used to generate initial guess
 
 Options Database Key:
-- `-ksp_guess_fischer_model <model,size>` - uses the Fischer initial guess generator for repeated linear solves
+- `-ksp_guess_fischer_model model,size` - uses the Fischer initial guess generator for repeated linear solves
 
 Level: advanced
 
@@ -234,15 +234,15 @@ Input Parameter:
 - `guess` - `KSPGuess` object
 
 Options Database Keys:
-- `-ksp_guess_type <method>`       - Turns on generation of initial guesses and sets the method; use -help for a list of available methods
-- `-ksp_guess_view <viewer>`       - view the `KSPGuess` object
-- `-ksp_guess_fischer_model <a,b>` - set details for the Fischer models
-- `-ksp_guess_fischer_monitor`     - monitor the Fischer models
-- `-ksp_guess_fischer_tol <tol>`   - set the tolerance for the Fischer models
-- `-ksp_guess_pod_size <size>`     - Number of snapshots
-- `-ksp_guess_pod_monitor true`    - monitor the pod initial guess processing
-- `-ksp_guess_pod_tol <tol>`       - Tolerance to retain eigenvectors
-- `-ksp_guess_pod_Ainner true`     - Use the operator as inner product (must be SPD)
+- `-ksp_guess_type method`             - Turns on generation of initial guesses and sets the method; see `KSPGuessType`
+- `-ksp_guess_view viewer`             - view the `KSPGuess` object
+- `-ksp_guess_fischer_model a,b`       - set details for the Fischer models
+- `-ksp_guess_fischer_monitor`         - monitor the Fischer models
+- `-ksp_guess_fischer_tol tol`         - set the tolerance for the Fischer models
+- `-ksp_guess_pod_size size`           - Number of snapshots
+- `-ksp_guess_pod_monitor`             - monitor the pod initial guess processing
+- `-ksp_guess_pod_tol tol`             - Tolerance to retain eigenvectors
+- `-ksp_guess_pod_Ainner (true|false)` - Use the operator as inner product (must be SPD)
 
 Level: developer
 
@@ -279,8 +279,8 @@ Input Parameters:
 - `tol`   - the tolerance
 
 Options Database Key:
-- `-ksp_guess_fischer_tol <tol>` - set the tolerance for the Fischer models
-- `-ksp_guess_pod_tol <tol>`     - set the tolerance for the Pod models
+- `-ksp_guess_fischer_tol tol` - set the tolerance for the Fischer models
+- `-ksp_guess_pod_tol tol`     - set the tolerance for the Pod models
 
 Level: developer
 
@@ -317,7 +317,7 @@ Input Parameters:
 - `type`  - a known `KSPGuessType`
 
 Options Database Key:
-- `-ksp_guess_type  <method>` - Turns on generation of initial guesses and sets the method; see `KSPGuessType` for a list of available types
+- `-ksp_guess_type  type` - Turns on generation of initial guesses and sets the method; see `KSPGuessType` for a list of available types
 
 Level: developer
 

@@ -89,6 +89,9 @@ end
 is_destroy(fn::Fn) = endswith(fn.name, "Destroy")
 
 function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
+    if a.typename in ("PetscCtxRt", "PetscCtx")     # PETSc >= 3.25: `typedef void *PetscCtx[Rt]`
+        a = Arg(a.name, "void", a.stars + 1, a.array, a.isconst, a.optional, a.isfunction, a.stringlen)
+    end
     stars = a.stars
     typename = map_type(r, a.typename)
     name = rename_arg(r, a.name)

@@ -72,7 +72,7 @@ end
 end 
 
 """
-	PetscContainerGetPointer(petsclib::PetscLibType,obj::PetscContainer, ptr::PeCtx) 
+	ptr::Ptr{Cvoid} = PetscContainerGetPointer(petsclib::PetscLibType,obj::PetscContainer) 
 Gets the pointer value contained in the container that was provided with `PetscContainerSetPointer()`
 
 Not Collective, No Fortran Support
@@ -91,21 +91,23 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerGetPointer"))
 """
-function PetscContainerGetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::PeCtx)
+function PetscContainerGetPointer(petsclib::PetscLibType, obj::PetscContainer)
     error("PetscContainerGetPointer: no generated method for these argument types")
 end
 
-@for_petsc function PetscContainerGetPointer(petsclib::$UnionPetscLib, obj::PetscContainer, ptr::PeCtx )
+@for_petsc function PetscContainerGetPointer(petsclib::$UnionPetscLib, obj::PetscContainer )
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PetscContainerGetPointer, $petsc_library),
                PetscErrorCode,
-               (PetscContainer, PeCtx),
-               obj, ptr,
+               (PetscContainer, Ptr{Cvoid}),
+               obj, ptr_,
               )
 
+	ptr = ptr_[]
 
-	return nothing
+	return ptr
 end 
 
 """

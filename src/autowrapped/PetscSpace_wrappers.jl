@@ -427,7 +427,7 @@ Input Parameters:
 - `formDegree` - the form degree
 
 Options Database Key:
-- `-petscspace_ptrimmed_form_degree <int>` - The trimmed polynomial form degree
+- `-petscspace_ptrimmed_form_degree degree` - The trimmed polynomial form degree
 
 Level: intermediate
 
@@ -571,7 +571,7 @@ Input Parameters:
 - `tensor` - `PETSC_TRUE` for a tensor polynomial space, `PETSC_FALSE` for a polynomial space
 
 Options Database Key:
-- `-petscspace_poly_tensor <bool>` - Whether to use tensor product polynomials in higher dimension
+- `-petscspace_poly_tensor (true|false)` - Whether to use tensor product polynomials in higher dimension
 
 Level: intermediate
 
@@ -672,9 +672,9 @@ Input Parameter:
 - `sp` - the `PetscSpace` object to set options for
 
 Options Database Keys:
-- `-petscspace_degree <deg>`   - the approximation order of the space
-- `-petscspace_variables <n>`  - the number of different variables, e.g. x and y
-- `-petscspace_components <c>` - the number of components, say d for a vector field
+- `-petscspace_degree deg`   - the degree of the space
+- `-petscspace_variables n`  - the number of different variables, e.g. x and y
+- `-petscspace_components c` - the number of components, say d for a vector field
 
 Level: intermediate
 
@@ -775,7 +775,7 @@ Input Parameters:
 - `name` - The kind of space
 
 Options Database Key:
-- `-petscspace_type <type>` - Sets the `PetscSpace` type; use -help for a list of available types
+- `-petscspace_type type` - Sets the `PetscSpace` type; use -help for a list of available types
 
 Level: intermediate
 
@@ -1300,6 +1300,9 @@ Input Parameters:
 - `A`    - the `PetscSpace` object
 - `obj`  - Optional object that provides the options name prefix
 - `name` - command line option name
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

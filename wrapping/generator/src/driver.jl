@@ -87,7 +87,8 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
     prologue = read(joinpath(wrapping_dir, "prologue.jl"), String)
     structs = read(joinpath(wrapping_dir, "structs.jl"), String)
     petscbool = read(joinpath(wrapping_dir, "petscbool.jl"), String)
-    typedef_exclude = Set(["PetscGeom", "PetscInt32", "PetscBool"])
+    # typedefs the prologue already defines (PetscInt, PetscScalar, ... are library dependent) or hand-defined
+    typedef_exclude = Set(["PetscGeom", "PetscInt32", "PetscBool", "PetscComplex"]) ∪ defined_names(prologue)
     known = defined_names(prologue) ∪ defined_names(structs) ∪ Set(["PetscBool", "PETSC_TRUE", "PETSC_FALSE"])
     union!(known, keys(api.enums), keys(api.senums), setdiff(keys(api.typedefs), typedef_exclude), keys(api.structs))
     union!(known, r.predeclared)
@@ -96,6 +97,9 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
     end
     isknown(t) = t in known || t == "String" || isdefined(Base, Symbol(t)) || isdefined(Core, Symbol(t)) ||
                  startswith(t, "Libc.") || startswith(t, "\$")
+
+    td_names, td_values, td_skipped = plan_typedefs(api, r, typedef_exclude, isknown)
+    setdiff!(known, td_skipped)          # so they get declared as opaque types below
 
     plans = plan_files(api, r)
     opaque = Set{String}()
@@ -139,7 +143,7 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
         write_senums(io, api, r)
     end
     open(joinpath(outdir, "typedefs_wrappers.jl"), "w") do io
-        write_typedefs(io, api, r, typedef_exclude, [petscbool])
+        write_typedefs(io, td_names, td_values, [petscbool])
     end
     write(joinpath(outdir, "struct_wrappers.jl"), structs)
     write(joinpath(outdir, "petscarray.jl"), read(joinpath(wrapping_dir, "petscarray.jl"), String))
@@ -180,7 +184,7 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
         end
         for m in eachmatch(r"(?m)^\s+\(([^:].*)\),\s*$", txt), id in eachmatch(r"[A-Za-z_]\w*", m.captures[1])
             n = id.match
-            (isknown(n) || n in defined || n in ("Ptr", "Ref", "Nothing")) || push!(missing, n)
+            (isknown(n) || n in defined || n in ("Ptr", "Ref", "Nothing", "MPI")) || push!(missing, n)
         end
     end
     isempty(missing) || @warn "type names used but not defined anywhere in the output" missing = sort!(collect(missing))

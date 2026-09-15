@@ -33,7 +33,9 @@ end
 _str(x) = x === nothing ? "" : String(x)
 
 function _arg(a)
-    Arg(_str(a[:name]), _str(a[:typename]), Int(a[:stars]), Bool(a[:array]), Bool(a[:const]),
+    name = _str(a[:name])
+    occursin(' ', strip(name)) && (name = String(last(split(name))))   # getAPI.py mis-parse such as "int cmp"
+    Arg(name, _str(a[:typename]), Int(a[:stars]), Bool(a[:array]), Bool(a[:const]),
         Bool(a[:optional]), Bool(a[:isfunction]), Bool(a[:stringlen]))
 end
 

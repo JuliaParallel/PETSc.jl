@@ -1,15 +1,37 @@
 """
-	DMAdaptInterpolator(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, InAdapt::AbstractPetscMat, user::Ptr{Cvoid}) 
+	InAdapt::PetscMat = DMAdaptInterpolator(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid}) 
+Adapts a grid interpolator so that it accurately reproduces a set of sample fine
+
+Collective
+
+Input Parameters:
+- `dmc`      - the coarse `DM`
+- `dmf`      - the fine `DM`
+- `In`       - the input (unadapted) interpolation matrix from `dmc` to `dmf`
+- `smoother` - a `KSP` whose operator provides the fine-grid matrix used to weight modes by their Rayleigh quotient
+- `MF`       - a dense matrix whose columns are fine-grid sample vectors
+- `MC`       - a dense matrix whose columns are the corresponding coarse-grid sample vectors (may be `NULL`, in which case I_n^T M_F is used)
+- `user`     - unused application context
+
+Output Parameter:
+- `InAdapt` - the adapted interpolation matrix (created inside the routine)
+
+Options Database Key:
+- `-dm_interpolator_adapt_debug flag` - print diagnostic information about the least-squares systems solved for each row
+
+Level: developer
+
+-seealso: [](ch_ksp), `DM`, `Mat`, `KSP`, `DMCheckInterpolator()`, `DMCreateInterpolation()`, `PCMG`
 
 # External Links
 $(_doc_external("DM/DMAdaptInterpolator"))
 """
-function DMAdaptInterpolator(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, InAdapt::AbstractPetscMat, user::Ptr{Cvoid})
+function DMAdaptInterpolator(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid})
     error("DMAdaptInterpolator: no generated method for these argument types")
 end
 
-@for_petsc function DMAdaptInterpolator(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, InAdapt::AbstractPetscMat, user::Ptr{Cvoid} )
-	InAdapt_ = Ref(InAdapt.ptr)
+@for_petsc function DMAdaptInterpolator(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid} )
+	InAdapt_ = Ref{CMat}()
 
     @chk ccall(
                (:DMAdaptInterpolator, $petsc_library),
@@ -18,9 +40,9 @@ end
                dmc, dmf, In, smoother, MF, MC, InAdapt_, user,
               )
 
-	InAdapt.ptr = InAdapt_[]
+	InAdapt = PetscMat(InAdapt_[], petsclib)
 
-	return nothing
+	return InAdapt
 end 
 
 """
@@ -119,14 +141,14 @@ Input Parameters:
 - `comps`    - An array of constrained component numbers
 - `bcFunc`   - A pointwise function giving boundary values
 - `bcFunc_t` - A pointwise function giving the time derivative of the boundary values, or `NULL`
-- `ctx`      - An optional user context for bcFunc
+- `ctx`      - An optional application context for `bcFunc`
 
 Output Parameter:
 - `bd` - (Optional) Boundary number
 
 Options Database Keys:
-- `-bc_<boundary name> <num>`      - Overrides the boundary ids
-- `-bc_<boundary name>_comp <num>` - Overrides the boundary components
+- `-bc_NAME values`     - Overrides the boundary ids for boundary named NAME
+- `-bc_NAME_comp comps` - Overrides the boundary components for boundary named NAME
 
 Level: intermediate
 
@@ -318,6 +340,23 @@ end
 
 """
 	DMCheckInterpolator(petsclib::PetscLibType,dmf::AbstractPetscDM, In::AbstractPetscMat, MC::AbstractPetscMat, MF::AbstractPetscMat, tol::PetscReal) 
+Check that an interpolation matrix accurately reproduces a set of sample fine
+
+Collective
+
+Input Parameters:
+- `dmf` - the fine `DM`
+- `In`  - the interpolation matrix from a coarse `DM` to `dmf`
+- `MC`  - a dense matrix whose columns are coarse-grid sample vectors
+- `MF`  - a dense matrix whose columns are the corresponding fine-grid sample vectors
+- `tol` - tolerance on the maximum 2-norm of v_f - I v_c across all sample vectors
+
+Options Database Key:
+- `-dm_interpolator_adapt_error view` - view the coarse, fine, and error vectors for each sample
+
+Level: developer
+
+-seealso: [](ch_ksp), `DM`, `Mat`, `DMAdaptInterpolator()`, `DMCreateInterpolation()`, `PCMG`
 
 # External Links
 $(_doc_external("DM/DMCheckInterpolator"))
@@ -457,7 +496,7 @@ Level: developer
 
 -seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
-`DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMRestoreLocalVector()`
+`DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMRestoreLocalVector()`,
 `VecStrideMax()`, `VecStrideMin()`, `VecStrideNorm()`, `DMClearLocalVectors()`
 
 # External Links
@@ -570,7 +609,7 @@ Level: developer
 
 -seealso: `DM`, `DMCreateLocalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMLocalToLocalBegin()`,
-`DMLocalToLocalEnd()`, `DMRestoreLocalVector()`
+`DMLocalToLocalEnd()`, `DMRestoreLocalVector()`,
 `VecStrideMax()`, `VecStrideMin()`, `VecStrideNorm()`, `DMClearGlobalVectors()`
 
 # External Links
@@ -799,12 +838,12 @@ Input Parameters:
 - `fine`         - `DM` on which to run a hook when restricting to a coarser level
 - `coarsenhook`  - function to run when setting up a coarser level
 - `restricthook` - function to run to update data on coarser levels (called once per `SNESSolve()`)
-- `ctx`          - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`          - [optional] application context for provide data for the hooks (may be `NULL`)
 
 Calling sequence of `coarsenhook`:
 - `fine`   - fine level `DM`
 - `coarse` - coarse level `DM` to restrict problem to
-- `ctx`    - optional user-defined function context
+- `ctx`    - optional application function context
 
 Calling sequence of `restricthook`:
 - `fine`      - fine level `DM`
@@ -812,7 +851,7 @@ Calling sequence of `restricthook`:
 - `rscale`    - scaling vector for restriction
 - `inject`    - matrix restricting by injection
 - `coarse`    - coarse level DM to update
-- `ctx`       - optional user-defined function context
+- `ctx`       - optional application function context
 
 Level: advanced
 
@@ -860,7 +899,20 @@ Input Parameters:
 - `fine`         - `DM` on which to run a hook when restricting to a coarser level
 - `coarsenhook`  - function to run when setting up a coarser level
 - `restricthook` - function to run to update data on coarser levels
-- `ctx`          - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`          - [optional] application context for provide data for the hooks (may be `NULL`)
+
+Calling sequence of `coarsenhook`:
+- `fine`   - fine level `DM`
+- `coarse` - coarse level `DM` to restrict problem to
+- `ctx`    - optional application function context
+
+Calling sequence of `restricthook`:
+- `fine`    - fine level `DM`
+- `rstrict` - matrix restricting a fine-level solution to the coarse grid, usually the transpose of the interpolation
+- `rscale`  - scaling vector for restriction
+- `inject`  - matrix restricting by injection
+- `coarse`  - coarse level DM to update
+- `ctx`     - optional application function context
 
 Level: advanced
 
@@ -1009,8 +1061,8 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCompositeScatter()`, `DMCreate()`
-`DMCompositeGather()`, `DMCreateGlobalVector()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`
+-seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCompositeScatter()`, `DMCreate()`,
+`DMCompositeGather()`, `DMCreateGlobalVector()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
 # External Links
@@ -1051,7 +1103,7 @@ Level: advanced
 
 -seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
 `DMCompositeScatter()`, `DMCompositeCreate()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
-`DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`,
+`DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
 # External Links
 $(_doc_external("DMComposite/DMCompositeGatherArray"))
@@ -1129,7 +1181,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`, `DMCompositeGetEntries()`
+-seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`, `DMCompositeGetEntries()`,
 `DMCompositeGather()`, `DMCompositeCreate()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeRestoreLocalVectors()`, `DMCompositeGetLocalVectors()`, `DMCompositeScatter()`
 
@@ -1444,7 +1496,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`
+-seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
 `DMCompositeGather()`, `DMCompositeCreate()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
@@ -1590,6 +1642,126 @@ end
                PetscErrorCode,
                (CDM, $PetscReal, CVec, CVec),
                dm, time, u, u_t,
+              )
+
+
+	return nothing
+end 
+
+# override for DMComputeL2Diff; C signature: DMComputeL2Diff(<not in API snapshot>)
+"""
+    DMComputeL2Diff(petsclib, dm, time, funcs, ctxs, X) -> PetscReal
+
+Compute the L² norm of the difference between the global vector `X` and the
+pointwise exact functions `funcs`.  `ctxs` is a `Vector{Ptr{Cvoid}}` of
+context pointers (use `C_NULL` entries for no context).
+"""
+function DMComputeL2Diff(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real,
+                         funcs::Vector{Ptr{Cvoid}}, ctxs::Vector{Ptr{Cvoid}},
+                         X::AbstractPetscVec) end
+
+@for_petsc function DMComputeL2Diff(petsclib::$UnionPetscLib, dm::AbstractPetscDM,
+                                    time::Real,
+                                    funcs::Vector{Ptr{Cvoid}},
+                                    ctxs::Vector{Ptr{Cvoid}},
+                                    X::AbstractPetscVec)
+    diff_ref = Ref{$PetscReal}(0)
+    GC.@preserve funcs ctxs @chk ccall(
+        (:DMComputeL2Diff, $petsc_library), PetscErrorCode,
+        (CDM, $PetscReal, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, CVec, Ptr{$PetscReal}),
+        dm, $PetscReal(time), funcs, ctxs, X, diff_ref)
+    return diff_ref[]
+end
+
+"""
+	DMComputeL2FieldDiff(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+This function computes the L_2 difference between a function u and an FEM interpolant solution u_h, separated into field components.
+
+Collective
+
+Input Parameters:
+- `dm`    - The `DM`
+- `time`  - The time
+- `funcs` - The functions to evaluate for each field component
+- `ctxs`  - Optional array of contexts to pass to each function, or `NULL`.
+- `X`     - The coefficient vector u_h, a global vector
+
+Output Parameter:
+- `diff` - The array of differences, ||u^f - u^f_h||_2
+
+Level: developer
+
+Developer Notes:
+This API is specific to only particular usage of `DM`
+
+The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
+
+See also: 
+=== 
+`DM`, `DMProjectFunction()`, `DMComputeL2GradientDiff()`
+
+# External Links
+$(_doc_external("DM/DMComputeL2FieldDiff"))
+"""
+function DMComputeL2FieldDiff(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, noname::Ptr{Cvoid})
+    error("DMComputeL2FieldDiff: no generated method for these argument types")
+end
+
+@for_petsc function DMComputeL2FieldDiff(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMComputeL2FieldDiff, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscReal, Ptr{Cvoid}),
+               dm, time, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMComputeL2GradientDiff(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+This function computes the L_2 difference between the gradient of a function u and an FEM interpolant solution grad u_h.
+
+Collective
+
+Input Parameters:
+- `dm`    - The `DM`
+- `time`  - The time
+- `funcs` - The gradient functions to evaluate for each field component
+- `ctxs`  - Optional array of contexts to pass to each function, or `NULL`.
+- `X`     - The coefficient vector u_h, a global vector
+- `n`     - The vector to project along
+
+Output Parameter:
+- `diff` - The diff ||(grad u - grad u_h) . n||_2
+
+Level: developer
+
+Developer Notes:
+This API is specific to only particular usage of `DM`
+
+The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
+
+See also: 
+=== 
+`DM`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMComputeL2FieldDiff()`
+
+# External Links
+$(_doc_external("DM/DMComputeL2GradientDiff"))
+"""
+function DMComputeL2GradientDiff(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, noname::Ptr{Cvoid})
+    error("DMComputeL2GradientDiff: no generated method for these argument types")
+end
+
+@for_petsc function DMComputeL2GradientDiff(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMComputeL2GradientDiff, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscReal, Ptr{Cvoid}),
+               dm, time, noname,
               )
 
 
@@ -1958,6 +2130,24 @@ end
 
 """
 	DMCopyTransform(petsclib::PetscLibType,dm::AbstractPetscDM, newdm::AbstractPetscDM) 
+Copy the basis transform context and callbacks from `dm` to `newdm`
+
+Not Collective
+
+Input Parameter:
+- `dm` - the source `DM`
+
+Output Parameter:
+- `newdm` - the destination `DM`
+
+Level: developer
+
+Note:
+If the transform requires setup, `DMConstructBasisTransform_Internal()` is invoked on `newdm`.
+
+See also: 
+=== 
+`DM`, `DMCopyDS()`, `DMCopyDisc()`
 
 # External Links
 $(_doc_external("DM/DMCopyTransform"))
@@ -2120,7 +2310,7 @@ end
 end 
 
 """
-	n::PetscInt,namelist::String,innerislist::Ptr{IS},outerislist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateDomainDecomposition(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	n::PetscInt,namelist::Ptr{Ptr{Cchar}},innerislist::Ptr{IS},outerislist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateDomainDecomposition(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Returns lists of `IS` objects defining a decomposition of a
 problem into subproblems corresponding to restrictions to pairs of nested subdomains.
 
@@ -2157,7 +2347,7 @@ The names are inconsistent, the hooks use `DMSubDomainHook` which is nothing lik
 See also: 
 === 
 `DM`, `DMCreateFieldDecomposition()`, `DMDestroy()`, `DMCreateDomainDecompositionScatters()`, `DMView()`, `DMCreateInterpolation()`,
-`DMSubDomainHookAdd()`, `DMSubDomainHookRemove()`,`DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`
+`DMSubDomainHookAdd()`, `DMSubDomainHookRemove()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`
 
 # External Links
 $(_doc_external("DM/DMCreateDomainDecomposition"))
@@ -2168,7 +2358,7 @@ end
 
 @for_petsc function DMCreateDomainDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	n_ = Ref{$PetscInt}()
-	namelist_ = Ref{Ptr{Cchar}}()
+	namelist_ = Ref{Ptr{Ptr{Cchar}}}()
 	innerislist_ = Ref{Ptr{IS}}()
 	outerislist_ = Ref{Ptr{IS}}()
 	dmlist_ = Ref{Ptr{PetscDM}}()
@@ -2176,12 +2366,12 @@ end
     @chk ccall(
                (:DMCreateDomainDecomposition, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{$PetscInt}, Ptr{Ptr{Cchar}}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}, Ptr{Ptr{CDM}}),
+               (CDM, Ptr{$PetscInt}, Ptr{Ptr{Ptr{Cchar}}}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}, Ptr{Ptr{CDM}}),
                dm, n_, namelist_, innerislist_, outerislist_, dmlist_,
               )
 
 	n = n_[]
-	namelist = unsafe_string(namelist_[])
+	namelist = namelist_[]
 	innerislist = innerislist_[]
 	outerislist = outerislist_[]
 	dmlist = dmlist_[]
@@ -2190,7 +2380,7 @@ end
 end 
 
 """
-	subdms::PetscDM,iscat::Ptr{VecScatter},oscat::Ptr{VecScatter},gscat::Ptr{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt) 
+	iscat::Ptr{VecScatter},oscat::Ptr{VecScatter},gscat::Ptr{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt, subdms::Vector{<:AbstractPetscDM}) 
 Returns scatters to the subdomain vectors from the global vector for subdomains created with
 `DMCreateDomainDecomposition()`
 
@@ -2209,13 +2399,13 @@ Output Parameters:
 Level: developer
 
 Note:
-This is an alternative to the iis and ois arguments in `DMCreateDomainDecomposition()` that allow for the solution
+This is an alternative to the `iis` and `ois` arguments in `DMCreateDomainDecomposition()` that allow for the solution
 of general nonlinear problems with overlapping subdomain methods.  While merely having index sets that enable subsets
 of the residual equations to be created is fine for linear problems, nonlinear problems require local assembly of
 solution and residual data.
 
 Developer Note:
-Can the subdms input be anything or are they exactly the `DM` obtained from
+Can the `subdms` input be anything or are they exactly the `DM` obtained from
 `DMCreateDomainDecomposition()`?
 
 See also: 
@@ -2225,12 +2415,11 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateDomainDecompositionScatters"))
 """
-function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer)
+function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer, subdms::Vector{<:AbstractPetscDM})
     error("DMCreateDomainDecompositionScatters: no generated method for these argument types")
 end
 
-@for_petsc function DMCreateDomainDecompositionScatters(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt )
-	subdms_ = Ref{CDM}()
+@for_petsc function DMCreateDomainDecompositionScatters(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt, subdms::Vector{<:AbstractPetscDM} )
 	iscat_ = Ref{Ptr{VecScatter}}()
 	oscat_ = Ref{Ptr{VecScatter}}()
 	gscat_ = Ref{Ptr{VecScatter}}()
@@ -2239,15 +2428,14 @@ end
                (:DMCreateDomainDecompositionScatters, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{CDM}, Ptr{Ptr{VecScatter}}, Ptr{Ptr{VecScatter}}, Ptr{Ptr{VecScatter}}),
-               dm, n, subdms_, iscat_, oscat_, gscat_,
+               dm, n, subdms, iscat_, oscat_, gscat_,
               )
 
-	subdms = PetscDM(subdms_[], petsclib)
 	iscat = iscat_[]
 	oscat = oscat_[]
 	gscat = gscat_[]
 
-	return subdms,iscat,oscat,gscat
+	return iscat,oscat,gscat
 end 
 
 """
@@ -2450,6 +2638,10 @@ Output Parameter:
 - `vec` - the global vector
 
 Level: beginner
+
+Note:
+PETSc `Vec` always have all zero entries when created with `DMCreateGlobalVector()` until routines such as `VecSet()` or `VecSetValues()`
+are used to change the values. There is no reason to call `VecZeroEntries()` after creation.
 
 See also: 
 === 
@@ -2763,12 +2955,15 @@ Output Parameter:
 
 Level: beginner
 
-Note:
+Notes:
 A local vector usually has ghost locations that contain values that are owned by different MPI ranks. A global vector has no ghost locations.
+
+PETSc `Vec` always have all zero entries when created with `DMCreateLocalVector()` until routines such as `VecSet()` or `VecSetValues()`
+are used to change the values. There is no reason to call `VecZeroEntries()` after creation.
 
 See also: 
 === 
-`DM`, `Vec`, `DMCreateGlobalVector()`, `DMGetLocalVector()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`
+`DM`, `Vec`, `DMCreateGlobalVector()`, `DMGetLocalVector()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`
 
 # External Links
@@ -2888,7 +3083,8 @@ end
 
 """
 	mat::PetscMat = DMCreateMatrix(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Gets an empty matrix for a `DM` that is most commonly used to store the Jacobian of a discrete PDE operator.
+Creates a matrix of appropriate size and nonzero structure for a `DM`. The matrix is most commonly used to store the Jacobian
+of a discrete PDE operator.
 
 Collective
 
@@ -2896,10 +3092,10 @@ Input Parameter:
 - `dm` - the `DM` object
 
 Output Parameter:
-- `mat` - the empty Jacobian
+- `mat` - the matrix
 
 Options Database Key:
-- `-dm_preallocate_only` - Only preallocate the matrix for `DMCreateMatrix()` and `DMCreateMassMatrix()`, but do not fill it with zeros
+- `-dm_preallocate_only (true|false)` - Only preallocate the matrix for `DMCreateMatrix()` and `DMCreateMassMatrix()`, but do not fill its nonzero structure
 
 Level: beginner
 
@@ -3356,10 +3552,10 @@ Output Parameter:
 - `da` - the resulting distributed array object
 
 Options Database Keys:
-- `-dm_view`          - Calls `DMView()` at the conclusion of `DMDACreate1d()`
-- `-da_grid_x <nx>`   - number of grid points in x direction
-- `-da_refine_x <rx>` - refinement factor
-- `-da_refine <n>`    - refine the `DMDA` n times before creating it
+- `-dm_view`        - Calls `DMView()` at the conclusion of `DMDACreate1d()`
+- `-da_grid_x nx`   - number of grid points in the x direction
+- `-da_refine_x rx` - refinement factor
+- `-da_refine n`    - refine the `DMDA` `n` times before creating it
 
 Level: beginner
 
@@ -3391,7 +3587,7 @@ end
 end 
 
 """
-	da::PetscDM = DMDACreate2d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
+	da::PetscDM = DMDACreate2d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, M_m::PetscInt, M_n::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
 Creates an object that will manage the communication of two
 regular array data that is distributed across one or more MPI processes.
 
@@ -3402,10 +3598,10 @@ Input Parameters:
 - `bx`           - type of ghost nodes the x array have. Use one of `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`.
 - `by`           - type of ghost nodes the y array have. Use one of `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`.
 - `stencil_type` - stencil type.  Use either `DMDA_STENCIL_BOX` or `DMDA_STENCIL_STAR`.
-- `M`            - global dimension in x direction of the array
-- `N`            - global dimension in y direction of the array
-- `m`            - corresponding number of processors in x dimension (or `PETSC_DECIDE` to have calculated)
-- `n`            - corresponding number of processors in y dimension (or `PETSC_DECIDE` to have calculated)
+- `M`            - global dimension in the x direction of the array
+- `N`            - global dimension in the y direction of the array
+- `m`            - corresponding number of processors in the x dimension (or `PETSC_DECIDE` to have calculated)
+- `n`            - corresponding number of processors in the y dimension (or `PETSC_DECIDE` to have calculated)
 - `dof`          - number of degrees of freedom per node
 - `s`            - stencil width
 - `lx`           - arrays containing the number of nodes in each cell along the x coordinates, or `NULL`.
@@ -3415,17 +3611,17 @@ Output Parameter:
 - `da` - the resulting distributed array object
 
 Options Database Keys:
-- `-dm_view`              - Calls `DMView()` at the conclusion of `DMDACreate2d()`
-- `-da_grid_x <nx>`       - number of grid points in x direction
-- `-da_grid_y <ny>`       - number of grid points in y direction
-- `-da_processors_x <nx>` - number of processors in x direction
-- `-da_processors_y <ny>` - number of processors in y direction
-- `-da_bd_x <bx>`         - boundary type in x direction
-- `-da_bd_y <by>`         - boundary type in y direction
-- `-da_bd_all <bt>`       - boundary type in all directions
-- `-da_refine_x <rx>`     - refinement ratio in x direction
-- `-da_refine_y <ry>`     - refinement ratio in y direction
-- `-da_refine <n>`        - refine the `DMDA` n times before creating
+- `-dm_view`            - Calls `DMView()` at the conclusion of `DMDACreate2d()`
+- `-da_grid_x nx`       - number of grid points in the x direction
+- `-da_grid_y ny`       - number of grid points in the y direction
+- `-da_processors_x nx` - number of processors in the x direction
+- `-da_processors_y ny` - number of processors in the y direction
+- `-da_bd_x bx`         - boundary type in the x direction
+- `-da_bd_y by`         - boundary type in the y direction
+- `-da_bd_all bt`       - boundary type in all directions
+- `-da_refine_x rx`     - refinement ratio in the x direction
+- `-da_refine_y ry`     - refinement ratio in the y direction
+- `-da_refine n`        - refine the `DMDA` `n` times before creating
 
 Level: beginner
 
@@ -3437,18 +3633,18 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDACreate2d"))
 """
-function DMDACreate2d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::Integer, N::Integer, m::Integer, n::Integer, dof::Integer, s::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}})
+function DMDACreate2d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::Integer, N::Integer, M_m::Integer, M_n::Integer, dof::Integer, s::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}})
     error("DMDACreate2d: no generated method for these argument types")
 end
 
-@for_petsc function DMDACreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function DMDACreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, M_m::$PetscInt, M_n::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}} )
 	da_ = Ref{CDM}()
 
     @chk ccall(
                (:DMDACreate2d, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, DMBoundaryType, DMBoundaryType, DMDAStencilType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{CDM}),
-               comm, bx, by, stencil_type, M, N, m, n, dof, s, lx, ly, da_,
+               comm, bx, by, stencil_type, M, N, M_m, M_n, dof, s, lx, ly, da_,
               )
 
 	da = PetscDM(da_[], petsclib)
@@ -3457,7 +3653,7 @@ end
 end 
 
 """
-	da::PetscDM = DMDACreate3d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, P::PetscInt, m::PetscInt, n::PetscInt, p::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
+	da::PetscDM = DMDACreate3d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, P::PetscInt, M_m::PetscInt, M_n::PetscInt, M_p::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
 Creates an object that will manage the communication of three
 regular array data that is distributed across one or more MPI processes.
 
@@ -3472,12 +3668,12 @@ Use one of `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`.
 - `bz`           - type of z ghost nodes the array have.
 Use one of `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`.
 - `stencil_type` - Type of stencil (`DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`)
-- `M`            - global dimension in x direction of the array
-- `N`            - global dimension in y direction of the array
-- `P`            - global dimension in z direction of the array
-- `m`            - corresponding number of processors in x dimension (or `PETSC_DECIDE` to have calculated)
-- `n`            - corresponding number of processors in y dimension (or `PETSC_DECIDE` to have calculated)
-- `p`            - corresponding number of processors in z dimension (or `PETSC_DECIDE` to have calculated)
+- `M`            - global dimension in the x direction of the array
+- `N`            - global dimension in the y direction of the array
+- `P`            - global dimension in the z direction of the array
+- `m`            - corresponding number of processors in the x dimension (or `PETSC_DECIDE` to have calculated)
+- `n`            - corresponding number of processors in the y dimension (or `PETSC_DECIDE` to have calculated)
+- `p`            - corresponding number of processors in the z dimension (or `PETSC_DECIDE` to have calculated)
 - `dof`          - number of degrees of freedom per node
 - `s`            - stencil width
 - `lx`           - arrays containing the number of nodes in each cell along the x  coordinates, or `NULL`.
@@ -3488,21 +3684,21 @@ Output Parameter:
 - `da` - the resulting distributed array object
 
 Options Database Keys:
-- `-dm_view`              - Calls `DMView()` at the conclusion of `DMDACreate3d()`
-- `-da_grid_x <nx>`       - number of grid points in x direction
-- `-da_grid_y <ny>`       - number of grid points in y direction
-- `-da_grid_z <nz>`       - number of grid points in z direction
-- `-da_processors_x <MX>` - number of processors in x direction
-- `-da_processors_y <MY>` - number of processors in y direction
-- `-da_processors_z <MZ>` - number of processors in z direction
-- `-da_bd_x <bx>`         - boundary type in x direction
-- `-da_bd_y <by>`         - boundary type in y direction
-- `-da_bd_z <bz>`         - boundary type in x direction
-- `-da_bd_all <bt>`       - boundary type in all directions
-- `-da_refine_x <rx>`     - refinement ratio in x direction
-- `-da_refine_y <ry>`     - refinement ratio in y direction
-- `-da_refine_z <rz>`     - refinement ratio in z directio
-- `-da_refine <n>`        - refine the `DMDA` n times before creating it
+- `-dm_view`            - Calls `DMView()` at the conclusion of `DMDACreate3d()`
+- `-da_grid_x nx`       - number of grid points in the x direction
+- `-da_grid_y ny`       - number of grid points in the y direction
+- `-da_grid_z nz`       - number of grid points in the z direction
+- `-da_processors_x MX` - number of processors in the x direction
+- `-da_processors_y MY` - number of processors in the y direction
+- `-da_processors_z MZ` - number of processors in the z direction
+- `-da_bd_x bx`         - boundary type in the x direction
+- `-da_bd_y by`         - boundary type in the y direction
+- `-da_bd_z bz`         - boundary type in the z direction
+- `-da_bd_all bt`       - boundary type in all directions
+- `-da_refine_x rx`     - refinement ratio in the x direction
+- `-da_refine_y ry`     - refinement ratio in the y direction
+- `-da_refine_z rz`     - refinement ratio in the z direction
+- `-da_refine n`        - refine the `DMDA` `n` times before creating it
 
 Level: beginner
 
@@ -3514,18 +3710,18 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDACreate3d"))
 """
-function DMDACreate3d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::Integer, N::Integer, P::Integer, m::Integer, n::Integer, p::Integer, dof::Integer, s::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}}, lz::Union{Ptr, AbstractVector{<:Number}})
+function DMDACreate3d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::Integer, N::Integer, P::Integer, M_m::Integer, M_n::Integer, M_p::Integer, dof::Integer, s::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}}, lz::Union{Ptr, AbstractVector{<:Number}})
     error("DMDACreate3d: no generated method for these argument types")
 end
 
-@for_petsc function DMDACreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, P::$PetscInt, m::$PetscInt, n::$PetscInt, p::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}}, lz::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function DMDACreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, P::$PetscInt, M_m::$PetscInt, M_n::$PetscInt, M_p::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}}, lz::Union{Ptr, Vector{$PetscInt}} )
 	da_ = Ref{CDM}()
 
     @chk ccall(
                (:DMDACreate3d, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, DMBoundaryType, DMBoundaryType, DMBoundaryType, DMDAStencilType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{CDM}),
-               comm, bx, by, bz, stencil_type, M, N, P, m, n, p, dof, s, lx, ly, lz, da_,
+               comm, bx, by, bz, stencil_type, M, N, P, M_m, M_n, M_p, dof, s, lx, ly, lz, da_,
               )
 
 	da = PetscDM(da_[], petsclib)
@@ -3749,7 +3945,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDASetAOType()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`
+-seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDASetAOType()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetOwnershipRanges()`,
 `AO`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
@@ -4042,7 +4238,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMDA`,  `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
+-seealso: [](ch_unstructured), `DM`, `DMDA`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
 `DMPlexGetDepthLabel()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`, `DMPlexInterpolate()`, `DMDAGetHeightStratum()`
 
 # External Links
@@ -4433,7 +4629,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMDA`,  `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
+-seealso: [](ch_unstructured), `DM`, `DMDA`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
 `DMPlexGetDepthLabel()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`, `DMPlexInterpolate()`, `DMDAGetDepthStratum()`
 
 # External Links
@@ -4461,7 +4657,7 @@ end
 end 
 
 """
-	dim::PetscInt,M::PetscInt,N::PetscInt,P::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt,dof::PetscInt,s::PetscInt,bx::DMBoundaryType,by::DMBoundaryType,bz::DMBoundaryType,st::DMDAStencilType = DMDAGetInfo(petsclib::PetscLibType,da::AbstractPetscDM) 
+	dim::PetscInt,M::PetscInt,N::PetscInt,P::PetscInt,M_m::PetscInt,M_n::PetscInt,M_p::PetscInt,dof::PetscInt,s::PetscInt,bx::DMBoundaryType,by::DMBoundaryType,bz::DMBoundaryType,st::DMDAStencilType = DMDAGetInfo(petsclib::PetscLibType,da::AbstractPetscDM) 
 Gets information about a given distributed array.
 
 Not Collective
@@ -4500,9 +4696,9 @@ end
 	M_ = Ref{$PetscInt}()
 	N_ = Ref{$PetscInt}()
 	P_ = Ref{$PetscInt}()
-	m_ = Ref{$PetscInt}()
-	n_ = Ref{$PetscInt}()
-	p_ = Ref{$PetscInt}()
+	M_m_ = Ref{$PetscInt}()
+	M_n_ = Ref{$PetscInt}()
+	M_p_ = Ref{$PetscInt}()
 	dof_ = Ref{$PetscInt}()
 	s_ = Ref{$PetscInt}()
 	bx_ = Ref{DMBoundaryType}()
@@ -4514,16 +4710,16 @@ end
                (:DMDAGetInfo, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{DMBoundaryType}, Ptr{DMBoundaryType}, Ptr{DMBoundaryType}, Ptr{DMDAStencilType}),
-               da, dim_, M_, N_, P_, m_, n_, p_, dof_, s_, bx_, by_, bz_, st_,
+               da, dim_, M_, N_, P_, M_m_, M_n_, M_p_, dof_, s_, bx_, by_, bz_, st_,
               )
 
 	dim = dim_[]
 	M = M_[]
 	N = N_[]
 	P = P_[]
-	m = m_[]
-	n = n_[]
-	p = p_[]
+	M_m = M_m_[]
+	M_n = M_n_[]
+	M_p = M_p_[]
 	dof = dof_[]
 	s = s_[]
 	bx = bx_[]
@@ -4531,7 +4727,7 @@ end
 	bz = bz_[]
 	st = st_[]
 
-	return dim,M,N,P,m,n,p,dof,s,bx,by,bz,st
+	return dim,M,N,P,M_m,M_n,M_p,dof,s,bx,by,bz,st
 end 
 
 """
@@ -4615,7 +4811,7 @@ end
 end 
 
 """
-	II::PetscInt,JJ::PetscInt,KK::PetscInt,X::PetscScalar,Y::PetscScalar,Z::PetscScalar = DMDAGetLogicalCoordinate(petsclib::PetscLibType,da::AbstractPetscDM, x::PetscScalar, y::PetscScalar, z::PetscScalar) 
+	II::PetscInt,JJ::PetscInt,KK::PetscInt,M_X::PetscScalar,M_Y::PetscScalar,M_Z::PetscScalar = DMDAGetLogicalCoordinate(petsclib::PetscLibType,da::AbstractPetscDM, x::PetscScalar, y::PetscScalar, z::PetscScalar) 
 Returns a the i,j,k logical coordinate for the closest mesh point to a `x`, `y`, `z` point in the coordinates of the `DMDA`
 
 Collective
@@ -4649,25 +4845,25 @@ end
 	II_ = Ref{$PetscInt}()
 	JJ_ = Ref{$PetscInt}()
 	KK_ = Ref{$PetscInt}()
-	X_ = Ref{$PetscScalar}()
-	Y_ = Ref{$PetscScalar}()
-	Z_ = Ref{$PetscScalar}()
+	M_X_ = Ref{$PetscScalar}()
+	M_Y_ = Ref{$PetscScalar}()
+	M_Z_ = Ref{$PetscScalar}()
 
     @chk ccall(
                (:DMDAGetLogicalCoordinate, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscScalar, $PetscScalar, $PetscScalar, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{$PetscScalar}, Ptr{$PetscScalar}),
-               da, x, y, z, II_, JJ_, KK_, X_, Y_, Z_,
+               da, x, y, z, II_, JJ_, KK_, M_X_, M_Y_, M_Z_,
               )
 
 	II = II_[]
 	JJ = JJ_[]
 	KK = KK_[]
-	X = X_[]
-	Y = Y_[]
-	Z = Z_[]
+	M_X = M_X_[]
+	M_Y = M_Y_[]
+	M_Z = M_Z_[]
 
-	return II,JJ,KK,X,Y,Z
+	return II,JJ,KK,M_X,M_Y,M_Z
 end 
 
 """
@@ -4809,6 +5005,24 @@ end
 
 """
 	numXFacesX::PetscInt,numXFaces::PetscInt,numYFacesY::PetscInt,numYFaces::PetscInt,numZFacesZ::PetscInt,numZFaces::PetscInt = DMDAGetNumFaces(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Return the number of local mesh faces of each orientation (including ghost faces) for a `DMDA`.
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DMDA`
+
+Output Parameters:
+- `numXFacesX` - number of X-normal faces along the x direction, or `NULL` if not needed
+- `numXFaces`  - total number of X-normal faces, or `NULL` if not needed
+- `numYFacesY` - number of Y-normal faces along the y direction, or `NULL` if not needed
+- `numYFaces`  - total number of Y-normal faces (`0` for 1D), or `NULL` if not needed
+- `numZFacesZ` - number of Z-normal faces along the z direction, or `NULL` if not needed
+- `numZFaces`  - total number of Z-normal faces (`0` for 1D/2D), or `NULL` if not needed
+
+Level: developer
+
+-seealso: `DM`, `DMDA`, `DMDAGetNumVertices()`, `DMDAGetNumCells()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumFaces"))
@@ -4882,6 +5096,22 @@ end
 
 """
 	numVerticesX::PetscInt,numVerticesY::PetscInt,numVerticesZ::PetscInt,numVertices::PetscInt = DMDAGetNumVertices(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Return the number of local vertices (including ghost vertices) of a `DMDA` in each dimension and in total.
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DMDA`
+
+Output Parameters:
+- `numVerticesX` - number of vertices in the x direction, or `NULL` if not needed
+- `numVerticesY` - number of vertices in the y direction (`1` if `dim < 2`), or `NULL` if not needed
+- `numVerticesZ` - number of vertices in the z direction (`1` if `dim < 3`), or `NULL` if not needed
+- `numVertices`  - total number of vertices, or `NULL` if not needed
+
+Level: developer
+
+-seealso: `DM`, `DMDA`, `DMDAGetNumCells()`, `DMDAGetNumFaces()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumVertices"))
@@ -5539,6 +5769,20 @@ end
 
 """
 	x::PetscScalar,y::PetscScalar = DMDAMapCoordsToPeriodicDomain(petsclib::PetscLibType,da::AbstractPetscDM) 
+Maps a `(x, y)` coordinate pair that lies outside a 2D `DMDA` domain back into the domain along any periodic boundaries
+
+Not Collective
+
+Input Parameter:
+- `da` - the 2D `DMDA` context
+
+Input/Output Parameters:
+- `x` - the x coordinate; wrapped in place if the x boundary is periodic
+- `y` - the y coordinate; wrapped in place if the y boundary is periodic
+
+Level: developer
+
+-seealso: [](ch_ts), `Characteristic`, `DMDA`, `CharacteristicSolve()`
 
 # External Links
 $(_doc_external("Characteristic/DMDAMapCoordsToPeriodicDomain"))
@@ -5866,7 +6110,7 @@ end
 end 
 
 """
-	DMDASNESSetFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid}) 
+	DMDASNESSetFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function for use with `DMDA`
 
 Logically Collective
@@ -5877,29 +6121,23 @@ Input Parameters:
 - `func`  - local residual evaluation
 - `ctx`   - optional context for local residual evaluation
 
-Calling sequence of `func`:
-- `info` - `DMDALocalInfo` defining the subdomain to evaluate the residual on
-- `x`    - dimensional pointer to state at which to evaluate residual (e.g. PetscScalar *x or **x or ***x)
-- `f`    - dimensional pointer to residual, write the residual here (e.g. PetscScalar *f or **f or ***f)
-- `ctx`  - optional context passed above
-
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESSetJacobianLocal()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+-seealso: [](ch_snes), `DMDA`, `DMDASNESFunctionFn`, `DMDASNESSetJacobianLocal()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetFunctionLocal"))
 """
-function DMDASNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid})
+function DMDASNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("DMDASNESSetFunctionLocal: no generated method for these argument types")
 end
 
-@for_petsc function DMDASNESSetFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMDASNESSetFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMDASNESSetFunctionLocal, $petsc_library),
                PetscErrorCode,
-               (CDM, InsertMode, external, Ptr{Cvoid}),
+               (CDM, InsertMode, Ptr{Cvoid}, Ptr{Cvoid}),
                dm, imode, func, ctx,
               )
 
@@ -5908,7 +6146,7 @@ end
 end 
 
 """
-	DMDASNESSetFunctionLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid}) 
+	DMDASNESSetFunctionLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function that operates on a local vector for `DMDA`
 
 Logically Collective
@@ -5919,29 +6157,23 @@ Input Parameters:
 - `func`  - local residual evaluation
 - `ctx`   - optional context for local residual evaluation
 
-Calling sequence of `func`:
-- `info` - `DMDALocalInfo` defining the subdomain to evaluate the residual on
-- `x`    - state vector at which to evaluate residual
-- `f`    - residual vector
-- `ctx`  - optional context passed above
-
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESSetFunctionLocal()`, `DMDASNESSetJacobianLocalVec()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+-seealso: [](ch_snes), `DMDA`, `DMDASNESFunctionVecFn`, `DMDASNESSetFunctionLocal()`, `DMDASNESSetJacobianLocalVec()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetFunctionLocalVec"))
 """
-function DMDASNESSetFunctionLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid})
+function DMDASNESSetFunctionLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("DMDASNESSetFunctionLocalVec: no generated method for these argument types")
 end
 
-@for_petsc function DMDASNESSetFunctionLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMDASNESSetFunctionLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMDASNESSetFunctionLocalVec, $petsc_library),
                PetscErrorCode,
-               (CDM, InsertMode, external, Ptr{Cvoid}),
+               (CDM, InsertMode, Ptr{Cvoid}, Ptr{Cvoid}),
                dm, imode, func, ctx,
               )
 
@@ -5950,7 +6182,7 @@ end
 end 
 
 """
-	DMDASNESSetJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMDASNESSetJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local Jacobian evaluation function for use with `DMDA`
 
 Logically Collective
@@ -5960,30 +6192,23 @@ Input Parameters:
 - `func` - local Jacobian evaluation function
 - `ctx`  - optional context for local Jacobian evaluation
 
-Calling sequence of `func`:
-- `info` - `DMDALocalInfo` defining the subdomain to evaluate the Jacobian at
-- `x`    - dimensional pointer to state at which to evaluate Jacobian (e.g. PetscScalar *x or **x or ***x)
-- `J`    - `Mat` object for the Jacobian
-- `M`    - `Mat` object used to compute the preconditioner often `J`
-- `ctx`  - optional context passed above
-
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESSetFunctionLocal()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+-seealso: [](ch_snes), `DMDA`, `DMDASNESJacobianFn`, `DMDASNESSetFunctionLocal()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetJacobianLocal"))
 """
-function DMDASNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+function DMDASNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("DMDASNESSetJacobianLocal: no generated method for these argument types")
 end
 
-@for_petsc function DMDASNESSetJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMDASNESSetJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMDASNESSetJacobianLocal, $petsc_library),
                PetscErrorCode,
-               (CDM, external, Ptr{Cvoid}),
+               (CDM, Ptr{Cvoid}, Ptr{Cvoid}),
                dm, func, ctx,
               )
 
@@ -5992,7 +6217,7 @@ end
 end 
 
 """
-	DMDASNESSetJacobianLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMDASNESSetJacobianLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local Jacobian evaluation function that operates on a local vector with `DMDA`
 
 Logically Collective
@@ -6002,30 +6227,23 @@ Input Parameters:
 - `func` - local Jacobian evaluation
 - `ctx`  - optional context for local Jacobian evaluation
 
-Calling sequence of `func`:
-- `info` - `DMDALocalInfo` defining the subdomain to evaluate the Jacobian at
-- `x`    - state vector at which to evaluate Jacobian
-- `J`    - the Jacobian
-- `M`    - approximate Jacobian from which the preconditioner will be computed, often `J`
-- `ctx`  - optional context passed above
-
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESSetJacobianLocal()`, `DMDASNESSetFunctionLocalVec()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+-seealso: [](ch_snes), `DMDA`, `DMDASNESJacobianVecFn`, `DMDASNESSetJacobianLocal()`, `DMDASNESSetFunctionLocalVec()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetJacobianLocalVec"))
 """
-function DMDASNESSetJacobianLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+function DMDASNESSetJacobianLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("DMDASNESSetJacobianLocalVec: no generated method for these argument types")
 end
 
-@for_petsc function DMDASNESSetJacobianLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMDASNESSetJacobianLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMDASNESSetJacobianLocalVec, $petsc_library),
                PetscErrorCode,
-               (CDM, external, Ptr{Cvoid}),
+               (CDM, Ptr{Cvoid}, Ptr{Cvoid}),
                dm, func, ctx,
               )
 
@@ -6034,7 +6252,7 @@ end
 end 
 
 """
-	DMDASNESSetObjectiveLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMDASNESSetObjectiveLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function to used with a `DMDA`
 
 Logically Collective
@@ -6044,29 +6262,23 @@ Input Parameters:
 - `func` - local objective evaluation, see `DMDASNESSetObjectiveLocal` for the calling sequence
 - `ctx`  - optional context for local residual evaluation
 
-Calling sequence of `func`:
-- `info` - `DMDALocalInfo` defining the subdomain to evaluate the Jacobian at
-- `x`    - dimensional pointer to state at which to evaluate the objective (e.g. PetscScalar *x or **x or ***x)
-- `obj`  - returned objective value for the local subdomain
-- `ctx`  - optional context passed above
-
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocal()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESObjectiveFn`
+-seealso: [](ch_snes), `DMDA`, `DMDASNESObjectiveFn`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocal()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESFunctionFn`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetObjectiveLocal"))
 """
-function DMDASNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+function DMDASNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("DMDASNESSetObjectiveLocal: no generated method for these argument types")
 end
 
-@for_petsc function DMDASNESSetObjectiveLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMDASNESSetObjectiveLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMDASNESSetObjectiveLocal, $petsc_library),
                PetscErrorCode,
-               (CDM, external, Ptr{Cvoid}),
+               (CDM, Ptr{Cvoid}, Ptr{Cvoid}),
                dm, func, ctx,
               )
 
@@ -6075,7 +6287,7 @@ end
 end 
 
 """
-	DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function that operates on a local vector with `DMDA`
 
 Logically Collective
@@ -6085,29 +6297,23 @@ Input Parameters:
 - `func` - local objective evaluation, see `DMDASNESSetObjectiveLocalVec` for the calling sequence
 - `ctx`  - optional context for local residual evaluation
 
-Calling sequence of `func`:
-- `info` - `DMDALocalInfo` defining the subdomain to evaluate the Jacobian at
-- `x`    - state vector at which to evaluate the objective
-- `obj`  - returned objective value for the local subdomain
-- `ctx`  - optional context passed above
-
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESSetObjectiveLocal()`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocalVec()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESObjectiveVecFn`
+-seealso: [](ch_snes), `DMDA`, `DMDASNESObjectiveVecFn`, `DMDASNESSetObjectiveLocal()`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocalVec()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESObjectiveFn`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetObjectiveLocalVec"))
 """
-function DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+function DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("DMDASNESSetObjectiveLocalVec: no generated method for these argument types")
 end
 
-@for_petsc function DMDASNESSetObjectiveLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMDASNESSetObjectiveLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMDASNESSetObjectiveLocalVec, $petsc_library),
                PetscErrorCode,
-               (CDM, external, Ptr{Cvoid}),
+               (CDM, Ptr{Cvoid}, Ptr{Cvoid}),
                dm, func, ctx,
               )
 
@@ -6116,7 +6322,7 @@ end
 end 
 
 """
-	DMDASNESSetPicardLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::external, jac::external, ctx::Ptr{Cvoid}) 
+	DMDASNESSetPicardLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local right
 
 Logically Collective
@@ -6128,36 +6334,23 @@ Input Parameters:
 - `jac`   - function to compute Jacobian
 - `ctx`   - optional context for local residual evaluation
 
-Calling sequence of `func`:
-- `info` - defines the subdomain to evaluate the residual on
-- `x`    - dimensional pointer to state at which to evaluate residual
-- `f`    - dimensional pointer to residual, write the residual here
-- `ctx`  - optional context passed above
-
-Calling sequence of `jac`:
-- `info` - defines the subdomain to evaluate the residual on
-- `x`    - dimensional pointer to state at which to evaluate residual
-- `jac`  - the Jacobian
-- `Jp`   - approximation to the Jacobian used to compute the preconditioner, often `J`
-- `ctx`  - optional context passed above
-
 Level: beginner
 
--seealso: [](ch_snes), `SNES`, `DMDA`, `DMSNESSetFunction()`, `DMDASNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+-seealso: [](ch_snes), `SNES`, `DMDA`, `DMDASNESFunctionFn`, `DMDASNESJacobianFn`, `DMSNESSetFunction()`, `DMDASNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetPicardLocal"))
 """
-function DMDASNESSetPicardLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, jac::external, ctx::Ptr{Cvoid})
+function DMDASNESSetPicardLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("DMDASNESSetPicardLocal: no generated method for these argument types")
 end
 
-@for_petsc function DMDASNESSetPicardLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::external, jac::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMDASNESSetPicardLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMDASNESSetPicardLocal, $petsc_library),
                PetscErrorCode,
-               (CDM, InsertMode, external, external, Ptr{Cvoid}),
+               (CDM, InsertMode, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
                dm, imode, func, jac, ctx,
               )
 
@@ -6177,7 +6370,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDAGetAO()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`
+-seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDAGetAO()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetGlobalIndices()`, `DMDAGetOwnershipRanges()`,
 `AO`, `AOPetscToApplication()`, `AOApplicationToPetsc()`, `AOType`, `AOBASIC`, `AOADVANCED`, `AOMAPPING`, `AOMEMORYSCALABLE`
 
@@ -6490,6 +6683,18 @@ end
 
 """
 	nodes::PetscReal = DMDASetGLLCoordinates(petsclib::PetscLibType,da::AbstractPetscDM, n::PetscInt) 
+Sets the global coordinates from
+
+Collective
+
+Input Parameters:
+- `da`    - the `DMDA` object
+- `n`     - the number of GLL nodes
+- `nodes` - the GLL nodes
+
+Level: advanced
+
+-seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `PetscDTGaussLobattoLegendreQuadrature()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetGLLCoordinates"))
@@ -6847,15 +7052,15 @@ Logically Collective
 
 Input Parameters:
 - `da`       - the `DMDA` object
-- `refine_x` - ratio of fine grid to coarse in x direction (2 by default)
-- `refine_y` - ratio of fine grid to coarse in y direction (2 by default)
-- `refine_z` - ratio of fine grid to coarse in z direction (2 by default)
+- `refine_x` - ratio of fine grid to coarse in the x direction (2 by default)
+- `refine_y` - ratio of fine grid to coarse in the y direction (2 by default)
+- `refine_z` - ratio of fine grid to coarse in the z direction (2 by default)
 
 Options Database Keys:
-- `-da_refine_x refine_x` - refinement ratio in x direction
-- `-da_refine_y rafine_y` - refinement ratio in y direction
-- `-da_refine_z refine_z` - refinement ratio in z direction
-- `-da_refine <n>`        - refine the `DMDA` object n times when it is created.
+- `-da_refine_x refine_x` - refinement ratio in the x direction
+- `-da_refine_y rafine_y` - refinement ratio in the y direction
+- `-da_refine_z refine_z` - refinement ratio in the z direction
+- `-da_refine n`          - refine the `DMDA` object `n` times when it is created.
 
 Level: intermediate
 
@@ -7258,7 +7463,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecRestoreArrayDOF()`
+-seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayDOF()`, `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`,
 `DMStagVecGetArray()`
 
@@ -7466,7 +7671,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecRestoreArrayDOF()`
+-seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayDOF()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7748,6 +7953,16 @@ end
 
 """
 	DMDestroyVI(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Frees the `DM_SNESVI` object contained in the `DM` and resets any function pointers the reduced
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DM` from which the VI context should be removed (may be `NULL`)
+
+Level: developer
+
+-seealso: `DM`, `SNESVINEWTONRSLS`, `SNESVISetVariableBounds()`, `PetscObjectCompose()`
 
 # External Links
 $(_doc_external("SNES/DMDestroyVI"))
@@ -8197,6 +8412,51 @@ end
 end 
 
 """
+	DMForestGetBaseCoordinateMapping(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the user
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DMFOREST`
+
+Output Parameters:
+- `func` - the callback, or `NULL`
+- `ctx`  - the application context that was registered with the callback, or `NULL`
+
+Calling sequence of `func`:
+- `base`        - the base `DM` of the forest
+- `coarsePoint` - the base-`DM` cell that owns the coordinate being mapped
+- `dim`         - the coordinate dimension (at most 3)
+- `coordIn`     - the input coordinate on the base `DM`
+- `coordOut`    - the mapped coordinate to be written
+- `ctx`         - optional application context
+
+Level: intermediate
+
+-seealso: `DM`, `DMFOREST`, `DMForestSetBaseCoordinateMapping()`
+
+# External Links
+$(_doc_external("DMForest/DMForestGetBaseCoordinateMapping"))
+"""
+function DMForestGetBaseCoordinateMapping(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMForestGetBaseCoordinateMapping: no generated method for these argument types")
+end
+
+@for_petsc function DMForestGetBaseCoordinateMapping(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMForestGetBaseCoordinateMapping, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	base::PetscDM = DMForestGetBaseDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Get the base `DM` of a `DMFOREST`
 
@@ -8639,7 +8899,7 @@ Input Parameter:
 - `dm` - the forest
 
 Output Parameter:
-- `topology` - the topology of the forest (e.g., 'cube', 'shell')
+- `topology` - the topology of the forest (e.g., `cube`, `shell`)
 
 Level: intermediate
 
@@ -8952,6 +9212,26 @@ end
 
 """
 	DMForestSetBaseCoordinateMapping(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+Set a user
+
+Logically Collective
+
+Input Parameters:
+- `dm`   - the `DMFOREST`
+- `func` - callback that maps reference coordinates to physical coordinates
+- `ctx`  - optional application context passed through to `func`
+
+Calling sequence of `func`:
+- `base`        - the base `DM` of the forest
+- `coarsePoint` - the base-`DM` cell that owns the coordinate being mapped
+- `dim`         - the coordinate dimension (at most 3)
+- `coordIn`     - the input coordinate on the base `DM`
+- `coordOut`    - the mapped coordinate to be written
+- `ctx`         - optional application context
+
+Level: intermediate
+
+-seealso: `DM`, `DMFOREST`, `DMForestGetBaseCoordinateMapping()`, `DMForestSetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetBaseCoordinateMapping"))
@@ -9365,7 +9645,7 @@ end
 end 
 
 """
-	tdm::PetscDM = DMForestTemplate(petsclib::PetscLibType,dm::AbstractPetscDM, comm::MPI_Comm) 
+	tedm::PetscDM = DMForestTemplate(petsclib::PetscLibType,dm::AbstractPetscDM, comm::MPI_Comm) 
 Create a new `DM` that will be adapted from a source `DM`.
 
 Collective
@@ -9375,7 +9655,7 @@ Input Parameters:
 - `comm` - the communicator for the new `DM` (this communicator is currently ignored, but is present so that `DMForestTemplate()` can be used within `DMCoarsen()`)
 
 Output Parameter:
-- `tdm` - the new `DM` object
+- `tedm` - the new `DM` object
 
 Level: intermediate
 
@@ -9389,22 +9669,39 @@ function DMForestTemplate(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI
 end
 
 @for_petsc function DMForestTemplate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, comm::MPI_Comm )
-	tdm_ = Ref{CDM}()
+	tedm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMForestTemplate, $petsc_library),
                PetscErrorCode,
                (CDM, MPI_Comm, Ptr{CDM}),
-               dm, comm, tdm_,
+               dm, comm, tedm_,
               )
 
-	tdm = PetscDM(tdm_[], petsclib)
+	tedm = PetscDM(tedm_[], petsclib)
 
-	return tdm
+	return tedm
 end 
 
 """
 	DMForestTransferVec(petsclib::PetscLibType,dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, useBCs::PetscBool, time::PetscReal) 
+Transfer a `Vec` between two related `DMFOREST` grids, e.g. before and after adaptation.
+
+Collective
+
+Input Parameters:
+- `dmIn`   - source `DMFOREST`
+- `vecIn`  - vector on `dmIn`
+- `dmOut`  - destination `DMFOREST`
+- `useBCs` - if `PETSC_TRUE`, apply boundary conditions during transfer
+- `time`   - simulation time supplied to any time-dependent boundary conditions
+
+Output Parameter:
+- `vecOut` - vector on `dmOut` that receives the transferred values
+
+Level: intermediate
+
+-seealso: `DM`, `DMFOREST`, `DMForestTransferVecFromBase()`, `DMForestSetAdaptivityForest()`
 
 # External Links
 $(_doc_external("DMForest/DMForestTransferVec"))
@@ -9428,6 +9725,20 @@ end
 
 """
 	DMForestTransferVecFromBase(petsclib::PetscLibType,dm::AbstractPetscDM, vecIn::AbstractPetscVec, vecOut::AbstractPetscVec) 
+Transfer a `Vec` defined on the base `DM` of a `DMFOREST` onto the refined forest.
+
+Collective
+
+Input Parameters:
+- `dm`    - the `DMFOREST`
+- `vecIn` - vector defined on the base `DM` returned by `DMForestGetBaseDM()`
+
+Output Parameter:
+- `vecOut` - vector on `dm` that receives the transferred values
+
+Level: intermediate
+
+-seealso: `DM`, `DMFOREST`, `DMForestTransferVec()`, `DMForestGetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestTransferVecFromBase"))
@@ -9515,6 +9826,13 @@ end
 
 """
 	DMGenerateRegisterDestroy(petsclib::PetscLibType) 
+Frees the list of `DM` mesh generators that were registered by `DMGenerateRegister()` or `DMGenerateRegisterAll()`.
+
+Not Collective
+
+Level: advanced
+
+-seealso: `DM`, `DMGenerateRegister()`, `DMGenerateRegisterAll()`
 
 # External Links
 $(_doc_external("DM/DMGenerateRegisterDestroy"))
@@ -9598,6 +9916,13 @@ end
 
 """
 	DMGeomModelRegisterDestroy(petsclib::PetscLibType) 
+Frees the list of `DM` geometry models that were registered by `DMGeomModelRegister()` or `DMGeomModelRegisterAll()`.
+
+Not Collective
+
+Level: advanced
+
+-seealso: `DM`, `DMGeomModelRegister()`, `DMGeomModelRegisterAll()`
 
 # External Links
 $(_doc_external("DM/DMGeomModelRegisterDestroy"))
@@ -9671,8 +9996,8 @@ end
 end 
 
 """
-	DMGetApplicationContext(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::PeCtx) 
-Gets a user context from a `DM` object provided with `DMSetApplicationContext()`
+	ctx::Ptr{Cvoid} = DMGetApplicationContext(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Gets an application context from a `DM` object provided with `DMSetApplicationContext()`
 
 Not Collective
 
@@ -9680,12 +10005,12 @@ Input Parameter:
 - `dm` - the `DM` object
 
 Output Parameter:
-- `ctx` - a pointer to the user context
+- `ctx` - a pointer to the application context
 
 Level: intermediate
 
 Note:
-A user context is a way to pass problem specific information that is accessible whenever the `DM` is available
+An application context is a way to pass problem specific information that is accessible whenever the `DM` is available
 
 Fortran Notes:
 This only works when the context is a Fortran derived type (it cannot be a `PetscObject`) and you **must** write a Fortran interface definition for this
@@ -9714,21 +10039,23 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetApplicationContext"))
 """
-function DMGetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::PeCtx)
+function DMGetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM)
     error("DMGetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function DMGetApplicationContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::PeCtx )
+@for_petsc function DMGetApplicationContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMGetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (CDM, PeCtx),
-               dm, ctx,
+               (CDM, Ptr{Cvoid}),
+               dm, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -10460,8 +10787,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSetCoordinateDM()`, `DMSetCoordinates()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGSetCellCoordinateDM()`,
-
+-seealso: `DM`, `DMSetCoordinateDM()`, `DMSetCoordinates()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGSetCellCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinateDM"))
@@ -10524,26 +10850,41 @@ end
 end 
 
 """
-	DMGetCoordinateField(petsclib::PetscLibType,dm::AbstractPetscDM, field::DMField) 
+	field::DMField = DMGetCoordinateField(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Get the `DMField` representation of the mesh coordinates
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DM`
+
+Output Parameter:
+- `field` - the `DMField` describing the coordinates
+
+Level: advanced
+
+-seealso: `DM`, `DMField`, `DMSetCoordinateField()`, `DMGetCoordinateDM()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinateField"))
 """
-function DMGetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField)
+function DMGetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM)
     error("DMGetCoordinateField: no generated method for these argument types")
 end
 
-@for_petsc function DMGetCoordinateField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::DMField )
+@for_petsc function DMGetCoordinateField(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	field_ = Ref{DMField}()
 
     @chk ccall(
                (:DMGetCoordinateField, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{DMField}),
-               dm, field,
+               dm, field_,
               )
 
+	field = field_[]
 
-	return nothing
+	return field
 end 
 
 """
@@ -11332,7 +11673,7 @@ Level: beginner
 
 -seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
-`DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMRestoreLocalVector()`
+`DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMRestoreLocalVector()`,
 `VecStrideMax()`, `VecStrideMin()`, `VecStrideNorm()`, `DMClearGlobalVectors()`, `DMGetNamedGlobalVector()`, `DMGetNamedLocalVector()`
 
 # External Links
@@ -11368,9 +11709,6 @@ Input Parameter:
 
 Output Parameter:
 - `ctype` - the matrix type
-
-Options Database Key:
-- `-dm_is_coloring_type` - global or local
 
 Level: intermediate
 
@@ -12034,6 +12372,52 @@ end
 end 
 
 """
+	DMGetNearNullSpaceConstructor(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, noname::Ptr{Cvoid}) 
+Return the callback function which constructs the near
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `dm`    - The `DM`
+- `field` - The field number for the nullspace
+
+Output Parameter:
+- `nullsp` - A callback to create the near-nullspace
+
+Calling sequence of `nullsp`:
+- `dm`        - The present `DM`
+- `origField` - The field number given above, in the original `DM`
+- `field`     - The field number in dm
+- `nullSpace` - The nullspace for the given field
+
+Level: intermediate
+
+See also: 
+=== 
+`DM`, `DMAddField()`, `DMGetField()`, `DMSetNearNullSpaceConstructor()`, `DMSetNullSpaceConstructor()`, `DMGetNullSpaceConstructor()`, `DMCreateSubDM()`,
+`MatNullSpace`, `DMCreateSuperDM()`
+
+# External Links
+$(_doc_external("DM/DMGetNearNullSpaceConstructor"))
+"""
+function DMGetNearNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::Integer, noname::Ptr{Cvoid})
+    error("DMGetNearNullSpaceConstructor: no generated method for these argument types")
+end
+
+@for_petsc function DMGetNearNullSpaceConstructor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMGetNearNullSpaceConstructor, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscInt, Ptr{Cvoid}),
+               dm, field, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	nranks::PetscInt,ranks::Ptr{PetscMPIInt} = DMGetNeighbors(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Gets an array containing the MPI ranks of all the processes neighbors
 
@@ -12077,6 +12461,51 @@ end
 	ranks = ranks_[]
 
 	return nranks,ranks
+end 
+
+"""
+	DMGetNullSpaceConstructor(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, noname::Ptr{Cvoid}) 
+Return the callback function which constructs the nullspace for a given field, defined with `DMAddField()`
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `dm`    - The `DM`
+- `field` - The field number for the nullspace
+
+Output Parameter:
+- `nullsp` - A callback to create the nullspace
+
+Calling sequence of `nullsp`:
+- `dm`        - The present DM
+- `origField` - The field number given above, in the original DM
+- `field`     - The field number in dm
+- `nullSpace` - The nullspace for the given field
+
+Level: intermediate
+
+See also: 
+=== 
+`DM`, `DMAddField()`, `DMGetField()`, `DMSetNullSpaceConstructor()`, `DMSetNearNullSpaceConstructor()`, `DMGetNearNullSpaceConstructor()`, `DMCreateSubDM()`, `DMCreateSuperDM()`
+
+# External Links
+$(_doc_external("DM/DMGetNullSpaceConstructor"))
+"""
+function DMGetNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::Integer, noname::Ptr{Cvoid})
+    error("DMGetNullSpaceConstructor: no generated method for these argument types")
+end
+
+@for_petsc function DMGetNullSpaceConstructor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMGetNullSpaceConstructor, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscInt, Ptr{Cvoid}),
+               dm, field, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -12831,9 +13260,12 @@ Output Parameter:
 
 Level: intermediate
 
+Note:
+`type` should not be retained for later use as it will be an invalid pointer if the `DMType` of `dm` is changed.
+
 See also: 
 === 
-`DM`, `DMType`, `DMDA`, `DMPLEX`, `DMSetType()`, `DMCreate()`
+`DM`, `DMType`, `DMDA`, `DMPLEX`, `DMSetType()`, `DMCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("DM/DMGetType"))
@@ -12960,8 +13392,8 @@ The communication involved in this update can be overlapped with computation by 
 See also: 
 === 
 `DM`, `DMGlobalToLocalHookAdd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`,
-`DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`,
-`DMGlobalToLocalBegin()` `DMGlobalToLocalEnd()`
+`DMLocalToGlobalBegin()`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`,
+`DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`
 
 # External Links
 $(_doc_external("DM/DMGlobalToLocal"))
@@ -13152,21 +13584,21 @@ Input Parameters:
 - `dm`        - the `DM`
 - `beginhook` - function to run at the beginning of `DMGlobalToLocalBegin()`
 - `endhook`   - function to run after `DMGlobalToLocalEnd()` has completed
-- `ctx`       - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`       - [optional] context for provide data for the hooks (may be `NULL`)
 
 Calling sequence of `beginhook`:
 - `dm`   - global `DM`
 - `g`    - global vector
 - `mode` - mode
 - `l`    - local vector
-- `ctx`  - optional user-defined function context
+- `ctx`  - optional function context
 
 Calling sequence of `endhook`:
 - `dm`   - global `DM`
 - `g`    - global vector
 - `mode` - mode
 - `l`    - local vector
-- `ctx`  - optional user-defined function context
+- `ctx`  - optional function context
 
 Level: advanced
 
@@ -14204,6 +14636,22 @@ end
 
 """
 	isBd::PetscBool = DMIsBoundaryPoint(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+Determine whether a mesh point lies on a `DM` boundary
+
+Not Collective
+
+Input Parameters:
+- `dm`    - the `DM` object
+- `point` - the mesh point number
+
+Output Parameter:
+- `isBd` - `PETSC_TRUE` if `point` belongs to any boundary label registered on the `DM`
+
+Level: developer
+
+See also: 
+=== 
+`DM`, `DMLabel`, `DMAddBoundary()`, `PetscDSGetBoundary()`
 
 # External Links
 $(_doc_external("DM/DMIsBoundaryPoint"))
@@ -14756,21 +15204,21 @@ Input Parameters:
 - `dm`        - the `DM`
 - `beginhook` - function to run at the beginning of `DMLocalToGlobalBegin()`
 - `endhook`   - function to run after `DMLocalToGlobalEnd()` has completed
-- `ctx`       - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`       - [optional] context for provide data for the hooks (may be `NULL`)
 
 Calling sequence of `beginhook`:
 - `global` - global `DM`
 - `l`      - local vector
 - `mode`   - mode
 - `g`      - global vector
-- `ctx`    - optional user-defined function context
+- `ctx`    - optional function context
 
 Calling sequence of `endhook`:
 - `global` - global `DM`
 - `l`      - local vector
 - `mode`   - mode
 - `g`      - global vector
-- `ctx`    - optional user-defined function context
+- `ctx`    - optional function context
 
 Level: advanced
 
@@ -16641,7 +17089,7 @@ Logically Collective
 Input Parameters:
 - `dm`             - the `DM`
 - `f`              - the monitor function
-- `mctx`           - [optional] user-defined context for private data for the monitor routine (use `NULL` if no context is desired)
+- `mctx`           - [optional] context for private data for the monitor routine (use `NULL` if no context is desired)
 - `monitordestroy` - [optional] routine that frees monitor context (may be `NULL`), see `PetscCtxDestroyFn` for the calling sequence
 
 Options Database Key:
@@ -16702,12 +17150,20 @@ Input Parameters:
 Output Parameter:
 - `flg` - Flag set if the monitor was created
 
+Calling sequence of `monitor`:
+- `dm`  - the `DM` to be monitored
+- `ctx` - monitor context
+
+Calling sequence of `monitorsetup`:
+- `dm` - the `DM` to be monitored
+- `vf` - the `PetscViewer` and format to be used by the monitor
+
 Level: developer
 
 See also: 
 === 
 `DM`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -17026,7 +17482,7 @@ Input Parameters:
 Options Database Keys:
 - `-dmnetwork_view`              - Calls `DMView()` at the conclusion of `DMSetUp()`
 - `-dmnetwork_view_distributed`  - Calls `DMView()` at the conclusion of `DMNetworkDistribute()`
-- `-dmnetwork_view_tmpdir`       - Sets the temporary directory to use when viewing with the `draw` option
+- `-dmnetwork_view_tmpdir dir`   - Sets the temporary directory to use when viewing with the `draw` option
 - `-dmnetwork_view_all_ranks`    - Displays all of the subnetworks for each MPI rank
 - `-dmnetwork_view_rank_range`   - Displays the subnetworks for the ranks in a comma-separated list
 - `-dmnetwork_view_no_vertices`  - Disables displaying the vertices in the network visualization
@@ -17130,7 +17586,7 @@ end
 end 
 
 """
-	compkey::PetscInt,nvar::PetscInt = DMNetworkGetComponent(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt, component::PeCtx) 
+	compkey::PetscInt,component::Ptr{Cvoid},nvar::PetscInt = DMNetworkGetComponent(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) 
 Gets the component key, the component data, and the number of variables at a given network point
 
 Not Collective
@@ -17152,25 +17608,27 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetComponent"))
 """
-function DMNetworkGetComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, compnum::Integer, component::PeCtx)
+function DMNetworkGetComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, compnum::Integer)
     error("DMNetworkGetComponent: no generated method for these argument types")
 end
 
-@for_petsc function DMNetworkGetComponent(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, compnum::$PetscInt, component::PeCtx )
+@for_petsc function DMNetworkGetComponent(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, compnum::$PetscInt )
 	compkey_ = Ref{$PetscInt}()
+	component_ = Ref{Ptr{Cvoid}}()
 	nvar_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMNetworkGetComponent, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, $PetscInt, Ptr{$PetscInt}, PeCtx, Ptr{$PetscInt}),
-               dm, p, compnum, compkey_, component, nvar_,
+               (CDM, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{$PetscInt}),
+               dm, p, compnum, compkey_, component_, nvar_,
               )
 
 	compkey = compkey_[]
+	component = component_[]
 	nvar = nvar_[]
 
-	return compkey,nvar
+	return compkey,component,nvar
 end 
 
 """
@@ -17253,7 +17711,7 @@ end
 
 """
 	eStart::PetscInt,eEnd::PetscInt = DMNetworkGetEdgeRange(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Get the bounds [start, end) for the local edges
+Get the bounds [start, end) (also sometimes called the chart) for the local edges
 
 Not Collective
 
@@ -17266,7 +17724,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetVertexRange()`
+-seealso: `DM`, `DMNETWORK`, `DMNetworkGetVertexRange()`, `DMNetworkGetSubnetwork()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetEdgeRange"))
@@ -17490,7 +17948,7 @@ end
 end 
 
 """
-	nEdges::PetscInt,NEdges::PetscInt = DMNetworkGetNumEdges(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nEdges::PetscInt,M_NEdges::PetscInt = DMNetworkGetNumEdges(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Get the local and global number of edges for the entire network.
 
 Not Collective
@@ -17515,23 +17973,23 @@ end
 
 @for_petsc function DMNetworkGetNumEdges(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nEdges_ = Ref{$PetscInt}()
-	NEdges_ = Ref{$PetscInt}()
+	M_NEdges_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMNetworkGetNumEdges, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               dm, nEdges_, NEdges_,
+               dm, nEdges_, M_NEdges_,
               )
 
 	nEdges = nEdges_[]
-	NEdges = NEdges_[]
+	M_NEdges = M_NEdges_[]
 
-	return nEdges,NEdges
+	return nEdges,M_NEdges
 end 
 
 """
-	nsubnet::PetscInt,Nsubnet::PetscInt = DMNetworkGetNumSubNetworks(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nsubnet::PetscInt,M_Nsubnet::PetscInt = DMNetworkGetNumSubNetworks(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Gets the number of subnetworks
 
 Not Collective
@@ -17556,23 +18014,23 @@ end
 
 @for_petsc function DMNetworkGetNumSubNetworks(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nsubnet_ = Ref{$PetscInt}()
-	Nsubnet_ = Ref{$PetscInt}()
+	M_Nsubnet_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMNetworkGetNumSubNetworks, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               dm, nsubnet_, Nsubnet_,
+               dm, nsubnet_, M_Nsubnet_,
               )
 
 	nsubnet = nsubnet_[]
-	Nsubnet = Nsubnet_[]
+	M_Nsubnet = M_Nsubnet_[]
 
-	return nsubnet,Nsubnet
+	return nsubnet,M_Nsubnet
 end 
 
 """
-	nVertices::PetscInt,NVertices::PetscInt = DMNetworkGetNumVertices(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nVertices::PetscInt,M_NVertices::PetscInt = DMNetworkGetNumVertices(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Get the local and global number of vertices for the entire network.
 
 Not Collective
@@ -17597,19 +18055,19 @@ end
 
 @for_petsc function DMNetworkGetNumVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nVertices_ = Ref{$PetscInt}()
-	NVertices_ = Ref{$PetscInt}()
+	M_NVertices_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMNetworkGetNumVertices, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               dm, nVertices_, NVertices_,
+               dm, nVertices_, M_NVertices_,
               )
 
 	nVertices = nVertices_[]
-	NVertices = NVertices_[]
+	M_NVertices = M_NVertices_[]
 
-	return nVertices,NVertices
+	return nVertices,M_NVertices
 end 
 
 """
@@ -17861,7 +18319,7 @@ end
 
 """
 	vStart::PetscInt,vEnd::PetscInt = DMNetworkGetVertexRange(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Get the bounds [start, end) for the local vertices
+Get the bounds [start, end) (also sometimes called the chart) for the local vertices
 
 Not Collective
 
@@ -17874,7 +18332,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetEdgeRange()`
+-seealso: `DM`, `DMNETWORK`, `DMNetworkGetEdgeRange()`, `DMNetworkGetSubnetwork()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetVertexRange"))
@@ -18088,7 +18546,7 @@ end
 end 
 
 """
-	DMNetworkSetNumSubNetworks(petsclib::PetscLibType,dm::AbstractPetscDM, nsubnet::PetscInt, Nsubnet::PetscInt) 
+	DMNetworkSetNumSubNetworks(petsclib::PetscLibType,dm::AbstractPetscDM, nsubnet::PetscInt, M_Nsubnet::PetscInt) 
 Sets the number of subnetworks
 
 Collective
@@ -18105,17 +18563,17 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkSetNumSubNetworks"))
 """
-function DMNetworkSetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM, nsubnet::Integer, Nsubnet::Integer)
+function DMNetworkSetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM, nsubnet::Integer, M_Nsubnet::Integer)
     error("DMNetworkSetNumSubNetworks: no generated method for these argument types")
 end
 
-@for_petsc function DMNetworkSetNumSubNetworks(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nsubnet::$PetscInt, Nsubnet::$PetscInt )
+@for_petsc function DMNetworkSetNumSubNetworks(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nsubnet::$PetscInt, M_Nsubnet::$PetscInt )
 
     @chk ccall(
                (:DMNetworkSetNumSubNetworks, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, $PetscInt),
-               dm, nsubnet, Nsubnet,
+               dm, nsubnet, M_Nsubnet,
               )
 
 
@@ -18480,7 +18938,6 @@ Output Parameter:
 
 -seealso: `DMPatchZoom()`
 
-
 # External Links
 $(_doc_external("DMPatch/DMPatchCreate"))
 """
@@ -18505,6 +18962,23 @@ end
 
 """
 	dm::PetscDM = DMPatchCreateGrid(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, patchSize::MatStencil, commSize::MatStencil, gridSize::MatStencil) 
+Create a `DMPATCH` whose coarse `DM` is a structured `DMDA` of the requested global size, with the given patch and process
+
+Collective
+
+Input Parameters:
+- `comm`      - the MPI communicator
+- `dim`       - the spatial dimension (1, 2, or 3); unused dimensions of `gridSize` and `patchSize` are forced to 1
+- `patchSize` - `MatStencil` giving the size of each patch in cells
+- `commSize`  - `MatStencil` giving the process grid used per patch (see `DMPatchSetCommSize()`)
+- `gridSize`  - `MatStencil` giving the global cell count of the underlying `DMDA` in each dimension
+
+Output Parameter:
+- `dm` - the newly created `DMPATCH`
+
+Level: developer
+
+-seealso: `DMPATCH`, `DMPatchCreate()`, `DMPatchSetPatchSize()`, `DMPatchSetCommSize()`, `DMDA`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchCreateGrid"))
@@ -18529,17 +19003,30 @@ end
 end 
 
 """
-	DMPatchGetCoarse(petsclib::PetscLibType,dm::AbstractPetscDM, dmCoarse::AbstractPetscDM) 
+	dmCoarse::PetscDM = DMPatchGetCoarse(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Get the coarse `DM` associated with a `DMPATCH`
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DMPATCH`
+
+Output Parameter:
+- `dmCoarse` - the coarse `DM`
+
+Level: intermediate
+
+-seealso: `DMPATCH`, `DMPatchCreate()`, `DMPatchZoom()`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchGetCoarse"))
 """
-function DMPatchGetCoarse(petsclib::PetscLibType, dm::AbstractPetscDM, dmCoarse::AbstractPetscDM)
+function DMPatchGetCoarse(petsclib::PetscLibType, dm::AbstractPetscDM)
     error("DMPatchGetCoarse: no generated method for these argument types")
 end
 
-@for_petsc function DMPatchGetCoarse(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmCoarse::AbstractPetscDM )
-	dmCoarse_ = Ref(dmCoarse.ptr)
+@for_petsc function DMPatchGetCoarse(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	dmCoarse_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPatchGetCoarse, $petsc_library),
@@ -18548,59 +19035,100 @@ end
                dm, dmCoarse_,
               )
 
-	dmCoarse.ptr = dmCoarse_[]
+	dmCoarse = PetscDM(dmCoarse_[], petsclib)
 
-	return nothing
+	return dmCoarse
 end 
 
 """
-	DMPatchGetCommSize(petsclib::PetscLibType,dm::AbstractPetscDM, commSize::Vector{MatStencil}) 
+	commSize::MatStencil = DMPatchGetCommSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Get the process grid used for each patch of a `DMPATCH`
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DMPATCH`
+
+Output Parameter:
+- `commSize` - a `MatStencil` whose `i`, `j`, `k` fields hold the number of processes used per patch in each dimension
+
+Level: intermediate
+
+-seealso: `DMPATCH`, `DMPatchSetCommSize()`, `DMPatchGetPatchSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchGetCommSize"))
 """
-function DMPatchGetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM, commSize::Vector{MatStencil})
+function DMPatchGetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM)
     error("DMPatchGetCommSize: no generated method for these argument types")
 end
 
-@for_petsc function DMPatchGetCommSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, commSize::Vector{MatStencil} )
+@for_petsc function DMPatchGetCommSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	commSize_ = Ref{MatStencil}()
 
     @chk ccall(
                (:DMPatchGetCommSize, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{MatStencil}),
-               dm, commSize,
+               dm, commSize_,
               )
 
+	commSize = commSize_[]
 
-	return nothing
+	return commSize
 end 
 
 """
-	DMPatchGetPatchSize(petsclib::PetscLibType,dm::AbstractPetscDM, patchSize::Vector{MatStencil}) 
+	patchSize::MatStencil = DMPatchGetPatchSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Get the size of a single patch of a `DMPATCH`, in grid cells
+
+Not Collective
+
+Input Parameter:
+- `dm` - the `DMPATCH`
+
+Output Parameter:
+- `patchSize` - a `MatStencil` whose `i`, `j`, `k`, `c` fields hold the patch extent in each dimension
+
+Level: intermediate
+
+-seealso: `DMPATCH`, `DMPatchSetPatchSize()`, `DMPatchGetCommSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchGetPatchSize"))
 """
-function DMPatchGetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM, patchSize::Vector{MatStencil})
+function DMPatchGetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM)
     error("DMPatchGetPatchSize: no generated method for these argument types")
 end
 
-@for_petsc function DMPatchGetPatchSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, patchSize::Vector{MatStencil} )
+@for_petsc function DMPatchGetPatchSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	patchSize_ = Ref{MatStencil}()
 
     @chk ccall(
                (:DMPatchGetPatchSize, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{MatStencil}),
-               dm, patchSize,
+               dm, patchSize_,
               )
 
+	patchSize = patchSize_[]
 
-	return nothing
+	return patchSize
 end 
 
 """
 	DMPatchSetCommSize(petsclib::PetscLibType,dm::AbstractPetscDM, commSize::MatStencil) 
+Set the process grid used for each patch of a `DMPATCH`
+
+Logically Collective
+
+Input Parameters:
+- `dm`       - the `DMPATCH`
+- `commSize` - a `MatStencil` whose `i`, `j`, `k` fields hold the number of processes to use per patch in each dimension
+
+Level: intermediate
+
+-seealso: `DMPATCH`, `DMPatchGetCommSize()`, `DMPatchSetPatchSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchSetCommSize"))
@@ -18624,6 +19152,17 @@ end
 
 """
 	DMPatchSetPatchSize(petsclib::PetscLibType,dm::AbstractPetscDM, patchSize::MatStencil) 
+Set the size of a single patch of a `DMPATCH`, in grid cells
+
+Logically Collective
+
+Input Parameters:
+- `dm`        - the `DMPATCH`
+- `patchSize` - a `MatStencil` whose `i`, `j`, `k`, `c` fields hold the patch extent in each dimension
+
+Level: intermediate
+
+-seealso: `DMPATCH`, `DMPatchGetPatchSize()`, `DMPatchSetCommSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchSetPatchSize"))
@@ -18647,6 +19186,16 @@ end
 
 """
 	DMPatchSolve(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Iterate over all patches of a `DMPATCH`, zooming the coarse `DM` onto each patch and scattering data between the coarse and zoomed representations
+
+Collective
+
+Input Parameter:
+- `dm` - the `DMPATCH`
+
+Level: developer
+
+-seealso: `DMPATCH`, `DMPatchZoom()`, `DMPatchGetCoarse()`, `DMPatchGetPatchSize()`, `DMPatchGetCommSize()`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchSolve"))
@@ -18839,7 +19388,7 @@ Input Parameters:
 
 Output Parameters:
 - `vertexSF`         - (Optional) `PetscSF` describing complete vertex ownership
-- `verticesAdjSaved` - (Optional) vertex adjacency array
+- `verticesAdjSaved` - (Optional) vertex adjacency array, must be freed by user
 
 Level: advanced
 
@@ -18886,7 +19435,7 @@ Input Parameters:
 
 Output Parameters:
 - `vertexSF`         - (Optional) `PetscSF` describing complete vertex ownership
-- `verticesAdjSaved` - (Optional) vertex adjacency array
+- `verticesAdjSaved` - (Optional) vertex adjacency array, must be freed by user
 
 Level: advanced
 
@@ -19211,7 +19760,7 @@ end
 end 
 
 """
-	DMPlexComputeBdIntegral(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::PetscInt, vals::Vector{PetscInt}, funcs::Ptr{Cvoid}) 
+	DMPlexComputeBdIntegral(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::PetscInt, vals::Vector{PetscInt}, noname::Ptr{Cvoid}) 
 Form the integral over the specified boundary from the global input X using pointwise functions specified by the user
 
 Input Parameters:
@@ -19221,7 +19770,7 @@ Input Parameters:
 - `numVals` - The number of label values to use, or `PETSC_DETERMINE` for all values
 - `vals`    - The label values to use, or NULL for all values
 - `funcs`   - The functions to integrate along the boundary for each field
-- `user`    - The user context
+- `ctx`     - The application context
 
 Output Parameter:
 - `integral` - Integral for each field
@@ -19233,17 +19782,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdIntegral"))
 """
-function DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::Integer, vals::AbstractVector{<:Number}, funcs::Ptr{Cvoid})
+function DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::Integer, vals::AbstractVector{<:Number}, noname::Ptr{Cvoid})
     error("DMPlexComputeBdIntegral: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeBdIntegral(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::$PetscInt, vals::Vector{$PetscInt}, funcs::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeBdIntegral(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::$PetscInt, vals::Vector{$PetscInt}, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeBdIntegral, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, DMLabel, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               dm, X, label, numVals, vals, funcs,
+               dm, X, label, numVals, vals, noname,
               )
 
 
@@ -19590,13 +20139,13 @@ end
 end 
 
 """
-	DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the vector of cellwise integrals F from the global input X using pointwise functions specified by the user
 
 Input Parameters:
-- `dm`   - The mesh
-- `X`    - Global input vector
-- `user` - The user context
+- `dm`  - The mesh
+- `X`   - Global input vector
+- `ctx` - The application context
 
 Output Parameter:
 - `F` - Cellwise integrals for each field
@@ -19608,17 +20157,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellwiseIntegralFEM"))
 """
-function DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexComputeCellwiseIntegralFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeCellwiseIntegralFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeCellwiseIntegralFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeCellwiseIntegralFEM, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, CVec, Ptr{Cvoid}),
-               dm, X, F, user,
+               dm, X, F, ctx,
               )
 
 
@@ -19783,13 +20332,13 @@ end
 end 
 
 """
-	sc::VecScatter = DMPlexComputeInjectorFEM(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, user::Ptr{Cvoid}) 
+	sc::VecScatter = DMPlexComputeInjectorFEM(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, ctx::Ptr{Cvoid}) 
 Compute a mapping from coarse unknowns to fine unknowns
 
 Input Parameters:
-- `dmc`  - The coarse mesh
-- `dmf`  - The fine mesh
-- `user` - The user context
+- `dmc` - The coarse mesh
+- `dmf` - The fine mesh
+- `ctx` - The application context
 
 Output Parameter:
 - `sc` - The mapping
@@ -19801,18 +20350,18 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInjectorFEM"))
 """
-function DMPlexComputeInjectorFEM(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, user::Ptr{Cvoid})
+function DMPlexComputeInjectorFEM(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, ctx::Ptr{Cvoid})
     error("DMPlexComputeInjectorFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeInjectorFEM(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeInjectorFEM(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, ctx::Ptr{Cvoid} )
 	sc_ = Ref{VecScatter}()
 
     @chk ccall(
                (:DMPlexComputeInjectorFEM, $petsc_library),
                PetscErrorCode,
                (CDM, CDM, Ptr{VecScatter}, Ptr{Cvoid}),
-               dmc, dmf, sc_, user,
+               dmc, dmf, sc_, ctx,
               )
 
 	sc = sc_[]
@@ -19821,17 +20370,30 @@ end
 end 
 
 """
-	DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType,refTree::AbstractPetscDM, inj::AbstractPetscMat) 
+	inj::PetscMat = DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType,refTree::AbstractPetscDM) 
+Compute the injection matrix from fine to coarse degrees of freedom on the reference tree
+
+Collective
+
+Input Parameter:
+- `refTree` - The reference-tree `DMPLEX` (see `DMPlexCreateDefaultReferenceTree()`)
+
+Output Parameter:
+- `inj` - The newly created injection `Mat` mapping fine-space coefficients on the reference tree to their coarse-space counterparts
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`, `DMPlexComputeInjectorTree()`, `DMPlexComputeInterpolatorTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInjectorReferenceTree"))
 """
-function DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType, refTree::AbstractPetscDM, inj::AbstractPetscMat)
+function DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType, refTree::AbstractPetscDM)
     error("DMPlexComputeInjectorReferenceTree: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeInjectorReferenceTree(petsclib::$UnionPetscLib, refTree::AbstractPetscDM, inj::AbstractPetscMat )
-	inj_ = Ref(inj.ptr)
+@for_petsc function DMPlexComputeInjectorReferenceTree(petsclib::$UnionPetscLib, refTree::AbstractPetscDM )
+	inj_ = Ref{CMat}()
 
     @chk ccall(
                (:DMPlexComputeInjectorReferenceTree, $petsc_library),
@@ -19840,19 +20402,19 @@ end
                refTree, inj_,
               )
 
-	inj.ptr = inj_[]
+	inj = PetscMat(inj_[], petsclib)
 
-	return nothing
+	return inj
 end 
 
 """
-	integral::PetscScalar = DMPlexComputeIntegralFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) 
+	integral::PetscScalar = DMPlexComputeIntegralFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the integral over the domain from the global input X using pointwise functions specified by the user
 
 Input Parameters:
-- `dm`   - The mesh
-- `X`    - Global input vector
-- `user` - The user context
+- `dm`  - The mesh
+- `X`   - Global input vector
+- `ctx` - The application context
 
 Output Parameter:
 - `integral` - Integral for each field
@@ -19864,18 +20426,18 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeIntegralFEM"))
 """
-function DMPlexComputeIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexComputeIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexComputeIntegralFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeIntegralFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeIntegralFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid} )
 	integral_ = Ref{$PetscScalar}()
 
     @chk ccall(
                (:DMPlexComputeIntegralFEM, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, X, integral_, user,
+               dm, X, integral_, ctx,
               )
 
 	integral = integral_[]
@@ -19884,13 +20446,13 @@ end
 end 
 
 """
-	DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the local portion of the interpolation matrix from the coarse `DM` to a non
 
 Input Parameters:
-- `dmf`  - The fine mesh
-- `dmc`  - The coarse mesh
-- `user` - The user context
+- `dmf` - The fine mesh
+- `dmc` - The coarse mesh
+- `ctx` - The application context
 
 Output Parameter:
 - `In` - The interpolation matrix
@@ -19902,17 +20464,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInterpolatorGeneral"))
 """
-function DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexComputeInterpolatorGeneral: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeInterpolatorGeneral(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeInterpolatorGeneral(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeInterpolatorGeneral, $petsc_library),
                PetscErrorCode,
                (CDM, CDM, CMat, Ptr{Cvoid}),
-               dmc, dmf, In, user,
+               dmc, dmf, In, ctx,
               )
 
 
@@ -19920,14 +20482,14 @@ end
 end 
 
 """
-	DMPlexComputeInterpolatorNested(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexComputeInterpolatorNested(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the local portion of the interpolation matrix from the coarse `DM` to a uniformly refined `DM`.
 
 Input Parameters:
 - `dmc`       - The coarse mesh
 - `dmf`       - The fine mesh
 - `isRefined` - Flag indicating regular refinement, rather than the same topology
-- `user`      - The user context
+- `ctx`       - The application context
 
 Output Parameter:
 - `In` - The interpolation matrix
@@ -19939,17 +20501,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInterpolatorNested"))
 """
-function DMPlexComputeInterpolatorNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexComputeInterpolatorNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexComputeInterpolatorNested: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeInterpolatorNested(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeInterpolatorNested(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeInterpolatorNested, $petsc_library),
                PetscErrorCode,
                (CDM, CDM, PetscBool, CMat, Ptr{Cvoid}),
-               dmc, dmf, isRefined, In, user,
+               dmc, dmf, isRefined, In, ctx,
               )
 
 
@@ -19957,7 +20519,7 @@ end
 end 
 
 """
-	DMPlexComputeJacobianActionByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexComputeJacobianActionByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the local Jacobian for terms matching the input key
 
 Collective
@@ -19971,7 +20533,7 @@ Input Parameters:
 - `locX`     - The local solution
 - `locX_t`   - The time derivative of the local solution, or `NULL` for time-independent problems
 - `locY`     - The local vector acted on by J
-- `user`     - An optional user context, passed to the pointwise functions
+- `ctx`      - An optional application context, passed to the pointwise functions
 
 Output Parameter:
 - `locF` - The local residual F = J(X) Y
@@ -19983,17 +20545,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianActionByKey"))
 """
-function DMPlexComputeJacobianActionByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexComputeJacobianActionByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexComputeJacobianActionByKey: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeJacobianActionByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeJacobianActionByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeJacobianActionByKey, $petsc_library),
                PetscErrorCode,
                (CDM, PetscFormKey, CIS, $PetscReal, $PetscReal, CVec, CVec, CVec, CVec, Ptr{Cvoid}),
-               dm, key, cellIS, t, X_tShift, locX, locX_t, locY, locF, user,
+               dm, key, cellIS, t, X_tShift, locX, locX_t, locY, locF, ctx,
               )
 
 
@@ -20001,7 +20563,7 @@ end
 end 
 
 """
-	DMPlexComputeJacobianByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexComputeJacobianByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Compute the local Jacobian for terms matching the input key
 
 Collective
@@ -20014,7 +20576,7 @@ Input Parameters:
 - `X_tShift` - The multiplier for the Jacobian with respect to X_t
 - `locX`     - The local solution
 - `locX_t`   - The time derivative of the local solution, or `NULL` for time-independent problems
-- `user`     - An optional user context, passed to the pointwise functions
+- `ctx`      - An optional application context, passed to the pointwise functions
 
 Output Parameters:
 - `Jac`  - The local Jacobian
@@ -20027,17 +20589,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianByKey"))
 """
-function DMPlexComputeJacobianByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexComputeJacobianByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexComputeJacobianByKey: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeJacobianByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeJacobianByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeJacobianByKey, $petsc_library),
                PetscErrorCode,
                (CDM, PetscFormKey, CIS, $PetscReal, $PetscReal, CVec, CVec, CMat, CMat, Ptr{Cvoid}),
-               dm, key, cellIS, t, X_tShift, locX, locX_t, Jac, JacP, user,
+               dm, key, cellIS, t, X_tShift, locX, locX_t, Jac, JacP, ctx,
               )
 
 
@@ -20045,22 +20607,45 @@ end
 end 
 
 """
-	DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType,dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType,dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Assemble the Jacobian and its preconditioning matrix over a cell range
+described by a `PetscFormKey` for a general (possibly non-square, non-nested) pair of row/column `DM`s.
+
+Collective
+
+Input Parameters:
+- `dmr`      - the row `DMPLEX`
+- `dmc`      - the column `DMPLEX`
+- `key`      - the `PetscFormKey` selecting the label, value, part, and field for assembly
+- `cellIS`   - the `IS` listing cells to process, or `NULL`
+- `t`        - the current time
+- `X_tShift` - the time-derivative shift used to combine dynamic and static Jacobian contributions
+- `locX`     - the local solution vector
+- `locX_t`   - the local time-derivative vector, or `NULL`
+- `ctx`      - the application context (unused; kept for API symmetry)
+
+Output Parameters:
+- `Jac`  - the assembled Jacobian matrix
+- `JacP` - the assembled matrix from which the preconditioner is constructed
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscFormKey`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeInterpolatorGeneral()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianByKeyGeneral"))
 """
-function DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexComputeJacobianByKeyGeneral: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeJacobianByKeyGeneral(petsclib::$UnionPetscLib, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeJacobianByKeyGeneral(petsclib::$UnionPetscLib, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeJacobianByKeyGeneral, $petsc_library),
                PetscErrorCode,
                (CDM, CDM, PetscFormKey, CIS, $PetscReal, $PetscReal, CVec, CVec, CMat, CMat, Ptr{Cvoid}),
-               dmr, dmc, key, cellIS, t, X_tShift, locX, locX_t, Jac, JacP, user,
+               dmr, dmc, key, cellIS, t, X_tShift, locX, locX_t, Jac, JacP, ctx,
               )
 
 
@@ -20068,7 +20653,7 @@ end
 end 
 
 """
-	DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Compute the local Jacobian over hybrid cells for terms matching the input key
 
 Collective
@@ -20081,7 +20666,7 @@ Input Parameters:
 - `X_tShift` - The multiplier for the Jacobian with respect to X_t
 - `locX`     - The local solution
 - `locX_t`   - The time derivative of the local solution, or `NULL` for time-independent problems
-- `user`     - An optional user context, passed to the pointwise functions
+- `ctx`      - An optional application context, passed to the pointwise functions
 
 Output Parameters:
 - `Jac`  - The local Jacobian
@@ -20094,17 +20679,97 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianHybridByKey"))
 """
-function DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexComputeJacobianHybridByKey: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeJacobianHybridByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeJacobianHybridByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeJacobianHybridByKey, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscFormKey}, CIS, $PetscReal, $PetscReal, CVec, CVec, CMat, CMat, Ptr{Cvoid}),
-               dm, key, cellIS, t, X_tShift, locX, locX_t, Jac, JacP, user,
+               dm, key, cellIS, t, X_tShift, locX, locX_t, Jac, JacP, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMPlexComputeL2DiffLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+This function computes the L_2 difference between a function u and an FEM interpolant solution u_h.
+
+Collective
+
+Input Parameters:
+- `dm`     - The `DM`
+- `time`   - The time
+- `funcs`  - The functions to evaluate for each field component
+- `ctxs`   - Optional array of contexts to pass to each function, or `NULL`.
+- `localX` - The coefficient vector u_h, a local vector
+
+Output Parameter:
+- `diff` - The diff ||u - u_h||_2
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexComputeL2DiffLocal"))
+"""
+function DMPlexComputeL2DiffLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, noname::Ptr{Cvoid})
+    error("DMPlexComputeL2DiffLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexComputeL2DiffLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMPlexComputeL2DiffLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscReal, Ptr{Cvoid}),
+               dm, time, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMPlexComputeL2DiffVec(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+This function computes the cellwise L_2 difference between a function u and an FEM interpolant solution u_h, and stores it in a Vec.
+
+Collective
+
+Input Parameters:
+- `dm`    - The `DM`
+- `time`  - The time
+- `funcs` - The functions to evaluate for each field component: `NULL` means that component does not contribute to error calculation
+- `ctxs`  - Optional array of contexts to pass to each function, or `NULL`.
+- `X`     - The coefficient vector u_h
+
+Output Parameter:
+- `D` - A `Vec` which holds the difference ||u - u_h||_2 for each cell
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexComputeL2DiffVec"))
+"""
+function DMPlexComputeL2DiffVec(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, noname::Ptr{Cvoid})
+    error("DMPlexComputeL2DiffVec: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexComputeL2DiffVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMPlexComputeL2DiffVec, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscReal, Ptr{Cvoid}),
+               dm, time, noname,
               )
 
 
@@ -20190,13 +20855,13 @@ end
 end 
 
 """
-	DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the local portion of the mass matrix from the coarse `DM` to a non
 
 Input Parameters:
-- `dmf`  - The fine mesh
-- `dmc`  - The coarse mesh
-- `user` - The user context
+- `dmf` - The fine mesh
+- `dmc` - The coarse mesh
+- `ctx` - The application context
 
 Output Parameter:
 - `mass` - The mass matrix
@@ -20208,17 +20873,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMassMatrixGeneral"))
 """
-function DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexComputeMassMatrixGeneral: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeMassMatrixGeneral(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeMassMatrixGeneral(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeMassMatrixGeneral, $petsc_library),
                PetscErrorCode,
                (CDM, CDM, CMat, Ptr{Cvoid}),
-               dmc, dmf, mass, user,
+               dmc, dmf, mass, ctx,
               )
 
 
@@ -20226,22 +20891,37 @@ end
 end 
 
 """
-	DMPlexComputeMassMatrixNested(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexComputeMassMatrixNested(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Form the local portion of the mass matrix from a coarse `DM` to a nested fine `DM`.
+
+Collective
+
+Input Parameters:
+- `dmc` - the coarse mesh
+- `dmf` - the fine mesh
+- `ctx` - the application context
+
+Output Parameter:
+- `mass` - the mass matrix
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeMassMatrixGeneral()`, `DMPlexComputeInterpolatorNested()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMassMatrixNested"))
 """
-function DMPlexComputeMassMatrixNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexComputeMassMatrixNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexComputeMassMatrixNested: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeMassMatrixNested(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeMassMatrixNested(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeMassMatrixNested, $petsc_library),
                PetscErrorCode,
                (CDM, CDM, CMat, Ptr{Cvoid}),
-               dmc, dmf, mass, user,
+               dmc, dmf, mass, ctx,
               )
 
 
@@ -20447,7 +21127,7 @@ end
 end 
 
 """
-	DMPlexComputeResidualByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexComputeResidualByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the local residual for terms matching the input key
 
 Collective
@@ -20460,7 +21140,7 @@ Input Parameters:
 - `locX`   - The local solution
 - `locX_t` - The time derivative of the local solution, or `NULL` for time-independent problems
 - `t`      - The time
-- `user`   - An optional user context, passed to the pointwise functions
+- `ctx`    - An optional application context, passed to the pointwise functions
 
 Output Parameter:
 - `locF` - The local residual
@@ -20472,17 +21152,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeResidualByKey"))
 """
-function DMPlexComputeResidualByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, locF::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexComputeResidualByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, locF::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexComputeResidualByKey: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeResidualByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeResidualByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeResidualByKey, $petsc_library),
                PetscErrorCode,
                (CDM, PetscFormKey, CIS, $PetscReal, CVec, CVec, $PetscReal, CVec, Ptr{Cvoid}),
-               dm, key, cellIS, time, locX, locX_t, t, locF, user,
+               dm, key, cellIS, time, locX, locX_t, t, locF, ctx,
               )
 
 
@@ -20490,7 +21170,7 @@ end
 end 
 
 """
-	DMPlexComputeResidualHybridByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexComputeResidualHybridByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the local residual over hybrid cells for terms matching the input key
 
 Collective
@@ -20503,7 +21183,7 @@ Input Parameters:
 - `locX`   - The local solution
 - `locX_t` - The time derivative of the local solution, or `NULL` for time-independent problems
 - `t`      - The time
-- `user`   - An optional user context, passed to the pointwise functions
+- `ctx`    - An optional application context, passed to the pointwise functions
 
 Output Parameter:
 - `locF` - The local residual
@@ -20515,17 +21195,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeResidualHybridByKey"))
 """
-function DMPlexComputeResidualHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, locF::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexComputeResidualHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, locF::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexComputeResidualHybridByKey: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexComputeResidualHybridByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeResidualHybridByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeResidualHybridByKey, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscFormKey}, CIS, $PetscReal, CVec, CVec, $PetscReal, CVec, Ptr{Cvoid}),
-               dm, key, cellIS, time, locX, locX_t, t, locF, user,
+               dm, key, cellIS, time, locX, locX_t, t, locF, ctx,
               )
 
 
@@ -21197,6 +21877,46 @@ end
 end 
 
 """
+	coloring::ISColoring = DMPlexCreateColoring(petsclib::PetscLibType,dm::AbstractPetscDM, depth::PetscInt, distance::PetscInt) 
+Gets coloring of the connectivity graph of the `DMPlex` points at a given depth.
+
+Collective
+
+Input Parameters:
+- `dm`       - the `DMPlex` object
+- `depth`    - the dimension of the entities in the connectivity graph.
+- `distance` - the distance of the coloring (either 1 or 2).
+
+Output Parameter:
+- `coloring` - the coloring
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DMPlex`, `ISColoring`, `MatColoring`, `DMCreateColoring()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexCreateColoring"))
+"""
+function DMPlexCreateColoring(petsclib::PetscLibType, dm::AbstractPetscDM, depth::Integer, distance::Integer)
+    error("DMPlexCreateColoring: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexCreateColoring(petsclib::$UnionPetscLib, dm::AbstractPetscDM, depth::$PetscInt, distance::$PetscInt )
+	coloring_ = Ref{ISColoring}()
+
+    @chk ccall(
+               (:DMPlexCreateColoring, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscInt, $PetscInt, Ptr{ISColoring}),
+               dm, depth, distance, coloring_,
+              )
+
+	coloring = coloring_[]
+
+	return coloring
+end 
+
+"""
 	DMPlexCreateCoordinateSpace(petsclib::PetscLibType,dm::AbstractPetscDM, degree::PetscInt, localized::PetscBool, project::PetscBool) 
 Creates a finite element space for the coordinates
 
@@ -21570,7 +22290,7 @@ Input Parameters:
 Output Parameters:
 - `dm`          - The `DM`
 - `vertexSF`    - (Optional) `PetscSF` describing complete vertex ownership
-- `verticesAdj` - (Optional) vertex adjacency array
+- `verticesAdj` - (Optional) vertex adjacency array, must be freed by user
 
 Level: intermediate
 
@@ -21669,7 +22389,7 @@ Input Parameters:
 Output Parameters:
 - `dm`          - The `DM`
 - `vertexSF`    - (Optional) `PetscSF` describing complete vertex ownership
-- `verticesAdj` - (Optional) vertex adjacency array
+- `verticesAdj` - (Optional) vertex adjacency array, must be freed by user
 
 Level: intermediate
 
@@ -21889,7 +22609,7 @@ Options Database Keys:
 - `-dm_plex_gmsh_mark_vertices`        - Add vertices to generated labels
 - `-dm_plex_gmsh_mark_vertices_strict` - Add vertices included in a region to generated labels
 - `-dm_plex_gmsh_multiple_tags`        - Allow multiple tags for default labels
-- `-dm_plex_gmsh_spacedim <d>`         - Embedding space dimension, if different from topological dimension
+- `-dm_plex_gmsh_spacedim d`           - Embedding space dimension, if different from topological dimension
 
 Level: beginner
 
@@ -22396,11 +23116,11 @@ Output Parameters:
 - `globalNumbering` - A map from the local cell numbering to the global numbering used in "adjacency".  Negative indicates that the cell is a duplicate from another process.
 
 Options Database Key:
-- `-dm_plex_csr_alg <mat,graph,overlap>` - Choose the algorithm for computing the CSR graph
+- `-dm_plex_csr_alg (mat|graph|overlap)` - Choose the algorithm for computing the CSR graph
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscPartitionerGetType()`, `PetscPartitionerCreate()`, `DMSetAdjacency()`
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCSRAlgorithm`, `PetscPartitionerGetType()`, `PetscPartitionerCreate()`, `DMSetAdjacency()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePartitionerGraph"))
@@ -23068,7 +23788,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeFieldIS()`, `DMPlexDistributeData()`
+-seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeFieldIS()`, `DMPlexDistributeData()`, `PetscSectionMigrateData()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeField"))
@@ -23108,7 +23828,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexDistributeData()`
+-seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexDistributeData()`, `PetscSectionMigrateData()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeFieldIS"))
@@ -23185,10 +23905,10 @@ Output Parameters:
 - `dmOverlap` - The overlapping distributed `DMPLEX` object
 
 Options Database Keys:
-- `-dm_plex_overlap_labels <name1,name2,...>` - List of overlap label names
-- `-dm_plex_overlap_values <int1,int2,...>`   - List of overlap label values
-- `-dm_plex_overlap_exclude_label <name>`     - Label used to exclude points from overlap
-- `-dm_plex_overlap_exclude_value <int>`      - Label value used to exclude points from overlap
+- `-dm_plex_overlap_labels name1,name2,...` - List of overlap label names
+- `-dm_plex_overlap_values int1,int2,...`   - List of overlap label values
+- `-dm_plex_overlap_exclude_label label`    - Label used to exclude points from overlap
+- `-dm_plex_overlap_exclude_value value`    - Label value used to exclude points from overlap
 
 Level: advanced
 
@@ -23410,7 +24130,7 @@ Input Parameters:
 - `dm`          - The surface mesh
 - `layers`      - The number of extruded layers
 - `thickness`   - The total thickness of the extruded layers, or `PETSC_DETERMINE`
-- `tensor`      - Flag to create tensor produt cells
+- `tensor`      - Flag to create tensor product cells
 - `symmetric`   - Flag to extrude symmetrically about the surface
 - `periodic`    - Flag to extrude periodically
 - `normal`      - Surface normal vector, or `NULL`
@@ -23421,12 +24141,12 @@ Output Parameter:
 - `edm` - The volumetric mesh
 
 Options Database Keys:
-- `-dm_plex_transform_extrude_thickness <t>`           - The total thickness of extruded layers
-- `-dm_plex_transform_extrude_use_tensor <bool>`       - Use tensor cells when extruding
-- `-dm_plex_transform_extrude_symmetric <bool>`        - Extrude layers symmetrically about the surface
-- `-dm_plex_transform_extrude_periodic <bool>`         - Extrude layers periodically
-- `-dm_plex_transform_extrude_normal <n0,...,nd>`      - Specify the extrusion direction
-- `-dm_plex_transform_extrude_thicknesses <t0,...,tl>` - Specify thickness of each layer
+- `-dm_plex_transform_extrude_thickness t`             - The total thickness of extruded layers
+- `-dm_plex_transform_extrude_use_tensor (true|false)` - Use tensor cells when extruding
+- `-dm_plex_transform_extrude_symmetric (true|false)`  - Extrude layers symmetrically about the surface
+- `-dm_plex_transform_extrude_periodic (true|false)`   - Extrude layers periodically
+- `-dm_plex_transform_extrude_normal n0,...,nd`        - Specify the extrusion direction
+- `-dm_plex_transform_extrude_thicknesses t0,...,tl`   - Specify thickness of each layer
 
 Level: intermediate
 
@@ -23455,7 +24175,7 @@ end
 end 
 
 """
-	ownershipTransferSF::PetscSF,subdm::PetscDM = DMPlexFilter(petsclib::PetscLibType,dm::AbstractPetscDM, cellLabel::DMLabel, value::PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool) 
+	ownershipTransferSF::PetscSF,subdm::PetscDM = DMPlexFilter(petsclib::PetscLibType,dm::AbstractPetscDM, cellLabel::DMLabel, value::PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm) 
 Extract a subset of mesh cells defined by a label as a separate mesh
 
 Input Parameters:
@@ -23464,6 +24184,7 @@ Input Parameters:
 - `value`           - The label value to use
 - `ignoreLabelHalo` - The flag indicating if labeled points that are in the halo are ignored
 - `sanitizeSubmesh` - The flag indicating if a subpoint is forced to be owned by a rank that owns a subcell that contains that point in its closure
+- `comm`            - The communicator you want the mesh on (currently supports only a sequential communicator or the same communicator of the original mesh)
 
 Output Parameters:
 - `ownershipTransferSF` - The `PetscSF` representing the ownership transfers between parent local meshes due to submeshing.
@@ -23476,19 +24197,19 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexFilter"))
 """
-function DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::DMLabel, value::Integer, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool)
+function DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::DMLabel, value::Integer, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm)
     error("DMPlexFilter: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexFilter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellLabel::DMLabel, value::$PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool )
+@for_petsc function DMPlexFilter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellLabel::DMLabel, value::$PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm )
 	ownershipTransferSF_ = Ref{PetscSF}()
 	subdm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexFilter, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, PetscBool, PetscBool, Ptr{PetscSF}, Ptr{CDM}),
-               dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, ownershipTransferSF_, subdm_,
+               (CDM, DMLabel, $PetscInt, PetscBool, PetscBool, MPI_Comm, Ptr{PetscSF}, Ptr{CDM}),
+               dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, comm, ownershipTransferSF_, subdm_,
               )
 
 	ownershipTransferSF = ownershipTransferSF_[]
@@ -23549,7 +24270,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexFreeGeomObject"))
@@ -23586,8 +24307,8 @@ Output Parameter:
 - `mesh` - The `DMPLEX` object
 
 Options Database Keys:
-- `-dm_plex_generate <name>` - package to generate mesh, for example, triangle, ctetgen or tetgen
-- `-dm_generator <name>`     - package to generate mesh, for example, triangle, ctetgen or tetgen
+- `-dm_plex_generate name` - package to generate mesh, for example, triangle, ctetgen or tetgen
+- `-dm_generator name`     - package to generate mesh, for example, triangle, ctetgen or tetgen
 
 Level: intermediate
 
@@ -23771,6 +24492,41 @@ end
 	useAnchors = useAnchors_[]
 
 	return useAnchors
+end 
+
+"""
+	DMPlexGetAdjacencyUser(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get the user
+
+Input Parameter:
+- `dm` - The `DM` object
+
+Output Parameters:
+- `user` - The callback
+- `ctx`  - context for callback evaluation
+
+Level: advanced
+
+-seealso: `DMPLEX`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexGetAdjacency()`, `DMPlexSetAdjacencyUser()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexGetAdjacencyUser"))
+"""
+function DMPlexGetAdjacencyUser(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMPlexGetAdjacencyUser: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexGetAdjacencyUser(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMPlexGetAdjacencyUser, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -24122,7 +24878,7 @@ Input Parameters:
 Output Parameters:
 - `numIndices` - The number of dof indices in the closure of point with the input sections
 - `indices`    - The dof indices
-- `outOffsets` - Array to write the field offsets into, or `NULL`
+- `outOffsets` - Array, of length the number of fields plus 1, to write the field offsets into, or `NULL`
 - `values`     - The input values, which may be modified if sign flips are induced by the point symmetries, or `NULL`
 
 Level: advanced
@@ -24158,30 +24914,56 @@ end
 end 
 
 """
-	numPoints::PetscInt = DMPlexGetCompressedClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, point::PetscInt, ornt::PetscInt, points::PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::PetscInt) 
+	numPoints::PetscInt,points::Ptr{PetscInt},clSec::PetscSection,clPoints::IS,clp::Ptr{PetscInt} = DMPlexGetCompressedClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, point::PetscInt, ornt::PetscInt) 
+Return the transitive closure of a point, restricted to points with dof in the given section
+
+Not Collective
+
+Input Parameters:
+- `dm`      - The `DMPLEX`
+- `section` - The `PetscSection` used to filter closure points
+- `point`   - The mesh point
+- `ornt`    - The orientation of `point`; when zero the cached closure index (if any) is used directly
+
+Output Parameters:
+- `numPoints` - Number of closure points that participate in `section`
+- `points`    - Array of `(point, orientation)` pairs; either the cached closure or a work array from `DMPlexGetTransitiveClosure_Internal()`
+- `clSec`     - The section describing the closure index, or `NULL` if none is cached
+- `clPoints`  - The `IS` holding the closure indices, or `NULL` if none is cached
+- `clp`       - Raw pointer into the closure-index `IS` when it is used, or `NULL` otherwise
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSection`, `DMPlexRestoreCompressedClosure()`, `DMPlexGetTransitiveClosure()`, `PetscSectionGetClosureIndex()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCompressedClosure"))
 """
-function DMPlexGetCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::Integer, ornt::Integer, points::Integer, clSec::PetscSection, clPoints::AbstractIS, clp::Integer)
+function DMPlexGetCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::Integer, ornt::Integer)
     error("DMPlexGetCompressedClosure: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexGetCompressedClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, point::$PetscInt, ornt::$PetscInt, points::$PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::$PetscInt )
+@for_petsc function DMPlexGetCompressedClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, point::$PetscInt, ornt::$PetscInt )
 	numPoints_ = Ref{$PetscInt}()
-	clPoints_ = Ref(clPoints.ptr)
+	points_ = Ref{Ptr{$PetscInt}}()
+	clSec_ = Ref{PetscSection}()
+	clPoints_ = Ref{CIS}()
+	clp_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
                (:DMPlexGetCompressedClosure, $petsc_library),
                PetscErrorCode,
                (CDM, PetscSection, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{PetscSection}, Ptr{CIS}, Ptr{Ptr{$PetscInt}}),
-               dm, section, point, ornt, numPoints_, points, clSec, clPoints_, clp,
+               dm, section, point, ornt, numPoints_, points_, clSec_, clPoints_, clp_,
               )
 
 	numPoints = numPoints_[]
-	clPoints.ptr = clPoints_[]
+	points = points_[]
+	clSec = clSec_[]
+	clPoints = IS(clPoints_[], petsclib)
+	clp = clp_[]
 
-	return numPoints
+	return numPoints,points,clSec,clPoints,clp
 end 
 
 """
@@ -24683,7 +25465,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetDepth()`, `DMPlexGetHeightStratum()`, `DMPlexGetDepthStratum()`, `DMPlexGetPointDepth()`,
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetDepth()`, `DMPlexGetHeightStratum()`, `DMPlexGetDepthStratum()`, `DMPlexGetPointDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepthLabel"))
@@ -25026,7 +25808,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomBodyMassProperties"))
@@ -25079,7 +25861,7 @@ Output Parameters:
 - `wDataLength`       - Length of wData Array.
 - `wData`             - Array holding the Weight for an associated Geometry Control Point.
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomCntrlPntAndWeightData"))
@@ -25135,7 +25917,9 @@ Output Parameters:
 - `cntrlPntVertexMap`       - Array containing the VERTEX ID for the Control Point. Array index corresponds to Control Point ID.
 - `cntrlPntWeightVertexMap` - Array containing the VERTEX ID for the Control Point Weight. Array index corresponds to Control Point ID.
 
--seealso: DMPlexGeomDataAndGrads
+Level: intermediate
+
+-seealso: `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomCntrlPntMaps"))
@@ -25186,7 +25970,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomFaceNumOfControlPoints"))
@@ -25229,7 +26013,7 @@ Output Parameters:
 - `gradSAW`             - Array containing the Surface Area Gradient with respect to Control Point Weight. Data is arranged by Control Point ID.
 - `gradVolW`            - Array containing the Volume Gradient with respect to Control Point Weight. Data is arranged by Control Point ID.
 
--seealso: DMPlexGeomDataAndGrads
+-seealso: `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomGradData"))
@@ -25283,7 +26067,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomID"))
@@ -25322,7 +26106,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodyShells()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodies"))
@@ -25364,7 +26148,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyEdges"))
@@ -25406,7 +26190,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyFaces"))
@@ -25448,7 +26232,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyLoops"))
@@ -25490,7 +26274,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyNodes"))
@@ -25532,7 +26316,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyShells"))
@@ -25575,7 +26359,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelEdgeNodes"))
@@ -25618,7 +26402,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelFaceEdges"))
@@ -25661,7 +26445,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelFaceLoops"))
@@ -25704,7 +26488,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelShellFaces"))
@@ -25732,7 +26516,7 @@ end
 
 """
 	DMPlexGetGeomModelTUV(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Gets the [t] (EDGES) and [u, v] (FACES) geometry parameters of DM points that are associated geometry relationships. Requires a DM with a EGADS model attached.
+Gets the [t] (EDGES) and [u, v] (FACES) geometry parameters of DM points that are associated geometry relationships. Requires a DM with an EGADS model attached.
 
 Collective
 
@@ -25780,7 +26564,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso:
+-seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomObject"))
@@ -25846,29 +26630,6 @@ end
 	minRadius = minRadius_[]
 
 	return facegeom,cellgeom,minRadius
-end 
-
-"""
-	DMPlexGetGlobalToNaturalSF(petsclib::PetscLibType,dm::AbstractPetscDM, sf::PetscSF) 
-
-# External Links
-$(_doc_external("DM/DMPlexGetGlobalToNaturalSF"))
-"""
-function DMPlexGetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
-    error("DMPlexGetGlobalToNaturalSF: no generated method for these argument types")
-end
-
-@for_petsc function DMPlexGetGlobalToNaturalSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
-
-    @chk ccall(
-               (:DMPlexGetGlobalToNaturalSF, $petsc_library),
-               PetscErrorCode,
-               (CDM, Ptr{PetscSF}),
-               dm, sf,
-              )
-
-
-	return nothing
 end 
 
 """
@@ -26307,7 +27068,7 @@ end
 	migrationSF::PetscSF = DMPlexGetMigrationSF(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Gets the `PetscSF` for migrating from a parent `DM` into this `DM`
 
-Note Collective
+Not Collective
 
 Input Parameter:
 - `dm` - The `DM`
@@ -27028,6 +27789,44 @@ end
 end 
 
 """
+	DMPlexGetRefinementFunction(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the function giving the maximum cell volume for refinement
+
+Input Parameter:
+- `dm` - The `DM`
+
+Output Parameter:
+- `refinementFunc` - Function giving the maximum cell volume in the refined mesh
+
+Calling Sequence of `refinementFunc`:
+- `coords` - Coordinates of the current point, usually a cell centroid
+- `limit`  - The maximum cell volume for a cell containing this point
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexSetRefinementFunction()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexGetRefinementFunction"))
+"""
+function DMPlexGetRefinementFunction(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMPlexGetRefinementFunction: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexGetRefinementFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMPlexGetRefinementFunction, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	refinementLimit::PetscReal = DMPlexGetRefinementLimit(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Retrieve the maximum cell volume for refinement
 
@@ -27137,6 +27936,19 @@ end
 
 """
 	save::PetscBool = DMPlexGetSaveTransform(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Get the flag which determines whether the `DMPlexTransform` used to produce a refined `DM` is retained
+
+Not Collective
+
+Input Parameter:
+- `dm` - The `DM`
+
+Output Parameter:
+- `save` - If `PETSC_TRUE`, the transform will be kept on the refined `DM`
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetSaveTransform()`, `DMPlexGetTransform()`, `DMPlexSetTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSaveTransform"))
@@ -27467,26 +28279,41 @@ end
 end 
 
 """
-	DMPlexGetTransform(petsclib::PetscLibType,dm::AbstractPetscDM, tr::DMPlexTransform) 
+	tr::DMPlexTransform = DMPlexGetTransform(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Get the `DMPlexTransform` cached on the `DM`
+
+Not Collective
+
+Input Parameter:
+- `dm` - The `DM`
+
+Output Parameter:
+- `tr` - The `DMPlexTransform`, or `NULL` if none has been saved
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetTransform()`, `DMPlexSetSaveTransform()`, `DMPlexGetSaveTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTransform"))
 """
-function DMPlexGetTransform(petsclib::PetscLibType, dm::AbstractPetscDM, tr::DMPlexTransform)
+function DMPlexGetTransform(petsclib::PetscLibType, dm::AbstractPetscDM)
     error("DMPlexGetTransform: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexGetTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, tr::DMPlexTransform )
+@for_petsc function DMPlexGetTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	tr_ = Ref{DMPlexTransform}()
 
     @chk ccall(
                (:DMPlexGetTransform, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{DMPlexTransform}),
-               dm, tr,
+               dm, tr_,
               )
 
+	tr = tr_[]
 
-	return nothing
+	return tr
 end 
 
 """
@@ -27534,7 +28361,7 @@ Not Collective
 Input Parameters:
 - `dm`      - The `DMPLEX`
 - `p`       - The mesh point
-- `useCone` - `PETSC_TRUE` for the closure, otherwise return the star
+- `useCone` - `PETSC_TRUE` for the closure, otherwise return the support
 
 Input/Output Parameter:
 - `points` - The points and point orientations, interleaved as pairs [p0, o0, p1, o1, ...];
@@ -27592,7 +28419,7 @@ the child corresponds to the point in the reference tree with index childID
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`,`DMPlexSetTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetAnchors()`, `DMPlexGetTreeParent()`, `DMPlexGetTreeChildren()`
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetAnchors()`, `DMPlexGetTreeParent()`, `DMPlexGetTreeChildren()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTree"))
@@ -28155,7 +28982,7 @@ Input Parameters:
 - `numids` - The number of `DMLabel` ids for constrained points
 - `ids`    - An array of ids for constrained points
 - `func`   - A pointwise function giving boundary values
-- `ctx`    - An optional user context for bcFunc
+- `ctx`    - An optional application context for `bcFunc`
 
 Output Parameter:
 - `locX` - A local vector to receives the boundary values
@@ -28201,7 +29028,7 @@ Input Parameters:
 - `numids` - The number of `DMLabel` ids for constrained points
 - `ids`    - An array of ids for constrained points
 - `func`   - A pointwise function giving boundary values, the calling sequence is given in `DMProjectBdFieldLabelLocal()`
-- `ctx`    - An optional user context for `func`
+- `ctx`    - An optional application context for `func`
 
 Output Parameter:
 - `locX` - A local vector to receive the boundary values
@@ -28245,7 +29072,7 @@ Input Parameters:
 - `numids` - The number of `DMLabel` ids for constrained points
 - `ids`    - An array of ids for constrained points
 - `func`   - A pointwise function giving boundary values
-- `ctx`    - An optional user context for bcFunc
+- `ctx`    - An optional application context for `bcFunc`
 
 Output Parameter:
 - `locX` - A local vector to receives the boundary values
@@ -28275,17 +29102,34 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType,dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::PetscReal, locGradient::AbstractPetscVec) 
+	locGradient::PetscVec = DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType,dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::PetscReal) 
+Reconstruct cell gradients and insert non
+into a local finite-volume solution vector.
+
+Collective
+
+Input Parameters:
+- `dm`   - the `DMPLEX`
+- `fv`   - the `PetscFV` discretization
+- `locX` - the local solution vector; updated with non-essential boundary values
+- `time` - the current time
+
+Output Parameter:
+- `locGradient` - if non-`NULL`, the local vector holding the reconstructed cell gradients
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscFV`, `DMPlexInsertBoundaryValues()`, `DMPlexReconstructGradientsFVM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesFVM"))
 """
-function DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::Real, locGradient::AbstractPetscVec)
+function DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::Real)
     error("DMPlexInsertBoundaryValuesFVM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexInsertBoundaryValuesFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::$PetscReal, locGradient::AbstractPetscVec )
-	locGradient_ = Ref(locGradient.ptr)
+@for_petsc function DMPlexInsertBoundaryValuesFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::$PetscReal )
+	locGradient_ = Ref{CVec}()
 
     @chk ccall(
                (:DMPlexInsertBoundaryValuesFVM, $petsc_library),
@@ -28294,9 +29138,9 @@ end
                dm, fv, locX, time, locGradient_,
               )
 
-	locGradient.ptr = locGradient_[]
+	locGradient = PetscVec(locGradient_[], petsclib)
 
-	return nothing
+	return locGradient
 end 
 
 """
@@ -28316,7 +29160,7 @@ Input Parameters:
 - `numids`       - The number of `DMLabel` ids for constrained points
 - `ids`          - An array of ids for constrained points
 - `func`         - A pointwise function giving boundary values
-- `ctx`          - An optional user context for bcFunc
+- `ctx`          - An optional application context for bcFunc
 
 Output Parameter:
 - `locX` - A local vector to receives the boundary values
@@ -28935,14 +29779,14 @@ end
 
 """
 	DMPlexLabelComplete(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
-Starting with a label marking points on a surface, we add the transitive closure to the surface
+Starting with a label marking points, we add their transitive closure
 
 Input Parameters:
 - `dm`    - The `DM`
-- `label` - A `DMLabel` marking the surface points
+- `label` - A `DMLabel` marking the points
 
 Output Parameter:
-- `label` - A `DMLabel` marking all surface points in the transitive closure
+- `label` - A `DMLabel` marking all points in the transitive closure
 
 Level: developer
 
@@ -29047,7 +29891,7 @@ Collective
 Input Parameters:
 - `pack`     - the `DMCOMPOSITE`
 - `func`     - call back function
-- `user_ctx` - user context
+- `user_ctx` - application context
 
 Input/Output Parameter:
 - `X` - Vector to data to
@@ -29503,6 +30347,26 @@ end
 
 """
 	DMPlexMatGetClosureIndicesRefined(petsclib::PetscLibType,dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, point::PetscInt, cindices::Vector{PetscInt}, findices::Vector{PetscInt}) 
+Compute the fine
+
+Not Collective
+
+Input Parameters:
+- `dmf`            - The fine `DMPLEX`
+- `fsection`       - The fine local `PetscSection`, or `NULL` to use `DMGetLocalSection(dmf, ...)`
+- `globalFSection` - The fine global `PetscSection`, or `NULL` to use `DMGetGlobalSection(dmf, ...)`
+- `dmc`            - The coarse `DMPLEX`
+- `csection`       - The coarse local `PetscSection`, or `NULL` to use `DMGetLocalSection(dmc, ...)`
+- `globalCSection` - The coarse global `PetscSection`, or `NULL` to use `DMGetGlobalSection(dmc, ...)`
+- `point`          - The coarse-mesh point
+
+Output Parameters:
+- `cindices` - Global column indices for the coarse closure (caller-provided buffer of the correct size)
+- `findices` - Global row indices for the fine closure across all subcells produced by uniformly refining `point`
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMatSetClosureRefined()`, `DMPlexGetClosureIndices()`, `DMPlexTransformCellTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMatGetClosureIndicesRefined"))
@@ -29526,7 +30390,7 @@ end
 
 """
 	DMPlexMatSetClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, globalSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
-Set an array of the values on the closure of 'point'
+Set an array of the values on the closure of `point`
 
 Not collective
 
@@ -29565,7 +30429,7 @@ end
 
 """
 	DMPlexMatSetClosureGeneral(petsclib::PetscLibType,dmRow::AbstractPetscDM, sectionRow::PetscSection, globalSectionRow::PetscSection, useRowPerm::PetscBool, dmCol::AbstractPetscDM, sectionCol::PetscSection, globalSectionCol::PetscSection, useColPerm::PetscBool, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
-Set an array of the values on the closure of 'point' using a different row and column section
+Set an array of the values on the closure of `point` using a different row and column section
 
 Not collective
 
@@ -29609,6 +30473,25 @@ end
 
 """
 	DMPlexMatSetClosureRefined(petsclib::PetscLibType,dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
+Insert values into `A` for the closure of a coarse
+
+Not Collective
+
+Input Parameters:
+- `dmf`            - The fine `DMPLEX`
+- `fsection`       - The fine local `PetscSection`, or `NULL` to use `DMGetLocalSection(dmf, ...)`
+- `globalFSection` - The fine global `PetscSection`, or `NULL` to use `DMGetGlobalSection(dmf, ...)`
+- `dmc`            - The coarse `DMPLEX`
+- `csection`       - The coarse local `PetscSection`, or `NULL` to use `DMGetLocalSection(dmc, ...)`
+- `globalCSection` - The coarse global `PetscSection`, or `NULL` to use `DMGetGlobalSection(dmc, ...)`
+- `A`              - The matrix
+- `point`          - The coarse-mesh point whose refined closure is inserted
+- `values`         - The values to insert (row block of size equal to the fine-closure dof count, column block of size equal to the coarse-closure dof count)
+- `mode`           - The `InsertMode` (`ADD_VALUES` or `INSERT_VALUES`)
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMatSetClosure()`, `DMPlexMatGetClosureIndicesRefined()`, `DMPlexTransformCellTransform()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMatSetClosureRefined"))
@@ -29752,7 +30635,7 @@ Output Parameter:
 - `metric` - The metric
 
 Options Database Key:
-- `-dm_adaptor <pragmatic/mmg/parmmg>` - specify dm adaptor to use
+- `-dm_adaptor (pragmatic|mmg|parmmg)` - specify `DMAdapterType` to use
 
 Options Database Keys for Mmg and ParMmg:
 - `-dm_plex_metric_gradation_factor` - Maximum ratio by which edge lengths may grow during gradation
@@ -30694,6 +31577,34 @@ end
 
 """
 	DMPlexMetricSetFromOptions(petsclib::PetscLibType,dm::AbstractPetscDM) 
+Configure the Riemannian metric context on a `DMPLEX` from the options database
+
+Collective
+
+Input Parameter:
+- `dm` - The `DM`
+
+Options Database Keys:
+- `-dm_plex_metric_isotropic (true|false)`                 - Is the metric isotropic?
+- `-dm_plex_metric_uniform (true|false)`                   - Is the metric uniform?
+- `-dm_plex_metric_restrict_anisotropy_first (true|false)` - Restrict anisotropy before normalization
+- `-dm_plex_metric_no_insert (true|false)`                 - Turn off node insertion and deletion during adaptation
+- `-dm_plex_metric_no_swap (true|false)`                   - Turn off facet swapping
+- `-dm_plex_metric_no_move (true|false)`                   - Turn off facet node movement
+- `-dm_plex_metric_no_surf (true|false)`                   - Turn off surface modification
+- `-dm_plex_metric_num_iterations nits`                    - Number of `ParMmg` adaptation iterations
+- `-dm_plex_metric_verbosity verbosity`                    - Verbosity of the metric-based adaptation package (-1 silent, 10 maximum)
+- `-dm_plex_metric_h_min h_min`                            - Minimum tolerated metric magnitude
+- `-dm_plex_metric_h_max h_max`                            - Maximum tolerated metric magnitude
+- `-dm_plex_metric_a_max a_max`                            - Maximum tolerated anisotropy
+- `-dm_plex_metric_p order`                                - L-p normalization order
+- `-dm_plex_metric_target_complexity comp`                 - Target metric complexity
+- `-dm_plex_metric_gradation_factor fact`                  - Metric gradation factor
+- `-dm_plex_metric_hausdorff_number h`                     - Metric Hausdorff number
+
+Level: beginner
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricSetUniform()`, `DMPlexMetricSetMinimumMagnitude()`, `DMPlexMetricSetMaximumMagnitude()`, `DMPlexMetricSetTargetComplexity()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetFromOptions"))
@@ -31350,12 +32261,12 @@ end
 end 
 
 """
-	DMPlexMonitorThroughput(petsclib::PetscLibType,dm::AbstractPetscDM, dummy::Ptr{Cvoid}) 
+	DMPlexMonitorThroughput(petsclib::PetscLibType,dm::AbstractPetscDM, unused::Ptr{Cvoid}) 
 Report the cell throughput of FE integration
 
 Input Parameters:
-- `dm`    - The `DM`
-- `dummy` - unused argument
+- `dm`     - The `DM`
+- `unused` - unused argument
 
 Options Database Key:
 - `-dm_plex_monitor_throughput` - Activate the monitor
@@ -31367,17 +32278,17 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexMonitorThroughput"))
 """
-function DMPlexMonitorThroughput(petsclib::PetscLibType, dm::AbstractPetscDM, dummy::Ptr{Cvoid})
+function DMPlexMonitorThroughput(petsclib::PetscLibType, dm::AbstractPetscDM, unused::Ptr{Cvoid})
     error("DMPlexMonitorThroughput: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexMonitorThroughput(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dummy::Ptr{Cvoid} )
+@for_petsc function DMPlexMonitorThroughput(petsclib::$UnionPetscLib, dm::AbstractPetscDM, unused::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexMonitorThroughput, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Cvoid}),
-               dm, dummy,
+               dm, unused,
               )
 
 
@@ -31465,7 +32376,7 @@ Give a consistent orientation to the input mesh
 Input Parameter:
 - `dm` - The `DM`
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexOrientLabel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexOrient"))
@@ -31489,6 +32400,15 @@ end
 
 """
 	DMPlexOrientLabel(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+Give a consistent orientation to the hypersurface marked by the `DMLabel` in the input mesh
+
+Collective on dm
+
+Input Parameters:
+- `dm`    - The `DM`
+- `label` - The `DMLabel`
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexOrient()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexOrientLabel"))
@@ -32390,6 +33310,78 @@ end
 end 
 
 """
+	reflect::PetscBool = DMPlexRefineToSimplexGetReflect(petsclib::PetscLibType,tr::DMPlexTransform) 
+Get the flag to reflect the transform
+
+Not Collective
+
+Input Parameter:
+- `tr` - The `DMPlexTransform`
+
+Output Parameter:
+- `reflect` - Whether to reflect the transform
+
+Level: intermediate
+
+-seealso: `DMPlexTransform`, `DMPlexRefineToSimplexSetReflect()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexRefineToSimplexGetReflect"))
+"""
+function DMPlexRefineToSimplexGetReflect(petsclib::PetscLibType, tr::DMPlexTransform)
+    error("DMPlexRefineToSimplexGetReflect: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexRefineToSimplexGetReflect(petsclib::$UnionPetscLib, tr::DMPlexTransform )
+	reflect_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:DMPlexRefineToSimplexGetReflect, $petsc_library),
+               PetscErrorCode,
+               (DMPlexTransform, Ptr{PetscBool}),
+               tr, reflect_,
+              )
+
+	reflect = reflect_[]
+
+	return reflect
+end 
+
+"""
+	DMPlexRefineToSimplexSetReflect(petsclib::PetscLibType,tr::DMPlexTransform, reflect::PetscBool) 
+Set the flag to reflect the transform
+
+Not Collective
+
+Input Parameters:
+- `tr`      - The `DMPlexTransform`
+- `reflect` - Whether to reflect the transform
+
+Level: intermediate
+
+-seealso: `DMPlexTransform`, `DMPlexRefineToSimplexGetReflect()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexRefineToSimplexSetReflect"))
+"""
+function DMPlexRefineToSimplexSetReflect(petsclib::PetscLibType, tr::DMPlexTransform, reflect::PetscBool)
+    error("DMPlexRefineToSimplexSetReflect: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexRefineToSimplexSetReflect(petsclib::$UnionPetscLib, tr::DMPlexTransform, reflect::PetscBool )
+
+    @chk ccall(
+               (:DMPlexRefineToSimplexSetReflect, $petsc_library),
+               PetscErrorCode,
+               (DMPlexTransform, PetscBool),
+               tr, reflect,
+              )
+
+
+	return nothing
+end 
+
+"""
 	DMPlexRemapGeometry(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, func::external) 
 This function maps the original `DM` coordinates to new coordinates.
 
@@ -32759,6 +33751,23 @@ end
 
 """
 	DMPlexRestoreCompressedClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, point::PetscInt, numPoints::PetscInt, points::PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::PetscInt) 
+Release the arrays returned by `DMPlexGetCompressedClosure()`
+
+Not Collective
+
+Input Parameters:
+- `dm`        - The `DMPLEX`
+- `section`   - The `PetscSection` passed to `DMPlexGetCompressedClosure()`
+- `point`     - The mesh point
+- `numPoints` - The number of closure points
+- `points`    - The closure array
+- `clSec`     - The cached closure section
+- `clPoints`  - The cached closure `IS`
+- `clp`       - The raw pointer into the closure index
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSection`, `DMPlexGetCompressedClosure()`, `DMPlexRestoreTransitiveClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCompressedClosure"))
@@ -32917,6 +33926,23 @@ end
 
 """
 	DMPlexRestoreGeomBodyMassProperties(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, volume::PetscScalar, surfArea::PetscScalar, centerOfGravity::PetscScalar, COGsize::PetscInt, inertiaMatrixCOG::PetscScalar, IMCOGsize::PetscInt) 
+Release the arrays returned by `DMPlexGetGeomBodyMassProperties()`
+
+Not Collective
+
+Input Parameters:
+- `dm`               - The `DMPLEX` with an attached CAD geometry
+- `body`             - The `PetscGeom` body previously queried
+- `volume`           - The volume value (unused, retained for API symmetry)
+- `surfArea`         - The surface area value (unused, retained for API symmetry)
+- `centerOfGravity`  - Center-of-gravity array to free
+- `COGsize`          - The size of `centerOfGravity` (unused, retained for API symmetry)
+- `inertiaMatrixCOG` - Inertia-matrix-at-COG array to free
+- `IMCOGsize`        - The size of `inertiaMatrixCOG` (unused, retained for API symmetry)
+
+Level: intermediate
+
+-seealso: `DMPlexGetGeomBodyMassProperties()`, `DMPlexGetGeomModelBodies()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomBodyMassProperties"))
@@ -32944,6 +33970,24 @@ end
 
 """
 	DMPlexRestoreGeomCntrlPntAndWeightData(petsclib::PetscLibType,dm::AbstractPetscDM, cpHashTable::PetscHMapI, cpCoordDataLength::PetscInt, cpCoordData::PetscScalar, maxNumEquiv::PetscInt, cpEquiv::AbstractPetscMat, wHashTable::PetscHMapI, wDataLength::PetscInt, wData::PetscScalar) 
+Release the arrays returned by `DMPlexGetGeomCntrlPntAndWeightData()`
+
+Not Collective
+
+Input Parameters:
+- `dm`                - The `DMPLEX` with an attached CAD geometry
+- `cpHashTable`       - Control-point hash table (unused, retained for API symmetry)
+- `cpCoordDataLength` - Length of `cpCoordData` (unused, retained for API symmetry)
+- `cpCoordData`       - Control-point coordinate array to release
+- `maxNumEquiv`       - Maximum number of equivalent control points (unused, retained for API symmetry)
+- `cpEquiv`           - Control-point equivalency matrix (unused, retained for API symmetry)
+- `wHashTable`        - Weight hash table (unused, retained for API symmetry)
+- `wDataLength`       - Length of `wData` (unused, retained for API symmetry)
+- `wData`             - Weight array to release
+
+Level: intermediate
+
+-seealso: `DMPlexGetGeomCntrlPntAndWeightData()`, `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomCntrlPntAndWeightData"))
@@ -32972,6 +34016,24 @@ end
 
 """
 	DMPlexRestoreGeomGradData(petsclib::PetscLibType,dm::AbstractPetscDM, cpSurfGradHashTable::PetscHMapI, cpSurfGrad::AbstractPetscMat, cpArraySize::PetscInt, gradSACP::PetscScalar, gradVolCP::PetscScalar, wArraySize::PetscInt, gradSAW::PetscScalar, gradVolW::PetscScalar) 
+Release the arrays returned by `DMPlexGetGeomGradData()`
+
+Not Collective
+
+Input Parameters:
+- `dm`                  - The `DMPLEX` with an attached CAD geometry
+- `cpSurfGradHashTable` - Surface-gradient hash table (unused, retained for API symmetry)
+- `cpSurfGrad`          - Surface-gradient matrix (unused, retained for API symmetry)
+- `cpArraySize`         - Length of the control-point gradient arrays (unused, retained for API symmetry)
+- `gradSACP`            - Surface-area gradient with respect to control points, to release
+- `gradVolCP`           - Volume gradient with respect to control points, to release
+- `wArraySize`          - Length of the control-point-weight gradient arrays (unused, retained for API symmetry)
+- `gradSAW`             - Surface-area gradient with respect to weights, to release
+- `gradVolW`            - Volume gradient with respect to weights, to release
+
+Level: intermediate
+
+-seealso: `DMPlexGetGeomGradData()`, `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomGradData"))
@@ -33158,12 +34220,12 @@ end
 end 
 
 """
-	DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the boundary values for the local input `X`
 
 Input Parameters:
-- `dm`   - The mesh
-- `user` - The user context
+- `dm`  - The mesh
+- `ctx` - The application context
 
 Output Parameter:
 - `X` - Local solution
@@ -33175,17 +34237,17 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeBoundaryFEM"))
 """
-function DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexSNESComputeBoundaryFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSNESComputeBoundaryFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexSNESComputeBoundaryFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexSNESComputeBoundaryFEM, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}),
-               dm, X, user,
+               dm, X, ctx,
               )
 
 
@@ -33193,13 +34255,13 @@ end
 end 
 
 """
-	DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the local portion of the Jacobian matrix `Jac` at the local solution `X` using pointwise functions specified by the user.
 
 Input Parameters:
-- `dm`   - The `DM`
-- `X`    - Local input vector
-- `user` - The user context
+- `dm`  - The `DM`
+- `X`   - Local input vector
+- `ctx` - The application context
 
 Output Parameters:
 - `Jac`  - Jacobian matrix
@@ -33212,17 +34274,17 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeJacobianFEM"))
 """
-function DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexSNESComputeJacobianFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSNESComputeJacobianFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexSNESComputeJacobianFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexSNESComputeJacobianFEM, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, CMat, CMat, Ptr{Cvoid}),
-               dm, X, Jac, JacP, user,
+               dm, X, Jac, JacP, ctx,
               )
 
 
@@ -33230,13 +34292,13 @@ end
 end 
 
 """
-	obj::PetscReal = DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) 
+	obj::PetscReal = DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Sums the local objectives from the local input X using pointwise functions specified by the user
 
 Input Parameters:
-- `dm`   - The mesh
-- `X`    - Local solution
-- `user` - The user context
+- `dm`  - The mesh
+- `X`   - Local solution
+- `ctx` - The application context
 
 Output Parameter:
 - `obj` - Local objective value
@@ -33248,18 +34310,18 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeObjectiveFEM"))
 """
-function DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexSNESComputeObjectiveFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSNESComputeObjectiveFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexSNESComputeObjectiveFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid} )
 	obj_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:DMPlexSNESComputeObjectiveFEM, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{$PetscReal}, Ptr{Cvoid}),
-               dm, X, obj_, user,
+               dm, X, obj_, ctx,
               )
 
 	obj = obj_[]
@@ -33268,22 +34330,37 @@ end
 end 
 
 """
-	DMPlexSNESComputeResidualCEED(petsclib::PetscLibType,dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexSNESComputeResidualCEED(petsclib::PetscLibType,dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Assemble the local residual for a `SNES` on a `DMPLEX` using the libCEED operator attached to the `DM`
+
+Collective
+
+Input Parameters:
+- `dm`   - the `DMPLEX` for which libCEED operators have been created by `DMCeedCreate()`
+- `locX` - local solution vector including ghost values
+- `ctx`  - application context (unused)
+
+Output Parameter:
+- `locF` - local residual vector to be assembled
+
+Level: developer
+
+-seealso: [](ch_snes), `SNES`, `DMPLEX`, `DMCeedCreate()`, `DMSNESSetFunctionLocal()`, `DMPlexTSComputeRHSFunctionFVMCEED()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualCEED"))
 """
-function DMPlexSNESComputeResidualCEED(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexSNESComputeResidualCEED(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexSNESComputeResidualCEED: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSNESComputeResidualCEED(petsclib::$UnionPetscLib, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexSNESComputeResidualCEED(petsclib::$UnionPetscLib, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexSNESComputeResidualCEED, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, CVec, Ptr{Cvoid}),
-               dm, locX, locF, user,
+               dm, locX, locF, ctx,
               )
 
 
@@ -33291,13 +34368,13 @@ end
 end 
 
 """
-	DMPlexSNESComputeResidualDS(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexSNESComputeResidualDS(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Sums the local residual into vector `F` from the local input `X` using all pointwise functions with unique keys in the `PetscDS`
 
 Input Parameters:
-- `dm`   - The mesh
-- `X`    - Local solution
-- `user` - The user context
+- `dm`  - The mesh
+- `X`   - Local solution
+- `ctx` - The application context
 
 Output Parameter:
 - `F` - Local output vector
@@ -33309,17 +34386,17 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualDS"))
 """
-function DMPlexSNESComputeResidualDS(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexSNESComputeResidualDS(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexSNESComputeResidualDS: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSNESComputeResidualDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexSNESComputeResidualDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexSNESComputeResidualDS, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, CVec, Ptr{Cvoid}),
-               dm, X, F, user,
+               dm, X, F, ctx,
               )
 
 
@@ -33327,13 +34404,13 @@ end
 end 
 
 """
-	DMPlexSNESComputeResidualFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexSNESComputeResidualFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Sums the local residual into vector `F` from the local input `X` using pointwise functions specified by the user
 
 Input Parameters:
-- `dm`   - The mesh
-- `X`    - Local solution
-- `user` - The user context
+- `dm`  - The mesh
+- `X`   - Local solution
+- `ctx` - The application context
 
 Output Parameter:
 - `F` - Local output vector
@@ -33345,17 +34422,17 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualFEM"))
 """
-function DMPlexSNESComputeResidualFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexSNESComputeResidualFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexSNESComputeResidualFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSNESComputeResidualFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexSNESComputeResidualFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexSNESComputeResidualFEM, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, CVec, Ptr{Cvoid}),
-               dm, X, F, user,
+               dm, X, F, ctx,
               )
 
 
@@ -34162,7 +35239,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscPartitioner`,`DMPlexDistribute()`, `DMPlexGetPartitioner()`, `PetscPartitionerCreate()`
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscPartitioner`, `DMPlexDistribute()`, `DMPlexGetPartitioner()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetPartitioner"))
@@ -34196,7 +35273,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`,`DMPlexGetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetReferenceTree"))
@@ -34357,11 +35434,11 @@ Use `DMPLEX`'s internal FEM routines to compute `SNES` boundary values, objectiv
 Input Parameters:
 - `dm`      - The `DM` object
 - `use_obj` - Use the objective function callback
-- `ctx`     - The user context that will be passed to pointwise evaluation routines
+- `ctx`     - The application context that will be passed to pointwise evaluation routines
 
 Level: developer
 
--seealso: [](ch_snes),`DMPLEX`, `SNES`, `PetscDSAddBoundary()`, `PetscDSSetObjective()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`
+-seealso: [](ch_snes), `DMPLEX`, `SNES`, `PetscDSAddBoundary()`, `PetscDSSetObjective()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSetSNESLocalFEM"))
@@ -34419,6 +35496,17 @@ end
 
 """
 	DMPlexSetSaveTransform(petsclib::PetscLibType,dm::AbstractPetscDM, save::PetscBool) 
+Set the flag which determines whether the `DMPlexTransform` used to produce a refined `DM` is retained
+
+Logically Collective
+
+Input Parameters:
+- `dm`   - The `DM`
+- `save` - If `PETSC_TRUE`, keep the transform on the refined `DM` so it can be retrieved with `DMPlexGetTransform()`
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexGetSaveTransform()`, `DMPlexGetTransform()`, `DMPlexSetTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSaveTransform"))
@@ -34579,6 +35667,17 @@ end
 
 """
 	DMPlexSetTransform(petsclib::PetscLibType,dm::AbstractPetscDM, tr::DMPlexTransform) 
+Set the `DMPlexTransform` cached on the `DM`
+
+Not Collective
+
+Input Parameters:
+- `dm` - The `DM`
+- `tr` - The `DMPlexTransform`
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexGetTransform()`, `DMPlexSetSaveTransform()`, `DMPlexGetSaveTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTransform"))
@@ -34877,7 +35976,7 @@ end
 end 
 
 """
-	DMPlexTSComputeBoundary(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexTSComputeBoundary(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Insert the essential boundary values into the local input `locX` and/or its time derivative `locX_t` using pointwise functions specified by the user
 
 Input Parameters:
@@ -34885,7 +35984,7 @@ Input Parameters:
 - `time`   - The time
 - `locX`   - Local solution
 - `locX_t` - Local solution time derivative, or `NULL`
-- `user`   - The user context
+- `ctx`    - The application context
 
 Level: developer
 
@@ -34894,17 +35993,17 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeBoundary"))
 """
-function DMPlexTSComputeBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexTSComputeBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexTSComputeBoundary: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTSComputeBoundary(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexTSComputeBoundary(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexTSComputeBoundary, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, CVec, CVec, Ptr{Cvoid}),
-               dm, time, locX, locX_t, user,
+               dm, time, locX, locX_t, ctx,
               )
 
 
@@ -34912,7 +36011,7 @@ end
 end 
 
 """
-	DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the local residual `locF` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
@@ -34920,7 +36019,7 @@ Input Parameters:
 - `time`   - The time
 - `locX`   - Local solution
 - `locX_t` - Local solution time derivative, or `NULL`
-- `user`   - The user context
+- `ctx`    - The application context
 
 Output Parameter:
 - `locF` - Local output vector
@@ -34932,17 +36031,17 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeIFunctionFEM"))
 """
-function DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexTSComputeIFunctionFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTSComputeIFunctionFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexTSComputeIFunctionFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexTSComputeIFunctionFEM, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, CVec, CVec, CVec, Ptr{Cvoid}),
-               dm, time, locX, locX_t, locF, user,
+               dm, time, locX, locX_t, locF, ctx,
               )
 
 
@@ -34950,7 +36049,7 @@ end
 end 
 
 """
-	DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) 
+	DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the Jacobian `Jac` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
@@ -34959,7 +36058,7 @@ Input Parameters:
 - `locX`     - Local solution
 - `locX_t`   - Local solution time derivative, or `NULL`
 - `X_tShift` - The multiplicative parameter for dF/du_t
-- `user`     - The user context
+- `ctx`      - The application context
 
 Output Parameters:
 - `Jac`  - the Jacobian
@@ -34972,17 +36071,17 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeIJacobianFEM"))
 """
-function DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+function DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid})
     error("DMPlexTSComputeIJacobianFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTSComputeIJacobianFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMPlexTSComputeIJacobianFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexTSComputeIJacobianFEM, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, CVec, CVec, $PetscReal, CMat, CMat, Ptr{Cvoid}),
-               dm, time, locX, locX_t, X_tShift, Jac, JacP, user,
+               dm, time, locX, locX_t, X_tShift, Jac, JacP, ctx,
               )
 
 
@@ -34990,14 +36089,14 @@ end
 end 
 
 """
-	DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the local residual `locG` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
 - `dm`   - The mesh
 - `time` - The time
 - `locX` - Local solution
-- `user` - The user context
+- `ctx`  - The application context
 
 Output Parameter:
 - `locG` - Local output vector
@@ -35009,17 +36108,17 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFEM"))
 """
-function DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locG::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locG::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexTSComputeRHSFunctionFEM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTSComputeRHSFunctionFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexTSComputeRHSFunctionFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexTSComputeRHSFunctionFEM, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, CVec, CVec, Ptr{Cvoid}),
-               dm, time, locX, locG, user,
+               dm, time, locX, locG, ctx,
               )
 
 
@@ -35027,14 +36126,14 @@ end
 end 
 
 """
-	DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the forcing `F` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
 - `dm`   - The mesh
 - `time` - The time
 - `locX` - Local solution
-- `user` - The user context
+- `ctx`  - The application context
 
 Output Parameter:
 - `F` - Global output vector
@@ -35046,17 +36145,17 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFVM"))
 """
-function DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexTSComputeRHSFunctionFVM: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTSComputeRHSFunctionFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexTSComputeRHSFunctionFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexTSComputeRHSFunctionFVM, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, CVec, CVec, Ptr{Cvoid}),
-               dm, time, locX, F, user,
+               dm, time, locX, F, ctx,
               )
 
 
@@ -35064,22 +36163,36 @@ end
 end 
 
 """
-	DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Assemble the right
+
+Collective
+
+Input Parameters:
+- `dm`   - the `DMPLEX` for which libCEED operators have been created by `DMCeedCreate()`
+- `time` - the current time
+- `locX` - local solution vector including ghost values
+- `F`    - the global right-hand-side vector to assemble
+- `ctx`  - application context (unused)
+
+Level: developer
+
+-seealso: [](ch_ts), `TS`, `DMPLEX`, `DMCeedCreate()`, `DMPlexSNESComputeResidualCEED()`, `DMTSSetRHSFunctionLocal()`
 
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFVMCEED"))
 """
-function DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+function DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMPlexTSComputeRHSFunctionFVMCEED: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTSComputeRHSFunctionFVMCEED(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMPlexTSComputeRHSFunctionFVMCEED(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexTSComputeRHSFunctionFVMCEED, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, CVec, CVec, Ptr{Cvoid}),
-               dm, time, locX, F, user,
+               dm, time, locX, F, ctx,
               )
 
 
@@ -35257,17 +36370,31 @@ end
 end 
 
 """
-	DMPlexTreeRefineCell(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, ncdm::AbstractPetscDM) 
+	ncdm::PetscDM = DMPlexTreeRefineCell(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt) 
+Refine a single cell on rank 0 using the `DM`'s reference tree, producing a non
+
+Collective
+
+Input Parameters:
+- `dm`   - The `DM` with an attached reference tree (see `DMPlexSetReferenceTree()`)
+- `cell` - The cell to be refined
+
+Output Parameter:
+- `ncdm` - A new `DM` in which `cell` has been split according to the reference tree
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexGetReferenceTree()`, `DMPlexSetTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTreeRefineCell"))
 """
-function DMPlexTreeRefineCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, ncdm::AbstractPetscDM)
+function DMPlexTreeRefineCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer)
     error("DMPlexTreeRefineCell: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTreeRefineCell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, ncdm::AbstractPetscDM )
-	ncdm_ = Ref(ncdm.ptr)
+@for_petsc function DMPlexTreeRefineCell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt )
+	ncdm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexTreeRefineCell, $petsc_library),
@@ -35276,9 +36403,9 @@ end
                dm, cell, ncdm_,
               )
 
-	ncdm.ptr = ncdm_[]
+	ncdm = PetscDM(ncdm_[], petsclib)
 
-	return nothing
+	return ncdm
 end 
 
 """
@@ -35389,7 +36516,7 @@ end
 
 """
 	csize::PetscInt,values::Vector{PetscScalar} = DMPlexVecGetClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt) 
-Get an array of the values on the closure of 'point'
+Get an array of the values on the closure of `point`
 
 Not collective
 
@@ -35406,7 +36533,7 @@ if the user provided `NULL`, it is a borrowed array and should not be freed, use
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecGetClosureAtDepth()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVecGetClosure"))
@@ -35434,8 +36561,54 @@ end
 end 
 
 """
+	csize::PetscInt,values::Ptr{PetscScalar} = DMPlexVecGetClosureAtDepth(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, depth::PetscInt) 
+Get an array of the values on the closure of `point` that are at a specific depth
+
+Not collective
+
+Input Parameters:
+- `dm`      - The `DM`
+- `section` - The section describing the layout in `v`, or `NULL` to use the default section
+- `v`       - The local vector
+- `depth`   - The depth of mesh points that should be returned
+- `point`   - The point in the `DM`
+
+Input/Output Parameters:
+- `csize`  - The size of the input values array, or `NULL`; on output the number of values in the closure
+- `values` - An array to use for the values, or *values = `NULL` to have it allocated automatically;
+if the user provided `NULL`, it is a borrowed array and should not be freed, use  `DMPlexVecRestoreClosure()` to return it
+
+Level: intermediate
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexVecGetClosureAtDepth"))
+"""
+function DMPlexVecGetClosureAtDepth(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::Integer, depth::Integer)
+    error("DMPlexVecGetClosureAtDepth: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexVecGetClosureAtDepth(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt, depth::$PetscInt )
+	csize_ = Ref{$PetscInt}()
+	values_ = Ref{Ptr{$PetscScalar}}()
+
+    @chk ccall(
+               (:DMPlexVecGetClosureAtDepth, $petsc_library),
+               PetscErrorCode,
+               (CDM, PetscSection, CVec, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{$PetscScalar}}),
+               dm, section, v, point, depth, csize_, values_,
+              )
+
+	csize = csize_[]
+	values = values_[]
+
+	return csize,values
+end 
+
+"""
 	csize::PetscInt,values::Ptr{PetscScalar} = DMPlexVecGetOrientedClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, useClPerm::PetscBool, v::AbstractPetscVec, point::PetscInt, ornt::PetscInt) 
-Get an array of the values on the closure of 'point' with a given orientation, optionally applying the closure permutation.
+Get an array of the values on the closure of `point` with a given orientation, optionally applying the closure permutation.
 
 Not collective
 
@@ -35482,7 +36655,7 @@ end
 
 """
 	DMPlexVecRestoreClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Union{Ptr, AbstractArray{PetscScalar}}) 
-Restore the array of the values on the closure of 'point' obtained with `DMPlexVecGetClosure()`
+Restore the array of the values on the closure of `point` obtained with `DMPlexVecGetClosure()`
 
 Not collective
 
@@ -35840,6 +37013,21 @@ end
 
 """
 	DMPrintCellIndices(petsclib::PetscLibType,c::PetscInt, name::String, len::PetscInt, x::Vector{PetscInt}) 
+Print an integer array of per
+
+Not Collective
+
+Input Parameters:
+- `c`    - the cell number
+- `name` - the label to print with the cell (typically the element or field name)
+- `len`  - the length of `x`
+- `x`    - the array of integer indices
+
+Level: developer
+
+See also: 
+=== 
+`DM`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellIndices"))
@@ -35863,6 +37051,25 @@ end
 
 """
 	DMPrintCellMatrix(petsclib::PetscLibType,c::PetscInt, name::String, rows::PetscInt, cols::PetscInt, A::Vector{PetscScalar}) 
+Print a scalar array representing a per
+
+Not Collective
+
+Input Parameters:
+- `c`    - the cell number
+- `name` - the label to print with the cell (typically the element or field name)
+- `rows` - number of rows in the matrix
+- `cols` - number of columns in the matrix
+- `A`    - the row-major array of `PetscScalar` matrix entries
+
+Level: developer
+
+Note:
+Only the real part of each entry is printed.
+
+See also: 
+=== 
+`DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellMatrix"))
@@ -35886,6 +37093,24 @@ end
 
 """
 	DMPrintCellVector(petsclib::PetscLibType,c::PetscInt, name::String, len::PetscInt, x::Vector{PetscScalar}) 
+Print a scalar array representing a per
+
+Not Collective
+
+Input Parameters:
+- `c`    - the cell number
+- `name` - the label to print with the cell (typically the element or field name)
+- `len`  - the length of `x`
+- `x`    - the array of `PetscScalar` values
+
+Level: developer
+
+Note:
+Only the real part of each entry is printed.
+
+See also: 
+=== 
+`DM`, `DMPrintCellIndices()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellVector"))
@@ -35909,6 +37134,21 @@ end
 
 """
 	DMPrintCellVectorReal(petsclib::PetscLibType,c::PetscInt, name::String, len::PetscInt, x::Vector{PetscReal}) 
+Print a real array representing a per
+
+Not Collective
+
+Input Parameters:
+- `c`    - the cell number
+- `name` - the label to print with the cell (typically the element or field name)
+- `len`  - the length of `x`
+- `x`    - the array of `PetscReal` values
+
+Level: developer
+
+See also: 
+=== 
+`DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellVectorReal"))
@@ -35932,6 +37172,24 @@ end
 
 """
 	DMPrintLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, tol::PetscReal, X::AbstractPetscVec) 
+Print a `Vec` associated with a `DM`, filtering out very small entries
+
+Collective
+
+Input Parameters:
+- `dm`   - the `DM` providing the communicator
+- `name` - a label printed before the vector values
+- `tol`  - tolerance below which entries are filtered to zero using `VecFilter()`
+- `X`    - the `Vec` to print
+
+Level: developer
+
+Note:
+Runs in parallel by wrapping the local portion of the vector in an MPI vector for viewing.
+
+See also: 
+=== 
+`DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `VecFilter()`
 
 # External Links
 $(_doc_external("DM/DMPrintLocalVec"))
@@ -36102,7 +37360,7 @@ end
 end 
 
 """
-	DMProjectBdFieldLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid}) 
+	DMProjectBdFieldLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a local vector, calculating only over the portion of the domain boundary specified by the label.
 
 Not Collective
@@ -36163,17 +37421,17 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectBdFieldLabelLocal"))
 """
-function DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, funcs::Ptr{Cvoid})
+function DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, noname::Ptr{Cvoid})
     error("DMProjectBdFieldLabelLocal: no generated method for these argument types")
 end
 
-@for_petsc function DMProjectBdFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid} )
+@for_petsc function DMProjectBdFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectBdFieldLabelLocal, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
-               dm, time, label, numIds, ids, Nc, comps, localU, funcs,
+               dm, time, label, numIds, ids, Nc, comps, localU, noname,
               )
 
 
@@ -36229,7 +37487,7 @@ end
 end 
 
 """
-	DMProjectFieldLabel(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, U::AbstractPetscVec, funcs::Ptr{Cvoid}) 
+	DMProjectFieldLabel(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a global vector, calculating only over the portion of the domain specified by the label.
 
 Not Collective
@@ -36289,17 +37547,17 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectFieldLabel"))
 """
-function DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, U::AbstractPetscVec, funcs::Ptr{Cvoid})
+function DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, U::AbstractPetscVec, noname::Ptr{Cvoid})
     error("DMProjectFieldLabel: no generated method for these argument types")
 end
 
-@for_petsc function DMProjectFieldLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, U::AbstractPetscVec, funcs::Ptr{Cvoid} )
+@for_petsc function DMProjectFieldLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectFieldLabel, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
-               dm, time, label, numIds, ids, Nc, comps, U, funcs,
+               dm, time, label, numIds, ids, Nc, comps, U, noname,
               )
 
 
@@ -36307,7 +37565,7 @@ end
 end 
 
 """
-	DMProjectFieldLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid}) 
+	DMProjectFieldLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a local vector, calculating only over the portion of the domain specified by the label.
 
 Not Collective
@@ -36367,17 +37625,17 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectFieldLabelLocal"))
 """
-function DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, funcs::Ptr{Cvoid})
+function DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, noname::Ptr{Cvoid})
     error("DMProjectFieldLabelLocal: no generated method for these argument types")
 end
 
-@for_petsc function DMProjectFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid} )
+@for_petsc function DMProjectFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectFieldLabelLocal, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
-               dm, time, label, numIds, ids, Nc, comps, localU, funcs,
+               dm, time, label, numIds, ids, Nc, comps, localU, noname,
               )
 
 
@@ -36385,7 +37643,7 @@ end
 end 
 
 """
-	DMProjectFieldLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, localU::AbstractPetscVec, funcs::Ptr{Cvoid}) 
+	DMProjectFieldLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided by the `DM`, putting the coefficients in a local vector.
 
 Not Collective
@@ -36441,17 +37699,217 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectFieldLocal"))
 """
-function DMProjectFieldLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, localU::AbstractPetscVec, funcs::Ptr{Cvoid})
+function DMProjectFieldLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, localU::AbstractPetscVec, noname::Ptr{Cvoid})
     error("DMProjectFieldLocal: no generated method for these argument types")
 end
 
-@for_petsc function DMProjectFieldLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, localU::AbstractPetscVec, funcs::Ptr{Cvoid} )
+@for_petsc function DMProjectFieldLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, localU::AbstractPetscVec, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectFieldLocal, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscReal, CVec, Ptr{Cvoid}),
-               dm, time, localU, funcs,
+               dm, time, localU, noname,
+              )
+
+
+	return nothing
+end 
+
+# override for DMProjectFunction; C signature: DMProjectFunction(<not in API snapshot>)
+"""
+    DMProjectFunction(petsclib, dm, time, funcs, ctxs, mode, X)
+
+Project the pointwise functions `funcs` (one `Ptr{Cvoid}` per field, matching
+`PetscSimplePointFn` signature) into the global vector `X`.  `ctxs` is a
+matching `Vector{Ptr{Cvoid}}` of context pointers (use `C_NULL` entries for
+no context).
+"""
+function DMProjectFunction(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real,
+                           funcs::Vector{Ptr{Cvoid}}, ctxs::Vector{Ptr{Cvoid}},
+                           mode::InsertMode, X::AbstractPetscVec) end
+
+@for_petsc function DMProjectFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM,
+                                      time::Real,
+                                      funcs::Vector{Ptr{Cvoid}},
+                                      ctxs::Vector{Ptr{Cvoid}},
+                                      mode::InsertMode, X::AbstractPetscVec)
+    GC.@preserve funcs ctxs @chk ccall(
+        (:DMProjectFunction, $petsc_library), PetscErrorCode,
+        (CDM, $PetscReal, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, InsertMode, CVec),
+        dm, $PetscReal(time), funcs, ctxs, mode, X)
+    return nothing
+end
+
+"""
+	DMProjectFunctionLabel(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+This projects the given function into the function space provided by the `DM`, putting the coefficients in a global vector, setting values only for points in the given label.
+
+Collective
+
+Input Parameters:
+- `dm`     - The `DM`
+- `time`   - The time
+- `numIds` - The number of ids
+- `ids`    - The ids
+- `Nc`     - The number of components
+- `comps`  - The components
+- `label`  - The `DMLabel` selecting the portion of the mesh for projection
+- `funcs`  - The coordinate functions to evaluate, one per field
+- `ctxs`   - Optional array of contexts to pass to each coordinate function.  ctxs may be null.
+- `mode`   - The insertion mode for values
+
+Output Parameter:
+- `X` - vector
+
+Calling sequence of `funcs`:
+- `dim`  - The spatial dimension
+- `time` - The current timestep
+- `x`    - The coordinates
+- `Nc`   - The number of components
+- `u`    - The output field values
+- `ctx`  - optional function context
+
+Level: developer
+
+Developer Notes:
+This API is specific to only particular usage of `DM`
+
+The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
+
+See also: 
+=== 
+`DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabelLocal()`, `DMComputeL2Diff()`
+
+# External Links
+$(_doc_external("DM/DMProjectFunctionLabel"))
+"""
+function DMProjectFunctionLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, noname::Ptr{Cvoid})
+    error("DMProjectFunctionLabel: no generated method for these argument types")
+end
+
+@for_petsc function DMProjectFunctionLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMProjectFunctionLabel, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               dm, time, label, numIds, ids, Nc, comps, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMProjectFunctionLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+This projects the given function into the function space provided by the `DM`, putting the coefficients in a local vector, setting values only for points in the given label.
+
+Not Collective
+
+Input Parameters:
+- `dm`     - The `DM`
+- `time`   - The time
+- `label`  - The `DMLabel` selecting the portion of the mesh for projection
+- `numIds` - The number of ids
+- `ids`    - The ids
+- `Nc`     - The number of components
+- `comps`  - The components
+- `funcs`  - The coordinate functions to evaluate, one per field
+- `ctxs`   - Optional array of contexts to pass to each coordinate function.  ctxs itself may be null.
+- `mode`   - The insertion mode for values
+
+Output Parameter:
+- `localX` - vector
+
+Calling sequence of `funcs`:
+- `dim`  - The spatial dimension
+- `time` - The current time
+- `x`    - The coordinates
+- `Nc`   - The number of components
+- `u`    - The output field values
+- `ctx`  - optional function context
+
+Level: developer
+
+Developer Notes:
+This API is specific to only particular usage of `DM`
+
+The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
+
+See also: 
+=== 
+`DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabel()`, `DMComputeL2Diff()`
+
+# External Links
+$(_doc_external("DM/DMProjectFunctionLabelLocal"))
+"""
+function DMProjectFunctionLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, noname::Ptr{Cvoid})
+    error("DMProjectFunctionLabelLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMProjectFunctionLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMProjectFunctionLabelLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               dm, time, label, numIds, ids, Nc, comps, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMProjectFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+This projects the given function into the function space provided by a `DM`, putting the coefficients in a local vector.
+
+Not Collective
+
+Input Parameters:
+- `dm`    - The `DM`
+- `time`  - The time
+- `funcs` - The coordinate functions to evaluate, one per field
+- `ctxs`  - Optional array of contexts to pass to each coordinate function.  ctxs itself may be null.
+- `mode`  - The insertion mode for values
+
+Output Parameter:
+- `localX` - vector
+
+Calling sequence of `funcs`:
+- `dim`  - The spatial dimension
+- `time` - The current timestep
+- `x`    - The coordinates
+- `Nc`   - The number of components
+- `u`    - The output field values
+- `ctx`  - optional function context
+
+Level: developer
+
+Developer Notes:
+This API is specific to only particular usage of `DM`
+
+The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
+
+See also: 
+=== 
+`DM`, `DMProjectFunction()`, `DMProjectFunctionLabel()`, `DMComputeL2Diff()`
+
+# External Links
+$(_doc_external("DM/DMProjectFunctionLocal"))
+"""
+function DMProjectFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, noname::Ptr{Cvoid})
+    error("DMProjectFunctionLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMProjectFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMProjectFunctionLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, $PetscReal, Ptr{Cvoid}),
+               dm, time, noname,
               )
 
 
@@ -36588,7 +38046,7 @@ Output Parameter:
 - `dmf` - the refined `DM`, or `NULL`
 
 Options Database Key:
-- `-dm_plex_cell_refiner <strategy>` - chooses the refinement strategy, e.g. regular, tohex
+- `-dm_plex_cell_refiner strategy` - chooses the refinement strategy, e.g. regular, tohex
 
 Level: developer
 
@@ -36671,18 +38129,18 @@ Input Parameters:
 - `coarse`     - `DM` on which to run a hook when interpolating to a finer level
 - `refinehook` - function to run when setting up the finer level
 - `interphook` - function to run to update data on finer levels (once per `SNESSolve()`)
-- `ctx`        - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`        - [optional] context for provide data for the hooks (may be `NULL`)
 
 Calling sequence of `refinehook`:
 - `coarse` - coarse level `DM`
 - `fine`   - fine level `DM` to interpolate problem to
-- `ctx`    - optional user-defined function context
+- `ctx`    - optional function context
 
 Calling sequence of `interphook`:
 - `coarse` - coarse level `DM`
 - `interp` - matrix interpolating a coarse-level solution to the finer grid
 - `fine`   - fine level `DM` to update
-- `ctx`    - optional user-defined function context
+- `ctx`    - optional function context
 
 Level: advanced
 
@@ -36729,7 +38187,18 @@ Input Parameters:
 - `coarse`     - the `DM` on which to run a hook when restricting to a coarser level
 - `refinehook` - function to run when setting up a finer level
 - `interphook` - function to run to update data on finer levels
-- `ctx`        - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`        - [optional] application context for provide data for the hooks (may be `NULL`)
+
+Calling sequence of refinehook:
+- `coarse` - the coarse `DM`
+- `fine`   - the fine `DM`
+- `ctx`    - context for the function
+
+Calling sequence of interphook:
+- `coarse` - the coarse `DM`
+- `interp` - the interpolation `Mat` from coarse to fine
+- `fine`   - the fine `DM`
+- `ctx`    - context for the function
 
 Level: advanced
 
@@ -36769,6 +38238,9 @@ Not Collective, No Fortran Support
 Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine itself
+
+Calling sequence of function:
+- `dm` - the new `DM` that is being created
 
 Level: advanced
 
@@ -36876,7 +38348,7 @@ If the `DM` has an exclusive reference to the label, the label gets destroyed an
 
 See also: 
 === 
-`DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabel()` `DMGetLabelValue()`, `DMSetLabelValue()`, `DMLabelDestroy()`, `DMRemoveLabel()`
+`DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMLabelDestroy()`, `DMRemoveLabel()`
 
 # External Links
 $(_doc_external("DM/DMRemoveLabelBySelf"))
@@ -37390,14 +38862,14 @@ end
 end 
 
 """
-	DMSNESComputeJacobianAction(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) 
+	DMSNESComputeJacobianAction(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the action of the Jacobian J(`X`) on `Y`
 
 Input Parameters:
-- `dm`   - The `DM`
-- `X`    - Local solution vector
-- `Y`    - Local input vector
-- `user` - The user context
+- `dm`  - The `DM`
+- `X`   - Local solution vector
+- `Y`   - Local input vector
+- `ctx` - The application context
 
 Output Parameter:
 - `F` - local output vector
@@ -37409,17 +38881,17 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESComputeJacobianAction"))
 """
-function DMSNESComputeJacobianAction(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+function DMSNESComputeJacobianAction(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMSNESComputeJacobianAction: no generated method for these argument types")
 end
 
-@for_petsc function DMSNESComputeJacobianAction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMSNESComputeJacobianAction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMSNESComputeJacobianAction, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, CVec, CVec, Ptr{Cvoid}),
-               dm, X, Y, F, user,
+               dm, X, Y, F, ctx,
               )
 
 
@@ -37427,15 +38899,15 @@ end
 end 
 
 """
-	J::PetscMat = DMSNESCreateJacobianMF(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) 
+	J::PetscMat = DMSNESCreateJacobianMF(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Create a `Mat` which computes the action of the Jacobian matrix
 
 Collective
 
 Input Parameters:
-- `dm`   - The `DM`
-- `X`    - The evaluation point for the Jacobian
-- `user` - A user context, or `NULL`
+- `dm`  - The `DM`
+- `X`   - The evaluation point for the Jacobian
+- `ctx` - An application context, or `NULL`
 
 Output Parameter:
 - `J` - The `Mat`
@@ -37447,23 +38919,65 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/DMSNESCreateJacobianMF"))
 """
-function DMSNESCreateJacobianMF(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+function DMSNESCreateJacobianMF(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid})
     error("DMSNESCreateJacobianMF: no generated method for these argument types")
 end
 
-@for_petsc function DMSNESCreateJacobianMF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
+@for_petsc function DMSNESCreateJacobianMF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid} )
 	J_ = Ref{CMat}()
 
     @chk ccall(
                (:DMSNESCreateJacobianMF, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}, Ptr{CMat}),
-               dm, X, user, J_,
+               dm, X, ctx, J_,
               )
 
 	J = PetscMat(J_[], petsclib)
 
 	return J
+end 
+
+"""
+	DMSNESGetBoundaryLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get the local boundary value function set with `DMSNESSetBoundaryLocal()`.
+
+Not Collective
+
+Input Parameter:
+- `dm` - `DM` with the associated callback
+
+Output Parameters:
+- `func` - local boundary value evaluation
+- `ctx`  - context for local boundary value evaluation
+
+Calling sequence of `func`:
+- `dm`  - the `DM` context
+- `X`   - ghosted solution vector, appropriate locations (such as essential boundary condition nodes) should be filled
+- `ctx` - option context passed in `DMSNESSetBoundaryLocal()`
+
+Level: intermediate
+
+-seealso: [](ch_snes), `DMSNESSetFunctionLocal()`, `DMSNESSetBoundaryLocal()`, `DMSNESSetJacobianLocal()`
+
+# External Links
+$(_doc_external("SNES/DMSNESGetBoundaryLocal"))
+"""
+function DMSNESGetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMSNESGetBoundaryLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMSNESGetBoundaryLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMSNESGetBoundaryLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -37497,7 +39011,7 @@ end
     @chk ccall(
                (:DMSNESGetFunction, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, f_, ctx_,
               )
 
@@ -37505,6 +39019,49 @@ end
 	ctx = ctx_[]
 
 	return f,ctx
+end 
+
+"""
+	DMSNESGetFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get the local residual evaluation function information set with `DMSNESSetFunctionLocal()`.
+
+Not Collective
+
+Input Parameter:
+- `dm` - `DM` with the associated callback
+
+Output Parameters:
+- `func` - local residual evaluation
+- `ctx`  - context for local residual evaluation
+
+Calling sequence of `func`:
+- `dm`  - `DM` for the function
+- `x`   - vector to state at which to evaluate residual
+- `f`   - vector to hold the function evaluation
+- `ctx` - optional context passed above
+
+Level: beginner
+
+-seealso: [](ch_snes), `DMSNESSetFunction()`, `DMSNESSetFunctionLocal()`, `DMSNESSetJacobianLocal()`
+
+# External Links
+$(_doc_external("SNES/DMSNESGetFunctionLocal"))
+"""
+function DMSNESGetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMSNESGetFunctionLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMSNESGetFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMSNESGetFunctionLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -37538,7 +39095,7 @@ end
     @chk ccall(
                (:DMSNESGetJacobian, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, J_, ctx_,
               )
 
@@ -37546,6 +39103,87 @@ end
 	ctx = ctx_[]
 
 	return J,ctx
+end 
+
+"""
+	DMSNESGetJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+the local Jacobian evaluation function set with `DMSNESSetJacobianLocal()`.
+
+Logically Collective
+
+Input Parameter:
+- `dm` - `DM` with the associated callback
+
+Output Parameters:
+- `func` - local Jacobian evaluation
+- `ctx`  - context for local Jacobian evaluation
+
+Calling sequence of `func`:
+- `dm`  - the `DM` context
+- `X`   - current solution vector (ghosted or not?)
+- `J`   - the Jacobian
+- `Jp`  - approximate Jacobian used to compute the preconditioner, often `J`
+- `ctx` - a user provided context
+
+Level: beginner
+
+-seealso: [](ch_snes), `DMSNESSetJacobianLocal()`, `DMSNESSetJacobian()`
+
+# External Links
+$(_doc_external("SNES/DMSNESGetJacobianLocal"))
+"""
+function DMSNESGetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMSNESGetJacobianLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMSNESGetJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMSNESGetJacobianLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMSNESGetNGS(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get `SNES` Gauss
+
+Not Collective
+
+Input Parameter:
+- `dm` - `DM` to be used with `SNES`
+
+Output Parameters:
+- `f`   - relaxation function which performs Gauss-Seidel sweeps, see `SNESSetNGS()`
+- `ctx` - context for residual evaluation
+
+Level: developer
+
+-seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESGetNGS()`, `DMSNESGetJacobian()`, `DMSNESGetFunction()`
+
+# External Links
+$(_doc_external("SNES/DMSNESGetNGS"))
+"""
+function DMSNESGetNGS(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMSNESGetNGS: no generated method for these argument types")
+end
+
+@for_petsc function DMSNESGetNGS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMSNESGetNGS, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -37579,7 +39217,7 @@ end
     @chk ccall(
                (:DMSNESGetObjective, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, obj_, ctx_,
               )
 
@@ -37587,6 +39225,49 @@ end
 	ctx = ctx_[]
 
 	return obj,ctx
+end 
+
+"""
+	DMSNESGetObjectiveLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get the local objective evaluation function information set with `DMSNESSetObjectiveLocal()`.
+
+Not Collective
+
+Input Parameter:
+- `dm` - `DM` with the associated callback
+
+Output Parameters:
+- `func` - local objective evaluation
+- `ctx`  - context for local residual evaluation
+
+Calling sequence of func:
+- `dm`  - the `DM`
+- `x`   - the location where the objective function is to be evaluated
+- `obj` - the value of the objective function
+- `ctx` - optional context for the local objective function evaluation
+
+Level: beginner
+
+-seealso: `DMSNESSetObjective()`, `DMSNESSetObjectiveLocal()`, `DMSNESSetFunctionLocal()`
+
+# External Links
+$(_doc_external("SNES/DMSNESGetObjectiveLocal"))
+"""
+function DMSNESGetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMSNESGetObjectiveLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMSNESGetObjectiveLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMSNESGetObjectiveLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -37622,7 +39303,7 @@ end
     @chk ccall(
                (:DMSNESGetPicard, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, b_, J_, ctx_,
               )
 
@@ -38012,7 +39693,13 @@ Logically Collective
 Input Parameters:
 - `dm`   - `DM` to associate callback with
 - `func` - local objective evaluation
-- `ctx`  - optional context for local residual evaluation
+- `ctx`  - optional context for local objective function evaluation
+
+Calling sequence of func:
+- `dm`  - the `DM`
+- `x`   - the location where the objective is to be evaluated
+- `obj` - the value of the objective function
+- `ctx` - optional context for the local objective function evaluation
 
 Level: advanced
 
@@ -38122,25 +39809,26 @@ end
 
 """
 	DMSetApplicationContext(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
-Set a user context into a `DM` object
+Set an application context into a `DM` object
 
 Not Collective
 
 Input Parameters:
 - `dm`  - the `DM` object
-- `ctx` - the user context
+- `ctx` - the application context
 
 Level: intermediate
 
 Note:
-A user context is a way to pass problem specific information that is accessible whenever the `DM` is available
-In a multilevel solver, the user context is shared by all the `DM` in the hierarchy; it is thus not advisable
+An application context is a way to pass problem specific information that is accessible whenever the `DM` is available
+In a multilevel solver, the application context is shared by all the `DM` in the hierarchy; it is thus not advisable
 to store objects that represent discretized quantities inside the context.
 
-Fortran Note:
-This only works when `ctx` is a Fortran derived type (it cannot be a `PetscObject`), we recommend writing a Fortran interface definition for this
-function that tells the Fortran compiler the derived data type that is passed in as the `ctx` argument. See `DMGetApplicationContext()` for
-an example.
+Fortran Notes:
+This only works when the context is a Fortran derived type or a `PetscObject`. Declare `ctx` with
+-vb
+type(tUsertype), pointer :: ctx
+-ve
 
 See also: 
 === 
@@ -38297,7 +39985,7 @@ Input Parameters:
 - `btype` - block by topological point or field node
 
 Options Database Key:
-- `-dm_blocking_type [topological_point, field_node]` - use topological point blocking or field node blocking
+- `-dm_blocking_type (topological_point|field_node)` - use topological point blocking or field node blocking
 
 Level: advanced
 
@@ -38362,6 +40050,17 @@ end
 
 """
 	DMSetCellCoordinateField(petsclib::PetscLibType,dm::AbstractPetscDM, field::DMField) 
+Set the `DMField` representation of the discontinuous per
+
+Logically Collective
+
+Input Parameters:
+- `dm`    - the `DM`
+- `field` - the `DMField` describing the cell coordinates
+
+Level: advanced
+
+-seealso: `DM`, `DMField`, `DMSetCoordinateField()`, `DMGetCellCoordinateDM()`, `DMSetCellCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMSetCellCoordinateField"))
@@ -38667,6 +40366,17 @@ end
 
 """
 	DMSetCoordinateField(petsclib::PetscLibType,dm::AbstractPetscDM, field::DMField) 
+Set the `DMField` representation of the mesh coordinates
+
+Logically Collective
+
+Input Parameters:
+- `dm`    - the `DM`
+- `field` - the `DMField` describing the coordinates
+
+Level: advanced
+
+-seealso: `DM`, `DMField`, `DMGetCoordinateField()`, `DMSetCoordinateDM()`, `DMSetCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMSetCoordinateField"))
@@ -38995,61 +40705,61 @@ Input Parameter:
 - `dm` - the `DM` object to set options for
 
 Options Database Keys:
-- `-dm_preallocate_only`                               - Only preallocate the matrix for `DMCreateMatrix()` and `DMCreateMassMatrix()`, but do not fill it with zeros
-- `-dm_vec_type <type>`                                - type of vector to create inside `DM`
-- `-dm_mat_type <type>`                                - type of matrix to create inside `DM`
-- `-dm_is_coloring_type`                               - <global or local>
-- `-dm_bind_below <n>`                                 - bind (force execution on CPU) for `Vec` and `Mat` objects with local size (number of vector entries or matrix rows) below n; currently only supported for `DMDA`
-- `-dm_plex_option_phases <ph0_, ph1_, ...>`           - List of prefixes for option processing phases
-- `-dm_plex_filename <str>`                            - File containing a mesh
-- `-dm_plex_boundary_filename <str>`                   - File containing a mesh boundary
-- `-dm_plex_name <str>`                                - Name of the mesh in the file
-- `-dm_plex_shape <shape>`                             - The domain shape, such as `BOX`, `SPHERE`, etc.
-- `-dm_plex_cell <ct>`                                 - Cell shape
-- `-dm_plex_reference_cell_domain <bool>`              - Use a reference cell domain
-- `-dm_plex_dim <dim>`                                 - Set the topological dimension
-- `-dm_plex_simplex <bool>`                            - `PETSC_TRUE` for simplex elements, `PETSC_FALSE` for tensor elements
-- `-dm_plex_interpolate <bool>`                        - `PETSC_TRUE` turns on topological interpolation (creating edges and faces)
-- `-dm_plex_orient <bool>`                             - `PETSC_TRUE` turns on topological orientation (flipping edges and faces)
-- `-dm_plex_scale <sc>`                                - Scale factor for mesh coordinates
-- `-dm_coord_remap <bool>`                             - Map coordinates using a function
-- `-dm_plex_coordinate_dim <dim>`                      - Change the coordinate dimension of a mesh (usually given with cdm_ prefix)
-- `-dm_coord_map <mapname>`                            - Select a builtin coordinate map
-- `-dm_coord_map_params <p0,p1,p2,...>`                - Set coordinate mapping parameters
-- `-dm_plex_box_faces <m,n,p>`                         - Number of faces along each dimension
-- `-dm_plex_box_lower <x,y,z>`                         - Specify lower-left-bottom coordinates for the box
-- `-dm_plex_box_upper <x,y,z>`                         - Specify upper-right-top coordinates for the box
-- `-dm_plex_box_bd <bx,by,bz>`                         - Specify the `DMBoundaryType` for each direction
-- `-dm_plex_sphere_radius <r>`                         - The sphere radius
-- `-dm_plex_ball_radius <r>`                           - Radius of the ball
-- `-dm_plex_cylinder_bd <bz>`                          - Boundary type in the z direction
-- `-dm_plex_cylinder_num_wedges <n>`                   - Number of wedges around the cylinder
-- `-dm_plex_reorder <order>`                           - Reorder the mesh using the specified algorithm
-- `-dm_refine_pre <n>`                                 - The number of refinements before distribution
-- `-dm_refine_uniform_pre <bool>`                      - Flag for uniform refinement before distribution
-- `-dm_refine_volume_limit_pre <v>`                    - The maximum cell volume after refinement before distribution
-- `-dm_refine <n>`                                     - The number of refinements after distribution
-- `-dm_extrude <l>`                                    - Activate extrusion and specify the number of layers to extrude
-- `-dm_plex_save_transform <bool>`                     - Save the `DMPlexTransform` that produced this mesh
-- `-dm_plex_transform_extrude_thickness <t>`           - The total thickness of extruded layers
-- `-dm_plex_transform_extrude_use_tensor <bool>`       - Use tensor cells when extruding
-- `-dm_plex_transform_extrude_symmetric <bool>`        - Extrude layers symmetrically about the surface
-- `-dm_plex_transform_extrude_normal <n0,...,nd>`      - Specify the extrusion direction
-- `-dm_plex_transform_extrude_thicknesses <t0,...,tl>` - Specify thickness of each layer
+- `-dm_preallocate_only (true|false)`                  - Only preallocate the matrix for `DMCreateMatrix()` and `DMCreateMassMatrix()`, but do not fill it with zeros
+- `-dm_vec_type type`                                  - type of vector to create inside `DM`
+- `-dm_mat_type type`                                  - type of matrix to create inside `DM`
+- `-dm_is_coloring_type (global|local)`                - see `ISColoringType`
+- `-dm_bind_below n`                                   - bind (force execution on CPU) for `Vec` and `Mat` objects with local size (number of vector entries or matrix rows) below n; currently only supported for `DMDA`
+- `-dm_plex_option_phases ph0_, ph1_, ...`             - List of prefixes for option processing phases
+- `-dm_plex_filename str`                              - File containing a mesh
+- `-dm_plex_boundary_filename str`                     - File containing a mesh boundary
+- `-dm_plex_name str`                                  - Name of the mesh in the file
+- `-dm_plex_shape shape`                               - The domain shape, such as `BOX`, `SPHERE`, etc.
+- `-dm_plex_cell ct`                                   - Cell shape
+- `-dm_plex_reference_cell_domain (true|false)`        - Use a reference cell domain
+- `-dm_plex_dim dim`                                   - Set the topological dimension
+- `-dm_plex_simplex (true|false)`                      - `PETSC_TRUE` for simplex elements, `PETSC_FALSE` for tensor elements
+- `-dm_plex_interpolate (true|false)`                  - `PETSC_TRUE` turns on topological interpolation (creating edges and faces)
+- `-dm_plex_orient (true|false)`                       - `PETSC_TRUE` turns on topological orientation (flipping edges and faces)
+- `-dm_plex_scale sc`                                  - Scale factor for mesh coordinates
+- `-dm_coord_remap (true|false)`                       - Map coordinates using a function
+- `-dm_plex_coordinate_dim dim`                        - Change the coordinate dimension of a mesh (usually given with cdm_ prefix)
+- `-dm_coord_map mapname`                              - Select a builtin coordinate map
+- `-dm_coord_map_params p0,p1,p2,...`                  - Set coordinate mapping parameters
+- `-dm_plex_box_faces m,n,p`                           - Number of faces along each dimension
+- `-dm_plex_box_lower x,y,z`                           - Specify lower-left-bottom coordinates for the box
+- `-dm_plex_box_upper x,y,z`                           - Specify upper-right-top coordinates for the box
+- `-dm_plex_box_bd bx,by,bz`                           - Specify the `DMBoundaryType` for each direction
+- `-dm_plex_sphere_radius r`                           - The sphere radius
+- `-dm_plex_ball_radius r`                             - Radius of the ball
+- `-dm_plex_cylinder_bd bz`                            - Boundary type in the z direction
+- `-dm_plex_cylinder_num_wedges n`                     - Number of wedges around the cylinder
+- `-dm_plex_reorder order`                             - Reorder the mesh using the specified algorithm
+- `-dm_refine_pre n`                                   - The number of refinements before distribution
+- `-dm_refine_uniform_pre (true|false)`                - Flag for uniform refinement before distribution
+- `-dm_refine_volume_limit_pre v`                      - The maximum cell volume after refinement before distribution
+- `-dm_refine n`                                       - The number of refinements after distribution
+- `-dm_extrude l`                                      - Activate extrusion and specify the number of layers to extrude
+- `-dm_plex_save_transform (true|false)`               - Save the `DMPlexTransform` that produced this mesh
+- `-dm_plex_transform_extrude_thickness t`             - The total thickness of extruded layers
+- `-dm_plex_transform_extrude_use_tensor (true|false)` - Use tensor cells when extruding
+- `-dm_plex_transform_extrude_symmetric (true|false)`  - Extrude layers symmetrically about the surface
+- `-dm_plex_transform_extrude_normal n0,...,nd`        - Specify the extrusion direction
+- `-dm_plex_transform_extrude_thicknesses t0,...,tl`   - Specify thickness of each layer
 - `-dm_plex_create_fv_ghost_cells`                     - Flag to create finite volume ghost cells on the boundary
-- `-dm_plex_fv_ghost_cells_label <name>`               - Label name for ghost cells boundary
-- `-dm_distribute <bool>`                              - Flag to redistribute a mesh among processes
-- `-dm_distribute_overlap <n>`                         - The size of the overlap halo
-- `-dm_plex_adj_cone <bool>`                           - Set adjacency direction
-- `-dm_plex_adj_closure <bool>`                        - Set adjacency size
-- `-dm_plex_use_ceed <bool>`                           - Use LibCEED as the FEM backend
-- `-dm_plex_check_symmetry`                            - Check that the adjacency information in the mesh is symmetric - `DMPlexCheckSymmetry()`
-- `-dm_plex_check_skeleton`                            - Check that each cell has the correct number of vertices (only for homogeneous simplex or tensor meshes) - `DMPlexCheckSkeleton()`
-- `-dm_plex_check_faces`                               - Check that the faces of each cell give a vertex order this is consistent with what we expect from the cell type - `DMPlexCheckFaces()`
-- `-dm_plex_check_geometry`                            - Check that cells have positive volume - `DMPlexCheckGeometry()`
-- `-dm_plex_check_pointsf`                             - Check some necessary conditions for `PointSF` - `DMPlexCheckPointSF()`
-- `-dm_plex_check_interface_cones`                     - Check points on inter-partition interfaces have conforming order of cone points - `DMPlexCheckInterfaceCones()`
-- `-dm_plex_check_all`                                 - Perform all the checks above
+- `-dm_plex_fv_ghost_cells_label name`                 - Label name for ghost cells boundary
+- `-dm_distribute (true|false)`                        - Flag to redistribute a mesh among processes
+- `-dm_distribute_overlap n`                           - The size of the overlap halo
+- `-dm_plex_adj_cone (true|false)`                     - Set adjacency direction
+- `-dm_plex_adj_closure (true|false)`                  - Set adjacency size
+- `-dm_plex_use_ceed (true|false)`                     - Use LibCEED as the FEM backend
+- `-dm_plex_check_symmetry (true|false)`               - Check that the adjacency information in the mesh is symmetric - `DMPlexCheckSymmetry()`
+- `-dm_plex_check_skeleton (true|false)`               - Check that each cell has the correct number of vertices (only for homogeneous simplex or tensor meshes) - `DMPlexCheckSkeleton()`
+- `-dm_plex_check_faces (true|false)`                  - Check that the faces of each cell give a vertex order this is consistent with what we expect from the cell type - `DMPlexCheckFaces()`
+- `-dm_plex_check_geometry (true|false)`               - Check that cells have positive volume - `DMPlexCheckGeometry()`
+- `-dm_plex_check_pointsf (true|false)`                - Check some necessary conditions for `PointSF` - `DMPlexCheckPointSF()`
+- `-dm_plex_check_interface_cones (true|false)`        - Check points on inter-partition interfaces have conforming order of cone points - `DMPlexCheckInterfaceCones()`
+- `-dm_plex_check_all (true|false)`                    - Perform all the checks above
 
 Level: intermediate
 
@@ -39130,7 +40840,7 @@ Input Parameters:
 - `ctype` - the matrix type
 
 Options Database Key:
-- `-dm_is_coloring_type` - global or local
+- `-dm_is_coloring_type (global|local)` - see `ISColoringType`
 
 Level: intermediate
 
@@ -39328,7 +41038,7 @@ Input Parameters:
 - `ctype` - the matrix type, for example `MATMPIAIJ`
 
 Options Database Key:
-- `-dm_mat_type ctype` - the type of the matrix to create, for example mpiaij
+- `-dm_mat_type ctype` - the type of the matrix to create, see `MatType`
 
 Level: intermediate
 
@@ -39983,7 +41693,7 @@ end
 	DMSetSparseLocalize(petsclib::PetscLibType,dm::AbstractPetscDM, sparse::PetscBool) 
 Set the flag indicating that `DM` coordinates should be localized only for cells near the periodic boundary.
 
-Logically collective
+Collective
 
 Input Parameters:
 - `dm`     - The `DM`
@@ -40062,7 +41772,7 @@ Input Parameters:
 - `method` - The name of the `DMType`, for example `DMDA`, `DMPLEX`
 
 Options Database Key:
-- `-dm_type <type>` - Sets the `DM` type; use -help for a list of available types
+- `-dm_type type` - Sets the `DM` type; use -help for a list of available types
 
 Level: intermediate
 
@@ -40212,8 +41922,13 @@ sets a function to compute the lower and upper bound vectors for `SNESVI`.
 Logically Collective
 
 Input Parameters:
-- `dm` - the DM object
+- `dm` - the `DM` object
 - `f`  - the function that computes variable bounds used by `SNESVI` (use `NULL` to cancel a previous function that was set)
+
+Calling sequence of f:
+- `dm`    - the `DM`
+- `lower` - the vector to hold the lower bounds
+- `upper` - the vector to hold the upper bounds
 
 Level: intermediate
 
@@ -40324,6 +42039,47 @@ end
 end 
 
 """
+	DMShellGetCoarsen(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the routine used to coarsen the `DMSHELL`
+
+Logically Collective
+
+Input Parameter:
+- `dm` - the `DMSHELL`
+
+Output Parameter:
+- `coarsen` - the routine that coarsens the `DM`
+
+Calling sequence of `coarsen`:
+- `fine`   - the `DM` to coarsen
+- `comm`   - the `MPI_Comm` to share the coarser `DM`
+- `coarse` - the resulting coarse `DM`
+
+Level: advanced
+
+-seealso: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMCoarsen()`, `DMShellSetRefine()`, `DMRefine()`
+
+# External Links
+$(_doc_external("DM/DMShellGetCoarsen"))
+"""
+function DMShellGetCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMShellGetCoarsen: no generated method for these argument types")
+end
+
+@for_petsc function DMShellGetCoarsen(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMShellGetCoarsen, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	ctx::Ptr{Cvoid} = DMShellGetContext(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Returns the user
 
@@ -40359,6 +42115,173 @@ end
 	ctx = ctx_[]
 
 	return ctx
+end 
+
+"""
+	DMShellGetCreateInjection(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the routine used to create the injection operator
+
+Logically Collective
+
+Input Parameter:
+- `dm` - the `DMSHELL`
+
+Output Parameter:
+- `inject` - the routine to create the injection
+
+Calling sequence of `inject`:
+- `fine`   - the fine `DM`
+- `coarse` - the `DM` to inject to
+- `inject` - the output injection `Mat`
+
+Level: advanced
+
+-seealso: `DM`, `DMSHELL`, `DMShellGetCreateInterpolation()`, `DMCreateInjection()`, `DMShellSetContext()`, `DMShellGetContext()`
+
+# External Links
+$(_doc_external("DM/DMShellGetCreateInjection"))
+"""
+function DMShellGetCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMShellGetCreateInjection: no generated method for these argument types")
+end
+
+@for_petsc function DMShellGetCreateInjection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMShellGetCreateInjection, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMShellGetCreateInterpolation(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the routine used to create the interpolation operator
+
+Logically Collective
+
+Input Parameter:
+- `dm` - the `DMSHELL`
+
+Output Parameter:
+- `interp` - the routine to create the interpolation
+
+Calling sequence of `interp`:
+- `coarse` - the `DM` to refine to
+- `fine`   - the fine `DM`
+- `interp` - the output interpolation `Mat`
+- `rscale` - an output scaling `Vec`, see `DMCreateInterpolationScale()`
+
+Level: advanced
+
+-seealso: `DM`, `DMSHELL`, `DMShellGetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
+
+# External Links
+$(_doc_external("DM/DMShellGetCreateInterpolation"))
+"""
+function DMShellGetCreateInterpolation(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMShellGetCreateInterpolation: no generated method for these argument types")
+end
+
+@for_petsc function DMShellGetCreateInterpolation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMShellGetCreateInterpolation, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMShellGetCreateRestriction(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the routine used to create the restriction operator
+
+Logically Collective
+
+Input Parameter:
+- `dm` - the `DMSHELL`
+
+Output Parameter:
+- `restriction` - the routine to create the restriction
+
+Calling sequence of `restriction`:
+- `fine`    - the fine `DM`
+- `coarse`  - the `DM` to restrict to
+- `restrct` - the output restriction `Mat`
+
+Level: advanced
+
+-seealso: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellSetContext()`, `DMShellGetContext()`
+
+# External Links
+$(_doc_external("DM/DMShellGetCreateRestriction"))
+"""
+function DMShellGetCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMShellGetCreateRestriction: no generated method for these argument types")
+end
+
+@for_petsc function DMShellGetCreateRestriction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMShellGetCreateRestriction, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMShellGetCreateSubDM(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the routine used to create a sub `DM` from the `DMSHELL`
+
+Logically Collective
+
+Input Parameter:
+- `dm` - the `DMSHELL`
+
+Output Parameter:
+- `subdm` - the routine to create the decomposition
+
+Calling sequence of `subdm`:
+- `dm`        - the original `DM`
+- `numFields` - the number of fields to create
+- `fields`    - the fields to create for
+- `is`        - output, the `IS` defining the sub `DM`
+- `subdm`     - the sub `DM`
+
+Level: advanced
+
+-seealso: `DM`, `DMSHELL`, `DMCreateSubDM()`, `DMShellSetCreateSubDM()`, `DMShellSetContext()`, `DMShellGetContext()`
+
+# External Links
+$(_doc_external("DM/DMShellGetCreateSubDM"))
+"""
+function DMShellGetCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMShellGetCreateSubDM: no generated method for these argument types")
+end
+
+@for_petsc function DMShellGetCreateSubDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMShellGetCreateSubDM, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -40398,6 +42321,47 @@ end
 end 
 
 """
+	DMShellGetRefine(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the routine used to refine the `DMSHELL`
+
+Logically Collective
+
+Input Parameter:
+- `dm` - the `DMSHELL`
+
+Output Parameter:
+- `refine` - the routine that refines the `DM`
+
+Calling sequence of `refine`:
+- `coarse` - the `DM` to refine
+- `comm`   - the `MPI_Comm` to share the finer `DM`
+- `fine`   - the resulting fine `DM`
+
+Level: advanced
+
+-seealso: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMCoarsen()`, `DMShellSetRefine()`, `DMRefine()`
+
+# External Links
+$(_doc_external("DM/DMShellGetRefine"))
+"""
+function DMShellGetRefine(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMShellGetRefine: no generated method for these argument types")
+end
+
+@for_petsc function DMShellGetRefine(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMShellGetRefine, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	DMShellSetCoarsen(petsclib::PetscLibType,dm::AbstractPetscDM, coarsen::external) 
 Set the routine used to coarsen the `DMSHELL`
 
@@ -40406,6 +42370,11 @@ Logically Collective
 Input Parameters:
 - `dm`      - the `DMSHELL`
 - `coarsen` - the routine that coarsens the `DM`
+
+Calling sequence of `coarsen`:
+- `fine`   - the `DM` to coarsen
+- `comm`   - the `MPI_Comm` to share the coarser `DM`
+- `coarse` - the resulting coarse `DM`
 
 Level: advanced
 
@@ -40475,6 +42444,14 @@ Input Parameters:
 - `dm`     - the `DMSHELL`
 - `decomp` - the routine to create the decomposition
 
+Calling sequence of `decomp`:
+- `dm`        - the `DM` to decompose into domains
+- `len`       - output, the number of domains (or `NULL` if not requested)
+- `namelist`  - output, the name for each domain (or `NULL` if not requested)
+- `innerlist` - output, the global indices for each domain's inner region (or `NULL` if not requested)
+- `outerlist` - output, the global indices for each domain's outer region (or `NULL` if not requested)
+- `dmlist`    - output, the `DM`s for each field subproblem (or `NULL`, if not requested; if `NULL` is returned, no `DM`s are defined)
+
 Level: advanced
 
 -seealso: `DM`, `DMSHELL`, `DMCreateDomainDecomposition()`, `DMShellSetContext()`, `DMShellGetContext()`
@@ -40508,6 +42485,14 @@ Logically Collective
 Input Parameters:
 - `dm`      - the `DMSHELL`
 - `scatter` - the routine to create the scatters
+
+Calling sequence of `scatter`:
+- `dm`     - the `DM` to decompose into domains
+- `n`      - number of subdomains
+- `subdms` - the sub `DM`
+- `iscat`  - output, the inner scatters for the subdomains
+- `oscat`  - output, outer scatters for the subdomains
+- `gscat`  - output, the global scatters for the subdomains
 
 Level: advanced
 
@@ -40543,6 +42528,13 @@ Input Parameters:
 - `dm`     - the `DMSHELL`
 - `decomp` - the routine to create the decomposition
 
+Calling sequence of `decomp`:
+- `dm`       - the `DM` to decompose into fields
+- `len`      - output, the number of fields (or `NULL` if not requested)
+- `namelist` - output, the name for each field (or `NULL` if not requested)
+- `islist`   - output, the global indices for each field (or `NULL` if not requested)
+- `dmlist`   - output, the `DM`s for each field subproblem (or `NULL`, if not requested; if `NULL` is returned, no `DM`s are defined)
+
 Level: advanced
 
 -seealso: `DM`, `DMSHELL`, `DMCreateFieldDecomposition()`, `DMShellSetContext()`, `DMShellGetContext()`
@@ -40576,6 +42568,10 @@ Logically Collective
 Input Parameters:
 - `dm`   - the `DMSHELL`
 - `func` - the creation routine
+
+Calling sequence of `func`:
+- `dm` - the `DM`
+- `g`  - the global `Vec` to be created
 
 Level: advanced
 
@@ -40611,6 +42607,11 @@ Input Parameters:
 - `dm`     - the `DMSHELL`
 - `inject` - the routine to create the injection
 
+Calling sequence of `inject`:
+- `fine`   - the fine `DM`
+- `coarse` - the `DM` to inject to
+- `inject` - the output injection `Mat`
+
 Level: advanced
 
 -seealso: `DM`, `DMSHELL`, `DMShellSetCreateInterpolation()`, `DMCreateInjection()`, `DMShellGetCreateInjection()`, `DMShellSetContext()`, `DMShellGetContext()`
@@ -40644,6 +42645,12 @@ Logically Collective
 Input Parameters:
 - `dm`     - the `DMSHELL`
 - `interp` - the routine to create the interpolation
+
+Calling sequence of `interp`:
+- `coarse` - the `DM` to refine to
+- `fine`   - the fine `DM`
+- `interp` - the output interpolation `Mat`
+- `rscale` - an output scaling `Vec`, see `DMCreateInterpolationScale()`
 
 Level: advanced
 
@@ -40679,6 +42686,10 @@ Input Parameters:
 - `dm`   - the `DMSHELL`
 - `func` - the creation routine
 
+Calling sequence of `func`:
+- `dm` - the `DM`
+- `l`  - the local `Vec` to be created
+
 Level: advanced
 
 -seealso: `DM`, `DMSHELL`, `DMShellSetLocalVector()`, `DMShellSetCreateMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
@@ -40712,6 +42723,10 @@ Logically Collective
 Input Parameters:
 - `dm`   - the `DMSHELL`
 - `func` - the function to create a matrix
+
+Calling sequence of `func`:
+- `dm`  - the `DM`
+- `mat` - the `Mat` to be created
 
 Level: advanced
 
@@ -40747,6 +42762,11 @@ Input Parameters:
 - `dm`          - the `DMSHELL`
 - `restriction` - the routine to create the restriction
 
+Calling sequence of `restriction`:
+- `fine`    - the fine `DM`
+- `coarse`  - the `DM` to restrict to
+- `restrct` - the output restriction `Mat`
+
 Level: advanced
 
 -seealso: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
@@ -40781,6 +42801,13 @@ Input Parameters:
 - `dm`    - the `DMSHELL`
 - `subdm` - the routine to create the decomposition
 
+Calling sequence of `subdm`:
+- `dm`        - the original `DM`
+- `numFields` - the number of fields to create
+- `fields`    - the fields to create for
+- `is`        - output, the `IS` defining the sub `DM`
+- `subdm`     - the sub `DM`
+
 Level: advanced
 
 -seealso: `DM`, `DMSHELL`, `DMCreateSubDM()`, `DMShellGetCreateSubDM()`, `DMShellSetContext()`, `DMShellGetContext()`
@@ -40806,7 +42833,7 @@ end
 end 
 
 """
-	DMShellSetDestroyContext(petsclib::PetscLibType,dm::AbstractPetscDM, destroyctx::external) 
+	DMShellSetDestroyContext(petsclib::PetscLibType,dm::AbstractPetscDM, destroyctx::Ptr{Cvoid}) 
 set a function that destroys the context provided with `DMShellSetContext()`
 
 Collective
@@ -40822,16 +42849,16 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetDestroyContext"))
 """
-function DMShellSetDestroyContext(petsclib::PetscLibType, dm::AbstractPetscDM, destroyctx::external)
+function DMShellSetDestroyContext(petsclib::PetscLibType, dm::AbstractPetscDM, destroyctx::Ptr{Cvoid})
     error("DMShellSetDestroyContext: no generated method for these argument types")
 end
 
-@for_petsc function DMShellSetDestroyContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, destroyctx::external )
+@for_petsc function DMShellSetDestroyContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, destroyctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMShellSetDestroyContext, $petsc_library),
                PetscErrorCode,
-               (CDM, external),
+               (CDM, Ptr{Cvoid}),
                dm, destroyctx,
               )
 
@@ -40849,6 +42876,18 @@ Input Parameters:
 - `dm`    - the `DMSHELL`
 - `begin` - the routine that begins the global to local scatter
 - `end`   - the routine that ends the global to local scatter
+
+Calling sequence of `begin`:
+- `dm`     - the `DM`
+- `global` - the global `Vec` to be communicated
+- `mode`   - insert mode of the resulting vector
+- `local`  - the local `Vec` to receive the result
+
+Calling sequence of `end`:
+- `dm`     - the `DM`
+- `global` - the global `Vec` to be communicated
+- `mode`   - insert mode of the resulting vector
+- `local`  - the local `Vec` to receive the result
 
 Level: advanced
 
@@ -40953,9 +42992,21 @@ Input Parameters:
 - `begin` - the routine that begins the local to global scatter
 - `end`   - the routine that ends the local to global scatter
 
+Calling sequence of `begin`:
+- `dm`     - the `DM`
+- `local`  - the local `Vec` to be communicated
+- `mode`   - insert mode of the resulting vector
+- `global` - the global `Vec` to receive the result
+
+Calling sequence of `end`:
+- `dm`     - the `DM`
+- `local`  - the local `Vec` to be communicated
+- `mode`   - insert mode of the resulting vector
+- `global` - the global `Vec` to receive the result
+
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`
+-seealso: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `InsertMode`, `VecScatter`, `DMLocalToGlobal()`, `DMGlobalToLocal()`
 
 # External Links
 $(_doc_external("DM/DMShellSetLocalToGlobal"))
@@ -41022,9 +43073,21 @@ Input Parameters:
 - `begin` - the routine that begins the local to local scatter
 - `end`   - the routine that ends the local to local scatter
 
+Calling sequence of `begin`:
+- `dm`     - the `DM`
+- `local`  - the local `Vec` to be communicated
+- `mode`   - insert mode of the resulting vector
+- `nlocal` - the local `Vec` to receive the result
+
+Calling sequence of `end`:
+- `dm`     - the `DM`
+- `local`  - the local `Vec` to be communicated
+- `mode`   - insert mode of the resulting vector
+- `nlocal` - the local `Vec` to receive the result
+
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `DMLocalToLocalBeginDefaultShell()`, `DMLocalToLocalEndDefaultShell()`
+-seealso: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `DMLocalToLocalBeginDefaultShell()`, `DMLocalToLocalEndDefaultShell()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`
 
 # External Links
 $(_doc_external("DM/DMShellSetLocalToLocal"))
@@ -41157,6 +43220,11 @@ Logically Collective
 Input Parameters:
 - `dm`     - the `DMSHELL`
 - `refine` - the routine that refines the `DM`
+
+Calling sequence of `refine`:
+- `coarse` - the `DM` to refine
+- `comm`   - the `MPI_Comm` to share the finer `DM`
+- `fine`   - the resulting fine `DM`
 
 Level: advanced
 
@@ -41406,9 +43474,9 @@ Output Parameter:
 
 Options Database Keys:
 - `-dm_view`                                      - calls `DMViewFromOptions()` at the conclusion of `DMSetUp()`
-- `-stag_grid_x <nx>`                             - number of elements in the x direction
+- `-stag_grid_x nx`                               - number of elements in the x direction
 - `-stag_ghost_stencil_width`                     - width of ghost region, in elements
-- `-stag_boundary_type_x <none,ghosted,periodic>` - `DMBoundaryType` value
+- `-stag_boundary_type_x (none|ghosted|periodic)` - `DMBoundaryType` value
 
 Level: beginner
 
@@ -41444,7 +43512,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMStagCreate2d(petsclib::PetscLibType,comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
+	dm::PetscDM = DMStagCreate2d(petsclib::PetscLibType,comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::PetscInt, N::PetscInt, M_m::PetscInt, M_n::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
 Create an object to manage data living on the elements, faces, and vertices of a parallelized regular 2D grid.
 
 Collective
@@ -41471,13 +43539,13 @@ Output Parameter:
 
 Options Database Keys:
 - `-dm_view`                                      - calls `DMViewFromOptions()` at the conclusion of `DMSetUp()`
-- `-stag_grid_x <nx>`                             - number of elements in the x direction
-- `-stag_grid_y <ny>`                             - number of elements in the y direction
-- `-stag_ranks_x <rx>`                            - number of ranks in the x direction
-- `-stag_ranks_y <ry>`                            - number of ranks in the y direction
+- `-stag_grid_x nx`                               - number of elements in the x direction
+- `-stag_grid_y ny`                               - number of elements in the y direction
+- `-stag_ranks_x rx`                              - number of ranks in the x direction
+- `-stag_ranks_y ry`                              - number of ranks in the y direction
 - `-stag_ghost_stencil_width`                     - width of ghost region, in elements
-- `-stag_boundary_type_x <none,ghosted,periodic>` - `DMBoundaryType` value
-- `-stag_boundary_type_y <none,ghosted,periodic>` - `DMBoundaryType` value
+- `-stag_boundary_type_x (none|ghosted|periodic)` - `DMBoundaryType` value
+- `-stag_boundary_type_y (none|ghosted|periodic)` - `DMBoundaryType` value
 
 Level: beginner
 
@@ -41493,18 +43561,18 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate2d"))
 """
-function DMStagCreate2d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::Integer, N::Integer, m::Integer, n::Integer, dof0::Integer, dof1::Integer, dof2::Integer, stencilType::DMStagStencilType, stencilWidth::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}})
+function DMStagCreate2d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::Integer, N::Integer, M_m::Integer, M_n::Integer, dof0::Integer, dof1::Integer, dof2::Integer, stencilType::DMStagStencilType, stencilWidth::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}})
     error("DMStagCreate2d: no generated method for these argument types")
 end
 
-@for_petsc function DMStagCreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function DMStagCreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::$PetscInt, N::$PetscInt, M_m::$PetscInt, M_n::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMStagCreate2d, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{CDM}),
-               comm, bndx, bndy, M, N, m, n, dof0, dof1, dof2, stencilType, stencilWidth, lx, ly, dm_,
+               comm, bndx, bndy, M, N, M_m, M_n, dof0, dof1, dof2, stencilType, stencilWidth, lx, ly, dm_,
               )
 
 	dm = PetscDM(dm_[], petsclib)
@@ -41513,7 +43581,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMStagCreate3d(petsclib::PetscLibType,comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::PetscInt, N::PetscInt, P::PetscInt, m::PetscInt, n::PetscInt, p::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
+	dm::PetscDM = DMStagCreate3d(petsclib::PetscLibType,comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::PetscInt, N::PetscInt, P::PetscInt, M_m::PetscInt, M_n::PetscInt, M_p::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
 Create an object to manage data living on the elements, faces, edges, and vertices of a parallelized regular 3D grid.
 
 Collective
@@ -41544,16 +43612,16 @@ Output Parameter:
 
 Options Database Keys:
 - `-dm_view`                                      - calls `DMViewFromOptions()` at the conclusion of `DMSetUp()`
-- `-stag_grid_x <nx>`                             - number of elements in the x direction
-- `-stag_grid_y <ny>`                             - number of elements in the y direction
-- `-stag_grid_z <nz>`                             - number of elements in the z direction
-- `-stag_ranks_x <rx>`                            - number of ranks in the x direction
-- `-stag_ranks_y <ry>`                            - number of ranks in the y direction
-- `-stag_ranks_z <rz>`                            - number of ranks in the z direction
+- `-stag_grid_x nx`                               - number of elements in the x direction
+- `-stag_grid_y ny`                               - number of elements in the y direction
+- `-stag_grid_z nz`                               - number of elements in the z direction
+- `-stag_ranks_x rx`                              - number of ranks in the x direction
+- `-stag_ranks_y ry`                              - number of ranks in the y direction
+- `-stag_ranks_z rz`                              - number of ranks in the z direction
 - `-stag_ghost_stencil_width`                     - width of ghost region, in elements
-- `-stag_boundary_type x <none,ghosted,periodic>` - `DMBoundaryType` value
-- `-stag_boundary_type y <none,ghosted,periodic>` - `DMBoundaryType` value
-- `-stag_boundary_type z <none,ghosted,periodic>` - `DMBoundaryType` value
+- `-stag_boundary_type x (none|ghosted|periodic)` - `DMBoundaryType` value
+- `-stag_boundary_type y (none|ghosted|periodic)` - `DMBoundaryType` value
+- `-stag_boundary_type z (none|ghosted|periodic)` - `DMBoundaryType` value
 
 Level: beginner
 
@@ -41569,18 +43637,18 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate3d"))
 """
-function DMStagCreate3d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::Integer, N::Integer, P::Integer, m::Integer, n::Integer, p::Integer, dof0::Integer, dof1::Integer, dof2::Integer, dof3::Integer, stencilType::DMStagStencilType, stencilWidth::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}}, lz::Union{Ptr, AbstractVector{<:Number}})
+function DMStagCreate3d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::Integer, N::Integer, P::Integer, M_m::Integer, M_n::Integer, M_p::Integer, dof0::Integer, dof1::Integer, dof2::Integer, dof3::Integer, stencilType::DMStagStencilType, stencilWidth::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}}, lz::Union{Ptr, AbstractVector{<:Number}})
     error("DMStagCreate3d: no generated method for these argument types")
 end
 
-@for_petsc function DMStagCreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::$PetscInt, N::$PetscInt, P::$PetscInt, m::$PetscInt, n::$PetscInt, p::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}}, lz::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function DMStagCreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::$PetscInt, N::$PetscInt, P::$PetscInt, M_m::$PetscInt, M_n::$PetscInt, M_p::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}}, lz::Union{Ptr, Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMStagCreate3d, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, DMBoundaryType, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{CDM}),
-               comm, bndx, bndy, bndz, M, N, P, m, n, p, dof0, dof1, dof2, dof3, stencilType, stencilWidth, lx, ly, lz, dm_,
+               comm, bndx, bndy, bndz, M, N, P, M_m, M_n, M_p, dof0, dof1, dof2, dof3, stencilType, stencilWidth, lx, ly, lz, dm_,
               )
 
 	dm = PetscDM(dm_[], petsclib)
@@ -43970,19 +46038,19 @@ Input Parameters:
 - `global`       - global `DM`
 - `ddhook`       - function to run to pass data to the decomposition `DM` upon its creation
 - `restricthook` - function to run to update data on block solve (at the beginning of the block solve)
-- `ctx`          - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`          - [optional] application context for provide data for the hooks (may be `NULL`)
 
 Calling sequence of `ddhook`:
 - `global` - global `DM`
 - `block`  - subdomain `DM`
-- `ctx`    - optional user-defined function context
+- `ctx`    - optional application function context
 
 Calling sequence of `restricthook`:
 - `global` - global `DM`
 - `out`    - scatter to the outer (with ghost and overlap points) sub vector
 - `in`     - scatter to sub vector values only owned locally
 - `block`  - subdomain `DM`
-- `ctx`    - optional user-defined function context
+- `ctx`    - optional application function context
 
 Level: advanced
 
@@ -44031,12 +46099,21 @@ Input Parameters:
 - `global`       - global `DM`
 - `ddhook`       - function to run to pass data to the decomposition `DM` upon its creation
 - `restricthook` - function to run to update data on block solve (at the beginning of the block solve)
-- `ctx`          - [optional] user-defined context for provide data for the hooks (may be `NULL`)
+- `ctx`          - [optional] application context for provide data for the hooks (may be `NULL`)
+
+Calling sequence of `ddhook`:
+- `dm`    - global `DM`
+- `block` - subdomain `DM`
+- `ctx`   - optional application function context
+
+Calling sequence of `restricthook`:
+- `dm`       - global `DM`
+- `oscatter` - scatter to the outer (with ghost and overlap points) sub vector
+- `gscatter` - scatter to sub vector values only owned locally
+- `block`    - subdomain `DM`
+- `ctx`      - optional application function context
 
 Level: advanced
-
-Note:
-See `DMSubDomainHookAdd()` for the calling sequences of `ddhook` and `restricthook`
 
 See also: 
 === 
@@ -45157,6 +47234,21 @@ end
 
 """
 	blocksize::PetscInt,type::PetscDataType = DMSwarmGetFieldInfo(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+Return the block size and data type of a registered `DMSWARM` field without accessing its data.
+
+Not Collective
+
+Input Parameters:
+- `dm`        - a `DMSWARM`
+- `fieldname` - the name of the registered field
+
+Output Parameters:
+- `blocksize` - the number of entries of `type` per particle, or `NULL`
+- `type`      - the `PetscDataType` of a single entry, or `NULL`
+
+Level: intermediate
+
+-seealso: `DM`, `DMSWARM`, `DMSwarmGetField()`, `DMSwarmRestoreField()`, `DMSwarmRegisterPetscDatatypeField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetFieldInfo"))
@@ -45675,6 +47767,21 @@ end
 
 """
 	DMSwarmProjectGradientFields(petsclib::PetscLibType,sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) 
+Project the gradient of continuum fields on a mesh onto particle fields in a `DMSWARM`, or the reverse
+
+Collective
+
+Input Parameters:
+- `sw`         - the `DMSWARM`
+- `dm`         - the continuum `DM` (a `DMPLEX`); if `NULL` the swarm's cell `DM` is used
+- `nfields`    - the number of fields to project
+- `fieldnames` - the names of the swarm fields to receive (or supply) the gradient
+- `fields`     - the corresponding mesh `Vec` objects
+- `mode`       - `SCATTER_FORWARD` to project mesh field gradients to particles, `SCATTER_REVERSE` to project particle values back to the mesh
+
+Level: intermediate
+
+-seealso: `DMSWARM`, `DMPLEX`, `DMSwarmProjectFields()`, `DMSwarmVectorDefineFields()`, `DMSwarmCreateGlobalVectorFromField()`
 
 # External Links
 $(_doc_external("DM/DMSwarmProjectGradientFields"))
@@ -45908,6 +48015,17 @@ end
 
 """
 	DMSwarmReplace(petsclib::PetscLibType,dm::AbstractPetscDM, ndm::AbstractPetscDM) 
+Replace the internal state of a `DMSWARM` with that of another `DMSWARM`, sharing the underlying particle data and destroying the source `DM`.
+
+Collective
+
+Input Parameters:
+- `dm`  - the destination `DMSWARM`, whose current contents are discarded
+- `ndm` - pointer to the source `DMSWARM`; destroyed and set to `NULL` on return
+
+Level: developer
+
+-seealso: `DM`, `DMSWARM`, `DMSwarmDuplicate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmReplace"))
@@ -46858,7 +48976,7 @@ end
     @chk ccall(
                (:DMTSGetForcingFunction, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, f_, ctx_,
               )
 
@@ -46899,7 +49017,7 @@ end
     @chk ccall(
                (:DMTSGetI2Function, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, fun_, ctx_,
               )
 
@@ -46940,7 +49058,7 @@ end
     @chk ccall(
                (:DMTSGetI2Jacobian, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, jac_, ctx_,
               )
 
@@ -46981,7 +49099,7 @@ end
     @chk ccall(
                (:DMTSGetIFunction, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, func_, ctx_,
               )
 
@@ -46989,6 +49107,53 @@ end
 	ctx = ctx_[]
 
 	return func,ctx
+end 
+
+"""
+	DMTSGetIFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get the local implicit function evaluation function. This function is called with local vector
+containing the local vector information PLUS ghost point information. It should compute a result for all local
+elements and `DM` will automatically accumulate the overlapping values.
+
+Logically Collective
+
+Input Parameter:
+- `dm` - `DM` to associate callback with
+
+Output Parameters:
+- `func` - local function evaluation
+- `ctx`  - context for function evaluation
+
+Calling sequence of `func`:
+- `dm`   - the `DM`
+- `t`    - the current time
+- `u`    - the current solution
+- `udot` - the derivative of `u`
+- `F`    - output, the computed implicit function
+- `ctx`  - the application context for the function
+
+Level: beginner
+
+-seealso: [](ch_ts), `DM`, `DMTSSetIFunctionLocal()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
+
+# External Links
+$(_doc_external("TS/DMTSGetIFunctionLocal"))
+"""
+function DMTSGetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMTSGetIFunctionLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMTSGetIFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMTSGetIFunctionLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -47022,7 +49187,7 @@ end
     @chk ccall(
                (:DMTSGetIJacobian, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, func_, ctx_,
               )
 
@@ -47030,6 +49195,53 @@ end
 	ctx = ctx_[]
 
 	return func,ctx
+end 
+
+"""
+	DMTSGetIJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get a local Jacobian evaluation function
+
+Logically Collective
+
+Input Parameter:
+- `dm` - `DM` to associate callback with
+
+Output Parameters:
+- `func` - local Jacobian evaluation
+- `ctx`  - optional context for local Jacobian evaluation
+
+Calling sequence of `func`:
+- `dm`    - the `DM`
+- `t`     - the current time
+- `u`     - the current solution
+- `udot`  - the derivative of `u`
+- `shift` - the shift factoring arising from the implicit time-step
+- `J`     - output, the Jacobian
+- `Jpre`  - output, matrix from which to compute the preconditioner for `J`, often the same as `J`
+- `ctx`   - the application context for the function
+
+Level: beginner
+
+-seealso: [](ch_ts), `DM`, `DMTSSetIJacobianLocal()`, `DMTSSetIFunctionLocal()`, `DMTSSetIJacobian()`, `DMTSSetIFunction()`
+
+# External Links
+$(_doc_external("TS/DMTSGetIJacobianLocal"))
+"""
+function DMTSGetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMTSGetIJacobianLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMTSGetIJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMTSGetIJacobianLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -47063,7 +49275,7 @@ end
     @chk ccall(
                (:DMTSGetRHSFunction, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, func_, ctx_,
               )
 
@@ -47071,6 +49283,52 @@ end
 	ctx = ctx_[]
 
 	return func,ctx
+end 
+
+"""
+	DMTSGetRHSFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get a local rhs function evaluation function. This function is called with local vector
+containing the local vector information PLUS ghost point information. It should compute a result for all local
+elements and `DM` will automatically accumulate the overlapping values.
+
+Logically Collective
+
+Input Parameter:
+- `dm` - `DM` to associate callback with
+
+Output Parameters:
+- `func` - local function evaluation
+- `ctx`  - context for function evaluation
+
+Calling sequence of `func`:
+- `dm`   - the `DM`
+- `t`    - the current time
+- `u`    - the current solution
+- `udot` - output, the evaluated right hand side
+- `ctx`  - the application context for the function
+
+Level: beginner
+
+-seealso: [](ch_ts), `DM`, `DMTSSetRHSFunctionLocal()`, `DMTSSetRHSFunction()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
+
+# External Links
+$(_doc_external("TS/DMTSGetRHSFunctionLocal"))
+"""
+function DMTSGetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid})
+    error("DMTSGetRHSFunctionLocal: no generated method for these argument types")
+end
+
+@for_petsc function DMTSGetRHSFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMTSGetRHSFunctionLocal, $petsc_library),
+               PetscErrorCode,
+               (CDM, Ptr{Cvoid}),
+               dm, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -47104,7 +49362,7 @@ end
     @chk ccall(
                (:DMTSGetRHSJacobian, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, func_, ctx_,
               )
 
@@ -47145,7 +49403,7 @@ end
     @chk ccall(
                (:DMTSGetSolutionFunction, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                dm, func_, ctx_,
               )
 
@@ -47206,6 +49464,13 @@ Input Parameters:
 - `dm`   - `DM` to associate callback with
 - `func` - local function evaluation
 - `ctx`  - context for function evaluation
+
+Calling sequence of `func`:
+- `dm`  - the `DM`
+- `t`   - the current time
+- `u`   - the current solution
+- `f`   - output, the computed right hand side function
+- `ctx` - the application context for the function
 
 Level: intermediate
 
@@ -47486,6 +49751,14 @@ Input Parameters:
 - `func` - local function evaluation
 - `ctx`  - context for function evaluation
 
+Calling sequence of `func`:
+- `dm`   - the `DM`
+- `t`    - the current time
+- `u`    - the current solution
+- `udot` - the derivative of `u`
+- `F`    - output, the computed implicit function
+- `ctx`  - the application context for the function
+
 Level: beginner
 
 -seealso: [](ch_ts), `DM`, `DMTSGetIFunctionLocal()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
@@ -47624,6 +49897,16 @@ Input Parameters:
 - `dm`   - `DM` to associate callback with
 - `func` - local Jacobian evaluation
 - `ctx`  - optional context for local Jacobian evaluation
+
+Calling sequence of `func`:
+- `dm`    - the `DM`
+- `t`     - the current time
+- `u`     - the current solution
+- `udot`  - the derivative of `u`
+- `shift` - the shift factoring arising from the implicit time-step
+- `J`     - output, the Jacobian
+- `Jpre`  - output, matrix from which to compute the preconditioner for `J`, often the same as `J`
+- `ctx`   - the application context for the function
 
 Level: beginner
 
@@ -47765,6 +50048,13 @@ Input Parameters:
 - `dm`   - `DM` to associate callback with
 - `func` - local function evaluation
 - `ctx`  - context for function evaluation
+
+Calling sequence of `func`:
+- `dm`  - the `DM`
+- `t`   - the current time
+- `u`   - the current solution
+- `f`   - output, the evaluated right hand side
+- `ctx` - the application context for the function
 
 Level: beginner
 
@@ -47973,11 +50263,11 @@ Input Parameters:
 - `v`  - the viewer
 
 Options Database Keys:
-- `-view_pyvista_warp <f>`                 - Warps the mesh by the active scalar with factor f
-- `-view_pyvista_clip <xl,xu,yl,yu,zl,zu>` - Defines the clipping box
-- `-dm_view_draw_line_color <int>`         - Specify the X-window color for cell borders
-- `-dm_view_draw_cell_color <int>`         - Specify the X-window color for cells
-- `-dm_view_draw_affine <bool>`            - Flag to ignore high-order edges
+- `-view_pyvista_warp f`                 - Warps the mesh by the active scalar with factor f
+- `-view_pyvista_clip xl,xu,yl,yu,zl,zu` - Defines the clipping box
+- `-dm_view_draw_line_color color`       - Specify the X-window color for cell borders
+- `-dm_view_draw_cell_color color`       - Specify the X-window color for cells
+- `-dm_view_draw_affine (true|false)`    - Flag to ignore high-order edges
 
 Level: beginner
 
@@ -48034,10 +50324,10 @@ Input Parameters:
 - `obj`  - optional object that provides the prefix for the options database (if `NULL` then the prefix in `obj` is used)
 - `name` - option string that is used to activate viewing
 
-Level: intermediate
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
-Note:
-See `PetscObjectViewFromOptions()` for a list of values that can be provided in the options database to determine how the `DM` is viewed
+Level: intermediate
 
 See also: 
 === 

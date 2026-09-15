@@ -221,7 +221,7 @@ Input Parameters:
 - `name` - The kind of limiter
 
 Options Database Key:
-- `-petsclimiter_type <type>` - Sets the PetscLimiter type; use -help for a list of available types
+- `-petsclimiter_type type` - Sets the PetscLimiter type; use -help for a list of available types
 
 Level: intermediate
 
@@ -324,6 +324,9 @@ Input Parameters:
 - `A`    - the `PetscLimiter` object to view
 - `obj`  - Optional object that provides the options prefix to use
 - `name` - command line option name
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

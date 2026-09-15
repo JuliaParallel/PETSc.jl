@@ -8,13 +8,13 @@ Input Parameter:
 - `coarser` - the coarsen
 
 Options Database Keys:
-- `-mat_coarsen_type mis|hem|misk` - mis: maximal independent set based; misk: distance k MIS; hem: heavy edge matching
-- `-mat_coarsen_view`              - view the coarsening object
+- `-mat_coarsen_type (mis|hem|misk)` - `mis`: maximal independent set based; `misk`: distance k MIS; `hem`: heavy edge matching
+- `-mat_coarsen_view`                - view the coarsening object
 
 Level: advanced
 
 -seealso: `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`, `MatCoarsenRegister()`, `MatCoarsenCreate()`,
-`MatCoarsenDestroy()`, `MatCoarsenSetAdjacency()`
+`MatCoarsenDestroy()`, `MatCoarsenSetAdjacency()`,
 `MatCoarsenGetData()`
 
 # External Links
@@ -238,12 +238,12 @@ Input Parameters:
 - `k`   - the distance
 
 Options Database Key:
-- `-mat_coarsen_misk_distance <k>` - distance for MIS
+- `-mat_coarsen_misk_distance k` - distance for MIS
 
 Level: advanced
 
 -seealso: `MATCOARSENMISK`, `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`, `MatCoarsenRegister()`, `MatCoarsenCreate()`,
-`MatCoarsenDestroy()`, `MatCoarsenSetAdjacency()`, `MatCoarsenMISKGetDistance()`
+`MatCoarsenDestroy()`, `MatCoarsenSetAdjacency()`, `MatCoarsenMISKGetDistance()`,
 `MatCoarsenGetData()`
 
 # External Links
@@ -344,13 +344,14 @@ Input Parameter:
 - `coarser` - the coarsen context.
 
 Options Database Key:
-- `-mat_coarsen_type  <type>`                                                       - mis: maximal independent set based; misk: distance k MIS; hem: heavy edge matching
-- `-mat_coarsen_max_it <its> number of iterations to use in the coarsening process` - see `MatCoarsenSetMaximumIterations()`
+- `-mat_coarsen_type  (mis|hem|misk)` - see `MatCoarsenType`
+- `-mat_coarsen_max_it its`           - number of iterations to use in the coarsening process, see `MatCoarsenSetMaximumIterations()`
+- `-mat_coarsen_threshold threshold`  - see `MatCoarsenSetThreshold()`, for `MATCOARSENHEM` only
 
 Level: advanced
 
 -seealso: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`,
-`MatCoarsenSetMaximumIterations()`
+`MatCoarsenSetMaximumIterations()`, `MATCOARSENHEM`, `MATCOARSENMIS`, `MATCOARSENMISK`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetFromOptions"))
@@ -417,7 +418,7 @@ Input Parameters:
 - `n`      - number of HEM iterations
 
 Options Database Key:
-- `-mat_coarsen_max_it <default=4>` - Maximum `MATCOARSENHEM` iterations to use
+- `-mat_coarsen_max_it n` - Maximum `MATCOARSENHEM` iterations to use
 
 Level: intermediate
 
@@ -523,10 +524,10 @@ Logically Collective
 
 Input Parameters:
 - `coarse` - the coarsen context
-- `b`      - threshold value
+- `b`      - threshold value, default is 0
 
 Options Database Key:
-- `-mat_coarsen_threshold <-1>` - threshold
+- `-mat_coarsen_threshold b` - threshold
 
 Level: intermediate
 
@@ -563,7 +564,7 @@ Input Parameters:
 - `type`    - a known coarsening method
 
 Options Database Key:
-- `-mat_coarsen_type  <type>` - maximal independent set based; distance k MIS; heavy edge matching
+- `-mat_coarsen_type  type` - maximal independent set based; distance k MIS; heavy edge matching
 
 Level: advanced
 
@@ -637,9 +638,11 @@ Input Parameters:
 - `name` - command line option (usually `-mat_coarsen_view`)
 
 Options Database Key:
-- `-mat_coarsen_view [viewertype]:...` - the viewer and its options
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
--seealso: `MatCoarsen`, `MatCoarsenView`, `PetscObjectViewFromOptions()`, `MatCoarsenCreate()`
+Level: intermediate
+
+-seealso: `MatCoarsen`, `MatCoarsenView()`, `PetscObjectViewFromOptions()`, `MatCoarsenCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenViewFromOptions"))
@@ -748,26 +751,45 @@ end
 end 
 
 """
-	MatColoringCreateWeights(petsclib::PetscLibType,mc::MatColoring, weights::PetscReal, lperm::PetscInt) 
+	weights::Ptr{PetscReal},lperm::Ptr{PetscInt} = MatColoringCreateWeights(petsclib::PetscLibType,mc::MatColoring) 
+Create per
+for a `MatColoring`, using the weight scheme set on the `MatColoring`.
+
+Collective
+
+Input Parameter:
+- `mc` - the `MatColoring`
+
+Output Parameters:
+- `weights` - the array of per-row weights, or `NULL` if not needed
+- `lperm`   - the permutation that sorts `weights` in decreasing order, or `NULL` if not needed
+
+Level: developer
+
+-seealso: `MatColoring`, `MatColoringWeightType`, `MatColoringSetWeights()`, `MatColoringGetDegrees()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringCreateWeights"))
 """
-function MatColoringCreateWeights(petsclib::PetscLibType, mc::MatColoring, weights::Real, lperm::Integer)
+function MatColoringCreateWeights(petsclib::PetscLibType, mc::MatColoring)
     error("MatColoringCreateWeights: no generated method for these argument types")
 end
 
-@for_petsc function MatColoringCreateWeights(petsclib::$UnionPetscLib, mc::MatColoring, weights::$PetscReal, lperm::$PetscInt )
+@for_petsc function MatColoringCreateWeights(petsclib::$UnionPetscLib, mc::MatColoring )
+	weights_ = Ref{Ptr{$PetscReal}}()
+	lperm_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
                (:MatColoringCreateWeights, $petsc_library),
                PetscErrorCode,
                (MatColoring, Ptr{Ptr{$PetscReal}}, Ptr{Ptr{$PetscInt}}),
-               mc, weights, lperm,
+               mc, weights_, lperm_,
               )
 
+	weights = weights_[]
+	lperm = lperm_[]
 
-	return nothing
+	return weights,lperm
 end 
 
 """
@@ -806,6 +828,20 @@ end
 
 """
 	degrees::PetscInt = MatColoringGetDegrees(petsclib::PetscLibType,G::AbstractPetscMat, distance::PetscInt) 
+Compute the number of vertices reachable in the graph within a given distance for each locally owned row.
+
+Collective
+
+Input Parameters:
+- `G`        - the graph matrix
+- `distance` - the distance (in graph edges) used to define the neighborhood
+
+Output Parameter:
+- `degrees` - array (of local size) of neighborhood sizes for each row
+
+Level: developer
+
+-seealso: `MatColoring`, `MatColoringCreateWeights()`, `MatColoringSetWeights()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringGetDegrees"))
@@ -1166,6 +1202,18 @@ end
 
 """
 	weights::PetscReal,lperm::PetscInt = MatColoringSetWeights(petsclib::PetscLibType,mc::MatColoring) 
+Provide user weights (and optionally a permutation ordering) for a `MatColoring`.
+
+Collective
+
+Input Parameters:
+- `mc`      - the `MatColoring`
+- `weights` - array of per-row weights, or `NULL` to clear any previously set weights
+- `lperm`   - the permutation sorting `weights` in decreasing order, or `NULL` to have it computed
+
+Level: developer
+
+-seealso: `MatColoring`, `MatColoringCreateWeights()`, `MatColoringGetDegrees()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetWeights"))
@@ -1465,6 +1513,18 @@ end
 
 """
 	MatFDColoringSetF(petsclib::PetscLibType,fd::MatFDColoring, F::AbstractPetscVec) 
+Cache the current function value used by the finite
+avoid recomputing `F(x)` during a Jacobian evaluation.
+
+Logically Collective
+
+Input Parameters:
+- `fd` - the `MatFDColoring` context
+- `F`  - the current function value `F(x)`, or `NULL` to invalidate any cached value
+
+Level: advanced
+
+-seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringApply()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetF"))
@@ -1780,7 +1840,7 @@ Input Parameters:
 - `h`     - scaling factor on `a`, may be changed on output
 
 Options Database Keys:
-- `-mat_mffd_check_positivity <bool>` - Ensure that U + h*a is nonnegative
+- `-mat_mffd_check_positivity (true|false)` - Ensure that U + h*a is nonnegative
 
 Level: advanced
 
@@ -1821,7 +1881,7 @@ Input Parameters:
 - `x`     - the point at which the Jacobian-vector products will be performed
 - `jac`   - the matrix-free Jacobian object of `MatType` `MATMFFD`, likely obtained with `MatCreateSNESMF()`
 - `B`     - either the same as `jac` or another matrix type (ignored)
-- `dummy` - the user context (ignored)
+- `dummy` - the application context (ignored)
 
 Options Database Key:
 - `-snes_mf` - use the matrix created with `MatSNESMFCreate()` to setup the Jacobian for each new solution in the Newton process
@@ -2098,7 +2158,7 @@ Input Parameters:
 - `ctx` - any context needed by the function
 
 Options Database Keys:
-- `-mat_mffd_check_positivity <bool>` - Ensure that U + h*a  is non-negative
+- `-mat_mffd_check_positivity (true|false)` - Ensure that U + h*a  is non-negative
 
 Level: advanced
 
@@ -2171,7 +2231,7 @@ Input Parameters:
 - `error` - relative error (should be set to the square root of the relative error in the function evaluations)
 
 Options Database Key:
-- `-mat_mffd_err <error_rel>` - Sets error_rel
+- `-mat_mffd_err error_rel` - Sets error_rel
 
 Level: advanced
 
@@ -2350,7 +2410,7 @@ Input Parameters:
 - `period` - 1 for every time, 2 for every second etc
 
 Options Database Key:
-- `-mat_mffd_period <period>` - Sets how often `h` is recomputed
+- `-mat_mffd_period period` - Sets how often `h` is recomputed
 
 Level: advanced
 
@@ -2422,7 +2482,7 @@ Input Parameters:
 - `flag` - `PETSC_TRUE` causes it to compute ||U||, `PETSC_FALSE` uses the previous value
 
 Options Database Key:
-- `-mat_mffd_compute_normu <true,false>` - true by default, false can save calculations but you
+- `-mat_mffd_compute_normu (true|false)` - true by default, false can save calculations but you
 must be sure that ||U|| has not changed in the mean time.
 
 Level: advanced
@@ -2765,8 +2825,8 @@ Output Parameter:
 - `partitioning` - the partitioning. For each local node this tells the MPI rank that that node is assigned to.
 
 Options Database Keys:
-- `-mat_partitioning_type <type>` - set the partitioning package or algorithm to use
-- `-mat_partitioning_view`        - display information about the partitioning object
+- `-mat_partitioning_type type` - set the partitioning package or algorithm to use
+- `-mat_partitioning_view`      - display information about the partitioning object
 
 Level: beginner
 
@@ -3041,7 +3101,7 @@ Input Parameters:
 - `level` - the coarse level in range [0.0,1.0]
 
 Options Database Key:
-- `-mat_partitioning_chaco_coarse <l>` - Coarse level
+- `-mat_partitioning_chaco_coarse l` - Coarse level
 
 Level: advanced
 
@@ -3079,7 +3139,7 @@ Input Parameters:
 - `num`  - the number of eigenvectors
 
 Options Database Key:
-- `-mat_partitioning_chaco_eigen_number <n>` - Number of eigenvectors
+- `-mat_partitioning_chaco_eigen_number n` - Number of eigenvectors
 
 -seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`, `MatPartitioningChacoGetEigenTol()`
 
@@ -3114,7 +3174,7 @@ Input Parameters:
 - `method` - one of `MP_CHACO_LANCZOS` or `MP_CHACO_RQI`
 
 Options Database Key:
-- `-mat_partitioning_chaco_eigen_solver <method>` - the eigensolver
+- `-mat_partitioning_chaco_eigen_solver method` - the eigensolver
 
 Level: advanced
 
@@ -3152,7 +3212,7 @@ Input Parameters:
 - `tol`  - the tolerance
 
 Options Database Key:
-- `-mat_partitioning_chaco_eigen_tol <tol>` - Tolerance for eigensolver
+- `-mat_partitioning_chaco_eigen_tol tol` - Tolerance for eigensolver
 
 -seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`, `MatPartitioningChacoGetEigenTol()`
 
@@ -3188,7 +3248,7 @@ Input Parameters:
 `MP_CHACO_RANDOM` or `MP_CHACO_SCATTERED`
 
 Options Database Key:
-- `-mat_partitioning_chaco_global <method>` - the global method
+- `-mat_partitioning_chaco_global method` - the global method
 
 Level: advanced
 
@@ -3225,7 +3285,7 @@ Input Parameters:
 - `method` - one of `MP_CHACO_KERNIGHAN` or `MP_CHACO_NONE`
 
 Options Database Key:
-- `-mat_partitioning_chaco_local <method>` - the local method
+- `-mat_partitioning_chaco_local method` - the local method
 
 Level: advanced
 
@@ -3403,17 +3463,30 @@ end
 end 
 
 """
-	MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType,part::MatPartitioning, coarseparts::AbstractIS) 
+	coarseparts::IS = MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType,part::MatPartitioning) 
+Get the coarse
+
+Not Collective
+
+Input Parameter:
+- `part` - the `MatPartitioning` of type `MATPARTITIONINGHIERARCH`
+
+Output Parameter:
+- `coarseparts` - the `IS` mapping each local row to its coarse partition; the caller must destroy it with `ISDestroy()`
+
+Level: advanced
+
+-seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalGetFineparts()`, `MatPartitioningHierarchicalSetNcoarseparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalGetCoarseparts"))
 """
-function MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType, part::MatPartitioning, coarseparts::AbstractIS)
+function MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType, part::MatPartitioning)
     error("MatPartitioningHierarchicalGetCoarseparts: no generated method for these argument types")
 end
 
-@for_petsc function MatPartitioningHierarchicalGetCoarseparts(petsclib::$UnionPetscLib, part::MatPartitioning, coarseparts::AbstractIS )
-	coarseparts_ = Ref(coarseparts.ptr)
+@for_petsc function MatPartitioningHierarchicalGetCoarseparts(petsclib::$UnionPetscLib, part::MatPartitioning )
+	coarseparts_ = Ref{CIS}()
 
     @chk ccall(
                (:MatPartitioningHierarchicalGetCoarseparts, $petsc_library),
@@ -3422,23 +3495,36 @@ end
                part, coarseparts_,
               )
 
-	coarseparts.ptr = coarseparts_[]
+	coarseparts = IS(coarseparts_[], petsclib)
 
-	return nothing
+	return coarseparts
 end 
 
 """
-	MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType,part::MatPartitioning, fineparts::AbstractIS) 
+	fineparts::IS = MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType,part::MatPartitioning) 
+Get the fine
+
+Not Collective
+
+Input Parameter:
+- `part` - the `MatPartitioning` of type `MATPARTITIONINGHIERARCH`
+
+Output Parameter:
+- `fineparts` - the `IS` mapping each local row to its fine partition; the caller must destroy it with `ISDestroy()`
+
+Level: advanced
+
+-seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalGetCoarseparts()`, `MatPartitioningHierarchicalSetNfineparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalGetFineparts"))
 """
-function MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::MatPartitioning, fineparts::AbstractIS)
+function MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::MatPartitioning)
     error("MatPartitioningHierarchicalGetFineparts: no generated method for these argument types")
 end
 
-@for_petsc function MatPartitioningHierarchicalGetFineparts(petsclib::$UnionPetscLib, part::MatPartitioning, fineparts::AbstractIS )
-	fineparts_ = Ref(fineparts.ptr)
+@for_petsc function MatPartitioningHierarchicalGetFineparts(petsclib::$UnionPetscLib, part::MatPartitioning )
+	fineparts_ = Ref{CIS}()
 
     @chk ccall(
                (:MatPartitioningHierarchicalGetFineparts, $petsc_library),
@@ -3447,13 +3533,24 @@ end
                part, fineparts_,
               )
 
-	fineparts.ptr = fineparts_[]
+	fineparts = IS(fineparts_[], petsclib)
 
-	return nothing
+	return fineparts
 end 
 
 """
 	MatPartitioningHierarchicalSetNcoarseparts(petsclib::PetscLibType,part::MatPartitioning, ncoarseparts::PetscInt) 
+Set the number of coarse partitions produced by a hierarchical `MatPartitioning`.
+
+Logically Collective
+
+Input Parameters:
+- `part`         - the `MatPartitioning` of type `MATPARTITIONINGHIERARCH`
+- `ncoarseparts` - the number of coarse partitions
+
+Level: advanced
+
+-seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalSetNfineparts()`, `MatPartitioningHierarchicalGetCoarseparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalSetNcoarseparts"))
@@ -3477,6 +3574,17 @@ end
 
 """
 	MatPartitioningHierarchicalSetNfineparts(petsclib::PetscLibType,part::MatPartitioning, nfineparts::PetscInt) 
+Set the number of fine partitions per coarse partition produced by a hierarchical `MatPartitioning`.
+
+Logically Collective
+
+Input Parameters:
+- `part`       - the `MatPartitioning` of type `MATPARTITIONINGHIERARCH`
+- `nfineparts` - the number of fine partitions per coarse partition
+
+Level: advanced
+
+-seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalSetNcoarseparts()`, `MatPartitioningHierarchicalGetFineparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalSetNfineparts"))
@@ -3629,7 +3737,7 @@ Input Parameters:
 - `imb`  - the load imbalance ratio
 
 Options Database Key:
-- `-mat_partitioning_ptscotch_imbalance <imb>` - set load imbalance ratio
+- `-mat_partitioning_ptscotch_imbalance imb` - set load imbalance ratio
 
 -seealso: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetStrategy()`, `MatPartitioningPTScotchGetImbalance()`
 
@@ -3837,7 +3945,7 @@ Input Parameters:
 - `level` - the coarse level in range [0.0,1.0]
 
 Options Database Key:
-- `-mat_partitioning_party_coarse <l>` - Coarse level
+- `-mat_partitioning_party_coarse l` - Coarse level
 
 Level: advanced
 
@@ -3874,7 +3982,7 @@ Input Parameters:
 - `global` - a string representing the method
 
 Options Database Key:
-- `-mat_partitioning_party_global <method>` - the global method
+- `-mat_partitioning_party_global method` - the global method
 
 Level: advanced
 
@@ -3911,7 +4019,7 @@ Input Parameters:
 - `local` - a string representing the method
 
 Options Database Key:
-- `-mat_partitioning_party_local <method>` - the local method
+- `-mat_partitioning_party_local method` - the local method
 
 Level: advanced
 
@@ -4055,8 +4163,8 @@ Input Parameter:
 - `part` - the partitioning context.
 
 Options Database Keys:
-- `-mat_partitioning_type  <type>` - (for instance, parmetis), use -help for a list of available methods
-- `-mat_partitioning_nparts`       - number of subgraphs
+- `-mat_partitioning_type type` - (for instance, parmetis), use -help for a list of available methods
+- `-mat_partitioning_nparts`    - number of subgraphs
 
 Level: beginner
 
@@ -4202,7 +4310,7 @@ Input Parameters:
 - `type` - a known method
 
 Options Database Key:
-- `-mat_partitioning_type  <type>` - (for instance, parmetis), use -help for a list of available methods or see  `MatPartitioningType`
+- `-mat_partitioning_type type` - (for instance, parmetis), see `MatPartitioningType`
 
 Level: intermediate
 
@@ -4348,7 +4456,7 @@ Input Parameters:
 - `name` - command line option
 
 Options Database Key:
-- `-mat_partitioning_view [viewertype]:...` - the viewer and its options
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

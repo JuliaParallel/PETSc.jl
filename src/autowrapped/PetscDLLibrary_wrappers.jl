@@ -151,6 +151,16 @@ end
 
 """
 	PetscDLLibraryPrintPath(petsclib::PetscLibType,libs::PetscDLLibrary) 
+Prints the names of all dynamic libraries in a `PetscDLLibrary` list to the PETSc error output stream
+
+Not Collective
+
+Input Parameter:
+- `libs` - the linked list of currently opened dynamic libraries
+
+Level: developer
+
+-seealso: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscDLLibrarySym()`, `PetscDLLibraryAppend()`, `PetscDLLibraryClose()`
 
 # External Links
 $(_doc_external("Sys/PetscDLLibraryPrintPath"))

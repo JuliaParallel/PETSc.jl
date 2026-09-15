@@ -1,5 +1,20 @@
 """
 	box::PetscGridHash = PetscGridHashCreate(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, point::Vector{PetscScalar}) 
+Create a `PetscGridHash` for spatially locating points in a mesh.
+
+Collective
+
+Input Parameters:
+- `comm`  - the MPI communicator
+- `dim`   - the spatial dimension
+- `point` - an initial point used to seed the bounding box, or `NULL` for a zero-initialized box
+
+Output Parameter:
+- `box` - the newly created `PetscGridHash`
+
+Level: developer
+
+-seealso: `DMPLEX`, `PetscGridHash`, `PetscGridHashEnlarge()`, `PetscGridHashDestroy()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashCreate"))
@@ -25,6 +40,16 @@ end
 
 """
 	PetscGridHashDestroy(petsclib::PetscLibType,box::Union{PetscGridHash, Ref{PetscGridHash}}) 
+Destroy a `PetscGridHash` and free its resources.
+
+Collective
+
+Input Parameter:
+- `box` - the `PetscGridHash` to destroy; set to `NULL` on return
+
+Level: developer
+
+-seealso: `DMPLEX`, `PetscGridHash`, `PetscGridHashCreate()`, `PetscGridHashEnlarge()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashDestroy"))
@@ -49,6 +74,17 @@ end
 
 """
 	PetscGridHashEnlarge(petsclib::PetscLibType,box::PetscGridHash, point::Vector{PetscScalar}) 
+Enlarge the bounding box of a `PetscGridHash` to include a new point.
+
+Not Collective
+
+Input Parameters:
+- `box`   - the `PetscGridHash`
+- `point` - the point whose coordinates extend the box's lower and upper bounds
+
+Level: developer
+
+-seealso: `DMPLEX`, `PetscGridHash`, `PetscGridHashCreate()`, `PetscGridHashDestroy()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashEnlarge"))

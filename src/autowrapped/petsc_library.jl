@@ -24,6 +24,7 @@ const MPI_MIN = MPI.MIN
 const MPI_REPLACE = MPI.REPLACE
 const MPIU_INT64 = MPI.UINT64_T
 const MPIU_INT32 = MPI.UINT32_T
+const MPI_Count = MPI.MPI_Count
 
 # We know these will be Cvoid, so just set them to be that
 const PetscViewer = Ptr{Cvoid}
@@ -468,6 +469,7 @@ include("PetscSegBuffer_wrappers.jl")
 include("PetscLimiter_wrappers.jl")
 include("PetscFV_wrappers.jl")
 include("Tao_addons_wrappers.jl")
+include("PetscDA_wrappers.jl")
 include("PetscViewer_wrappers.jl")
 include("Characteristic_wrappers.jl")
 include("PetscSF_wrappers.jl")

@@ -616,7 +616,7 @@ Input Parameters:
 - `type` - The name of the vector scatter type
 
 Options Database Key:
-- `-sf_type <type>` - Sets the `VecScatterType`
+- `-sf_type type` - Sets the `VecScatterType`
 
 Level: intermediate
 
@@ -719,6 +719,9 @@ Input Parameters:
 - `sf`   - the scatter context
 - `obj`  - Optional object
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 
@@ -1014,35 +1017,54 @@ end
 end 
 
 """
+	VecSetOperation(petsclib::PetscLibType,vec::AbstractPetscVec, op::VecOperation, f::Ptr{Cvoid}) 
+Allows the user to override a particular vector operation.
+
+Logically Collective; No Fortran Support
+
+Input Parameters:
+- `vec` - The vector to modify
+- `op`  - The name of the operation
+- `f`   - The function that provides the operation.
+
+Level: advanced
+
+-seealso: [](ch_vectors), `Vec`, `VecCreate()`, `VecGetOperation()`, `MatSetOperation()`, `MatShellSetOperation()`
+
+# External Links
+$(_doc_external("Vec/VecSetOperation"))
+"""
+function VecSetOperation(petsclib::PetscLibType, vec::AbstractPetscVec, op::VecOperation, f::Ptr{Cvoid})
+    error("VecSetOperation: no generated method for these argument types")
+end
+
+@for_petsc function VecSetOperation(petsclib::$UnionPetscLib, vec::AbstractPetscVec, op::VecOperation, f::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:VecSetOperation, $petsc_library),
+               PetscErrorCode,
+               (CVec, VecOperation, Ptr{Cvoid}),
+               vec, op, f,
+              )
+
+
+	return nothing
+end 
+
+"""
 	VecSetOption(petsclib::PetscLibType,x::AbstractPetscVec, op::VecOption, flag::PetscBool) 
-Sets an option for controlling a vector's behavior.
+Sets an option for controlling a vector's behavior with `VecSetValues()` and related routines
 
 Collective
 
 Input Parameters:
 - `x`    - the vector
-- `op`   - the option
+- `op`   - the `VecOption`
 - `flag` - turn the option on or off
-
-Supported Options:
-- `VEC_IGNORE_OFF_PROC_ENTRIES` - which causes `VecSetValues()` to ignore
-entries destined to be stored on a separate processor. This can be used
-to eliminate the global reduction in the `VecAssemblyBegin()` if you know
-that you have only used `VecSetValues()` to set local elements
-- `VEC_IGNORE_NEGATIVE_INDICES` - which means you can pass negative indices
-in ix in calls to `VecSetValues()` or `VecGetValues()`. These rows are simply
-ignored.
-- `VEC_SUBSET_OFF_PROC_ENTRIES` - which causes `VecAssemblyBegin()` to assume that the off-process
-entries will always be a subset (possibly equal) of the off-process entries set on the
-first assembly which had a true `VEC_SUBSET_OFF_PROC_ENTRIES` and the vector has not
-changed this flag afterwards. If this assembly is not such first assembly, then this
-assembly can reuse the communication pattern setup in that first assembly, thus avoiding
-a global reduction. Subsequent assemblies setting off-process values should use the same
-InsertMode as the first assembly.
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecSetValues()`
+-seealso: [](ch_vectors), `Vec`, `VecSetValues()`, `VecOption`, `MatSetOption()`
 
 # External Links
 $(_doc_external("Vec/VecSetOption"))
@@ -1110,7 +1132,7 @@ Input Parameters:
 - `mbytes` - minimum data size in bytes
 
 Options Database Key:
-- `-vec_pinned_memory_min <size>` - minimum size (in bytes) for an allocation to use pinned memory on host.
+- `-vec_pinned_memory_min size` - minimum size (in bytes) for an allocation to use pinned memory on host.
 
 Level: developer
 
@@ -1243,7 +1265,43 @@ end
 end 
 
 """
-	VecSetSizes(petsclib::PetscLibType,v::AbstractPetscVec, n::PetscInt, N::PetscInt) 
+	VecSetRandomGaussian(petsclib::PetscLibType,v::AbstractPetscVec, rng::PetscRandom, mean::PetscReal, std_dev::PetscReal) 
+Fills a vector with Gaussian random values of the given mean and standard deviation.
+
+Collective
+
+Input Parameters:
+- `v`       - the vector to fill
+- `rng`     - PETSc random number generator
+- `mean`    - desired mean of the Gaussian samples
+- `std_dev` - desired standard deviation
+
+Level: advanced
+
+-seealso: [](ch_vectors), [](ch_da), `PetscDA`, `PetscRandom`, `PetscRandomSetInterval()`, `VecSetRandom()`
+
+# External Links
+$(_doc_external("Vec/VecSetRandomGaussian"))
+"""
+function VecSetRandomGaussian(petsclib::PetscLibType, v::AbstractPetscVec, rng::PetscRandom, mean::Real, std_dev::Real)
+    error("VecSetRandomGaussian: no generated method for these argument types")
+end
+
+@for_petsc function VecSetRandomGaussian(petsclib::$UnionPetscLib, v::AbstractPetscVec, rng::PetscRandom, mean::$PetscReal, std_dev::$PetscReal )
+
+    @chk ccall(
+               (:VecSetRandomGaussian, $petsc_library),
+               PetscErrorCode,
+               (CVec, PetscRandom, $PetscReal, $PetscReal),
+               v, rng, mean, std_dev,
+              )
+
+
+	return nothing
+end 
+
+"""
+	VecSetSizes(petsclib::PetscLibType,v::AbstractPetscVec, n::PetscInt, M_N::PetscInt) 
 Sets the local and global sizes, and checks to determine compatibility of the sizes
 
 Collective
@@ -1261,17 +1319,17 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetSizes"))
 """
-function VecSetSizes(petsclib::PetscLibType, v::AbstractPetscVec, n::Integer, N::Integer)
+function VecSetSizes(petsclib::PetscLibType, v::AbstractPetscVec, n::Integer, M_N::Integer)
     error("VecSetSizes: no generated method for these argument types")
 end
 
-@for_petsc function VecSetSizes(petsclib::$UnionPetscLib, v::AbstractPetscVec, n::$PetscInt, N::$PetscInt )
+@for_petsc function VecSetSizes(petsclib::$UnionPetscLib, v::AbstractPetscVec, n::$PetscInt, M_N::$PetscInt )
 
     @chk ccall(
                (:VecSetSizes, $petsc_library),
                PetscErrorCode,
                (CVec, $PetscInt, $PetscInt),
-               v, n, N,
+               v, n, M_N,
               )
 
 
@@ -1289,8 +1347,7 @@ Input Parameters:
 - `newType` - The name of the vector type
 
 Options Database Key:
-- `-vec_type <type>` - Sets the vector type; use -help for a list
-of available types
+- `-vec_type type` - Sets the vector type; see `VecType`
 
 Level: intermediate
 
@@ -1411,7 +1468,8 @@ Input Parameters:
 Level: beginner
 
 -seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValuesLocal()`,
-`VecSetValue()`, `VecSetValuesBlocked()`, `InsertMode`, `INSERT_VALUES`, `ADD_VALUES`, `VecGetValues()`
+`VecSetValue()`, `VecSetValuesBlocked()`, `InsertMode`, `INSERT_VALUES`, `ADD_VALUES`, `VecGetValues()`,
+`VecOption`, `VecSetOption()`
 
 # External Links
 $(_doc_external("Vec/VecSetValues"))
@@ -1669,7 +1727,6 @@ Level: beginner
 
 -seealso: `Vec`, `VecLog()`, `VecExp()`, `VecReciprocal()`, `VecAbs()`
 
-
 # External Links
 $(_doc_external("Vec/VecSqrtAbs"))
 """
@@ -1752,8 +1809,8 @@ Input Parameters:
 - `bsize` - the initial size of the block-stash(if used).
 
 Options Database Keys:
-- `-vecstash_initial_size <size> or <size0,size1,...sizep-1>`           - set initial size
-- `-vecstash_block_initial_size <bsize> or <bsize0,bsize1,...bsizep-1>` - set initial block size
+- `-vecstash_initial_size size or size0,size1,...,sizep-1`           - set initial size
+- `-vecstash_block_initial_size bsize or bsize0,bsize1,...,bsizep-1` - set initial block size
 
 Level: intermediate
 
@@ -1814,15 +1871,18 @@ end
 end 
 
 """
-	VecStashViewFromOptions(petsclib::PetscLibType,obj::AbstractPetscVec, bobj, optionname::String) 
+	VecStashViewFromOptions(petsclib::PetscLibType,obj::AbstractPetscVec, bobj, name::String) 
 Processes command line options to determine if/how a `VecStash` object is to be viewed.
 
 Collective
 
 Input Parameters:
-- `obj`        - the `Vec` containing a stash
-- `bobj`       - optional other object that provides the prefix
-- `optionname` - option to activate viewing
+- `obj`  - the `Vec` containing a stash
+- `bobj` - optional other object that provides the prefix
+- `name` - option to activate viewing
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 
@@ -1831,17 +1891,17 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecStashViewFromOptions"))
 """
-function VecStashViewFromOptions(petsclib::PetscLibType, obj::AbstractPetscVec, bobj, optionname::String)
+function VecStashViewFromOptions(petsclib::PetscLibType, obj::AbstractPetscVec, bobj, name::String)
     error("VecStashViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function VecStashViewFromOptions(petsclib::$UnionPetscLib, obj::AbstractPetscVec, bobj, optionname::String )
+@for_petsc function VecStashViewFromOptions(petsclib::$UnionPetscLib, obj::AbstractPetscVec, bobj, name::String )
 
     @chk ccall(
                (:VecStashViewFromOptions, $petsc_library),
                PetscErrorCode,
                (CVec, PetscObject, Ptr{Cchar}),
-               obj, bobj, optionname,
+               obj, bobj, name,
               )
 
 
@@ -2423,8 +2483,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGather()`,
-
+-seealso: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGather()`
 
 # External Links
 $(_doc_external("Vec/VecStrideScatterAll"))
@@ -2715,6 +2774,21 @@ end
 
 """
 	x::Vecs = VecsCreateSeq(petsclib::PetscLibType,comm::MPI_Comm, p::PetscInt, m::PetscInt) 
+Creates a `Vecs` object holding `p` sequential `Vec`s of length `m`, all stored contiguously in a single underlying `Vec`
+
+Collective
+
+Input Parameters:
+- `comm` - the MPI communicator (typically `PETSC_COMM_SELF`)
+- `p`    - the number of vectors
+- `m`    - the length of each vector
+
+Output Parameter:
+- `x` - the newly created `Vecs`
+
+Level: advanced
+
+-seealso: `Vecs`, `VecsCreateSeqWithArray()`, `VecsDuplicate()`, `VecsDestroy()`, `VecCreateSeq()`
 
 # External Links
 $(_doc_external("Vec/VecsCreateSeq"))
@@ -2740,6 +2814,22 @@ end
 
 """
 	a::PetscScalar,x::Vecs = VecsCreateSeqWithArray(petsclib::PetscLibType,comm::MPI_Comm, p::PetscInt, m::PetscInt) 
+Creates a `Vecs` object holding `p` sequential `Vec`s of length `m` that use a user
+
+Collective
+
+Input Parameters:
+- `comm` - the MPI communicator (typically `PETSC_COMM_SELF`)
+- `p`    - the number of vectors
+- `m`    - the length of each vector
+- `a`    - the array of length `p*m` used as storage for the vectors
+
+Output Parameter:
+- `x` - the newly created `Vecs`
+
+Level: advanced
+
+-seealso: `Vecs`, `VecsCreateSeq()`, `VecsDuplicate()`, `VecsDestroy()`, `VecCreateSeqWithArray()`
 
 # External Links
 $(_doc_external("Vec/VecsCreateSeqWithArray"))
@@ -2767,6 +2857,16 @@ end
 
 """
 	VecsDestroy(petsclib::PetscLibType,x::Vecs) 
+Destroys a `Vecs` collection of vectors
+
+Collective
+
+Input Parameter:
+- `x` - the `Vecs` object to destroy
+
+Level: advanced
+
+-seealso: `Vecs`, `VecsCreateSeq()`, `VecsCreateSeqWithArray()`, `VecsDuplicate()`
 
 # External Links
 $(_doc_external("Vec/VecsDestroy"))
@@ -2790,6 +2890,19 @@ end
 
 """
 	y::Vecs = VecsDuplicate(petsclib::PetscLibType,x::Vecs) 
+Creates a new `Vecs` with the same size and layout as an existing `Vecs`, but does not copy the values
+
+Collective
+
+Input Parameter:
+- `x` - the existing `Vecs`
+
+Output Parameter:
+- `y` - the newly created `Vecs`
+
+Level: advanced
+
+-seealso: `Vecs`, `VecsCreateSeq()`, `VecsCreateSeqWithArray()`, `VecsDestroy()`, `VecDuplicate()`
 
 # External Links
 $(_doc_external("Vec/VecsDuplicate"))

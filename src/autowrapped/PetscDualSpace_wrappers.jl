@@ -1486,7 +1486,7 @@ Input Parameters:
 - `continuous` - flag for element continuity
 
 Options Database Key:
-- `-petscdualspace_lagrange_continuity <bool>` - use a continuous element
+- `-petscdualspace_lagrange_continuity (true|false)` - use a continuous element
 
 Level: intermediate
 
@@ -1989,18 +1989,18 @@ Input Parameter:
 - `sp` - the `PetscDualSpace` object to set options for
 
 Options Database Keys:
-- `-petscdualspace_order <order>`                 - the approximation order of the space
-- `-petscdualspace_form_degree <deg>`             - the form degree, say 0 for point evaluations, or 2 for area integrals
-- `-petscdualspace_components <c>`                - the number of components, say d for a vector field
-- `-petscdualspace_refcell <celltype>`            - Reference cell type name
-- `-petscdualspace_lagrange_continuity`           - Flag for continuous element
-- `-petscdualspace_lagrange_tensor`               - Flag for tensor dual space
-- `-petscdualspace_lagrange_trimmed`              - Flag for trimmed dual space
-- `-petscdualspace_lagrange_node_type <nodetype>` - Lagrange node location type
-- `-petscdualspace_lagrange_node_endpoints`       - Flag for nodes that include endpoints
-- `-petscdualspace_lagrange_node_exponent`        - Gauss-Jacobi weight function exponent
-- `-petscdualspace_lagrange_use_moments`          - Use moments (where appropriate) for functionals
-- `-petscdualspace_lagrange_moment_order <order>` - Quadrature order for moment functionals
+- `-petscdualspace_order order`                          - the approximation order of the space
+- `-petscdualspace_form_degree deg`                      - the form degree, say 0 for point evaluations, or 2 for area integrals
+- `-petscdualspace_components c`                         - the number of components, say d for a vector field
+- `-petscdualspace_refcell celltype`                     - Reference cell type name
+- `-petscdualspace_lagrange_continuity (true|false)`     - Flag for continuous element
+- `-petscdualspace_lagrange_tensor (true|false)`         - Flag for tensor dual space
+- `-petscdualspace_lagrange_trimmed (true|false)`        - Flag for trimmed dual space
+- `-petscdualspace_lagrange_node_type nodetype`          - Lagrange node location type
+- `-petscdualspace_lagrange_node_endpoints (true|false)` - Flag for nodes that include endpoints
+- `-petscdualspace_lagrange_node_exponent exponent`      - Gauss-Jacobi weight function exponent
+- `-petscdualspace_lagrange_use_moments (true|false)`    - Use moments (where appropriate) for functionals
+- `-petscdualspace_lagrange_moment_order order`          - Quadrature order for moment functionals
 
 Level: intermediate
 
@@ -2103,7 +2103,7 @@ Input Parameters:
 - `name` - The kind of space
 
 Options Database Key:
-- `-petscdualspace_type <type>` - Sets the PetscDualSpace type; use -help for a list of available types
+- `-petscdualspace_type type` - Sets the `PetscDualSpace` type; see `PetscDualSpaceType` for the choices
 
 Level: intermediate
 
@@ -2679,6 +2679,9 @@ Input Parameters:
 - `A`    - the `PetscDualSpace` object
 - `obj`  - Optional object, provides the options prefix
 - `name` - command line option name
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

@@ -76,6 +76,16 @@ end
 
 """
 	PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType,hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) 
+Destroys the object used to track which help messages have already been printed
+
+Not Collective
+
+Input Parameter:
+- `hp` - pointer to the `PetscOptionsHelpPrinted` object to destroy; set to `NULL` on return
+
+Level: developer
+
+-seealso: `PetscOptionsHelpPrintedCreate()`, `PetscOptionsHelpPrintedCheck()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsHelpPrintedDestroy"))

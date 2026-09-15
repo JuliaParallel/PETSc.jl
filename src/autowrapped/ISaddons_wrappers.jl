@@ -207,6 +207,16 @@ end
 
 """
 	ISColoringReference(petsclib::PetscLibType,coloring::ISColoring) 
+Increases the reference count of an `ISColoring` object by one
+
+Logically collective
+
+Input Parameter:
+- `coloring` - the `ISColoring` object
+
+Level: developer
+
+-seealso: `ISColoring`, `ISColoringCreate()`, `ISColoringDestroy()`
 
 # External Links
 $(_doc_external("IS/ISColoringReference"))
@@ -356,34 +366,37 @@ end
 end 
 
 """
-	ISColoringViewFromOptions(petsclib::PetscLibType,obj::ISColoring, bobj, optionname::String) 
+	ISColoringViewFromOptions(petsclib::PetscLibType,obj::ISColoring, bobj, name::String) 
 Processes command line options to determine if/how an `ISColoring` object is to be viewed.
 
 Collective
 
 Input Parameters:
-- `obj`        - the `ISColoring` object
-- `bobj`       - prefix to use for viewing, or `NULL` to use prefix of `mat`
-- `optionname` - option to activate viewing
+- `obj`  - the `ISColoring` object
+- `bobj` - prefix to use for viewing, or `NULL` to use prefix of `mat`
+- `name` - option to activate viewing
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 
--seealso: `ISColoring`, `ISColoringView()`
+-seealso: `ISColoring`, `ISColoringView()`, `PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("IS/ISColoringViewFromOptions"))
 """
-function ISColoringViewFromOptions(petsclib::PetscLibType, obj::ISColoring, bobj, optionname::String)
+function ISColoringViewFromOptions(petsclib::PetscLibType, obj::ISColoring, bobj, name::String)
     error("ISColoringViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function ISColoringViewFromOptions(petsclib::$UnionPetscLib, obj::ISColoring, bobj, optionname::String )
+@for_petsc function ISColoringViewFromOptions(petsclib::$UnionPetscLib, obj::ISColoring, bobj, name::String )
 
     @chk ccall(
                (:ISColoringViewFromOptions, $petsc_library),
                PetscErrorCode,
                (ISColoring, PetscObject, Ptr{Cchar}),
-               obj, bobj, optionname,
+               obj, bobj, name,
               )
 
 
@@ -579,7 +592,7 @@ Output Parameter:
 Level: advanced
 
 -seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`,
-`ISLOCALTOGLOBALMAPPINGBASIC`, `ISLOCALTOGLOBALMAPPINGHASH`
+`ISLOCALTOGLOBALMAPPINGBASIC`, `ISLOCALTOGLOBALMAPPINGHASH`,
 `ISLocalToGlobalMappingSetType()`, `ISLocalToGlobalMappingType`
 
 # External Links
@@ -1150,7 +1163,8 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetType()`
+-seealso: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetType()`,
+`PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingGetType"))
@@ -1544,7 +1558,7 @@ Input Parameter:
 - `mapping` - mapping data structure
 
 Options Database Key:
-- `-islocaltoglobalmapping_type` - <basic,hash> nonscalable and scalable versions
+- `-islocaltoglobalmapping_type (basic|hash)` - nonscalable and scalable versions
 
 Level: advanced
 
@@ -1583,7 +1597,7 @@ Input Parameters:
 - `type` - a known method
 
 Options Database Key:
-- `-islocaltoglobalmapping_type  <method>` - Sets the method; use -help for a list of available methods (for instance, basic or hash)
+- `-islocaltoglobalmapping_type (basic|hash)` - Sets the method used for applying the mapping, see `ISLocalToGlobalMappingType`
 
 Level: intermediate
 
@@ -1653,6 +1667,9 @@ Input Parameters:
 - `A`    - the local to global mapping object
 - `obj`  - Optional object that provides the options prefix used for the options database query
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

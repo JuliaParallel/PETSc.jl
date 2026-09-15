@@ -118,6 +118,17 @@ end
 
 """
 	PetscObjectChangeTypeName(petsclib::PetscLibType,obj, type_name::String) 
+Changes the type name stored on a `PetscObject`
+
+Logically collective
+
+Input Parameters:
+- `obj`       - the `PetscObject`
+- `type_name` - the new type name
+
+Level: developer
+
+-seealso: `PetscObject`, `PetscObjectGetType()`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectChangeTypeName"))
@@ -254,7 +265,7 @@ end
 end 
 
 """
-	PetscObjectContainerQuery(petsclib::PetscLibType,obj, name::String, pointer::PeCtx) 
+	ptr::Ptr{Cvoid} = PetscObjectContainerQuery(petsclib::PetscLibType,obj, name::String) 
 Accesses the pointer in a container composed to a `PetscObject` with `PetscObjectContainerCompose()`
 
 Collective
@@ -264,7 +275,7 @@ Input Parameters:
 - `name` - the name for the composed container
 
 Output Parameter:
-- `pointer` - the pointer to the data
+- `ptr` - the pointer to the data
 
 Level: advanced
 
@@ -274,21 +285,23 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscObjectContainerQuery"))
 """
-function PetscObjectContainerQuery(petsclib::PetscLibType, obj, name::String, pointer::PeCtx)
+function PetscObjectContainerQuery(petsclib::PetscLibType, obj, name::String)
     error("PetscObjectContainerQuery: no generated method for these argument types")
 end
 
-@for_petsc function PetscObjectContainerQuery(petsclib::$UnionPetscLib, obj, name::String, pointer::PeCtx )
+@for_petsc function PetscObjectContainerQuery(petsclib::$UnionPetscLib, obj, name::String )
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PetscObjectContainerQuery, $petsc_library),
                PetscErrorCode,
-               (PetscObject, Ptr{Cchar}, PeCtx),
-               obj, name, pointer,
+               (PetscObject, Ptr{Cchar}, Ptr{Cvoid}),
+               obj, name, ptr_,
               )
 
+	ptr = ptr_[]
 
-	return nothing
+	return ptr
 end 
 
 """
@@ -329,7 +342,7 @@ end
 
 """
 	PetscObjectDestroy(petsclib::PetscLibType,obj::Union{PetscObject, Ref{PetscObject}}) 
-Destroys a `PetscObject`, regardless of the type.
+Destroys a `PetscObject`, regardless of the class.
 
 Collective
 
@@ -979,7 +992,6 @@ Level: intermediate
 
 -seealso: `PetscObjectTypeCompare()`, `VecGetType()`, `KSPGetType()`, `PCGetType()`, `SNESGetType()`, `PetscObjectBaseTypeCompare()`, `PetscObjectTypeCompareAny()`, `PetscObjectBaseTypeCompareAny()`
 
-
 # External Links
 $(_doc_external("Sys/PetscObjectObjectTypeCompare"))
 """
@@ -1117,7 +1129,7 @@ cast with (`PetscObject`*)
 
 Level: advanced
 
--seealso: `PetscObjectCompose()`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`, `PetscContainer`
+-seealso: `PetscObjectCompose()`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`, `PetscContainer`,
 `PetscContainerGetPointer()`, `PetscObject`
 
 # External Links
@@ -1242,6 +1254,17 @@ end
 
 """
 	PetscObjectRemoveReference(petsclib::PetscLibType,obj, name::String) 
+Removes a reference link from a `PetscObject`'s object list without dereferencing the referenced object
+
+Logically collective
+
+Input Parameters:
+- `obj`  - the `PetscObject` whose list will be modified
+- `name` - the name under which the reference was composed
+
+Level: developer
+
+-seealso: `PetscObject`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObjectReference()`, `PetscObjectDereference()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectRemoveReference"))
@@ -1400,6 +1423,16 @@ end
 
 """
 	PetscObjectSAWsViewOff(petsclib::PetscLibType,obj) 
+Remove a `PetscObject`'s SAWs (Scientific Application Web server) directory so the object is no longer published
+
+Logically Collective
+
+Input Parameter:
+- `obj` - the `PetscObject` whose SAWs publication should be torn down
+
+Level: developer
+
+-seealso: `PetscObject`, `PetscObjectSAWsBlock()`, `PetscObjectSAWsTakeAccess()`, `PetscObjectSAWsGrantAccess()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSAWsViewOff"))
@@ -1701,7 +1734,7 @@ end
 
 """
 	PetscObjectView(petsclib::PetscLibType,obj, viewer::PetscViewer) 
-Views a `PetscObject` regardless of the type.
+Views, that is displays or stores information about a `PetscObject`.
 
 Collective
 
@@ -1735,18 +1768,18 @@ end
 end 
 
 """
-	PetscObjectViewFromOptions(petsclib::PetscLibType,obj, bobj, optionname::String) 
+	PetscObjectViewFromOptions(petsclib::PetscLibType,obj, bobj, name::String) 
 Processes command line options to determine if/how a `PetscObject` is to be viewed.
 
 Collective
 
 Input Parameters:
-- `obj`        - the object
-- `bobj`       - optional other object that provides prefix (if `NULL` then the prefix in `obj` is used)
-- `optionname` - option string that is used to activate viewing
+- `obj`  - the object
+- `bobj` - optional other object that provides prefix (if `NULL` then the prefix in `obj` is used)
+- `name` - option string that is used to activate viewing. It typically ends with _view.
 
 Options Database Key:
-- `-optionname_view [viewertype]:...` - option name and values. In actual usage this would be something like `-mat_coarse_view`
+- `-name [viewertype][:...]` - option name and values. In actual usage the key might be something like `-vec_view`
 
 Level: developer
 
@@ -1755,17 +1788,17 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscObjectViewFromOptions"))
 """
-function PetscObjectViewFromOptions(petsclib::PetscLibType, obj, bobj, optionname::String)
+function PetscObjectViewFromOptions(petsclib::PetscLibType, obj, bobj, name::String)
     error("PetscObjectViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function PetscObjectViewFromOptions(petsclib::$UnionPetscLib, obj, bobj, optionname::String )
+@for_petsc function PetscObjectViewFromOptions(petsclib::$UnionPetscLib, obj, bobj, name::String )
 
     @chk ccall(
                (:PetscObjectViewFromOptions, $petsc_library),
                PetscErrorCode,
                (PetscObject, PetscObject, Ptr{Cchar}),
-               obj, bobj, optionname,
+               obj, bobj, name,
               )
 
 
@@ -1815,7 +1848,7 @@ Input Parameters:
 - `all` - by default only tries to display objects created explicitly by the user, if all is `PETSC_TRUE` then lists all outstanding objects
 
 Options Database Key:
-- `-objects_dump <all>` - print information about all the objects that exist at the end of the programs run
+- `-objects_dump all` - print information about all the objects that exist at the end of the programs run
 
 Level: advanced
 

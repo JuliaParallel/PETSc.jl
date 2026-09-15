@@ -56,14 +56,14 @@ Input Parameters:
 - `npoints` - The number of tabulation points
 - `points`  - The tabulation point coordinates
 - `K`       - The number of derivatives calculated
-- `T`       - An existing tabulation object with enough allocated space
+- `T`       - An existing tabulation object with enough allocated space, created with `PetscFECreateTabulation()`
 
 Output Parameter:
 - `T` - The basis function values and derivatives at tabulation points
 
 Level: intermediate
 
--seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`
+-seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`, `PetscFECreateTabulation()`
 
 # External Links
 $(_doc_external("FE/PetscFEComputeTabulation"))
@@ -214,7 +214,8 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFECreateDefault()`, `PetscFECreateLagrange()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`, `PetscFESetFromOptions()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
+-seealso: `PetscFE`, `PetscFECreateDefault()`, `PetscFECreateLagrange()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`,
+`PetscFESetFromOptions()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`, `DMPolytopeType`
 
 # External Links
 $(_doc_external("FE/PetscFECreateByCell"))
@@ -240,6 +241,20 @@ end
 
 """
 	cgeom::PetscFEGeom = PetscFECreateCellGeometry(petsclib::PetscLibType,fe::PetscFE, quad::PetscQuadrature) 
+Populates the arrays in a `PetscFEGeom` for a single reference cell of a `PetscFE`.
+
+Not Collective
+
+Input Parameters:
+- `fe`   - the `PetscFE` whose dual-space `DM` provides the reference cell
+- `quad` - the quadrature at which to evaluate the geometry, or `NULL` to use the `PetscFE`'s own quadrature
+
+Output Parameter:
+- `cgeom` - the `PetscFEGeom` populated with reference-cell coordinates, Jacobians, inverse Jacobians, and their determinants
+
+Level: developer
+
+-seealso: `PetscFE`, `PetscFEGeom`, `PetscFEDestroyCellGeometry()`, `PetscFEGetQuadrature()`, `DMPlexComputeCellGeometryFEM()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateCellGeometry"))
@@ -282,7 +297,8 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFECreateLagrange()`, `PetscFECreateByCell()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`, `PetscFESetFromOptions()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
+-seealso: `PetscFE`, `PetscFECreateLagrange()`, `PetscFECreateByCell()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`, `PetscFESetFromOptions()`,
+`PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateDefault"))
@@ -307,7 +323,7 @@ end
 end 
 
 """
-	fem::PetscFE = PetscFECreateFromSpaces(petsclib::PetscLibType,P::PetscSpace, Q::PetscDualSpace, q::PetscQuadrature, fq::PetscQuadrature) 
+	fem::PetscFE = PetscFECreateFromSpaces(petsclib::PetscLibType,P::PetscSpace, Q::PetscDualSpace, M_q::PetscQuadrature, fq::PetscQuadrature) 
 Create a `PetscFE` from the basis and dual spaces
 
 Collective
@@ -329,18 +345,18 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFECreateFromSpaces"))
 """
-function PetscFECreateFromSpaces(petsclib::PetscLibType, P::PetscSpace, Q::PetscDualSpace, q::PetscQuadrature, fq::PetscQuadrature)
+function PetscFECreateFromSpaces(petsclib::PetscLibType, P::PetscSpace, Q::PetscDualSpace, M_q::PetscQuadrature, fq::PetscQuadrature)
     error("PetscFECreateFromSpaces: no generated method for these argument types")
 end
 
-@for_petsc function PetscFECreateFromSpaces(petsclib::$UnionPetscLib, P::PetscSpace, Q::PetscDualSpace, q::PetscQuadrature, fq::PetscQuadrature )
+@for_petsc function PetscFECreateFromSpaces(petsclib::$UnionPetscLib, P::PetscSpace, Q::PetscDualSpace, M_q::PetscQuadrature, fq::PetscQuadrature )
 	fem_ = Ref{PetscFE}()
 
     @chk ccall(
                (:PetscFECreateFromSpaces, $petsc_library),
                PetscErrorCode,
                (PetscSpace, PetscDualSpace, PetscQuadrature, PetscQuadrature, Ptr{PetscFE}),
-               P, Q, q, fq, fem_,
+               P, Q, M_q, fq, fem_,
               )
 
 	fem = fem_[]
@@ -350,6 +366,20 @@ end
 
 """
 	trFE::PetscFE = PetscFECreateHeightTrace(petsclib::PetscLibType,fe::PetscFE, height::PetscInt) 
+Create the trace `PetscFE` for the first mesh point of the given height stratum.
+
+Not Collective
+
+Input Parameters:
+- `fe`     - the `PetscFE` object
+- `height` - the height of the stratum whose first point is used to construct the trace element
+
+Output Parameter:
+- `trFE` - the trace `PetscFE`, or `NULL` if the requested height stratum is empty
+
+Level: developer
+
+-seealso: `PetscFE`, `PetscFECreatePointTrace()`, `PetscFEGetHeightSubspace()`, `DMPlexGetHeightStratum()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateHeightTrace"))
@@ -375,7 +405,7 @@ end
 
 """
 	fem::PetscFE = PetscFECreateLagrange(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, k::PetscInt, qorder::PetscInt) 
-Create a `PetscFE` for the basic Lagrange space of degree k
+Create a `PetscFE` for the basic Lagrange space of degree `k`
 
 Collective
 
@@ -384,7 +414,7 @@ Input Parameters:
 - `dim`       - The spatial dimension
 - `Nc`        - The number of components
 - `isSimplex` - Flag for simplex reference cell, otherwise its a tensor product
-- `k`         - The degree k of the space
+- `k`         - The degree of the space
 - `qorder`    - The quadrature order or `PETSC_DETERMINE` to use `PetscSpace` polynomial degree
 
 Output Parameter:
@@ -392,7 +422,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFECreateLagrangeByCell()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
+-seealso: `PetscFE`, `PetscFECreateLagrangeByCell()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateLagrange"))
@@ -418,7 +448,7 @@ end
 
 """
 	fem::PetscFE = PetscFECreateLagrangeByCell(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, k::PetscInt, qorder::PetscInt) 
-Create a `PetscFE` for the basic Lagrange space of degree k
+Create a `PetscFE` for the basic Lagrange space of degree `k`
 
 Collective
 
@@ -427,7 +457,7 @@ Input Parameters:
 - `dim`    - The spatial dimension
 - `Nc`     - The number of components
 - `ct`     - The celltype of the reference cell
-- `k`      - The degree k of the space
+- `k`      - The degree of the space
 - `qorder` - The quadrature order or `PETSC_DETERMINE` to use `PetscSpace` polynomial degree
 
 Output Parameter:
@@ -435,7 +465,8 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
+-seealso: `PetscFE`, `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`,
+`DMPolytopeType`
 
 # External Links
 $(_doc_external("FE/PetscFECreateLagrangeByCell"))
@@ -461,7 +492,7 @@ end
 
 """
 	T::PetscTabulation = PetscFECreateTabulation(petsclib::PetscLibType,fem::PetscFE, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) 
-Tabulates the basis functions, and perhaps derivatives, at the points provided.
+Creates a `PetscTabulation` object to hold the basis functions, and perhaps derivatives, at the points provided.
 
 Not Collective
 
@@ -473,11 +504,11 @@ Input Parameters:
 - `K`       - The number of derivatives calculated
 
 Output Parameter:
-- `T` - The basis function values and derivatives at tabulation points
+- `T` - The `PetscTabulation` to hold the basis function values and derivatives at tabulation points
 
 Level: intermediate
 
--seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`
+-seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`, `PetscFEComputeTabulation()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateTabulation"))
@@ -589,6 +620,17 @@ end
 
 """
 	PetscFEDestroyCellGeometry(petsclib::PetscLibType,fe::PetscFE, cgeom::Vector{PetscFEGeom}) 
+Free the arrays inside a `PetscFEGeom` allocated by `PetscFECreateCellGeometry()`.
+
+Not Collective
+
+Input Parameters:
+- `fe`    - the `PetscFE` (unused, kept for API symmetry with `PetscFECreateCellGeometry()`)
+- `cgeom` - the `PetscFEGeom` whose owned arrays should be freed
+
+Level: developer
+
+-seealso: `PetscFE`, `PetscFEGeom`, `PetscFECreateCellGeometry()`
 
 # External Links
 $(_doc_external("FE/PetscFEDestroyCellGeometry"))
@@ -611,26 +653,43 @@ end
 end 
 
 """
-	PetscFEExpandFaceQuadrature(petsclib::PetscLibType,fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature) 
+	efq::PetscQuadrature = PetscFEExpandFaceQuadrature(petsclib::PetscLibType,fe::PetscFE, fq::PetscQuadrature) 
+Expand a face quadrature into a cell quadrature by mapping the face
+quadrature points and weights through each face of the cell reference geometry.
+
+Not Collective
+
+Input Parameters:
+- `fe` - the `PetscFE` object whose cell geometry defines the faces
+- `fq` - the face quadrature to expand
+
+Output Parameter:
+- `efq` - the expanded quadrature covering all faces of the cell
+
+Level: developer
+
+-seealso: `PetscFE`, `PetscQuadrature`, `PetscFECreateFaceQuadrature()`, `PetscFEGetQuadrature()`
 
 # External Links
 $(_doc_external("FE/PetscFEExpandFaceQuadrature"))
 """
-function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature)
+function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature)
     error("PetscFEExpandFaceQuadrature: no generated method for these argument types")
 end
 
-@for_petsc function PetscFEExpandFaceQuadrature(petsclib::$UnionPetscLib, fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature )
+@for_petsc function PetscFEExpandFaceQuadrature(petsclib::$UnionPetscLib, fe::PetscFE, fq::PetscQuadrature )
+	efq_ = Ref{PetscQuadrature}()
 
     @chk ccall(
                (:PetscFEExpandFaceQuadrature, $petsc_library),
                PetscErrorCode,
                (PetscFE, PetscQuadrature, Ptr{PetscQuadrature}),
-               fe, fq, efq,
+               fe, fq, efq_,
               )
 
+	efq = efq_[]
 
-	return nothing
+	return efq
 end 
 
 """
@@ -1525,7 +1584,7 @@ end
 end 
 
 """
-	PetscFEIntegrateBd(petsclib::PetscLibType,prob::PetscDS, field::PetscInt, obj_func::Ptr{Cvoid}) 
+	PetscFEIntegrateBd(petsclib::PetscLibType,prob::PetscDS, field::PetscInt, noname::Ptr{Cvoid}) 
 Produce the integral for the given field for a chunk of elements by quadrature integration
 
 Not Collective
@@ -1550,17 +1609,17 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEIntegrateBd"))
 """
-function PetscFEIntegrateBd(petsclib::PetscLibType, prob::PetscDS, field::Integer, obj_func::Ptr{Cvoid})
+function PetscFEIntegrateBd(petsclib::PetscLibType, prob::PetscDS, field::Integer, noname::Ptr{Cvoid})
     error("PetscFEIntegrateBd: no generated method for these argument types")
 end
 
-@for_petsc function PetscFEIntegrateBd(petsclib::$UnionPetscLib, prob::PetscDS, field::$PetscInt, obj_func::Ptr{Cvoid} )
+@for_petsc function PetscFEIntegrateBd(petsclib::$UnionPetscLib, prob::PetscDS, field::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscFEIntegrateBd, $petsc_library),
                PetscErrorCode,
                (PetscDS, $PetscInt, Ptr{Cvoid}),
-               prob, field, obj_func,
+               prob, field, noname,
               )
 
 
@@ -2248,8 +2307,8 @@ Input Parameter:
 - `fem` - the `PetscFE` object to set options for
 
 Options Database Keys:
-- `-petscfe_num_blocks`  - the number of cell blocks to integrate concurrently
-- `-petscfe_num_batches` - the number of cell batches to integrate serially
+- `-petscfe_num_blocks  nblocks`  - the number of cell blocks to integrate concurrently
+- `-petscfe_num_batches nbatches` - the number of cell batches to integrate serially
 
 Level: intermediate
 
@@ -2425,7 +2484,7 @@ Input Parameters:
 - `name` - The kind of FEM space
 
 Options Database Key:
-- `-petscfe_type <type>` - Sets the `PetscFE` type; use -help for a list of available types
+- `-petscfe_type (basic|opencl|composite|vector)` - Sets the `PetscFEType`
 
 Level: intermediate
 
@@ -2520,7 +2579,7 @@ end
 
 """
 	PetscFEViewFromOptions(petsclib::PetscLibType,A::PetscFE, obj, name::String) 
-View from a `PetscFE` based on values in the options database
+View a `PetscFE` based on values in the options database
 
 Collective
 
@@ -2528,6 +2587,9 @@ Input Parameters:
 - `A`    - the `PetscFE` object
 - `obj`  - Optional object that provides the options prefix, pass `NULL` to use the options prefix of `A`
 - `name` - command line option name
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 
@@ -3199,6 +3261,25 @@ end
 
 """
 	PetscWeakFormAddBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+Append boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `g0`    - The `g0` boundary Jacobian pointwise function to append; a `NULL` is ignored
+- `g1`    - The `g1` boundary Jacobian pointwise function to append; a `NULL` is ignored
+- `g2`    - The `g2` boundary Jacobian pointwise function to append; a `NULL` is ignored
+- `g3`    - The `g3` boundary Jacobian pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormAddJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobian"))
@@ -3222,6 +3303,25 @@ end
 
 """
 	PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+Append boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `g0`    - The `g0` boundary Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+- `g1`    - The `g1` boundary Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+- `g2`    - The `g2` boundary Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+- `g3`    - The `g3` boundary Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobianPreconditioner"))
@@ -3245,6 +3345,22 @@ end
 
 """
 	PetscWeakFormAddBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
+Append boundary residual pointwise functions `f0` and `f1` to the lists for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `f0`    - The `f0` boundary residual pointwise function to append; a `NULL` is ignored
+- `f1`    - The `f1` boundary residual pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormAddResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdResidual"))
@@ -3268,6 +3384,25 @@ end
 
 """
 	PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+Append dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `g0`    - The `g0` dynamic Jacobian pointwise function to append; a `NULL` is ignored
+- `g1`    - The `g1` dynamic Jacobian pointwise function to append; a `NULL` is ignored
+- `g2`    - The `g2` dynamic Jacobian pointwise function to append; a `NULL` is ignored
+- `g3`    - The `g3` dynamic Jacobian pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormAddJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddDynamicJacobian"))
@@ -3291,6 +3426,25 @@ end
 
 """
 	PetscWeakFormAddJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+Append Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `g0`    - The `g0` Jacobian pointwise function to append; a `NULL` is ignored
+- `g1`    - The `g1` Jacobian pointwise function to append; a `NULL` is ignored
+- `g2`    - The `g2` Jacobian pointwise function to append; a `NULL` is ignored
+- `g3`    - The `g3` Jacobian pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormSetIndexJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobian"))
@@ -3314,6 +3468,25 @@ end
 
 """
 	PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+Append Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `g0`    - The `g0` Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+- `g1`    - The `g1` Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+- `g2`    - The `g2` Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+- `g3`    - The `g3` Jacobian preconditioner pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormAddJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobianPreconditioner"))
@@ -3337,6 +3510,21 @@ end
 
 """
 	PetscWeakFormAddObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) 
+Append an objective pointwise function to the list for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `obj`   - The objective pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormGetObjective()`, `PetscWeakFormSetIndexObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddObjective"))
@@ -3360,6 +3548,22 @@ end
 
 """
 	PetscWeakFormAddResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
+Append residual pointwise functions `f0` and `f1` to the lists for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `f0`    - The `f0` residual pointwise function to append; a `NULL` is ignored
+- `f1`    - The `f1` residual pointwise function to append; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormGetResidual()`, `PetscWeakFormSetIndexResidual()`, `PetscWeakFormAddBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddResidual"))
@@ -3416,6 +3620,22 @@ end
 
 """
 	PetscWeakFormClearIndex(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) 
+Clear the pointwise function at a given index for the given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `kind`  - The kind of weak form, see `PetscWeakFormKind`
+- `ind`   - The index of the function to clear in the function list for this key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormKind`, `PetscWeakFormCreate()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormClearIndex"))
@@ -3546,23 +3766,48 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the lists of boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n0` - The number of `g0` boundary pointwise functions registered for this key
+- `g0` - The array of `g0` boundary Jacobian pointwise functions
+- `n1` - The number of `g1` boundary pointwise functions registered for this key
+- `g1` - The array of `g1` boundary Jacobian pointwise functions
+- `n2` - The number of `g2` boundary pointwise functions registered for this key
+- `g2` - The array of `g2` boundary Jacobian pointwise functions
+- `n3` - The number of `g3` boundary pointwise functions registered for this key
+- `g3` - The array of `g3` boundary Jacobian pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormHasBdJacobian()`, `PetscWeakFormGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobian"))
 """
-function PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetBdJacobian: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetBdJacobian, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0_, g0,
+               wf, label, val, f, g, part, n0_, noname,
               )
 
 	n0 = n0_[]
@@ -3571,23 +3816,48 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the lists of boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n0` - The number of `g0` boundary pointwise functions registered for this key
+- `g0` - The array of `g0` boundary Jacobian preconditioner pointwise functions
+- `n1` - The number of `g1` boundary pointwise functions registered for this key
+- `g1` - The array of `g1` boundary Jacobian preconditioner pointwise functions
+- `n2` - The number of `g2` boundary pointwise functions registered for this key
+- `g2` - The array of `g2` boundary Jacobian preconditioner pointwise functions
+- `n3` - The number of `g3` boundary pointwise functions registered for this key
+- `g3` - The array of `g3` boundary Jacobian preconditioner pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormHasBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobianPreconditioner"))
 """
-function PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetBdJacobianPreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetBdJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0_, g0,
+               wf, label, val, f, g, part, n0_, noname,
               )
 
 	n0 = n0_[]
@@ -3596,23 +3866,43 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the lists of boundary residual pointwise functions `f0` and `f1` for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n0` - The number of `f0` boundary pointwise functions registered for this key
+- `f0` - The array of `f0` boundary residual pointwise functions
+- `n1` - The number of `f1` boundary pointwise functions registered for this key
+- `f1` - The array of `f1` boundary residual pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormGetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdResidual"))
 """
-function PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::Ptr{Cvoid})
+function PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetBdResidual: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetBdResidual, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, part, n0_, f0,
+               wf, label, val, f, part, n0_, noname,
               )
 
 	n0 = n0_[]
@@ -3621,23 +3911,48 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the lists of dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n0` - The number of `g0` pointwise functions registered for this key
+- `g0` - The array of `g0` dynamic Jacobian pointwise functions
+- `n1` - The number of `g1` pointwise functions registered for this key
+- `g1` - The array of `g1` dynamic Jacobian pointwise functions
+- `n2` - The number of `g2` pointwise functions registered for this key
+- `g2` - The array of `g2` dynamic Jacobian pointwise functions
+- `n3` - The number of `g3` pointwise functions registered for this key
+- `g3` - The array of `g3` dynamic Jacobian pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormHasDynamicJacobian()`, `PetscWeakFormGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetDynamicJacobian"))
 """
-function PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetDynamicJacobian: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetDynamicJacobian, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0_, g0,
+               wf, label, val, f, g, part, n0_, noname,
               )
 
 	n0 = n0_[]
@@ -3646,22 +3961,40 @@ end
 end 
 
 """
-	PetscWeakFormGetIndexObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::Ptr{Cvoid}) 
+	PetscWeakFormGetIndexObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve a single objective pointwise function at the given index for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `ind`   - The index into the list of objective pointwise functions for this key
+
+Output Parameter:
+- `obj` - The objective pointwise function at position `ind`, or `NULL` if no function is registered for this key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetIndexObjective()`, `PetscWeakFormGetObjective()`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetIndexObjective"))
 """
-function PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, obj::Ptr{Cvoid})
+function PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetIndexObjective: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, obj::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormGetIndexObjective, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, part, ind, obj,
+               wf, label, val, f, part, ind, noname,
               )
 
 
@@ -3669,23 +4002,48 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the lists of Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n0` - The number of `g0` pointwise functions registered for this key
+- `g0` - The array of `g0` Jacobian pointwise functions
+- `n1` - The number of `g1` pointwise functions registered for this key
+- `g1` - The array of `g1` Jacobian pointwise functions
+- `n2` - The number of `g2` pointwise functions registered for this key
+- `g2` - The array of `g2` Jacobian pointwise functions
+- `n3` - The number of `g3` pointwise functions registered for this key
+- `g3` - The array of `g3` Jacobian pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormGetJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobian"))
 """
-function PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetJacobian: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetJacobian, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0_, g0,
+               wf, label, val, f, g, part, n0_, noname,
               )
 
 	n0 = n0_[]
@@ -3694,23 +4052,48 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the lists of Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n0` - The number of `g0` pointwise functions registered for this key
+- `g0` - The array of `g0` Jacobian preconditioner pointwise functions
+- `n1` - The number of `g1` pointwise functions registered for this key
+- `g1` - The array of `g1` Jacobian preconditioner pointwise functions
+- `n2` - The number of `g2` pointwise functions registered for this key
+- `g2` - The array of `g2` Jacobian preconditioner pointwise functions
+- `n3` - The number of `g3` pointwise functions registered for this key
+- `g3` - The array of `g3` Jacobian preconditioner pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormHasJacobianPreconditioner()`, `PetscWeakFormGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobianPreconditioner"))
 """
-function PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetJacobianPreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0_, g0,
+               wf, label, val, f, g, part, n0_, noname,
               )
 
 	n0 = n0_[]
@@ -3757,23 +4140,41 @@ end
 end 
 
 """
-	n::PetscInt = PetscWeakFormGetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::Ptr{Cvoid}) 
+	n::PetscInt = PetscWeakFormGetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the list of objective pointwise functions for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n`   - The number of objective pointwise functions registered for this key
+- `obj` - The array of objective pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormSetIndexObjective()`, `PetscWeakFormGetIndexObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetObjective"))
 """
-function PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, obj::Ptr{Cvoid})
+function PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetObjective: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, obj::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetObjective, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, part, n_, obj,
+               wf, label, val, f, part, n_, noname,
               )
 
 	n = n_[]
@@ -3782,23 +4183,43 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the lists of residual pointwise functions `f0` and `f1` for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n0` - The number of `f0` pointwise functions registered for this key
+- `f0` - The array of `f0` residual pointwise functions
+- `n1` - The number of `f1` pointwise functions registered for this key
+- `f1` - The array of `f1` residual pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormGetBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetResidual"))
 """
-function PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::Ptr{Cvoid})
+function PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetResidual: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetResidual, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, part, n0_, f0,
+               wf, label, val, f, part, n0_, noname,
               )
 
 	n0 = n0_[]
@@ -3807,23 +4228,41 @@ end
 end 
 
 """
-	n::PetscInt = PetscWeakFormGetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, r::Ptr{Cvoid}) 
+	n::PetscInt = PetscWeakFormGetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+Retrieve the list of Riemann solver pointwise functions for a given key from a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+
+Output Parameters:
+- `n` - The number of Riemann solver pointwise functions registered for this key
+- `r` - The array of Riemann solver pointwise functions
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormSetIndexRiemannSolver()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetRiemannSolver"))
 """
-function PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, r::Ptr{Cvoid})
+function PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormGetRiemannSolver: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormGetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, r::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetRiemannSolver, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
-               wf, label, val, f, part, n_, r,
+               wf, label, val, f, part, n_, noname,
               )
 
 	n = n_[]
@@ -3833,6 +4272,19 @@ end
 
 """
 	hasJac::PetscBool = PetscWeakFormHasBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
+Returns whether the `PetscWeakForm` has any boundary Jacobian (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
+
+Not Collective
+
+Input Parameter:
+- `wf` - The `PetscWeakForm`
+
+Output Parameter:
+- `hasJac` - `PETSC_TRUE` if any boundary Jacobian pointwise functions are registered, `PETSC_FALSE` otherwise
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormHasBdJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasBdJacobian"))
@@ -3858,6 +4310,19 @@ end
 
 """
 	hasJacPre::PetscBool = PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm) 
+Returns whether the `PetscWeakForm` has any boundary Jacobian preconditioner (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
+
+Not Collective
+
+Input Parameter:
+- `wf` - The `PetscWeakForm`
+
+Output Parameter:
+- `hasJacPre` - `PETSC_TRUE` if any boundary Jacobian preconditioner pointwise functions are registered, `PETSC_FALSE` otherwise
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormHasBdJacobian()`, `PetscWeakFormHasJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasBdJacobianPreconditioner"))
@@ -3883,6 +4348,19 @@ end
 
 """
 	hasDynJac::PetscBool = PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
+Returns whether the `PetscWeakForm` has any dynamic Jacobian (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
+
+Not Collective
+
+Input Parameter:
+- `wf` - The `PetscWeakForm`
+
+Output Parameter:
+- `hasDynJac` - `PETSC_TRUE` if any dynamic Jacobian pointwise functions are registered, `PETSC_FALSE` otherwise
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormHasJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasDynamicJacobian"))
@@ -3908,6 +4386,19 @@ end
 
 """
 	hasJac::PetscBool = PetscWeakFormHasJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
+Returns whether the `PetscWeakForm` has any Jacobian (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
+
+Not Collective
+
+Input Parameter:
+- `wf` - The `PetscWeakForm`
+
+Output Parameter:
+- `hasJac` - `PETSC_TRUE` if any Jacobian pointwise functions are registered, `PETSC_FALSE` otherwise
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormHasJacobianPreconditioner()`, `PetscWeakFormHasBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasJacobian"))
@@ -3933,6 +4424,19 @@ end
 
 """
 	hasJacPre::PetscBool = PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm) 
+Returns whether the `PetscWeakForm` has any Jacobian preconditioner (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
+
+Not Collective
+
+Input Parameter:
+- `wf` - The `PetscWeakForm`
+
+Output Parameter:
+- `hasJacPre` - `PETSC_TRUE` if any Jacobian preconditioner pointwise functions are registered, `PETSC_FALSE` otherwise
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormHasBdJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasJacobianPreconditioner"))
@@ -4027,22 +4531,45 @@ end
 end 
 
 """
-	PetscWeakFormSetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) 
+	PetscWeakFormSetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+Set the lists of boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `n0`    - The number of `g0` boundary pointwise functions to set
+- `g0`    - The array of `g0` boundary Jacobian pointwise functions, or `NULL` to clear the key
+- `n1`    - The number of `g1` boundary pointwise functions to set
+- `g1`    - The array of `g1` boundary Jacobian pointwise functions, or `NULL` to clear the key
+- `n2`    - The number of `g2` boundary pointwise functions to set
+- `g2`    - The array of `g2` boundary Jacobian pointwise functions, or `NULL` to clear the key
+- `n3`    - The number of `g3` boundary pointwise functions to set
+- `g3`    - The array of `g3` boundary Jacobian pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormSetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobian"))
 """
-function PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetBdJacobian: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetBdJacobian, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0, g0,
+               wf, label, val, f, g, part, n0, noname,
               )
 
 
@@ -4050,22 +4577,45 @@ end
 end 
 
 """
-	PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) 
+	PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+Set the lists of boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `n0`    - The number of `g0` boundary pointwise functions to set
+- `g0`    - The array of `g0` boundary Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+- `n1`    - The number of `g1` boundary pointwise functions to set
+- `g1`    - The array of `g1` boundary Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+- `n2`    - The number of `g2` boundary pointwise functions to set
+- `g2`    - The array of `g2` boundary Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+- `n3`    - The number of `g3` boundary pointwise functions to set
+- `g3`    - The array of `g3` boundary Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormSetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobianPreconditioner"))
 """
-function PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetBdJacobianPreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetBdJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0, g0,
+               wf, label, val, f, g, part, n0, noname,
               )
 
 
@@ -4073,22 +4623,40 @@ end
 end 
 
 """
-	PetscWeakFormSetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, f0::Ptr{Cvoid}) 
+	PetscWeakFormSetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+Set the lists of boundary residual pointwise functions `f0` and `f1` for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `n0`    - The number of `f0` boundary pointwise functions to set
+- `f0`    - The array of `f0` boundary residual pointwise functions, or `NULL` to clear the key
+- `n1`    - The number of `f1` boundary pointwise functions to set
+- `f1`    - The array of `f1` boundary residual pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormSetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdResidual"))
 """
-function PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, f0::Ptr{Cvoid})
+function PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetBdResidual: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, f0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetBdResidual, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, part, n0, f0,
+               wf, label, val, f, part, n0, noname,
               )
 
 
@@ -4096,22 +4664,45 @@ end
 end 
 
 """
-	PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) 
+	PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+Set the lists of dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `n0`    - The number of `g0` pointwise functions to set
+- `g0`    - The array of `g0` dynamic Jacobian pointwise functions, or `NULL` to clear the key
+- `n1`    - The number of `g1` pointwise functions to set
+- `g1`    - The array of `g1` dynamic Jacobian pointwise functions, or `NULL` to clear the key
+- `n2`    - The number of `g2` pointwise functions to set
+- `g2`    - The array of `g2` dynamic Jacobian pointwise functions, or `NULL` to clear the key
+- `n3`    - The number of `g3` pointwise functions to set
+- `g3`    - The array of `g3` dynamic Jacobian pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormSetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetDynamicJacobian"))
 """
-function PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetDynamicJacobian: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetDynamicJacobian, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0, g0,
+               wf, label, val, f, g, part, n0, noname,
               )
 
 
@@ -4120,6 +4711,29 @@ end
 
 """
 	PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+Set the boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `i0`    - The index at which to store `g0` in the `g0` list
+- `g0`    - The `g0` boundary Jacobian pointwise function; a `NULL` is ignored
+- `i1`    - The index at which to store `g1` in the `g1` list
+- `g1`    - The `g1` boundary Jacobian pointwise function; a `NULL` is ignored
+- `i2`    - The index at which to store `g2` in the `g2` list
+- `g2`    - The `g2` boundary Jacobian pointwise function; a `NULL` is ignored
+- `i3`    - The index at which to store `g3` in the `g3` list
+- `g3`    - The `g3` boundary Jacobian pointwise function; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobian"))
@@ -4143,6 +4757,29 @@ end
 
 """
 	PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+Set the boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `i0`    - The index at which to store `g0` in the `g0` list
+- `g0`    - The `g0` boundary Jacobian preconditioner pointwise function; a `NULL` is ignored
+- `i1`    - The index at which to store `g1` in the `g1` list
+- `g1`    - The `g1` boundary Jacobian preconditioner pointwise function; a `NULL` is ignored
+- `i2`    - The index at which to store `g2` in the `g2` list
+- `g2`    - The `g2` boundary Jacobian preconditioner pointwise function; a `NULL` is ignored
+- `i3`    - The index at which to store `g3` in the `g3` list
+- `g3`    - The `g3` boundary Jacobian preconditioner pointwise function; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobianPreconditioner"))
@@ -4166,6 +4803,24 @@ end
 
 """
 	PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
+Set the boundary residual pointwise functions `f0` and `f1` at the given indices for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the boundary region, or `NULL` for the entire boundary
+- `val`   - The label value selecting the boundary region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `i0`    - The index at which to store `f0` in the `f0` list
+- `f0`    - The `f0` boundary residual pointwise function; a `NULL` is ignored
+- `i1`    - The index at which to store `f1` in the `f1` list
+- `f1`    - The `f1` boundary residual pointwise function; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdResidual"))
@@ -4189,6 +4844,29 @@ end
 
 """
 	PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+Set the dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `i0`    - The index at which to store `g0` in the `g0` list
+- `g0`    - The `g0` dynamic Jacobian pointwise function; a `NULL` is ignored
+- `i1`    - The index at which to store `g1` in the `g1` list
+- `g1`    - The `g1` dynamic Jacobian pointwise function; a `NULL` is ignored
+- `i2`    - The index at which to store `g2` in the `g2` list
+- `g2`    - The `g2` dynamic Jacobian pointwise function; a `NULL` is ignored
+- `i3`    - The index at which to store `g3` in the `g3` list
+- `g3`    - The `g3` dynamic Jacobian pointwise function; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexDynamicJacobian"))
@@ -4212,6 +4890,29 @@ end
 
 """
 	PetscWeakFormSetIndexJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+Set the Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `i0`    - The index at which to store `g0` in the `g0` list
+- `g0`    - The `g0` Jacobian pointwise function; a `NULL` is ignored
+- `i1`    - The index at which to store `g1` in the `g1` list
+- `g1`    - The `g1` Jacobian pointwise function; a `NULL` is ignored
+- `i2`    - The index at which to store `g2` in the `g2` list
+- `g2`    - The `g2` Jacobian pointwise function; a `NULL` is ignored
+- `i3`    - The index at which to store `g3` in the `g3` list
+- `g3`    - The `g3` Jacobian pointwise function; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobian"))
@@ -4235,6 +4936,29 @@ end
 
 """
 	PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+Set the Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `i0`    - The index at which to store `g0` in the `g0` list
+- `g0`    - The `g0` Jacobian preconditioner pointwise function; a `NULL` is ignored
+- `i1`    - The index at which to store `g1` in the `g1` list
+- `g1`    - The `g1` Jacobian preconditioner pointwise function; a `NULL` is ignored
+- `i2`    - The index at which to store `g2` in the `g2` list
+- `g2`    - The `g2` Jacobian preconditioner pointwise function; a `NULL` is ignored
+- `i3`    - The index at which to store `g3` in the `g3` list
+- `g3`    - The `g3` Jacobian preconditioner pointwise function; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobianPreconditioner"))
@@ -4258,6 +4982,22 @@ end
 
 """
 	PetscWeakFormSetIndexObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) 
+Set a single objective pointwise function at the given index for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `ind`   - The index into the list of objective pointwise functions for this key
+- `obj`   - The objective pointwise function to store at position `ind`; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetIndexObjective()`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexObjective"))
@@ -4281,6 +5021,24 @@ end
 
 """
 	PetscWeakFormSetIndexResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
+Set the residual pointwise functions `f0` and `f1` at the given indices for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `i0`    - The index at which to store `f0` in the `f0` list
+- `f0`    - The `f0` residual pointwise function; a `NULL` is ignored
+- `i1`    - The index at which to store `f1` in the `f1` list
+- `f1`    - The `f1` residual pointwise function; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormGetResidual()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexResidual"))
@@ -4304,6 +5062,22 @@ end
 
 """
 	PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) 
+Set a single Riemann solver pointwise function at the given index for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `i`     - The index into the list of Riemann solver pointwise functions for this key
+- `r`     - The Riemann solver pointwise function to store at position `i`; a `NULL` is ignored
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormGetRiemannSolver()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexRiemannSolver"))
@@ -4326,22 +5100,45 @@ end
 end 
 
 """
-	PetscWeakFormSetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) 
+	PetscWeakFormSetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+Set the lists of Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `n0`    - The number of `g0` pointwise functions to set
+- `g0`    - The array of `g0` Jacobian pointwise functions, or `NULL` to clear the key
+- `n1`    - The number of `g1` pointwise functions to set
+- `g1`    - The array of `g1` Jacobian pointwise functions, or `NULL` to clear the key
+- `n2`    - The number of `g2` pointwise functions to set
+- `g2`    - The array of `g2` Jacobian pointwise functions, or `NULL` to clear the key
+- `n3`    - The number of `g3` pointwise functions to set
+- `g3`    - The array of `g3` Jacobian pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormSetIndexJacobian()`, `PetscWeakFormSetJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobian"))
 """
-function PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetJacobian: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetJacobian, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0, g0,
+               wf, label, val, f, g, part, n0, noname,
               )
 
 
@@ -4349,22 +5146,45 @@ end
 end 
 
 """
-	PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) 
+	PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+Set the lists of Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The test field number
+- `g`     - The trial field number
+- `part`  - The equation part, or 0 if unused
+- `n0`    - The number of `g0` pointwise functions to set
+- `g0`    - The array of `g0` Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+- `n1`    - The number of `g1` pointwise functions to set
+- `g1`    - The array of `g1` Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+- `n2`    - The number of `g2` pointwise functions to set
+- `g2`    - The array of `g2` Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+- `n3`    - The number of `g3` pointwise functions to set
+- `g3`    - The array of `g3` Jacobian preconditioner pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormSetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobianPreconditioner"))
 """
-function PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+function PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetJacobianPreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, g, part, n0, g0,
+               wf, label, val, f, g, part, n0, noname,
               )
 
 
@@ -4406,22 +5226,38 @@ end
 end 
 
 """
-	PetscWeakFormSetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, obj::Ptr{Cvoid}) 
+	PetscWeakFormSetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
+Set the list of objective pointwise functions for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `n`     - The number of objective pointwise functions to set
+- `obj`   - The array of objective pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormSetIndexObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetObjective"))
 """
-function PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, obj::Ptr{Cvoid})
+function PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetObjective: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, obj::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetObjective, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, part, n, obj,
+               wf, label, val, f, part, n, noname,
               )
 
 
@@ -4429,22 +5265,40 @@ end
 end 
 
 """
-	PetscWeakFormSetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, f0::Ptr{Cvoid}) 
+	PetscWeakFormSetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+Set the lists of residual pointwise functions `f0` and `f1` for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `n0`    - The number of `f0` pointwise functions to set
+- `f0`    - The array of `f0` residual pointwise functions, or `NULL` to clear the key
+- `n1`    - The number of `f1` pointwise functions to set
+- `f1`    - The array of `f1` residual pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormSetIndexResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetResidual"))
 """
-function PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, f0::Ptr{Cvoid})
+function PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetResidual: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, f0::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetResidual, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, part, n0, f0,
+               wf, label, val, f, part, n0, noname,
               )
 
 
@@ -4452,22 +5306,38 @@ end
 end 
 
 """
-	PetscWeakFormSetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, r::Ptr{Cvoid}) 
+	PetscWeakFormSetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
+Set the list of Riemann solver pointwise functions for a given key in a `PetscWeakForm`
+
+Not Collective
+
+Input Parameters:
+- `wf`    - The `PetscWeakForm`
+- `label` - The label selecting the mesh region, or `NULL` for the entire domain
+- `val`   - The label value selecting the mesh region
+- `f`     - The field number
+- `part`  - The equation part, or 0 if unused
+- `n`     - The number of Riemann solver pointwise functions to set
+- `r`     - The array of Riemann solver pointwise functions, or `NULL` to clear the key
+
+Level: intermediate
+
+-seealso: `PetscWeakForm`, `PetscWeakFormGetRiemannSolver()`, `PetscWeakFormSetIndexRiemannSolver()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetRiemannSolver"))
 """
-function PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, r::Ptr{Cvoid})
+function PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, noname::Ptr{Cvoid})
     error("PetscWeakFormSetRiemannSolver: no generated method for these argument types")
 end
 
-@for_petsc function PetscWeakFormSetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, r::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetRiemannSolver, $petsc_library),
                PetscErrorCode,
                (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
-               wf, label, val, f, part, n, r,
+               wf, label, val, f, part, n, noname,
               )
 
 

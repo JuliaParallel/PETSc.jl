@@ -143,6 +143,13 @@ end
 
 """
 	PetscFunctionListPrintAll(petsclib::PetscLibType) 
+Prints the names of all functions registered in every `PetscFunctionList` known to PETSc
+
+Not Collective
+
+Level: developer
+
+-seealso: `PetscFunctionList`, `PetscFunctionListPrintNonEmpty()`, `PetscFunctionListAdd()`, `PetscFunctionListView()`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListPrintAll"))

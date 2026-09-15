@@ -9,11 +9,12 @@ fix_substring_replacements = false
 dispatch_types = ["PetscScalar", "PetscReal", "PetscInt", "PetscComplex"]
 
 [replace]
-order = ["size_t", "ptrdiff_t", "short", "int32_t", "float", "bool", "char", "unsigned", "void", "double", "int", "FILE"]
+order = ["size_t", "ptrdiff_t", "short", "int32_t", "int64_t", "float", "bool", "char", "unsigned", "void", "double", "int", "FILE"]
 size_t = "Csize_t"
 ptrdiff_t = "Cptrdiff_t"
 short = "Cshort"
 int32_t = "Int32"
+int64_t = "Int64"
 float = "Cfloat"
 bool = "Bool"
 unsigned = "Cuchar"   # getAPI.py splits `unsigned char` into type `unsigned`, name `char`

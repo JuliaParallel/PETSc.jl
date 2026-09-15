@@ -1774,7 +1774,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISCreate()`
+-seealso: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("IS/ISGetType"))
@@ -2703,7 +2703,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetBlockSize()`, `ISCreateBlock()`, `ISBlockGetIndices()`,
+-seealso: `IS`, `ISGetBlockSize()`, `ISCreateBlock()`, `ISBlockGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISSetBlockSize"))
@@ -2916,7 +2916,7 @@ Input Parameters:
 - `method` - The name of the index set type
 
 Options Database Key:
-- `-is_type <type>` - Sets the index set type; use `-help` for a list of available types
+- `-is_type type` - Sets the index set type; see `ISType`
 
 Level: intermediate
 
@@ -3316,6 +3316,9 @@ Input Parameters:
 - `A`    - the index set
 - `obj`  - Optional object that provides the prefix for the options database
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

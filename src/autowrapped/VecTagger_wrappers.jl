@@ -968,7 +968,6 @@ Level: advanced
 
 -seealso: `VecTagger`, `VecTaggerCreate()`, `VecTaggerSetUp()`
 
-
 # External Links
 $(_doc_external("Vec/VecTaggerSetFromOptions"))
 """
@@ -1036,8 +1035,7 @@ Input Parameters:
 - `type`   - a known method
 
 Options Database Key:
-- `-vec_tagger_type <type>` - Sets the method; use -help for a list
-of available methods (for instance, absolute, relative, cdf, or, and)
+- `-vec_tagger_type type` - Sets the method; see `VecTaggerType`
 
 Level: advanced
 

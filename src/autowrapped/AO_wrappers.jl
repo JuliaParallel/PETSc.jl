@@ -168,8 +168,8 @@ Output Parameter:
 - `ao` - the new application ordering
 
 Options Database Key:
-- `-ao_type <aotype>` - create `AO` with particular format
-- `-ao_view`          - call `AOView()` at the conclusion of `AOCreate()`
+- `-ao_type (basic|advanced|mapping|memoryscalable)` - Sets the `AO` type; see `AOType`
+- `-ao_view`                                         - call `AOView()` at the conclusion of `AOCreate()`
 
 Level: beginner
 
@@ -505,7 +505,7 @@ end
 
 """
 	type::AOType = AOGetType(petsclib::PetscLibType,ao::AbstractAO) 
-Gets the `AO` type name (as a string) from the AO.
+Gets the `AO` type name (as a string) from the `AO`.
 
 Not Collective
 
@@ -517,7 +517,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `AO`, `AOType`, `AOSetType()`, `AOCreate()`
+-seealso: `AO`, `AOType`, `AOSetType()`, `AOCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("AO/AOGetType"))
@@ -878,7 +878,7 @@ Input Parameter:
 - `ao` - the application ordering
 
 Options Database Key:
-- `-ao_type <basic, memoryscalable>` - sets the type of the `AO`
+- `-ao_type (basic|memoryscalable)` - sets the type of the `AO`
 
 Level: beginner
 
@@ -950,7 +950,7 @@ Input Parameters:
 - `method` - The name of the AO type
 
 Options Database Key:
-- `-ao_type <type>` - Sets the `AO` type; use -help for a list of available types
+- `-ao_type (basic|advanced|mapping|memoryscalable)` - Sets the `AO` type; see `AOType`
 
 Level: intermediate
 
@@ -986,12 +986,12 @@ Input Parameters:
 - `ao`     - the application ordering context
 - `viewer` - viewer used for display
 
-Level: intermediate
-
 Options Database Key:
 - `-ao_view` - calls `AOView()` at end of `AOCreate()`
 
--seealso: [](sec_ao), `AO`, `PetscViewerASCIIOpen()`, `AOViewFromOptions()`
+Level: intermediate
+
+-seealso: [](sec_ao), `AO`, `PetscViewer`, `PetscViewerASCIIOpen()`, `AOViewFromOptions()`
 
 # External Links
 $(_doc_external("AO/AOView"))
@@ -1023,6 +1023,9 @@ Input Parameters:
 - `ao`   - the application ordering context
 - `obj`  - optional object that provides the prefix used to search the options database
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

@@ -5,7 +5,7 @@ Do barrier on MPI ranks in omp_comm contained by the PETSc OMP controller (to le
 Input Parameter:
 - `ctrl` - a PETSc OMP controller
 
--seealso: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`,
+-seealso: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlBarrier"))
@@ -40,7 +40,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscOmpCtrlDestroy()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`,
+-seealso: `PetscOmpCtrlDestroy()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlCreate"))
@@ -73,7 +73,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscOmpCtrlCreate()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`,
+-seealso: `PetscOmpCtrlCreate()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlDestroy"))
@@ -109,7 +109,7 @@ Output Parameters:
 on slave ranks, `MPI_COMM_NULL` will be return in reality.
 - `is_omp_master`   - true if the calling process is an OMP master rank.
 
--seealso: `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`,
+-seealso: `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlGetOmpComms"))

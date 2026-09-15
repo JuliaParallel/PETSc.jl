@@ -1515,7 +1515,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawType`, `PetscDrawSetType()`, `PetscDrawCreate()`
+-seealso: `PetscDraw`, `PetscDrawType`, `PetscDrawSetType()`, `PetscDrawCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetType"))
@@ -2827,7 +2827,7 @@ Input Parameters:
 - `lg` - the line graph context
 
 Options Database Key:
-- `-lg_use_markers  <true,false>` - true means it draws a marker for each point
+- `-lg_use_markers (true|false)` - true means it draws a marker for each point
 
 Level: intermediate
 
@@ -2973,7 +2973,7 @@ Input Parameters:
 - `flg` - should mark each data point
 
 Options Database Key:
-- `-lg_use_markers  <true,false>` - true means it draws a marker for each point
+- `-lg_use_markers (true|false)` - true means it draws a marker for each point
 
 Level: intermediate
 
@@ -3282,10 +3282,10 @@ Output Parameter:
 
 Options Database Keys:
 - `-nox`                    - Disables all x-windows output
-- `-display <name>`         - Sets name of machine for the X display
-- `-draw_pause <pause>`     - Sets time (in seconds) that the program pauses after `PetscDrawPause()` has been called
+- `-display name`           - Sets name of machine for the X display
+- `-draw_pause pause`       - Sets time (in seconds) that the program pauses after `PetscDrawPause()` has been called
 (0 is default, -1 implies until user input).
-- `-draw_cmap <name>`       - Sets the colormap to use.
+- `-draw_cmap name`         - Sets the colormap to use.
 - `-draw_cmap_reverse`      - Reverses the colormap.
 - `-draw_cmap_brighten`     - Brighten (0 < beta < 1) or darken (-1 < beta < 0) the colormap.
 - `-draw_x_shared_colormap` - Causes PETSc to use a shared colormap. By default PETSc creates a separate color
@@ -3299,7 +3299,7 @@ in bad contour plots.
 
 Level: beginner
 
--seealso: `PetscDrawFlush()`, `PetscDrawDestroy()`, `PetscDrawCreate()`, `PetscDrawOpnOpenGL()`
+-seealso: `PetscDrawFlush()`, `PetscDrawDestroy()`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawOpenX"))
@@ -4451,16 +4451,16 @@ Input Parameter:
 - `draw` - the graphics context
 
 Options Database Keys:
-- `-nox`                                       - do not use X graphics (ignore graphics calls, but run program correctly)
-- `-nox_warning`                               - when X Windows support is not installed this prevents the warning message from being printed
-- `-draw_pause <pause amount>`                 - - -1 indicates wait for mouse input, -2 indicates pause when window is to be destroyed
-- `-draw_marker_type`                          - <x,point>
-- `-draw_save [optional filename]`             - (X Windows only) saves each image before it is cleared to a file
-- `-draw_save_final_image [optional filename]` - (X Windows only) saves the final image displayed in a window
-- `-draw_save_movie`                           - converts image files to a movie  at the end of the run. See PetscDrawSetSave()
-- `-draw_save_single_file`                     - saves each new image in the same file, normally each new image is saved in a new file with 'filename/filename_%d.ext'
-- `-draw_save_on_clear`                        - saves an image on each clear, mainly for debugging
-- `-draw_save_on_flush`                        - saves an image on each flush, mainly for debugging
+- `-nox`                              - do not use X graphics (ignore graphics calls, but run program correctly)
+- `-nox_warning`                      - when X Windows support is not installed this prevents the warning message from being printed
+- `-draw_pause seconds`               - -1 indicates wait for mouse input, -2 indicates pause when window is to be destroyed
+- `-draw_marker_type (x|point)`       - set the marker type
+- `-draw_save [filename]`             - (X Windows only) saves each image before it is cleared to a file
+- `-draw_save_final_image [filename]` - (X Windows only) saves the final image displayed in a window
+- `-draw_save_movie`                  - converts image files to a movie  at the end of the run. See `PetscDrawSetSave()`
+- `-draw_save_single_file`            - saves each new image in the same file, normally each new image is saved in a new file with 'filename/filename_%d.ext'
+- `-draw_save_on_clear`               - saves an image on each clear, mainly for debugging
+- `-draw_save_on_flush`               - saves an image on each flush, mainly for debugging
 
 Level: intermediate
 
@@ -4607,9 +4607,9 @@ Input Parameters:
 - `filename` - name of the file, if .ext then uses name of draw object plus .ext using .ext to determine the image type
 
 Options Database Keys:
-- `-draw_save <filename>`                      - filename could be name.ext or .ext (where .ext determines the type of graphics file to save, for example .png)
-- `-draw_save_final_image [optional filename]` - saves the final image displayed in a window
-- `-draw_save_single_file`                     - saves each new image in the same file, normally each new image is saved in a new file with filename/filename_%d.ext
+- `-draw_save filename filename`      - `filename` could be `name.ext` or `.ext` (where .ext determines the type of graphics file to save, for example .png)
+- `-draw_save_final_image [filename]` - saves the final image displayed in a window
+- `-draw_save_single_file`            - saves each new image in the same file, normally each new image is saved in a new file with filename/filename_%d.ext
 
 Level: intermediate
 
@@ -4646,7 +4646,7 @@ Input Parameters:
 - `filename` - name of the file, if NULL or empty uses name set with `PetscDrawSetSave()` or the name of the draw object
 
 Options Database Key:
-- `-draw_save_final_image  <filename>` - filename could be name.ext or .ext (where .ext determines the type of graphics file to save, for example .png)
+- `-draw_save_final_image filename` - filename could be name.ext or .ext (where .ext determines the type of graphics file to save, for example .png)
 
 Level: intermediate
 
@@ -4683,7 +4683,7 @@ Input Parameters:
 - `movieext` - optional extension defining the movie format
 
 Options Database Key:
-- `-draw_save_movie <.ext>` - saves a movie with extension .ext
+- `-draw_save_movie .ext` - saves a movie with extension .ext
 
 Level: intermediate
 
@@ -4754,7 +4754,7 @@ Input Parameters:
 - `type` - for example, `PETSC_DRAW_X`
 
 Options Database Key:
-- `-draw_type  <type>` - Sets the type; use -help for a list of available methods (for instance, x)
+- `-draw_type (x|null|win32|tikz|image)` - Sets the type; see `PetscDrawType`
 
 Level: intermediate
 
@@ -5258,22 +5258,44 @@ end
 end 
 
 """
-	PetscDrawUtilitySetCmap(petsclib::PetscLibType,colormap::String, mapsize::Cint, char::Vector{Cuchar}, char_2::Vector{Cuchar}, char_3::Vector{Cuchar}) 
+	PetscDrawUtilitySetCmap(petsclib::PetscLibType,colormap::String, mapsize::Cint, char::Vector{Cuchar}, M_char::Vector{Cuchar}, M_char_2::Vector{Cuchar}) 
+Populate the RGB entries of a colormap from a named palette, honoring options
+overrides for the colormap name, reversal, and brightness.
+
+Not Collective
+
+Input Parameters:
+- `colormap` - the name of the colormap (e.g. `"hue"`, `"gray"`, `"jet"`, `"viridis"`), or `NULL`/empty for the default
+- `mapsize`  - the number of colormap entries to fill
+
+Output Parameters:
+- `R` - the red channel of length `mapsize`
+- `G` - the green channel of length `mapsize`
+- `B` - the blue channel of length `mapsize`
+
+Options Database Keys:
+- `-draw_cmap name`           - select the colormap by name
+- `-draw_cmap_reverse`        - reverse the colormap
+- `-draw_cmap_brighten value` - brighten (positive) or darken (negative) the colormap; value must be in `(-1, 1)`
+
+Level: developer
+
+-seealso: `PetscDraw`, `PetscDrawUtilitySetGamma()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawUtilitySetCmap"))
 """
-function PetscDrawUtilitySetCmap(petsclib::PetscLibType, colormap::String, mapsize::Cint, char::Vector{Cuchar}, char_2::Vector{Cuchar}, char_3::Vector{Cuchar})
+function PetscDrawUtilitySetCmap(petsclib::PetscLibType, colormap::String, mapsize::Cint, char::Vector{Cuchar}, M_char::Vector{Cuchar}, M_char_2::Vector{Cuchar})
     error("PetscDrawUtilitySetCmap: no generated method for these argument types")
 end
 
-@for_petsc function PetscDrawUtilitySetCmap(petsclib::$UnionPetscLib, colormap::String, mapsize::Cint, char::Vector{Cuchar}, char_2::Vector{Cuchar}, char_3::Vector{Cuchar} )
+@for_petsc function PetscDrawUtilitySetCmap(petsclib::$UnionPetscLib, colormap::String, mapsize::Cint, char::Vector{Cuchar}, M_char::Vector{Cuchar}, M_char_2::Vector{Cuchar} )
 
     @chk ccall(
                (:PetscDrawUtilitySetCmap, $petsc_library),
                PetscErrorCode,
                (Ptr{Cchar}, Cint, Ptr{Cuchar}, Ptr{Cuchar}, Ptr{Cuchar}),
-               colormap, mapsize, char, char_2, char_3,
+               colormap, mapsize, char, M_char, M_char_2,
               )
 
 
@@ -5282,6 +5304,16 @@ end
 
 """
 	PetscDrawUtilitySetGamma(petsclib::PetscLibType,g::PetscReal) 
+Set the monitor gamma
+
+Not Collective
+
+Input Parameter:
+- `g` - the gamma value; a typical value is 2.0
+
+Level: developer
+
+-seealso: `PetscDraw`, `PetscDrawUtilitySetCmap()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawUtilitySetGamma"))
@@ -5347,6 +5379,9 @@ Input Parameters:
 - `A`    - the `PetscDraw` context
 - `obj`  - Optional object
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 
@@ -5532,7 +5567,11 @@ Collective draw
 Input Parameters:
 - `draw` - the window where the graph will be made.
 - `func` - users function that draws the graphic
-- `ctx`  - pointer to any user required data
+- `ctx`  - pointer to any application required data
+
+Calling sequence of func:
+- `draw` - the `PetscDraw` object to zoom on
+- `ctx`  - the context for the zooming operation
 
 Level: advanced
 

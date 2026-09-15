@@ -123,7 +123,7 @@ end
 end 
 
 """
-	map::PetscLayout = PetscLayoutCreateFromSizes(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt, bs::PetscInt) 
+	map::PetscLayout = PetscLayoutCreateFromSizes(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt, bs::PetscInt) 
 Allocates `PetscLayout` object and sets the layout sizes, and sets the layout up.
 
 Collective
@@ -145,18 +145,18 @@ Level: advanced
 # External Links
 $(_doc_external("IS/PetscLayoutCreateFromSizes"))
 """
-function PetscLayoutCreateFromSizes(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer, bs::Integer)
+function PetscLayoutCreateFromSizes(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer, bs::Integer)
     error("PetscLayoutCreateFromSizes: no generated method for these argument types")
 end
 
-@for_petsc function PetscLayoutCreateFromSizes(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt, bs::$PetscInt )
+@for_petsc function PetscLayoutCreateFromSizes(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt, bs::$PetscInt )
 	map_ = Ref{PetscLayout}()
 
     @chk ccall(
                (:PetscLayoutCreateFromSizes, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{PetscLayout}),
-               comm, n, N, bs, map_,
+               comm, n, M_N, bs, map_,
               )
 
 	map = map_[]
@@ -333,7 +333,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetSize()`
 
 # External Links
@@ -372,7 +372,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
@@ -494,7 +494,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
@@ -521,6 +521,23 @@ end
 
 """
 	on::PetscInt,oidxs::Ptr{PetscInt},ogidxs::Ptr{PetscInt} = PetscLayoutMapLocal(petsclib::PetscLibType,map::PetscLayout, N::PetscInt, idxs::Vector{PetscInt}) 
+Maps a set of global indices to the subset owned locally by each MPI process according to a `PetscLayout`
+
+Collective
+
+Input Parameters:
+- `map`  - the `PetscLayout` describing global ownership
+- `N`    - the number of input indices
+- `idxs` - the global indices; negative entries are ignored
+
+Output Parameters:
+- `on`     - number of indices in the returned local set (may be `NULL`)
+- `oidxs`  - the local (0-based) indices owned by this MPI process (may be `NULL`); caller must `PetscFree()`
+- `ogidxs` - the corresponding global indices in a compact numbering (may be `NULL`); caller must `PetscFree()`
+
+Level: developer
+
+-seealso: `PetscLayout`, `PetscSF`, `PetscLayoutFindOwner()`, `PetscSFCreateFromLayouts()`
 
 # External Links
 $(_doc_external("PetscSF/PetscLayoutMapLocal"))
@@ -667,7 +684,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetUp()`
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
@@ -702,7 +719,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links

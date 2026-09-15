@@ -482,7 +482,7 @@ Input Parameter:
 - `rnd` - The random number generator context
 
 Options Database Keys:
-- `-random_seed <integer>`    - provide a seed to the random number generator
+- `-random_seed seed`         - provide a seed to the random number generator
 - `-random_no_imaginary_part` - makes the imaginary part of the random number zero, this is useful when you want the
 same code to produce the same result when run with real numbers or complex numbers for regression testing purposes
 
@@ -626,8 +626,7 @@ Input Parameters:
 - `type` - The name of the random type
 
 Options Database Key:
-- `-random_type <type>` - Sets the random type; use -help for a list
-of available types
+- `-random_type (rander48|rand|rand48|sprng|random123|curand)` - set the random number generator from the options database, see `PetscRandomType`.
 
 Level: intermediate
 
@@ -697,6 +696,9 @@ Input Parameters:
 - `A`    - the random number generator context
 - `obj`  - Optional object
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

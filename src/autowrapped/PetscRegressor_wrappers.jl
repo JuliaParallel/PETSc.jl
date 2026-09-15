@@ -398,7 +398,7 @@ Input Parameters:
 Level: intermediate
 
 Options Database Key:
-- `regressor_linear_fit_intercept <true,false>` - fit the intercept
+- `regressor_linear_fit_intercept (true|false)` - fit the intercept
 
 -seealso: `PetscRegressor`, `PetscRegressorFit()`
 
@@ -473,7 +473,7 @@ Input Parameters:
 - `flg`       - `PETSC_TRUE` to use a `KSP`, `PETSC_FALSE` to use a `Tao` object (default is false)
 
 Options Database Key:
-- `regressor_linear_use_ksp <true,false>` - use `KSP`
+- `regressor_linear_use_ksp (true|false)` - use `KSP`
 
 Level: intermediate
 
@@ -611,7 +611,7 @@ Input Parameter:
 - `regressor` - the `PetscRegressor` context
 
 Options Database Keys:
-- `-regressor_type <type>` - the particular type of regressor to be used; see `PetscRegressorType` for complete list
+- `-regressor_type (linear)` - the particular type of regressor to be used
 
 Level: beginner
 
@@ -683,7 +683,7 @@ Input Parameters:
 - `weight`    - the regularizer weight
 
 Options Database Key:
-- `regressor_regularizer_weight <weight>` - sets the regularizer's weight
+- `regressor_regularizer_weight weight` - sets the regularizer's weight
 
 Level: beginner
 
@@ -720,7 +720,7 @@ Input Parameters:
 - `type`      - a known regression method
 
 Options Database Key:
-- `-regressor_type <type>` - Sets the type of regressor; use -help for a list of available types
+- `-regressor_type type` - Sets the type of regressor; use -help for a list of available types
 
 Level: intermediate
 
@@ -824,6 +824,9 @@ Input Parameters:
 - `A`    - the  `PetscRegressor` context
 - `obj`  - Optional object that provides the prefix for the options database
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

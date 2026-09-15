@@ -1,4 +1,45 @@
 """
+	val::PetscScalar = MatADot(petsclib::PetscLibType,mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
+Computes the inner product with respect to a matrix, i.e., (x, y)_A = y^H A x where A is symmetric (Hermitian when using complex)
+positive definite.
+
+Collective
+
+Input Parameters:
+- `mat` - matrix used to define the inner product
+- `x`   - first vector
+- `y`   - second vector
+
+Output Parameter:
+- `val` - the dot product with respect to `A`
+
+Level: intermediate
+
+-seealso: [](ch_matrices), `Mat`, `MatANorm()`, `VecDot()`, `VecNorm()`, `MatMult()`, `MatMultAdd()`, `MatMultTransposeAdd()`
+
+# External Links
+$(_doc_external("Mat/MatADot"))
+"""
+function MatADot(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("MatADot: no generated method for these argument types")
+end
+
+@for_petsc function MatADot(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	val_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:MatADot, $petsc_library),
+               PetscErrorCode,
+               (CMat, CVec, CVec, Ptr{$PetscScalar}),
+               mat, x, y, val_,
+              )
+
+	val = val_[]
+
+	return val
+end 
+
+"""
 	A_loc::PetscMat = MatAIJGetLocalMat(petsclib::PetscLibType,A::AbstractPetscMat) 
 Creates a `MATSEQAIJ` from a `MATAIJ` matrix.
 
@@ -34,6 +75,46 @@ end
 	A_loc = PetscMat(A_loc_[], petsclib)
 
 	return A_loc
+end 
+
+"""
+	val::PetscReal = MatANorm(petsclib::PetscLibType,mat::AbstractPetscMat, x::AbstractPetscVec) 
+Computes the norm with respect to a matrix, i.e., (x, x)_A^{1/2} = (x^H A x)^{1/2} where A is symmetric (Hermitian when using complex)
+positive definite.
+
+Collective
+
+Input Parameters:
+- `mat` - matrix used to define norm
+- `x`   - the vector to compute the norm of
+
+Output Parameter:
+- `val` - the norm with respect to `A`
+
+Level: intermediate
+
+-seealso: [](ch_matrices), `Mat`, `MatADot()`, `VecDot()`, `VecNorm()`, `MatMult()`, `MatMultAdd()`, `MatMultTransposeAdd()`
+
+# External Links
+$(_doc_external("Mat/MatANorm"))
+"""
+function MatANorm(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec)
+    error("MatANorm: no generated method for these argument types")
+end
+
+@for_petsc function MatANorm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec )
+	val_ = Ref{$PetscReal}()
+
+    @chk ccall(
+               (:MatANorm, $petsc_library),
+               PetscErrorCode,
+               (CMat, CVec, Ptr{$PetscReal}),
+               mat, x, val_,
+              )
+
+	val = val_[]
+
+	return val
 end 
 
 """
@@ -265,22 +346,13 @@ Input Parameters:
 - `mat`  - the matrix
 - `type` - type of assembly, either `MAT_FLUSH_ASSEMBLY` or `MAT_FINAL_ASSEMBLY`
 
-Options Database Keys:
-- `-mat_view ::ascii_info`             - Prints info on matrix at conclusion of `MatAssemblyEnd()`
-- `-mat_view ::ascii_info_detail`      - Prints more detailed info
-- `-mat_view`                          - Prints matrix in ASCII format
-- `-mat_view ::ascii_matlab`           - Prints matrix in MATLAB format
-- `-mat_view draw`                     - draws nonzero structure of matrix, using `MatView()` and `PetscDrawOpenX()`.
-- `-display <name>`                    - Sets display name (default is host)
-- `-draw_pause <sec>`                  - Sets number of seconds to pause after display
-- `-mat_view socket`                   - Sends matrix to socket, can be accessed from MATLAB (See [Using MATLAB with PETSc](ch_matlab))
-- `-viewer_socket_machine <machine>`   - Machine to use for socket
-- `-viewer_socket_port <port>`         - Port number to use for socket
-- `-mat_view binary:filename[:append]` - Save matrix to file in binary format
+Options Database Key:
+- `-mat_view [viewertype][:...]` - option name and values. See `MatViewFromOptions()`/`PetscObjectViewFromOptions()` for the possible arguments
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatAssemblyBegin()`, `MatSetValues()`, `PetscDrawOpenX()`, `PetscDrawCreate()`, `MatView()`, `MatAssembled()`, `PetscViewerSocketOpen()`
+-seealso: [](ch_matrices), `Mat`, `MatAssemblyBegin()`, `MatSetValues()`, `PetscDrawOpenX()`, `PetscDrawCreate()`, `MatView()`, `MatAssembled()`, `PetscViewerSocketOpen()`,
+`MatViewFromOptions()`, `PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("Mat/MatAssemblyEnd"))
@@ -451,6 +523,52 @@ end
 end 
 
 """
+	MatCUSPARSESetFormat(petsclib::PetscLibType,A::AbstractPetscMat, op::MatCUSPARSEFormatOperation, format::MatCUSPARSEStorageFormat) 
+
+# External Links
+$(_doc_external("Mat/MatCUSPARSESetFormat"))
+"""
+function MatCUSPARSESetFormat(petsclib::PetscLibType, A::AbstractPetscMat, op::MatCUSPARSEFormatOperation, format::MatCUSPARSEStorageFormat)
+    error("MatCUSPARSESetFormat: no generated method for these argument types")
+end
+
+@for_petsc function MatCUSPARSESetFormat(petsclib::$UnionPetscLib, A::AbstractPetscMat, op::MatCUSPARSEFormatOperation, format::MatCUSPARSEStorageFormat )
+
+    @chk ccall(
+               (:MatCUSPARSESetFormat, $petsc_library),
+               PetscErrorCode,
+               (CMat, MatCUSPARSEFormatOperation, MatCUSPARSEStorageFormat),
+               A, op, format,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatCUSPARSESetUseCPUSolve(petsclib::PetscLibType,A::AbstractPetscMat, use_cpu::PetscBool) 
+
+# External Links
+$(_doc_external("Mat/MatCUSPARSESetUseCPUSolve"))
+"""
+function MatCUSPARSESetUseCPUSolve(petsclib::PetscLibType, A::AbstractPetscMat, use_cpu::PetscBool)
+    error("MatCUSPARSESetUseCPUSolve: no generated method for these argument types")
+end
+
+@for_petsc function MatCUSPARSESetUseCPUSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, use_cpu::PetscBool )
+
+    @chk ccall(
+               (:MatCUSPARSESetUseCPUSolve, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool),
+               A, use_cpu,
+              )
+
+
+	return nothing
+end 
+
+"""
 	MatCholeskyFactor(petsclib::PetscLibType,mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo}) 
 Performs in
 symmetric matrix.
@@ -464,7 +582,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatFactorInfo`, `MatLUFactor()`, `MatCholeskyFactorSymbolic()`, `MatCholeskyFactorNumeric()`
+-seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatFactorInfo`, `MatLUFactor()`, `MatCholeskyFactorSymbolic()`, `MatCholeskyFactorNumeric()`,
 `MatGetOrdering()`
 
 # External Links
@@ -536,7 +654,7 @@ Input Parameters:
 - `mat`  - the matrix
 - `perm` - row and column permutations
 - `info` - options for factorization, includes
--seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorInfo`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactor()`, `MatCholeskyFactorNumeric()`
+-seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorInfo`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactor()`, `MatCholeskyFactorNumeric()`,
 `MatGetOrdering()`
 
 # External Links
@@ -796,7 +914,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatAXPY()`, `MatCreateComposite()`, `MatCompositeMerge()` `MatCompositeGetMatStructure()`, `MATCOMPOSITE`
+-seealso: [](ch_matrices), `Mat`, `MatAXPY()`, `MatCreateComposite()`, `MatCompositeMerge()`, `MatCompositeGetMatStructure()`, `MATCOMPOSITE`
 
 # External Links
 $(_doc_external("Mat/MatCompositeSetMatStructure"))
@@ -1317,7 +1435,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateAIJ(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
+	A::PetscMat = MatCreateAIJ(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
 Creates a sparse parallel matrix in `MATAIJ` format
 (the default parallel PETSc format).  For good matrix assembly performance
 the user should preallocate the matrix storage by setting the parameters
@@ -1353,9 +1471,9 @@ Output Parameter:
 - `A` - the matrix
 
 Options Database Keys:
-- `-mat_no_inode`                     - Do not use inodes
-- `-mat_inode_limit <limit>`          - Sets inode limit (max limit=5)
-- `-matmult_vecscatter_view <viewer>` - View the vecscatter (i.e., communication pattern) used in `MatMult()` of sparse parallel matrices.
+- `-mat_no_inode`                   - Do not use inodes
+- `-mat_inode_limit limit`          - Sets inode limit (max limit=5)
+- `-matmult_vecscatter_view viewer` - View the vecscatter (i.e., communication pattern) used in `MatMult()` of sparse parallel matrices.
 See viewer types in manual of `MatView()`. Of them, ascii_matlab, draw or binary cause the `VecScatter`
 to be viewed as a matrix. Entry (i,j) is the size of message (in bytes) rank i sends to rank j in one `MatMult()` call.
 
@@ -1368,18 +1486,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateAIJ"))
 """
-function MatCreateAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
+function MatCreateAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
     error("MatCreateAIJ: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function MatCreateAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateAIJ, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -1388,23 +1506,73 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateAIJKokkos(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	A::PetscMat = MatCreateAIJCUSPARSE(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("Mat/MatCreateAIJCUSPARSE"))
+"""
+function MatCreateAIJCUSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+    error("MatCreateAIJCUSPARSE: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateAIJCUSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateAIJCUSPARSE, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
+              )
+
+	A = PetscMat(A_[], petsclib)
+
+	return A
+end 
+
+"""
+	A::PetscMat = MatCreateAIJHIPSPARSE(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("Mat/MatCreateAIJHIPSPARSE"))
+"""
+function MatCreateAIJHIPSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+    error("MatCreateAIJHIPSPARSE: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateAIJHIPSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateAIJHIPSPARSE, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
+              )
+
+	A = PetscMat(A_[], petsclib)
+
+	return A
+end 
+
+"""
+	A::PetscMat = MatCreateAIJKokkos(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 
 # External Links
 $(_doc_external("Mat/MatCreateAIJKokkos"))
 """
-function MatCreateAIJKokkos(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+function MatCreateAIJKokkos(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
     error("MatCreateAIJKokkos: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateAIJKokkos(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateAIJKokkos(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateAIJKokkos, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -1413,23 +1581,23 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateAIJViennaCL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	A::PetscMat = MatCreateAIJViennaCL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 
 # External Links
 $(_doc_external("Mat/MatCreateAIJViennaCL"))
 """
-function MatCreateAIJViennaCL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+function MatCreateAIJViennaCL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
     error("MatCreateAIJViennaCL: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateAIJViennaCL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateAIJViennaCL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateAIJViennaCL, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -1438,7 +1606,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateBAIJ(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
+	A::PetscMat = MatCreateBAIJ(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
 Creates a sparse parallel matrix in `MATBAIJ` format
 (block compressed row).
 
@@ -1472,29 +1640,29 @@ Output Parameter:
 - `A` - the matrix
 
 Options Database Keys:
-- `-mat_block_size`            - size of the blocks to use
-- `-mat_use_hash_table <fact>` - set hash table factor
+- `-mat_block_size`          - size of the blocks to use
+- `-mat_use_hash_table fact` - set hash table factor
 
 Level: intermediate
 
 -seealso: `Mat`, `MatCreate()`, `MatCreateSeqBAIJ()`, `MatSetValues()`, `MatMPIBAIJSetPreallocation()`, `MatMPIBAIJSetPreallocationCSR()`,
-`MatGetOwnershipRange()`,  `MatGetOwnershipRanges()`, `MatGetOwnershipRangeColumn()`, `MatGetOwnershipRangesColumn()`, `PetscLayout`
+`MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `MatGetOwnershipRangeColumn()`, `MatGetOwnershipRangesColumn()`, `PetscLayout`
 
 # External Links
 $(_doc_external("Mat/MatCreateBAIJ"))
 """
-function MatCreateBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
+function MatCreateBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
     error("MatCreateBAIJ: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function MatCreateBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateBAIJ, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, bs, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, bs, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -1503,7 +1671,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateBAIJMKL(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
+	A::PetscMat = MatCreateBAIJMKL(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
 Creates a sparse parallel matrix in `MATBAIJMKL` format (block compressed row).
 
 Collective
@@ -1536,8 +1704,8 @@ Output Parameter:
 - `A` - the matrix
 
 Options Database Keys:
-- `-mat_block_size`            - size of the blocks to use
-- `-mat_use_hash_table <fact>` - set hash table factor
+- `-mat_block_size`          - size of the blocks to use
+- `-mat_use_hash_table fact` - set hash table factor
 
 Level: intermediate
 
@@ -1546,18 +1714,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateBAIJMKL"))
 """
-function MatCreateBAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
+function MatCreateBAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
     error("MatCreateBAIJMKL: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateBAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function MatCreateBAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateBAIJMKL, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, bs, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, bs, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -1611,7 +1779,7 @@ end
 end 
 
 """
-	C::PetscMat = MatCreateCentering(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	C::PetscMat = MatCreateCentering(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a new matrix object that implements the (symmetric and idempotent) centering matrix,  I
 
 Collective
@@ -1631,18 +1799,18 @@ Output Parameter:
 # External Links
 $(_doc_external("Mat/MatCreateCentering"))
 """
-function MatCreateCentering(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateCentering(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateCentering: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateCentering(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateCentering(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	C_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateCentering, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, C_,
+               comm, n, M_N, C_,
               )
 
 	C = PetscMat(C_[], petsclib)
@@ -1699,7 +1867,7 @@ end
 end 
 
 """
-	J::PetscMat = MatCreateConstantDiagonal(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, diag::PetscScalar) 
+	J::PetscMat = MatCreateConstantDiagonal(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, diag::PetscScalar) 
 Creates a matrix with a uniform value along the diagonal
 
 Collective
@@ -1726,18 +1894,18 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateConstantDiagonal"))
 """
-function MatCreateConstantDiagonal(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, diag::Number)
+function MatCreateConstantDiagonal(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, diag::Number)
     error("MatCreateConstantDiagonal: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateConstantDiagonal(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, diag::$PetscScalar )
+@for_petsc function MatCreateConstantDiagonal(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, diag::$PetscScalar )
 	J_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateConstantDiagonal, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscScalar, Ptr{CMat}),
-               comm, m, n, M, N, diag, J_,
+               comm, m, n, M_M, M_N, diag, J_,
               )
 
 	J = PetscMat(J_[], petsclib)
@@ -1746,7 +1914,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateDense(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, data::Union{Ptr, Vector{PetscScalar}}) 
+	A::PetscMat = MatCreateDense(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, data::Union{Ptr, Vector{PetscScalar}}) 
 Creates a matrix in `MATDENSE` format.
 
 Collective
@@ -1770,18 +1938,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateDense"))
 """
-function MatCreateDense(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, data::Union{Ptr, AbstractVector{<:Number}})
+function MatCreateDense(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, data::Union{Ptr, AbstractVector{<:Number}})
     error("MatCreateDense: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, data::Union{Ptr, Vector{$PetscScalar}} )
+@for_petsc function MatCreateDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, data::Union{Ptr, Vector{$PetscScalar}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateDense, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
-               comm, m, n, M, N, data, A_,
+               comm, m, n, M_M, M_N, data, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -1790,8 +1958,35 @@ end
 end 
 
 """
-	data::PetscScalar,A::PetscMat = MatCreateDenseFromVecType(petsclib::PetscLibType,comm::MPI_Comm, vtype::VecType, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, lda::PetscInt) 
-Create a matrix that matches the type of a Vec.
+	data::PetscScalar,A::PetscMat = MatCreateDenseCUDA(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt) 
+
+# External Links
+$(_doc_external("Mat/MatCreateDenseCUDA"))
+"""
+function MatCreateDenseCUDA(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
+    error("MatCreateDenseCUDA: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateDenseCUDA(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
+	data_ = Ref{$PetscScalar}()
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateDenseCUDA, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
+               comm, m, n, M_M, M_N, data_, A_,
+              )
+
+	data = data_[]
+	A = PetscMat(A_[], petsclib)
+
+	return data,A
+end 
+
+"""
+	data::PetscScalar,A::PetscMat = MatCreateDenseFromVecType(petsclib::PetscLibType,comm::MPI_Comm, vtype::VecType, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, lda::PetscInt) 
+Create a matrix that matches the type of a `Vec`.
 
 Collective
 
@@ -1802,7 +1997,7 @@ Input Parameters:
 - `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if `N` is given)
 - `M`     - number of global rows (or `PETSC_DECIDE` to have calculated if `m` is given)
 - `N`     - number of global columns (or `PETSC_DECIDE` to have calculated if `n` is given)
-- `lda`   - optional leading dimension. Pass any non-positive number to use the default.
+- `lda`   - leading dimension (or `PETSC_DECIDE` to use the default)
 - `data`  - optional location of matrix data, which should have the same memory type as the vector. Pass `NULL` to have PETSc take care of matrix memory allocation.
 
 Output Parameter:
@@ -1810,16 +2005,16 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatCreateDense()`, `MatCreateDenseCUDA()`, `MatCreateDenseHIP()`, `PetscMemType`
+-seealso: [](ch_matrices), `Mat`, `MatCreateDense()`, `MatCreateDenseCUDA()`, `MatCreateDenseHIP()`, `MatCreateDenseWithMemType()`, `PetscMemType`
 
 # External Links
 $(_doc_external("Mat/MatCreateDenseFromVecType"))
 """
-function MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype::VecType, m::Integer, n::Integer, M::Integer, N::Integer, lda::Integer)
+function MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype::VecType, m::Integer, n::Integer, M_M::Integer, M_N::Integer, lda::Integer)
     error("MatCreateDenseFromVecType: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateDenseFromVecType(petsclib::$UnionPetscLib, comm::MPI_Comm, vtype::VecType, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, lda::$PetscInt )
+@for_petsc function MatCreateDenseFromVecType(petsclib::$UnionPetscLib, comm::MPI_Comm, vtype::VecType, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, lda::$PetscInt )
 	data_ = Ref{$PetscScalar}()
 	A_ = Ref{CMat}()
 
@@ -1827,7 +2022,81 @@ end
                (:MatCreateDenseFromVecType, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, VecType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
-               comm, vtype, m, n, M, N, lda, data_, A_,
+               comm, vtype, m, n, M_M, M_N, lda, data_, A_,
+              )
+
+	data = data_[]
+	A = PetscMat(A_[], petsclib)
+
+	return data,A
+end 
+
+"""
+	data::PetscScalar,A::PetscMat = MatCreateDenseHIP(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt) 
+
+# External Links
+$(_doc_external("Mat/MatCreateDenseHIP"))
+"""
+function MatCreateDenseHIP(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
+    error("MatCreateDenseHIP: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateDenseHIP(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
+	data_ = Ref{$PetscScalar}()
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateDenseHIP, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
+               comm, m, n, M_M, M_N, data_, A_,
+              )
+
+	data = data_[]
+	A = PetscMat(A_[], petsclib)
+
+	return data,A
+end 
+
+"""
+	data::PetscScalar,A::PetscMat = MatCreateDenseWithMemType(petsclib::PetscLibType,comm::MPI_Comm, mtype::PetscMemType, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, lda::PetscInt) 
+Create a matrix that matches the supplied `PetscMemType`.
+
+Collective
+
+Input Parameters:
+- `comm`  - the communicator
+- `mtype` - the memory type
+- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given)
+- `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if `N` is given)
+- `M`     - number of global rows (or `PETSC_DECIDE` to have calculated if `m` is given)
+- `N`     - number of global columns (or `PETSC_DECIDE` to have calculated if `n` is given)
+- `lda`   - leading dimension (or `PETSC_DECIDE` to use the default)
+- `data`  - optional location of matrix data, which should match the specified `mtype`. Pass `NULL` to have PETSc take care of matrix memory allocation.
+
+Output Parameter:
+- `A` - the dense matrix
+
+Level: advanced
+
+-seealso: [](ch_matrices), `Mat`, `MatCreateDense()`, `MatCreateDenseCUDA()`, `MatCreateDenseHIP()`, `MatCreateDenseFromVecType()`, `PetscMemType`
+
+# External Links
+$(_doc_external("Mat/MatCreateDenseWithMemType"))
+"""
+function MatCreateDenseWithMemType(petsclib::PetscLibType, comm::MPI_Comm, mtype::PetscMemType, m::Integer, n::Integer, M_M::Integer, M_N::Integer, lda::Integer)
+    error("MatCreateDenseWithMemType: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateDenseWithMemType(petsclib::$UnionPetscLib, comm::MPI_Comm, mtype::PetscMemType, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, lda::$PetscInt )
+	data_ = Ref{$PetscScalar}()
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateDenseWithMemType, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, PetscMemType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
+               comm, mtype, m, n, M_M, M_N, lda, data_, A_,
               )
 
 	data = data_[]
@@ -1850,8 +2119,9 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatDestroy()`, `MATCONSTANTDIAGONAL`, `MatScale()`, `MatShift()`, `MatMult()`, `MatGetDiagonal()`, `MatSolve()`
-`MatDiagonalRestoreInverseDiagonal()`, `MatDiagonalGetDiagonal()`, `MatDiagonalRestoreDiagonal()`, `MatDiagonalGetInverseDiagonal()`
+-seealso: [](ch_matrices), `Mat`, `MatDestroy()`, `MATDIAGONAL`, `MatScale()`, `MatShift()`, `MatMult()`, `MatGetDiagonal()`, `MatSolve()`,
+`MatDiagonalRestoreInverseDiagonal()`, `MatDiagonalGetDiagonal()`, `MatDiagonalRestoreDiagonal()`, `MatDiagonalGetInverseDiagonal()`,
+`MATCONSTANTDIAGONAL`
 
 # External Links
 $(_doc_external("Mat/MatCreateDiagonal"))
@@ -1920,7 +2190,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateFromOptions(petsclib::PetscLibType,comm::MPI_Comm, prefix::String, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) 
+	A::PetscMat = MatCreateFromOptions(petsclib::PetscLibType,comm::MPI_Comm, prefix::String, bs::PetscInt, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt) 
 Creates a matrix whose type is set from the options database
 
 Collective
@@ -1951,18 +2221,18 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatCreateFromOptions"))
 """
-function MatCreateFromOptions(petsclib::PetscLibType, comm::MPI_Comm, prefix::String, bs::Integer, m::Integer, n::Integer, M::Integer, N::Integer)
+function MatCreateFromOptions(petsclib::PetscLibType, comm::MPI_Comm, prefix::String, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
     error("MatCreateFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateFromOptions(petsclib::$UnionPetscLib, comm::MPI_Comm, prefix::String, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateFromOptions(petsclib::$UnionPetscLib, comm::MPI_Comm, prefix::String, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateFromOptions, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, Ptr{Cchar}, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, prefix, bs, m, n, M, N, A_,
+               comm, prefix, bs, m, n, M_M, M_N, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -1982,7 +2252,7 @@ Input Parameters:
 - `sym`     - `PETSC_TRUE` indicates that the graph should be symmetrized
 - `scale`   - `PETSC_TRUE` indicates that the graph edge weights should be symmetrically scaled with the diagonal entry
 - `filter`  - filter value - < 0: does nothing; == 0: removes only 0.0 entries; otherwise: removes entries with abs(entries) <= value
-- `num_idx` - size of 'index' array
+- `num_idx` - size of `index` array
 - `index`   - array of block indices to use for graph strength of connection weight
 
 Output Parameter:
@@ -2012,6 +2282,56 @@ end
 	graph = PetscMat(graph_[], petsclib)
 
 	return graph
+end 
+
+"""
+	nA::PetscMat = MatCreateH2OpusFromKernel(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, spacedim::PetscInt, coords::Vector{PetscReal}, cdist::PetscBool, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid}, eta::PetscReal, leafsize::PetscInt, basisord::PetscInt) 
+
+# External Links
+$(_doc_external("Mat/MatCreateH2OpusFromKernel"))
+"""
+function MatCreateH2OpusFromKernel(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, spacedim::Integer, coords::AbstractVector{<:Number}, cdist::PetscBool, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid}, eta::Real, leafsize::Integer, basisord::Integer)
+    error("MatCreateH2OpusFromKernel: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateH2OpusFromKernel(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, spacedim::$PetscInt, coords::Vector{$PetscReal}, cdist::PetscBool, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid}, eta::$PetscReal, leafsize::$PetscInt, basisord::$PetscInt )
+	nA_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateH2OpusFromKernel, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscReal}, PetscBool, Ptr{Cvoid}, Ptr{Cvoid}, $PetscReal, $PetscInt, $PetscInt, Ptr{CMat}),
+               comm, m, n, M_M, M_N, spacedim, coords, cdist, kernel, kernelctx, eta, leafsize, basisord, nA_,
+              )
+
+	nA = PetscMat(nA_[], petsclib)
+
+	return nA
+end 
+
+"""
+	nA::PetscMat = MatCreateH2OpusFromMat(petsclib::PetscLibType,B::AbstractPetscMat, spacedim::PetscInt, coords::Vector{PetscReal}, cdist::PetscBool, eta::PetscReal, leafsize::PetscInt, maxrank::PetscInt, bs::PetscInt, rtol::PetscReal) 
+
+# External Links
+$(_doc_external("Mat/MatCreateH2OpusFromMat"))
+"""
+function MatCreateH2OpusFromMat(petsclib::PetscLibType, B::AbstractPetscMat, spacedim::Integer, coords::AbstractVector{<:Number}, cdist::PetscBool, eta::Real, leafsize::Integer, maxrank::Integer, bs::Integer, rtol::Real)
+    error("MatCreateH2OpusFromMat: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateH2OpusFromMat(petsclib::$UnionPetscLib, B::AbstractPetscMat, spacedim::$PetscInt, coords::Vector{$PetscReal}, cdist::PetscBool, eta::$PetscReal, leafsize::$PetscInt, maxrank::$PetscInt, bs::$PetscInt, rtol::$PetscReal )
+	nA_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateH2OpusFromMat, $petsc_library),
+               PetscErrorCode,
+               (CMat, $PetscInt, Ptr{$PetscReal}, PetscBool, $PetscReal, $PetscInt, $PetscInt, $PetscInt, $PetscReal, Ptr{CMat}),
+               B, spacedim, coords, cdist, eta, leafsize, maxrank, bs, rtol, nA_,
+              )
+
+	nA = PetscMat(nA_[], petsclib)
+
+	return nA
 end 
 
 """
@@ -2054,23 +2374,23 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateHtoolFromKernel(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, spacedim::PetscInt, coords_target::Vector{PetscReal}, coords_source::Vector{PetscReal}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid}) 
+	B::PetscMat = MatCreateHtoolFromKernel(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, spacedim::PetscInt, coords_target::Vector{PetscReal}, coords_source::Vector{PetscReal}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid}) 
 
 # External Links
 $(_doc_external("Mat/MatCreateHtoolFromKernel"))
 """
-function MatCreateHtoolFromKernel(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, spacedim::Integer, coords_target::AbstractVector{<:Number}, coords_source::AbstractVector{<:Number}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid})
+function MatCreateHtoolFromKernel(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, spacedim::Integer, coords_target::AbstractVector{<:Number}, coords_source::AbstractVector{<:Number}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid})
     error("MatCreateHtoolFromKernel: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateHtoolFromKernel(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, spacedim::$PetscInt, coords_target::Vector{$PetscReal}, coords_source::Vector{$PetscReal}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid} )
+@for_petsc function MatCreateHtoolFromKernel(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, spacedim::$PetscInt, coords_target::Vector{$PetscReal}, coords_source::Vector{$PetscReal}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid} )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateHtoolFromKernel, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscReal}, Ptr{$PetscReal}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{CMat}),
-               comm, m, n, M, N, spacedim, coords_target, coords_source, kernel, kernelctx, B_,
+               comm, m, n, M_M, M_N, spacedim, coords_target, coords_source, kernel, kernelctx, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2079,7 +2399,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateIS(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping) 
+	A::PetscMat = MatCreateIS(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping) 
 Creates a "process" unassembled matrix.
 
 Collective.
@@ -2104,18 +2424,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateIS"))
 """
-function MatCreateIS(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M::Integer, N::Integer, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping)
+function MatCreateIS(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping)
     error("MatCreateIS: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateIS(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping )
+@for_petsc function MatCreateIS(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateIS, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, ISLocalToGlobalMapping, ISLocalToGlobalMapping, Ptr{CMat}),
-               comm, bs, m, n, M, N, rmap, cmap, A_,
+               comm, bs, m, n, M_M, M_N, rmap, cmap, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -2166,7 +2486,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMBFGS(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMBFGS(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a limited
 matrix used for approximating Jacobians. L-BFGS is symmetric positive-definite by
 construction, and is commonly used to approximate Hessians in optimization
@@ -2203,18 +2523,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMBFGS"))
 """
-function MatCreateLMVMBFGS(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMBFGS(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMBFGS: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMBFGS(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMBFGS(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMBFGS, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2223,7 +2543,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMBadBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMBadBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a limited
 approximation matrix used for a Jacobian. L-BadBrdn is not guaranteed to be
 symmetric or positive-definite.
@@ -2257,18 +2577,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMBadBroyden"))
 """
-function MatCreateLMVMBadBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMBadBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMBadBroyden: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMBadBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMBadBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMBadBroyden, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2277,7 +2597,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a limited
 matrix used for a Jacobian. L-Brdn is not guaranteed to be symmetric or
 positive-definite.
@@ -2311,18 +2631,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMBroyden"))
 """
-function MatCreateLMVMBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMBroyden: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMBroyden, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2331,7 +2651,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMDBFGS(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMDBFGS(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a dense representation of the limited
 Broyden-Fletcher-Goldfarb-Shanno (BFGS) approximation to a Hessian.
 
@@ -2352,18 +2672,18 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/MatCreateLMVMDBFGS"))
 """
-function MatCreateLMVMDBFGS(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMDBFGS(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMDBFGS: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMDBFGS(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMDBFGS(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMDBFGS, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2372,7 +2692,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMDDFP(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMDDFP(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a dense representation of the limited
 Davidon-Fletcher-Powell (DFP) approximation to a Hessian.
 
@@ -2393,18 +2713,18 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/MatCreateLMVMDDFP"))
 """
-function MatCreateLMVMDDFP(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMDDFP(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMDDFP: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMDDFP(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMDDFP(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMDDFP, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2413,7 +2733,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMDFP(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMDFP(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a limited
 used for approximating Jacobians. L-DFP is symmetric positive-definite by
 construction, and is the dual of L-BFGS where Y and S vectors swap roles.
@@ -2449,18 +2769,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMDFP"))
 """
-function MatCreateLMVMDFP(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMDFP(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMDFP: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMDFP(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMDFP(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMDFP, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2469,7 +2789,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMDQN(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMDQN(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a dense representation of the limited
 Quasi-Newton approximation to a Hessian.
 
@@ -2490,18 +2810,18 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/MatCreateLMVMDQN"))
 """
-function MatCreateLMVMDQN(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMDQN(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMDQN: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMDQN(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMDQN(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMDQN, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2510,7 +2830,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMDiagBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMDiagBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 DiagBrdn creates a symmetric Broyden
 for approximating Hessians.
 
@@ -2541,18 +2861,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMDiagBroyden"))
 """
-function MatCreateLMVMDiagBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMDiagBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMDiagBroyden: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMDiagBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMDiagBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMDiagBroyden, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2561,7 +2881,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMSR1(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMSR1(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a limited
 matrix used for a Jacobian. L-SR1 is symmetric by construction, but is not
 guaranteed to be positive-definite.
@@ -2596,18 +2916,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMSR1"))
 """
-function MatCreateLMVMSR1(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMSR1(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMSR1: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMSR1(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMSR1(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMSR1, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2616,7 +2936,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMSymBadBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMSymBadBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a limited
 for approximating Jacobians.
 
@@ -2652,18 +2972,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMSymBadBroyden"))
 """
-function MatCreateLMVMSymBadBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMSymBadBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMSymBadBroyden: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMSymBadBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMSymBadBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMSymBadBroyden, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2672,7 +2992,7 @@ end
 end 
 
 """
-	B::PetscMat = MatCreateLMVMSymBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt) 
+	B::PetscMat = MatCreateLMVMSymBroyden(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a limited
 for approximating Jacobians.
 
@@ -2708,18 +3028,18 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/MatCreateLMVMSymBroyden"))
 """
-function MatCreateLMVMSymBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer)
+function MatCreateLMVMSymBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
     error("MatCreateLMVMSymBroyden: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateLMVMSymBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateLMVMSymBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateLMVMSymBroyden, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, n, N, B_,
+               comm, n, M_N, B_,
               )
 
 	B = PetscMat(B_[], petsclib)
@@ -2889,7 +3209,7 @@ end
 end 
 
 """
-	J::PetscMat = MatCreateMFFD(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) 
+	J::PetscMat = MatCreateMFFD(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt) 
 Creates a matrix
 approximately multiply a vector by the matrix (Jacobian) . See also `MatCreateSNESMF()`
 
@@ -2914,7 +3234,7 @@ Options Database Keys:
 - `-mat_mffd_err`              - square root of estimated relative error in function evaluation
 - `-mat_mffd_period`           - how often h is recomputed, defaults to 1, every time
 - `-mat_mffd_check_positivity` - possibly decrease `h` until U + h*a has only positive values
-- `-mat_mffd_umin <umin>`      - Sets umin (for default PETSc routine that computes h only)
+- `-mat_mffd_umin umin`        - Sets umin (for default PETSc routine that computes h only)
 - `-mat_mffd_complex`          - use the Lyness trick with complex numbers to compute the matrix-vector product instead of differencing
 (requires real valued functions but that PETSc be configured for complex numbers)
 - `-snes_mf`                   - use the finite difference based matrix-free matrix with `SNESSolve()` and no preconditioner
@@ -2923,25 +3243,25 @@ using the matrix passed as `pmat` to `SNESSetJacobian()`.
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatDestroy()`, `MatMFFDSetFunctionError()`, `MatMFFDDSSetUmin()`, `MatMFFDSetFunction()`
+-seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatDestroy()`, `MatMFFDSetFunctionError()`, `MatMFFDDSSetUmin()`, `MatMFFDSetFunction()`,
 `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`, `MatCreateSNESMF()`, `MatCreateShell()`, `MATSHELL`,
 `MatMFFDGetH()`, `MatMFFDRegister()`, `MatMFFDComputeJacobian()`
 
 # External Links
 $(_doc_external("Mat/MatCreateMFFD"))
 """
-function MatCreateMFFD(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer)
+function MatCreateMFFD(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
     error("MatCreateMFFD: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMFFD(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt )
+@for_petsc function MatCreateMFFD(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
 	J_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMFFD, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{CMat}),
-               comm, m, n, M, N, J_,
+               comm, m, n, M_M, M_N, J_,
               )
 
 	J = PetscMat(J_[], petsclib)
@@ -2994,7 +3314,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateMPIAIJMKL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	A::PetscMat = MatCreateMPIAIJMKL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 Creates a sparse parallel matrix whose local
 portions are stored as `MATSEQAIJMKL` matrices (a matrix class that inherits
 from `MATSEQAIJ` but uses some operations provided by Intel MKL).
@@ -3042,18 +3362,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJMKL"))
 """
-function MatCreateMPIAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+function MatCreateMPIAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
     error("MatCreateMPIAIJMKL: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMPIAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateMPIAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMPIAIJMKL, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -3062,7 +3382,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateMPIAIJPERM(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
+	A::PetscMat = MatCreateMPIAIJPERM(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
 Creates a sparse parallel matrix whose local
 portions are stored as `MATSEQAIJPERM` matrices (a matrix class that inherits
 from SEQAIJ but includes some optimizations to allow more effective
@@ -3100,8 +3420,8 @@ Output Parameter:
 - `A` - the matrix
 
 Options Database Keys:
-- `-mat_no_inode`            - Do not use inodes
-- `-mat_inode_limit <limit>` - Sets inode limit (max limit=5)
+- `-mat_no_inode`          - Do not use inodes
+- `-mat_inode_limit limit` - Sets inode limit (max limit=5)
 
 Level: intermediate
 
@@ -3110,18 +3430,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJPERM"))
 """
-function MatCreateMPIAIJPERM(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
+function MatCreateMPIAIJPERM(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
     error("MatCreateMPIAIJPERM: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMPIAIJPERM(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function MatCreateMPIAIJPERM(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMPIAIJPERM, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -3130,7 +3450,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateMPIAIJSELL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	A::PetscMat = MatCreateMPIAIJSELL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 Creates a sparse parallel matrix whose local
 portions are stored as `MATSEQAIJSELL` matrices (a matrix class that inherits
 from SEQAIJ but performs some operations in SELL format).
@@ -3177,18 +3497,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJSELL"))
 """
-function MatCreateMPIAIJSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+function MatCreateMPIAIJSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
     error("MatCreateMPIAIJSELL: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMPIAIJSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateMPIAIJSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMPIAIJSELL, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -3241,6 +3561,18 @@ end
 
 """
 	MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType,seqmat::AbstractPetscMat, mpimat::AbstractPetscMat) 
+Fill the numerical values of an `MATMPIAIJ` matrix previously created by
+`MatCreateMPIAIJSumSeqAIJSymbolic()` by summing the local `MATSEQAIJ` contributions from each process.
+
+Collective
+
+Input Parameters:
+- `seqmat` - the local `MATSEQAIJ` contribution from this process
+- `mpimat` - the target `MATMPIAIJ` matrix created by `MatCreateMPIAIJSumSeqAIJSymbolic()`
+
+Level: developer
+
+-seealso: `Mat`, `MATMPIAIJ`, `MATSEQAIJ`, `MatCreateMPIAIJSumSeqAIJSymbolic()`, `MatCreateMPIAIJSumSeqAIJ()`
 
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJNumeric"))
@@ -3264,6 +3596,23 @@ end
 
 """
 	mpimat::PetscMat = MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType,comm::MPI_Comm, seqmat::AbstractPetscMat, m::PetscInt, n::PetscInt) 
+Create the symbolic (nonzero
+obtained by summing local `MATSEQAIJ` contributions from each process.
+
+Collective
+
+Input Parameters:
+- `comm`   - the communicator
+- `seqmat` - the local `MATSEQAIJ` contribution from this process
+- `m`      - the number of local rows for the resulting `MATMPIAIJ` matrix, or `PETSC_DECIDE`
+- `n`      - the number of local columns for the resulting `MATMPIAIJ` matrix, or `PETSC_DECIDE`
+
+Output Parameter:
+- `mpimat` - the newly created `MATMPIAIJ` matrix
+
+Level: developer
+
+-seealso: `Mat`, `MATMPIAIJ`, `MATSEQAIJ`, `MatCreateMPIAIJSumSeqAIJNumeric()`, `MatCreateMPIAIJSumSeqAIJ()`
 
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJSymbolic"))
@@ -3288,7 +3637,7 @@ end
 end 
 
 """
-	mat::PetscMat = MatCreateMPIAIJWithArrays(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}) 
+	mat::PetscMat = MatCreateMPIAIJWithArrays(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}) 
 creates a `MATMPIAIJ` matrix using arrays that contain in standard
 CSR format for the local rows.
 
@@ -3317,18 +3666,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJWithArrays"))
 """
-function MatCreateMPIAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
+function MatCreateMPIAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
     error("MatCreateMPIAIJWithArrays: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMPIAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
+@for_petsc function MatCreateMPIAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMPIAIJWithArrays, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{CMat}),
-               comm, m, n, M, N, i, j, a, mat_,
+               comm, m, n, M_M, M_N, i, j, a, mat_,
               )
 
 	mat = PetscMat(mat_[], petsclib)
@@ -3383,7 +3732,7 @@ end
 end 
 
 """
-	mat::PetscMat = MatCreateMPIAIJWithSplitArrays(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}, oi::Vector{PetscInt}, oj::Vector{PetscInt}, oa::Vector{PetscScalar}) 
+	mat::PetscMat = MatCreateMPIAIJWithSplitArrays(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}, oi::Vector{PetscInt}, oj::Vector{PetscInt}, oa::Vector{PetscScalar}) 
 creates a `MATMPIAIJ` matrix using arrays that contain the "diagonal"
 and "off-diagonal" part of the matrix in CSR format.
 
@@ -3415,18 +3764,18 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJWithSplitArrays"))
 """
-function MatCreateMPIAIJWithSplitArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number}, oi::AbstractVector{<:Number}, oj::AbstractVector{<:Number}, oa::AbstractVector{<:Number})
+function MatCreateMPIAIJWithSplitArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number}, oi::AbstractVector{<:Number}, oj::AbstractVector{<:Number}, oa::AbstractVector{<:Number})
     error("MatCreateMPIAIJWithSplitArrays: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMPIAIJWithSplitArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar}, oi::Vector{$PetscInt}, oj::Vector{$PetscInt}, oa::Vector{$PetscScalar} )
+@for_petsc function MatCreateMPIAIJWithSplitArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar}, oi::Vector{$PetscInt}, oj::Vector{$PetscInt}, oa::Vector{$PetscScalar} )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMPIAIJWithSplitArrays, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{CMat}),
-               comm, m, n, M, N, i, j, a, oi, oj, oa, mat_,
+               comm, m, n, M_M, M_N, i, j, a, oi, oj, oa, mat_,
               )
 
 	mat = PetscMat(mat_[], petsclib)
@@ -3480,7 +3829,7 @@ end
 end 
 
 """
-	mat::PetscMat = MatCreateMPIBAIJWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}) 
+	mat::PetscMat = MatCreateMPIBAIJWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}) 
 creates a `MATMPIBAIJ` matrix using arrays that contain in standard block CSR format for the local rows.
 
 Collective
@@ -3509,18 +3858,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateMPIBAIJWithArrays"))
 """
-function MatCreateMPIBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M::Integer, N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
+function MatCreateMPIBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
     error("MatCreateMPIBAIJWithArrays: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMPIBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
+@for_petsc function MatCreateMPIBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMPIBAIJWithArrays, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{CMat}),
-               comm, bs, m, n, M, N, i, j, a, mat_,
+               comm, bs, m, n, M_M, M_N, i, j, a, mat_,
               )
 
 	mat = PetscMat(mat_[], petsclib)
@@ -3571,7 +3920,7 @@ end
 end 
 
 """
-	mat::PetscMat = MatCreateMPISBAIJWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}) 
+	mat::PetscMat = MatCreateMPISBAIJWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}) 
 creates a `MATMPISBAIJ` matrix using arrays that contain in standard CSR format for the local rows.
 
 Collective
@@ -3600,18 +3949,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateMPISBAIJWithArrays"))
 """
-function MatCreateMPISBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M::Integer, N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
+function MatCreateMPISBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
     error("MatCreateMPISBAIJWithArrays: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateMPISBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
+@for_petsc function MatCreateMPISBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateMPISBAIJWithArrays, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscScalar}, Ptr{CMat}),
-               comm, bs, m, n, M, N, i, j, a, mat_,
+               comm, bs, m, n, M_M, M_N, i, j, a, mat_,
               )
 
 	mat = PetscMat(mat_[], petsclib)
@@ -3782,7 +4131,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateSBAIJ(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
+	A::PetscMat = MatCreateSBAIJ(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr, Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr, Vector{PetscInt}}) 
 Creates a sparse parallel matrix in symmetric block AIJ format, `MATSBAIJ`,
 (block compressed row).  For good matrix assembly performance
 the user should preallocate the matrix storage by setting the parameters
@@ -3828,23 +4177,23 @@ block calculations (much slower)
 Level: intermediate
 
 -seealso: [](ch_matrices), `Mat`, `MATSBAIJ`, `MatCreate()`, `MatCreateSeqSBAIJ()`, `MatSetValues()`, `MatCreateBAIJ()`,
-`MatGetOwnershipRange()`,  `MatGetOwnershipRanges()`, `MatGetOwnershipRangeColumn()`, `MatGetOwnershipRangesColumn()`, `PetscLayout`
+`MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `MatGetOwnershipRangeColumn()`, `MatGetOwnershipRangesColumn()`, `PetscLayout`
 
 # External Links
 $(_doc_external("Mat/MatCreateSBAIJ"))
 """
-function MatCreateSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M::Integer, N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
+function MatCreateSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
     error("MatCreateSBAIJ: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function MatCreateSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateSBAIJ, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, bs, m, n, M, N, d_nz, d_nnz, o_nz, o_nnz, A_,
+               comm, bs, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -3853,7 +4202,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateSELL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_rlenmax::PetscInt, d_rlen::Union{Ptr, Vector{PetscInt}}, o_rlenmax::PetscInt, o_rlen::Union{Ptr, Vector{PetscInt}}) 
+	A::PetscMat = MatCreateSELL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_rlenmax::PetscInt, d_rlen::Union{Ptr, Vector{PetscInt}}, o_rlenmax::PetscInt, o_rlen::Union{Ptr, Vector{PetscInt}}) 
 Creates a sparse parallel matrix in `MATSELL` format.
 
 Collective
@@ -3901,18 +4250,68 @@ as follows
 # External Links
 $(_doc_external("Mat/MatCreateSELL"))
 """
-function MatCreateSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, d_rlenmax::Integer, d_rlen::Union{Ptr, AbstractVector{<:Number}}, o_rlenmax::Integer, o_rlen::Union{Ptr, AbstractVector{<:Number}})
+function MatCreateSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_rlenmax::Integer, d_rlen::Union{Ptr, AbstractVector{<:Number}}, o_rlenmax::Integer, o_rlen::Union{Ptr, AbstractVector{<:Number}})
     error("MatCreateSELL: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_rlenmax::$PetscInt, d_rlen::Union{Ptr, Vector{$PetscInt}}, o_rlenmax::$PetscInt, o_rlen::Union{Ptr, Vector{$PetscInt}} )
+@for_petsc function MatCreateSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_rlenmax::$PetscInt, d_rlen::Union{Ptr, Vector{$PetscInt}}, o_rlenmax::$PetscInt, o_rlen::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateSELL, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, M, N, d_rlenmax, d_rlen, o_rlenmax, o_rlen, A_,
+               comm, m, n, M_M, M_N, d_rlenmax, d_rlen, o_rlenmax, o_rlen, A_,
+              )
+
+	A = PetscMat(A_[], petsclib)
+
+	return A
+end 
+
+"""
+	A::PetscMat = MatCreateSELLCUDA(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("Mat/MatCreateSELLCUDA"))
+"""
+function MatCreateSELLCUDA(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+    error("MatCreateSELLCUDA: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateSELLCUDA(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateSELLCUDA, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
+              )
+
+	A = PetscMat(A_[], petsclib)
+
+	return A
+end 
+
+"""
+	A::PetscMat = MatCreateSELLHIP(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("Mat/MatCreateSELLHIP"))
+"""
+function MatCreateSELLHIP(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+    error("MatCreateSELLHIP: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateSELLHIP(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateSELLHIP, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
+               comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -3937,7 +4336,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `MATMFFD`, `MatDestroy()`, `MatMFFDSetFunction()`, `MatMFFDSetFunctionError()`, `MatMFFDDSSetUmin()`
+-seealso: [](ch_snes), `SNES`, `MATMFFD`, `MatDestroy()`, `MatMFFDSetFunction()`, `MatMFFDSetFunctionError()`, `MatMFFDDSSetUmin()`,
 `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`, `MatCreateMFFD()`, `MatCreateShell()`,
 `MatMFFDGetH()`, `MatMFFDRegister()`, `MatMFFDComputeJacobian()`, `MatSNESMFSetReuseBase()`, `MatSNESMFGetReuseBase()`
 
@@ -3977,11 +4376,11 @@ Output Parameter:
 - `J` - the matrix-free matrix
 
 Options Database Keys:
-- `-snes_mf_err <error_rel>` - see `MatCreateSNESMF()`
-- `-snes_mf_umin <umin>`     - see `MatCreateSNESMF()`
-- `-snes_mf_compute_err`     - compute the square root or relative error in function
-- `-snes_mf_freq_err <freq>` - set the frequency to recompute the parameters
-- `-snes_mf_jorge`           - use the method of Jorge More
+- `-snes_mf_err error_rel` - see `MatCreateSNESMF()`
+- `-snes_mf_umin umin`     - see `MatCreateSNESMF()`
+- `-snes_mf_compute_err`   - compute the square root or relative error in function
+- `-snes_mf_freq_err freq` - set the frequency to recompute the parameters
+- `-snes_mf_jorge`         - use the method of Jorge More
 
 Level: advanced
 
@@ -4204,8 +4603,8 @@ Output Parameter:
 - `A` - the matrix
 
 Options Database Keys:
-- `-mat_no_inode`            - Do not use inodes
-- `-mat_inode_limit <limit>` - Sets inode limit (max limit=5)
+- `-mat_no_inode`          - Do not use inodes
+- `-mat_inode_limit limit` - Sets inode limit (max limit=5)
 
 Level: intermediate
 
@@ -4277,6 +4676,31 @@ end
 end 
 
 """
+	A::PetscMat = MatCreateSeqAIJCUSPARSE(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("Mat/MatCreateSeqAIJCUSPARSE"))
+"""
+function MatCreateSeqAIJCUSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::AbstractVector{<:Number})
+    error("MatCreateSeqAIJCUSPARSE: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateSeqAIJCUSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateSeqAIJCUSPARSE, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
+               comm, m, n, nz, nnz, A_,
+              )
+
+	A = PetscMat(A_[], petsclib)
+
+	return A
+end 
+
+"""
 	mat::PetscMat = MatCreateSeqAIJFromTriple(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, a::Vector{PetscScalar}, nz::PetscCount, idx::PetscBool) 
 Creates an sequential `MATSEQAIJ` matrix using matrix elements (in COO format)
 provided by the user.
@@ -4322,6 +4746,31 @@ end
 	mat = PetscMat(mat_[], petsclib)
 
 	return mat
+end 
+
+"""
+	A::PetscMat = MatCreateSeqAIJHIPSPARSE(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("Mat/MatCreateSeqAIJHIPSPARSE"))
+"""
+function MatCreateSeqAIJHIPSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::AbstractVector{<:Number})
+    error("MatCreateSeqAIJHIPSPARSE: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateSeqAIJHIPSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateSeqAIJHIPSPARSE, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
+               comm, m, n, nz, nnz, A_,
+              )
+
+	A = PetscMat(A_[], petsclib)
+
+	return A
 end 
 
 """
@@ -4705,6 +5154,31 @@ end
 end 
 
 """
+	A::PetscMat = MatCreateSeqCUFFT(petsclib::PetscLibType,comm::MPI_Comm, ndim::PetscInt, dim::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("Mat/MatCreateSeqCUFFT"))
+"""
+function MatCreateSeqCUFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::Integer, dim::AbstractVector{<:Number})
+    error("MatCreateSeqCUFFT: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateSeqCUFFT(petsclib::$UnionPetscLib, comm::MPI_Comm, ndim::$PetscInt, dim::Vector{$PetscInt} )
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateSeqCUFFT, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
+               comm, ndim, dim, A_,
+              )
+
+	A = PetscMat(A_[], petsclib)
+
+	return A
+end 
+
+"""
 	A::PetscMat = MatCreateSeqDense(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, data::Union{Ptr, Vector{PetscScalar}}) 
 Creates a `MATSEQDENSE` that
 is stored in column major order (the usual Fortran format).
@@ -4745,6 +5219,60 @@ end
 	A = PetscMat(A_[], petsclib)
 
 	return A
+end 
+
+"""
+	data::PetscScalar,A::PetscMat = MatCreateSeqDenseCUDA(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt) 
+
+# External Links
+$(_doc_external("Mat/MatCreateSeqDenseCUDA"))
+"""
+function MatCreateSeqDenseCUDA(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer)
+    error("MatCreateSeqDenseCUDA: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateSeqDenseCUDA(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt )
+	data_ = Ref{$PetscScalar}()
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateSeqDenseCUDA, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
+               comm, m, n, data_, A_,
+              )
+
+	data = data_[]
+	A = PetscMat(A_[], petsclib)
+
+	return data,A
+end 
+
+"""
+	data::PetscScalar,A::PetscMat = MatCreateSeqDenseHIP(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt) 
+
+# External Links
+$(_doc_external("Mat/MatCreateSeqDenseHIP"))
+"""
+function MatCreateSeqDenseHIP(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer)
+    error("MatCreateSeqDenseHIP: no generated method for these argument types")
+end
+
+@for_petsc function MatCreateSeqDenseHIP(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt )
+	data_ = Ref{$PetscScalar}()
+	A_ = Ref{CMat}()
+
+    @chk ccall(
+               (:MatCreateSeqDenseHIP, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
+               comm, m, n, data_, A_,
+              )
+
+	data = data_[]
+	A = PetscMat(A_[], petsclib)
+
+	return data,A
 end 
 
 """
@@ -4887,7 +5415,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateShell(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, ctx::Ptr{Cvoid}) 
+	A::PetscMat = MatCreateShell(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, ctx::Ptr{Cvoid}) 
 Creates a new matrix of `MatType` `MATSHELL` for use with a user
 private matrix data storage format.
 
@@ -4911,18 +5439,18 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateShell"))
 """
-function MatCreateShell(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, ctx::Ptr{Cvoid})
+function MatCreateShell(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, ctx::Ptr{Cvoid})
     error("MatCreateShell: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateShell(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, ctx::Ptr{Cvoid} )
+@for_petsc function MatCreateShell(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, ctx::Ptr{Cvoid} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateShell, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{CMat}),
-               comm, m, n, M, N, ctx, A_,
+               comm, m, n, M_M, M_N, ctx, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -5192,9 +5720,12 @@ Output Parameters:
 - `right` - (optional) vector that the matrix can be multiplied against
 - `left`  - (optional) vector that the matrix vector product can be stored in
 
+Options Database Key:
+- `-mat_vec_type type` - set the `VecType` of the created vectors during `MatSetFromOptions()`
+
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `Vec`, `VecCreate()`, `VecDestroy()`, `DMCreateGlobalVector()`
+-seealso: [](ch_matrices), `Mat`, `Vec`, `VecCreate()`, `VecDestroy()`, `DMCreateGlobalVector()`, `MatSetVecType()`
 
 # External Links
 $(_doc_external("Mat/MatCreateVecs"))
@@ -5336,7 +5867,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `Mat`, `VecFischer()`, `VecDFischer()`, `MatDFischer()`
+-seealso: `Mat`, `VecFischer()`, `VecSFischer()`, `MatDFischer()`
 
 # External Links
 $(_doc_external("Tao/MatDSFischer"))
@@ -5356,6 +5887,242 @@ end
 
 
 	return nothing
+end 
+
+"""
+	MatDenseCUDAGetArray(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDAGetArray"))
+"""
+function MatDenseCUDAGetArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseCUDAGetArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDAGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseCUDAGetArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseCUDAGetArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDAGetArrayRead"))
+"""
+function MatDenseCUDAGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseCUDAGetArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDAGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseCUDAGetArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseCUDAGetArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDAGetArrayWrite"))
+"""
+function MatDenseCUDAGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseCUDAGetArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDAGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseCUDAGetArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	array::PetscScalar = MatDenseCUDAPlaceArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDAPlaceArray"))
+"""
+function MatDenseCUDAPlaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
+    error("MatDenseCUDAPlaceArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDAPlaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	array_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:MatDenseCUDAPlaceArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{$PetscScalar}),
+               mat, array_,
+              )
+
+	array = array_[]
+
+	return array
+end 
+
+"""
+	array::PetscScalar = MatDenseCUDAReplaceArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDAReplaceArray"))
+"""
+function MatDenseCUDAReplaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
+    error("MatDenseCUDAReplaceArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDAReplaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	array_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:MatDenseCUDAReplaceArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{$PetscScalar}),
+               mat, array_,
+              )
+
+	array = array_[]
+
+	return array
+end 
+
+"""
+	MatDenseCUDAResetArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDAResetArray"))
+"""
+function MatDenseCUDAResetArray(petsclib::PetscLibType, mat::AbstractPetscMat)
+    error("MatDenseCUDAResetArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDAResetArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+
+    @chk ccall(
+               (:MatDenseCUDAResetArray, $petsc_library),
+               PetscErrorCode,
+               (CMat,),
+               mat,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseCUDARestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDARestoreArray"))
+"""
+function MatDenseCUDARestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseCUDARestoreArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDARestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseCUDARestoreArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseCUDARestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDARestoreArrayRead"))
+"""
+function MatDenseCUDARestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseCUDARestoreArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDARestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseCUDARestoreArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseCUDARestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDARestoreArrayWrite"))
+"""
+function MatDenseCUDARestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseCUDARestoreArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDARestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseCUDARestoreArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	device_array::PetscScalar = MatDenseCUDASetPreallocation(petsclib::PetscLibType,A::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseCUDASetPreallocation"))
+"""
+function MatDenseCUDASetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat)
+    error("MatDenseCUDASetPreallocation: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseCUDASetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	device_array_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:MatDenseCUDASetPreallocation, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{$PetscScalar}),
+               A, device_array_,
+              )
+
+	device_array = device_array_[]
+
+	return device_array
 end 
 
 """
@@ -5878,6 +6645,242 @@ end
 end 
 
 """
+	MatDenseHIPGetArray(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPGetArray"))
+"""
+function MatDenseHIPGetArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseHIPGetArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseHIPGetArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseHIPGetArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPGetArrayRead"))
+"""
+function MatDenseHIPGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseHIPGetArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseHIPGetArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseHIPGetArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPGetArrayWrite"))
+"""
+function MatDenseHIPGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseHIPGetArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseHIPGetArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	array::PetscScalar = MatDenseHIPPlaceArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPPlaceArray"))
+"""
+function MatDenseHIPPlaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
+    error("MatDenseHIPPlaceArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPPlaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	array_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:MatDenseHIPPlaceArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{$PetscScalar}),
+               mat, array_,
+              )
+
+	array = array_[]
+
+	return array
+end 
+
+"""
+	array::PetscScalar = MatDenseHIPReplaceArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPReplaceArray"))
+"""
+function MatDenseHIPReplaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
+    error("MatDenseHIPReplaceArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPReplaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	array_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:MatDenseHIPReplaceArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{$PetscScalar}),
+               mat, array_,
+              )
+
+	array = array_[]
+
+	return array
+end 
+
+"""
+	MatDenseHIPResetArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPResetArray"))
+"""
+function MatDenseHIPResetArray(petsclib::PetscLibType, mat::AbstractPetscMat)
+    error("MatDenseHIPResetArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPResetArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+
+    @chk ccall(
+               (:MatDenseHIPResetArray, $petsc_library),
+               PetscErrorCode,
+               (CMat,),
+               mat,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseHIPRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPRestoreArray"))
+"""
+function MatDenseHIPRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseHIPRestoreArray: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseHIPRestoreArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseHIPRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPRestoreArrayRead"))
+"""
+function MatDenseHIPRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseHIPRestoreArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseHIPRestoreArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseHIPRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPRestoreArrayWrite"))
+"""
+function MatDenseHIPRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatDenseHIPRestoreArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatDenseHIPRestoreArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	device_array::PetscScalar = MatDenseHIPSetPreallocation(petsclib::PetscLibType,A::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatDenseHIPSetPreallocation"))
+"""
+function MatDenseHIPSetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat)
+    error("MatDenseHIPSetPreallocation: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseHIPSetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	device_array_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:MatDenseHIPSetPreallocation, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{$PetscScalar}),
+               A, device_array_,
+              )
+
+	device_array = device_array_[]
+
+	return device_array
+end 
+
+"""
 	MatDensePlaceArray(petsclib::PetscLibType,mat::AbstractPetscMat, array::Vector{PetscScalar}) 
 Allows one to replace the array in a `MATDENSE` matrix with an
 array provided by the user. This is useful to avoid copying an array
@@ -5944,6 +6947,42 @@ end
                PetscErrorCode,
                (CMat, Ptr{$PetscScalar}),
                mat, array,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDenseReplaceArrayWithMemType(petsclib::PetscLibType,mat::AbstractPetscMat, mtype::PetscMemType, array::Vector{PetscScalar}) 
+Allows one to replace the array in a `MATDENSE`, `MATDENSECUDA`, or `MATDENSEHIP`
+with an array provided by the user and a matching `PetscMemType`. This is useful to avoid copying an array into a matrix.
+
+Not Collective
+
+Input Parameters:
+- `mat`   - the matrix
+- `mtype` - the `PetscMemType` of the array
+- `array` - the array in column major order
+
+Level: developer
+
+-seealso: `MatDenseReplaceArray()`, `MatDenseCUDAReplaceArray()`, `MatDenseHIPReplaceArray()`
+
+# External Links
+$(_doc_external("Mat/MatDenseReplaceArrayWithMemType"))
+"""
+function MatDenseReplaceArrayWithMemType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::PetscMemType, array::AbstractVector{<:Number})
+    error("MatDenseReplaceArrayWithMemType: no generated method for these argument types")
+end
+
+@for_petsc function MatDenseReplaceArrayWithMemType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::PetscMemType, array::Vector{$PetscScalar} )
+
+    @chk ccall(
+               (:MatDenseReplaceArrayWithMemType, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscMemType, Ptr{$PetscScalar}),
+               mat, mtype, array,
               )
 
 
@@ -6347,7 +7386,7 @@ Collective
 
 Input Parameters:
 - `A` - the `Mat` object
-- `v` - the `Mat` object (may be `NULL`)
+- `v` - the `Mat` object (cannot be `NULL`)
 
 Level: intermediate
 
@@ -6792,6 +7831,42 @@ end
                PetscErrorCode,
                (CMat, CVec, InsertMode),
                Y, D, is,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatDiagonalSetDiagonal(petsclib::PetscLibType,J::AbstractPetscMat, diag::AbstractPetscVec) 
+Sets the diagonal for a `MATDIAGONAL`
+
+Collective
+
+Input Parameter:
+- `J`    - the `MATDIAGONAL` matrix
+- `diag` - the vector for the diagonal
+
+Level: advanced
+
+-seealso: [](ch_matrices), `Mat`, `MatDestroy()`, `MatCreateDiagonal()`, `MATDIAGONAL`, `MatScale()`, `MatShift()`, `MatMult()`, `MatGetDiagonal()`, `MatSolve()`,
+`MatDiagonalRestoreInverseDiagonal()`, `MatDiagonalGetDiagonal()`, `MatDiagonalRestoreDiagonal()`, `MatDiagonalGetInverseDiagonal()`,
+`MATCONSTANTDIAGONAL`
+
+# External Links
+$(_doc_external("Mat/MatDiagonalSetDiagonal"))
+"""
+function MatDiagonalSetDiagonal(petsclib::PetscLibType, J::AbstractPetscMat, diag::AbstractPetscVec)
+    error("MatDiagonalSetDiagonal: no generated method for these argument types")
+end
+
+@for_petsc function MatDiagonalSetDiagonal(petsclib::$UnionPetscLib, J::AbstractPetscMat, diag::AbstractPetscVec )
+
+    @chk ccall(
+               (:MatDiagonalSetDiagonal, $petsc_library),
+               PetscErrorCode,
+               (CMat, CVec),
+               J, diag,
               )
 
 
@@ -7734,7 +8809,7 @@ Output Parameter:
 - `A` - the Galerkin coarse matrix
 
 Options Database Key:
-- `-pc_mg_galerkin <both,pmat,mat,none>` - for what matrices the Galerkin process should be used
+- `-pc_mg_galerkin (both|pmat|mat|none)` - for what matrices the Galerkin process should be used
 
 Level: developer
 
@@ -8415,7 +9490,7 @@ end
 end 
 
 """
-	a::PetscMat = MatGetDiagonalBlock(petsclib::PetscLibType,A::AbstractPetscMat) 
+	MatGetDiagonalBlock(petsclib::PetscLibType,A::AbstractPetscMat, M_a::AbstractPetscMat) 
 Returns the part of the matrix associated with the on
 
 Not Collective
@@ -8433,34 +9508,35 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetDiagonalBlock"))
 """
-function MatGetDiagonalBlock(petsclib::PetscLibType, A::AbstractPetscMat)
+function MatGetDiagonalBlock(petsclib::PetscLibType, A::AbstractPetscMat, M_a::AbstractPetscMat)
     error("MatGetDiagonalBlock: no generated method for these argument types")
 end
 
-@for_petsc function MatGetDiagonalBlock(petsclib::$UnionPetscLib, A::AbstractPetscMat )
-	a_ = Ref{CMat}()
+@for_petsc function MatGetDiagonalBlock(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::AbstractPetscMat )
+	M_a_ = Ref(M_a.ptr)
 
     @chk ccall(
                (:MatGetDiagonalBlock, $petsc_library),
                PetscErrorCode,
                (CMat, Ptr{CMat}),
-               A, a_,
+               A, M_a_,
               )
 
-	a = PetscMat(a_[], petsclib)
+	M_a.ptr = M_a_[]
 
-	return a
+	return nothing
 end 
 
 """
 	f::PetscMat = MatGetFactor(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType) 
-Returns a matrix suitable to calls to MatXXFactorSymbolic,Numeric()
+Returns a matrix suitable to calls to routines such as `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`, `MatILUFactorSymbolic()`,
+`MatICCFactorSymbolic()`, `MatLUFactorNumeric()`, and `MatCholeskyFactorNumeric()`
 
 Collective
 
 Input Parameters:
 - `mat`   - the matrix
-- `type`  - name of solver type, for example, `superlu`, `petsc` (to use PETSc's solver if it is available), if this is 'NULL', then the first result that satisfies
+- `type`  - name of solver type, for example, `superlu_dist`, `petsc` (to use PETSc's solver if it is available), if this is `NULL`, then the first result that satisfies
 the other criteria is returned
 - `ftype` - factor type, `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ICC`, `MAT_FACTOR_ILU`, `MAT_FACTOR_QR`
 
@@ -8468,15 +9544,17 @@ Output Parameter:
 - `f` - the factor matrix used with MatXXFactorSymbolic,Numeric() calls. Can be `NULL` in some cases, see notes below.
 
 Options Database Keys:
-- `-pc_factor_mat_solver_type <type>`    - choose the type at run time. When using `KSP` solvers
-- `-pc_factor_mat_factor_on_host <bool>` - do mat factorization on host (with device matrices). Default is doing it on device
-- `-pc_factor_mat_solve_on_host <bool>`  - do mat solve on host (with device matrices). Default is doing it on device
+- `-pc_factor_mat_solver_type type`            - choose the type at run time. When using `KSP` solvers
+- `-pc_factor_mat_factor_on_host (true|false)` - do matrix factorization on host (with device matrices). Default is doing it on device
+- `-pc_factor_mat_solve_on_host (true|false)`  - do matrix solve on host (with device matrices). Default is doing it on device
 
 Level: intermediate
 
 -seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `KSP`, `MatSolverType`, `MatFactorType`, `MatCopy()`, `MatDuplicate()`,
-`MatGetFactorAvailable()`, `MatFactorGetCanUseOrdering()`, `MatSolverTypeRegister()`, `MatSolverTypeGet()`
-`MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ICC`, `MAT_FACTOR_ILU`, `MAT_FACTOR_QR`, `MatInitializePackage()`
+`MatGetFactorAvailable()`, `MatFactorGetCanUseOrdering()`, `MatSolverTypeRegister()`, `MatSolverTypeGet()`,
+`MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ICC`, `MAT_FACTOR_ILU`, `MAT_FACTOR_QR`, `MatInitializePackage()`,
+`MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`, `MatILUFactorSymbolic()`,
+`MatICCFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactorNumeric()`
 
 # External Links
 $(_doc_external("Mat/MatGetFactor"))
@@ -8556,7 +9634,7 @@ Output Parameter:
 Level: intermediate
 
 -seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorType`, `MatGetFactor()`, `MatSetFactorType()`, `MAT_FACTOR_NONE`, `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ILU`,
-`MAT_FACTOR_ICC`,`MAT_FACTOR_ILUDT`, `MAT_FACTOR_QR`
+`MAT_FACTOR_ICC`, `MAT_FACTOR_ILUDT`, `MAT_FACTOR_QR`
 
 # External Links
 $(_doc_external("Mat/MatGetFactorType"))
@@ -9066,6 +10144,45 @@ end
 end 
 
 """
+	f::Ptr{Cvoid} = MatGetOperation(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOperation) 
+Gets a matrix operation for any matrix type.
+
+Not Collective
+
+Input Parameters:
+- `mat` - the matrix
+- `op`  - the name of the operation
+
+Output Parameter:
+- `f` - the function that provides the operation
+
+Level: developer
+
+-seealso: [](ch_matrices), `Mat`, `MatSetOperation()`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellGetOperation()`
+
+# External Links
+$(_doc_external("Mat/MatGetOperation"))
+"""
+function MatGetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation)
+    error("MatGetOperation: no generated method for these argument types")
+end
+
+@for_petsc function MatGetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
+	f_ = Ref{Ptr{Cvoid}}()
+
+    @chk ccall(
+               (:MatGetOperation, $petsc_library),
+               PetscErrorCode,
+               (CMat, MatOperation, Ptr{Ptr{Cvoid}}),
+               mat, op, f_,
+              )
+
+	f = f_[]
+
+	return f
+end 
+
+"""
 	flg::PetscBool = MatGetOption(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOption) 
 Gets a parameter option that has been set for a matrix.
 
@@ -9181,26 +10298,38 @@ end
 end 
 
 """
-	MatGetOrderingList(petsclib::PetscLibType,list::PetscFunctionList) 
+	list::PetscFunctionList = MatGetOrderingList(petsclib::PetscLibType) 
+Get the `PetscFunctionList` of registered matrix ordering methods.
+
+Not Collective
+
+Output Parameter:
+- `list` - the function list
+
+Level: developer
+
+-seealso: `Mat`, `MatOrderingType`, `MatOrderingRegister()`, `MatGetOrdering()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatGetOrderingList"))
 """
-function MatGetOrderingList(petsclib::PetscLibType, list::PetscFunctionList)
+function MatGetOrderingList(petsclib::PetscLibType)
     error("MatGetOrderingList: no generated method for these argument types")
 end
 
-@for_petsc function MatGetOrderingList(petsclib::$UnionPetscLib, list::PetscFunctionList )
+@for_petsc function MatGetOrderingList(petsclib::$UnionPetscLib)
+	list_ = Ref{PetscFunctionList}()
 
     @chk ccall(
                (:MatGetOrderingList, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscFunctionList},),
-               list,
+               list_,
               )
 
+	list = list_[]
 
-	return nothing
+	return list
 end 
 
 """
@@ -10251,6 +11380,242 @@ end
 end 
 
 """
+	MatH2OpusCompress(petsclib::PetscLibType,A::AbstractPetscMat, tol::PetscReal) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusCompress"))
+"""
+function MatH2OpusCompress(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real)
+    error("MatH2OpusCompress: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusCompress(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal )
+
+    @chk ccall(
+               (:MatH2OpusCompress, $petsc_library),
+               PetscErrorCode,
+               (CMat, $PetscReal),
+               A, tol,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatH2OpusGetIndexMap(petsclib::PetscLibType,A::AbstractPetscMat, indexmap::AbstractIS) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusGetIndexMap"))
+"""
+function MatH2OpusGetIndexMap(petsclib::PetscLibType, A::AbstractPetscMat, indexmap::AbstractIS)
+    error("MatH2OpusGetIndexMap: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusGetIndexMap(petsclib::$UnionPetscLib, A::AbstractPetscMat, indexmap::AbstractIS )
+	indexmap_ = Ref(indexmap.ptr)
+
+    @chk ccall(
+               (:MatH2OpusGetIndexMap, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{CIS}),
+               A, indexmap_,
+              )
+
+	indexmap.ptr = indexmap_[]
+
+	return nothing
+end 
+
+"""
+	nm::PetscBool = MatH2OpusGetNativeMult(petsclib::PetscLibType,A::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusGetNativeMult"))
+"""
+function MatH2OpusGetNativeMult(petsclib::PetscLibType, A::AbstractPetscMat)
+    error("MatH2OpusGetNativeMult: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusGetNativeMult(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	nm_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:MatH2OpusGetNativeMult, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{PetscBool}),
+               A, nm_,
+              )
+
+	nm = nm_[]
+
+	return nm
+end 
+
+"""
+	MatH2OpusLowRankUpdate(petsclib::PetscLibType,A::AbstractPetscMat, U::AbstractPetscMat, V::AbstractPetscMat, s::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusLowRankUpdate"))
+"""
+function MatH2OpusLowRankUpdate(petsclib::PetscLibType, A::AbstractPetscMat, U::AbstractPetscMat, V::AbstractPetscMat, s::Number)
+    error("MatH2OpusLowRankUpdate: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusLowRankUpdate(petsclib::$UnionPetscLib, A::AbstractPetscMat, U::AbstractPetscMat, V::AbstractPetscMat, s::$PetscScalar )
+
+    @chk ccall(
+               (:MatH2OpusLowRankUpdate, $petsc_library),
+               PetscErrorCode,
+               (CMat, CMat, CMat, $PetscScalar),
+               A, U, V, s,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatH2OpusMapVec(petsclib::PetscLibType,A::AbstractPetscMat, nativetopetsc::PetscBool, in::AbstractPetscVec, out::AbstractPetscVec) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusMapVec"))
+"""
+function MatH2OpusMapVec(petsclib::PetscLibType, A::AbstractPetscMat, nativetopetsc::PetscBool, in::AbstractPetscVec, out::AbstractPetscVec)
+    error("MatH2OpusMapVec: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusMapVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, nativetopetsc::PetscBool, in::AbstractPetscVec, out::AbstractPetscVec )
+	out_ = Ref(out.ptr)
+
+    @chk ccall(
+               (:MatH2OpusMapVec, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool, CVec, Ptr{CVec}),
+               A, nativetopetsc, in, out_,
+              )
+
+	out.ptr = out_[]
+
+	return nothing
+end 
+
+"""
+	MatH2OpusOrthogonalize(petsclib::PetscLibType,A::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusOrthogonalize"))
+"""
+function MatH2OpusOrthogonalize(petsclib::PetscLibType, A::AbstractPetscMat)
+    error("MatH2OpusOrthogonalize: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusOrthogonalize(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+
+    @chk ccall(
+               (:MatH2OpusOrthogonalize, $petsc_library),
+               PetscErrorCode,
+               (CMat,),
+               A,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatH2OpusSetNativeMult(petsclib::PetscLibType,A::AbstractPetscMat, nm::PetscBool) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusSetNativeMult"))
+"""
+function MatH2OpusSetNativeMult(petsclib::PetscLibType, A::AbstractPetscMat, nm::PetscBool)
+    error("MatH2OpusSetNativeMult: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusSetNativeMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, nm::PetscBool )
+
+    @chk ccall(
+               (:MatH2OpusSetNativeMult, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool),
+               A, nm,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatH2OpusSetSamplingMat(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, bs::PetscInt, tol::PetscReal) 
+
+# External Links
+$(_doc_external("Mat/MatH2OpusSetSamplingMat"))
+"""
+function MatH2OpusSetSamplingMat(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, bs::Integer, tol::Real)
+    error("MatH2OpusSetSamplingMat: no generated method for these argument types")
+end
+
+@for_petsc function MatH2OpusSetSamplingMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, bs::$PetscInt, tol::$PetscReal )
+
+    @chk ccall(
+               (:MatH2OpusSetSamplingMat, $petsc_library),
+               PetscErrorCode,
+               (CMat, CMat, $PetscInt, $PetscReal),
+               A, B, bs, tol,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatHIPSPARSESetFormat(petsclib::PetscLibType,A::AbstractPetscMat, op::MatHIPSPARSEFormatOperation, format::MatHIPSPARSEStorageFormat) 
+
+# External Links
+$(_doc_external("Mat/MatHIPSPARSESetFormat"))
+"""
+function MatHIPSPARSESetFormat(petsclib::PetscLibType, A::AbstractPetscMat, op::MatHIPSPARSEFormatOperation, format::MatHIPSPARSEStorageFormat)
+    error("MatHIPSPARSESetFormat: no generated method for these argument types")
+end
+
+@for_petsc function MatHIPSPARSESetFormat(petsclib::$UnionPetscLib, A::AbstractPetscMat, op::MatHIPSPARSEFormatOperation, format::MatHIPSPARSEStorageFormat )
+
+    @chk ccall(
+               (:MatHIPSPARSESetFormat, $petsc_library),
+               PetscErrorCode,
+               (CMat, MatHIPSPARSEFormatOperation, MatHIPSPARSEStorageFormat),
+               A, op, format,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatHIPSPARSESetUseCPUSolve(petsclib::PetscLibType,A::AbstractPetscMat, use_cpu::PetscBool) 
+
+# External Links
+$(_doc_external("Mat/MatHIPSPARSESetUseCPUSolve"))
+"""
+function MatHIPSPARSESetUseCPUSolve(petsclib::PetscLibType, A::AbstractPetscMat, use_cpu::PetscBool)
+    error("MatHIPSPARSESetUseCPUSolve: no generated method for these argument types")
+end
+
+@for_petsc function MatHIPSPARSESetUseCPUSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, use_cpu::PetscBool )
+
+    @chk ccall(
+               (:MatHIPSPARSESetUseCPUSolve, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool),
+               A, use_cpu,
+              )
+
+
+	return nothing
+end 
+
+"""
 	parcsr::Ptr{hypre_ParCSRMatrix} = MatHYPREGetParCSR(petsclib::PetscLibType,A::AbstractPetscMat) 
 Gets the pointer to the ParCSR matrix
 
@@ -10796,7 +12161,7 @@ Input Parameters:
 - `row`  - row permutation
 - `col`  - column permutation
 - `info` - structure containing
--seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`
+-seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`,
 `MatGetOrdering()`, `MatFactorInfo`
 
 # External Links
@@ -11337,18 +12702,33 @@ end
 end 
 
 """
-	MatInodeAdjustForInodes(petsclib::PetscLibType,A::AbstractPetscMat, rperm::AbstractIS, cperm::AbstractIS) 
+	rperm::IS,cperm::IS = MatInodeAdjustForInodes(petsclib::PetscLibType,A::AbstractPetscMat) 
+If the matrix uses identical
+which are expressed on inode blocks, with permutations expressed on the individual rows and columns.
+
+Not Collective
+
+Input Parameter:
+- `A` - the matrix
+
+Output Parameters:
+- `rperm` - the row permutation, updated in place
+- `cperm` - the column permutation, updated in place
+
+Level: developer
+
+-seealso: `Mat`, `MATSEQAIJ`, `MatInodeGetInodeSizes()`, `MatGetOrdering()`
 
 # External Links
 $(_doc_external("Mat/MatInodeAdjustForInodes"))
 """
-function MatInodeAdjustForInodes(petsclib::PetscLibType, A::AbstractPetscMat, rperm::AbstractIS, cperm::AbstractIS)
+function MatInodeAdjustForInodes(petsclib::PetscLibType, A::AbstractPetscMat)
     error("MatInodeAdjustForInodes: no generated method for these argument types")
 end
 
-@for_petsc function MatInodeAdjustForInodes(petsclib::$UnionPetscLib, A::AbstractPetscMat, rperm::AbstractIS, cperm::AbstractIS )
-	rperm_ = Ref(rperm.ptr)
-	cperm_ = Ref(cperm.ptr)
+@for_petsc function MatInodeAdjustForInodes(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	rperm_ = Ref{CIS}()
+	cperm_ = Ref{CIS}()
 
     @chk ccall(
                (:MatInodeAdjustForInodes, $petsc_library),
@@ -11357,10 +12737,10 @@ end
                A, rperm_, cperm_,
               )
 
-	rperm.ptr = rperm_[]
-	cperm.ptr = cperm_[]
+	rperm = IS(rperm_[], petsclib)
+	cperm = IS(cperm_[], petsclib)
 
-	return nothing
+	return rperm,cperm
 end 
 
 """
@@ -12719,9 +14099,9 @@ Input Parameters:
 - `type` - scale type, see `MatLMVMDenseSetType`
 
 Options Database Keys:
-- `-mat_lqn_type   <reorder,inplace>` - set the strategy
-- `-mat_lbfgs_type <reorder,inplace>` - set the strategy
-- `-mat_ldfp_type  <reorder,inplace>` - set the strategy
+- `-mat_lqn_type   (reorder|inplace)` - set the strategy
+- `-mat_lbfgs_type (reorder|inplace)` - set the strategy
+- `-mat_ldfp_type  (reorder|inplace)` - set the strategy
 
 Level: intermediate
 
@@ -12753,6 +14133,19 @@ end
 
 """
 	hist_size::PetscInt = MatLMVMGetHistorySize(petsclib::PetscLibType,B::AbstractPetscMat) 
+Get the number of past iterates stored for the construction of the limited
+
+Not Collective
+
+Input Parameter:
+- `B` - A `MATLMVM` matrix
+
+Output Parameter:
+- `hist_size` - number of past iterates stored
+
+Level: intermediate
+
+-seealso: [](ch_ksp), [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetHistorySize()`, `MatLMVMGetUpdateCount()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMGetHistorySize"))
@@ -13149,7 +14542,7 @@ Input Parameters:
 - `hist_size` - number of past iterates (default 5)
 
 Options Database Key:
-- `-mat_lmvm_hist_size <m>` - set number of past iterates
+- `-mat_lmvm_hist_size m` - set number of past iterates
 
 Level: beginner
 
@@ -13567,7 +14960,7 @@ Input Parameters:
 - `stype` - scale type, see `MatLMVMSymBroydenScaleType`
 
 Options Database Key:
-- `-mat_lmvm_scale_type <none,scalar,diagonal>` - set the scaling type
+- `-mat_lmvm_scale_type (none|scalar|diagonal)` - set the scaling type
 
 Level: intermediate
 
@@ -13837,7 +15230,7 @@ or some related function before a call to `MatLoad()`
 - `viewer` - `PETSCVIEWERBINARY`/`PETSCVIEWERHDF5` file viewer
 
 Options Database Key:
-- `-matload_block_size <bs>` - set block size
+- `-matload_block_size bs` - set block size
 
 Level: beginner
 
@@ -14431,18 +15824,34 @@ end
 end 
 
 """
-	colmap::Ptr{PetscInt} = MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType,A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat) 
+	Ad::PetscMat,Ao::PetscMat,colmap::Ptr{PetscInt} = MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType,A::AbstractPetscMat) 
+Get the on
+matrices that make up an `MATMPIBAIJ` matrix, together with the local-to-global column map for the off-diagonal block.
+
+Not Collective
+
+Input Parameter:
+- `A` - the `MATMPIBAIJ` matrix
+
+Output Parameters:
+- `Ad`     - the diagonal block `MATSEQBAIJ`, or `NULL` if not needed
+- `Ao`     - the off-diagonal block `MATSEQBAIJ`, or `NULL` if not needed
+- `colmap` - the local-to-global column index map for `Ao`, or `NULL` if not needed
+
+Level: advanced
+
+-seealso: `Mat`, `MATMPIBAIJ`, `MATSEQBAIJ`, `MatMPIAIJGetSeqAIJ()`
 
 # External Links
 $(_doc_external("Mat/MatMPIBAIJGetSeqBAIJ"))
 """
-function MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType, A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat)
+function MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType, A::AbstractPetscMat)
     error("MatMPIBAIJGetSeqBAIJ: no generated method for these argument types")
 end
 
-@for_petsc function MatMPIBAIJGetSeqBAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat )
-	Ad_ = Ref(Ad.ptr)
-	Ao_ = Ref(Ao.ptr)
+@for_petsc function MatMPIBAIJGetSeqBAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	Ad_ = Ref{CMat}()
+	Ao_ = Ref{CMat}()
 	colmap_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
@@ -14452,11 +15861,11 @@ end
                A, Ad_, Ao_, colmap_,
               )
 
-	Ad.ptr = Ad_[]
-	Ao.ptr = Ao_[]
+	Ad = PetscMat(Ad_[], petsclib)
+	Ao = PetscMat(Ao_[], petsclib)
 	colmap = colmap_[]
 
-	return colmap
+	return Ad,Ao,colmap
 end 
 
 """
@@ -14468,7 +15877,7 @@ Input Parameters:
 - `fact` - factor
 
 Options Database Key:
-- `-mat_use_hash_table <fact>` - provide the factor
+- `-mat_use_hash_table fact` - provide the factor
 
 Level: advanced
 
@@ -14520,8 +15929,8 @@ each block row) or `NULL`.
 If the *_nnz parameter is given then the *_nz parameter is ignored
 
 Options Database Keys:
-- `-mat_block_size`            - size of the blocks to use
-- `-mat_use_hash_table <fact>` - set hash table factor
+- `-mat_block_size`          - size of the blocks to use
+- `-mat_use_hash_table fact` - set hash table factor
 
 Level: intermediate
 
@@ -15196,7 +16605,7 @@ the second never stores more than one portion of the `B` matrix at a time but re
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatProductCreate()`, `MATPRODUCT_ABt`, `MatMatMult()`, `MatTransposeMatMult()` `MatPtAP()`, `MatProductAlgorithm`, `MatProductType`
+-seealso: [](ch_matrices), `Mat`, `MatProductCreate()`, `MATPRODUCT_ABt`, `MatMatMult()`, `MatTransposeMatMult()`, `MatPtAP()`, `MatProductAlgorithm`, `MatProductType`
 
 # External Links
 $(_doc_external("Mat/MatMatTransposeMult"))
@@ -15336,47 +16745,6 @@ end
 	dual = PetscMat(dual_[], petsclib)
 
 	return dual
-end 
-
-"""
-	missing::PetscBool,dd::PetscInt = MatMissingDiagonal(petsclib::PetscLibType,mat::AbstractPetscMat) 
-Determine if sparse matrix is missing a diagonal entry (or block entry for `MATBAIJ` and `MATSBAIJ` matrices) in the nonzero structure
-
-Not Collective
-
-Input Parameter:
-- `mat` - the matrix
-
-Output Parameters:
-- `missing` - is any diagonal entry missing
-- `dd`      - first diagonal entry that is missing (optional) on this process
-
-Level: advanced
-
--seealso: [](ch_matrices), `Mat`
-
-# External Links
-$(_doc_external("Mat/MatMissingDiagonal"))
-"""
-function MatMissingDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatMissingDiagonal: no generated method for these argument types")
-end
-
-@for_petsc function MatMissingDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
-	missing_ = Ref{PetscBool}()
-	dd_ = Ref{$PetscInt}()
-
-    @chk ccall(
-               (:MatMissingDiagonal, $petsc_library),
-               PetscErrorCode,
-               (CMat, Ptr{PetscBool}, Ptr{$PetscInt}),
-               mat, missing_, dd_,
-              )
-
-	missing = missing_[]
-	dd = dd_[]
-
-	return missing,dd
 end 
 
 """
@@ -16152,6 +17520,44 @@ end
 end 
 
 """
+	tmpdir::String = MatMumpsGetOocTmpDir(petsclib::PetscLibType,F::AbstractPetscMat) 
+Get MUMPS out
+
+Logically Collective
+
+Input Parameter:
+- `F` - the factored matrix obtained by calling `MatGetFactor()` with a `MatSolverType` of `MATSOLVERMUMPS` and a `MatFactorType` of `MAT_FACTOR_LU` or `MAT_FACTOR_CHOLESKY`.
+
+Output Parameter:
+- `tmpdir` - temporary directory for out-of-core facility.
+
+Level: beginner
+
+-seealso: [](ch_matrices), `Mat`, `MatGetFactor()`, `MatMumpsSetOocTmpDir`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `MatMumpsSetCntl()`, `MatMumpsGetInfo()`, `MatMumpsGetInfog()`, `MatMumpsGetRinfo()`, `MatMumpsGetRinfog()`
+
+# External Links
+$(_doc_external("Mat/MatMumpsGetOocTmpDir"))
+"""
+function MatMumpsGetOocTmpDir(petsclib::PetscLibType, F::AbstractPetscMat)
+    error("MatMumpsGetOocTmpDir: no generated method for these argument types")
+end
+
+@for_petsc function MatMumpsGetOocTmpDir(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	tmpdir_ = Ref{Ptr{Cchar}}()
+
+    @chk ccall(
+               (:MatMumpsGetOocTmpDir, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{Cchar}}),
+               F, tmpdir_,
+              )
+
+	tmpdir = unsafe_string(tmpdir_[])
+
+	return tmpdir
+end 
+
+"""
 	val::PetscReal = MatMumpsGetRinfo(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt) 
 Get MUMPS parameter RINFO() <https://mumps
 
@@ -16277,7 +17683,7 @@ Input Parameters:
 - `val`   - value of MUMPS `CNTL(icntl)`
 
 Options Database Key:
-- `-mat_mumps_cntl_<icntl> <val>` - change the option numbered icntl to ival
+- `-mat_mumps_cntl_icntl val` - change the option numbered icntl to ival
 
 Level: beginner
 
@@ -16315,7 +17721,7 @@ Input Parameters:
 - `ival`  - value of MUMPS `ICNTL(icntl)`
 
 Options Database Key:
-- `-mat_mumps_icntl_<icntl> <ival>` - change the option numbered `icntl` to `ival`
+- `-mat_mumps_icntl_ICNTL ival` - change the option numbered `icntl` to `ival`, here ICNTL denotes an integer value
 
 Level: beginner
 
@@ -16335,6 +17741,40 @@ end
                PetscErrorCode,
                (CMat, $PetscInt, $PetscInt),
                F, icntl, ival,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatMumpsSetOocTmpDir(petsclib::PetscLibType,F::AbstractPetscMat, tmpdir::String) 
+Set MUMPS out
+
+Logically Collective
+
+Input Parameters:
+- `F`      - the factored matrix obtained by calling `MatGetFactor()` with a `MatSolverType` of `MATSOLVERMUMPS` and a `MatFactorType` of `MAT_FACTOR_LU` or `MAT_FACTOR_CHOLESKY`.
+- `tmpdir` - temporary directory for out-of-core facility.
+
+Level: beginner
+
+-seealso: [](ch_matrices), `Mat`, `MatGetFactor()`, `MatMumpsGetOocTmpDir`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `MatMumpsSetCntl()`, `MatMumpsGetInfo()`, `MatMumpsGetInfog()`, `MatMumpsGetRinfo()`, `MatMumpsGetRinfog()`
+
+# External Links
+$(_doc_external("Mat/MatMumpsSetOocTmpDir"))
+"""
+function MatMumpsSetOocTmpDir(petsclib::PetscLibType, F::AbstractPetscMat, tmpdir::String)
+    error("MatMumpsSetOocTmpDir: no generated method for these argument types")
+end
+
+@for_petsc function MatMumpsSetOocTmpDir(petsclib::$UnionPetscLib, F::AbstractPetscMat, tmpdir::String )
+
+    @chk ccall(
+               (:MatMumpsSetOocTmpDir, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Cchar}),
+               F, tmpdir,
               )
 
 
@@ -16583,7 +18023,7 @@ end
 end 
 
 """
-	MatNestSetSubMats(petsclib::PetscLibType,A::AbstractPetscMat, nr::PetscInt, is_row::Vector{<:AbstractIS}, nc::PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat}) 
+	MatNestSetSubMats(petsclib::PetscLibType,A::AbstractPetscMat, nr::PetscInt, is_row::Vector{<:AbstractIS}, nc::PetscInt, is_col::Vector{<:AbstractIS}, M_a::Vector{<:AbstractPetscMat}) 
 Sets the nested submatrices in a `MATNEST`
 
 Collective
@@ -16603,17 +18043,17 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNestSetSubMats"))
 """
-function MatNestSetSubMats(petsclib::PetscLibType, A::AbstractPetscMat, nr::Integer, is_row::Vector{<:AbstractIS}, nc::Integer, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat})
+function MatNestSetSubMats(petsclib::PetscLibType, A::AbstractPetscMat, nr::Integer, is_row::Vector{<:AbstractIS}, nc::Integer, is_col::Vector{<:AbstractIS}, M_a::Vector{<:AbstractPetscMat})
     error("MatNestSetSubMats: no generated method for these argument types")
 end
 
-@for_petsc function MatNestSetSubMats(petsclib::$UnionPetscLib, A::AbstractPetscMat, nr::$PetscInt, is_row::Vector{<:AbstractIS}, nc::$PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat} )
+@for_petsc function MatNestSetSubMats(petsclib::$UnionPetscLib, A::AbstractPetscMat, nr::$PetscInt, is_row::Vector{<:AbstractIS}, nc::$PetscInt, is_col::Vector{<:AbstractIS}, M_a::Vector{<:AbstractPetscMat} )
 
     @chk ccall(
                (:MatNestSetSubMats, $petsc_library),
                PetscErrorCode,
                (CMat, $PetscInt, Ptr{CIS}, $PetscInt, Ptr{CIS}, Ptr{CMat}),
-               A, nr, is_row, nc, is_col, a,
+               A, nr, is_row, nc, is_col, M_a,
               )
 
 
@@ -16928,7 +18368,8 @@ Output Parameter:
 Level: intermediate
 
 Example:
--seealso: [](ch_matrices), `MatProduct`, `Mat`, `MatProductCreateWithMat()`, `MatProductSetType()`, `MatProductSetAlgorithm()`, `MatProductClear()`
+-seealso: [](ch_matrices), `MatProduct`, `Mat`, `MatProductCreateWithMat()`, `MatProductSetType()`, `MatProductSetAlgorithm()`, `MatProductClear()`,
+`MatProductSymbolic()`, `MatProductNumeric()`, `MatProductAlgorithm`, `MatProductType`
 
 # External Links
 $(_doc_external("Mat/MatProductCreate"))
@@ -17189,7 +18630,7 @@ Input Parameters:
 - `alg` - particular implementation algorithm of the matrix product, e.g., `MATPRODUCTALGORITHMDEFAULT`.
 
 Options Database Key:
-- `-mat_product_algorithm <algorithm>` - Sets the algorithm, see `MatProductAlgorithm`
+- `-mat_product_algorithm algorithm` - Sets the algorithm, see `MatProductAlgorithm`
 
 Level: intermediate
 
@@ -17262,7 +18703,7 @@ Input Parameter:
 
 Options Database Keys:
 - `-mat_product_clear`                 - Clear intermediate data structures after `MatProductNumeric()` has been called
-- `-mat_product_algorithm <algorithm>` - Sets the algorithm, see `MatProductAlgorithm` for possible values
+- `-mat_product_algorithm algorithm`   - Sets the algorithm, see `MatProductAlgorithm` for possible values
 - `-mat_product_algorithm_backend_cpu` - Use the CPU to perform the computation even if the matrix is a GPU matrix
 
 Level: intermediate
@@ -17512,7 +18953,7 @@ end
 end 
 
 """
-	A::PetscMat = MatPythonCreate(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, pyname::String) 
+	A::PetscMat = MatPythonCreate(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, pyname::String) 
 Create a `Mat` object implemented in Python.
 
 Collective
@@ -17535,18 +18976,18 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatPythonCreate"))
 """
-function MatPythonCreate(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M::Integer, N::Integer, pyname::String)
+function MatPythonCreate(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, pyname::String)
     error("MatPythonCreate: no generated method for these argument types")
 end
 
-@for_petsc function MatPythonCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, pyname::String )
+@for_petsc function MatPythonCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, pyname::String )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatPythonCreate, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cchar}, Ptr{CMat}),
-               comm, m, n, M, N, pyname, A_,
+               comm, m, n, M_M, M_N, pyname, A_,
               )
 
 	A = PetscMat(A_[], petsclib)
@@ -17603,7 +19044,7 @@ Input Parameters:
 - `pyname`  - full dotted Python name [package].module[.{class|function}]
 
 Options Database Key:
-- `-mat_python_type <pyname>`  - python class
+- `-mat_python_type pyname`  - python class
 
 Level: intermediate
 
@@ -17958,6 +19399,17 @@ end
 
 """
 	MatReorderingSeqSBAIJ(petsclib::PetscLibType,A::AbstractPetscMat, perm::AbstractIS) 
+Prepare an updated index structure for a symmetric reordering of a `MATSEQSBAIJ` matrix.
+
+Not Collective
+
+Input Parameters:
+- `A`    - the `MATSEQSBAIJ` matrix
+- `perm` - the (assumed symmetric) permutation to be applied
+
+Level: developer
+
+-seealso: `Mat`, `MATSEQSBAIJ`, `MatGetOrdering()`, `MatPermute()`
 
 # External Links
 $(_doc_external("Mat/MatReorderingSeqSBAIJ"))
@@ -18485,11 +19937,11 @@ Input Parameters:
 - `h`     - differencing parameter
 
 Options Database Keys:
-- `-snes_mf_err <error_rel>` - see `MatCreateSNESMF()`
-- `-snes_mf_umin <umin>`     - see `MatCreateSNESMF()`
-- `-snes_mf_compute_err`     - compute the square root or relative error in function
-- `-snes_mf_freq_err <freq>` - set the frequency to recompute the parameters
-- `-snes_mf_jorge`           - use the method of Jorge More
+- `-snes_mf_err error_rel` - see `MatCreateSNESMF()`
+- `-snes_mf_umin umin`     - see `MatCreateSNESMF()`
+- `-snes_mf_compute_err`   - compute the square root or relative error in function
+- `-snes_mf_freq_err freq` - set the frequency to recompute the parameters
+- `-snes_mf_jorge`         - use the method of Jorge More
 
 Level: advanced
 
@@ -18577,9 +20029,7 @@ SOR Flags:
 - `SOR_LOCAL_BACKWARD_SWEEP`     - local forward SOR
 - `SOR_LOCAL_SYMMETRIC_SWEEP`     - local SSOR
 - `SOR_EISENSTAT`     - SOR with Eisenstat trick
-- `SOR_APPLY_UPPER`, `SOR_APPLY_LOWER`     - applies
-upper/lower triangular part of matrix to
-vector (with omega)
+- `SOR_APPLY_UPPER`, `SOR_APPLY_LOWER`     - applies upper/lower triangular part of matrix to vector (with `omega`)
 - `SOR_ZERO_INITIAL_GUESS`     - zero initial guess
 
 Level: developer
@@ -19743,9 +21193,6 @@ Input Parameter:
 Output Parameter:
 - `ksp` - the linear solver object
 
-Options Database Key:
-- `-fieldsplit_<splitname_0>_XXX` - sets `KSP` and `PC` options for the 0-split solver inside the Schur complement used in `PCFIELDSPLIT`; default <splitname_0> is 0.
-
 Level: intermediate
 
 -seealso: [](ch_ksp), `Mat`, `MatSchurComplementSetKSP()`, `MatCreateSchurComplement()`, `MatCreateNormal()`, `MatMult()`, `MatCreate()`
@@ -19873,7 +21320,7 @@ Input Parameters:
 `MAT_SCHUR_COMPLEMENT_AINV_DIAG`, `MAT_SCHUR_COMPLEMENT_AINV_LUMP`, `MAT_SCHUR_COMPLEMENT_AINV_BLOCK_DIAG`, or `MAT_SCHUR_COMPLEMENT_AINV_FULL`
 
 Options Database Key:
-- `-mat_schur_complement_ainv_type diag | lump | blockdiag | full` - set schur complement type
+- `-mat_schur_complement_ainv_type (diag|lump|blockdiag|full)` - set Schur complement type
 
 Level: advanced
 
@@ -20044,6 +21491,190 @@ end
 	return nothing
 end 
 
+"""
+	MatSeqAIJCUSPARSEGetArray(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSEGetArray"))
+"""
+function MatSeqAIJCUSPARSEGetArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatSeqAIJCUSPARSEGetArray: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSEGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSEGetArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJCUSPARSEGetArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSEGetArrayRead"))
+"""
+function MatSeqAIJCUSPARSEGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatSeqAIJCUSPARSEGetArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSEGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSEGetArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJCUSPARSEGetArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSEGetArrayWrite"))
+"""
+function MatSeqAIJCUSPARSEGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatSeqAIJCUSPARSEGetArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSEGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSEGetArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJCUSPARSEGetIJ(petsclib::PetscLibType,A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSEGetIJ"))
+"""
+function MatSeqAIJCUSPARSEGetIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint)
+    error("MatSeqAIJCUSPARSEGetIJ: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSEGetIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSEGetIJ, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool, Ptr{Ptr{Cint}}, Ptr{Ptr{Cint}}),
+               A, compressed, i, j,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJCUSPARSERestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSERestoreArray"))
+"""
+function MatSeqAIJCUSPARSERestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatSeqAIJCUSPARSERestoreArray: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSERestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSERestoreArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJCUSPARSERestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSERestoreArrayRead"))
+"""
+function MatSeqAIJCUSPARSERestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatSeqAIJCUSPARSERestoreArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSERestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSERestoreArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJCUSPARSERestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, M_a::PetscScalar) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSERestoreArrayWrite"))
+"""
+function MatSeqAIJCUSPARSERestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
+    error("MatSeqAIJCUSPARSERestoreArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSERestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSERestoreArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJCUSPARSERestoreIJ(petsclib::PetscLibType,A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJCUSPARSERestoreIJ"))
+"""
+function MatSeqAIJCUSPARSERestoreIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint)
+    error("MatSeqAIJCUSPARSERestoreIJ: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJCUSPARSERestoreIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint )
+
+    @chk ccall(
+               (:MatSeqAIJCUSPARSERestoreIJ, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool, Ptr{Ptr{Cint}}, Ptr{Ptr{Cint}}),
+               A, compressed, i, j,
+              )
+
+
+	return nothing
+end 
+
 # override for MatSeqAIJGetArray; C signature: MatSeqAIJGetArray(Mat A, PetscScalar* array[])
 """
     array::Vector{PetscScalar} = MatSeqAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat)
@@ -20095,7 +21726,7 @@ end
 	array::Ptr{PetscScalar} = MatSeqAIJGetArrayRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives read
 
-Not Collective; No Fortran Support
+Not Collective
 
 Input Parameter:
 - `A` - a `MATSEQAIJ` matrix
@@ -20133,7 +21764,7 @@ end
 	array::Ptr{PetscScalar} = MatSeqAIJGetArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives write
 
-Not Collective; No Fortran Support
+Not Collective
 
 Input Parameter:
 - `A` - a `MATSEQAIJ` matrix
@@ -20143,7 +21774,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJRestoreArrayRead()`
+-seealso: [](ch_matrices), `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJRestoreArrayWrite()`
 
 # External Links
 $(_doc_external("Mat/MatSeqAIJGetArrayWrite"))
@@ -20258,6 +21889,203 @@ end
 end 
 
 """
+	M_a::Ptr{PetscScalar} = MatSeqAIJHIPSPARSEGetArray(petsclib::PetscLibType,A::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSEGetArray"))
+"""
+function MatSeqAIJHIPSPARSEGetArray(petsclib::PetscLibType, A::AbstractPetscMat)
+    error("MatSeqAIJHIPSPARSEGetArray: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSEGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	M_a_ = Ref{Ptr{$PetscScalar}}()
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSEGetArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a_,
+              )
+
+	M_a = M_a_[]
+
+	return M_a
+end 
+
+"""
+	M_a::Ptr{PetscScalar} = MatSeqAIJHIPSPARSEGetArrayRead(petsclib::PetscLibType,A::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSEGetArrayRead"))
+"""
+function MatSeqAIJHIPSPARSEGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat)
+    error("MatSeqAIJHIPSPARSEGetArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSEGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	M_a_ = Ref{Ptr{$PetscScalar}}()
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSEGetArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a_,
+              )
+
+	M_a = M_a_[]
+
+	return M_a
+end 
+
+"""
+	M_a::Ptr{PetscScalar} = MatSeqAIJHIPSPARSEGetArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSEGetArrayWrite"))
+"""
+function MatSeqAIJHIPSPARSEGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat)
+    error("MatSeqAIJHIPSPARSEGetArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSEGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	M_a_ = Ref{Ptr{$PetscScalar}}()
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSEGetArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a_,
+              )
+
+	M_a = M_a_[]
+
+	return M_a
+end 
+
+"""
+	MatSeqAIJHIPSPARSEGetIJ(petsclib::PetscLibType,A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}}) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSEGetIJ"))
+"""
+function MatSeqAIJHIPSPARSEGetIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}})
+    error("MatSeqAIJHIPSPARSEGetIJ: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSEGetIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}} )
+	i_ = Ref{Ptr{Cint}}(i isa Ptr ? i : pointer(i))
+	j_ = Ref{Ptr{Cint}}(j isa Ptr ? j : pointer(j))
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSEGetIJ, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool, Ptr{Ptr{Cint}}, Ptr{Ptr{Cint}}),
+               A, compressed, i_, j_,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJHIPSPARSERestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{PetscScalar}}) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreArray"))
+"""
+function MatSeqAIJHIPSPARSERestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{<:Number}})
+    error("MatSeqAIJHIPSPARSERestoreArray: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSERestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{$PetscScalar}} )
+	M_a_ = Ref{Ptr{$PetscScalar}}(M_a isa Ptr ? M_a : pointer(M_a))
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSERestoreArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a_,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJHIPSPARSERestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{PetscScalar}}) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreArrayRead"))
+"""
+function MatSeqAIJHIPSPARSERestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{<:Number}})
+    error("MatSeqAIJHIPSPARSERestoreArrayRead: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSERestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{$PetscScalar}} )
+	M_a_ = Ref{Ptr{$PetscScalar}}(M_a isa Ptr ? M_a : pointer(M_a))
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSERestoreArrayRead, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a_,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJHIPSPARSERestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{PetscScalar}}) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreArrayWrite"))
+"""
+function MatSeqAIJHIPSPARSERestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{<:Number}})
+    error("MatSeqAIJHIPSPARSERestoreArrayWrite: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSERestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{$PetscScalar}} )
+	M_a_ = Ref{Ptr{$PetscScalar}}(M_a isa Ptr ? M_a : pointer(M_a))
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSERestoreArrayWrite, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, M_a_,
+              )
+
+
+	return nothing
+end 
+
+"""
+	MatSeqAIJHIPSPARSERestoreIJ(petsclib::PetscLibType,A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}}) 
+
+# External Links
+$(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreIJ"))
+"""
+function MatSeqAIJHIPSPARSERestoreIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}})
+    error("MatSeqAIJHIPSPARSERestoreIJ: no generated method for these argument types")
+end
+
+@for_petsc function MatSeqAIJHIPSPARSERestoreIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}} )
+	i_ = Ref{Ptr{Cint}}(i isa Ptr ? i : pointer(i))
+	j_ = Ref{Ptr{Cint}}(j isa Ptr ? j : pointer(j))
+
+    @chk ccall(
+               (:MatSeqAIJHIPSPARSERestoreIJ, $petsc_library),
+               PetscErrorCode,
+               (CMat, PetscBool, Ptr{Ptr{Cint}}, Ptr{Ptr{Cint}}),
+               A, compressed, i_, j_,
+              )
+
+
+	return nothing
+end 
+
+"""
 	C::PetscMat = MatSeqAIJKron(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, reuse::MatReuse) 
 Computes `C`, the Kronecker product of `A` and `B`.
 
@@ -20368,7 +22196,7 @@ end
 	MatSeqAIJRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, array::Union{Ptr, AbstractArray{PetscScalar}}) 
 restore the read
 
-Not Collective; No Fortran Support
+Not Collective
 
 Input Parameter:
 - `A` - a `MATSEQAIJ` matrix
@@ -20403,19 +22231,19 @@ end
 
 """
 	MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, array::Union{Ptr, AbstractArray{PetscScalar}}) 
-restore the read
+restore the write
 
-Not Collective; No Fortran Support
+Not Collective
 
 Input Parameter:
-- `A` - a MATSEQAIJ matrix
+- `A` - a `MATSEQAIJ` matrix
 
 Output Parameter:
 - `array` - pointer to the data
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJGetArrayRead()`
+-seealso: [](ch_matrices), `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJGetArrayWrite()`
 
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArrayWrite"))
@@ -20489,8 +22317,8 @@ Input Parameters:
 (possibly different for each row) or NULL
 
 Options Database Keys:
-- `-mat_no_inode`            - Do not use inodes
-- `-mat_inode_limit <limit>` - Sets inode limit (max limit=5)
+- `-mat_no_inode`          - Do not use inodes
+- `-mat_inode_limit limit` - Sets inode limit (max limit=5)
 
 Level: intermediate
 
@@ -20594,7 +22422,7 @@ Input Parameters:
 - `matype` - matrix type
 
 Options Database Key:
-- `-mat_seqaij_type  <method>` - for example seqaijcrl
+- `-mat_seqaij_type  method` - for example seqaijcrl
 
 Level: intermediate
 
@@ -20622,6 +22450,23 @@ end
 
 """
 	MatSeqAIJSetValuesLocalFast(petsclib::PetscLibType,A::AbstractPetscMat, m::PetscInt, im::Vector{PetscInt}, n::PetscInt, in::Vector{PetscInt}, v::Vector{PetscScalar}, is::InsertMode) 
+An optimized version of `MatSetValuesLocal()` for `MATSEQAIJ` matrices, valid under
+several restrictive assumptions.
+
+Not Collective
+
+Input Parameters:
+- `A`  - the `MATSEQAIJ` matrix
+- `m`  - the number of rows being set (must be 1)
+- `im` - array of length `m` giving the local row index
+- `n`  - the number of columns being set
+- `in` - array of length `n` giving the local column indices
+- `v`  - array of length `n` of values to add
+- `is` - the insert mode (must be `ADD_VALUES`)
+
+Level: developer
+
+-seealso: `Mat`, `MATSEQAIJ`, `MatSetValuesLocal()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetValuesLocalFast"))
@@ -20834,6 +22679,16 @@ end
 
 """
 	MatSeqDenseInvert(petsclib::PetscLibType,A::AbstractPetscMat) 
+Invert a small `MATSEQDENSE` matrix in place using a hard
+
+Not Collective
+
+Input Parameter:
+- `A` - the `MATSEQDENSE` matrix
+
+Level: developer
+
+-seealso: `Mat`, `MATSEQDENSE`, `MatInvertBlockDiagonal()`, `MatLUFactor()`, `MatSetErrorIfFailure()`, `MatFactorGetError()`
 
 # External Links
 $(_doc_external("Mat/MatSeqDenseInvert"))
@@ -21408,7 +23263,7 @@ Logically Collective
 Input Parameters:
 - `mat`     - the matrix
 - `fromRow` - matrix from which to copy row block size
-- `fromCol` - matrix from which to copy column block size (can be same as fromRow)
+- `fromCol` - matrix from which to copy column block size (can be same as `fromRow`)
 
 Level: developer
 
@@ -21524,7 +23379,7 @@ Input Parameters:
 Level: intermediate
 
 -seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorType`, `MatGetFactor()`, `MatGetFactorType()`, `MAT_FACTOR_NONE`, `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ILU`,
-`MAT_FACTOR_ICC`,`MAT_FACTOR_ILUDT`, `MAT_FACTOR_QR`
+`MAT_FACTOR_ICC`, `MAT_FACTOR_ILUDT`, `MAT_FACTOR_QR`
 
 # External Links
 $(_doc_external("Mat/MatSetFactorType"))
@@ -21563,6 +23418,7 @@ Options Database Keys:
 - `-mat_type mpidense` - `MATMPIDENSE`, uses `MatCreateDense()`
 - `-mat_type seqbaij`  - `MATSEQBAIJ`, uses `MatCreateSeqBAIJ()`
 - `-mat_type mpibaij`  - `MATMPIBAIJ`, uses `MatCreateBAIJ()`
+- `-mat_vec_type`      - the `VecType` used by `MatCreateVecs()`, see `MatSetVecType()`
 
 See the manpages for particular formats (e.g., `MATSEQAIJ`)
 for additional format-specific options.
@@ -21631,6 +23487,16 @@ end
 
 """
 	MatSetInf(petsclib::PetscLibType,A::AbstractPetscMat) 
+Set every entry (of a given nonzero pattern) of a matrix to positive infinity.
+
+Logically Collective
+
+Input Parameter:
+- `A` - the matrix
+
+Level: developer
+
+-seealso: `Mat`, `MatZeroEntries()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("Mat/MatSetInf"))
@@ -21795,6 +23661,41 @@ end
 end 
 
 """
+	MatSetOperation(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOperation, f::Ptr{Cvoid}) 
+Allows user to set a matrix operation for any matrix type
+
+Logically Collective
+
+Input Parameters:
+- `mat` - the matrix
+- `op`  - the name of the operation
+- `f`   - the function that provides the operation
+
+Level: developer
+
+-seealso: [](ch_matrices), `Mat`, `MatGetOperation()`, `MatCreateShell()`, `MatShellSetContext()`, `MatShellSetOperation()`
+
+# External Links
+$(_doc_external("Mat/MatSetOperation"))
+"""
+function MatSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation, f::Ptr{Cvoid})
+    error("MatSetOperation: no generated method for these argument types")
+end
+
+@for_petsc function MatSetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation, f::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:MatSetOperation, $petsc_library),
+               PetscErrorCode,
+               (CMat, MatOperation, Ptr{Cvoid}),
+               mat, op, f,
+              )
+
+
+	return nothing
+end 
+
+"""
 	MatSetOption(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOption, flg::PetscBool) 
 Sets a parameter option for a matrix. Some options
 may be specific to certain storage formats.  Some options
@@ -21915,7 +23816,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`,   [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatSetFromOptions()`, `MatSetOptionsPrefix()`, `MatAppendOptionsPrefixFactor()`
+-seealso: [](ch_matrices), `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatSetFromOptions()`, `MatSetOptionsPrefix()`, `MatAppendOptionsPrefixFactor()`
 
 # External Links
 $(_doc_external("Mat/MatSetOptionsPrefixFactor"))
@@ -22048,7 +23949,7 @@ end
 end 
 
 """
-	MatSetSizes(petsclib::PetscLibType,A::AbstractPetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) 
+	MatSetSizes(petsclib::PetscLibType,A::AbstractPetscMat, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt) 
 Sets the local and global sizes, and checks to determine compatibility
 
 Collective
@@ -22068,17 +23969,17 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetSizes"))
 """
-function MatSetSizes(petsclib::PetscLibType, A::AbstractPetscMat, m::Integer, n::Integer, M::Integer, N::Integer)
+function MatSetSizes(petsclib::PetscLibType, A::AbstractPetscMat, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
     error("MatSetSizes: no generated method for these argument types")
 end
 
-@for_petsc function MatSetSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt )
+@for_petsc function MatSetSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
 
     @chk ccall(
                (:MatSetSizes, $petsc_library),
                PetscErrorCode,
                (CMat, $PetscInt, $PetscInt, $PetscInt, $PetscInt),
-               A, m, n, M, N,
+               A, m, n, M_M, M_N,
               )
 
 
@@ -22101,7 +24002,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatStencil`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`
+-seealso: [](ch_matrices), `Mat`, `MatStencil`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`,
 `MatSetValues()`, `MatSetValuesBlockedStencil()`, `MatSetValuesStencil()`
 
 # External Links
@@ -22169,7 +24070,7 @@ Input Parameters:
 - `matype` - matrix type
 
 Options Database Key:
-- `-mat_type  <method>` - Sets the type; see `MatType`
+- `-mat_type type` - Sets the type; see `MatType`
 
 Level: intermediate
 
@@ -22430,7 +24331,7 @@ end
 end 
 
 """
-	MatSetValuesBlockedLocal(petsclib::PetscLibType,mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesBlockedLocal(petsclib::PetscLibType,mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds values into certain locations of a matrix,
 using a local ordering of the nodes a block at a time.
 
@@ -22442,7 +24343,7 @@ Input Parameters:
 - `irow` - the row local indices
 - `ncol` - number of columns
 - `icol` - the column local indices
-- `y`    - a one-dimensional array that contains the values implicitly stored as a two-dimensional array, by default in row-major order.
+- `v`    - a one-dimensional array that contains the values implicitly stored as a two-dimensional array, by default in row-major order.
 See `MAT_ROW_ORIENTED` in `MatSetOption()` for how to use column-major order.
 - `addv` - either `ADD_VALUES` to add values to any existing entries, or `INSERT_VALUES` to replace existing entries with new values
 
@@ -22454,17 +24355,17 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetValuesBlockedLocal"))
 """
-function MatSetValuesBlockedLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::Integer, irow::AbstractVector{<:Number}, ncol::Integer, icol::AbstractVector{<:Number}, y::AbstractVector{<:Number}, addv::InsertMode)
+function MatSetValuesBlockedLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::Integer, irow::AbstractVector{<:Number}, ncol::Integer, icol::AbstractVector{<:Number}, v::AbstractVector{<:Number}, addv::InsertMode)
     error("MatSetValuesBlockedLocal: no generated method for these argument types")
 end
 
-@for_petsc function MatSetValuesBlockedLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesBlockedLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesBlockedLocal, $petsc_library),
                PetscErrorCode,
                (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
-               mat, nrow, irow, ncol, icol, y, addv,
+               mat, nrow, irow, ncol, icol, v, addv,
               )
 
 
@@ -22490,7 +24391,7 @@ See `MAT_ROW_ORIENTED` in `MatSetOption()` for how to use column-major order.
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `DMDA`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`
+-seealso: [](ch_matrices), `Mat`, `DMDA`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`,
 `MatSetValues()`, `MatSetValuesStencil()`, `MatSetStencil()`, `DMCreateMatrix()`, `DMDAVecGetArray()`, `MatStencil`,
 `MatSetBlockSize()`, `MatSetLocalToGlobalMapping()`
 
@@ -22591,7 +24492,7 @@ end
 end 
 
 """
-	MatSetValuesLocal(petsclib::PetscLibType,mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesLocal(petsclib::PetscLibType,mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds values into certain locations of a matrix,
 using a local numbering of the rows and columns.
 
@@ -22603,7 +24504,7 @@ Input Parameters:
 - `irow` - the row local indices
 - `ncol` - number of columns
 - `icol` - the column local indices
-- `y`    - a one-dimensional array that contains the values implicitly stored as a two-dimensional array, by default in row-major order.
+- `v`    - a one-dimensional array that contains the values implicitly stored as a two-dimensional array, by default in row-major order.
 See `MAT_ROW_ORIENTED` in `MatSetOption()` for how to use column-major order.
 - `addv` - either `ADD_VALUES` to add values to any existing entries, or `INSERT_VALUES` to replace existing entries with new values
 
@@ -22615,17 +24516,17 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetValuesLocal"))
 """
-function MatSetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::Integer, irow::AbstractVector{<:Number}, ncol::Integer, icol::AbstractVector{<:Number}, y::AbstractVector{<:Number}, addv::InsertMode)
+function MatSetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::Integer, irow::AbstractVector{<:Number}, ncol::Integer, icol::AbstractVector{<:Number}, v::AbstractVector{<:Number}, addv::InsertMode)
     error("MatSetValuesLocal: no generated method for these argument types")
 end
 
-@for_petsc function MatSetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesLocal, $petsc_library),
                PetscErrorCode,
                (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
-               mat, nrow, irow, ncol, icol, y, addv,
+               mat, nrow, irow, ncol, icol, v, addv,
               )
 
 
@@ -22634,20 +24535,19 @@ end
 
 """
 	MatSetValuesRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, v::Vector{PetscScalar}) 
-Inserts a row (block row for `MATBAIJ` matrices) of nonzero
-values into a matrix
+Inserts a row of nonzero values into a matrix
 
 Not Collective
 
 Input Parameters:
 - `mat` - the matrix
-- `row` - the (block) row to set
-- `v`   - a logically two-dimensional (column major) array of values for  block matrices with blocksize larger than one, otherwise a one dimensional array of values
+- `row` - the row to set
+- `v`   - a one dimensional array of values
 
 Level: advanced
 
 -seealso: [](ch_matrices), `Mat`, `MatSetValues()`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`,
-`InsertMode`, `INSERT_VALUES`, `ADD_VALUES`
+`InsertMode`, `INSERT_VALUES`, `ADD_VALUES`, `MATAIJ`
 
 # External Links
 $(_doc_external("Mat/MatSetValuesRow"))
@@ -22671,21 +24571,19 @@ end
 
 """
 	MatSetValuesRowLocal(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, v::Vector{PetscScalar}) 
-Inserts a row (block row for `MATBAIJ` matrices) of nonzero
-values into a matrix
+Inserts a row of nonzero values into a matrix
 
 Not Collective
 
 Input Parameters:
 - `mat` - the matrix
-- `row` - the (block) row to set
-- `v`   - a one-dimensional array that contains the values. For `MATBAIJ` they are implicitly stored as a two-dimensional array, by default in row-major order.
-See `MAT_ROW_ORIENTED` in `MatSetOption()` for how to use column-major order.
+- `row` - the row to set
+- `v`   - a one-dimensional array that contains the values
 
 Level: intermediate
 
 -seealso: [](ch_matrices), `Mat`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`,
-`InsertMode`, `INSERT_VALUES`, `ADD_VALUES`, `MatSetValues()`, `MatSetValuesRow()`, `MatSetLocalToGlobalMapping()`
+`InsertMode`, `INSERT_VALUES`, `ADD_VALUES`, `MatSetValues()`, `MatSetValuesRow()`, `MatSetLocalToGlobalMapping()`, `MATAIJ`
 
 # External Links
 $(_doc_external("Mat/MatSetValuesRowLocal"))
@@ -22726,7 +24624,7 @@ See `MAT_ROW_ORIENTED` in `MatSetOption()` for how to use column-major order.
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `DMDA`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`
+-seealso: [](ch_matrices), `Mat`, `DMDA`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValuesBlocked()`, `MatSetValuesLocal()`,
 `MatSetValues()`, `MatSetValuesBlockedStencil()`, `MatSetStencil()`, `DMCreateMatrix()`, `DMDAVecGetArray()`, `MatStencil`
 
 # External Links
@@ -22795,9 +24693,12 @@ Input Parameters:
 - `mat`   - the matrix object
 - `vtype` - vector type
 
+Options Database Key:
+- `-mat_vec_type vtype` - set the `VecType` of the created vectors during `MatSetFromOptions()`
+
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `VecType`, `VecSetType()`, `MatGetVecType()`
+-seealso: [](ch_matrices), `Mat`, `VecType`, `VecSetType()`, `MatGetVecType()`, `MatCreateVecs()`
 
 # External Links
 $(_doc_external("Mat/MatSetVecType"))
@@ -22855,6 +24756,45 @@ end
 	ctx = ctx_[]
 
 	return ctx
+end 
+
+"""
+	g::Ptr{Cvoid} = MatShellGetOperation(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOperation) 
+Gets a matrix function for a `MATSHELL` shell matrix.
+
+Not Collective
+
+Input Parameters:
+- `mat` - the `MATSHELL` shell matrix
+- `op`  - the name of the operation
+
+Output Parameter:
+- `g` - the function that provides the operation.
+
+Level: advanced
+
+-seealso: [](ch_matrices), `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellSetOperation()`, `MatShellSetContext()`
+
+# External Links
+$(_doc_external("Mat/MatShellGetOperation"))
+"""
+function MatShellGetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation)
+    error("MatShellGetOperation: no generated method for these argument types")
+end
+
+@for_petsc function MatShellGetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
+	g_ = Ref{Ptr{Cvoid}}()
+
+    @chk ccall(
+               (:MatShellGetOperation, $petsc_library),
+               PetscErrorCode,
+               (CMat, MatOperation, Ptr{Ptr{Cvoid}}),
+               mat, op, g_,
+              )
+
+	g = g_[]
+
+	return g
 end 
 
 """
@@ -22961,7 +24901,7 @@ end
 end 
 
 """
-	MatShellSetMatProductOperation(petsclib::PetscLibType,A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType}) 
+	MatShellSetMatProductOperation(petsclib::PetscLibType,A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::MatType, Ctype::Union{Ptr, MatType}) 
 Allows user to set a matrix matrix operation for a `MATSHELL` shell matrix.
 
 Logically Collective; No Fortran Support
@@ -22982,22 +24922,56 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellSetMatProductOperation"))
 """
-function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType})
+function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::MatType, Ctype::Union{Ptr, MatType})
     error("MatShellSetMatProductOperation: no generated method for these argument types")
 end
 
-@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType} )
+@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::MatType, Ctype::Union{Ptr, MatType} )
 
     @chk ccall(
                (:MatShellSetMatProductOperation, $petsc_library),
                PetscErrorCode,
-               (CMat, MatProductType, external, external, external, MatType, MatType),
+               (CMat, MatProductType, external, external, Ptr{Cvoid}, MatType, MatType),
                A, ptype, symbolic, numeric, destroy, Btype, Ctype,
               )
 
 
 	return nothing
 end 
+
+# override for MatShellSetOperation; C signature: MatShellSetOperation(<not in API snapshot>)
+"""
+    MatShellSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation, g::Ptr)
+
+Allows user to set a matrix operation for a `MATSHELL` shell matrix.
+
+Logically Collective
+
+Input Parameters:
+`mat` - the `MATSHELL` shell matrix
+`op`  - the name of the operation
+`g`   - a pointer to the function that provides the operation created with `@cfunction`
+
+Level: advanced
+
+-seealso: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellGetOperation()`, `MatShellSetContext()`, `MatSetOperation()`, `MatShellSetManageScalingShifts()`, `MatShellSetMatProductOperation()`
+
+# External Links
+$(_doc_external("Mat/MatShellSetOperation"))
+"""
+function MatShellSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation, g::Ptr) end
+
+@for_petsc function MatShellSetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation, g::Ptr)
+
+    @chk ccall(
+               (:MatShellSetOperation, $petsc_library),
+               PetscErrorCode,
+               (CMat, MatOperation, Ptr{Cvoid}),
+               mat, op, g,
+              )
+
+	return nothing
+end
 
 """
 	MatShellSetVecType(petsclib::PetscLibType,mat::AbstractPetscMat, vtype::VecType) 
@@ -23307,6 +25281,54 @@ end
 end 
 
 """
+	foundtype::PetscBool,foundmtype::PetscBool = MatSolverTypeGet(petsclib::PetscLibType,type::MatSolverType, mtype::MatType, ftype::MatFactorType, noname::Ptr{Cvoid}) 
+Gets the function that creates the factor matrix if it exist
+
+Input Parameters:
+- `type`  - name of the package, for example `petsc` or `superlu`, if this is `NULL`, then the first result that satisfies the other criteria is returned
+- `ftype` - the type of factorization supported by the type
+- `mtype` - the matrix type that works with this type
+
+Output Parameters:
+- `foundtype`    - `PETSC_TRUE` if the type was registered
+- `foundmtype`   - `PETSC_TRUE` if the type supports the requested mtype
+- `createfactor` - routine that will create the factored matrix ready to be used or `NULL` if not found
+
+Calling sequence of `createfactor`:
+- `A`     - the matrix providing the factor matrix
+- `ftype` - the `MatFactorType` of the factor requested
+- `B`     - the new factor matrix that responds to MatXXFactorSymbolic,Numeric() functions, such as `MatLUFactorSymbolic()`
+
+Level: developer
+
+-seealso: [](ch_matrices), `Mat`, `MatFactorType`, `MatType`, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`, `MatSolverTypeRegister()`, `MatGetFactor()`,
+`MatInitializePackage()`
+
+# External Links
+$(_doc_external("Mat/MatSolverTypeGet"))
+"""
+function MatSolverTypeGet(petsclib::PetscLibType, type::MatSolverType, mtype::MatType, ftype::MatFactorType, noname::Ptr{Cvoid})
+    error("MatSolverTypeGet: no generated method for these argument types")
+end
+
+@for_petsc function MatSolverTypeGet(petsclib::$UnionPetscLib, type::MatSolverType, mtype::MatType, ftype::MatFactorType, noname::Ptr{Cvoid} )
+	foundtype_ = Ref{PetscBool}()
+	foundmtype_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:MatSolverTypeGet, $petsc_library),
+               PetscErrorCode,
+               (MatSolverType, MatType, MatFactorType, Ptr{PetscBool}, Ptr{PetscBool}, Ptr{Cvoid}),
+               type, mtype, ftype, foundtype_, foundmtype_, noname,
+              )
+
+	foundtype = foundtype_[]
+	foundmtype = foundmtype_[]
+
+	return foundtype,foundmtype
+end 
+
+"""
 	MatSolverTypeRegister(petsclib::PetscLibType,package::MatSolverType, mtype::MatType, ftype::MatFactorType, createfactor::external) 
 Registers a `MatSolverType` that works for a particular matrix type
 
@@ -23442,8 +25464,8 @@ Input Parameters:
 - `bsize` - the initial size of the block-stash(if used).
 
 Options Database Keys:
-- `-matstash_initial_size <size> or <size0,size1,...sizep-1>`            - set initial size
-- `-matstash_block_initial_size <bsize>  or <bsize0,bsize1,...bsizep-1>` - set initial block size
+- `-matstash_initial_size size or size0,size1,...,sizep-1`            - set initial size
+- `-matstash_block_initial_size bsize  or bsize0,bsize1,...,bsizep-1` - set initial block size
 
 Level: intermediate
 
@@ -23540,7 +25562,7 @@ end
 end 
 
 """
-	n::PetscInt,iss::Ptr{IS} = MatSubdomainsCreateCoalesce(petsclib::PetscLibType,A::AbstractPetscMat, N::PetscInt) 
+	M_n::PetscInt,iss::Ptr{IS} = MatSubdomainsCreateCoalesce(petsclib::PetscLibType,A::AbstractPetscMat, N::PetscInt) 
 Creates index subdomains by coalescing adjacent MPI processes' ownership ranges.
 
 Collective
@@ -23565,24 +25587,37 @@ function MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::AbstractPetscMat
 end
 
 @for_petsc function MatSubdomainsCreateCoalesce(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
-	n_ = Ref{$PetscInt}()
+	M_n_ = Ref{$PetscInt}()
 	iss_ = Ref{Ptr{IS}}()
 
     @chk ccall(
                (:MatSubdomainsCreateCoalesce, $petsc_library),
                PetscErrorCode,
                (CMat, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{CIS}}),
-               A, N, n_, iss_,
+               A, N, M_n_, iss_,
               )
 
-	n = n_[]
+	M_n = M_n_[]
 	iss = iss_[]
 
-	return n,iss
+	return M_n,iss
 end 
 
 """
 	diagU::PetscScalar = MatSuperluDistGetDiagU(petsclib::PetscLibType,F::AbstractPetscMat) 
+Get the diagonal of the U factor of a `MATSOLVERSUPERLU_DIST` factored matrix.
+
+Collective
+
+Input Parameter:
+- `F` - the factored matrix returned by `MatGetFactor()` with `MATSOLVERSUPERLU_DIST`
+
+Output Parameter:
+- `diagU` - array of the U factor diagonal; must be preallocated by the caller
+
+Level: advanced
+
+-seealso: `Mat`, `MATSOLVERSUPERLU_DIST`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatLUFactorNumeric()`
 
 # External Links
 $(_doc_external("Mat/MatSuperluDistGetDiagU"))
@@ -23617,7 +25652,7 @@ Input Parameters:
 - `dtol` - drop tolerance
 
 Options Database Key:
-- `-mat_superlu_ilu_droptol <dtol>` - the drop tolerance
+- `-mat_superlu_ilu_droptol dtol` - the drop tolerance
 
 Level: beginner
 
@@ -23994,7 +26029,7 @@ end
 end 
 
 """
-	MatUpdateMPIAIJWithArrays(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, Ii::Vector{PetscInt}, J::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatUpdateMPIAIJWithArrays(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, Ii::Vector{PetscInt}, J::Vector{PetscInt}, v::Vector{PetscScalar}) 
 updates a `MATMPIAIJ` matrix using arrays that contain in standard
 CSR format for the local rows. Only the numerical values are updated the other arrays must be identical to what was passed
 from `MatCreateMPIAIJWithArrays()`
@@ -24023,17 +26058,17 @@ Level: deprecated
 # External Links
 $(_doc_external("Mat/MatUpdateMPIAIJWithArrays"))
 """
-function MatUpdateMPIAIJWithArrays(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, n::Integer, M::Integer, N::Integer, Ii::AbstractVector{<:Number}, J::AbstractVector{<:Number}, v::AbstractVector{<:Number})
+function MatUpdateMPIAIJWithArrays(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, n::Integer, M_M::Integer, M_N::Integer, Ii::AbstractVector{<:Number}, J::AbstractVector{<:Number}, v::AbstractVector{<:Number})
     error("MatUpdateMPIAIJWithArrays: no generated method for these argument types")
 end
 
-@for_petsc function MatUpdateMPIAIJWithArrays(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, Ii::Vector{$PetscInt}, J::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatUpdateMPIAIJWithArrays(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, Ii::Vector{$PetscInt}, J::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatUpdateMPIAIJWithArrays, $petsc_library),
                PetscErrorCode,
                (CMat, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscScalar}),
-               mat, m, n, M, N, Ii, J, v,
+               mat, m, n, M_M, M_N, Ii, J, v,
               )
 
 
@@ -24051,18 +26086,18 @@ Input Parameters:
 - `viewer` - visualization context
 
 Options Database Keys:
-- `-mat_view ::ascii_info`           - Prints info on matrix at conclusion of `MatAssemblyEnd()`
-- `-mat_view ::ascii_info_detail`    - Prints more detailed info
-- `-mat_view`                        - Prints matrix in ASCII format
-- `-mat_view ::ascii_matlab`         - Prints matrix in MATLAB format
-- `-mat_view draw`                   - PetscDraws nonzero structure of matrix, using `MatView()` and `PetscDrawOpenX()`.
-- `-display <name>`                  - Sets display name (default is host)
-- `-draw_pause <sec>`                - Sets number of seconds to pause after display
-- `-mat_view socket`                 - Sends matrix to socket, can be accessed from MATLAB (see Users-Manual: ch_matlab for details)
-- `-viewer_socket_machine <machine>` - -
-- `-viewer_socket_port <port>`       - -
-- `-mat_view binary`                 - save matrix to file in binary format
-- `-viewer_binary_filename <name>`   - -
+- `-mat_view ::ascii_info`         - Prints info on matrix at conclusion of `MatAssemblyEnd()`
+- `-mat_view ::ascii_info_detail`  - Prints more detailed info
+- `-mat_view`                      - Prints matrix in ASCII format
+- `-mat_view ::ascii_matlab`       - Prints matrix in MATLAB format
+- `-mat_view draw`                 - PetscDraws nonzero structure of matrix, using `MatView()` and `PetscDrawOpenX()`.
+- `-display name`                  - Sets display name (default is host)
+- `-draw_pause sec`                - Sets number of seconds to pause after display
+- `-mat_view socket`               - Sends matrix to socket, can be accessed from MATLAB (see Users-Manual: ch_matlab for details)
+- `-viewer_socket_machine machine` - -
+- `-viewer_socket_port port`       - -
+- `-mat_view binary`               - save matrix to file in binary format
+- `-viewer_binary_filename name`   - -
 
 Level: beginner
 
@@ -24101,7 +26136,7 @@ Input Parameters:
 - `name` - command line option
 
 Options Database Key:
-- `-mat_view [viewertype]:...` - the viewer and its options
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

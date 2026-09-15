@@ -2289,7 +2289,7 @@ Not Collective
 
 Input Parameters:
 - `s`      - the `PetscSection`
-- `pStart` - the first point
+- `pStart` - the first `point`
 - `pEnd`   - one past the last point, `pStart`  \\le  `pEnd`
 
 Level: intermediate
@@ -3688,6 +3688,9 @@ Input Parameters:
 - `A`    - the `PetscSection` object to view
 - `obj`  - Optional object that provides the options prefix used for the options
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

@@ -23,9 +23,24 @@ function write_senums(io::IO, api::API, r::Rules)
     end
 end
 
-function write_typedefs(io::IO, api::API, r::Rules, exclude::Set{String}, hand_blocks::Vector{String})
+"""Typedefs that can be emitted (name => Julia value) and the names that cannot because their value
+refers to something unknown (e.g. `__complex128`, `cusolverDnHandle_t`); the latter become opaque types."""
+function plan_typedefs(api::API, r::Rules, exclude::Set{String}, isknown)
     names = sort!(filter(n -> !(n in exclude), collect(keys(api.typedefs))))
     values = Dict(n => map_type(r, api.typedefs[n]) for n in names)
+    skipped = String[]
+    for n in copy(names)
+        ids = [String(m.match) for m in eachmatch(r"[A-Za-z_]\w*", values[n])]
+        bad = filter(id -> !(id in names) && !isknown(id) && !(id in ("Ptr", "NTuple", "Cvoid")), ids)
+        if !isempty(bad)
+            @warn "typedef $n = $(values[n]) skipped (unknown $(bad)); declared as an opaque type instead"
+            filter!(!=(n), names); delete!(values, n); push!(skipped, n)
+        end
+    end
+    return names, values, skipped
+end
+
+function write_typedefs(io::IO, names::Vector{String}, values::Dict{String,String}, hand_blocks::Vector{String})
     # dependency order: a typedef whose value names another pending typedef waits for it
     pending = copy(names)
     while !isempty(pending)

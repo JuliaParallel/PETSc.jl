@@ -1,4 +1,39 @@
 """
+	PFAppendOptionsPrefix(petsclib::PetscLibType,pf::AbstractPF, prefix::String) 
+Appends to the prefix used for searching for all
+`PF` options in the database.
+
+Logically Collective
+
+Input Parameters:
+- `pf`     - the `PF`
+- `prefix` - the prefix string to prepend to all `PF` option requests
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFGetOptionsPrefix()`
+
+# External Links
+$(_doc_external("PF/PFAppendOptionsPrefix"))
+"""
+function PFAppendOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::String)
+    error("PFAppendOptionsPrefix: no generated method for these argument types")
+end
+
+@for_petsc function PFAppendOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF, prefix::String )
+
+    @chk ccall(
+               (:PFAppendOptionsPrefix, $petsc_library),
+               PetscErrorCode,
+               (CPF, Ptr{Cchar}),
+               pf, prefix,
+              )
+
+
+	return nothing
+end 
+
+"""
 	y::PetscScalar = PFApply(petsclib::PetscLibType,pf::AbstractPF, n::PetscInt, x::Vector{PetscScalar}) 
 Applies the mathematical function to an array of values.
 
@@ -181,6 +216,45 @@ end
 end 
 
 """
+	prefix::Ptr{Cchar} = PFGetOptionsPrefix(petsclib::PetscLibType,pf::AbstractPF) 
+Gets the prefix used for searching for all
+`PF` options in the database.
+
+Not Collective
+
+Input Parameter:
+- `pf` - the `PF`
+
+Output Parameter:
+- `prefix` - pointer to the prefix string used, is returned
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFAppendOptionsPrefix()`
+
+# External Links
+$(_doc_external("PF/PFGetOptionsPrefix"))
+"""
+function PFGetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF)
+    error("PFGetOptionsPrefix: no generated method for these argument types")
+end
+
+@for_petsc function PFGetOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF )
+	prefix_ = Ref{Ptr{Cchar}}()
+
+    @chk ccall(
+               (:PFGetOptionsPrefix, $petsc_library),
+               PetscErrorCode,
+               (CPF, Ptr{Ptr{Cchar}}),
+               pf, prefix_,
+              )
+
+	prefix = prefix_[]
+
+	return prefix
+end 
+
+"""
 	type::PFType = PFGetType(petsclib::PetscLibType,pf::AbstractPF) 
 Gets the `PFType` name (as a string) from the `PF`
 context.
@@ -195,7 +269,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PF`, `PFSetType()`
+-seealso: `PF`, `PFSetType()`, `PFType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("PF/PFGetType"))
@@ -352,6 +426,41 @@ end
 end 
 
 """
+	PFSetOptionsPrefix(petsclib::PetscLibType,pf::AbstractPF, prefix::String) 
+Sets the prefix used for searching for all
+`PF` options in the database.
+
+Logically Collective
+
+Input Parameters:
+- `pf`     - the `PF` context
+- `prefix` - the prefix string to prepend to all `PF` option requests
+
+Level: advanced
+
+-seealso: [](ch_ksp), `PF`, `PFSetFromOptions()`, `PFAppendOptionsPrefix()`, `PFGetOptionsPrefix()`
+
+# External Links
+$(_doc_external("PF/PFSetOptionsPrefix"))
+"""
+function PFSetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::String)
+    error("PFSetOptionsPrefix: no generated method for these argument types")
+end
+
+@for_petsc function PFSetOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF, prefix::String )
+
+    @chk ccall(
+               (:PFSetOptionsPrefix, $petsc_library),
+               PetscErrorCode,
+               (CPF, Ptr{Cchar}),
+               pf, prefix,
+              )
+
+
+	return nothing
+end 
+
+"""
 	PFSetType(petsclib::PetscLibType,pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid}) 
 Builds `PF` for a particular function
 
@@ -359,15 +468,15 @@ Collective
 
 Input Parameters:
 - `pf`   - the function context.
-- `type` - a known method
+- `type` - a known type, see `PFType` for available methods (for instance, `PFCONSTANT`)
 - `ctx`  - optional type dependent context
 
 Options Database Key:
-- `-pf_type <type>` - Sets PF type
+- `-pf_type (constant|mat|string|quick|identity|matlab)` - Set the `PFType`
 
 Level: intermediate
 
--seealso: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`
+-seealso: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`, `PFType`, `PFGetType()`
 
 # External Links
 $(_doc_external("PF/PFSetType"))
@@ -467,6 +576,9 @@ Input Parameters:
 - `A`    - the `PF` context
 - `obj`  - Optional object that provides the prefix used to search the options database
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

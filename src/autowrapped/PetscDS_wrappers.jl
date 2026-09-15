@@ -16,14 +16,14 @@ Input Parameters:
 - `comps`    - An array of constrained component numbers
 - `bcFunc`   - A pointwise function giving boundary values
 - `bcFunc_t` - A pointwise function giving the time derivative of the boundary values, or `NULL`
-- `ctx`      - An optional user context for `bcFunc`
+- `ctx`      - An optional application context for `bcFunc`
 
 Output Parameter:
 - `bd` - The boundary number
 
 Options Database Keys:
-- `-bc_<boundary name> <num>`      - Overrides the boundary ids
-- `-bc_<boundary name>_comp <num>` - Overrides the boundary components
+- `-bc_NAME values`     - comma separated list of values for the boundary condition NAME
+- `-bc_NAME_comp comps` - comma separated list of components for the boundary condition NAME
 
 Level: developer
 
@@ -69,14 +69,14 @@ Input Parameters:
 - `comps`    - An array of constrained component numbers
 - `bcFunc`   - A pointwise function giving boundary values
 - `bcFunc_t` - A pointwise function giving the time derivative of the boundary values, or `NULL`
-- `ctx`      - An optional user context for `bcFunc`
+- `ctx`      - An optional application context for `bcFunc`
 
 Output Parameter:
 - `bd` - The boundary number
 
 Options Database Keys:
-- `-bc_<boundary name> <num>`      - Overrides the boundary ids
-- `-bc_<boundary name>_comp <num>` - Overrides the boundary components
+- `-bc_NAME values`     - comma separated list of values for the boundary condition NAME
+- `-bc_NAME_comp comps` - comma separated list of components for the boundary condition NAME
 
 Calling Sequence of `bcFunc` and `bcFunc_t`:
 If the type is `DM_BC_ESSENTIAL`
@@ -140,6 +140,22 @@ end
 
 """
 	PetscDSCopy(petsclib::PetscLibType,ds::PetscDS, minDegree::PetscInt, maxDegree::PetscInt, dmNew::AbstractPetscDM, dsNew::PetscDS) 
+Copy the contents of a `PetscDS` into another `PetscDS` on a new `DM`.
+
+Collective
+
+Input Parameters:
+- `ds`        - the source `PetscDS`
+- `minDegree` - the minimum polynomial degree to consider when selecting discretizations, or `PETSC_DETERMINE`
+- `maxDegree` - the maximum polynomial degree to consider when selecting discretizations, or `PETSC_DETERMINE`
+- `dmNew`     - the target `DM` used to resolve boundary condition labels for the copied boundaries
+
+Output Parameter:
+- `dsNew` - the destination `PetscDS`
+
+Level: developer
+
+-seealso: `PetscDS`, `PetscDSCopyEquations()`, `PetscDSCopyConstants()`, `PetscDSCopyExactSolutions()`, `PetscDSCopyBounds()`, `PetscDSCopyBoundary()`
 
 # External Links
 $(_doc_external("DT/PetscDSCopy"))
@@ -1202,6 +1218,21 @@ end
 
 """
 	u::Ptr{PetscScalar},u_t::Ptr{PetscScalar},u_x::Ptr{PetscScalar} = PetscDSGetEvaluationArrays(petsclib::PetscLibType,prob::PetscDS) 
+Get scratch arrays used to evaluate fields, time derivatives, and field gradients at quadrature points.
+
+Not Collective
+
+Input Parameter:
+- `prob` - the `PetscDS`
+
+Output Parameters:
+- `u`   - array for the field values, or `NULL` if not needed
+- `u_t` - array for the field time derivatives, or `NULL` if not needed
+- `u_x` - array for the field gradients, or `NULL` if not needed
+
+Level: developer
+
+-seealso: `PetscDS`, `PetscDSGetWeakFormArrays()`, `PetscDSGetWorkspace()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetEvaluationArrays"))
@@ -1546,26 +1577,42 @@ end
 end 
 
 """
-	PetscDSGetHeightSubspace(petsclib::PetscLibType,prob::PetscDS, height::PetscInt, subprob::PetscDS) 
+	subprob::PetscDS = PetscDSGetHeightSubspace(petsclib::PetscLibType,prob::PetscDS, height::PetscInt) 
+Get the `PetscDS` for the trace subspace at a given height in the mesh.
+
+Not Collective
+
+Input Parameters:
+- `prob`   - the `PetscDS`
+- `height` - the height (0 for the ambient cell, 1 for faces, etc.)
+
+Output Parameter:
+- `subprob` - the `PetscDS` for the trace subspace; `prob` itself is returned when `height` is 0
+
+Level: developer
+
+-seealso: `PetscDS`, `PetscFE`, `PetscFEGetHeightSubspace()`, `PetscDSGetSpatialDimension()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetHeightSubspace"))
 """
-function PetscDSGetHeightSubspace(petsclib::PetscLibType, prob::PetscDS, height::Integer, subprob::PetscDS)
+function PetscDSGetHeightSubspace(petsclib::PetscLibType, prob::PetscDS, height::Integer)
     error("PetscDSGetHeightSubspace: no generated method for these argument types")
 end
 
-@for_petsc function PetscDSGetHeightSubspace(petsclib::$UnionPetscLib, prob::PetscDS, height::$PetscInt, subprob::PetscDS )
+@for_petsc function PetscDSGetHeightSubspace(petsclib::$UnionPetscLib, prob::PetscDS, height::$PetscInt )
+	subprob_ = Ref{PetscDS}()
 
     @chk ccall(
                (:PetscDSGetHeightSubspace, $petsc_library),
                PetscErrorCode,
                (PetscDS, $PetscInt, Ptr{PetscDS}),
-               prob, height, subprob,
+               prob, height, subprob_,
               )
 
+	subprob = subprob_[]
 
-	return nothing
+	return subprob
 end 
 
 """
@@ -2444,26 +2491,53 @@ end
 end 
 
 """
-	PetscDSGetWorkspace(petsclib::PetscLibType,prob::PetscDS, x::PetscReal, basisReal::PetscScalar, basisDerReal::PetscScalar, testReal::PetscScalar, testDerReal::PetscScalar) 
+	x::Ptr{PetscReal},basisReal::Ptr{PetscScalar},basisDerReal::Ptr{PetscScalar},testReal::Ptr{PetscScalar},testDerReal::Ptr{PetscScalar} = PetscDSGetWorkspace(petsclib::PetscLibType,prob::PetscDS) 
+Get scratch storage used during discretization computations.
+
+Not Collective
+
+Input Parameter:
+- `prob` - the `PetscDS`
+
+Output Parameters:
+- `x`            - array for real-valued quadrature point coordinates, or `NULL` if not needed
+- `basisReal`    - array for the real-valued basis function values, or `NULL` if not needed
+- `basisDerReal` - array for the real-valued basis function derivatives, or `NULL` if not needed
+- `testReal`     - array for the real-valued test function values, or `NULL` if not needed
+- `testDerReal`  - array for the real-valued test function derivatives, or `NULL` if not needed
+
+Level: developer
+
+-seealso: `PetscDS`, `PetscDSGetEvaluationArrays()`, `PetscDSGetWeakFormArrays()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetWorkspace"))
 """
-function PetscDSGetWorkspace(petsclib::PetscLibType, prob::PetscDS, x::Real, basisReal::Number, basisDerReal::Number, testReal::Number, testDerReal::Number)
+function PetscDSGetWorkspace(petsclib::PetscLibType, prob::PetscDS)
     error("PetscDSGetWorkspace: no generated method for these argument types")
 end
 
-@for_petsc function PetscDSGetWorkspace(petsclib::$UnionPetscLib, prob::PetscDS, x::$PetscReal, basisReal::$PetscScalar, basisDerReal::$PetscScalar, testReal::$PetscScalar, testDerReal::$PetscScalar )
+@for_petsc function PetscDSGetWorkspace(petsclib::$UnionPetscLib, prob::PetscDS )
+	x_ = Ref{Ptr{$PetscReal}}()
+	basisReal_ = Ref{Ptr{$PetscScalar}}()
+	basisDerReal_ = Ref{Ptr{$PetscScalar}}()
+	testReal_ = Ref{Ptr{$PetscScalar}}()
+	testDerReal_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:PetscDSGetWorkspace, $petsc_library),
                PetscErrorCode,
                (PetscDS, Ptr{Ptr{$PetscReal}}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}),
-               prob, x, basisReal, basisDerReal, testReal, testDerReal,
+               prob, x_, basisReal_, basisDerReal_, testReal_, testDerReal_,
               )
 
+	x = x_[]
+	basisReal = basisReal_[]
+	basisDerReal = basisDerReal_[]
+	testReal = testReal_[]
+	testDerReal = testDerReal_[]
 
-	return nothing
+	return x,basisReal,basisDerReal,testReal,testDerReal
 end 
 
 """
@@ -2725,6 +2799,22 @@ end
 
 """
 	qperm::PetscInt = PetscDSPermuteQuadPoint(petsclib::PetscLibType,ds::PetscDS, ornt::PetscInt, field::PetscInt, q::PetscInt) 
+Permute a quadrature point index according to a cell orientation.
+
+Not Collective
+
+Input Parameters:
+- `ds`    - the `PetscDS`
+- `ornt`  - the cell orientation, in `[-Na, Na)` where `Na` is half the number of arrangements for the cell type
+- `field` - the field number whose quadrature is used
+- `q`     - the input quadrature point index in `[0, Nq)`
+
+Output Parameter:
+- `qperm` - the permuted quadrature point index
+
+Level: developer
+
+-seealso: `PetscDS`, `PetscQuadrature`, `PetscQuadratureComputePermutations()`, `DMPolytopeTypeGetNumArrangements()`
 
 # External Links
 $(_doc_external("DT/PetscDSPermuteQuadPoint"))
@@ -3336,11 +3426,11 @@ Input Parameter:
 - `prob` - the `PetscDS` object to set options for
 
 Options Database Keys:
-- `-petscds_type <type>`     - Set the `PetscDS` type
-- `-petscds_view <view opt>` - View the `PetscDS`
-- `-petscds_jac_pre`         - Turn formation of a separate Jacobian preconditioner on or off
-- `-bc_<name> <ids>`         - Specify a list of label ids for a boundary condition
-- `-bc_<name>_comp <comps>`  - Specify a list of field components to constrain for a boundary condition
+- `-petscds_type type`            - Set the `PetscDS` type
+- `-petscds_view`                 - View the `PetscDS`
+- `-petscds_jac_pre (true|false)` - Turn formation of a separate Jacobian preconditioner on or off
+- `-bc_NAME ids`                  - comma separated list of label ids for the boundary condition NAME
+- `-bc_NAME_comp comps`           - comma separated list of field components to constrain for the boundary condition NAME
 
 Level: intermediate
 
@@ -3739,7 +3829,7 @@ Input Parameters:
 - `name` - The `PetscDSType`
 
 Options Database Key:
-- `-petscds_type <type>` - Sets the PetscDS type; use -help for a list of available types
+- `-petscds_type type` - Sets the PetscDS type; use -help for a list of available types
 
 Level: intermediate
 
@@ -3920,7 +4010,7 @@ Input Parameters:
 - `comps`    - An array of constrained component numbers
 - `bcFunc`   - A pointwise function giving boundary values
 - `bcFunc_t` - A pointwise function giving the time derivative of the boundary values, or `NULL`
-- `ctx`      - An optional user context for `bcFunc`
+- `ctx`      - An optional application context for `bcFunc`
 
 Level: developer
 
@@ -4058,6 +4148,9 @@ Input Parameters:
 - `A`    - the `PetscDS` object
 - `obj`  - Optional object that provides the options prefix used in the search of the options database
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

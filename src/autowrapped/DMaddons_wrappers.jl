@@ -14,10 +14,10 @@ Output Parameters:
 - `ax`  - The adapted solution
 
 Options Database Keys:
-- `-snes_adapt <strategy>` - initial, sequential, multigrid
-- `-adapt_gradient_view`   - View the Clement interpolant of the solution gradient
-- `-adapt_hessian_view`    - View the Clement interpolant of the solution Hessian
-- `-adapt_metric_view`     - View the metric tensor for adaptive mesh refinement
+- `-snes_adapt (initial|sequential|multigrid)` - adaption strategy, see `DMAdaptationStrategy`
+- `-adapt_gradient_view`                       - View the Clement interpolant of the solution gradient
+- `-adapt_hessian_view`                        - View the Clement interpolant of the solution Hessian
+- `-adapt_metric_view`                         - View the metric tensor for adaptive mesh refinement
 
 Level: intermediate
 
@@ -164,6 +164,42 @@ end
 end 
 
 """
+	DMAdaptorGetMixedSetupFunction(petsclib::PetscLibType,adaptor::DMAdaptor, noname::Ptr{Cvoid}) 
+Get the function setting up the mixed problem, if it exists
+
+Not Collective
+
+Input Parameter:
+- `adaptor` - the `DMAdaptor`
+
+Output Parameter:
+- `setupFunc` - the function setting up the mixed problem, or `NULL`
+
+Level: advanced
+
+-seealso: `DMAdaptor`, `DMAdaptorSetMixedSetupFunction()`, `DMAdaptorAdapt()`
+
+# External Links
+$(_doc_external("DM/DMAdaptorGetMixedSetupFunction"))
+"""
+function DMAdaptorGetMixedSetupFunction(petsclib::PetscLibType, adaptor::DMAdaptor, noname::Ptr{Cvoid})
+    error("DMAdaptorGetMixedSetupFunction: no generated method for these argument types")
+end
+
+@for_petsc function DMAdaptorGetMixedSetupFunction(petsclib::$UnionPetscLib, adaptor::DMAdaptor, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMAdaptorGetMixedSetupFunction, $petsc_library),
+               PetscErrorCode,
+               (DMAdaptor, Ptr{Cvoid}),
+               adaptor, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	num::PetscInt = DMAdaptorGetSequenceLength(petsclib::PetscLibType,adaptor::DMAdaptor) 
 Gets the number of sequential adaptations used by an adapter
 
@@ -241,6 +277,50 @@ end
 	snes = PetscSNES(snes_[], petsclib)
 
 	return snes
+end 
+
+"""
+	DMAdaptorGetTransferFunction(petsclib::PetscLibType,adaptor::DMAdaptor, noname::Ptr{Cvoid}) 
+Get the callback used by a `DMAdaptor` to transfer a solution vector from an old `DM` to the adapted `DM`
+
+Not Collective
+
+Input Parameter:
+- `adaptor` - the `DMAdaptor` object
+
+Output Parameter:
+- `tfunc` - pointer to the transfer callback
+
+Calling sequence of `tfunc`:
+- `adaptor` - the `DMAdaptor` object
+- `dm`      - the current `DM`
+- `xin`     - the current solution
+- `newdm`   - the adapted `DM`
+- `xout`    - the transferred solution on `newdm`
+- `ctx`     - application context, set with `DMSetApplicationContext()`
+
+Level: developer
+
+-seealso: `DMAdaptor`, `DMAdaptorSetTransferFunction()`, `DMAdaptorAdapt()`
+
+# External Links
+$(_doc_external("DM/DMAdaptorGetTransferFunction"))
+"""
+function DMAdaptorGetTransferFunction(petsclib::PetscLibType, adaptor::DMAdaptor, noname::Ptr{Cvoid})
+    error("DMAdaptorGetTransferFunction: no generated method for these argument types")
+end
+
+@for_petsc function DMAdaptorGetTransferFunction(petsclib::$UnionPetscLib, adaptor::DMAdaptor, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMAdaptorGetTransferFunction, $petsc_library),
+               PetscErrorCode,
+               (DMAdaptor, Ptr{Cvoid}),
+               adaptor, noname,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -495,7 +575,7 @@ Collective
 Input Parameters:
 - `viewer` - The `PetscViewer`
 - `format` - The viewer format
-- `ctx`    - An optional user context
+- `ctx`    - An optional application context
 
 Output Parameter:
 - `vf` - The viewer context
@@ -686,7 +766,7 @@ Input Parameters:
 - `adaptor` - `DMadaptor` object you wish to monitor
 - `opt`     - the command line option for this monitor
 - `name`    - the monitor type one is seeking
-- `ctx`     - An optional user context for the monitor, or `NULL`
+- `ctx`     - An optional application context for the monitor, or `NULL`
 
 Level: developer
 
@@ -749,6 +829,38 @@ end
                PetscErrorCode,
                (DMAdaptor, $PetscInt, CDM, CDM, $PetscInt, Ptr{$PetscReal}, CVec, Ptr{PetscViewerAndFormat}),
                adaptor, n, odm, adm, Nf, enorms, error, vf,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMAdaptorRegister(petsclib::PetscLibType,name::String, noname::Ptr{Cvoid}) 
+Adds a new adaptor component implementation
+
+Not Collective
+
+Input Parameters:
+- `name`        - The name of a new user-defined creation routine
+- `create_func` - The creation routine
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorRegisterAll()`, `DMAdaptorRegisterDestroy()`
+
+# External Links
+$(_doc_external("DM/DMAdaptorRegister"))
+"""
+function DMAdaptorRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid})
+    error("DMAdaptorRegister: no generated method for these argument types")
+end
+
+@for_petsc function DMAdaptorRegister(petsclib::$UnionPetscLib, name::String, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMAdaptorRegister, $petsc_library),
+               PetscErrorCode,
+               (Ptr{Cchar}, Ptr{Cvoid}),
+               name, noname,
               )
 
 
@@ -857,12 +969,12 @@ Input Parameter:
 - `adaptor` - The `DMAdaptor` object
 
 Options Database Keys:
-- `-adaptor_monitor_size`                - Monitor the mesh size
-- `-adaptor_monitor_error`               - Monitor the solution error
-- `-adaptor_sequence_num <num>`          - Number of adaptations to generate an optimal grid
-- `-adaptor_target_num <num>`            - Set the target number of vertices N_adapt, -1 for automatic determination
-- `-adaptor_refinement_factor <r>`       - Set r such that N_adapt = r^dim N_orig
-- `-adaptor_mixed_setup_function <func>` - Set the function func that sets up the mixed problem
+- `-adaptor_monitor_size`              - Monitor the mesh size
+- `-adaptor_monitor_error`             - Monitor the solution error
+- `-adaptor_sequence_num num`          - Number of adaptations to generate an optimal grid
+- `-adaptor_target_num num`            - Set the target number of vertices N_adapt, -1 for automatic determination
+- `-adaptor_refinement_factor r`       - Set r such that N_adapt = r^dim N_orig
+- `-adaptor_mixed_setup_function func` - Set the function func that sets up the mixed problem
 
 Level: beginner
 
@@ -899,6 +1011,10 @@ Not Collective
 Input Parameters:
 - `adaptor`   - the `DMAdaptor`
 - `setupFunc` - the function setting up the mixed problem
+
+Calling sequence of setupFunc:
+- `adaptor` - the `DMAdaptor`
+- `dm`      - the `DM`
 
 Level: advanced
 
@@ -1032,6 +1148,25 @@ end
 
 """
 	DMAdaptorSetTransferFunction(petsclib::PetscLibType,adaptor::DMAdaptor, tfunc::external) 
+Set the callback used by a `DMAdaptor` to transfer a solution vector from an old `DM` to the adapted `DM`
+
+Logically Collective
+
+Input Parameters:
+- `adaptor` - the `DMAdaptor` object
+- `tfunc`   - the transfer callback
+
+Calling sequence of `tfunc`:
+- `adaptor` - the `DMAdaptor` object
+- `dm`      - the current `DM`
+- `xin`     - the current solution
+- `newdm`   - the adapted `DM`
+- `xout`    - the transferred solution on `newdm`
+- `ctx`     - application context, set with `DMSetApplicationContext()`
+
+Level: developer
+
+-seealso: `DMAdaptor`, `DMAdaptorGetTransferFunction()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetTransferFunction"))
@@ -1064,7 +1199,7 @@ Input Parameters:
 - `method`  - The name of the adaptor type
 
 Options Database Key:
-- `-adaptor_type <type>` - Sets the adaptor type; see `DMAdaptorType`
+- `-adaptor_type type` - Sets the adaptor type; see `DMAdaptorType`
 
 Level: intermediate
 
@@ -1162,34 +1297,62 @@ end
 end 
 
 """
-	cornerValues::PetscScalar,field::DMField = DMFieldCreateDA(petsclib::PetscLibType,dm::AbstractPetscDM, nc::PetscInt) 
+	field::DMField = DMFieldCreateDA(petsclib::PetscLibType,dm::AbstractPetscDM, nc::PetscInt, cornerValues::Vector{PetscScalar}) 
+Create a `DMField` of type `DMFIELDDA` that represents a multilinear field on a `DMDA` given by its values at the corners of the reference element.
+
+Collective
+
+Input Parameters:
+- `dm`           - the `DMDA` on which the field lives
+- `nc`           - the number of components of the field
+- `cornerValues` - array of length `nc * (1 << dim)` holding the field values at each corner of the reference element, ordered by lexicographic corner index
+
+Output Parameter:
+- `field` - the newly created `DMField`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDDA`, `DMDA`, `DMFieldCreate()`, `DMFieldCreateDS()`, `DMFieldCreateShell()`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDA"))
 """
-function DMFieldCreateDA(petsclib::PetscLibType, dm::AbstractPetscDM, nc::Integer)
+function DMFieldCreateDA(petsclib::PetscLibType, dm::AbstractPetscDM, nc::Integer, cornerValues::AbstractVector{<:Number})
     error("DMFieldCreateDA: no generated method for these argument types")
 end
 
-@for_petsc function DMFieldCreateDA(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nc::$PetscInt )
-	cornerValues_ = Ref{$PetscScalar}()
+@for_petsc function DMFieldCreateDA(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nc::$PetscInt, cornerValues::Vector{$PetscScalar} )
 	field_ = Ref{DMField}()
 
     @chk ccall(
                (:DMFieldCreateDA, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscScalar}, Ptr{DMField}),
-               dm, nc, cornerValues_, field_,
+               dm, nc, cornerValues, field_,
               )
 
-	cornerValues = cornerValues_[]
 	field = field_[]
 
-	return cornerValues,field
+	return field
 end 
 
 """
 	field::DMField = DMFieldCreateDS(petsclib::PetscLibType,dm::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec) 
+Create a `DMField` of type `DMFIELDDS` for a `PetscDS` field on a `DM`.
+
+Collective
+
+Input Parameters:
+- `dm`       - the `DM` carrying the discretization
+- `fieldNum` - the field number within the `DM`'s `PetscDS`
+- `vec`      - local vector holding the coefficients
+
+Output Parameter:
+- `field` - the newly created `DMField`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDDS`, `DMFieldCreateDSWithDG()`, `DMFieldCreate()`, `PetscDS`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDS"))
@@ -1215,6 +1378,23 @@ end
 
 """
 	field::DMField = DMFieldCreateDSWithDG(petsclib::PetscLibType,dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec) 
+Create a `DMField` of type `DMFIELDDS` for a `PetscDS` field, optionally paired with a matching discontinuous
+
+Collective
+
+Input Parameters:
+- `dm`       - the `DM` carrying the primary (continuous) discretization
+- `dmDG`     - optional `DM` carrying a matching discontinuous-Galerkin discretization, or `NULL`
+- `fieldNum` - the field number within the `DM`'s `PetscDS`
+- `vec`      - local vector holding the coefficients on `dm`
+- `vecDG`    - local vector holding the coefficients on `dmDG`, or `NULL` if `dmDG` is `NULL`
+
+Output Parameter:
+- `field` - the newly created `DMField`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDDS`, `DMFieldCreateDS()`, `DMFieldCreate()`, `PetscDS`, `PetscFE`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDSWithDG"))
@@ -1360,6 +1540,22 @@ end
 
 """
 	field::DMField = DMFieldCreateShell(petsclib::PetscLibType,dm::AbstractPetscDM, numComponents::PetscInt, continuity::DMFieldContinuity, ctx::Ptr{Cvoid}) 
+Create a `DMFIELDSHELL`, a `DMField` whose evaluation is implemented entirely by user
+
+Collective
+
+Input Parameters:
+- `dm`            - the `DM` on which the field lives
+- `numComponents` - the number of components of the field
+- `continuity`    - the continuity of the field (e.g. `DMFIELD_VERTEX`)
+- `ctx`           - optional application context returned by `DMFieldShellGetContext()`
+
+Output Parameter:
+- `field` - the newly created `DMField` of type `DMFIELDSHELL`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldShellGetContext()`, `DMFieldShellSetEvaluate()`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellSetEvaluateFV()`, `DMFieldShellSetDestroy()`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateShell"))
@@ -1746,7 +1942,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMField`, `DMFieldSetType()`, `DMFieldType`
+-seealso: `DMField`, `DMFieldSetType()`, `DMFieldType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("DM/DMFieldGetType"))
@@ -1839,11 +2035,11 @@ Collective
 
 Input Parameters:
 - `field` - the `DMField` context
-- `type`  - a known method
+- `type`  - a known method, see `DMFieldType`
 
 Level: advanced
 
--seealso: `DMField`, `DMFieldGetType()`, `DMFieldType`,
+-seealso: `DMField`, `DMFieldGetType()`, `DMFieldType`
 
 # External Links
 $(_doc_external("DM/DMFieldSetType"))
@@ -1866,91 +2062,169 @@ end
 end 
 
 """
-	DMFieldShellEvaluateFEDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType, B::Ptr{Cvoid}, D::Ptr{Cvoid}, H::Ptr{Cvoid}) 
+	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldShellEvaluateFEDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType) 
+Default finite
+
+Not Collective
+
+Input Parameters:
+- `field`   - the `DMField` of type `DMFIELDSHELL`
+- `pointIS` - the `IS` of mesh points at which to evaluate
+- `quad`    - the reference-element quadrature
+- `type`    - `PETSC_SCALAR` or `PETSC_REAL`
+
+Output Parameters:
+- `B` - values at quadrature points, or `NULL`
+- `D` - derivatives at quadrature points, or `NULL`
+- `H` - Hessians at quadrature points, or `NULL`
+
+Level: developer
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellEvaluateFVDefault()`, `DMFieldEvaluate()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellEvaluateFEDefault"))
 """
-function DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType, B::Ptr{Cvoid}, D::Ptr{Cvoid}, H::Ptr{Cvoid})
+function DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType)
     error("DMFieldShellEvaluateFEDefault: no generated method for these argument types")
 end
 
-@for_petsc function DMFieldShellEvaluateFEDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType, B::Ptr{Cvoid}, D::Ptr{Cvoid}, H::Ptr{Cvoid} )
+@for_petsc function DMFieldShellEvaluateFEDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType )
+	B_ = Ref{Ptr{Cvoid}}()
+	D_ = Ref{Ptr{Cvoid}}()
+	H_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMFieldShellEvaluateFEDefault, $petsc_library),
                PetscErrorCode,
                (DMField, CIS, PetscQuadrature, PetscDataType, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               field, pointIS, quad, type, B, D, H,
+               field, pointIS, quad, type, B_, D_, H_,
               )
 
+	B = B_[]
+	D = D_[]
+	H = H_[]
 
-	return nothing
+	return B,D,H
 end 
 
 """
-	DMFieldShellEvaluateFVDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, type::PetscDataType, B::Ptr{Cvoid}, D::Ptr{Cvoid}, H::Ptr{Cvoid}) 
+	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldShellEvaluateFVDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, type::PetscDataType) 
+Default finite
+
+Not Collective
+
+Input Parameters:
+- `field`   - the `DMField` of type `DMFIELDSHELL`
+- `pointIS` - the `IS` of mesh cells at which to evaluate
+- `type`    - `PETSC_SCALAR` or `PETSC_REAL`
+
+Output Parameters:
+- `B` - cell-averaged values, or `NULL`
+- `D` - cell-averaged derivatives, or `NULL`
+- `H` - cell-averaged Hessians, or `NULL`
+
+Level: developer
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFV()`, `DMFieldShellEvaluateFEDefault()`, `DMFieldEvaluate()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellEvaluateFVDefault"))
 """
-function DMFieldShellEvaluateFVDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, type::PetscDataType, B::Ptr{Cvoid}, D::Ptr{Cvoid}, H::Ptr{Cvoid})
+function DMFieldShellEvaluateFVDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, type::PetscDataType)
     error("DMFieldShellEvaluateFVDefault: no generated method for these argument types")
 end
 
-@for_petsc function DMFieldShellEvaluateFVDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, type::PetscDataType, B::Ptr{Cvoid}, D::Ptr{Cvoid}, H::Ptr{Cvoid} )
+@for_petsc function DMFieldShellEvaluateFVDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, type::PetscDataType )
+	B_ = Ref{Ptr{Cvoid}}()
+	D_ = Ref{Ptr{Cvoid}}()
+	H_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMFieldShellEvaluateFVDefault, $petsc_library),
                PetscErrorCode,
                (DMField, CIS, PetscDataType, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               field, pointIS, type, B, D, H,
+               field, pointIS, type, B_, D_, H_,
               )
 
+	B = B_[]
+	D = D_[]
+	H = H_[]
 
-	return nothing
+	return B,D,H
 end 
 
 """
-	DMFieldShellGetContext(petsclib::PetscLibType,field::DMField, ctx::Ptr{Cvoid}) 
+	ctx::Ptr{Cvoid} = DMFieldShellGetContext(petsclib::PetscLibType,field::DMField) 
+Retrieve the user
+
+Not Collective
+
+Input Parameter:
+- `field` - the `DMField` of type `DMFIELDSHELL`
+
+Output Parameter:
+- `ctx` - the context pointer that was passed to `DMFieldCreateShell()`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellGetContext"))
 """
-function DMFieldShellGetContext(petsclib::PetscLibType, field::DMField, ctx::Ptr{Cvoid})
+function DMFieldShellGetContext(petsclib::PetscLibType, field::DMField)
     error("DMFieldShellGetContext: no generated method for these argument types")
 end
 
-@for_petsc function DMFieldShellGetContext(petsclib::$UnionPetscLib, field::DMField, ctx::Ptr{Cvoid} )
+@for_petsc function DMFieldShellGetContext(petsclib::$UnionPetscLib, field::DMField )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMFieldShellGetContext, $petsc_library),
                PetscErrorCode,
                (DMField, Ptr{Cvoid}),
-               field, ctx,
+               field, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
-	DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType,field::DMField, createDefaultQuadrature::external) 
+	DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType,field::DMField, create::external) 
+Register the routine that supplies a default `PetscQuadrature` sufficient to integrate a `DMFIELDSHELL` exactly over a set of mesh points.
+
+Logically Collective
+
+Input Parameters:
+- `field`  - the `DMField` of type `DMFIELDSHELL`
+- `create` - callback that returns a newly created `PetscQuadrature` for the given point `IS`
+
+Calling sequence of `create`:
+- `f`    - the `DMField` of type `DMFIELDSHELL`
+- `is`   - the `IS` of mesh points over which the field will be integrated
+- `quad` - the newly created `PetscQuadrature`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldCreateDefaultQuadrature()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetCreateDefaultQuadrature"))
 """
-function DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, createDefaultQuadrature::external)
+function DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, create::external)
     error("DMFieldShellSetCreateDefaultQuadrature: no generated method for these argument types")
 end
 
-@for_petsc function DMFieldShellSetCreateDefaultQuadrature(petsclib::$UnionPetscLib, field::DMField, createDefaultQuadrature::external )
+@for_petsc function DMFieldShellSetCreateDefaultQuadrature(petsclib::$UnionPetscLib, field::DMField, create::external )
 
     @chk ccall(
                (:DMFieldShellSetCreateDefaultQuadrature, $petsc_library),
                PetscErrorCode,
                (DMField, external),
-               field, createDefaultQuadrature,
+               field, create,
               )
 
 
@@ -1959,6 +2233,20 @@ end
 
 """
 	DMFieldShellSetDestroy(petsclib::PetscLibType,field::DMField, destroy::external) 
+Register a destroy callback that will be invoked when a `DMFIELDSHELL` is destroyed.
+
+Logically Collective
+
+Input Parameters:
+- `field`   - the `DMField` of type `DMFIELDSHELL`
+- `destroy` - the destroy routine, called before the shell's own data is freed
+
+Calling sequence of `destroy`:
+- `field` - the `DMField` of type `DMFIELDSHELL` being destroyed
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldDestroy()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetDestroy"))
@@ -1982,6 +2270,25 @@ end
 
 """
 	DMFieldShellSetEvaluate(petsclib::PetscLibType,field::DMField, evaluate::external) 
+Register the routine that evaluates a `DMFIELDSHELL` at an arbitrary set of real
+
+Logically Collective
+
+Input Parameters:
+- `field`    - the `DMField` of type `DMFIELDSHELL`
+- `evaluate` - the evaluation callback
+
+Calling sequence of `evaluate`:
+- `field` - the `DMField` of type `DMFIELDSHELL`
+- `u`     - the points at which to evaluate the field, as a `Vec` of coordinates of size d x n
+- `dtype` - `PETSC_SCALAR` or `PETSC_REAL`
+- `B`     - array of field values at each point, or `NULL`
+- `D`     - array of field spatial derivatives at each point, or `NULL`
+- `H`     - array of field spatial Hessians at each point, or `NULL`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluate()`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellSetEvaluateFV()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetEvaluate"))
@@ -2005,6 +2312,26 @@ end
 
 """
 	DMFieldShellSetEvaluateFE(petsclib::PetscLibType,field::DMField, evaluateFE::external) 
+Register the routine that evaluates a `DMFIELDSHELL` at finite
+
+Logically Collective
+
+Input Parameters:
+- `field`      - the `DMField` of type `DMFIELDSHELL`
+- `evaluateFE` - the FE evaluation callback
+
+Calling sequence of `evaluateFE`:
+- `field` - the `DMField` of type `DMFIELDSHELL`
+- `is`    - the `IS` of mesh cells on which to evaluate the field
+- `quad`  - the reference-cell `PetscQuadrature` supplying the evaluation points
+- `dtype` - `PETSC_SCALAR` or `PETSC_REAL`
+- `B`     - array of field values at each quadrature point, or `NULL`
+- `D`     - array of field reference derivatives at each quadrature point, or `NULL`
+- `H`     - array of field reference Hessians at each quadrature point, or `NULL`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFE()`, `DMFieldShellEvaluateFEDefault()`, `DMFieldShellSetEvaluateFV()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetEvaluateFE"))
@@ -2028,6 +2355,25 @@ end
 
 """
 	DMFieldShellSetEvaluateFV(petsclib::PetscLibType,field::DMField, evaluateFV::external) 
+Register the routine that evaluates a `DMFIELDSHELL` as cell averages over a set of mesh cells.
+
+Logically Collective
+
+Input Parameters:
+- `field`      - the `DMField` of type `DMFIELDSHELL`
+- `evaluateFV` - the FV evaluation callback
+
+Calling sequence of `evaluateFV`:
+- `field` - the `DMField` of type `DMFIELDSHELL`
+- `is`    - the `IS` of mesh cells on which to evaluate the field
+- `dtype` - `PETSC_SCALAR` or `PETSC_REAL`
+- `B`     - array of cell-averaged field values, or `NULL`
+- `D`     - array of cell-averaged field derivatives, or `NULL`
+- `H`     - array of cell-averaged field Hessians, or `NULL`
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFV()`, `DMFieldShellEvaluateFVDefault()`, `DMFieldShellSetEvaluateFE()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetEvaluateFV"))
@@ -2051,6 +2397,23 @@ end
 
 """
 	DMFieldShellSetGetDegree(petsclib::PetscLibType,field::DMField, getDegree::external) 
+Register the routine that reports the polynomial degree bounds of a `DMFIELDSHELL` over a set of mesh points.
+
+Logically Collective
+
+Input Parameters:
+- `field`     - the `DMField` of type `DMFIELDSHELL`
+- `getDegree` - callback that returns the minimum and maximum polynomial degrees of the field over the given point `IS`
+
+Calling sequence of `getDegree`:
+- `field`     - the `DMField` of type `DMFIELDSHELL`
+- `is`        - the `IS` of mesh points over which the degree bounds are requested
+- `minDegree` - the degree of the largest polynomial space contained in the field on each element
+- `maxDegree` - the largest degree of the smallest polynomial space containing the field on any element
+
+Level: intermediate
+
+-seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldGetDegree()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetGetDegree"))
@@ -2923,7 +3286,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+-seealso: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetValueISGlobal()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetNonEmptyStratumValuesIS"))
@@ -3278,7 +3641,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+-seealso: `DMLabel`, `DM`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelGetValueISGlobal()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueIS"))
@@ -3295,6 +3658,46 @@ end
                PetscErrorCode,
                (DMLabel, Ptr{CIS}),
                label, values_,
+              )
+
+	values = IS(values_[], petsclib)
+
+	return values
+end 
+
+"""
+	values::IS = DMLabelGetValueISGlobal(petsclib::PetscLibType,comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool) 
+Get an `IS` of all values that the `DMlabel` takes across all ranks
+
+Collective
+
+Input Parameter:
+- `comm`         - MPI communicator to collect values
+- `label`        - the `DMLabel`, may be `NULL` for ranks in `comm` which do not have the corresponding `DMLabel`
+- `get_nonempty` - whether to get nonempty stratum values (akin to `DMLabelGetNonEmptyStratumValuesIS()`)
+
+Output Parameter:
+- `values` - the value `IS`
+
+Level: intermediate
+
+-seealso: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+
+# External Links
+$(_doc_external("DMLabel/DMLabelGetValueISGlobal"))
+"""
+function DMLabelGetValueISGlobal(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool)
+    error("DMLabelGetValueISGlobal: no generated method for these argument types")
+end
+
+@for_petsc function DMLabelGetValueISGlobal(petsclib::$UnionPetscLib, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool )
+	values_ = Ref{CIS}()
+
+    @chk ccall(
+               (:DMLabelGetValueISGlobal, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, DMLabel, PetscBool, Ptr{CIS}),
+               comm, label, get_nonempty, values_,
               )
 
 	values = IS(values_[], petsclib)
@@ -3645,13 +4048,13 @@ Input Parameters:
 - `label`     - The `DMLabel` to propagate across processes
 - `pointSF`   - The `PetscSF` describing parallel layout of the label points
 - `markPoint` - An optional callback that is called when a point is marked, or `NULL`
-- `ctx`       - An optional user context for the callback, or `NULL`
+- `ctx`       - An optional application context for the callback, or `NULL`
 
 Calling sequence of `markPoint`:
 - `label` - The `DMLabel`
 - `p`     - The point being marked
 - `val`   - The label value for `p`
-- `ctx`   - An optional user context
+- `ctx`   - An optional application context
 
 Level: intermediate
 
@@ -3671,6 +4074,38 @@ end
                PetscErrorCode,
                (DMLabel, PetscSF, external, Ptr{Cvoid}),
                label, pointSF, markPoint, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMLabelRegister(petsclib::PetscLibType,name::String, noname::Ptr{Cvoid}) 
+Adds a new label component implementation
+
+Not Collective
+
+Input Parameters:
+- `name`        - The name of a new user-defined creation routine
+- `create_func` - The creation routine itself
+
+-seealso: `DMLabel`, `DM`, `DMLabelType`, `DMLabelRegisterAll()`, `DMLabelRegisterDestroy()`
+
+# External Links
+$(_doc_external("DMLabel/DMLabelRegister"))
+"""
+function DMLabelRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid})
+    error("DMLabelRegister: no generated method for these argument types")
+end
+
+@for_petsc function DMLabelRegister(petsclib::$UnionPetscLib, name::String, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMLabelRegister, $petsc_library),
+               PetscErrorCode,
+               (Ptr{Cchar}, Ptr{Cvoid}),
+               name, noname,
               )
 
 
@@ -3920,11 +4355,11 @@ Input Parameters:
 - `method` - The name of the label type
 
 Options Database Key:
-- `-dm_label_type <type>` - Sets the label type; use -help for a list of available types or see `DMLabelType`
+- `-dm_label_type type` - Sets the label type; see `DMLabelType`
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetType()`, `DMLabelCreate()`
+-seealso: `DMLabel`, `DM`, `DMLabelGetType()`, `DMLabelCreate()`, `DMLabelType`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelSetType"))
@@ -4083,6 +4518,46 @@ end
                PetscErrorCode,
                (DMLabel, PetscViewer),
                label, viewer,
+              )
+
+
+	return nothing
+end 
+
+"""
+	DMLabelViewFromOptions(petsclib::PetscLibType,label::DMLabel, obj, name::String) 
+View a `DMLabel` in a particular way based on a request in the options database
+
+Collective
+
+Input Parameters:
+- `label` - the `DMLabel` object
+- `obj`   - optional object that provides the prefix for the options database (if `NULL` then the prefix in `obj` is used)
+- `name`  - option string that is used to activate viewing
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
+
+Level: intermediate
+
+See also: 
+=== 
+`DMLabel`, `DMLabelView()`, `PetscObjectViewFromOptions()`, `DMLabelCreate()`
+
+# External Links
+$(_doc_external("DMLabel/DMLabelViewFromOptions"))
+"""
+function DMLabelViewFromOptions(petsclib::PetscLibType, label::DMLabel, obj, name::String)
+    error("DMLabelViewFromOptions: no generated method for these argument types")
+end
+
+@for_petsc function DMLabelViewFromOptions(petsclib::$UnionPetscLib, label::DMLabel, obj, name::String )
+
+    @chk ccall(
+               (:DMLabelViewFromOptions, $petsc_library),
+               PetscErrorCode,
+               (DMLabel, PetscObject, Ptr{Cchar}),
+               label, obj, name,
               )
 
 
@@ -4273,6 +4748,19 @@ end
 
 """
 	p::PetscInt = DMPlexPointQueueBack(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+Return, without removing, the mesh point at the back of a `DMPlexPointQueue`.
+
+Not Collective
+
+Input Parameter:
+- `queue` - the queue
+
+Output Parameter:
+- `p` - the mesh point at the back of the queue
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueFront()`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueBack"))
@@ -4298,6 +4786,19 @@ end
 
 """
 	queue::DMPlexPoCintQueue = DMPlexPointQueueCreate(petsclib::PetscLibType,size::PetscInt) 
+Create a `DMPlexPointQueue`, a simple FIFO queue of `PetscInt` mesh points used by `DMPLEX` traversal routines.
+
+Not Collective
+
+Input Parameter:
+- `size` - the initial capacity of the queue
+
+Output Parameter:
+- `queue` - the newly created `DMPlexPointQueue`
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDestroy()`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueDequeue()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueCreate"))
@@ -4323,6 +4824,19 @@ end
 
 """
 	p::PetscInt = DMPlexPointQueueDequeue(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+Remove and return the mesh point at the front of a `DMPlexPointQueue`.
+
+Not Collective
+
+Input Parameter:
+- `queue` - the queue
+
+Output Parameter:
+- `p` - the mesh point that was at the front of the queue
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueFront()`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueDequeue"))
@@ -4348,6 +4862,16 @@ end
 
 """
 	DMPlexPointQueueDestroy(petsclib::PetscLibType,queue::Union{DMPlexPoCintQueue, Ref{DMPlexPoCintQueue}}) 
+Destroy a `DMPlexPointQueue` previously created with `DMPlexPointQueueCreate()`.
+
+Not Collective
+
+Input Parameter:
+- `queue` - the queue to destroy; set to `NULL` on return
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueDestroy"))
@@ -4372,6 +4896,20 @@ end
 
 """
 	empty::PetscBool = DMPlexPointQueueEmptyCollective(petsclib::PetscLibType,obj, queue::DMPlexPoCintQueue) 
+Collectively determine whether a `DMPlexPointQueue` is empty on every rank of a communicator.
+
+Collective
+
+Input Parameters:
+- `obj`   - a `PetscObject` whose communicator is used for the reduction
+- `queue` - the queue
+
+Output Parameter:
+- `empty` - `PETSC_TRUE` if the queue is empty on every rank, `PETSC_FALSE` otherwise
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueEmptyCollective"))
@@ -4397,6 +4935,17 @@ end
 
 """
 	DMPlexPointQueueEnqueue(petsclib::PetscLibType,queue::DMPlexPoCintQueue, p::PetscInt) 
+Add a mesh point to the back of a `DMPlexPointQueue`.
+
+Not Collective
+
+Input Parameters:
+- `queue` - the queue
+- `p`     - the mesh point to enqueue
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDequeue()`, `DMPlexPointQueueBack()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueEnqueue"))
@@ -4420,6 +4969,16 @@ end
 
 """
 	DMPlexPointQueueEnsureSize(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+Ensure that a `DMPlexPointQueue` has room for at least one more entry, doubling its capacity if it is full.
+
+Not Collective
+
+Input Parameter:
+- `queue` - the queue
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`, `DMPlexPointQueueEnqueue()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueEnsureSize"))
@@ -4443,6 +5002,19 @@ end
 
 """
 	p::PetscInt = DMPlexPointQueueFront(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+Return, without removing, the mesh point at the front of a `DMPlexPointQueue`.
+
+Not Collective
+
+Input Parameter:
+- `queue` - the queue
+
+Output Parameter:
+- `p` - the mesh point at the front of the queue
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueBack()`, `DMPlexPointQueueDequeue()`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueFront"))
@@ -4467,17 +5039,33 @@ end
 end 
 
 """
-	DMPlexTransformAdaptLabel(petsclib::PetscLibType,dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::AbstractPetscDM) 
+	rdm::PetscDM = DMPlexTransformAdaptLabel(petsclib::PetscLibType,dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel) 
+Adapt a `DMPLEX` using a `DMPlexTransform` driven by a `DMLabel` marking cells to be refined or coarsened.
+
+Collective
+
+Input Parameters:
+- `dm`         - the input `DMPLEX`
+- `metric`     - unused; present to conform to the `DMAdaptor` label-based interface
+- `adaptLabel` - a `DMLabel` marking cells with `DM_ADAPT_REFINE`, `DM_ADAPT_COARSEN`, etc.
+- `rgLabel`    - unused region-tag label; present to conform to the `DMAdaptor` interface
+
+Output Parameter:
+- `rdm` - the adapted `DMPLEX`
+
+Level: developer
+
+-seealso: `DMPLEX`, `DMPlexTransform`, `DMAdaptLabel()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`, `DMLabel`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformAdaptLabel"))
 """
-function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::AbstractPetscDM)
+function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel)
     error("DMPlexTransformAdaptLabel: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::AbstractPetscDM )
-	rdm_ = Ref(rdm.ptr)
+@for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel )
+	rdm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexTransformAdaptLabel, $petsc_library),
@@ -4486,13 +5074,13 @@ end
                dm, metric, adaptLabel, rgLabel, rdm_,
               )
 
-	rdm.ptr = rdm_[]
+	rdm = PetscDM(rdm_[], petsclib)
 
-	return nothing
+	return rdm
 end 
 
 """
-	tdm::PetscDM = DMPlexTransformApply(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM) 
+	trdm::PetscDM = DMPlexTransformApply(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM) 
 Execute the transformation, producing another `DM`
 
 Collective
@@ -4502,14 +5090,14 @@ Input Parameters:
 - `dm` - The original `DM`
 
 Output Parameter:
-- `tdm` - The transformed `DM`
+- `trdm` - The transformed `DM`
 
 Level: intermediate
 
 Options Database Keys:
-- `-dm_plex_transform_label_match_strata`      - Only label points of the same stratum as the producing point
-- `-dm_plex_transform_label_replica_inc <num>` - Increment for the label value to be multiplied by the replica number
-- `-dm_plex_transform_active <name>`           - Name for active mesh label
+- `-dm_plex_transform_label_match_strata`    - Only label points of the same stratum as the producing point
+- `-dm_plex_transform_label_replica_inc num` - Increment for the label value to be multiplied by the replica number
+- `-dm_plex_transform_active name`           - Name for active mesh label
 
 -seealso: [](plex_transform_table), [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformCreate()`, `DMPlexTransformSetDM()`
 
@@ -4521,18 +5109,18 @@ function DMPlexTransformApply(petsclib::PetscLibType, tr::DMPlexTransform, dm::A
 end
 
 @for_petsc function DMPlexTransformApply(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM )
-	tdm_ = Ref{CDM}()
+	trdm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexTransformApply, $petsc_library),
                PetscErrorCode,
                (DMPlexTransform, CDM, Ptr{CDM}),
-               tr, dm, tdm_,
+               tr, dm, trdm_,
               )
 
-	tdm = PetscDM(tdm_[], petsclib)
+	trdm = PetscDM(trdm_[], petsclib)
 
-	return tdm
+	return trdm
 end 
 
 """
@@ -4590,6 +5178,26 @@ end
 
 """
 	rt::PetscInt,Nt::PetscInt,target::Ptr{DMPolytopeType},size::Ptr{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransformIdentity(petsclib::PetscLibType,tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
+Default `celltransform` implementation for transforms that reproduce the input mesh
+
+Not Collective
+
+Input Parameters:
+- `tr`     - The `DMPlexTransform`
+- `source` - The cell type of the source point
+- `p`      - The source point
+
+Output Parameters:
+- `rt`     - Refinement type of the source point (set to 0), or `NULL`
+- `Nt`     - Number of target cell types produced (always 1)
+- `target` - Array of produced cell types (a single-element array containing `source`)
+- `size`   - Array of replica counts for each produced type (a single-element array containing 1)
+- `cone`   - Cone description used by `DMPlexTransformGetCone()`; encodes that the replica takes the entire parent cone
+- `ornt`   - Orientation array associated with `cone`; all zero for identity
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformCellTransform()`, `DMPlexTransformGetSubcellOrientationIdentity()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCellTransformIdentity"))
@@ -4841,6 +5449,17 @@ end
 
 """
 	DMPlexTransformCreateDiscLabels(petsclib::PetscLibType,tr::DMPlexTransform, rdm::AbstractPetscDM) 
+Refine the labels which define field and discrete system regions on the transformed `DM`
+
+Not Collective
+
+Input Parameters:
+- `tr`  - The `DMPlexTransform`
+- `rdm` - The refined `DM` produced by the transform
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMSetField()`, `DMSetRegionNumDS()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCreateDiscLabels"))
@@ -5427,6 +6046,20 @@ end
 
 """
 	celltype::DMPolytopeType = DMPlexTransformGetCellType(petsclib::PetscLibType,tr::DMPlexTransform, cell::PetscInt) 
+Return the cell type for a point in the transformed mesh
+
+Not Collective
+
+Input Parameters:
+- `tr`   - The `DMPlexTransform`
+- `cell` - The point number in the transformed mesh
+
+Output Parameter:
+- `celltype` - The `DMPolytopeType` of the point
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetChart()`, `DMPlexTransformGetCellTypeStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetCellType"))
@@ -5452,6 +6085,21 @@ end
 
 """
 	start::PetscInt,end_::PetscInt = DMPlexTransformGetCellTypeStratum(petsclib::PetscLibType,tr::DMPlexTransform, celltype::DMPolytopeType) 
+Return the point range for a given cell type in the transformed mesh
+
+Not Collective
+
+Input Parameters:
+- `tr`       - The `DMPlexTransform`
+- `celltype` - The `DMPolytopeType` of the requested stratum
+
+Output Parameters:
+- `start` - The first point of the stratum, or `NULL` if not needed
+- `end`   - One past the last point of the stratum, or `NULL` if not needed
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetCellType()`, `DMPlexTransformGetChart()`, `DMPlexGetDepthStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetCellTypeStratum"))
@@ -5519,6 +6167,20 @@ end
 
 """
 	pStart::PetscInt,pEnd::PetscInt = DMPlexTransformGetChart(petsclib::PetscLibType,tr::DMPlexTransform) 
+Get the chart `[pStart, pEnd)` for the points produced by the transform
+
+Not Collective
+
+Input Parameter:
+- `tr` - The `DMPlexTransform`
+
+Output Parameters:
+- `pStart` - The first point in the transformed mesh, or `NULL` if not needed
+- `pEnd`   - One past the last point in the transformed mesh, or `NULL` if not needed
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTransformGetCellType()`, `DMPlexTransformGetCellTypeStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetChart"))
@@ -5546,6 +6208,21 @@ end
 
 """
 	cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformGetCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt) 
+Return the cone of a point in the transformed mesh
+
+Not Collective
+
+Input Parameters:
+- `tr` - The `DMPlexTransform`
+- `q`  - The point number in the transformed mesh
+
+Output Parameters:
+- `cone` - The cone points, obtained from an internal work array, or `NULL` if not requested
+- `ornt` - The orientations of the cone points, obtained from an internal work array, or `NULL` if not requested
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRestoreCone()`, `DMPlexTransformGetConeOriented()`, `DMPlexTransformGetConeSize()`, `DMPlexGetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetCone"))
@@ -5573,6 +6250,22 @@ end
 
 """
 	cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformGetConeOriented(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, po::PetscInt) 
+Return the cone of a point in the transformed mesh, computed using a specified parent orientation
+
+Not Collective
+
+Input Parameters:
+- `tr` - The `DMPlexTransform`
+- `q`  - The point number in the transformed mesh
+- `po` - The orientation of the parent cell in the original mesh to use when producing the cone
+
+Output Parameters:
+- `cone` - The cone points, obtained from an internal work array
+- `ornt` - The orientations of the cone points, obtained from an internal work array
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformRestoreCone()`, `DMPlexTransformGetConeSize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetConeOriented"))
@@ -5600,6 +6293,20 @@ end
 
 """
 	coneSize::PetscInt = DMPlexTransformGetConeSize(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt) 
+Return the cone size of a point in the transformed mesh
+
+Not Collective
+
+Input Parameters:
+- `tr` - The `DMPlexTransform`
+- `q`  - The point number in the transformed mesh
+
+Output Parameter:
+- `coneSize` - The number of points in the cone of `q`
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformGetCellType()`, `DMPlexGetConeSize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetConeSize"))
@@ -5661,6 +6368,19 @@ end
 
 """
 	depth::PetscInt = DMPlexTransformGetDepth(petsclib::PetscLibType,tr::DMPlexTransform) 
+Return the topological depth of the transformed mesh
+
+Not Collective
+
+Input Parameter:
+- `tr` - The `DMPlexTransform`
+
+Output Parameter:
+- `depth` - The depth of the transformed mesh
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepthStratum()`, `DMPlexGetDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetDepth"))
@@ -5686,6 +6406,21 @@ end
 
 """
 	start::PetscInt,end_::PetscInt = DMPlexTransformGetDepthStratum(petsclib::PetscLibType,tr::DMPlexTransform, depth::PetscInt) 
+Return the point range for a given depth in the transformed mesh
+
+Not Collective
+
+Input Parameters:
+- `tr`    - The `DMPlexTransform`
+- `depth` - The requested depth in the transformed mesh
+
+Output Parameters:
+- `start` - The first point at the given depth, or `NULL` if not needed
+- `end`   - One past the last point at the given depth, or `NULL` if not needed
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepth()`, `DMPlexGetDepthStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetDepthStratum"))
@@ -5846,6 +6581,26 @@ end
 
 """
 	rnew::PetscInt,onew::PetscInt = DMPlexTransformGetSubcellOrientationIdentity(petsclib::PetscLibType,tr::DMPlexTransform, sct::DMPolytopeType, sp::PetscInt, so::PetscInt, tct::DMPolytopeType, r::PetscInt, o::PetscInt) 
+Default `getsubcellorientation` implementation for transforms that reproduce the input mesh
+
+Not Collective
+
+Input Parameters:
+- `tr`  - The `DMPlexTransform`
+- `sct` - The source point cell type
+- `sp`  - The source point
+- `so`  - The orientation of the source point in its enclosing parent
+- `tct` - The target point cell type
+- `r`   - The replica number requested for the produced cell type
+- `o`   - The orientation of the replica
+
+Output Parameters:
+- `rnew` - The replica number, given the orientation of the parent (returns `r`)
+- `onew` - The replica orientation composed with the source orientation
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetSubcellOrientation()`, `DMPlexTransformCellTransformIdentity()`, `DMPolytopeTypeComposeOrientation()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetSubcellOrientationIdentity"))
@@ -6070,6 +6825,38 @@ end
 end 
 
 """
+	DMPlexTransformRegister(petsclib::PetscLibType,name::String, noname::Ptr{Cvoid}) 
+Adds a new transform component implementation
+
+Not Collective
+
+Input Parameters:
+- `name`        - The name of a new user-defined creation routine
+- `create_func` - The creation routine
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRegisterAll()`, `DMPlexTransformRegisterDestroy()`
+
+# External Links
+$(_doc_external("DMPlex/DMPlexTransformRegister"))
+"""
+function DMPlexTransformRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid})
+    error("DMPlexTransformRegister: no generated method for these argument types")
+end
+
+@for_petsc function DMPlexTransformRegister(petsclib::$UnionPetscLib, name::String, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:DMPlexTransformRegister, $petsc_library),
+               PetscErrorCode,
+               (Ptr{Cchar}, Ptr{Cvoid}),
+               name, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
 	DMPlexTransformRegisterAll(petsclib::PetscLibType) 
 Registers all of the transform components in the `DM` package.
 
@@ -6129,6 +6916,19 @@ end
 
 """
 	DMPlexTransformRestoreCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) 
+Return the work arrays produced by `DMPlexTransformGetCone()` or `DMPlexTransformGetConeOriented()`
+
+Not Collective
+
+Input Parameters:
+- `tr`   - The `DMPlexTransform`
+- `q`    - The point number in the transformed mesh
+- `cone` - The cone points to release, or `NULL`
+- `ornt` - The orientations to release, or `NULL`
+
+Level: developer
+
+-seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformGetConeOriented()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformRestoreCone"))
@@ -6217,7 +7017,7 @@ end
 end 
 
 """
-	DMPlexTransformSetDimensions(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM) 
+	DMPlexTransformSetDimensions(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM, trdm::AbstractPetscDM) 
 Set the dimensions for the transformed `DM`
 
 Input Parameters:
@@ -6225,7 +7025,7 @@ Input Parameters:
 - `dm` - The original `DM`
 
 Output Parameter:
-- `tdm` - The transformed `DM`
+- `trdm` - The transformed `DM`
 
 Level: advanced
 
@@ -6234,17 +7034,17 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetDimensions"))
 """
-function DMPlexTransformSetDimensions(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM)
+function DMPlexTransformSetDimensions(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM, trdm::AbstractPetscDM)
     error("DMPlexTransformSetDimensions: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTransformSetDimensions(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM )
+@for_petsc function DMPlexTransformSetDimensions(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM, trdm::AbstractPetscDM )
 
     @chk ccall(
                (:DMPlexTransformSetDimensions, $petsc_library),
                PetscErrorCode,
                (DMPlexTransform, CDM, CDM),
-               tr, dm, tdm,
+               tr, dm, trdm,
               )
 
 
@@ -6261,11 +7061,11 @@ Input Parameter:
 - `tr` - the `DMPlexTransform` object to set options for
 
 Options Database Keys:
-- `-dm_plex_transform_type`                      - Set the transform type, e.g. refine_regular
-- `-dm_plex_transform_label_match_strata`        - Only label points of the same stratum as the producing point
-- `-dm_plex_transform_label_replica_inc <inc>`   - Increment for the label value to be multiplied by the replica number, so that the new label value is oldValue + r * inc
-- `-dm_plex_transform_active <name>`             - Name for active mesh label
-- `-dm_plex_transform_active_values <v0,v1,...>` - Values in the active label
+- `-dm_plex_transform_type type`               - Set the transform type, e.g. refine_regular
+- `-dm_plex_transform_label_match_strata`      - Only label points of the same stratum as the producing point
+- `-dm_plex_transform_label_replica_inc inc`   - Increment for the label value to be multiplied by the replica number, so that the new label value is oldValue + r * inc
+- `-dm_plex_transform_active name`             - Name for active mesh label
+- `-dm_plex_transform_active_values v0,v1,...` - Values in the active label
 
 Level: intermediate
 
@@ -6368,7 +7168,7 @@ Input Parameters:
 - `method` - The name of the transform type
 
 Options Database Key:
-- `-dm_plex_transform_type <type>` - Sets the transform type; see `DMPlexTransformType`
+- `-dm_plex_transform_type type` - Sets the transform type; see `DMPlexTransformType`
 
 Level: intermediate
 
@@ -6841,30 +7641,60 @@ end
 end 
 
 """
-	DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::PetscLibType,db::DMSwarmDataBucket, name::String, gfield::DMSwarmDataField) 
+	gfield::DMSwarmDataField = DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::PetscLibType,db::DMSwarmDataBucket, name::String) 
+Return the `DMSwarmDataField` handle registered in a `DMSwarmDataBucket` under a given name.
+
+Not Collective
+
+Input Parameters:
+- `db`   - the `DMSwarmDataBucket`
+- `name` - the field name
+
+Output Parameter:
+- `gfield` - the `DMSwarmDataField` handle
+
+Level: developer
+
+-seealso: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldIdByName()`, `DMSwarmDataBucketQueryDMSwarmDataFieldByName()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataBucketGetDMSwarmDataFieldByName"))
 """
-function DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String, gfield::DMSwarmDataField)
+function DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String)
     error("DMSwarmDataBucketGetDMSwarmDataFieldByName: no generated method for these argument types")
 end
 
-@for_petsc function DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::$UnionPetscLib, db::DMSwarmDataBucket, name::String, gfield::DMSwarmDataField )
+@for_petsc function DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::$UnionPetscLib, db::DMSwarmDataBucket, name::String )
+	gfield_ = Ref{DMSwarmDataField}()
 
     @chk ccall(
                (:DMSwarmDataBucketGetDMSwarmDataFieldByName, $petsc_library),
                PetscErrorCode,
                (DMSwarmDataBucket, Ptr{Cchar}, Ptr{DMSwarmDataField}),
-               db, name, gfield,
+               db, name, gfield_,
               )
 
+	gfield = gfield_[]
 
-	return nothing
+	return gfield
 end 
 
 """
 	idx::PetscInt = DMSwarmDataBucketGetDMSwarmDataFieldIdByName(petsclib::PetscLibType,db::DMSwarmDataBucket, name::String) 
+Return the index of a `DMSwarmDataField` within a `DMSwarmDataBucket` given its name.
+
+Not Collective
+
+Input Parameters:
+- `db`   - the `DMSwarmDataBucket`
+- `name` - the field name
+
+Output Parameter:
+- `idx` - the index of the field within the bucket
+
+Level: developer
+
+-seealso: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldByName()`, `DMSwarmDataBucketQueryDMSwarmDataFieldByName()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataBucketGetDMSwarmDataFieldIdByName"))
@@ -6890,6 +7720,20 @@ end
 
 """
 	found::PetscBool = DMSwarmDataBucketQueryDMSwarmDataFieldByName(petsclib::PetscLibType,db::DMSwarmDataBucket, name::String) 
+Test whether a `DMSwarmDataBucket` contains a `DMSwarmDataField` with the given name.
+
+Not Collective
+
+Input Parameters:
+- `db`   - the `DMSwarmDataBucket`
+- `name` - the field name to look up
+
+Output Parameter:
+- `found` - `PETSC_TRUE` if a field with the given name is registered, otherwise `PETSC_FALSE`
+
+Level: developer
+
+-seealso: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldByName()`, `DMSwarmDataBucketGetDMSwarmDataFieldIdByName()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataBucketQueryDMSwarmDataFieldByName"))
@@ -6915,6 +7759,19 @@ end
 
 """
 	data::Ptr{Cvoid} = DMSwarmDataFieldGetEntries(petsclib::PetscLibType,gfield::DMSwarmDataField) 
+Return a pointer to the raw contiguous storage backing a `DMSwarmDataField`.
+
+Not Collective
+
+Input Parameter:
+- `gfield` - the `DMSwarmDataField`
+
+Output Parameter:
+- `data` - pointer to the raw entries; must be released with `DMSwarmDataFieldRestoreEntries()`
+
+Level: developer
+
+-seealso: `DMSwarmDataField`, `DMSwarmDataFieldRestoreEntries()`, `DMSwarmDataFieldGetNumEntries()`, `DMSwarmDataFieldGetAtomicSize()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataFieldGetEntries"))
@@ -6939,46 +7796,61 @@ end
 end 
 
 """
-	DMSwarmDataFieldRestoreEntries(petsclib::PetscLibType,gfield::DMSwarmDataField, data::Ptr{Ptr{Cvoid}}) 
+	data::Ptr{Cvoid} = DMSwarmDataFieldRestoreEntries(petsclib::PetscLibType,gfield::DMSwarmDataField) 
+Release a pointer obtained from `DMSwarmDataFieldGetEntries()`, clearing the caller's handle to `NULL`.
+
+Not Collective
+
+Input Parameter:
+- `gfield` - the `DMSwarmDataField`
+
+Output Parameter:
+- `data` - pointer that will be set to `NULL`
+
+Level: developer
+
+-seealso: `DMSwarmDataField`, `DMSwarmDataFieldGetEntries()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataFieldRestoreEntries"))
 """
-function DMSwarmDataFieldRestoreEntries(petsclib::PetscLibType, gfield::DMSwarmDataField, data::Ptr{Ptr{Cvoid}})
+function DMSwarmDataFieldRestoreEntries(petsclib::PetscLibType, gfield::DMSwarmDataField)
     error("DMSwarmDataFieldRestoreEntries: no generated method for these argument types")
 end
 
-@for_petsc function DMSwarmDataFieldRestoreEntries(petsclib::$UnionPetscLib, gfield::DMSwarmDataField, data::Ptr{Ptr{Cvoid}} )
+@for_petsc function DMSwarmDataFieldRestoreEntries(petsclib::$UnionPetscLib, gfield::DMSwarmDataField )
+	data_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMSwarmDataFieldRestoreEntries, $petsc_library),
                PetscErrorCode,
                (DMSwarmDataField, Ptr{Ptr{Cvoid}}),
-               gfield, data,
+               gfield, data_,
               )
 
+	data = data_[]
 
-	return nothing
+	return data
 end 
 
 """
-	DMSwarmSortDestroy(petsclib::PetscLibType,_ctx::Union{DMSwarmSort, Ref{DMSwarmSort}}) 
+	DMSwarmSortDestroy(petsclib::PetscLibType,ctx::Union{DMSwarmSort, Ref{DMSwarmSort}}) 
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortDestroy"))
 """
-function DMSwarmSortDestroy(petsclib::PetscLibType, _ctx::Union{DMSwarmSort, Ref{DMSwarmSort}})
+function DMSwarmSortDestroy(petsclib::PetscLibType, ctx::Union{DMSwarmSort, Ref{DMSwarmSort}})
     error("DMSwarmSortDestroy: no generated method for these argument types")
 end
 
-@for_petsc function DMSwarmSortDestroy(petsclib::$UnionPetscLib, _ctx::Union{DMSwarmSort, Ref{DMSwarmSort}} )
-	_ctx_ = _ctx isa Base.RefValue ? _ctx : Ref{DMSwarmSort}(_ctx)
+@for_petsc function DMSwarmSortDestroy(petsclib::$UnionPetscLib, ctx::Union{DMSwarmSort, Ref{DMSwarmSort}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{DMSwarmSort}(ctx)
 
     @chk ccall(
                (:DMSwarmSortDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMSwarmSort},),
-               _ctx_,
+               ctx_,
               )
 
 

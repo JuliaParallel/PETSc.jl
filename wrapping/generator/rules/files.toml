@@ -206,7 +206,11 @@ classes = ["PetscFV"]
 
 [[file]]
 name = "Tao_addons_wrappers.jl"
-classes = ["TaoMonitorDrawCtx", "TaoLineSearch"]
+classes = ["TaoMonitorDrawCtx", "TaoLineSearch", "TaoTerm"]
+
+[[file]]
+name = "PetscDA_wrappers.jl"
+classes = ["PetscDA"]
 
 [[file]]
 name = "PetscViewer_wrappers.jl"

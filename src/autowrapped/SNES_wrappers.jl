@@ -265,7 +265,7 @@ Input Parameters:
 - `type` - `SNES_COMPOSITE_ADDITIVE` (default), `SNES_COMPOSITE_MULTIPLICATIVE`, or `SNES_COMPOSITE_ADDITIVEOPTIMAL`
 
 Options Database Key:
-- `-snes_composite_type <type: one of multiplicative, additive, additiveoptimal>` - Sets composite preconditioner type
+- `-snes_composite_type (multiplicative|additive|additive_optimal)` - Sets composite preconditioner type
 
 Level: developer
 
@@ -293,7 +293,7 @@ end
 end 
 
 """
-	SNESComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec) 
+	SNESComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec) 
 Calls the function that has been set with `SNESSetFunction()`.
 
 Collective
@@ -303,26 +303,26 @@ Input Parameters:
 - `x`    - input vector
 
 Output Parameter:
-- `y` - function vector, as set by `SNESSetFunction()`
+- `f` - function vector, as set by `SNESSetFunction()`
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESSetFunction()`, `SNESGetFunction()`, `SNESComputeMFFunction()`
+-seealso: [](ch_snes), `SNES`, `SNESSetFunction()`, `SNESGetFunction()`, `SNESComputeMFFunction()`, `SNESSetFunctionDomainError()`
 
 # External Links
 $(_doc_external("SNES/SNESComputeFunction"))
 """
-function SNESComputeFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec)
+function SNESComputeFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec)
     error("SNESComputeFunction: no generated method for these argument types")
 end
 
-@for_petsc function SNESComputeFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec )
+@for_petsc function SNESComputeFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec )
 
     @chk ccall(
                (:SNESComputeFunction, $petsc_library),
                PetscErrorCode,
                (CSNES, CVec, CVec),
-               snes, x, y,
+               snes, x, f,
               )
 
 
@@ -331,6 +331,20 @@ end
 
 """
 	SNESComputeFunctionDefaultNPC(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec) 
+Compute the residual by applying the attached nonlinear preconditioner when one is present, otherwise defer to `SNESComputeFunction()`
+
+Collective
+
+Input Parameters:
+- `snes` - the `SNES` context
+- `X`    - the current iterate
+
+Output Parameter:
+- `F` - the residual vector produced by the nonlinear preconditioner (or the standard function evaluation)
+
+Level: developer
+
+-seealso: [](ch_snes), `SNES`, `SNESSetNPC()`, `SNESApplyNPC()`, `SNESComputeFunction()`, `SNESGetNPCFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESComputeFunctionDefaultNPC"))
@@ -367,25 +381,27 @@ Output Parameters:
 - `B` - optional matrix for building the preconditioner, usually the same as `A`
 
 Options Database Keys:
-- `-snes_lag_preconditioner <lag>`           - how often to rebuild preconditioner
-- `-snes_lag_jacobian <lag>`                 - how often to rebuild Jacobian
-- `-snes_test_jacobian <optional threshold>` - compare the user provided Jacobian with one compute via finite differences to check for errors.  If a threshold is given, display only those entries whose difference is greater than the threshold.
-- `-snes_test_jacobian_view`                 - display the user provided Jacobian, the finite difference Jacobian and the difference between them to help users detect the location of errors in the user provided Jacobian
-- `-snes_compare_explicit`                   - Compare the computed Jacobian to the finite difference Jacobian and output the differences
-- `-snes_compare_explicit_draw`              - Compare the computed Jacobian to the finite difference Jacobian and draw the result
-- `-snes_compare_explicit_contour`           - Compare the computed Jacobian to the finite difference Jacobian and draw a contour plot with the result
-- `-snes_compare_operator`                   - Make the comparison options above use the operator instead of the matrix used to construct the preconditioner
-- `-snes_compare_coloring`                   - Compute the finite difference Jacobian using coloring and display norms of difference
-- `-snes_compare_coloring_display`           - Compute the finite difference Jacobian using coloring and display verbose differences
-- `-snes_compare_coloring_threshold`         - Display only those matrix entries that differ by more than a given threshold
-- `-snes_compare_coloring_threshold_atol`    - Absolute tolerance for difference in matrix entries to be displayed by `-snes_compare_coloring_threshold`
-- `-snes_compare_coloring_threshold_rtol`    - Relative tolerance for difference in matrix entries to be displayed by `-snes_compare_coloring_threshold`
-- `-snes_compare_coloring_draw`              - Compute the finite difference Jacobian using coloring and draw differences
-- `-snes_compare_coloring_draw_contour`      - Compute the finite difference Jacobian using coloring and show contours of matrices and differences
+- `-snes_lag_preconditioner lag`          - how often to rebuild preconditioner
+- `-snes_lag_jacobian lag`                - how often to rebuild Jacobian
+- `-snes_test_jacobian [threshold]`       - compare the user provided Jacobian with one compute via finite differences to check for errors.
+If a threshold is given, display only those entries whose difference is greater than the threshold.
+- `-snes_test_jacobian_view [viewer]`     - display the user provided Jacobian, the finite difference Jacobian and the difference between them to help users detect the location of errors in the user provided Jacobian
+- `-snes_compare_explicit`                - Compare the computed Jacobian to the finite difference Jacobian and output the differences
+- `-snes_compare_explicit_draw`           - Compare the computed Jacobian to the finite difference Jacobian and draw the result
+- `-snes_compare_explicit_contour`        - Compare the computed Jacobian to the finite difference Jacobian and draw a contour plot with the result
+- `-snes_compare_operator`                - Make the comparison options above use the operator instead of the matrix used to construct the preconditioner
+- `-snes_compare_coloring`                - Compute the finite difference Jacobian using coloring and display norms of difference
+- `-snes_compare_coloring_display`        - Compute the finite difference Jacobian using coloring and display verbose differences
+- `-snes_compare_coloring_threshold`      - Display only those matrix entries that differ by more than a given threshold
+- `-snes_compare_coloring_threshold_atol` - Absolute tolerance for difference in matrix entries to be displayed by `-snes_compare_coloring_threshold`
+- `-snes_compare_coloring_threshold_rtol` - Relative tolerance for difference in matrix entries to be displayed by `-snes_compare_coloring_threshold`
+- `-snes_compare_coloring_draw`           - Compute the finite difference Jacobian using coloring and draw differences
+- `-snes_compare_coloring_draw_contour`   - Compute the finite difference Jacobian using coloring and show contours of matrices and differences
 
 Level: developer
 
--seealso: [](ch_snes), `SNESSetJacobian()`, `KSPSetOperators()`, `MatStructure`, `SNESSetLagPreconditioner()`, `SNESSetLagJacobian()`
+-seealso: [](ch_snes), `SNESSetJacobian()`, `KSPSetOperators()`, `MatStructure`, `SNESSetLagPreconditioner()`, `SNESSetLagJacobian()`,
+`SNESSetJacobianDomainError()`, `SNESCheckJacobianDomainError()`, `SNESSetCheckJacobianDomainError()`
 
 # External Links
 $(_doc_external("SNES/SNESComputeJacobian"))
@@ -423,11 +439,11 @@ Output Parameters:
 - `B` - newly computed Jacobian matrix to use with preconditioner (generally the same as `J`)
 
 Options Database Keys:
-- `-snes_fd`          - Activates `SNESComputeJacobianDefault()`
-- `-snes_fd_coloring` - Activates a faster computation that uses a graph coloring of the matrix
-- `-snes_test_err`    - Square root of function error tolerance, default square root of machine
+- `-snes_fd`             - Activates `SNESComputeJacobianDefault()`
+- `-snes_fd_coloring`    - Activates a faster computation that uses a graph coloring of the matrix
+- `-snes_test_err etol`  - Square root of function error tolerance, default square root of machine
 epsilon (1.e-8 in double, 3.e-4 in single)
-- `-mat_fd_type`      - Either wp or ds (see `MATMFFD_WP` or `MATMFFD_DS`)
+- `-mat_fd_type (wp|ds)` - See `MATMFFD_WP` and `MATMFFD_DS`
 
 Level: intermediate
 
@@ -470,13 +486,13 @@ Output Parameters:
 - `B` - newly computed Jacobian matrix to use with preconditioner (generally the same as `J`)
 
 Options Database Keys:
-- `-snes_fd_color_use_mat`       - use a matrix coloring from the explicit matrix nonzero pattern instead of from the `DM` providing the matrix
-- `-snes_fd_color`               - Activates `SNESComputeJacobianDefaultColor()` in `SNESSetFromOptions()`
-- `-mat_fd_coloring_err <err>`   - Sets <err> (square root of relative error in the function)
-- `-mat_fd_coloring_umin <umin>` - Sets umin, the minimum allowable u-value magnitude
-- `-mat_fd_type`                 - Either wp or ds (see `MATMFFD_WP` or `MATMFFD_DS`)
-- `-snes_mf_operator`            - Use matrix-free application of Jacobian
-- `-snes_mf`                     - Use matrix-free Jacobian with no explicit Jacobian representation
+- `-snes_fd_color_use_mat`     - use a matrix coloring from the explicit matrix nonzero pattern instead of from the `DM` providing the matrix
+- `-snes_fd_color`             - Activates `SNESComputeJacobianDefaultColor()` in `SNESSetFromOptions()`
+- `-mat_fd_coloring_err err`   - Sets err (square root of relative error in the function)
+- `-mat_fd_coloring_umin umin` - Sets umin, the minimum allowable u-value magnitude
+- `-mat_fd_type`               - Either wp or ds (see `MATMFFD_WP` or `MATMFFD_DS`)
+- `-snes_mf_operator`          - Use matrix-free application of Jacobian
+- `-snes_mf`                   - Use matrix-free Jacobian with no explicit Jacobian representation
 
 -seealso: [](ch_snes), `SNES`, `SNESSetJacobian()`, `SNESTestJacobian()`, `SNESComputeJacobianDefault()`, `SNESSetUseMatrixFree()`,
 `MatFDColoringCreate()`, `MatFDColoringSetFunction()`
@@ -665,10 +681,10 @@ Input Parameters:
 - `xnorm` - 2-norm of current iterate
 - `gnorm` - 2-norm of current step
 - `f`     - 2-norm of function at current iterate
-- `ctx`   - Optional user context
+- `ctx`   - Optional application context
 
 Output Parameter:
-- `reason` - `SNES_CONVERGED_ITERATING`, `SNES_CONVERGED_ITS`, or `SNES_DIVERGED_FNORM_NAN`
+- `reason` - `SNES_CONVERGED_ITERATING`, `SNES_CONVERGED_ITS`, or `SNES_DIVERGED_FUNCTION_NANORINF`
 
 Options Database Key:
 - `-snes_convergence_test correct_pressure` - see `SNESSetFromOptions()`
@@ -700,7 +716,7 @@ end
 end 
 
 """
-	reason::SNESConvergedReason = SNESConvergedDefault(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, dummy::Ptr{Cvoid}) 
+	reason::SNESConvergedReason = SNESConvergedDefault(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, ctx::Ptr{Cvoid}) 
 Default convergence test for `SNESSolve()`.
 
 Collective
@@ -711,20 +727,20 @@ Input Parameters:
 - `xnorm` - 2-norm of current iterate
 - `snorm` - 2-norm of current step
 - `fnorm` - 2-norm of function at current iterate
-- `dummy` - unused context
+- `ctx`   - unused context
 
 Output Parameter:
 - `reason` - converged reason, see `SNESConvergedReason`
 
 Options Database Keys:
-- `-snes_convergence_test default`      - see `SNESSetFromOptions()`
-- `-snes_stol`                          - convergence tolerance in terms of the norm of the change in the solution between steps
-- `-snes_atol <abstol>`                 - absolute tolerance of residual norm
-- `-snes_rtol <rtol>`                   - relative decrease in tolerance norm from the initial 2-norm of the solution
-- `-snes_divergence_tolerance <divtol>` - if the residual goes above divtol*rnorm0, exit with divergence
-- `-snes_max_funcs <max_funcs>`         - maximum number of function evaluations, use `unlimited` for no maximum
-- `-snes_max_fail <max_fail>`           - maximum number of line search failures allowed before stopping, default is none
-- `-snes_max_linear_solve_fail`         - number of linear solver failures before `SNESSolve()` stops
+- `-snes_convergence_test default`    - see `SNESSetFromOptions()`
+- `-snes_stol`                        - convergence tolerance in terms of the norm of the change in the solution between steps
+- `-snes_atol abstol`                 - absolute tolerance of residual norm
+- `-snes_rtol rtol`                   - relative decrease in tolerance norm from the initial 2-norm of the solution
+- `-snes_divergence_tolerance divtol` - if the residual goes above divtol*rnorm0, exit with divergence
+- `-snes_max_funcs max_funcs`         - maximum number of function evaluations, use `unlimited` for no maximum
+- `-snes_max_fail max_fail`           - maximum number of line search failures allowed before stopping, default is none
+- `-snes_max_linear_solve_fail`       - number of linear solver failures before `SNESSolve()` stops
 
 Level: developer
 
@@ -734,18 +750,18 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESConvergedDefault"))
 """
-function SNESConvergedDefault(petsclib::PetscLibType, snes::AbstractPetscSNES, it::Integer, xnorm::Real, snorm::Real, fnorm::Real, dummy::Ptr{Cvoid})
+function SNESConvergedDefault(petsclib::PetscLibType, snes::AbstractPetscSNES, it::Integer, xnorm::Real, snorm::Real, fnorm::Real, ctx::Ptr{Cvoid})
     error("SNESConvergedDefault: no generated method for these argument types")
 end
 
-@for_petsc function SNESConvergedDefault(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, dummy::Ptr{Cvoid} )
+@for_petsc function SNESConvergedDefault(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
 	reason_ = Ref{SNESConvergedReason}()
 
     @chk ccall(
                (:SNESConvergedDefault, $petsc_library),
                PetscErrorCode,
                (CSNES, $PetscInt, $PetscReal, $PetscReal, $PetscReal, Ptr{SNESConvergedReason}, Ptr{Cvoid}),
-               snes, it, xnorm, snorm, fnorm, reason_, dummy,
+               snes, it, xnorm, snorm, fnorm, reason_, ctx,
               )
 
 	reason = reason_[]
@@ -911,7 +927,7 @@ end
 end 
 
 """
-	reason::SNESConvergedReason = SNESConvergedSkip(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, dummy::Ptr{Cvoid}) 
+	reason::SNESConvergedReason = SNESConvergedSkip(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, ctx::Ptr{Cvoid}) 
 Convergence test for `SNES` that NEVER returns as
 converged, UNLESS the maximum number of iteration have been reached.
 
@@ -923,10 +939,10 @@ Input Parameters:
 - `xnorm` - 2-norm of current iterate
 - `snorm` - 2-norm of current step
 - `fnorm` - 2-norm of function at current iterate
-- `dummy` - unused context
+- `ctx`   - unused context
 
 Output Parameter:
-- `reason` - `SNES_CONVERGED_ITERATING`, `SNES_CONVERGED_ITS`, or `SNES_DIVERGED_FNORM_NAN`
+- `reason` - `SNES_CONVERGED_ITERATING`, `SNES_CONVERGED_ITS`, or `SNES_DIVERGED_FUNCTION_NANORINF`
 
 Options Database Key:
 - `-snes_convergence_test skip` - see `SNESSetFromOptions()`
@@ -938,18 +954,18 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESConvergedSkip"))
 """
-function SNESConvergedSkip(petsclib::PetscLibType, snes::AbstractPetscSNES, it::Integer, xnorm::Real, snorm::Real, fnorm::Real, dummy::Ptr{Cvoid})
+function SNESConvergedSkip(petsclib::PetscLibType, snes::AbstractPetscSNES, it::Integer, xnorm::Real, snorm::Real, fnorm::Real, ctx::Ptr{Cvoid})
     error("SNESConvergedSkip: no generated method for these argument types")
 end
 
-@for_petsc function SNESConvergedSkip(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, dummy::Ptr{Cvoid} )
+@for_petsc function SNESConvergedSkip(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
 	reason_ = Ref{SNESConvergedReason}()
 
     @chk ccall(
                (:SNESConvergedSkip, $petsc_library),
                PetscErrorCode,
                (CSNES, $PetscInt, $PetscReal, $PetscReal, $PetscReal, Ptr{SNESConvergedReason}, Ptr{Cvoid}),
-               snes, it, xnorm, snorm, fnorm, reason_, dummy,
+               snes, it, xnorm, snorm, fnorm, reason_, ctx,
               )
 
 	reason = reason_[]
@@ -1089,7 +1105,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESFAS` `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoother()`
+-seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoother()`
 
 # External Links
 $(_doc_external("SNESFAS/SNESFASCycleGetCorrection"))
@@ -2097,7 +2113,7 @@ Input Parameters:
 - `cycles` - the number of cycles -- 1 for V-cycle, 2 for W-cycle
 
 Options Database Key:
-- `-snes_fas_cycles <1,2>` - 1 for V-cycle, 2 for W-cycle
+- `-snes_fas_cycles (1|2)` - 1 for V-cycle, 2 for W-cycle
 
 Level: advanced
 
@@ -2343,7 +2359,7 @@ Input Parameters:
 - `n`    - the number of smoothing steps to use
 
 Options Database Key:
-- `-snes_fas_smoothdown <n>` - Sets number of pre-smoothing steps
+- `-snes_fas_smoothdown n` - Sets number of pre-smoothing steps
 
 Level: advanced
 
@@ -2381,7 +2397,7 @@ Input Parameters:
 - `n`    - the number of smoothing steps to use
 
 Options Database Key:
-- `-snes_fas_smoothup <n>` - Sets number of pre-smoothing steps
+- `-snes_fas_smoothup n` - Sets number of pre-smoothing steps
 
 Level: advanced
 
@@ -2576,7 +2592,7 @@ end
 end 
 
 """
-	SNESGetApplicationContext(petsclib::PetscLibType,snes::AbstractPetscSNES, ctx::PeCtx) 
+	ctx::Ptr{Cvoid} = SNESGetApplicationContext(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the user
 nonlinear solvers set with `SNESGetApplicationContext()` or `SNESSetComputeApplicationContext()`
 
@@ -2586,7 +2602,7 @@ Input Parameter:
 - `snes` - `SNES` context
 
 Output Parameter:
-- `ctx` - user context
+- `ctx` - the application context
 
 Level: intermediate
 
@@ -2595,21 +2611,23 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetApplicationContext"))
 """
-function SNESGetApplicationContext(petsclib::PetscLibType, snes::AbstractPetscSNES, ctx::PeCtx)
+function SNESGetApplicationContext(petsclib::PetscLibType, snes::AbstractPetscSNES)
     error("SNESGetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function SNESGetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ctx::PeCtx )
+@for_petsc function SNESGetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:SNESGetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (CSNES, PeCtx),
-               snes, ctx,
+               (CSNES, Ptr{Cvoid}),
+               snes, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -2957,7 +2975,7 @@ end
     @chk ccall(
                (:SNESGetFunction, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CSNES, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                snes, r_, f_, ctx_,
               )
 
@@ -2966,44 +2984,6 @@ end
 	ctx = ctx_[]
 
 	return r,f,ctx
-end 
-
-"""
-	domainerror::PetscBool = SNESGetFunctionDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
-Gets the status of the domain error after a call to `SNESComputeFunction()`
-
-Not Collective, different MPI processes may return different values
-
-Input Parameter:
-- `snes` - the `SNES` context
-
-Output Parameter:
-- `domainerror` - Set to `PETSC_TRUE` if there's a domain error; `PETSC_FALSE` otherwise.
-
-Level: developer
-
--seealso: [](ch_snes), `SNES`, `SNESSetFunctionDomainError()`, `SNESComputeFunction()`
-
-# External Links
-$(_doc_external("SNES/SNESGetFunctionDomainError"))
-"""
-function SNESGetFunctionDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES)
-    error("SNESGetFunctionDomainError: no generated method for these argument types")
-end
-
-@for_petsc function SNESGetFunctionDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
-	domainerror_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:SNESGetFunctionDomainError, $petsc_library),
-               PetscErrorCode,
-               (CSNES, Ptr{PetscBool}),
-               snes, domainerror_,
-              )
-
-	domainerror = domainerror_[]
-
-	return domainerror
 end 
 
 """
@@ -3193,7 +3173,7 @@ end
     @chk ccall(
                (:SNESGetJacobian, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CSNES, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                snes, Amat_, Pmat_, J_, ctx_,
               )
 
@@ -3203,44 +3183,6 @@ end
 	ctx = ctx_[]
 
 	return Amat,Pmat,J,ctx
-end 
-
-"""
-	domainerror::PetscBool = SNESGetJacobianDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
-Gets the status of the Jacobian domain error after a call to `SNESComputeJacobian()`
-
-Not Collective, different MPI processes may return different values
-
-Input Parameter:
-- `snes` - the `SNES` context
-
-Output Parameter:
-- `domainerror` - Set to `PETSC_TRUE` if there's a Jacobian domain error; `PETSC_FALSE` otherwise.
-
-Level: advanced
-
--seealso: [](ch_snes), `SNES`, `SNESSetFunctionDomainError()`, `SNESComputeFunction()`, `SNESGetFunctionDomainError()`
-
-# External Links
-$(_doc_external("SNES/SNESGetJacobianDomainError"))
-"""
-function SNESGetJacobianDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES)
-    error("SNESGetJacobianDomainError: no generated method for these argument types")
-end
-
-@for_petsc function SNESGetJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
-	domainerror_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:SNESGetJacobianDomainError, $petsc_library),
-               PetscErrorCode,
-               (CSNES, Ptr{PetscBool}),
-               snes, domainerror_,
-              )
-
-	domainerror = domainerror_[]
-
-	return domainerror
 end 
 
 """
@@ -3297,7 +3239,6 @@ the Jacobian is built etc.
 Level: intermediate
 
 -seealso: [](ch_snes), `SNES`, `SNESSetLagJacobian()`, `SNESSetLagPreconditioner()`, `SNESGetLagPreconditioner()`, `SNESSetLagJacobianPersists()`, `SNESSetLagPreconditionerPersists()`
-
 
 # External Links
 $(_doc_external("SNES/SNESGetLagJacobian"))
@@ -3412,7 +3353,7 @@ Output Parameter:
 - `nfails` - number of failed solves
 
 Options Database Key:
-- `-snes_max_linear_solve_fail <num>` - The number of failures before the solve is terminated
+- `-snes_max_linear_solve_fail num` - The number of failures before the solve is terminated
 
 Level: intermediate
 
@@ -3494,7 +3435,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNESSetErrorIfNotConverged()`, `SNESGetLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `SNESSetMaxLinearSolveFailures()`,
+-seealso: [](ch_snes), `SNESSetErrorIfNotConverged()`, `SNESGetLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `SNESSetMaxLinearSolveFailures()`
 
 # External Links
 $(_doc_external("SNES/SNESGetMaxLinearSolveFailures"))
@@ -3587,7 +3528,7 @@ end
     @chk ccall(
                (:SNESGetNGS, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CSNES, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                snes, f_, ctx_,
               )
 
@@ -3610,7 +3551,7 @@ Output Parameter:
 - `pc` - the `SNES` preconditioner context
 
 Options Database Key:
-- `-npc_snes_type <type>` - set the type of the `SNES` to use as the nonlinear preconditioner
+- `-npc_snes_type type` - set the type of the `SNES` to use as the nonlinear preconditioner
 
 Level: advanced
 
@@ -3640,7 +3581,8 @@ end
 
 """
 	fnorm::PetscReal = SNESGetNPCFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, F::AbstractPetscVec) 
-Gets the current function value and its norm from a nonlinear preconditioner after `SNESSolve()` has been called on that `SNES`
+Gets the current function value (for the callback function provided by `SNESSetFunction()`,
+and its norm from a nonlinear preconditioner after `SNESSolve()` has been called on that `SNES`
 
 Collective
 
@@ -3715,7 +3657,7 @@ end
 """
 	nfails::PetscInt = SNESGetNonlinearStepFailures(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the number of unsuccessful steps
-attempted by the nonlinear solver in the current or most recent `SNESSolve()` .
+taken by the nonlinear solver in the current or most recent `SNESSolve()` .
 
 Not Collective
 
@@ -3859,7 +3801,7 @@ end
     @chk ccall(
                (:SNESGetObjective, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CSNES, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                snes, obj_, ctx_,
               )
 
@@ -3947,7 +3889,7 @@ end
     @chk ccall(
                (:SNESGetPicard, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CSNES, Ptr{CVec}, Ptr{Ptr{Cvoid}}, Ptr{CMat}, Ptr{CMat}, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                snes, r_, f_, Amat_, Pmat_, J_, ctx_,
               )
 
@@ -4180,7 +4122,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNESSetType()`, `SNESType`, `SNESSetFromOptions()`, `SNES`
+-seealso: [](ch_snes), `SNESSetType()`, `SNESType`, `SNESSetFromOptions()`, `SNES`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("SNES/SNESGetType"))
@@ -4504,14 +4446,14 @@ Input Parameters:
 - `flag` - `PETSC_TRUE` or `PETSC_FALSE`
 
 Options Database Keys:
-- `-snes_ksp_ew`                       - use Eisenstat-Walker method for determining linear system convergence
-- `-snes_ksp_ew_version ver`           - version of  Eisenstat-Walker method
-- `-snes_ksp_ew_rtol0 <rtol0>`         - Sets rtol0
-- `-snes_ksp_ew_rtolmax <rtolmax>`     - Sets rtolmax
-- `-snes_ksp_ew_gamma <gamma>`         - Sets gamma
-- `-snes_ksp_ew_alpha <alpha>`         - Sets alpha
-- `-snes_ksp_ew_alpha2 <alpha2>`       - Sets alpha2
-- `-snes_ksp_ew_threshold <threshold>` - Sets threshold
+- `-snes_ksp_ew`                     - use Eisenstat-Walker method for determining linear system convergence
+- `-snes_ksp_ew_version ver`         - version of  Eisenstat-Walker method
+- `-snes_ksp_ew_rtol0 rtol0`         - Sets rtol0
+- `-snes_ksp_ew_rtolmax rtolmax`     - Sets rtolmax
+- `-snes_ksp_ew_gamma gamma`         - Sets gamma
+- `-snes_ksp_ew_alpha alpha`         - Sets alpha
+- `-snes_ksp_ew_alpha2 alpha2`       - Sets alpha2
+- `-snes_ksp_ew_threshold threshold` - Sets threshold
 
 Level: advanced
 
@@ -5024,6 +4966,17 @@ end
 
 """
 	SNESMonitorDefaultSetUp(petsclib::PetscLibType,snes::AbstractPetscSNES, vf::Vector{PetscViewerAndFormat}) 
+Prepare the `PetscViewerAndFormat` associated with `SNESMonitorDefault()`, in particular by initializing the underlying `PetscDrawLG` when the viewer format is `PETSC_VIEWER_DRAW_LG`
+
+Collective
+
+Input Parameters:
+- `snes` - the `SNES` context
+- `vf`   - the viewer/format pair passed to `SNESMonitorSet()` along with `SNESMonitorDefault()`
+
+Level: developer
+
+-seealso: [](ch_snes), `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `PetscViewerAndFormat`, `PetscViewerMonitorLGSetUp()`
 
 # External Links
 $(_doc_external("SNES/SNESMonitorDefaultSetUp"))
@@ -5145,6 +5098,19 @@ end
 
 """
 	SNESMonitorLGRange(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt, rnorm::PetscReal, monctx::Ptr{Cvoid}) 
+Line
+
+Collective
+
+Input Parameters:
+- `snes`   - the `SNES` context
+- `n`      - the iteration number
+- `rnorm`  - the 2-norm of the residual
+- `monctx` - a `PetscViewer` of type `PETSCVIEWERDRAW` set up with `PetscViewerMonitorLGSetUp()`
+
+Level: intermediate
+
+-seealso: [](ch_snes), `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `PetscViewerDrawGetDrawLG()`, `PetscDrawLG`
 
 # External Links
 $(_doc_external("SNES/SNESMonitorLGRange"))
@@ -5393,7 +5359,7 @@ end
 end 
 
 """
-	SNESMonitorSAWsDestroy(petsclib::PetscLibType,ctx::Ptr{Ptr{Cvoid}}) 
+	SNESMonitorSAWsDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
 destroy a monitor context created with `SNESMonitorSAWsCreate()`
 
 Collective
@@ -5408,16 +5374,16 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESMonitorSAWsDestroy"))
 """
-function SNESMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Ptr{Ptr{Cvoid}})
+function SNESMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid})
     error("SNESMonitorSAWsDestroy: no generated method for these argument types")
 end
 
-@for_petsc function SNESMonitorSAWsDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Ptr{Cvoid}} )
+@for_petsc function SNESMonitorSAWsDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:SNESMonitorSAWsDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{Ptr{Cvoid}},),
+               (Ptr{Cvoid},),
                ctx,
               )
 
@@ -5476,9 +5442,15 @@ Input Parameters:
 - `mctx`           - [optional] user-defined context for private data for the monitor routine (use `NULL` if no context is desired)
 - `monitordestroy` - [optional] routine that frees monitor context (may be `NULL`), see `PetscCtxDestroyFn` for the calling sequence
 
+Calling sequence of f:
+- `snes`  - the `SNES` object
+- `it`    - the current iteration
+- `rnorm` - norm of the residual
+- `mctx`  - the optional monitor context
+
 Options Database Keys:
 - `-snes_monitor`               - sets `SNESMonitorDefault()`
-- `-snes_monitor draw::draw_lg` - sets line graph monitor,
+- `-snes_monitor draw::draw_lg` - sets line graph monitor
 - `-snes_monitor_cancel`        - cancels all monitors that have been hardwired into a code by calls to `SNESMonitorSet()`, but does not cancel those set via
 the options database.
 
@@ -5536,7 +5508,7 @@ Options Database Key:
 Level: advanced
 
 -seealso: [](ch_snes), `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -5800,7 +5772,7 @@ Input Parameters:
 - `type` - `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE` (default), `PC_COMPOSITE_SYMMETRIC_MULTIPLICATIVE`
 
 Options Database Key:
-- `-snes_multiblock_type <type: one of multiplicative, additive, symmetric_multiplicative>` - Sets block combination type
+- `-snes_multiblock_type (multiplicative|additive|symmetric_multiplicative)` - Sets block combination type
 
 Level: advanced
 
@@ -6126,7 +6098,7 @@ Input Parameters:
 - `dmp`  - damping
 
 Options Database Key:
-- `-snes_nasm_damping <dmp>` - the new solution is obtained as old solution plus `dmp` times (sum of the solutions on the subdomains)
+- `-snes_nasm_damping dmp` - the new solution is obtained as old solution plus `dmp` times (sum of the solutions on the subdomains)
 
 Level: intermediate
 
@@ -6201,7 +6173,7 @@ Input Parameters:
 - `type` - the type of update, `PC_ASM_BASIC` or `PC_ASM_RESTRICT`
 
 Options Database Key:
-- `-snes_nasm_type <basic,restrict>` - type of subdomain update used
+- `-snes_nasm_type (basic|restrict)` - type of subdomain update used
 
 Level: intermediate
 
@@ -6272,7 +6244,7 @@ Input Parameters:
 - `btype` - update type, see `SNESNCGType`
 
 Options Database Key:
-- `-snes_ncg_type <prp,fr,hs,dy,cd>` - strategy for selecting algorithm for computing beta
+- `-snes_ncg_type (prp|fr|hs|dy|cd)` - strategy for selecting algorithm for computing beta
 
 Level: intermediate
 
@@ -6300,6 +6272,19 @@ end
 
 """
 	flg::PetscBool = SNESNGMRESGetRestartFmRise(petsclib::PetscLibType,snes::AbstractPetscSNES) 
+Get whether `SNESNGMRES` increases the restart count when a step x_M increases the residual F_M
+
+Not Collective
+
+Input Parameter:
+- `snes` - the `SNES` context
+
+Output Parameter:
+- `flg` - `PETSC_TRUE` if the option is enabled
+
+Level: advanced
+
+-seealso: [](ch_snes), `SNES`, `SNESNGMRES`, `SNESNGMRESSetRestartFmRise()`, `SNESNGMRESSetRestartType()`
 
 # External Links
 $(_doc_external("SNES/SNESNGMRESGetRestartFmRise"))
@@ -6332,7 +6317,7 @@ Input Parameters:
 - `flg`  - boolean value deciding whether to use the option or not, default is `PETSC_FALSE`
 
 Options Database Key:
-- `-snes_ngmres_restart_fm_rise` - Increase the restart count if the step x_M increases the residual F_M
+- `-snes_ngmres_restart_fm_rise (true|false)` - Increase the restart count if the step x_M increases the residual F_M
 
 Level: advanced
 
@@ -6369,8 +6354,8 @@ Input Parameters:
 - `rtype` - restart type, see `SNESNGMRESRestartType`
 
 Options Database Keys:
-- `-snes_ngmres_restart_type<difference,periodic,none>` - set the restart type
-- `-snes_ngmres_restart <30>`                           - sets the number of iterations before restart for periodic
+- `-snes_ngmres_restart_type (difference|periodic|none)` - set the restart type
+- `-snes_ngmres_restart restart`                         - sets the number of iterations before restart for periodic
 
 Level: intermediate
 
@@ -6409,7 +6394,7 @@ Input Parameters:
 - `stype` - selection type, see `SNESNGMRESSelectType`
 
 Options Database Key:
-- `-snes_ngmres_select_type<difference,none,linesearch>` - select type
+- `-snes_ngmres_select_type (difference|none|linesearch)` - select type
 
 Level: intermediate
 
@@ -6529,7 +6514,7 @@ Input Parameters:
 - `sweeps` - the number of sweeps of nonlinear GS to perform.
 
 Options Database Key:
-- `-snes_ngs_sweeps <n>` - Number of sweeps of nonlinear GS to apply
+- `-snes_ngs_sweeps n` - Number of sweeps of nonlinear GS to apply
 
 Level: intermediate
 
@@ -6569,10 +6554,10 @@ Input Parameters:
 - `maxit`  - maximum number of iterations
 
 Options Database Keys:
-- `-snes_ngs_atol <abstol>` - Sets abstol
-- `-snes_ngs_rtol <rtol>`   - Sets rtol
-- `-snes_ngs_stol <stol>`   - Sets stol
-- `-snes_max_it <maxit>`    - Sets maxit
+- `-snes_ngs_atol abstol` - Sets abstol
+- `-snes_ngs_rtol rtol`   - Sets rtol
+- `-snes_ngs_stol stol`   - Sets stol
+- `-snes_max_it maxit`    - Sets maxit
 
 Level: intermediate
 
@@ -6636,7 +6621,7 @@ end
 end 
 
 """
-	SNESNewtonALGetFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Ptr{Cvoid}}) 
+	SNESNewtonALGetFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Cvoid}) 
 Get the user function and context set with `SNESNewtonALSetFunction`
 
 Logically Collective
@@ -6653,16 +6638,16 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonALGetFunction"))
 """
-function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Ptr{Cvoid}})
+function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Cvoid})
     error("SNESNewtonALGetFunction: no generated method for these argument types")
 end
 
-@for_petsc function SNESNewtonALGetFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Ptr{Cvoid}} )
+@for_petsc function SNESNewtonALGetFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:SNESNewtonALGetFunction, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               (CSNES, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
                snes, func, ctx,
               )
 
@@ -6719,7 +6704,7 @@ Input Parameters:
 - `ctype` - the type of correction to use
 
 Options Database Key:
-- `-snes_newtonal_correction_type <type>` - Set the type of correction to use; use -help for a list of available types
+- `-snes_newtonal_correction_type type` - Set the type of correction to use; use -help for a list of available types
 
 Level: intermediate
 
@@ -6739,6 +6724,38 @@ end
                PetscErrorCode,
                (CSNES, SNESNewtonALCorrectionType),
                snes, ctype,
+              )
+
+
+	return nothing
+end 
+
+"""
+	SNESNewtonALSetDiagonalScaling(petsclib::PetscLibType,snes::AbstractPetscSNES, v::AbstractPetscVec) 
+Set the global vector used to rescale DoFs for computation of arc length.
+
+Logically Collective
+
+Input Parameters:
+- `snes` - the nonlinear solver object
+- `v`    - the `Vec` containing diagonal scaling for each DoF, must be the same size as the solution vector (may be `NULL`)
+
+-seealso: [](ch_snes), `SNES`, `SNESNEWTONAL`, `SNESNewtonALSetFunction()`, `SNESNewtonALGetLoadParameter()`
+
+# External Links
+$(_doc_external("SNES/SNESNewtonALSetDiagonalScaling"))
+"""
+function SNESNewtonALSetDiagonalScaling(petsclib::PetscLibType, snes::AbstractPetscSNES, v::AbstractPetscVec)
+    error("SNESNewtonALSetDiagonalScaling: no generated method for these argument types")
+end
+
+@for_petsc function SNESNewtonALSetDiagonalScaling(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, v::AbstractPetscVec )
+
+    @chk ccall(
+               (:SNESNewtonALSetDiagonalScaling, $petsc_library),
+               PetscErrorCode,
+               (CSNES, CVec),
+               snes, v,
               )
 
 
@@ -6775,6 +6792,96 @@ end
                PetscErrorCode,
                (CSNES, Ptr{Cvoid}, Ptr{Cvoid}),
                snes, func, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	SNESNewtonTRDCGetPostCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, noname::Ptr{Cvoid}) 
+Gets the post
+
+Not Collective
+
+Input Parameter:
+- `snes` - the nonlinear solver context
+
+Output Parameters:
+- `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRDCPostCheck()`
+- `ctx`  - [optional] context for private data for the function evaluation routine (may be `NULL`)
+
+Calling sequence of `func`:
+- `snes`      - the nonlinear solver object
+- `X`         - the current solution value
+- `Y`         - the tentative update step
+- `W`         - the tentative new solution value
+- `changed_y` - output, flag indicated `Y` has been changed by the post-check
+- `changed_w` - output, flag indicated `W` has been changed by the post-check
+- `ctx`       - the optional application context
+
+Level: intermediate
+
+-seealso: [](ch_snes), `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCSetPostCheck()`, `SNESNewtonTRDCPostCheck()`, `SNESNewtonTRDCSetPreCheck()`, `SNESNewtonTRDCGetPreCheck()`
+
+# External Links
+$(_doc_external("SNES/SNESNewtonTRDCGetPostCheck"))
+"""
+function SNESNewtonTRDCGetPostCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, noname::Ptr{Cvoid})
+    error("SNESNewtonTRDCGetPostCheck: no generated method for these argument types")
+end
+
+@for_petsc function SNESNewtonTRDCGetPostCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:SNESNewtonTRDCGetPostCheck, $petsc_library),
+               PetscErrorCode,
+               (CSNES, Ptr{Cvoid}),
+               snes, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	SNESNewtonTRDCGetPreCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, noname::Ptr{Cvoid}) 
+Gets the pre
+
+Not Collective
+
+Input Parameter:
+- `snes` - the nonlinear solver context
+
+Output Parameters:
+- `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRDCPreCheck()`
+- `ctx`  - [optional] context for private data for the function evaluation routine (may be `NULL`)
+
+Calling sequence of `func`:
+- `snes`    - the nonlinear solver object
+- `X`       - the current solution value
+- `Y`       - the tentative update step
+- `changed` - output, flag indicating `Y` has been changed by the pre-check
+- `ctx`     - the optional application context
+
+Level: intermediate
+
+-seealso: [](ch_snes), `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCSetPreCheck()`, `SNESNewtonTRDCPreCheck()`
+
+# External Links
+$(_doc_external("SNES/SNESNewtonTRDCGetPreCheck"))
+"""
+function SNESNewtonTRDCGetPreCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, noname::Ptr{Cvoid})
+    error("SNESNewtonTRDCGetPreCheck: no generated method for these argument types")
+end
+
+@for_petsc function SNESNewtonTRDCGetPreCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:SNESNewtonTRDCGetPreCheck, $petsc_library),
+               PetscErrorCode,
+               (CSNES, Ptr{Cvoid}),
+               snes, noname,
               )
 
 
@@ -6830,7 +6937,16 @@ Logically Collective
 Input Parameters:
 - `snes` - the nonlinear solver object
 - `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRDCPostCheck()`
-- `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
+- `ctx`  - [optional] context for private data for the function evaluation routine (may be `NULL`)
+
+Calling sequence of `func`:
+- `snes`      - the nonlinear solver object
+- `X`         - the current solution value
+- `Y`         - the tentative update step
+- `W`         - the tentative new solution value
+- `changed_y` - output, flag indicated `Y` has been changed by the post-check
+- `changed_w` - output, flag indicated `W` has been changed by the post-check
+- `ctx`       - the optional application context
 
 Level: intermediate
 
@@ -6866,7 +6982,14 @@ Logically Collective
 Input Parameters:
 - `snes` - the nonlinear solver object
 - `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRDCPreCheck()`
-- `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
+- `ctx`  - [optional] application context for private data for the function evaluation routine (may be `NULL`)
+
+Calling sequence of `func`:
+- `snes`    - the nonlinear solver object
+- `X`       - the current solution value
+- `Y`       - the tentative update step
+- `changed` - output, flag indicating `Y` has been changed by the pre-check
+- `ctx`     - the optional application context
 
 Level: intermediate
 
@@ -6887,6 +7010,96 @@ end
                PetscErrorCode,
                (CSNES, external, Ptr{Cvoid}),
                snes, func, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	SNESNewtonTRGetPostCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, noname::Ptr{Cvoid}) 
+Gets the post
+
+Not Collective
+
+Input Parameter:
+- `snes` - the nonlinear solver context
+
+Output Parameters:
+- `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRPostCheck()`
+- `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
+
+Calling sequence of `func`:
+- `snes`      - the nonlinear solver object
+- `X`         - the current solution value
+- `Y`         - the tentative update step
+- `W`         - the tentative new solution value
+- `changed_Y` - output, flag indicated `Y` has been changed by the post-check
+- `changed_W` - output, flag indicated `W` has been changed by the post-check
+- `ctx`       - the optional application context
+
+Level: intermediate
+
+-seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRPostCheck()`
+
+# External Links
+$(_doc_external("SNES/SNESNewtonTRGetPostCheck"))
+"""
+function SNESNewtonTRGetPostCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, noname::Ptr{Cvoid})
+    error("SNESNewtonTRGetPostCheck: no generated method for these argument types")
+end
+
+@for_petsc function SNESNewtonTRGetPostCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:SNESNewtonTRGetPostCheck, $petsc_library),
+               PetscErrorCode,
+               (CSNES, Ptr{Cvoid}),
+               snes, noname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	SNESNewtonTRGetPreCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, noname::Ptr{Cvoid}) 
+Gets the pre
+
+Not Collective
+
+Input Parameter:
+- `snes` - the nonlinear solver context
+
+Output Parameters:
+- `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRPreCheck()`
+- `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
+
+Calling sequence of `func`:
+- `snes`    - the nonlinear solver object
+- `X`       - the current solution value
+- `Y`       - the tentative update step
+- `changed` - output, flag indicating `Y` has been changed by the pre-check
+- `ctx`     - the optional application context
+
+Level: intermediate
+
+-seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRSetPreCheck()`, `SNESNewtonTRPreCheck()`
+
+# External Links
+$(_doc_external("SNES/SNESNewtonTRGetPreCheck"))
+"""
+function SNESNewtonTRGetPreCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, noname::Ptr{Cvoid})
+    error("SNESNewtonTRGetPreCheck: no generated method for these argument types")
+end
+
+@for_petsc function SNESNewtonTRGetPreCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, noname::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:SNESNewtonTRGetPreCheck, $petsc_library),
+               PetscErrorCode,
+               (CSNES, Ptr{Cvoid}),
+               snes, noname,
               )
 
 
@@ -7146,6 +7359,15 @@ Input Parameters:
 - `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRPostCheck()`
 - `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
 
+Calling sequence of `func`:
+- `snes`      - the nonlinear solver object
+- `X`         - the current solution value
+- `Y`         - the tentative update step
+- `W`         - the tentative new solution value
+- `changed_Y` - output, flag indicated `Y` has been changed by the post-check
+- `changed_W` - output, flag indicated `W` has been changed by the post-check
+- `ctx`       - the optional application context
+
 Level: intermediate
 
 -seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRPostCheck()`, `SNESNewtonTRGetPostCheck()`, `SNESNewtonTRSetPreCheck()`, `SNESNewtonTRGetPreCheck()`
@@ -7182,9 +7404,16 @@ Input Parameters:
 - `func` - [optional] function evaluation routine, for the calling sequence see `SNESNewtonTRPreCheck()`
 - `ctx`  - [optional] user-defined context for private data for the function evaluation routine (may be `NULL`)
 
+Calling sequence of `func`:
+- `snes`    - the nonlinear solver object
+- `X`       - the current solution value
+- `Y`       - the tentative update step
+- `changed` - output, flag indicating `Y` has been changed by the pre-check
+- `ctx`     - the optional application context
+
 Level: intermediate
 
--seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRPreCheck()`, `SNESNewtonTRGetPreCheck()`, `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRGetPostCheck()`,
+-seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRPreCheck()`, `SNESNewtonTRGetPreCheck()`, `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRGetPostCheck()`
 
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetPreCheck"))
@@ -7251,9 +7480,9 @@ Input Parameters:
 - `delta_0`   - initial trust region size
 
 Options Database Key:
-- `-snes_tr_deltamin <tol>` - Set minimum size
-- `-snes_tr_deltamax <tol>` - Set maximum size
-- `-snes_tr_delta0   <tol>` - Set initial size
+- `-snes_tr_deltamin tol` - Set minimum size
+- `-snes_tr_deltamax tol` - Set maximum size
+- `-snes_tr_delta0   tol` - Set initial size
 
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONTR`, `SNESNewtonTRGetTolerances()`
 
@@ -7292,11 +7521,11 @@ Input Parameters:
 - `t2`   - enlarge factor
 
 Options Database Key:
-- `-snes_tr_eta1 <tol>` - Set `eta1`
-- `-snes_tr_eta2 <tol>` - Set `eta2`
-- `-snes_tr_eta3 <tol>` - Set `eta3`
-- `-snes_tr_t1   <tol>` - Set `t1`
-- `-snes_tr_t2   <tol>` - Set `t2`
+- `-snes_tr_eta1 tol` - Set `eta1`
+- `-snes_tr_eta2 tol` - Set `eta2`
+- `-snes_tr_eta3 tol` - Set `eta3`
+- `-snes_tr_t1   tol` - Set `t1`
+- `-snes_tr_t2   tol` - Set `t2`
 
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONTR`, `SNESSetObjective()`, `SNESNewtonTRGetUpdateParameters()`
 
@@ -7399,6 +7628,17 @@ end
 
 """
 	SNESPatchSetCellNumbering(petsclib::PetscLibType,snes::AbstractPetscSNES, cellNumbering::PetscSection) 
+Set the `PetscSection` that provides a numbering of the cells used to define patches in a `SNESPATCH` solver
+
+Logically Collective
+
+Input Parameters:
+- `snes`          - the `SNESPATCH` solver
+- `cellNumbering` - the `PetscSection` giving the cell numbering; forwarded to the underlying `PCPATCH` via `PCPatchSetCellNumbering()`
+
+Level: advanced
+
+-seealso: [](ch_snes), `SNESPATCH`, `PCPATCH`, `PCPatchSetCellNumbering()`, `PetscSection`
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetCellNumbering"))
@@ -7422,6 +7662,29 @@ end
 
 """
 	SNESPatchSetComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Ptr{Cvoid}) 
+Set the callback used to compute the per
+
+Logically Collective
+
+Input Parameters:
+- `snes` - the `SNESPATCH` solver
+- `func` - callback that computes the patch residual; forwarded to the underlying `PCPATCH` via `PCPatchSetComputeFunction()`
+- `ctx`  - optional application context passed to `func`
+
+Calling sequence of `func`:
+- `pc`               - the `PC` associated with the `SNESPATCH` solver
+- `point`            - the point
+- `x`                - the input solution (not used in linear problems)
+- `f`                - the patch residual vector
+- `cellIS`           - an array of the cell numbers
+- `n`                - the size of `dofsArray`
+- `dofsArray`        - the dofmap for the dofs to be solved for
+- `dofsArrayWithAll` - the dofmap for all dofs on the patch
+- `ctx`              - the application context
+
+Level: advanced
+
+-seealso: [](ch_snes), `SNESPATCH`, `PCPATCH`, `PCPatchSetComputeFunction()`, `SNESPatchSetComputeOperator()`
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetComputeFunction"))
@@ -7445,6 +7708,29 @@ end
 
 """
 	SNESPatchSetComputeOperator(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Ptr{Cvoid}) 
+Set the callback used to assemble the per
+
+Logically Collective
+
+Input Parameters:
+- `snes` - the `SNESPATCH` solver
+- `func` - callback that assembles the patch Jacobian; forwarded to the underlying `PCPATCH` via `PCPatchSetComputeOperator()`
+- `ctx`  - optional application context passed to `func`
+
+Calling sequence of `func`:
+- `pc`               - the `PC` associated with the `SNESPATCH` solver
+- `point`            - the point
+- `x`                - the input solution (not used in linear problems)
+- `mat`              - the patch matrix
+- `cellIS`           - an array of the cell numbers
+- `n`                - the size of `dofsArray`
+- `dofsArray`        - the dofmap for the dofs to be solved for
+- `dofsArrayWithAll` - the dofmap for all dofs on the patch
+- `ctx`              - the application context
+
+Level: advanced
+
+-seealso: [](ch_snes), `SNESPATCH`, `PCPATCH`, `PCPatchSetComputeOperator()`, `SNESPatchSetComputeFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetComputeOperator"))
@@ -7468,6 +7754,26 @@ end
 
 """
 	SNESPatchSetConstructType(petsclib::PetscLibType,snes::AbstractPetscSNES, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid}) 
+Set the way patches are constructed for a `SNESPATCH` solver
+
+Logically Collective
+
+Input Parameters:
+- `snes`  - the `SNESPATCH` solver
+- `ctype` - the `PCPatchConstructType` selecting the patch construction strategy
+- `func`  - user callback that builds the patches, used only when `ctype` is `PC_PATCH_USER` or `PC_PATCH_PYTHON`; may be `NULL` otherwise
+- `ctx`   - optional application context passed to `func`
+
+Calling sequence of `func`:
+- `pc`                - the `PC` associated with the `SNESPATCH` solver
+- `npatch`            - number of patches
+- `patches`           - the `IS` that define each patch
+- `patchIterationSet` - how the patches are iterated over
+- `ctx`               - optional application context
+
+Level: advanced
+
+-seealso: [](ch_snes), `SNESPATCH`, `PCPATCH`, `PCPatchSetConstructType()`, `PCPatchConstructType`
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetConstructType"))
@@ -7490,42 +7796,65 @@ end
 end 
 
 """
-	bs::PetscInt,nodesPerCell::PetscInt,subspaceOffsets::PetscInt,ghostBcNodes::PetscInt,globalBcNodes::PetscInt = SNESPatchSetDiscretisationInfo(petsclib::PetscLibType,snes::AbstractPetscSNES, nsubspaces::PetscInt, dms::AbstractPetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) 
+	SNESPatchSetDiscretisationInfo(petsclib::PetscLibType,snes::AbstractPetscSNES, nsubspaces::PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{PetscInt}, nodesPerCell::Vector{PetscInt}, cellNodeMap::PetscInt, subspaceOffsets::Vector{PetscInt}, numGhostBcs::PetscInt, ghostBcNodes::Vector{PetscInt}, numGlobalBcs::PetscInt, globalBcNodes::Vector{PetscInt}) 
+Provide the per
+
+Logically Collective
+
+Input Parameters:
+- `snes`            - the `SNESPATCH` solver
+- `nsubspaces`      - the number of discretisation subspaces (e.g. fields)
+- `dms`             - array of length `nsubspaces` of `DM`s, one per subspace
+- `bs`              - array of length `nsubspaces` giving the block size of each subspace
+- `nodesPerCell`    - array of length `nsubspaces` giving the number of nodes per cell for each subspace
+- `cellNodeMap`     - array of length `nsubspaces`; entry `i` is a cell-to-node map for subspace `i`
+- `subspaceOffsets` - array of length `nsubspaces + 1` giving the starting global dof offset of each subspace
+- `numGhostBcs`     - number of ghost (off-process) boundary-condition dofs
+- `ghostBcNodes`    - array of length `numGhostBcs` of the ghost boundary-condition dof indices
+- `numGlobalBcs`    - number of global boundary-condition dofs
+- `globalBcNodes`   - array of length `numGlobalBcs` of the global boundary-condition dof indices
+
+Level: advanced
+
+-seealso: [](ch_snes), `SNESPATCH`, `PCPATCH`, `PCPatchSetDiscretisationInfo()`, `SNESPatchSetComputeOperator()`, `SNESPatchSetComputeFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetDiscretisationInfo"))
 """
-function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::AbstractPetscSNES, nsubspaces::Integer, dms::AbstractPetscDM, cellNodeMap::Integer, numGhostBcs::Integer, numGlobalBcs::Integer)
+function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::AbstractPetscSNES, nsubspaces::Integer, dms::Vector{<:AbstractPetscDM}, bs::AbstractVector{<:Number}, nodesPerCell::AbstractVector{<:Number}, cellNodeMap::Integer, subspaceOffsets::AbstractVector{<:Number}, numGhostBcs::Integer, ghostBcNodes::AbstractVector{<:Number}, numGlobalBcs::Integer, globalBcNodes::AbstractVector{<:Number})
     error("SNESPatchSetDiscretisationInfo: no generated method for these argument types")
 end
 
-@for_petsc function SNESPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, nsubspaces::$PetscInt, dms::AbstractPetscDM, cellNodeMap::$PetscInt, numGhostBcs::$PetscInt, numGlobalBcs::$PetscInt )
-	dms_ = Ref(dms.ptr)
-	bs_ = Ref{$PetscInt}()
-	nodesPerCell_ = Ref{$PetscInt}()
-	subspaceOffsets_ = Ref{$PetscInt}()
-	ghostBcNodes_ = Ref{$PetscInt}()
-	globalBcNodes_ = Ref{$PetscInt}()
+@for_petsc function SNESPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, nsubspaces::$PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{$PetscInt}, nodesPerCell::Vector{$PetscInt}, cellNodeMap::$PetscInt, subspaceOffsets::Vector{$PetscInt}, numGhostBcs::$PetscInt, ghostBcNodes::Vector{$PetscInt}, numGlobalBcs::$PetscInt, globalBcNodes::Vector{$PetscInt} )
 
     @chk ccall(
                (:SNESPatchSetDiscretisationInfo, $petsc_library),
                PetscErrorCode,
                (CSNES, $PetscInt, Ptr{CDM}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}),
-               snes, nsubspaces, dms_, bs_, nodesPerCell_, cellNodeMap, subspaceOffsets_, numGhostBcs, ghostBcNodes_, numGlobalBcs, globalBcNodes_,
+               snes, nsubspaces, dms, bs, nodesPerCell, cellNodeMap, subspaceOffsets, numGhostBcs, ghostBcNodes, numGlobalBcs, globalBcNodes,
               )
 
-	dms.ptr = dms_[]
-	bs = bs_[]
-	nodesPerCell = nodesPerCell_[]
-	subspaceOffsets = subspaceOffsets_[]
-	ghostBcNodes = ghostBcNodes_[]
-	globalBcNodes = globalBcNodes_[]
 
-	return bs,nodesPerCell,subspaceOffsets,ghostBcNodes,globalBcNodes
+	return nothing
 end 
 
 """
 	SNESPicardComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Compute the residual A(x) x
+
+Collective
+
+Input Parameters:
+- `snes` - the `SNES` context
+- `x`    - the current iterate
+- `ctx`  - unused application context; the Picard callbacks are retrieved from the attached `DMSNES`
+
+Output Parameter:
+- `f` - the residual vector
+
+Level: developer
+
+-seealso: [](ch_snes), `SNES`, `SNESSetPicard()`, `SNESPicardComputeMFFunction()`, `SNESPicardComputeJacobian()`
 
 # External Links
 $(_doc_external("SNES/SNESPicardComputeFunction"))
@@ -7549,6 +7878,20 @@ end
 
 """
 	SNESPicardComputeJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Trivial Jacobian assembly callback used by `SNESSetPicard()`; the Picard operator is filled in by `SNESPicardComputeFunction()`
+
+Collective
+
+Input Parameters:
+- `snes` - the `SNES` context
+- `x1`   - the current iterate (unused)
+- `J`    - the Jacobian matrix to assemble
+- `B`    - the preconditioning matrix (unused)
+- `ctx`  - unused application context
+
+Level: developer
+
+-seealso: [](ch_snes), `SNES`, `SNESSetPicard()`, `SNESPicardComputeFunction()`, `SNESPicardComputeMFFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESPicardComputeJacobian"))
@@ -7572,6 +7915,21 @@ end
 
 """
 	SNESPicardComputeMFFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Matrix
+
+Collective
+
+Input Parameters:
+- `snes` - the `SNES` context
+- `x`    - the current iterate
+- `ctx`  - unused application context; the Picard callbacks are retrieved from the attached `DMSNES`
+
+Output Parameter:
+- `f` - the residual vector
+
+Level: developer
+
+-seealso: [](ch_snes), `SNES`, `SNESSetPicard()`, `SNESPicardComputeFunction()`, `SNESPicardComputeJacobian()`
 
 # External Links
 $(_doc_external("SNES/SNESPicardComputeMFFunction"))
@@ -7677,7 +8035,7 @@ Input Parameters:
 - `pyname`  - full dotted Python name [package].module[.{class|function}]
 
 Options Database Key:
-- `-snes_python_type <pyname>`  - python class
+- `-snes_python_type pyname`  - python class
 
 Level: intermediate
 
@@ -7714,8 +8072,8 @@ Input Parameters:
 - `rtype` - restart type, see `SNESQNRestartType`
 
 Options Database Keys:
-- `-snes_qn_restart_type <powell,periodic,none>` - set the restart type
-- `-snes_qn_m <m>`                               - sets the number of stored updates and the restart period for periodic
+- `-snes_qn_restart_type (powell|periodic|none)` - set the restart type
+- `-snes_qn_m m`                                 - sets the number of stored updates and the restart period for periodic
 
 Level: intermediate
 
@@ -7753,7 +8111,7 @@ Input Parameters:
 - `stype` - scale type, see `SNESQNScaleType`
 
 Options Database Key:
-- `-snes_qn_scale_type <diagonal,none,scalar,jacobian>` - Scaling type
+- `-snes_qn_scale_type (diagonal|none|scalar|jacobian)` - Scaling type
 
 Level: intermediate
 
@@ -7790,11 +8148,11 @@ Input Parameters:
 - `qtype` - variant type, see `SNESQNType`
 
 Options Database Key:
-- `-snes_qn_type <lbfgs,broyden,badbroyden>` - quasi-Newton type
+- `-snes_qn_type (lbfgs|broyden|badbroyden)` - quasi-Newton type
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNESQN`, `SNES_QN_LBFGS`, `SNES_QN_BROYDEN`, `SNES_QN_BADBROYDEN`, `SNESQNType`,  `SNESQNScaleType`, `TAOLMVM`, `TAOBLMVM`
+-seealso: [](ch_snes), `SNESQN`, `SNES_QN_LBFGS`, `SNES_QN_BROYDEN`, `SNES_QN_BADBROYDEN`, `SNESQNType`, `SNESQNScaleType`, `TAOLMVM`, `TAOBLMVM`
 
 # External Links
 $(_doc_external("SNES/SNESQNSetType"))
@@ -7991,7 +8349,7 @@ Logically Collective
 
 Input Parameters:
 - `snes` - the `SNES` context
-- `ctx`  - the user context
+- `ctx`  - the application context
 
 Level: intermediate
 
@@ -8019,8 +8377,8 @@ end
 
 """
 	SNESSetCheckJacobianDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
-tells `SNESSolve()` whether to check if the user called `SNESSetJacobianDomainError()` Jacobian domain error after
-each Jacobian evaluation. By default, it checks for the Jacobian domain error in the debug mode, and does not check it in the optimized mode.
+tells `SNESSolve()` whether to check if the user called `SNESSetJacobianDomainError()` to indicate a Jacobian domain error after
+each Jacobian evaluation.
 
 Logically Collective
 
@@ -8202,36 +8560,45 @@ end
 end 
 
 """
-	SNESSetConvergenceTest(petsclib::PetscLibType,snes::AbstractPetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external) 
+	SNESSetConvergenceTest(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Sets the function that is to be used
 to test for convergence of the nonlinear iterative solution.
 
 Logically Collective
 
 Input Parameters:
-- `snes`                        - the `SNES` context
-- `SNESConvergenceTestFunction` - routine to test for convergence
-- `cctx`                        - [optional] context for private data for the convergence routine  (may be `NULL`)
-- `destroy`                     - [optional] destructor for the context (may be `NULL`; `PETSC_NULL_FUNCTION` in Fortran)
+- `snes`    - the `SNES` context
+- `func`    - routine to test for convergence
+- `ctx`     - [optional] context for private data for the convergence routine  (may be `NULL`)
+- `destroy` - [optional] destructor for the context (may be `NULL`; `PETSC_NULL_FUNCTION` in Fortran)
+
+Calling sequence of func:
+- `snes`   - the `SNES` context
+- `it`     - the current iteration number
+- `xnorm`  - the norm of the new solution
+- `snorm`  - the norm of the step
+- `fnorm`  - the norm of the function value
+- `reason` - output, the reason convergence or divergence as declared
+- `ctx`    - the optional convergence test context
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESConvergedDefault()`, `SNESConvergedSkip()`, `SNESConvergenceTestFunction`
+-seealso: [](ch_snes), `SNES`, `SNESConvergedDefault()`, `SNESConvergedSkip()`
 
 # External Links
 $(_doc_external("SNES/SNESSetConvergenceTest"))
 """
-function SNESSetConvergenceTest(petsclib::PetscLibType, snes::AbstractPetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external)
+function SNESSetConvergenceTest(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
     error("SNESSetConvergenceTest: no generated method for these argument types")
 end
 
-@for_petsc function SNESSetConvergenceTest(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external )
+@for_petsc function SNESSetConvergenceTest(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:SNESSetConvergenceTest, $petsc_library),
                PetscErrorCode,
-               (CSNES, external, Ptr{Cvoid}, external),
-               snes, SNESConvergenceTestFunction, cctx, destroy,
+               (CSNES, external, Ptr{Cvoid}, Ptr{Cvoid}),
+               snes, func, ctx, destroy,
               )
 
 
@@ -8319,7 +8686,7 @@ Input Parameters:
 is stopped due to divergence.
 
 Options Database Key:
-- `-snes_divergence_tolerance <divtol>` - Sets `divtol`
+- `-snes_divergence_tolerance divtol` - Sets `divtol`
 
 Level: intermediate
 
@@ -8356,7 +8723,7 @@ Input Parameters:
 - `flg`  - `PETSC_TRUE` indicates you want the error generated
 
 Options Database Key:
-- `-snes_error_if_not_converged <true,false>` - cause an immediate error condition and stop the program if the solver does not converge
+- `-snes_error_if_not_converged (true|false)` - cause an immediate error condition and stop the program if the solver does not converge
 
 Level: intermediate
 
@@ -8393,7 +8760,7 @@ Input Parameters:
 - `force` - `PETSC_TRUE` require at least one iteration
 
 Options Database Key:
-- `-snes_force_iteration <force>` - Sets forcing an iteration
+- `-snes_force_iteration force` - Sets forcing an iteration
 
 Level: intermediate
 
@@ -8429,45 +8796,49 @@ Input Parameter:
 - `snes` - the `SNES` context
 
 Options Database Keys:
-- `-snes_type <type>`                                                            - newtonls, newtontr, ngmres, ncg, nrichardson, qn, vi, fas, `SNESType` for complete list
-- `-snes_rtol <rtol>`                                                            - relative decrease in tolerance norm from initial
-- `-snes_atol <abstol>`                                                          - absolute tolerance of residual norm
-- `-snes_stol <stol>`                                                            - convergence tolerance in terms of the norm of the change in the solution between steps
-- `-snes_divergence_tolerance <divtol>`                                          - if the residual goes above divtol*rnorm0, exit with divergence
-- `-snes_max_it <max_it>`                                                        - maximum number of iterations
-- `-snes_max_funcs <max_funcs>`                                                  - maximum number of function evaluations
-- `-snes_force_iteration <force>`                                                - force `SNESSolve()` to take at least one iteration
-- `-snes_max_fail <max_fail>`                                                    - maximum number of line search failures allowed before stopping, default is none
+- `-snes_type type`                                                              - newtonls, newtontr, ngmres, ncg, nrichardson, qn, vi, fas, `SNESType` for complete list
+- `-snes_rtol rtol`                                                              - relative decrease in tolerance norm from initial
+- `-snes_atol abstol`                                                            - absolute tolerance of residual norm
+- `-snes_stol stol`                                                              - convergence tolerance in terms of the norm of the change in the solution between steps
+- `-snes_divergence_tolerance divtol`                                            - if the residual goes above divtol*rnorm0, exit with divergence
+- `-snes_max_it max_it`                                                          - maximum number of iterations
+- `-snes_max_funcs max_funcs`                                                    - maximum number of function evaluations
+- `-snes_force_iteration force`                                                  - force `SNESSolve()` to take at least one iteration
+- `-snes_max_fail max_fail`                                                      - maximum number of line search failures allowed before stopping, default is none
 - `-snes_max_linear_solve_fail`                                                  - number of linear solver failures before SNESSolve() stops
-- `-snes_lag_preconditioner <lag>`                                               - how often preconditioner is rebuilt (use -1 to never rebuild)
-- `-snes_lag_preconditioner_persists <true,false>`                               - retains the -snes_lag_preconditioner information across multiple SNESSolve()
-- `-snes_lag_jacobian <lag>`                                                     - how often Jacobian is rebuilt (use -1 to never rebuild)
-- `-snes_lag_jacobian_persists <true,false>`                                     - retains the -snes_lag_jacobian information across multiple SNESSolve()
-- `-snes_convergence_test <default,skip,correct_pressure>`                       - convergence test in nonlinear solver. default `SNESConvergedDefault()`. skip `SNESConvergedSkip()` means continue iterating until max_it or some other criterion is reached, saving expense of convergence test. correct_pressure `SNESConvergedCorrectPressure()` has special handling of a pressure null space.
+- `-snes_lag_preconditioner lag`                                                 - how often preconditioner is rebuilt (use -1 to never rebuild)
+- `-snes_lag_preconditioner_persists (true|false)`                               - retains the -snes_lag_preconditioner information across multiple SNESSolve()
+- `-snes_lag_jacobian lag`                                                       - how often Jacobian is rebuilt (use -1 to never rebuild)
+- `-snes_lag_jacobian_persists (true|false)`                                     - retains the -snes_lag_jacobian information across multiple SNESSolve()
+- `-snes_convergence_test (default|skip|correct_pressure)`                       - convergence test in nonlinear solver. default `SNESConvergedDefault()`. skip `SNESConvergedSkip()` means continue
+iterating until max_it or some other criterion is reached, saving expense of convergence test. correct_pressure
+`SNESConvergedCorrectPressure()` has special handling of a pressure null space.
 - `-snes_monitor [ascii][:filename][:viewer format]`                             - prints residual norm at each iteration. if no filename given prints to stdout
 - `-snes_monitor_solution [ascii binary draw][:filename][:viewer format]`        - plots solution at each iteration
 - `-snes_monitor_residual [ascii binary draw][:filename][:viewer format]`        - plots residual (not its norm) at each iteration
 - `-snes_monitor_solution_update [ascii binary draw][:filename][:viewer format]` - plots update to solution at each iteration
-- `-snes_monitor_lg_residualnorm`                                                - plots residual norm at each iteration
-- `-snes_monitor_lg_range`                                                       - plots residual norm at each iteration
+- `-snes_monitor draw::draw_lg`                                                  - plots residual norm at each iteration
+- `-snes_monitor_lg_range`                                                       - plots function range at each iteration
 - `-snes_monitor_pause_final`                                                    - Pauses all monitor drawing after the solver ends
 - `-snes_fd`                                                                     - use finite differences to compute Jacobian; very slow, only for testing
 - `-snes_fd_color`                                                               - use finite differences with coloring to compute Jacobian
 - `-snes_mf_ksp_monitor`                                                         - if using matrix-free multiply then print h at each `KSP` iteration
 - `-snes_converged_reason`                                                       - print the reason for convergence/divergence after each solve
-- `-npc_snes_type <type>`                                                        - the `SNES` type to use as a nonlinear preconditioner
-- `-snes_test_jacobian <optional threshold>`                                     - compare the user provided Jacobian with one computed via finite differences to check for errors.  If a threshold is given, display only those entries whose difference is greater than the threshold.
-- `-snes_test_jacobian_view`                                                     - display the user provided Jacobian, the finite difference Jacobian and the difference between them to help users detect the location of errors in the user provided Jacobian.
+- `-npc_snes_type type`                                                          - the `SNES` type to use as a nonlinear preconditioner
+- `-snes_test_jacobian [threshold]`                                              - compare the user provided Jacobian with one computed via finite differences to check for errors.
+If a threshold is given, display only those entries whose difference is greater than the threshold.
+- `-snes_test_jacobian_view`                                                     - display the user provided Jacobian, the finite difference Jacobian and the difference between them
+to help users detect the location of errors in the user provided Jacobian.
 
 Options Database Keys for Eisenstat-Walker method:
-- `-snes_ksp_ew`                       - use Eisenstat-Walker method for determining linear system convergence
-- `-snes_ksp_ew_version ver`           - version of  Eisenstat-Walker method
-- `-snes_ksp_ew_rtol0 <rtol0>`         - Sets rtol0
-- `-snes_ksp_ew_rtolmax <rtolmax>`     - Sets rtolmax
-- `-snes_ksp_ew_gamma <gamma>`         - Sets gamma
-- `-snes_ksp_ew_alpha <alpha>`         - Sets alpha
-- `-snes_ksp_ew_alpha2 <alpha2>`       - Sets alpha2
-- `-snes_ksp_ew_threshold <threshold>` - Sets threshold
+- `-snes_ksp_ew`                     - use Eisenstat-Walker method for determining linear system convergence
+- `-snes_ksp_ew_version ver`         - version of  Eisenstat-Walker method
+- `-snes_ksp_ew_rtol0 rtol0`         - Sets rtol0
+- `-snes_ksp_ew_rtolmax rtolmax`     - Sets rtolmax
+- `-snes_ksp_ew_gamma gamma`         - Sets gamma
+- `-snes_ksp_ew_alpha alpha`         - Sets alpha
+- `-snes_ksp_ew_alpha2 alpha2`       - Sets alpha2
+- `-snes_ksp_ew_threshold threshold` - Sets threshold
 
 Level: beginner
 
@@ -8535,7 +8906,7 @@ end
 """
 	SNESSetFunctionDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 tells `SNES` that the input vector, a proposed new solution, to your function you provided to `SNESSetFunction()` is not
-in the functions domain. For example, a step with negative pressure.
+in the function's domain. For example, a step with negative pressure.
 
 Not Collective
 
@@ -8546,7 +8917,7 @@ Level: advanced
 
 -seealso: [](ch_snes), `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSetJacobianDomainError()`, `SNESVISetVariableBounds()`,
 `SNESVISetComputeVariableBounds()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESConvergedReason`, `SNESGetConvergedReason()`,
-`SNES_DIVERGED_FUNCTION_DOMAIN`
+`SNES_DIVERGED_FUNCTION_DOMAIN`, `SNESSetObjectiveDomainError()`, `SNES_DIVERGED_OBJECTIVE_DOMAIN`
 
 # External Links
 $(_doc_external("SNES/SNESSetFunctionDomainError"))
@@ -8653,7 +9024,7 @@ Input Parameters:
 - `steps` - the number of refinements to do, defaults to 0
 
 Options Database Key:
-- `-snes_grid_sequence <steps>` - Use grid sequencing to generate initial guess
+- `-snes_grid_sequence steps` - Use grid sequencing to generate initial guess
 
 Level: intermediate
 
@@ -8869,10 +9240,10 @@ Input Parameters:
 the Jacobian is built etc. -2 means rebuild at next chance but then never again
 
 Options Database Keys:
-- `-snes_lag_jacobian_persists <true,false>`       - sets the persistence through multiple SNES solves
-- `-snes_lag_jacobian <-2,1,2,...>`                - sets the lag
-- `-snes_lag_preconditioner_persists <true,false>` - sets the persistence through multiple SNES solves
-- `-snes_lag_preconditioner <-2,1,2,...>`          - sets the lag.
+- `-snes_lag_jacobian_persists (true|false)`       - sets the persistence through multiple SNES solves
+- `-snes_lag_jacobian (-2|1|2|...)`                - sets the lag
+- `-snes_lag_preconditioner_persists (true|false)` - sets the persistence through multiple SNES solves
+- `-snes_lag_preconditioner (-2|1|2|...)`          - sets the lag.
 
 Level: intermediate
 
@@ -8909,10 +9280,10 @@ Input Parameters:
 - `flg`  - jacobian lagging persists if true
 
 Options Database Keys:
-- `-snes_lag_jacobian_persists <true,false>`       - sets the persistence through multiple SNES solves
-- `-snes_lag_jacobian <-2,1,2,...>`                - sets the lag
-- `-snes_lag_preconditioner_persists <true,false>` - sets the persistence through multiple SNES solves
-- `-snes_lag_preconditioner <-2,1,2,...>`          - sets the lag
+- `-snes_lag_jacobian_persists (true|false)`       - sets the persistence through multiple SNES solves
+- `-snes_lag_jacobian (-2|1|2|...)`                - sets the lag
+- `-snes_lag_preconditioner_persists (true|false)` - sets the persistence through multiple SNES solves
+- `-snes_lag_preconditioner (-2|1|2|...)`          - sets the lag
 
 Level: advanced
 
@@ -8950,10 +9321,10 @@ Input Parameters:
 the Jacobian is built etc. -2 indicates rebuild preconditioner at next chance but then never rebuild after that
 
 Options Database Keys:
-- `-snes_lag_jacobian_persists <true,false>`       - sets the persistence through multiple `SNESSolve()`
-- `-snes_lag_jacobian <-2,1,2,...>`                - sets the lag
-- `-snes_lag_preconditioner_persists <true,false>` - sets the persistence through multiple `SNESSolve()`
-- `-snes_lag_preconditioner <-2,1,2,...>`          - sets the lag
+- `-snes_lag_jacobian_persists (true|false)`       - sets the persistence through multiple `SNESSolve()`
+- `-snes_lag_jacobian (-2|1|2|...)`                - sets the lag
+- `-snes_lag_preconditioner_persists (true|false)` - sets the persistence through multiple `SNESSolve()`
+- `-snes_lag_preconditioner (-2|1|2|...)`          - sets the lag
 
 Level: intermediate
 
@@ -8991,10 +9362,10 @@ Input Parameters:
 - `flg`  - preconditioner lagging persists if true
 
 Options Database Keys:
-- `-snes_lag_jacobian_persists <true,false>`       - sets the persistence through multiple SNES solves
-- `-snes_lag_jacobian <-2,1,2,...>`                - sets the lag
-- `-snes_lag_preconditioner_persists <true,false>` - sets the persistence through multiple SNES solves
-- `-snes_lag_preconditioner <-2,1,2,...>`          - sets the lag
+- `-snes_lag_jacobian_persists (true|false)`       - sets the persistence through multiple SNES solves
+- `-snes_lag_jacobian (-2|1|2|...)`                - sets the lag
+- `-snes_lag_preconditioner_persists (true|false)` - sets the persistence through multiple SNES solves
+- `-snes_lag_preconditioner (-2|1|2|...)`          - sets the lag
 
 Level: developer
 
@@ -9066,7 +9437,7 @@ Input Parameters:
 - `maxFails` - maximum allowed linear solve failures, use `PETSC_UNLIMITED` to have no limit on the number of failures
 
 Options Database Key:
-- `-snes_max_linear_solve_fail <num>` - The number of failures before the solve is terminated
+- `-snes_max_linear_solve_fail num` - The number of failures before the solve is terminated
 
 Level: intermediate
 
@@ -9104,12 +9475,12 @@ Input Parameters:
 - `maxFails` - maximum of unsuccessful steps allowed, use `PETSC_UNLIMITED` to have no limit on the number of failures
 
 Options Database Key:
-- `-snes_max_fail <n>` - maximum number of unsuccessful steps allowed
+- `-snes_max_fail n` - maximum number of unsuccessful steps allowed
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNESSetErrorIfNotConverged()`, `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `SNESSetMaxLinearSolveFailures()`, `SNESGetLinearSolveFailures()`,
-`SNESGetMaxNonlinearStepFailures()`, `SNESGetNonlinearStepFailures()`
+-seealso: [](ch_snes), `SNESSetErrorIfNotConverged()`, `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `SNESSetMaxLinearSolveFailures()`,
+`SNESGetLinearSolveFailures()`, `SNESGetMaxNonlinearStepFailures()`, `SNESGetNonlinearStepFailures()`, `SNESCheckLineSearchFailure()`
 
 # External Links
 $(_doc_external("SNES/SNESSetMaxNonlinearStepFailures"))
@@ -9176,7 +9547,7 @@ Input Parameters:
 - `npc`  - the `SNES` nonlinear preconditioner object
 
 Options Database Key:
-- `-npc_snes_type <type>` - set the type of the `SNES` to use as the nonlinear preconditioner
+- `-npc_snes_type type` - set the type of the `SNES` to use as the nonlinear preconditioner
 
 Level: developer
 
@@ -9247,7 +9618,7 @@ Input Parameters:
 - `normschedule` - the frequency of norm computation
 
 Options Database Key:
-- `-snes_norm_schedule <none, always, initialonly, finalonly, initialfinalonly>` - set the schedule
+- `-snes_norm_schedule (none|always|initialonly|finalonly|initialfinalonly)` - set the schedule
 
 Level: advanced
 
@@ -9287,7 +9658,7 @@ Input Parameters:
 Level: intermediate
 
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch()`, `SNESGetObjective()`, `SNESComputeObjective()`, `SNESSetFunction()`, `SNESSetJacobian()`,
-`SNESObjectiveFn`
+`SNESObjectiveFn`, `SNESSetObjectiveDomainError()`
 
 # External Links
 $(_doc_external("SNES/SNESSetObjective"))
@@ -9303,6 +9674,42 @@ end
                PetscErrorCode,
                (CSNES, Ptr{Cvoid}, Ptr{Cvoid}),
                snes, obj, ctx,
+              )
+
+
+	return nothing
+end 
+
+"""
+	SNESSetObjectiveDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
+tells `SNES` that the input vector, a proposed new solution, to your function you provided to `SNESSetObjective()` is not
+in the function's domain. For example, a step with negative pressure.
+
+Not Collective
+
+Input Parameter:
+- `snes` - the `SNES` context
+
+Level: advanced
+
+-seealso: [](ch_snes), `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSetJacobianDomainError()`, `SNESVISetVariableBounds()`,
+`SNESVISetComputeVariableBounds()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESConvergedReason`, `SNESGetConvergedReason()`,
+`SNES_DIVERGED_OBJECTIVE_DOMAIN`, `SNESSetFunctionDomainError()`, `SNES_DIVERGED_FUNCTION_DOMAIN`
+
+# External Links
+$(_doc_external("SNES/SNESSetObjectiveDomainError"))
+"""
+function SNESSetObjectiveDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES)
+    error("SNESSetObjectiveDomainError: no generated method for these argument types")
+end
+
+@for_petsc function SNESSetObjectiveDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
+
+    @chk ccall(
+               (:SNESSetObjectiveDomainError, $petsc_library),
+               PetscErrorCode,
+               (CSNES,),
+               snes,
               )
 
 
@@ -9433,11 +9840,11 @@ Input Parameters:
 - `maxf`   - the maximum number of function evaluations allowed in the solver (use `PETSC_UNLIMITED` indicates no limit), default 10,000
 
 Options Database Keys:
-- `-snes_atol <abstol>`    - Sets `abstol`
-- `-snes_rtol <rtol>`      - Sets `rtol`
-- `-snes_stol <stol>`      - Sets `stol`
-- `-snes_max_it <maxit>`   - Sets `maxit`
-- `-snes_max_funcs <maxf>` - Sets `maxf` (use `unlimited` to have no maximum)
+- `-snes_atol abstol`    - Sets `abstol`
+- `-snes_rtol rtol`      - Sets `rtol`
+- `-snes_stol stol`      - Sets `stol`
+- `-snes_max_it maxit`   - Sets `maxit`
+- `-snes_max_funcs maxf` - Sets `maxf` (use `unlimited` to have no maximum)
 
 Level: intermediate
 
@@ -9474,8 +9881,7 @@ Input Parameters:
 - `type` - a known method
 
 Options Database Key:
-- `-snes_type <type>` - Sets the method; use -help for a list
-of available methods (for instance, newtonls or newtontr)
+- `-snes_type type` - Sets the method; see `SNESType`
 
 Level: intermediate
 
@@ -9836,7 +10242,7 @@ Logically Collective
 Input Parameters:
 - `snes` - nonlinear solver
 - `U`    - the current state at which to evaluate the residual
-- `ctx`  - user context, must be a `TS`
+- `ctx`  - application context, must be a `TS`
 
 Output Parameter:
 - `F` - the nonlinear residual
@@ -9874,7 +10280,7 @@ Collective
 Input Parameters:
 - `snes` - nonlinear solver
 - `U`    - the current state at which to evaluate the residual
-- `ctx`  - user context, must be a `TS`
+- `ctx`  - application context, must be a `TS`
 
 Output Parameters:
 - `A` - the Jacobian
@@ -9955,8 +10361,8 @@ Output Parameters:
 - `diffNorm` - the Frobenius norm of the difference of the computed and finite-difference Jacobians, or `NULL`
 
 Options Database Keys:
-- `-snes_test_jacobian <optional threshold>` - compare the user provided Jacobian with one compute via finite differences to check for errors.  If a threshold is given, display only those entries whose difference is greater than the threshold.
-- `-snes_test_jacobian_view`                 - display the user provided Jacobian, the finite difference Jacobian and the difference
+- `-snes_test_jacobian [threshold]` - compare the user provided Jacobian with one compute via finite differences to check for errors.  If a threshold is given, display only those entries whose difference is greater than the threshold.
+- `-snes_test_jacobian_view`        - display the user provided Jacobian, the finite difference Jacobian and the difference
 
 Level: developer
 
@@ -9988,6 +10394,16 @@ end
 
 """
 	SNESTestLocalMin(petsclib::PetscLibType,snes::AbstractPetscSNES) 
+Diagnostic that probes each entry of the current `SNES` solution to check whether the residual norm has a local minimum along the coordinate directions
+
+Collective
+
+Input Parameter:
+- `snes` - the `SNES` context
+
+Level: developer
+
+-seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESComputeFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESTestLocalMin"))
@@ -10326,6 +10742,12 @@ Input Parameters:
 - `func` - the function to check of redundancies
 - `ctx`  - optional context used by the function
 
+Calling sequence of func:
+- `snes`      - the `SNES` context
+- `is_act`    - the set of points in the active sets
+- `is_redact` - output, the set of points in the non-redundant active set
+- `ctx`       - optional context
+
 Level: advanced
 
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONRSLS`, `SNESVIGetInactiveSet()`, `DMSetVI()`
@@ -10431,6 +10853,9 @@ Input Parameters:
 - `A`    - the `SNES` context
 - `obj`  - Optional object that provides the options prefix for the checks
 - `name` - command line option
+
+Options Database Key:
+- `-name [viewertype][:...]` - option name and values. See `PetscObjectViewFromOptions()` for the possible arguments
 
 Level: intermediate
 

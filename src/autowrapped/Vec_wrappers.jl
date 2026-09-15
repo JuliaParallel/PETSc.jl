@@ -3195,7 +3195,7 @@ function VecDuplicate(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecDestroy(petsclib::PetscLibType,v::PetscVec) 
+	VecDestroy(petsclib::PetscLibType,v::AbstractPetscVec)
 Destroys a vector.
 
 Collective
@@ -3210,9 +3210,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecDestroy"))
 """
-function VecDestroy(petsclib::PetscLibType, v::PetscVec) end
+function VecDestroy(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecDestroy(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecDestroy(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
 
     @chk ccall(

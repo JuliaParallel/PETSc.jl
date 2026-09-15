@@ -1,0 +1,56 @@
+name: Wrappers
+# The files in src/autowrapped are generated. This job regenerates them from the PETSc release
+# recorded in src/autowrapped/petsc_wrappers_version.jl and fails if the committed files differ,
+# so hand edits of generated files (or an uncommitted regeneration) are caught.
+on:
+  push:
+    branches: [main, v0.5]
+    paths: ['src/autowrapped/**', 'wrapping/generator/**', '.github/workflows/wrappers.yml']
+  pull_request:
+    paths: ['src/autowrapped/**', 'wrapping/generator/**', '.github/workflows/wrappers.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  regenerate:
+    name: regenerate and diff
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v2
+      - name: PETSc version of the committed wrappers
+        id: ver
+        run: |
+          v=$(sed -n 's/.*v"\([0-9.]*\)".*/\1/p' src/autowrapped/petsc_wrappers_version.jl)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+      - name: Fetch PETSc source
+        run: |
+          curl -sSL -o petsc.tar.gz "https://web.cels.anl.gov/projects/petsc/download/release-snapshots/petsc-${{ steps.ver.outputs.version }}.tar.gz"
+          tar xzf petsc.tar.gz
+      - name: Regenerate
+        run: |
+          julia --project=wrapping/generator -e 'using Pkg; Pkg.instantiate()'
+          python3 wrapping/generator/getapi_dump.py petsc-${{ steps.ver.outputs.version }} /tmp/api.json
+          julia --project=wrapping/generator wrapping/generator/generate.jl \
+                --petsc-dir petsc-${{ steps.ver.outputs.version }} --api /tmp/api.json --out /tmp/autowrapped
+      - name: Compare with the committed files
+        run: |
+          if ! diff -r src/autowrapped /tmp/autowrapped > /tmp/wrappers.diff; then
+            echo "src/autowrapped differs from a fresh generation (edit wrapping/generator, then regenerate):"
+            head -100 /tmp/wrappers.diff
+            exit 1
+          fi
+          echo "src/autowrapped is up to date"
+      - name: Snapshot matches the committed one
+        run: |
+          diff -q /tmp/api.json wrapping/generator/api/petsc-${{ steps.ver.outputs.version }}.json
+      - name: Known-bad patterns
+        run: |
+          ! grep -rn "isa Ref ?" src/autowrapped/
+          ! grep -rn "VecGetLocalSize(petsclib, x)" src/autowrapped/ | grep -v "x::AbstractPetscVec\|x::PetscVec" | grep -q "CHECK SIZE"
+          ! grep -rn "CHECK SIZE" src/autowrapped/

@@ -154,6 +154,22 @@ collected into `extra_wrappers.jl` (macros such as `PETSC_VIEWER_STDOUT_WORLD`, 
 helpers such as `DMProjectFunction`). Use an override only when no rule can express the wrapper
 (multi-dimensional `PetscArray` views, `MatGetRowIJ`, `PetscOptionsGetString`, ...).
 
+## Tools
+
+| script | purpose |
+|---|---|
+| `generate.jl` | regenerate `src/autowrapped` |
+| `apidiff.jl OLD.json NEW.json` | new / removed / signature-changed functions between two snapshots, and rules or overrides that no longer match |
+| `golden_diff.jl A B [--categorize] [--show NAME]` | function-level comparison of two autowrapped directories |
+| `check_callers.jl [DIR]` | every `LibPETSc.X(...)` call in `src/`, `ext/`, `test/`, `examples/` whose argument count does not match the generated stub (first thing to run after a regeneration that changed conventions) |
+| `bootstrap_rules.jl GOLDEN` | one-off: mine `rules/args_mined.toml` from a hand-edited directory |
+| `make_overrides.jl GOLDEN NAME...` | copy hand-written blocks into `overrides/` |
+
+`.github/workflows/wrappers.yml` regenerates from the PETSc tarball on every change to
+`src/autowrapped` or `wrapping/generator` and fails if the committed files differ.
+`test/wrapper_quality.jl` infers the return type of every generated method (must be concrete)
+and checks representatives of each argument kind with `@inferred` and `@allocated`.
+
 ## Checking a regeneration
 
 `golden_diff.jl` compares two autowrapped directories block by block, independent of the order of

@@ -18,7 +18,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerCreate"))
 """
-function PetscContainerCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscContainerCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscContainerCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscContainerCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	container_ = Ref{PetscContainer}()
@@ -51,7 +53,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerDestroy"))
 """
-function PetscContainerDestroy(petsclib::PetscLibType, obj::Union{PetscContainer, Ref{PetscContainer}}) end
+function PetscContainerDestroy(petsclib::PetscLibType, obj::Union{PetscContainer, Ref{PetscContainer}})
+    error("PetscContainerDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscContainerDestroy(petsclib::$UnionPetscLib, obj::Union{PetscContainer, Ref{PetscContainer}} )
 	obj_ = obj isa Base.RefValue ? obj : Ref{PetscContainer}(obj)
@@ -87,7 +91,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerGetPointer"))
 """
-function PetscContainerGetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::PeCtx) end
+function PetscContainerGetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::PeCtx)
+    error("PetscContainerGetPointer: no generated method for these argument types")
+end
 
 @for_petsc function PetscContainerGetPointer(petsclib::$UnionPetscLib, obj::PetscContainer, ptr::PeCtx )
 
@@ -120,7 +126,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerSetCtxDestroy"))
 """
-function PetscContainerSetCtxDestroy(petsclib::PetscLibType, obj::PetscContainer, des::Ptr{Cvoid}) end
+function PetscContainerSetCtxDestroy(petsclib::PetscLibType, obj::PetscContainer, des::Ptr{Cvoid})
+    error("PetscContainerSetCtxDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscContainerSetCtxDestroy(petsclib::$UnionPetscLib, obj::PetscContainer, des::Ptr{Cvoid} )
 
@@ -153,7 +161,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerSetPointer"))
 """
-function PetscContainerSetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::Ptr{Cvoid}) end
+function PetscContainerSetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::Ptr{Cvoid})
+    error("PetscContainerSetPointer: no generated method for these argument types")
+end
 
 @for_petsc function PetscContainerSetPointer(petsclib::$UnionPetscLib, obj::PetscContainer, ptr::Ptr{Cvoid} )
 

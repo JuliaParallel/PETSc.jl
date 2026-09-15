@@ -17,7 +17,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMGetDualVector"))
 """
-function TaoADMMGetDualVector(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoADMMGetDualVector(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoADMMGetDualVector: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMGetDualVector(petsclib::$UnionPetscLib, tao::AbstractTao )
 	Y_ = Ref{CVec}()
@@ -53,7 +55,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetMisfitSubsolver"))
 """
-function TaoADMMGetMisfitSubsolver(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoADMMGetMisfitSubsolver(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoADMMGetMisfitSubsolver: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMGetMisfitSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao )
 	misfit_ = Ref{CTao}()
@@ -89,7 +93,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetRegularizationSubsolver"))
 """
-function TaoADMMGetRegularizationSubsolver(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoADMMGetRegularizationSubsolver(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoADMMGetRegularizationSubsolver: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMGetRegularizationSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao )
 	reg_ = Ref{CTao}()
@@ -125,7 +131,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetRegularizerCoefficient"))
 """
-function TaoADMMGetRegularizerCoefficient(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoADMMGetRegularizerCoefficient(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoADMMGetRegularizerCoefficient: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMGetRegularizerCoefficient(petsclib::$UnionPetscLib, tao::AbstractTao )
 	lambda_ = Ref{$PetscReal}()
@@ -161,7 +169,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMGetRegularizerType"))
 """
-function TaoADMMGetRegularizerType(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoADMMGetRegularizerType(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoADMMGetRegularizerType: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMGetRegularizerType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoADMMRegularizerType}()
@@ -197,7 +207,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetSpectralPenalty"))
 """
-function TaoADMMGetSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoADMMGetSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoADMMGetSpectralPenalty: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMGetSpectralPenalty(petsclib::$UnionPetscLib, tao::AbstractTao )
 	mu_ = Ref{$PetscReal}()
@@ -233,7 +245,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMGetUpdateType"))
 """
-function TaoADMMGetUpdateType(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoADMMGetUpdateType(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoADMMGetUpdateType: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMGetUpdateType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoADMMUpdateType}()
@@ -267,7 +281,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetConstraintVectorRHS"))
 """
-function TaoADMMSetConstraintVectorRHS(petsclib::PetscLibType, tao::AbstractTao, c::AbstractPetscVec) end
+function TaoADMMSetConstraintVectorRHS(petsclib::PetscLibType, tao::AbstractTao, c::AbstractPetscVec)
+    error("TaoADMMSetConstraintVectorRHS: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetConstraintVectorRHS(petsclib::$UnionPetscLib, tao::AbstractTao, c::AbstractPetscVec )
 
@@ -299,7 +315,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMinimumSpectralPenalty"))
 """
-function TaoADMMSetMinimumSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao, mu::PetscReal) end
+function TaoADMMSetMinimumSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao, mu::Real)
+    error("TaoADMMSetMinimumSpectralPenalty: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetMinimumSpectralPenalty(petsclib::$UnionPetscLib, tao::AbstractTao, mu::$PetscReal )
 
@@ -334,7 +352,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitConstraintJacobian"))
 """
-function TaoADMMSetMisfitConstraintJacobian(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoADMMSetMisfitConstraintJacobian(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoADMMSetMisfitConstraintJacobian: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetMisfitConstraintJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -366,7 +386,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitHessianChangeStatus"))
 """
-function TaoADMMSetMisfitHessianChangeStatus(petsclib::PetscLibType, tao::AbstractTao, b::PetscBool) end
+function TaoADMMSetMisfitHessianChangeStatus(petsclib::PetscLibType, tao::AbstractTao, b::PetscBool)
+    error("TaoADMMSetMisfitHessianChangeStatus: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetMisfitHessianChangeStatus(petsclib::$UnionPetscLib, tao::AbstractTao, b::PetscBool )
 
@@ -402,7 +424,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitHessianRoutine"))
 """
-function TaoADMMSetMisfitHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoADMMSetMisfitHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoADMMSetMisfitHessianRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetMisfitHessianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -435,7 +459,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitObjectiveAndGradientRoutine"))
 """
-function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}) end
+function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid})
+    error("TaoADMMSetMisfitObjectiveAndGradientRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Ptr{Cvoid} )
 
@@ -467,7 +493,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegHessianChangeStatus"))
 """
-function TaoADMMSetRegHessianChangeStatus(petsclib::PetscLibType, tao::AbstractTao, b::PetscBool) end
+function TaoADMMSetRegHessianChangeStatus(petsclib::PetscLibType, tao::AbstractTao, b::PetscBool)
+    error("TaoADMMSetRegHessianChangeStatus: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetRegHessianChangeStatus(petsclib::$UnionPetscLib, tao::AbstractTao, b::PetscBool )
 
@@ -499,7 +527,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerCoefficient"))
 """
-function TaoADMMSetRegularizerCoefficient(petsclib::PetscLibType, tao::AbstractTao, lambda::PetscReal) end
+function TaoADMMSetRegularizerCoefficient(petsclib::PetscLibType, tao::AbstractTao, lambda::Real)
+    error("TaoADMMSetRegularizerCoefficient: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetRegularizerCoefficient(petsclib::$UnionPetscLib, tao::AbstractTao, lambda::$PetscReal )
 
@@ -534,7 +564,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerConstraintJacobian"))
 """
-function TaoADMMSetRegularizerConstraintJacobian(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoADMMSetRegularizerConstraintJacobian(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoADMMSetRegularizerConstraintJacobian: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetRegularizerConstraintJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -570,7 +602,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerHessianRoutine"))
 """
-function TaoADMMSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoADMMSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoADMMSetRegularizerHessianRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetRegularizerHessianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -603,7 +637,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerObjectiveAndGradientRoutine"))
 """
-function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}) end
+function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid})
+    error("TaoADMMSetRegularizerObjectiveAndGradientRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Ptr{Cvoid} )
 
@@ -638,7 +674,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerType"))
 """
-function TaoADMMSetRegularizerType(petsclib::PetscLibType, tao::AbstractTao, type::TaoADMMRegularizerType) end
+function TaoADMMSetRegularizerType(petsclib::PetscLibType, tao::AbstractTao, type::TaoADMMRegularizerType)
+    error("TaoADMMSetRegularizerType: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetRegularizerType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoADMMRegularizerType )
 
@@ -670,7 +708,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetSpectralPenalty"))
 """
-function TaoADMMSetSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao, mu::PetscReal) end
+function TaoADMMSetSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao, mu::Real)
+    error("TaoADMMSetSpectralPenalty: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetSpectralPenalty(petsclib::$UnionPetscLib, tao::AbstractTao, mu::$PetscReal )
 
@@ -702,7 +742,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMSetUpdateType"))
 """
-function TaoADMMSetUpdateType(petsclib::PetscLibType, tao::AbstractTao, type::TaoADMMUpdateType) end
+function TaoADMMSetUpdateType(petsclib::PetscLibType, tao::AbstractTao, type::TaoADMMUpdateType)
+    error("TaoADMMSetUpdateType: no generated method for these argument types")
+end
 
 @for_petsc function TaoADMMSetUpdateType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoADMMUpdateType )
 
@@ -737,7 +779,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetDualIS"))
 """
-function TaoALMMGetDualIS(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoALMMGetDualIS(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoALMMGetDualIS: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMGetDualIS(petsclib::$UnionPetscLib, tao::AbstractTao )
 	eq_is_ = Ref{CIS}()
@@ -773,7 +817,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetMultipliers"))
 """
-function TaoALMMGetMultipliers(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoALMMGetMultipliers(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoALMMGetMultipliers: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMGetMultipliers(petsclib::$UnionPetscLib, tao::AbstractTao )
 	Y_ = Ref{CVec}()
@@ -809,7 +855,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetPrimalIS"))
 """
-function TaoALMMGetPrimalIS(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoALMMGetPrimalIS(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoALMMGetPrimalIS: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMGetPrimalIS(petsclib::$UnionPetscLib, tao::AbstractTao )
 	opt_is_ = Ref{CIS}()
@@ -845,7 +893,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetSubsolver"))
 """
-function TaoALMMGetSubsolver(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoALMMGetSubsolver(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoALMMGetSubsolver: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMGetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao )
 	subsolver_ = Ref{CTao}()
@@ -879,7 +929,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetType"))
 """
-function TaoALMMGetType(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoALMMGetType(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoALMMGetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoALMMType}()
@@ -911,7 +963,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMSetMultipliers"))
 """
-function TaoALMMSetMultipliers(petsclib::PetscLibType, tao::AbstractTao, Y::AbstractPetscVec) end
+function TaoALMMSetMultipliers(petsclib::PetscLibType, tao::AbstractTao, Y::AbstractPetscVec)
+    error("TaoALMMSetMultipliers: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMSetMultipliers(petsclib::$UnionPetscLib, tao::AbstractTao, Y::AbstractPetscVec )
 
@@ -941,7 +995,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMSetSubsolver"))
 """
-function TaoALMMSetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver::AbstractTao) end
+function TaoALMMSetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver::AbstractTao)
+    error("TaoALMMSetSubsolver: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMSetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, subsolver::AbstractTao )
 
@@ -971,7 +1027,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMSetType"))
 """
-function TaoALMMSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoALMMType) end
+function TaoALMMSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoALMMType)
+    error("TaoALMMSetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoALMMSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoALMMType )
 
@@ -1001,7 +1059,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoAddLineSearchCounts"))
 """
-function TaoAddLineSearchCounts(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoAddLineSearchCounts(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoAddLineSearchCounts: no generated method for these argument types")
+end
 
 @for_petsc function TaoAddLineSearchCounts(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -1033,7 +1093,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoAppendOptionsPrefix"))
 """
-function TaoAppendOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String) end
+function TaoAppendOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String)
+    error("TaoAppendOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function TaoAppendOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao, p::String )
 
@@ -1065,7 +1127,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBNCGGetType"))
 """
-function TaoBNCGGetType(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoBNCGGetType(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoBNCGGetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoBNCGGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoBNCGType}()
@@ -1097,7 +1161,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBNCGSetType"))
 """
-function TaoBNCGSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoBNCGType) end
+function TaoBNCGSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoBNCGType)
+    error("TaoBNCGSetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoBNCGSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoBNCGType )
 
@@ -1131,7 +1197,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoBRGNGetDampingVector"))
 """
-function TaoBRGNGetDampingVector(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoBRGNGetDampingVector(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoBRGNGetDampingVector: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNGetDampingVector(petsclib::$UnionPetscLib, tao::AbstractTao )
 	d_ = Ref{CVec}()
@@ -1167,7 +1235,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNGetRegularizationType"))
 """
-function TaoBRGNGetRegularizationType(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoBRGNGetRegularizationType(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoBRGNGetRegularizationType: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNGetRegularizationType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoBRGNRegularizationType}()
@@ -1201,7 +1271,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNGetSubsolver"))
 """
-function TaoBRGNGetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver::AbstractTao) end
+function TaoBRGNGetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver::AbstractTao)
+    error("TaoBRGNGetSubsolver: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNGetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, subsolver::AbstractTao )
 	subsolver_ = Ref(subsolver.ptr)
@@ -1233,7 +1305,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetDictionaryMatrix"))
 """
-function TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType, tao::AbstractTao, dict::AbstractPetscMat) end
+function TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType, tao::AbstractTao, dict::AbstractPetscMat)
+    error("TaoBRGNSetDictionaryMatrix: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNSetDictionaryMatrix(petsclib::$UnionPetscLib, tao::AbstractTao, dict::AbstractPetscMat )
 
@@ -1265,7 +1339,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetL1SmoothEpsilon"))
 """
-function TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType, tao::AbstractTao, epsilon::PetscReal) end
+function TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType, tao::AbstractTao, epsilon::Real)
+    error("TaoBRGNSetL1SmoothEpsilon: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNSetL1SmoothEpsilon(petsclib::$UnionPetscLib, tao::AbstractTao, epsilon::$PetscReal )
 
@@ -1297,7 +1373,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizationType"))
 """
-function TaoBRGNSetRegularizationType(petsclib::PetscLibType, tao::AbstractTao, type::TaoBRGNRegularizationType) end
+function TaoBRGNSetRegularizationType(petsclib::PetscLibType, tao::AbstractTao, type::TaoBRGNRegularizationType)
+    error("TaoBRGNSetRegularizationType: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNSetRegularizationType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoBRGNRegularizationType )
 
@@ -1336,7 +1414,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizerHessianRoutine"))
 """
-function TaoBRGNSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, Hreg::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoBRGNSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, Hreg::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoBRGNSetRegularizerHessianRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNSetRegularizerHessianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, Hreg::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -1375,7 +1455,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizerObjectiveAndGradientRoutine"))
 """
-function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}) end
+function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid})
+    error("TaoBRGNSetRegularizerObjectiveAndGradientRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Ptr{Cvoid} )
 
@@ -1407,7 +1489,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizerWeight"))
 """
-function TaoBRGNSetRegularizerWeight(petsclib::PetscLibType, tao::AbstractTao, lambda::PetscReal) end
+function TaoBRGNSetRegularizerWeight(petsclib::PetscLibType, tao::AbstractTao, lambda::Real)
+    error("TaoBRGNSetRegularizerWeight: no generated method for these argument types")
+end
 
 @for_petsc function TaoBRGNSetRegularizerWeight(petsclib::$UnionPetscLib, tao::AbstractTao, lambda::$PetscReal )
 
@@ -1445,7 +1529,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoBoundSolution"))
 """
-function TaoBoundSolution(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, bound_tol::PetscReal, Xout::AbstractPetscVec) end
+function TaoBoundSolution(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, bound_tol::Real, Xout::AbstractPetscVec)
+    error("TaoBoundSolution: no generated method for these argument types")
+end
 
 @for_petsc function TaoBoundSolution(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, bound_tol::$PetscReal, Xout::AbstractPetscVec )
 	nDiff_ = Ref{$PetscInt}()
@@ -1486,7 +1572,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoBoundStep"))
 """
-function TaoBoundStep(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, scale::PetscReal, S::AbstractPetscVec) end
+function TaoBoundStep(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, scale::Real, S::AbstractPetscVec)
+    error("TaoBoundStep: no generated method for these argument types")
+end
 
 @for_petsc function TaoBoundStep(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, scale::$PetscReal, S::AbstractPetscVec )
 
@@ -1522,7 +1610,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeConstraints"))
 """
-function TaoComputeConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, C::AbstractPetscVec) end
+function TaoComputeConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, C::AbstractPetscVec)
+    error("TaoComputeConstraints: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, C::AbstractPetscVec )
 
@@ -1558,7 +1648,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoComputeDualVariables"))
 """
-function TaoComputeDualVariables(petsclib::PetscLibType, tao::AbstractTao, DL::AbstractPetscVec, DU::AbstractPetscVec) end
+function TaoComputeDualVariables(petsclib::PetscLibType, tao::AbstractTao, DL::AbstractPetscVec, DU::AbstractPetscVec)
+    error("TaoComputeDualVariables: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeDualVariables(petsclib::$UnionPetscLib, tao::AbstractTao, DL::AbstractPetscVec, DU::AbstractPetscVec )
 
@@ -1594,7 +1686,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeEqualityConstraints"))
 """
-function TaoComputeEqualityConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, CE::AbstractPetscVec) end
+function TaoComputeEqualityConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, CE::AbstractPetscVec)
+    error("TaoComputeEqualityConstraints: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeEqualityConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, CE::AbstractPetscVec )
 
@@ -1633,7 +1727,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeGradient"))
 """
-function TaoComputeGradient(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec) end
+function TaoComputeGradient(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec)
+    error("TaoComputeGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeGradient(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec )
 
@@ -1675,7 +1771,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeHessian"))
 """
-function TaoComputeHessian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat) end
+function TaoComputeHessian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat)
+    error("TaoComputeHessian: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeHessian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat )
 
@@ -1711,7 +1809,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeInequalityConstraints"))
 """
-function TaoComputeInequalityConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, CI::AbstractPetscVec) end
+function TaoComputeInequalityConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, CI::AbstractPetscVec)
+    error("TaoComputeInequalityConstraints: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeInequalityConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, CI::AbstractPetscVec )
 
@@ -1748,7 +1848,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobian"))
 """
-function TaoComputeJacobian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
+function TaoComputeJacobian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat)
+    error("TaoComputeJacobian: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
@@ -1784,7 +1886,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianDesign"))
 """
-function TaoComputeJacobianDesign(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat) end
+function TaoComputeJacobianDesign(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat)
+    error("TaoComputeJacobianDesign: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeJacobianDesign(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat )
 
@@ -1821,7 +1925,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianEquality"))
 """
-function TaoComputeJacobianEquality(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
+function TaoComputeJacobianEquality(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat)
+    error("TaoComputeJacobianEquality: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeJacobianEquality(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
@@ -1858,7 +1964,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianInequality"))
 """
-function TaoComputeJacobianInequality(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
+function TaoComputeJacobianInequality(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat)
+    error("TaoComputeJacobianInequality: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeJacobianInequality(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
@@ -1896,7 +2004,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianState"))
 """
-function TaoComputeJacobianState(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat) end
+function TaoComputeJacobianState(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat)
+    error("TaoComputeJacobianState: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeJacobianState(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat )
 
@@ -1931,7 +2041,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeObjective"))
 """
-function TaoComputeObjective(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec) end
+function TaoComputeObjective(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec)
+    error("TaoComputeObjective: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeObjective(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
@@ -1969,7 +2081,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeObjectiveAndGradient"))
 """
-function TaoComputeObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec) end
+function TaoComputeObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec)
+    error("TaoComputeObjectiveAndGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeObjectiveAndGradient(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
@@ -2006,7 +2120,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoComputeResidual"))
 """
-function TaoComputeResidual(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, F::AbstractPetscVec) end
+function TaoComputeResidual(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, F::AbstractPetscVec)
+    error("TaoComputeResidual: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeResidual(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, F::AbstractPetscVec )
 
@@ -2043,7 +2159,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeResidualJacobian"))
 """
-function TaoComputeResidualJacobian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
+function TaoComputeResidualJacobian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat)
+    error("TaoComputeResidualJacobian: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeResidualJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
@@ -2075,7 +2193,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeVariableBounds"))
 """
-function TaoComputeVariableBounds(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoComputeVariableBounds(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoComputeVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function TaoComputeVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -2112,7 +2232,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoCreate"))
 """
-function TaoCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function TaoCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("TaoCreate: no generated method for these argument types")
+end
 
 @for_petsc function TaoCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	newtao_ = Ref{CTao}()
@@ -2154,7 +2276,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeGradient"))
 """
-function TaoDefaultComputeGradient(petsclib::PetscLibType, tao::AbstractTao, Xin::AbstractPetscVec, G::AbstractPetscVec, dummy::Ptr{Cvoid}) end
+function TaoDefaultComputeGradient(petsclib::PetscLibType, tao::AbstractTao, Xin::AbstractPetscVec, G::AbstractPetscVec, dummy::Ptr{Cvoid})
+    error("TaoDefaultComputeGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoDefaultComputeGradient(petsclib::$UnionPetscLib, tao::AbstractTao, Xin::AbstractPetscVec, G::AbstractPetscVec, dummy::Ptr{Cvoid} )
 
@@ -2194,7 +2318,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeHessian"))
 """
-function TaoDefaultComputeHessian(petsclib::PetscLibType, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid}) end
+function TaoDefaultComputeHessian(petsclib::PetscLibType, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid})
+    error("TaoDefaultComputeHessian: no generated method for these argument types")
+end
 
 @for_petsc function TaoDefaultComputeHessian(petsclib::$UnionPetscLib, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid} )
 
@@ -2231,7 +2357,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeHessianColor"))
 """
-function TaoDefaultComputeHessianColor(petsclib::PetscLibType, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) end
+function TaoDefaultComputeHessianColor(petsclib::PetscLibType, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid})
+    error("TaoDefaultComputeHessianColor: no generated method for these argument types")
+end
 
 @for_petsc function TaoDefaultComputeHessianColor(petsclib::$UnionPetscLib, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
@@ -2252,7 +2380,9 @@ end
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeHessianMFFD"))
 """
-function TaoDefaultComputeHessianMFFD(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) end
+function TaoDefaultComputeHessianMFFD(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid})
+    error("TaoDefaultComputeHessianMFFD: no generated method for these argument types")
+end
 
 @for_petsc function TaoDefaultComputeHessianMFFD(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
 
@@ -2285,7 +2415,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoDefaultConvergenceTest"))
 """
-function TaoDefaultConvergenceTest(petsclib::PetscLibType, tao::AbstractTao, dummy::Ptr{Cvoid}) end
+function TaoDefaultConvergenceTest(petsclib::PetscLibType, tao::AbstractTao, dummy::Ptr{Cvoid})
+    error("TaoDefaultConvergenceTest: no generated method for these argument types")
+end
 
 @for_petsc function TaoDefaultConvergenceTest(petsclib::$UnionPetscLib, tao::AbstractTao, dummy::Ptr{Cvoid} )
 
@@ -2316,7 +2448,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoDestroy"))
 """
-function TaoDestroy(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoDestroy(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoDestroy: no generated method for these argument types")
+end
 
 @for_petsc function TaoDestroy(petsclib::$UnionPetscLib, tao::AbstractTao )
 	tao_ = Ref(tao.ptr)
@@ -2362,7 +2496,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoEstimateActiveBounds"))
 """
-function TaoEstimateActiveBounds(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, G::AbstractPetscVec, S::AbstractPetscVec, W::AbstractPetscVec, steplen::PetscReal) end
+function TaoEstimateActiveBounds(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, G::AbstractPetscVec, S::AbstractPetscVec, W::AbstractPetscVec, steplen::Real)
+    error("TaoEstimateActiveBounds: no generated method for these argument types")
+end
 
 @for_petsc function TaoEstimateActiveBounds(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, G::AbstractPetscVec, S::AbstractPetscVec, W::AbstractPetscVec, steplen::$PetscReal )
 	bound_tol_ = Ref{$PetscReal}()
@@ -2401,7 +2537,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoFinalizePackage"))
 """
-function TaoFinalizePackage(petsclib::PetscLibType) end
+function TaoFinalizePackage(petsclib::PetscLibType)
+    error("TaoFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function TaoFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -2434,7 +2572,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetADMMParentTao"))
 """
-function TaoGetADMMParentTao(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetADMMParentTao(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetADMMParentTao: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetADMMParentTao(petsclib::$UnionPetscLib, tao::AbstractTao )
 	admm_tao_ = Ref{CTao}()
@@ -2470,7 +2610,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetApplicationContext"))
 """
-function TaoGetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx::PeCtx) end
+function TaoGetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx::PeCtx)
+    error("TaoGetApplicationContext: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::PeCtx )
 
@@ -2505,7 +2647,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetConstraintTolerances"))
 """
-function TaoGetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetConstraintTolerances: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetConstraintTolerances(petsclib::$UnionPetscLib, tao::AbstractTao )
 	catol_ = Ref{$PetscReal}()
@@ -2543,7 +2687,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetConvergedReason"))
 """
-function TaoGetConvergedReason(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetConvergedReason(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetConvergedReason: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetConvergedReason(petsclib::$UnionPetscLib, tao::AbstractTao )
 	reason_ = Ref{TaoConvergedReason}()
@@ -2583,7 +2729,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetConvergenceHistory"))
 """
-function TaoGetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetConvergenceHistory: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetConvergenceHistory(petsclib::$UnionPetscLib, tao::AbstractTao )
 	obj_ = Ref{Ptr{$PetscReal}}()
@@ -2627,7 +2775,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetCurrentFunctionEvaluations"))
 """
-function TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetCurrentFunctionEvaluations: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetCurrentFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	nfuncs_ = Ref{$PetscInt}()
@@ -2663,7 +2813,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetCurrentTrustRegionRadius"))
 """
-function TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetCurrentTrustRegionRadius: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetCurrentTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao )
 	radius_ = Ref{$PetscReal}()
@@ -2700,7 +2852,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetDualVariables"))
 """
-function TaoGetDualVariables(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetDualVariables(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetDualVariables: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetDualVariables(petsclib::$UnionPetscLib, tao::AbstractTao )
 	DE_ = Ref{CVec}()
@@ -2740,7 +2894,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetFunctionLowerBound"))
 """
-function TaoGetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetFunctionLowerBound: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetFunctionLowerBound(petsclib::$UnionPetscLib, tao::AbstractTao )
 	fmin_ = Ref{$PetscReal}()
@@ -2776,7 +2932,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoGetGradientNorm"))
 """
-function TaoGetGradientNorm(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetGradientNorm(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetGradientNorm: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao )
 	M_ = Ref{CMat}()
@@ -2813,7 +2971,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoGetInequalityBounds"))
 """
-function TaoGetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetInequalityBounds: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetInequalityBounds(petsclib::$UnionPetscLib, tao::AbstractTao )
 	IL_ = Ref{CVec}()
@@ -2851,7 +3011,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetInitialTrustRegionRadius"))
 """
-function TaoGetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetInitialTrustRegionRadius: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao )
 	radius_ = Ref{$PetscReal}()
@@ -2886,7 +3048,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Tao/TaoGetIterationNumber"))
 """
-function TaoGetIterationNumber(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetIterationNumber(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetIterationNumber: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao )
 	iter_ = Ref{$PetscInt}()
@@ -2922,7 +3086,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetKSP"))
 """
-function TaoGetKSP(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetKSP(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetKSP(petsclib::$UnionPetscLib, tao::AbstractTao )
 	ksp_ = Ref{CKSP}()
@@ -2957,7 +3123,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetLMVMMatrix"))
 """
-function TaoGetLMVMMatrix(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetLMVMMatrix(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetLMVMMatrix: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetLMVMMatrix(petsclib::$UnionPetscLib, tao::AbstractTao )
 	B_ = Ref{CMat}()
@@ -2993,7 +3161,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetLineSearch"))
 """
-function TaoGetLineSearch(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetLineSearch(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetLineSearch: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetLineSearch(petsclib::$UnionPetscLib, tao::AbstractTao )
 	ls_ = Ref{TaoLineSearch}()
@@ -3030,7 +3200,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetLinearSolveIterations"))
 """
-function TaoGetLinearSolveIterations(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetLinearSolveIterations(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetLinearSolveIterations: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetLinearSolveIterations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	lits_ = Ref{$PetscInt}()
@@ -3066,7 +3238,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetMaximumFunctionEvaluations"))
 """
-function TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetMaximumFunctionEvaluations: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	nfcn_ = Ref{$PetscInt}()
@@ -3102,7 +3276,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetMaximumIterations"))
 """
-function TaoGetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetMaximumIterations: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetMaximumIterations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	maxits_ = Ref{$PetscInt}()
@@ -3139,7 +3315,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetOptionsPrefix"))
 """
-function TaoGetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao )
 	p_ = Ref{Ptr{Cchar}}()
@@ -3176,7 +3354,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetRecycleHistory"))
 """
-function TaoGetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetRecycleHistory: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetRecycleHistory(petsclib::$UnionPetscLib, tao::AbstractTao )
 	recycle_ = Ref{PetscBool}()
@@ -3213,7 +3393,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetResidualNorm"))
 """
-function TaoGetResidualNorm(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetResidualNorm(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetResidualNorm: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetResidualNorm(petsclib::$UnionPetscLib, tao::AbstractTao )
 	value_ = Ref{$PetscReal}()
@@ -3249,7 +3431,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetSolution"))
 """
-function TaoGetSolution(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetSolution(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetSolution: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetSolution(petsclib::$UnionPetscLib, tao::AbstractTao )
 	X_ = Ref{CVec}()
@@ -3291,7 +3475,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetSolutionStatus"))
 """
-function TaoGetSolutionStatus(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetSolutionStatus(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetSolutionStatus: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetSolutionStatus(petsclib::$UnionPetscLib, tao::AbstractTao )
 	its_ = Ref{$PetscInt}()
@@ -3339,7 +3525,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetTolerances"))
 """
-function TaoGetTolerances(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetTolerances(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetTolerances: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetTolerances(petsclib::$UnionPetscLib, tao::AbstractTao )
 	gatol_ = Ref{$PetscReal}()
@@ -3381,7 +3569,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetTotalIterationNumber"))
 """
-function TaoGetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetTotalIterationNumber: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetTotalIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao )
 	iter_ = Ref{$PetscInt}()
@@ -3417,7 +3607,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetType"))
 """
-function TaoGetType(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetType(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoType}()
@@ -3454,7 +3646,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoGetVariableBounds"))
 """
-function TaoGetVariableBounds(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoGetVariableBounds(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoGetVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function TaoGetVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao )
 	XL_ = Ref{CVec}()
@@ -3494,7 +3688,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGradientNorm"))
 """
-function TaoGradientNorm(petsclib::PetscLibType, tao::AbstractTao, gradient::AbstractPetscVec, type::NormType) end
+function TaoGradientNorm(petsclib::PetscLibType, tao::AbstractTao, gradient::AbstractPetscVec, type::NormType)
+    error("TaoGradientNorm: no generated method for these argument types")
+end
 
 @for_petsc function TaoGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao, gradient::AbstractPetscVec, type::NormType )
 	gnorm_ = Ref{$PetscReal}()
@@ -3525,7 +3721,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/TaoInitializePackage"))
 """
-function TaoInitializePackage(petsclib::PetscLibType) end
+function TaoInitializePackage(petsclib::PetscLibType)
+    error("TaoInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function TaoInitializePackage(petsclib::$UnionPetscLib)
 
@@ -3561,7 +3759,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoIsGradientDefined"))
 """
-function TaoIsGradientDefined(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoIsGradientDefined(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoIsGradientDefined: no generated method for these argument types")
+end
 
 @for_petsc function TaoIsGradientDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
 	flg_ = Ref{PetscBool}()
@@ -3600,7 +3800,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoIsObjectiveAndGradientDefined"))
 """
-function TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoIsObjectiveAndGradientDefined: no generated method for these argument types")
+end
 
 @for_petsc function TaoIsObjectiveAndGradientDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
 	flg_ = Ref{PetscBool}()
@@ -3639,7 +3841,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoIsObjectiveDefined"))
 """
-function TaoIsObjectiveDefined(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoIsObjectiveDefined(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoIsObjectiveDefined: no generated method for these argument types")
+end
 
 @for_petsc function TaoIsObjectiveDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
 	flg_ = Ref{PetscBool}()
@@ -3673,7 +3877,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoKSPSetUseEW"))
 """
-function TaoKSPSetUseEW(petsclib::PetscLibType, tao::AbstractTao, flag::PetscBool) end
+function TaoKSPSetUseEW(petsclib::PetscLibType, tao::AbstractTao, flag::PetscBool)
+    error("TaoKSPSetUseEW: no generated method for these argument types")
+end
 
 @for_petsc function TaoKSPSetUseEW(petsclib::$UnionPetscLib, tao::AbstractTao, flag::PetscBool )
 
@@ -3705,7 +3911,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLMVMGetH0"))
 """
-function TaoLMVMGetH0(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoLMVMGetH0(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoLMVMGetH0: no generated method for these argument types")
+end
 
 @for_petsc function TaoLMVMGetH0(petsclib::$UnionPetscLib, tao::AbstractTao )
 	H0_ = Ref{CMat}()
@@ -3739,7 +3947,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLMVMGetH0KSP"))
 """
-function TaoLMVMGetH0KSP(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoLMVMGetH0KSP(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoLMVMGetH0KSP: no generated method for these argument types")
+end
 
 @for_petsc function TaoLMVMGetH0KSP(petsclib::$UnionPetscLib, tao::AbstractTao )
 	ksp_ = Ref{CKSP}()
@@ -3771,7 +3981,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoLMVMRecycle"))
 """
-function TaoLMVMRecycle(petsclib::PetscLibType, tao::AbstractTao, flg::PetscBool) end
+function TaoLMVMRecycle(petsclib::PetscLibType, tao::AbstractTao, flg::PetscBool)
+    error("TaoLMVMRecycle: no generated method for these argument types")
+end
 
 @for_petsc function TaoLMVMRecycle(petsclib::$UnionPetscLib, tao::AbstractTao, flg::PetscBool )
 
@@ -3801,7 +4013,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLMVMSetH0"))
 """
-function TaoLMVMSetH0(petsclib::PetscLibType, tao::AbstractTao, H0::AbstractPetscMat) end
+function TaoLMVMSetH0(petsclib::PetscLibType, tao::AbstractTao, H0::AbstractPetscMat)
+    error("TaoLMVMSetH0: no generated method for these argument types")
+end
 
 @for_petsc function TaoLMVMSetH0(petsclib::$UnionPetscLib, tao::AbstractTao, H0::AbstractPetscMat )
 
@@ -3836,7 +4050,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoMatGetSubMat"))
 """
-function TaoMatGetSubMat(petsclib::PetscLibType, M::AbstractPetscMat, is::AbstractIS, v1::AbstractPetscVec, subset_type::TaoSubsetType) end
+function TaoMatGetSubMat(petsclib::PetscLibType, M::AbstractPetscMat, is::AbstractIS, v1::AbstractPetscVec, subset_type::TaoSubsetType)
+    error("TaoMatGetSubMat: no generated method for these argument types")
+end
 
 @for_petsc function TaoMatGetSubMat(petsclib::$UnionPetscLib, M::AbstractPetscMat, is::AbstractIS, v1::AbstractPetscVec, subset_type::TaoSubsetType )
 	Msub_ = Ref{CMat}()
@@ -3878,7 +4094,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoMonitor"))
 """
-function TaoMonitor(petsclib::PetscLibType, tao::AbstractTao, its::PetscInt, f::PetscReal, res::PetscReal, cnorm::PetscReal, steplength::PetscReal) end
+function TaoMonitor(petsclib::PetscLibType, tao::AbstractTao, its::Integer, f::Real, res::Real, cnorm::Real, steplength::Real)
+    error("TaoMonitor: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitor(petsclib::$UnionPetscLib, tao::AbstractTao, its::$PetscInt, f::$PetscReal, res::$PetscReal, cnorm::$PetscReal, steplength::$PetscReal )
 
@@ -3914,7 +4132,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorCancel"))
 """
-function TaoMonitorCancel(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoMonitorCancel(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoMonitorCancel: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorCancel(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -3950,7 +4170,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorConstraintNorm"))
 """
-function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorConstraintNorm: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorConstraintNorm(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -3985,7 +4207,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorDefault"))
 """
-function TaoMonitorDefault(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorDefault(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorDefault: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorDefault(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4020,7 +4244,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorDefaultShort"))
 """
-function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorDefaultShort: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorDefaultShort(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4055,7 +4281,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGlobalization"))
 """
-function TaoMonitorGlobalization(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorGlobalization(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorGlobalization: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorGlobalization(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4090,7 +4318,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGradient"))
 """
-function TaoMonitorGradient(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorGradient(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorGradient(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4125,7 +4355,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGradientDraw"))
 """
-function TaoMonitorGradientDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorGradientDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorGradientDraw: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorGradientDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4160,7 +4392,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorResidual"))
 """
-function TaoMonitorResidual(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorResidual(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorResidual: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorResidual(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4200,7 +4434,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoMonitorSet"))
 """
-function TaoMonitorSet(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}, dest::Ptr{Cvoid}) end
+function TaoMonitorSet(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}, dest::Ptr{Cvoid})
+    error("TaoMonitorSet: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorSet(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}, dest::Ptr{Cvoid} )
 
@@ -4235,7 +4471,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorSolution"))
 """
-function TaoMonitorSolution(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorSolution(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorSolution: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorSolution(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4271,7 +4509,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorSolutionDraw"))
 """
-function TaoMonitorSolutionDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorSolutionDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorSolutionDraw: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorSolutionDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4306,7 +4546,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorStep"))
 """
-function TaoMonitorStep(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorStep(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorStep: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorStep(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4341,7 +4583,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorStepDraw"))
 """
-function TaoMonitorStepDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoMonitorStepDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoMonitorStepDraw: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorStepDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4374,7 +4618,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoParametersInitialize"))
 """
-function TaoParametersInitialize(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoParametersInitialize(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoParametersInitialize: no generated method for these argument types")
+end
 
 @for_petsc function TaoParametersInitialize(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -4408,7 +4654,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoPythonGetType"))
 """
-function TaoPythonGetType(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoPythonGetType(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoPythonGetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoPythonGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	pyname_ = Ref{Ptr{Cchar}}()
@@ -4445,7 +4693,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoPythonSetType"))
 """
-function TaoPythonSetType(petsclib::PetscLibType, tao::AbstractTao, pyname::String) end
+function TaoPythonSetType(petsclib::PetscLibType, tao::AbstractTao, pyname::String)
+    error("TaoPythonSetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoPythonSetType(petsclib::$UnionPetscLib, tao::AbstractTao, pyname::String )
 
@@ -4475,7 +4725,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Tao/TaoRegister"))
 """
-function TaoRegister(petsclib::PetscLibType, sname::String, func::external) end
+function TaoRegister(petsclib::PetscLibType, sname::String, func::external)
+    error("TaoRegister: no generated method for these argument types")
+end
 
 @for_petsc function TaoRegister(petsclib::$UnionPetscLib, sname::String, func::external )
 
@@ -4504,7 +4756,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoRegisterDestroy"))
 """
-function TaoRegisterDestroy(petsclib::PetscLibType) end
+function TaoRegisterDestroy(petsclib::PetscLibType)
+    error("TaoRegisterDestroy: no generated method for these argument types")
+end
 
 @for_petsc function TaoRegisterDestroy(petsclib::$UnionPetscLib)
 
@@ -4536,7 +4790,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoResetStatistics"))
 """
-function TaoResetStatistics(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoResetStatistics(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoResetStatistics: no generated method for these argument types")
+end
 
 @for_petsc function TaoResetStatistics(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -4569,7 +4825,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetApplicationContext"))
 """
-function TaoSetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoSetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoSetApplicationContext: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -4606,7 +4864,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConstraintTolerances"))
 """
-function TaoSetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao, catol::PetscReal, crtol::PetscReal) end
+function TaoSetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao, catol::Real, crtol::Real)
+    error("TaoSetConstraintTolerances: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetConstraintTolerances(petsclib::$UnionPetscLib, tao::AbstractTao, catol::$PetscReal, crtol::$PetscReal )
 
@@ -4646,7 +4906,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConstraintsRoutine"))
 """
-function TaoSetConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, c::AbstractPetscVec, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, c::AbstractPetscVec, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetConstraintsRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, c::AbstractPetscVec, func::external, ctx::Ptr{Cvoid} )
 
@@ -4678,7 +4940,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConvergedReason"))
 """
-function TaoSetConvergedReason(petsclib::PetscLibType, tao::AbstractTao, reason::TaoConvergedReason) end
+function TaoSetConvergedReason(petsclib::PetscLibType, tao::AbstractTao, reason::TaoConvergedReason)
+    error("TaoSetConvergedReason: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetConvergedReason(petsclib::$UnionPetscLib, tao::AbstractTao, reason::TaoConvergedReason )
 
@@ -4716,7 +4980,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConvergenceHistory"))
 """
-function TaoSetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao, obj::Vector{PetscReal}, resid::Vector{PetscReal}, cnorm::Vector{PetscReal}, lits::Vector{PetscInt}, na::PetscInt, reset::PetscBool) end
+function TaoSetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao, obj::AbstractVector{<:Number}, resid::AbstractVector{<:Number}, cnorm::AbstractVector{<:Number}, lits::AbstractVector{<:Number}, na::Integer, reset::PetscBool)
+    error("TaoSetConvergenceHistory: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetConvergenceHistory(petsclib::$UnionPetscLib, tao::AbstractTao, obj::Vector{$PetscReal}, resid::Vector{$PetscReal}, cnorm::Vector{$PetscReal}, lits::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
 
@@ -4756,7 +5022,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetConvergenceTest"))
 """
-function TaoSetConvergenceTest(petsclib::PetscLibType, tao::AbstractTao, conv::external, ctx::Ptr{Cvoid}) end
+function TaoSetConvergenceTest(petsclib::PetscLibType, tao::AbstractTao, conv::external, ctx::Ptr{Cvoid})
+    error("TaoSetConvergenceTest: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetConvergenceTest(petsclib::$UnionPetscLib, tao::AbstractTao, conv::external, ctx::Ptr{Cvoid} )
 
@@ -4796,7 +5064,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetEqualityConstraintsRoutine"))
 """
-function TaoSetEqualityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, ce::AbstractPetscVec, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetEqualityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, ce::AbstractPetscVec, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetEqualityConstraintsRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetEqualityConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, ce::AbstractPetscVec, func::external, ctx::Ptr{Cvoid} )
 
@@ -4856,7 +5126,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetFromOptions"))
 """
-function TaoSetFromOptions(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoSetFromOptions(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetFromOptions(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -4893,7 +5165,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetFunctionLowerBound"))
 """
-function TaoSetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao, fmin::PetscReal) end
+function TaoSetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao, fmin::Real)
+    error("TaoSetFunctionLowerBound: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetFunctionLowerBound(petsclib::$UnionPetscLib, tao::AbstractTao, fmin::$PetscReal )
 
@@ -4934,7 +5208,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetGradient"))
 """
-function TaoSetGradient(petsclib::PetscLibType, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetGradient(petsclib::PetscLibType, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetGradient(petsclib::$UnionPetscLib, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Ptr{Cvoid} )
 
@@ -4966,7 +5242,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetGradientNorm"))
 """
-function TaoSetGradientNorm(petsclib::PetscLibType, tao::AbstractTao, M::AbstractPetscMat) end
+function TaoSetGradientNorm(petsclib::PetscLibType, tao::AbstractTao, M::AbstractPetscMat)
+    error("TaoSetGradientNorm: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao, M::AbstractPetscMat )
 
@@ -5009,7 +5287,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetHessian"))
 """
-function TaoSetHessian(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetHessian(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetHessian: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetHessian(petsclib::$UnionPetscLib, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -5042,7 +5322,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetInequalityBounds"))
 """
-function TaoSetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec) end
+function TaoSetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec)
+    error("TaoSetInequalityBounds: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetInequalityBounds(petsclib::$UnionPetscLib, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec )
 
@@ -5082,7 +5364,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetInequalityConstraintsRoutine"))
 """
-function TaoSetInequalityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, ci::AbstractPetscVec, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetInequalityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, ci::AbstractPetscVec, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetInequalityConstraintsRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetInequalityConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, ci::AbstractPetscVec, func::external, ctx::Ptr{Cvoid} )
 
@@ -5117,7 +5401,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetInitialTrustRegionRadius"))
 """
-function TaoSetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao, radius::PetscReal) end
+function TaoSetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao, radius::Real)
+    error("TaoSetInitialTrustRegionRadius: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao, radius::$PetscReal )
 
@@ -5149,7 +5435,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoSetIterationNumber"))
 """
-function TaoSetIterationNumber(petsclib::PetscLibType, tao::AbstractTao, iter::PetscInt) end
+function TaoSetIterationNumber(petsclib::PetscLibType, tao::AbstractTao, iter::Integer)
+    error("TaoSetIterationNumber: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao, iter::$PetscInt )
 
@@ -5192,7 +5480,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianDesignRoutine"))
 """
-function TaoSetJacobianDesignRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetJacobianDesignRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetJacobianDesignRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetJacobianDesignRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -5237,7 +5527,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianEqualityRoutine"))
 """
-function TaoSetJacobianEqualityRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetJacobianEqualityRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetJacobianEqualityRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetJacobianEqualityRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -5282,7 +5574,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianInequalityRoutine"))
 """
-function TaoSetJacobianInequalityRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetJacobianInequalityRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetJacobianInequalityRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetJacobianInequalityRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -5326,7 +5620,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianResidualRoutine"))
 """
-function TaoSetJacobianResidualRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetJacobianResidualRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetJacobianResidualRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetJacobianResidualRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -5369,7 +5665,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianRoutine"))
 """
-function TaoSetJacobianRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetJacobianRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetJacobianRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetJacobianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -5416,7 +5714,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianStateRoutine"))
 """
-function TaoSetJacobianStateRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetJacobianStateRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetJacobianStateRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetJacobianStateRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat, func::external, ctx::Ptr{Cvoid} )
 
@@ -5450,7 +5750,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetLMVMMatrix"))
 """
-function TaoSetLMVMMatrix(petsclib::PetscLibType, tao::AbstractTao, B::AbstractPetscMat) end
+function TaoSetLMVMMatrix(petsclib::PetscLibType, tao::AbstractTao, B::AbstractPetscMat)
+    error("TaoSetLMVMMatrix: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetLMVMMatrix(petsclib::$UnionPetscLib, tao::AbstractTao, B::AbstractPetscMat )
 
@@ -5485,7 +5787,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetMaximumFunctionEvaluations"))
 """
-function TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao, nfcn::PetscInt) end
+function TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao, nfcn::Integer)
+    error("TaoSetMaximumFunctionEvaluations: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao, nfcn::$PetscInt )
 
@@ -5520,7 +5824,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetMaximumIterations"))
 """
-function TaoSetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao, maxits::PetscInt) end
+function TaoSetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao, maxits::Integer)
+    error("TaoSetMaximumIterations: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetMaximumIterations(petsclib::$UnionPetscLib, tao::AbstractTao, maxits::$PetscInt )
 
@@ -5560,7 +5866,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetObjective"))
 """
-function TaoSetObjective(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetObjective(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetObjective: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetObjective(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Ptr{Cvoid} )
 
@@ -5602,7 +5910,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetObjectiveAndGradient"))
 """
-function TaoSetObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetObjectiveAndGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetObjectiveAndGradient(petsclib::$UnionPetscLib, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Ptr{Cvoid} )
 
@@ -5635,7 +5945,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetOptionsPrefix"))
 """
-function TaoSetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String) end
+function TaoSetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String)
+    error("TaoSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao, p::String )
 
@@ -5672,7 +5984,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetRecycleHistory"))
 """
-function TaoSetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao, recycle::PetscBool) end
+function TaoSetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao, recycle::PetscBool)
+    error("TaoSetRecycleHistory: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetRecycleHistory(petsclib::$UnionPetscLib, tao::AbstractTao, recycle::PetscBool )
 
@@ -5713,7 +6027,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetResidualRoutine"))
 """
-function TaoSetResidualRoutine(petsclib::PetscLibType, tao::AbstractTao, res::AbstractPetscVec, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetResidualRoutine(petsclib::PetscLibType, tao::AbstractTao, res::AbstractPetscVec, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetResidualRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetResidualRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, res::AbstractPetscVec, func::external, ctx::Ptr{Cvoid} )
 
@@ -5749,7 +6065,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetResidualWeights"))
 """
-function TaoSetResidualWeights(petsclib::PetscLibType, tao::AbstractTao, sigma_v::AbstractPetscVec, n::PetscInt) end
+function TaoSetResidualWeights(petsclib::PetscLibType, tao::AbstractTao, sigma_v::AbstractPetscVec, n::Integer)
+    error("TaoSetResidualWeights: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetResidualWeights(petsclib::$UnionPetscLib, tao::AbstractTao, sigma_v::AbstractPetscVec, n::$PetscInt )
 	rows_ = Ref{$PetscInt}()
@@ -5787,7 +6105,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetSolution"))
 """
-function TaoSetSolution(petsclib::PetscLibType, tao::AbstractTao, x0::AbstractPetscVec) end
+function TaoSetSolution(petsclib::PetscLibType, tao::AbstractTao, x0::AbstractPetscVec)
+    error("TaoSetSolution: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetSolution(petsclib::$UnionPetscLib, tao::AbstractTao, x0::AbstractPetscVec )
 
@@ -5822,7 +6142,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetStateDesignIS"))
 """
-function TaoSetStateDesignIS(petsclib::PetscLibType, tao::AbstractTao, s_is::AbstractIS, d_is::AbstractIS) end
+function TaoSetStateDesignIS(petsclib::PetscLibType, tao::AbstractTao, s_is::AbstractIS, d_is::AbstractIS)
+    error("TaoSetStateDesignIS: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetStateDesignIS(petsclib::$UnionPetscLib, tao::AbstractTao, s_is::AbstractIS, d_is::AbstractIS )
 
@@ -5860,7 +6182,9 @@ Stopping Criteria:
 # External Links
 $(_doc_external("Tao/TaoSetTolerances"))
 """
-function TaoSetTolerances(petsclib::PetscLibType, tao::AbstractTao, gatol::PetscReal, grtol::PetscReal, gttol::PetscReal) end
+function TaoSetTolerances(petsclib::PetscLibType, tao::AbstractTao, gatol::Real, grtol::Real, gttol::Real)
+    error("TaoSetTolerances: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetTolerances(petsclib::$UnionPetscLib, tao::AbstractTao, gatol::$PetscReal, grtol::$PetscReal, gttol::$PetscReal )
 
@@ -5892,7 +6216,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoSetTotalIterationNumber"))
 """
-function TaoSetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao, iter::PetscInt) end
+function TaoSetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao, iter::Integer)
+    error("TaoSetTotalIterationNumber: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetTotalIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao, iter::$PetscInt )
 
@@ -5928,7 +6254,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetType"))
 """
-function TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoType) end
+function TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoType)
+    error("TaoSetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoType )
 
@@ -5960,7 +6288,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetUp"))
 """
-function TaoSetUp(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoSetUp(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoSetUp: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetUp(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -6000,7 +6330,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetUpdate"))
 """
-function TaoSetUpdate(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetUpdate(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetUpdate: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetUpdate(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Ptr{Cvoid} )
 
@@ -6033,7 +6365,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetVariableBounds"))
 """
-function TaoSetVariableBounds(petsclib::PetscLibType, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec) end
+function TaoSetVariableBounds(petsclib::PetscLibType, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec)
+    error("TaoSetVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec )
 
@@ -6072,7 +6406,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetVariableBoundsRoutine"))
 """
-function TaoSetVariableBoundsRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid}) end
+function TaoSetVariableBoundsRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Ptr{Cvoid})
+    error("TaoSetVariableBoundsRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoSetVariableBoundsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Ptr{Cvoid} )
 
@@ -6088,7 +6424,7 @@ function TaoSetVariableBoundsRoutine(petsclib::PetscLibType, tao::AbstractTao, f
 end 
 
 """
-	TaoShellGetContext(petsclib::PetscLibType,tao::AbstractTao, ctx::Ptr{Cvoid}) 
+	ctx::Ptr{Cvoid} = TaoShellGetContext(petsclib::PetscLibType,tao::AbstractTao) 
 Returns the user
 
 Not Collective
@@ -6106,19 +6442,23 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoShellGetContext"))
 """
-function TaoShellGetContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoShellGetContext(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoShellGetContext: no generated method for these argument types")
+end
 
-@for_petsc function TaoShellGetContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+@for_petsc function TaoShellGetContext(petsclib::$UnionPetscLib, tao::AbstractTao )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:TaoShellGetContext, $petsc_library),
                PetscErrorCode,
                (CTao, Ptr{Cvoid}),
-               tao, ctx,
+               tao, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -6138,7 +6478,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoShellSetContext"))
 """
-function TaoShellSetContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid}) end
+function TaoShellSetContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{Cvoid})
+    error("TaoShellSetContext: no generated method for these argument types")
+end
 
 @for_petsc function TaoShellSetContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
 
@@ -6173,7 +6515,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoShellSetSolve"))
 """
-function TaoShellSetSolve(petsclib::PetscLibType, tao::AbstractTao, solve::external) end
+function TaoShellSetSolve(petsclib::PetscLibType, tao::AbstractTao, solve::external)
+    error("TaoShellSetSolve: no generated method for these argument types")
+end
 
 @for_petsc function TaoShellSetSolve(petsclib::$UnionPetscLib, tao::AbstractTao, solve::external )
 
@@ -6206,7 +6550,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Tao/TaoSoftThreshold"))
 """
-function TaoSoftThreshold(petsclib::PetscLibType, in::AbstractPetscVec, lb::PetscReal, ub::PetscReal, out::AbstractPetscVec) end
+function TaoSoftThreshold(petsclib::PetscLibType, in::AbstractPetscVec, lb::Real, ub::Real, out::AbstractPetscVec)
+    error("TaoSoftThreshold: no generated method for these argument types")
+end
 
 @for_petsc function TaoSoftThreshold(petsclib::$UnionPetscLib, in::AbstractPetscVec, lb::$PetscReal, ub::$PetscReal, out::AbstractPetscVec )
 
@@ -6237,7 +6583,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSolve"))
 """
-function TaoSolve(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoSolve(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoSolve: no generated method for these argument types")
+end
 
 @for_petsc function TaoSolve(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -6258,7 +6606,9 @@ end
 # External Links
 $(_doc_external("Tao/TaoTestGradient"))
 """
-function TaoTestGradient(petsclib::PetscLibType, tao::AbstractTao, x::AbstractPetscVec, g1::AbstractPetscVec) end
+function TaoTestGradient(petsclib::PetscLibType, tao::AbstractTao, x::AbstractPetscVec, g1::AbstractPetscVec)
+    error("TaoTestGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoTestGradient(petsclib::$UnionPetscLib, tao::AbstractTao, x::AbstractPetscVec, g1::AbstractPetscVec )
 
@@ -6279,7 +6629,9 @@ end
 # External Links
 $(_doc_external("Tao/TaoTestHessian"))
 """
-function TaoTestHessian(petsclib::PetscLibType, tao::AbstractTao) end
+function TaoTestHessian(petsclib::PetscLibType, tao::AbstractTao)
+    error("TaoTestHessian: no generated method for these argument types")
+end
 
 @for_petsc function TaoTestHessian(petsclib::$UnionPetscLib, tao::AbstractTao )
 
@@ -6314,7 +6666,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoVecGetSubVec"))
 """
-function TaoVecGetSubVec(petsclib::PetscLibType, vfull::AbstractPetscVec, is::AbstractIS, reduced_type::TaoSubsetType, maskvalue::PetscReal) end
+function TaoVecGetSubVec(petsclib::PetscLibType, vfull::AbstractPetscVec, is::AbstractIS, reduced_type::TaoSubsetType, maskvalue::Real)
+    error("TaoVecGetSubVec: no generated method for these argument types")
+end
 
 @for_petsc function TaoVecGetSubVec(petsclib::$UnionPetscLib, vfull::AbstractPetscVec, is::AbstractIS, reduced_type::TaoSubsetType, maskvalue::$PetscReal )
 	vreduced_ = Ref{CVec}()
@@ -6351,7 +6705,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoView"))
 """
-function TaoView(petsclib::PetscLibType, tao::AbstractTao, viewer::PetscViewer) end
+function TaoView(petsclib::PetscLibType, tao::AbstractTao, viewer::PetscViewer)
+    error("TaoView: no generated method for these argument types")
+end
 
 @for_petsc function TaoView(petsclib::$UnionPetscLib, tao::AbstractTao, viewer::PetscViewer )
 
@@ -6384,7 +6740,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoViewFromOptions"))
 """
-function TaoViewFromOptions(petsclib::PetscLibType, A::AbstractTao, obj, name::String) end
+function TaoViewFromOptions(petsclib::PetscLibType, A::AbstractTao, obj, name::String)
+    error("TaoViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function TaoViewFromOptions(petsclib::$UnionPetscLib, A::AbstractTao, obj, name::String )
 

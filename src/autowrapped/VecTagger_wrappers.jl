@@ -17,7 +17,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerAbsoluteGetBox"))
 """
-function VecTaggerAbsoluteGetBox(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerAbsoluteGetBox(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerAbsoluteGetBox: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerAbsoluteGetBox(petsclib::$UnionPetscLib, tagger::VecTagger )
 	box_ = Ref{Ptr{VecTaggerBox}}()
@@ -51,7 +53,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerAbsoluteSetBox"))
 """
-function VecTaggerAbsoluteSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox}) end
+function VecTaggerAbsoluteSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox})
+    error("VecTaggerAbsoluteSetBox: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerAbsoluteSetBox(petsclib::$UnionPetscLib, tagger::VecTagger, box::Vector{VecTaggerBox} )
 
@@ -86,7 +90,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerAndGetSubs"))
 """
-function VecTaggerAndGetSubs(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerAndGetSubs(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerAndGetSubs: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerAndGetSubs(petsclib::$UnionPetscLib, tagger::VecTagger )
 	nsubs_ = Ref{$PetscInt}()
@@ -124,7 +130,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerAndSetSubs"))
 """
-function VecTaggerAndSetSubs(petsclib::PetscLibType, tagger::VecTagger, nsubs::PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode) end
+function VecTaggerAndSetSubs(petsclib::PetscLibType, tagger::VecTagger, nsubs::Integer, subs::Vector{VecTagger}, mode::PetscCopyMode)
+    error("VecTaggerAndSetSubs: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerAndSetSubs(petsclib::$UnionPetscLib, tagger::VecTagger, nsubs::$PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode )
 
@@ -159,7 +167,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerCDFGetBox"))
 """
-function VecTaggerCDFGetBox(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerCDFGetBox(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerCDFGetBox: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerCDFGetBox(petsclib::$UnionPetscLib, tagger::VecTagger )
 	box_ = Ref{Ptr{VecTaggerBox}}()
@@ -195,7 +205,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerCDFGetMethod"))
 """
-function VecTaggerCDFGetMethod(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerCDFGetMethod(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerCDFGetMethod: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerCDFGetMethod(petsclib::$UnionPetscLib, tagger::VecTagger )
 	method_ = Ref{VecTaggerCDFMethod}()
@@ -234,7 +246,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerCDFIterativeGetTolerances"))
 """
-function VecTaggerCDFIterativeGetTolerances(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerCDFIterativeGetTolerances(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerCDFIterativeGetTolerances: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerCDFIterativeGetTolerances(petsclib::$UnionPetscLib, tagger::VecTagger )
 	maxit_ = Ref{$PetscInt}()
@@ -275,7 +289,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerCDFIterativeSetTolerances"))
 """
-function VecTaggerCDFIterativeSetTolerances(petsclib::PetscLibType, tagger::VecTagger, maxit::PetscInt, rtol::PetscReal, atol::PetscReal) end
+function VecTaggerCDFIterativeSetTolerances(petsclib::PetscLibType, tagger::VecTagger, maxit::Integer, rtol::Real, atol::Real)
+    error("VecTaggerCDFIterativeSetTolerances: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerCDFIterativeSetTolerances(petsclib::$UnionPetscLib, tagger::VecTagger, maxit::$PetscInt, rtol::$PetscReal, atol::$PetscReal )
 
@@ -307,7 +323,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerCDFSetBox"))
 """
-function VecTaggerCDFSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox}) end
+function VecTaggerCDFSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox})
+    error("VecTaggerCDFSetBox: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerCDFSetBox(petsclib::$UnionPetscLib, tagger::VecTagger, box::Vector{VecTaggerBox} )
 
@@ -339,7 +357,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerCDFSetMethod"))
 """
-function VecTaggerCDFSetMethod(petsclib::PetscLibType, tagger::VecTagger, method::VecTaggerCDFMethod) end
+function VecTaggerCDFSetMethod(petsclib::PetscLibType, tagger::VecTagger, method::VecTaggerCDFMethod)
+    error("VecTaggerCDFSetMethod: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerCDFSetMethod(petsclib::$UnionPetscLib, tagger::VecTagger, method::VecTaggerCDFMethod )
 
@@ -377,7 +397,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerComputeBoxes"))
 """
-function VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec) end
+function VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec)
+    error("VecTaggerComputeBoxes: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerComputeBoxes(petsclib::$UnionPetscLib, tagger::VecTagger, vec::AbstractPetscVec )
 	numBoxes_ = Ref{$PetscInt}()
@@ -419,7 +441,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerComputeIS"))
 """
-function VecTaggerComputeIS(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS}) end
+function VecTaggerComputeIS(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS})
+    error("VecTaggerComputeIS: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerComputeIS(petsclib::$UnionPetscLib, tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS} )
 	listed_ = Ref{PetscBool}()
@@ -455,7 +479,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerCreate"))
 """
-function VecTaggerCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function VecTaggerCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("VecTaggerCreate: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	tagger_ = Ref{VecTagger}()
@@ -488,7 +514,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerDestroy"))
 """
-function VecTaggerDestroy(petsclib::PetscLibType, tagger::Union{VecTagger, Ref{VecTagger}}) end
+function VecTaggerDestroy(petsclib::PetscLibType, tagger::Union{VecTagger, Ref{VecTagger}})
+    error("VecTaggerDestroy: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerDestroy(petsclib::$UnionPetscLib, tagger::Union{VecTagger, Ref{VecTagger}} )
 	tagger_ = tagger isa Base.RefValue ? tagger : Ref{VecTagger}(tagger)
@@ -517,7 +545,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecTaggerFinalizePackage"))
 """
-function VecTaggerFinalizePackage(petsclib::PetscLibType) end
+function VecTaggerFinalizePackage(petsclib::PetscLibType)
+    error("VecTaggerFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -550,7 +580,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerGetBlockSize"))
 """
-function VecTaggerGetBlockSize(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerGetBlockSize(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerGetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerGetBlockSize(petsclib::$UnionPetscLib, tagger::VecTagger )
 	blocksize_ = Ref{$PetscInt}()
@@ -586,7 +618,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerGetInvert"))
 """
-function VecTaggerGetInvert(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerGetInvert(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerGetInvert: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerGetInvert(petsclib::$UnionPetscLib, tagger::VecTagger )
 	invert_ = Ref{PetscBool}()
@@ -622,7 +656,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerGetType"))
 """
-function VecTaggerGetType(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerGetType(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerGetType: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerGetType(petsclib::$UnionPetscLib, tagger::VecTagger )
 	type_ = Ref{VecTaggerType}()
@@ -652,7 +688,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecTaggerInitializePackage"))
 """
-function VecTaggerInitializePackage(petsclib::PetscLibType) end
+function VecTaggerInitializePackage(petsclib::PetscLibType)
+    error("VecTaggerInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerInitializePackage(petsclib::$UnionPetscLib)
 
@@ -686,7 +724,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerOrGetSubs"))
 """
-function VecTaggerOrGetSubs(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerOrGetSubs(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerOrGetSubs: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerOrGetSubs(petsclib::$UnionPetscLib, tagger::VecTagger )
 	nsubs_ = Ref{$PetscInt}()
@@ -724,7 +764,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerOrSetSubs"))
 """
-function VecTaggerOrSetSubs(petsclib::PetscLibType, tagger::VecTagger, nsubs::PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode) end
+function VecTaggerOrSetSubs(petsclib::PetscLibType, tagger::VecTagger, nsubs::Integer, subs::Vector{VecTagger}, mode::PetscCopyMode)
+    error("VecTaggerOrSetSubs: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerOrSetSubs(petsclib::$UnionPetscLib, tagger::VecTagger, nsubs::$PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode )
 
@@ -756,7 +798,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerRegister"))
 """
-function VecTaggerRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function VecTaggerRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("VecTaggerRegister: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -784,7 +828,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerRegisterAll"))
 """
-function VecTaggerRegisterAll(petsclib::PetscLibType) end
+function VecTaggerRegisterAll(petsclib::PetscLibType)
+    error("VecTaggerRegisterAll: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerRegisterAll(petsclib::$UnionPetscLib)
 
@@ -817,7 +863,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerRelativeGetBox"))
 """
-function VecTaggerRelativeGetBox(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerRelativeGetBox(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerRelativeGetBox: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerRelativeGetBox(petsclib::$UnionPetscLib, tagger::VecTagger )
 	box_ = Ref{Ptr{VecTaggerBox}}()
@@ -851,7 +899,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerRelativeSetBox"))
 """
-function VecTaggerRelativeSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox}) end
+function VecTaggerRelativeSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox})
+    error("VecTaggerRelativeSetBox: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerRelativeSetBox(petsclib::$UnionPetscLib, tagger::VecTagger, box::Vector{VecTaggerBox} )
 
@@ -883,7 +933,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerSetBlockSize"))
 """
-function VecTaggerSetBlockSize(petsclib::PetscLibType, tagger::VecTagger, blocksize::PetscInt) end
+function VecTaggerSetBlockSize(petsclib::PetscLibType, tagger::VecTagger, blocksize::Integer)
+    error("VecTaggerSetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerSetBlockSize(petsclib::$UnionPetscLib, tagger::VecTagger, blocksize::$PetscInt )
 
@@ -920,7 +972,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerSetFromOptions"))
 """
-function VecTaggerSetFromOptions(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerSetFromOptions(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerSetFromOptions(petsclib::$UnionPetscLib, tagger::VecTagger )
 
@@ -954,7 +1008,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerSetInvert"))
 """
-function VecTaggerSetInvert(petsclib::PetscLibType, tagger::VecTagger, invert::PetscBool) end
+function VecTaggerSetInvert(petsclib::PetscLibType, tagger::VecTagger, invert::PetscBool)
+    error("VecTaggerSetInvert: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerSetInvert(petsclib::$UnionPetscLib, tagger::VecTagger, invert::PetscBool )
 
@@ -990,7 +1046,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerSetType"))
 """
-function VecTaggerSetType(petsclib::PetscLibType, tagger::VecTagger, type::VecTaggerType) end
+function VecTaggerSetType(petsclib::PetscLibType, tagger::VecTagger, type::VecTaggerType)
+    error("VecTaggerSetType: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerSetType(petsclib::$UnionPetscLib, tagger::VecTagger, type::VecTaggerType )
 
@@ -1021,7 +1079,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerSetUp"))
 """
-function VecTaggerSetUp(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerSetUp(petsclib::PetscLibType, tagger::VecTagger)
+    error("VecTaggerSetUp: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerSetUp(petsclib::$UnionPetscLib, tagger::VecTagger )
 
@@ -1053,7 +1113,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerView"))
 """
-function VecTaggerView(petsclib::PetscLibType, tagger::VecTagger, viewer::PetscViewer) end
+function VecTaggerView(petsclib::PetscLibType, tagger::VecTagger, viewer::PetscViewer)
+    error("VecTaggerView: no generated method for these argument types")
+end
 
 @for_petsc function VecTaggerView(petsclib::$UnionPetscLib, tagger::VecTagger, viewer::PetscViewer )
 

@@ -18,7 +18,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLLibraryAppend"))
 """
-function PetscDLLibraryAppend(petsclib::PetscLibType, comm::MPI_Comm, path::String) end
+function PetscDLLibraryAppend(petsclib::PetscLibType, comm::MPI_Comm, path::String)
+    error("PetscDLLibraryAppend: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLLibraryAppend(petsclib::$UnionPetscLib, comm::MPI_Comm, path::String )
 	outlist_ = Ref{PetscDLLibrary}()
@@ -52,7 +54,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLLibraryClose"))
 """
-function PetscDLLibraryClose(petsclib::PetscLibType, list::PetscDLLibrary) end
+function PetscDLLibraryClose(petsclib::PetscLibType, list::PetscDLLibrary)
+    error("PetscDLLibraryClose: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLLibraryClose(petsclib::$UnionPetscLib, list::PetscDLLibrary )
 
@@ -87,7 +91,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLLibraryOpen"))
 """
-function PetscDLLibraryOpen(petsclib::PetscLibType, comm::MPI_Comm, path::String) end
+function PetscDLLibraryOpen(petsclib::PetscLibType, comm::MPI_Comm, path::String)
+    error("PetscDLLibraryOpen: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLLibraryOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, path::String )
 	entry_ = Ref{PetscDLLibrary}()
@@ -124,7 +130,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLLibraryPrepend"))
 """
-function PetscDLLibraryPrepend(petsclib::PetscLibType, comm::MPI_Comm, path::String) end
+function PetscDLLibraryPrepend(petsclib::PetscLibType, comm::MPI_Comm, path::String)
+    error("PetscDLLibraryPrepend: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLLibraryPrepend(petsclib::$UnionPetscLib, comm::MPI_Comm, path::String )
 	outlist_ = Ref{PetscDLLibrary}()
@@ -147,7 +155,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscDLLibraryPrintPath"))
 """
-function PetscDLLibraryPrintPath(petsclib::PetscLibType, libs::PetscDLLibrary) end
+function PetscDLLibraryPrintPath(petsclib::PetscLibType, libs::PetscDLLibrary)
+    error("PetscDLLibraryPrintPath: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLLibraryPrintPath(petsclib::$UnionPetscLib, libs::PetscDLLibrary )
 
@@ -185,7 +195,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLLibraryRetrieve"))
 """
-function PetscDLLibraryRetrieve(petsclib::PetscLibType, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t) end
+function PetscDLLibraryRetrieve(petsclib::PetscLibType, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t)
+    error("PetscDLLibraryRetrieve: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLLibraryRetrieve(petsclib::$UnionPetscLib, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t )
 	found_ = Ref{PetscBool}()
@@ -224,7 +236,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLLibrarySym"))
 """
-function PetscDLLibrarySym(petsclib::PetscLibType, comm::MPI_Comm, outlist::PetscDLLibrary, path::String, insymbol::String) end
+function PetscDLLibrarySym(petsclib::PetscLibType, comm::MPI_Comm, outlist::PetscDLLibrary, path::String, insymbol::String)
+    error("PetscDLLibrarySym: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLLibrarySym(petsclib::$UnionPetscLib, comm::MPI_Comm, outlist::PetscDLLibrary, path::String, insymbol::String )
 	value_ = Ref{Ptr{Cvoid}}()

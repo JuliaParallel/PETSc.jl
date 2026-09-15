@@ -21,7 +21,9 @@ Level: advanced
 # External Links
 $(_doc_external("IS/PetscKDTreeCreate"))
 """
-function PetscKDTreeCreate(petsclib::PetscLibType, num_coords::PetscCount, dim::PetscInt, coords::Vector{PetscReal}, copy_mode::PetscCopyMode, max_bucket_size::PetscInt) end
+function PetscKDTreeCreate(petsclib::PetscLibType, num_coords::PetscCount, dim::Integer, coords::AbstractVector{<:Number}, copy_mode::PetscCopyMode, max_bucket_size::Integer)
+    error("PetscKDTreeCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscKDTreeCreate(petsclib::$UnionPetscLib, num_coords::PetscCount, dim::$PetscInt, coords::Vector{$PetscReal}, copy_mode::PetscCopyMode, max_bucket_size::$PetscInt )
 	new_tree_ = Ref{PetscKDTree}()
@@ -54,7 +56,9 @@ Level: advanced
 # External Links
 $(_doc_external("IS/PetscKDTreeDestroy"))
 """
-function PetscKDTreeDestroy(petsclib::PetscLibType, tree::Union{PetscKDTree, Ref{PetscKDTree}}) end
+function PetscKDTreeDestroy(petsclib::PetscLibType, tree::Union{PetscKDTree, Ref{PetscKDTree}})
+    error("PetscKDTreeDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscKDTreeDestroy(petsclib::$UnionPetscLib, tree::Union{PetscKDTree, Ref{PetscKDTree}} )
 	tree_ = tree isa Base.RefValue ? tree : Ref{PetscKDTree}(tree)
@@ -93,7 +97,9 @@ Level: advanced
 # External Links
 $(_doc_external("IS/PetscKDTreeQueryPointsNearestNeighbor"))
 """
-function PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType, tree::PetscKDTree, num_points::PetscCount, points::Vector{PetscReal}, tolerance::PetscReal, indices::Vector{PetscCount}, distances::Vector{PetscReal}) end
+function PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType, tree::PetscKDTree, num_points::PetscCount, points::AbstractVector{<:Number}, tolerance::Real, indices::Vector{PetscCount}, distances::AbstractVector{<:Number})
+    error("PetscKDTreeQueryPointsNearestNeighbor: no generated method for these argument types")
+end
 
 @for_petsc function PetscKDTreeQueryPointsNearestNeighbor(petsclib::$UnionPetscLib, tree::PetscKDTree, num_points::PetscCount, points::Vector{$PetscReal}, tolerance::$PetscReal, indices::Vector{PetscCount}, distances::Vector{$PetscReal} )
 
@@ -125,7 +131,9 @@ Level: advanced
 # External Links
 $(_doc_external("IS/PetscKDTreeView"))
 """
-function PetscKDTreeView(petsclib::PetscLibType, tree::PetscKDTree, viewer::PetscViewer) end
+function PetscKDTreeView(petsclib::PetscLibType, tree::PetscKDTree, viewer::PetscViewer)
+    error("PetscKDTreeView: no generated method for these argument types")
+end
 
 @for_petsc function PetscKDTreeView(petsclib::$UnionPetscLib, tree::PetscKDTree, viewer::PetscViewer )
 

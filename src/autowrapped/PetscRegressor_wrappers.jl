@@ -15,7 +15,9 @@ Level: advanced
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorAppendOptionsPrefix"))
 """
-function PetscRegressorAppendOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor, p::String) end
+function PetscRegressorAppendOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor, p::String)
+    error("PetscRegressorAppendOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorAppendOptionsPrefix(petsclib::$UnionPetscLib, regressor::PetscRegressor, p::String )
 
@@ -49,7 +51,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorCreate"))
 """
-function PetscRegressorCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscRegressorCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscRegressorCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	newregressor_ = Ref{PetscRegressor}()
@@ -82,7 +86,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorDestroy"))
 """
-function PetscRegressorDestroy(petsclib::PetscLibType, regressor::Union{PetscRegressor, Ref{PetscRegressor}}) end
+function PetscRegressorDestroy(petsclib::PetscLibType, regressor::Union{PetscRegressor, Ref{PetscRegressor}})
+    error("PetscRegressorDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorDestroy(petsclib::$UnionPetscLib, regressor::Union{PetscRegressor, Ref{PetscRegressor}} )
 	regressor_ = regressor isa Base.RefValue ? regressor : Ref{PetscRegressor}(regressor)
@@ -111,7 +117,9 @@ Level: developer
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorFinalizePackage"))
 """
-function PetscRegressorFinalizePackage(petsclib::PetscLibType) end
+function PetscRegressorFinalizePackage(petsclib::PetscLibType)
+    error("PetscRegressorFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -143,7 +151,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorFit"))
 """
-function PetscRegressorFit(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) end
+function PetscRegressorFit(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec)
+    error("PetscRegressorFit: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorFit(petsclib::$UnionPetscLib, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec )
 
@@ -176,7 +186,9 @@ Output Parameter:
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorGetOptionsPrefix"))
 """
-function PetscRegressorGetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorGetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorGetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorGetOptionsPrefix(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 	p_ = Ref{Ptr{Cchar}}()
@@ -212,7 +224,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorGetTao"))
 """
-function PetscRegressorGetTao(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorGetTao(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorGetTao: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorGetTao(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 	tao_ = Ref{CTao}()
@@ -248,7 +262,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorGetType"))
 """
-function PetscRegressorGetType(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorGetType(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorGetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorGetType(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 	type_ = Ref{PetscRegressorType}()
@@ -278,7 +294,9 @@ Level: developer
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorInitializePackage"))
 """
-function PetscRegressorInitializePackage(petsclib::PetscLibType) end
+function PetscRegressorInitializePackage(petsclib::PetscLibType)
+    error("PetscRegressorInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorInitializePackage(petsclib::$UnionPetscLib)
 
@@ -311,7 +329,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearGetKSP"))
 """
-function PetscRegressorLinearGetKSP(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorLinearGetKSP(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorLinearGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorLinearGetKSP(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 	ksp_ = Ref{CKSP}()
@@ -345,7 +365,9 @@ Level: advanced
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearGetType"))
 """
-function PetscRegressorLinearGetType(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorLinearGetType(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorLinearGetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorLinearGetType(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 	type_ = Ref{PetscRegressorLinearType}()
@@ -383,7 +405,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearSetFitIntercept"))
 """
-function PetscRegressorLinearSetFitIntercept(petsclib::PetscLibType, regressor::PetscRegressor, flg::PetscBool) end
+function PetscRegressorLinearSetFitIntercept(petsclib::PetscLibType, regressor::PetscRegressor, flg::PetscBool)
+    error("PetscRegressorLinearSetFitIntercept: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorLinearSetFitIntercept(petsclib::$UnionPetscLib, regressor::PetscRegressor, flg::PetscBool )
 
@@ -420,7 +444,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearSetType"))
 """
-function PetscRegressorLinearSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorLinearType) end
+function PetscRegressorLinearSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorLinearType)
+    error("PetscRegressorLinearSetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorLinearSetType(petsclib::$UnionPetscLib, regressor::PetscRegressor, type::PetscRegressorLinearType )
 
@@ -456,7 +482,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearSetUseKSP"))
 """
-function PetscRegressorLinearSetUseKSP(petsclib::PetscLibType, regressor::PetscRegressor, flg::PetscBool) end
+function PetscRegressorLinearSetUseKSP(petsclib::PetscLibType, regressor::PetscRegressor, flg::PetscBool)
+    error("PetscRegressorLinearSetUseKSP: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorLinearSetUseKSP(petsclib::$UnionPetscLib, regressor::PetscRegressor, flg::PetscBool )
 
@@ -491,7 +519,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorPredict"))
 """
-function PetscRegressorPredict(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) end
+function PetscRegressorPredict(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec)
+    error("PetscRegressorPredict: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorPredict(petsclib::$UnionPetscLib, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec )
 
@@ -521,7 +551,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorRegister"))
 """
-function PetscRegressorRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function PetscRegressorRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("PetscRegressorRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -552,7 +584,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorReset"))
 """
-function PetscRegressorReset(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorReset(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorReset: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorReset(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 
@@ -586,7 +620,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetFromOptions"))
 """
-function PetscRegressorSetFromOptions(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorSetFromOptions(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorSetFromOptions(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 
@@ -619,7 +655,9 @@ Level: advanced
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetOptionsPrefix"))
 """
-function PetscRegressorSetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor, p::String) end
+function PetscRegressorSetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor, p::String)
+    error("PetscRegressorSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorSetOptionsPrefix(petsclib::$UnionPetscLib, regressor::PetscRegressor, p::String )
 
@@ -654,7 +692,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetRegularizerWeight"))
 """
-function PetscRegressorSetRegularizerWeight(petsclib::PetscLibType, regressor::PetscRegressor, weight::PetscReal) end
+function PetscRegressorSetRegularizerWeight(petsclib::PetscLibType, regressor::PetscRegressor, weight::Real)
+    error("PetscRegressorSetRegularizerWeight: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorSetRegularizerWeight(petsclib::$UnionPetscLib, regressor::PetscRegressor, weight::$PetscReal )
 
@@ -689,7 +729,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetType"))
 """
-function PetscRegressorSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorType) end
+function PetscRegressorSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorType)
+    error("PetscRegressorSetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorSetType(petsclib::$UnionPetscLib, regressor::PetscRegressor, type::PetscRegressorType )
 
@@ -718,7 +760,9 @@ Input Parameter:
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetUp"))
 """
-function PetscRegressorSetUp(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorSetUp(petsclib::PetscLibType, regressor::PetscRegressor)
+    error("PetscRegressorSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorSetUp(petsclib::$UnionPetscLib, regressor::PetscRegressor )
 
@@ -753,7 +797,9 @@ Level: beginner
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorView"))
 """
-function PetscRegressorView(petsclib::PetscLibType, regressor::PetscRegressor, viewer::PetscViewer) end
+function PetscRegressorView(petsclib::PetscLibType, regressor::PetscRegressor, viewer::PetscViewer)
+    error("PetscRegressorView: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorView(petsclib::$UnionPetscLib, regressor::PetscRegressor, viewer::PetscViewer )
 
@@ -786,7 +832,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorViewFromOptions"))
 """
-function PetscRegressorViewFromOptions(petsclib::PetscLibType, A::PetscRegressor, obj, name::String) end
+function PetscRegressorViewFromOptions(petsclib::PetscLibType, A::PetscRegressor, obj, name::String)
+    error("PetscRegressorViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegressorViewFromOptions(petsclib::$UnionPetscLib, A::PetscRegressor, obj, name::String )
 

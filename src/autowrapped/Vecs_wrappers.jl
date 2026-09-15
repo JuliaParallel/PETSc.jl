@@ -20,7 +20,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Tao/VecSFischer"))
 """
-function VecSFischer(petsclib::PetscLibType, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, mu::PetscReal, FB::AbstractPetscVec) end
+function VecSFischer(petsclib::PetscLibType, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, mu::Real, FB::AbstractPetscVec)
+    error("VecSFischer: no generated method for these argument types")
+end
 
 @for_petsc function VecSFischer(petsclib::$UnionPetscLib, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, mu::$PetscReal, FB::AbstractPetscVec )
 
@@ -52,7 +54,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScale"))
 """
-function VecScale(petsclib::PetscLibType, x::AbstractPetscVec, alpha::PetscScalar) end
+function VecScale(petsclib::PetscLibType, x::AbstractPetscVec, alpha::Number)
+    error("VecScale: no generated method for these argument types")
+end
 
 @for_petsc function VecScale(petsclib::$UnionPetscLib, x::AbstractPetscVec, alpha::$PetscScalar )
 
@@ -89,7 +93,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterBegin"))
 """
-function VecScatterBegin(petsclib::PetscLibType, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode) end
+function VecScatterBegin(petsclib::PetscLibType, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode)
+    error("VecScatterBegin: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterBegin(petsclib::$UnionPetscLib, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode )
 
@@ -123,7 +129,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecScatterCopy"))
 """
-function VecScatterCopy(petsclib::PetscLibType, sf::VecScatter) end
+function VecScatterCopy(petsclib::PetscLibType, sf::VecScatter)
+    error("VecScatterCopy: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterCopy(petsclib::$UnionPetscLib, sf::VecScatter )
 	newsf_ = Ref{VecScatter}()
@@ -169,7 +177,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterCreate"))
 """
-function VecScatterCreate(petsclib::PetscLibType, x::AbstractPetscVec, ix::AbstractIS, y::AbstractPetscVec, iy::AbstractIS) end
+function VecScatterCreate(petsclib::PetscLibType, x::AbstractPetscVec, ix::AbstractIS, y::AbstractPetscVec, iy::AbstractIS)
+    error("VecScatterCreate: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterCreate(petsclib::$UnionPetscLib, x::AbstractPetscVec, ix::AbstractIS, y::AbstractPetscVec, iy::AbstractIS )
 	newsf_ = Ref{VecScatter}()
@@ -207,7 +217,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterCreateToAll"))
 """
-function VecScatterCreateToAll(petsclib::PetscLibType, vin::AbstractPetscVec) end
+function VecScatterCreateToAll(petsclib::PetscLibType, vin::AbstractPetscVec)
+    error("VecScatterCreateToAll: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterCreateToAll(petsclib::$UnionPetscLib, vin::AbstractPetscVec )
 	ctx_ = Ref{VecScatter}()
@@ -248,7 +260,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterCreateToZero"))
 """
-function VecScatterCreateToZero(petsclib::PetscLibType, vin::AbstractPetscVec) end
+function VecScatterCreateToZero(petsclib::PetscLibType, vin::AbstractPetscVec)
+    error("VecScatterCreateToZero: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterCreateToZero(petsclib::$UnionPetscLib, vin::AbstractPetscVec )
 	ctx_ = Ref{VecScatter}()
@@ -283,7 +297,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterDestroy"))
 """
-function VecScatterDestroy(petsclib::PetscLibType, sf::Union{VecScatter, Ref{VecScatter}}) end
+function VecScatterDestroy(petsclib::PetscLibType, sf::Union{VecScatter, Ref{VecScatter}})
+    error("VecScatterDestroy: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterDestroy(petsclib::$UnionPetscLib, sf::Union{VecScatter, Ref{VecScatter}} )
 	sf_ = sf isa Base.RefValue ? sf : Ref{VecScatter}(sf)
@@ -320,7 +336,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterEnd"))
 """
-function VecScatterEnd(petsclib::PetscLibType, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode) end
+function VecScatterEnd(petsclib::PetscLibType, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode)
+    error("VecScatterEnd: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterEnd(petsclib::$UnionPetscLib, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode )
 
@@ -355,7 +373,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/VecScatterFFTWToPetsc"))
 """
-function VecScatterFFTWToPetsc(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
+function VecScatterFFTWToPetsc(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("VecScatterFFTWToPetsc: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterFFTWToPetsc(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -390,7 +410,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecScatterGetMerged"))
 """
-function VecScatterGetMerged(petsclib::PetscLibType, sf::VecScatter) end
+function VecScatterGetMerged(petsclib::PetscLibType, sf::VecScatter)
+    error("VecScatterGetMerged: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterGetMerged(petsclib::$UnionPetscLib, sf::VecScatter )
 	flg_ = Ref{PetscBool}()
@@ -426,7 +448,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterGetType"))
 """
-function VecScatterGetType(petsclib::PetscLibType, sf::VecScatter) end
+function VecScatterGetType(petsclib::PetscLibType, sf::VecScatter)
+    error("VecScatterGetType: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterGetType(petsclib::$UnionPetscLib, sf::VecScatter )
 	type_ = Ref{VecScatterType}()
@@ -463,7 +487,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/VecScatterPetscToFFTW"))
 """
-function VecScatterPetscToFFTW(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
+function VecScatterPetscToFFTW(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("VecScatterPetscToFFTW: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterPetscToFFTW(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -495,7 +521,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecScatterRegister"))
 """
-function VecScatterRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function VecScatterRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("VecScatterRegister: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -529,7 +557,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecScatterRemap"))
 """
-function VecScatterRemap(petsclib::PetscLibType, sf::VecScatter, tomap::Vector{PetscInt}, frommap::Vector{PetscInt}) end
+function VecScatterRemap(petsclib::PetscLibType, sf::VecScatter, tomap::AbstractVector{<:Number}, frommap::AbstractVector{<:Number})
+    error("VecScatterRemap: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterRemap(petsclib::$UnionPetscLib, sf::VecScatter, tomap::Vector{$PetscInt}, frommap::Vector{$PetscInt} )
 
@@ -558,7 +588,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Vec/VecScatterSetFromOptions"))
 """
-function VecScatterSetFromOptions(petsclib::PetscLibType, sf::VecScatter) end
+function VecScatterSetFromOptions(petsclib::PetscLibType, sf::VecScatter)
+    error("VecScatterSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterSetFromOptions(petsclib::$UnionPetscLib, sf::VecScatter )
 
@@ -593,7 +625,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterSetType"))
 """
-function VecScatterSetType(petsclib::PetscLibType, sf::VecScatter, type::VecScatterType) end
+function VecScatterSetType(petsclib::PetscLibType, sf::VecScatter, type::VecScatterType)
+    error("VecScatterSetType: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterSetType(petsclib::$UnionPetscLib, sf::VecScatter, type::VecScatterType )
 
@@ -624,7 +658,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterSetUp"))
 """
-function VecScatterSetUp(petsclib::PetscLibType, sf::VecScatter) end
+function VecScatterSetUp(petsclib::PetscLibType, sf::VecScatter)
+    error("VecScatterSetUp: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterSetUp(petsclib::$UnionPetscLib, sf::VecScatter )
 
@@ -656,7 +692,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterView"))
 """
-function VecScatterView(petsclib::PetscLibType, sf::VecScatter, viewer::PetscViewer) end
+function VecScatterView(petsclib::PetscLibType, sf::VecScatter, viewer::PetscViewer)
+    error("VecScatterView: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterView(petsclib::$UnionPetscLib, sf::VecScatter, viewer::PetscViewer )
 
@@ -689,7 +727,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterViewFromOptions"))
 """
-function VecScatterViewFromOptions(petsclib::PetscLibType, sf::VecScatter, obj, name::String) end
+function VecScatterViewFromOptions(petsclib::PetscLibType, sf::VecScatter, obj, name::String)
+    error("VecScatterViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function VecScatterViewFromOptions(petsclib::$UnionPetscLib, sf::VecScatter, obj, name::String )
 
@@ -721,7 +761,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSet"))
 """
-function VecSet(petsclib::PetscLibType, x::AbstractPetscVec, alpha::PetscScalar) end
+function VecSet(petsclib::PetscLibType, x::AbstractPetscVec, alpha::Number)
+    error("VecSet: no generated method for these argument types")
+end
 
 @for_petsc function VecSet(petsclib::$UnionPetscLib, x::AbstractPetscVec, alpha::$PetscScalar )
 
@@ -751,7 +793,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecSetBindingPropagates"))
 """
-function VecSetBindingPropagates(petsclib::PetscLibType, v::AbstractPetscVec, flg::PetscBool) end
+function VecSetBindingPropagates(petsclib::PetscLibType, v::AbstractPetscVec, flg::PetscBool)
+    error("VecSetBindingPropagates: no generated method for these argument types")
+end
 
 @for_petsc function VecSetBindingPropagates(petsclib::$UnionPetscLib, v::AbstractPetscVec, flg::PetscBool )
 
@@ -784,7 +828,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecSetBlockSize"))
 """
-function VecSetBlockSize(petsclib::PetscLibType, v::AbstractPetscVec, bs::PetscInt) end
+function VecSetBlockSize(petsclib::PetscLibType, v::AbstractPetscVec, bs::Integer)
+    error("VecSetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function VecSetBlockSize(petsclib::$UnionPetscLib, v::AbstractPetscVec, bs::$PetscInt )
 
@@ -823,7 +869,9 @@ See also:
 # External Links
 $(_doc_external("DM/VecSetDM"))
 """
-function VecSetDM(petsclib::PetscLibType, v::AbstractPetscVec, dm::AbstractPetscDM) end
+function VecSetDM(petsclib::PetscLibType, v::AbstractPetscVec, dm::AbstractPetscDM)
+    error("VecSetDM: no generated method for these argument types")
+end
 
 @for_petsc function VecSetDM(petsclib::$UnionPetscLib, v::AbstractPetscVec, dm::AbstractPetscDM )
 
@@ -844,7 +892,9 @@ end
 # External Links
 $(_doc_external("Vec/VecSetErrorIfLocked"))
 """
-function VecSetErrorIfLocked(petsclib::PetscLibType, x::AbstractPetscVec, arg::PetscInt) end
+function VecSetErrorIfLocked(petsclib::PetscLibType, x::AbstractPetscVec, arg::Integer)
+    error("VecSetErrorIfLocked: no generated method for these argument types")
+end
 
 @for_petsc function VecSetErrorIfLocked(petsclib::$UnionPetscLib, x::AbstractPetscVec, arg::$PetscInt )
 
@@ -875,7 +925,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSetFromOptions"))
 """
-function VecSetFromOptions(petsclib::PetscLibType, vec::AbstractPetscVec) end
+function VecSetFromOptions(petsclib::PetscLibType, vec::AbstractPetscVec)
+    error("VecSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function VecSetFromOptions(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 
@@ -907,7 +959,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecSetLayout"))
 """
-function VecSetLayout(petsclib::PetscLibType, x::AbstractPetscVec, map::PetscLayout) end
+function VecSetLayout(petsclib::PetscLibType, x::AbstractPetscVec, map::PetscLayout)
+    error("VecSetLayout: no generated method for these argument types")
+end
 
 @for_petsc function VecSetLayout(petsclib::$UnionPetscLib, x::AbstractPetscVec, map::PetscLayout )
 
@@ -942,7 +996,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetLocalToGlobalMapping"))
 """
-function VecSetLocalToGlobalMapping(petsclib::PetscLibType, x::AbstractPetscVec, mapping::ISLocalToGlobalMapping) end
+function VecSetLocalToGlobalMapping(petsclib::PetscLibType, x::AbstractPetscVec, mapping::ISLocalToGlobalMapping)
+    error("VecSetLocalToGlobalMapping: no generated method for these argument types")
+end
 
 @for_petsc function VecSetLocalToGlobalMapping(petsclib::$UnionPetscLib, x::AbstractPetscVec, mapping::ISLocalToGlobalMapping )
 
@@ -991,7 +1047,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetOption"))
 """
-function VecSetOption(petsclib::PetscLibType, x::AbstractPetscVec, op::VecOption, flag::PetscBool) end
+function VecSetOption(petsclib::PetscLibType, x::AbstractPetscVec, op::VecOption, flag::PetscBool)
+    error("VecSetOption: no generated method for these argument types")
+end
 
 @for_petsc function VecSetOption(petsclib::$UnionPetscLib, x::AbstractPetscVec, op::VecOption, flag::PetscBool )
 
@@ -1024,7 +1082,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecSetOptionsPrefix"))
 """
-function VecSetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec, prefix::String) end
+function VecSetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec, prefix::String)
+    error("VecSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function VecSetOptionsPrefix(petsclib::$UnionPetscLib, v::AbstractPetscVec, prefix::String )
 
@@ -1059,7 +1119,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecSetPinnedMemoryMin"))
 """
-function VecSetPinnedMemoryMin(petsclib::PetscLibType, v::AbstractPetscVec, mbytes::Csize_t) end
+function VecSetPinnedMemoryMin(petsclib::PetscLibType, v::AbstractPetscVec, mbytes::Csize_t)
+    error("VecSetPinnedMemoryMin: no generated method for these argument types")
+end
 
 @for_petsc function VecSetPinnedMemoryMin(petsclib::$UnionPetscLib, v::AbstractPetscVec, mbytes::Csize_t )
 
@@ -1092,7 +1154,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSetPreallocationCOO"))
 """
-function VecSetPreallocationCOO(petsclib::PetscLibType, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{PetscInt}) end
+function VecSetPreallocationCOO(petsclib::PetscLibType, x::AbstractPetscVec, ncoo::PetscCount, coo_i::AbstractVector{<:Number})
+    error("VecSetPreallocationCOO: no generated method for these argument types")
+end
 
 @for_petsc function VecSetPreallocationCOO(petsclib::$UnionPetscLib, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{$PetscInt} )
 
@@ -1125,7 +1189,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSetPreallocationCOOLocal"))
 """
-function VecSetPreallocationCOOLocal(petsclib::PetscLibType, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{PetscInt}) end
+function VecSetPreallocationCOOLocal(petsclib::PetscLibType, x::AbstractPetscVec, ncoo::PetscCount, coo_i::AbstractVector{<:Number})
+    error("VecSetPreallocationCOOLocal: no generated method for these argument types")
+end
 
 @for_petsc function VecSetPreallocationCOOLocal(petsclib::$UnionPetscLib, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{$PetscInt} )
 
@@ -1159,7 +1225,9 @@ Example of Usage:
 # External Links
 $(_doc_external("Vec/VecSetRandom"))
 """
-function VecSetRandom(petsclib::PetscLibType, x::AbstractPetscVec, rctx::PetscRandom) end
+function VecSetRandom(petsclib::PetscLibType, x::AbstractPetscVec, rctx::PetscRandom)
+    error("VecSetRandom: no generated method for these argument types")
+end
 
 @for_petsc function VecSetRandom(petsclib::$UnionPetscLib, x::AbstractPetscVec, rctx::PetscRandom )
 
@@ -1193,7 +1261,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetSizes"))
 """
-function VecSetSizes(petsclib::PetscLibType, v::AbstractPetscVec, n::PetscInt, N::PetscInt) end
+function VecSetSizes(petsclib::PetscLibType, v::AbstractPetscVec, n::Integer, N::Integer)
+    error("VecSetSizes: no generated method for these argument types")
+end
 
 @for_petsc function VecSetSizes(petsclib::$UnionPetscLib, v::AbstractPetscVec, n::$PetscInt, N::$PetscInt )
 
@@ -1229,7 +1299,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetType"))
 """
-function VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::VecType) end
+function VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::VecType)
+    error("VecSetType: no generated method for these argument types")
+end
 
 @for_petsc function VecSetType(petsclib::$UnionPetscLib, vec::AbstractPetscVec, newType::VecType )
 
@@ -1260,7 +1332,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecSetUp"))
 """
-function VecSetUp(petsclib::PetscLibType, v::AbstractPetscVec) end
+function VecSetUp(petsclib::PetscLibType, v::AbstractPetscVec)
+    error("VecSetUp: no generated method for these argument types")
+end
 
 @for_petsc function VecSetUp(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
@@ -1281,7 +1355,9 @@ end
 # External Links
 $(_doc_external("Vec/VecSetValue"))
 """
-function VecSetValue(petsclib::PetscLibType, v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) end
+function VecSetValue(petsclib::PetscLibType, v::AbstractPetscVec, i::Integer, va::Number, mode::InsertMode)
+    error("VecSetValue: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValue(petsclib::$UnionPetscLib, v::AbstractPetscVec, i::$PetscInt, va::$PetscScalar, mode::InsertMode )
 
@@ -1302,7 +1378,9 @@ end
 # External Links
 $(_doc_external("Vec/VecSetValueLocal"))
 """
-function VecSetValueLocal(petsclib::PetscLibType, v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) end
+function VecSetValueLocal(petsclib::PetscLibType, v::AbstractPetscVec, i::Integer, va::Number, mode::InsertMode)
+    error("VecSetValueLocal: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValueLocal(petsclib::$UnionPetscLib, v::AbstractPetscVec, i::$PetscInt, va::$PetscScalar, mode::InsertMode )
 
@@ -1338,7 +1416,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSetValues"))
 """
-function VecSetValues(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) end
+function VecSetValues(petsclib::PetscLibType, x::AbstractPetscVec, ni::Integer, ix::AbstractVector{<:Number}, y::AbstractVector{<:Number}, iora::InsertMode)
+    error("VecSetValues: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValues(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
 
@@ -1374,7 +1454,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetValuesBlocked"))
 """
-function VecSetValuesBlocked(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) end
+function VecSetValuesBlocked(petsclib::PetscLibType, x::AbstractPetscVec, ni::Integer, ix::AbstractVector{<:Number}, y::AbstractVector{<:Number}, iora::InsertMode)
+    error("VecSetValuesBlocked: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValuesBlocked(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
 
@@ -1411,7 +1493,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetValuesBlockedLocal"))
 """
-function VecSetValuesBlockedLocal(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) end
+function VecSetValuesBlockedLocal(petsclib::PetscLibType, x::AbstractPetscVec, ni::Integer, ix::AbstractVector{<:Number}, y::AbstractVector{<:Number}, iora::InsertMode)
+    error("VecSetValuesBlockedLocal: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValuesBlockedLocal(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
 
@@ -1444,7 +1528,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSetValuesCOO"))
 """
-function VecSetValuesCOO(petsclib::PetscLibType, x::AbstractPetscVec, coo_v::Vector{PetscScalar}, imode::InsertMode) end
+function VecSetValuesCOO(petsclib::PetscLibType, x::AbstractPetscVec, coo_v::AbstractVector{<:Number}, imode::InsertMode)
+    error("VecSetValuesCOO: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValuesCOO(petsclib::$UnionPetscLib, x::AbstractPetscVec, coo_v::Vector{$PetscScalar}, imode::InsertMode )
 
@@ -1481,7 +1567,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecSetValuesLocal"))
 """
-function VecSetValuesLocal(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) end
+function VecSetValuesLocal(petsclib::PetscLibType, x::AbstractPetscVec, ni::Integer, ix::AbstractVector{<:Number}, y::AbstractVector{<:Number}, iora::InsertMode)
+    error("VecSetValuesLocal: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValuesLocal(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
 
@@ -1516,7 +1604,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecSetValuesSection"))
 """
-function VecSetValuesSection(petsclib::PetscLibType, v::AbstractPetscVec, s::PetscSection, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) end
+function VecSetValuesSection(petsclib::PetscLibType, v::AbstractPetscVec, s::PetscSection, point::Integer, values::AbstractVector{<:Number}, mode::InsertMode)
+    error("VecSetValuesSection: no generated method for these argument types")
+end
 
 @for_petsc function VecSetValuesSection(petsclib::$UnionPetscLib, v::AbstractPetscVec, s::PetscSection, point::$PetscInt, values::Vector{$PetscScalar}, mode::InsertMode )
 
@@ -1549,7 +1639,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecShift"))
 """
-function VecShift(petsclib::PetscLibType, v::AbstractPetscVec, shift::PetscScalar) end
+function VecShift(petsclib::PetscLibType, v::AbstractPetscVec, shift::Number)
+    error("VecShift: no generated method for these argument types")
+end
 
 @for_petsc function VecShift(petsclib::$UnionPetscLib, v::AbstractPetscVec, shift::$PetscScalar )
 
@@ -1581,7 +1673,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSqrtAbs"))
 """
-function VecSqrtAbs(petsclib::PetscLibType, v::AbstractPetscVec) end
+function VecSqrtAbs(petsclib::PetscLibType, v::AbstractPetscVec)
+    error("VecSqrtAbs: no generated method for these argument types")
+end
 
 @for_petsc function VecSqrtAbs(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
@@ -1619,7 +1713,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStashGetInfo"))
 """
-function VecStashGetInfo(petsclib::PetscLibType, vec::AbstractPetscVec) end
+function VecStashGetInfo(petsclib::PetscLibType, vec::AbstractPetscVec)
+    error("VecStashGetInfo: no generated method for these argument types")
+end
 
 @for_petsc function VecStashGetInfo(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 	nstash_ = Ref{$PetscInt}()
@@ -1666,7 +1762,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecStashSetInitialSize"))
 """
-function VecStashSetInitialSize(petsclib::PetscLibType, vec::AbstractPetscVec, size::PetscInt, bsize::PetscInt) end
+function VecStashSetInitialSize(petsclib::PetscLibType, vec::AbstractPetscVec, size::Integer, bsize::Integer)
+    error("VecStashSetInitialSize: no generated method for these argument types")
+end
 
 @for_petsc function VecStashSetInitialSize(petsclib::$UnionPetscLib, vec::AbstractPetscVec, size::$PetscInt, bsize::$PetscInt )
 
@@ -1698,7 +1796,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStashView"))
 """
-function VecStashView(petsclib::PetscLibType, v::AbstractPetscVec, viewer::PetscViewer) end
+function VecStashView(petsclib::PetscLibType, v::AbstractPetscVec, viewer::PetscViewer)
+    error("VecStashView: no generated method for these argument types")
+end
 
 @for_petsc function VecStashView(petsclib::$UnionPetscLib, v::AbstractPetscVec, viewer::PetscViewer )
 
@@ -1731,7 +1831,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecStashViewFromOptions"))
 """
-function VecStashViewFromOptions(petsclib::PetscLibType, obj::AbstractPetscVec, bobj, optionname::String) end
+function VecStashViewFromOptions(petsclib::PetscLibType, obj::AbstractPetscVec, bobj, optionname::String)
+    error("VecStashViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function VecStashViewFromOptions(petsclib::$UnionPetscLib, obj::AbstractPetscVec, bobj, optionname::String )
 
@@ -1770,7 +1872,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStepBoundInfo"))
 """
-function VecStepBoundInfo(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec) end
+function VecStepBoundInfo(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec)
+    error("VecStepBoundInfo: no generated method for these argument types")
+end
 
 @for_petsc function VecStepBoundInfo(petsclib::$UnionPetscLib, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec )
 	boundmin_ = Ref{$PetscReal}()
@@ -1811,7 +1915,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStepMax"))
 """
-function VecStepMax(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec) end
+function VecStepMax(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec)
+    error("VecStepMax: no generated method for these argument types")
+end
 
 @for_petsc function VecStepMax(petsclib::$UnionPetscLib, X::AbstractPetscVec, DX::AbstractPetscVec )
 	step_ = Ref{$PetscReal}()
@@ -1850,7 +1956,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecStepMaxBounded"))
 """
-function VecStepMaxBounded(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec) end
+function VecStepMaxBounded(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec)
+    error("VecStepMaxBounded: no generated method for these argument types")
+end
 
 @for_petsc function VecStepMaxBounded(petsclib::$UnionPetscLib, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec )
 	stepmax_ = Ref{$PetscReal}()
@@ -1890,7 +1998,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideGather"))
 """
-function VecStrideGather(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, s::AbstractPetscVec, addv::InsertMode) end
+function VecStrideGather(petsclib::PetscLibType, v::AbstractPetscVec, start::Integer, s::AbstractPetscVec, addv::InsertMode)
+    error("VecStrideGather: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideGather(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, s::AbstractPetscVec, addv::InsertMode )
 
@@ -1927,7 +2037,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideGatherAll"))
 """
-function VecStrideGatherAll(petsclib::PetscLibType, v::AbstractPetscVec, s::Vector{<:AbstractPetscVec}, addv::InsertMode) end
+function VecStrideGatherAll(petsclib::PetscLibType, v::AbstractPetscVec, s::Vector{<:AbstractPetscVec}, addv::InsertMode)
+    error("VecStrideGatherAll: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideGatherAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, s::Vector{<:AbstractPetscVec}, addv::InsertMode )
 
@@ -1964,7 +2076,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideMax"))
 """
-function VecStrideMax(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt) end
+function VecStrideMax(petsclib::PetscLibType, v::AbstractPetscVec, start::Integer)
+    error("VecStrideMax: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideMax(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt )
 	idex_ = Ref{$PetscInt}()
@@ -2005,7 +2119,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideMaxAll"))
 """
-function VecStrideMaxAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::Vector{PetscInt}, nrm::Vector{PetscReal}) end
+function VecStrideMaxAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::AbstractVector{<:Number}, nrm::AbstractVector{<:Number})
+    error("VecStrideMaxAll: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideMaxAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, idex::Vector{$PetscInt}, nrm::Vector{$PetscReal} )
 
@@ -2042,7 +2158,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideMin"))
 """
-function VecStrideMin(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt) end
+function VecStrideMin(petsclib::PetscLibType, v::AbstractPetscVec, start::Integer)
+    error("VecStrideMin: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideMin(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt )
 	idex_ = Ref{$PetscInt}()
@@ -2083,7 +2201,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideMinAll"))
 """
-function VecStrideMinAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::Vector{PetscInt}, nrm::Vector{PetscReal}) end
+function VecStrideMinAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::AbstractVector{<:Number}, nrm::AbstractVector{<:Number})
+    error("VecStrideMinAll: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideMinAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, idex::Vector{$PetscInt}, nrm::Vector{$PetscReal} )
 
@@ -2120,7 +2240,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideNorm"))
 """
-function VecStrideNorm(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, ntype::NormType) end
+function VecStrideNorm(petsclib::PetscLibType, v::AbstractPetscVec, start::Integer, ntype::NormType)
+    error("VecStrideNorm: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideNorm(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, ntype::NormType )
 	nrm_ = Ref{$PetscReal}()
@@ -2158,7 +2280,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideNormAll"))
 """
-function VecStrideNormAll(petsclib::PetscLibType, v::AbstractPetscVec, ntype::NormType, nrm::Vector{PetscReal}) end
+function VecStrideNormAll(petsclib::PetscLibType, v::AbstractPetscVec, ntype::NormType, nrm::AbstractVector{<:Number})
+    error("VecStrideNormAll: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideNormAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, ntype::NormType, nrm::Vector{$PetscReal} )
 
@@ -2192,7 +2316,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideScale"))
 """
-function VecStrideScale(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, scale::PetscScalar) end
+function VecStrideScale(petsclib::PetscLibType, v::AbstractPetscVec, start::Integer, scale::Number)
+    error("VecStrideScale: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideScale(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, scale::$PetscScalar )
 
@@ -2225,7 +2351,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideScaleAll"))
 """
-function VecStrideScaleAll(petsclib::PetscLibType, v::AbstractPetscVec, scales::Vector{PetscScalar}) end
+function VecStrideScaleAll(petsclib::PetscLibType, v::AbstractPetscVec, scales::AbstractVector{<:Number})
+    error("VecStrideScaleAll: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideScaleAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, scales::Vector{$PetscScalar} )
 
@@ -2262,7 +2390,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideScatter"))
 """
-function VecStrideScatter(petsclib::PetscLibType, s::AbstractPetscVec, start::PetscInt, v::AbstractPetscVec, addv::InsertMode) end
+function VecStrideScatter(petsclib::PetscLibType, s::AbstractPetscVec, start::Integer, v::AbstractPetscVec, addv::InsertMode)
+    error("VecStrideScatter: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideScatter(petsclib::$UnionPetscLib, s::AbstractPetscVec, start::$PetscInt, v::AbstractPetscVec, addv::InsertMode )
 
@@ -2299,7 +2429,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideScatterAll"))
 """
-function VecStrideScatterAll(petsclib::PetscLibType, s::Vector{<:AbstractPetscVec}, v::AbstractPetscVec, addv::InsertMode) end
+function VecStrideScatterAll(petsclib::PetscLibType, s::Vector{<:AbstractPetscVec}, v::AbstractPetscVec, addv::InsertMode)
+    error("VecStrideScatterAll: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideScatterAll(petsclib::$UnionPetscLib, s::Vector{<:AbstractPetscVec}, v::AbstractPetscVec, addv::InsertMode )
 
@@ -2333,7 +2465,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideSet"))
 """
-function VecStrideSet(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, s::PetscScalar) end
+function VecStrideSet(petsclib::PetscLibType, v::AbstractPetscVec, start::Integer, s::Number)
+    error("VecStrideSet: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideSet(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, s::$PetscScalar )
 
@@ -2373,7 +2507,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideSubSetGather"))
 """
-function VecStrideSubSetGather(petsclib::PetscLibType, v::AbstractPetscVec, nidx::PetscInt, idxv::Vector{PetscInt}, idxs::Vector{PetscInt}, s::AbstractPetscVec, addv::InsertMode) end
+function VecStrideSubSetGather(petsclib::PetscLibType, v::AbstractPetscVec, nidx::Integer, idxv::AbstractVector{<:Number}, idxs::AbstractVector{<:Number}, s::AbstractPetscVec, addv::InsertMode)
+    error("VecStrideSubSetGather: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideSubSetGather(petsclib::$UnionPetscLib, v::AbstractPetscVec, nidx::$PetscInt, idxv::Vector{$PetscInt}, idxs::Vector{$PetscInt}, s::AbstractPetscVec, addv::InsertMode )
 
@@ -2412,7 +2548,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideSubSetScatter"))
 """
-function VecStrideSubSetScatter(petsclib::PetscLibType, s::AbstractPetscVec, nidx::PetscInt, idxs::Vector{PetscInt}, idxv::Vector{PetscInt}, v::AbstractPetscVec, addv::InsertMode) end
+function VecStrideSubSetScatter(petsclib::PetscLibType, s::AbstractPetscVec, nidx::Integer, idxs::AbstractVector{<:Number}, idxv::AbstractVector{<:Number}, v::AbstractPetscVec, addv::InsertMode)
+    error("VecStrideSubSetScatter: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideSubSetScatter(petsclib::$UnionPetscLib, s::AbstractPetscVec, nidx::$PetscInt, idxs::Vector{$PetscInt}, idxv::Vector{$PetscInt}, v::AbstractPetscVec, addv::InsertMode )
 
@@ -2448,7 +2586,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideSum"))
 """
-function VecStrideSum(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt) end
+function VecStrideSum(petsclib::PetscLibType, v::AbstractPetscVec, start::Integer)
+    error("VecStrideSum: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideSum(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt )
 	sum_ = Ref{$PetscScalar}()
@@ -2484,7 +2624,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideSumAll"))
 """
-function VecStrideSumAll(petsclib::PetscLibType, v::AbstractPetscVec, sums::Vector{PetscScalar}) end
+function VecStrideSumAll(petsclib::PetscLibType, v::AbstractPetscVec, sums::AbstractVector{<:Number})
+    error("VecStrideSumAll: no generated method for these argument types")
+end
 
 @for_petsc function VecStrideSumAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, sums::Vector{$PetscScalar} )
 
@@ -2518,7 +2660,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSum"))
 """
-function VecSum(petsclib::PetscLibType, v::AbstractPetscVec) end
+function VecSum(petsclib::PetscLibType, v::AbstractPetscVec)
+    error("VecSum: no generated method for these argument types")
+end
 
 @for_petsc function VecSum(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	sum_ = Ref{$PetscScalar}()
@@ -2552,7 +2696,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecSwap"))
 """
-function VecSwap(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) end
+function VecSwap(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("VecSwap: no generated method for these argument types")
+end
 
 @for_petsc function VecSwap(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -2573,7 +2719,9 @@ end
 # External Links
 $(_doc_external("Vec/VecsCreateSeq"))
 """
-function VecsCreateSeq(petsclib::PetscLibType, comm::MPI_Comm, p::PetscInt, m::PetscInt) end
+function VecsCreateSeq(petsclib::PetscLibType, comm::MPI_Comm, p::Integer, m::Integer)
+    error("VecsCreateSeq: no generated method for these argument types")
+end
 
 @for_petsc function VecsCreateSeq(petsclib::$UnionPetscLib, comm::MPI_Comm, p::$PetscInt, m::$PetscInt )
 	x_ = Ref{Vecs}()
@@ -2596,7 +2744,9 @@ end
 # External Links
 $(_doc_external("Vec/VecsCreateSeqWithArray"))
 """
-function VecsCreateSeqWithArray(petsclib::PetscLibType, comm::MPI_Comm, p::PetscInt, m::PetscInt) end
+function VecsCreateSeqWithArray(petsclib::PetscLibType, comm::MPI_Comm, p::Integer, m::Integer)
+    error("VecsCreateSeqWithArray: no generated method for these argument types")
+end
 
 @for_petsc function VecsCreateSeqWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, p::$PetscInt, m::$PetscInt )
 	a_ = Ref{$PetscScalar}()
@@ -2621,7 +2771,9 @@ end
 # External Links
 $(_doc_external("Vec/VecsDestroy"))
 """
-function VecsDestroy(petsclib::PetscLibType, x::Vecs) end
+function VecsDestroy(petsclib::PetscLibType, x::Vecs)
+    error("VecsDestroy: no generated method for these argument types")
+end
 
 @for_petsc function VecsDestroy(petsclib::$UnionPetscLib, x::Vecs )
 
@@ -2642,7 +2794,9 @@ end
 # External Links
 $(_doc_external("Vec/VecsDuplicate"))
 """
-function VecsDuplicate(petsclib::PetscLibType, x::Vecs) end
+function VecsDuplicate(petsclib::PetscLibType, x::Vecs)
+    error("VecsDuplicate: no generated method for these argument types")
+end
 
 @for_petsc function VecsDuplicate(petsclib::$UnionPetscLib, x::Vecs )
 	y_ = Ref{Vecs}()

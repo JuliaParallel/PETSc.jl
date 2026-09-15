@@ -4,7 +4,9 @@
 # External Links
 $(_doc_external("DMPlex/PetscGridHashCreate"))
 """
-function PetscGridHashCreate(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, point::Vector{PetscScalar}) end
+function PetscGridHashCreate(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, point::AbstractVector{<:Number})
+    error("PetscGridHashCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscGridHashCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, point::Vector{$PetscScalar} )
 	box_ = Ref{PetscGridHash}()
@@ -27,7 +29,9 @@ end
 # External Links
 $(_doc_external("DMPlex/PetscGridHashDestroy"))
 """
-function PetscGridHashDestroy(petsclib::PetscLibType, box::Union{PetscGridHash, Ref{PetscGridHash}}) end
+function PetscGridHashDestroy(petsclib::PetscLibType, box::Union{PetscGridHash, Ref{PetscGridHash}})
+    error("PetscGridHashDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscGridHashDestroy(petsclib::$UnionPetscLib, box::Union{PetscGridHash, Ref{PetscGridHash}} )
 	box_ = box isa Base.RefValue ? box : Ref{PetscGridHash}(box)
@@ -49,7 +53,9 @@ end
 # External Links
 $(_doc_external("DMPlex/PetscGridHashEnlarge"))
 """
-function PetscGridHashEnlarge(petsclib::PetscLibType, box::PetscGridHash, point::Vector{PetscScalar}) end
+function PetscGridHashEnlarge(petsclib::PetscLibType, box::PetscGridHash, point::AbstractVector{<:Number})
+    error("PetscGridHashEnlarge: no generated method for these argument types")
+end
 
 @for_petsc function PetscGridHashEnlarge(petsclib::$UnionPetscLib, box::PetscGridHash, point::Vector{$PetscScalar} )
 
@@ -86,7 +92,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/PetscGridHashGetEnclosingBox"))
 """
-function PetscGridHashGetEnclosingBox(petsclib::PetscLibType, box::PetscGridHash, numPoints::PetscInt, points::Vector{PetscScalar}, dboxes::Vector{PetscInt}, boxes::Vector{PetscInt}) end
+function PetscGridHashGetEnclosingBox(petsclib::PetscLibType, box::PetscGridHash, numPoints::Integer, points::AbstractVector{<:Number}, dboxes::AbstractVector{<:Number}, boxes::AbstractVector{<:Number})
+    error("PetscGridHashGetEnclosingBox: no generated method for these argument types")
+end
 
 @for_petsc function PetscGridHashGetEnclosingBox(petsclib::$UnionPetscLib, box::PetscGridHash, numPoints::$PetscInt, points::Vector{$PetscScalar}, dboxes::Vector{$PetscInt}, boxes::Vector{$PetscInt} )
 
@@ -119,7 +127,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/PetscGridHashSetGrid"))
 """
-function PetscGridHashSetGrid(petsclib::PetscLibType, box::PetscGridHash, n::Vector{PetscInt}, h::Vector{PetscReal}) end
+function PetscGridHashSetGrid(petsclib::PetscLibType, box::PetscGridHash, n::AbstractVector{<:Number}, h::AbstractVector{<:Number})
+    error("PetscGridHashSetGrid: no generated method for these argument types")
+end
 
 @for_petsc function PetscGridHashSetGrid(petsclib::$UnionPetscLib, box::PetscGridHash, n::Vector{$PetscInt}, h::Vector{$PetscReal} )
 

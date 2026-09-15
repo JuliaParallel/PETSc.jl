@@ -4,7 +4,9 @@
 # External Links
 $(_doc_external("SNES/PetscConvEstComputeError"))
 """
-function PetscConvEstComputeError(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{PetscReal}) end
+function PetscConvEstComputeError(petsclib::PetscLibType, ce::PetscConvEst, r::Integer, dm::AbstractPetscDM, u::AbstractPetscVec, errors::AbstractVector{<:Number})
+    error("PetscConvEstComputeError: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstComputeError(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{$PetscReal} )
 
@@ -25,7 +27,9 @@ end
 # External Links
 $(_doc_external("SNES/PetscConvEstComputeInitialGuess"))
 """
-function PetscConvEstComputeInitialGuess(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec) end
+function PetscConvEstComputeInitialGuess(petsclib::PetscLibType, ce::PetscConvEst, r::Integer, dm::AbstractPetscDM, u::AbstractPetscVec)
+    error("PetscConvEstComputeInitialGuess: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstComputeInitialGuess(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec )
 
@@ -59,7 +63,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/PetscConvEstCreate"))
 """
-function PetscConvEstCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscConvEstCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscConvEstCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	ce_ = Ref{PetscConvEst}()
@@ -92,7 +98,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/PetscConvEstDestroy"))
 """
-function PetscConvEstDestroy(petsclib::PetscLibType, ce::Union{PetscConvEst, Ref{PetscConvEst}}) end
+function PetscConvEstDestroy(petsclib::PetscLibType, ce::Union{PetscConvEst, Ref{PetscConvEst}})
+    error("PetscConvEstDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstDestroy(petsclib::$UnionPetscLib, ce::Union{PetscConvEst, Ref{PetscConvEst}} )
 	ce_ = ce isa Base.RefValue ? ce : Ref{PetscConvEst}(ce)
@@ -131,7 +139,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/PetscConvEstGetConvRate"))
 """
-function PetscConvEstGetConvRate(petsclib::PetscLibType, ce::PetscConvEst, alpha::Vector{PetscReal}) end
+function PetscConvEstGetConvRate(petsclib::PetscLibType, ce::PetscConvEst, alpha::AbstractVector{<:Number})
+    error("PetscConvEstGetConvRate: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstGetConvRate(petsclib::$UnionPetscLib, ce::PetscConvEst, alpha::Vector{$PetscReal} )
 
@@ -165,7 +175,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/PetscConvEstGetSolver"))
 """
-function PetscConvEstGetSolver(petsclib::PetscLibType, ce::PetscConvEst) end
+function PetscConvEstGetSolver(petsclib::PetscLibType, ce::PetscConvEst)
+    error("PetscConvEstGetSolver: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstGetSolver(petsclib::$UnionPetscLib, ce::PetscConvEst )
 	solver_ = Ref{PetscObject}()
@@ -202,7 +214,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/PetscConvEstMonitorDefault"))
 """
-function PetscConvEstMonitorDefault(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt) end
+function PetscConvEstMonitorDefault(petsclib::PetscLibType, ce::PetscConvEst, r::Integer)
+    error("PetscConvEstMonitorDefault: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstMonitorDefault(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt )
 
@@ -238,7 +252,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/PetscConvEstRateView"))
 """
-function PetscConvEstRateView(petsclib::PetscLibType, ce::PetscConvEst, alpha::Vector{PetscReal}, viewer::PetscViewer) end
+function PetscConvEstRateView(petsclib::PetscLibType, ce::PetscConvEst, alpha::AbstractVector{<:Number}, viewer::PetscViewer)
+    error("PetscConvEstRateView: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstRateView(petsclib::$UnionPetscLib, ce::PetscConvEst, alpha::Vector{$PetscReal}, viewer::PetscViewer )
 
@@ -269,7 +285,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/PetscConvEstSetFromOptions"))
 """
-function PetscConvEstSetFromOptions(petsclib::PetscLibType, ce::PetscConvEst) end
+function PetscConvEstSetFromOptions(petsclib::PetscLibType, ce::PetscConvEst)
+    error("PetscConvEstSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstSetFromOptions(petsclib::$UnionPetscLib, ce::PetscConvEst )
 
@@ -301,7 +319,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/PetscConvEstSetSolver"))
 """
-function PetscConvEstSetSolver(petsclib::PetscLibType, ce::PetscConvEst, solver) end
+function PetscConvEstSetSolver(petsclib::PetscLibType, ce::PetscConvEst, solver)
+    error("PetscConvEstSetSolver: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstSetSolver(petsclib::$UnionPetscLib, ce::PetscConvEst, solver )
 
@@ -332,7 +352,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/PetscConvEstSetUp"))
 """
-function PetscConvEstSetUp(petsclib::PetscLibType, ce::PetscConvEst) end
+function PetscConvEstSetUp(petsclib::PetscLibType, ce::PetscConvEst)
+    error("PetscConvEstSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstSetUp(petsclib::$UnionPetscLib, ce::PetscConvEst )
 
@@ -353,7 +375,9 @@ end
 # External Links
 $(_doc_external("TS/PetscConvEstUseTS"))
 """
-function PetscConvEstUseTS(petsclib::PetscLibType, ce::PetscConvEst, checkTemporal::PetscBool) end
+function PetscConvEstUseTS(petsclib::PetscLibType, ce::PetscConvEst, checkTemporal::PetscBool)
+    error("PetscConvEstUseTS: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstUseTS(petsclib::$UnionPetscLib, ce::PetscConvEst, checkTemporal::PetscBool )
 
@@ -385,7 +409,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/PetscConvEstView"))
 """
-function PetscConvEstView(petsclib::PetscLibType, ce::PetscConvEst, viewer::PetscViewer) end
+function PetscConvEstView(petsclib::PetscLibType, ce::PetscConvEst, viewer::PetscViewer)
+    error("PetscConvEstView: no generated method for these argument types")
+end
 
 @for_petsc function PetscConvEstView(petsclib::$UnionPetscLib, ce::PetscConvEst, viewer::PetscViewer )
 

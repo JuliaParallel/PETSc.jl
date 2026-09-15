@@ -14,7 +14,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListClear"))
 """
-function PetscFunctionListClear(petsclib::PetscLibType, fl::PetscFunctionList) end
+function PetscFunctionListClear(petsclib::PetscLibType, fl::PetscFunctionList)
+    error("PetscFunctionListClear: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListClear(petsclib::$UnionPetscLib, fl::PetscFunctionList )
 
@@ -43,7 +45,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListDestroy"))
 """
-function PetscFunctionListDestroy(petsclib::PetscLibType, fl::Union{PetscFunctionList, Ref{PetscFunctionList}}) end
+function PetscFunctionListDestroy(petsclib::PetscLibType, fl::Union{PetscFunctionList, Ref{PetscFunctionList}})
+    error("PetscFunctionListDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListDestroy(petsclib::$UnionPetscLib, fl::Union{PetscFunctionList, Ref{PetscFunctionList}} )
 	fl_ = fl isa Base.RefValue ? fl : Ref{PetscFunctionList}(fl)
@@ -76,7 +80,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListDuplicate"))
 """
-function PetscFunctionListDuplicate(petsclib::PetscLibType, fl::PetscFunctionList) end
+function PetscFunctionListDuplicate(petsclib::PetscLibType, fl::PetscFunctionList)
+    error("PetscFunctionListDuplicate: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListDuplicate(petsclib::$UnionPetscLib, fl::PetscFunctionList )
 	nl_ = Ref{PetscFunctionList}()
@@ -114,7 +120,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListGet"))
 """
-function PetscFunctionListGet(petsclib::PetscLibType, list::PetscFunctionList) end
+function PetscFunctionListGet(petsclib::PetscLibType, list::PetscFunctionList)
+    error("PetscFunctionListGet: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListGet(petsclib::$UnionPetscLib, list::PetscFunctionList )
 	array_ = Ref{Ptr{Cchar}}()
@@ -139,7 +147,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscFunctionListPrintAll"))
 """
-function PetscFunctionListPrintAll(petsclib::PetscLibType) end
+function PetscFunctionListPrintAll(petsclib::PetscLibType)
+    error("PetscFunctionListPrintAll: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListPrintAll(petsclib::$UnionPetscLib)
 
@@ -169,7 +179,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListPrintNonEmpty"))
 """
-function PetscFunctionListPrintNonEmpty(petsclib::PetscLibType, fl::PetscFunctionList) end
+function PetscFunctionListPrintNonEmpty(petsclib::PetscLibType, fl::PetscFunctionList)
+    error("PetscFunctionListPrintNonEmpty: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListPrintNonEmpty(petsclib::$UnionPetscLib, fl::PetscFunctionList )
 
@@ -208,7 +220,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListPrintTypes"))
 """
-function PetscFunctionListPrintTypes(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE, prefix::String, name::String, text::String, man::String, list::PetscFunctionList, def::String, newv::String) end
+function PetscFunctionListPrintTypes(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE, prefix::String, name::String, text::String, man::String, list::PetscFunctionList, def::String, newv::String)
+    error("PetscFunctionListPrintTypes: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListPrintTypes(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Libc.FILE, prefix::String, name::String, text::String, man::String, list::PetscFunctionList, def::String, newv::String )
 
@@ -240,7 +254,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListView"))
 """
-function PetscFunctionListView(petsclib::PetscLibType, list::PetscFunctionList, viewer::PetscViewer) end
+function PetscFunctionListView(petsclib::PetscLibType, list::PetscFunctionList, viewer::PetscViewer)
+    error("PetscFunctionListView: no generated method for these argument types")
+end
 
 @for_petsc function PetscFunctionListView(petsclib::$UnionPetscLib, list::PetscFunctionList, viewer::PetscViewer )
 

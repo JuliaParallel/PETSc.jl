@@ -26,6 +26,19 @@ end
 
 _titlecase(s) = isempty(s) ? s : uppercase(s[1:1]) * lowercase(s[2:end])
 
+"""Loosen the library-dependent scalar types in a stub signature."""
+function loosen(sig::AbstractString)
+    s = String(sig)
+    for (pat, rep) in (r"Vector\{(PetscScalar|PetscReal|PetscInt|PetscComplex)\}" => s"AbstractVector{<:Number}",
+                       r"AbstractArray\{(PetscScalar|PetscReal|PetscInt|PetscComplex)\}" => s"AbstractArray{<:Number}",
+                       r"Ptr\{(PetscScalar|PetscReal|PetscInt|PetscComplex)\}" => s"Ptr",
+                       r"\bPetscScalar\b" => "Number", r"\bPetscComplex\b" => "Number",
+                       r"\bPetscReal\b" => "Real", r"\bPetscInt\b" => "Integer")
+        s = replace(s, pat => rep)
+    end
+    return s
+end
+
 """
     render_function(io, r, fn, args, doc_lines)
 
@@ -46,11 +59,16 @@ function render_function(io::IO, r::Rules, fn::Fn, args::Vector{FArg}, doc_lines
     println(io, "# External Links")
     println(io, "\$(_doc_external(\"$mansec/$name\"))")
     println(io, "\"\"\"")
+    # The untyped stub carries the docstring. Its scalar types are loosened (PetscScalar -> Number, ...)
+    # so it is never more specific than a generated method (no ambiguities), and it throws, so a call
+    # with wrong argument types is an error rather than a silent no-op.
     if num_in > 0
-        println(io, "function $name(petsclib::PetscLibType, $str_in) end")
+        println(io, "function $name(petsclib::PetscLibType, $(loosen(str_in)))")
     else
-        println(io, "function $name(petsclib::PetscLibType) end")
+        println(io, "function $name(petsclib::PetscLibType)")
     end
+    println(io, "    error(\"$name: no generated method for these argument types\")")
+    println(io, "end")
     println(io, "")
     if num_in > 0
         println(io, "@for_petsc function $name(petsclib::\$UnionPetscLib, $(dispatch(r, str_in)) )")

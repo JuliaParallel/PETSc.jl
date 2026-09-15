@@ -12,7 +12,7 @@ defined = Set{String}()
 for f in readdir(wrapdir)
     endswith(f, ".jl") || continue
     txt = read(joinpath(wrapdir, f), String)
-    for m in eachmatch(r"(?m)^function (\w+)\(petsclib::PetscLibType(.*)\) end\s*$", txt)
+    for m in eachmatch(r"(?m)^function (\w+)\(petsclib::PetscLibType(.*)\)(?: end)?\s*$", txt)
         args = strip(m.captures[2])
         n = isempty(args) ? 0 : count(",", replace(args, r"\{[^{}]*(\{[^{}]*\})*[^{}]*\}" => "")) # commas outside braces
         stubs[m.captures[1]] = n

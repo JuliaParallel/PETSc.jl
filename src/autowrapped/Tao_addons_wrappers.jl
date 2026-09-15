@@ -16,7 +16,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchAppendOptionsPrefix"))
 """
-function TaoLineSearchAppendOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String) end
+function TaoLineSearchAppendOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String)
+    error("TaoLineSearchAppendOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchAppendOptionsPrefix(petsclib::$UnionPetscLib, ls::TaoLineSearch, p::String )
 
@@ -57,7 +59,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchApply"))
 """
-function TaoLineSearchApply(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec) end
+function TaoLineSearchApply(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec)
+    error("TaoLineSearchApply: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchApply(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
@@ -98,7 +102,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeGradient"))
 """
-function TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) end
+function TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec)
+    error("TaoLineSearchComputeGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchComputeGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
 
@@ -133,7 +139,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjective"))
 """
-function TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec) end
+function TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec)
+    error("TaoLineSearchComputeObjective: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchComputeObjective(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
@@ -172,7 +180,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjectiveAndGTS"))
 """
-function TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec) end
+function TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec)
+    error("TaoLineSearchComputeObjectiveAndGTS: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchComputeObjectiveAndGTS(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
@@ -212,7 +222,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjectiveAndGradient"))
 """
-function TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) end
+function TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec)
+    error("TaoLineSearchComputeObjectiveAndGradient: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchComputeObjectiveAndGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
@@ -252,7 +264,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchCreate"))
 """
-function TaoLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function TaoLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("TaoLineSearchCreate: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	newls_ = Ref{TaoLineSearch}()
@@ -286,7 +300,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchDestroy"))
 """
-function TaoLineSearchDestroy(petsclib::PetscLibType, ls::Union{TaoLineSearch, Ref{TaoLineSearch}}) end
+function TaoLineSearchDestroy(petsclib::PetscLibType, ls::Union{TaoLineSearch, Ref{TaoLineSearch}})
+    error("TaoLineSearchDestroy: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchDestroy(petsclib::$UnionPetscLib, ls::Union{TaoLineSearch, Ref{TaoLineSearch}} )
 	ls_ = ls isa Base.RefValue ? ls : Ref{TaoLineSearch}(ls)
@@ -313,7 +329,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchFinalizePackage"))
 """
-function TaoLineSearchFinalizePackage(petsclib::PetscLibType) end
+function TaoLineSearchFinalizePackage(petsclib::PetscLibType)
+    error("TaoLineSearchFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -346,7 +364,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetFullStepObjective"))
 """
-function TaoLineSearchGetFullStepObjective(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchGetFullStepObjective(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchGetFullStepObjective: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetFullStepObjective(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	f_fullstep_ = Ref{$PetscReal}()
@@ -385,7 +405,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetNumberFunctionEvaluations"))
 """
-function TaoLineSearchGetNumberFunctionEvaluations(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchGetNumberFunctionEvaluations(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchGetNumberFunctionEvaluations: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetNumberFunctionEvaluations(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	nfeval_ = Ref{$PetscInt}()
@@ -426,7 +448,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetOptionsPrefix"))
 """
-function TaoLineSearchGetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchGetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchGetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetOptionsPrefix(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	p_ = Ref{Ptr{Cchar}}()
@@ -466,7 +490,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetSolution"))
 """
-function TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) end
+function TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec)
+    error("TaoLineSearchGetSolution: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetSolution(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
@@ -507,7 +533,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStartingVector"))
 """
-function TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchGetStartingVector: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetStartingVector(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	x_ = Ref{CVec}()
@@ -544,7 +572,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStepDirection"))
 """
-function TaoLineSearchGetStepDirection(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchGetStepDirection(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchGetStepDirection: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetStepDirection(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	s_ = Ref{CVec}()
@@ -580,7 +610,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStepLength"))
 """
-function TaoLineSearchGetStepLength(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchGetStepLength(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchGetStepLength: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetStepLength(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	s_ = Ref{$PetscReal}()
@@ -616,7 +648,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetType"))
 """
-function TaoLineSearchGetType(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchGetType(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchGetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchGetType(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	type_ = Ref{TaoLineSearchType}()
@@ -647,7 +681,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchInitializePackage"))
 """
-function TaoLineSearchInitializePackage(petsclib::PetscLibType) end
+function TaoLineSearchInitializePackage(petsclib::PetscLibType)
+    error("TaoLineSearchInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchInitializePackage(petsclib::$UnionPetscLib)
 
@@ -682,7 +718,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchIsUsingTaoRoutines"))
 """
-function TaoLineSearchIsUsingTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchIsUsingTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchIsUsingTaoRoutines: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchIsUsingTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 	flg_ = Ref{PetscBool}()
@@ -721,7 +759,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchMonitor"))
 """
-function TaoLineSearchMonitor(petsclib::PetscLibType, ls::TaoLineSearch, its::PetscInt, f::PetscReal, step::PetscReal) end
+function TaoLineSearchMonitor(petsclib::PetscLibType, ls::TaoLineSearch, its::Integer, f::Real, step::Real)
+    error("TaoLineSearchMonitor: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchMonitor(petsclib::$UnionPetscLib, ls::TaoLineSearch, its::$PetscInt, f::$PetscReal, step::$PetscReal )
 
@@ -751,7 +791,9 @@ Input Parameters:
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchRegister"))
 """
-function TaoLineSearchRegister(petsclib::PetscLibType, sname::String, func::external) end
+function TaoLineSearchRegister(petsclib::PetscLibType, sname::String, func::external)
+    error("TaoLineSearchRegister: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchRegister(petsclib::$UnionPetscLib, sname::String, func::external )
 
@@ -784,7 +826,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchReset"))
 """
-function TaoLineSearchReset(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchReset(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchReset: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchReset(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 
@@ -827,7 +871,9 @@ Level: beginner
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetFromOptions"))
 """
-function TaoLineSearchSetFromOptions(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchSetFromOptions(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetFromOptions(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 
@@ -866,7 +912,9 @@ Level: beginner
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetGradientRoutine"))
 """
-function TaoLineSearchSetGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) end
+function TaoLineSearchSetGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
+    error("TaoLineSearchSetGradientRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetGradientRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
 
@@ -899,7 +947,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetInitialStepLength"))
 """
-function TaoLineSearchSetInitialStepLength(petsclib::PetscLibType, ls::TaoLineSearch, s::PetscReal) end
+function TaoLineSearchSetInitialStepLength(petsclib::PetscLibType, ls::TaoLineSearch, s::Real)
+    error("TaoLineSearchSetInitialStepLength: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetInitialStepLength(petsclib::$UnionPetscLib, ls::TaoLineSearch, s::$PetscReal )
 
@@ -941,7 +991,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveAndGTSRoutine"))
 """
-function TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) end
+function TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
+    error("TaoLineSearchSetObjectiveAndGTSRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
 
@@ -981,7 +1033,9 @@ Level: beginner
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveAndGradientRoutine"))
 """
-function TaoLineSearchSetObjectiveAndGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) end
+function TaoLineSearchSetObjectiveAndGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
+    error("TaoLineSearchSetObjectiveAndGradientRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
 
@@ -1020,7 +1074,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveRoutine"))
 """
-function TaoLineSearchSetObjectiveRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) end
+function TaoLineSearchSetObjectiveRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
+    error("TaoLineSearchSetObjectiveRoutine: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetObjectiveRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
 
@@ -1053,7 +1109,9 @@ Level: advanced
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetOptionsPrefix"))
 """
-function TaoLineSearchSetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String) end
+function TaoLineSearchSetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String)
+    error("TaoLineSearchSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetOptionsPrefix(petsclib::$UnionPetscLib, ls::TaoLineSearch, p::String )
 
@@ -1089,7 +1147,9 @@ Level: beginner
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetType"))
 """
-function TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::TaoLineSearchType) end
+function TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::TaoLineSearchType)
+    error("TaoLineSearchSetType: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetType(petsclib::$UnionPetscLib, ls::TaoLineSearch, type::TaoLineSearchType )
 
@@ -1121,7 +1181,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetUp"))
 """
-function TaoLineSearchSetUp(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchSetUp(petsclib::PetscLibType, ls::TaoLineSearch)
+    error("TaoLineSearchSetUp: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetUp(petsclib::$UnionPetscLib, ls::TaoLineSearch )
 
@@ -1154,7 +1216,9 @@ Level: beginner
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetVariableBounds"))
 """
-function TaoLineSearchSetVariableBounds(petsclib::PetscLibType, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec) end
+function TaoLineSearchSetVariableBounds(petsclib::PetscLibType, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec)
+    error("TaoLineSearchSetVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchSetVariableBounds(petsclib::$UnionPetscLib, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec )
 
@@ -1187,7 +1251,9 @@ Level: developer
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchUseTaoRoutines"))
 """
-function TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, ts::AbstractTao) end
+function TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, ts::AbstractTao)
+    error("TaoLineSearchUseTaoRoutines: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchUseTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch, ts::AbstractTao )
 
@@ -1222,7 +1288,9 @@ Level: beginner
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchView"))
 """
-function TaoLineSearchView(petsclib::PetscLibType, ls::TaoLineSearch, viewer::PetscViewer) end
+function TaoLineSearchView(petsclib::PetscLibType, ls::TaoLineSearch, viewer::PetscViewer)
+    error("TaoLineSearchView: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchView(petsclib::$UnionPetscLib, ls::TaoLineSearch, viewer::PetscViewer )
 
@@ -1255,7 +1323,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchViewFromOptions"))
 """
-function TaoLineSearchViewFromOptions(petsclib::PetscLibType, A::TaoLineSearch, obj, name::String) end
+function TaoLineSearchViewFromOptions(petsclib::PetscLibType, A::TaoLineSearch, obj, name::String)
+    error("TaoLineSearchViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function TaoLineSearchViewFromOptions(petsclib::$UnionPetscLib, A::TaoLineSearch, obj, name::String )
 
@@ -1300,7 +1370,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoMonitorDrawCtxCreate"))
 """
-function TaoMonitorDrawCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) end
+function TaoMonitorDrawCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer)
+    error("TaoMonitorDrawCtxCreate: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorDrawCtxCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
 	ctx_ = Ref{TaoMonitorDrawCtx}()
@@ -1333,7 +1405,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoMonitorDrawCtxDestroy"))
 """
-function TaoMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}}) end
+function TaoMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}})
+    error("TaoMonitorDrawCtxDestroy: no generated method for these argument types")
+end
 
 @for_petsc function TaoMonitorDrawCtxDestroy(petsclib::$UnionPetscLib, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}} )
 	ictx_ = ictx isa Base.RefValue ? ictx : Ref{TaoMonitorDrawCtx}(ictx)

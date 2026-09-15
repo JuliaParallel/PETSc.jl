@@ -666,9 +666,7 @@ function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
             cx::CVec,
             cy::CVec,
         ) where {PetscLib}
-    r_ctx = Ref{Ptr{Cvoid}}()
-    LibPETSc.MatShellGetContext(PetscLib, M, r_ctx)
-    ptr = r_ctx[]
+    ptr = LibPETSc.MatShellGetContext(PetscLib, M)
 
     mat = unsafe_pointer_to_objref(ptr)
 

@@ -18,7 +18,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsAllUsed"))
 """
-function PetscOptionsAllUsed(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsAllUsed(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsAllUsed: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsAllUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	N_ = Ref{$PetscInt}()
@@ -51,7 +53,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOptionsClear"))
 """
-function PetscOptionsClear(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsClear(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsClear: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsClear(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
@@ -84,7 +88,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsClearValue"))
 """
-function PetscOptionsClearValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String) end
+function PetscOptionsClearValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String)
+    error("PetscOptionsClearValue: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsClearValue(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String )
 
@@ -115,7 +121,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsCreate"))
 """
-function PetscOptionsCreate(petsclib::PetscLibType) end
+function PetscOptionsCreate(petsclib::PetscLibType)
+    error("PetscOptionsCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsCreate(petsclib::$UnionPetscLib)
 	options_ = Ref{COptions}()
@@ -138,7 +146,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsCreateDefault"))
 """
-function PetscOptionsCreateDefault(petsclib::PetscLibType) end
+function PetscOptionsCreateDefault(petsclib::PetscLibType)
+    error("PetscOptionsCreateDefault: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsCreateDefault(petsclib::$UnionPetscLib)
 
@@ -183,7 +193,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Viewer/PetscOptionsCreateViewer"))
 """
-function PetscOptionsCreateViewer(petsclib::PetscLibType, comm::MPI_Comm, options::Union{Ptr, AbstractPetscOptions}, pre::String, name::String) end
+function PetscOptionsCreateViewer(petsclib::PetscLibType, comm::MPI_Comm, options::Union{Ptr, AbstractPetscOptions}, pre::String, name::String)
+    error("PetscOptionsCreateViewer: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsCreateViewer(petsclib::$UnionPetscLib, comm::MPI_Comm, options::Union{Ptr, AbstractPetscOptions}, pre::String, name::String )
 	viewer_ = Ref{PetscViewer}()
@@ -231,7 +243,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Viewer/PetscOptionsCreateViewers"))
 """
-function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, viewers::Vector{PetscViewer}, formats::Vector{PetscViewerFormat}) end
+function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, viewers::Vector{PetscViewer}, formats::Vector{PetscViewerFormat})
+    error("PetscOptionsCreateViewers: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsCreateViewers(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, viewers::Vector{PetscViewer}, formats::Vector{PetscViewerFormat} )
 	n_max_ = Ref{$PetscInt}()
@@ -266,7 +280,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsDestroy"))
 """
-function PetscOptionsDestroy(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsDestroy(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsDestroy(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	options_ = Ref(options.ptr)
@@ -289,7 +305,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsDestroyDefault"))
 """
-function PetscOptionsDestroyDefault(petsclib::PetscLibType) end
+function PetscOptionsDestroyDefault(petsclib::PetscLibType)
+    error("PetscOptionsDestroyDefault: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsDestroyDefault(petsclib::$UnionPetscLib)
 
@@ -325,7 +343,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOptionsFindPair"))
 """
-function PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsFindPair: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsFindPair(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	value_ = Ref{Ptr{Cchar}}()
@@ -363,7 +383,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsGetAll"))
 """
-function PetscOptionsGetAll(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsGetAll(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsGetAll: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetAll(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	copts_ = Ref{Ptr{Cchar}}()
@@ -408,7 +430,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetBool"))
 """
-function PetscOptionsGetBool(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetBool(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsGetBool: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetBool(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	ivalue_ = Ref{PetscBool}()
@@ -455,7 +479,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetBool3"))
 """
-function PetscOptionsGetBool3(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetBool3(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsGetBool3: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetBool3(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	ivalue_ = Ref{PetscBool3}()
@@ -503,7 +529,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetBoolArray"))
 """
-function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool}) end
+function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool})
+    error("PetscOptionsGetBoolArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool} )
 	nmax_ = Ref{$PetscInt}()
@@ -538,7 +566,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscOptionsGetCreateViewerOff"))
 """
-function PetscOptionsGetCreateViewerOff(petsclib::PetscLibType) end
+function PetscOptionsGetCreateViewerOff(petsclib::PetscLibType)
+    error("PetscOptionsGetCreateViewerOff: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetCreateViewerOff(petsclib::$UnionPetscLib)
 	flg_ = Ref{PetscBool}()
@@ -584,7 +614,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsGetEList"))
 """
-function PetscOptionsGetEList(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) end
+function PetscOptionsGetEList(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::Integer)
+    error("PetscOptionsGetEList: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetEList(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::$PetscInt )
 	list_ = Ref{Ptr{Cchar}}(list isa Ptr ? list : pointer(list))
@@ -633,7 +665,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetEnum"))
 """
-function PetscOptionsGetEnum(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String) end
+function PetscOptionsGetEnum(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String)
+    error("PetscOptionsGetEnum: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetEnum(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String )
 	list_ = Ref{Ptr{Cchar}}(list isa Ptr ? list : pointer(list))
@@ -682,7 +716,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetEnumArray"))
 """
-function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) end
+function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum})
+    error("PetscOptionsGetEnumArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
 	list_ = Ref{Ptr{Cchar}}(list isa Ptr ? list : pointer(list))
@@ -730,7 +766,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetInt"))
 """
-function PetscOptionsGetInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsGetInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	ivalue_ = Ref{$PetscInt}()
@@ -777,7 +815,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetIntArray"))
 """
-function PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{PetscInt}) end
+function PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::AbstractVector{<:Number})
+    error("PetscOptionsGetIntArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{$PetscInt} )
 	nmax_ = Ref{$PetscInt}()
@@ -824,7 +864,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetMPIInt"))
 """
-function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsGetMPIInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetMPIInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	ivalue_ = Ref{PetscMPIInt}()
@@ -871,7 +913,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetReal"))
 """
-function PetscOptionsGetReal(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetReal(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsGetReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetReal(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	dvalue_ = Ref{$PetscReal}()
@@ -919,7 +963,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetRealArray"))
 """
-function PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscReal}) end
+function PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::AbstractVector{<:Number})
+    error("PetscOptionsGetRealArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscReal} )
 	nmax_ = Ref{$PetscInt}()
@@ -966,7 +1012,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetScalar"))
 """
-function PetscOptionsGetScalar(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetScalar(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsGetScalar: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetScalar(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	dvalue_ = Ref{$PetscScalar}()
@@ -1014,7 +1062,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetScalarArray"))
 """
-function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscScalar}) end
+function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::AbstractVector{<:Number})
+    error("PetscOptionsGetScalarArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscScalar} )
 	nmax_ = Ref{$PetscInt}()
@@ -1115,7 +1165,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetStringArray"))
 """
-function PetscOptionsGetStringArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetStringArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsGetStringArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetStringArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	strings_ = Ref{Ptr{Cchar}}()
@@ -1142,7 +1194,9 @@ end
 # External Links
 $(_doc_external("Vec/PetscOptionsGetVec"))
 """
-function PetscOptionsGetVec(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) end
+function PetscOptionsGetVec(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec)
+    error("PetscOptionsGetVec: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetVec(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec )
 	set_ = Ref{PetscBool}()
@@ -1182,7 +1236,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsGetenv"))
 """
-function PetscOptionsGetenv(petsclib::PetscLibType, comm::MPI_Comm, name::String, env::String, len::Csize_t) end
+function PetscOptionsGetenv(petsclib::PetscLibType, comm::MPI_Comm, name::String, env::String, len::Csize_t)
+    error("PetscOptionsGetenv: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsGetenv(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, env::String, len::Csize_t )
 	flag_ = Ref{PetscBool}()
@@ -1218,7 +1274,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsHasHelp"))
 """
-function PetscOptionsHasHelp(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsHasHelp(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsHasHelp: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsHasHelp(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	set_ = Ref{PetscBool}()
@@ -1262,7 +1320,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsHasName"))
 """
-function PetscOptionsHasName(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsHasName(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String)
+    error("PetscOptionsHasName: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsHasName(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	set_ = Ref{PetscBool}()
@@ -1307,7 +1367,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsInsert"))
 """
-function PetscOptionsInsert(petsclib::PetscLibType, options::AbstractPetscOptions, args::Cchar, file::String) end
+function PetscOptionsInsert(petsclib::PetscLibType, options::AbstractPetscOptions, args::Cchar, file::String)
+    error("PetscOptionsInsert: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsInsert(petsclib::$UnionPetscLib, options::AbstractPetscOptions, args::Cchar, file::String )
 	argc_ = Ref{Cint}()
@@ -1342,7 +1404,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertArgs"))
 """
-function PetscOptionsInsertArgs(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::String) end
+function PetscOptionsInsertArgs(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::String)
+    error("PetscOptionsInsertArgs: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsInsertArgs(petsclib::$UnionPetscLib, options::AbstractPetscOptions, argc::Cint, args::String )
 	args_ = Ref{Ptr{Cchar}}(args isa Ptr ? args : pointer(args))
@@ -1384,7 +1448,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertFile"))
 """
-function PetscOptionsInsertFile(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
+function PetscOptionsInsertFile(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool)
+    error("PetscOptionsInsertFile: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsInsertFile(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
 
@@ -1423,7 +1489,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertFileYAML"))
 """
-function PetscOptionsInsertFileYAML(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
+function PetscOptionsInsertFileYAML(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool)
+    error("PetscOptionsInsertFileYAML: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsInsertFileYAML(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
 
@@ -1467,7 +1535,9 @@ Contributed by Boyana Norris
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertString"))
 """
-function PetscOptionsInsertString(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
+function PetscOptionsInsertString(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String)
+    error("PetscOptionsInsertString: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsInsertString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
 
@@ -1504,7 +1574,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertStringYAML"))
 """
-function PetscOptionsInsertStringYAML(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
+function PetscOptionsInsertStringYAML(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String)
+    error("PetscOptionsInsertStringYAML: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsInsertStringYAML(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
 
@@ -1538,7 +1610,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsLeft"))
 """
-function PetscOptionsLeft(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsLeft(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsLeft: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsLeft(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
@@ -1559,7 +1633,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsLeftError"))
 """
-function PetscOptionsLeftError(petsclib::PetscLibType) end
+function PetscOptionsLeftError(petsclib::PetscLibType)
+    error("PetscOptionsLeftError: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsLeftError(petsclib::$UnionPetscLib)
 
@@ -1594,7 +1670,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsLeftGet"))
 """
-function PetscOptionsLeftGet(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsLeftGet(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsLeftGet: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsLeftGet(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	N_ = Ref{$PetscInt}()
@@ -1634,7 +1712,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsLeftRestore"))
 """
-function PetscOptionsLeftRestore(petsclib::PetscLibType, options::AbstractPetscOptions, N::PetscInt, names::String, values::String) end
+function PetscOptionsLeftRestore(petsclib::PetscLibType, options::AbstractPetscOptions, N::Integer, names::String, values::String)
+    error("PetscOptionsLeftRestore: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsLeftRestore(petsclib::$UnionPetscLib, options::AbstractPetscOptions, N::$PetscInt, names::String, values::String )
 	N_ = Ref{$PetscInt}(N)
@@ -1669,7 +1749,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsMonitorDefault"))
 """
-function PetscOptionsMonitorDefault(petsclib::PetscLibType, name::String, value::String, source::PetscOptionSource, ctx::Ptr{Cvoid}) end
+function PetscOptionsMonitorDefault(petsclib::PetscLibType, name::String, value::String, source::PetscOptionSource, ctx::Ptr{Cvoid})
+    error("PetscOptionsMonitorDefault: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsMonitorDefault(petsclib::$UnionPetscLib, name::String, value::String, source::PetscOptionSource, ctx::Ptr{Cvoid} )
 
@@ -1715,7 +1797,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsMonitorSet"))
 """
-function PetscOptionsMonitorSet(petsclib::PetscLibType, monitor::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) end
+function PetscOptionsMonitorSet(petsclib::PetscLibType, monitor::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid})
+    error("PetscOptionsMonitorSet: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsMonitorSet(petsclib::$UnionPetscLib, monitor::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
 
@@ -1743,7 +1827,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsPop"))
 """
-function PetscOptionsPop(petsclib::PetscLibType) end
+function PetscOptionsPop(petsclib::PetscLibType)
+    error("PetscOptionsPop: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsPop(petsclib::$UnionPetscLib)
 
@@ -1770,7 +1856,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscOptionsPopCreateViewerOff"))
 """
-function PetscOptionsPopCreateViewerOff(petsclib::PetscLibType) end
+function PetscOptionsPopCreateViewerOff(petsclib::PetscLibType)
+    error("PetscOptionsPopCreateViewerOff: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsPopCreateViewerOff(petsclib::$UnionPetscLib)
 
@@ -1800,7 +1888,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsPrefixPop"))
 """
-function PetscOptionsPrefixPop(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsPrefixPop(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscOptionsPrefixPop: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsPrefixPop(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
@@ -1836,7 +1926,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsPrefixPush"))
 """
-function PetscOptionsPrefixPush(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String) end
+function PetscOptionsPrefixPush(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String)
+    error("PetscOptionsPrefixPush: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsPrefixPush(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String )
 
@@ -1868,7 +1960,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsPush"))
 """
-function PetscOptionsPush(petsclib::PetscLibType, opt::AbstractPetscOptions) end
+function PetscOptionsPush(petsclib::PetscLibType, opt::AbstractPetscOptions)
+    error("PetscOptionsPush: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsPush(petsclib::$UnionPetscLib, opt::AbstractPetscOptions )
 
@@ -1899,7 +1993,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscOptionsPushCreateViewerOff"))
 """
-function PetscOptionsPushCreateViewerOff(petsclib::PetscLibType, flg::PetscBool) end
+function PetscOptionsPushCreateViewerOff(petsclib::PetscLibType, flg::PetscBool)
+    error("PetscOptionsPushCreateViewerOff: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsPushCreateViewerOff(petsclib::$UnionPetscLib, flg::PetscBool )
 
@@ -1938,7 +2034,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsReject"))
 """
-function PetscOptionsReject(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, mess::String) end
+function PetscOptionsReject(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, mess::String)
+    error("PetscOptionsReject: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsReject(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, mess::String )
 
@@ -1976,7 +2074,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsSetAlias"))
 """
-function PetscOptionsSetAlias(petsclib::PetscLibType, options::AbstractPetscOptions, newname::String, oldname::String) end
+function PetscOptionsSetAlias(petsclib::PetscLibType, options::AbstractPetscOptions, newname::String, oldname::String)
+    error("PetscOptionsSetAlias: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsSetAlias(petsclib::$UnionPetscLib, options::AbstractPetscOptions, newname::String, oldname::String )
 
@@ -2010,7 +2110,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsSetValue"))
 """
-function PetscOptionsSetValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String, value::Union{Ptr, String}) end
+function PetscOptionsSetValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String, value::Union{Ptr, String})
+    error("PetscOptionsSetValue: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsSetValue(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String, value::Union{Ptr, String} )
 
@@ -2031,7 +2133,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToBool"))
 """
-function PetscOptionsStringToBool(petsclib::PetscLibType, value::String) end
+function PetscOptionsStringToBool(petsclib::PetscLibType, value::String)
+    error("PetscOptionsStringToBool: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsStringToBool(petsclib::$UnionPetscLib, value::String )
 	a_ = Ref{PetscBool}()
@@ -2054,7 +2158,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToInt"))
 """
-function PetscOptionsStringToInt(petsclib::PetscLibType, name::String) end
+function PetscOptionsStringToInt(petsclib::PetscLibType, name::String)
+    error("PetscOptionsStringToInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsStringToInt(petsclib::$UnionPetscLib, name::String )
 	a_ = Ref{$PetscInt}()
@@ -2077,7 +2183,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToReal"))
 """
-function PetscOptionsStringToReal(petsclib::PetscLibType, name::String) end
+function PetscOptionsStringToReal(petsclib::PetscLibType, name::String)
+    error("PetscOptionsStringToReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsStringToReal(petsclib::$UnionPetscLib, name::String )
 	a_ = Ref{$PetscReal}()
@@ -2100,7 +2208,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsStringToScalar"))
 """
-function PetscOptionsStringToScalar(petsclib::PetscLibType, name::String) end
+function PetscOptionsStringToScalar(petsclib::PetscLibType, name::String)
+    error("PetscOptionsStringToScalar: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsStringToScalar(petsclib::$UnionPetscLib, name::String )
 	a_ = Ref{$PetscScalar}()
@@ -2137,7 +2247,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsUsed"))
 """
-function PetscOptionsUsed(petsclib::PetscLibType, options::AbstractPetscOptions, name::String) end
+function PetscOptionsUsed(petsclib::PetscLibType, options::AbstractPetscOptions, name::String)
+    error("PetscOptionsUsed: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String )
 	used_ = Ref{PetscBool}()
@@ -2173,7 +2285,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsValidKey"))
 """
-function PetscOptionsValidKey(petsclib::PetscLibType, key::String) end
+function PetscOptionsValidKey(petsclib::PetscLibType, key::String)
+    error("PetscOptionsValidKey: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsValidKey(petsclib::$UnionPetscLib, key::String )
 	valid_ = Ref{PetscBool}()
@@ -2211,7 +2325,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsView"))
 """
-function PetscOptionsView(petsclib::PetscLibType, options::AbstractPetscOptions, viewer::PetscViewer) end
+function PetscOptionsView(petsclib::PetscLibType, options::AbstractPetscOptions, viewer::PetscViewer)
+    error("PetscOptionsView: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsView(petsclib::$UnionPetscLib, options::AbstractPetscOptions, viewer::PetscViewer )
 

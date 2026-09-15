@@ -16,7 +16,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchAppendOptionsPrefix"))
 """
-function SNESLineSearchAppendOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch, prefix::String) end
+function SNESLineSearchAppendOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch, prefix::String)
+    error("SNESLineSearchAppendOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchAppendOptionsPrefix(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, prefix::String )
 
@@ -62,7 +64,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchApply"))
 """
-function SNESLineSearchApply(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec) end
+function SNESLineSearchApply(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec)
+    error("SNESLineSearchApply: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchApply(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec )
 	fnorm_ = Ref{$PetscReal}()
@@ -96,7 +100,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchBTGetAlpha"))
 """
-function SNESLineSearchBTGetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchBTGetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchBTGetAlpha: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchBTGetAlpha(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	alpha_ = Ref{$PetscReal}()
@@ -128,7 +134,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchBTSetAlpha"))
 """
-function SNESLineSearchBTSetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch, alpha::PetscReal) end
+function SNESLineSearchBTSetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch, alpha::Real)
+    error("SNESLineSearchBTSetAlpha: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchBTSetAlpha(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, alpha::$PetscReal )
 
@@ -160,7 +168,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchComputeNorms"))
 """
-function SNESLineSearchComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchComputeNorms: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchComputeNorms(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 
@@ -194,7 +204,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchCreate"))
 """
-function SNESLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function SNESLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("SNESLineSearchCreate: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	outlinesearch_ = Ref{SNESLineSearch}()
@@ -227,7 +239,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchDestroy"))
 """
-function SNESLineSearchDestroy(petsclib::PetscLibType, linesearch::Union{SNESLineSearch, Ref{SNESLineSearch}}) end
+function SNESLineSearchDestroy(petsclib::PetscLibType, linesearch::Union{SNESLineSearch, Ref{SNESLineSearch}})
+    error("SNESLineSearchDestroy: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchDestroy(petsclib::$UnionPetscLib, linesearch::Union{SNESLineSearch, Ref{SNESLineSearch}} )
 	linesearch_ = linesearch isa Base.RefValue ? linesearch : Ref{SNESLineSearch}(linesearch)
@@ -260,7 +274,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetDamping"))
 """
-function SNESLineSearchGetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetDamping: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetDamping(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	damping_ = Ref{$PetscReal}()
@@ -296,7 +312,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetDefaultMonitor"))
 """
-function SNESLineSearchGetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetDefaultMonitor: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetDefaultMonitor(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	monitor_ = Ref{PetscViewer}()
@@ -332,7 +350,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetLambda"))
 """
-function SNESLineSearchGetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetLambda: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetLambda(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	lambda_ = Ref{$PetscReal}()
@@ -370,7 +390,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetNorms"))
 """
-function SNESLineSearchGetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetNorms: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetNorms(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	xnorm_ = Ref{$PetscReal}()
@@ -411,7 +433,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetOptionsPrefix"))
 """
-function SNESLineSearchGetOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetOptionsPrefix(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	prefix_ = Ref{Ptr{Cchar}}()
@@ -445,7 +469,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetOrder"))
 """
-function SNESLineSearchGetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetOrder: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetOrder(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	order_ = Ref{$PetscInt}()
@@ -479,7 +505,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetReason"))
 """
-function SNESLineSearchGetReason(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetReason(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetReason: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetReason(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	result_ = Ref{SNESLineSearchReason}()
@@ -515,7 +543,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetSNES"))
 """
-function SNESLineSearchGetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetSNES: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	snes_ = Ref{CSNES}()
@@ -556,7 +586,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetTolerances"))
 """
-function SNESLineSearchGetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetTolerances: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetTolerances(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	minlambda_ = Ref{$PetscReal}()
@@ -602,7 +634,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetType"))
 """
-function SNESLineSearchGetType(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetType(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetType: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetType(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	type_ = Ref{SNESLineSearchType}()
@@ -641,7 +675,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetVIFunctions"))
 """
-function SNESLineSearchGetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetVIFunctions: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetVIFunctions(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	projectfunc_ = Ref{Ptr{Cvoid}}()
@@ -685,7 +721,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetVecs"))
 """
-function SNESLineSearchGetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchGetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchGetVecs: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchGetVecs(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	X_ = Ref{CVec}()
@@ -726,7 +764,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitor"))
 """
-function SNESLineSearchMonitor(petsclib::PetscLibType, ls::SNESLineSearch) end
+function SNESLineSearchMonitor(petsclib::PetscLibType, ls::SNESLineSearch)
+    error("SNESLineSearchMonitor: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchMonitor(petsclib::$UnionPetscLib, ls::SNESLineSearch )
 
@@ -762,7 +802,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitorCancel"))
 """
-function SNESLineSearchMonitorCancel(petsclib::PetscLibType, ls::SNESLineSearch) end
+function SNESLineSearchMonitorCancel(petsclib::PetscLibType, ls::SNESLineSearch)
+    error("SNESLineSearchMonitorCancel: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchMonitorCancel(petsclib::$UnionPetscLib, ls::SNESLineSearch )
 
@@ -802,7 +844,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitorSet"))
 """
-function SNESLineSearchMonitorSet(petsclib::PetscLibType, ls::SNESLineSearch, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) end
+function SNESLineSearchMonitorSet(petsclib::PetscLibType, ls::SNESLineSearch, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid})
+    error("SNESLineSearchMonitorSet: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchMonitorSet(petsclib::$UnionPetscLib, ls::SNESLineSearch, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
 
@@ -852,7 +896,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitorSetFromOptions"))
 """
-function SNESLineSearchMonitorSetFromOptions(petsclib::PetscLibType, ls::SNESLineSearch, name::String, help::String, manual::String, monitor::external, monitorsetup::external) end
+function SNESLineSearchMonitorSetFromOptions(petsclib::PetscLibType, ls::SNESLineSearch, name::String, help::String, manual::String, monitor::external, monitorsetup::external)
+    error("SNESLineSearchMonitorSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchMonitorSetFromOptions(petsclib::$UnionPetscLib, ls::SNESLineSearch, name::String, help::String, manual::String, monitor::external, monitorsetup::external )
 
@@ -889,7 +935,9 @@ This is not normally called directly but is passed to `SNESLineSearchMonitorSet(
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitorSolutionUpdate"))
 """
-function SNESLineSearchMonitorSolutionUpdate(petsclib::PetscLibType, ls::SNESLineSearch, vf::Vector{PetscViewerAndFormat}) end
+function SNESLineSearchMonitorSolutionUpdate(petsclib::PetscLibType, ls::SNESLineSearch, vf::Vector{PetscViewerAndFormat})
+    error("SNESLineSearchMonitorSolutionUpdate: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchMonitorSolutionUpdate(petsclib::$UnionPetscLib, ls::SNESLineSearch, vf::Vector{PetscViewerAndFormat} )
 
@@ -927,7 +975,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchPostCheck"))
 """
-function SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec) end
+function SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec)
+    error("SNESLineSearchPostCheck: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchPostCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec )
 	changed_Y_ = Ref{PetscBool}()
@@ -968,7 +1018,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchPreCheck"))
 """
-function SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec) end
+function SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec)
+    error("SNESLineSearchPreCheck: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchPreCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec )
 	changed_ = Ref{PetscBool}()
@@ -1013,7 +1065,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchPreCheckPicard"))
 """
-function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Ptr{Cvoid}) end
+function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Ptr{Cvoid})
+    error("SNESLineSearchPreCheckPicard: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchPreCheckPicard(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Ptr{Cvoid} )
 	changed_ = Ref{PetscBool}()
@@ -1050,7 +1104,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchRegister"))
 """
-function SNESLineSearchRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function SNESLineSearchRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("SNESLineSearchRegister: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -1081,7 +1137,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchReset"))
 """
-function SNESLineSearchReset(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchReset(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchReset: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchReset(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 
@@ -1114,7 +1172,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetComputeNorms"))
 """
-function SNESLineSearchSetComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, flg::PetscBool) end
+function SNESLineSearchSetComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, flg::PetscBool)
+    error("SNESLineSearchSetComputeNorms: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetComputeNorms(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, flg::PetscBool )
 
@@ -1147,7 +1207,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetDamping"))
 """
-function SNESLineSearchSetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch, damping::PetscReal) end
+function SNESLineSearchSetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch, damping::Real)
+    error("SNESLineSearchSetDamping: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetDamping(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, damping::$PetscReal )
 
@@ -1183,7 +1245,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetDefaultMonitor"))
 """
-function SNESLineSearchSetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer) end
+function SNESLineSearchSetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer)
+    error("SNESLineSearchSetDefaultMonitor: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetDefaultMonitor(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, viewer::PetscViewer )
 
@@ -1232,7 +1296,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetFromOptions"))
 """
-function SNESLineSearchSetFromOptions(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchSetFromOptions(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetFromOptions(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 
@@ -1268,7 +1334,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetFunction"))
 """
-function SNESLineSearchSetFunction(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external) end
+function SNESLineSearchSetFunction(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external)
+    error("SNESLineSearchSetFunction: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetFunction(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, func::external )
 
@@ -1298,7 +1366,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetLambda"))
 """
-function SNESLineSearchSetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch, lambda::PetscReal) end
+function SNESLineSearchSetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch, lambda::Real)
+    error("SNESLineSearchSetLambda: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetLambda(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, lambda::$PetscReal )
 
@@ -1332,7 +1402,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetNorms"))
 """
-function SNESLineSearchSetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, xnorm::PetscReal, fnorm::PetscReal, ynorm::PetscReal) end
+function SNESLineSearchSetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, xnorm::Real, fnorm::Real, ynorm::Real)
+    error("SNESLineSearchSetNorms: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetNorms(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, xnorm::$PetscReal, fnorm::$PetscReal, ynorm::$PetscReal )
 
@@ -1370,7 +1442,9 @@ Options Database Key:
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetOrder"))
 """
-function SNESLineSearchSetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch, order::PetscInt) end
+function SNESLineSearchSetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch, order::Integer)
+    error("SNESLineSearchSetOrder: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetOrder(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, order::$PetscInt )
 
@@ -1414,7 +1488,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetPostCheck"))
 """
-function SNESLineSearchSetPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid}) end
+function SNESLineSearchSetPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid})
+    error("SNESLineSearchSetPostCheck: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetPostCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid} )
 
@@ -1458,7 +1534,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetPreCheck"))
 """
-function SNESLineSearchSetPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid}) end
+function SNESLineSearchSetPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid})
+    error("SNESLineSearchSetPreCheck: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetPreCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid} )
 
@@ -1490,7 +1568,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetReason"))
 """
-function SNESLineSearchSetReason(petsclib::PetscLibType, linesearch::SNESLineSearch, result::SNESLineSearchReason) end
+function SNESLineSearchSetReason(petsclib::PetscLibType, linesearch::SNESLineSearch, result::SNESLineSearchReason)
+    error("SNESLineSearchSetReason: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetReason(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, result::SNESLineSearchReason )
 
@@ -1520,7 +1600,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetSNES"))
 """
-function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::AbstractPetscSNES) end
+function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::AbstractPetscSNES)
+    error("SNESLineSearchSetSNES: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::AbstractPetscSNES )
 
@@ -1565,7 +1647,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetTolerances"))
 """
-function SNESLineSearchSetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch, minlambda::PetscReal, maxlambda::PetscReal, rtol::PetscReal, atol::PetscReal, ltol::PetscReal, max_it::PetscInt) end
+function SNESLineSearchSetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch, minlambda::Real, maxlambda::Real, rtol::Real, atol::Real, ltol::Real, max_it::Integer)
+    error("SNESLineSearchSetTolerances: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetTolerances(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, minlambda::$PetscReal, maxlambda::$PetscReal, rtol::$PetscReal, atol::$PetscReal, ltol::$PetscReal, max_it::$PetscInt )
 
@@ -1601,7 +1685,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetType"))
 """
-function SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::SNESLineSearchType) end
+function SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::SNESLineSearchType)
+    error("SNESLineSearchSetType: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetType(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, type::SNESLineSearchType )
 
@@ -1633,7 +1719,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetUp"))
 """
-function SNESLineSearchSetUp(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchSetUp(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchSetUp: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetUp(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 
@@ -1668,7 +1756,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetVIFunctions"))
 """
-function SNESLineSearchSetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch, projectfunc::Ptr{Cvoid}, normfunc::Ptr{Cvoid}, dirderivfunc::Ptr{Cvoid}) end
+function SNESLineSearchSetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch, projectfunc::Ptr{Cvoid}, normfunc::Ptr{Cvoid}, dirderivfunc::Ptr{Cvoid})
+    error("SNESLineSearchSetVIFunctions: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetVIFunctions(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, projectfunc::Ptr{Cvoid}, normfunc::Ptr{Cvoid}, dirderivfunc::Ptr{Cvoid} )
 
@@ -1704,7 +1794,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetVecs"))
 """
-function SNESLineSearchSetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec) end
+function SNESLineSearchSetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec)
+    error("SNESLineSearchSetVecs: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetVecs(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec )
 
@@ -1734,7 +1826,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetWorkVecs"))
 """
-function SNESLineSearchSetWorkVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, nwork::PetscInt) end
+function SNESLineSearchSetWorkVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, nwork::Integer)
+    error("SNESLineSearchSetWorkVecs: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchSetWorkVecs(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, nwork::$PetscInt )
 
@@ -1770,7 +1864,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchShellGetApply"))
 """
-function SNESLineSearchShellGetApply(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchShellGetApply(petsclib::PetscLibType, linesearch::SNESLineSearch)
+    error("SNESLineSearchShellGetApply: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchShellGetApply(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
 	func_ = Ref{Ptr{Cvoid}}()
@@ -1807,7 +1903,9 @@ Usage:
 # External Links
 $(_doc_external("SNES/SNESLineSearchShellSetApply"))
 """
-function SNESLineSearchShellSetApply(petsclib::PetscLibType, linesearch::SNESLineSearch, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function SNESLineSearchShellSetApply(petsclib::PetscLibType, linesearch::SNESLineSearch, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("SNESLineSearchShellSetApply: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchShellSetApply(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -1839,7 +1937,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchView"))
 """
-function SNESLineSearchView(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer) end
+function SNESLineSearchView(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer)
+    error("SNESLineSearchView: no generated method for these argument types")
+end
 
 @for_petsc function SNESLineSearchView(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, viewer::PetscViewer )
 

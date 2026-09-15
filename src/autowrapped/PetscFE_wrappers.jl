@@ -20,7 +20,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFECompositeGetMapping"))
 """
-function PetscFECompositeGetMapping(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFECompositeGetMapping(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFECompositeGetMapping: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECompositeGetMapping(petsclib::$UnionPetscLib, fem::PetscFE )
 	numSubelements_ = Ref{$PetscInt}()
@@ -66,7 +68,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEComputeTabulation"))
 """
-function PetscFEComputeTabulation(petsclib::PetscLibType, fem::PetscFE, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt, T::PetscTabulation) end
+function PetscFEComputeTabulation(petsclib::PetscLibType, fem::PetscFE, npoints::Integer, points::AbstractVector{<:Number}, K::Integer, T::PetscTabulation)
+    error("PetscFEComputeTabulation: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEComputeTabulation(petsclib::$UnionPetscLib, fem::PetscFE, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt, T::PetscTabulation )
 
@@ -98,7 +102,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFECopyQuadrature"))
 """
-function PetscFECopyQuadrature(petsclib::PetscLibType, sfe::PetscFE, tfe::PetscFE) end
+function PetscFECopyQuadrature(petsclib::PetscLibType, sfe::PetscFE, tfe::PetscFE)
+    error("PetscFECopyQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECopyQuadrature(petsclib::$UnionPetscLib, sfe::PetscFE, tfe::PetscFE )
 
@@ -132,7 +138,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFECreate"))
 """
-function PetscFECreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscFECreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscFECreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	fem_ = Ref{PetscFE}()
@@ -168,7 +176,9 @@ Level: advanced
 # External Links
 $(_doc_external("FE/PetscFECreateBrokenElement"))
 """
-function PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::PetscFE) end
+function PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::PetscFE)
+    error("PetscFECreateBrokenElement: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateBrokenElement(petsclib::$UnionPetscLib, cgfe::PetscFE )
 	dgfe_ = Ref{PetscFE}()
@@ -209,7 +219,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFECreateByCell"))
 """
-function PetscFECreateByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, prefix::String, qorder::PetscInt) end
+function PetscFECreateByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, Nc::Integer, ct::DMPolytopeType, prefix::String, qorder::Integer)
+    error("PetscFECreateByCell: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateByCell(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, ct::DMPolytopeType, prefix::String, qorder::$PetscInt )
 	fem_ = Ref{PetscFE}()
@@ -232,7 +244,9 @@ end
 # External Links
 $(_doc_external("FE/PetscFECreateCellGeometry"))
 """
-function PetscFECreateCellGeometry(petsclib::PetscLibType, fe::PetscFE, quad::PetscQuadrature) end
+function PetscFECreateCellGeometry(petsclib::PetscLibType, fe::PetscFE, quad::PetscQuadrature)
+    error("PetscFECreateCellGeometry: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateCellGeometry(petsclib::$UnionPetscLib, fe::PetscFE, quad::PetscQuadrature )
 	cgeom_ = Ref{PetscFEGeom}()
@@ -273,7 +287,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFECreateDefault"))
 """
-function PetscFECreateDefault(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, prefix::String, qorder::PetscInt) end
+function PetscFECreateDefault(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, Nc::Integer, isSimplex::PetscBool, prefix::String, qorder::Integer)
+    error("PetscFECreateDefault: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateDefault(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, isSimplex::PetscBool, prefix::String, qorder::$PetscInt )
 	fem_ = Ref{PetscFE}()
@@ -313,7 +329,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFECreateFromSpaces"))
 """
-function PetscFECreateFromSpaces(petsclib::PetscLibType, P::PetscSpace, Q::PetscDualSpace, q::PetscQuadrature, fq::PetscQuadrature) end
+function PetscFECreateFromSpaces(petsclib::PetscLibType, P::PetscSpace, Q::PetscDualSpace, q::PetscQuadrature, fq::PetscQuadrature)
+    error("PetscFECreateFromSpaces: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateFromSpaces(petsclib::$UnionPetscLib, P::PetscSpace, Q::PetscDualSpace, q::PetscQuadrature, fq::PetscQuadrature )
 	fem_ = Ref{PetscFE}()
@@ -336,7 +354,9 @@ end
 # External Links
 $(_doc_external("FE/PetscFECreateHeightTrace"))
 """
-function PetscFECreateHeightTrace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt) end
+function PetscFECreateHeightTrace(petsclib::PetscLibType, fe::PetscFE, height::Integer)
+    error("PetscFECreateHeightTrace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateHeightTrace(petsclib::$UnionPetscLib, fe::PetscFE, height::$PetscInt )
 	trFE_ = Ref{PetscFE}()
@@ -377,7 +397,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFECreateLagrange"))
 """
-function PetscFECreateLagrange(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, k::PetscInt, qorder::PetscInt) end
+function PetscFECreateLagrange(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, Nc::Integer, isSimplex::PetscBool, k::Integer, qorder::Integer)
+    error("PetscFECreateLagrange: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateLagrange(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, isSimplex::PetscBool, k::$PetscInt, qorder::$PetscInt )
 	fem_ = Ref{PetscFE}()
@@ -418,7 +440,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFECreateLagrangeByCell"))
 """
-function PetscFECreateLagrangeByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, k::PetscInt, qorder::PetscInt) end
+function PetscFECreateLagrangeByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, Nc::Integer, ct::DMPolytopeType, k::Integer, qorder::Integer)
+    error("PetscFECreateLagrangeByCell: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateLagrangeByCell(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, ct::DMPolytopeType, k::$PetscInt, qorder::$PetscInt )
 	fem_ = Ref{PetscFE}()
@@ -458,7 +482,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFECreateTabulation"))
 """
-function PetscFECreateTabulation(petsclib::PetscLibType, fem::PetscFE, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) end
+function PetscFECreateTabulation(petsclib::PetscLibType, fem::PetscFE, nrepl::Integer, npoints::Integer, points::AbstractVector{<:Number}, K::Integer)
+    error("PetscFECreateTabulation: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateTabulation(petsclib::$UnionPetscLib, fem::PetscFE, nrepl::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt )
 	T_ = Ref{PetscTabulation}()
@@ -508,7 +534,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFECreateVector"))
 """
-function PetscFECreateVector(petsclib::PetscLibType, scalar_fe::PetscFE, num_copies::PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool) end
+function PetscFECreateVector(petsclib::PetscLibType, scalar_fe::PetscFE, num_copies::Integer, interleave_basis::PetscBool, interleave_components::PetscBool)
+    error("PetscFECreateVector: no generated method for these argument types")
+end
 
 @for_petsc function PetscFECreateVector(petsclib::$UnionPetscLib, scalar_fe::PetscFE, num_copies::$PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool )
 	vector_fe_ = Ref{PetscFE}()
@@ -541,7 +569,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFEDestroy"))
 """
-function PetscFEDestroy(petsclib::PetscLibType, fem::Union{PetscFE, Ref{PetscFE}}) end
+function PetscFEDestroy(petsclib::PetscLibType, fem::Union{PetscFE, Ref{PetscFE}})
+    error("PetscFEDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEDestroy(petsclib::$UnionPetscLib, fem::Union{PetscFE, Ref{PetscFE}} )
 	fem_ = fem isa Base.RefValue ? fem : Ref{PetscFE}(fem)
@@ -563,7 +593,9 @@ end
 # External Links
 $(_doc_external("FE/PetscFEDestroyCellGeometry"))
 """
-function PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::PetscFE, cgeom::Vector{PetscFEGeom}) end
+function PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::PetscFE, cgeom::Vector{PetscFEGeom})
+    error("PetscFEDestroyCellGeometry: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEDestroyCellGeometry(petsclib::$UnionPetscLib, fe::PetscFE, cgeom::Vector{PetscFEGeom} )
 
@@ -584,7 +616,9 @@ end
 # External Links
 $(_doc_external("FE/PetscFEExpandFaceQuadrature"))
 """
-function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature) end
+function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature)
+    error("PetscFEExpandFaceQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEExpandFaceQuadrature(petsclib::$UnionPetscLib, fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature )
 
@@ -611,7 +645,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/PetscFEFinalizePackage"))
 """
-function PetscFEFinalizePackage(petsclib::PetscLibType) end
+function PetscFEFinalizePackage(petsclib::PetscLibType)
+    error("PetscFEFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -639,7 +675,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGeomComplete"))
 """
-function PetscFEGeomComplete(petsclib::PetscLibType, geom::Vector{PetscFEGeom}) end
+function PetscFEGeomComplete(petsclib::PetscLibType, geom::Vector{PetscFEGeom})
+    error("PetscFEGeomComplete: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGeomComplete(petsclib::$UnionPetscLib, geom::Vector{PetscFEGeom} )
 
@@ -674,7 +712,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFEGeomCreate"))
 """
-function PetscFEGeomCreate(petsclib::PetscLibType, quad::PetscQuadrature, numCells::PetscInt, dimEmbed::PetscInt, mode::PetscFEGeomMode) end
+function PetscFEGeomCreate(petsclib::PetscLibType, quad::PetscQuadrature, numCells::Integer, dimEmbed::Integer, mode::PetscFEGeomMode)
+    error("PetscFEGeomCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGeomCreate(petsclib::$UnionPetscLib, quad::PetscQuadrature, numCells::$PetscInt, dimEmbed::$PetscInt, mode::PetscFEGeomMode )
 	geom_ = Ref{Ptr{PetscFEGeom}}()
@@ -705,7 +745,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFEGeomDestroy"))
 """
-function PetscFEGeomDestroy(petsclib::PetscLibType, geom::PetscFEGeom) end
+function PetscFEGeomDestroy(petsclib::PetscLibType, geom::PetscFEGeom)
+    error("PetscFEGeomDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGeomDestroy(petsclib::$UnionPetscLib, geom::PetscFEGeom )
 
@@ -739,7 +781,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGeomGetCellPoint"))
 """
-function PetscFEGeomGetCellPoint(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, c::PetscInt, p::PetscInt) end
+function PetscFEGeomGetCellPoint(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, c::Integer, p::Integer)
+    error("PetscFEGeomGetCellPoint: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGeomGetCellPoint(petsclib::$UnionPetscLib, geom::Vector{PetscFEGeom}, c::$PetscInt, p::$PetscInt )
 	pgeom_ = Ref{PetscFEGeom}()
@@ -775,7 +819,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGeomGetChunk"))
 """
-function PetscFEGeomGetChunk(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, cStart::PetscInt, cEnd::PetscInt) end
+function PetscFEGeomGetChunk(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, cStart::Integer, cEnd::Integer)
+    error("PetscFEGeomGetChunk: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGeomGetChunk(petsclib::$UnionPetscLib, geom::Vector{PetscFEGeom}, cStart::$PetscInt, cEnd::$PetscInt )
 	chunkGeom_ = Ref{Ptr{PetscFEGeom}}()
@@ -812,7 +858,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGeomGetPoint"))
 """
-function PetscFEGeomGetPoint(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, c::PetscInt, p::PetscInt, pcoords::Vector{PetscReal}) end
+function PetscFEGeomGetPoint(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, c::Integer, p::Integer, pcoords::AbstractVector{<:Number})
+    error("PetscFEGeomGetPoint: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGeomGetPoint(petsclib::$UnionPetscLib, geom::Vector{PetscFEGeom}, c::$PetscInt, p::$PetscInt, pcoords::Vector{$PetscReal} )
 	pgeom_ = Ref{PetscFEGeom}()
@@ -846,7 +894,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGeomRestoreChunk"))
 """
-function PetscFEGeomRestoreChunk(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, cStart::PetscInt, cEnd::PetscInt, chunkGeom::PetscFEGeom) end
+function PetscFEGeomRestoreChunk(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, cStart::Integer, cEnd::Integer, chunkGeom::PetscFEGeom)
+    error("PetscFEGeomRestoreChunk: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGeomRestoreChunk(petsclib::$UnionPetscLib, geom::Vector{PetscFEGeom}, cStart::$PetscInt, cEnd::$PetscInt, chunkGeom::PetscFEGeom )
 
@@ -880,7 +930,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetBasisSpace"))
 """
-function PetscFEGetBasisSpace(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetBasisSpace(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetBasisSpace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetBasisSpace(petsclib::$UnionPetscLib, fem::PetscFE )
 	sp_ = Ref{PetscSpace}()
@@ -917,7 +969,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetCellTabulation"))
 """
-function PetscFEGetCellTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt) end
+function PetscFEGetCellTabulation(petsclib::PetscLibType, fem::PetscFE, k::Integer)
+    error("PetscFEGetCellTabulation: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetCellTabulation(petsclib::$UnionPetscLib, fem::PetscFE, k::$PetscInt )
 	T_ = Ref{PetscTabulation}()
@@ -953,7 +1007,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetDimension"))
 """
-function PetscFEGetDimension(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetDimension(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetDimension: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetDimension(petsclib::$UnionPetscLib, fem::PetscFE )
 	dim_ = Ref{$PetscInt}()
@@ -989,7 +1045,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetDualSpace"))
 """
-function PetscFEGetDualSpace(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetDualSpace(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetDualSpace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetDualSpace(petsclib::$UnionPetscLib, fem::PetscFE )
 	sp_ = Ref{PetscDualSpace}()
@@ -1025,7 +1083,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetFaceCentroidTabulation"))
 """
-function PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetFaceCentroidTabulation: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetFaceCentroidTabulation(petsclib::$UnionPetscLib, fem::PetscFE )
 	Tc_ = Ref{PetscTabulation}()
@@ -1061,7 +1121,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetFaceQuadrature"))
 """
-function PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetFaceQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetFaceQuadrature(petsclib::$UnionPetscLib, fem::PetscFE )
 	q_ = Ref{PetscQuadrature}()
@@ -1098,7 +1160,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetFaceTabulation"))
 """
-function PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt) end
+function PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::PetscFE, k::Integer)
+    error("PetscFEGetFaceTabulation: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetFaceTabulation(petsclib::$UnionPetscLib, fem::PetscFE, k::$PetscInt )
 	Tf_ = Ref{PetscTabulation}()
@@ -1133,7 +1197,9 @@ Level: advanced
 # External Links
 $(_doc_external("FE/PetscFEGetHeightSubspace"))
 """
-function PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt) end
+function PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::PetscFE, height::Integer)
+    error("PetscFEGetHeightSubspace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetHeightSubspace(petsclib::$UnionPetscLib, fe::PetscFE, height::$PetscInt )
 	subfe_ = Ref{PetscFE}()
@@ -1169,7 +1235,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetNumComponents"))
 """
-function PetscFEGetNumComponents(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetNumComponents(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetNumComponents(petsclib::$UnionPetscLib, fem::PetscFE )
 	comp_ = Ref{$PetscInt}()
@@ -1205,7 +1273,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetNumDof"))
 """
-function PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetNumDof: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetNumDof(petsclib::$UnionPetscLib, fem::PetscFE )
 	numDof_ = Ref{Ptr{$PetscInt}}()
@@ -1241,7 +1311,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetQuadrature"))
 """
-function PetscFEGetQuadrature(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetQuadrature(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetQuadrature(petsclib::$UnionPetscLib, fem::PetscFE )
 	q_ = Ref{PetscQuadrature}()
@@ -1277,7 +1349,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetSpatialDimension"))
 """
-function PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetSpatialDimension: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetSpatialDimension(petsclib::$UnionPetscLib, fem::PetscFE )
 	dim_ = Ref{$PetscInt}()
@@ -1316,7 +1390,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetTileSizes"))
 """
-function PetscFEGetTileSizes(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetTileSizes(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetTileSizes: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetTileSizes(petsclib::$UnionPetscLib, fem::PetscFE )
 	blockSize_ = Ref{$PetscInt}()
@@ -1358,7 +1434,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEGetType"))
 """
-function PetscFEGetType(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEGetType(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEGetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEGetType(petsclib::$UnionPetscLib, fem::PetscFE )
 	name_ = Ref{PetscFEType}()
@@ -1388,7 +1466,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/PetscFEInitializePackage"))
 """
-function PetscFEInitializePackage(petsclib::PetscLibType) end
+function PetscFEInitializePackage(petsclib::PetscLibType)
+    error("PetscFEInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEInitializePackage(petsclib::$UnionPetscLib)
 
@@ -1427,7 +1507,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEIntegrate"))
 """
-function PetscFEIntegrate(petsclib::PetscLibType, prob::PetscDS, field::PetscInt, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, integral::Vector{PetscScalar}) end
+function PetscFEIntegrate(petsclib::PetscLibType, prob::PetscDS, field::Integer, Ne::Integer, cgeom::Vector{PetscFEGeom}, coefficients::AbstractVector{<:Number}, probAux::PetscDS, coefficientsAux::AbstractVector{<:Number}, integral::AbstractVector{<:Number})
+    error("PetscFEIntegrate: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrate(petsclib::$UnionPetscLib, prob::PetscDS, field::$PetscInt, Ne::$PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{$PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{$PetscScalar}, integral::Vector{$PetscScalar} )
 
@@ -1468,7 +1550,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEIntegrateBd"))
 """
-function PetscFEIntegrateBd(petsclib::PetscLibType, prob::PetscDS, field::PetscInt, obj_func::Ptr{Cvoid}) end
+function PetscFEIntegrateBd(petsclib::PetscLibType, prob::PetscDS, field::Integer, obj_func::Ptr{Cvoid})
+    error("PetscFEIntegrateBd: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrateBd(petsclib::$UnionPetscLib, prob::PetscDS, field::$PetscInt, obj_func::Ptr{Cvoid} )
 
@@ -1513,7 +1597,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEIntegrateBdJacobian"))
 """
-function PetscFEIntegrateBdJacobian(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) end
+function PetscFEIntegrateBdJacobian(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::Integer, fgeom::Vector{PetscFEGeom}, coefficients::AbstractVector{<:Number}, coefficients_t::AbstractVector{<:Number}, probAux::PetscDS, coefficientsAux::AbstractVector{<:Number}, t::Real, u_tshift::Real, elemMat::AbstractVector{<:Number})
+    error("PetscFEIntegrateBdJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrateBdJacobian(petsclib::$UnionPetscLib, ds::PetscDS, wf::PetscWeakForm, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::$PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{$PetscScalar}, coefficients_t::Vector{$PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{$PetscScalar}, t::$PetscReal, u_tshift::$PetscReal, elemMat::Vector{$PetscScalar} )
 
@@ -1556,7 +1642,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEIntegrateBdResidual"))
 """
-function PetscFEIntegrateBdResidual(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, key::PetscFormKey, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) end
+function PetscFEIntegrateBdResidual(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, key::PetscFormKey, Ne::Integer, fgeom::Vector{PetscFEGeom}, coefficients::AbstractVector{<:Number}, coefficients_t::AbstractVector{<:Number}, probAux::PetscDS, coefficientsAux::AbstractVector{<:Number}, t::Real, elemVec::AbstractVector{<:Number})
+    error("PetscFEIntegrateBdResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrateBdResidual(petsclib::$UnionPetscLib, ds::PetscDS, wf::PetscWeakForm, key::PetscFormKey, Ne::$PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{$PetscScalar}, coefficients_t::Vector{$PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{$PetscScalar}, t::$PetscReal, elemVec::Vector{$PetscScalar} )
 
@@ -1603,7 +1691,9 @@ Level: developer
 # External Links
 $(_doc_external("FE/PetscFEIntegrateHybridJacobian"))
 """
-function PetscFEIntegrateHybridJacobian(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) end
+function PetscFEIntegrateHybridJacobian(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, s::Integer, Ne::Integer, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::AbstractVector{<:Number}, coefficients_t::AbstractVector{<:Number}, probAux::PetscDS, coefficientsAux::AbstractVector{<:Number}, t::Real, u_tshift::Real, elemMat::AbstractVector{<:Number})
+    error("PetscFEIntegrateHybridJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrateHybridJacobian(petsclib::$UnionPetscLib, ds::PetscDS, dsIn::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, s::$PetscInt, Ne::$PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{$PetscScalar}, coefficients_t::Vector{$PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{$PetscScalar}, t::$PetscReal, u_tshift::$PetscReal, elemMat::Vector{$PetscScalar} )
 
@@ -1648,7 +1738,9 @@ Level: developer
 # External Links
 $(_doc_external("FE/PetscFEIntegrateHybridResidual"))
 """
-function PetscFEIntegrateHybridResidual(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) end
+function PetscFEIntegrateHybridResidual(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, key::PetscFormKey, s::Integer, Ne::Integer, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::AbstractVector{<:Number}, coefficients_t::AbstractVector{<:Number}, probAux::PetscDS, coefficientsAux::AbstractVector{<:Number}, t::Real, elemVec::AbstractVector{<:Number})
+    error("PetscFEIntegrateHybridResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrateHybridResidual(petsclib::$UnionPetscLib, ds::PetscDS, dsIn::PetscDS, key::PetscFormKey, s::$PetscInt, Ne::$PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{$PetscScalar}, coefficients_t::Vector{$PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{$PetscScalar}, t::$PetscReal, elemVec::Vector{$PetscScalar} )
 
@@ -1693,7 +1785,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEIntegrateJacobian"))
 """
-function PetscFEIntegrateJacobian(petsclib::PetscLibType, rds::PetscDS, cds::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, dsAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) end
+function PetscFEIntegrateJacobian(petsclib::PetscLibType, rds::PetscDS, cds::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::Integer, cgeom::Vector{PetscFEGeom}, coefficients::AbstractVector{<:Number}, coefficients_t::AbstractVector{<:Number}, dsAux::PetscDS, coefficientsAux::AbstractVector{<:Number}, t::Real, u_tshift::Real, elemMat::AbstractVector{<:Number})
+    error("PetscFEIntegrateJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrateJacobian(petsclib::$UnionPetscLib, rds::PetscDS, cds::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::$PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{$PetscScalar}, coefficients_t::Vector{$PetscScalar}, dsAux::PetscDS, coefficientsAux::Vector{$PetscScalar}, t::$PetscReal, u_tshift::$PetscReal, elemMat::Vector{$PetscScalar} )
 
@@ -1735,7 +1829,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEIntegrateResidual"))
 """
-function PetscFEIntegrateResidual(petsclib::PetscLibType, ds::PetscDS, key::PetscFormKey, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) end
+function PetscFEIntegrateResidual(petsclib::PetscLibType, ds::PetscDS, key::PetscFormKey, Ne::Integer, cgeom::Vector{PetscFEGeom}, coefficients::AbstractVector{<:Number}, coefficients_t::AbstractVector{<:Number}, probAux::PetscDS, coefficientsAux::AbstractVector{<:Number}, t::Real, elemVec::AbstractVector{<:Number})
+    error("PetscFEIntegrateResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEIntegrateResidual(petsclib::$UnionPetscLib, ds::PetscDS, key::PetscFormKey, Ne::$PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{$PetscScalar}, coefficients_t::Vector{$PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{$PetscScalar}, t::$PetscReal, elemVec::Vector{$PetscScalar} )
 
@@ -1771,7 +1867,9 @@ Level: advanced
 # External Links
 $(_doc_external("FE/PetscFELimitDegree"))
 """
-function PetscFELimitDegree(petsclib::PetscLibType, fe::PetscFE, minDegree::PetscInt, maxDegree::PetscInt) end
+function PetscFELimitDegree(petsclib::PetscLibType, fe::PetscFE, minDegree::Integer, maxDegree::Integer)
+    error("PetscFELimitDegree: no generated method for these argument types")
+end
 
 @for_petsc function PetscFELimitDegree(petsclib::$UnionPetscLib, fe::PetscFE, minDegree::$PetscInt, maxDegree::$PetscInt )
 	newfe_ = Ref{PetscFE}()
@@ -1805,7 +1903,9 @@ Level: developer
 # External Links
 $(_doc_external("FE/PetscFEOpenCLGetRealType"))
 """
-function PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFEOpenCLGetRealType: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEOpenCLGetRealType(petsclib::$UnionPetscLib, fem::PetscFE )
 	realType_ = Ref{PetscDataType}()
@@ -1837,7 +1937,9 @@ Level: developer
 # External Links
 $(_doc_external("FE/PetscFEOpenCLSetRealType"))
 """
-function PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::PetscFE, realType::PetscDataType) end
+function PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::PetscFE, realType::PetscDataType)
+    error("PetscFEOpenCLSetRealType: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEOpenCLSetRealType(petsclib::$UnionPetscLib, fem::PetscFE, realType::PetscDataType )
 
@@ -1872,7 +1974,9 @@ Level: advanced
 # External Links
 $(_doc_external("FE/PetscFEPushforward"))
 """
-function PetscFEPushforward(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) end
+function PetscFEPushforward(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
+    error("PetscFEPushforward: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEPushforward(petsclib::$UnionPetscLib, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
 
@@ -1907,7 +2011,9 @@ Level: advanced
 # External Links
 $(_doc_external("FE/PetscFEPushforwardGradient"))
 """
-function PetscFEPushforwardGradient(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) end
+function PetscFEPushforwardGradient(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
+    error("PetscFEPushforwardGradient: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEPushforwardGradient(petsclib::$UnionPetscLib, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
 
@@ -1942,7 +2048,9 @@ Level: advanced
 # External Links
 $(_doc_external("FE/PetscFEPushforwardHessian"))
 """
-function PetscFEPushforwardHessian(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) end
+function PetscFEPushforwardHessian(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
+    error("PetscFEPushforwardHessian: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEPushforwardHessian(petsclib::$UnionPetscLib, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
 
@@ -1977,7 +2085,9 @@ Level: advanced
 # External Links
 $(_doc_external("FE/PetscFERefine"))
 """
-function PetscFERefine(petsclib::PetscLibType, fe::PetscFE) end
+function PetscFERefine(petsclib::PetscLibType, fe::PetscFE)
+    error("PetscFERefine: no generated method for these argument types")
+end
 
 @for_petsc function PetscFERefine(petsclib::$UnionPetscLib, fe::PetscFE )
 	feRef_ = Ref{PetscFE}()
@@ -2009,7 +2119,9 @@ Input Parameters:
 # External Links
 $(_doc_external("FE/PetscFERegister"))
 """
-function PetscFERegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function PetscFERegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("PetscFERegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscFERegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -2041,7 +2153,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetBasisSpace"))
 """
-function PetscFESetBasisSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscSpace) end
+function PetscFESetBasisSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscSpace)
+    error("PetscFESetBasisSpace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetBasisSpace(petsclib::$UnionPetscLib, fem::PetscFE, sp::PetscSpace )
 
@@ -2073,7 +2187,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetDualSpace"))
 """
-function PetscFESetDualSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscDualSpace) end
+function PetscFESetDualSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscDualSpace)
+    error("PetscFESetDualSpace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetDualSpace(petsclib::$UnionPetscLib, fem::PetscFE, sp::PetscDualSpace )
 
@@ -2105,7 +2221,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetFaceQuadrature"))
 """
-function PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) end
+function PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature)
+    error("PetscFESetFaceQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetFaceQuadrature(petsclib::$UnionPetscLib, fem::PetscFE, q::PetscQuadrature )
 
@@ -2140,7 +2258,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetFromOptions"))
 """
-function PetscFESetFromOptions(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFESetFromOptions(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFESetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetFromOptions(petsclib::$UnionPetscLib, fem::PetscFE )
 
@@ -2172,7 +2292,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetName"))
 """
-function PetscFESetName(petsclib::PetscLibType, fe::PetscFE, name::String) end
+function PetscFESetName(petsclib::PetscLibType, fe::PetscFE, name::String)
+    error("PetscFESetName: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetName(petsclib::$UnionPetscLib, fe::PetscFE, name::String )
 
@@ -2204,7 +2326,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetNumComponents"))
 """
-function PetscFESetNumComponents(petsclib::PetscLibType, fem::PetscFE, comp::PetscInt) end
+function PetscFESetNumComponents(petsclib::PetscLibType, fem::PetscFE, comp::Integer)
+    error("PetscFESetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetNumComponents(petsclib::$UnionPetscLib, fem::PetscFE, comp::$PetscInt )
 
@@ -2236,7 +2360,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetQuadrature"))
 """
-function PetscFESetQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) end
+function PetscFESetQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature)
+    error("PetscFESetQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetQuadrature(petsclib::$UnionPetscLib, fem::PetscFE, q::PetscQuadrature )
 
@@ -2271,7 +2397,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetTileSizes"))
 """
-function PetscFESetTileSizes(petsclib::PetscLibType, fem::PetscFE, blockSize::PetscInt, numBlocks::PetscInt, batchSize::PetscInt, numBatches::PetscInt) end
+function PetscFESetTileSizes(petsclib::PetscLibType, fem::PetscFE, blockSize::Integer, numBlocks::Integer, batchSize::Integer, numBatches::Integer)
+    error("PetscFESetTileSizes: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetTileSizes(petsclib::$UnionPetscLib, fem::PetscFE, blockSize::$PetscInt, numBlocks::$PetscInt, batchSize::$PetscInt, numBatches::$PetscInt )
 
@@ -2306,7 +2434,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetType"))
 """
-function PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::PetscFEType) end
+function PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::PetscFEType)
+    error("PetscFESetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetType(petsclib::$UnionPetscLib, fem::PetscFE, name::PetscFEType )
 
@@ -2337,7 +2467,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFESetUp"))
 """
-function PetscFESetUp(petsclib::PetscLibType, fem::PetscFE) end
+function PetscFESetUp(petsclib::PetscLibType, fem::PetscFE)
+    error("PetscFESetUp: no generated method for these argument types")
+end
 
 @for_petsc function PetscFESetUp(petsclib::$UnionPetscLib, fem::PetscFE )
 
@@ -2369,7 +2501,9 @@ Level: beginner
 # External Links
 $(_doc_external("FE/PetscFEView"))
 """
-function PetscFEView(petsclib::PetscLibType, fem::PetscFE, viewer::PetscViewer) end
+function PetscFEView(petsclib::PetscLibType, fem::PetscFE, viewer::PetscViewer)
+    error("PetscFEView: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEView(petsclib::$UnionPetscLib, fem::PetscFE, viewer::PetscViewer )
 
@@ -2402,7 +2536,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEViewFromOptions"))
 """
-function PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj, name::String) end
+function PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj, name::String)
+    error("PetscFEViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscFEViewFromOptions(petsclib::$UnionPetscLib, A::PetscFE, obj, name::String )
 
@@ -2435,7 +2571,9 @@ Level: developer
 # External Links
 $(_doc_external("DT/PetscQuadratureComputePermutations"))
 """
-function PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature) end
+function PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature)
+    error("PetscQuadratureComputePermutations: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureComputePermutations(petsclib::$UnionPetscLib, quad::PetscQuadrature )
 	Np_ = Ref{$PetscInt}()
@@ -2473,7 +2611,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscQuadratureCreate"))
 """
-function PetscQuadratureCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscQuadratureCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscQuadratureCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	q_ = Ref{PetscQuadrature}()
@@ -2506,7 +2646,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscQuadratureDestroy"))
 """
-function PetscQuadratureDestroy(petsclib::PetscLibType, q::Union{PetscQuadrature, Ref{PetscQuadrature}}) end
+function PetscQuadratureDestroy(petsclib::PetscLibType, q::Union{PetscQuadrature, Ref{PetscQuadrature}})
+    error("PetscQuadratureDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureDestroy(petsclib::$UnionPetscLib, q::Union{PetscQuadrature, Ref{PetscQuadrature}} )
 	q_ = q isa Base.RefValue ? q : Ref{PetscQuadrature}(q)
@@ -2541,7 +2683,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscQuadratureDuplicate"))
 """
-function PetscQuadratureDuplicate(petsclib::PetscLibType, q::PetscQuadrature) end
+function PetscQuadratureDuplicate(petsclib::PetscLibType, q::PetscQuadrature)
+    error("PetscQuadratureDuplicate: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureDuplicate(petsclib::$UnionPetscLib, q::PetscQuadrature )
 	r_ = Ref{PetscQuadrature}()
@@ -2576,7 +2720,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureEqual"))
 """
-function PetscQuadratureEqual(petsclib::PetscLibType, A::PetscQuadrature, B::PetscQuadrature) end
+function PetscQuadratureEqual(petsclib::PetscLibType, A::PetscQuadrature, B::PetscQuadrature)
+    error("PetscQuadratureEqual: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureEqual(petsclib::$UnionPetscLib, A::PetscQuadrature, B::PetscQuadrature )
 	equal_ = Ref{PetscBool}()
@@ -2615,7 +2761,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureExpandComposite"))
 """
-function PetscQuadratureExpandComposite(petsclib::PetscLibType, q::PetscQuadrature, numSubelements::PetscInt, v0::Vector{PetscReal}, jac::Vector{PetscReal}) end
+function PetscQuadratureExpandComposite(petsclib::PetscLibType, q::PetscQuadrature, numSubelements::Integer, v0::AbstractVector{<:Number}, jac::AbstractVector{<:Number})
+    error("PetscQuadratureExpandComposite: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureExpandComposite(petsclib::$UnionPetscLib, q::PetscQuadrature, numSubelements::$PetscInt, v0::Vector{$PetscReal}, jac::Vector{$PetscReal} )
 	qref_ = Ref{PetscQuadrature}()
@@ -2651,7 +2799,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureGetCellType"))
 """
-function PetscQuadratureGetCellType(petsclib::PetscLibType, q::PetscQuadrature) end
+function PetscQuadratureGetCellType(petsclib::PetscLibType, q::PetscQuadrature)
+    error("PetscQuadratureGetCellType: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureGetCellType(petsclib::$UnionPetscLib, q::PetscQuadrature )
 	ct_ = Ref{DMPolytopeType}()
@@ -2691,7 +2841,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureGetData"))
 """
-function PetscQuadratureGetData(petsclib::PetscLibType, q::PetscQuadrature) end
+function PetscQuadratureGetData(petsclib::PetscLibType, q::PetscQuadrature)
+    error("PetscQuadratureGetData: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureGetData(petsclib::$UnionPetscLib, q::PetscQuadrature )
 	dim_ = Ref{$PetscInt}()
@@ -2735,7 +2887,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureGetNumComponents"))
 """
-function PetscQuadratureGetNumComponents(petsclib::PetscLibType, q::PetscQuadrature) end
+function PetscQuadratureGetNumComponents(petsclib::PetscLibType, q::PetscQuadrature)
+    error("PetscQuadratureGetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureGetNumComponents(petsclib::$UnionPetscLib, q::PetscQuadrature )
 	Nc_ = Ref{$PetscInt}()
@@ -2771,7 +2925,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureGetOrder"))
 """
-function PetscQuadratureGetOrder(petsclib::PetscLibType, q::PetscQuadrature) end
+function PetscQuadratureGetOrder(petsclib::PetscLibType, q::PetscQuadrature)
+    error("PetscQuadratureGetOrder: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureGetOrder(petsclib::$UnionPetscLib, q::PetscQuadrature )
 	order_ = Ref{$PetscInt}()
@@ -2814,7 +2970,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadraturePushForward"))
 """
-function PetscQuadraturePushForward(petsclib::PetscLibType, q::PetscQuadrature, imageDim::PetscInt, origin::Vector{PetscReal}, originImage::Vector{PetscReal}, J::Vector{PetscReal}, formDegree::PetscInt) end
+function PetscQuadraturePushForward(petsclib::PetscLibType, q::PetscQuadrature, imageDim::Integer, origin::AbstractVector{<:Number}, originImage::AbstractVector{<:Number}, J::AbstractVector{<:Number}, formDegree::Integer)
+    error("PetscQuadraturePushForward: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadraturePushForward(petsclib::$UnionPetscLib, q::PetscQuadrature, imageDim::$PetscInt, origin::Vector{$PetscReal}, originImage::Vector{$PetscReal}, J::Vector{$PetscReal}, formDegree::$PetscInt )
 	Jinvstarq_ = Ref{PetscQuadrature}()
@@ -2848,7 +3006,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureSetCellType"))
 """
-function PetscQuadratureSetCellType(petsclib::PetscLibType, q::PetscQuadrature, ct::DMPolytopeType) end
+function PetscQuadratureSetCellType(petsclib::PetscLibType, q::PetscQuadrature, ct::DMPolytopeType)
+    error("PetscQuadratureSetCellType: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureSetCellType(petsclib::$UnionPetscLib, q::PetscQuadrature, ct::DMPolytopeType )
 
@@ -2884,7 +3044,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureSetData"))
 """
-function PetscQuadratureSetData(petsclib::PetscLibType, q::PetscQuadrature, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, weights::Vector{PetscReal}) end
+function PetscQuadratureSetData(petsclib::PetscLibType, q::PetscQuadrature, dim::Integer, Nc::Integer, npoints::Integer, points::AbstractVector{<:Number}, weights::AbstractVector{<:Number})
+    error("PetscQuadratureSetData: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureSetData(petsclib::$UnionPetscLib, q::PetscQuadrature, dim::$PetscInt, Nc::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, weights::Vector{$PetscReal} )
 
@@ -2916,7 +3078,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureSetNumComponents"))
 """
-function PetscQuadratureSetNumComponents(petsclib::PetscLibType, q::PetscQuadrature, Nc::PetscInt) end
+function PetscQuadratureSetNumComponents(petsclib::PetscLibType, q::PetscQuadrature, Nc::Integer)
+    error("PetscQuadratureSetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureSetNumComponents(petsclib::$UnionPetscLib, q::PetscQuadrature, Nc::$PetscInt )
 
@@ -2948,7 +3112,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscQuadratureSetOrder"))
 """
-function PetscQuadratureSetOrder(petsclib::PetscLibType, q::PetscQuadrature, order::PetscInt) end
+function PetscQuadratureSetOrder(petsclib::PetscLibType, q::PetscQuadrature, order::Integer)
+    error("PetscQuadratureSetOrder: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureSetOrder(petsclib::$UnionPetscLib, q::PetscQuadrature, order::$PetscInt )
 
@@ -2980,7 +3146,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscQuadratureView"))
 """
-function PetscQuadratureView(petsclib::PetscLibType, quad::PetscQuadrature, viewer::PetscViewer) end
+function PetscQuadratureView(petsclib::PetscLibType, quad::PetscQuadrature, viewer::PetscViewer)
+    error("PetscQuadratureView: no generated method for these argument types")
+end
 
 @for_petsc function PetscQuadratureView(petsclib::$UnionPetscLib, quad::PetscQuadrature, viewer::PetscViewer )
 
@@ -3011,7 +3179,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscTabulationDestroy"))
 """
-function PetscTabulationDestroy(petsclib::PetscLibType, T::Union{PetscTabulation, Ref{PetscTabulation}}) end
+function PetscTabulationDestroy(petsclib::PetscLibType, T::Union{PetscTabulation, Ref{PetscTabulation}})
+    error("PetscTabulationDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscTabulationDestroy(petsclib::$UnionPetscLib, T::Union{PetscTabulation, Ref{PetscTabulation}} )
 	T_ = T isa Base.RefValue ? T : Ref{PetscTabulation}(T)
@@ -3033,7 +3203,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobian"))
 """
-function PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
+function PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+    error("PetscWeakFormAddBdJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
@@ -3054,7 +3226,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobianPreconditioner"))
 """
-function PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
+function PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+    error("PetscWeakFormAddBdJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
@@ -3075,7 +3249,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdResidual"))
 """
-function PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) end
+function PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::external, f1::external)
+    error("PetscWeakFormAddBdResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::external, f1::external )
 
@@ -3096,7 +3272,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddDynamicJacobian"))
 """
-function PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
+function PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+    error("PetscWeakFormAddDynamicJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
@@ -3117,7 +3295,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobian"))
 """
-function PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
+function PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+    error("PetscWeakFormAddJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
@@ -3138,7 +3318,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobianPreconditioner"))
 """
-function PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
+function PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+    error("PetscWeakFormAddJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
@@ -3159,7 +3341,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddObjective"))
 """
-function PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) end
+function PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, obj::external)
+    error("PetscWeakFormAddObjective: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, obj::external )
 
@@ -3180,7 +3364,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormAddResidual"))
 """
-function PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) end
+function PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::external, f1::external)
+    error("PetscWeakFormAddResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormAddResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::external, f1::external )
 
@@ -3211,7 +3397,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscWeakFormClear"))
 """
-function PetscWeakFormClear(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormClear(petsclib::PetscLibType, wf::PetscWeakForm)
+    error("PetscWeakFormClear: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormClear(petsclib::$UnionPetscLib, wf::PetscWeakForm )
 
@@ -3232,7 +3420,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormClearIndex"))
 """
-function PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) end
+function PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, kind::PetscWeakFormKind, ind::Integer)
+    error("PetscWeakFormClearIndex: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormClearIndex(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, kind::PetscWeakFormKind, ind::$PetscInt )
 
@@ -3266,7 +3456,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscWeakFormCopy"))
 """
-function PetscWeakFormCopy(petsclib::PetscLibType, wf::PetscWeakForm, wfNew::PetscWeakForm) end
+function PetscWeakFormCopy(petsclib::PetscLibType, wf::PetscWeakForm, wfNew::PetscWeakForm)
+    error("PetscWeakFormCopy: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormCopy(petsclib::$UnionPetscLib, wf::PetscWeakForm, wfNew::PetscWeakForm )
 
@@ -3300,7 +3492,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscWeakFormCreate"))
 """
-function PetscWeakFormCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscWeakFormCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscWeakFormCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	wf_ = Ref{PetscWeakForm}()
@@ -3333,7 +3527,9 @@ Level: developer
 # External Links
 $(_doc_external("DT/PetscWeakFormDestroy"))
 """
-function PetscWeakFormDestroy(petsclib::PetscLibType, wf::Union{PetscWeakForm, Ref{PetscWeakForm}}) end
+function PetscWeakFormDestroy(petsclib::PetscLibType, wf::Union{PetscWeakForm, Ref{PetscWeakForm}})
+    error("PetscWeakFormDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormDestroy(petsclib::$UnionPetscLib, wf::Union{PetscWeakForm, Ref{PetscWeakForm}} )
 	wf_ = wf isa Base.RefValue ? wf : Ref{PetscWeakForm}(wf)
@@ -3355,7 +3551,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobian"))
 """
-function PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormGetBdJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
@@ -3378,7 +3576,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobianPreconditioner"))
 """
-function PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormGetBdJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
@@ -3401,7 +3601,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdResidual"))
 """
-function PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::Ptr{Cvoid}) end
+function PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::Ptr{Cvoid})
+    error("PetscWeakFormGetBdResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
@@ -3424,7 +3626,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetDynamicJacobian"))
 """
-function PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormGetDynamicJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
@@ -3447,7 +3651,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetIndexObjective"))
 """
-function PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::Ptr{Cvoid}) end
+function PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, obj::Ptr{Cvoid})
+    error("PetscWeakFormGetIndexObjective: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, obj::Ptr{Cvoid} )
 
@@ -3468,7 +3674,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobian"))
 """
-function PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormGetJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
@@ -3491,7 +3699,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobianPreconditioner"))
 """
-function PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormGetJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
@@ -3527,7 +3737,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscWeakFormGetNumFields"))
 """
-function PetscWeakFormGetNumFields(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormGetNumFields(petsclib::PetscLibType, wf::PetscWeakForm)
+    error("PetscWeakFormGetNumFields: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetNumFields(petsclib::$UnionPetscLib, wf::PetscWeakForm )
 	Nf_ = Ref{$PetscInt}()
@@ -3550,7 +3762,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetObjective"))
 """
-function PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::Ptr{Cvoid}) end
+function PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, obj::Ptr{Cvoid})
+    error("PetscWeakFormGetObjective: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, obj::Ptr{Cvoid} )
 	n_ = Ref{$PetscInt}()
@@ -3573,7 +3787,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetResidual"))
 """
-function PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::Ptr{Cvoid}) end
+function PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::Ptr{Cvoid})
+    error("PetscWeakFormGetResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
@@ -3596,7 +3812,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormGetRiemannSolver"))
 """
-function PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, r::Ptr{Cvoid}) end
+function PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, r::Ptr{Cvoid})
+    error("PetscWeakFormGetRiemannSolver: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormGetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, r::Ptr{Cvoid} )
 	n_ = Ref{$PetscInt}()
@@ -3619,7 +3837,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormHasBdJacobian"))
 """
-function PetscWeakFormHasBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormHasBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm)
+    error("PetscWeakFormHasBdJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormHasBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm )
 	hasJac_ = Ref{PetscBool}()
@@ -3642,7 +3862,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormHasBdJacobianPreconditioner"))
 """
-function PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm)
+    error("PetscWeakFormHasBdJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormHasBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm )
 	hasJacPre_ = Ref{PetscBool}()
@@ -3665,7 +3887,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormHasDynamicJacobian"))
 """
-function PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm)
+    error("PetscWeakFormHasDynamicJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormHasDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm )
 	hasDynJac_ = Ref{PetscBool}()
@@ -3688,7 +3912,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormHasJacobian"))
 """
-function PetscWeakFormHasJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormHasJacobian(petsclib::PetscLibType, wf::PetscWeakForm)
+    error("PetscWeakFormHasJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormHasJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm )
 	hasJac_ = Ref{PetscBool}()
@@ -3711,7 +3937,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormHasJacobianPreconditioner"))
 """
-function PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm)
+    error("PetscWeakFormHasJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormHasJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm )
 	hasJacPre_ = Ref{PetscBool}()
@@ -3745,7 +3973,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscWeakFormReplaceLabel"))
 """
-function PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel) end
+function PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel)
+    error("PetscWeakFormReplaceLabel: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormReplaceLabel(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel )
 
@@ -3779,7 +4009,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscWeakFormRewriteKeys"))
 """
-function PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}) end
+function PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number})
+    error("PetscWeakFormRewriteKeys: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormRewriteKeys(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt} )
 
@@ -3800,7 +4032,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobian"))
 """
-function PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormSetBdJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
 
@@ -3821,7 +4055,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobianPreconditioner"))
 """
-function PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormSetBdJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
 
@@ -3842,7 +4078,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdResidual"))
 """
-function PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, f0::Ptr{Cvoid}) end
+function PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, f0::Ptr{Cvoid})
+    error("PetscWeakFormSetBdResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, f0::Ptr{Cvoid} )
 
@@ -3863,7 +4101,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetDynamicJacobian"))
 """
-function PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormSetDynamicJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
 
@@ -3884,7 +4124,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobian"))
 """
-function PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
+function PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+    error("PetscWeakFormSetIndexBdJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
@@ -3905,7 +4147,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobianPreconditioner"))
 """
-function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
+function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+    error("PetscWeakFormSetIndexBdJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
@@ -3926,7 +4170,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdResidual"))
 """
-function PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) end
+function PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, i0::Integer, f0::external, i1::Integer, f1::external)
+    error("PetscWeakFormSetIndexBdResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i0::$PetscInt, f0::external, i1::$PetscInt, f1::external )
 
@@ -3947,7 +4193,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexDynamicJacobian"))
 """
-function PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
+function PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+    error("PetscWeakFormSetIndexDynamicJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
@@ -3968,7 +4216,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobian"))
 """
-function PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
+function PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+    error("PetscWeakFormSetIndexJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
@@ -3989,7 +4239,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobianPreconditioner"))
 """
-function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
+function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+    error("PetscWeakFormSetIndexJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
@@ -4010,7 +4262,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexObjective"))
 """
-function PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) end
+function PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, obj::external)
+    error("PetscWeakFormSetIndexObjective: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, obj::external )
 
@@ -4031,7 +4285,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexResidual"))
 """
-function PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) end
+function PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, i0::Integer, f0::external, i1::Integer, f1::external)
+    error("PetscWeakFormSetIndexResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i0::$PetscInt, f0::external, i1::$PetscInt, f1::external )
 
@@ -4052,7 +4308,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexRiemannSolver"))
 """
-function PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) end
+function PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, i::Integer, r::external)
+    error("PetscWeakFormSetIndexRiemannSolver: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetIndexRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i::$PetscInt, r::external )
 
@@ -4073,7 +4331,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobian"))
 """
-function PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormSetJacobian: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
 
@@ -4094,7 +4354,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobianPreconditioner"))
 """
-function PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Ptr{Cvoid}) end
+function PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, g0::Ptr{Cvoid})
+    error("PetscWeakFormSetJacobianPreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, g0::Ptr{Cvoid} )
 
@@ -4126,7 +4388,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscWeakFormSetNumFields"))
 """
-function PetscWeakFormSetNumFields(petsclib::PetscLibType, wf::PetscWeakForm, Nf::PetscInt) end
+function PetscWeakFormSetNumFields(petsclib::PetscLibType, wf::PetscWeakForm, Nf::Integer)
+    error("PetscWeakFormSetNumFields: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetNumFields(petsclib::$UnionPetscLib, wf::PetscWeakForm, Nf::$PetscInt )
 
@@ -4147,7 +4411,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetObjective"))
 """
-function PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, obj::Ptr{Cvoid}) end
+function PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, obj::Ptr{Cvoid})
+    error("PetscWeakFormSetObjective: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, obj::Ptr{Cvoid} )
 
@@ -4168,7 +4434,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetResidual"))
 """
-function PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, f0::Ptr{Cvoid}) end
+function PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, f0::Ptr{Cvoid})
+    error("PetscWeakFormSetResidual: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, f0::Ptr{Cvoid} )
 
@@ -4189,7 +4457,9 @@ end
 # External Links
 $(_doc_external("DT/PetscWeakFormSetRiemannSolver"))
 """
-function PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, r::Ptr{Cvoid}) end
+function PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, r::Ptr{Cvoid})
+    error("PetscWeakFormSetRiemannSolver: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormSetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, r::Ptr{Cvoid} )
 
@@ -4221,7 +4491,9 @@ Level: developer
 # External Links
 $(_doc_external("DT/PetscWeakFormView"))
 """
-function PetscWeakFormView(petsclib::PetscLibType, wf::PetscWeakForm, v::PetscViewer) end
+function PetscWeakFormView(petsclib::PetscLibType, wf::PetscWeakForm, v::PetscViewer)
+    error("PetscWeakFormView: no generated method for these argument types")
+end
 
 @for_petsc function PetscWeakFormView(petsclib::$UnionPetscLib, wf::PetscWeakForm, v::PetscViewer )
 

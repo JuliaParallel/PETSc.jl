@@ -20,7 +20,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenApply"))
 """
-function MatCoarsenApply(petsclib::PetscLibType, coarser::MatCoarsen) end
+function MatCoarsenApply(petsclib::PetscLibType, coarser::MatCoarsen)
+    error("MatCoarsenApply: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenApply(petsclib::$UnionPetscLib, coarser::MatCoarsen )
 
@@ -55,7 +57,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenCreate"))
 """
-function MatCoarsenCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function MatCoarsenCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("MatCoarsenCreate: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	newcrs_ = Ref{MatCoarsen}()
@@ -88,7 +92,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenDestroy"))
 """
-function MatCoarsenDestroy(petsclib::PetscLibType, agg::Union{MatCoarsen, Ref{MatCoarsen}}) end
+function MatCoarsenDestroy(petsclib::PetscLibType, agg::Union{MatCoarsen, Ref{MatCoarsen}})
+    error("MatCoarsenDestroy: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenDestroy(petsclib::$UnionPetscLib, agg::Union{MatCoarsen, Ref{MatCoarsen}} )
 	agg_ = agg isa Base.RefValue ? agg : Ref{MatCoarsen}(agg)
@@ -123,7 +129,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenGetData"))
 """
-function MatCoarsenGetData(petsclib::PetscLibType, coarser::MatCoarsen) end
+function MatCoarsenGetData(petsclib::PetscLibType, coarser::MatCoarsen)
+    error("MatCoarsenGetData: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenGetData(petsclib::$UnionPetscLib, coarser::MatCoarsen )
 	llist_ = Ref{Ptr{PetscCoarsenData}}()
@@ -160,7 +168,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenGetType"))
 """
-function MatCoarsenGetType(petsclib::PetscLibType, coarsen::MatCoarsen) end
+function MatCoarsenGetType(petsclib::PetscLibType, coarsen::MatCoarsen)
+    error("MatCoarsenGetType: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenGetType(petsclib::$UnionPetscLib, coarsen::MatCoarsen )
 	type_ = Ref{MatCoarsenType}()
@@ -198,7 +208,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenMISKGetDistance"))
 """
-function MatCoarsenMISKGetDistance(petsclib::PetscLibType, crs::MatCoarsen) end
+function MatCoarsenMISKGetDistance(petsclib::PetscLibType, crs::MatCoarsen)
+    error("MatCoarsenMISKGetDistance: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenMISKGetDistance(petsclib::$UnionPetscLib, crs::MatCoarsen )
 	k_ = Ref{$PetscInt}()
@@ -237,7 +249,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenMISKSetDistance"))
 """
-function MatCoarsenMISKSetDistance(petsclib::PetscLibType, crs::MatCoarsen, k::PetscInt) end
+function MatCoarsenMISKSetDistance(petsclib::PetscLibType, crs::MatCoarsen, k::Integer)
+    error("MatCoarsenMISKSetDistance: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenMISKSetDistance(petsclib::$UnionPetscLib, crs::MatCoarsen, k::$PetscInt )
 
@@ -269,7 +283,9 @@ Level: developer
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenRegister"))
 """
-function MatCoarsenRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function MatCoarsenRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("MatCoarsenRegister: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -301,7 +317,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetAdjacency"))
 """
-function MatCoarsenSetAdjacency(petsclib::PetscLibType, agg::MatCoarsen, adj::AbstractPetscMat) end
+function MatCoarsenSetAdjacency(petsclib::PetscLibType, agg::MatCoarsen, adj::AbstractPetscMat)
+    error("MatCoarsenSetAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetAdjacency(petsclib::$UnionPetscLib, agg::MatCoarsen, adj::AbstractPetscMat )
 
@@ -337,7 +355,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetFromOptions"))
 """
-function MatCoarsenSetFromOptions(petsclib::PetscLibType, coarser::MatCoarsen) end
+function MatCoarsenSetFromOptions(petsclib::PetscLibType, coarser::MatCoarsen)
+    error("MatCoarsenSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetFromOptions(petsclib::$UnionPetscLib, coarser::MatCoarsen )
 
@@ -369,7 +389,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetGreedyOrdering"))
 """
-function MatCoarsenSetGreedyOrdering(petsclib::PetscLibType, coarser::MatCoarsen, perm::AbstractIS) end
+function MatCoarsenSetGreedyOrdering(petsclib::PetscLibType, coarser::MatCoarsen, perm::AbstractIS)
+    error("MatCoarsenSetGreedyOrdering: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetGreedyOrdering(petsclib::$UnionPetscLib, coarser::MatCoarsen, perm::AbstractIS )
 
@@ -404,7 +426,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetMaximumIterations"))
 """
-function MatCoarsenSetMaximumIterations(petsclib::PetscLibType, coarse::MatCoarsen, n::PetscInt) end
+function MatCoarsenSetMaximumIterations(petsclib::PetscLibType, coarse::MatCoarsen, n::Integer)
+    error("MatCoarsenSetMaximumIterations: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetMaximumIterations(petsclib::$UnionPetscLib, coarse::MatCoarsen, n::$PetscInt )
 
@@ -440,7 +464,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetStrengthIndex"))
 """
-function MatCoarsenSetStrengthIndex(petsclib::PetscLibType, coarse::MatCoarsen, n::PetscInt, idx::Vector{PetscInt}) end
+function MatCoarsenSetStrengthIndex(petsclib::PetscLibType, coarse::MatCoarsen, n::Integer, idx::AbstractVector{<:Number})
+    error("MatCoarsenSetStrengthIndex: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetStrengthIndex(petsclib::$UnionPetscLib, coarse::MatCoarsen, n::$PetscInt, idx::Vector{$PetscInt} )
 
@@ -472,7 +498,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetStrictAggs"))
 """
-function MatCoarsenSetStrictAggs(petsclib::PetscLibType, agg::MatCoarsen, str::PetscBool) end
+function MatCoarsenSetStrictAggs(petsclib::PetscLibType, agg::MatCoarsen, str::PetscBool)
+    error("MatCoarsenSetStrictAggs: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetStrictAggs(petsclib::$UnionPetscLib, agg::MatCoarsen, str::PetscBool )
 
@@ -507,7 +535,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetThreshold"))
 """
-function MatCoarsenSetThreshold(petsclib::PetscLibType, coarse::MatCoarsen, b::PetscReal) end
+function MatCoarsenSetThreshold(petsclib::PetscLibType, coarse::MatCoarsen, b::Real)
+    error("MatCoarsenSetThreshold: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetThreshold(petsclib::$UnionPetscLib, coarse::MatCoarsen, b::$PetscReal )
 
@@ -542,7 +572,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetType"))
 """
-function MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::MatCoarsenType) end
+function MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::MatCoarsenType)
+    error("MatCoarsenSetType: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenSetType(petsclib::$UnionPetscLib, coarser::MatCoarsen, type::MatCoarsenType )
 
@@ -576,7 +608,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenView"))
 """
-function MatCoarsenView(petsclib::PetscLibType, agg::MatCoarsen, viewer::PetscViewer) end
+function MatCoarsenView(petsclib::PetscLibType, agg::MatCoarsen, viewer::PetscViewer)
+    error("MatCoarsenView: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenView(petsclib::$UnionPetscLib, agg::MatCoarsen, viewer::PetscViewer )
 
@@ -610,7 +644,9 @@ Options Database Key:
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenViewFromOptions"))
 """
-function MatCoarsenViewFromOptions(petsclib::PetscLibType, A::MatCoarsen, obj, name::String) end
+function MatCoarsenViewFromOptions(petsclib::PetscLibType, A::MatCoarsen, obj, name::String)
+    error("MatCoarsenViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function MatCoarsenViewFromOptions(petsclib::$UnionPetscLib, A::MatCoarsen, obj, name::String )
 
@@ -646,7 +682,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringApply"))
 """
-function MatColoringApply(petsclib::PetscLibType, mc::MatColoring) end
+function MatColoringApply(petsclib::PetscLibType, mc::MatColoring)
+    error("MatColoringApply: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringApply(petsclib::$UnionPetscLib, mc::MatColoring )
 	coloring_ = Ref{ISColoring}()
@@ -690,7 +728,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringCreate"))
 """
-function MatColoringCreate(petsclib::PetscLibType, m::AbstractPetscMat) end
+function MatColoringCreate(petsclib::PetscLibType, m::AbstractPetscMat)
+    error("MatColoringCreate: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringCreate(petsclib::$UnionPetscLib, m::AbstractPetscMat )
 	mcptr_ = Ref{MatColoring}()
@@ -713,7 +753,9 @@ end
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringCreateWeights"))
 """
-function MatColoringCreateWeights(petsclib::PetscLibType, mc::MatColoring, weights::PetscReal, lperm::PetscInt) end
+function MatColoringCreateWeights(petsclib::PetscLibType, mc::MatColoring, weights::Real, lperm::Integer)
+    error("MatColoringCreateWeights: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringCreateWeights(petsclib::$UnionPetscLib, mc::MatColoring, weights::$PetscReal, lperm::$PetscInt )
 
@@ -744,7 +786,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringDestroy"))
 """
-function MatColoringDestroy(petsclib::PetscLibType, mc::Union{MatColoring, Ref{MatColoring}}) end
+function MatColoringDestroy(petsclib::PetscLibType, mc::Union{MatColoring, Ref{MatColoring}})
+    error("MatColoringDestroy: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringDestroy(petsclib::$UnionPetscLib, mc::Union{MatColoring, Ref{MatColoring}} )
 	mc_ = mc isa Base.RefValue ? mc : Ref{MatColoring}(mc)
@@ -766,7 +810,9 @@ end
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringGetDegrees"))
 """
-function MatColoringGetDegrees(petsclib::PetscLibType, G::AbstractPetscMat, distance::PetscInt) end
+function MatColoringGetDegrees(petsclib::PetscLibType, G::AbstractPetscMat, distance::Integer)
+    error("MatColoringGetDegrees: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringGetDegrees(petsclib::$UnionPetscLib, G::AbstractPetscMat, distance::$PetscInt )
 	degrees_ = Ref{$PetscInt}()
@@ -802,7 +848,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringGetDistance"))
 """
-function MatColoringGetDistance(petsclib::PetscLibType, mc::MatColoring) end
+function MatColoringGetDistance(petsclib::PetscLibType, mc::MatColoring)
+    error("MatColoringGetDistance: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringGetDistance(petsclib::$UnionPetscLib, mc::MatColoring )
 	dist_ = Ref{$PetscInt}()
@@ -838,7 +886,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringGetMaxColors"))
 """
-function MatColoringGetMaxColors(petsclib::PetscLibType, mc::MatColoring) end
+function MatColoringGetMaxColors(petsclib::PetscLibType, mc::MatColoring)
+    error("MatColoringGetMaxColors: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringGetMaxColors(petsclib::$UnionPetscLib, mc::MatColoring )
 	maxcolors_ = Ref{$PetscInt}()
@@ -878,7 +928,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatColoringPatch"))
 """
-function MatColoringPatch(petsclib::PetscLibType, mat::AbstractPetscMat, ncolors::PetscInt, n::PetscInt, colorarray::Vector{ISColoringValue}) end
+function MatColoringPatch(petsclib::PetscLibType, mat::AbstractPetscMat, ncolors::Integer, n::Integer, colorarray::Vector{ISColoringValue})
+    error("MatColoringPatch: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringPatch(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ncolors::$PetscInt, n::$PetscInt, colorarray::Vector{ISColoringValue} )
 	iscoloring_ = Ref{ISColoring}()
@@ -912,7 +964,9 @@ Level: developer
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringRegister"))
 """
-function MatColoringRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function MatColoringRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("MatColoringRegister: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -947,7 +1001,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetDistance"))
 """
-function MatColoringSetDistance(petsclib::PetscLibType, mc::MatColoring, dist::PetscInt) end
+function MatColoringSetDistance(petsclib::PetscLibType, mc::MatColoring, dist::Integer)
+    error("MatColoringSetDistance: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringSetDistance(petsclib::$UnionPetscLib, mc::MatColoring, dist::$PetscInt )
 
@@ -986,7 +1042,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetFromOptions"))
 """
-function MatColoringSetFromOptions(petsclib::PetscLibType, mc::MatColoring) end
+function MatColoringSetFromOptions(petsclib::PetscLibType, mc::MatColoring)
+    error("MatColoringSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringSetFromOptions(petsclib::$UnionPetscLib, mc::MatColoring )
 
@@ -1018,7 +1076,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetMaxColors"))
 """
-function MatColoringSetMaxColors(petsclib::PetscLibType, mc::MatColoring, maxcolors::PetscInt) end
+function MatColoringSetMaxColors(petsclib::PetscLibType, mc::MatColoring, maxcolors::Integer)
+    error("MatColoringSetMaxColors: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringSetMaxColors(petsclib::$UnionPetscLib, mc::MatColoring, maxcolors::$PetscInt )
 
@@ -1053,7 +1113,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetType"))
 """
-function MatColoringSetType(petsclib::PetscLibType, mc::MatColoring, type::MatColoringType) end
+function MatColoringSetType(petsclib::PetscLibType, mc::MatColoring, type::MatColoringType)
+    error("MatColoringSetType: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringSetType(petsclib::$UnionPetscLib, mc::MatColoring, type::MatColoringType )
 
@@ -1085,7 +1147,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetWeightType"))
 """
-function MatColoringSetWeightType(petsclib::PetscLibType, mc::MatColoring, wt::MatColoringWeightType) end
+function MatColoringSetWeightType(petsclib::PetscLibType, mc::MatColoring, wt::MatColoringWeightType)
+    error("MatColoringSetWeightType: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringSetWeightType(petsclib::$UnionPetscLib, mc::MatColoring, wt::MatColoringWeightType )
 
@@ -1106,7 +1170,9 @@ end
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetWeights"))
 """
-function MatColoringSetWeights(petsclib::PetscLibType, mc::MatColoring) end
+function MatColoringSetWeights(petsclib::PetscLibType, mc::MatColoring)
+    error("MatColoringSetWeights: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringSetWeights(petsclib::$UnionPetscLib, mc::MatColoring )
 	weights_ = Ref{$PetscReal}()
@@ -1142,7 +1208,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringView"))
 """
-function MatColoringView(petsclib::PetscLibType, mc::MatColoring, viewer::PetscViewer) end
+function MatColoringView(petsclib::PetscLibType, mc::MatColoring, viewer::PetscViewer)
+    error("MatColoringView: no generated method for these argument types")
+end
 
 @for_petsc function MatColoringView(petsclib::$UnionPetscLib, mc::MatColoring, viewer::PetscViewer )
 
@@ -1183,7 +1251,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatFD/MatFDColoringApply"))
 """
-function MatFDColoringApply(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Ptr{Cvoid}) end
+function MatFDColoringApply(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Ptr{Cvoid})
+    error("MatFDColoringApply: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringApply(petsclib::$UnionPetscLib, J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Ptr{Cvoid} )
 
@@ -1221,7 +1291,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatFD/MatFDColoringCreate"))
 """
-function MatFDColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring) end
+function MatFDColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring)
+    error("MatFDColoringCreate: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringCreate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring )
 	color_ = Ref{MatFDColoring}()
@@ -1255,7 +1327,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatFD/MatFDColoringDestroy"))
 """
-function MatFDColoringDestroy(petsclib::PetscLibType, c::Union{MatFDColoring, Ref{MatFDColoring}}) end
+function MatFDColoringDestroy(petsclib::PetscLibType, c::Union{MatFDColoring, Ref{MatFDColoring}})
+    error("MatFDColoringDestroy: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringDestroy(petsclib::$UnionPetscLib, c::Union{MatFDColoring, Ref{MatFDColoring}} )
 	c_ = c isa Base.RefValue ? c : Ref{MatFDColoring}(c)
@@ -1291,7 +1365,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatFD/MatFDColoringGetFunction"))
 """
-function MatFDColoringGetFunction(petsclib::PetscLibType, matfd::MatFDColoring) end
+function MatFDColoringGetFunction(petsclib::PetscLibType, matfd::MatFDColoring)
+    error("MatFDColoringGetFunction: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringGetFunction(petsclib::$UnionPetscLib, matfd::MatFDColoring )
 	f_ = Ref{Ptr{Cvoid}}()
@@ -1331,7 +1407,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatFD/MatFDColoringGetPerturbedColumns"))
 """
-function MatFDColoringGetPerturbedColumns(petsclib::PetscLibType, coloring::MatFDColoring) end
+function MatFDColoringGetPerturbedColumns(petsclib::PetscLibType, coloring::MatFDColoring)
+    error("MatFDColoringGetPerturbedColumns: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringGetPerturbedColumns(petsclib::$UnionPetscLib, coloring::MatFDColoring )
 	n_ = Ref{$PetscInt}()
@@ -1368,7 +1446,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetBlockSize"))
 """
-function MatFDColoringSetBlockSize(petsclib::PetscLibType, matfd::MatFDColoring, brows::PetscInt, bcols::PetscInt) end
+function MatFDColoringSetBlockSize(petsclib::PetscLibType, matfd::MatFDColoring, brows::Integer, bcols::Integer)
+    error("MatFDColoringSetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetBlockSize(petsclib::$UnionPetscLib, matfd::MatFDColoring, brows::$PetscInt, bcols::$PetscInt )
 
@@ -1389,7 +1469,9 @@ end
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetF"))
 """
-function MatFDColoringSetF(petsclib::PetscLibType, fd::MatFDColoring, F::AbstractPetscVec) end
+function MatFDColoringSetF(petsclib::PetscLibType, fd::MatFDColoring, F::AbstractPetscVec)
+    error("MatFDColoringSetF: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetF(petsclib::$UnionPetscLib, fd::MatFDColoring, F::AbstractPetscVec )
 
@@ -1417,7 +1499,9 @@ The Jacobian, F'(u), is estimated with the differencing approximation
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetFromOptions"))
 """
-function MatFDColoringSetFromOptions(petsclib::PetscLibType, matfd::MatFDColoring) end
+function MatFDColoringSetFromOptions(petsclib::PetscLibType, matfd::MatFDColoring)
+    error("MatFDColoringSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetFromOptions(petsclib::$UnionPetscLib, matfd::MatFDColoring )
 
@@ -1450,7 +1534,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetFunction"))
 """
-function MatFDColoringSetFunction(petsclib::PetscLibType, matfd::MatFDColoring, f::Ptr{Cvoid}, fctx::Ptr{Cvoid}) end
+function MatFDColoringSetFunction(petsclib::PetscLibType, matfd::MatFDColoring, f::Ptr{Cvoid}, fctx::Ptr{Cvoid})
+    error("MatFDColoringSetFunction: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetFunction(petsclib::$UnionPetscLib, matfd::MatFDColoring, f::Ptr{Cvoid}, fctx::Ptr{Cvoid} )
 
@@ -1484,7 +1570,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetParameters"))
 """
-function MatFDColoringSetParameters(petsclib::PetscLibType, matfd::MatFDColoring, error::PetscReal, umin::PetscReal) end
+function MatFDColoringSetParameters(petsclib::PetscLibType, matfd::MatFDColoring, error::Real, umin::Real)
+    error("MatFDColoringSetParameters: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetParameters(petsclib::$UnionPetscLib, matfd::MatFDColoring, error::$PetscReal, umin::$PetscReal )
 
@@ -1519,7 +1607,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetType"))
 """
-function MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type::MatMFFDType) end
+function MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type::MatMFFDType)
+    error("MatFDColoringSetType: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetType(petsclib::$UnionPetscLib, matfd::MatFDColoring, type::MatMFFDType )
 
@@ -1552,7 +1642,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetUp"))
 """
-function MatFDColoringSetUp(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring) end
+function MatFDColoringSetUp(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring)
+    error("MatFDColoringSetUp: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetUp(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring )
 
@@ -1586,7 +1678,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFDColoringSetValues"))
 """
-function MatFDColoringSetValues(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{PetscScalar}) end
+function MatFDColoringSetValues(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, y::AbstractVector{<:Number})
+    error("MatFDColoringSetValues: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringSetValues(petsclib::$UnionPetscLib, J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{$PetscScalar} )
 
@@ -1621,7 +1715,9 @@ See also:
 # External Links
 $(_doc_external("DM/MatFDColoringUseDM"))
 """
-function MatFDColoringUseDM(petsclib::PetscLibType, coloring::AbstractPetscMat, fdcoloring::MatFDColoring) end
+function MatFDColoringUseDM(petsclib::PetscLibType, coloring::AbstractPetscMat, fdcoloring::MatFDColoring)
+    error("MatFDColoringUseDM: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringUseDM(petsclib::$UnionPetscLib, coloring::AbstractPetscMat, fdcoloring::MatFDColoring )
 
@@ -1653,7 +1749,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatFD/MatFDColoringView"))
 """
-function MatFDColoringView(petsclib::PetscLibType, c::MatFDColoring, viewer::PetscViewer) end
+function MatFDColoringView(petsclib::PetscLibType, c::MatFDColoring, viewer::PetscViewer)
+    error("MatFDColoringView: no generated method for these argument types")
+end
 
 @for_petsc function MatFDColoringView(petsclib::$UnionPetscLib, c::MatFDColoring, viewer::PetscViewer )
 
@@ -1691,7 +1789,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDCheckPositivity"))
 """
-function MatMFFDCheckPositivity(petsclib::PetscLibType, dummy::Ptr{Cvoid}, U::AbstractPetscVec, a::AbstractPetscVec) end
+function MatMFFDCheckPositivity(petsclib::PetscLibType, dummy::Ptr{Cvoid}, U::AbstractPetscVec, a::AbstractPetscVec)
+    error("MatMFFDCheckPositivity: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDCheckPositivity(petsclib::$UnionPetscLib, dummy::Ptr{Cvoid}, U::AbstractPetscVec, a::AbstractPetscVec )
 	h_ = Ref{$PetscScalar}()
@@ -1734,7 +1834,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/MatMFFDComputeJacobian"))
 """
-function MatMFFDComputeJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid}) end
+function MatMFFDComputeJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid})
+    error("MatMFFDComputeJacobian: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid} )
 
@@ -1766,7 +1868,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDDSSetUmin"))
 """
-function MatMFFDDSSetUmin(petsclib::PetscLibType, A::AbstractPetscMat, umin::PetscReal) end
+function MatMFFDDSSetUmin(petsclib::PetscLibType, A::AbstractPetscMat, umin::Real)
+    error("MatMFFDDSSetUmin: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDDSSetUmin(petsclib::$UnionPetscLib, A::AbstractPetscMat, umin::$PetscReal )
 
@@ -1793,7 +1897,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMFFDFinalizePackage"))
 """
-function MatMFFDFinalizePackage(petsclib::PetscLibType) end
+function MatMFFDFinalizePackage(petsclib::PetscLibType)
+    error("MatMFFDFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -1827,7 +1933,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDGetH"))
 """
-function MatMFFDGetH(petsclib::PetscLibType, mat::AbstractPetscMat) end
+function MatMFFDGetH(petsclib::PetscLibType, mat::AbstractPetscMat)
+    error("MatMFFDGetH: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDGetH(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	h_ = Ref{$PetscScalar}()
@@ -1856,7 +1964,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMFFDInitializePackage"))
 """
-function MatMFFDInitializePackage(petsclib::PetscLibType) end
+function MatMFFDInitializePackage(petsclib::PetscLibType)
+    error("MatMFFDInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDInitializePackage(petsclib::$UnionPetscLib)
 
@@ -1887,7 +1997,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMFFDRegister"))
 """
-function MatMFFDRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function MatMFFDRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("MatMFFDRegister: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -1920,7 +2032,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDResetHHistory"))
 """
-function MatMFFDResetHHistory(petsclib::PetscLibType, J::AbstractPetscMat) end
+function MatMFFDResetHHistory(petsclib::PetscLibType, J::AbstractPetscMat)
+    error("MatMFFDResetHHistory: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDResetHHistory(petsclib::$UnionPetscLib, J::AbstractPetscMat )
 
@@ -1954,7 +2068,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetBase"))
 """
-function MatMFFDSetBase(petsclib::PetscLibType, J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec) end
+function MatMFFDSetBase(petsclib::PetscLibType, J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec)
+    error("MatMFFDSetBase: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetBase(petsclib::$UnionPetscLib, J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec )
 
@@ -1991,7 +2107,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetCheckh"))
 """
-function MatMFFDSetCheckh(petsclib::PetscLibType, J::AbstractPetscMat, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function MatMFFDSetCheckh(petsclib::PetscLibType, J::AbstractPetscMat, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("MatMFFDSetCheckh: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetCheckh(petsclib::$UnionPetscLib, J::AbstractPetscMat, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -2025,7 +2143,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunction"))
 """
-function MatMFFDSetFunction(petsclib::PetscLibType, mat::AbstractPetscMat, func::Ptr{Cvoid}, funcctx::Ptr{Cvoid}) end
+function MatMFFDSetFunction(petsclib::PetscLibType, mat::AbstractPetscMat, func::Ptr{Cvoid}, funcctx::Ptr{Cvoid})
+    error("MatMFFDSetFunction: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetFunction(petsclib::$UnionPetscLib, mat::AbstractPetscMat, func::Ptr{Cvoid}, funcctx::Ptr{Cvoid} )
 
@@ -2061,7 +2181,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunctionError"))
 """
-function MatMFFDSetFunctionError(petsclib::PetscLibType, mat::AbstractPetscMat, error::PetscReal) end
+function MatMFFDSetFunctionError(petsclib::PetscLibType, mat::AbstractPetscMat, error::Real)
+    error("MatMFFDSetFunctionError: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetFunctionError(petsclib::$UnionPetscLib, mat::AbstractPetscMat, error::$PetscReal )
 
@@ -2094,7 +2216,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunctioni"))
 """
-function MatMFFDSetFunctioni(petsclib::PetscLibType, mat::AbstractPetscMat, funci::Ptr{Cvoid}) end
+function MatMFFDSetFunctioni(petsclib::PetscLibType, mat::AbstractPetscMat, funci::Ptr{Cvoid})
+    error("MatMFFDSetFunctioni: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetFunctioni(petsclib::$UnionPetscLib, mat::AbstractPetscMat, funci::Ptr{Cvoid} )
 
@@ -2127,7 +2251,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunctioniBase"))
 """
-function MatMFFDSetFunctioniBase(petsclib::PetscLibType, mat::AbstractPetscMat, func::Ptr{Cvoid}) end
+function MatMFFDSetFunctioniBase(petsclib::PetscLibType, mat::AbstractPetscMat, func::Ptr{Cvoid})
+    error("MatMFFDSetFunctioniBase: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetFunctioniBase(petsclib::$UnionPetscLib, mat::AbstractPetscMat, func::Ptr{Cvoid} )
 
@@ -2163,7 +2289,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetHHistory"))
 """
-function MatMFFDSetHHistory(petsclib::PetscLibType, J::AbstractPetscMat, history::Vector{PetscScalar}, nhistory::PetscInt) end
+function MatMFFDSetHHistory(petsclib::PetscLibType, J::AbstractPetscMat, history::AbstractVector{<:Number}, nhistory::Integer)
+    error("MatMFFDSetHHistory: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetHHistory(petsclib::$UnionPetscLib, J::AbstractPetscMat, history::Vector{$PetscScalar}, nhistory::$PetscInt )
 
@@ -2194,7 +2322,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatMFFDSetOptionsPrefix"))
 """
-function MatMFFDSetOptionsPrefix(petsclib::PetscLibType, mat::AbstractPetscMat, prefix::String) end
+function MatMFFDSetOptionsPrefix(petsclib::PetscLibType, mat::AbstractPetscMat, prefix::String)
+    error("MatMFFDSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetOptionsPrefix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, prefix::String )
 
@@ -2230,7 +2360,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetPeriod"))
 """
-function MatMFFDSetPeriod(petsclib::PetscLibType, mat::AbstractPetscMat, period::PetscInt) end
+function MatMFFDSetPeriod(petsclib::PetscLibType, mat::AbstractPetscMat, period::Integer)
+    error("MatMFFDSetPeriod: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetPeriod(petsclib::$UnionPetscLib, mat::AbstractPetscMat, period::$PetscInt )
 
@@ -2262,7 +2394,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetType"))
 """
-function MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatMFFDType) end
+function MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatMFFDType)
+    error("MatMFFDSetType: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ftype::MatMFFDType )
 
@@ -2298,7 +2432,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDWPSetComputeNormU"))
 """
-function MatMFFDWPSetComputeNormU(petsclib::PetscLibType, A::AbstractPetscMat, flag::PetscBool) end
+function MatMFFDWPSetComputeNormU(petsclib::PetscLibType, A::AbstractPetscMat, flag::PetscBool)
+    error("MatMFFDWPSetComputeNormU: no generated method for these argument types")
+end
 
 @for_petsc function MatMFFDWPSetComputeNormU(petsclib::$UnionPetscLib, A::AbstractPetscMat, flag::PetscBool )
 
@@ -2338,7 +2474,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceCreate"))
 """
-function MatNullSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm, has_cnst::PetscBool, n::PetscInt, vecs::Vector{<:AbstractPetscVec}) end
+function MatNullSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm, has_cnst::PetscBool, n::Integer, vecs::Vector{<:AbstractPetscVec})
+    error("MatNullSpaceCreate: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, has_cnst::PetscBool, n::$PetscInt, vecs::Vector{<:AbstractPetscVec} )
 	SP_ = Ref{MatNullSpace}()
@@ -2374,7 +2512,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceCreateRigidBody"))
 """
-function MatNullSpaceCreateRigidBody(petsclib::PetscLibType, coords::AbstractPetscVec) end
+function MatNullSpaceCreateRigidBody(petsclib::PetscLibType, coords::AbstractPetscVec)
+    error("MatNullSpaceCreateRigidBody: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceCreateRigidBody(petsclib::$UnionPetscLib, coords::AbstractPetscVec )
 	sp_ = Ref{MatNullSpace}()
@@ -2407,7 +2547,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceDestroy"))
 """
-function MatNullSpaceDestroy(petsclib::PetscLibType, sp::Union{MatNullSpace, Ref{MatNullSpace}}) end
+function MatNullSpaceDestroy(petsclib::PetscLibType, sp::Union{MatNullSpace, Ref{MatNullSpace}})
+    error("MatNullSpaceDestroy: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceDestroy(petsclib::$UnionPetscLib, sp::Union{MatNullSpace, Ref{MatNullSpace}} )
 	sp_ = sp isa Base.RefValue ? sp : Ref{MatNullSpace}(sp)
@@ -2444,7 +2586,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatNullSpaceGetVecs"))
 """
-function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace) end
+function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace)
+    error("MatNullSpaceGetVecs: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::MatNullSpace )
 	has_const_ = Ref{PetscBool}()
@@ -2482,7 +2626,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceRemove"))
 """
-function MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::AbstractPetscVec) end
+function MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::AbstractPetscVec)
+    error("MatNullSpaceRemove: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceRemove(petsclib::$UnionPetscLib, sp::MatNullSpace, vec::AbstractPetscVec )
 
@@ -2516,7 +2662,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceSetFunction"))
 """
-function MatNullSpaceSetFunction(petsclib::PetscLibType, sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function MatNullSpaceSetFunction(petsclib::PetscLibType, sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("MatNullSpaceSetFunction: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceSetFunction(petsclib::$UnionPetscLib, sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -2551,7 +2699,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceTest"))
 """
-function MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::AbstractPetscMat) end
+function MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::AbstractPetscMat)
+    error("MatNullSpaceTest: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceTest(petsclib::$UnionPetscLib, sp::MatNullSpace, mat::AbstractPetscMat )
 	isNull_ = Ref{PetscBool}()
@@ -2585,7 +2735,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceView"))
 """
-function MatNullSpaceView(petsclib::PetscLibType, sp::MatNullSpace, viewer::PetscViewer) end
+function MatNullSpaceView(petsclib::PetscLibType, sp::MatNullSpace, viewer::PetscViewer)
+    error("MatNullSpaceView: no generated method for these argument types")
+end
 
 @for_petsc function MatNullSpaceView(petsclib::$UnionPetscLib, sp::MatNullSpace, viewer::PetscViewer )
 
@@ -2627,7 +2779,9 @@ The user can define additional partitionings; see `MatPartitioningRegister()`.
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningApply"))
 """
-function MatPartitioningApply(petsclib::PetscLibType, matp::MatPartitioning) end
+function MatPartitioningApply(petsclib::PetscLibType, matp::MatPartitioning)
+    error("MatPartitioningApply: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningApply(petsclib::$UnionPetscLib, matp::MatPartitioning )
 	partitioning_ = Ref{CIS}()
@@ -2666,7 +2820,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningApplyND"))
 """
-function MatPartitioningApplyND(petsclib::PetscLibType, matp::MatPartitioning) end
+function MatPartitioningApplyND(petsclib::PetscLibType, matp::MatPartitioning)
+    error("MatPartitioningApplyND: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningApplyND(petsclib::$UnionPetscLib, matp::MatPartitioning )
 	partitioning_ = Ref{CIS}()
@@ -2702,7 +2858,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetEigenNumber"))
 """
-function MatPartitioningChacoGetEigenNumber(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningChacoGetEigenNumber(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningChacoGetEigenNumber: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoGetEigenNumber(petsclib::$UnionPetscLib, part::MatPartitioning )
 	num_ = Ref{$PetscInt}()
@@ -2738,7 +2896,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetEigenSolver"))
 """
-function MatPartitioningChacoGetEigenSolver(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningChacoGetEigenSolver(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningChacoGetEigenSolver: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoGetEigenSolver(petsclib::$UnionPetscLib, part::MatPartitioning )
 	method_ = Ref{MPChacoEigenType}()
@@ -2774,7 +2934,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetEigenTol"))
 """
-function MatPartitioningChacoGetEigenTol(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningChacoGetEigenTol(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningChacoGetEigenTol: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoGetEigenTol(petsclib::$UnionPetscLib, part::MatPartitioning )
 	tol_ = Ref{$PetscReal}()
@@ -2810,7 +2972,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetGlobal"))
 """
-function MatPartitioningChacoGetGlobal(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningChacoGetGlobal(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningChacoGetGlobal: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoGetGlobal(petsclib::$UnionPetscLib, part::MatPartitioning )
 	method_ = Ref{MPChacoGlobalType}()
@@ -2846,7 +3010,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetLocal"))
 """
-function MatPartitioningChacoGetLocal(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningChacoGetLocal(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningChacoGetLocal: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoGetLocal(petsclib::$UnionPetscLib, part::MatPartitioning )
 	method_ = Ref{MPChacoLocalType}()
@@ -2884,7 +3050,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetCoarseLevel"))
 """
-function MatPartitioningChacoSetCoarseLevel(petsclib::PetscLibType, part::MatPartitioning, level::PetscReal) end
+function MatPartitioningChacoSetCoarseLevel(petsclib::PetscLibType, part::MatPartitioning, level::Real)
+    error("MatPartitioningChacoSetCoarseLevel: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoSetCoarseLevel(petsclib::$UnionPetscLib, part::MatPartitioning, level::$PetscReal )
 
@@ -2918,7 +3086,9 @@ Options Database Key:
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetEigenNumber"))
 """
-function MatPartitioningChacoSetEigenNumber(petsclib::PetscLibType, part::MatPartitioning, num::PetscInt) end
+function MatPartitioningChacoSetEigenNumber(petsclib::PetscLibType, part::MatPartitioning, num::Integer)
+    error("MatPartitioningChacoSetEigenNumber: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoSetEigenNumber(petsclib::$UnionPetscLib, part::MatPartitioning, num::$PetscInt )
 
@@ -2954,7 +3124,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetEigenSolver"))
 """
-function MatPartitioningChacoSetEigenSolver(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoEigenType) end
+function MatPartitioningChacoSetEigenSolver(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoEigenType)
+    error("MatPartitioningChacoSetEigenSolver: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoSetEigenSolver(petsclib::$UnionPetscLib, part::MatPartitioning, method::MPChacoEigenType )
 
@@ -2987,7 +3159,9 @@ Options Database Key:
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetEigenTol"))
 """
-function MatPartitioningChacoSetEigenTol(petsclib::PetscLibType, part::MatPartitioning, tol::PetscReal) end
+function MatPartitioningChacoSetEigenTol(petsclib::PetscLibType, part::MatPartitioning, tol::Real)
+    error("MatPartitioningChacoSetEigenTol: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoSetEigenTol(petsclib::$UnionPetscLib, part::MatPartitioning, tol::$PetscReal )
 
@@ -3023,7 +3197,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetGlobal"))
 """
-function MatPartitioningChacoSetGlobal(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoGlobalType) end
+function MatPartitioningChacoSetGlobal(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoGlobalType)
+    error("MatPartitioningChacoSetGlobal: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoSetGlobal(petsclib::$UnionPetscLib, part::MatPartitioning, method::MPChacoGlobalType )
 
@@ -3058,7 +3234,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetLocal"))
 """
-function MatPartitioningChacoSetLocal(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoLocalType) end
+function MatPartitioningChacoSetLocal(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoLocalType)
+    error("MatPartitioningChacoSetLocal: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningChacoSetLocal(petsclib::$UnionPetscLib, part::MatPartitioning, method::MPChacoLocalType )
 
@@ -3093,7 +3271,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningCreate"))
 """
-function MatPartitioningCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function MatPartitioningCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("MatPartitioningCreate: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	newp_ = Ref{MatPartitioning}()
@@ -3126,7 +3306,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningDestroy"))
 """
-function MatPartitioningDestroy(petsclib::PetscLibType, part::Union{MatPartitioning, Ref{MatPartitioning}}) end
+function MatPartitioningDestroy(petsclib::PetscLibType, part::Union{MatPartitioning, Ref{MatPartitioning}})
+    error("MatPartitioningDestroy: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningDestroy(petsclib::$UnionPetscLib, part::Union{MatPartitioning, Ref{MatPartitioning}} )
 	part_ = part isa Base.RefValue ? part : Ref{MatPartitioning}(part)
@@ -3162,7 +3344,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningGetType"))
 """
-function MatPartitioningGetType(petsclib::PetscLibType, partitioning::MatPartitioning) end
+function MatPartitioningGetType(petsclib::PetscLibType, partitioning::MatPartitioning)
+    error("MatPartitioningGetType: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningGetType(petsclib::$UnionPetscLib, partitioning::MatPartitioning )
 	type_ = Ref{MatPartitioningType}()
@@ -3199,7 +3383,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningGetUseEdgeWeights"))
 """
-function MatPartitioningGetUseEdgeWeights(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningGetUseEdgeWeights(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningGetUseEdgeWeights: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningGetUseEdgeWeights(petsclib::$UnionPetscLib, part::MatPartitioning )
 	use_edge_weights_ = Ref{PetscBool}()
@@ -3222,7 +3408,9 @@ end
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalGetCoarseparts"))
 """
-function MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType, part::MatPartitioning, coarseparts::AbstractIS) end
+function MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType, part::MatPartitioning, coarseparts::AbstractIS)
+    error("MatPartitioningHierarchicalGetCoarseparts: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningHierarchicalGetCoarseparts(petsclib::$UnionPetscLib, part::MatPartitioning, coarseparts::AbstractIS )
 	coarseparts_ = Ref(coarseparts.ptr)
@@ -3245,7 +3433,9 @@ end
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalGetFineparts"))
 """
-function MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::MatPartitioning, fineparts::AbstractIS) end
+function MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::MatPartitioning, fineparts::AbstractIS)
+    error("MatPartitioningHierarchicalGetFineparts: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningHierarchicalGetFineparts(petsclib::$UnionPetscLib, part::MatPartitioning, fineparts::AbstractIS )
 	fineparts_ = Ref(fineparts.ptr)
@@ -3268,7 +3458,9 @@ end
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalSetNcoarseparts"))
 """
-function MatPartitioningHierarchicalSetNcoarseparts(petsclib::PetscLibType, part::MatPartitioning, ncoarseparts::PetscInt) end
+function MatPartitioningHierarchicalSetNcoarseparts(petsclib::PetscLibType, part::MatPartitioning, ncoarseparts::Integer)
+    error("MatPartitioningHierarchicalSetNcoarseparts: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningHierarchicalSetNcoarseparts(petsclib::$UnionPetscLib, part::MatPartitioning, ncoarseparts::$PetscInt )
 
@@ -3289,7 +3481,9 @@ end
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalSetNfineparts"))
 """
-function MatPartitioningHierarchicalSetNfineparts(petsclib::PetscLibType, part::MatPartitioning, nfineparts::PetscInt) end
+function MatPartitioningHierarchicalSetNfineparts(petsclib::PetscLibType, part::MatPartitioning, nfineparts::Integer)
+    error("MatPartitioningHierarchicalSetNfineparts: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningHierarchicalSetNfineparts(petsclib::$UnionPetscLib, part::MatPartitioning, nfineparts::$PetscInt )
 
@@ -3327,7 +3521,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningImprove"))
 """
-function MatPartitioningImprove(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) end
+function MatPartitioningImprove(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS)
+    error("MatPartitioningImprove: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningImprove(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::AbstractIS )
 	partitioning_ = Ref(partitioning.ptr)
@@ -3364,7 +3560,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchGetImbalance"))
 """
-function MatPartitioningPTScotchGetImbalance(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningPTScotchGetImbalance(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningPTScotchGetImbalance: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPTScotchGetImbalance(petsclib::$UnionPetscLib, part::MatPartitioning )
 	imb_ = Ref{$PetscReal}()
@@ -3400,7 +3598,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchGetStrategy"))
 """
-function MatPartitioningPTScotchGetStrategy(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningPTScotchGetStrategy(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningPTScotchGetStrategy: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPTScotchGetStrategy(petsclib::$UnionPetscLib, part::MatPartitioning )
 	strategy_ = Ref{MPPTScotchStrategyType}()
@@ -3436,7 +3636,9 @@ Options Database Key:
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchSetImbalance"))
 """
-function MatPartitioningPTScotchSetImbalance(petsclib::PetscLibType, part::MatPartitioning, imb::PetscReal) end
+function MatPartitioningPTScotchSetImbalance(petsclib::PetscLibType, part::MatPartitioning, imb::Real)
+    error("MatPartitioningPTScotchSetImbalance: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPTScotchSetImbalance(petsclib::$UnionPetscLib, part::MatPartitioning, imb::$PetscReal )
 
@@ -3465,7 +3667,9 @@ Input Parameters:
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchSetStrategy"))
 """
-function MatPartitioningPTScotchSetStrategy(petsclib::PetscLibType, part::MatPartitioning, strategy::MPPTScotchStrategyType) end
+function MatPartitioningPTScotchSetStrategy(petsclib::PetscLibType, part::MatPartitioning, strategy::MPPTScotchStrategyType)
+    error("MatPartitioningPTScotchSetStrategy: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPTScotchSetStrategy(petsclib::$UnionPetscLib, part::MatPartitioning, strategy::MPPTScotchStrategyType )
 
@@ -3497,7 +3701,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningParmetisGetEdgeCut"))
 """
-function MatPartitioningParmetisGetEdgeCut(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningParmetisGetEdgeCut(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningParmetisGetEdgeCut: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningParmetisGetEdgeCut(petsclib::$UnionPetscLib, part::MatPartitioning )
 	cut_ = Ref{$PetscInt}()
@@ -3531,7 +3737,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningParmetisSetCoarseSequential"))
 """
-function MatPartitioningParmetisSetCoarseSequential(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningParmetisSetCoarseSequential(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningParmetisSetCoarseSequential: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningParmetisSetCoarseSequential(petsclib::$UnionPetscLib, part::MatPartitioning )
 
@@ -3563,7 +3771,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningParmetisSetRepartition"))
 """
-function MatPartitioningParmetisSetRepartition(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningParmetisSetRepartition(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningParmetisSetRepartition: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningParmetisSetRepartition(petsclib::$UnionPetscLib, part::MatPartitioning )
 
@@ -3598,7 +3808,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetBipart"))
 """
-function MatPartitioningPartySetBipart(petsclib::PetscLibType, part::MatPartitioning, bp::PetscBool) end
+function MatPartitioningPartySetBipart(petsclib::PetscLibType, part::MatPartitioning, bp::PetscBool)
+    error("MatPartitioningPartySetBipart: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPartySetBipart(petsclib::$UnionPetscLib, part::MatPartitioning, bp::PetscBool )
 
@@ -3634,7 +3846,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetCoarseLevel"))
 """
-function MatPartitioningPartySetCoarseLevel(petsclib::PetscLibType, part::MatPartitioning, level::PetscReal) end
+function MatPartitioningPartySetCoarseLevel(petsclib::PetscLibType, part::MatPartitioning, level::Real)
+    error("MatPartitioningPartySetCoarseLevel: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPartySetCoarseLevel(petsclib::$UnionPetscLib, part::MatPartitioning, level::$PetscReal )
 
@@ -3669,7 +3883,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetGlobal"))
 """
-function MatPartitioningPartySetGlobal(petsclib::PetscLibType, part::MatPartitioning, glob::String) end
+function MatPartitioningPartySetGlobal(petsclib::PetscLibType, part::MatPartitioning, glob::String)
+    error("MatPartitioningPartySetGlobal: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPartySetGlobal(petsclib::$UnionPetscLib, part::MatPartitioning, glob::String )
 
@@ -3704,7 +3920,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetLocal"))
 """
-function MatPartitioningPartySetLocal(petsclib::PetscLibType, part::MatPartitioning, loc::String) end
+function MatPartitioningPartySetLocal(petsclib::PetscLibType, part::MatPartitioning, loc::String)
+    error("MatPartitioningPartySetLocal: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPartySetLocal(petsclib::$UnionPetscLib, part::MatPartitioning, loc::String )
 
@@ -3740,7 +3958,9 @@ Level: advanced
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetMatchOptimization"))
 """
-function MatPartitioningPartySetMatchOptimization(petsclib::PetscLibType, part::MatPartitioning, opt::PetscBool) end
+function MatPartitioningPartySetMatchOptimization(petsclib::PetscLibType, part::MatPartitioning, opt::PetscBool)
+    error("MatPartitioningPartySetMatchOptimization: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningPartySetMatchOptimization(petsclib::$UnionPetscLib, part::MatPartitioning, opt::PetscBool )
 
@@ -3772,7 +3992,9 @@ Level: developer
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningRegister"))
 """
-function MatPartitioningRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function MatPartitioningRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("MatPartitioningRegister: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -3805,7 +4027,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetAdjacency"))
 """
-function MatPartitioningSetAdjacency(petsclib::PetscLibType, part::MatPartitioning, adj::AbstractPetscMat) end
+function MatPartitioningSetAdjacency(petsclib::PetscLibType, part::MatPartitioning, adj::AbstractPetscMat)
+    error("MatPartitioningSetAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetAdjacency(petsclib::$UnionPetscLib, part::MatPartitioning, adj::AbstractPetscMat )
 
@@ -3841,7 +4065,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetFromOptions"))
 """
-function MatPartitioningSetFromOptions(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningSetFromOptions(petsclib::PetscLibType, part::MatPartitioning)
+    error("MatPartitioningSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetFromOptions(petsclib::$UnionPetscLib, part::MatPartitioning )
 
@@ -3875,7 +4101,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetNParts"))
 """
-function MatPartitioningSetNParts(petsclib::PetscLibType, part::MatPartitioning, n::PetscInt) end
+function MatPartitioningSetNParts(petsclib::PetscLibType, part::MatPartitioning, n::Integer)
+    error("MatPartitioningSetNParts: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetNParts(petsclib::$UnionPetscLib, part::MatPartitioning, n::$PetscInt )
 
@@ -3907,7 +4135,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetNumberVertexWeights"))
 """
-function MatPartitioningSetNumberVertexWeights(petsclib::PetscLibType, partitioning::MatPartitioning, ncon::PetscInt) end
+function MatPartitioningSetNumberVertexWeights(petsclib::PetscLibType, partitioning::MatPartitioning, ncon::Integer)
+    error("MatPartitioningSetNumberVertexWeights: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetNumberVertexWeights(petsclib::$UnionPetscLib, partitioning::MatPartitioning, ncon::$PetscInt )
 
@@ -3944,7 +4174,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetPartitionWeights"))
 """
-function MatPartitioningSetPartitionWeights(petsclib::PetscLibType, part::MatPartitioning, weights::Vector{PetscReal}) end
+function MatPartitioningSetPartitionWeights(petsclib::PetscLibType, part::MatPartitioning, weights::AbstractVector{<:Number})
+    error("MatPartitioningSetPartitionWeights: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetPartitionWeights(petsclib::$UnionPetscLib, part::MatPartitioning, weights::Vector{$PetscReal} )
 
@@ -3979,7 +4211,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetType"))
 """
-function MatPartitioningSetType(petsclib::PetscLibType, part::MatPartitioning, type::MatPartitioningType) end
+function MatPartitioningSetType(petsclib::PetscLibType, part::MatPartitioning, type::MatPartitioningType)
+    error("MatPartitioningSetType: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetType(petsclib::$UnionPetscLib, part::MatPartitioning, type::MatPartitioningType )
 
@@ -4016,7 +4250,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetUseEdgeWeights"))
 """
-function MatPartitioningSetUseEdgeWeights(petsclib::PetscLibType, part::MatPartitioning, use_edge_weights::PetscBool) end
+function MatPartitioningSetUseEdgeWeights(petsclib::PetscLibType, part::MatPartitioning, use_edge_weights::PetscBool)
+    error("MatPartitioningSetUseEdgeWeights: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetUseEdgeWeights(petsclib::$UnionPetscLib, part::MatPartitioning, use_edge_weights::PetscBool )
 
@@ -4049,7 +4285,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetVertexWeights"))
 """
-function MatPartitioningSetVertexWeights(petsclib::PetscLibType, part::MatPartitioning, weights::Vector{PetscInt}) end
+function MatPartitioningSetVertexWeights(petsclib::PetscLibType, part::MatPartitioning, weights::AbstractVector{<:Number})
+    error("MatPartitioningSetVertexWeights: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningSetVertexWeights(petsclib::$UnionPetscLib, part::MatPartitioning, weights::Vector{$PetscInt} )
 
@@ -4081,7 +4319,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningView"))
 """
-function MatPartitioningView(petsclib::PetscLibType, part::MatPartitioning, viewer::PetscViewer) end
+function MatPartitioningView(petsclib::PetscLibType, part::MatPartitioning, viewer::PetscViewer)
+    error("MatPartitioningView: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningView(petsclib::$UnionPetscLib, part::MatPartitioning, viewer::PetscViewer )
 
@@ -4117,7 +4357,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningViewFromOptions"))
 """
-function MatPartitioningViewFromOptions(petsclib::PetscLibType, A::MatPartitioning, obj, name::String) end
+function MatPartitioningViewFromOptions(petsclib::PetscLibType, A::MatPartitioning, obj, name::String)
+    error("MatPartitioningViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningViewFromOptions(petsclib::$UnionPetscLib, A::MatPartitioning, obj, name::String )
 
@@ -4152,7 +4394,9 @@ Level: beginner
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningViewImbalance"))
 """
-function MatPartitioningViewImbalance(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) end
+function MatPartitioningViewImbalance(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS)
+    error("MatPartitioningViewImbalance: no generated method for these argument types")
+end
 
 @for_petsc function MatPartitioningViewImbalance(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::AbstractIS )
 
@@ -4188,7 +4432,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeColoringCreate"))
 """
-function MatTransposeColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring) end
+function MatTransposeColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring)
+    error("MatTransposeColoringCreate: no generated method for these argument types")
+end
 
 @for_petsc function MatTransposeColoringCreate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring )
 	color_ = Ref{MatTransposeColoring}()
@@ -4222,7 +4468,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeColoringDestroy"))
 """
-function MatTransposeColoringDestroy(petsclib::PetscLibType, c::Union{MatTransposeColoring, Ref{MatTransposeColoring}}) end
+function MatTransposeColoringDestroy(petsclib::PetscLibType, c::Union{MatTransposeColoring, Ref{MatTransposeColoring}})
+    error("MatTransposeColoringDestroy: no generated method for these argument types")
+end
 
 @for_petsc function MatTransposeColoringDestroy(petsclib::$UnionPetscLib, c::Union{MatTransposeColoring, Ref{MatTransposeColoring}} )
 	c_ = c isa Base.RefValue ? c : Ref{MatTransposeColoring}(c)

@@ -4,7 +4,9 @@
 # External Links
 $(_doc_external("DM/DMAdaptInterpolator"))
 """
-function DMAdaptInterpolator(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, InAdapt::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMAdaptInterpolator(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, InAdapt::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMAdaptInterpolator: no generated method for these argument types")
+end
 
 @for_petsc function DMAdaptInterpolator(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, InAdapt::AbstractPetscMat, user::Ptr{Cvoid} )
 	InAdapt_ = Ref(InAdapt.ptr)
@@ -43,7 +45,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMAdaptLabel"))
 """
-function DMAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMAdaptLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 	dmAdapt_ = Ref{CDM}()
@@ -78,7 +82,9 @@ Output Parameter:
 # External Links
 $(_doc_external("DM/DMAdaptMetric"))
 """
-function DMAdaptMetric(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel) end
+function DMAdaptMetric(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel)
+    error("DMAdaptMetric: no generated method for these argument types")
+end
 
 @for_petsc function DMAdaptMetric(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel )
 	dmAdapt_ = Ref{CDM}()
@@ -165,7 +171,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAddBoundary"))
 """
-function DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMAddBoundary: no generated method for these argument types")
+end
 
 @for_petsc function DMAddBoundary(petsclib::$UnionPetscLib, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 	bd_ = Ref{$PetscInt}()
@@ -213,7 +221,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAddField"))
 """
-function DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, disc) end
+function DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, disc)
+    error("DMAddField: no generated method for these argument types")
+end
 
 @for_petsc function DMAddField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, disc )
 
@@ -247,7 +257,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAddLabel"))
 """
-function DMAddLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMAddLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMAddLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMAddLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -287,7 +299,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAppendOptionsPrefix"))
 """
-function DMAppendOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String) end
+function DMAppendOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String)
+    error("DMAppendOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function DMAppendOptionsPrefix(petsclib::$UnionPetscLib, dm::AbstractPetscDM, prefix::String )
 
@@ -308,7 +322,9 @@ end
 # External Links
 $(_doc_external("DM/DMCheckInterpolator"))
 """
-function DMCheckInterpolator(petsclib::PetscLibType, dmf::AbstractPetscDM, In::AbstractPetscMat, MC::AbstractPetscMat, MF::AbstractPetscMat, tol::PetscReal) end
+function DMCheckInterpolator(petsclib::PetscLibType, dmf::AbstractPetscDM, In::AbstractPetscMat, MC::AbstractPetscMat, MF::AbstractPetscMat, tol::Real)
+    error("DMCheckInterpolator: no generated method for these argument types")
+end
 
 @for_petsc function DMCheckInterpolator(petsclib::$UnionPetscLib, dmf::AbstractPetscDM, In::AbstractPetscMat, MC::AbstractPetscMat, MF::AbstractPetscMat, tol::$PetscReal )
 
@@ -341,7 +357,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMClearAuxiliaryVec"))
 """
-function DMClearAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClearAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClearAuxiliaryVec: no generated method for these argument types")
+end
 
 @for_petsc function DMClearAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -374,7 +392,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMClearDS"))
 """
-function DMClearDS(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClearDS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClearDS: no generated method for these argument types")
+end
 
 @for_petsc function DMClearDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -407,7 +427,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMClearFields"))
 """
-function DMClearFields(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClearFields(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClearFields: no generated method for these argument types")
+end
 
 @for_petsc function DMClearFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -441,7 +463,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMClearGlobalVectors"))
 """
-function DMClearGlobalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClearGlobalVectors(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClearGlobalVectors: no generated method for these argument types")
+end
 
 @for_petsc function DMClearGlobalVectors(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -478,7 +502,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMClearLabelStratum"))
 """
-function DMClearLabelStratum(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt) end
+function DMClearLabelStratum(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::Integer)
+    error("DMClearLabelStratum: no generated method for these argument types")
+end
 
 @for_petsc function DMClearLabelStratum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, value::$PetscInt )
 
@@ -514,7 +540,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMClearLabelValue"))
 """
-function DMClearLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::PetscInt, value::PetscInt) end
+function DMClearLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::Integer, value::Integer)
+    error("DMClearLabelValue: no generated method for these argument types")
+end
 
 @for_petsc function DMClearLabelValue(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, point::$PetscInt, value::$PetscInt )
 
@@ -548,7 +576,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMClearLocalVectors"))
 """
-function DMClearLocalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClearLocalVectors(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClearLocalVectors: no generated method for these argument types")
+end
 
 @for_petsc function DMClearLocalVectors(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -579,7 +609,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMClearNamedGlobalVectors"))
 """
-function DMClearNamedGlobalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClearNamedGlobalVectors(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClearNamedGlobalVectors: no generated method for these argument types")
+end
 
 @for_petsc function DMClearNamedGlobalVectors(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -610,7 +642,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMClearNamedLocalVectors"))
 """
-function DMClearNamedLocalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClearNamedLocalVectors(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClearNamedLocalVectors: no generated method for these argument types")
+end
 
 @for_petsc function DMClearNamedLocalVectors(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -655,7 +689,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMClone"))
 """
-function DMClone(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMClone(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMClone: no generated method for these argument types")
+end
 
 @for_petsc function DMClone(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	newdm_ = Ref{CDM}()
@@ -695,7 +731,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCoarsen"))
 """
-function DMCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm) end
+function DMCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm)
+    error("DMCoarsen: no generated method for these argument types")
+end
 
 @for_petsc function DMCoarsen(petsclib::$UnionPetscLib, dm::AbstractPetscDM, comm::MPI_Comm )
 	dmc_ = Ref{CDM}()
@@ -734,7 +772,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCoarsenHierarchy"))
 """
-function DMCoarsenHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::PetscInt, dmc::Vector{<:AbstractPetscDM}) end
+function DMCoarsenHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::Integer, dmc::Vector{<:AbstractPetscDM})
+    error("DMCoarsenHierarchy: no generated method for these argument types")
+end
 
 @for_petsc function DMCoarsenHierarchy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nlevels::$PetscInt, dmc::Vector{<:AbstractPetscDM} )
 
@@ -793,7 +833,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCoarsenHookAdd"))
 """
-function DMCoarsenHookAdd(petsclib::PetscLibType, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}) end
+function DMCoarsenHookAdd(petsclib::PetscLibType, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid})
+    error("DMCoarsenHookAdd: no generated method for these argument types")
+end
 
 @for_petsc function DMCoarsenHookAdd(petsclib::$UnionPetscLib, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid} )
 
@@ -834,7 +876,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCoarsenHookRemove"))
 """
-function DMCoarsenHookRemove(petsclib::PetscLibType, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}) end
+function DMCoarsenHookRemove(petsclib::PetscLibType, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid})
+    error("DMCoarsenHookRemove: no generated method for these argument types")
+end
 
 @for_petsc function DMCoarsenHookRemove(petsclib::$UnionPetscLib, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid} )
 
@@ -893,7 +937,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCompareLabels"))
 """
-function DMCompareLabels(petsclib::PetscLibType, dm0::AbstractPetscDM, dm1::AbstractPetscDM) end
+function DMCompareLabels(petsclib::PetscLibType, dm0::AbstractPetscDM, dm1::AbstractPetscDM)
+    error("DMCompareLabels: no generated method for these argument types")
+end
 
 @for_petsc function DMCompareLabels(petsclib::$UnionPetscLib, dm0::AbstractPetscDM, dm1::AbstractPetscDM )
 	equal_ = Ref{PetscBool}()
@@ -931,7 +977,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeAddDM"))
 """
-function DMCompositeAddDM(petsclib::PetscLibType, dmc::AbstractPetscDM, dm::AbstractPetscDM) end
+function DMCompositeAddDM(petsclib::PetscLibType, dmc::AbstractPetscDM, dm::AbstractPetscDM)
+    error("DMCompositeAddDM: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeAddDM(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dm::AbstractPetscDM )
 
@@ -968,7 +1016,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeCreate"))
 """
-function DMCompositeCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMCompositeCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMCompositeCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	packer_ = Ref{CDM}()
@@ -1006,7 +1056,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeGatherArray"))
 """
-function DMCompositeGatherArray(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, gvec::AbstractPetscVec, lvecs::AbstractPetscVec) end
+function DMCompositeGatherArray(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, gvec::AbstractPetscVec, lvecs::AbstractPetscVec)
+    error("DMCompositeGatherArray: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGatherArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, gvec::AbstractPetscVec, lvecs::AbstractPetscVec )
 	lvecs_ = Ref(lvecs.ptr)
@@ -1046,7 +1098,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetAccessArray"))
 """
-function DMCompositeGetAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) end
+function DMCompositeGetAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::Integer, wanted::AbstractVector{<:Number}, vecs::Vector{<:AbstractPetscVec})
+    error("DMCompositeGetAccessArray: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGetAccessArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::$PetscInt, wanted::Vector{$PetscInt}, vecs::Vector{<:AbstractPetscVec} )
 
@@ -1082,7 +1136,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetEntriesArray"))
 """
-function DMCompositeGetEntriesArray(petsclib::PetscLibType, dm::AbstractPetscDM, dms::Vector{<:AbstractPetscDM}) end
+function DMCompositeGetEntriesArray(petsclib::PetscLibType, dm::AbstractPetscDM, dms::Vector{<:AbstractPetscDM})
+    error("DMCompositeGetEntriesArray: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGetEntriesArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dms::Vector{<:AbstractPetscDM} )
 
@@ -1118,7 +1174,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetGlobalISs"))
 """
-function DMCompositeGetGlobalISs(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCompositeGetGlobalISs(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCompositeGetGlobalISs: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGetGlobalISs(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	is_ = Ref{Ptr{IS}}()
@@ -1157,7 +1215,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetISLocalToGlobalMappings"))
 """
-function DMCompositeGetISLocalToGlobalMappings(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCompositeGetISLocalToGlobalMappings(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCompositeGetISLocalToGlobalMappings: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGetISLocalToGlobalMappings(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	ltogs_ = Ref{Ptr{ISLocalToGlobalMapping}}()
@@ -1198,7 +1258,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetLocalAccessArray"))
 """
-function DMCompositeGetLocalAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) end
+function DMCompositeGetLocalAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::Integer, wanted::AbstractVector{<:Number}, vecs::Vector{<:AbstractPetscVec})
+    error("DMCompositeGetLocalAccessArray: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGetLocalAccessArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::$PetscInt, wanted::Vector{$PetscInt}, vecs::Vector{<:AbstractPetscVec} )
 
@@ -1233,7 +1295,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetLocalISs"))
 """
-function DMCompositeGetLocalISs(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCompositeGetLocalISs(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCompositeGetLocalISs: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGetLocalISs(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	is_ = Ref{Ptr{IS}}()
@@ -1270,7 +1334,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetNumberDM"))
 """
-function DMCompositeGetNumberDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCompositeGetNumberDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCompositeGetNumberDM: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeGetNumberDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nDM_ = Ref{$PetscInt}()
@@ -1307,7 +1373,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeRestoreAccessArray"))
 """
-function DMCompositeRestoreAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) end
+function DMCompositeRestoreAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::Integer, wanted::AbstractVector{<:Number}, vecs::Vector{<:AbstractPetscVec})
+    error("DMCompositeRestoreAccessArray: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeRestoreAccessArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::$PetscInt, wanted::Vector{$PetscInt}, vecs::Vector{<:AbstractPetscVec} )
 
@@ -1344,7 +1412,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeRestoreLocalAccessArray"))
 """
-function DMCompositeRestoreLocalAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::AbstractPetscVec) end
+function DMCompositeRestoreLocalAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::Integer, wanted::AbstractVector{<:Number}, vecs::AbstractPetscVec)
+    error("DMCompositeRestoreLocalAccessArray: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeRestoreLocalAccessArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::$PetscInt, wanted::Vector{$PetscInt}, vecs::AbstractPetscVec )
 	vecs_ = Ref(vecs.ptr)
@@ -1381,7 +1451,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeScatterArray"))
 """
-function DMCompositeScatterArray(petsclib::PetscLibType, dm::AbstractPetscDM, gvec::AbstractPetscVec, lvecs::AbstractPetscVec) end
+function DMCompositeScatterArray(petsclib::PetscLibType, dm::AbstractPetscDM, gvec::AbstractPetscVec, lvecs::AbstractPetscVec)
+    error("DMCompositeScatterArray: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeScatterArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, gvec::AbstractPetscVec, lvecs::AbstractPetscVec )
 	lvecs_ = Ref(lvecs.ptr)
@@ -1416,7 +1488,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMComposite/DMCompositeSetCoupling"))
 """
-function DMCompositeSetCoupling(petsclib::PetscLibType, dm::AbstractPetscDM, FormCoupleLocations::external) end
+function DMCompositeSetCoupling(petsclib::PetscLibType, dm::AbstractPetscDM, FormCoupleLocations::external)
+    error("DMCompositeSetCoupling: no generated method for these argument types")
+end
 
 @for_petsc function DMCompositeSetCoupling(petsclib::$UnionPetscLib, dm::AbstractPetscDM, FormCoupleLocations::external )
 
@@ -1460,7 +1534,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMComputeError"))
 """
-function DMComputeError(petsclib::PetscLibType, dm::AbstractPetscDM, sol::AbstractPetscVec, errors::Vector{PetscReal}) end
+function DMComputeError(petsclib::PetscLibType, dm::AbstractPetscDM, sol::AbstractPetscVec, errors::AbstractVector{<:Number})
+    error("DMComputeError: no generated method for these argument types")
+end
 
 @for_petsc function DMComputeError(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sol::AbstractPetscVec, errors::Vector{$PetscReal} )
 	errorVec_ = Ref{CVec}()
@@ -1503,7 +1579,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMComputeExactSolution"))
 """
-function DMComputeExactSolution(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec) end
+function DMComputeExactSolution(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, u::AbstractPetscVec, u_t::AbstractPetscVec)
+    error("DMComputeExactSolution: no generated method for these argument types")
+end
 
 @for_petsc function DMComputeExactSolution(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec )
 
@@ -1543,7 +1621,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMComputeVariableBounds"))
 """
-function DMComputeVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, xl::AbstractPetscVec, xu::AbstractPetscVec) end
+function DMComputeVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, xl::AbstractPetscVec, xu::AbstractPetscVec)
+    error("DMComputeVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function DMComputeVariableBounds(petsclib::$UnionPetscLib, dm::AbstractPetscDM, xl::AbstractPetscVec, xu::AbstractPetscVec )
 
@@ -1585,7 +1665,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMConvert"))
 """
-function DMConvert(petsclib::PetscLibType, dm::AbstractPetscDM, newtype::DMType) end
+function DMConvert(petsclib::PetscLibType, dm::AbstractPetscDM, newtype::DMType)
+    error("DMConvert: no generated method for these argument types")
+end
 
 @for_petsc function DMConvert(petsclib::$UnionPetscLib, dm::AbstractPetscDM, newtype::DMType )
 	M_ = Ref{CDM}()
@@ -1626,7 +1708,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCopyAuxiliaryVec"))
 """
-function DMCopyAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, dmNew::AbstractPetscDM) end
+function DMCopyAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, dmNew::AbstractPetscDM)
+    error("DMCopyAuxiliaryVec: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmNew::AbstractPetscDM )
 
@@ -1658,7 +1742,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/DMCopyDMKSP"))
 """
-function DMCopyDMKSP(petsclib::PetscLibType, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM) end
+function DMCopyDMKSP(petsclib::PetscLibType, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM)
+    error("DMCopyDMKSP: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyDMKSP(petsclib::$UnionPetscLib, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM )
 
@@ -1690,7 +1776,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMCopyDMSNES"))
 """
-function DMCopyDMSNES(petsclib::PetscLibType, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM) end
+function DMCopyDMSNES(petsclib::PetscLibType, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM)
+    error("DMCopyDMSNES: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyDMSNES(petsclib::$UnionPetscLib, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM )
 
@@ -1728,7 +1816,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCopyDS"))
 """
-function DMCopyDS(petsclib::PetscLibType, dm::AbstractPetscDM, minDegree::PetscInt, maxDegree::PetscInt, newdm::AbstractPetscDM) end
+function DMCopyDS(petsclib::PetscLibType, dm::AbstractPetscDM, minDegree::Integer, maxDegree::Integer, newdm::AbstractPetscDM)
+    error("DMCopyDS: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, minDegree::$PetscInt, maxDegree::$PetscInt, newdm::AbstractPetscDM )
 
@@ -1767,7 +1857,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCopyDisc"))
 """
-function DMCopyDisc(petsclib::PetscLibType, dm::AbstractPetscDM, newdm::AbstractPetscDM) end
+function DMCopyDisc(petsclib::PetscLibType, dm::AbstractPetscDM, newdm::AbstractPetscDM)
+    error("DMCopyDisc: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyDisc(petsclib::$UnionPetscLib, dm::AbstractPetscDM, newdm::AbstractPetscDM )
 
@@ -1805,7 +1897,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCopyFields"))
 """
-function DMCopyFields(petsclib::PetscLibType, dm::AbstractPetscDM, minDegree::PetscInt, maxDegree::PetscInt, newdm::AbstractPetscDM) end
+function DMCopyFields(petsclib::PetscLibType, dm::AbstractPetscDM, minDegree::Integer, maxDegree::Integer, newdm::AbstractPetscDM)
+    error("DMCopyFields: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, minDegree::$PetscInt, maxDegree::$PetscInt, newdm::AbstractPetscDM )
 
@@ -1845,7 +1939,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCopyLabels"))
 """
-function DMCopyLabels(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM, mode::PetscCopyMode, all::PetscBool, emode::DMCopyLabelsMode) end
+function DMCopyLabels(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM, mode::PetscCopyMode, all::PetscBool, emode::DMCopyLabelsMode)
+    error("DMCopyLabels: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyLabels(petsclib::$UnionPetscLib, dmA::AbstractPetscDM, dmB::AbstractPetscDM, mode::PetscCopyMode, all::PetscBool, emode::DMCopyLabelsMode )
 
@@ -1866,7 +1962,9 @@ end
 # External Links
 $(_doc_external("DM/DMCopyTransform"))
 """
-function DMCopyTransform(petsclib::PetscLibType, dm::AbstractPetscDM, newdm::AbstractPetscDM) end
+function DMCopyTransform(petsclib::PetscLibType, dm::AbstractPetscDM, newdm::AbstractPetscDM)
+    error("DMCopyTransform: no generated method for these argument types")
+end
 
 @for_petsc function DMCopyTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, newdm::AbstractPetscDM )
 
@@ -1911,7 +2009,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreate"))
 """
-function DMCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	dm_ = Ref{CDM}()
@@ -1959,7 +2059,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateColoring"))
 """
-function DMCreateColoring(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::ISColoringType) end
+function DMCreateColoring(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::ISColoringType)
+    error("DMCreateColoring: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateColoring(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::ISColoringType )
 	coloring_ = Ref{ISColoring}()
@@ -2000,7 +2102,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateDS"))
 """
-function DMCreateDS(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateDS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateDS: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -2058,7 +2162,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateDomainDecomposition"))
 """
-function DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateDomainDecomposition: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateDomainDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	n_ = Ref{$PetscInt}()
@@ -2119,7 +2225,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateDomainDecompositionScatters"))
 """
-function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) end
+function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer)
+    error("DMCreateDomainDecompositionScatters: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateDomainDecompositionScatters(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt )
 	subdms_ = Ref{CDM}()
@@ -2169,7 +2277,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateFEDefault"))
 """
-function DMCreateFEDefault(petsclib::PetscLibType, dm::AbstractPetscDM, Nc::PetscInt, prefix::String, qorder::PetscInt) end
+function DMCreateFEDefault(petsclib::PetscLibType, dm::AbstractPetscDM, Nc::Integer, prefix::String, qorder::Integer)
+    error("DMCreateFEDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateFEDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nc::$PetscInt, prefix::String, qorder::$PetscInt )
 	fem_ = Ref{PetscFE}()
@@ -2239,7 +2349,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateFieldDecomposition"))
 """
-function DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateFieldDecomposition: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateFieldDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	len_ = Ref{$PetscInt}()
@@ -2347,7 +2459,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateGlobalVector"))
 """
-function DMCreateGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	vec_ = Ref{CVec}()
@@ -2389,7 +2503,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateGradientMatrix"))
 """
-function DMCreateGradientMatrix(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) end
+function DMCreateGradientMatrix(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM)
+    error("DMCreateGradientMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateGradientMatrix(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM )
 	mat_ = Ref{CMat}()
@@ -2440,7 +2556,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateInjection"))
 """
-function DMCreateInjection(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM) end
+function DMCreateInjection(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM)
+    error("DMCreateInjection: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateInjection(petsclib::$UnionPetscLib, dac::AbstractPetscDM, daf::AbstractPetscDM )
 	mat_ = Ref{CMat}()
@@ -2488,7 +2606,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateInterpolation"))
 """
-function DMCreateInterpolation(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) end
+function DMCreateInterpolation(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM)
+    error("DMCreateInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateInterpolation(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM )
 	mat_ = Ref{CMat}()
@@ -2537,7 +2657,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateInterpolationScale"))
 """
-function DMCreateInterpolationScale(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM, mat::AbstractPetscMat) end
+function DMCreateInterpolationScale(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM, mat::AbstractPetscMat)
+    error("DMCreateInterpolationScale: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateInterpolationScale(petsclib::$UnionPetscLib, dac::AbstractPetscDM, daf::AbstractPetscDM, mat::AbstractPetscMat )
 	scale_ = Ref{CVec}()
@@ -2573,7 +2695,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateLabel"))
 """
-function DMCreateLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMCreateLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMCreateLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 
@@ -2608,7 +2732,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateLabelAtIndex"))
 """
-function DMCreateLabelAtIndex(petsclib::PetscLibType, dm::AbstractPetscDM, l::PetscInt, name::String) end
+function DMCreateLabelAtIndex(petsclib::PetscLibType, dm::AbstractPetscDM, l::Integer, name::String)
+    error("DMCreateLabelAtIndex: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateLabelAtIndex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, l::$PetscInt, name::String )
 
@@ -2648,7 +2774,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateLocalVector"))
 """
-function DMCreateLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	vec_ = Ref{CVec}()
@@ -2693,7 +2821,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateMassMatrix"))
 """
-function DMCreateMassMatrix(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) end
+function DMCreateMassMatrix(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM)
+    error("DMCreateMassMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateMassMatrix(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM )
 	mat_ = Ref{CMat}()
@@ -2735,7 +2865,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateMassMatrixLumped"))
 """
-function DMCreateMassMatrixLumped(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateMassMatrixLumped(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateMassMatrixLumped: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateMassMatrixLumped(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	llm_ = Ref{CVec}()
@@ -2791,7 +2923,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateMatrix"))
 """
-function DMCreateMatrix(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateMatrix(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateMatrix(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	mat_ = Ref{CMat}()
@@ -2835,7 +2969,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateRestriction"))
 """
-function DMCreateRestriction(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) end
+function DMCreateRestriction(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM)
+    error("DMCreateRestriction: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateRestriction(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM )
 	mat_ = Ref{CMat}()
@@ -2872,7 +3008,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateSectionPermutation"))
 """
-function DMCreateSectionPermutation(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMCreateSectionPermutation(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMCreateSectionPermutation: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateSectionPermutation(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	perm_ = Ref{CIS}()
@@ -2919,7 +3057,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateSectionSF"))
 """
-function DMCreateSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM, localSection::PetscSection, globalSection::PetscSection) end
+function DMCreateSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM, localSection::PetscSection, globalSection::PetscSection)
+    error("DMCreateSectionSF: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateSectionSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, localSection::PetscSection, globalSection::PetscSection )
 
@@ -2958,7 +3098,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMCreateSectionSubDM"))
 """
-function DMCreateSectionSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt, fields::Vector{PetscInt}, numComps::Vector{PetscInt}, comps::Vector{PetscInt}) end
+function DMCreateSectionSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::Integer, fields::AbstractVector{<:Number}, numComps::AbstractVector{<:Number}, comps::AbstractVector{<:Number})
+    error("DMCreateSectionSubDM: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateSectionSubDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numFields::$PetscInt, fields::Vector{$PetscInt}, numComps::Vector{$PetscInt}, comps::Vector{$PetscInt} )
 	is_ = Ref{CIS}()
@@ -2998,7 +3140,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMCreateSectionSuperDM"))
 """
-function DMCreateSectionSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, len::PetscInt) end
+function DMCreateSectionSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, len::Integer)
+    error("DMCreateSectionSuperDM: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateSectionSuperDM(petsclib::$UnionPetscLib, dms::Vector{<:AbstractPetscDM}, len::$PetscInt )
 	is_ = Ref{Ptr{IS}}()
@@ -3045,7 +3189,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateSubDM"))
 """
-function DMCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt, fields::Vector{PetscInt}) end
+function DMCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::Integer, fields::AbstractVector{<:Number})
+    error("DMCreateSubDM: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateSubDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numFields::$PetscInt, fields::Vector{$PetscInt} )
 	is_ = Ref{CIS}()
@@ -3090,7 +3236,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateSuperDM"))
 """
-function DMCreateSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, n::PetscInt) end
+function DMCreateSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, n::Integer)
+    error("DMCreateSuperDM: no generated method for these argument types")
+end
 
 @for_petsc function DMCreateSuperDM(petsclib::$UnionPetscLib, dms::Vector{<:AbstractPetscDM}, n::$PetscInt )
 	is_ = Ref{Ptr{IS}}()
@@ -3129,7 +3277,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAConvertToCell"))
 """
-function DMDAConvertToCell(petsclib::PetscLibType, dm::AbstractPetscDM, s::MatStencil) end
+function DMDAConvertToCell(petsclib::PetscLibType, dm::AbstractPetscDM, s::MatStencil)
+    error("DMDAConvertToCell: no generated method for these argument types")
+end
 
 @for_petsc function DMDAConvertToCell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, s::MatStencil )
 	cell_ = Ref{$PetscInt}()
@@ -3165,7 +3315,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDACreate"))
 """
-function DMDACreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMDACreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMDACreate: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	da_ = Ref{CDM}()
@@ -3219,7 +3371,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDACreate1d"))
 """
-function DMDACreate1d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, M::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}) end
+function DMDACreate1d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, M::Integer, dof::Integer, s::Integer, lx::Union{Ptr, AbstractVector{<:Number}})
+    error("DMDACreate1d: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreate1d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, M::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}} )
 	da_ = Ref{CDM}()
@@ -3283,7 +3437,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDACreate2d"))
 """
-function DMDACreate2d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) end
+function DMDACreate2d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::Integer, N::Integer, m::Integer, n::Integer, dof::Integer, s::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}})
+    error("DMDACreate2d: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}} )
 	da_ = Ref{CDM}()
@@ -3358,7 +3514,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDACreate3d"))
 """
-function DMDACreate3d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, P::PetscInt, m::PetscInt, n::PetscInt, p::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) end
+function DMDACreate3d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::Integer, N::Integer, P::Integer, m::Integer, n::Integer, p::Integer, dof::Integer, s::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}}, lz::Union{Ptr, AbstractVector{<:Number}})
+    error("DMDACreate3d: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, P::$PetscInt, m::$PetscInt, n::$PetscInt, p::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}}, lz::Union{Ptr, Vector{$PetscInt}} )
 	da_ = Ref{CDM}()
@@ -3396,7 +3554,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDACreateAggregates"))
 """
-function DMDACreateAggregates(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM) end
+function DMDACreateAggregates(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM)
+    error("DMDACreateAggregates: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreateAggregates(petsclib::$UnionPetscLib, dac::AbstractPetscDM, daf::AbstractPetscDM )
 	rest_ = Ref{CMat}()
@@ -3434,7 +3594,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDACreateCompatibleDMDA"))
 """
-function DMDACreateCompatibleDMDA(petsclib::PetscLibType, da::AbstractPetscDM, nfields::PetscInt) end
+function DMDACreateCompatibleDMDA(petsclib::PetscLibType, da::AbstractPetscDM, nfields::Integer)
+    error("DMDACreateCompatibleDMDA: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreateCompatibleDMDA(petsclib::$UnionPetscLib, da::AbstractPetscDM, nfields::$PetscInt )
 	nda_ = Ref{CDM}()
@@ -3474,7 +3636,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDACreateNaturalVector"))
 """
-function DMDACreateNaturalVector(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDACreateNaturalVector(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDACreateNaturalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreateNaturalVector(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	g_ = Ref{CVec}()
@@ -3511,7 +3675,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDACreatePF"))
 """
-function DMDACreatePF(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDACreatePF(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDACreatePF: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreatePF(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	pf_ = Ref{CPF}()
@@ -3550,7 +3716,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDACreatePatchIS"))
 """
-function DMDACreatePatchIS(petsclib::PetscLibType, da::AbstractPetscDM, lower::Vector{MatStencil}, upper::Vector{MatStencil}, offproc::PetscBool) end
+function DMDACreatePatchIS(petsclib::PetscLibType, da::AbstractPetscDM, lower::Vector{MatStencil}, upper::Vector{MatStencil}, offproc::PetscBool)
+    error("DMDACreatePatchIS: no generated method for these argument types")
+end
 
 @for_petsc function DMDACreatePatchIS(petsclib::$UnionPetscLib, da::AbstractPetscDM, lower::Vector{MatStencil}, upper::Vector{MatStencil}, offproc::PetscBool )
 	is_ = Ref{CIS}()
@@ -3588,7 +3756,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetAO"))
 """
-function DMDAGetAO(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetAO(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetAO: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetAO(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	ao_ = Ref{CAO}()
@@ -3606,7 +3776,7 @@ function DMDAGetAO(petsclib::PetscLibType, da::AbstractPetscDM) end
 end 
 
 """
-	DMDAGetArray(petsclib::PetscLibType,da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid}) 
+	vptr::Ptr{Cvoid} = DMDAGetArray(petsclib::PetscLibType,da::AbstractPetscDM, ghosted::PetscBool) 
 Gets a work array for a `DMDA`
 
 Input Parameters:
@@ -3623,19 +3793,23 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGetArray"))
 """
-function DMDAGetArray(petsclib::PetscLibType, da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid}) end
+function DMDAGetArray(petsclib::PetscLibType, da::AbstractPetscDM, ghosted::PetscBool)
+    error("DMDAGetArray: no generated method for these argument types")
+end
 
-@for_petsc function DMDAGetArray(petsclib::$UnionPetscLib, da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid} )
+@for_petsc function DMDAGetArray(petsclib::$UnionPetscLib, da::AbstractPetscDM, ghosted::PetscBool )
+	vptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAGetArray, $petsc_library),
                PetscErrorCode,
                (CDM, PetscBool, Ptr{Cvoid}),
-               da, ghosted, vptr,
+               da, ghosted, vptr_,
               )
 
+	vptr = vptr_[]
 
-	return nothing
+	return vptr
 end 
 
 """
@@ -3659,7 +3833,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetBoundaryType"))
 """
-function DMDAGetBoundaryType(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetBoundaryType(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetBoundaryType: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetBoundaryType(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	bx_ = Ref{DMBoundaryType}()
@@ -3700,7 +3876,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAGetCellPoint"))
 """
-function DMDAGetCellPoint(petsclib::PetscLibType, dm::AbstractPetscDM, i::PetscInt, j::PetscInt, k::PetscInt) end
+function DMDAGetCellPoint(petsclib::PetscLibType, dm::AbstractPetscDM, i::Integer, j::Integer, k::Integer)
+    error("DMDAGetCellPoint: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetCellPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, i::$PetscInt, j::$PetscInt, k::$PetscInt )
 	point_ = Ref{$PetscInt}()
@@ -3718,7 +3896,7 @@ function DMDAGetCellPoint(petsclib::PetscLibType, dm::AbstractPetscDM, i::PetscI
 end 
 
 """
-	DMDAGetCoordinateArray(petsclib::PetscLibType,dm::AbstractPetscDM, xc::Ptr{Cvoid}) 
+	xc::Ptr{Cvoid} = DMDAGetCoordinateArray(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Gets an array containing the coordinates of the `DMDA`
 
 Not Collective; No Fortran Support
@@ -3736,19 +3914,23 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetCoordinateArray"))
 """
-function DMDAGetCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM, xc::Ptr{Cvoid}) end
+function DMDAGetCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDAGetCoordinateArray: no generated method for these argument types")
+end
 
-@for_petsc function DMDAGetCoordinateArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, xc::Ptr{Cvoid} )
+@for_petsc function DMDAGetCoordinateArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	xc_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAGetCoordinateArray, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Cvoid}),
-               dm, xc,
+               dm, xc_,
               )
 
+	xc = xc_[]
 
-	return nothing
+	return xc
 end 
 
 """
@@ -3771,7 +3953,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetCoordinateName"))
 """
-function DMDAGetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::PetscInt) end
+function DMDAGetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::Integer)
+    error("DMDAGetCoordinateName: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetCoordinateName(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nf::$PetscInt )
 	name_ = Ref{Ptr{Cchar}}()
@@ -3813,7 +3997,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDAGetCorners"))
 """
-function DMDAGetCorners(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetCorners(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetCorners: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetCorners(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	x_ = Ref{$PetscInt}()
@@ -3862,7 +4048,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAGetDepthStratum"))
 """
-function DMDAGetDepthStratum(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt) end
+function DMDAGetDepthStratum(petsclib::PetscLibType, dm::AbstractPetscDM, depth::Integer)
+    error("DMDAGetDepthStratum: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetDepthStratum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, depth::$PetscInt )
 	pStart_ = Ref{$PetscInt}()
@@ -3900,7 +4088,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetDof"))
 """
-function DMDAGetDof(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetDof(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetDof: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetDof(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	dof_ = Ref{$PetscInt}()
@@ -3937,7 +4127,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetElementType"))
 """
-function DMDAGetElementType(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetElementType(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetElementType: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetElementType(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	etype_ = Ref{DMDAElementType}()
@@ -3979,7 +4171,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetElements"))
 """
-function DMDAGetElements(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDAGetElements(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDAGetElements: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nel_ = Ref{$PetscInt}()
@@ -4023,7 +4217,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetElementsCorners"))
 """
-function DMDAGetElementsCorners(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetElementsCorners(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetElementsCorners: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetElementsCorners(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	gx_ = Ref{$PetscInt}()
@@ -4065,7 +4261,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetElementsSizes"))
 """
-function DMDAGetElementsSizes(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetElementsSizes(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetElementsSizes: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetElementsSizes(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	mx_ = Ref{$PetscInt}()
@@ -4108,7 +4306,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetFieldName"))
 """
-function DMDAGetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::PetscInt) end
+function DMDAGetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::Integer)
+    error("DMDAGetFieldName: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetFieldName(petsclib::$UnionPetscLib, da::AbstractPetscDM, nf::$PetscInt )
 	name_ = Ref{Ptr{Cchar}}()
@@ -4144,7 +4344,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetFieldNames"))
 """
-function DMDAGetFieldNames(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetFieldNames(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetFieldNames: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetFieldNames(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	names_ = Ref{Ptr{Cchar}}()
@@ -4186,7 +4388,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDAGetGhostCorners"))
 """
-function DMDAGetGhostCorners(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetGhostCorners(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetGhostCorners: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetGhostCorners(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	x_ = Ref{$PetscInt}()
@@ -4235,7 +4439,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAGetHeightStratum"))
 """
-function DMDAGetHeightStratum(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) end
+function DMDAGetHeightStratum(petsclib::PetscLibType, dm::AbstractPetscDM, height::Integer)
+    error("DMDAGetHeightStratum: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetHeightStratum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, height::$PetscInt )
 	pStart_ = Ref{$PetscInt}()
@@ -4285,7 +4491,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDAGetInfo"))
 """
-function DMDAGetInfo(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetInfo(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetInfo: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetInfo(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	dim_ = Ref{$PetscInt}()
@@ -4347,7 +4555,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetInterpolationType"))
 """
-function DMDAGetInterpolationType(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetInterpolationType(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetInterpolationType: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetInterpolationType(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	ctype_ = Ref{DMDAInterpolationType}()
@@ -4383,7 +4593,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDAGetLocalInfo"))
 """
-function DMDAGetLocalInfo(petsclib::PetscLibType) end
+function DMDAGetLocalInfo(petsclib::PetscLibType)
+    error("DMDAGetLocalInfo: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetLocalInfo(petsclib::$UnionPetscLib)
 	da_ = Ref{CDM}()
@@ -4429,7 +4641,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGetLogicalCoordinate"))
 """
-function DMDAGetLogicalCoordinate(petsclib::PetscLibType, da::AbstractPetscDM, x::PetscScalar, y::PetscScalar, z::PetscScalar) end
+function DMDAGetLogicalCoordinate(petsclib::PetscLibType, da::AbstractPetscDM, x::Number, y::Number, z::Number)
+    error("DMDAGetLogicalCoordinate: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetLogicalCoordinate(petsclib::$UnionPetscLib, da::AbstractPetscDM, x::$PetscScalar, y::$PetscScalar, z::$PetscScalar )
 	II_ = Ref{$PetscInt}()
@@ -4476,7 +4690,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetNeighbors"))
 """
-function DMDAGetNeighbors(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetNeighbors(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetNeighbors: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetNeighbors(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	ranks_ = Ref{Ptr{PetscMPIInt}}()
@@ -4517,7 +4733,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetNonOverlappingRegion"))
 """
-function DMDAGetNonOverlappingRegion(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetNonOverlappingRegion(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetNonOverlappingRegion: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetNonOverlappingRegion(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	xs_ = Ref{$PetscInt}()
@@ -4564,7 +4782,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAGetNumCells"))
 """
-function DMDAGetNumCells(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDAGetNumCells(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDAGetNumCells: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetNumCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numCellsX_ = Ref{$PetscInt}()
@@ -4593,7 +4813,9 @@ end
 # External Links
 $(_doc_external("DMDA/DMDAGetNumFaces"))
 """
-function DMDAGetNumFaces(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDAGetNumFaces(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDAGetNumFaces: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetNumFaces(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numXFacesX_ = Ref{$PetscInt}()
@@ -4639,7 +4861,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetNumLocalSubDomains"))
 """
-function DMDAGetNumLocalSubDomains(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetNumLocalSubDomains(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetNumLocalSubDomains: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetNumLocalSubDomains(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	Nsub_ = Ref{$PetscInt}()
@@ -4662,7 +4886,9 @@ end
 # External Links
 $(_doc_external("DMDA/DMDAGetNumVertices"))
 """
-function DMDAGetNumVertices(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDAGetNumVertices(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDAGetNumVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetNumVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numVerticesX_ = Ref{$PetscInt}()
@@ -4709,7 +4935,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAGetOffset"))
 """
-function DMDAGetOffset(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetOffset(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetOffset: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetOffset(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	xo_ = Ref{$PetscInt}()
@@ -4757,7 +4985,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetOverlap"))
 """
-function DMDAGetOverlap(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetOverlap(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetOverlap: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetOverlap(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	x_ = Ref{$PetscInt}()
@@ -4799,7 +5029,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetOwnershipRanges"))
 """
-function DMDAGetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetOwnershipRanges: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetOwnershipRanges(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	lx_ = Ref{Ptr{$PetscInt}}()
@@ -4837,7 +5069,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAGetPreallocationCenterDimension"))
 """
-function DMDAGetPreallocationCenterDimension(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDAGetPreallocationCenterDimension(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDAGetPreallocationCenterDimension: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetPreallocationCenterDimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	preallocCenterDim_ = Ref{$PetscInt}()
@@ -4877,7 +5111,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGetProcessorSubset"))
 """
-function DMDAGetProcessorSubset(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection, gp::PetscInt) end
+function DMDAGetProcessorSubset(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection, gp::Integer)
+    error("DMDAGetProcessorSubset: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetProcessorSubset(petsclib::$UnionPetscLib, da::AbstractPetscDM, dir::DMDirection, gp::$PetscInt )
 	comm_ = Ref{MPI.MPI_Comm}()
@@ -4916,7 +5152,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGetProcessorSubsets"))
 """
-function DMDAGetProcessorSubsets(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection) end
+function DMDAGetProcessorSubsets(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection)
+    error("DMDAGetProcessorSubsets: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetProcessorSubsets(petsclib::$UnionPetscLib, da::AbstractPetscDM, dir::DMDirection )
 	subcomm_ = Ref{MPI.MPI_Comm}()
@@ -4955,7 +5193,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGetRay"))
 """
-function DMDAGetRay(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection, gp::PetscInt) end
+function DMDAGetRay(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection, gp::Integer)
+    error("DMDAGetRay: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetRay(petsclib::$UnionPetscLib, da::AbstractPetscDM, dir::DMDirection, gp::$PetscInt )
 	newvec_ = Ref{CVec}()
@@ -4995,7 +5235,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetRefinementFactor"))
 """
-function DMDAGetRefinementFactor(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetRefinementFactor(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetRefinementFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetRefinementFactor(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	refine_x_ = Ref{$PetscInt}()
@@ -5037,7 +5279,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAGetScatter"))
 """
-function DMDAGetScatter(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetScatter(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetScatter: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetScatter(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	gtol_ = Ref{VecScatter}()
@@ -5075,7 +5319,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetStencilType"))
 """
-function DMDAGetStencilType(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetStencilType(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetStencilType: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetStencilType(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	stype_ = Ref{DMDAStencilType}()
@@ -5111,7 +5357,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetStencilWidth"))
 """
-function DMDAGetStencilWidth(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGetStencilWidth(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGetStencilWidth: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetStencilWidth(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	width_ = Ref{$PetscInt}()
@@ -5149,7 +5397,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAGetSubdomainCornersIS"))
 """
-function DMDAGetSubdomainCornersIS(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDAGetSubdomainCornersIS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDAGetSubdomainCornersIS: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGetSubdomainCornersIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	is_ = Ref{CIS}()
@@ -5187,7 +5437,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGlobalToNaturalAllCreate"))
 """
-function DMDAGlobalToNaturalAllCreate(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAGlobalToNaturalAllCreate(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAGlobalToNaturalAllCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGlobalToNaturalAllCreate(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	scatter_ = Ref{VecScatter}()
@@ -5228,7 +5480,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGlobalToNaturalBegin"))
 """
-function DMDAGlobalToNaturalBegin(petsclib::PetscLibType, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec) end
+function DMDAGlobalToNaturalBegin(petsclib::PetscLibType, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec)
+    error("DMDAGlobalToNaturalBegin: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGlobalToNaturalBegin(petsclib::$UnionPetscLib, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec )
 
@@ -5266,7 +5520,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDAGlobalToNaturalEnd"))
 """
-function DMDAGlobalToNaturalEnd(petsclib::PetscLibType, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec) end
+function DMDAGlobalToNaturalEnd(petsclib::PetscLibType, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec)
+    error("DMDAGlobalToNaturalEnd: no generated method for these argument types")
+end
 
 @for_petsc function DMDAGlobalToNaturalEnd(petsclib::$UnionPetscLib, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec )
 
@@ -5287,7 +5543,9 @@ end
 # External Links
 $(_doc_external("Characteristic/DMDAMapCoordsToPeriodicDomain"))
 """
-function DMDAMapCoordsToPeriodicDomain(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDAMapCoordsToPeriodicDomain(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDAMapCoordsToPeriodicDomain: no generated method for these argument types")
+end
 
 @for_petsc function DMDAMapCoordsToPeriodicDomain(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	x_ = Ref{$PetscScalar}()
@@ -5327,7 +5585,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAMapMatStencilToGlobal"))
 """
-function DMDAMapMatStencilToGlobal(petsclib::PetscLibType, da::AbstractPetscDM, m::PetscInt, idxm::Vector{MatStencil}, gidxm::Vector{PetscInt}) end
+function DMDAMapMatStencilToGlobal(petsclib::PetscLibType, da::AbstractPetscDM, m::Integer, idxm::Vector{MatStencil}, gidxm::AbstractVector{<:Number})
+    error("DMDAMapMatStencilToGlobal: no generated method for these argument types")
+end
 
 @for_petsc function DMDAMapMatStencilToGlobal(petsclib::$UnionPetscLib, da::AbstractPetscDM, m::$PetscInt, idxm::Vector{MatStencil}, gidxm::Vector{$PetscInt} )
 
@@ -5363,7 +5623,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDANaturalAllToGlobalCreate"))
 """
-function DMDANaturalAllToGlobalCreate(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMDANaturalAllToGlobalCreate(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMDANaturalAllToGlobalCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMDANaturalAllToGlobalCreate(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	scatter_ = Ref{VecScatter}()
@@ -5404,7 +5666,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDANaturalToGlobalBegin"))
 """
-function DMDANaturalToGlobalBegin(petsclib::PetscLibType, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) end
+function DMDANaturalToGlobalBegin(petsclib::PetscLibType, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec)
+    error("DMDANaturalToGlobalBegin: no generated method for these argument types")
+end
 
 @for_petsc function DMDANaturalToGlobalBegin(petsclib::$UnionPetscLib, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec )
 
@@ -5442,7 +5706,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDANaturalToGlobalEnd"))
 """
-function DMDANaturalToGlobalEnd(petsclib::PetscLibType, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) end
+function DMDANaturalToGlobalEnd(petsclib::PetscLibType, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec)
+    error("DMDANaturalToGlobalEnd: no generated method for these argument types")
+end
 
 @for_petsc function DMDANaturalToGlobalEnd(petsclib::$UnionPetscLib, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec )
 
@@ -5473,7 +5739,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMDA/DMDARestoreArray"))
 """
-function DMDARestoreArray(petsclib::PetscLibType, da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid}) end
+function DMDARestoreArray(petsclib::PetscLibType, da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid})
+    error("DMDARestoreArray: no generated method for these argument types")
+end
 
 @for_petsc function DMDARestoreArray(petsclib::$UnionPetscLib, da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid} )
 
@@ -5505,7 +5773,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDARestoreCoordinateArray"))
 """
-function DMDARestoreCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM, xc::Ptr{Cvoid}) end
+function DMDARestoreCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM, xc::Ptr{Cvoid})
+    error("DMDARestoreCoordinateArray: no generated method for these argument types")
+end
 
 @for_petsc function DMDARestoreCoordinateArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, xc::Ptr{Cvoid} )
 
@@ -5539,7 +5809,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDARestoreElements"))
 """
-function DMDARestoreElements(petsclib::PetscLibType, dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::Union{Ptr, AbstractArray{PetscInt}}) end
+function DMDARestoreElements(petsclib::PetscLibType, dm::AbstractPetscDM, nel::Integer, nen::Integer, e::Union{Ptr, AbstractArray{<:Number}})
+    error("DMDARestoreElements: no generated method for these argument types")
+end
 
 @for_petsc function DMDARestoreElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nel::$PetscInt, nen::$PetscInt, e::Union{Ptr, AbstractArray{$PetscInt}} )
 	nel_ = Ref{$PetscInt}(nel)
@@ -5574,7 +5846,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDARestoreSubdomainCornersIS"))
 """
-function DMDARestoreSubdomainCornersIS(petsclib::PetscLibType, dm::AbstractPetscDM, is::AbstractIS) end
+function DMDARestoreSubdomainCornersIS(petsclib::PetscLibType, dm::AbstractPetscDM, is::AbstractIS)
+    error("DMDARestoreSubdomainCornersIS: no generated method for these argument types")
+end
 
 @for_petsc function DMDARestoreSubdomainCornersIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, is::AbstractIS )
 	is_ = Ref(is.ptr)
@@ -5616,7 +5890,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/DMDASNESSetFunctionLocal"))
 """
-function DMDASNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid}) end
+function DMDASNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid})
+    error("DMDASNESSetFunctionLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDASNESSetFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid} )
 
@@ -5656,7 +5932,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/DMDASNESSetFunctionLocalVec"))
 """
-function DMDASNESSetFunctionLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid}) end
+function DMDASNESSetFunctionLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid})
+    error("DMDASNESSetFunctionLocalVec: no generated method for these argument types")
+end
 
 @for_petsc function DMDASNESSetFunctionLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::external, ctx::Ptr{Cvoid} )
 
@@ -5696,7 +5974,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/DMDASNESSetJacobianLocal"))
 """
-function DMDASNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMDASNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMDASNESSetJacobianLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDASNESSetJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -5736,7 +6016,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/DMDASNESSetJacobianLocalVec"))
 """
-function DMDASNESSetJacobianLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMDASNESSetJacobianLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMDASNESSetJacobianLocalVec: no generated method for these argument types")
+end
 
 @for_petsc function DMDASNESSetJacobianLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -5775,7 +6057,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/DMDASNESSetObjectiveLocal"))
 """
-function DMDASNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMDASNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMDASNESSetObjectiveLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDASNESSetObjectiveLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -5814,7 +6098,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/DMDASNESSetObjectiveLocalVec"))
 """
-function DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMDASNESSetObjectiveLocalVec: no generated method for these argument types")
+end
 
 @for_petsc function DMDASNESSetObjectiveLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -5862,7 +6148,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/DMDASNESSetPicardLocal"))
 """
-function DMDASNESSetPicardLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, jac::external, ctx::Ptr{Cvoid}) end
+function DMDASNESSetPicardLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::external, jac::external, ctx::Ptr{Cvoid})
+    error("DMDASNESSetPicardLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDASNESSetPicardLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::external, jac::external, ctx::Ptr{Cvoid} )
 
@@ -5896,7 +6184,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetAOType"))
 """
-function DMDASetAOType(petsclib::PetscLibType, da::AbstractPetscDM, aotype::AOType) end
+function DMDASetAOType(petsclib::PetscLibType, da::AbstractPetscDM, aotype::AOType)
+    error("DMDASetAOType: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetAOType(petsclib::$UnionPetscLib, da::AbstractPetscDM, aotype::AOType )
 
@@ -5930,7 +6220,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDASetBlockFills"))
 """
-function DMDASetBlockFills(petsclib::PetscLibType, da::AbstractPetscDM, dfill::Vector{PetscInt}, ofill::Vector{PetscInt}) end
+function DMDASetBlockFills(petsclib::PetscLibType, da::AbstractPetscDM, dfill::AbstractVector{<:Number}, ofill::AbstractVector{<:Number})
+    error("DMDASetBlockFills: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetBlockFills(petsclib::$UnionPetscLib, da::AbstractPetscDM, dfill::Vector{$PetscInt}, ofill::Vector{$PetscInt} )
 
@@ -5965,7 +6257,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDASetBlockFillsSparse"))
 """
-function DMDASetBlockFillsSparse(petsclib::PetscLibType, da::AbstractPetscDM, dfillsparse::Vector{PetscInt}, ofillsparse::Vector{PetscInt}) end
+function DMDASetBlockFillsSparse(petsclib::PetscLibType, da::AbstractPetscDM, dfillsparse::AbstractVector{<:Number}, ofillsparse::AbstractVector{<:Number})
+    error("DMDASetBlockFillsSparse: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetBlockFillsSparse(petsclib::$UnionPetscLib, da::AbstractPetscDM, dfillsparse::Vector{$PetscInt}, ofillsparse::Vector{$PetscInt} )
 
@@ -5999,7 +6293,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetBoundaryType"))
 """
-function DMDASetBoundaryType(petsclib::PetscLibType, da::AbstractPetscDM, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType) end
+function DMDASetBoundaryType(petsclib::PetscLibType, da::AbstractPetscDM, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType)
+    error("DMDASetBoundaryType: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetBoundaryType(petsclib::$UnionPetscLib, da::AbstractPetscDM, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType )
 
@@ -6032,7 +6328,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetCoordinateName"))
 """
-function DMDASetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::PetscInt, name::String) end
+function DMDASetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::Integer, name::String)
+    error("DMDASetCoordinateName: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetCoordinateName(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nf::$PetscInt, name::String )
 
@@ -6064,7 +6362,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetDof"))
 """
-function DMDASetDof(petsclib::PetscLibType, da::AbstractPetscDM, dof::PetscInt) end
+function DMDASetDof(petsclib::PetscLibType, da::AbstractPetscDM, dof::Integer)
+    error("DMDASetDof: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetDof(petsclib::$UnionPetscLib, da::AbstractPetscDM, dof::$PetscInt )
 
@@ -6099,7 +6399,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetElementType"))
 """
-function DMDASetElementType(petsclib::PetscLibType, da::AbstractPetscDM, etype::DMDAElementType) end
+function DMDASetElementType(petsclib::PetscLibType, da::AbstractPetscDM, etype::DMDAElementType)
+    error("DMDASetElementType: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetElementType(petsclib::$UnionPetscLib, da::AbstractPetscDM, etype::DMDAElementType )
 
@@ -6134,7 +6436,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetFieldName"))
 """
-function DMDASetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::PetscInt, name::String) end
+function DMDASetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::Integer, name::String)
+    error("DMDASetFieldName: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetFieldName(petsclib::$UnionPetscLib, da::AbstractPetscDM, nf::$PetscInt, name::String )
 
@@ -6166,7 +6470,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetFieldNames"))
 """
-function DMDASetFieldNames(petsclib::PetscLibType, da::AbstractPetscDM, names::String) end
+function DMDASetFieldNames(petsclib::PetscLibType, da::AbstractPetscDM, names::String)
+    error("DMDASetFieldNames: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetFieldNames(petsclib::$UnionPetscLib, da::AbstractPetscDM, names::String )
 	names_ = Ref{Ptr{Cchar}}(names isa Ptr ? names : pointer(names))
@@ -6188,7 +6494,9 @@ end
 # External Links
 $(_doc_external("DMDA/DMDASetGLLCoordinates"))
 """
-function DMDASetGLLCoordinates(petsclib::PetscLibType, da::AbstractPetscDM, n::PetscInt) end
+function DMDASetGLLCoordinates(petsclib::PetscLibType, da::AbstractPetscDM, n::Integer)
+    error("DMDASetGLLCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetGLLCoordinates(petsclib::$UnionPetscLib, da::AbstractPetscDM, n::$PetscInt )
 	nodes_ = Ref{$PetscReal}()
@@ -6226,7 +6534,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDASetGetMatrix"))
 """
-function DMDASetGetMatrix(petsclib::PetscLibType, da::AbstractPetscDM, f::external) end
+function DMDASetGetMatrix(petsclib::PetscLibType, da::AbstractPetscDM, f::external)
+    error("DMDASetGetMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetGetMatrix(petsclib::$UnionPetscLib, da::AbstractPetscDM, f::external )
 
@@ -6260,7 +6570,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetInterpolationType"))
 """
-function DMDASetInterpolationType(petsclib::PetscLibType, da::AbstractPetscDM, ctype::DMDAInterpolationType) end
+function DMDASetInterpolationType(petsclib::PetscLibType, da::AbstractPetscDM, ctype::DMDAInterpolationType)
+    error("DMDASetInterpolationType: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetInterpolationType(petsclib::$UnionPetscLib, da::AbstractPetscDM, ctype::DMDAInterpolationType )
 
@@ -6297,7 +6609,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetNonOverlappingRegion"))
 """
-function DMDASetNonOverlappingRegion(petsclib::PetscLibType, da::AbstractPetscDM, xs::PetscInt, ys::PetscInt, zs::PetscInt, xm::PetscInt, ym::PetscInt, zm::PetscInt) end
+function DMDASetNonOverlappingRegion(petsclib::PetscLibType, da::AbstractPetscDM, xs::Integer, ys::Integer, zs::Integer, xm::Integer, ym::Integer, zm::Integer)
+    error("DMDASetNonOverlappingRegion: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetNonOverlappingRegion(petsclib::$UnionPetscLib, da::AbstractPetscDM, xs::$PetscInt, ys::$PetscInt, zs::$PetscInt, xm::$PetscInt, ym::$PetscInt, zm::$PetscInt )
 
@@ -6329,7 +6643,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetNumLocalSubDomains"))
 """
-function DMDASetNumLocalSubDomains(petsclib::PetscLibType, da::AbstractPetscDM, Nsub::PetscInt) end
+function DMDASetNumLocalSubDomains(petsclib::PetscLibType, da::AbstractPetscDM, Nsub::Integer)
+    error("DMDASetNumLocalSubDomains: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetNumLocalSubDomains(petsclib::$UnionPetscLib, da::AbstractPetscDM, Nsub::$PetscInt )
 
@@ -6363,7 +6679,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetNumProcs"))
 """
-function DMDASetNumProcs(petsclib::PetscLibType, da::AbstractPetscDM, m::PetscInt, n::PetscInt, p::PetscInt) end
+function DMDASetNumProcs(petsclib::PetscLibType, da::AbstractPetscDM, m::Integer, n::Integer, p::Integer)
+    error("DMDASetNumProcs: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetNumProcs(petsclib::$UnionPetscLib, da::AbstractPetscDM, m::$PetscInt, n::$PetscInt, p::$PetscInt )
 
@@ -6400,7 +6718,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDASetOffset"))
 """
-function DMDASetOffset(petsclib::PetscLibType, da::AbstractPetscDM, xo::PetscInt, yo::PetscInt, zo::PetscInt, Mo::PetscInt, No::PetscInt, Po::PetscInt) end
+function DMDASetOffset(petsclib::PetscLibType, da::AbstractPetscDM, xo::Integer, yo::Integer, zo::Integer, Mo::Integer, No::Integer, Po::Integer)
+    error("DMDASetOffset: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetOffset(petsclib::$UnionPetscLib, da::AbstractPetscDM, xo::$PetscInt, yo::$PetscInt, zo::$PetscInt, Mo::$PetscInt, No::$PetscInt, Po::$PetscInt )
 
@@ -6434,7 +6754,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetOverlap"))
 """
-function DMDASetOverlap(petsclib::PetscLibType, da::AbstractPetscDM, x::PetscInt, y::PetscInt, z::PetscInt) end
+function DMDASetOverlap(petsclib::PetscLibType, da::AbstractPetscDM, x::Integer, y::Integer, z::Integer)
+    error("DMDASetOverlap: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetOverlap(petsclib::$UnionPetscLib, da::AbstractPetscDM, x::$PetscInt, y::$PetscInt, z::$PetscInt )
 
@@ -6468,7 +6790,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetOwnershipRanges"))
 """
-function DMDASetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM, lx::Vector{PetscInt}, ly::Vector{PetscInt}, lz::Vector{PetscInt}) end
+function DMDASetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM, lx::AbstractVector{<:Number}, ly::AbstractVector{<:Number}, lz::AbstractVector{<:Number})
+    error("DMDASetOwnershipRanges: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetOwnershipRanges(petsclib::$UnionPetscLib, da::AbstractPetscDM, lx::Vector{$PetscInt}, ly::Vector{$PetscInt}, lz::Vector{$PetscInt} )
 
@@ -6498,7 +6822,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDASetPreallocationCenterDimension"))
 """
-function DMDASetPreallocationCenterDimension(petsclib::PetscLibType, dm::AbstractPetscDM, preallocCenterDim::PetscInt) end
+function DMDASetPreallocationCenterDimension(petsclib::PetscLibType, dm::AbstractPetscDM, preallocCenterDim::Integer)
+    error("DMDASetPreallocationCenterDimension: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetPreallocationCenterDimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM, preallocCenterDim::$PetscInt )
 
@@ -6538,7 +6864,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetRefinementFactor"))
 """
-function DMDASetRefinementFactor(petsclib::PetscLibType, da::AbstractPetscDM, refine_x::PetscInt, refine_y::PetscInt, refine_z::PetscInt) end
+function DMDASetRefinementFactor(petsclib::PetscLibType, da::AbstractPetscDM, refine_x::Integer, refine_y::Integer, refine_z::Integer)
+    error("DMDASetRefinementFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetRefinementFactor(petsclib::$UnionPetscLib, da::AbstractPetscDM, refine_x::$PetscInt, refine_y::$PetscInt, refine_z::$PetscInt )
 
@@ -6572,7 +6900,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetSizes"))
 """
-function DMDASetSizes(petsclib::PetscLibType, da::AbstractPetscDM, M::PetscInt, N::PetscInt, P::PetscInt) end
+function DMDASetSizes(petsclib::PetscLibType, da::AbstractPetscDM, M::Integer, N::Integer, P::Integer)
+    error("DMDASetSizes: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetSizes(petsclib::$UnionPetscLib, da::AbstractPetscDM, M::$PetscInt, N::$PetscInt, P::$PetscInt )
 
@@ -6604,7 +6934,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetStencilType"))
 """
-function DMDASetStencilType(petsclib::PetscLibType, da::AbstractPetscDM, stype::DMDAStencilType) end
+function DMDASetStencilType(petsclib::PetscLibType, da::AbstractPetscDM, stype::DMDAStencilType)
+    error("DMDASetStencilType: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetStencilType(petsclib::$UnionPetscLib, da::AbstractPetscDM, stype::DMDAStencilType )
 
@@ -6636,7 +6968,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetStencilWidth"))
 """
-function DMDASetStencilWidth(petsclib::PetscLibType, da::AbstractPetscDM, width::PetscInt) end
+function DMDASetStencilWidth(petsclib::PetscLibType, da::AbstractPetscDM, width::Integer)
+    error("DMDASetStencilWidth: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetStencilWidth(petsclib::$UnionPetscLib, da::AbstractPetscDM, width::$PetscInt )
 
@@ -6673,7 +7007,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDASetUniformCoordinates"))
 """
-function DMDASetUniformCoordinates(petsclib::PetscLibType, da::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) end
+function DMDASetUniformCoordinates(petsclib::PetscLibType, da::AbstractPetscDM, xmin::Real, xmax::Real, ymin::Real, ymax::Real, zmin::Real, zmax::Real)
+    error("DMDASetUniformCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetUniformCoordinates(petsclib::$UnionPetscLib, da::AbstractPetscDM, xmin::$PetscReal, xmax::$PetscReal, ymin::$PetscReal, ymax::$PetscReal, zmin::$PetscReal, zmax::$PetscReal )
 
@@ -6710,7 +7046,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDASetVertexCoordinates"))
 """
-function DMDASetVertexCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, xl::PetscReal, xu::PetscReal, yl::PetscReal, yu::PetscReal, zl::PetscReal, zu::PetscReal) end
+function DMDASetVertexCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, xl::Real, xu::Real, yl::Real, yu::Real, zl::Real, zu::Real)
+    error("DMDASetVertexCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMDASetVertexCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, xl::$PetscReal, xu::$PetscReal, yl::$PetscReal, yu::$PetscReal, zl::$PetscReal, zu::$PetscReal )
 
@@ -6745,7 +7083,9 @@ Level: beginner
 # External Links
 $(_doc_external("TS/DMDATSSetIFunctionLocal"))
 """
-function DMDATSSetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMDATSSetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMDATSSetIFunctionLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDATSSetIFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -6779,7 +7119,9 @@ Level: beginner
 # External Links
 $(_doc_external("TS/DMDATSSetIJacobianLocal"))
 """
-function DMDATSSetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMDATSSetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMDATSSetIJacobianLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDATSSetIJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -6813,7 +7155,9 @@ Level: beginner
 # External Links
 $(_doc_external("TS/DMDATSSetRHSFunctionLocal"))
 """
-function DMDATSSetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMDATSSetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMDATSSetRHSFunctionLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDATSSetRHSFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -6847,7 +7191,9 @@ Level: beginner
 # External Links
 $(_doc_external("TS/DMDATSSetRHSJacobianLocal"))
 """
-function DMDATSSetRHSJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMDATSSetRHSJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMDATSSetRHSJacobianLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMDATSSetRHSJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -6879,7 +7225,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAVTKWriteAll"))
 """
-function DMDAVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer) end
+function DMDAVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer)
+    error("DMDAVTKWriteAll: no generated method for these argument types")
+end
 
 @for_petsc function DMDAVTKWriteAll(petsclib::$UnionPetscLib, odm, viewer::PetscViewer )
 
@@ -6895,7 +7243,7 @@ function DMDAVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer) end
 end 
 
 """
-	DMDAVecGetArray(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	array::Ptr{Cvoid} = DMDAVecGetArray(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`.
 
@@ -6917,23 +7265,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecGetArray"))
 """
-function DMDAVecGetArray(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecGetArray(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMDAVecGetArray: no generated method for these argument types")
+end
 
-@for_petsc function DMDAVecGetArray(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
+@for_petsc function DMDAVecGetArray(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec )
+	array_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAVecGetArray, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}),
-               da, vec, array,
+               da, vec, array_,
               )
 
+	array = array_[]
 
-	return nothing
+	return array
 end 
 
 """
-	DMDAVecGetArrayDOF(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayDOF(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`
 
@@ -6954,23 +7306,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecGetArrayDOF"))
 """
-function DMDAVecGetArrayDOF(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecGetArrayDOF(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMDAVecGetArrayDOF: no generated method for these argument types")
+end
 
-@for_petsc function DMDAVecGetArrayDOF(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
+@for_petsc function DMDAVecGetArrayDOF(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec )
+	array_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAVecGetArrayDOF, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}),
-               da, vec, array,
+               da, vec, array_,
               )
 
+	array = array_[]
 
-	return nothing
+	return array
 end 
 
 """
-	DMDAVecGetArrayDOFRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayDOFRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`
 
@@ -6991,23 +7347,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecGetArrayDOFRead"))
 """
-function DMDAVecGetArrayDOFRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecGetArrayDOFRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMDAVecGetArrayDOFRead: no generated method for these argument types")
+end
 
-@for_petsc function DMDAVecGetArrayDOFRead(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
+@for_petsc function DMDAVecGetArrayDOFRead(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec )
+	array_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAVecGetArrayDOFRead, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}),
-               da, vec, array,
+               da, vec, array_,
               )
 
+	array = array_[]
 
-	return nothing
+	return array
 end 
 
 """
-	DMDAVecGetArrayDOFWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayDOFWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`
 
@@ -7028,23 +7388,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecGetArrayDOFWrite"))
 """
-function DMDAVecGetArrayDOFWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecGetArrayDOFWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMDAVecGetArrayDOFWrite: no generated method for these argument types")
+end
 
-@for_petsc function DMDAVecGetArrayDOFWrite(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
+@for_petsc function DMDAVecGetArrayDOFWrite(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec )
+	array_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAVecGetArrayDOFWrite, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}),
-               da, vec, array,
+               da, vec, array_,
               )
 
+	array = array_[]
 
-	return nothing
+	return array
 end 
 
 """
-	DMDAVecGetArrayRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`.
 
@@ -7067,23 +7431,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecGetArrayRead"))
 """
-function DMDAVecGetArrayRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecGetArrayRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMDAVecGetArrayRead: no generated method for these argument types")
+end
 
-@for_petsc function DMDAVecGetArrayRead(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
+@for_petsc function DMDAVecGetArrayRead(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec )
+	array_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAVecGetArrayRead, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}),
-               da, vec, array,
+               da, vec, array_,
               )
 
+	array = array_[]
 
-	return nothing
+	return array
 end 
 
 """
-	DMDAVecGetArrayWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`.
 
@@ -7104,19 +7472,23 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecGetArrayWrite"))
 """
-function DMDAVecGetArrayWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecGetArrayWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMDAVecGetArrayWrite: no generated method for these argument types")
+end
 
-@for_petsc function DMDAVecGetArrayWrite(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
+@for_petsc function DMDAVecGetArrayWrite(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec )
+	array_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMDAVecGetArrayWrite, $petsc_library),
                PetscErrorCode,
                (CDM, CVec, Ptr{Cvoid}),
-               da, vec, array,
+               da, vec, array_,
               )
 
+	array = array_[]
 
-	return nothing
+	return array
 end 
 
 """
@@ -7139,7 +7511,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecRestoreArray"))
 """
-function DMDAVecRestoreArray(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecRestoreArray(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMDAVecRestoreArray: no generated method for these argument types")
+end
 
 @for_petsc function DMDAVecRestoreArray(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -7173,7 +7547,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecRestoreArrayDOF"))
 """
-function DMDAVecRestoreArrayDOF(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecRestoreArrayDOF(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMDAVecRestoreArrayDOF: no generated method for these argument types")
+end
 
 @for_petsc function DMDAVecRestoreArrayDOF(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -7207,7 +7583,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecRestoreArrayDOFRead"))
 """
-function DMDAVecRestoreArrayDOFRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecRestoreArrayDOFRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMDAVecRestoreArrayDOFRead: no generated method for these argument types")
+end
 
 @for_petsc function DMDAVecRestoreArrayDOFRead(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -7241,7 +7619,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecRestoreArrayDOFWrite"))
 """
-function DMDAVecRestoreArrayDOFWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecRestoreArrayDOFWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMDAVecRestoreArrayDOFWrite: no generated method for these argument types")
+end
 
 @for_petsc function DMDAVecRestoreArrayDOFWrite(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -7276,7 +7656,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecRestoreArrayRead"))
 """
-function DMDAVecRestoreArrayRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecRestoreArrayRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMDAVecRestoreArrayRead: no generated method for these argument types")
+end
 
 @for_petsc function DMDAVecRestoreArrayRead(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -7310,7 +7692,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDAVecRestoreArrayWrite"))
 """
-function DMDAVecRestoreArrayWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMDAVecRestoreArrayWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMDAVecRestoreArrayWrite: no generated method for these argument types")
+end
 
 @for_petsc function DMDAVecRestoreArrayWrite(petsclib::$UnionPetscLib, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -7343,7 +7727,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMDestroy"))
 """
-function DMDestroy(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDestroy(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dm_ = Ref(dm.ptr)
@@ -7366,7 +7752,9 @@ end
 # External Links
 $(_doc_external("SNES/DMDestroyVI"))
 """
-function DMDestroyVI(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMDestroyVI(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMDestroyVI: no generated method for these argument types")
+end
 
 @for_petsc function DMDestroyVI(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -7406,7 +7794,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMExtrude"))
 """
-function DMExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::PetscInt) end
+function DMExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::Integer)
+    error("DMExtrude: no generated method for these argument types")
+end
 
 @for_petsc function DMExtrude(petsclib::$UnionPetscLib, dm::AbstractPetscDM, layers::$PetscInt )
 	dme_ = Ref{CDM}()
@@ -7435,7 +7825,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMFinalizePackage"))
 """
-function DMFinalizePackage(petsclib::PetscLibType) end
+function DMFinalizePackage(petsclib::PetscLibType)
+    error("DMFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function DMFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -7471,7 +7863,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMFindRegionNum"))
 """
-function DMFindRegionNum(petsclib::PetscLibType, dm::AbstractPetscDM, ds::PetscDS) end
+function DMFindRegionNum(petsclib::PetscLibType, dm::AbstractPetscDM, ds::PetscDS)
+    error("DMFindRegionNum: no generated method for these argument types")
+end
 
 @for_petsc function DMFindRegionNum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ds::PetscDS )
 	num_ = Ref{$PetscInt}()
@@ -7507,7 +7901,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityForest"))
 """
-function DMForestGetAdaptivityForest(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdaptivityForest(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdaptivityForest: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdaptivityForest(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	adapt_ = Ref{CDM}()
@@ -7544,7 +7940,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityLabel"))
 """
-function DMForestGetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdaptivityLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdaptivityLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	adaptLabel_ = Ref{DMLabel}()
@@ -7582,7 +7980,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityPurpose"))
 """
-function DMForestGetAdaptivityPurpose(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdaptivityPurpose(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdaptivityPurpose: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdaptivityPurpose(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	purpose_ = Ref{DMAdaptFlag}()
@@ -7620,7 +8020,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivitySF"))
 """
-function DMForestGetAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdaptivitySF: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdaptivitySF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	preCoarseToFine_ = Ref{PetscSF}()
@@ -7658,7 +8060,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityStrategy"))
 """
-function DMForestGetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdaptivityStrategy: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdaptivityStrategy(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	adaptStrategy_ = Ref{DMForestAdaptivityStrategy}()
@@ -7695,7 +8099,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivitySuccess"))
 """
-function DMForestGetAdaptivitySuccess(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdaptivitySuccess(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdaptivitySuccess: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdaptivitySuccess(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	success_ = Ref{PetscBool}()
@@ -7732,7 +8138,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetAdjacencyCodimension"))
 """
-function DMForestGetAdjacencyCodimension(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdjacencyCodimension(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdjacencyCodimension: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdjacencyCodimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	adjCodim_ = Ref{$PetscInt}()
@@ -7769,7 +8177,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetAdjacencyDimension"))
 """
-function DMForestGetAdjacencyDimension(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetAdjacencyDimension(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetAdjacencyDimension: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetAdjacencyDimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	adjDim_ = Ref{$PetscInt}()
@@ -7805,7 +8215,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetBaseDM"))
 """
-function DMForestGetBaseDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetBaseDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetBaseDM: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetBaseDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	base_ = Ref{CDM}()
@@ -7842,7 +8254,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetCellChart"))
 """
-function DMForestGetCellChart(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetCellChart(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetCellChart: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetCellChart(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cStart_ = Ref{$PetscInt}()
@@ -7880,7 +8294,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetCellSF"))
 """
-function DMForestGetCellSF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetCellSF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetCellSF: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetCellSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cellSF_ = Ref{PetscSF}()
@@ -7917,7 +8333,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetCellWeightFactor"))
 """
-function DMForestGetCellWeightFactor(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetCellWeightFactor(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetCellWeightFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetCellWeightFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	weightsFactor_ = Ref{$PetscReal}()
@@ -7954,7 +8372,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetCellWeights"))
 """
-function DMForestGetCellWeights(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetCellWeights(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetCellWeights: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetCellWeights(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	weights_ = Ref{Ptr{$PetscReal}}()
@@ -7992,7 +8412,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetComputeAdaptivitySF"))
 """
-function DMForestGetComputeAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetComputeAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetComputeAdaptivitySF: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetComputeAdaptivitySF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	computeSF_ = Ref{PetscBool}()
@@ -8030,7 +8452,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetGradeFactor"))
 """
-function DMForestGetGradeFactor(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetGradeFactor(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetGradeFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetGradeFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	grade_ = Ref{$PetscInt}()
@@ -8067,7 +8491,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetInitialRefinement"))
 """
-function DMForestGetInitialRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetInitialRefinement(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetInitialRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetInitialRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	initRefinement_ = Ref{$PetscInt}()
@@ -8105,7 +8531,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetMaximumRefinement"))
 """
-function DMForestGetMaximumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetMaximumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetMaximumRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetMaximumRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	maxRefinement_ = Ref{$PetscInt}()
@@ -8143,7 +8571,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetMinimumRefinement"))
 """
-function DMForestGetMinimumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetMinimumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetMinimumRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetMinimumRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	minRefinement_ = Ref{$PetscInt}()
@@ -8180,7 +8610,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetPartitionOverlap"))
 """
-function DMForestGetPartitionOverlap(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetPartitionOverlap(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetPartitionOverlap: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetPartitionOverlap(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	overlap_ = Ref{$PetscInt}()
@@ -8216,7 +8648,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestGetTopology"))
 """
-function DMForestGetTopology(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetTopology(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetTopology: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetTopology(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	topology_ = Ref{DMForestTopology}()
@@ -8253,7 +8687,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestGetWeightCapacity"))
 """
-function DMForestGetWeightCapacity(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMForestGetWeightCapacity(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMForestGetWeightCapacity: no generated method for these argument types")
+end
 
 @for_petsc function DMForestGetWeightCapacity(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	capacity_ = Ref{$PetscReal}()
@@ -8286,7 +8722,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestRegisterType"))
 """
-function DMForestRegisterType(petsclib::PetscLibType, name::DMType) end
+function DMForestRegisterType(petsclib::PetscLibType, name::DMType)
+    error("DMForestRegisterType: no generated method for these argument types")
+end
 
 @for_petsc function DMForestRegisterType(petsclib::$UnionPetscLib, name::DMType )
 
@@ -8320,7 +8758,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityForest"))
 """
-function DMForestSetAdaptivityForest(petsclib::PetscLibType, dm::AbstractPetscDM, adapt::AbstractPetscDM) end
+function DMForestSetAdaptivityForest(petsclib::PetscLibType, dm::AbstractPetscDM, adapt::AbstractPetscDM)
+    error("DMForestSetAdaptivityForest: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetAdaptivityForest(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adapt::AbstractPetscDM )
 
@@ -8353,7 +8793,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityLabel"))
 """
-function DMForestSetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM, adaptLabel::DMLabel) end
+function DMForestSetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM, adaptLabel::DMLabel)
+    error("DMForestSetAdaptivityLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetAdaptivityLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adaptLabel::DMLabel )
 
@@ -8387,7 +8829,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityPurpose"))
 """
-function DMForestSetAdaptivityPurpose(petsclib::PetscLibType, dm::AbstractPetscDM, purpose::DMAdaptFlag) end
+function DMForestSetAdaptivityPurpose(petsclib::PetscLibType, dm::AbstractPetscDM, purpose::DMAdaptFlag)
+    error("DMForestSetAdaptivityPurpose: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetAdaptivityPurpose(petsclib::$UnionPetscLib, dm::AbstractPetscDM, purpose::DMAdaptFlag )
 
@@ -8419,7 +8863,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityStrategy"))
 """
-function DMForestSetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy) end
+function DMForestSetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy)
+    error("DMForestSetAdaptivityStrategy: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetAdaptivityStrategy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy )
 
@@ -8452,7 +8898,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetAdjacencyCodimension"))
 """
-function DMForestSetAdjacencyCodimension(petsclib::PetscLibType, dm::AbstractPetscDM, adjCodim::PetscInt) end
+function DMForestSetAdjacencyCodimension(petsclib::PetscLibType, dm::AbstractPetscDM, adjCodim::Integer)
+    error("DMForestSetAdjacencyCodimension: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetAdjacencyCodimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adjCodim::$PetscInt )
 
@@ -8485,7 +8933,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetAdjacencyDimension"))
 """
-function DMForestSetAdjacencyDimension(petsclib::PetscLibType, dm::AbstractPetscDM, adjDim::PetscInt) end
+function DMForestSetAdjacencyDimension(petsclib::PetscLibType, dm::AbstractPetscDM, adjDim::Integer)
+    error("DMForestSetAdjacencyDimension: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetAdjacencyDimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adjDim::$PetscInt )
 
@@ -8506,7 +8956,9 @@ end
 # External Links
 $(_doc_external("DMForest/DMForestSetBaseCoordinateMapping"))
 """
-function DMForestSetBaseCoordinateMapping(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMForestSetBaseCoordinateMapping(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMForestSetBaseCoordinateMapping: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetBaseCoordinateMapping(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -8539,7 +8991,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetBaseDM"))
 """
-function DMForestSetBaseDM(petsclib::PetscLibType, dm::AbstractPetscDM, base::AbstractPetscDM) end
+function DMForestSetBaseDM(petsclib::PetscLibType, dm::AbstractPetscDM, base::AbstractPetscDM)
+    error("DMForestSetBaseDM: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetBaseDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, base::AbstractPetscDM )
 
@@ -8572,7 +9026,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestSetCellWeightFactor"))
 """
-function DMForestSetCellWeightFactor(petsclib::PetscLibType, dm::AbstractPetscDM, weightsFactor::PetscReal) end
+function DMForestSetCellWeightFactor(petsclib::PetscLibType, dm::AbstractPetscDM, weightsFactor::Real)
+    error("DMForestSetCellWeightFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetCellWeightFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, weightsFactor::$PetscReal )
 
@@ -8606,7 +9062,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestSetCellWeights"))
 """
-function DMForestSetCellWeights(petsclib::PetscLibType, dm::AbstractPetscDM, weights::Vector{PetscReal}, copyMode::PetscCopyMode) end
+function DMForestSetCellWeights(petsclib::PetscLibType, dm::AbstractPetscDM, weights::AbstractVector{<:Number}, copyMode::PetscCopyMode)
+    error("DMForestSetCellWeights: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetCellWeights(petsclib::$UnionPetscLib, dm::AbstractPetscDM, weights::Vector{$PetscReal}, copyMode::PetscCopyMode )
 
@@ -8639,7 +9097,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestSetComputeAdaptivitySF"))
 """
-function DMForestSetComputeAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM, computeSF::PetscBool) end
+function DMForestSetComputeAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM, computeSF::PetscBool)
+    error("DMForestSetComputeAdaptivitySF: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetComputeAdaptivitySF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, computeSF::PetscBool )
 
@@ -8673,7 +9133,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestSetGradeFactor"))
 """
-function DMForestSetGradeFactor(petsclib::PetscLibType, dm::AbstractPetscDM, grade::PetscInt) end
+function DMForestSetGradeFactor(petsclib::PetscLibType, dm::AbstractPetscDM, grade::Integer)
+    error("DMForestSetGradeFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetGradeFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, grade::$PetscInt )
 
@@ -8706,7 +9168,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetInitialRefinement"))
 """
-function DMForestSetInitialRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, initRefinement::PetscInt) end
+function DMForestSetInitialRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, initRefinement::Integer)
+    error("DMForestSetInitialRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetInitialRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM, initRefinement::$PetscInt )
 
@@ -8740,7 +9204,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetMaximumRefinement"))
 """
-function DMForestSetMaximumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, maxRefinement::PetscInt) end
+function DMForestSetMaximumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, maxRefinement::Integer)
+    error("DMForestSetMaximumRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetMaximumRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM, maxRefinement::$PetscInt )
 
@@ -8774,7 +9240,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetMinimumRefinement"))
 """
-function DMForestSetMinimumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, minRefinement::PetscInt) end
+function DMForestSetMinimumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, minRefinement::Integer)
+    error("DMForestSetMinimumRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetMinimumRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM, minRefinement::$PetscInt )
 
@@ -8808,7 +9276,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetPartitionOverlap"))
 """
-function DMForestSetPartitionOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) end
+function DMForestSetPartitionOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::Integer)
+    error("DMForestSetPartitionOverlap: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetPartitionOverlap(petsclib::$UnionPetscLib, dm::AbstractPetscDM, overlap::$PetscInt )
 
@@ -8842,7 +9312,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetTopology"))
 """
-function DMForestSetTopology(petsclib::PetscLibType, dm::AbstractPetscDM, topology::DMForestTopology) end
+function DMForestSetTopology(petsclib::PetscLibType, dm::AbstractPetscDM, topology::DMForestTopology)
+    error("DMForestSetTopology: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetTopology(petsclib::$UnionPetscLib, dm::AbstractPetscDM, topology::DMForestTopology )
 
@@ -8875,7 +9347,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMForest/DMForestSetWeightCapacity"))
 """
-function DMForestSetWeightCapacity(petsclib::PetscLibType, dm::AbstractPetscDM, capacity::PetscReal) end
+function DMForestSetWeightCapacity(petsclib::PetscLibType, dm::AbstractPetscDM, capacity::Real)
+    error("DMForestSetWeightCapacity: no generated method for these argument types")
+end
 
 @for_petsc function DMForestSetWeightCapacity(petsclib::$UnionPetscLib, dm::AbstractPetscDM, capacity::$PetscReal )
 
@@ -8910,7 +9384,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestTemplate"))
 """
-function DMForestTemplate(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm) end
+function DMForestTemplate(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm)
+    error("DMForestTemplate: no generated method for these argument types")
+end
 
 @for_petsc function DMForestTemplate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, comm::MPI_Comm )
 	tdm_ = Ref{CDM}()
@@ -8933,7 +9409,9 @@ end
 # External Links
 $(_doc_external("DMForest/DMForestTransferVec"))
 """
-function DMForestTransferVec(petsclib::PetscLibType, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, useBCs::PetscBool, time::PetscReal) end
+function DMForestTransferVec(petsclib::PetscLibType, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, useBCs::PetscBool, time::Real)
+    error("DMForestTransferVec: no generated method for these argument types")
+end
 
 @for_petsc function DMForestTransferVec(petsclib::$UnionPetscLib, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, useBCs::PetscBool, time::$PetscReal )
 
@@ -8954,7 +9432,9 @@ end
 # External Links
 $(_doc_external("DMForest/DMForestTransferVecFromBase"))
 """
-function DMForestTransferVecFromBase(petsclib::PetscLibType, dm::AbstractPetscDM, vecIn::AbstractPetscVec, vecOut::AbstractPetscVec) end
+function DMForestTransferVecFromBase(petsclib::PetscLibType, dm::AbstractPetscDM, vecIn::AbstractPetscVec, vecOut::AbstractPetscVec)
+    error("DMForestTransferVecFromBase: no generated method for these argument types")
+end
 
 @for_petsc function DMForestTransferVecFromBase(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vecIn::AbstractPetscVec, vecOut::AbstractPetscVec )
 
@@ -8987,7 +9467,9 @@ Input Parameters:
 # External Links
 $(_doc_external("DM/DMGenerateRegister"))
 """
-function DMGenerateRegister(petsclib::PetscLibType, sname::String, fnc::external, rfnc::external, alfnc::external, dim::PetscInt) end
+function DMGenerateRegister(petsclib::PetscLibType, sname::String, fnc::external, rfnc::external, alfnc::external, dim::Integer)
+    error("DMGenerateRegister: no generated method for these argument types")
+end
 
 @for_petsc function DMGenerateRegister(petsclib::$UnionPetscLib, sname::String, fnc::external, rfnc::external, alfnc::external, dim::$PetscInt )
 
@@ -9015,7 +9497,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGenerateRegisterAll"))
 """
-function DMGenerateRegisterAll(petsclib::PetscLibType) end
+function DMGenerateRegisterAll(petsclib::PetscLibType)
+    error("DMGenerateRegisterAll: no generated method for these argument types")
+end
 
 @for_petsc function DMGenerateRegisterAll(petsclib::$UnionPetscLib)
 
@@ -9035,7 +9519,9 @@ end
 # External Links
 $(_doc_external("DM/DMGenerateRegisterDestroy"))
 """
-function DMGenerateRegisterDestroy(petsclib::PetscLibType) end
+function DMGenerateRegisterDestroy(petsclib::PetscLibType)
+    error("DMGenerateRegisterDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMGenerateRegisterDestroy(petsclib::$UnionPetscLib)
 
@@ -9064,7 +9550,9 @@ Input Parameters:
 # External Links
 $(_doc_external("DM/DMGeomModelRegister"))
 """
-function DMGeomModelRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function DMGeomModelRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("DMGeomModelRegister: no generated method for these argument types")
+end
 
 @for_petsc function DMGeomModelRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -9092,7 +9580,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGeomModelRegisterAll"))
 """
-function DMGeomModelRegisterAll(petsclib::PetscLibType) end
+function DMGeomModelRegisterAll(petsclib::PetscLibType)
+    error("DMGeomModelRegisterAll: no generated method for these argument types")
+end
 
 @for_petsc function DMGeomModelRegisterAll(petsclib::$UnionPetscLib)
 
@@ -9112,7 +9602,9 @@ end
 # External Links
 $(_doc_external("DM/DMGeomModelRegisterDestroy"))
 """
-function DMGeomModelRegisterDestroy(petsclib::PetscLibType) end
+function DMGeomModelRegisterDestroy(petsclib::PetscLibType)
+    error("DMGeomModelRegisterDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMGeomModelRegisterDestroy(petsclib::$UnionPetscLib)
 
@@ -9157,7 +9649,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetAdjacency"))
 """
-function DMGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) end
+function DMGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer)
+    error("DMGetAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function DMGetAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt )
 	useCone_ = Ref{PetscBool}()
@@ -9220,7 +9714,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetApplicationContext"))
 """
-function DMGetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::PeCtx) end
+function DMGetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::PeCtx)
+    error("DMGetApplicationContext: no generated method for these argument types")
+end
 
 @for_petsc function DMGetApplicationContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::PeCtx )
 
@@ -9261,7 +9757,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetAuxiliaryLabels"))
 """
-function DMGetAuxiliaryLabels(petsclib::PetscLibType, dm::AbstractPetscDM, labels::Vector{DMLabel}, values::Vector{PetscInt}, parts::Vector{PetscInt}) end
+function DMGetAuxiliaryLabels(petsclib::PetscLibType, dm::AbstractPetscDM, labels::Vector{DMLabel}, values::AbstractVector{<:Number}, parts::AbstractVector{<:Number})
+    error("DMGetAuxiliaryLabels: no generated method for these argument types")
+end
 
 @for_petsc function DMGetAuxiliaryLabels(petsclib::$UnionPetscLib, dm::AbstractPetscDM, labels::Vector{DMLabel}, values::Vector{$PetscInt}, parts::Vector{$PetscInt} )
 
@@ -9303,7 +9801,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetAuxiliaryVec"))
 """
-function DMGetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt) end
+function DMGetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::Integer, part::Integer)
+    error("DMGetAuxiliaryVec: no generated method for these argument types")
+end
 
 @for_petsc function DMGetAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, value::$PetscInt, part::$PetscInt )
 	aux_ = Ref{CVec}()
@@ -9349,7 +9849,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetBasicAdjacency"))
 """
-function DMGetBasicAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetBasicAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetBasicAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function DMGetBasicAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	useCone_ = Ref{PetscBool}()
@@ -9395,7 +9897,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetBlockSize"))
 """
-function DMGetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function DMGetBlockSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	bs_ = Ref{$PetscInt}()
@@ -9433,7 +9937,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetBlockingType"))
 """
-function DMGetBlockingType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetBlockingType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetBlockingType: no generated method for these argument types")
+end
 
 @for_petsc function DMGetBlockingType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	btype_ = Ref{DMBlockingType}()
@@ -9470,7 +9976,9 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMGetBoundingBox"))
 """
-function DMGetBoundingBox(petsclib::PetscLibType, dm::AbstractPetscDM, gmin::Vector{PetscReal}, gmax::Vector{PetscReal}) end
+function DMGetBoundingBox(petsclib::PetscLibType, dm::AbstractPetscDM, gmin::AbstractVector{<:Number}, gmax::AbstractVector{<:Number})
+    error("DMGetBoundingBox: no generated method for these argument types")
+end
 
 @for_petsc function DMGetBoundingBox(petsclib::$UnionPetscLib, dm::AbstractPetscDM, gmin::Vector{$PetscReal}, gmax::Vector{$PetscReal} )
 
@@ -9505,7 +10013,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCellCoordinateDM"))
 """
-function DMGetCellCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCellCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCellCoordinateDM: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCellCoordinateDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cdm_ = Ref{CDM}()
@@ -9541,7 +10051,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCellCoordinateSection"))
 """
-function DMGetCellCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCellCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCellCoordinateSection: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCellCoordinateSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	section_ = Ref{PetscSection}()
@@ -9577,7 +10089,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCellCoordinates"))
 """
-function DMGetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCellCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCellCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	c_ = Ref{CVec}()
@@ -9613,7 +10127,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCellCoordinatesLocal"))
 """
-function DMGetCellCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCellCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCellCoordinatesLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCellCoordinatesLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	c_ = Ref{CVec}()
@@ -9649,7 +10165,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGetCellCoordinatesLocalNoncollective"))
 """
-function DMGetCellCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCellCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCellCoordinatesLocalNoncollective: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCellCoordinatesLocalNoncollective(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	c_ = Ref{CVec}()
@@ -9682,7 +10200,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGetCellCoordinatesLocalSetUp"))
 """
-function DMGetCellCoordinatesLocalSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCellCoordinatesLocalSetUp(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCellCoordinatesLocalSetUp: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCellCoordinatesLocalSetUp(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -9720,7 +10240,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetCellDS"))
 """
-function DMGetCellDS(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMGetCellDS(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMGetCellDS: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCellDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	ds_ = Ref{PetscDS}()
@@ -9760,7 +10282,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetCoarseDM"))
 """
-function DMGetCoarseDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoarseDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoarseDM: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoarseDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cdm_ = Ref{CDM}()
@@ -9798,7 +10322,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetCoarsenLevel"))
 """
-function DMGetCoarsenLevel(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoarsenLevel(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoarsenLevel: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoarsenLevel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	level_ = Ref{$PetscInt}()
@@ -9899,7 +10425,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetCompatibility"))
 """
-function DMGetCompatibility(petsclib::PetscLibType, dm1::AbstractPetscDM, dm2::AbstractPetscDM) end
+function DMGetCompatibility(petsclib::PetscLibType, dm1::AbstractPetscDM, dm2::AbstractPetscDM)
+    error("DMGetCompatibility: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCompatibility(petsclib::$UnionPetscLib, dm1::AbstractPetscDM, dm2::AbstractPetscDM )
 	compatible_ = Ref{PetscBool}()
@@ -9938,7 +10466,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCoordinateDM"))
 """
-function DMGetCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinateDM: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinateDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cdm_ = Ref{CDM}()
@@ -9974,7 +10504,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCoordinateDim"))
 """
-function DMGetCoordinateDim(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinateDim(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinateDim: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinateDim(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dim_ = Ref{$PetscInt}()
@@ -9997,7 +10529,9 @@ end
 # External Links
 $(_doc_external("DM/DMGetCoordinateField"))
 """
-function DMGetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField) end
+function DMGetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField)
+    error("DMGetCoordinateField: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinateField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::DMField )
 
@@ -10031,7 +10565,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCoordinateSection"))
 """
-function DMGetCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinateSection: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinateSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	section_ = Ref{PetscSection}()
@@ -10067,7 +10603,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCoordinates"))
 """
-function DMGetCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	c_ = Ref{CVec}()
@@ -10103,7 +10641,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocal"))
 """
-function DMGetCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinatesLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinatesLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	c_ = Ref{CVec}()
@@ -10139,7 +10679,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalNoncollective"))
 """
-function DMGetCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinatesLocalNoncollective: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinatesLocalNoncollective(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	c_ = Ref{CVec}()
@@ -10172,7 +10714,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalSetUp"))
 """
-function DMGetCoordinatesLocalSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinatesLocalSetUp(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinatesLocalSetUp: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinatesLocalSetUp(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -10208,7 +10752,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalTuple"))
 """
-function DMGetCoordinatesLocalTuple(petsclib::PetscLibType, dm::AbstractPetscDM, p::AbstractIS) end
+function DMGetCoordinatesLocalTuple(petsclib::PetscLibType, dm::AbstractPetscDM, p::AbstractIS)
+    error("DMGetCoordinatesLocalTuple: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinatesLocalTuple(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::AbstractIS )
 	pCoordSection_ = Ref{PetscSection}()
@@ -10246,7 +10792,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalized"))
 """
-function DMGetCoordinatesLocalized(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinatesLocalized(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinatesLocalized: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinatesLocalized(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	areLocalized_ = Ref{PetscBool}()
@@ -10282,7 +10830,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalizedLocal"))
 """
-function DMGetCoordinatesLocalizedLocal(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetCoordinatesLocalizedLocal(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetCoordinatesLocalizedLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMGetCoordinatesLocalizedLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	areLocalized_ = Ref{PetscBool}()
@@ -10323,7 +10873,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetDS"))
 """
-function DMGetDS(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetDS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetDS: no generated method for these argument types")
+end
 
 @for_petsc function DMGetDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	ds_ = Ref{PetscDS}()
@@ -10366,7 +10918,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetDefaultConstraints"))
 """
-function DMGetDefaultConstraints(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetDefaultConstraints(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetDefaultConstraints: no generated method for these argument types")
+end
 
 @for_petsc function DMGetDefaultConstraints(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	section_ = Ref{PetscSection}()
@@ -10415,7 +10969,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetDimPoints"))
 """
-function DMGetDimPoints(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt) end
+function DMGetDimPoints(petsclib::PetscLibType, dm::AbstractPetscDM, dim::Integer)
+    error("DMGetDimPoints: no generated method for these argument types")
+end
 
 @for_petsc function DMGetDimPoints(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dim::$PetscInt )
 	pStart_ = Ref{$PetscInt}()
@@ -10455,7 +11011,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetDimension"))
 """
-function DMGetDimension(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetDimension(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetDimension: no generated method for these argument types")
+end
 
 @for_petsc function DMGetDimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dim_ = Ref{$PetscInt}()
@@ -10492,7 +11050,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMGetEnclosurePoint"))
 """
-function DMGetEnclosurePoint(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM, etype::DMEnclosureType, pB::PetscInt) end
+function DMGetEnclosurePoint(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM, etype::DMEnclosureType, pB::Integer)
+    error("DMGetEnclosurePoint: no generated method for these argument types")
+end
 
 @for_petsc function DMGetEnclosurePoint(petsclib::$UnionPetscLib, dmA::AbstractPetscDM, dmB::AbstractPetscDM, etype::DMEnclosureType, pB::$PetscInt )
 	pA_ = Ref{$PetscInt}()
@@ -10527,7 +11087,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMGetEnclosureRelation"))
 """
-function DMGetEnclosureRelation(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM) end
+function DMGetEnclosureRelation(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM)
+    error("DMGetEnclosureRelation: no generated method for these argument types")
+end
 
 @for_petsc function DMGetEnclosureRelation(petsclib::$UnionPetscLib, dmA::AbstractPetscDM, dmB::AbstractPetscDM )
 	rel_ = Ref{DMEnclosureType}()
@@ -10567,7 +11129,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetField"))
 """
-function DMGetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) end
+function DMGetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer)
+    error("DMGetField: no generated method for these argument types")
+end
 
 @for_petsc function DMGetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt )
 	label_ = Ref{DMLabel}()
@@ -10608,7 +11172,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetFieldAvoidTensor"))
 """
-function DMGetFieldAvoidTensor(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) end
+function DMGetFieldAvoidTensor(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer)
+    error("DMGetFieldAvoidTensor: no generated method for these argument types")
+end
 
 @for_petsc function DMGetFieldAvoidTensor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt )
 	avoidTensor_ = Ref{PetscBool}()
@@ -10644,7 +11210,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetFineDM"))
 """
-function DMGetFineDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetFineDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetFineDM: no generated method for these argument types")
+end
 
 @for_petsc function DMGetFineDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	fdm_ = Ref{CDM}()
@@ -10684,7 +11252,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMGetFirstLabeledPoint"))
 """
-function DMGetFirstLabeledPoint(petsclib::PetscLibType, dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, height::PetscInt) end
+function DMGetFirstLabeledPoint(petsclib::PetscLibType, dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, height::Integer)
+    error("DMGetFirstLabeledPoint: no generated method for these argument types")
+end
 
 @for_petsc function DMGetFirstLabeledPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, height::$PetscInt )
 	point_ = Ref{$PetscInt}()
@@ -10727,7 +11297,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetGlobalSection"))
 """
-function DMGetGlobalSection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetGlobalSection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetGlobalSection: no generated method for these argument types")
+end
 
 @for_petsc function DMGetGlobalSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	section_ = Ref{PetscSection}()
@@ -10766,7 +11338,9 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMGetGlobalVector"))
 """
-function DMGetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMGetGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	g_ = Ref{CVec}()
@@ -10808,7 +11382,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetISColoringType"))
 """
-function DMGetISColoringType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetISColoringType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetISColoringType: no generated method for these argument types")
+end
 
 @for_petsc function DMGetISColoringType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	ctype_ = Ref{ISColoringType}()
@@ -10855,7 +11431,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabel"))
 """
-function DMGetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMGetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMGetLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	label_ = Ref{DMLabel}()
@@ -10894,7 +11472,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabelByNum"))
 """
-function DMGetLabelByNum(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) end
+function DMGetLabelByNum(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer)
+    error("DMGetLabelByNum: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLabelByNum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt )
 	label_ = Ref{DMLabel}()
@@ -10933,7 +11513,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabelIdIS"))
 """
-function DMGetLabelIdIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMGetLabelIdIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMGetLabelIdIS: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLabelIdIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	ids_ = Ref{CIS}()
@@ -10975,7 +11557,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabelName"))
 """
-function DMGetLabelName(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) end
+function DMGetLabelName(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer)
+    error("DMGetLabelName: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLabelName(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt )
 	name_ = Ref{Ptr{Cchar}}()
@@ -11014,7 +11598,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabelOutput"))
 """
-function DMGetLabelOutput(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMGetLabelOutput(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMGetLabelOutput: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLabelOutput(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	output_ = Ref{PetscBool}()
@@ -11056,7 +11642,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabelSize"))
 """
-function DMGetLabelSize(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMGetLabelSize(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMGetLabelSize: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLabelSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	size_ = Ref{$PetscInt}()
@@ -11096,7 +11684,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabelValue"))
 """
-function DMGetLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::PetscInt) end
+function DMGetLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::Integer)
+    error("DMGetLabelValue: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLabelValue(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, point::$PetscInt )
 	value_ = Ref{$PetscInt}()
@@ -11133,7 +11723,9 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMGetLocalBoundingBox"))
 """
-function DMGetLocalBoundingBox(petsclib::PetscLibType, dm::AbstractPetscDM, lmin::Vector{PetscReal}, lmax::Vector{PetscReal}) end
+function DMGetLocalBoundingBox(petsclib::PetscLibType, dm::AbstractPetscDM, lmin::AbstractVector{<:Number}, lmax::AbstractVector{<:Number})
+    error("DMGetLocalBoundingBox: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLocalBoundingBox(petsclib::$UnionPetscLib, dm::AbstractPetscDM, lmin::Vector{$PetscReal}, lmax::Vector{$PetscReal} )
 
@@ -11173,7 +11765,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLocalSection"))
 """
-function DMGetLocalSection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetLocalSection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetLocalSection: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLocalSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	section_ = Ref{PetscSection}()
@@ -11220,7 +11814,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLocalToGlobalMapping"))
 """
-function DMGetLocalToGlobalMapping(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetLocalToGlobalMapping(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetLocalToGlobalMapping: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLocalToGlobalMapping(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	ltog_ = Ref{ISLocalToGlobalMapping}()
@@ -11259,7 +11855,9 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMGetLocalVector"))
 """
-function DMGetLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMGetLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	g_ = Ref{CVec}()
@@ -11297,7 +11895,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetMatType"))
 """
-function DMGetMatType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetMatType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetMatType: no generated method for these argument types")
+end
 
 @for_petsc function DMGetMatType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	ctype_ = Ref{MatType}()
@@ -11334,7 +11934,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMGetNamedGlobalVector"))
 """
-function DMGetNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMGetNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMGetNamedGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNamedGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	X_ = Ref{CVec}()
@@ -11371,7 +11973,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMGetNamedLocalVector"))
 """
-function DMGetNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMGetNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMGetNamedLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNamedLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	X_ = Ref{CVec}()
@@ -11410,7 +12014,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetNaturalSF"))
 """
-function DMGetNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetNaturalSF: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNaturalSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	sf_ = Ref{PetscSF}()
@@ -11452,7 +12058,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetNeighbors"))
 """
-function DMGetNeighbors(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetNeighbors(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetNeighbors: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNeighbors(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nranks_ = Ref{$PetscInt}()
@@ -11492,7 +12100,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetNumAuxiliaryVec"))
 """
-function DMGetNumAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetNumAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetNumAuxiliaryVec: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNumAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numAux_ = Ref{$PetscInt}()
@@ -11530,7 +12140,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetNumDS"))
 """
-function DMGetNumDS(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetNumDS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetNumDS: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNumDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	Nds_ = Ref{$PetscInt}()
@@ -11568,7 +12180,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetNumFields"))
 """
-function DMGetNumFields(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetNumFields(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetNumFields: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNumFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numFields_ = Ref{$PetscInt}()
@@ -11606,7 +12220,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetNumLabels"))
 """
-function DMGetNumLabels(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetNumLabels(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetNumLabels: no generated method for these argument types")
+end
 
 @for_petsc function DMGetNumLabels(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numLabels_ = Ref{$PetscInt}()
@@ -11645,7 +12261,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetOptionsPrefix"))
 """
-function DMGetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function DMGetOptionsPrefix(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	prefix_ = Ref{Ptr{Cchar}}()
@@ -11688,7 +12306,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetOutputDM"))
 """
-function DMGetOutputDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetOutputDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetOutputDM: no generated method for these argument types")
+end
 
 @for_petsc function DMGetOutputDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	odm_ = Ref{CDM}()
@@ -11733,7 +12353,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetOutputSequenceLength"))
 """
-function DMGetOutputSequenceLength(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, name::String) end
+function DMGetOutputSequenceLength(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, name::String)
+    error("DMGetOutputSequenceLength: no generated method for these argument types")
+end
 
 @for_petsc function DMGetOutputSequenceLength(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, name::String )
 	len_ = Ref{$PetscInt}()
@@ -11778,7 +12400,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetOutputSequenceNumber"))
 """
-function DMGetOutputSequenceNumber(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetOutputSequenceNumber(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetOutputSequenceNumber: no generated method for these argument types")
+end
 
 @for_petsc function DMGetOutputSequenceNumber(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	num_ = Ref{$PetscInt}()
@@ -11818,7 +12442,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMGetPeriodicity"))
 """
-function DMGetPeriodicity(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetPeriodicity(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetPeriodicity: no generated method for these argument types")
+end
 
 @for_petsc function DMGetPeriodicity(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	maxCell_ = Ref{Ptr{$PetscReal}}()
@@ -11863,7 +12489,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetPointSF"))
 """
-function DMGetPointSF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetPointSF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetPointSF: no generated method for these argument types")
+end
 
 @for_petsc function DMGetPointSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	sf_ = Ref{PetscSF}()
@@ -11904,7 +12532,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetRefineLevel"))
 """
-function DMGetRefineLevel(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetRefineLevel(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetRefineLevel: no generated method for these argument types")
+end
 
 @for_petsc function DMGetRefineLevel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	level_ = Ref{$PetscInt}()
@@ -11950,7 +12580,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetRegionDS"))
 """
-function DMGetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMGetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMGetRegionDS: no generated method for these argument types")
+end
 
 @for_petsc function DMGetRegionDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 	fields_ = Ref{CIS}()
@@ -11996,7 +12628,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetRegionNumDS"))
 """
-function DMGetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt) end
+function DMGetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::Integer)
+    error("DMGetRegionNumDS: no generated method for these argument types")
+end
 
 @for_petsc function DMGetRegionNumDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, num::$PetscInt )
 	label_ = Ref{DMLabel}()
@@ -12042,7 +12676,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetSectionSF"))
 """
-function DMGetSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetSectionSF: no generated method for these argument types")
+end
 
 @for_petsc function DMGetSectionSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	sf_ = Ref{PetscSF}()
@@ -12078,7 +12714,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetSparseLocalize"))
 """
-function DMGetSparseLocalize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetSparseLocalize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetSparseLocalize: no generated method for these argument types")
+end
 
 @for_petsc function DMGetSparseLocalize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	sparse_ = Ref{PetscBool}()
@@ -12118,7 +12756,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetStratumIS"))
 """
-function DMGetStratumIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt) end
+function DMGetStratumIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::Integer)
+    error("DMGetStratumIS: no generated method for these argument types")
+end
 
 @for_petsc function DMGetStratumIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, value::$PetscInt )
 	points_ = Ref{CIS}()
@@ -12158,7 +12798,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetStratumSize"))
 """
-function DMGetStratumSize(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt) end
+function DMGetStratumSize(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::Integer)
+    error("DMGetStratumSize: no generated method for these argument types")
+end
 
 @for_petsc function DMGetStratumSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, value::$PetscInt )
 	size_ = Ref{$PetscInt}()
@@ -12196,7 +12838,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetType"))
 """
-function DMGetType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetType: no generated method for these argument types")
+end
 
 @for_petsc function DMGetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	type_ = Ref{DMType}()
@@ -12234,7 +12878,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetUseNatural"))
 """
-function DMGetUseNatural(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMGetUseNatural(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMGetUseNatural: no generated method for these argument types")
+end
 
 @for_petsc function DMGetUseNatural(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	useNatural_ = Ref{PetscBool}()
@@ -12272,7 +12918,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetVecType"))
 """
-function DMGetVecType(petsclib::PetscLibType, da::AbstractPetscDM) end
+function DMGetVecType(petsclib::PetscLibType, da::AbstractPetscDM)
+    error("DMGetVecType: no generated method for these argument types")
+end
 
 @for_petsc function DMGetVecType(petsclib::$UnionPetscLib, da::AbstractPetscDM )
 	ctype_ = Ref{VecType}()
@@ -12318,7 +12966,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGlobalToLocal"))
 """
-function DMGlobalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMGlobalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMGlobalToLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMGlobalToLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -12363,7 +13013,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGlobalToLocalBegin"))
 """
-function DMGlobalToLocalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMGlobalToLocalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMGlobalToLocalBegin: no generated method for these argument types")
+end
 
 @for_petsc function DMGlobalToLocalBegin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -12397,7 +13049,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGlobalToLocalBeginDefaultShell"))
 """
-function DMGlobalToLocalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMGlobalToLocalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMGlobalToLocalBeginDefaultShell: no generated method for these argument types")
+end
 
 @for_petsc function DMGlobalToLocalBeginDefaultShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -12436,7 +13090,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGlobalToLocalEnd"))
 """
-function DMGlobalToLocalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMGlobalToLocalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMGlobalToLocalEnd: no generated method for these argument types")
+end
 
 @for_petsc function DMGlobalToLocalEnd(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -12469,7 +13125,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMGlobalToLocalEndDefaultShell"))
 """
-function DMGlobalToLocalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMGlobalToLocalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMGlobalToLocalEndDefaultShell: no generated method for these argument types")
+end
 
 @for_petsc function DMGlobalToLocalEndDefaultShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -12522,7 +13180,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGlobalToLocalHookAdd"))
 """
-function DMGlobalToLocalHookAdd(petsclib::PetscLibType, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid}) end
+function DMGlobalToLocalHookAdd(petsclib::PetscLibType, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid})
+    error("DMGlobalToLocalHookAdd: no generated method for these argument types")
+end
 
 @for_petsc function DMGlobalToLocalHookAdd(petsclib::$UnionPetscLib, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid} )
 
@@ -12574,7 +13234,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMGlobalToLocalSolve"))
 """
-function DMGlobalToLocalSolve(petsclib::PetscLibType, dm::AbstractPetscDM, x::AbstractPetscVec, y::AbstractPetscVec) end
+function DMGlobalToLocalSolve(petsclib::PetscLibType, dm::AbstractPetscDM, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("DMGlobalToLocalSolve: no generated method for these argument types")
+end
 
 @for_petsc function DMGlobalToLocalSolve(petsclib::$UnionPetscLib, dm::AbstractPetscDM, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -12608,7 +13270,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMHasBasisTransform"))
 """
-function DMHasBasisTransform(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMHasBasisTransform(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMHasBasisTransform: no generated method for these argument types")
+end
 
 @for_petsc function DMHasBasisTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	flg_ = Ref{PetscBool}()
@@ -12646,7 +13310,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMHasBound"))
 """
-function DMHasBound(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMHasBound(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMHasBound: no generated method for these argument types")
+end
 
 @for_petsc function DMHasBound(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	hasBound_ = Ref{PetscBool}()
@@ -12684,7 +13350,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMHasColoring"))
 """
-function DMHasColoring(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMHasColoring(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMHasColoring: no generated method for these argument types")
+end
 
 @for_petsc function DMHasColoring(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	flg_ = Ref{PetscBool}()
@@ -12722,7 +13390,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMHasCreateInjection"))
 """
-function DMHasCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMHasCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMHasCreateInjection: no generated method for these argument types")
+end
 
 @for_petsc function DMHasCreateInjection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	flg_ = Ref{PetscBool}()
@@ -12760,7 +13430,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMHasCreateRestriction"))
 """
-function DMHasCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMHasCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMHasCreateRestriction: no generated method for these argument types")
+end
 
 @for_petsc function DMHasCreateRestriction(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	flg_ = Ref{PetscBool}()
@@ -12799,7 +13471,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMHasLabel"))
 """
-function DMHasLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMHasLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMHasLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMHasLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	hasLabel_ = Ref{PetscBool}()
@@ -12836,7 +13510,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMHasNamedGlobalVector"))
 """
-function DMHasNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMHasNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMHasNamedGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMHasNamedGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	exists_ = Ref{PetscBool}()
@@ -12873,7 +13549,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMHasNamedLocalVector"))
 """
-function DMHasNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMHasNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMHasNamedLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMHasNamedLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	exists_ = Ref{PetscBool}()
@@ -12911,7 +13589,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMHasVariableBounds"))
 """
-function DMHasVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMHasVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMHasVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function DMHasVariableBounds(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	flg_ = Ref{PetscBool}()
@@ -12941,7 +13621,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMInitializePackage"))
 """
-function DMInitializePackage(petsclib::PetscLibType) end
+function DMInitializePackage(petsclib::PetscLibType)
+    error("DMInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function DMInitializePackage(petsclib::$UnionPetscLib)
 
@@ -12979,7 +13661,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolate"))
 """
-function DMInterpolate(petsclib::PetscLibType, coarse::AbstractPetscDM, interp::AbstractPetscMat, fine::AbstractPetscDM) end
+function DMInterpolate(petsclib::PetscLibType, coarse::AbstractPetscDM, interp::AbstractPetscMat, fine::AbstractPetscDM)
+    error("DMInterpolate: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolate(petsclib::$UnionPetscLib, coarse::AbstractPetscDM, interp::AbstractPetscMat, fine::AbstractPetscDM )
 
@@ -13029,7 +13713,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolateSolution"))
 """
-function DMInterpolateSolution(petsclib::PetscLibType, coarse::AbstractPetscDM, fine::AbstractPetscDM, interp::AbstractPetscMat, coarseSol::AbstractPetscVec, fineSol::AbstractPetscVec) end
+function DMInterpolateSolution(petsclib::PetscLibType, coarse::AbstractPetscDM, fine::AbstractPetscDM, interp::AbstractPetscMat, coarseSol::AbstractPetscVec, fineSol::AbstractPetscVec)
+    error("DMInterpolateSolution: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolateSolution(petsclib::$UnionPetscLib, coarse::AbstractPetscDM, fine::AbstractPetscDM, interp::AbstractPetscMat, coarseSol::AbstractPetscVec, fineSol::AbstractPetscVec )
 
@@ -13067,7 +13753,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationAddPoints"))
 """
-function DMInterpolationAddPoints(petsclib::PetscLibType, ctx::DMInterpolationInfo, n::PetscInt, points::Vector{PetscReal}) end
+function DMInterpolationAddPoints(petsclib::PetscLibType, ctx::DMInterpolationInfo, n::Integer, points::AbstractVector{<:Number})
+    error("DMInterpolationAddPoints: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationAddPoints(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo, n::$PetscInt, points::Vector{$PetscReal} )
 
@@ -13106,7 +13794,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationCreate"))
 """
-function DMInterpolationCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMInterpolationCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMInterpolationCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	ctx_ = Ref{DMInterpolationInfo}()
@@ -13141,7 +13831,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationDestroy"))
 """
-function DMInterpolationDestroy(petsclib::PetscLibType, ctx::Union{DMInterpolationInfo, Ref{DMInterpolationInfo}}) end
+function DMInterpolationDestroy(petsclib::PetscLibType, ctx::Union{DMInterpolationInfo, Ref{DMInterpolationInfo}})
+    error("DMInterpolationDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationDestroy(petsclib::$UnionPetscLib, ctx::Union{DMInterpolationInfo, Ref{DMInterpolationInfo}} )
 	ctx_ = ctx isa Base.RefValue ? ctx : Ref{DMInterpolationInfo}(ctx)
@@ -13178,7 +13870,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationEvaluate"))
 """
-function DMInterpolationEvaluate(petsclib::PetscLibType, ctx::DMInterpolationInfo, dm::AbstractPetscDM, x::AbstractPetscVec, v::AbstractPetscVec) end
+function DMInterpolationEvaluate(petsclib::PetscLibType, ctx::DMInterpolationInfo, dm::AbstractPetscDM, x::AbstractPetscVec, v::AbstractPetscVec)
+    error("DMInterpolationEvaluate: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationEvaluate(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo, dm::AbstractPetscDM, x::AbstractPetscVec, v::AbstractPetscVec )
 
@@ -13218,7 +13912,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationGetCoordinates"))
 """
-function DMInterpolationGetCoordinates(petsclib::PetscLibType, ctx::DMInterpolationInfo) end
+function DMInterpolationGetCoordinates(petsclib::PetscLibType, ctx::DMInterpolationInfo)
+    error("DMInterpolationGetCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationGetCoordinates(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo )
 	coordinates_ = Ref{CVec}()
@@ -13256,7 +13952,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationGetDim"))
 """
-function DMInterpolationGetDim(petsclib::PetscLibType, ctx::DMInterpolationInfo) end
+function DMInterpolationGetDim(petsclib::PetscLibType, ctx::DMInterpolationInfo)
+    error("DMInterpolationGetDim: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationGetDim(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo )
 	dim_ = Ref{$PetscInt}()
@@ -13294,7 +13992,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationGetDof"))
 """
-function DMInterpolationGetDof(petsclib::PetscLibType, ctx::DMInterpolationInfo) end
+function DMInterpolationGetDof(petsclib::PetscLibType, ctx::DMInterpolationInfo)
+    error("DMInterpolationGetDof: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationGetDof(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo )
 	dof_ = Ref{$PetscInt}()
@@ -13335,7 +14035,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationGetVector"))
 """
-function DMInterpolationGetVector(petsclib::PetscLibType, ctx::DMInterpolationInfo) end
+function DMInterpolationGetVector(petsclib::PetscLibType, ctx::DMInterpolationInfo)
+    error("DMInterpolationGetVector: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationGetVector(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo )
 	v_ = Ref{CVec}()
@@ -13371,7 +14073,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationRestoreVector"))
 """
-function DMInterpolationRestoreVector(petsclib::PetscLibType, ctx::DMInterpolationInfo, v::AbstractPetscVec) end
+function DMInterpolationRestoreVector(petsclib::PetscLibType, ctx::DMInterpolationInfo, v::AbstractPetscVec)
+    error("DMInterpolationRestoreVector: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationRestoreVector(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
@@ -13407,7 +14111,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationSetDim"))
 """
-function DMInterpolationSetDim(petsclib::PetscLibType, ctx::DMInterpolationInfo, dim::PetscInt) end
+function DMInterpolationSetDim(petsclib::PetscLibType, ctx::DMInterpolationInfo, dim::Integer)
+    error("DMInterpolationSetDim: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationSetDim(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo, dim::$PetscInt )
 
@@ -13441,7 +14147,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationSetDof"))
 """
-function DMInterpolationSetDof(petsclib::PetscLibType, ctx::DMInterpolationInfo, dof::PetscInt) end
+function DMInterpolationSetDof(petsclib::PetscLibType, ctx::DMInterpolationInfo, dof::Integer)
+    error("DMInterpolationSetDof: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationSetDof(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo, dof::$PetscInt )
 
@@ -13477,7 +14185,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationSetUp"))
 """
-function DMInterpolationSetUp(petsclib::PetscLibType, ctx::DMInterpolationInfo, dm::AbstractPetscDM, redundantPoints::PetscBool, ignoreOutsideDomain::PetscBool) end
+function DMInterpolationSetUp(petsclib::PetscLibType, ctx::DMInterpolationInfo, dm::AbstractPetscDM, redundantPoints::PetscBool, ignoreOutsideDomain::PetscBool)
+    error("DMInterpolationSetUp: no generated method for these argument types")
+end
 
 @for_petsc function DMInterpolationSetUp(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo, dm::AbstractPetscDM, redundantPoints::PetscBool, ignoreOutsideDomain::PetscBool )
 
@@ -13498,7 +14208,9 @@ end
 # External Links
 $(_doc_external("DM/DMIsBoundaryPoint"))
 """
-function DMIsBoundaryPoint(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMIsBoundaryPoint(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMIsBoundaryPoint: no generated method for these argument types")
+end
 
 @for_petsc function DMIsBoundaryPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	isBd_ = Ref{PetscBool}()
@@ -13534,7 +14246,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMIsForest"))
 """
-function DMIsForest(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMIsForest(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMIsForest: no generated method for these argument types")
+end
 
 @for_petsc function DMIsForest(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	isForest_ = Ref{PetscBool}()
@@ -13552,7 +14266,7 @@ function DMIsForest(petsclib::PetscLibType, dm::AbstractPetscDM) end
 end 
 
 """
-	func::Ptr{Cvoid} = DMKSPGetComputeInitialGuess(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeInitialGuess(petsclib::PetscLibType,dm::AbstractPetscDM) 
 get `KSP` initial guess evaluation function
 
 Not Collective
@@ -13571,25 +14285,29 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/DMKSPGetComputeInitialGuess"))
 """
-function DMKSPGetComputeInitialGuess(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) end
+function DMKSPGetComputeInitialGuess(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMKSPGetComputeInitialGuess: no generated method for these argument types")
+end
 
-@for_petsc function DMKSPGetComputeInitialGuess(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::Ptr{Cvoid} )
+@for_petsc function DMKSPGetComputeInitialGuess(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMKSPGetComputeInitialGuess, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
-               dm, func_, ctx,
+               dm, func_, ctx_,
               )
 
 	func = func_[]
+	ctx = ctx_[]
 
-	return func
+	return func,ctx
 end 
 
 """
-	func::Ptr{Cvoid} = DMKSPGetComputeOperators(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeOperators(petsclib::PetscLibType,dm::AbstractPetscDM) 
 get `KSP` matrix evaluation function
 
 Not Collective
@@ -13608,25 +14326,29 @@ Level: developer
 # External Links
 $(_doc_external("KSP/DMKSPGetComputeOperators"))
 """
-function DMKSPGetComputeOperators(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) end
+function DMKSPGetComputeOperators(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMKSPGetComputeOperators: no generated method for these argument types")
+end
 
-@for_petsc function DMKSPGetComputeOperators(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::Ptr{Cvoid} )
+@for_petsc function DMKSPGetComputeOperators(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMKSPGetComputeOperators, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
-               dm, func_, ctx,
+               dm, func_, ctx_,
               )
 
 	func = func_[]
+	ctx = ctx_[]
 
-	return func
+	return func,ctx
 end 
 
 """
-	func::Ptr{Cvoid} = DMKSPGetComputeRHS(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeRHS(petsclib::PetscLibType,dm::AbstractPetscDM) 
 get `KSP` right
 
 Not Collective
@@ -13645,21 +14367,25 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/DMKSPGetComputeRHS"))
 """
-function DMKSPGetComputeRHS(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) end
+function DMKSPGetComputeRHS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMKSPGetComputeRHS: no generated method for these argument types")
+end
 
-@for_petsc function DMKSPGetComputeRHS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::Ptr{Cvoid} )
+@for_petsc function DMKSPGetComputeRHS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMKSPGetComputeRHS, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
-               dm, func_, ctx,
+               dm, func_, ctx_,
               )
 
 	func = func_[]
+	ctx = ctx_[]
 
-	return func
+	return func,ctx
 end 
 
 """
@@ -13680,7 +14406,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/DMKSPSetComputeInitialGuess"))
 """
-function DMKSPSetComputeInitialGuess(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMKSPSetComputeInitialGuess(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMKSPSetComputeInitialGuess: no generated method for these argument types")
+end
 
 @for_petsc function DMKSPSetComputeInitialGuess(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -13713,7 +14441,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/DMKSPSetComputeOperators"))
 """
-function DMKSPSetComputeOperators(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMKSPSetComputeOperators(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMKSPSetComputeOperators: no generated method for these argument types")
+end
 
 @for_petsc function DMKSPSetComputeOperators(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -13746,7 +14476,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/DMKSPSetComputeRHS"))
 """
-function DMKSPSetComputeRHS(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMKSPSetComputeRHS(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMKSPSetComputeRHS: no generated method for these argument types")
+end
 
 @for_petsc function DMKSPSetComputeRHS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -13789,7 +14521,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMLoad"))
 """
-function DMLoad(petsclib::PetscLibType, newdm::AbstractPetscDM, viewer::PetscViewer) end
+function DMLoad(petsclib::PetscLibType, newdm::AbstractPetscDM, viewer::PetscViewer)
+    error("DMLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMLoad(petsclib::$UnionPetscLib, newdm::AbstractPetscDM, viewer::PetscViewer )
 
@@ -13835,7 +14569,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMLocalToGlobal"))
 """
-function DMLocalToGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) end
+function DMLocalToGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec)
+    error("DMLocalToGlobal: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToGlobal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec )
 
@@ -13882,7 +14618,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMLocalToGlobalBegin"))
 """
-function DMLocalToGlobalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) end
+function DMLocalToGlobalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec)
+    error("DMLocalToGlobalBegin: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToGlobalBegin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec )
 
@@ -13915,7 +14653,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMLocalToGlobalBeginDefaultShell"))
 """
-function DMLocalToGlobalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) end
+function DMLocalToGlobalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec)
+    error("DMLocalToGlobalBeginDefaultShell: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToGlobalBeginDefaultShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec )
 
@@ -13954,7 +14694,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMLocalToGlobalEnd"))
 """
-function DMLocalToGlobalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) end
+function DMLocalToGlobalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec)
+    error("DMLocalToGlobalEnd: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToGlobalEnd(petsclib::$UnionPetscLib, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec )
 
@@ -13987,7 +14729,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMLocalToGlobalEndDefaultShell"))
 """
-function DMLocalToGlobalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) end
+function DMLocalToGlobalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec)
+    error("DMLocalToGlobalEndDefaultShell: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToGlobalEndDefaultShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec )
 
@@ -14037,7 +14781,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMLocalToGlobalHookAdd"))
 """
-function DMLocalToGlobalHookAdd(petsclib::PetscLibType, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid}) end
+function DMLocalToGlobalHookAdd(petsclib::PetscLibType, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid})
+    error("DMLocalToGlobalHookAdd: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToGlobalHookAdd(petsclib::$UnionPetscLib, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid} )
 
@@ -14080,7 +14826,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMLocalToLocalBegin"))
 """
-function DMLocalToLocalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMLocalToLocalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMLocalToLocalBegin: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToLocalBegin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -14115,7 +14863,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMLocalToLocalBeginDefaultShell"))
 """
-function DMLocalToLocalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMLocalToLocalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMLocalToLocalBeginDefaultShell: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToLocalBeginDefaultShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -14154,7 +14904,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMLocalToLocalEnd"))
 """
-function DMLocalToLocalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMLocalToLocalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMLocalToLocalEnd: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToLocalEnd(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -14189,7 +14941,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMLocalToLocalEndDefaultShell"))
 """
-function DMLocalToLocalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) end
+function DMLocalToLocalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec)
+    error("DMLocalToLocalEndDefaultShell: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalToLocalEndDefaultShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec )
 
@@ -14223,7 +14977,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMLocalizeCoordinate"))
 """
-function DMLocalizeCoordinate(petsclib::PetscLibType, dm::AbstractPetscDM, in::Vector{PetscScalar}, endpoint::PetscBool, out::Vector{PetscScalar}) end
+function DMLocalizeCoordinate(petsclib::PetscLibType, dm::AbstractPetscDM, in::AbstractVector{<:Number}, endpoint::PetscBool, out::AbstractVector{<:Number})
+    error("DMLocalizeCoordinate: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalizeCoordinate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, in::Vector{$PetscScalar}, endpoint::PetscBool, out::Vector{$PetscScalar} )
 
@@ -14254,7 +15010,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMLocalizeCoordinates"))
 """
-function DMLocalizeCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMLocalizeCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMLocalizeCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMLocalizeCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -14291,7 +15049,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMLocatePoints"))
 """
-function DMLocatePoints(petsclib::PetscLibType, dm::AbstractPetscDM, v::AbstractPetscVec, ltype::DMPoCintLocationType, cellSF::PetscSF) end
+function DMLocatePoints(petsclib::PetscLibType, dm::AbstractPetscDM, v::AbstractPetscVec, ltype::DMPoCintLocationType, cellSF::PetscSF)
+    error("DMLocatePoints: no generated method for these argument types")
+end
 
 @for_petsc function DMLocatePoints(petsclib::$UnionPetscLib, dm::AbstractPetscDM, v::AbstractPetscVec, ltype::DMPoCintLocationType, cellSF::PetscSF )
 
@@ -14312,7 +15072,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCheckBoundaryVertices"))
 """
-function DMMoabCheckBoundaryVertices(petsclib::PetscLibType, dm::AbstractPetscDM, nconn::PetscInt, cnt::moab_EntityHandle) end
+function DMMoabCheckBoundaryVertices(petsclib::PetscLibType, dm::AbstractPetscDM, nconn::Integer, cnt::moab_EntityHandle)
+    error("DMMoabCheckBoundaryVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCheckBoundaryVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nconn::$PetscInt, cnt::moab_EntityHandle )
 	isbdvtx_ = Ref{PetscBool}()
@@ -14335,7 +15097,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCreate"))
 """
-function DMMoabCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMMoabCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMMoabCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	dmb_ = Ref{CDM}()
@@ -14358,7 +15122,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCreateBoxMesh"))
 """
-function DMMoabCreateBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, useSimplex::PetscBool, nele::PetscInt, nghost::PetscInt) end
+function DMMoabCreateBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, useSimplex::PetscBool, nele::Integer, nghost::Integer)
+    error("DMMoabCreateBoxMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCreateBoxMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, useSimplex::PetscBool, nele::$PetscInt, nghost::$PetscInt )
 	bounds_ = Ref{$PetscReal}()
@@ -14383,7 +15149,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCreateElement"))
 """
-function DMMoabCreateElement(petsclib::PetscLibType, dm::AbstractPetscDM, type::moab_EntityType, nverts::PetscInt) end
+function DMMoabCreateElement(petsclib::PetscLibType, dm::AbstractPetscDM, type::moab_EntityType, nverts::Integer)
+    error("DMMoabCreateElement: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCreateElement(petsclib::$UnionPetscLib, dm::AbstractPetscDM, type::moab_EntityType, nverts::$PetscInt )
 	conn_ = Ref{moab_EntityHandle}()
@@ -14408,7 +15176,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCreateMoab"))
 """
-function DMMoabCreateMoab(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMMoabCreateMoab(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMMoabCreateMoab: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCreateMoab(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	mbiface_ = Ref{moab_Interface}()
@@ -14437,7 +15207,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCreateSubmesh"))
 """
-function DMMoabCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabCreateSubmesh: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCreateSubmesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	newdm_ = Ref{CDM}()
@@ -14460,7 +15232,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCreateVector"))
 """
-function DMMoabCreateVector(petsclib::PetscLibType, dm::AbstractPetscDM, tag::moab_Tag, is_global_vec::PetscBool, destroy_tag::PetscBool) end
+function DMMoabCreateVector(petsclib::PetscLibType, dm::AbstractPetscDM, tag::moab_Tag, is_global_vec::PetscBool, destroy_tag::PetscBool)
+    error("DMMoabCreateVector: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCreateVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, tag::moab_Tag, is_global_vec::PetscBool, destroy_tag::PetscBool )
 	range_ = Ref{moab_Range}()
@@ -14485,7 +15259,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabCreateVertices"))
 """
-function DMMoabCreateVertices(petsclib::PetscLibType, dm::AbstractPetscDM, nverts::PetscInt) end
+function DMMoabCreateVertices(petsclib::PetscLibType, dm::AbstractPetscDM, nverts::Integer)
+    error("DMMoabCreateVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabCreateVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nverts::$PetscInt )
 	coords_ = Ref{$PetscReal}()
@@ -14510,7 +15286,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabFEMComputeBasis"))
 """
-function DMMoabFEMComputeBasis(petsclib::PetscLibType, dim::PetscInt, nverts::PetscInt, quadrature::PetscQuadrature, fe_basis_derivatives::PetscReal) end
+function DMMoabFEMComputeBasis(petsclib::PetscLibType, dim::Integer, nverts::Integer, quadrature::PetscQuadrature, fe_basis_derivatives::Real)
+    error("DMMoabFEMComputeBasis: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabFEMComputeBasis(petsclib::$UnionPetscLib, dim::$PetscInt, nverts::$PetscInt, quadrature::PetscQuadrature, fe_basis_derivatives::$PetscReal )
 	coordinates_ = Ref{$PetscReal}()
@@ -14539,7 +15317,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabFEMCreateQuadratureDefault"))
 """
-function DMMoabFEMCreateQuadratureDefault(petsclib::PetscLibType, dim::PetscInt, nverts::PetscInt) end
+function DMMoabFEMCreateQuadratureDefault(petsclib::PetscLibType, dim::Integer, nverts::Integer)
+    error("DMMoabFEMCreateQuadratureDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabFEMCreateQuadratureDefault(petsclib::$UnionPetscLib, dim::$PetscInt, nverts::$PetscInt )
 	quadrature_ = Ref{PetscQuadrature}()
@@ -14562,7 +15342,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGenerateHierarchy"))
 """
-function DMMoabGenerateHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::PetscInt) end
+function DMMoabGenerateHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::Integer)
+    error("DMMoabGenerateHierarchy: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGenerateHierarchy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nlevels::$PetscInt )
 	ldegrees_ = Ref{$PetscInt}()
@@ -14585,7 +15367,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetAllVertices"))
 """
-function DMMoabGetAllVertices(petsclib::PetscLibType, dm::AbstractPetscDM, loc::moab_Range) end
+function DMMoabGetAllVertices(petsclib::PetscLibType, dm::AbstractPetscDM, loc::moab_Range)
+    error("DMMoabGetAllVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetAllVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, loc::moab_Range )
 
@@ -14606,7 +15390,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetBlockSize"))
 """
-function DMMoabGetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabGetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabGetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetBlockSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	bs_ = Ref{$PetscInt}()
@@ -14629,7 +15415,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetBoundaryMarkers"))
 """
-function DMMoabGetBoundaryMarkers(petsclib::PetscLibType, dm::AbstractPetscDM, bdvtx::moab_Range, bdelems::moab_Range, bdfaces::moab_Range) end
+function DMMoabGetBoundaryMarkers(petsclib::PetscLibType, dm::AbstractPetscDM, bdvtx::moab_Range, bdelems::moab_Range, bdfaces::moab_Range)
+    error("DMMoabGetBoundaryMarkers: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetBoundaryMarkers(petsclib::$UnionPetscLib, dm::AbstractPetscDM, bdvtx::moab_Range, bdelems::moab_Range, bdfaces::moab_Range )
 
@@ -14650,7 +15438,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetDimension"))
 """
-function DMMoabGetDimension(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabGetDimension(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabGetDimension: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetDimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dim_ = Ref{$PetscInt}()
@@ -14673,7 +15463,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetDofs"))
 """
-function DMMoabGetDofs(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) end
+function DMMoabGetDofs(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer, points::moab_EntityHandle)
+    error("DMMoabGetDofs: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetDofs(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt, points::moab_EntityHandle )
 	dof_ = Ref{$PetscInt}()
@@ -14696,7 +15488,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetDofsBlocked"))
 """
-function DMMoabGetDofsBlocked(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) end
+function DMMoabGetDofsBlocked(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer, points::moab_EntityHandle)
+    error("DMMoabGetDofsBlocked: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetDofsBlocked(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt, points::moab_EntityHandle )
 	dof_ = Ref{$PetscInt}()
@@ -14719,7 +15513,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetDofsBlockedLocal"))
 """
-function DMMoabGetDofsBlockedLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) end
+function DMMoabGetDofsBlockedLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer, points::moab_EntityHandle)
+    error("DMMoabGetDofsBlockedLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetDofsBlockedLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt, points::moab_EntityHandle )
 	dof_ = Ref{$PetscInt}()
@@ -14742,7 +15538,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetDofsLocal"))
 """
-function DMMoabGetDofsLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) end
+function DMMoabGetDofsLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer, points::moab_EntityHandle)
+    error("DMMoabGetDofsLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetDofsLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt, points::moab_EntityHandle )
 	dof_ = Ref{$PetscInt}()
@@ -14765,7 +15563,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetElementConnectivity"))
 """
-function DMMoabGetElementConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle, conn::moab_EntityHandle) end
+function DMMoabGetElementConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle, conn::moab_EntityHandle)
+    error("DMMoabGetElementConnectivity: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetElementConnectivity(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ehandle::moab_EntityHandle, conn::moab_EntityHandle )
 	nconn_ = Ref{$PetscInt}()
@@ -14788,7 +15588,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetFieldDof"))
 """
-function DMMoabGetFieldDof(petsclib::PetscLibType, dm::AbstractPetscDM, point::moab_EntityHandle, field::PetscInt) end
+function DMMoabGetFieldDof(petsclib::PetscLibType, dm::AbstractPetscDM, point::moab_EntityHandle, field::Integer)
+    error("DMMoabGetFieldDof: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetFieldDof(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::moab_EntityHandle, field::$PetscInt )
 	dof_ = Ref{$PetscInt}()
@@ -14811,7 +15613,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetFieldDofs"))
 """
-function DMMoabGetFieldDofs(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle, field::PetscInt) end
+function DMMoabGetFieldDofs(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer, points::moab_EntityHandle, field::Integer)
+    error("DMMoabGetFieldDofs: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetFieldDofs(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt, points::moab_EntityHandle, field::$PetscInt )
 	dof_ = Ref{$PetscInt}()
@@ -14834,7 +15638,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetFieldDofsLocal"))
 """
-function DMMoabGetFieldDofsLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle, field::PetscInt) end
+function DMMoabGetFieldDofsLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer, points::moab_EntityHandle, field::Integer)
+    error("DMMoabGetFieldDofsLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetFieldDofsLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt, points::moab_EntityHandle, field::$PetscInt )
 	dof_ = Ref{$PetscInt}()
@@ -14857,7 +15663,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetFieldName"))
 """
-function DMMoabGetFieldName(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, fieldName::String) end
+function DMMoabGetFieldName(petsclib::PetscLibType, dm::AbstractPetscDM, field::Integer, fieldName::String)
+    error("DMMoabGetFieldName: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetFieldName(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt, fieldName::String )
 	fieldName_ = Ref{Ptr{Cchar}}(fieldName isa Ptr ? fieldName : pointer(fieldName))
@@ -14879,7 +15687,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetHierarchyLevel"))
 """
-function DMMoabGetHierarchyLevel(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabGetHierarchyLevel(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabGetHierarchyLevel: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetHierarchyLevel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nlevel_ = Ref{$PetscInt}()
@@ -14902,7 +15712,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetInterface"))
 """
-function DMMoabGetInterface(petsclib::PetscLibType, dm::AbstractPetscDM, mbiface::moab_Interface) end
+function DMMoabGetInterface(petsclib::PetscLibType, dm::AbstractPetscDM, mbiface::moab_Interface)
+    error("DMMoabGetInterface: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetInterface(petsclib::$UnionPetscLib, dm::AbstractPetscDM, mbiface::moab_Interface )
 
@@ -14923,7 +15735,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetLocalElements"))
 """
-function DMMoabGetLocalElements(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range) end
+function DMMoabGetLocalElements(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range)
+    error("DMMoabGetLocalElements: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetLocalElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM, range::moab_Range )
 
@@ -14944,7 +15758,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetLocalSize"))
 """
-function DMMoabGetLocalSize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabGetLocalSize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabGetLocalSize: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetLocalSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nel_ = Ref{$PetscInt}()
@@ -14973,7 +15789,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetLocalToGlobalTag"))
 """
-function DMMoabGetLocalToGlobalTag(petsclib::PetscLibType, dm::AbstractPetscDM, ltog_tag::moab_Tag) end
+function DMMoabGetLocalToGlobalTag(petsclib::PetscLibType, dm::AbstractPetscDM, ltog_tag::moab_Tag)
+    error("DMMoabGetLocalToGlobalTag: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetLocalToGlobalTag(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ltog_tag::moab_Tag )
 
@@ -14994,7 +15812,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetLocalVertices"))
 """
-function DMMoabGetLocalVertices(petsclib::PetscLibType, dm::AbstractPetscDM, owned::moab_Range, ghost::moab_Range) end
+function DMMoabGetLocalVertices(petsclib::PetscLibType, dm::AbstractPetscDM, owned::moab_Range, ghost::moab_Range)
+    error("DMMoabGetLocalVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetLocalVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, owned::moab_Range, ghost::moab_Range )
 
@@ -15015,7 +15835,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetMaterialBlock"))
 """
-function DMMoabGetMaterialBlock(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle) end
+function DMMoabGetMaterialBlock(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle)
+    error("DMMoabGetMaterialBlock: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetMaterialBlock(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ehandle::moab_EntityHandle )
 	mat_ = Ref{$PetscInt}()
@@ -15038,7 +15860,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetOffset"))
 """
-function DMMoabGetOffset(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabGetOffset(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabGetOffset: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetOffset(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	offset_ = Ref{$PetscInt}()
@@ -15061,7 +15885,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetParallelComm"))
 """
-function DMMoabGetParallelComm(petsclib::PetscLibType, dm::AbstractPetscDM, pcomm::moab_ParallelComm) end
+function DMMoabGetParallelComm(petsclib::PetscLibType, dm::AbstractPetscDM, pcomm::moab_ParallelComm)
+    error("DMMoabGetParallelComm: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetParallelComm(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pcomm::moab_ParallelComm )
 
@@ -15082,7 +15908,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetSize"))
 """
-function DMMoabGetSize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabGetSize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabGetSize: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	neg_ = Ref{$PetscInt}()
@@ -15107,7 +15935,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetVecRange"))
 """
-function DMMoabGetVecRange(petsclib::PetscLibType, vec::AbstractPetscVec, range::moab_Range) end
+function DMMoabGetVecRange(petsclib::PetscLibType, vec::AbstractPetscVec, range::moab_Range)
+    error("DMMoabGetVecRange: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetVecRange(petsclib::$UnionPetscLib, vec::AbstractPetscVec, range::moab_Range )
 
@@ -15128,7 +15958,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetVecTag"))
 """
-function DMMoabGetVecTag(petsclib::PetscLibType, vec::AbstractPetscVec, tag::moab_Tag) end
+function DMMoabGetVecTag(petsclib::PetscLibType, vec::AbstractPetscVec, tag::moab_Tag)
+    error("DMMoabGetVecTag: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetVecTag(petsclib::$UnionPetscLib, vec::AbstractPetscVec, tag::moab_Tag )
 
@@ -15149,7 +15981,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetVertexConnectivity"))
 """
-function DMMoabGetVertexConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, vhandle::moab_EntityHandle, conn::moab_EntityHandle) end
+function DMMoabGetVertexConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, vhandle::moab_EntityHandle, conn::moab_EntityHandle)
+    error("DMMoabGetVertexConnectivity: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetVertexConnectivity(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vhandle::moab_EntityHandle, conn::moab_EntityHandle )
 	nconn_ = Ref{$PetscInt}()
@@ -15172,7 +16006,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetVertexCoordinates"))
 """
-function DMMoabGetVertexCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, nconn::PetscInt, conn::moab_EntityHandle) end
+function DMMoabGetVertexCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, nconn::Integer, conn::moab_EntityHandle)
+    error("DMMoabGetVertexCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetVertexCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nconn::$PetscInt, conn::moab_EntityHandle )
 	vpos_ = Ref{$PetscReal}()
@@ -15195,7 +16031,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetVertexDofsBlocked"))
 """
-function DMMoabGetVertexDofsBlocked(petsclib::PetscLibType, dm::AbstractPetscDM, dof::PetscInt) end
+function DMMoabGetVertexDofsBlocked(petsclib::PetscLibType, dm::AbstractPetscDM, dof::Integer)
+    error("DMMoabGetVertexDofsBlocked: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetVertexDofsBlocked(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dof::$PetscInt )
 
@@ -15216,7 +16054,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabGetVertexDofsBlockedLocal"))
 """
-function DMMoabGetVertexDofsBlockedLocal(petsclib::PetscLibType, dm::AbstractPetscDM, dof::PetscInt) end
+function DMMoabGetVertexDofsBlockedLocal(petsclib::PetscLibType, dm::AbstractPetscDM, dof::Integer)
+    error("DMMoabGetVertexDofsBlockedLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabGetVertexDofsBlockedLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dof::$PetscInt )
 
@@ -15237,7 +16077,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabIsEntityOnBoundary"))
 """
-function DMMoabIsEntityOnBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, ent::moab_EntityHandle) end
+function DMMoabIsEntityOnBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, ent::moab_EntityHandle)
+    error("DMMoabIsEntityOnBoundary: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabIsEntityOnBoundary(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ent::moab_EntityHandle )
 	ent_on_boundary_ = Ref{PetscBool}()
@@ -15260,7 +16102,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabLoadFromFile"))
 """
-function DMMoabLoadFromFile(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, nghost::PetscInt, filename::String, usrreadopts::String, dm::AbstractPetscDM) end
+function DMMoabLoadFromFile(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, nghost::Integer, filename::String, usrreadopts::String, dm::AbstractPetscDM)
+    error("DMMoabLoadFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabLoadFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, nghost::$PetscInt, filename::String, usrreadopts::String, dm::AbstractPetscDM )
 	dm_ = Ref(dm.ptr)
@@ -15283,7 +16127,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabOutput"))
 """
-function DMMoabOutput(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String, usrwriteopts::String) end
+function DMMoabOutput(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String, usrwriteopts::String)
+    error("DMMoabOutput: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabOutput(petsclib::$UnionPetscLib, dm::AbstractPetscDM, filename::String, usrwriteopts::String )
 
@@ -15304,7 +16150,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabPToRMapping"))
 """
-function DMMoabPToRMapping(petsclib::PetscLibType, dim::PetscInt, nverts::PetscInt) end
+function DMMoabPToRMapping(petsclib::PetscLibType, dim::Integer, nverts::Integer)
+    error("DMMoabPToRMapping: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabPToRMapping(petsclib::$UnionPetscLib, dim::$PetscInt, nverts::$PetscInt )
 	coordinates_ = Ref{$PetscReal}()
@@ -15333,7 +16181,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabRenumberMeshEntities"))
 """
-function DMMoabRenumberMeshEntities(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabRenumberMeshEntities(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabRenumberMeshEntities: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabRenumberMeshEntities(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -15354,7 +16204,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabRestoreVertexConnectivity"))
 """
-function DMMoabRestoreVertexConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle, nconn::PetscInt, conn::moab_EntityHandle) end
+function DMMoabRestoreVertexConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle, nconn::Integer, conn::moab_EntityHandle)
+    error("DMMoabRestoreVertexConnectivity: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabRestoreVertexConnectivity(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ehandle::moab_EntityHandle, nconn::$PetscInt, conn::moab_EntityHandle )
 	nconn_ = Ref{$PetscInt}(nconn)
@@ -15376,7 +16228,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetBlockFills"))
 """
-function DMMoabSetBlockFills(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMoabSetBlockFills(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMoabSetBlockFills: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetBlockFills(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dfill_ = Ref{$PetscInt}()
@@ -15401,7 +16255,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetBlockSize"))
 """
-function DMMoabSetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM, bs::PetscInt) end
+function DMMoabSetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM, bs::Integer)
+    error("DMMoabSetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetBlockSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, bs::$PetscInt )
 
@@ -15422,7 +16278,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetFieldName"))
 """
-function DMMoabSetFieldName(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, fieldName::String) end
+function DMMoabSetFieldName(petsclib::PetscLibType, dm::AbstractPetscDM, field::Integer, fieldName::String)
+    error("DMMoabSetFieldName: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetFieldName(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt, fieldName::String )
 
@@ -15443,7 +16301,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetFieldNames"))
 """
-function DMMoabSetFieldNames(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt, fields::String) end
+function DMMoabSetFieldNames(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::Integer, fields::String)
+    error("DMMoabSetFieldNames: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetFieldNames(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numFields::$PetscInt, fields::String )
 	fields_ = Ref{Ptr{Cchar}}(fields isa Ptr ? fields : pointer(fields))
@@ -15465,7 +16325,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetFieldVector"))
 """
-function DMMoabSetFieldVector(petsclib::PetscLibType, dm::AbstractPetscDM, ifield::PetscInt, fvec::AbstractPetscVec) end
+function DMMoabSetFieldVector(petsclib::PetscLibType, dm::AbstractPetscDM, ifield::Integer, fvec::AbstractPetscVec)
+    error("DMMoabSetFieldVector: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetFieldVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ifield::$PetscInt, fvec::AbstractPetscVec )
 
@@ -15486,7 +16348,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetGlobalFieldVector"))
 """
-function DMMoabSetGlobalFieldVector(petsclib::PetscLibType, dm::AbstractPetscDM, fvec::AbstractPetscVec) end
+function DMMoabSetGlobalFieldVector(petsclib::PetscLibType, dm::AbstractPetscDM, fvec::AbstractPetscVec)
+    error("DMMoabSetGlobalFieldVector: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetGlobalFieldVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fvec::AbstractPetscVec )
 
@@ -15507,7 +16371,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetInterface"))
 """
-function DMMoabSetInterface(petsclib::PetscLibType, dm::AbstractPetscDM, mbiface::moab_Interface) end
+function DMMoabSetInterface(petsclib::PetscLibType, dm::AbstractPetscDM, mbiface::moab_Interface)
+    error("DMMoabSetInterface: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetInterface(petsclib::$UnionPetscLib, dm::AbstractPetscDM, mbiface::moab_Interface )
 
@@ -15528,7 +16394,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetLocalElements"))
 """
-function DMMoabSetLocalElements(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range) end
+function DMMoabSetLocalElements(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range)
+    error("DMMoabSetLocalElements: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetLocalElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM, range::moab_Range )
 
@@ -15549,7 +16417,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetLocalToGlobalTag"))
 """
-function DMMoabSetLocalToGlobalTag(petsclib::PetscLibType, dm::AbstractPetscDM, ltogtag::moab_Tag) end
+function DMMoabSetLocalToGlobalTag(petsclib::PetscLibType, dm::AbstractPetscDM, ltogtag::moab_Tag)
+    error("DMMoabSetLocalToGlobalTag: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetLocalToGlobalTag(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ltogtag::moab_Tag )
 
@@ -15570,7 +16440,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabSetLocalVertices"))
 """
-function DMMoabSetLocalVertices(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range) end
+function DMMoabSetLocalVertices(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range)
+    error("DMMoabSetLocalVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabSetLocalVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, range::moab_Range )
 
@@ -15591,7 +16463,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabVecGetArray"))
 """
-function DMMoabVecGetArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMMoabVecGetArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMMoabVecGetArray: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabVecGetArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -15612,7 +16486,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabVecGetArrayRead"))
 """
-function DMMoabVecGetArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMMoabVecGetArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMMoabVecGetArrayRead: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabVecGetArrayRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -15633,7 +16509,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabVecRestoreArray"))
 """
-function DMMoabVecRestoreArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMMoabVecRestoreArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMMoabVecRestoreArray: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabVecRestoreArray(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -15654,7 +16532,9 @@ end
 # External Links
 $(_doc_external("DM/DMMoabVecRestoreArrayRead"))
 """
-function DMMoabVecRestoreArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) end
+function DMMoabVecRestoreArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid})
+    error("DMMoabVecRestoreArrayRead: no generated method for these argument types")
+end
 
 @for_petsc function DMMoabVecRestoreArrayRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid} )
 
@@ -15692,7 +16572,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMMonitor"))
 """
-function DMMonitor(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMonitor(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMonitor: no generated method for these argument types")
+end
 
 @for_petsc function DMMonitor(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -15733,7 +16615,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMMonitorCancel"))
 """
-function DMMonitorCancel(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMMonitorCancel(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMMonitorCancel: no generated method for these argument types")
+end
 
 @for_petsc function DMMonitorCancel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -15784,7 +16668,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMMonitorSet"))
 """
-function DMMonitorSet(petsclib::PetscLibType, dm::AbstractPetscDM, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) end
+function DMMonitorSet(petsclib::PetscLibType, dm::AbstractPetscDM, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid})
+    error("DMMonitorSet: no generated method for these argument types")
+end
 
 @for_petsc function DMMonitorSet(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
 
@@ -15831,7 +16717,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMMonitorSetFromOptions"))
 """
-function DMMonitorSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, help::String, manual::String, monitor::external, monitorsetup::external) end
+function DMMonitorSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, help::String, manual::String, monitor::external, monitorsetup::external)
+    error("DMMonitorSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMMonitorSetFromOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, help::String, manual::String, monitor::external, monitorsetup::external )
 	flg_ = Ref{PetscBool}()
@@ -15869,7 +16757,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAddComponent"))
 """
-function DMNetworkAddComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, componentkey::PetscInt, compvalue::Ptr{Cvoid}, nvar::PetscInt) end
+function DMNetworkAddComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, componentkey::Integer, compvalue::Ptr{Cvoid}, nvar::Integer)
+    error("DMNetworkAddComponent: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkAddComponent(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, componentkey::$PetscInt, compvalue::Ptr{Cvoid}, nvar::$PetscInt )
 
@@ -15905,7 +16795,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAddSharedVertices"))
 """
-function DMNetworkAddSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, anetnum::PetscInt, bnetnum::PetscInt, nsvtx::PetscInt, asvtx::Vector{PetscInt}, bsvtx::Vector{PetscInt}) end
+function DMNetworkAddSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, anetnum::Integer, bnetnum::Integer, nsvtx::Integer, asvtx::AbstractVector{<:Number}, bsvtx::AbstractVector{<:Number})
+    error("DMNetworkAddSharedVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkAddSharedVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, anetnum::$PetscInt, bnetnum::$PetscInt, nsvtx::$PetscInt, asvtx::Vector{$PetscInt}, bsvtx::Vector{$PetscInt} )
 
@@ -15943,7 +16835,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAddSubnetwork"))
 """
-function DMNetworkAddSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, ne::PetscInt, edgelist::Vector{PetscInt}) end
+function DMNetworkAddSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, ne::Integer, edgelist::AbstractVector{<:Number})
+    error("DMNetworkAddSubnetwork: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkAddSubnetwork(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, ne::$PetscInt, edgelist::Vector{$PetscInt} )
 	netnum_ = Ref{$PetscInt}()
@@ -15976,7 +16870,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAssembleGraphStructures"))
 """
-function DMNetworkAssembleGraphStructures(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkAssembleGraphStructures(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkAssembleGraphStructures: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkAssembleGraphStructures(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -16010,7 +16906,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreate"))
 """
-function DMNetworkCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMNetworkCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMNetworkCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	network_ = Ref{CDM}()
@@ -16051,7 +16949,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateIS"))
 """
-function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) end
+function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::Integer, keys::AbstractVector{<:Number}, blocksize::AbstractVector{<:Number}, nselectedvar::AbstractVector{<:Number}, selectedvar::Union{Ptr, AbstractArray{<:Number}})
+    error("DMNetworkCreateIS: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkCreateIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::Union{Ptr, AbstractArray{$PetscInt}} )
 	selectedvar_ = Ref{Ptr{$PetscInt}}(selectedvar isa Ptr ? selectedvar : pointer(selectedvar))
@@ -16093,7 +16993,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateLocalIS"))
 """
-function DMNetworkCreateLocalIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) end
+function DMNetworkCreateLocalIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::Integer, keys::AbstractVector{<:Number}, blocksize::AbstractVector{<:Number}, nselectedvar::AbstractVector{<:Number}, selectedvar::Union{Ptr, AbstractArray{<:Number}})
+    error("DMNetworkCreateLocalIS: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkCreateLocalIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::Union{Ptr, AbstractArray{$PetscInt}} )
 	selectedvar_ = Ref{Ptr{$PetscInt}}(selectedvar isa Ptr ? selectedvar : pointer(selectedvar))
@@ -16137,7 +17039,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkDistribute"))
 """
-function DMNetworkDistribute(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) end
+function DMNetworkDistribute(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::Integer)
+    error("DMNetworkDistribute: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkDistribute(petsclib::$UnionPetscLib, dm::AbstractPetscDM, overlap::$PetscInt )
 	dm_ = Ref(dm.ptr)
@@ -16174,7 +17078,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkEdgeSetMatrix"))
 """
-function DMNetworkEdgeSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, J::Vector{<:AbstractPetscMat}) end
+function DMNetworkEdgeSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, J::Vector{<:AbstractPetscMat})
+    error("DMNetworkEdgeSetMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkEdgeSetMatrix(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, J::Vector{<:AbstractPetscMat} )
 
@@ -16206,7 +17112,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkFinalizeComponents"))
 """
-function DMNetworkFinalizeComponents(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkFinalizeComponents(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkFinalizeComponents: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkFinalizeComponents(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -16244,7 +17152,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetComponent"))
 """
-function DMNetworkGetComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt, component::PeCtx) end
+function DMNetworkGetComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, compnum::Integer, component::PeCtx)
+    error("DMNetworkGetComponent: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetComponent(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, compnum::$PetscInt, component::PeCtx )
 	compkey_ = Ref{$PetscInt}()
@@ -16283,7 +17193,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetConnectedVertices"))
 """
-function DMNetworkGetConnectedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, edge::PetscInt) end
+function DMNetworkGetConnectedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, edge::Integer)
+    error("DMNetworkGetConnectedVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetConnectedVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, edge::$PetscInt )
 	vertices_ = Ref{Ptr{$PetscInt}}()
@@ -16320,7 +17232,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetEdgeOffset"))
 """
-function DMNetworkGetEdgeOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMNetworkGetEdgeOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMNetworkGetEdgeOffset: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetEdgeOffset(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	offset_ = Ref{$PetscInt}()
@@ -16357,7 +17271,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetEdgeRange"))
 """
-function DMNetworkGetEdgeRange(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkGetEdgeRange(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkGetEdgeRange: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetEdgeRange(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	eStart_ = Ref{$PetscInt}()
@@ -16396,7 +17312,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetGlobalEdgeIndex"))
 """
-function DMNetworkGetGlobalEdgeIndex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMNetworkGetGlobalEdgeIndex(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMNetworkGetGlobalEdgeIndex: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetGlobalEdgeIndex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	index_ = Ref{$PetscInt}()
@@ -16434,7 +17352,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetGlobalVecOffset"))
 """
-function DMNetworkGetGlobalVecOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) end
+function DMNetworkGetGlobalVecOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, compnum::Integer)
+    error("DMNetworkGetGlobalVecOffset: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetGlobalVecOffset(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, compnum::$PetscInt )
 	offsetg_ = Ref{$PetscInt}()
@@ -16471,7 +17391,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetGlobalVertexIndex"))
 """
-function DMNetworkGetGlobalVertexIndex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMNetworkGetGlobalVertexIndex(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMNetworkGetGlobalVertexIndex: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetGlobalVertexIndex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	index_ = Ref{$PetscInt}()
@@ -16509,7 +17431,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetLocalVecOffset"))
 """
-function DMNetworkGetLocalVecOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) end
+function DMNetworkGetLocalVecOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, compnum::Integer)
+    error("DMNetworkGetLocalVecOffset: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetLocalVecOffset(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, compnum::$PetscInt )
 	offset_ = Ref{$PetscInt}()
@@ -16546,7 +17470,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumComponents"))
 """
-function DMNetworkGetNumComponents(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMNetworkGetNumComponents(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMNetworkGetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetNumComponents(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	numcomponents_ = Ref{$PetscInt}()
@@ -16583,7 +17509,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumEdges"))
 """
-function DMNetworkGetNumEdges(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkGetNumEdges(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkGetNumEdges: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetNumEdges(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nEdges_ = Ref{$PetscInt}()
@@ -16622,7 +17550,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumSubNetworks"))
 """
-function DMNetworkGetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkGetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkGetNumSubNetworks: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetNumSubNetworks(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nsubnet_ = Ref{$PetscInt}()
@@ -16661,7 +17591,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumVertices"))
 """
-function DMNetworkGetNumVertices(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkGetNumVertices(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkGetNumVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetNumVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nVertices_ = Ref{$PetscInt}()
@@ -16699,7 +17631,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetPlex"))
 """
-function DMNetworkGetPlex(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkGetPlex(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkGetPlex: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetPlex(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	plexdm_ = Ref{CDM}()
@@ -16736,7 +17670,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetSharedVertices"))
 """
-function DMNetworkGetSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkGetSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkGetSharedVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetSharedVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nsv_ = Ref{$PetscInt}()
@@ -16778,7 +17714,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetSubnetwork"))
 """
-function DMNetworkGetSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, netnum::PetscInt) end
+function DMNetworkGetSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, netnum::Integer)
+    error("DMNetworkGetSubnetwork: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetSubnetwork(petsclib::$UnionPetscLib, dm::AbstractPetscDM, netnum::$PetscInt )
 	nv_ = Ref{$PetscInt}()
@@ -16822,7 +17760,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetSupportingEdges"))
 """
-function DMNetworkGetSupportingEdges(petsclib::PetscLibType, dm::AbstractPetscDM, vertex::PetscInt) end
+function DMNetworkGetSupportingEdges(petsclib::PetscLibType, dm::AbstractPetscDM, vertex::Integer)
+    error("DMNetworkGetSupportingEdges: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetSupportingEdges(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vertex::$PetscInt )
 	nedges_ = Ref{$PetscInt}()
@@ -16861,7 +17801,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetVertexLocalToGlobalOrdering"))
 """
-function DMNetworkGetVertexLocalToGlobalOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, vloc::PetscInt) end
+function DMNetworkGetVertexLocalToGlobalOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, vloc::Integer)
+    error("DMNetworkGetVertexLocalToGlobalOrdering: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetVertexLocalToGlobalOrdering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vloc::$PetscInt )
 	vg_ = Ref{$PetscInt}()
@@ -16898,7 +17840,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetVertexOffset"))
 """
-function DMNetworkGetVertexOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMNetworkGetVertexOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMNetworkGetVertexOffset: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetVertexOffset(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	offset_ = Ref{$PetscInt}()
@@ -16935,7 +17879,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetVertexRange"))
 """
-function DMNetworkGetVertexRange(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkGetVertexRange(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkGetVertexRange: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkGetVertexRange(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	vStart_ = Ref{$PetscInt}()
@@ -16973,7 +17919,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkHasJacobian"))
 """
-function DMNetworkHasJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, eflg::PetscBool, vflg::PetscBool) end
+function DMNetworkHasJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, eflg::PetscBool, vflg::PetscBool)
+    error("DMNetworkHasJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkHasJacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM, eflg::PetscBool, vflg::PetscBool )
 
@@ -17008,7 +17956,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkIsGhostVertex"))
 """
-function DMNetworkIsGhostVertex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMNetworkIsGhostVertex(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMNetworkIsGhostVertex: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkIsGhostVertex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	isghost_ = Ref{PetscBool}()
@@ -17045,7 +17995,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkIsSharedVertex"))
 """
-function DMNetworkIsSharedVertex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMNetworkIsSharedVertex(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMNetworkIsSharedVertex: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkIsSharedVertex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	flag_ = Ref{PetscBool}()
@@ -17078,7 +18030,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkLayoutSetUp"))
 """
-function DMNetworkLayoutSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkLayoutSetUp(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkLayoutSetUp: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkLayoutSetUp(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -17114,7 +18068,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkRegisterComponent"))
 """
-function DMNetworkRegisterComponent(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, size::Csize_t) end
+function DMNetworkRegisterComponent(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, size::Csize_t)
+    error("DMNetworkRegisterComponent: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkRegisterComponent(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, size::Csize_t )
 	key_ = Ref{$PetscInt}()
@@ -17149,7 +18105,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkSetNumSubNetworks"))
 """
-function DMNetworkSetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM, nsubnet::PetscInt, Nsubnet::PetscInt) end
+function DMNetworkSetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM, nsubnet::Integer, Nsubnet::Integer)
+    error("DMNetworkSetNumSubNetworks: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkSetNumSubNetworks(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nsubnet::$PetscInt, Nsubnet::$PetscInt )
 
@@ -17180,7 +18138,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkSetVertexLocalToGlobalOrdering"))
 """
-function DMNetworkSetVertexLocalToGlobalOrdering(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMNetworkSetVertexLocalToGlobalOrdering(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMNetworkSetVertexLocalToGlobalOrdering: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkSetVertexLocalToGlobalOrdering(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -17217,7 +18177,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMNetwork/DMNetworkSharedVertexGetInfo"))
 """
-function DMNetworkSharedVertexGetInfo(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscInt) end
+function DMNetworkSharedVertexGetInfo(petsclib::PetscLibType, dm::AbstractPetscDM, v::Integer)
+    error("DMNetworkSharedVertexGetInfo: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkSharedVertexGetInfo(petsclib::$UnionPetscLib, dm::AbstractPetscDM, v::$PetscInt )
 	gidx_ = Ref{$PetscInt}()
@@ -17259,7 +18221,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkVertexSetMatrix"))
 """
-function DMNetworkVertexSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, J::Vector{<:AbstractPetscMat}) end
+function DMNetworkVertexSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, J::Vector{<:AbstractPetscMat})
+    error("DMNetworkVertexSetMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkVertexSetMatrix(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, J::Vector{<:AbstractPetscMat} )
 
@@ -17293,7 +18257,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowGlobal"))
 """
-function DMNetworkViewSetShowGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, showglobal::PetscBool) end
+function DMNetworkViewSetShowGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, showglobal::PetscBool)
+    error("DMNetworkViewSetShowGlobal: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkViewSetShowGlobal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, showglobal::PetscBool )
 
@@ -17327,7 +18293,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowNumbering"))
 """
-function DMNetworkViewSetShowNumbering(petsclib::PetscLibType, dm::AbstractPetscDM, shownumbering::PetscBool) end
+function DMNetworkViewSetShowNumbering(petsclib::PetscLibType, dm::AbstractPetscDM, shownumbering::PetscBool)
+    error("DMNetworkViewSetShowNumbering: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkViewSetShowNumbering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, shownumbering::PetscBool )
 
@@ -17361,7 +18329,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowRanks"))
 """
-function DMNetworkViewSetShowRanks(petsclib::PetscLibType, dm::AbstractPetscDM, showranks::PetscBool) end
+function DMNetworkViewSetShowRanks(petsclib::PetscLibType, dm::AbstractPetscDM, showranks::PetscBool)
+    error("DMNetworkViewSetShowRanks: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkViewSetShowRanks(petsclib::$UnionPetscLib, dm::AbstractPetscDM, showranks::PetscBool )
 
@@ -17395,7 +18365,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowVertices"))
 """
-function DMNetworkViewSetShowVertices(petsclib::PetscLibType, dm::AbstractPetscDM, showvertices::PetscBool) end
+function DMNetworkViewSetShowVertices(petsclib::PetscLibType, dm::AbstractPetscDM, showvertices::PetscBool)
+    error("DMNetworkViewSetShowVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkViewSetShowVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, showvertices::PetscBool )
 
@@ -17429,7 +18401,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetViewRanks"))
 """
-function DMNetworkViewSetViewRanks(petsclib::PetscLibType, dm::AbstractPetscDM, viewranks::AbstractIS) end
+function DMNetworkViewSetViewRanks(petsclib::PetscLibType, dm::AbstractPetscDM, viewranks::AbstractIS)
+    error("DMNetworkViewSetViewRanks: no generated method for these argument types")
+end
 
 @for_petsc function DMNetworkViewSetViewRanks(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewranks::AbstractIS )
 
@@ -17473,7 +18447,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMOutputSequenceLoad"))
 """
-function DMOutputSequenceLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, name::String, num::PetscInt) end
+function DMOutputSequenceLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, name::String, num::Integer)
+    error("DMOutputSequenceLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMOutputSequenceLoad(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, name::String, num::$PetscInt )
 	val_ = Ref{$PetscReal}()
@@ -17508,7 +18484,9 @@ Output Parameter:
 # External Links
 $(_doc_external("DMPatch/DMPatchCreate"))
 """
-function DMPatchCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMPatchCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMPatchCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	mesh_ = Ref{CDM}()
@@ -17531,7 +18509,9 @@ end
 # External Links
 $(_doc_external("DMPatch/DMPatchCreateGrid"))
 """
-function DMPatchCreateGrid(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, patchSize::MatStencil, commSize::MatStencil, gridSize::MatStencil) end
+function DMPatchCreateGrid(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, patchSize::MatStencil, commSize::MatStencil, gridSize::MatStencil)
+    error("DMPatchCreateGrid: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchCreateGrid(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, patchSize::MatStencil, commSize::MatStencil, gridSize::MatStencil )
 	dm_ = Ref{CDM}()
@@ -17554,7 +18534,9 @@ end
 # External Links
 $(_doc_external("DMPatch/DMPatchGetCoarse"))
 """
-function DMPatchGetCoarse(petsclib::PetscLibType, dm::AbstractPetscDM, dmCoarse::AbstractPetscDM) end
+function DMPatchGetCoarse(petsclib::PetscLibType, dm::AbstractPetscDM, dmCoarse::AbstractPetscDM)
+    error("DMPatchGetCoarse: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchGetCoarse(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmCoarse::AbstractPetscDM )
 	dmCoarse_ = Ref(dmCoarse.ptr)
@@ -17577,7 +18559,9 @@ end
 # External Links
 $(_doc_external("DMPatch/DMPatchGetCommSize"))
 """
-function DMPatchGetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM, commSize::Vector{MatStencil}) end
+function DMPatchGetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM, commSize::Vector{MatStencil})
+    error("DMPatchGetCommSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchGetCommSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, commSize::Vector{MatStencil} )
 
@@ -17598,7 +18582,9 @@ end
 # External Links
 $(_doc_external("DMPatch/DMPatchGetPatchSize"))
 """
-function DMPatchGetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM, patchSize::Vector{MatStencil}) end
+function DMPatchGetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM, patchSize::Vector{MatStencil})
+    error("DMPatchGetPatchSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchGetPatchSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, patchSize::Vector{MatStencil} )
 
@@ -17619,7 +18605,9 @@ end
 # External Links
 $(_doc_external("DMPatch/DMPatchSetCommSize"))
 """
-function DMPatchSetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM, commSize::MatStencil) end
+function DMPatchSetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM, commSize::MatStencil)
+    error("DMPatchSetCommSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchSetCommSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, commSize::MatStencil )
 
@@ -17640,7 +18628,9 @@ end
 # External Links
 $(_doc_external("DMPatch/DMPatchSetPatchSize"))
 """
-function DMPatchSetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM, patchSize::MatStencil) end
+function DMPatchSetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM, patchSize::MatStencil)
+    error("DMPatchSetPatchSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchSetPatchSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, patchSize::MatStencil )
 
@@ -17661,7 +18651,9 @@ end
 # External Links
 $(_doc_external("DMPatch/DMPatchSolve"))
 """
-function DMPatchSolve(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPatchSolve(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPatchSolve: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchSolve(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -17700,7 +18692,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPatch/DMPatchZoom"))
 """
-function DMPatchZoom(petsclib::PetscLibType, dm::AbstractPetscDM, lower::MatStencil, upper::MatStencil, commz::MPI_Comm) end
+function DMPatchZoom(petsclib::PetscLibType, dm::AbstractPetscDM, lower::MatStencil, upper::MatStencil, commz::MPI_Comm)
+    error("DMPatchZoom: no generated method for these argument types")
+end
 
 @for_petsc function DMPatchZoom(petsclib::$UnionPetscLib, dm::AbstractPetscDM, lower::MatStencil, upper::MatStencil, commz::MPI_Comm )
 	dmz_ = Ref{CDM}()
@@ -17739,7 +18733,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildCoordinatesFromCellList"))
 """
-function DMPlexBuildCoordinatesFromCellList(petsclib::PetscLibType, dm::AbstractPetscDM, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) end
+function DMPlexBuildCoordinatesFromCellList(petsclib::PetscLibType, dm::AbstractPetscDM, spaceDim::Integer, vertexCoords::AbstractVector{<:Number})
+    error("DMPlexBuildCoordinatesFromCellList: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexBuildCoordinatesFromCellList(petsclib::$UnionPetscLib, dm::AbstractPetscDM, spaceDim::$PetscInt, vertexCoords::Vector{$PetscReal} )
 
@@ -17773,7 +18769,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildCoordinatesFromCellListParallel"))
 """
-function DMPlexBuildCoordinatesFromCellListParallel(petsclib::PetscLibType, dm::AbstractPetscDM, spaceDim::PetscInt, sfVert::PetscSF, vertexCoords::Vector{PetscReal}) end
+function DMPlexBuildCoordinatesFromCellListParallel(petsclib::PetscLibType, dm::AbstractPetscDM, spaceDim::Integer, sfVert::PetscSF, vertexCoords::AbstractVector{<:Number})
+    error("DMPlexBuildCoordinatesFromCellListParallel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexBuildCoordinatesFromCellListParallel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, spaceDim::$PetscInt, sfVert::PetscSF, vertexCoords::Vector{$PetscReal} )
 
@@ -17808,7 +18806,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildFromCellList"))
 """
-function DMPlexBuildFromCellList(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, numCorners::PetscInt, cells::Vector{PetscInt}) end
+function DMPlexBuildFromCellList(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::Integer, numVertices::Integer, numCorners::Integer, cells::AbstractVector{<:Number})
+    error("DMPlexBuildFromCellList: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexBuildFromCellList(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numCells::$PetscInt, numVertices::$PetscInt, numCorners::$PetscInt, cells::Vector{$PetscInt} )
 
@@ -17849,7 +18849,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildFromCellListParallel"))
 """
-function DMPlexBuildFromCellListParallel(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, numCorners::PetscInt, cells::Vector{PetscInt}) end
+function DMPlexBuildFromCellListParallel(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::Integer, numVertices::Integer, NVertices::Integer, numCorners::Integer, cells::AbstractVector{<:Number})
+    error("DMPlexBuildFromCellListParallel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexBuildFromCellListParallel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numCells::$PetscInt, numVertices::$PetscInt, NVertices::$PetscInt, numCorners::$PetscInt, cells::Vector{$PetscInt} )
 	vertexSF_ = Ref{PetscSF}()
@@ -17894,7 +18896,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildFromCellSectionParallel"))
 """
-function DMPlexBuildFromCellSectionParallel(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, cellSection::PetscSection, cells::Vector{PetscInt}) end
+function DMPlexBuildFromCellSectionParallel(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::Integer, numVertices::Integer, NVertices::Integer, cellSection::PetscSection, cells::AbstractVector{<:Number})
+    error("DMPlexBuildFromCellSectionParallel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexBuildFromCellSectionParallel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numCells::$PetscInt, numVertices::$PetscInt, NVertices::$PetscInt, cellSection::PetscSection, cells::Vector{$PetscInt} )
 	vertexSF_ = Ref{PetscSF}()
@@ -17927,7 +18931,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheck"))
 """
-function DMPlexCheck(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCheck(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCheck: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheck(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -17960,7 +18966,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckCellShape"))
 """
-function DMPlexCheckCellShape(petsclib::PetscLibType, dm::AbstractPetscDM, output::PetscBool, condLimit::PetscReal) end
+function DMPlexCheckCellShape(petsclib::PetscLibType, dm::AbstractPetscDM, output::PetscBool, condLimit::Real)
+    error("DMPlexCheckCellShape: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckCellShape(petsclib::$UnionPetscLib, dm::AbstractPetscDM, output::PetscBool, condLimit::$PetscReal )
 
@@ -17992,7 +19000,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckFaces"))
 """
-function DMPlexCheckFaces(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) end
+function DMPlexCheckFaces(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::Integer)
+    error("DMPlexCheckFaces: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckFaces(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellHeight::$PetscInt )
 
@@ -18021,7 +19031,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckGeometry"))
 """
-function DMPlexCheckGeometry(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCheckGeometry(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCheckGeometry: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckGeometry(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -18050,7 +19062,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckInterfaceCones"))
 """
-function DMPlexCheckInterfaceCones(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCheckInterfaceCones(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCheckInterfaceCones: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckInterfaceCones(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -18081,7 +19095,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckOrphanVertices"))
 """
-function DMPlexCheckOrphanVertices(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCheckOrphanVertices(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCheckOrphanVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckOrphanVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -18114,7 +19130,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckPointSF"))
 """
-function DMPlexCheckPointSF(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, allowExtraRoots::PetscBool) end
+function DMPlexCheckPointSF(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, allowExtraRoots::PetscBool)
+    error("DMPlexCheckPointSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckPointSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pointSF::PetscSF, allowExtraRoots::PetscBool )
 
@@ -18144,7 +19162,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckSkeleton"))
 """
-function DMPlexCheckSkeleton(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) end
+function DMPlexCheckSkeleton(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::Integer)
+    error("DMPlexCheckSkeleton: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckSkeleton(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellHeight::$PetscInt )
 
@@ -18173,7 +19193,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckSymmetry"))
 """
-function DMPlexCheckSymmetry(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCheckSymmetry(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCheckSymmetry: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCheckSymmetry(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -18211,7 +19233,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdIntegral"))
 """
-function DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::PetscInt, vals::Vector{PetscInt}, funcs::Ptr{Cvoid}) end
+function DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::Integer, vals::AbstractVector{<:Number}, funcs::Ptr{Cvoid})
+    error("DMPlexComputeBdIntegral: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeBdIntegral(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::$PetscInt, vals::Vector{$PetscInt}, funcs::Ptr{Cvoid} )
 
@@ -18255,7 +19279,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdJacobianSingle"))
 """
-function DMPlexComputeBdJacobianSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) end
+function DMPlexComputeBdJacobianSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::Integer, values::AbstractVector{<:Number}, fieldI::Integer, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat)
+    error("DMPlexComputeBdJacobianSingle: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeBdJacobianSingle(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::$PetscInt, values::Vector{$PetscInt}, fieldI::$PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat )
 
@@ -18301,7 +19327,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdJacobianSingleByLabel"))
 """
-function DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) end
+function DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::Integer, values::AbstractVector{<:Number}, fieldI::Integer, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, coordField::DMField, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat)
+    error("DMPlexComputeBdJacobianSingleByLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeBdJacobianSingleByLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::$PetscInt, values::Vector{$PetscInt}, fieldI::$PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, coordField::DMField, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat )
 
@@ -18340,7 +19368,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdResidualSingle"))
 """
-function DMPlexComputeBdResidualSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec) end
+function DMPlexComputeBdResidualSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, locF::AbstractPetscVec)
+    error("DMPlexComputeBdResidualSingle: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeBdResidualSingle(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, locF::AbstractPetscVec )
 
@@ -18381,7 +19411,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdResidualSingleByKey"))
 """
-function DMPlexComputeBdResidualSingleByKey(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, locF::AbstractPetscVec) end
+function DMPlexComputeBdResidualSingleByKey(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, coordField::DMField, locF::AbstractPetscVec)
+    error("DMPlexComputeBdResidualSingleByKey: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeBdResidualSingleByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, coordField::DMField, locF::AbstractPetscVec )
 
@@ -18419,7 +19451,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellGeometryAffineFEM"))
 """
-function DMPlexComputeCellGeometryAffineFEM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, v0::Vector{PetscReal}, J::Vector{PetscReal}, invJ::Vector{PetscReal}) end
+function DMPlexComputeCellGeometryAffineFEM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, v0::AbstractVector{<:Number}, J::AbstractVector{<:Number}, invJ::AbstractVector{<:Number})
+    error("DMPlexComputeCellGeometryAffineFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeCellGeometryAffineFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, v0::Vector{$PetscReal}, J::Vector{$PetscReal}, invJ::Vector{$PetscReal} )
 	detJ_ = Ref{$PetscReal}()
@@ -18464,7 +19498,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellGeometryFEM"))
 """
-function DMPlexComputeCellGeometryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, quad::PetscQuadrature, v::Vector{PetscReal}, J::Vector{PetscReal}, invJ::Vector{PetscReal}, detJ::Vector{PetscReal}) end
+function DMPlexComputeCellGeometryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, quad::PetscQuadrature, v::AbstractVector{<:Number}, J::AbstractVector{<:Number}, invJ::AbstractVector{<:Number}, detJ::AbstractVector{<:Number})
+    error("DMPlexComputeCellGeometryFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeCellGeometryFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, quad::PetscQuadrature, v::Vector{$PetscReal}, J::Vector{$PetscReal}, invJ::Vector{$PetscReal}, detJ::Vector{$PetscReal} )
 
@@ -18501,7 +19537,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellGeometryFVM"))
 """
-function DMPlexComputeCellGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, centroid::Vector{PetscReal}, normal::Vector{PetscReal}) end
+function DMPlexComputeCellGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, centroid::AbstractVector{<:Number}, normal::AbstractVector{<:Number})
+    error("DMPlexComputeCellGeometryFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeCellGeometryFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, centroid::Vector{$PetscReal}, normal::Vector{$PetscReal} )
 	vol_ = Ref{$PetscReal}()
@@ -18534,7 +19572,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellTypes"))
 """
-function DMPlexComputeCellTypes(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexComputeCellTypes(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexComputeCellTypes: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeCellTypes(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -18568,7 +19608,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellwiseIntegralFEM"))
 """
-function DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexComputeCellwiseIntegralFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeCellwiseIntegralFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -18603,7 +19645,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeClementInterpolant"))
 """
-function DMPlexComputeClementInterpolant(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec) end
+function DMPlexComputeClementInterpolant(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec)
+    error("DMPlexComputeClementInterpolant: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeClementInterpolant(petsclib::$UnionPetscLib, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec )
 
@@ -18636,7 +19680,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeGeometryFVM"))
 """
-function DMPlexComputeGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexComputeGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexComputeGeometryFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeGeometryFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cellgeom_ = Ref{CVec}()
@@ -18675,7 +19721,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeGradientClementInterpolant"))
 """
-function DMPlexComputeGradientClementInterpolant(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec) end
+function DMPlexComputeGradientClementInterpolant(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec)
+    error("DMPlexComputeGradientClementInterpolant: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeGradientClementInterpolant(petsclib::$UnionPetscLib, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec )
 
@@ -18715,7 +19763,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeGradientFVM"))
 """
-function DMPlexComputeGradientFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fvm::PetscFV, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) end
+function DMPlexComputeGradientFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fvm::PetscFV, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec)
+    error("DMPlexComputeGradientFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeGradientFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fvm::PetscFV, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec )
 	dmGrad_ = Ref{CDM}()
@@ -18751,7 +19801,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInjectorFEM"))
 """
-function DMPlexComputeInjectorFEM(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, user::Ptr{Cvoid}) end
+function DMPlexComputeInjectorFEM(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, user::Ptr{Cvoid})
+    error("DMPlexComputeInjectorFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeInjectorFEM(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, user::Ptr{Cvoid} )
 	sc_ = Ref{VecScatter}()
@@ -18774,7 +19826,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInjectorReferenceTree"))
 """
-function DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType, refTree::AbstractPetscDM, inj::AbstractPetscMat) end
+function DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType, refTree::AbstractPetscDM, inj::AbstractPetscMat)
+    error("DMPlexComputeInjectorReferenceTree: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeInjectorReferenceTree(petsclib::$UnionPetscLib, refTree::AbstractPetscDM, inj::AbstractPetscMat )
 	inj_ = Ref(inj.ptr)
@@ -18810,7 +19864,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeIntegralFEM"))
 """
-function DMPlexComputeIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexComputeIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexComputeIntegralFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeIntegralFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
 	integral_ = Ref{$PetscScalar}()
@@ -18846,7 +19902,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInterpolatorGeneral"))
 """
-function DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexComputeInterpolatorGeneral: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeInterpolatorGeneral(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -18881,7 +19939,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInterpolatorNested"))
 """
-function DMPlexComputeInterpolatorNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexComputeInterpolatorNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexComputeInterpolatorNested: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeInterpolatorNested(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -18923,7 +19983,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianActionByKey"))
 """
-function DMPlexComputeJacobianActionByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexComputeJacobianActionByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexComputeJacobianActionByKey: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeJacobianActionByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -18965,7 +20027,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianByKey"))
 """
-function DMPlexComputeJacobianByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexComputeJacobianByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexComputeJacobianByKey: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeJacobianByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -18986,7 +20050,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianByKeyGeneral"))
 """
-function DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexComputeJacobianByKeyGeneral: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeJacobianByKeyGeneral(petsclib::$UnionPetscLib, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -19028,7 +20094,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianHybridByKey"))
 """
-function DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::Real, X_tShift::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexComputeJacobianHybridByKey: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeJacobianHybridByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::$PetscReal, X_tShift::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -19065,7 +20133,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeL2FluxDiffVec"))
 """
-function DMPlexComputeL2FluxDiffVec(petsclib::PetscLibType, u::AbstractPetscVec, f::PetscInt, mu::AbstractPetscVec, mf::PetscInt, eFlux::AbstractPetscVec) end
+function DMPlexComputeL2FluxDiffVec(petsclib::PetscLibType, u::AbstractPetscVec, f::Integer, mu::AbstractPetscVec, mf::Integer, eFlux::AbstractPetscVec)
+    error("DMPlexComputeL2FluxDiffVec: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeL2FluxDiffVec(petsclib::$UnionPetscLib, u::AbstractPetscVec, f::$PetscInt, mu::AbstractPetscVec, mf::$PetscInt, eFlux::AbstractPetscVec )
 
@@ -19102,7 +20172,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeL2FluxDiffVecLocal"))
 """
-function DMPlexComputeL2FluxDiffVecLocal(petsclib::PetscLibType, lu::AbstractPetscVec, f::PetscInt, lmu::AbstractPetscVec, mf::PetscInt, eFlux::AbstractPetscVec) end
+function DMPlexComputeL2FluxDiffVecLocal(petsclib::PetscLibType, lu::AbstractPetscVec, f::Integer, lmu::AbstractPetscVec, mf::Integer, eFlux::AbstractPetscVec)
+    error("DMPlexComputeL2FluxDiffVecLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeL2FluxDiffVecLocal(petsclib::$UnionPetscLib, lu::AbstractPetscVec, f::$PetscInt, lmu::AbstractPetscVec, mf::$PetscInt, eFlux::AbstractPetscVec )
 
@@ -19136,7 +20208,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMassMatrixGeneral"))
 """
-function DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexComputeMassMatrixGeneral: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeMassMatrixGeneral(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -19157,7 +20231,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMassMatrixNested"))
 """
-function DMPlexComputeMassMatrixNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexComputeMassMatrixNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexComputeMassMatrixNested: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeMassMatrixNested(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -19192,7 +20268,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMoments"))
 """
-function DMPlexComputeMoments(petsclib::PetscLibType, dm::AbstractPetscDM, u::AbstractPetscVec, moments::Vector{PetscReal}) end
+function DMPlexComputeMoments(petsclib::PetscLibType, dm::AbstractPetscDM, u::AbstractPetscVec, moments::AbstractVector{<:Number})
+    error("DMPlexComputeMoments: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeMoments(petsclib::$UnionPetscLib, dm::AbstractPetscDM, u::AbstractPetscVec, moments::Vector{$PetscReal} )
 
@@ -19234,7 +20312,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeOrthogonalQuality"))
 """
-function DMPlexComputeOrthogonalQuality(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, atol::PetscReal) end
+function DMPlexComputeOrthogonalQuality(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, atol::Real)
+    error("DMPlexComputeOrthogonalQuality: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeOrthogonalQuality(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fv::PetscFV, atol::$PetscReal )
 	OrthQual_ = Ref{CVec}()
@@ -19272,7 +20352,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeProjection2Dto1D"))
 """
-function DMPlexComputeProjection2Dto1D(petsclib::PetscLibType, coords::Vector{PetscScalar}, R::Vector{PetscReal}) end
+function DMPlexComputeProjection2Dto1D(petsclib::PetscLibType, coords::AbstractVector{<:Number}, R::AbstractVector{<:Number})
+    error("DMPlexComputeProjection2Dto1D: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeProjection2Dto1D(petsclib::$UnionPetscLib, coords::Vector{$PetscScalar}, R::Vector{$PetscReal} )
 
@@ -19306,7 +20388,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeProjection3Dto1D"))
 """
-function DMPlexComputeProjection3Dto1D(petsclib::PetscLibType, coords::Vector{PetscScalar}, R::Vector{PetscReal}) end
+function DMPlexComputeProjection3Dto1D(petsclib::PetscLibType, coords::AbstractVector{<:Number}, R::AbstractVector{<:Number})
+    error("DMPlexComputeProjection3Dto1D: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeProjection3Dto1D(petsclib::$UnionPetscLib, coords::Vector{$PetscScalar}, R::Vector{$PetscReal} )
 
@@ -19345,7 +20429,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeProjection3Dto2D"))
 """
-function DMPlexComputeProjection3Dto2D(petsclib::PetscLibType, coordSize::PetscInt, coords::Vector{PetscScalar}, R::Vector{PetscReal}) end
+function DMPlexComputeProjection3Dto2D(petsclib::PetscLibType, coordSize::Integer, coords::AbstractVector{<:Number}, R::AbstractVector{<:Number})
+    error("DMPlexComputeProjection3Dto2D: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeProjection3Dto2D(petsclib::$UnionPetscLib, coordSize::$PetscInt, coords::Vector{$PetscScalar}, R::Vector{$PetscReal} )
 
@@ -19386,7 +20472,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeResidualByKey"))
 """
-function DMPlexComputeResidualByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexComputeResidualByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, locF::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexComputeResidualByKey: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeResidualByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -19427,7 +20515,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeResidualHybridByKey"))
 """
-function DMPlexComputeResidualHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexComputeResidualHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, locF::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexComputeResidualHybridByKey: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexComputeResidualHybridByKey(petsclib::$UnionPetscLib, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, locF::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -19463,7 +20553,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexConstructCohesiveCells"))
 """
-function DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel) end
+function DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel)
+    error("DMPlexConstructCohesiveCells: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexConstructCohesiveCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel )
 	dmSplit_ = Ref{CDM}()
@@ -19501,7 +20593,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexConstructGhostCells"))
 """
-function DMPlexConstructGhostCells(petsclib::PetscLibType, dm::AbstractPetscDM, labelName::String) end
+function DMPlexConstructGhostCells(petsclib::PetscLibType, dm::AbstractPetscDM, labelName::String)
+    error("DMPlexConstructGhostCells: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexConstructGhostCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, labelName::String )
 	numGhostCells_ = Ref{$PetscInt}()
@@ -19539,7 +20633,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexCoordinatesLoad"))
 """
-function DMPlexCoordinatesLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF) end
+function DMPlexCoordinatesLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF)
+    error("DMPlexCoordinatesLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCoordinatesLoad(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF )
 
@@ -19579,7 +20675,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCoordinatesToReference"))
 """
-function DMPlexCoordinatesToReference(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, numPoints::PetscInt, realCoords::Vector{PetscReal}, refCoords::Vector{PetscReal}) end
+function DMPlexCoordinatesToReference(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, numPoints::Integer, realCoords::AbstractVector{<:Number}, refCoords::AbstractVector{<:Number})
+    error("DMPlexCoordinatesToReference: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCoordinatesToReference(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, numPoints::$PetscInt, realCoords::Vector{$PetscReal}, refCoords::Vector{$PetscReal} )
 
@@ -19611,7 +20709,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexCoordinatesView"))
 """
-function DMPlexCoordinatesView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) end
+function DMPlexCoordinatesView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer)
+    error("DMPlexCoordinatesView: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCoordinatesView(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer )
 
@@ -19645,7 +20745,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCopyCoordinates"))
 """
-function DMPlexCopyCoordinates(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM) end
+function DMPlexCopyCoordinates(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM)
+    error("DMPlexCopyCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCopyCoordinates(petsclib::$UnionPetscLib, dmA::AbstractPetscDM, dmB::AbstractPetscDM )
 
@@ -19679,7 +20781,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreate"))
 """
-function DMPlexCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMPlexCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMPlexCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	mesh_ = Ref{CDM}()
@@ -19720,7 +20824,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBallMesh"))
 """
-function DMPlexCreateBallMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, R::PetscReal) end
+function DMPlexCreateBallMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, R::Real)
+    error("DMPlexCreateBallMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateBallMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, R::$PetscReal )
 	dm_ = Ref{CDM}()
@@ -19755,7 +20861,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBasisRotation"))
 """
-function DMPlexCreateBasisRotation(petsclib::PetscLibType, dm::AbstractPetscDM, alpha::PetscReal, beta::PetscReal, gamma::PetscReal) end
+function DMPlexCreateBasisRotation(petsclib::PetscLibType, dm::AbstractPetscDM, alpha::Real, beta::Real, gamma::Real)
+    error("DMPlexCreateBasisRotation: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateBasisRotation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, alpha::$PetscReal, beta::$PetscReal, gamma::$PetscReal )
 
@@ -19798,7 +20906,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBoxMesh"))
 """
-function DMPlexCreateBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, periodicity::Vector{DMBoundaryType}, interpolate::PetscBool, localizationHeight::PetscInt, sparseLocalize::PetscBool) end
+function DMPlexCreateBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, simplex::PetscBool, faces::AbstractVector{<:Number}, lower::AbstractVector{<:Number}, upper::AbstractVector{<:Number}, periodicity::Vector{DMBoundaryType}, interpolate::PetscBool, localizationHeight::Integer, sparseLocalize::PetscBool)
+    error("DMPlexCreateBoxMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateBoxMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, simplex::PetscBool, faces::Vector{$PetscInt}, lower::Vector{$PetscReal}, upper::Vector{$PetscReal}, periodicity::Vector{DMBoundaryType}, interpolate::PetscBool, localizationHeight::$PetscInt, sparseLocalize::PetscBool )
 	dm_ = Ref{CDM}()
@@ -19839,7 +20949,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBoxSurfaceMesh"))
 """
-function DMPlexCreateBoxSurfaceMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, interpolate::PetscBool) end
+function DMPlexCreateBoxSurfaceMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, faces::AbstractVector{<:Number}, lower::AbstractVector{<:Number}, upper::AbstractVector{<:Number}, interpolate::PetscBool)
+    error("DMPlexCreateBoxSurfaceMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateBoxSurfaceMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, faces::Vector{$PetscInt}, lower::Vector{$PetscReal}, upper::Vector{$PetscReal}, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -19877,7 +20989,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCGNS"))
 """
-function DMPlexCreateCGNS(petsclib::PetscLibType, comm::MPI_Comm, cgid::PetscInt, interpolate::PetscBool) end
+function DMPlexCreateCGNS(petsclib::PetscLibType, comm::MPI_Comm, cgid::Integer, interpolate::PetscBool)
+    error("DMPlexCreateCGNS: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateCGNS(petsclib::$UnionPetscLib, comm::MPI_Comm, cgid::$PetscInt, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -19915,7 +21029,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCGNSFromFile"))
 """
-function DMPlexCreateCGNSFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) end
+function DMPlexCreateCGNSFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool)
+    error("DMPlexCreateCGNSFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateCGNSFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -19950,7 +21066,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCellNumbering"))
 """
-function DMPlexCreateCellNumbering(petsclib::PetscLibType, dm::AbstractPetscDM, includeAll::PetscBool) end
+function DMPlexCreateCellNumbering(petsclib::PetscLibType, dm::AbstractPetscDM, includeAll::PetscBool)
+    error("DMPlexCreateCellNumbering: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateCellNumbering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, includeAll::PetscBool )
 	globalCellNumbers_ = Ref{CIS}()
@@ -19984,7 +21102,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateClosureIndex"))
 """
-function DMPlexCreateClosureIndex(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection) end
+function DMPlexCreateClosureIndex(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection)
+    error("DMPlexCreateClosureIndex: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateClosureIndex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection )
 
@@ -20018,7 +21138,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCoarsePointIS"))
 """
-function DMPlexCreateCoarsePointIS(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCreateCoarsePointIS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCreateCoarsePointIS: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateCoarsePointIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	fpointIS_ = Ref{CIS}()
@@ -20055,7 +21177,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCohesiveSubmesh"))
 """
-function DMPlexCreateCohesiveSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, hasLagrange::PetscBool, label::String, value::PetscInt) end
+function DMPlexCreateCohesiveSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, hasLagrange::PetscBool, label::String, value::Integer)
+    error("DMPlexCreateCohesiveSubmesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateCohesiveSubmesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM, hasLagrange::PetscBool, label::String, value::$PetscInt )
 	subdm_ = Ref{CDM}()
@@ -20091,7 +21215,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCoordinateSpace"))
 """
-function DMPlexCreateCoordinateSpace(petsclib::PetscLibType, dm::AbstractPetscDM, degree::PetscInt, localized::PetscBool, project::PetscBool) end
+function DMPlexCreateCoordinateSpace(petsclib::PetscLibType, dm::AbstractPetscDM, degree::Integer, localized::PetscBool, project::PetscBool)
+    error("DMPlexCreateCoordinateSpace: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateCoordinateSpace(petsclib::$UnionPetscLib, dm::AbstractPetscDM, degree::$PetscInt, localized::PetscBool, project::PetscBool )
 
@@ -20127,7 +21253,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateDefaultReferenceTree"))
 """
-function DMPlexCreateDefaultReferenceTree(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool) end
+function DMPlexCreateDefaultReferenceTree(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, simplex::PetscBool)
+    error("DMPlexCreateDefaultReferenceTree: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateDefaultReferenceTree(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, simplex::PetscBool )
 	ref_ = Ref{CDM}()
@@ -20167,7 +21295,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateDoublet"))
 """
-function DMPlexCreateDoublet(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, interpolate::PetscBool, refinementLimit::PetscReal) end
+function DMPlexCreateDoublet(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, simplex::PetscBool, interpolate::PetscBool, refinementLimit::Real)
+    error("DMPlexCreateDoublet: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateDoublet(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, simplex::PetscBool, interpolate::PetscBool, refinementLimit::$PetscReal )
 	newdm_ = Ref{CDM}()
@@ -20203,7 +21333,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateEdgeNumbering"))
 """
-function DMPlexCreateEdgeNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCreateEdgeNumbering(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCreateEdgeNumbering: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateEdgeNumbering(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	globalEdgeNumbers_ = Ref{CIS}()
@@ -20238,7 +21370,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateEphemeral"))
 """
-function DMPlexCreateEphemeral(petsclib::PetscLibType, tr::DMPlexTransform, prefix::String) end
+function DMPlexCreateEphemeral(petsclib::PetscLibType, tr::DMPlexTransform, prefix::String)
+    error("DMPlexCreateEphemeral: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateEphemeral(petsclib::$UnionPetscLib, tr::DMPlexTransform, prefix::String )
 	dm_ = Ref{CDM}()
@@ -20276,7 +21410,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateExodus"))
 """
-function DMPlexCreateExodus(petsclib::PetscLibType, comm::MPI_Comm, exoid::PetscExodusIIInt, interpolate::PetscBool) end
+function DMPlexCreateExodus(petsclib::PetscLibType, comm::MPI_Comm, exoid::PetscExodusIIInt, interpolate::PetscBool)
+    error("DMPlexCreateExodus: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateExodus(petsclib::$UnionPetscLib, comm::MPI_Comm, exoid::PetscExodusIIInt, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20314,7 +21450,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateExodusFromFile"))
 """
-function DMPlexCreateExodusFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) end
+function DMPlexCreateExodusFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool)
+    error("DMPlexCreateExodusFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateExodusFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20352,7 +21490,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFluent"))
 """
-function DMPlexCreateFluent(petsclib::PetscLibType, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool) end
+function DMPlexCreateFluent(petsclib::PetscLibType, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool)
+    error("DMPlexCreateFluent: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateFluent(petsclib::$UnionPetscLib, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20390,7 +21530,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFluentFromFile"))
 """
-function DMPlexCreateFluentFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) end
+function DMPlexCreateFluentFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool)
+    error("DMPlexCreateFluentFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateFluentFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20437,7 +21579,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromCellListParallelPetsc"))
 """
-function DMPlexCreateFromCellListParallelPetsc(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, numCorners::PetscInt, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) end
+function DMPlexCreateFromCellListParallelPetsc(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, numCells::Integer, numVertices::Integer, NVertices::Integer, numCorners::Integer, interpolate::PetscBool, cells::AbstractVector{<:Number}, spaceDim::Integer, vertexCoords::AbstractVector{<:Number})
+    error("DMPlexCreateFromCellListParallelPetsc: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateFromCellListParallelPetsc(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, numCells::$PetscInt, numVertices::$PetscInt, NVertices::$PetscInt, numCorners::$PetscInt, interpolate::PetscBool, cells::Vector{$PetscInt}, spaceDim::$PetscInt, vertexCoords::Vector{$PetscReal} )
 	vertexSF_ = Ref{PetscSF}()
@@ -20485,7 +21629,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromCellListPetsc"))
 """
-function DMPlexCreateFromCellListPetsc(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, numCorners::PetscInt, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) end
+function DMPlexCreateFromCellListPetsc(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, numCells::Integer, numVertices::Integer, numCorners::Integer, interpolate::PetscBool, cells::AbstractVector{<:Number}, spaceDim::Integer, vertexCoords::AbstractVector{<:Number})
+    error("DMPlexCreateFromCellListPetsc: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateFromCellListPetsc(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, numCells::$PetscInt, numVertices::$PetscInt, numCorners::$PetscInt, interpolate::PetscBool, cells::Vector{$PetscInt}, spaceDim::$PetscInt, vertexCoords::Vector{$PetscReal} )
 	dm_ = Ref{CDM}()
@@ -20532,7 +21678,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromCellSectionParallel"))
 """
-function DMPlexCreateFromCellSectionParallel(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, cellSection::PetscSection, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) end
+function DMPlexCreateFromCellSectionParallel(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, numCells::Integer, numVertices::Integer, NVertices::Integer, cellSection::PetscSection, interpolate::PetscBool, cells::AbstractVector{<:Number}, spaceDim::Integer, vertexCoords::AbstractVector{<:Number})
+    error("DMPlexCreateFromCellSectionParallel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateFromCellSectionParallel(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, numCells::$PetscInt, numVertices::$PetscInt, NVertices::$PetscInt, cellSection::PetscSection, interpolate::PetscBool, cells::Vector{$PetscInt}, spaceDim::$PetscInt, vertexCoords::Vector{$PetscReal} )
 	vertexSF_ = Ref{PetscSF}()
@@ -20576,7 +21724,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromDAG"))
 """
-function DMPlexCreateFromDAG(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt, numPoints::Vector{PetscInt}, coneSize::Vector{PetscInt}, cones::Vector{PetscInt}, coneOrientations::Vector{PetscInt}, vertexCoords::Vector{PetscScalar}) end
+function DMPlexCreateFromDAG(petsclib::PetscLibType, dm::AbstractPetscDM, depth::Integer, numPoints::AbstractVector{<:Number}, coneSize::AbstractVector{<:Number}, cones::AbstractVector{<:Number}, coneOrientations::AbstractVector{<:Number}, vertexCoords::AbstractVector{<:Number})
+    error("DMPlexCreateFromDAG: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateFromDAG(petsclib::$UnionPetscLib, dm::AbstractPetscDM, depth::$PetscInt, numPoints::Vector{$PetscInt}, coneSize::Vector{$PetscInt}, cones::Vector{$PetscInt}, coneOrientations::Vector{$PetscInt}, vertexCoords::Vector{$PetscScalar} )
 
@@ -20618,7 +21768,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromFile"))
 """
-function DMPlexCreateFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, plexname::String, interpolate::PetscBool) end
+function DMPlexCreateFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, plexname::String, interpolate::PetscBool)
+    error("DMPlexCreateFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, plexname::String, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20656,7 +21808,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGeomFromFile"))
 """
-function DMPlexCreateGeomFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, islite::PetscBool) end
+function DMPlexCreateGeomFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, islite::PetscBool)
+    error("DMPlexCreateGeomFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateGeomFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, islite::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20692,7 +21846,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGlobalToNaturalSF"))
 """
-function DMPlexCreateGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, sfMigration::PetscSF) end
+function DMPlexCreateGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, sfMigration::PetscSF)
+    error("DMPlexCreateGlobalToNaturalSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateGlobalToNaturalSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, sfMigration::PetscSF )
 	sfNatural_ = Ref{PetscSF}()
@@ -20742,7 +21898,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGmsh"))
 """
-function DMPlexCreateGmsh(petsclib::PetscLibType, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool) end
+function DMPlexCreateGmsh(petsclib::PetscLibType, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool)
+    error("DMPlexCreateGmsh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateGmsh(petsclib::$UnionPetscLib, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20778,7 +21936,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGmshFromFile"))
 """
-function DMPlexCreateGmshFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) end
+function DMPlexCreateGmshFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool)
+    error("DMPlexCreateGmshFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateGmshFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -20816,7 +21976,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateHexCylinderMesh"))
 """
-function DMPlexCreateHexCylinderMesh(petsclib::PetscLibType, comm::MPI_Comm, periodicZ::DMBoundaryType, Nr::PetscInt) end
+function DMPlexCreateHexCylinderMesh(petsclib::PetscLibType, comm::MPI_Comm, periodicZ::DMBoundaryType, Nr::Integer)
+    error("DMPlexCreateHexCylinderMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateHexCylinderMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, periodicZ::DMBoundaryType, Nr::$PetscInt )
 	dm_ = Ref{CDM}()
@@ -20858,7 +22020,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateHybridMesh"))
 """
-function DMPlexCreateHybridMesh(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::PetscInt) end
+function DMPlexCreateHybridMesh(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::Integer)
+    error("DMPlexCreateHybridMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateHybridMesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::$PetscInt )
 	hybridLabel_ = Ref{DMLabel}()
@@ -20905,7 +22069,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateHypercubicMesh"))
 """
-function DMPlexCreateHypercubicMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, edges::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, overlap::PetscInt) end
+function DMPlexCreateHypercubicMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, edges::AbstractVector{<:Number}, lower::AbstractVector{<:Number}, upper::AbstractVector{<:Number}, overlap::Integer)
+    error("DMPlexCreateHypercubicMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateHypercubicMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, edges::Vector{$PetscInt}, lower::Vector{$PetscReal}, upper::Vector{$PetscReal}, overlap::$PetscInt )
 	dm_ = Ref{CDM}()
@@ -20943,7 +22109,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateLabelField"))
 """
-function DMPlexCreateLabelField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexCreateLabelField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexCreateLabelField: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateLabelField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 	val_ = Ref{CVec}()
@@ -20979,7 +22147,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateNaturalVector"))
 """
-function DMPlexCreateNaturalVector(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCreateNaturalVector(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCreateNaturalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateNaturalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nv_ = Ref{CVec}()
@@ -21018,7 +22188,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateNeighborCSR"))
 """
-function DMPlexCreateNeighborCSR(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) end
+function DMPlexCreateNeighborCSR(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::Integer)
+    error("DMPlexCreateNeighborCSR: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateNeighborCSR(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellHeight::$PetscInt )
 	numVertices_ = Ref{$PetscInt}()
@@ -21063,7 +22235,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateOverlapLabel"))
 """
-function DMPlexCreateOverlapLabel(petsclib::PetscLibType, dm::AbstractPetscDM, levels::PetscInt, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) end
+function DMPlexCreateOverlapLabel(petsclib::PetscLibType, dm::AbstractPetscDM, levels::Integer, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS)
+    error("DMPlexCreateOverlapLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateOverlapLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, levels::$PetscInt, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS )
 	ovLabel_ = Ref{DMLabel}()
@@ -21109,7 +22283,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateOverlapLabelFromLabels"))
 """
-function DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType, dm::AbstractPetscDM, numLabels::PetscInt, label::Vector{DMLabel}, value::Vector{PetscInt}, numExLabels::PetscInt, exLabel::Vector{DMLabel}, exValue::Vector{PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) end
+function DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType, dm::AbstractPetscDM, numLabels::Integer, label::Vector{DMLabel}, value::AbstractVector{<:Number}, numExLabels::Integer, exLabel::Vector{DMLabel}, exValue::AbstractVector{<:Number}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS)
+    error("DMPlexCreateOverlapLabelFromLabels: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateOverlapLabelFromLabels(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numLabels::$PetscInt, label::Vector{DMLabel}, value::Vector{$PetscInt}, numExLabels::$PetscInt, exLabel::Vector{DMLabel}, exValue::Vector{$PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS )
 	ovLabel_ = Ref{DMLabel}()
@@ -21146,7 +22322,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateOverlapMigrationSF"))
 """
-function DMPlexCreateOverlapMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, overlapSF::PetscSF) end
+function DMPlexCreateOverlapMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, overlapSF::PetscSF)
+    error("DMPlexCreateOverlapMigrationSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateOverlapMigrationSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, overlapSF::PetscSF )
 	migrationSF_ = Ref{PetscSF}()
@@ -21182,7 +22360,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePLYFromFile"))
 """
-function DMPlexCreatePLYFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) end
+function DMPlexCreatePLYFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool)
+    error("DMPlexCreatePLYFromFile: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreatePLYFromFile(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -21225,7 +22405,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePartitionerGraph"))
 """
-function DMPlexCreatePartitionerGraph(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) end
+function DMPlexCreatePartitionerGraph(petsclib::PetscLibType, dm::AbstractPetscDM, height::Integer)
+    error("DMPlexCreatePartitionerGraph: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreatePartitionerGraph(petsclib::$UnionPetscLib, dm::AbstractPetscDM, height::$PetscInt )
 	numVertices_ = Ref{$PetscInt}()
@@ -21267,7 +22449,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePointNumbering"))
 """
-function DMPlexCreatePointNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCreatePointNumbering(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCreatePointNumbering: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreatePointNumbering(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	globalPointNumbers_ = Ref{CIS}()
@@ -21303,7 +22487,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePointSF"))
 """
-function DMPlexCreatePointSF(petsclib::PetscLibType, dm::AbstractPetscDM, migrationSF::PetscSF, ownership::PetscBool) end
+function DMPlexCreatePointSF(petsclib::PetscLibType, dm::AbstractPetscDM, migrationSF::PetscSF, ownership::PetscBool)
+    error("DMPlexCreatePointSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreatePointSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, migrationSF::PetscSF, ownership::PetscBool )
 	pointSF_ = Ref{PetscSF}()
@@ -21341,7 +22527,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateProcessSF"))
 """
-function DMPlexCreateProcessSF(petsclib::PetscLibType, dm::AbstractPetscDM, sfPoint::PetscSF) end
+function DMPlexCreateProcessSF(petsclib::PetscLibType, dm::AbstractPetscDM, sfPoint::PetscSF)
+    error("DMPlexCreateProcessSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateProcessSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sfPoint::PetscSF )
 	processRanks_ = Ref{CIS}()
@@ -21380,7 +22568,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateRankField"))
 """
-function DMPlexCreateRankField(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexCreateRankField(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexCreateRankField: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateRankField(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	ranks_ = Ref{CVec}()
@@ -21417,7 +22607,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateReferenceCell"))
 """
-function DMPlexCreateReferenceCell(petsclib::PetscLibType, comm::MPI_Comm, ct::DMPolytopeType) end
+function DMPlexCreateReferenceCell(petsclib::PetscLibType, comm::MPI_Comm, ct::DMPolytopeType)
+    error("DMPlexCreateReferenceCell: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateReferenceCell(petsclib::$UnionPetscLib, comm::MPI_Comm, ct::DMPolytopeType )
 	refdm_ = Ref{CDM}()
@@ -21457,7 +22649,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateRigidBodies"))
 """
-function DMPlexCreateRigidBodies(petsclib::PetscLibType, dm::AbstractPetscDM, nb::PetscInt, label::DMLabel, nids::Vector{PetscInt}, ids::Vector{PetscInt}) end
+function DMPlexCreateRigidBodies(petsclib::PetscLibType, dm::AbstractPetscDM, nb::Integer, label::DMLabel, nids::AbstractVector{<:Number}, ids::AbstractVector{<:Number})
+    error("DMPlexCreateRigidBodies: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateRigidBodies(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nb::$PetscInt, label::DMLabel, nids::Vector{$PetscInt}, ids::Vector{$PetscInt} )
 	sp_ = Ref{MatNullSpace}()
@@ -21494,7 +22688,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateRigidBody"))
 """
-function DMPlexCreateRigidBody(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt) end
+function DMPlexCreateRigidBody(petsclib::PetscLibType, dm::AbstractPetscDM, field::Integer)
+    error("DMPlexCreateRigidBody: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateRigidBody(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt )
 	sp_ = Ref{MatNullSpace}()
@@ -21538,7 +22734,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSection"))
 """
-function DMPlexCreateSection(petsclib::PetscLibType, dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::Vector{PetscInt}, numDof::Vector{PetscInt}, numBC::PetscInt, bcField::Vector{PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS) end
+function DMPlexCreateSection(petsclib::PetscLibType, dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::AbstractVector{<:Number}, numDof::AbstractVector{<:Number}, numBC::Integer, bcField::AbstractVector{<:Number}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS)
+    error("DMPlexCreateSection: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::Vector{$PetscInt}, numDof::Vector{$PetscInt}, numBC::$PetscInt, bcField::Vector{$PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS )
 	section_ = Ref{PetscSection}()
@@ -21577,7 +22775,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSphereMesh"))
 """
-function DMPlexCreateSphereMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, R::PetscReal) end
+function DMPlexCreateSphereMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, simplex::PetscBool, R::Real)
+    error("DMPlexCreateSphereMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateSphereMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, simplex::PetscBool, R::$PetscReal )
 	dm_ = Ref{CDM}()
@@ -21614,7 +22814,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSubmesh"))
 """
-function DMPlexCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, vertexLabel::DMLabel, value::PetscInt, markedFaces::PetscBool) end
+function DMPlexCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, vertexLabel::DMLabel, value::Integer, markedFaces::PetscBool)
+    error("DMPlexCreateSubmesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateSubmesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vertexLabel::DMLabel, value::$PetscInt, markedFaces::PetscBool )
 	subdm_ = Ref{CDM}()
@@ -21657,7 +22859,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateTPSMesh"))
 """
-function DMPlexCreateTPSMesh(petsclib::PetscLibType, comm::MPI_Comm, tpstype::DMPlexTPSType, extent::Vector{PetscInt}, periodic::Vector{DMBoundaryType}, tps_distribute::PetscBool, refinements::PetscInt, layers::PetscInt, thickness::PetscReal) end
+function DMPlexCreateTPSMesh(petsclib::PetscLibType, comm::MPI_Comm, tpstype::DMPlexTPSType, extent::AbstractVector{<:Number}, periodic::Vector{DMBoundaryType}, tps_distribute::PetscBool, refinements::Integer, layers::Integer, thickness::Real)
+    error("DMPlexCreateTPSMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateTPSMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, tpstype::DMPlexTPSType, extent::Vector{$PetscInt}, periodic::Vector{DMBoundaryType}, tps_distribute::PetscBool, refinements::$PetscInt, layers::$PetscInt, thickness::$PetscReal )
 	dm_ = Ref{CDM}()
@@ -21699,7 +22903,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateTwoSidedProcessSF"))
 """
-function DMPlexCreateTwoSidedProcessSF(petsclib::PetscLibType, dm::AbstractPetscDM, sfPoint::PetscSF, rootRankSection::PetscSection, rootRanks::AbstractIS, leafRankSection::PetscSection, leafRanks::AbstractIS) end
+function DMPlexCreateTwoSidedProcessSF(petsclib::PetscLibType, dm::AbstractPetscDM, sfPoint::PetscSF, rootRankSection::PetscSection, rootRanks::AbstractIS, leafRankSection::PetscSection, leafRanks::AbstractIS)
+    error("DMPlexCreateTwoSidedProcessSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateTwoSidedProcessSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sfPoint::PetscSF, rootRankSection::PetscSection, rootRanks::AbstractIS, leafRankSection::PetscSection, leafRanks::AbstractIS )
 	processRanks_ = Ref{CIS}()
@@ -21743,7 +22949,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateWedgeBoxMesh"))
 """
-function DMPlexCreateWedgeBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, periodicity::Vector{DMBoundaryType}, orderHeight::PetscBool, interpolate::PetscBool) end
+function DMPlexCreateWedgeBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, faces::AbstractVector{<:Number}, lower::AbstractVector{<:Number}, upper::AbstractVector{<:Number}, periodicity::Vector{DMBoundaryType}, orderHeight::PetscBool, interpolate::PetscBool)
+    error("DMPlexCreateWedgeBoxMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateWedgeBoxMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, faces::Vector{$PetscInt}, lower::Vector{$PetscReal}, upper::Vector{$PetscReal}, periodicity::Vector{DMBoundaryType}, orderHeight::PetscBool, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -21781,7 +22989,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateWedgeCylinderMesh"))
 """
-function DMPlexCreateWedgeCylinderMesh(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, interpolate::PetscBool) end
+function DMPlexCreateWedgeCylinderMesh(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, interpolate::PetscBool)
+    error("DMPlexCreateWedgeCylinderMesh: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexCreateWedgeCylinderMesh(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, interpolate::PetscBool )
 	dm_ = Ref{CDM}()
@@ -21819,7 +23029,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexDistribute"))
 """
-function DMPlexDistribute(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) end
+function DMPlexDistribute(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::Integer)
+    error("DMPlexDistribute: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistribute(petsclib::$UnionPetscLib, dm::AbstractPetscDM, overlap::$PetscInt )
 	sf_ = Ref{PetscSF}()
@@ -21861,7 +23073,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeField"))
 """
-function DMPlexDistributeField(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalVec::AbstractPetscVec, newSection::PetscSection, newVec::AbstractPetscVec) end
+function DMPlexDistributeField(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalVec::AbstractPetscVec, newSection::PetscSection, newVec::AbstractPetscVec)
+    error("DMPlexDistributeField: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributeField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalVec::AbstractPetscVec, newSection::PetscSection, newVec::AbstractPetscVec )
 
@@ -21899,7 +23113,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeFieldIS"))
 """
-function DMPlexDistributeFieldIS(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalIS::AbstractIS, newSection::PetscSection) end
+function DMPlexDistributeFieldIS(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalIS::AbstractIS, newSection::PetscSection)
+    error("DMPlexDistributeFieldIS: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributeFieldIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalIS::AbstractIS, newSection::PetscSection )
 	newIS_ = Ref{CIS}()
@@ -21935,7 +23151,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeGetDefault"))
 """
-function DMPlexDistributeGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexDistributeGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexDistributeGetDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributeGetDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dist_ = Ref{PetscBool}()
@@ -21979,7 +23197,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeOverlap"))
 """
-function DMPlexDistributeOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) end
+function DMPlexDistributeOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::Integer)
+    error("DMPlexDistributeOverlap: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributeOverlap(petsclib::$UnionPetscLib, dm::AbstractPetscDM, overlap::$PetscInt )
 	sf_ = Ref{PetscSF}()
@@ -22020,7 +23240,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeOwnership"))
 """
-function DMPlexDistributeOwnership(petsclib::PetscLibType, dm::AbstractPetscDM, rootSection::PetscSection, leafSection::PetscSection) end
+function DMPlexDistributeOwnership(petsclib::PetscLibType, dm::AbstractPetscDM, rootSection::PetscSection, leafSection::PetscSection)
+    error("DMPlexDistributeOwnership: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributeOwnership(petsclib::$UnionPetscLib, dm::AbstractPetscDM, rootSection::PetscSection, leafSection::PetscSection )
 	rootrank_ = Ref{CIS}()
@@ -22056,7 +23278,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeSetDefault"))
 """
-function DMPlexDistributeSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, dist::PetscBool) end
+function DMPlexDistributeSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, dist::PetscBool)
+    error("DMPlexDistributeSetDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributeSetDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dist::PetscBool )
 
@@ -22088,7 +23312,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributionGetName"))
 """
-function DMPlexDistributionGetName(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexDistributionGetName(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexDistributionGetName: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributionGetName(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	name_ = Ref{Ptr{Cchar}}()
@@ -22120,7 +23346,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributionSetName"))
 """
-function DMPlexDistributionSetName(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMPlexDistributionSetName(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMPlexDistributionSetName: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexDistributionSetName(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 
@@ -22155,7 +23383,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexEqual"))
 """
-function DMPlexEqual(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM) end
+function DMPlexEqual(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM)
+    error("DMPlexEqual: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexEqual(petsclib::$UnionPetscLib, dmA::AbstractPetscDM, dmB::AbstractPetscDM )
 	equal_ = Ref{PetscBool}()
@@ -22205,7 +23435,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexExtrude"))
 """
-function DMPlexExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::PetscInt, thickness::PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{PetscReal}, thicknesses::Vector{PetscReal}, activeLabel::DMLabel) end
+function DMPlexExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::Integer, thickness::Real, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::AbstractVector{<:Number}, thicknesses::AbstractVector{<:Number}, activeLabel::DMLabel)
+    error("DMPlexExtrude: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexExtrude(petsclib::$UnionPetscLib, dm::AbstractPetscDM, layers::$PetscInt, thickness::$PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{$PetscReal}, thicknesses::Vector{$PetscReal}, activeLabel::DMLabel )
 	edm_ = Ref{CDM}()
@@ -22244,7 +23476,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexFilter"))
 """
-function DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::DMLabel, value::PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool) end
+function DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::DMLabel, value::Integer, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool)
+    error("DMPlexFilter: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexFilter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellLabel::DMLabel, value::$PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool )
 	ownershipTransferSF_ = Ref{PetscSF}()
@@ -22284,7 +23518,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexFindVertices"))
 """
-function DMPlexFindVertices(petsclib::PetscLibType, dm::AbstractPetscDM, coordinates::AbstractPetscVec, eps::PetscReal) end
+function DMPlexFindVertices(petsclib::PetscLibType, dm::AbstractPetscDM, coordinates::AbstractPetscVec, eps::Real)
+    error("DMPlexFindVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexFindVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, coordinates::AbstractPetscVec, eps::$PetscReal )
 	points_ = Ref{CIS}()
@@ -22318,7 +23554,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexFreeGeomObject"))
 """
-function DMPlexFreeGeomObject(petsclib::PetscLibType, dm::AbstractPetscDM, geomObj::PetscGeom) end
+function DMPlexFreeGeomObject(petsclib::PetscLibType, dm::AbstractPetscDM, geomObj::PetscGeom)
+    error("DMPlexFreeGeomObject: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexFreeGeomObject(petsclib::$UnionPetscLib, dm::AbstractPetscDM, geomObj::PetscGeom )
 
@@ -22358,7 +23596,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGenerate"))
 """
-function DMPlexGenerate(petsclib::PetscLibType, boundary::AbstractPetscDM, name::String, interpolate::PetscBool) end
+function DMPlexGenerate(petsclib::PetscLibType, boundary::AbstractPetscDM, name::String, interpolate::PetscBool)
+    error("DMPlexGenerate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGenerate(petsclib::$UnionPetscLib, boundary::AbstractPetscDM, name::String, interpolate::PetscBool )
 	mesh_ = Ref{CDM}()
@@ -22400,7 +23640,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGeomDataAndGrads"))
 """
-function DMPlexGeomDataAndGrads(petsclib::PetscLibType, dm::AbstractPetscDM, fullGeomGrad::PetscBool) end
+function DMPlexGeomDataAndGrads(petsclib::PetscLibType, dm::AbstractPetscDM, fullGeomGrad::PetscBool)
+    error("DMPlexGeomDataAndGrads: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGeomDataAndGrads(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fullGeomGrad::PetscBool )
 
@@ -22434,7 +23676,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetActivePoint"))
 """
-function DMPlexGetActivePoint(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetActivePoint(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetActivePoint: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetActivePoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	point_ = Ref{$PetscInt}()
@@ -22472,7 +23716,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetAdjacency"))
 """
-function DMPlexGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMPlexGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMPlexGetAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	adjSize_ = Ref{$PetscInt}()
@@ -22508,7 +23754,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetAdjacencyUseAnchors"))
 """
-function DMPlexGetAdjacencyUseAnchors(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetAdjacencyUseAnchors(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetAdjacencyUseAnchors: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetAdjacencyUseAnchors(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	useAnchors_ = Ref{PetscBool}()
@@ -22546,7 +23794,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetAnchors"))
 """
-function DMPlexGetAnchors(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetAnchors(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetAnchors: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetAnchors(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	anchorSection_ = Ref{PetscSection}()
@@ -22588,7 +23838,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellCoordinates"))
 """
-function DMPlexGetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt) end
+function DMPlexGetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer)
+    error("DMPlexGetCellCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCellCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt )
 	isDG_ = Ref{PetscBool}()
@@ -22637,7 +23889,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellFields"))
 """
-function DMPlexGetCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec) end
+function DMPlexGetCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec)
+    error("DMPlexGetCellFields: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCellFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec )
 	u_ = Ref{Ptr{$PetscScalar}}()
@@ -22675,7 +23929,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellNumbering"))
 """
-function DMPlexGetCellNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetCellNumbering(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetCellNumbering: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCellNumbering(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	globalCellNumbers_ = Ref{CIS}()
@@ -22712,7 +23968,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellType"))
 """
-function DMPlexGetCellType(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt) end
+function DMPlexGetCellType(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer)
+    error("DMPlexGetCellType: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCellType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt )
 	celltype_ = Ref{DMPolytopeType}()
@@ -22748,7 +24006,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellTypeLabel"))
 """
-function DMPlexGetCellTypeLabel(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetCellTypeLabel(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetCellTypeLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCellTypeLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	celltypeLabel_ = Ref{DMLabel}()
@@ -22784,7 +24044,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellTypeStratum"))
 """
-function DMPlexGetCellTypeStratum(petsclib::PetscLibType, dm::AbstractPetscDM, ct::DMPolytopeType) end
+function DMPlexGetCellTypeStratum(petsclib::PetscLibType, dm::AbstractPetscDM, ct::DMPolytopeType)
+    error("DMPlexGetCellTypeStratum: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCellTypeStratum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ct::DMPolytopeType )
 	start_ = Ref{$PetscInt}()
@@ -22823,7 +24085,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetChart"))
 """
-function DMPlexGetChart(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetChart(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetChart: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetChart(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	pStart_ = Ref{$PetscInt}()
@@ -22869,7 +24133,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetClosureIndices"))
 """
-function DMPlexGetClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, values::Union{Ptr, AbstractArray{PetscScalar}}) end
+function DMPlexGetClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::Integer, useClPerm::PetscBool, values::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexGetClosureIndices: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetClosureIndices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::$PetscInt, useClPerm::PetscBool, values::Union{Ptr, AbstractArray{$PetscScalar}} )
 	numIndices_ = Ref{$PetscInt}()
@@ -22897,7 +24163,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCompressedClosure"))
 """
-function DMPlexGetCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::PetscInt, ornt::PetscInt, points::PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::PetscInt) end
+function DMPlexGetCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::Integer, ornt::Integer, points::Integer, clSec::PetscSection, clPoints::AbstractIS, clp::Integer)
+    error("DMPlexGetCompressedClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCompressedClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, point::$PetscInt, ornt::$PetscInt, points::$PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::$PetscInt )
 	numPoints_ = Ref{$PetscInt}()
@@ -22936,7 +24204,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCone"))
 """
-function DMPlexGetCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMPlexGetCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMPlexGetCone: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	cone_ = Ref{Ptr{$PetscInt}}()
@@ -22976,7 +24246,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeOrientation"))
 """
-function DMPlexGetConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMPlexGetConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMPlexGetConeOrientation: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetConeOrientation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	coneOrientation_ = Ref{Ptr{$PetscInt}}()
@@ -23013,7 +24285,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeOrientations"))
 """
-function DMPlexGetConeOrientations(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetConeOrientations(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetConeOrientations: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetConeOrientations(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	coneOrientations_ = Ref{Ptr{$PetscInt}}()
@@ -23054,7 +24328,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeRecursive"))
 """
-function DMPlexGetConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS) end
+function DMPlexGetConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS)
+    error("DMPlexGetConeRecursive: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetConeRecursive(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS )
 	depth_ = Ref{$PetscInt}()
@@ -23096,7 +24372,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeRecursiveVertices"))
 """
-function DMPlexGetConeRecursiveVertices(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS) end
+function DMPlexGetConeRecursiveVertices(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS)
+    error("DMPlexGetConeRecursiveVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetConeRecursiveVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS )
 	expandedPoints_ = Ref{CIS}()
@@ -23132,7 +24410,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeSection"))
 """
-function DMPlexGetConeSection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetConeSection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetConeSection: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetConeSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	section_ = Ref{PetscSection}()
@@ -23169,7 +24449,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeSize"))
 """
-function DMPlexGetConeSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMPlexGetConeSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMPlexGetConeSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetConeSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	size_ = Ref{$PetscInt}()
@@ -23207,7 +24489,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeTuple"))
 """
-function DMPlexGetConeTuple(petsclib::PetscLibType, dm::AbstractPetscDM, p::AbstractIS) end
+function DMPlexGetConeTuple(petsclib::PetscLibType, dm::AbstractPetscDM, p::AbstractIS)
+    error("DMPlexGetConeTuple: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetConeTuple(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::AbstractIS )
 	pConesSection_ = Ref{PetscSection}()
@@ -23245,7 +24529,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCones"))
 """
-function DMPlexGetCones(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetCones(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetCones: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCones(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cones_ = Ref{Ptr{$PetscInt}}()
@@ -23281,7 +24567,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCoordinateMap"))
 """
-function DMPlexGetCoordinateMap(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetCoordinateMap(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetCoordinateMap: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetCoordinateMap(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	coordFunc_ = Ref{Ptr{Cvoid}}()
@@ -23320,7 +24608,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDataFVM"))
 """
-function DMPlexGetDataFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV) end
+function DMPlexGetDataFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV)
+    error("DMPlexGetDataFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetDataFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fv::PetscFV )
 	cellgeom_ = Ref{CVec}()
@@ -23360,7 +24650,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepth"))
 """
-function DMPlexGetDepth(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetDepth(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetDepth: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetDepth(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	depth_ = Ref{$PetscInt}()
@@ -23396,7 +24688,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepthLabel"))
 """
-function DMPlexGetDepthLabel(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetDepthLabel(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetDepthLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetDepthLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	depthLabel_ = Ref{DMLabel}()
@@ -23434,7 +24728,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepthStratum"))
 """
-function DMPlexGetDepthStratum(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt) end
+function DMPlexGetDepthStratum(petsclib::PetscLibType, dm::AbstractPetscDM, depth::Integer)
+    error("DMPlexGetDepthStratum: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetDepthStratum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, depth::$PetscInt )
 	start_ = Ref{$PetscInt}()
@@ -23471,7 +24767,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepthStratumGlobalSize"))
 """
-function DMPlexGetDepthStratumGlobalSize(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt) end
+function DMPlexGetDepthStratumGlobalSize(petsclib::PetscLibType, dm::AbstractPetscDM, depth::Integer)
+    error("DMPlexGetDepthStratumGlobalSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetDepthStratumGlobalSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, depth::$PetscInt )
 	gsize_ = Ref{$PetscInt}()
@@ -23514,7 +24812,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetFaceFields"))
 """
-function DMPlexGetFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec) end
+function DMPlexGetFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::Integer, fEnd::Integer, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec)
+    error("DMPlexGetFaceFields: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetFaceFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec )
 	Nface_ = Ref{$PetscInt}()
@@ -23558,7 +24858,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetFaceGeometry"))
 """
-function DMPlexGetFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) end
+function DMPlexGetFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::Integer, fEnd::Integer, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec)
+    error("DMPlexGetFaceGeometry: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetFaceGeometry(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec )
 	Nface_ = Ref{$PetscInt}()
@@ -23601,7 +24903,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetFullJoin"))
 """
-function DMPlexGetFullJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) end
+function DMPlexGetFullJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::Integer, points::AbstractVector{<:Number})
+    error("DMPlexGetFullJoin: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetFullJoin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
 	numCoveredPoints_ = Ref{$PetscInt}()
@@ -23681,7 +24985,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGatherDM"))
 """
-function DMPlexGetGatherDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetGatherDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetGatherDM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGatherDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	sf_ = Ref{PetscSF}()
@@ -23725,7 +25031,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomBodyMassProperties"))
 """
-function DMPlexGetGeomBodyMassProperties(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) end
+function DMPlexGetGeomBodyMassProperties(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom)
+    error("DMPlexGetGeomBodyMassProperties: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomBodyMassProperties(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom )
 	volume_ = Ref{$PetscScalar}()
@@ -23776,7 +25084,9 @@ Output Parameters:
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomCntrlPntAndWeightData"))
 """
-function DMPlexGetGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetGeomCntrlPntAndWeightData: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomCntrlPntAndWeightData(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cpHashTable_ = Ref{PetscHMapI}()
@@ -23830,7 +25140,9 @@ Output Parameters:
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomCntrlPntMaps"))
 """
-function DMPlexGetGeomCntrlPntMaps(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetGeomCntrlPntMaps(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetGeomCntrlPntMaps: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomCntrlPntMaps(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numCntrlPnts_ = Ref{$PetscInt}()
@@ -23879,7 +25191,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomFaceNumOfControlPoints"))
 """
-function DMPlexGetGeomFaceNumOfControlPoints(petsclib::PetscLibType, dm::AbstractPetscDM, face::PetscGeom) end
+function DMPlexGetGeomFaceNumOfControlPoints(petsclib::PetscLibType, dm::AbstractPetscDM, face::PetscGeom)
+    error("DMPlexGetGeomFaceNumOfControlPoints: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomFaceNumOfControlPoints(petsclib::$UnionPetscLib, dm::AbstractPetscDM, face::PetscGeom )
 	numCntrlPnts_ = Ref{$PetscInt}()
@@ -23920,7 +25234,9 @@ Output Parameters:
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomGradData"))
 """
-function DMPlexGetGeomGradData(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetGeomGradData(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetGeomGradData: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomGradData(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cpSurfGradHashTable_ = Ref{PetscHMapI}()
@@ -23972,7 +25288,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomID"))
 """
-function DMPlexGetGeomID(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, topoObj::PetscGeom) end
+function DMPlexGetGeomID(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, topoObj::PetscGeom)
+    error("DMPlexGetGeomID: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomID(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom, topoObj::PetscGeom )
 	id_ = Ref{$PetscInt}()
@@ -24009,7 +25327,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodies"))
 """
-function DMPlexGetGeomModelBodies(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetGeomModelBodies(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetGeomModelBodies: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelBodies(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	bodies_ = Ref{Ptr{PetscGeom}}()
@@ -24049,7 +25369,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyEdges"))
 """
-function DMPlexGetGeomModelBodyEdges(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) end
+function DMPlexGetGeomModelBodyEdges(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom)
+    error("DMPlexGetGeomModelBodyEdges: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelBodyEdges(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom )
 	edges_ = Ref{Ptr{PetscGeom}}()
@@ -24089,7 +25411,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyFaces"))
 """
-function DMPlexGetGeomModelBodyFaces(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) end
+function DMPlexGetGeomModelBodyFaces(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom)
+    error("DMPlexGetGeomModelBodyFaces: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelBodyFaces(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom )
 	faces_ = Ref{Ptr{PetscGeom}}()
@@ -24129,7 +25453,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyLoops"))
 """
-function DMPlexGetGeomModelBodyLoops(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) end
+function DMPlexGetGeomModelBodyLoops(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom)
+    error("DMPlexGetGeomModelBodyLoops: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelBodyLoops(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom )
 	loops_ = Ref{Ptr{PetscGeom}}()
@@ -24169,7 +25495,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyNodes"))
 """
-function DMPlexGetGeomModelBodyNodes(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) end
+function DMPlexGetGeomModelBodyNodes(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom)
+    error("DMPlexGetGeomModelBodyNodes: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelBodyNodes(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom )
 	nodes_ = Ref{Ptr{PetscGeom}}()
@@ -24209,7 +25537,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyShells"))
 """
-function DMPlexGetGeomModelBodyShells(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) end
+function DMPlexGetGeomModelBodyShells(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom)
+    error("DMPlexGetGeomModelBodyShells: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelBodyShells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom )
 	shells_ = Ref{Ptr{PetscGeom}}()
@@ -24250,7 +25580,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelEdgeNodes"))
 """
-function DMPlexGetGeomModelEdgeNodes(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, edge::PetscGeom) end
+function DMPlexGetGeomModelEdgeNodes(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, edge::PetscGeom)
+    error("DMPlexGetGeomModelEdgeNodes: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelEdgeNodes(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom, edge::PetscGeom )
 	nodes_ = Ref{Ptr{PetscGeom}}()
@@ -24291,7 +25623,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelFaceEdges"))
 """
-function DMPlexGetGeomModelFaceEdges(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom) end
+function DMPlexGetGeomModelFaceEdges(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom)
+    error("DMPlexGetGeomModelFaceEdges: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelFaceEdges(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom )
 	edges_ = Ref{Ptr{PetscGeom}}()
@@ -24332,7 +25666,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelFaceLoops"))
 """
-function DMPlexGetGeomModelFaceLoops(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom) end
+function DMPlexGetGeomModelFaceLoops(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom)
+    error("DMPlexGetGeomModelFaceLoops: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelFaceLoops(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom )
 	loops_ = Ref{Ptr{PetscGeom}}()
@@ -24373,7 +25709,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelShellFaces"))
 """
-function DMPlexGetGeomModelShellFaces(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, shell::PetscGeom) end
+function DMPlexGetGeomModelShellFaces(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, shell::PetscGeom)
+    error("DMPlexGetGeomModelShellFaces: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelShellFaces(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom, shell::PetscGeom )
 	faces_ = Ref{Ptr{PetscGeom}}()
@@ -24408,7 +25746,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelTUV"))
 """
-function DMPlexGetGeomModelTUV(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetGeomModelTUV(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetGeomModelTUV: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomModelTUV(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -24445,7 +25785,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomObject"))
 """
-function DMPlexGetGeomObject(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, geomType::PetscInt, geomID::PetscInt) end
+function DMPlexGetGeomObject(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, geomType::Integer, geomID::Integer)
+    error("DMPlexGetGeomObject: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeomObject(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom, geomType::$PetscInt, geomID::$PetscInt )
 	geomObj_ = Ref{PetscGeom}()
@@ -24483,7 +25825,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeometryFVM"))
 """
-function DMPlexGetGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetGeometryFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGeometryFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	facegeom_ = Ref{CVec}()
@@ -24510,7 +25854,9 @@ end
 # External Links
 $(_doc_external("DM/DMPlexGetGlobalToNaturalSF"))
 """
-function DMPlexGetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) end
+function DMPlexGetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
+    error("DMPlexGetGlobalToNaturalSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGlobalToNaturalSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
 
@@ -24545,7 +25891,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGradientDM"))
 """
-function DMPlexGetGradientDM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV) end
+function DMPlexGetGradientDM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV)
+    error("DMPlexGetGradientDM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetGradientDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fv::PetscFV )
 	dmGrad_ = Ref{CDM}()
@@ -24583,7 +25931,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetHeightStratum"))
 """
-function DMPlexGetHeightStratum(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) end
+function DMPlexGetHeightStratum(petsclib::PetscLibType, dm::AbstractPetscDM, height::Integer)
+    error("DMPlexGetHeightStratum: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetHeightStratum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, height::$PetscInt )
 	start_ = Ref{$PetscInt}()
@@ -24621,7 +25971,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetInterpolatePreferTensor"))
 """
-function DMPlexGetInterpolatePreferTensor(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetInterpolatePreferTensor(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetInterpolatePreferTensor: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetInterpolatePreferTensor(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	preferTensor_ = Ref{PetscBool}()
@@ -24658,7 +26010,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetIsoperiodicFaceSF"))
 """
-function DMPlexGetIsoperiodicFaceSF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetIsoperiodicFaceSF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetIsoperiodicFaceSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetIsoperiodicFaceSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	num_face_sfs_ = Ref{$PetscInt}()
@@ -24699,7 +26053,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetJoin"))
 """
-function DMPlexGetJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) end
+function DMPlexGetJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::Integer, points::AbstractVector{<:Number})
+    error("DMPlexGetJoin: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetJoin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
 	numCoveredPoints_ = Ref{$PetscInt}()
@@ -24746,7 +26102,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetLocalOffsets"))
 """
-function DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt, height::PetscInt, dm_field::PetscInt) end
+function DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::Integer, height::Integer, dm_field::Integer)
+    error("DMPlexGetLocalOffsets: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetLocalOffsets(petsclib::$UnionPetscLib, dm::AbstractPetscDM, domain_label::DMLabel, label_value::$PetscInt, height::$PetscInt, dm_field::$PetscInt )
 	num_cells_ = Ref{$PetscInt}()
@@ -24796,7 +26154,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetLocalOffsetsSupport"))
 """
-function DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt) end
+function DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::Integer)
+    error("DMPlexGetLocalOffsetsSupport: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetLocalOffsetsSupport(petsclib::$UnionPetscLib, dm::AbstractPetscDM, domain_label::DMLabel, label_value::$PetscInt )
 	num_faces_ = Ref{$PetscInt}()
@@ -24839,7 +26199,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMaxProjectionHeight"))
 """
-function DMPlexGetMaxProjectionHeight(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetMaxProjectionHeight(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetMaxProjectionHeight: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetMaxProjectionHeight(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	height_ = Ref{$PetscInt}()
@@ -24876,7 +26238,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMaxSizes"))
 """
-function DMPlexGetMaxSizes(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetMaxSizes(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetMaxSizes: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetMaxSizes(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	maxConeSize_ = Ref{$PetscInt}()
@@ -24917,7 +26281,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMeet"))
 """
-function DMPlexGetMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) end
+function DMPlexGetMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::Integer, points::AbstractVector{<:Number})
+    error("DMPlexGetMeet: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetMeet(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
 	numCoveringPoints_ = Ref{$PetscInt}()
@@ -24956,7 +26322,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMigrationSF"))
 """
-function DMPlexGetMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetMigrationSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetMigrationSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	migrationSF_ = Ref{PetscSF}()
@@ -24992,7 +26360,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMinRadius"))
 """
-function DMPlexGetMinRadius(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetMinRadius(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetMinRadius: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetMinRadius(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	minradius_ = Ref{$PetscReal}()
@@ -25030,7 +26400,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetNumFaceVertices"))
 """
-function DMPlexGetNumFaceVertices(petsclib::PetscLibType, dm::AbstractPetscDM, cellDim::PetscInt, numCorners::PetscInt) end
+function DMPlexGetNumFaceVertices(petsclib::PetscLibType, dm::AbstractPetscDM, cellDim::Integer, numCorners::Integer)
+    error("DMPlexGetNumFaceVertices: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetNumFaceVertices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellDim::$PetscInt, numCorners::$PetscInt )
 	numFaceVertices_ = Ref{$PetscInt}()
@@ -25068,7 +26440,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrdering"))
 """
-function DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel) end
+function DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel)
+    error("DMPlexGetOrdering: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetOrdering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel )
 	perm_ = Ref{CIS}()
@@ -25104,7 +26478,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrdering1D"))
 """
-function DMPlexGetOrdering1D(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetOrdering1D(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetOrdering1D: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetOrdering1D(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	perm_ = Ref{CIS}()
@@ -25143,7 +26519,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrientedCone"))
 """
-function DMPlexGetOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMPlexGetOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMPlexGetOrientedCone: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetOrientedCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	cone_ = Ref{Ptr{$PetscInt}}()
@@ -25191,7 +26569,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrientedFace"))
 """
-function DMPlexGetOrientedFace(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, faceSize::PetscInt, face::Vector{PetscInt}, numCorners::PetscInt, indices::Vector{PetscInt}, origVertices::Vector{PetscInt}, faceVertices::Vector{PetscInt}) end
+function DMPlexGetOrientedFace(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, faceSize::Integer, face::AbstractVector{<:Number}, numCorners::Integer, indices::AbstractVector{<:Number}, origVertices::AbstractVector{<:Number}, faceVertices::AbstractVector{<:Number})
+    error("DMPlexGetOrientedFace: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetOrientedFace(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, faceSize::$PetscInt, face::Vector{$PetscInt}, numCorners::$PetscInt, indices::Vector{$PetscInt}, origVertices::Vector{$PetscInt}, faceVertices::Vector{$PetscInt} )
 	posOriented_ = Ref{PetscBool}()
@@ -25227,7 +26607,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOverlap"))
 """
-function DMPlexGetOverlap(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetOverlap(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetOverlap: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetOverlap(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	overlap_ = Ref{$PetscInt}()
@@ -25261,7 +26643,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPartitionBalance"))
 """
-function DMPlexGetPartitionBalance(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetPartitionBalance(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetPartitionBalance: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPartitionBalance(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	flg_ = Ref{PetscBool}()
@@ -25297,7 +26681,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPartitioner"))
 """
-function DMPlexGetPartitioner(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetPartitioner(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetPartitioner: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPartitioner(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	part_ = Ref{PetscPartitioner}()
@@ -25334,7 +26720,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointDepth"))
 """
-function DMPlexGetPointDepth(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMPlexGetPointDepth(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexGetPointDepth: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPointDepth(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	depth_ = Ref{$PetscInt}()
@@ -25372,7 +26760,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointGlobal"))
 """
-function DMPlexGetPointGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMPlexGetPointGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexGetPointGlobal: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPointGlobal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	start_ = Ref{$PetscInt}()
@@ -25413,7 +26803,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointGlobalField"))
 """
-function DMPlexGetPointGlobalField(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt) end
+function DMPlexGetPointGlobalField(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, field::Integer)
+    error("DMPlexGetPointGlobalField: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPointGlobalField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt )
 	start_ = Ref{$PetscInt}()
@@ -25452,7 +26844,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointHeight"))
 """
-function DMPlexGetPointHeight(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMPlexGetPointHeight(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexGetPointHeight: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPointHeight(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	height_ = Ref{$PetscInt}()
@@ -25490,7 +26884,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointLocal"))
 """
-function DMPlexGetPointLocal(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMPlexGetPointLocal(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexGetPointLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPointLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	start_ = Ref{$PetscInt}()
@@ -25531,7 +26927,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointLocalField"))
 """
-function DMPlexGetPointLocalField(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt) end
+function DMPlexGetPointLocalField(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, field::Integer)
+    error("DMPlexGetPointLocalField: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetPointLocalField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt )
 	start_ = Ref{$PetscInt}()
@@ -25570,7 +26968,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRedundantDM"))
 """
-function DMPlexGetRedundantDM(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetRedundantDM(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetRedundantDM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetRedundantDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	sf_ = Ref{PetscSF}()
@@ -25608,7 +27008,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetReferenceTree"))
 """
-function DMPlexGetReferenceTree(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetReferenceTree(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetReferenceTree: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetReferenceTree(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	ref_ = Ref{CDM}()
@@ -25642,7 +27044,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRefinementLimit"))
 """
-function DMPlexGetRefinementLimit(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetRefinementLimit(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetRefinementLimit: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetRefinementLimit(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	refinementLimit_ = Ref{$PetscReal}()
@@ -25676,7 +27080,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRefinementUniform"))
 """
-function DMPlexGetRefinementUniform(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetRefinementUniform(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetRefinementUniform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetRefinementUniform(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	refinementUniform_ = Ref{PetscBool}()
@@ -25710,7 +27116,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRegularRefinement"))
 """
-function DMPlexGetRegularRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetRegularRefinement(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetRegularRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetRegularRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	regular_ = Ref{PetscBool}()
@@ -25733,7 +27141,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSaveTransform"))
 """
-function DMPlexGetSaveTransform(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetSaveTransform(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetSaveTransform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSaveTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	save_ = Ref{PetscBool}()
@@ -25770,7 +27180,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGetScale"))
 """
-function DMPlexGetScale(petsclib::PetscLibType, dm::AbstractPetscDM, unit::PetscUnit) end
+function DMPlexGetScale(petsclib::PetscLibType, dm::AbstractPetscDM, unit::PetscUnit)
+    error("DMPlexGetScale: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetScale(petsclib::$UnionPetscLib, dm::AbstractPetscDM, unit::PetscUnit )
 	scale_ = Ref{$PetscReal}()
@@ -25806,7 +27218,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSimplexOrBoxCells"))
 """
-function DMPlexGetSimplexOrBoxCells(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) end
+function DMPlexGetSimplexOrBoxCells(petsclib::PetscLibType, dm::AbstractPetscDM, height::Integer)
+    error("DMPlexGetSimplexOrBoxCells: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSimplexOrBoxCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, height::$PetscInt )
 	cStart_ = Ref{$PetscInt}()
@@ -25844,7 +27258,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSubdomainSection"))
 """
-function DMPlexGetSubdomainSection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetSubdomainSection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetSubdomainSection: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSubdomainSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	subsection_ = Ref{PetscSection}()
@@ -25878,7 +27294,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSubpointIS"))
 """
-function DMPlexGetSubpointIS(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetSubpointIS(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetSubpointIS: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSubpointIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	subpointIS_ = Ref{CIS}()
@@ -25912,7 +27330,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSubpointMap"))
 """
-function DMPlexGetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetSubpointMap: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSubpointMap(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	subpointMap_ = Ref{DMLabel}()
@@ -25949,7 +27369,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSupport"))
 """
-function DMPlexGetSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMPlexGetSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMPlexGetSupport: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSupport(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	support_ = Ref{Ptr{$PetscInt}}()
@@ -25986,7 +27408,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSupportSection"))
 """
-function DMPlexGetSupportSection(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetSupportSection(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetSupportSection: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSupportSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	section_ = Ref{PetscSection}()
@@ -26023,7 +27447,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSupportSize"))
 """
-function DMPlexGetSupportSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) end
+function DMPlexGetSupportSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer)
+    error("DMPlexGetSupportSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetSupportSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt )
 	size_ = Ref{$PetscInt}()
@@ -26046,7 +27472,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTransform"))
 """
-function DMPlexGetTransform(petsclib::PetscLibType, dm::AbstractPetscDM, tr::DMPlexTransform) end
+function DMPlexGetTransform(petsclib::PetscLibType, dm::AbstractPetscDM, tr::DMPlexTransform)
+    error("DMPlexGetTransform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, tr::DMPlexTransform )
 
@@ -26078,7 +27506,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTransformType"))
 """
-function DMPlexGetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetTransformType: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetTransformType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	type_ = Ref{DMPlexTransformType}()
@@ -26121,7 +27551,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTransitiveClosure"))
 """
-function DMPlexGetTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool) end
+function DMPlexGetTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, useCone::PetscBool)
+    error("DMPlexGetTransitiveClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetTransitiveClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, useCone::PetscBool )
 	numPoints_ = Ref{$PetscInt}()
@@ -26165,7 +27597,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTree"))
 """
-function DMPlexGetTree(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetTree(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetTree: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetTree(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	parentSection_ = Ref{PetscSection}()
@@ -26209,7 +27643,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTreeChildren"))
 """
-function DMPlexGetTreeChildren(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMPlexGetTreeChildren(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexGetTreeChildren: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetTreeChildren(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	numChildren_ = Ref{$PetscInt}()
@@ -26248,7 +27684,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTreeParent"))
 """
-function DMPlexGetTreeParent(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMPlexGetTreeParent(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexGetTreeParent: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetTreeParent(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	parent_ = Ref{$PetscInt}()
@@ -26286,7 +27724,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGetUseMatClosurePermutation"))
 """
-function DMPlexGetUseMatClosurePermutation(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetUseMatClosurePermutation(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetUseMatClosurePermutation: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetUseMatClosurePermutation(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	useClPerm_ = Ref{PetscBool}()
@@ -26320,7 +27760,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetVTKCellHeight"))
 """
-function DMPlexGetVTKCellHeight(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetVTKCellHeight(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetVTKCellHeight: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetVTKCellHeight(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	cellHeight_ = Ref{$PetscInt}()
@@ -26354,7 +27796,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGetVertexNumbering"))
 """
-function DMPlexGetVertexNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexGetVertexNumbering(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexGetVertexNumbering: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGetVertexNumbering(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	globalVertexNumbers_ = Ref{CIS}()
@@ -26389,7 +27833,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalToLocalBasis"))
 """
-function DMPlexGlobalToLocalBasis(petsclib::PetscLibType, dm::AbstractPetscDM, lv::AbstractPetscVec) end
+function DMPlexGlobalToLocalBasis(petsclib::PetscLibType, dm::AbstractPetscDM, lv::AbstractPetscVec)
+    error("DMPlexGlobalToLocalBasis: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGlobalToLocalBasis(petsclib::$UnionPetscLib, dm::AbstractPetscDM, lv::AbstractPetscVec )
 
@@ -26424,7 +27870,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalToNaturalBegin"))
 """
-function DMPlexGlobalToNaturalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec) end
+function DMPlexGlobalToNaturalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec)
+    error("DMPlexGlobalToNaturalBegin: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGlobalToNaturalBegin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec )
 
@@ -26459,7 +27907,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalToNaturalEnd"))
 """
-function DMPlexGlobalToNaturalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec) end
+function DMPlexGlobalToNaturalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec)
+    error("DMPlexGlobalToNaturalEnd: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGlobalToNaturalEnd(petsclib::$UnionPetscLib, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec )
 
@@ -26495,7 +27945,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalVectorLoad"))
 """
-function DMPlexGlobalVectorLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec) end
+function DMPlexGlobalVectorLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec)
+    error("DMPlexGlobalVectorLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGlobalVectorLoad(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec )
 
@@ -26529,7 +27981,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalVectorView"))
 """
-function DMPlexGlobalVectorView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec) end
+function DMPlexGlobalVectorView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMPlexGlobalVectorView: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexGlobalVectorView(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec )
 
@@ -26563,7 +28017,9 @@ If useTUV = PETSC_FALSE, use the nodes (x, y, z) coordinates and the shortest di
 # External Links
 $(_doc_external("DMPlex/DMPlexInflateToGeomModel"))
 """
-function DMPlexInflateToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, useTUV::PetscBool) end
+function DMPlexInflateToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, useTUV::PetscBool)
+    error("DMPlexInflateToGeomModel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInflateToGeomModel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, useTUV::PetscBool )
 
@@ -26594,7 +28050,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexInflateToGeomModelUseTUV"))
 """
-function DMPlexInflateToGeomModelUseTUV(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexInflateToGeomModelUseTUV(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexInflateToGeomModelUseTUV: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInflateToGeomModelUseTUV(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -26625,7 +28083,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexInflateToGeomModelUseXYZ"))
 """
-function DMPlexInflateToGeomModelUseXYZ(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexInflateToGeomModelUseXYZ(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexInflateToGeomModelUseXYZ: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInflateToGeomModelUseXYZ(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -26664,7 +28124,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValues"))
 """
-function DMPlexInsertBoundaryValues(petsclib::PetscLibType, dm::AbstractPetscDM, insertEssential::PetscBool, locX::AbstractPetscVec, time::PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec) end
+function DMPlexInsertBoundaryValues(petsclib::PetscLibType, dm::AbstractPetscDM, insertEssential::PetscBool, locX::AbstractPetscVec, time::Real, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec)
+    error("DMPlexInsertBoundaryValues: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertBoundaryValues(petsclib::$UnionPetscLib, dm::AbstractPetscDM, insertEssential::PetscBool, locX::AbstractPetscVec, time::$PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec )
 
@@ -26705,7 +28167,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssential"))
 """
-function DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) end
+function DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+    error("DMPlexInsertBoundaryValuesEssential: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertBoundaryValuesEssential(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
@@ -26749,7 +28213,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssentialBdField"))
 """
-function DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) end
+function DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locU::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+    error("DMPlexInsertBoundaryValuesEssentialBdField: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertBoundaryValuesEssentialBdField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locU::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
@@ -26791,7 +28257,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssentialField"))
 """
-function DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) end
+function DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locU::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+    error("DMPlexInsertBoundaryValuesEssentialField: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertBoundaryValuesEssentialField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locU::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
@@ -26812,7 +28280,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesFVM"))
 """
-function DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::PetscReal, locGradient::AbstractPetscVec) end
+function DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::Real, locGradient::AbstractPetscVec)
+    error("DMPlexInsertBoundaryValuesFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertBoundaryValuesFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::$PetscReal, locGradient::AbstractPetscVec )
 	locGradient_ = Ref(locGradient.ptr)
@@ -26858,7 +28328,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesRiemann"))
 """
-function DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) end
+function DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+    error("DMPlexInsertBoundaryValuesRiemann: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertBoundaryValuesRiemann(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
@@ -26894,7 +28366,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBounds"))
 """
-function DMPlexInsertBounds(petsclib::PetscLibType, dm::AbstractPetscDM, lower::PetscBool, time::PetscReal, locB::AbstractPetscVec) end
+function DMPlexInsertBounds(petsclib::PetscLibType, dm::AbstractPetscDM, lower::PetscBool, time::Real, locB::AbstractPetscVec)
+    error("DMPlexInsertBounds: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertBounds(petsclib::$UnionPetscLib, dm::AbstractPetscDM, lower::PetscBool, time::$PetscReal, locB::AbstractPetscVec )
 
@@ -26928,7 +28402,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertCone"))
 """
-function DMPlexInsertCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, conePos::PetscInt, conePoint::PetscInt) end
+function DMPlexInsertCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, conePos::Integer, conePoint::Integer)
+    error("DMPlexInsertCone: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, conePos::$PetscInt, conePoint::$PetscInt )
 
@@ -26962,7 +28438,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertConeOrientation"))
 """
-function DMPlexInsertConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, conePos::PetscInt, coneOrientation::PetscInt) end
+function DMPlexInsertConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, conePos::Integer, coneOrientation::Integer)
+    error("DMPlexInsertConeOrientation: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertConeOrientation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, conePos::$PetscInt, coneOrientation::$PetscInt )
 
@@ -26996,7 +28474,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertSupport"))
 """
-function DMPlexInsertSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, supportPos::PetscInt, supportPoint::PetscInt) end
+function DMPlexInsertSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, supportPos::Integer, supportPoint::Integer)
+    error("DMPlexInsertSupport: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertSupport(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, supportPos::$PetscInt, supportPoint::$PetscInt )
 
@@ -27033,7 +28513,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertTimeDerivativeBoundaryValues"))
 """
-function DMPlexInsertTimeDerivativeBoundaryValues(petsclib::PetscLibType, dm::AbstractPetscDM, insertEssential::PetscBool, locX_t::AbstractPetscVec, time::PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec) end
+function DMPlexInsertTimeDerivativeBoundaryValues(petsclib::PetscLibType, dm::AbstractPetscDM, insertEssential::PetscBool, locX_t::AbstractPetscVec, time::Real, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec)
+    error("DMPlexInsertTimeDerivativeBoundaryValues: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInsertTimeDerivativeBoundaryValues(petsclib::$UnionPetscLib, dm::AbstractPetscDM, insertEssential::PetscBool, locX_t::AbstractPetscVec, time::$PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec )
 
@@ -27067,7 +28549,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexInterpolate"))
 """
-function DMPlexInterpolate(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexInterpolate(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexInterpolate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInterpolate(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dmInt_ = Ref{CDM}()
@@ -27101,7 +28585,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexInterpolatePointSF"))
 """
-function DMPlexInterpolatePointSF(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF) end
+function DMPlexInterpolatePointSF(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF)
+    error("DMPlexInterpolatePointSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInterpolatePointSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pointSF::PetscSF )
 
@@ -27134,7 +28620,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexInvertCell"))
 """
-function DMPlexInvertCell(petsclib::PetscLibType, cellType::DMPolytopeType, cone::Vector{PetscInt}) end
+function DMPlexInvertCell(petsclib::PetscLibType, cellType::DMPolytopeType, cone::AbstractVector{<:Number})
+    error("DMPlexInvertCell: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexInvertCell(petsclib::$UnionPetscLib, cellType::DMPolytopeType, cone::Vector{$PetscInt} )
 
@@ -27168,7 +28656,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexIsDistributed"))
 """
-function DMPlexIsDistributed(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexIsDistributed(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexIsDistributed: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexIsDistributed(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	distributed_ = Ref{PetscBool}()
@@ -27204,7 +28694,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexIsInterpolated"))
 """
-function DMPlexIsInterpolated(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexIsInterpolated(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexIsInterpolated: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexIsInterpolated(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	interpolated_ = Ref{DMPlexInterpolatedFlag}()
@@ -27240,7 +28732,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexIsInterpolatedCollective"))
 """
-function DMPlexIsInterpolatedCollective(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexIsInterpolatedCollective(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexIsInterpolatedCollective: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexIsInterpolatedCollective(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	interpolated_ = Ref{DMPlexInterpolatedFlag}()
@@ -27274,7 +28768,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexIsSimplex"))
 """
-function DMPlexIsSimplex(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexIsSimplex(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexIsSimplex: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexIsSimplex(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	simplex_ = Ref{PetscBool}()
@@ -27309,7 +28805,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelAddCells"))
 """
-function DMPlexLabelAddCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexLabelAddCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexLabelAddCells: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLabelAddCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -27342,7 +28840,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelAddFaceCells"))
 """
-function DMPlexLabelAddFaceCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexLabelAddFaceCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexLabelAddFaceCells: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLabelAddFaceCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -27375,7 +28875,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelClearCells"))
 """
-function DMPlexLabelClearCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexLabelClearCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexLabelClearCells: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLabelClearCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -27414,7 +28916,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelCohesiveComplete"))
 """
-function DMPlexLabelCohesiveComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM) end
+function DMPlexLabelCohesiveComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::Integer, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM)
+    error("DMPlexLabelCohesiveComplete: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLabelCohesiveComplete(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::$PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM )
 
@@ -27447,7 +28951,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelComplete"))
 """
-function DMPlexLabelComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexLabelComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexLabelComplete: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLabelComplete(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -27481,7 +28987,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelsLoad"))
 """
-function DMPlexLabelsLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF) end
+function DMPlexLabelsLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF)
+    error("DMPlexLabelsLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLabelsLoad(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF )
 
@@ -27513,7 +29021,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelsView"))
 """
-function DMPlexLabelsView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) end
+function DMPlexLabelsView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer)
+    error("DMPlexLabelsView: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLabelsView(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer )
 
@@ -27549,7 +29059,9 @@ Level: advanced
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauAccess"))
 """
-function DMPlexLandauAccess(petsclib::PetscLibType, pack::AbstractPetscDM, X::AbstractPetscVec, func::external, user_ctx::Ptr{Cvoid}) end
+function DMPlexLandauAccess(petsclib::PetscLibType, pack::AbstractPetscDM, X::AbstractPetscVec, func::external, user_ctx::Ptr{Cvoid})
+    error("DMPlexLandauAccess: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauAccess(petsclib::$UnionPetscLib, pack::AbstractPetscDM, X::AbstractPetscVec, func::external, user_ctx::Ptr{Cvoid} )
 
@@ -27590,7 +29102,9 @@ Level: beginner
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauAddMaxwellians"))
 """
-function DMPlexLandauAddMaxwellians(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, time::PetscReal, temps::Vector{PetscReal}, ns::Vector{PetscReal}, grid::PetscInt, b_id::PetscInt, n_batch::PetscInt, actx::Ptr{Cvoid}) end
+function DMPlexLandauAddMaxwellians(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, time::Real, temps::AbstractVector{<:Number}, ns::AbstractVector{<:Number}, grid::Integer, b_id::Integer, n_batch::Integer, actx::Ptr{Cvoid})
+    error("DMPlexLandauAddMaxwellians: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauAddMaxwellians(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, time::$PetscReal, temps::Vector{$PetscReal}, ns::Vector{$PetscReal}, grid::$PetscInt, b_id::$PetscInt, n_batch::$PetscInt, actx::Ptr{Cvoid} )
 
@@ -27625,7 +29139,9 @@ Level: beginner
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauCreateMassMatrix"))
 """
-function DMPlexLandauCreateMassMatrix(petsclib::PetscLibType, pack::AbstractPetscDM) end
+function DMPlexLandauCreateMassMatrix(petsclib::PetscLibType, pack::AbstractPetscDM)
+    error("DMPlexLandauCreateMassMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauCreateMassMatrix(petsclib::$UnionPetscLib, pack::AbstractPetscDM )
 	Amat_ = Ref{CMat}()
@@ -27665,7 +29181,9 @@ Level: beginner
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauCreateVelocitySpace"))
 """
-function DMPlexLandauCreateVelocitySpace(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, prefix::String) end
+function DMPlexLandauCreateVelocitySpace(petsclib::PetscLibType, comm::MPI_Comm, dim::Integer, prefix::String)
+    error("DMPlexLandauCreateVelocitySpace: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauCreateVelocitySpace(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, prefix::String )
 	X_ = Ref{CVec}()
@@ -27702,7 +29220,9 @@ Level: beginner
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauDestroyVelocitySpace"))
 """
-function DMPlexLandauDestroyVelocitySpace(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexLandauDestroyVelocitySpace(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexLandauDestroyVelocitySpace: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauDestroyVelocitySpace(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dm_ = Ref(dm.ptr)
@@ -27742,7 +29262,9 @@ Level: beginner
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauIFunction"))
 """
-function DMPlexLandauIFunction(petsclib::PetscLibType, ts::AbstractTS, time_dummy::PetscReal, X::AbstractPetscVec, X_t::AbstractPetscVec, F::AbstractPetscVec, actx::Ptr{Cvoid}) end
+function DMPlexLandauIFunction(petsclib::PetscLibType, ts::AbstractTS, time_dummy::Real, X::AbstractPetscVec, X_t::AbstractPetscVec, F::AbstractPetscVec, actx::Ptr{Cvoid})
+    error("DMPlexLandauIFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauIFunction(petsclib::$UnionPetscLib, ts::AbstractTS, time_dummy::$PetscReal, X::AbstractPetscVec, X_t::AbstractPetscVec, F::AbstractPetscVec, actx::Ptr{Cvoid} )
 
@@ -27782,7 +29304,9 @@ Level: beginner
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauIJacobian"))
 """
-function DMPlexLandauIJacobian(petsclib::PetscLibType, ts::AbstractTS, time_dummy::PetscReal, X::AbstractPetscVec, U_tdummy::AbstractPetscVec, shift::PetscReal, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, actx::Ptr{Cvoid}) end
+function DMPlexLandauIJacobian(petsclib::PetscLibType, ts::AbstractTS, time_dummy::Real, X::AbstractPetscVec, U_tdummy::AbstractPetscVec, shift::Real, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, actx::Ptr{Cvoid})
+    error("DMPlexLandauIJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauIJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, time_dummy::$PetscReal, X::AbstractPetscVec, U_tdummy::AbstractPetscVec, shift::$PetscReal, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, actx::Ptr{Cvoid} )
 
@@ -27814,7 +29338,9 @@ Level: beginner
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauPrintNorms"))
 """
-function DMPlexLandauPrintNorms(petsclib::PetscLibType, X::AbstractPetscVec, stepi::PetscInt) end
+function DMPlexLandauPrintNorms(petsclib::PetscLibType, X::AbstractPetscVec, stepi::Integer)
+    error("DMPlexLandauPrintNorms: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLandauPrintNorms(petsclib::$UnionPetscLib, X::AbstractPetscVec, stepi::$PetscInt )
 
@@ -27847,7 +29373,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexLocalToGlobalBasis"))
 """
-function DMPlexLocalToGlobalBasis(petsclib::PetscLibType, dm::AbstractPetscDM, lv::AbstractPetscVec) end
+function DMPlexLocalToGlobalBasis(petsclib::PetscLibType, dm::AbstractPetscDM, lv::AbstractPetscVec)
+    error("DMPlexLocalToGlobalBasis: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLocalToGlobalBasis(petsclib::$UnionPetscLib, dm::AbstractPetscDM, lv::AbstractPetscVec )
 
@@ -27883,7 +29411,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexLocalVectorLoad"))
 """
-function DMPlexLocalVectorLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec) end
+function DMPlexLocalVectorLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec)
+    error("DMPlexLocalVectorLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLocalVectorLoad(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec )
 
@@ -27917,7 +29447,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexLocalVectorView"))
 """
-function DMPlexLocalVectorView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec) end
+function DMPlexLocalVectorView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec)
+    error("DMPlexLocalVectorView: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexLocalVectorView(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec )
 
@@ -27952,7 +29484,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexMarkBoundaryFaces"))
 """
-function DMPlexMarkBoundaryFaces(petsclib::PetscLibType, dm::AbstractPetscDM, val::PetscInt, label::DMLabel) end
+function DMPlexMarkBoundaryFaces(petsclib::PetscLibType, dm::AbstractPetscDM, val::Integer, label::DMLabel)
+    error("DMPlexMarkBoundaryFaces: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMarkBoundaryFaces(petsclib::$UnionPetscLib, dm::AbstractPetscDM, val::$PetscInt, label::DMLabel )
 
@@ -27973,7 +29507,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexMatGetClosureIndicesRefined"))
 """
-function DMPlexMatGetClosureIndicesRefined(petsclib::PetscLibType, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, point::PetscInt, cindices::Vector{PetscInt}, findices::Vector{PetscInt}) end
+function DMPlexMatGetClosureIndicesRefined(petsclib::PetscLibType, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, point::Integer, cindices::AbstractVector{<:Number}, findices::AbstractVector{<:Number})
+    error("DMPlexMatGetClosureIndicesRefined: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMatGetClosureIndicesRefined(petsclib::$UnionPetscLib, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, point::$PetscInt, cindices::Vector{$PetscInt}, findices::Vector{$PetscInt} )
 
@@ -28010,7 +29546,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexMatSetClosure"))
 """
-function DMPlexMatSetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, globalSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) end
+function DMPlexMatSetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, globalSection::PetscSection, A::AbstractPetscMat, point::Integer, values::AbstractVector{<:Number}, mode::InsertMode)
+    error("DMPlexMatSetClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMatSetClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, globalSection::PetscSection, A::AbstractPetscMat, point::$PetscInt, values::Vector{$PetscScalar}, mode::InsertMode )
 
@@ -28052,7 +29590,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexMatSetClosureGeneral"))
 """
-function DMPlexMatSetClosureGeneral(petsclib::PetscLibType, dmRow::AbstractPetscDM, sectionRow::PetscSection, globalSectionRow::PetscSection, useRowPerm::PetscBool, dmCol::AbstractPetscDM, sectionCol::PetscSection, globalSectionCol::PetscSection, useColPerm::PetscBool, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) end
+function DMPlexMatSetClosureGeneral(petsclib::PetscLibType, dmRow::AbstractPetscDM, sectionRow::PetscSection, globalSectionRow::PetscSection, useRowPerm::PetscBool, dmCol::AbstractPetscDM, sectionCol::PetscSection, globalSectionCol::PetscSection, useColPerm::PetscBool, A::AbstractPetscMat, point::Integer, values::AbstractVector{<:Number}, mode::InsertMode)
+    error("DMPlexMatSetClosureGeneral: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMatSetClosureGeneral(petsclib::$UnionPetscLib, dmRow::AbstractPetscDM, sectionRow::PetscSection, globalSectionRow::PetscSection, useRowPerm::PetscBool, dmCol::AbstractPetscDM, sectionCol::PetscSection, globalSectionCol::PetscSection, useColPerm::PetscBool, A::AbstractPetscMat, point::$PetscInt, values::Vector{$PetscScalar}, mode::InsertMode )
 
@@ -28073,7 +29613,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexMatSetClosureRefined"))
 """
-function DMPlexMatSetClosureRefined(petsclib::PetscLibType, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) end
+function DMPlexMatSetClosureRefined(petsclib::PetscLibType, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, A::AbstractPetscMat, point::Integer, values::AbstractVector{<:Number}, mode::InsertMode)
+    error("DMPlexMatSetClosureRefined: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMatSetClosureRefined(petsclib::$UnionPetscLib, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, A::AbstractPetscMat, point::$PetscInt, values::Vector{$PetscScalar}, mode::InsertMode )
 
@@ -28108,7 +29650,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricAverage"))
 """
-function DMPlexMetricAverage(petsclib::PetscLibType, dm::AbstractPetscDM, numMetrics::PetscInt, weights::Vector{PetscReal}, metrics::Vector{<:AbstractPetscVec}, metricAvg::AbstractPetscVec) end
+function DMPlexMetricAverage(petsclib::PetscLibType, dm::AbstractPetscDM, numMetrics::Integer, weights::AbstractVector{<:Number}, metrics::Vector{<:AbstractPetscVec}, metricAvg::AbstractPetscVec)
+    error("DMPlexMetricAverage: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricAverage(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numMetrics::$PetscInt, weights::Vector{$PetscReal}, metrics::Vector{<:AbstractPetscVec}, metricAvg::AbstractPetscVec )
 
@@ -28142,7 +29686,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricAverage2"))
 """
-function DMPlexMetricAverage2(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricAvg::AbstractPetscVec) end
+function DMPlexMetricAverage2(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricAvg::AbstractPetscVec)
+    error("DMPlexMetricAverage2: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricAverage2(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricAvg::AbstractPetscVec )
 
@@ -28177,7 +29723,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricAverage3"))
 """
-function DMPlexMetricAverage3(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricAvg::AbstractPetscVec) end
+function DMPlexMetricAverage3(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricAvg::AbstractPetscVec)
+    error("DMPlexMetricAverage3: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricAverage3(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricAvg::AbstractPetscVec )
 
@@ -28231,7 +29779,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricCreate"))
 """
-function DMPlexMetricCreate(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) end
+function DMPlexMetricCreate(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer)
+    error("DMPlexMetricCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricCreate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt )
 	metric_ = Ref{CVec}()
@@ -28267,7 +29817,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricCreateIsotropic"))
 """
-function DMPlexMetricCreateIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, indicator::AbstractPetscVec) end
+function DMPlexMetricCreateIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer, indicator::AbstractPetscVec)
+    error("DMPlexMetricCreateIsotropic: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricCreateIsotropic(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, indicator::AbstractPetscVec )
 	metric_ = Ref{CVec}()
@@ -28303,7 +29855,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricCreateUniform"))
 """
-function DMPlexMetricCreateUniform(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, alpha::PetscReal) end
+function DMPlexMetricCreateUniform(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer, alpha::Real)
+    error("DMPlexMetricCreateUniform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricCreateUniform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, alpha::$PetscReal )
 	metric_ = Ref{CVec}()
@@ -28339,7 +29893,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricDeterminantCreate"))
 """
-function DMPlexMetricDeterminantCreate(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) end
+function DMPlexMetricDeterminantCreate(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer)
+    error("DMPlexMetricDeterminantCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricDeterminantCreate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt )
 	determinant_ = Ref{CVec}()
@@ -28386,7 +29942,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricEnforceSPD"))
 """
-function DMPlexMetricEnforceSPD(petsclib::PetscLibType, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec) end
+function DMPlexMetricEnforceSPD(petsclib::PetscLibType, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec)
+    error("DMPlexMetricEnforceSPD: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricEnforceSPD(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec )
 
@@ -28418,7 +29976,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetGradationFactor"))
 """
-function DMPlexMetricGetGradationFactor(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetGradationFactor(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetGradationFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetGradationFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	beta_ = Ref{$PetscReal}()
@@ -28452,7 +30012,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetHausdorffNumber"))
 """
-function DMPlexMetricGetHausdorffNumber(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetHausdorffNumber(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetHausdorffNumber: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetHausdorffNumber(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	hausd_ = Ref{$PetscReal}()
@@ -28486,7 +30048,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetMaximumAnisotropy"))
 """
-function DMPlexMetricGetMaximumAnisotropy(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetMaximumAnisotropy(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetMaximumAnisotropy: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetMaximumAnisotropy(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	a_max_ = Ref{$PetscReal}()
@@ -28520,7 +30084,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetMaximumMagnitude"))
 """
-function DMPlexMetricGetMaximumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetMaximumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetMaximumMagnitude: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetMaximumMagnitude(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	h_max_ = Ref{$PetscReal}()
@@ -28554,7 +30120,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetMinimumMagnitude"))
 """
-function DMPlexMetricGetMinimumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetMinimumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetMinimumMagnitude: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetMinimumMagnitude(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	h_min_ = Ref{$PetscReal}()
@@ -28588,7 +30156,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetNormalizationOrder"))
 """
-function DMPlexMetricGetNormalizationOrder(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetNormalizationOrder(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetNormalizationOrder: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetNormalizationOrder(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	p_ = Ref{$PetscReal}()
@@ -28622,7 +30192,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetNumIterations"))
 """
-function DMPlexMetricGetNumIterations(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetNumIterations(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetNumIterations: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetNumIterations(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	numIter_ = Ref{$PetscInt}()
@@ -28656,7 +30228,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetTargetComplexity"))
 """
-function DMPlexMetricGetTargetComplexity(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetTargetComplexity(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetTargetComplexity: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetTargetComplexity(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	targetComplexity_ = Ref{$PetscReal}()
@@ -28690,7 +30264,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetVerbosity"))
 """
-function DMPlexMetricGetVerbosity(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricGetVerbosity(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricGetVerbosity: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricGetVerbosity(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	verbosity_ = Ref{$PetscInt}()
@@ -28726,7 +30302,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIntersection"))
 """
-function DMPlexMetricIntersection(petsclib::PetscLibType, dm::AbstractPetscDM, numMetrics::PetscInt, metrics::Vector{<:AbstractPetscVec}, metricInt::AbstractPetscVec) end
+function DMPlexMetricIntersection(petsclib::PetscLibType, dm::AbstractPetscDM, numMetrics::Integer, metrics::Vector{<:AbstractPetscVec}, metricInt::AbstractPetscVec)
+    error("DMPlexMetricIntersection: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricIntersection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numMetrics::$PetscInt, metrics::Vector{<:AbstractPetscVec}, metricInt::AbstractPetscVec )
 
@@ -28760,7 +30338,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIntersection2"))
 """
-function DMPlexMetricIntersection2(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricInt::AbstractPetscVec) end
+function DMPlexMetricIntersection2(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricInt::AbstractPetscVec)
+    error("DMPlexMetricIntersection2: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricIntersection2(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricInt::AbstractPetscVec )
 
@@ -28795,7 +30375,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIntersection3"))
 """
-function DMPlexMetricIntersection3(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricInt::AbstractPetscVec) end
+function DMPlexMetricIntersection3(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricInt::AbstractPetscVec)
+    error("DMPlexMetricIntersection3: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricIntersection3(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricInt::AbstractPetscVec )
 
@@ -28827,7 +30409,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIsIsotropic"))
 """
-function DMPlexMetricIsIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricIsIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricIsIsotropic: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricIsIsotropic(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	isotropic_ = Ref{PetscBool}()
@@ -28861,7 +30445,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIsUniform"))
 """
-function DMPlexMetricIsUniform(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricIsUniform(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricIsUniform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricIsUniform(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	uniform_ = Ref{PetscBool}()
@@ -28895,7 +30481,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoInsertion"))
 """
-function DMPlexMetricNoInsertion(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricNoInsertion(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricNoInsertion: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricNoInsertion(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	noInsert_ = Ref{PetscBool}()
@@ -28929,7 +30517,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoMovement"))
 """
-function DMPlexMetricNoMovement(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricNoMovement(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricNoMovement: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricNoMovement(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	noMove_ = Ref{PetscBool}()
@@ -28963,7 +30553,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoSurf"))
 """
-function DMPlexMetricNoSurf(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricNoSurf(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricNoSurf: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricNoSurf(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	noSurf_ = Ref{PetscBool}()
@@ -28997,7 +30589,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoSwapping"))
 """
-function DMPlexMetricNoSwapping(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricNoSwapping(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricNoSwapping: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricNoSwapping(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	noSwap_ = Ref{PetscBool}()
@@ -29045,7 +30639,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNormalize"))
 """
-function DMPlexMetricNormalize(petsclib::PetscLibType, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec) end
+function DMPlexMetricNormalize(petsclib::PetscLibType, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec)
+    error("DMPlexMetricNormalize: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricNormalize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec )
 
@@ -29077,7 +30673,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricRestrictAnisotropyFirst"))
 """
-function DMPlexMetricRestrictAnisotropyFirst(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricRestrictAnisotropyFirst(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricRestrictAnisotropyFirst: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricRestrictAnisotropyFirst(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	restrictAnisotropyFirst_ = Ref{PetscBool}()
@@ -29100,7 +30698,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetFromOptions"))
 """
-function DMPlexMetricSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexMetricSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexMetricSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetFromOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -29130,7 +30730,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetGradationFactor"))
 """
-function DMPlexMetricSetGradationFactor(petsclib::PetscLibType, dm::AbstractPetscDM, beta::PetscReal) end
+function DMPlexMetricSetGradationFactor(petsclib::PetscLibType, dm::AbstractPetscDM, beta::Real)
+    error("DMPlexMetricSetGradationFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetGradationFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, beta::$PetscReal )
 
@@ -29160,7 +30762,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetHausdorffNumber"))
 """
-function DMPlexMetricSetHausdorffNumber(petsclib::PetscLibType, dm::AbstractPetscDM, hausd::PetscReal) end
+function DMPlexMetricSetHausdorffNumber(petsclib::PetscLibType, dm::AbstractPetscDM, hausd::Real)
+    error("DMPlexMetricSetHausdorffNumber: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetHausdorffNumber(petsclib::$UnionPetscLib, dm::AbstractPetscDM, hausd::$PetscReal )
 
@@ -29190,7 +30794,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetIsotropic"))
 """
-function DMPlexMetricSetIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM, isotropic::PetscBool) end
+function DMPlexMetricSetIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM, isotropic::PetscBool)
+    error("DMPlexMetricSetIsotropic: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetIsotropic(petsclib::$UnionPetscLib, dm::AbstractPetscDM, isotropic::PetscBool )
 
@@ -29220,7 +30826,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetMaximumAnisotropy"))
 """
-function DMPlexMetricSetMaximumAnisotropy(petsclib::PetscLibType, dm::AbstractPetscDM, a_max::PetscReal) end
+function DMPlexMetricSetMaximumAnisotropy(petsclib::PetscLibType, dm::AbstractPetscDM, a_max::Real)
+    error("DMPlexMetricSetMaximumAnisotropy: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetMaximumAnisotropy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, a_max::$PetscReal )
 
@@ -29250,7 +30858,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetMaximumMagnitude"))
 """
-function DMPlexMetricSetMaximumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM, h_max::PetscReal) end
+function DMPlexMetricSetMaximumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM, h_max::Real)
+    error("DMPlexMetricSetMaximumMagnitude: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetMaximumMagnitude(petsclib::$UnionPetscLib, dm::AbstractPetscDM, h_max::$PetscReal )
 
@@ -29280,7 +30890,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetMinimumMagnitude"))
 """
-function DMPlexMetricSetMinimumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM, h_min::PetscReal) end
+function DMPlexMetricSetMinimumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM, h_min::Real)
+    error("DMPlexMetricSetMinimumMagnitude: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetMinimumMagnitude(petsclib::$UnionPetscLib, dm::AbstractPetscDM, h_min::$PetscReal )
 
@@ -29310,7 +30922,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoInsertion"))
 """
-function DMPlexMetricSetNoInsertion(petsclib::PetscLibType, dm::AbstractPetscDM, noInsert::PetscBool) end
+function DMPlexMetricSetNoInsertion(petsclib::PetscLibType, dm::AbstractPetscDM, noInsert::PetscBool)
+    error("DMPlexMetricSetNoInsertion: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetNoInsertion(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noInsert::PetscBool )
 
@@ -29340,7 +30954,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoMovement"))
 """
-function DMPlexMetricSetNoMovement(petsclib::PetscLibType, dm::AbstractPetscDM, noMove::PetscBool) end
+function DMPlexMetricSetNoMovement(petsclib::PetscLibType, dm::AbstractPetscDM, noMove::PetscBool)
+    error("DMPlexMetricSetNoMovement: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetNoMovement(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noMove::PetscBool )
 
@@ -29370,7 +30986,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoSurf"))
 """
-function DMPlexMetricSetNoSurf(petsclib::PetscLibType, dm::AbstractPetscDM, noSurf::PetscBool) end
+function DMPlexMetricSetNoSurf(petsclib::PetscLibType, dm::AbstractPetscDM, noSurf::PetscBool)
+    error("DMPlexMetricSetNoSurf: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetNoSurf(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noSurf::PetscBool )
 
@@ -29400,7 +31018,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoSwapping"))
 """
-function DMPlexMetricSetNoSwapping(petsclib::PetscLibType, dm::AbstractPetscDM, noSwap::PetscBool) end
+function DMPlexMetricSetNoSwapping(petsclib::PetscLibType, dm::AbstractPetscDM, noSwap::PetscBool)
+    error("DMPlexMetricSetNoSwapping: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetNoSwapping(petsclib::$UnionPetscLib, dm::AbstractPetscDM, noSwap::PetscBool )
 
@@ -29430,7 +31050,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNormalizationOrder"))
 """
-function DMPlexMetricSetNormalizationOrder(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscReal) end
+function DMPlexMetricSetNormalizationOrder(petsclib::PetscLibType, dm::AbstractPetscDM, p::Real)
+    error("DMPlexMetricSetNormalizationOrder: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetNormalizationOrder(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscReal )
 
@@ -29460,7 +31082,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNumIterations"))
 """
-function DMPlexMetricSetNumIterations(petsclib::PetscLibType, dm::AbstractPetscDM, numIter::PetscInt) end
+function DMPlexMetricSetNumIterations(petsclib::PetscLibType, dm::AbstractPetscDM, numIter::Integer)
+    error("DMPlexMetricSetNumIterations: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetNumIterations(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numIter::$PetscInt )
 
@@ -29490,7 +31114,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetRestrictAnisotropyFirst"))
 """
-function DMPlexMetricSetRestrictAnisotropyFirst(petsclib::PetscLibType, dm::AbstractPetscDM, restrictAnisotropyFirst::PetscBool) end
+function DMPlexMetricSetRestrictAnisotropyFirst(petsclib::PetscLibType, dm::AbstractPetscDM, restrictAnisotropyFirst::PetscBool)
+    error("DMPlexMetricSetRestrictAnisotropyFirst: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetRestrictAnisotropyFirst(petsclib::$UnionPetscLib, dm::AbstractPetscDM, restrictAnisotropyFirst::PetscBool )
 
@@ -29520,7 +31146,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetTargetComplexity"))
 """
-function DMPlexMetricSetTargetComplexity(petsclib::PetscLibType, dm::AbstractPetscDM, targetComplexity::PetscReal) end
+function DMPlexMetricSetTargetComplexity(petsclib::PetscLibType, dm::AbstractPetscDM, targetComplexity::Real)
+    error("DMPlexMetricSetTargetComplexity: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetTargetComplexity(petsclib::$UnionPetscLib, dm::AbstractPetscDM, targetComplexity::$PetscReal )
 
@@ -29550,7 +31178,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetUniform"))
 """
-function DMPlexMetricSetUniform(petsclib::PetscLibType, dm::AbstractPetscDM, uniform::PetscBool) end
+function DMPlexMetricSetUniform(petsclib::PetscLibType, dm::AbstractPetscDM, uniform::PetscBool)
+    error("DMPlexMetricSetUniform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetUniform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, uniform::PetscBool )
 
@@ -29580,7 +31210,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetVerbosity"))
 """
-function DMPlexMetricSetVerbosity(petsclib::PetscLibType, dm::AbstractPetscDM, verbosity::PetscInt) end
+function DMPlexMetricSetVerbosity(petsclib::PetscLibType, dm::AbstractPetscDM, verbosity::Integer)
+    error("DMPlexMetricSetVerbosity: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMetricSetVerbosity(petsclib::$UnionPetscLib, dm::AbstractPetscDM, verbosity::$PetscInt )
 
@@ -29615,7 +31247,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexMigrate"))
 """
-function DMPlexMigrate(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF, targetDM::AbstractPetscDM) end
+function DMPlexMigrate(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF, targetDM::AbstractPetscDM)
+    error("DMPlexMigrate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMigrate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF, targetDM::AbstractPetscDM )
 
@@ -29650,7 +31284,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexMigrateGlobalToNaturalSF"))
 """
-function DMPlexMigrateGlobalToNaturalSF(petsclib::PetscLibType, dmOld::AbstractPetscDM, dmNew::AbstractPetscDM, sfNaturalOld::PetscSF, sfMigration::PetscSF) end
+function DMPlexMigrateGlobalToNaturalSF(petsclib::PetscLibType, dmOld::AbstractPetscDM, dmNew::AbstractPetscDM, sfNaturalOld::PetscSF, sfMigration::PetscSF)
+    error("DMPlexMigrateGlobalToNaturalSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMigrateGlobalToNaturalSF(petsclib::$UnionPetscLib, dmOld::AbstractPetscDM, dmNew::AbstractPetscDM, sfNaturalOld::PetscSF, sfMigration::PetscSF )
 	sfNaturalNew_ = Ref{PetscSF}()
@@ -29696,7 +31332,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexModifyGeomModel"))
 """
-function DMPlexModifyGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm, newCP::Vector{PetscScalar}, newW::Vector{PetscScalar}, autoInflate::PetscBool, saveGeom::PetscBool, stpName::String) end
+function DMPlexModifyGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm, newCP::AbstractVector{<:Number}, newW::AbstractVector{<:Number}, autoInflate::PetscBool, saveGeom::PetscBool, stpName::String)
+    error("DMPlexModifyGeomModel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexModifyGeomModel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, comm::MPI_Comm, newCP::Vector{$PetscScalar}, newW::Vector{$PetscScalar}, autoInflate::PetscBool, saveGeom::PetscBool, stpName::String )
 
@@ -29729,7 +31367,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexMonitorThroughput"))
 """
-function DMPlexMonitorThroughput(petsclib::PetscLibType, dm::AbstractPetscDM, dummy::Ptr{Cvoid}) end
+function DMPlexMonitorThroughput(petsclib::PetscLibType, dm::AbstractPetscDM, dummy::Ptr{Cvoid})
+    error("DMPlexMonitorThroughput: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexMonitorThroughput(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dummy::Ptr{Cvoid} )
 
@@ -29764,7 +31404,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexNaturalToGlobalBegin"))
 """
-function DMPlexNaturalToGlobalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec) end
+function DMPlexNaturalToGlobalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec)
+    error("DMPlexNaturalToGlobalBegin: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexNaturalToGlobalBegin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec )
 
@@ -29799,7 +31441,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexNaturalToGlobalEnd"))
 """
-function DMPlexNaturalToGlobalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec) end
+function DMPlexNaturalToGlobalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec)
+    error("DMPlexNaturalToGlobalEnd: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexNaturalToGlobalEnd(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec )
 
@@ -29826,7 +31470,9 @@ Input Parameter:
 # External Links
 $(_doc_external("DMPlex/DMPlexOrient"))
 """
-function DMPlexOrient(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexOrient(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexOrient: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexOrient(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -29847,7 +31493,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexOrientLabel"))
 """
-function DMPlexOrientLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexOrientLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexOrientLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexOrientLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -29880,7 +31528,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexOrientPoint"))
 """
-function DMPlexOrientPoint(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, o::PetscInt) end
+function DMPlexOrientPoint(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, o::Integer)
+    error("DMPlexOrientPoint: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexOrientPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, o::$PetscInt )
 
@@ -29910,7 +31560,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelAdjacency"))
 """
-function DMPlexPartitionLabelAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexPartitionLabelAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexPartitionLabelAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexPartitionLabelAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -29940,7 +31592,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelClosure"))
 """
-function DMPlexPartitionLabelClosure(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexPartitionLabelClosure(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexPartitionLabelClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexPartitionLabelClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -29974,7 +31628,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelCreateSF"))
 """
-function DMPlexPartitionLabelCreateSF(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool) end
+function DMPlexPartitionLabelCreateSF(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool)
+    error("DMPlexPartitionLabelCreateSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexPartitionLabelCreateSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool )
 	sf_ = Ref{PetscSF}()
@@ -30010,7 +31666,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelInvert"))
 """
-function DMPlexPartitionLabelInvert(petsclib::PetscLibType, dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel) end
+function DMPlexPartitionLabelInvert(petsclib::PetscLibType, dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel)
+    error("DMPlexPartitionLabelInvert: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexPartitionLabelInvert(petsclib::$UnionPetscLib, dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel )
 
@@ -30040,7 +31698,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelPropagate"))
 """
-function DMPlexPartitionLabelPropagate(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMPlexPartitionLabelPropagate(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMPlexPartitionLabelPropagate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexPartitionLabelPropagate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -30075,7 +31735,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPermute"))
 """
-function DMPlexPermute(petsclib::PetscLibType, dm::AbstractPetscDM, perm::AbstractIS) end
+function DMPlexPermute(petsclib::PetscLibType, dm::AbstractPetscDM, perm::AbstractIS)
+    error("DMPlexPermute: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexPermute(petsclib::$UnionPetscLib, dm::AbstractPetscDM, perm::AbstractIS )
 	pdm_ = Ref{CDM}()
@@ -30093,7 +31755,7 @@ function DMPlexPermute(petsclib::PetscLibType, dm::AbstractPetscDM, perm::Abstra
 end 
 
 """
-	DMPlexPointGlobalFieldRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) 
+	ptr::Ptr{Cvoid} = DMPlexPointGlobalFieldRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}) 
 return read access to a field on a point in global array
 
 Not Collective
@@ -30114,23 +31776,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalFieldRead"))
 """
-function DMPlexPointGlobalFieldRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) end
+function DMPlexPointGlobalFieldRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, field::Integer, array::AbstractVector{<:Number})
+    error("DMPlexPointGlobalFieldRead: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointGlobalFieldRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt, array::Vector{$PetscScalar}, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointGlobalFieldRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt, array::Vector{$PetscScalar} )
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointGlobalFieldRead, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, field, array, ptr,
+               dm, point, field, array, ptr_,
               )
 
+	ptr = ptr_[]
 
-	return nothing
+	return ptr
 end 
 
 """
-	array::PetscScalar = DMPlexPointGlobalFieldRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, ptr::Ptr{Cvoid}) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointGlobalFieldRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
 return read/write access to a field on a point in global array
 
 Not Collective
@@ -30151,25 +31817,29 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalFieldRef"))
 """
-function DMPlexPointGlobalFieldRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt, ptr::Ptr{Cvoid}) end
+function DMPlexPointGlobalFieldRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, field::Integer)
+    error("DMPlexPointGlobalFieldRef: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointGlobalFieldRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointGlobalFieldRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt )
 	array_ = Ref{$PetscScalar}()
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointGlobalFieldRef, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, field, array_, ptr,
+               dm, point, field, array_, ptr_,
               )
 
 	array = array_[]
+	ptr = ptr_[]
 
-	return array
+	return array,ptr
 end 
 
 """
-	DMPlexPointGlobalRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) 
+	ptr::Ptr{Cvoid} = DMPlexPointGlobalRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}) 
 return read access to a point in global array
 
 Not Collective
@@ -30189,23 +31859,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalRead"))
 """
-function DMPlexPointGlobalRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) end
+function DMPlexPointGlobalRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, array::AbstractVector{<:Number})
+    error("DMPlexPointGlobalRead: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointGlobalRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, array::Vector{$PetscScalar}, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointGlobalRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, array::Vector{$PetscScalar} )
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointGlobalRead, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, array, ptr,
+               dm, point, array, ptr_,
               )
 
+	ptr = ptr_[]
 
-	return nothing
+	return ptr
 end 
 
 """
-	array::PetscScalar = DMPlexPointGlobalRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, ptr::Ptr{Cvoid}) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointGlobalRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
 return read/write access to a point in global array
 
 Not Collective
@@ -30225,25 +31899,29 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalRef"))
 """
-function DMPlexPointGlobalRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, ptr::Ptr{Cvoid}) end
+function DMPlexPointGlobalRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexPointGlobalRef: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointGlobalRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointGlobalRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	array_ = Ref{$PetscScalar}()
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointGlobalRef, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, array_, ptr,
+               dm, point, array_, ptr_,
               )
 
 	array = array_[]
+	ptr = ptr_[]
 
-	return array
+	return array,ptr
 end 
 
 """
-	DMPlexPointLocalFieldRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) 
+	ptr::Ptr{Cvoid} = DMPlexPointLocalFieldRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}) 
 return read access to a field on a point in local array
 
 Not Collective
@@ -30264,23 +31942,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalFieldRead"))
 """
-function DMPlexPointLocalFieldRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) end
+function DMPlexPointLocalFieldRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, field::Integer, array::AbstractVector{<:Number})
+    error("DMPlexPointLocalFieldRead: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointLocalFieldRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt, array::Vector{$PetscScalar}, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointLocalFieldRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt, array::Vector{$PetscScalar} )
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointLocalFieldRead, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, field, array, ptr,
+               dm, point, field, array, ptr_,
               )
 
+	ptr = ptr_[]
 
-	return nothing
+	return ptr
 end 
 
 """
-	array::PetscScalar = DMPlexPointLocalFieldRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, ptr::Ptr{Cvoid}) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointLocalFieldRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
 return read/write access to a field on a point in local array
 
 Not Collective
@@ -30301,25 +31983,29 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalFieldRef"))
 """
-function DMPlexPointLocalFieldRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt, ptr::Ptr{Cvoid}) end
+function DMPlexPointLocalFieldRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, field::Integer)
+    error("DMPlexPointLocalFieldRef: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointLocalFieldRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointLocalFieldRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, field::$PetscInt )
 	array_ = Ref{$PetscScalar}()
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointLocalFieldRef, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, field, array_, ptr,
+               dm, point, field, array_, ptr_,
               )
 
 	array = array_[]
+	ptr = ptr_[]
 
-	return array
+	return array,ptr
 end 
 
 """
-	DMPlexPointLocalRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) 
+	ptr::Ptr{Cvoid} = DMPlexPointLocalRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}) 
 return read access to a point in local array
 
 Not Collective
@@ -30339,23 +32025,27 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalRead"))
 """
-function DMPlexPointLocalRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}, ptr::Ptr{Cvoid}) end
+function DMPlexPointLocalRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, array::AbstractVector{<:Number})
+    error("DMPlexPointLocalRead: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointLocalRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, array::Vector{$PetscScalar}, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointLocalRead(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, array::Vector{$PetscScalar} )
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointLocalRead, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, array, ptr,
+               dm, point, array, ptr_,
               )
 
+	ptr = ptr_[]
 
-	return nothing
+	return ptr
 end 
 
 """
-	array::PetscScalar = DMPlexPointLocalRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, ptr::Ptr{Cvoid}) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointLocalRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
 return read/write access to a point in local array
 
 Not Collective
@@ -30375,21 +32065,25 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalRef"))
 """
-function DMPlexPointLocalRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, ptr::Ptr{Cvoid}) end
+function DMPlexPointLocalRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexPointLocalRef: no generated method for these argument types")
+end
 
-@for_petsc function DMPlexPointLocalRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, ptr::Ptr{Cvoid} )
+@for_petsc function DMPlexPointLocalRef(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 	array_ = Ref{$PetscScalar}()
+	ptr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMPlexPointLocalRef, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscScalar}, Ptr{Cvoid}),
-               dm, point, array_, ptr,
+               dm, point, array_, ptr_,
               )
 
 	array = array_[]
+	ptr = ptr_[]
 
-	return array
+	return array,ptr
 end 
 
 """
@@ -30418,7 +32112,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexPreallocateOperator"))
 """
-function DMPlexPreallocateOperator(petsclib::PetscLibType, dm::AbstractPetscDM, bs::PetscInt, dnz::Vector{PetscInt}, onz::Vector{PetscInt}, dnzu::Vector{PetscInt}, onzu::Vector{PetscInt}, A::AbstractPetscMat, fillMatrix::PetscBool) end
+function DMPlexPreallocateOperator(petsclib::PetscLibType, dm::AbstractPetscDM, bs::Integer, dnz::AbstractVector{<:Number}, onz::AbstractVector{<:Number}, dnzu::AbstractVector{<:Number}, onzu::AbstractVector{<:Number}, A::AbstractPetscMat, fillMatrix::PetscBool)
+    error("DMPlexPreallocateOperator: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexPreallocateOperator(petsclib::$UnionPetscLib, dm::AbstractPetscDM, bs::$PetscInt, dnz::Vector{$PetscInt}, onz::Vector{$PetscInt}, dnzu::Vector{$PetscInt}, onzu::Vector{$PetscInt}, A::AbstractPetscMat, fillMatrix::PetscBool )
 
@@ -30459,7 +32155,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRebalanceSharedPoints"))
 """
-function DMPlexRebalanceSharedPoints(petsclib::PetscLibType, dm::AbstractPetscDM, entityDepth::PetscInt, useInitialGuess::PetscBool, parallel::PetscBool) end
+function DMPlexRebalanceSharedPoints(petsclib::PetscLibType, dm::AbstractPetscDM, entityDepth::Integer, useInitialGuess::PetscBool, parallel::PetscBool)
+    error("DMPlexRebalanceSharedPoints: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRebalanceSharedPoints(petsclib::$UnionPetscLib, dm::AbstractPetscDM, entityDepth::$PetscInt, useInitialGuess::PetscBool, parallel::PetscBool )
 	success_ = Ref{PetscBool}()
@@ -30494,7 +32192,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexReconstructGradientsFVM"))
 """
-function DMPlexReconstructGradientsFVM(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, grad::AbstractPetscVec) end
+function DMPlexReconstructGradientsFVM(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, grad::AbstractPetscVec)
+    error("DMPlexReconstructGradientsFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexReconstructGradientsFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, locX::AbstractPetscVec, grad::AbstractPetscVec )
 
@@ -30533,7 +32233,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexReferenceToCoordinates"))
 """
-function DMPlexReferenceToCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, numPoints::PetscInt, refCoords::Vector{PetscReal}, realCoords::Vector{PetscReal}) end
+function DMPlexReferenceToCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, numPoints::Integer, refCoords::AbstractVector{<:Number}, realCoords::AbstractVector{<:Number})
+    error("DMPlexReferenceToCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexReferenceToCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, numPoints::$PetscInt, refCoords::Vector{$PetscReal}, realCoords::Vector{$PetscReal} )
 
@@ -30571,7 +32273,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexReferenceTreeGetChildSymmetry"))
 """
-function DMPlexReferenceTreeGetChildSymmetry(petsclib::PetscLibType, dm::AbstractPetscDM, parent::PetscInt, parentOrientA::PetscInt, childOrientA::PetscInt, childA::PetscInt, parentOrientB::PetscInt) end
+function DMPlexReferenceTreeGetChildSymmetry(petsclib::PetscLibType, dm::AbstractPetscDM, parent::Integer, parentOrientA::Integer, childOrientA::Integer, childA::Integer, parentOrientB::Integer)
+    error("DMPlexReferenceTreeGetChildSymmetry: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexReferenceTreeGetChildSymmetry(petsclib::$UnionPetscLib, dm::AbstractPetscDM, parent::$PetscInt, parentOrientA::$PetscInt, childOrientA::$PetscInt, childA::$PetscInt, parentOrientB::$PetscInt )
 	childOrientB_ = Ref{$PetscInt}()
@@ -30612,7 +32316,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRefineRegularGetAffineFaceTransforms"))
 """
-function DMPlexRefineRegularGetAffineFaceTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType) end
+function DMPlexRefineRegularGetAffineFaceTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType)
+    error("DMPlexRefineRegularGetAffineFaceTransforms: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRefineRegularGetAffineFaceTransforms(petsclib::$UnionPetscLib, tr::DMPlexTransform, ct::DMPolytopeType )
 	Nf_ = Ref{$PetscInt}()
@@ -30658,7 +32364,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRefineRegularGetAffineTransforms"))
 """
-function DMPlexRefineRegularGetAffineTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType) end
+function DMPlexRefineRegularGetAffineTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType)
+    error("DMPlexRefineRegularGetAffineTransforms: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRefineRegularGetAffineTransforms(petsclib::$UnionPetscLib, tr::DMPlexTransform, ct::DMPolytopeType )
 	Nc_ = Ref{$PetscInt}()
@@ -30719,7 +32427,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRemapGeometry"))
 """
-function DMPlexRemapGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, func::external) end
+function DMPlexRemapGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, func::external)
+    error("DMPlexRemapGeometry: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRemapGeometry(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, func::external )
 
@@ -30754,7 +32464,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRemapMigrationSF"))
 """
-function DMPlexRemapMigrationSF(petsclib::PetscLibType, sfOverlap::PetscSF, sfMigration::PetscSF) end
+function DMPlexRemapMigrationSF(petsclib::PetscLibType, sfOverlap::PetscSF, sfMigration::PetscSF)
+    error("DMPlexRemapMigrationSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRemapMigrationSF(petsclib::$UnionPetscLib, sfOverlap::PetscSF, sfMigration::PetscSF )
 	sfMigrationNew_ = Ref{PetscSF}()
@@ -30790,7 +32502,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderCell"))
 """
-function DMPlexReorderCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, cone::Vector{PetscInt}) end
+function DMPlexReorderCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, cone::AbstractVector{<:Number})
+    error("DMPlexReorderCell: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexReorderCell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, cone::Vector{$PetscInt} )
 
@@ -30821,7 +32535,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderCohesiveSupports"))
 """
-function DMPlexReorderCohesiveSupports(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexReorderCohesiveSupports(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexReorderCohesiveSupports: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexReorderCohesiveSupports(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -30855,7 +32571,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderGetDefault"))
 """
-function DMPlexReorderGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexReorderGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexReorderGetDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexReorderGetDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	reorder_ = Ref{DMReorderDefaultFlag}()
@@ -30889,7 +32607,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderSetDefault"))
 """
-function DMPlexReorderSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag) end
+function DMPlexReorderSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag)
+    error("DMPlexReorderSetDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexReorderSetDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag )
 
@@ -30927,7 +32647,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCellCoordinates"))
 """
-function DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, isDG::Union{PetscBool, Bool}, Nc::PetscInt, array::Union{Ptr, AbstractArray{PetscScalar}}, coords::Union{Ptr, AbstractArray{PetscScalar}}) end
+function DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, isDG::Union{PetscBool, Bool}, Nc::Integer, array::Union{Ptr, AbstractArray{<:Number}}, coords::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreCellCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreCellCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, isDG::Union{PetscBool, Bool}, Nc::$PetscInt, array::Union{Ptr, AbstractArray{$PetscScalar}}, coords::Union{Ptr, AbstractArray{$PetscScalar}} )
 	isDG_ = Ref{PetscBool}(isDG)
@@ -30969,7 +32691,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCellFields"))
 """
-function DMPlexRestoreCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{PetscScalar}}, u_t::Union{Ptr, AbstractArray{PetscScalar}}, a::Union{Ptr, AbstractArray{PetscScalar}}) end
+function DMPlexRestoreCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{<:Number}}, u_t::Union{Ptr, AbstractArray{<:Number}}, a::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreCellFields: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreCellFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{$PetscScalar}}, u_t::Union{Ptr, AbstractArray{$PetscScalar}}, a::Union{Ptr, AbstractArray{$PetscScalar}} )
 	u_ = Ref{Ptr{$PetscScalar}}(u isa Ptr ? u : pointer(u))
@@ -31013,7 +32737,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreClosureIndices"))
 """
-function DMPlexRestoreClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::Union{Ptr, AbstractArray{PetscInt}}, outOffsets::Union{Ptr, Vector{PetscInt}}, values::Union{Ptr, AbstractArray{PetscScalar}}) end
+function DMPlexRestoreClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::Integer, useClPerm::PetscBool, numIndices::Integer, indices::Union{Ptr, AbstractArray{<:Number}}, outOffsets::Union{Ptr, AbstractVector{<:Number}}, values::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreClosureIndices: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreClosureIndices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::$PetscInt, useClPerm::PetscBool, numIndices::$PetscInt, indices::Union{Ptr, AbstractArray{$PetscInt}}, outOffsets::Union{Ptr, Vector{$PetscInt}}, values::Union{Ptr, AbstractArray{$PetscScalar}} )
 	numIndices_ = Ref{$PetscInt}(numIndices)
@@ -31037,7 +32763,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCompressedClosure"))
 """
-function DMPlexRestoreCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::PetscInt, numPoints::PetscInt, points::PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::PetscInt) end
+function DMPlexRestoreCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::Integer, numPoints::Integer, points::Integer, clSec::PetscSection, clPoints::AbstractIS, clp::Integer)
+    error("DMPlexRestoreCompressedClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreCompressedClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, point::$PetscInt, numPoints::$PetscInt, points::$PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::$PetscInt )
 	numPoints_ = Ref{$PetscInt}(numPoints)
@@ -31078,7 +32806,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreConeRecursive"))
 """
-function DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}}) end
+function DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::Integer, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}})
+    error("DMPlexRestoreConeRecursive: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreConeRecursive(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS, depth::$PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}} )
 	depth_ = Ref{$PetscInt}(depth)
@@ -31122,7 +32852,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreFaceFields"))
 """
-function DMPlexRestoreFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::PetscInt, uL::Union{Ptr, AbstractArray{PetscScalar}}, uR::Union{Ptr, AbstractArray{PetscScalar}}) end
+function DMPlexRestoreFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::Integer, fEnd::Integer, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::Integer, uL::Union{Ptr, AbstractArray{<:Number}}, uR::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreFaceFields: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreFaceFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::$PetscInt, uL::Union{Ptr, AbstractArray{$PetscScalar}}, uR::Union{Ptr, AbstractArray{$PetscScalar}} )
 	Nface_ = Ref{$PetscInt}(Nface)
@@ -31163,7 +32895,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreFaceGeometry"))
 """
-function DMPlexRestoreFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::PetscInt, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{PetscReal}}) end
+function DMPlexRestoreFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::Integer, fEnd::Integer, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::Integer, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreFaceGeometry: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreFaceGeometry(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::$PetscInt, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{$PetscReal}} )
 	Nface_ = Ref{$PetscInt}(Nface)
@@ -31187,7 +32921,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomBodyMassProperties"))
 """
-function DMPlexRestoreGeomBodyMassProperties(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, volume::PetscScalar, surfArea::PetscScalar, centerOfGravity::PetscScalar, COGsize::PetscInt, inertiaMatrixCOG::PetscScalar, IMCOGsize::PetscInt) end
+function DMPlexRestoreGeomBodyMassProperties(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, volume::Number, surfArea::Number, centerOfGravity::Number, COGsize::Integer, inertiaMatrixCOG::Number, IMCOGsize::Integer)
+    error("DMPlexRestoreGeomBodyMassProperties: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreGeomBodyMassProperties(petsclib::$UnionPetscLib, dm::AbstractPetscDM, body::PetscGeom, volume::$PetscScalar, surfArea::$PetscScalar, centerOfGravity::$PetscScalar, COGsize::$PetscInt, inertiaMatrixCOG::$PetscScalar, IMCOGsize::$PetscInt )
 	volume_ = Ref{$PetscScalar}(volume)
@@ -31212,7 +32948,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomCntrlPntAndWeightData"))
 """
-function DMPlexRestoreGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::AbstractPetscDM, cpHashTable::PetscHMapI, cpCoordDataLength::PetscInt, cpCoordData::PetscScalar, maxNumEquiv::PetscInt, cpEquiv::AbstractPetscMat, wHashTable::PetscHMapI, wDataLength::PetscInt, wData::PetscScalar) end
+function DMPlexRestoreGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::AbstractPetscDM, cpHashTable::PetscHMapI, cpCoordDataLength::Integer, cpCoordData::Number, maxNumEquiv::Integer, cpEquiv::AbstractPetscMat, wHashTable::PetscHMapI, wDataLength::Integer, wData::Number)
+    error("DMPlexRestoreGeomCntrlPntAndWeightData: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreGeomCntrlPntAndWeightData(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cpHashTable::PetscHMapI, cpCoordDataLength::$PetscInt, cpCoordData::$PetscScalar, maxNumEquiv::$PetscInt, cpEquiv::AbstractPetscMat, wHashTable::PetscHMapI, wDataLength::$PetscInt, wData::$PetscScalar )
 	cpCoordDataLength_ = Ref{$PetscInt}(cpCoordDataLength)
@@ -31238,7 +32976,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomGradData"))
 """
-function DMPlexRestoreGeomGradData(petsclib::PetscLibType, dm::AbstractPetscDM, cpSurfGradHashTable::PetscHMapI, cpSurfGrad::AbstractPetscMat, cpArraySize::PetscInt, gradSACP::PetscScalar, gradVolCP::PetscScalar, wArraySize::PetscInt, gradSAW::PetscScalar, gradVolW::PetscScalar) end
+function DMPlexRestoreGeomGradData(petsclib::PetscLibType, dm::AbstractPetscDM, cpSurfGradHashTable::PetscHMapI, cpSurfGrad::AbstractPetscMat, cpArraySize::Integer, gradSACP::Number, gradVolCP::Number, wArraySize::Integer, gradSAW::Number, gradVolW::Number)
+    error("DMPlexRestoreGeomGradData: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreGeomGradData(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cpSurfGradHashTable::PetscHMapI, cpSurfGrad::AbstractPetscMat, cpArraySize::$PetscInt, gradSACP::$PetscScalar, gradVolCP::$PetscScalar, wArraySize::$PetscInt, gradSAW::$PetscScalar, gradVolW::$PetscScalar )
 	cpSurfGrad_ = Ref(cpSurfGrad.ptr)
@@ -31279,7 +33019,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreJoin"))
 """
-function DMPlexRestoreJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) end
+function DMPlexRestoreJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::Integer, points::AbstractVector{<:Number}, numCoveredPoints::Integer, coveredPoints::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreJoin: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreJoin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::Union{Ptr, AbstractArray{$PetscInt}} )
 	numCoveredPoints_ = Ref{$PetscInt}(numCoveredPoints)
@@ -31318,7 +33060,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreMeet"))
 """
-function DMPlexRestoreMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) end
+function DMPlexRestoreMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::Integer, points::AbstractVector{<:Number}, numCoveredPoints::Integer, coveredPoints::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreMeet: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreMeet(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::Union{Ptr, AbstractArray{$PetscInt}} )
 	numCoveredPoints_ = Ref{$PetscInt}(numCoveredPoints)
@@ -31355,7 +33099,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreOrientedCone"))
 """
-function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) end
+function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, cone::Union{Ptr, AbstractArray{<:Number}}, ornt::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreOrientedCone: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreOrientedCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, cone::Union{Ptr, AbstractArray{$PetscInt}}, ornt::Union{Ptr, AbstractArray{$PetscInt}} )
 	cone_ = Ref{Ptr{$PetscInt}}(cone isa Ptr ? cone : pointer(cone))
@@ -31392,7 +33138,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreTransitiveClosure"))
 """
-function DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) end
+function DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, useCone::PetscBool, numPoints::Integer, points::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexRestoreTransitiveClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexRestoreTransitiveClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, useCone::PetscBool, numPoints::$PetscInt, points::Union{Ptr, AbstractArray{$PetscInt}} )
 	numPoints_ = Ref{$PetscInt}(numPoints)
@@ -31427,7 +33175,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeBoundaryFEM"))
 """
-function DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexSNESComputeBoundaryFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSNESComputeBoundaryFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -31462,7 +33212,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeJacobianFEM"))
 """
-function DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexSNESComputeJacobianFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSNESComputeJacobianFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -31496,7 +33248,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeObjectiveFEM"))
 """
-function DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexSNESComputeObjectiveFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSNESComputeObjectiveFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
 	obj_ = Ref{$PetscReal}()
@@ -31519,7 +33273,9 @@ end
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualCEED"))
 """
-function DMPlexSNESComputeResidualCEED(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexSNESComputeResidualCEED(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexSNESComputeResidualCEED: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSNESComputeResidualCEED(petsclib::$UnionPetscLib, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -31553,7 +33309,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualDS"))
 """
-function DMPlexSNESComputeResidualDS(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexSNESComputeResidualDS(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexSNESComputeResidualDS: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSNESComputeResidualDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -31587,7 +33345,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualFEM"))
 """
-function DMPlexSNESComputeResidualFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexSNESComputeResidualFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexSNESComputeResidualFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSNESComputeResidualFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -31625,7 +33385,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSectionLoad"))
 """
-function DMPlexSectionLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, globalToLocalPointSF::PetscSF) end
+function DMPlexSectionLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, globalToLocalPointSF::PetscSF)
+    error("DMPlexSectionLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSectionLoad(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, globalToLocalPointSF::PetscSF )
 	globalDofSF_ = Ref{PetscSF}()
@@ -31662,7 +33424,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSectionView"))
 """
-function DMPlexSectionView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM) end
+function DMPlexSectionView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM)
+    error("DMPlexSectionView: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSectionView(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM )
 
@@ -31694,7 +33458,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetActivePoint"))
 """
-function DMPlexSetActivePoint(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) end
+function DMPlexSetActivePoint(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer)
+    error("DMPlexSetActivePoint: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetActivePoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt )
 
@@ -31724,7 +33490,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetAdjacencyUseAnchors"))
 """
-function DMPlexSetAdjacencyUseAnchors(petsclib::PetscLibType, dm::AbstractPetscDM, useAnchors::PetscBool) end
+function DMPlexSetAdjacencyUseAnchors(petsclib::PetscLibType, dm::AbstractPetscDM, useAnchors::PetscBool)
+    error("DMPlexSetAdjacencyUseAnchors: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetAdjacencyUseAnchors(petsclib::$UnionPetscLib, dm::AbstractPetscDM, useAnchors::PetscBool )
 
@@ -31755,7 +33523,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSetAdjacencyUser"))
 """
-function DMPlexSetAdjacencyUser(petsclib::PetscLibType, dm::AbstractPetscDM, user::external, ctx::Ptr{Cvoid}) end
+function DMPlexSetAdjacencyUser(petsclib::PetscLibType, dm::AbstractPetscDM, user::external, ctx::Ptr{Cvoid})
+    error("DMPlexSetAdjacencyUser: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetAdjacencyUser(petsclib::$UnionPetscLib, dm::AbstractPetscDM, user::external, ctx::Ptr{Cvoid} )
 
@@ -31789,7 +33559,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetAnchors"))
 """
-function DMPlexSetAnchors(petsclib::PetscLibType, dm::AbstractPetscDM, anchorSection::PetscSection, anchorIS::AbstractIS) end
+function DMPlexSetAnchors(petsclib::PetscLibType, dm::AbstractPetscDM, anchorSection::PetscSection, anchorIS::AbstractIS)
+    error("DMPlexSetAnchors: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetAnchors(petsclib::$UnionPetscLib, dm::AbstractPetscDM, anchorSection::PetscSection, anchorIS::AbstractIS )
 
@@ -31822,7 +33594,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSetCellType"))
 """
-function DMPlexSetCellType(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, celltype::DMPolytopeType) end
+function DMPlexSetCellType(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, celltype::DMPolytopeType)
+    error("DMPlexSetCellType: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetCellType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, celltype::DMPolytopeType )
 
@@ -31855,7 +33629,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexSetChart"))
 """
-function DMPlexSetChart(petsclib::PetscLibType, dm::AbstractPetscDM, pStart::PetscInt, pEnd::PetscInt) end
+function DMPlexSetChart(petsclib::PetscLibType, dm::AbstractPetscDM, pStart::Integer, pEnd::Integer)
+    error("DMPlexSetChart: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetChart(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pStart::$PetscInt, pEnd::$PetscInt )
 
@@ -31888,7 +33664,9 @@ A typical interpolated single-quad mesh might order points as
 # External Links
 $(_doc_external("DMPlex/DMPlexSetClosurePermutationTensor"))
 """
-function DMPlexSetClosurePermutationTensor(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, section::PetscSection) end
+function DMPlexSetClosurePermutationTensor(petsclib::PetscLibType, dm::AbstractPetscDM, point::Integer, section::PetscSection)
+    error("DMPlexSetClosurePermutationTensor: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetClosurePermutationTensor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, point::$PetscInt, section::PetscSection )
 
@@ -31921,7 +33699,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexSetCone"))
 """
-function DMPlexSetCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::Vector{PetscInt}) end
+function DMPlexSetCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, cone::AbstractVector{<:Number})
+    error("DMPlexSetCone: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, cone::Vector{$PetscInt} )
 
@@ -31954,7 +33734,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexSetConeOrientation"))
 """
-function DMPlexSetConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, coneOrientation::Vector{PetscInt}) end
+function DMPlexSetConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, coneOrientation::AbstractVector{<:Number})
+    error("DMPlexSetConeOrientation: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetConeOrientation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, coneOrientation::Vector{$PetscInt} )
 
@@ -31987,7 +33769,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexSetConeSize"))
 """
-function DMPlexSetConeSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, size::PetscInt) end
+function DMPlexSetConeSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, size::Integer)
+    error("DMPlexSetConeSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetConeSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, size::$PetscInt )
 
@@ -32019,7 +33803,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetCoordinateMap"))
 """
-function DMPlexSetCoordinateMap(petsclib::PetscLibType, dm::AbstractPetscDM, coordFunc::Ptr{Cvoid}) end
+function DMPlexSetCoordinateMap(petsclib::PetscLibType, dm::AbstractPetscDM, coordFunc::Ptr{Cvoid})
+    error("DMPlexSetCoordinateMap: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetCoordinateMap(petsclib::$UnionPetscLib, dm::AbstractPetscDM, coordFunc::Ptr{Cvoid} )
 
@@ -32040,7 +33826,9 @@ end
 # External Links
 $(_doc_external("DM/DMPlexSetGlobalToNaturalSF"))
 """
-function DMPlexSetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) end
+function DMPlexSetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
+    error("DMPlexSetGlobalToNaturalSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetGlobalToNaturalSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
 
@@ -32072,7 +33860,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetInterpolatePreferTensor"))
 """
-function DMPlexSetInterpolatePreferTensor(petsclib::PetscLibType, dm::AbstractPetscDM, preferTensor::PetscBool) end
+function DMPlexSetInterpolatePreferTensor(petsclib::PetscLibType, dm::AbstractPetscDM, preferTensor::PetscBool)
+    error("DMPlexSetInterpolatePreferTensor: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetInterpolatePreferTensor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, preferTensor::PetscBool )
 
@@ -32105,7 +33895,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSetIsoperiodicFaceSF"))
 """
-function DMPlexSetIsoperiodicFaceSF(petsclib::PetscLibType, dm::AbstractPetscDM, num_face_sfs::PetscInt, face_sfs::PetscSF) end
+function DMPlexSetIsoperiodicFaceSF(petsclib::PetscLibType, dm::AbstractPetscDM, num_face_sfs::Integer, face_sfs::PetscSF)
+    error("DMPlexSetIsoperiodicFaceSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetIsoperiodicFaceSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, num_face_sfs::$PetscInt, face_sfs::PetscSF )
 
@@ -32138,7 +33930,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSetIsoperiodicFaceTransform"))
 """
-function DMPlexSetIsoperiodicFaceTransform(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, t::Vector{PetscScalar}) end
+function DMPlexSetIsoperiodicFaceTransform(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer, t::AbstractVector{<:Number})
+    error("DMPlexSetIsoperiodicFaceTransform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetIsoperiodicFaceTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt, t::Vector{$PetscScalar} )
 
@@ -32170,7 +33964,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSetMaxProjectionHeight"))
 """
-function DMPlexSetMaxProjectionHeight(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) end
+function DMPlexSetMaxProjectionHeight(petsclib::PetscLibType, dm::AbstractPetscDM, height::Integer)
+    error("DMPlexSetMaxProjectionHeight: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetMaxProjectionHeight(petsclib::$UnionPetscLib, dm::AbstractPetscDM, height::$PetscInt )
 
@@ -32202,7 +33998,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetMigrationSF"))
 """
-function DMPlexSetMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, migrationSF::PetscSF) end
+function DMPlexSetMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, migrationSF::PetscSF)
+    error("DMPlexSetMigrationSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetMigrationSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, migrationSF::PetscSF )
 
@@ -32234,7 +34032,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetMinRadius"))
 """
-function DMPlexSetMinRadius(petsclib::PetscLibType, dm::AbstractPetscDM, minradius::PetscReal) end
+function DMPlexSetMinRadius(petsclib::PetscLibType, dm::AbstractPetscDM, minradius::Real)
+    error("DMPlexSetMinRadius: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetMinRadius(petsclib::$UnionPetscLib, dm::AbstractPetscDM, minradius::$PetscReal )
 
@@ -32266,7 +34066,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSetOptionsPrefix"))
 """
-function DMPlexSetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String) end
+function DMPlexSetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String)
+    error("DMPlexSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetOptionsPrefix(petsclib::$UnionPetscLib, dm::AbstractPetscDM, prefix::String )
 
@@ -32299,7 +34101,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetOverlap"))
 """
-function DMPlexSetOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, dmSrc::AbstractPetscDM, overlap::PetscInt) end
+function DMPlexSetOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, dmSrc::AbstractPetscDM, overlap::Integer)
+    error("DMPlexSetOverlap: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetOverlap(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmSrc::AbstractPetscDM, overlap::$PetscInt )
 
@@ -32329,7 +34133,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetPartitionBalance"))
 """
-function DMPlexSetPartitionBalance(petsclib::PetscLibType, dm::AbstractPetscDM, flg::PetscBool) end
+function DMPlexSetPartitionBalance(petsclib::PetscLibType, dm::AbstractPetscDM, flg::PetscBool)
+    error("DMPlexSetPartitionBalance: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetPartitionBalance(petsclib::$UnionPetscLib, dm::AbstractPetscDM, flg::PetscBool )
 
@@ -32361,7 +34167,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetPartitioner"))
 """
-function DMPlexSetPartitioner(petsclib::PetscLibType, dm::AbstractPetscDM, part::PetscPartitioner) end
+function DMPlexSetPartitioner(petsclib::PetscLibType, dm::AbstractPetscDM, part::PetscPartitioner)
+    error("DMPlexSetPartitioner: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetPartitioner(petsclib::$UnionPetscLib, dm::AbstractPetscDM, part::PetscPartitioner )
 
@@ -32393,7 +34201,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetReferenceTree"))
 """
-function DMPlexSetReferenceTree(petsclib::PetscLibType, dm::AbstractPetscDM, ref::AbstractPetscDM) end
+function DMPlexSetReferenceTree(petsclib::PetscLibType, dm::AbstractPetscDM, ref::AbstractPetscDM)
+    error("DMPlexSetReferenceTree: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetReferenceTree(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ref::AbstractPetscDM )
 
@@ -32427,7 +34237,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRefinementFunction"))
 """
-function DMPlexSetRefinementFunction(petsclib::PetscLibType, dm::AbstractPetscDM, refinementFunc::external) end
+function DMPlexSetRefinementFunction(petsclib::PetscLibType, dm::AbstractPetscDM, refinementFunc::external)
+    error("DMPlexSetRefinementFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetRefinementFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, refinementFunc::external )
 
@@ -32457,7 +34269,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRefinementLimit"))
 """
-function DMPlexSetRefinementLimit(petsclib::PetscLibType, dm::AbstractPetscDM, refinementLimit::PetscReal) end
+function DMPlexSetRefinementLimit(petsclib::PetscLibType, dm::AbstractPetscDM, refinementLimit::Real)
+    error("DMPlexSetRefinementLimit: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetRefinementLimit(petsclib::$UnionPetscLib, dm::AbstractPetscDM, refinementLimit::$PetscReal )
 
@@ -32487,7 +34301,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRefinementUniform"))
 """
-function DMPlexSetRefinementUniform(petsclib::PetscLibType, dm::AbstractPetscDM, refinementUniform::PetscBool) end
+function DMPlexSetRefinementUniform(petsclib::PetscLibType, dm::AbstractPetscDM, refinementUniform::PetscBool)
+    error("DMPlexSetRefinementUniform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetRefinementUniform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, refinementUniform::PetscBool )
 
@@ -32517,7 +34333,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRegularRefinement"))
 """
-function DMPlexSetRegularRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, regular::PetscBool) end
+function DMPlexSetRegularRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, regular::PetscBool)
+    error("DMPlexSetRegularRefinement: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetRegularRefinement(petsclib::$UnionPetscLib, dm::AbstractPetscDM, regular::PetscBool )
 
@@ -32548,7 +34366,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMPlexSetSNESLocalFEM"))
 """
-function DMPlexSetSNESLocalFEM(petsclib::PetscLibType, dm::AbstractPetscDM, use_obj::PetscBool, ctx::Ptr{Cvoid}) end
+function DMPlexSetSNESLocalFEM(petsclib::PetscLibType, dm::AbstractPetscDM, use_obj::PetscBool, ctx::Ptr{Cvoid})
+    error("DMPlexSetSNESLocalFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetSNESLocalFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, use_obj::PetscBool, ctx::Ptr{Cvoid} )
 
@@ -32580,7 +34400,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/DMPlexSetSNESVariableBounds"))
 """
-function DMPlexSetSNESVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, snes::AbstractPetscSNES) end
+function DMPlexSetSNESVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, snes::AbstractPetscSNES)
+    error("DMPlexSetSNESVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetSNESVariableBounds(petsclib::$UnionPetscLib, dm::AbstractPetscDM, snes::AbstractPetscSNES )
 
@@ -32601,7 +34423,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSaveTransform"))
 """
-function DMPlexSetSaveTransform(petsclib::PetscLibType, dm::AbstractPetscDM, save::PetscBool) end
+function DMPlexSetSaveTransform(petsclib::PetscLibType, dm::AbstractPetscDM, save::PetscBool)
+    error("DMPlexSetSaveTransform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetSaveTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, save::PetscBool )
 
@@ -32634,7 +34458,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexSetScale"))
 """
-function DMPlexSetScale(petsclib::PetscLibType, dm::AbstractPetscDM, unit::PetscUnit, scale::PetscReal) end
+function DMPlexSetScale(petsclib::PetscLibType, dm::AbstractPetscDM, unit::PetscUnit, scale::Real)
+    error("DMPlexSetScale: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetScale(petsclib::$UnionPetscLib, dm::AbstractPetscDM, unit::PetscUnit, scale::$PetscReal )
 
@@ -32664,7 +34490,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSubpointMap"))
 """
-function DMPlexSetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM, subpointMap::DMLabel) end
+function DMPlexSetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM, subpointMap::DMLabel)
+    error("DMPlexSetSubpointMap: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetSubpointMap(petsclib::$UnionPetscLib, dm::AbstractPetscDM, subpointMap::DMLabel )
 
@@ -32697,7 +34525,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSupport"))
 """
-function DMPlexSetSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, support::Vector{PetscInt}) end
+function DMPlexSetSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, support::AbstractVector{<:Number})
+    error("DMPlexSetSupport: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetSupport(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, support::Vector{$PetscInt} )
 
@@ -32730,7 +34560,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSupportSize"))
 """
-function DMPlexSetSupportSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, size::PetscInt) end
+function DMPlexSetSupportSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, size::Integer)
+    error("DMPlexSetSupportSize: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetSupportSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, size::$PetscInt )
 
@@ -32751,7 +34583,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTransform"))
 """
-function DMPlexSetTransform(petsclib::PetscLibType, dm::AbstractPetscDM, tr::DMPlexTransform) end
+function DMPlexSetTransform(petsclib::PetscLibType, dm::AbstractPetscDM, tr::DMPlexTransform)
+    error("DMPlexSetTransform: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetTransform(petsclib::$UnionPetscLib, dm::AbstractPetscDM, tr::DMPlexTransform )
 
@@ -32781,7 +34615,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTransformType"))
 """
-function DMPlexSetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMPlexTransformType) end
+function DMPlexSetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMPlexTransformType)
+    error("DMPlexSetTransformType: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetTransformType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, type::DMPlexTransformType )
 
@@ -32819,7 +34655,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTree"))
 """
-function DMPlexSetTree(petsclib::PetscLibType, dm::AbstractPetscDM, parentSection::PetscSection, parents::Vector{PetscInt}, childIDs::Vector{PetscInt}) end
+function DMPlexSetTree(petsclib::PetscLibType, dm::AbstractPetscDM, parentSection::PetscSection, parents::AbstractVector{<:Number}, childIDs::AbstractVector{<:Number})
+    error("DMPlexSetTree: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetTree(petsclib::$UnionPetscLib, dm::AbstractPetscDM, parentSection::PetscSection, parents::Vector{$PetscInt}, childIDs::Vector{$PetscInt} )
 
@@ -32851,7 +34689,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexSetUseMatClosurePermutation"))
 """
-function DMPlexSetUseMatClosurePermutation(petsclib::PetscLibType, dm::AbstractPetscDM, useClPerm::PetscBool) end
+function DMPlexSetUseMatClosurePermutation(petsclib::PetscLibType, dm::AbstractPetscDM, useClPerm::PetscBool)
+    error("DMPlexSetUseMatClosurePermutation: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetUseMatClosurePermutation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, useClPerm::PetscBool )
 
@@ -32881,7 +34721,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexSetVTKCellHeight"))
 """
-function DMPlexSetVTKCellHeight(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) end
+function DMPlexSetVTKCellHeight(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::Integer)
+    error("DMPlexSetVTKCellHeight: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSetVTKCellHeight(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellHeight::$PetscInt )
 
@@ -32914,7 +34756,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexShearGeometry"))
 """
-function DMPlexShearGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, direction::DMDirection, multipliers::Vector{PetscReal}) end
+function DMPlexShearGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, direction::DMDirection, multipliers::AbstractVector{<:Number})
+    error("DMPlexShearGeometry: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexShearGeometry(petsclib::$UnionPetscLib, dm::AbstractPetscDM, direction::DMDirection, multipliers::Vector{$PetscReal} )
 
@@ -32945,7 +34789,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexStratify"))
 """
-function DMPlexStratify(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexStratify(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexStratify: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexStratify(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -32978,7 +34824,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexStratifyMigrationSF"))
 """
-function DMPlexStratifyMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) end
+function DMPlexStratifyMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
+    error("DMPlexStratifyMigrationSF: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexStratifyMigrationSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
 	migrationSF_ = Ref{PetscSF}()
@@ -33011,7 +34859,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexSymmetrize"))
 """
-function DMPlexSymmetrize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexSymmetrize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexSymmetrize: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexSymmetrize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -33044,7 +34894,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeBoundary"))
 """
-function DMPlexTSComputeBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexTSComputeBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexTSComputeBoundary: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTSComputeBoundary(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -33080,7 +34932,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeIFunctionFEM"))
 """
-function DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexTSComputeIFunctionFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTSComputeIFunctionFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -33118,7 +34972,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeIJacobianFEM"))
 """
-function DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid}) end
+function DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid})
+    error("DMPlexTSComputeIJacobianFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTSComputeIJacobianFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, user::Ptr{Cvoid} )
 
@@ -33153,7 +35009,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFEM"))
 """
-function DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, locG::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexTSComputeRHSFunctionFEM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTSComputeRHSFunctionFEM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -33188,7 +35046,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFVM"))
 """
-function DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexTSComputeRHSFunctionFVM: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTSComputeRHSFunctionFVM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -33209,7 +35069,9 @@ end
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFVMCEED"))
 """
-function DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMPlexTSComputeRHSFunctionFVMCEED: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTSComputeRHSFunctionFVMCEED(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -33241,7 +35103,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexTetgenSetOptions"))
 """
-function DMPlexTetgenSetOptions(petsclib::PetscLibType, dm::AbstractPetscDM, opts::String) end
+function DMPlexTetgenSetOptions(petsclib::PetscLibType, dm::AbstractPetscDM, opts::String)
+    error("DMPlexTetgenSetOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTetgenSetOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM, opts::String )
 
@@ -33278,7 +35142,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexTopologyLoad"))
 """
-function DMPlexTopologyLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) end
+function DMPlexTopologyLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer)
+    error("DMPlexTopologyLoad: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTopologyLoad(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer )
 	globalToLocalPointSF_ = Ref{PetscSF}()
@@ -33312,7 +35178,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexTopologyView"))
 """
-function DMPlexTopologyView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) end
+function DMPlexTopologyView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer)
+    error("DMPlexTopologyView: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTopologyView(petsclib::$UnionPetscLib, dm::AbstractPetscDM, viewer::PetscViewer )
 
@@ -33367,7 +35235,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexTransferVecTree"))
 """
-function DMPlexTransferVecTree(petsclib::PetscLibType, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, sfRefine::PetscSF, sfCoarsen::PetscSF, useBCs::PetscBool, time::PetscReal) end
+function DMPlexTransferVecTree(petsclib::PetscLibType, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, sfRefine::PetscSF, sfCoarsen::PetscSF, useBCs::PetscBool, time::Real)
+    error("DMPlexTransferVecTree: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTransferVecTree(petsclib::$UnionPetscLib, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, sfRefine::PetscSF, sfCoarsen::PetscSF, useBCs::PetscBool, time::$PetscReal )
 	cidsRefine_ = Ref{$PetscInt}()
@@ -33392,7 +35262,9 @@ end
 # External Links
 $(_doc_external("DMPlex/DMPlexTreeRefineCell"))
 """
-function DMPlexTreeRefineCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, ncdm::AbstractPetscDM) end
+function DMPlexTreeRefineCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::Integer, ncdm::AbstractPetscDM)
+    error("DMPlexTreeRefineCell: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTreeRefineCell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, ncdm::AbstractPetscDM )
 	ncdm_ = Ref(ncdm.ptr)
@@ -33426,7 +35298,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexTriangleSetOptions"))
 """
-function DMPlexTriangleSetOptions(petsclib::PetscLibType, dm::AbstractPetscDM, opts::String) end
+function DMPlexTriangleSetOptions(petsclib::PetscLibType, dm::AbstractPetscDM, opts::String)
+    error("DMPlexTriangleSetOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexTriangleSetOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM, opts::String )
 
@@ -33460,7 +35334,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexUninterpolate"))
 """
-function DMPlexUninterpolate(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMPlexUninterpolate(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMPlexUninterpolate: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexUninterpolate(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dmUnint_ = Ref{CDM}()
@@ -33494,7 +35370,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexVTKWriteAll"))
 """
-function DMPlexVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer) end
+function DMPlexVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer)
+    error("DMPlexVTKWriteAll: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexVTKWriteAll(petsclib::$UnionPetscLib, odm, viewer::PetscViewer )
 
@@ -33533,7 +35411,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexVecGetClosure"))
 """
-function DMPlexVecGetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt) end
+function DMPlexVecGetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::Integer)
+    error("DMPlexVecGetClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexVecGetClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt )
 	csize_ = Ref{$PetscInt}()
@@ -33579,7 +35459,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexVecGetOrientedClosure"))
 """
-function DMPlexVecGetOrientedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, useClPerm::PetscBool, v::AbstractPetscVec, point::PetscInt, ornt::PetscInt) end
+function DMPlexVecGetOrientedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, useClPerm::PetscBool, v::AbstractPetscVec, point::Integer, ornt::Integer)
+    error("DMPlexVecGetOrientedClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexVecGetOrientedClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, useClPerm::PetscBool, v::AbstractPetscVec, point::$PetscInt, ornt::$PetscInt )
 	csize_ = Ref{$PetscInt}()
@@ -33619,7 +35501,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexVecRestoreClosure"))
 """
-function DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Union{Ptr, AbstractArray{PetscScalar}}) end
+function DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::Integer, csize::Integer, values::Union{Ptr, AbstractArray{<:Number}})
+    error("DMPlexVecRestoreClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexVecRestoreClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt, csize::$PetscInt, values::Union{Ptr, AbstractArray{$PetscScalar}} )
 	csize_ = Ref{$PetscInt}(csize)
@@ -33658,7 +35542,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexVecSetClosure"))
 """
-function DMPlexVecSetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) end
+function DMPlexVecSetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::Integer, values::AbstractVector{<:Number}, mode::InsertMode)
+    error("DMPlexVecSetClosure: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexVecSetClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt, values::Vector{$PetscScalar}, mode::InsertMode )
 
@@ -33692,7 +35578,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexVecView1D"))
 """
-function DMPlexVecView1D(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, u::Vector{<:AbstractPetscVec}, viewer::PetscViewer) end
+function DMPlexVecView1D(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer, u::Vector{<:AbstractPetscVec}, viewer::PetscViewer)
+    error("DMPlexVecView1D: no generated method for these argument types")
+end
 
 @for_petsc function DMPlexVecView1D(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt, u::Vector{<:AbstractPetscVec}, viewer::PetscViewer )
 
@@ -33736,7 +35624,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMPolytopeGetOrientation"))
 """
-function DMPolytopeGetOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) end
+function DMPolytopeGetOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::AbstractVector{<:Number}, targetCone::AbstractVector{<:Number})
+    error("DMPolytopeGetOrientation: no generated method for these argument types")
+end
 
 @for_petsc function DMPolytopeGetOrientation(petsclib::$UnionPetscLib, ct::DMPolytopeType, sourceCone::Vector{$PetscInt}, targetCone::Vector{$PetscInt} )
 	ornt_ = Ref{$PetscInt}()
@@ -33782,7 +35672,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMPolytopeGetVertexOrientation"))
 """
-function DMPolytopeGetVertexOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) end
+function DMPolytopeGetVertexOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::AbstractVector{<:Number}, targetCone::AbstractVector{<:Number})
+    error("DMPolytopeGetVertexOrientation: no generated method for these argument types")
+end
 
 @for_petsc function DMPolytopeGetVertexOrientation(petsclib::$UnionPetscLib, ct::DMPolytopeType, sourceCone::Vector{$PetscInt}, targetCone::Vector{$PetscInt} )
 	ornt_ = Ref{$PetscInt}()
@@ -33821,7 +35713,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMPolytopeInCellTest"))
 """
-function DMPolytopeInCellTest(petsclib::PetscLibType, ct::DMPolytopeType, point::Vector{PetscReal}) end
+function DMPolytopeInCellTest(petsclib::PetscLibType, ct::DMPolytopeType, point::AbstractVector{<:Number})
+    error("DMPolytopeInCellTest: no generated method for these argument types")
+end
 
 @for_petsc function DMPolytopeInCellTest(petsclib::$UnionPetscLib, ct::DMPolytopeType, point::Vector{$PetscReal} )
 	inside_ = Ref{PetscBool}()
@@ -33870,7 +35764,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMPolytopeMatchOrientation"))
 """
-function DMPolytopeMatchOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) end
+function DMPolytopeMatchOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::AbstractVector{<:Number}, targetCone::AbstractVector{<:Number})
+    error("DMPolytopeMatchOrientation: no generated method for these argument types")
+end
 
 @for_petsc function DMPolytopeMatchOrientation(petsclib::$UnionPetscLib, ct::DMPolytopeType, sourceCone::Vector{$PetscInt}, targetCone::Vector{$PetscInt} )
 	ornt_ = Ref{$PetscInt}()
@@ -33921,7 +35817,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMPolytopeMatchVertexOrientation"))
 """
-function DMPolytopeMatchVertexOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceVert::Vector{PetscInt}, targetVert::Vector{PetscInt}) end
+function DMPolytopeMatchVertexOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceVert::AbstractVector{<:Number}, targetVert::AbstractVector{<:Number})
+    error("DMPolytopeMatchVertexOrientation: no generated method for these argument types")
+end
 
 @for_petsc function DMPolytopeMatchVertexOrientation(petsclib::$UnionPetscLib, ct::DMPolytopeType, sourceVert::Vector{$PetscInt}, targetVert::Vector{$PetscInt} )
 	ornt_ = Ref{$PetscInt}()
@@ -33946,7 +35844,9 @@ end
 # External Links
 $(_doc_external("DM/DMPrintCellIndices"))
 """
-function DMPrintCellIndices(petsclib::PetscLibType, c::PetscInt, name::String, len::PetscInt, x::Vector{PetscInt}) end
+function DMPrintCellIndices(petsclib::PetscLibType, c::Integer, name::String, len::Integer, x::AbstractVector{<:Number})
+    error("DMPrintCellIndices: no generated method for these argument types")
+end
 
 @for_petsc function DMPrintCellIndices(petsclib::$UnionPetscLib, c::$PetscInt, name::String, len::$PetscInt, x::Vector{$PetscInt} )
 
@@ -33967,7 +35867,9 @@ end
 # External Links
 $(_doc_external("DM/DMPrintCellMatrix"))
 """
-function DMPrintCellMatrix(petsclib::PetscLibType, c::PetscInt, name::String, rows::PetscInt, cols::PetscInt, A::Vector{PetscScalar}) end
+function DMPrintCellMatrix(petsclib::PetscLibType, c::Integer, name::String, rows::Integer, cols::Integer, A::AbstractVector{<:Number})
+    error("DMPrintCellMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMPrintCellMatrix(petsclib::$UnionPetscLib, c::$PetscInt, name::String, rows::$PetscInt, cols::$PetscInt, A::Vector{$PetscScalar} )
 
@@ -33988,7 +35890,9 @@ end
 # External Links
 $(_doc_external("DM/DMPrintCellVector"))
 """
-function DMPrintCellVector(petsclib::PetscLibType, c::PetscInt, name::String, len::PetscInt, x::Vector{PetscScalar}) end
+function DMPrintCellVector(petsclib::PetscLibType, c::Integer, name::String, len::Integer, x::AbstractVector{<:Number})
+    error("DMPrintCellVector: no generated method for these argument types")
+end
 
 @for_petsc function DMPrintCellVector(petsclib::$UnionPetscLib, c::$PetscInt, name::String, len::$PetscInt, x::Vector{$PetscScalar} )
 
@@ -34009,7 +35913,9 @@ end
 # External Links
 $(_doc_external("DM/DMPrintCellVectorReal"))
 """
-function DMPrintCellVectorReal(petsclib::PetscLibType, c::PetscInt, name::String, len::PetscInt, x::Vector{PetscReal}) end
+function DMPrintCellVectorReal(petsclib::PetscLibType, c::Integer, name::String, len::Integer, x::AbstractVector{<:Number})
+    error("DMPrintCellVectorReal: no generated method for these argument types")
+end
 
 @for_petsc function DMPrintCellVectorReal(petsclib::$UnionPetscLib, c::$PetscInt, name::String, len::$PetscInt, x::Vector{$PetscReal} )
 
@@ -34030,7 +35936,9 @@ end
 # External Links
 $(_doc_external("DM/DMPrintLocalVec"))
 """
-function DMPrintLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, tol::PetscReal, X::AbstractPetscVec) end
+function DMPrintLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, tol::Real, X::AbstractPetscVec)
+    error("DMPrintLocalVec: no generated method for these argument types")
+end
 
 @for_petsc function DMPrintLocalVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, tol::$PetscReal, X::AbstractPetscVec )
 
@@ -34065,7 +35973,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPRODUCT/DMProductGetDM"))
 """
-function DMProductGetDM(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt) end
+function DMProductGetDM(petsclib::PetscLibType, dm::AbstractPetscDM, slot::Integer)
+    error("DMProductGetDM: no generated method for these argument types")
+end
 
 @for_petsc function DMProductGetDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, slot::$PetscInt )
 	subdm_ = Ref{CDM}()
@@ -34102,7 +36012,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPRODUCT/DMProductGetDimensionIndex"))
 """
-function DMProductGetDimensionIndex(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt) end
+function DMProductGetDimensionIndex(petsclib::PetscLibType, dm::AbstractPetscDM, slot::Integer)
+    error("DMProductGetDimensionIndex: no generated method for these argument types")
+end
 
 @for_petsc function DMProductGetDimensionIndex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, slot::$PetscInt )
 	idx_ = Ref{$PetscInt}()
@@ -34137,7 +36049,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPRODUCT/DMProductSetDM"))
 """
-function DMProductSetDM(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt, subdm::AbstractPetscDM) end
+function DMProductSetDM(petsclib::PetscLibType, dm::AbstractPetscDM, slot::Integer, subdm::AbstractPetscDM)
+    error("DMProductSetDM: no generated method for these argument types")
+end
 
 @for_petsc function DMProductSetDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, slot::$PetscInt, subdm::AbstractPetscDM )
 
@@ -34170,7 +36084,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMPRODUCT/DMProductSetDimensionIndex"))
 """
-function DMProductSetDimensionIndex(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt, idx::PetscInt) end
+function DMProductSetDimensionIndex(petsclib::PetscLibType, dm::AbstractPetscDM, slot::Integer, idx::Integer)
+    error("DMProductSetDimensionIndex: no generated method for these argument types")
+end
 
 @for_petsc function DMProductSetDimensionIndex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, slot::$PetscInt, idx::$PetscInt )
 
@@ -34247,7 +36163,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectBdFieldLabelLocal"))
 """
-function DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid}) end
+function DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, funcs::Ptr{Cvoid})
+    error("DMProjectBdFieldLabelLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMProjectBdFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid} )
 
@@ -34293,7 +36211,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectField"))
 """
-function DMProjectField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, U::AbstractPetscVec, funcs::Ptr{Ptr{Cvoid}}, mode::InsertMode, X::AbstractPetscVec) end
+function DMProjectField(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, U::AbstractPetscVec, funcs::Ptr{Ptr{Cvoid}}, mode::InsertMode, X::AbstractPetscVec)
+    error("DMProjectField: no generated method for these argument types")
+end
 
 @for_petsc function DMProjectField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, U::AbstractPetscVec, funcs::Ptr{Ptr{Cvoid}}, mode::InsertMode, X::AbstractPetscVec )
 
@@ -34369,7 +36289,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectFieldLabel"))
 """
-function DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, U::AbstractPetscVec, funcs::Ptr{Cvoid}) end
+function DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, U::AbstractPetscVec, funcs::Ptr{Cvoid})
+    error("DMProjectFieldLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMProjectFieldLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, U::AbstractPetscVec, funcs::Ptr{Cvoid} )
 
@@ -34445,7 +36367,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectFieldLabelLocal"))
 """
-function DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid}) end
+function DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, funcs::Ptr{Cvoid})
+    error("DMProjectFieldLabelLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMProjectFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, funcs::Ptr{Cvoid} )
 
@@ -34517,7 +36441,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectFieldLocal"))
 """
-function DMProjectFieldLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, localU::AbstractPetscVec, funcs::Ptr{Cvoid}) end
+function DMProjectFieldLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, localU::AbstractPetscVec, funcs::Ptr{Cvoid})
+    error("DMProjectFieldLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMProjectFieldLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, localU::AbstractPetscVec, funcs::Ptr{Cvoid} )
 
@@ -34553,7 +36479,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMRedundantCreate"))
 """
-function DMRedundantCreate(petsclib::PetscLibType, comm::MPI_Comm, rank::PetscMPIInt, N::PetscInt) end
+function DMRedundantCreate(petsclib::PetscLibType, comm::MPI_Comm, rank::PetscMPIInt, N::Integer)
+    error("DMRedundantCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMRedundantCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, rank::PetscMPIInt, N::$PetscInt )
 	dm_ = Ref{CDM}()
@@ -34590,7 +36518,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMRedundantGetSize"))
 """
-function DMRedundantGetSize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMRedundantGetSize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMRedundantGetSize: no generated method for these argument types")
+end
 
 @for_petsc function DMRedundantGetSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	rank_ = Ref{PetscMPIInt}()
@@ -34627,7 +36557,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMRedundantSetSize"))
 """
-function DMRedundantSetSize(petsclib::PetscLibType, dm::AbstractPetscDM, rank::PetscMPIInt, N::PetscInt) end
+function DMRedundantSetSize(petsclib::PetscLibType, dm::AbstractPetscDM, rank::PetscMPIInt, N::Integer)
+    error("DMRedundantSetSize: no generated method for these argument types")
+end
 
 @for_petsc function DMRedundantSetSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, rank::PetscMPIInt, N::$PetscInt )
 
@@ -34671,7 +36603,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRefine"))
 """
-function DMRefine(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm) end
+function DMRefine(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm)
+    error("DMRefine: no generated method for these argument types")
+end
 
 @for_petsc function DMRefine(petsclib::$UnionPetscLib, dm::AbstractPetscDM, comm::MPI_Comm )
 	dmf_ = Ref{CDM}()
@@ -34710,7 +36644,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRefineHierarchy"))
 """
-function DMRefineHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::PetscInt, dmf::Vector{<:AbstractPetscDM}) end
+function DMRefineHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::Integer, dmf::Vector{<:AbstractPetscDM})
+    error("DMRefineHierarchy: no generated method for these argument types")
+end
 
 @for_petsc function DMRefineHierarchy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nlevels::$PetscInt, dmf::Vector{<:AbstractPetscDM} )
 
@@ -34765,7 +36701,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRefineHookAdd"))
 """
-function DMRefineHookAdd(petsclib::PetscLibType, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid}) end
+function DMRefineHookAdd(petsclib::PetscLibType, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid})
+    error("DMRefineHookAdd: no generated method for these argument types")
+end
 
 @for_petsc function DMRefineHookAdd(petsclib::$UnionPetscLib, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid} )
 
@@ -34805,7 +36743,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRefineHookRemove"))
 """
-function DMRefineHookRemove(petsclib::PetscLibType, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid}) end
+function DMRefineHookRemove(petsclib::PetscLibType, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid})
+    error("DMRefineHookRemove: no generated method for these argument types")
+end
 
 @for_petsc function DMRefineHookRemove(petsclib::$UnionPetscLib, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid} )
 
@@ -34857,7 +36797,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRegister"))
 """
-function DMRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function DMRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("DMRegister: no generated method for these argument types")
+end
 
 @for_petsc function DMRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -34895,7 +36837,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRemoveLabel"))
 """
-function DMRemoveLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMRemoveLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMRemoveLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMRemoveLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 	label_ = Ref{DMLabel}()
@@ -34937,7 +36881,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRemoveLabelBySelf"))
 """
-function DMRemoveLabelBySelf(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool) end
+function DMRemoveLabelBySelf(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool)
+    error("DMRemoveLabelBySelf: no generated method for these argument types")
+end
 
 @for_petsc function DMRemoveLabelBySelf(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool )
 
@@ -34971,7 +36917,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMReorderSectionGetDefault"))
 """
-function DMReorderSectionGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMReorderSectionGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMReorderSectionGetDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMReorderSectionGetDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	reorder_ = Ref{DMReorderDefaultFlag}()
@@ -35007,7 +36955,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMReorderSectionGetType"))
 """
-function DMReorderSectionGetType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMReorderSectionGetType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMReorderSectionGetType: no generated method for these argument types")
+end
 
 @for_petsc function DMReorderSectionGetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	reorder_ = Ref{MatOrderingType}()
@@ -35041,7 +36991,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMReorderSectionSetDefault"))
 """
-function DMReorderSectionSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag) end
+function DMReorderSectionSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag)
+    error("DMReorderSectionSetDefault: no generated method for these argument types")
+end
 
 @for_petsc function DMReorderSectionSetDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag )
 
@@ -35073,7 +37025,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMReorderSectionSetType"))
 """
-function DMReorderSectionSetType(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::MatOrderingType) end
+function DMReorderSectionSetType(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::MatOrderingType)
+    error("DMReorderSectionSetType: no generated method for these argument types")
+end
 
 @for_petsc function DMReorderSectionSetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, reorder::MatOrderingType )
 
@@ -35109,7 +37063,9 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMRestoreGlobalVector"))
 """
-function DMRestoreGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec) end
+function DMRestoreGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec)
+    error("DMRestoreGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMRestoreGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec )
 	g_ = Ref(g.ptr)
@@ -35147,7 +37103,9 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMRestoreLocalVector"))
 """
-function DMRestoreLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec) end
+function DMRestoreLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec)
+    error("DMRestoreLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMRestoreLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, g::AbstractPetscVec )
 	g_ = Ref(g.ptr)
@@ -35182,7 +37140,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMRestoreNamedGlobalVector"))
 """
-function DMRestoreNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, X::AbstractPetscVec) end
+function DMRestoreNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, X::AbstractPetscVec)
+    error("DMRestoreNamedGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMRestoreNamedGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, X::AbstractPetscVec )
 	X_ = Ref(X.ptr)
@@ -35217,7 +37177,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMRestoreNamedLocalVector"))
 """
-function DMRestoreNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, X::AbstractPetscVec) end
+function DMRestoreNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, X::AbstractPetscVec)
+    error("DMRestoreNamedLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMRestoreNamedLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, X::AbstractPetscVec )
 	X_ = Ref(X.ptr)
@@ -35259,7 +37221,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMRestrict"))
 """
-function DMRestrict(petsclib::PetscLibType, fine::AbstractPetscDM, restrct::AbstractPetscMat, rscale::AbstractPetscVec, inject::AbstractPetscMat, coarse::AbstractPetscDM) end
+function DMRestrict(petsclib::PetscLibType, fine::AbstractPetscDM, restrct::AbstractPetscMat, rscale::AbstractPetscVec, inject::AbstractPetscMat, coarse::AbstractPetscDM)
+    error("DMRestrict: no generated method for these argument types")
+end
 
 @for_petsc function DMRestrict(petsclib::$UnionPetscLib, fine::AbstractPetscDM, restrct::AbstractPetscMat, rscale::AbstractPetscVec, inject::AbstractPetscMat, coarse::AbstractPetscDM )
 
@@ -35295,7 +37259,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckDiscretization"))
 """
-function DMSNESCheckDiscretization(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, tol::PetscReal, error::Vector{PetscReal}) end
+function DMSNESCheckDiscretization(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, t::Real, u::AbstractPetscVec, tol::Real, error::AbstractVector{<:Number})
+    error("DMSNESCheckDiscretization: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESCheckDiscretization(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dm::AbstractPetscDM, t::$PetscReal, u::AbstractPetscVec, tol::$PetscReal, error::Vector{$PetscReal} )
 
@@ -35325,7 +37291,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckFromOptions"))
 """
-function DMSNESCheckFromOptions(petsclib::PetscLibType, snes::AbstractPetscSNES, u::AbstractPetscVec) end
+function DMSNESCheckFromOptions(petsclib::PetscLibType, snes::AbstractPetscSNES, u::AbstractPetscVec)
+    error("DMSNESCheckFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESCheckFromOptions(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, u::AbstractPetscVec )
 
@@ -35361,7 +37329,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckJacobian"))
 """
-function DMSNESCheckJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) end
+function DMSNESCheckJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::Real)
+    error("DMSNESCheckJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESCheckJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::$PetscReal )
 	isLinear_ = Ref{PetscBool}()
@@ -35400,7 +37370,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckResidual"))
 """
-function DMSNESCheckResidual(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) end
+function DMSNESCheckResidual(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::Real)
+    error("DMSNESCheckResidual: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESCheckResidual(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::$PetscReal )
 	residual_ = Ref{$PetscReal}()
@@ -35437,7 +37409,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESComputeJacobianAction"))
 """
-function DMSNESComputeJacobianAction(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMSNESComputeJacobianAction(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMSNESComputeJacobianAction: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESComputeJacobianAction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, user::Ptr{Cvoid} )
 
@@ -35473,7 +37447,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/DMSNESCreateJacobianMF"))
 """
-function DMSNESCreateJacobianMF(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid}) end
+function DMSNESCreateJacobianMF(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid})
+    error("DMSNESCreateJacobianMF: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESCreateJacobianMF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, user::Ptr{Cvoid} )
 	J_ = Ref{CMat}()
@@ -35510,7 +37486,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESGetFunction"))
 """
-function DMSNESGetFunction(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSNESGetFunction(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSNESGetFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESGetFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	f_ = Ref{Ptr{Cvoid}}()
@@ -35549,7 +37527,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESGetJacobian"))
 """
-function DMSNESGetJacobian(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSNESGetJacobian(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSNESGetJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESGetJacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	J_ = Ref{Ptr{Cvoid}}()
@@ -35588,7 +37568,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESGetObjective"))
 """
-function DMSNESGetObjective(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSNESGetObjective(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSNESGetObjective: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESGetObjective(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	obj_ = Ref{Ptr{Cvoid}}()
@@ -35628,7 +37610,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESGetPicard"))
 """
-function DMSNESGetPicard(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSNESGetPicard(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSNESGetPicard: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESGetPicard(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	b_ = Ref{Ptr{Cvoid}}()
@@ -35672,7 +37656,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/DMSNESSetBoundaryLocal"))
 """
-function DMSNESSetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMSNESSetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMSNESSetBoundaryLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetBoundaryLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -35705,7 +37691,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetFunction"))
 """
-function DMSNESSetFunction(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMSNESSetFunction(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMSNESSetFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -35737,7 +37725,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetFunctionContextDestroy"))
 """
-function DMSNESSetFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMSNESSetFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMSNESSetFunctionContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetFunctionContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -35778,7 +37768,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/DMSNESSetFunctionLocal"))
 """
-function DMSNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMSNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMSNESSetFunctionLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -35811,7 +37803,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetJacobian"))
 """
-function DMSNESSetJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, J::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMSNESSetJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, J::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMSNESSetJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetJacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM, J::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -35843,7 +37837,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetJacobianContextDestroy"))
 """
-function DMSNESSetJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMSNESSetJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMSNESSetJacobianContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetJacobianContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -35883,7 +37879,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/DMSNESSetJacobianLocal"))
 """
-function DMSNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMSNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMSNESSetJacobianLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -35916,7 +37914,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetMFFunction"))
 """
-function DMSNESSetMFFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMSNESSetMFFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMSNESSetMFFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetMFFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -35949,7 +37949,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetNGS"))
 """
-function DMSNESSetNGS(petsclib::PetscLibType, dm::AbstractPetscDM, f::external, ctx::Ptr{Cvoid}) end
+function DMSNESSetNGS(petsclib::PetscLibType, dm::AbstractPetscDM, f::external, ctx::Ptr{Cvoid})
+    error("DMSNESSetNGS: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetNGS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::external, ctx::Ptr{Cvoid} )
 
@@ -35982,7 +37984,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetObjective"))
 """
-function DMSNESSetObjective(petsclib::PetscLibType, dm::AbstractPetscDM, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMSNESSetObjective(petsclib::PetscLibType, dm::AbstractPetscDM, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMSNESSetObjective: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetObjective(petsclib::$UnionPetscLib, dm::AbstractPetscDM, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -36017,7 +38021,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/DMSNESSetObjectiveLocal"))
 """
-function DMSNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMSNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMSNESSetObjectiveLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetObjectiveLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -36051,7 +38057,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESSetPicard"))
 """
-function DMSNESSetPicard(petsclib::PetscLibType, dm::AbstractPetscDM, b::Ptr{Cvoid}, J::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMSNESSetPicard(petsclib::PetscLibType, dm::AbstractPetscDM, b::Ptr{Cvoid}, J::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMSNESSetPicard: no generated method for these argument types")
+end
 
 @for_petsc function DMSNESSetPicard(petsclib::$UnionPetscLib, dm::AbstractPetscDM, b::Ptr{Cvoid}, J::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -36095,7 +38103,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetAdjacency"))
 """
-function DMSetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, useCone::PetscBool, useClosure::PetscBool) end
+function DMSetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer, useCone::PetscBool, useClosure::PetscBool)
+    error("DMSetAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function DMSetAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, useCone::PetscBool, useClosure::PetscBool )
 
@@ -36139,7 +38149,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetApplicationContext"))
 """
-function DMSetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) end
+function DMSetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid})
+    error("DMSetApplicationContext: no generated method for these argument types")
+end
 
 @for_petsc function DMSetApplicationContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::Ptr{Cvoid} )
 
@@ -36174,7 +38186,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetApplicationContextDestroy"))
 """
-function DMSetApplicationContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, destroy::Ptr{Cvoid}) end
+function DMSetApplicationContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, destroy::Ptr{Cvoid})
+    error("DMSetApplicationContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMSetApplicationContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, destroy::Ptr{Cvoid} )
 
@@ -36211,7 +38225,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetAuxiliaryVec"))
 """
-function DMSetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt, aux::AbstractPetscVec) end
+function DMSetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::Integer, part::Integer, aux::AbstractPetscVec)
+    error("DMSetAuxiliaryVec: no generated method for these argument types")
+end
 
 @for_petsc function DMSetAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, value::$PetscInt, part::$PetscInt, aux::AbstractPetscVec )
 
@@ -36253,7 +38269,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetBasicAdjacency"))
 """
-function DMSetBasicAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, useCone::PetscBool, useClosure::PetscBool) end
+function DMSetBasicAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, useCone::PetscBool, useClosure::PetscBool)
+    error("DMSetBasicAdjacency: no generated method for these argument types")
+end
 
 @for_petsc function DMSetBasicAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM, useCone::PetscBool, useClosure::PetscBool )
 
@@ -36290,7 +38308,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetBlockingType"))
 """
-function DMSetBlockingType(petsclib::PetscLibType, dm::AbstractPetscDM, btype::DMBlockingType) end
+function DMSetBlockingType(petsclib::PetscLibType, dm::AbstractPetscDM, btype::DMBlockingType)
+    error("DMSetBlockingType: no generated method for these argument types")
+end
 
 @for_petsc function DMSetBlockingType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, btype::DMBlockingType )
 
@@ -36323,7 +38343,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCellCoordinateDM"))
 """
-function DMSetCellCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM) end
+function DMSetCellCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM)
+    error("DMSetCellCoordinateDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCellCoordinateDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cdm::AbstractPetscDM )
 
@@ -36344,7 +38366,9 @@ end
 # External Links
 $(_doc_external("DM/DMSetCellCoordinateField"))
 """
-function DMSetCellCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField) end
+function DMSetCellCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField)
+    error("DMSetCellCoordinateField: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCellCoordinateField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::DMField )
 
@@ -36377,7 +38401,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCellCoordinateSection"))
 """
-function DMSetCellCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt, section::PetscSection) end
+function DMSetCellCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM, dim::Integer, section::PetscSection)
+    error("DMSetCellCoordinateSection: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCellCoordinateSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dim::$PetscInt, section::PetscSection )
 
@@ -36409,7 +38435,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCellCoordinates"))
 """
-function DMSetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) end
+function DMSetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec)
+    error("DMSetCellCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCellCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, c::AbstractPetscVec )
 
@@ -36441,7 +38469,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCellCoordinatesLocal"))
 """
-function DMSetCellCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) end
+function DMSetCellCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec)
+    error("DMSetCellCoordinatesLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCellCoordinatesLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, c::AbstractPetscVec )
 
@@ -36476,7 +38506,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetCoarseDM"))
 """
-function DMSetCoarseDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM) end
+function DMSetCoarseDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM)
+    error("DMSetCoarseDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoarseDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cdm::AbstractPetscDM )
 
@@ -36513,7 +38545,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetCoarsenLevel"))
 """
-function DMSetCoarsenLevel(petsclib::PetscLibType, dm::AbstractPetscDM, level::PetscInt) end
+function DMSetCoarsenLevel(petsclib::PetscLibType, dm::AbstractPetscDM, level::Integer)
+    error("DMSetCoarsenLevel: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoarsenLevel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, level::$PetscInt )
 
@@ -36546,7 +38580,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCoordinateDM"))
 """
-function DMSetCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM) end
+function DMSetCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM)
+    error("DMSetCoordinateDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoordinateDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cdm::AbstractPetscDM )
 
@@ -36578,7 +38614,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCoordinateDim"))
 """
-function DMSetCoordinateDim(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt) end
+function DMSetCoordinateDim(petsclib::PetscLibType, dm::AbstractPetscDM, dim::Integer)
+    error("DMSetCoordinateDim: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoordinateDim(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dim::$PetscInt )
 
@@ -36610,7 +38648,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCoordinateDisc"))
 """
-function DMSetCoordinateDisc(petsclib::PetscLibType, dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool) end
+function DMSetCoordinateDisc(petsclib::PetscLibType, dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool)
+    error("DMSetCoordinateDisc: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoordinateDisc(petsclib::$UnionPetscLib, dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool )
 
@@ -36631,7 +38671,9 @@ end
 # External Links
 $(_doc_external("DM/DMSetCoordinateField"))
 """
-function DMSetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField) end
+function DMSetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField)
+    error("DMSetCoordinateField: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoordinateField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::DMField )
 
@@ -36664,7 +38706,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCoordinateSection"))
 """
-function DMSetCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt, section::PetscSection) end
+function DMSetCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM, dim::Integer, section::PetscSection)
+    error("DMSetCoordinateSection: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoordinateSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dim::$PetscInt, section::PetscSection )
 
@@ -36696,7 +38740,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCoordinates"))
 """
-function DMSetCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) end
+function DMSetCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec)
+    error("DMSetCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, c::AbstractPetscVec )
 
@@ -36728,7 +38774,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetCoordinatesLocal"))
 """
-function DMSetCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) end
+function DMSetCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec)
+    error("DMSetCoordinatesLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMSetCoordinatesLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, c::AbstractPetscVec )
 
@@ -36771,7 +38819,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetDefaultConstraints"))
 """
-function DMSetDefaultConstraints(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, mat::AbstractPetscMat, bias::AbstractPetscVec) end
+function DMSetDefaultConstraints(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, mat::AbstractPetscMat, bias::AbstractPetscVec)
+    error("DMSetDefaultConstraints: no generated method for these argument types")
+end
 
 @for_petsc function DMSetDefaultConstraints(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, mat::AbstractPetscMat, bias::AbstractPetscVec )
 
@@ -36805,7 +38855,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetDimension"))
 """
-function DMSetDimension(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt) end
+function DMSetDimension(petsclib::PetscLibType, dm::AbstractPetscDM, dim::Integer)
+    error("DMSetDimension: no generated method for these argument types")
+end
 
 @for_petsc function DMSetDimension(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dim::$PetscInt )
 
@@ -36842,7 +38894,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetField"))
 """
-function DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc) end
+function DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer, label::DMLabel, disc)
+    error("DMSetField: no generated method for these argument types")
+end
 
 @for_petsc function DMSetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, label::DMLabel, disc )
 
@@ -36877,7 +38931,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetFieldAvoidTensor"))
 """
-function DMSetFieldAvoidTensor(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, avoidTensor::PetscBool) end
+function DMSetFieldAvoidTensor(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer, avoidTensor::PetscBool)
+    error("DMSetFieldAvoidTensor: no generated method for these argument types")
+end
 
 @for_petsc function DMSetFieldAvoidTensor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, avoidTensor::PetscBool )
 
@@ -36912,7 +38968,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetFineDM"))
 """
-function DMSetFineDM(petsclib::PetscLibType, dm::AbstractPetscDM, fdm::AbstractPetscDM) end
+function DMSetFineDM(petsclib::PetscLibType, dm::AbstractPetscDM, fdm::AbstractPetscDM)
+    error("DMSetFineDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSetFineDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fdm::AbstractPetscDM )
 
@@ -37007,7 +39065,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetFromOptions"))
 """
-function DMSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMSetFromOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -37042,7 +39102,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetGlobalSection"))
 """
-function DMSetGlobalSection(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection) end
+function DMSetGlobalSection(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection)
+    error("DMSetGlobalSection: no generated method for these argument types")
+end
 
 @for_petsc function DMSetGlobalSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection )
 
@@ -37080,7 +39142,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetISColoringType"))
 """
-function DMSetISColoringType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::ISColoringType) end
+function DMSetISColoringType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::ISColoringType)
+    error("DMSetISColoringType: no generated method for these argument types")
+end
 
 @for_petsc function DMSetISColoringType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::ISColoringType )
 
@@ -37122,7 +39186,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetLabel"))
 """
-function DMSetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) end
+function DMSetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+    error("DMSetLabel: no generated method for these argument types")
+end
 
 @for_petsc function DMSetLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
 
@@ -37157,7 +39223,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetLabelOutput"))
 """
-function DMSetLabelOutput(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, output::PetscBool) end
+function DMSetLabelOutput(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, output::PetscBool)
+    error("DMSetLabelOutput: no generated method for these argument types")
+end
 
 @for_petsc function DMSetLabelOutput(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, output::PetscBool )
 
@@ -37195,7 +39263,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetLabelValue"))
 """
-function DMSetLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::PetscInt, value::PetscInt) end
+function DMSetLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::Integer, value::Integer)
+    error("DMSetLabelValue: no generated method for these argument types")
+end
 
 @for_petsc function DMSetLabelValue(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, point::$PetscInt, value::$PetscInt )
 
@@ -37230,7 +39300,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetLocalSection"))
 """
-function DMSetLocalSection(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection) end
+function DMSetLocalSection(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection)
+    error("DMSetLocalSection: no generated method for these argument types")
+end
 
 @for_petsc function DMSetLocalSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection )
 
@@ -37267,7 +39339,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetMatType"))
 """
-function DMSetMatType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::MatType) end
+function DMSetMatType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::MatType)
+    error("DMSetMatType: no generated method for these argument types")
+end
 
 @for_petsc function DMSetMatType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::MatType )
 
@@ -37305,7 +39379,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetMatrixPreallocateOnly"))
 """
-function DMSetMatrixPreallocateOnly(petsclib::PetscLibType, dm::AbstractPetscDM, only::PetscBool) end
+function DMSetMatrixPreallocateOnly(petsclib::PetscLibType, dm::AbstractPetscDM, only::PetscBool)
+    error("DMSetMatrixPreallocateOnly: no generated method for these argument types")
+end
 
 @for_petsc function DMSetMatrixPreallocateOnly(petsclib::$UnionPetscLib, dm::AbstractPetscDM, only::PetscBool )
 
@@ -37345,7 +39421,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetMatrixPreallocateSkip"))
 """
-function DMSetMatrixPreallocateSkip(petsclib::PetscLibType, dm::AbstractPetscDM, skip::PetscBool) end
+function DMSetMatrixPreallocateSkip(petsclib::PetscLibType, dm::AbstractPetscDM, skip::PetscBool)
+    error("DMSetMatrixPreallocateSkip: no generated method for these argument types")
+end
 
 @for_petsc function DMSetMatrixPreallocateSkip(petsclib::$UnionPetscLib, dm::AbstractPetscDM, skip::PetscBool )
 
@@ -37380,7 +39458,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetMatrixStructureOnly"))
 """
-function DMSetMatrixStructureOnly(petsclib::PetscLibType, dm::AbstractPetscDM, only::PetscBool) end
+function DMSetMatrixStructureOnly(petsclib::PetscLibType, dm::AbstractPetscDM, only::PetscBool)
+    error("DMSetMatrixStructureOnly: no generated method for these argument types")
+end
 
 @for_petsc function DMSetMatrixStructureOnly(petsclib::$UnionPetscLib, dm::AbstractPetscDM, only::PetscBool )
 
@@ -37412,7 +39492,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetNaturalSF"))
 """
-function DMSetNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) end
+function DMSetNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
+    error("DMSetNaturalSF: no generated method for these argument types")
+end
 
 @for_petsc function DMSetNaturalSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
 
@@ -37454,7 +39536,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetNearNullSpaceConstructor"))
 """
-function DMSetNearNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, nullsp::external) end
+function DMSetNearNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::Integer, nullsp::external)
+    error("DMSetNearNullSpaceConstructor: no generated method for these argument types")
+end
 
 @for_petsc function DMSetNearNullSpaceConstructor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt, nullsp::external )
 
@@ -37496,7 +39580,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetNullSpaceConstructor"))
 """
-function DMSetNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, nullsp::external) end
+function DMSetNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::Integer, nullsp::external)
+    error("DMSetNullSpaceConstructor: no generated method for these argument types")
+end
 
 @for_petsc function DMSetNullSpaceConstructor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt, nullsp::external )
 
@@ -37530,7 +39616,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetNumFields"))
 """
-function DMSetNumFields(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt) end
+function DMSetNumFields(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::Integer)
+    error("DMSetNumFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSetNumFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numFields::$PetscInt )
 
@@ -37568,7 +39656,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetOptionsPrefix"))
 """
-function DMSetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String) end
+function DMSetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String)
+    error("DMSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function DMSetOptionsPrefix(petsclib::$UnionPetscLib, dm::AbstractPetscDM, prefix::String )
 
@@ -37605,7 +39695,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetOutputSequenceNumber"))
 """
-function DMSetOutputSequenceNumber(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt, val::PetscReal) end
+function DMSetOutputSequenceNumber(petsclib::PetscLibType, dm::AbstractPetscDM, num::Integer, val::Real)
+    error("DMSetOutputSequenceNumber: no generated method for these argument types")
+end
 
 @for_petsc function DMSetOutputSequenceNumber(petsclib::$UnionPetscLib, dm::AbstractPetscDM, num::$PetscInt, val::$PetscReal )
 
@@ -37639,7 +39731,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMSetPeriodicity"))
 """
-function DMSetPeriodicity(petsclib::PetscLibType, dm::AbstractPetscDM, maxCell::Vector{PetscReal}, Lstart::Vector{PetscReal}, L::Vector{PetscReal}) end
+function DMSetPeriodicity(petsclib::PetscLibType, dm::AbstractPetscDM, maxCell::AbstractVector{<:Number}, Lstart::AbstractVector{<:Number}, L::AbstractVector{<:Number})
+    error("DMSetPeriodicity: no generated method for these argument types")
+end
 
 @for_petsc function DMSetPeriodicity(petsclib::$UnionPetscLib, dm::AbstractPetscDM, maxCell::Vector{$PetscReal}, Lstart::Vector{$PetscReal}, L::Vector{$PetscReal} )
 
@@ -37673,7 +39767,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetPointSF"))
 """
-function DMSetPointSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) end
+function DMSetPointSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
+    error("DMSetPointSF: no generated method for these argument types")
+end
 
 @for_petsc function DMSetPointSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
 
@@ -37712,7 +39808,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetRefineLevel"))
 """
-function DMSetRefineLevel(petsclib::PetscLibType, dm::AbstractPetscDM, level::PetscInt) end
+function DMSetRefineLevel(petsclib::PetscLibType, dm::AbstractPetscDM, level::Integer)
+    error("DMSetRefineLevel: no generated method for these argument types")
+end
 
 @for_petsc function DMSetRefineLevel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, level::$PetscInt )
 
@@ -37753,7 +39851,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetRegionDS"))
 """
-function DMSetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) end
+function DMSetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS)
+    error("DMSetRegionDS: no generated method for these argument types")
+end
 
 @for_petsc function DMSetRegionDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS )
 
@@ -37791,7 +39891,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetRegionNumDS"))
 """
-function DMSetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) end
+function DMSetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::Integer, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS)
+    error("DMSetRegionNumDS: no generated method for these argument types")
+end
 
 @for_petsc function DMSetRegionNumDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, num::$PetscInt, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS )
 
@@ -37826,7 +39928,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetSectionSF"))
 """
-function DMSetSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) end
+function DMSetSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
+    error("DMSetSectionSF: no generated method for these argument types")
+end
 
 @for_petsc function DMSetSectionSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
 
@@ -37858,7 +39962,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetSnapToGeomModel"))
 """
-function DMSetSnapToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) end
+function DMSetSnapToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
+    error("DMSetSnapToGeomModel: no generated method for these argument types")
+end
 
 @for_petsc function DMSetSnapToGeomModel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
 
@@ -37890,7 +39996,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSetSparseLocalize"))
 """
-function DMSetSparseLocalize(petsclib::PetscLibType, dm::AbstractPetscDM, sparse::PetscBool) end
+function DMSetSparseLocalize(petsclib::PetscLibType, dm::AbstractPetscDM, sparse::PetscBool)
+    error("DMSetSparseLocalize: no generated method for these argument types")
+end
 
 @for_petsc function DMSetSparseLocalize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sparse::PetscBool )
 
@@ -37926,7 +40034,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetStratumIS"))
 """
-function DMSetStratumIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt, points::AbstractIS) end
+function DMSetStratumIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::Integer, points::AbstractIS)
+    error("DMSetStratumIS: no generated method for these argument types")
+end
 
 @for_petsc function DMSetStratumIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String, value::$PetscInt, points::AbstractIS )
 
@@ -37966,7 +40076,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetType"))
 """
-function DMSetType(petsclib::PetscLibType, dm::AbstractPetscDM, method::DMType) end
+function DMSetType(petsclib::PetscLibType, dm::AbstractPetscDM, method::DMType)
+    error("DMSetType: no generated method for these argument types")
+end
 
 @for_petsc function DMSetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, method::DMType )
 
@@ -38002,7 +40114,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetUp"))
 """
-function DMSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSetUp(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSetUp: no generated method for these argument types")
+end
 
 @for_petsc function DMSetUp(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -38039,7 +40153,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetUseNatural"))
 """
-function DMSetUseNatural(petsclib::PetscLibType, dm::AbstractPetscDM, useNatural::PetscBool) end
+function DMSetUseNatural(petsclib::PetscLibType, dm::AbstractPetscDM, useNatural::PetscBool)
+    error("DMSetUseNatural: no generated method for these argument types")
+end
 
 @for_petsc function DMSetUseNatural(petsclib::$UnionPetscLib, dm::AbstractPetscDM, useNatural::PetscBool )
 
@@ -38072,7 +40188,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/DMSetVI"))
 """
-function DMSetVI(petsclib::PetscLibType, dm::AbstractPetscDM, inactive::AbstractIS) end
+function DMSetVI(petsclib::PetscLibType, dm::AbstractPetscDM, inactive::AbstractIS)
+    error("DMSetVI: no generated method for these argument types")
+end
 
 @for_petsc function DMSetVI(petsclib::$UnionPetscLib, dm::AbstractPetscDM, inactive::AbstractIS )
 
@@ -38110,7 +40228,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetVariableBounds"))
 """
-function DMSetVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, f::external) end
+function DMSetVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, f::external)
+    error("DMSetVariableBounds: no generated method for these argument types")
+end
 
 @for_petsc function DMSetVariableBounds(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::external )
 
@@ -38148,7 +40268,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetVecType"))
 """
-function DMSetVecType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::VecType) end
+function DMSetVecType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::VecType)
+    error("DMSetVecType: no generated method for these argument types")
+end
 
 @for_petsc function DMSetVecType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::VecType )
 
@@ -38182,7 +40304,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellCreate"))
 """
-function DMShellCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function DMShellCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("DMShellCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMShellCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	dm_ = Ref{CDM}()
@@ -38200,7 +40324,7 @@ function DMShellCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	DMShellGetContext(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	ctx::Ptr{Cvoid} = DMShellGetContext(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Returns the user
 
 Collective
@@ -38218,19 +40342,23 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellGetContext"))
 """
-function DMShellGetContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) end
+function DMShellGetContext(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMShellGetContext: no generated method for these argument types")
+end
 
-@for_petsc function DMShellGetContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::Ptr{Cvoid} )
+@for_petsc function DMShellGetContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMShellGetContext, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Cvoid}),
-               dm, ctx,
+               dm, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -38250,7 +40378,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellGetGlobalVector"))
 """
-function DMShellGetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec) end
+function DMShellGetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec)
+    error("DMShellGetGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMShellGetGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec )
 	X_ = Ref(X.ptr)
@@ -38284,7 +40414,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCoarsen"))
 """
-function DMShellSetCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, coarsen::external) end
+function DMShellSetCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, coarsen::external)
+    error("DMShellSetCoarsen: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCoarsen(petsclib::$UnionPetscLib, dm::AbstractPetscDM, coarsen::external )
 
@@ -38316,7 +40448,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetContext"))
 """
-function DMShellSetContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) end
+function DMShellSetContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid})
+    error("DMShellSetContext: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::Ptr{Cvoid} )
 
@@ -38348,7 +40482,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateDomainDecomposition"))
 """
-function DMShellSetCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM, decomp::external) end
+function DMShellSetCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM, decomp::external)
+    error("DMShellSetCreateDomainDecomposition: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateDomainDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM, decomp::external )
 
@@ -38380,7 +40516,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateDomainDecompositionScatters"))
 """
-function DMShellSetCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, scatter::external) end
+function DMShellSetCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, scatter::external)
+    error("DMShellSetCreateDomainDecompositionScatters: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateDomainDecompositionScatters(petsclib::$UnionPetscLib, dm::AbstractPetscDM, scatter::external )
 
@@ -38412,7 +40550,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateFieldDecomposition"))
 """
-function DMShellSetCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM, decomp::external) end
+function DMShellSetCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM, decomp::external)
+    error("DMShellSetCreateFieldDecomposition: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateFieldDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM, decomp::external )
 
@@ -38444,7 +40584,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateGlobalVector"))
 """
-function DMShellSetCreateGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, func::external) end
+function DMShellSetCreateGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, func::external)
+    error("DMShellSetCreateGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external )
 
@@ -38476,7 +40618,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateInjection"))
 """
-function DMShellSetCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM, inject::external) end
+function DMShellSetCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM, inject::external)
+    error("DMShellSetCreateInjection: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateInjection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, inject::external )
 
@@ -38508,7 +40652,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateInterpolation"))
 """
-function DMShellSetCreateInterpolation(petsclib::PetscLibType, dm::AbstractPetscDM, interp::external) end
+function DMShellSetCreateInterpolation(petsclib::PetscLibType, dm::AbstractPetscDM, interp::external)
+    error("DMShellSetCreateInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateInterpolation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, interp::external )
 
@@ -38540,7 +40686,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateLocalVector"))
 """
-function DMShellSetCreateLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, func::external) end
+function DMShellSetCreateLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, func::external)
+    error("DMShellSetCreateLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external )
 
@@ -38572,7 +40720,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateMatrix"))
 """
-function DMShellSetCreateMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, func::external) end
+function DMShellSetCreateMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, func::external)
+    error("DMShellSetCreateMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateMatrix(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external )
 
@@ -38604,7 +40754,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateRestriction"))
 """
-function DMShellSetCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM, restriction::external) end
+function DMShellSetCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM, restriction::external)
+    error("DMShellSetCreateRestriction: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateRestriction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, restriction::external )
 
@@ -38636,7 +40788,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetCreateSubDM"))
 """
-function DMShellSetCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, subdm::external) end
+function DMShellSetCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, subdm::external)
+    error("DMShellSetCreateSubDM: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetCreateSubDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, subdm::external )
 
@@ -38668,7 +40822,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetDestroyContext"))
 """
-function DMShellSetDestroyContext(petsclib::PetscLibType, dm::AbstractPetscDM, destroyctx::external) end
+function DMShellSetDestroyContext(petsclib::PetscLibType, dm::AbstractPetscDM, destroyctx::external)
+    error("DMShellSetDestroyContext: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetDestroyContext(petsclib::$UnionPetscLib, dm::AbstractPetscDM, destroyctx::external )
 
@@ -38701,7 +40857,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetGlobalToLocal"))
 """
-function DMShellSetGlobalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external) end
+function DMShellSetGlobalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external)
+    error("DMShellSetGlobalToLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetGlobalToLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, begin_::external, end_::external )
 
@@ -38733,7 +40891,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetGlobalToLocalVecScatter"))
 """
-function DMShellSetGlobalToLocalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, gtol::VecScatter) end
+function DMShellSetGlobalToLocalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, gtol::VecScatter)
+    error("DMShellSetGlobalToLocalVecScatter: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetGlobalToLocalVecScatter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, gtol::VecScatter )
 
@@ -38765,7 +40925,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetGlobalVector"))
 """
-function DMShellSetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec) end
+function DMShellSetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec)
+    error("DMShellSetGlobalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetGlobalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec )
 
@@ -38798,7 +40960,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetLocalToGlobal"))
 """
-function DMShellSetLocalToGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external) end
+function DMShellSetLocalToGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external)
+    error("DMShellSetLocalToGlobal: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetLocalToGlobal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, begin_::external, end_::external )
 
@@ -38830,7 +40994,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetLocalToGlobalVecScatter"))
 """
-function DMShellSetLocalToGlobalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, ltog::VecScatter) end
+function DMShellSetLocalToGlobalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, ltog::VecScatter)
+    error("DMShellSetLocalToGlobalVecScatter: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetLocalToGlobalVecScatter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ltog::VecScatter )
 
@@ -38863,7 +41029,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetLocalToLocal"))
 """
-function DMShellSetLocalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external) end
+function DMShellSetLocalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external)
+    error("DMShellSetLocalToLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetLocalToLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, begin_::external, end_::external )
 
@@ -38895,7 +41063,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetLocalToLocalVecScatter"))
 """
-function DMShellSetLocalToLocalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, ltol::VecScatter) end
+function DMShellSetLocalToLocalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, ltol::VecScatter)
+    error("DMShellSetLocalToLocalVecScatter: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetLocalToLocalVecScatter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ltol::VecScatter )
 
@@ -38927,7 +41097,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetLocalVector"))
 """
-function DMShellSetLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec) end
+function DMShellSetLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec)
+    error("DMShellSetLocalVector: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetLocalVector(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec )
 
@@ -38959,7 +41131,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetMatrix"))
 """
-function DMShellSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, J::AbstractPetscMat) end
+function DMShellSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, J::AbstractPetscMat)
+    error("DMShellSetMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetMatrix(petsclib::$UnionPetscLib, dm::AbstractPetscDM, J::AbstractPetscMat )
 
@@ -38991,7 +41165,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMShellSetRefine"))
 """
-function DMShellSetRefine(petsclib::PetscLibType, dm::AbstractPetscDM, refine::external) end
+function DMShellSetRefine(petsclib::PetscLibType, dm::AbstractPetscDM, refine::external)
+    error("DMShellSetRefine: no generated method for these argument types")
+end
 
 @for_petsc function DMShellSetRefine(petsclib::$UnionPetscLib, dm::AbstractPetscDM, refine::external )
 
@@ -39033,7 +41209,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSlicedCreate"))
 """
-function DMSlicedCreate(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, nlocal::PetscInt, Nghosts::PetscInt, ghosts::Vector{PetscInt}, d_nnz::Vector{PetscInt}, o_nnz::Vector{PetscInt}) end
+function DMSlicedCreate(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, nlocal::Integer, Nghosts::Integer, ghosts::AbstractVector{<:Number}, d_nnz::AbstractVector{<:Number}, o_nnz::AbstractVector{<:Number})
+    error("DMSlicedCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMSlicedCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, nlocal::$PetscInt, Nghosts::$PetscInt, ghosts::Vector{$PetscInt}, d_nnz::Vector{$PetscInt}, o_nnz::Vector{$PetscInt} )
 	dm_ = Ref{CDM}()
@@ -39069,7 +41247,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSlicedSetBlockFills"))
 """
-function DMSlicedSetBlockFills(petsclib::PetscLibType, dm::AbstractPetscDM, dfill::Vector{PetscInt}, ofill::Vector{PetscInt}) end
+function DMSlicedSetBlockFills(petsclib::PetscLibType, dm::AbstractPetscDM, dfill::AbstractVector{<:Number}, ofill::AbstractVector{<:Number})
+    error("DMSlicedSetBlockFills: no generated method for these argument types")
+end
 
 @for_petsc function DMSlicedSetBlockFills(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dfill::Vector{$PetscInt}, ofill::Vector{$PetscInt} )
 
@@ -39105,7 +41285,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSlicedSetGhosts"))
 """
-function DMSlicedSetGhosts(petsclib::PetscLibType, dm::AbstractPetscDM, bs::PetscInt, nlocal::PetscInt, Nghosts::PetscInt, ghosts::Vector{PetscInt}) end
+function DMSlicedSetGhosts(petsclib::PetscLibType, dm::AbstractPetscDM, bs::Integer, nlocal::Integer, Nghosts::Integer, ghosts::AbstractVector{<:Number})
+    error("DMSlicedSetGhosts: no generated method for these argument types")
+end
 
 @for_petsc function DMSlicedSetGhosts(petsclib::$UnionPetscLib, dm::AbstractPetscDM, bs::$PetscInt, nlocal::$PetscInt, Nghosts::$PetscInt, ghosts::Vector{$PetscInt} )
 
@@ -39147,7 +41329,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSlicedSetPreallocation"))
 """
-function DMSlicedSetPreallocation(petsclib::PetscLibType, dm::AbstractPetscDM, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
+function DMSlicedSetPreallocation(petsclib::PetscLibType, dm::AbstractPetscDM, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
+    error("DMSlicedSetPreallocation: no generated method for these argument types")
+end
 
 @for_petsc function DMSlicedSetPreallocation(petsclib::$UnionPetscLib, dm::AbstractPetscDM, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
 
@@ -39184,7 +41368,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSnapToGeomModel"))
 """
-function DMSnapToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, dE::PetscInt, mcoords::Vector{PetscScalar}, gcoords::Vector{PetscScalar}) end
+function DMSnapToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, p::Integer, dE::Integer, mcoords::AbstractVector{<:Number}, gcoords::AbstractVector{<:Number})
+    error("DMSnapToGeomModel: no generated method for these argument types")
+end
 
 @for_petsc function DMSnapToGeomModel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, dE::$PetscInt, mcoords::Vector{$PetscScalar}, gcoords::Vector{$PetscScalar} )
 
@@ -39238,7 +41424,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate1d"))
 """
-function DMStagCreate1d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, M::PetscInt, dof0::PetscInt, dof1::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}) end
+function DMStagCreate1d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, M::Integer, dof0::Integer, dof1::Integer, stencilType::DMStagStencilType, stencilWidth::Integer, lx::Union{Ptr, AbstractVector{<:Number}})
+    error("DMStagCreate1d: no generated method for these argument types")
+end
 
 @for_petsc function DMStagCreate1d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, M::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
@@ -39305,7 +41493,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate2d"))
 """
-function DMStagCreate2d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) end
+function DMStagCreate2d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::Integer, N::Integer, m::Integer, n::Integer, dof0::Integer, dof1::Integer, dof2::Integer, stencilType::DMStagStencilType, stencilWidth::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}})
+    error("DMStagCreate2d: no generated method for these argument types")
+end
 
 @for_petsc function DMStagCreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
@@ -39379,7 +41569,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate3d"))
 """
-function DMStagCreate3d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::PetscInt, N::PetscInt, P::PetscInt, m::PetscInt, n::PetscInt, p::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) end
+function DMStagCreate3d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::Integer, N::Integer, P::Integer, m::Integer, n::Integer, p::Integer, dof0::Integer, dof1::Integer, dof2::Integer, dof3::Integer, stencilType::DMStagStencilType, stencilWidth::Integer, lx::Union{Ptr, AbstractVector{<:Number}}, ly::Union{Ptr, AbstractVector{<:Number}}, lz::Union{Ptr, AbstractVector{<:Number}})
+    error("DMStagCreate3d: no generated method for these argument types")
+end
 
 @for_petsc function DMStagCreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::$PetscInt, N::$PetscInt, P::$PetscInt, m::$PetscInt, n::$PetscInt, p::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}}, lz::Union{Ptr, Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
@@ -39428,7 +41620,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreateCompatibleDMStag"))
 """
-function DMStagCreateCompatibleDMStag(petsclib::PetscLibType, dm::AbstractPetscDM, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt) end
+function DMStagCreateCompatibleDMStag(petsclib::PetscLibType, dm::AbstractPetscDM, dof0::Integer, dof1::Integer, dof2::Integer, dof3::Integer)
+    error("DMStagCreateCompatibleDMStag: no generated method for these argument types")
+end
 
 @for_petsc function DMStagCreateCompatibleDMStag(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt )
 	newdm_ = Ref{CDM}()
@@ -39471,7 +41665,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreateISFromStencils"))
 """
-function DMStagCreateISFromStencils(petsclib::PetscLibType, dm::AbstractPetscDM, n_stencil::PetscInt, stencils::Vector{DMStagStencil}) end
+function DMStagCreateISFromStencils(petsclib::PetscLibType, dm::AbstractPetscDM, n_stencil::Integer, stencils::Vector{DMStagStencil})
+    error("DMStagCreateISFromStencils: no generated method for these argument types")
+end
 
 @for_petsc function DMStagCreateISFromStencils(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n_stencil::$PetscInt, stencils::Vector{DMStagStencil} )
 	is_ = Ref{CIS}()
@@ -39511,7 +41707,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetBoundaryTypes"))
 """
-function DMStagGetBoundaryTypes(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetBoundaryTypes(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetBoundaryTypes: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetBoundaryTypes(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	boundaryTypeX_ = Ref{DMBoundaryType}()
@@ -39568,7 +41766,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetCorners"))
 """
-function DMStagGetCorners(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetCorners(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetCorners: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetCorners(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	x_ = Ref{$PetscInt}()
@@ -39625,7 +41825,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetDOF"))
 """
-function DMStagGetDOF(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetDOF(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetDOF: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetDOF(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	dof0_ = Ref{$PetscInt}()
@@ -39675,7 +41877,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetEntries"))
 """
-function DMStagGetEntries(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetEntries(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetEntries: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetEntries(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	entries_ = Ref{$PetscInt}()
@@ -39719,7 +41923,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetEntriesLocal"))
 """
-function DMStagGetEntriesLocal(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetEntriesLocal(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetEntriesLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetEntriesLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	entries_ = Ref{$PetscInt}()
@@ -39761,7 +41967,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetEntriesPerElement"))
 """
-function DMStagGetEntriesPerElement(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetEntriesPerElement(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetEntriesPerElement: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetEntriesPerElement(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	entriesPerElement_ = Ref{$PetscInt}()
@@ -39807,7 +42015,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetGhostCorners"))
 """
-function DMStagGetGhostCorners(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetGhostCorners(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetGhostCorners: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetGhostCorners(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	x_ = Ref{$PetscInt}()
@@ -39860,7 +42070,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetGlobalSizes"))
 """
-function DMStagGetGlobalSizes(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetGlobalSizes(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetGlobalSizes: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetGlobalSizes(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	M_ = Ref{$PetscInt}()
@@ -39907,7 +42119,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetIsFirstRank"))
 """
-function DMStagGetIsFirstRank(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetIsFirstRank(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetIsFirstRank: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetIsFirstRank(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	isFirstRank0_ = Ref{PetscBool}()
@@ -39954,7 +42168,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetIsLastRank"))
 """
-function DMStagGetIsLastRank(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetIsLastRank(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetIsLastRank: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetIsLastRank(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	isLastRank0_ = Ref{PetscBool}()
@@ -40001,7 +42217,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetLocalSizes"))
 """
-function DMStagGetLocalSizes(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetLocalSizes(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetLocalSizes: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetLocalSizes(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	m_ = Ref{$PetscInt}()
@@ -40044,7 +42262,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetLocationDOF"))
 """
-function DMStagGetLocationDOF(petsclib::PetscLibType, dm::AbstractPetscDM, loc::DMStagStencilLocation) end
+function DMStagGetLocationDOF(petsclib::PetscLibType, dm::AbstractPetscDM, loc::DMStagStencilLocation)
+    error("DMStagGetLocationDOF: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetLocationDOF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, loc::DMStagStencilLocation )
 	dof_ = Ref{$PetscInt}()
@@ -40089,7 +42309,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetLocationSlot"))
 """
-function DMStagGetLocationSlot(petsclib::PetscLibType, dm::AbstractPetscDM, loc::DMStagStencilLocation, c::PetscInt) end
+function DMStagGetLocationSlot(petsclib::PetscLibType, dm::AbstractPetscDM, loc::DMStagStencilLocation, c::Integer)
+    error("DMStagGetLocationSlot: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetLocationSlot(petsclib::$UnionPetscLib, dm::AbstractPetscDM, loc::DMStagStencilLocation, c::$PetscInt )
 	slot_ = Ref{$PetscInt}()
@@ -40129,7 +42351,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetNumRanks"))
 """
-function DMStagGetNumRanks(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetNumRanks(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetNumRanks: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetNumRanks(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nRanks0_ = Ref{$PetscInt}()
@@ -40368,7 +42592,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetRefinementFactor"))
 """
-function DMStagGetRefinementFactor(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetRefinementFactor(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetRefinementFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetRefinementFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	refine_x_ = Ref{$PetscInt}()
@@ -40410,7 +42636,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetStencilType"))
 """
-function DMStagGetStencilType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetStencilType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetStencilType: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetStencilType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	stencilType_ = Ref{DMStagStencilType}()
@@ -40448,7 +42676,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetStencilWidth"))
 """
-function DMStagGetStencilWidth(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagGetStencilWidth(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagGetStencilWidth: no generated method for these argument types")
+end
 
 @for_petsc function DMStagGetStencilWidth(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	stencilWidth_ = Ref{$PetscInt}()
@@ -40466,7 +42696,7 @@ function DMStagGetStencilWidth(petsclib::PetscLibType, dm::AbstractPetscDM) end
 end 
 
 """
-	val::PetscScalar = DMStagMatGetValuesStencil(petsclib::PetscLibType,dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}) 
+	val::Vector{PetscScalar} = DMStagMatGetValuesStencil(petsclib::PetscLibType,dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}) 
 retrieve local matrix entries using grid indexing
 
 Not Collective
@@ -40491,19 +42721,20 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagMatGetValuesStencil"))
 """
-function DMStagMatGetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}) end
+function DMStagMatGetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::Integer, posRow::Vector{DMStagStencil}, nCol::Integer, posCol::Vector{DMStagStencil})
+    error("DMStagMatGetValuesStencil: no generated method for these argument types")
+end
 
 @for_petsc function DMStagMatGetValuesStencil(petsclib::$UnionPetscLib, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::$PetscInt, posRow::Vector{DMStagStencil}, nCol::$PetscInt, posCol::Vector{DMStagStencil} )
-	val_ = Ref{$PetscScalar}()
+	val = Vector{$PetscScalar}(undef, nRow * nCol)
 
     @chk ccall(
                (:DMStagMatGetValuesStencil, $petsc_library),
                PetscErrorCode,
                (CDM, CMat, $PetscInt, Ptr{DMStagStencil}, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscScalar}),
-               dm, mat, nRow, posRow, nCol, posCol, val_,
+               dm, mat, nRow, posRow, nCol, posCol, val,
               )
 
-	val = val_[]
 
 	return val
 end 
@@ -40536,7 +42767,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagMatSetValuesStencil"))
 """
-function DMStagMatSetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}, val::Vector{PetscScalar}, insertMode::InsertMode) end
+function DMStagMatSetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::Integer, posRow::Vector{DMStagStencil}, nCol::Integer, posCol::Vector{DMStagStencil}, val::AbstractVector{<:Number}, insertMode::InsertMode)
+    error("DMStagMatSetValuesStencil: no generated method for these argument types")
+end
 
 @for_petsc function DMStagMatSetValuesStencil(petsclib::$UnionPetscLib, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::$PetscInt, posRow::Vector{DMStagStencil}, nCol::$PetscInt, posCol::Vector{DMStagStencil}, val::Vector{$PetscScalar}, insertMode::InsertMode )
 
@@ -40577,7 +42810,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagMigrateVec"))
 """
-function DMStagMigrateVec(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, dmTo::AbstractPetscDM, vecTo::AbstractPetscVec) end
+function DMStagMigrateVec(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, dmTo::AbstractPetscDM, vecTo::AbstractPetscVec)
+    error("DMStagMigrateVec: no generated method for these argument types")
+end
 
 @for_petsc function DMStagMigrateVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vec::AbstractPetscVec, dmTo::AbstractPetscDM, vecTo::AbstractPetscVec )
 
@@ -40630,7 +42865,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagPopulateLocalToGlobalInjective"))
 """
-function DMStagPopulateLocalToGlobalInjective(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMStagPopulateLocalToGlobalInjective(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMStagPopulateLocalToGlobalInjective: no generated method for these argument types")
+end
 
 @for_petsc function DMStagPopulateLocalToGlobalInjective(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -40770,7 +43007,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagRestrictSimple"))
 """
-function DMStagRestrictSimple(petsclib::PetscLibType, dmf::AbstractPetscDM, xf::AbstractPetscVec, dmc::AbstractPetscDM, xc::AbstractPetscVec) end
+function DMStagRestrictSimple(petsclib::PetscLibType, dmf::AbstractPetscDM, xf::AbstractPetscVec, dmc::AbstractPetscDM, xc::AbstractPetscVec)
+    error("DMStagRestrictSimple: no generated method for these argument types")
+end
 
 @for_petsc function DMStagRestrictSimple(petsclib::$UnionPetscLib, dmf::AbstractPetscDM, xf::AbstractPetscVec, dmc::AbstractPetscDM, xc::AbstractPetscVec )
 
@@ -40809,7 +43048,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetBoundaryTypes"))
 """
-function DMStagSetBoundaryTypes(petsclib::PetscLibType, dm::AbstractPetscDM, boundaryType0::DMBoundaryType, boundaryType1::DMBoundaryType, boundaryType2::DMBoundaryType) end
+function DMStagSetBoundaryTypes(petsclib::PetscLibType, dm::AbstractPetscDM, boundaryType0::DMBoundaryType, boundaryType1::DMBoundaryType, boundaryType2::DMBoundaryType)
+    error("DMStagSetBoundaryTypes: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetBoundaryTypes(petsclib::$UnionPetscLib, dm::AbstractPetscDM, boundaryType0::DMBoundaryType, boundaryType1::DMBoundaryType, boundaryType2::DMBoundaryType )
 
@@ -40843,7 +43084,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetCoordinateDMType"))
 """
-function DMStagSetCoordinateDMType(petsclib::PetscLibType, dm::AbstractPetscDM, dmtype::DMType) end
+function DMStagSetCoordinateDMType(petsclib::PetscLibType, dm::AbstractPetscDM, dmtype::DMType)
+    error("DMStagSetCoordinateDMType: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetCoordinateDMType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmtype::DMType )
 
@@ -40883,7 +43126,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetDOF"))
 """
-function DMStagSetDOF(petsclib::PetscLibType, dm::AbstractPetscDM, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt) end
+function DMStagSetDOF(petsclib::PetscLibType, dm::AbstractPetscDM, dof0::Integer, dof1::Integer, dof2::Integer, dof3::Integer)
+    error("DMStagSetDOF: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetDOF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt )
 
@@ -40922,7 +43167,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetGlobalSizes"))
 """
-function DMStagSetGlobalSizes(petsclib::PetscLibType, dm::AbstractPetscDM, N0::PetscInt, N1::PetscInt, N2::PetscInt) end
+function DMStagSetGlobalSizes(petsclib::PetscLibType, dm::AbstractPetscDM, N0::Integer, N1::Integer, N2::Integer)
+    error("DMStagSetGlobalSizes: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetGlobalSizes(petsclib::$UnionPetscLib, dm::AbstractPetscDM, N0::$PetscInt, N1::$PetscInt, N2::$PetscInt )
 
@@ -40961,7 +43208,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetNumRanks"))
 """
-function DMStagSetNumRanks(petsclib::PetscLibType, dm::AbstractPetscDM, nRanks0::PetscInt, nRanks1::PetscInt, nRanks2::PetscInt) end
+function DMStagSetNumRanks(petsclib::PetscLibType, dm::AbstractPetscDM, nRanks0::Integer, nRanks1::Integer, nRanks2::Integer)
+    error("DMStagSetNumRanks: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetNumRanks(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nRanks0::$PetscInt, nRanks1::$PetscInt, nRanks2::$PetscInt )
 
@@ -41000,7 +43249,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetOwnershipRanges"))
 """
-function DMStagSetOwnershipRanges(petsclib::PetscLibType, dm::AbstractPetscDM, lx::Vector{PetscInt}, ly::Vector{PetscInt}, lz::Vector{PetscInt}) end
+function DMStagSetOwnershipRanges(petsclib::PetscLibType, dm::AbstractPetscDM, lx::AbstractVector{<:Number}, ly::AbstractVector{<:Number}, lz::AbstractVector{<:Number})
+    error("DMStagSetOwnershipRanges: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetOwnershipRanges(petsclib::$UnionPetscLib, dm::AbstractPetscDM, lx::Vector{$PetscInt}, ly::Vector{$PetscInt}, lz::Vector{$PetscInt} )
 
@@ -41039,7 +43290,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetRefinementFactor"))
 """
-function DMStagSetRefinementFactor(petsclib::PetscLibType, dm::AbstractPetscDM, refine_x::PetscInt, refine_y::PetscInt, refine_z::PetscInt) end
+function DMStagSetRefinementFactor(petsclib::PetscLibType, dm::AbstractPetscDM, refine_x::Integer, refine_y::Integer, refine_z::Integer)
+    error("DMStagSetRefinementFactor: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetRefinementFactor(petsclib::$UnionPetscLib, dm::AbstractPetscDM, refine_x::$PetscInt, refine_y::$PetscInt, refine_z::$PetscInt )
 
@@ -41073,7 +43326,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetStencilType"))
 """
-function DMStagSetStencilType(petsclib::PetscLibType, dm::AbstractPetscDM, stencilType::DMStagStencilType) end
+function DMStagSetStencilType(petsclib::PetscLibType, dm::AbstractPetscDM, stencilType::DMStagStencilType)
+    error("DMStagSetStencilType: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetStencilType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, stencilType::DMStagStencilType )
 
@@ -41110,7 +43365,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetStencilWidth"))
 """
-function DMStagSetStencilWidth(petsclib::PetscLibType, dm::AbstractPetscDM, stencilWidth::PetscInt) end
+function DMStagSetStencilWidth(petsclib::PetscLibType, dm::AbstractPetscDM, stencilWidth::Integer)
+    error("DMStagSetStencilWidth: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetStencilWidth(petsclib::$UnionPetscLib, dm::AbstractPetscDM, stencilWidth::$PetscInt )
 
@@ -41161,7 +43418,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetUniformCoordinates"))
 """
-function DMStagSetUniformCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) end
+function DMStagSetUniformCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::Real, xmax::Real, ymin::Real, ymax::Real, zmin::Real, zmax::Real)
+    error("DMStagSetUniformCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetUniformCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, xmin::$PetscReal, xmax::$PetscReal, ymin::$PetscReal, ymax::$PetscReal, zmin::$PetscReal, zmax::$PetscReal )
 
@@ -41209,7 +43468,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetUniformCoordinatesExplicit"))
 """
-function DMStagSetUniformCoordinatesExplicit(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) end
+function DMStagSetUniformCoordinatesExplicit(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::Real, xmax::Real, ymin::Real, ymax::Real, zmin::Real, zmax::Real)
+    error("DMStagSetUniformCoordinatesExplicit: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetUniformCoordinatesExplicit(petsclib::$UnionPetscLib, dm::AbstractPetscDM, xmin::$PetscReal, xmax::$PetscReal, ymin::$PetscReal, ymax::$PetscReal, zmin::$PetscReal, zmax::$PetscReal )
 
@@ -41260,7 +43521,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagSetUniformCoordinatesProduct"))
 """
-function DMStagSetUniformCoordinatesProduct(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) end
+function DMStagSetUniformCoordinatesProduct(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::Real, xmax::Real, ymin::Real, ymax::Real, zmin::Real, zmax::Real)
+    error("DMStagSetUniformCoordinatesProduct: no generated method for these argument types")
+end
 
 @for_petsc function DMStagSetUniformCoordinatesProduct(petsclib::$UnionPetscLib, dm::AbstractPetscDM, xmin::$PetscReal, xmax::$PetscReal, ymin::$PetscReal, ymax::$PetscReal, zmin::$PetscReal, zmax::$PetscReal )
 
@@ -41276,7 +43539,7 @@ function DMStagSetUniformCoordinatesProduct(petsclib::PetscLibType, dm::Abstract
 end 
 
 """
-	ix::PetscInt = DMStagStencilToIndexLocal(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt, n::PetscInt, pos::Vector{DMStagStencil}) 
+	ix::Vector{PetscInt} = DMStagStencilToIndexLocal(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt, n::PetscInt, pos::Vector{DMStagStencil}) 
 Convert an array of `DMStagStenci`l objects to an array of indices into a local vector.
 
 Not Collective
@@ -41307,19 +43570,20 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagStencilToIndexLocal"))
 """
-function DMStagStencilToIndexLocal(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt, n::PetscInt, pos::Vector{DMStagStencil}) end
+function DMStagStencilToIndexLocal(petsclib::PetscLibType, dm::AbstractPetscDM, dim::Integer, n::Integer, pos::Vector{DMStagStencil})
+    error("DMStagStencilToIndexLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMStagStencilToIndexLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dim::$PetscInt, n::$PetscInt, pos::Vector{DMStagStencil} )
-	ix_ = Ref{$PetscInt}()
+	ix = Vector{$PetscInt}(undef, n)
 
     @chk ccall(
                (:DMStagStencilToIndexLocal, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscInt}),
-               dm, dim, n, pos, ix_,
+               dm, dim, n, pos, ix,
               )
 
-	ix = ix_[]
 
 	return ix
 end 
@@ -41626,7 +43890,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagVecSetValuesStencil"))
 """
-function DMStagVecSetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, n::PetscInt, pos::Vector{DMStagStencil}, val::Vector{PetscScalar}, insertMode::InsertMode) end
+function DMStagVecSetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, n::Integer, pos::Vector{DMStagStencil}, val::AbstractVector{<:Number}, insertMode::InsertMode)
+    error("DMStagVecSetValuesStencil: no generated method for these argument types")
+end
 
 @for_petsc function DMStagVecSetValuesStencil(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vec::AbstractPetscVec, n::$PetscInt, pos::Vector{DMStagStencil}, val::Vector{$PetscScalar}, insertMode::InsertMode )
 
@@ -41673,7 +43939,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagVecSplitToDMDA"))
 """
-function DMStagVecSplitToDMDA(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, loc::DMStagStencilLocation, c::PetscInt) end
+function DMStagVecSplitToDMDA(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, loc::DMStagStencilLocation, c::Integer)
+    error("DMStagVecSplitToDMDA: no generated method for these argument types")
+end
 
 @for_petsc function DMStagVecSplitToDMDA(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vec::AbstractPetscVec, loc::DMStagStencilLocation, c::$PetscInt )
 	pda_ = Ref{CDM}()
@@ -41736,7 +44004,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSubDomainHookAdd"))
 """
-function DMSubDomainHookAdd(petsclib::PetscLibType, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid}) end
+function DMSubDomainHookAdd(petsclib::PetscLibType, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid})
+    error("DMSubDomainHookAdd: no generated method for these argument types")
+end
 
 @for_petsc function DMSubDomainHookAdd(petsclib::$UnionPetscLib, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid} )
 
@@ -41776,7 +44046,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSubDomainHookRemove"))
 """
-function DMSubDomainHookRemove(petsclib::PetscLibType, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid}) end
+function DMSubDomainHookRemove(petsclib::PetscLibType, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid})
+    error("DMSubDomainHookRemove: no generated method for these argument types")
+end
 
 @for_petsc function DMSubDomainHookRemove(petsclib::$UnionPetscLib, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid} )
 
@@ -41812,7 +44084,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSubDomainRestrict"))
 """
-function DMSubDomainRestrict(petsclib::PetscLibType, glob::AbstractPetscDM, oscatter::VecScatter, gscatter::VecScatter, subdm::AbstractPetscDM) end
+function DMSubDomainRestrict(petsclib::PetscLibType, glob::AbstractPetscDM, oscatter::VecScatter, gscatter::VecScatter, subdm::AbstractPetscDM)
+    error("DMSubDomainRestrict: no generated method for these argument types")
+end
 
 @for_petsc function DMSubDomainRestrict(petsclib::$UnionPetscLib, glob::AbstractPetscDM, oscatter::VecScatter, gscatter::VecScatter, subdm::AbstractPetscDM )
 
@@ -41844,7 +44118,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmAddCellDM"))
 """
-function DMSwarmAddCellDM(petsclib::PetscLibType, sw::AbstractPetscDM, celldm::DMSwarmCellDM) end
+function DMSwarmAddCellDM(petsclib::PetscLibType, sw::AbstractPetscDM, celldm::DMSwarmCellDM)
+    error("DMSwarmAddCellDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmAddCellDM(petsclib::$UnionPetscLib, sw::AbstractPetscDM, celldm::DMSwarmCellDM )
 
@@ -41876,7 +44152,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmAddNPoints"))
 """
-function DMSwarmAddNPoints(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt) end
+function DMSwarmAddNPoints(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer)
+    error("DMSwarmAddNPoints: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmAddNPoints(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt )
 
@@ -41907,7 +44185,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmAddPoint"))
 """
-function DMSwarmAddPoint(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmAddPoint(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmAddPoint: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmAddPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -41939,7 +44219,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCollectViewCreate"))
 """
-function DMSwarmCollectViewCreate(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmCollectViewCreate(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmCollectViewCreate: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCollectViewCreate(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -41968,7 +44250,9 @@ Input Parameters:
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCollectViewDestroy"))
 """
-function DMSwarmCollectViewDestroy(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmCollectViewDestroy(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmCollectViewDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCollectViewDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -42001,7 +44285,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmComputeLocalSize"))
 """
-function DMSwarmComputeLocalSize(petsclib::PetscLibType, sw::AbstractPetscDM, N::PetscInt, density::Ptr{Cvoid}) end
+function DMSwarmComputeLocalSize(petsclib::PetscLibType, sw::AbstractPetscDM, N::Integer, density::Ptr{Cvoid})
+    error("DMSwarmComputeLocalSize: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmComputeLocalSize(petsclib::$UnionPetscLib, sw::AbstractPetscDM, N::$PetscInt, density::Ptr{Cvoid} )
 
@@ -42032,7 +44318,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmComputeLocalSizeFromOptions"))
 """
-function DMSwarmComputeLocalSizeFromOptions(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmComputeLocalSizeFromOptions(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmComputeLocalSizeFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmComputeLocalSizeFromOptions(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 
@@ -42068,7 +44356,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmComputeMoments"))
 """
-function DMSwarmComputeMoments(petsclib::PetscLibType, sw::AbstractPetscDM, coordinate::String, weight::String, moments::Vector{PetscReal}) end
+function DMSwarmComputeMoments(petsclib::PetscLibType, sw::AbstractPetscDM, coordinate::String, weight::String, moments::AbstractVector{<:Number})
+    error("DMSwarmComputeMoments: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmComputeMoments(petsclib::$UnionPetscLib, sw::AbstractPetscDM, coordinate::String, weight::String, moments::Vector{$PetscReal} )
 
@@ -42101,7 +44391,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCopyPoint"))
 """
-function DMSwarmCopyPoint(petsclib::PetscLibType, dm::AbstractPetscDM, pi::PetscInt, pj::PetscInt) end
+function DMSwarmCopyPoint(petsclib::PetscLibType, dm::AbstractPetscDM, pi::Integer, pj::Integer)
+    error("DMSwarmCopyPoint: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCopyPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, pi::$PetscInt, pj::$PetscInt )
 
@@ -42136,7 +44428,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateGlobalVectorFromField"))
 """
-function DMSwarmCreateGlobalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) end
+function DMSwarmCreateGlobalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String)
+    error("DMSwarmCreateGlobalVectorFromField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCreateGlobalVectorFromField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String )
 	vec_ = Ref{CVec}()
@@ -42174,7 +44468,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateGlobalVectorFromFields"))
 """
-function DMSwarmCreateGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
+function DMSwarmCreateGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::Integer, fieldnames::String)
+    error("DMSwarmCreateGlobalVectorFromFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCreateGlobalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
 	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
@@ -42212,7 +44508,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateLocalVectorFromField"))
 """
-function DMSwarmCreateLocalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) end
+function DMSwarmCreateLocalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String)
+    error("DMSwarmCreateLocalVectorFromField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCreateLocalVectorFromField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String )
 	vec_ = Ref{CVec}()
@@ -42250,7 +44548,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateLocalVectorFromFields"))
 """
-function DMSwarmCreateLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
+function DMSwarmCreateLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::Integer, fieldnames::String)
+    error("DMSwarmCreateLocalVectorFromFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCreateLocalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
 	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
@@ -42288,7 +44588,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateMassMatrixSquare"))
 """
-function DMSwarmCreateMassMatrixSquare(petsclib::PetscLibType, dmCoarse::AbstractPetscDM, dmFine::AbstractPetscDM) end
+function DMSwarmCreateMassMatrixSquare(petsclib::PetscLibType, dmCoarse::AbstractPetscDM, dmFine::AbstractPetscDM)
+    error("DMSwarmCreateMassMatrixSquare: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCreateMassMatrixSquare(petsclib::$UnionPetscLib, dmCoarse::AbstractPetscDM, dmFine::AbstractPetscDM )
 	mass_ = Ref{CMat}()
@@ -42325,7 +44627,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreatePointPerCellCount"))
 """
-function DMSwarmCreatePointPerCellCount(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmCreatePointPerCellCount(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmCreatePointPerCellCount: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmCreatePointPerCellCount(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	ncells_ = Ref{$PetscInt}()
@@ -42364,7 +44668,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyGlobalVectorFromField"))
 """
-function DMSwarmDestroyGlobalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) end
+function DMSwarmDestroyGlobalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String)
+    error("DMSwarmDestroyGlobalVectorFromField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmDestroyGlobalVectorFromField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String )
 	vec_ = Ref{CVec}()
@@ -42402,7 +44708,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyGlobalVectorFromFields"))
 """
-function DMSwarmDestroyGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
+function DMSwarmDestroyGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::Integer, fieldnames::String)
+    error("DMSwarmDestroyGlobalVectorFromFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmDestroyGlobalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
 	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
@@ -42440,7 +44748,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyLocalVectorFromField"))
 """
-function DMSwarmDestroyLocalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) end
+function DMSwarmDestroyLocalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String)
+    error("DMSwarmDestroyLocalVectorFromField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmDestroyLocalVectorFromField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String )
 	vec_ = Ref{CVec}()
@@ -42478,7 +44788,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyLocalVectorFromFields"))
 """
-function DMSwarmDestroyLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
+function DMSwarmDestroyLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::Integer, fieldnames::String)
+    error("DMSwarmDestroyLocalVectorFromFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmDestroyLocalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
 	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
@@ -42515,7 +44827,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDuplicate"))
 """
-function DMSwarmDuplicate(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmDuplicate(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmDuplicate: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmDuplicate(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	nsw_ = Ref{CDM}()
@@ -42549,7 +44863,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmFinalizeFieldRegister"))
 """
-function DMSwarmFinalizeFieldRegister(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmFinalizeFieldRegister(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmFinalizeFieldRegister: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmFinalizeFieldRegister(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -42583,7 +44899,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDM"))
 """
-function DMSwarmGetCellDM(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmGetCellDM(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmGetCellDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetCellDM(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	dm_ = Ref{CDM}()
@@ -42619,7 +44937,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDMActive"))
 """
-function DMSwarmGetCellDMActive(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmGetCellDMActive(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmGetCellDMActive: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetCellDMActive(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	celldm_ = Ref{DMSwarmCellDM}()
@@ -42656,7 +44976,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDMByName"))
 """
-function DMSwarmGetCellDMByName(petsclib::PetscLibType, sw::AbstractPetscDM, name::String) end
+function DMSwarmGetCellDMByName(petsclib::PetscLibType, sw::AbstractPetscDM, name::String)
+    error("DMSwarmGetCellDMByName: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetCellDMByName(petsclib::$UnionPetscLib, sw::AbstractPetscDM, name::String )
 	celldm_ = Ref{DMSwarmCellDM}()
@@ -42693,7 +45015,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDMNames"))
 """
-function DMSwarmGetCellDMNames(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmGetCellDMNames(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmGetCellDMNames: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetCellDMNames(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	Ndm_ = Ref{$PetscInt}()
@@ -42731,7 +45055,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellSwarm"))
 """
-function DMSwarmGetCellSwarm(petsclib::PetscLibType, sw::AbstractPetscDM, cellID::PetscInt, cellswarm::AbstractPetscDM) end
+function DMSwarmGetCellSwarm(petsclib::PetscLibType, sw::AbstractPetscDM, cellID::Integer, cellswarm::AbstractPetscDM)
+    error("DMSwarmGetCellSwarm: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetCellSwarm(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cellID::$PetscInt, cellswarm::AbstractPetscDM )
 
@@ -42765,7 +45091,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCoordinateFunction"))
 """
-function DMSwarmGetCoordinateFunction(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmGetCoordinateFunction(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmGetCoordinateFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetCoordinateFunction(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	coordFunc_ = Ref{Ptr{Cvoid}}()
@@ -42804,7 +45132,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetField"))
 """
-function DMSwarmGetField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) end
+function DMSwarmGetField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String)
+    error("DMSwarmGetField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String )
 	blocksize_ = Ref{$PetscInt}()
@@ -42831,7 +45161,9 @@ end
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetFieldInfo"))
 """
-function DMSwarmGetFieldInfo(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) end
+function DMSwarmGetFieldInfo(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String)
+    error("DMSwarmGetFieldInfo: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetFieldInfo(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String )
 	blocksize_ = Ref{$PetscInt}()
@@ -42869,7 +45201,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetLocalSize"))
 """
-function DMSwarmGetLocalSize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmGetLocalSize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmGetLocalSize: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetLocalSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	nlocal_ = Ref{$PetscInt}()
@@ -42905,7 +45239,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetMigrateType"))
 """
-function DMSwarmGetMigrateType(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmGetMigrateType(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmGetMigrateType: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetMigrateType(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	mtype_ = Ref{DMSwarmMigrateType}()
@@ -42941,7 +45277,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetNumSpecies"))
 """
-function DMSwarmGetNumSpecies(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmGetNumSpecies(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmGetNumSpecies: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetNumSpecies(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	Ns_ = Ref{$PetscInt}()
@@ -42977,7 +45315,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetSize"))
 """
-function DMSwarmGetSize(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmGetSize(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmGetSize: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetSize(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	n_ = Ref{$PetscInt}()
@@ -43013,7 +45353,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetType"))
 """
-function DMSwarmGetType(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmGetType(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmGetType: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetType(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	stype_ = Ref{DMSwarmType}()
@@ -43049,7 +45391,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetVelocityFunction"))
 """
-function DMSwarmGetVelocityFunction(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmGetVelocityFunction(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmGetVelocityFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmGetVelocityFunction(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	velFunc_ = Ref{Ptr{Cvoid}}()
@@ -43082,7 +45426,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInitializeCoordinates"))
 """
-function DMSwarmInitializeCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmInitializeCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmInitializeCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmInitializeCoordinates(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 
@@ -43114,7 +45460,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInitializeFieldRegister"))
 """
-function DMSwarmInitializeFieldRegister(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmInitializeFieldRegister(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmInitializeFieldRegister: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmInitializeFieldRegister(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -43147,7 +45495,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInitializeVelocities"))
 """
-function DMSwarmInitializeVelocities(petsclib::PetscLibType, sw::AbstractPetscDM, sampler::Ptr{Cvoid}, v0::Vector{PetscReal}) end
+function DMSwarmInitializeVelocities(petsclib::PetscLibType, sw::AbstractPetscDM, sampler::Ptr{Cvoid}, v0::AbstractVector{<:Number})
+    error("DMSwarmInitializeVelocities: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmInitializeVelocities(petsclib::$UnionPetscLib, sw::AbstractPetscDM, sampler::Ptr{Cvoid}, v0::Vector{$PetscReal} )
 
@@ -43179,7 +45529,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInitializeVelocitiesFromOptions"))
 """
-function DMSwarmInitializeVelocitiesFromOptions(petsclib::PetscLibType, sw::AbstractPetscDM, v0::Vector{PetscReal}) end
+function DMSwarmInitializeVelocitiesFromOptions(petsclib::PetscLibType, sw::AbstractPetscDM, v0::AbstractVector{<:Number})
+    error("DMSwarmInitializeVelocitiesFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmInitializeVelocitiesFromOptions(petsclib::$UnionPetscLib, sw::AbstractPetscDM, v0::Vector{$PetscReal} )
 
@@ -43212,7 +45564,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInsertPointsUsingCellDM"))
 """
-function DMSwarmInsertPointsUsingCellDM(petsclib::PetscLibType, dm::AbstractPetscDM, layout_type::DMSwarmPICLayoutType, fill_param::PetscInt) end
+function DMSwarmInsertPointsUsingCellDM(petsclib::PetscLibType, dm::AbstractPetscDM, layout_type::DMSwarmPICLayoutType, fill_param::Integer)
+    error("DMSwarmInsertPointsUsingCellDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmInsertPointsUsingCellDM(petsclib::$UnionPetscLib, dm::AbstractPetscDM, layout_type::DMSwarmPICLayoutType, fill_param::$PetscInt )
 
@@ -43244,7 +45598,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmMigrate"))
 """
-function DMSwarmMigrate(petsclib::PetscLibType, dm::AbstractPetscDM, remove_sent_points::PetscBool) end
+function DMSwarmMigrate(petsclib::PetscLibType, dm::AbstractPetscDM, remove_sent_points::PetscBool)
+    error("DMSwarmMigrate: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmMigrate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, remove_sent_points::PetscBool )
 
@@ -43299,7 +45655,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSwarmProjectFields"))
 """
-function DMSwarmProjectFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) end
+function DMSwarmProjectFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::Integer, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode)
+    error("DMSwarmProjectFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmProjectFields(petsclib::$UnionPetscLib, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::$PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode )
 	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
@@ -43321,7 +45679,9 @@ end
 # External Links
 $(_doc_external("DM/DMSwarmProjectGradientFields"))
 """
-function DMSwarmProjectGradientFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) end
+function DMSwarmProjectGradientFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::Integer, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode)
+    error("DMSwarmProjectGradientFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmProjectGradientFields(petsclib::$UnionPetscLib, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::$PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode )
 	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
@@ -43356,7 +45716,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRegisterPetscDatatypeField"))
 """
-function DMSwarmRegisterPetscDatatypeField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, blocksize::PetscInt, type::PetscDataType) end
+function DMSwarmRegisterPetscDatatypeField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, blocksize::Integer, type::PetscDataType)
+    error("DMSwarmRegisterPetscDatatypeField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRegisterPetscDatatypeField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String, blocksize::$PetscInt, type::PetscDataType )
 
@@ -43390,7 +45752,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRegisterUserDatatypeField"))
 """
-function DMSwarmRegisterUserDatatypeField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, size::Csize_t, blocksize::PetscInt) end
+function DMSwarmRegisterUserDatatypeField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, size::Csize_t, blocksize::Integer)
+    error("DMSwarmRegisterUserDatatypeField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRegisterUserDatatypeField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String, size::Csize_t, blocksize::$PetscInt )
 
@@ -43423,7 +45787,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRegisterUserStructField"))
 """
-function DMSwarmRegisterUserStructField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, size::Csize_t) end
+function DMSwarmRegisterUserStructField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, size::Csize_t)
+    error("DMSwarmRegisterUserStructField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRegisterUserStructField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String, size::Csize_t )
 
@@ -43456,7 +45822,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSwarmRemap"))
 """
-function DMSwarmRemap(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmRemap(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmRemap: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRemap(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 
@@ -43487,7 +45855,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRemovePoint"))
 """
-function DMSwarmRemovePoint(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMSwarmRemovePoint(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMSwarmRemovePoint: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRemovePoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -43519,7 +45889,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRemovePointAtIndex"))
 """
-function DMSwarmRemovePointAtIndex(petsclib::PetscLibType, dm::AbstractPetscDM, idx::PetscInt) end
+function DMSwarmRemovePointAtIndex(petsclib::PetscLibType, dm::AbstractPetscDM, idx::Integer)
+    error("DMSwarmRemovePointAtIndex: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRemovePointAtIndex(petsclib::$UnionPetscLib, dm::AbstractPetscDM, idx::$PetscInt )
 
@@ -43540,7 +45912,9 @@ end
 # External Links
 $(_doc_external("DMSwarm/DMSwarmReplace"))
 """
-function DMSwarmReplace(petsclib::PetscLibType, dm::AbstractPetscDM, ndm::AbstractPetscDM) end
+function DMSwarmReplace(petsclib::PetscLibType, dm::AbstractPetscDM, ndm::AbstractPetscDM)
+    error("DMSwarmReplace: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmReplace(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ndm::AbstractPetscDM )
 	ndm_ = Ref(ndm.ptr)
@@ -43575,7 +45949,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRestoreCellSwarm"))
 """
-function DMSwarmRestoreCellSwarm(petsclib::PetscLibType, sw::AbstractPetscDM, cellID::PetscInt, cellswarm::AbstractPetscDM) end
+function DMSwarmRestoreCellSwarm(petsclib::PetscLibType, sw::AbstractPetscDM, cellID::Integer, cellswarm::AbstractPetscDM)
+    error("DMSwarmRestoreCellSwarm: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRestoreCellSwarm(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cellID::$PetscInt, cellswarm::AbstractPetscDM )
 
@@ -43612,7 +45988,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRestoreField"))
 """
-function DMSwarmRestoreField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, blocksize::PetscInt, type::PetscDataType) end
+function DMSwarmRestoreField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, blocksize::Integer, type::PetscDataType)
+    error("DMSwarmRestoreField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmRestoreField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String, blocksize::$PetscInt, type::PetscDataType )
 	blocksize_ = Ref{$PetscInt}(blocksize)
@@ -43648,7 +46026,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetCellDM"))
 """
-function DMSwarmSetCellDM(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM) end
+function DMSwarmSetCellDM(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM)
+    error("DMSwarmSetCellDM: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetCellDM(petsclib::$UnionPetscLib, sw::AbstractPetscDM, dm::AbstractPetscDM )
 
@@ -43680,7 +46060,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetCellDMActive"))
 """
-function DMSwarmSetCellDMActive(petsclib::PetscLibType, sw::AbstractPetscDM, name::String) end
+function DMSwarmSetCellDMActive(petsclib::PetscLibType, sw::AbstractPetscDM, name::String)
+    error("DMSwarmSetCellDMActive: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetCellDMActive(petsclib::$UnionPetscLib, sw::AbstractPetscDM, name::String )
 
@@ -43712,7 +46094,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetCoordinateFunction"))
 """
-function DMSwarmSetCoordinateFunction(petsclib::PetscLibType, sw::AbstractPetscDM, coordFunc::Ptr{Cvoid}) end
+function DMSwarmSetCoordinateFunction(petsclib::PetscLibType, sw::AbstractPetscDM, coordFunc::Ptr{Cvoid})
+    error("DMSwarmSetCoordinateFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetCoordinateFunction(petsclib::$UnionPetscLib, sw::AbstractPetscDM, coordFunc::Ptr{Cvoid} )
 
@@ -43745,7 +46129,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetLocalSizes"))
 """
-function DMSwarmSetLocalSizes(petsclib::PetscLibType, sw::AbstractPetscDM, nlocal::PetscInt, buffer::PetscInt) end
+function DMSwarmSetLocalSizes(petsclib::PetscLibType, sw::AbstractPetscDM, nlocal::Integer, buffer::Integer)
+    error("DMSwarmSetLocalSizes: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetLocalSizes(petsclib::$UnionPetscLib, sw::AbstractPetscDM, nlocal::$PetscInt, buffer::$PetscInt )
 
@@ -43777,7 +46163,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetMigrateType"))
 """
-function DMSwarmSetMigrateType(petsclib::PetscLibType, dm::AbstractPetscDM, mtype::DMSwarmMigrateType) end
+function DMSwarmSetMigrateType(petsclib::PetscLibType, dm::AbstractPetscDM, mtype::DMSwarmMigrateType)
+    error("DMSwarmSetMigrateType: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetMigrateType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, mtype::DMSwarmMigrateType )
 
@@ -43809,7 +46197,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetNumSpecies"))
 """
-function DMSwarmSetNumSpecies(petsclib::PetscLibType, sw::AbstractPetscDM, Ns::PetscInt) end
+function DMSwarmSetNumSpecies(petsclib::PetscLibType, sw::AbstractPetscDM, Ns::Integer)
+    error("DMSwarmSetNumSpecies: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetNumSpecies(petsclib::$UnionPetscLib, sw::AbstractPetscDM, Ns::$PetscInt )
 
@@ -43844,7 +46234,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointCoordinates"))
 """
-function DMSwarmSetPointCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM, npoints::PetscInt, coor::Vector{PetscReal}, redundant::PetscBool, mode::InsertMode) end
+function DMSwarmSetPointCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM, npoints::Integer, coor::AbstractVector{<:Number}, redundant::PetscBool, mode::InsertMode)
+    error("DMSwarmSetPointCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetPointCoordinates(petsclib::$UnionPetscLib, sw::AbstractPetscDM, npoints::$PetscInt, coor::Vector{$PetscReal}, redundant::PetscBool, mode::InsertMode )
 
@@ -43877,7 +46269,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointCoordinatesCellwise"))
 """
-function DMSwarmSetPointCoordinatesCellwise(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, xi::Vector{PetscReal}) end
+function DMSwarmSetPointCoordinatesCellwise(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::Integer, xi::AbstractVector{<:Number})
+    error("DMSwarmSetPointCoordinatesCellwise: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetPointCoordinatesCellwise(petsclib::$UnionPetscLib, dm::AbstractPetscDM, npoints::$PetscInt, xi::Vector{$PetscReal} )
 
@@ -43909,7 +46303,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointCoordinatesRandom"))
 """
-function DMSwarmSetPointCoordinatesRandom(petsclib::PetscLibType, dm::AbstractPetscDM, Npc::PetscInt) end
+function DMSwarmSetPointCoordinatesRandom(petsclib::PetscLibType, dm::AbstractPetscDM, Npc::Integer)
+    error("DMSwarmSetPointCoordinatesRandom: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetPointCoordinatesRandom(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Npc::$PetscInt )
 
@@ -43944,7 +46340,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointsUniformCoordinates"))
 """
-function DMSwarmSetPointsUniformCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM, min::Vector{PetscReal}, max::Vector{PetscReal}, npoints::Vector{PetscInt}, mode::InsertMode) end
+function DMSwarmSetPointsUniformCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM, min::AbstractVector{<:Number}, max::AbstractVector{<:Number}, npoints::AbstractVector{<:Number}, mode::InsertMode)
+    error("DMSwarmSetPointsUniformCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetPointsUniformCoordinates(petsclib::$UnionPetscLib, sw::AbstractPetscDM, min::Vector{$PetscReal}, max::Vector{$PetscReal}, npoints::Vector{$PetscInt}, mode::InsertMode )
 
@@ -43976,7 +46374,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetType"))
 """
-function DMSwarmSetType(petsclib::PetscLibType, sw::AbstractPetscDM, stype::DMSwarmType) end
+function DMSwarmSetType(petsclib::PetscLibType, sw::AbstractPetscDM, stype::DMSwarmType)
+    error("DMSwarmSetType: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetType(petsclib::$UnionPetscLib, sw::AbstractPetscDM, stype::DMSwarmType )
 
@@ -44008,7 +46408,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetVelocityFunction"))
 """
-function DMSwarmSetVelocityFunction(petsclib::PetscLibType, sw::AbstractPetscDM, velFunc::Ptr{Cvoid}) end
+function DMSwarmSetVelocityFunction(petsclib::PetscLibType, sw::AbstractPetscDM, velFunc::Ptr{Cvoid})
+    error("DMSwarmSetVelocityFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmSetVelocityFunction(petsclib::$UnionPetscLib, sw::AbstractPetscDM, velFunc::Ptr{Cvoid} )
 
@@ -44041,7 +46443,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmVectorDefineField"))
 """
-function DMSwarmVectorDefineField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) end
+function DMSwarmVectorDefineField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String)
+    error("DMSwarmVectorDefineField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmVectorDefineField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldname::String )
 
@@ -44075,7 +46479,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmVectorDefineFields"))
 """
-function DMSwarmVectorDefineFields(petsclib::PetscLibType, sw::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
+function DMSwarmVectorDefineFields(petsclib::PetscLibType, sw::AbstractPetscDM, Nf::Integer, fieldnames::String)
+    error("DMSwarmVectorDefineFields: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmVectorDefineFields(petsclib::$UnionPetscLib, sw::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
 	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
@@ -44112,7 +46518,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmVectorGetField"))
 """
-function DMSwarmVectorGetField(petsclib::PetscLibType, sw::AbstractPetscDM) end
+function DMSwarmVectorGetField(petsclib::PetscLibType, sw::AbstractPetscDM)
+    error("DMSwarmVectorGetField: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmVectorGetField(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	Nf_ = Ref{$PetscInt}()
@@ -44150,7 +46558,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmViewFieldsXDMF"))
 """
-function DMSwarmViewFieldsXDMF(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String, nfields::PetscInt, field_name_list::String) end
+function DMSwarmViewFieldsXDMF(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String, nfields::Integer, field_name_list::String)
+    error("DMSwarmViewFieldsXDMF: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmViewFieldsXDMF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, filename::String, nfields::$PetscInt, field_name_list::String )
 	field_name_list_ = Ref{Ptr{Cchar}}(field_name_list isa Ptr ? field_name_list : pointer(field_name_list))
@@ -44183,7 +46593,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmViewXDMF"))
 """
-function DMSwarmViewXDMF(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String) end
+function DMSwarmViewXDMF(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String)
+    error("DMSwarmViewXDMF: no generated method for these argument types")
+end
 
 @for_petsc function DMSwarmViewXDMF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, filename::String )
 
@@ -44214,7 +46626,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSCheckFromOptions"))
 """
-function DMTSCheckFromOptions(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec) end
+function DMTSCheckFromOptions(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec)
+    error("DMTSCheckFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMTSCheckFromOptions(petsclib::$UnionPetscLib, ts::AbstractTS, u::AbstractPetscVec )
 
@@ -44252,7 +46666,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSCheckJacobian"))
 """
-function DMTSCheckJacobian(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::PetscReal) end
+function DMTSCheckJacobian(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM, t::Real, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::Real)
+    error("DMTSCheckJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMTSCheckJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, dm::AbstractPetscDM, t::$PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::$PetscReal )
 	isLinear_ = Ref{PetscBool}()
@@ -44293,7 +46709,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSCheckResidual"))
 """
-function DMTSCheckResidual(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::PetscReal) end
+function DMTSCheckResidual(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM, t::Real, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::Real)
+    error("DMTSCheckResidual: no generated method for these argument types")
+end
 
 @for_petsc function DMTSCheckResidual(petsclib::$UnionPetscLib, ts::AbstractTS, dm::AbstractPetscDM, t::$PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::$PetscReal )
 	residual_ = Ref{$PetscReal}()
@@ -44326,7 +46744,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSCreateRHSMassMatrix"))
 """
-function DMTSCreateRHSMassMatrix(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSCreateRHSMassMatrix(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSCreateRHSMassMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMTSCreateRHSMassMatrix(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -44357,7 +46777,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSCreateRHSMassMatrixLumped"))
 """
-function DMTSCreateRHSMassMatrixLumped(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSCreateRHSMassMatrixLumped(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSCreateRHSMassMatrixLumped: no generated method for these argument types")
+end
 
 @for_petsc function DMTSCreateRHSMassMatrixLumped(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -44388,7 +46810,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSDestroyRHSMassMatrix"))
 """
-function DMTSDestroyRHSMassMatrix(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSDestroyRHSMassMatrix(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSDestroyRHSMassMatrix: no generated method for these argument types")
+end
 
 @for_petsc function DMTSDestroyRHSMassMatrix(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 
@@ -44423,7 +46847,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetForcingFunction"))
 """
-function DMTSGetForcingFunction(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetForcingFunction(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetForcingFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetForcingFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	f_ = Ref{Ptr{Cvoid}}()
@@ -44462,7 +46888,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetI2Function"))
 """
-function DMTSGetI2Function(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetI2Function(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetI2Function: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetI2Function(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	fun_ = Ref{Ptr{Cvoid}}()
@@ -44501,7 +46929,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetI2Jacobian"))
 """
-function DMTSGetI2Jacobian(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetI2Jacobian(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetI2Jacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetI2Jacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	jac_ = Ref{Ptr{Cvoid}}()
@@ -44540,7 +46970,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetIFunction"))
 """
-function DMTSGetIFunction(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetIFunction(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetIFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetIFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
@@ -44579,7 +47011,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetIJacobian"))
 """
-function DMTSGetIJacobian(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetIJacobian(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetIJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetIJacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
@@ -44618,7 +47052,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetRHSFunction"))
 """
-function DMTSGetRHSFunction(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetRHSFunction(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetRHSFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetRHSFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
@@ -44657,7 +47093,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetRHSJacobian"))
 """
-function DMTSGetRHSJacobian(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetRHSJacobian(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetRHSJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetRHSJacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
@@ -44696,7 +47134,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetSolutionFunction"))
 """
-function DMTSGetSolutionFunction(petsclib::PetscLibType, dm::AbstractPetscDM) end
+function DMTSGetSolutionFunction(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetSolutionFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSGetSolutionFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	func_ = Ref{Ptr{Cvoid}}()
@@ -44716,7 +47156,7 @@ function DMTSGetSolutionFunction(petsclib::PetscLibType, dm::AbstractPetscDM) en
 end 
 
 """
-	tvar::Ptr{Cvoid} = DMTSGetTransientVariable(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	tvar::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetTransientVariable(petsclib::PetscLibType,dm::AbstractPetscDM) 
 gets function to transform from state to transient variables set with `DMTSSetTransientVariable()` from a `TSDM`
 
 Logically Collective
@@ -44735,21 +47175,25 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSGetTransientVariable"))
 """
-function DMTSGetTransientVariable(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) end
+function DMTSGetTransientVariable(petsclib::PetscLibType, dm::AbstractPetscDM)
+    error("DMTSGetTransientVariable: no generated method for these argument types")
+end
 
-@for_petsc function DMTSGetTransientVariable(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctx::Ptr{Cvoid} )
+@for_petsc function DMTSGetTransientVariable(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	tvar_ = Ref{Ptr{Cvoid}}()
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:DMTSGetTransientVariable, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Ptr{Cvoid}}, Ptr{Cvoid}),
-               dm, tvar_, ctx,
+               dm, tvar_, ctx_,
               )
 
 	tvar = tvar_[]
+	ctx = ctx_[]
 
-	return tvar
+	return tvar,ctx
 end 
 
 """
@@ -44770,7 +47214,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/DMTSSetBoundaryLocal"))
 """
-function DMTSSetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMTSSetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMTSSetBoundaryLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetBoundaryLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -44803,7 +47249,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetForcingFunction"))
 """
-function DMTSSetForcingFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetForcingFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetForcingFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetForcingFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -44836,7 +47284,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetI2Function"))
 """
-function DMTSSetI2Function(petsclib::PetscLibType, dm::AbstractPetscDM, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetI2Function(petsclib::PetscLibType, dm::AbstractPetscDM, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetI2Function: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetI2Function(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -44868,7 +47318,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetI2FunctionContextDestroy"))
 """
-function DMTSSetI2FunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMTSSetI2FunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMTSSetI2FunctionContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetI2FunctionContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -44901,7 +47353,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetI2Jacobian"))
 """
-function DMTSSetI2Jacobian(petsclib::PetscLibType, dm::AbstractPetscDM, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetI2Jacobian(petsclib::PetscLibType, dm::AbstractPetscDM, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetI2Jacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetI2Jacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -44933,7 +47387,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetI2JacobianContextDestroy"))
 """
-function DMTSSetI2JacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMTSSetI2JacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMTSSetI2JacobianContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetI2JacobianContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -44966,7 +47422,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetIFunction"))
 """
-function DMTSSetIFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetIFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetIFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -44998,7 +47456,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetIFunctionContextDestroy"))
 """
-function DMTSSetIFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMTSSetIFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMTSSetIFunctionContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIFunctionContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -45033,7 +47493,9 @@ Level: beginner
 # External Links
 $(_doc_external("TS/DMTSSetIFunctionLocal"))
 """
-function DMTSSetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMTSSetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMTSSetIFunctionLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -45066,7 +47528,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetIFunctionSerialize"))
 """
-function DMTSSetIFunctionSerialize(petsclib::PetscLibType, dm::AbstractPetscDM, view::external, load::external) end
+function DMTSSetIFunctionSerialize(petsclib::PetscLibType, dm::AbstractPetscDM, view::external, load::external)
+    error("DMTSSetIFunctionSerialize: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIFunctionSerialize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, view::external, load::external )
 
@@ -45099,7 +47563,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetIJacobian"))
 """
-function DMTSSetIJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetIJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetIJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIJacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -45131,7 +47597,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetIJacobianContextDestroy"))
 """
-function DMTSSetIJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMTSSetIJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMTSSetIJacobianContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIJacobianContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -45164,7 +47632,9 @@ Level: beginner
 # External Links
 $(_doc_external("TS/DMTSSetIJacobianLocal"))
 """
-function DMTSSetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMTSSetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMTSSetIJacobianLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIJacobianLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -45197,7 +47667,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetIJacobianSerialize"))
 """
-function DMTSSetIJacobianSerialize(petsclib::PetscLibType, dm::AbstractPetscDM, view::external, load::external) end
+function DMTSSetIJacobianSerialize(petsclib::PetscLibType, dm::AbstractPetscDM, view::external, load::external)
+    error("DMTSSetIJacobianSerialize: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetIJacobianSerialize(petsclib::$UnionPetscLib, dm::AbstractPetscDM, view::external, load::external )
 
@@ -45230,7 +47702,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetRHSFunction"))
 """
-function DMTSSetRHSFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetRHSFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetRHSFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetRHSFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -45262,7 +47736,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetRHSFunctionContextDestroy"))
 """
-function DMTSSetRHSFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMTSSetRHSFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMTSSetRHSFunctionContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetRHSFunctionContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -45297,7 +47773,9 @@ Level: beginner
 # External Links
 $(_doc_external("TS/DMTSSetRHSFunctionLocal"))
 """
-function DMTSSetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) end
+function DMTSSetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid})
+    error("DMTSSetRHSFunctionLocal: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetRHSFunctionLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid} )
 
@@ -45330,7 +47808,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetRHSJacobian"))
 """
-function DMTSSetRHSJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetRHSJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetRHSJacobian: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetRHSJacobian(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -45362,7 +47842,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetRHSJacobianContextDestroy"))
 """
-function DMTSSetRHSJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) end
+function DMTSSetRHSJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid})
+    error("DMTSSetRHSJacobianContextDestroy: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetRHSJacobianContextDestroy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::Ptr{Cvoid} )
 
@@ -45395,7 +47877,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetSolutionFunction"))
 """
-function DMTSSetSolutionFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetSolutionFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetSolutionFunction: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetSolutionFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -45428,7 +47912,9 @@ Level: developer
 # External Links
 $(_doc_external("TS/DMTSSetTransientVariable"))
 """
-function DMTSSetTransientVariable(petsclib::PetscLibType, dm::AbstractPetscDM, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function DMTSSetTransientVariable(petsclib::PetscLibType, dm::AbstractPetscDM, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("DMTSSetTransientVariable: no generated method for these argument types")
+end
 
 @for_petsc function DMTSSetTransientVariable(petsclib::$UnionPetscLib, dm::AbstractPetscDM, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -45458,7 +47944,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMUseTensorOrder"))
 """
-function DMUseTensorOrder(petsclib::PetscLibType, dm::AbstractPetscDM, tensor::PetscBool) end
+function DMUseTensorOrder(petsclib::PetscLibType, dm::AbstractPetscDM, tensor::PetscBool)
+    error("DMUseTensorOrder: no generated method for these argument types")
+end
 
 @for_petsc function DMUseTensorOrder(petsclib::$UnionPetscLib, dm::AbstractPetscDM, tensor::PetscBool )
 
@@ -45518,7 +48006,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMView"))
 """
-function DMView(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscViewer) end
+function DMView(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscViewer)
+    error("DMView: no generated method for these argument types")
+end
 
 @for_petsc function DMView(petsclib::$UnionPetscLib, dm::AbstractPetscDM, v::PetscViewer )
 
@@ -45556,7 +48046,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMViewFromOptions"))
 """
-function DMViewFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, obj, name::String) end
+function DMViewFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, obj, name::String)
+    error("DMViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function DMViewFromOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM, obj, name::String )
 

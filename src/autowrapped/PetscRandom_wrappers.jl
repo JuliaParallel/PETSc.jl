@@ -19,7 +19,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomCreate"))
 """
-function PetscRandomCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscRandomCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscRandomCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	r_ = Ref{PetscRandom}()
@@ -52,7 +54,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomDestroy"))
 """
-function PetscRandomDestroy(petsclib::PetscLibType, r::Union{PetscRandom, Ref{PetscRandom}}) end
+function PetscRandomDestroy(petsclib::PetscLibType, r::Union{PetscRandom, Ref{PetscRandom}})
+    error("PetscRandomDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomDestroy(petsclib::$UnionPetscLib, r::Union{PetscRandom, Ref{PetscRandom}} )
 	r_ = r isa Base.RefValue ? r : Ref{PetscRandom}(r)
@@ -80,7 +84,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscRandomFinalizePackage"))
 """
-function PetscRandomFinalizePackage(petsclib::PetscLibType) end
+function PetscRandomFinalizePackage(petsclib::PetscLibType)
+    error("PetscRandomFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -115,7 +121,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomGetInterval"))
 """
-function PetscRandomGetInterval(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomGetInterval(petsclib::PetscLibType, r::PetscRandom)
+    error("PetscRandomGetInterval: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomGetInterval(petsclib::$UnionPetscLib, r::PetscRandom )
 	low_ = Ref{$PetscScalar}()
@@ -153,7 +161,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomGetSeed"))
 """
-function PetscRandomGetSeed(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomGetSeed(petsclib::PetscLibType, r::PetscRandom)
+    error("PetscRandomGetSeed: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomGetSeed(petsclib::$UnionPetscLib, r::PetscRandom )
 	seed_ = Ref{$PetscInt64}()
@@ -189,7 +199,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomGetType"))
 """
-function PetscRandomGetType(petsclib::PetscLibType, rnd::PetscRandom) end
+function PetscRandomGetType(petsclib::PetscLibType, rnd::PetscRandom)
+    error("PetscRandomGetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomGetType(petsclib::$UnionPetscLib, rnd::PetscRandom )
 	type_ = Ref{PetscRandomType}()
@@ -226,7 +238,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomGetValue"))
 """
-function PetscRandomGetValue(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomGetValue(petsclib::PetscLibType, r::PetscRandom)
+    error("PetscRandomGetValue: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomGetValue(petsclib::$UnionPetscLib, r::PetscRandom )
 	val_ = Ref{$PetscScalar}()
@@ -263,7 +277,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomGetValueReal"))
 """
-function PetscRandomGetValueReal(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomGetValueReal(petsclib::PetscLibType, r::PetscRandom)
+    error("PetscRandomGetValueReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomGetValueReal(petsclib::$UnionPetscLib, r::PetscRandom )
 	val_ = Ref{$PetscReal}()
@@ -301,7 +317,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomGetValues"))
 """
-function PetscRandomGetValues(petsclib::PetscLibType, r::PetscRandom, n::PetscInt) end
+function PetscRandomGetValues(petsclib::PetscLibType, r::PetscRandom, n::Integer)
+    error("PetscRandomGetValues: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomGetValues(petsclib::$UnionPetscLib, r::PetscRandom, n::$PetscInt )
 	val_ = Ref{$PetscScalar}()
@@ -339,7 +357,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomGetValuesReal"))
 """
-function PetscRandomGetValuesReal(petsclib::PetscLibType, r::PetscRandom, n::PetscInt) end
+function PetscRandomGetValuesReal(petsclib::PetscLibType, r::PetscRandom, n::Integer)
+    error("PetscRandomGetValuesReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomGetValuesReal(petsclib::$UnionPetscLib, r::PetscRandom, n::$PetscInt )
 	val_ = Ref{$PetscReal}()
@@ -369,7 +389,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscRandomInitializePackage"))
 """
-function PetscRandomInitializePackage(petsclib::PetscLibType) end
+function PetscRandomInitializePackage(petsclib::PetscLibType)
+    error("PetscRandomInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomInitializePackage(petsclib::$UnionPetscLib)
 
@@ -400,7 +422,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscRandomRegister"))
 """
-function PetscRandomRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function PetscRandomRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("PetscRandomRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -431,7 +455,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomSeed"))
 """
-function PetscRandomSeed(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomSeed(petsclib::PetscLibType, r::PetscRandom)
+    error("PetscRandomSeed: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomSeed(petsclib::$UnionPetscLib, r::PetscRandom )
 
@@ -467,7 +493,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscRandomSetFromOptions"))
 """
-function PetscRandomSetFromOptions(petsclib::PetscLibType, rnd::PetscRandom) end
+function PetscRandomSetFromOptions(petsclib::PetscLibType, rnd::PetscRandom)
+    error("PetscRandomSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomSetFromOptions(petsclib::$UnionPetscLib, rnd::PetscRandom )
 
@@ -501,7 +529,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomSetInterval"))
 """
-function PetscRandomSetInterval(petsclib::PetscLibType, r::PetscRandom, low::PetscScalar, high::PetscScalar) end
+function PetscRandomSetInterval(petsclib::PetscLibType, r::PetscRandom, low::Number, high::Number)
+    error("PetscRandomSetInterval: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomSetInterval(petsclib::$UnionPetscLib, r::PetscRandom, low::$PetscScalar, high::$PetscScalar )
 
@@ -534,7 +564,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscRandomSetOptionsPrefix"))
 """
-function PetscRandomSetOptionsPrefix(petsclib::PetscLibType, r::PetscRandom, prefix::String) end
+function PetscRandomSetOptionsPrefix(petsclib::PetscLibType, r::PetscRandom, prefix::String)
+    error("PetscRandomSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomSetOptionsPrefix(petsclib::$UnionPetscLib, r::PetscRandom, prefix::String )
 
@@ -566,7 +598,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomSetSeed"))
 """
-function PetscRandomSetSeed(petsclib::PetscLibType, r::PetscRandom, seed::PetscInt64) end
+function PetscRandomSetSeed(petsclib::PetscLibType, r::PetscRandom, seed::PetscInt64)
+    error("PetscRandomSetSeed: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomSetSeed(petsclib::$UnionPetscLib, r::PetscRandom, seed::$PetscInt64 )
 
@@ -602,7 +636,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomSetType"))
 """
-function PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::PetscRandomType) end
+function PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::PetscRandomType)
+    error("PetscRandomSetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomSetType(petsclib::$UnionPetscLib, rnd::PetscRandom, type::PetscRandomType )
 
@@ -634,7 +670,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscRandomView"))
 """
-function PetscRandomView(petsclib::PetscLibType, rnd::PetscRandom, viewer::PetscViewer) end
+function PetscRandomView(petsclib::PetscLibType, rnd::PetscRandom, viewer::PetscViewer)
+    error("PetscRandomView: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomView(petsclib::$UnionPetscLib, rnd::PetscRandom, viewer::PetscViewer )
 
@@ -667,7 +705,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomViewFromOptions"))
 """
-function PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj, name::String) end
+function PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj, name::String)
+    error("PetscRandomViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscRandomViewFromOptions(petsclib::$UnionPetscLib, A::PetscRandom, obj, name::String )
 

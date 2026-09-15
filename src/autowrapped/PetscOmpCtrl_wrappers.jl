@@ -10,7 +10,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlBarrier"))
 """
-function PetscOmpCtrlBarrier(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
+function PetscOmpCtrlBarrier(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
+    error("PetscOmpCtrlBarrier: no generated method for these argument types")
+end
 
 @for_petsc function PetscOmpCtrlBarrier(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
 
@@ -43,7 +45,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlCreate"))
 """
-function PetscOmpCtrlCreate(petsclib::PetscLibType, petsc_comm::MPI_Comm, nthreads::PetscInt) end
+function PetscOmpCtrlCreate(petsclib::PetscLibType, petsc_comm::MPI_Comm, nthreads::Integer)
+    error("PetscOmpCtrlCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscOmpCtrlCreate(petsclib::$UnionPetscLib, petsc_comm::MPI_Comm, nthreads::$PetscInt )
 	pctrl_ = Ref{PetscOmpCtrl}()
@@ -74,7 +78,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlDestroy"))
 """
-function PetscOmpCtrlDestroy(petsclib::PetscLibType, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}}) end
+function PetscOmpCtrlDestroy(petsclib::PetscLibType, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}})
+    error("PetscOmpCtrlDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscOmpCtrlDestroy(petsclib::$UnionPetscLib, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}} )
 	pctrl_ = pctrl isa Base.RefValue ? pctrl : Ref{PetscOmpCtrl}(pctrl)
@@ -108,7 +114,9 @@ on slave ranks, `MPI_COMM_NULL` will be return in reality.
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlGetOmpComms"))
 """
-function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
+function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
+    error("PetscOmpCtrlGetOmpComms: no generated method for these argument types")
+end
 
 @for_petsc function PetscOmpCtrlGetOmpComms(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
 	omp_comm_ = Ref{MPI.MPI_Comm}()
@@ -141,7 +149,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlOmpRegionOnMasterBegin"))
 """
-function PetscOmpCtrlOmpRegionOnMasterBegin(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
+function PetscOmpCtrlOmpRegionOnMasterBegin(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
+    error("PetscOmpCtrlOmpRegionOnMasterBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscOmpCtrlOmpRegionOnMasterBegin(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
 
@@ -168,7 +178,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlOmpRegionOnMasterEnd"))
 """
-function PetscOmpCtrlOmpRegionOnMasterEnd(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
+function PetscOmpCtrlOmpRegionOnMasterEnd(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
+    error("PetscOmpCtrlOmpRegionOnMasterEnd: no generated method for these argument types")
+end
 
 @for_petsc function PetscOmpCtrlOmpRegionOnMasterEnd(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
 

@@ -15,7 +15,9 @@ Level: advanced
 # External Links
 $(_doc_external("FV/PetscFVClone"))
 """
-function PetscFVClone(petsclib::PetscLibType, fv::PetscFV) end
+function PetscFVClone(petsclib::PetscLibType, fv::PetscFV)
+    error("PetscFVClone: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVClone(petsclib::$UnionPetscLib, fv::PetscFV )
 	fvNew_ = Ref{PetscFV}()
@@ -51,7 +53,9 @@ Level: advanced
 # External Links
 $(_doc_external("FV/PetscFVComputeGradient"))
 """
-function PetscFVComputeGradient(petsclib::PetscLibType, fvm::PetscFV, numFaces::PetscInt, dx::Vector{PetscScalar}, grad::Vector{PetscScalar}) end
+function PetscFVComputeGradient(petsclib::PetscLibType, fvm::PetscFV, numFaces::Integer, dx::AbstractVector{<:Number}, grad::AbstractVector{<:Number})
+    error("PetscFVComputeGradient: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVComputeGradient(petsclib::$UnionPetscLib, fvm::PetscFV, numFaces::$PetscInt, dx::Vector{$PetscScalar}, grad::Vector{$PetscScalar} )
 
@@ -85,7 +89,9 @@ Level: beginner
 # External Links
 $(_doc_external("FV/PetscFVCreate"))
 """
-function PetscFVCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscFVCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscFVCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	fvm_ = Ref{PetscFV}()
@@ -119,7 +125,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVCreateDualSpace"))
 """
-function PetscFVCreateDualSpace(petsclib::PetscLibType, fvm::PetscFV, ct::DMPolytopeType) end
+function PetscFVCreateDualSpace(petsclib::PetscLibType, fvm::PetscFV, ct::DMPolytopeType)
+    error("PetscFVCreateDualSpace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVCreateDualSpace(petsclib::$UnionPetscLib, fvm::PetscFV, ct::DMPolytopeType )
 
@@ -157,7 +165,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVCreateTabulation"))
 """
-function PetscFVCreateTabulation(petsclib::PetscLibType, fvm::PetscFV, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) end
+function PetscFVCreateTabulation(petsclib::PetscLibType, fvm::PetscFV, nrepl::Integer, npoints::Integer, points::AbstractVector{<:Number}, K::Integer)
+    error("PetscFVCreateTabulation: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVCreateTabulation(petsclib::$UnionPetscLib, fvm::PetscFV, nrepl::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt )
 	T_ = Ref{PetscTabulation}()
@@ -190,7 +200,9 @@ Level: beginner
 # External Links
 $(_doc_external("FV/PetscFVDestroy"))
 """
-function PetscFVDestroy(petsclib::PetscLibType, fvm::Union{PetscFV, Ref{PetscFV}}) end
+function PetscFVDestroy(petsclib::PetscLibType, fvm::Union{PetscFV, Ref{PetscFV}})
+    error("PetscFVDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVDestroy(petsclib::$UnionPetscLib, fvm::Union{PetscFV, Ref{PetscFV}} )
 	fvm_ = fvm isa Base.RefValue ? fvm : Ref{PetscFV}(fvm)
@@ -218,7 +230,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/PetscFVFinalizePackage"))
 """
-function PetscFVFinalizePackage(petsclib::PetscLibType) end
+function PetscFVFinalizePackage(petsclib::PetscLibType)
+    error("PetscFVFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -251,7 +265,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetCellTabulation"))
 """
-function PetscFVGetCellTabulation(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetCellTabulation(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetCellTabulation: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetCellTabulation(petsclib::$UnionPetscLib, fvm::PetscFV )
 	T_ = Ref{PetscTabulation}()
@@ -288,7 +304,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetComponentName"))
 """
-function PetscFVGetComponentName(petsclib::PetscLibType, fvm::PetscFV, comp::PetscInt) end
+function PetscFVGetComponentName(petsclib::PetscLibType, fvm::PetscFV, comp::Integer)
+    error("PetscFVGetComponentName: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetComponentName(petsclib::$UnionPetscLib, fvm::PetscFV, comp::$PetscInt )
 	name_ = Ref{Ptr{Cchar}}()
@@ -324,7 +342,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetComputeGradients"))
 """
-function PetscFVGetComputeGradients(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetComputeGradients(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetComputeGradients: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetComputeGradients(petsclib::$UnionPetscLib, fvm::PetscFV )
 	computeGradients_ = Ref{PetscBool}()
@@ -360,7 +380,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetDualSpace"))
 """
-function PetscFVGetDualSpace(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetDualSpace(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetDualSpace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetDualSpace(petsclib::$UnionPetscLib, fvm::PetscFV )
 	sp_ = Ref{PetscDualSpace}()
@@ -396,7 +418,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetLimiter"))
 """
-function PetscFVGetLimiter(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetLimiter(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetLimiter: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetLimiter(petsclib::$UnionPetscLib, fvm::PetscFV )
 	lim_ = Ref{PetscLimiter}()
@@ -432,7 +456,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetNumComponents"))
 """
-function PetscFVGetNumComponents(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetNumComponents(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetNumComponents(petsclib::$UnionPetscLib, fvm::PetscFV )
 	comp_ = Ref{$PetscInt}()
@@ -468,7 +494,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetQuadrature"))
 """
-function PetscFVGetQuadrature(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetQuadrature(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetQuadrature(petsclib::$UnionPetscLib, fvm::PetscFV )
 	q_ = Ref{PetscQuadrature}()
@@ -504,7 +532,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetSpatialDimension"))
 """
-function PetscFVGetSpatialDimension(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetSpatialDimension(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetSpatialDimension: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetSpatialDimension(petsclib::$UnionPetscLib, fvm::PetscFV )
 	dim_ = Ref{$PetscInt}()
@@ -540,7 +570,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVGetType"))
 """
-function PetscFVGetType(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVGetType(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVGetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVGetType(petsclib::$UnionPetscLib, fvm::PetscFV )
 	name_ = Ref{PetscFVType}()
@@ -570,7 +602,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/PetscFVInitializePackage"))
 """
-function PetscFVInitializePackage(petsclib::PetscLibType) end
+function PetscFVInitializePackage(petsclib::PetscLibType)
+    error("PetscFVInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVInitializePackage(petsclib::$UnionPetscLib)
 
@@ -611,7 +645,9 @@ Level: developer
 # External Links
 $(_doc_external("FV/PetscFVIntegrateRHSFunction"))
 """
-function PetscFVIntegrateRHSFunction(petsclib::PetscLibType, fvm::PetscFV, prob::PetscDS, field::PetscInt, Nf::PetscInt, fgeom::Vector{PetscFVFaceGeom}, uL::Vector{PetscScalar}, uR::Vector{PetscScalar}, fluxL::Vector{PetscScalar}, fluxR::Vector{PetscScalar}) end
+function PetscFVIntegrateRHSFunction(petsclib::PetscLibType, fvm::PetscFV, prob::PetscDS, field::Integer, Nf::Integer, fgeom::Vector{PetscFVFaceGeom}, uL::AbstractVector{<:Number}, uR::AbstractVector{<:Number}, fluxL::AbstractVector{<:Number}, fluxR::AbstractVector{<:Number})
+    error("PetscFVIntegrateRHSFunction: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVIntegrateRHSFunction(petsclib::$UnionPetscLib, fvm::PetscFV, prob::PetscDS, field::$PetscInt, Nf::$PetscInt, fgeom::Vector{PetscFVFaceGeom}, uL::Vector{$PetscScalar}, uR::Vector{$PetscScalar}, fluxL::Vector{$PetscScalar}, fluxR::Vector{$PetscScalar} )
 	neighborVol_ = Ref{$PetscReal}()
@@ -645,7 +681,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVLeastSquaresSetMaxFaces"))
 """
-function PetscFVLeastSquaresSetMaxFaces(petsclib::PetscLibType, fvm::PetscFV, maxFaces::PetscInt) end
+function PetscFVLeastSquaresSetMaxFaces(petsclib::PetscLibType, fvm::PetscFV, maxFaces::Integer)
+    error("PetscFVLeastSquaresSetMaxFaces: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVLeastSquaresSetMaxFaces(petsclib::$UnionPetscLib, fvm::PetscFV, maxFaces::$PetscInt )
 
@@ -678,7 +716,9 @@ Level: advanced
 # External Links
 $(_doc_external("FV/PetscFVRefine"))
 """
-function PetscFVRefine(petsclib::PetscLibType, fv::PetscFV) end
+function PetscFVRefine(petsclib::PetscLibType, fv::PetscFV)
+    error("PetscFVRefine: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVRefine(petsclib::$UnionPetscLib, fv::PetscFV )
 	fvRef_ = Ref{PetscFV}()
@@ -710,7 +750,9 @@ Input Parameters:
 # External Links
 $(_doc_external("FV/PetscFVRegister"))
 """
-function PetscFVRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function PetscFVRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("PetscFVRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -743,7 +785,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetComponentName"))
 """
-function PetscFVSetComponentName(petsclib::PetscLibType, fvm::PetscFV, comp::PetscInt, name::String) end
+function PetscFVSetComponentName(petsclib::PetscLibType, fvm::PetscFV, comp::Integer, name::String)
+    error("PetscFVSetComponentName: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetComponentName(petsclib::$UnionPetscLib, fvm::PetscFV, comp::$PetscInt, name::String )
 
@@ -775,7 +819,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetComputeGradients"))
 """
-function PetscFVSetComputeGradients(petsclib::PetscLibType, fvm::PetscFV, computeGradients::PetscBool) end
+function PetscFVSetComputeGradients(petsclib::PetscLibType, fvm::PetscFV, computeGradients::PetscBool)
+    error("PetscFVSetComputeGradients: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetComputeGradients(petsclib::$UnionPetscLib, fvm::PetscFV, computeGradients::PetscBool )
 
@@ -807,7 +853,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetDualSpace"))
 """
-function PetscFVSetDualSpace(petsclib::PetscLibType, fvm::PetscFV, sp::PetscDualSpace) end
+function PetscFVSetDualSpace(petsclib::PetscLibType, fvm::PetscFV, sp::PetscDualSpace)
+    error("PetscFVSetDualSpace: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetDualSpace(petsclib::$UnionPetscLib, fvm::PetscFV, sp::PetscDualSpace )
 
@@ -841,7 +889,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetFromOptions"))
 """
-function PetscFVSetFromOptions(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVSetFromOptions(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetFromOptions(petsclib::$UnionPetscLib, fvm::PetscFV )
 
@@ -873,7 +923,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetLimiter"))
 """
-function PetscFVSetLimiter(petsclib::PetscLibType, fvm::PetscFV, lim::PetscLimiter) end
+function PetscFVSetLimiter(petsclib::PetscLibType, fvm::PetscFV, lim::PetscLimiter)
+    error("PetscFVSetLimiter: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetLimiter(petsclib::$UnionPetscLib, fvm::PetscFV, lim::PetscLimiter )
 
@@ -905,7 +957,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetNumComponents"))
 """
-function PetscFVSetNumComponents(petsclib::PetscLibType, fvm::PetscFV, comp::PetscInt) end
+function PetscFVSetNumComponents(petsclib::PetscLibType, fvm::PetscFV, comp::Integer)
+    error("PetscFVSetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetNumComponents(petsclib::$UnionPetscLib, fvm::PetscFV, comp::$PetscInt )
 
@@ -937,7 +991,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetQuadrature"))
 """
-function PetscFVSetQuadrature(petsclib::PetscLibType, fvm::PetscFV, q::PetscQuadrature) end
+function PetscFVSetQuadrature(petsclib::PetscLibType, fvm::PetscFV, q::PetscQuadrature)
+    error("PetscFVSetQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetQuadrature(petsclib::$UnionPetscLib, fvm::PetscFV, q::PetscQuadrature )
 
@@ -969,7 +1025,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetSpatialDimension"))
 """
-function PetscFVSetSpatialDimension(petsclib::PetscLibType, fvm::PetscFV, dim::PetscInt) end
+function PetscFVSetSpatialDimension(petsclib::PetscLibType, fvm::PetscFV, dim::Integer)
+    error("PetscFVSetSpatialDimension: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetSpatialDimension(petsclib::$UnionPetscLib, fvm::PetscFV, dim::$PetscInt )
 
@@ -1004,7 +1062,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetType"))
 """
-function PetscFVSetType(petsclib::PetscLibType, fvm::PetscFV, name::PetscFVType) end
+function PetscFVSetType(petsclib::PetscLibType, fvm::PetscFV, name::PetscFVType)
+    error("PetscFVSetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetType(petsclib::$UnionPetscLib, fvm::PetscFV, name::PetscFVType )
 
@@ -1035,7 +1095,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVSetUp"))
 """
-function PetscFVSetUp(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVSetUp(petsclib::PetscLibType, fvm::PetscFV)
+    error("PetscFVSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVSetUp(petsclib::$UnionPetscLib, fvm::PetscFV )
 
@@ -1067,7 +1129,9 @@ Level: beginner
 # External Links
 $(_doc_external("FV/PetscFVView"))
 """
-function PetscFVView(petsclib::PetscLibType, fvm::PetscFV, v::PetscViewer) end
+function PetscFVView(petsclib::PetscLibType, fvm::PetscFV, v::PetscViewer)
+    error("PetscFVView: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVView(petsclib::$UnionPetscLib, fvm::PetscFV, v::PetscViewer )
 
@@ -1100,7 +1164,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscFVViewFromOptions"))
 """
-function PetscFVViewFromOptions(petsclib::PetscLibType, A::PetscFV, obj, name::String) end
+function PetscFVViewFromOptions(petsclib::PetscLibType, A::PetscFV, obj, name::String)
+    error("PetscFVViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscFVViewFromOptions(petsclib::$UnionPetscLib, A::PetscFV, obj, name::String )
 

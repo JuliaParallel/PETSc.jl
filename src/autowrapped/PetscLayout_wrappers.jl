@@ -19,7 +19,9 @@ Level: beginner
 # External Links
 $(_doc_external("IS/PetscLayoutCompare"))
 """
-function PetscLayoutCompare(petsclib::PetscLibType, mapa::PetscLayout, mapb::PetscLayout) end
+function PetscLayoutCompare(petsclib::PetscLibType, mapa::PetscLayout, mapb::PetscLayout)
+    error("PetscLayoutCompare: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutCompare(petsclib::$UnionPetscLib, mapa::PetscLayout, mapb::PetscLayout )
 	congruent_ = Ref{PetscBool}()
@@ -58,7 +60,9 @@ Level: advanced
 # External Links
 $(_doc_external("IS/PetscLayoutCreate"))
 """
-function PetscLayoutCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscLayoutCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscLayoutCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	map_ = Ref{PetscLayout}()
@@ -99,7 +103,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutCreateFromRanges"))
 """
-function PetscLayoutCreateFromRanges(petsclib::PetscLibType, comm::MPI_Comm, range::Vector{PetscInt}, mode::PetscCopyMode, bs::PetscInt) end
+function PetscLayoutCreateFromRanges(petsclib::PetscLibType, comm::MPI_Comm, range::AbstractVector{<:Number}, mode::PetscCopyMode, bs::Integer)
+    error("PetscLayoutCreateFromRanges: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutCreateFromRanges(petsclib::$UnionPetscLib, comm::MPI_Comm, range::Vector{$PetscInt}, mode::PetscCopyMode, bs::$PetscInt )
 	newmap_ = Ref{PetscLayout}()
@@ -139,7 +145,9 @@ Level: advanced
 # External Links
 $(_doc_external("IS/PetscLayoutCreateFromSizes"))
 """
-function PetscLayoutCreateFromSizes(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N::PetscInt, bs::PetscInt) end
+function PetscLayoutCreateFromSizes(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, N::Integer, bs::Integer)
+    error("PetscLayoutCreateFromSizes: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutCreateFromSizes(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt, bs::$PetscInt )
 	map_ = Ref{PetscLayout}()
@@ -174,7 +182,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutDestroy"))
 """
-function PetscLayoutDestroy(petsclib::PetscLibType, map::Union{PetscLayout, Ref{PetscLayout}}) end
+function PetscLayoutDestroy(petsclib::PetscLibType, map::Union{PetscLayout, Ref{PetscLayout}})
+    error("PetscLayoutDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutDestroy(petsclib::$UnionPetscLib, map::Union{PetscLayout, Ref{PetscLayout}} )
 	map_ = map isa Base.RefValue ? map : Ref{PetscLayout}(map)
@@ -209,7 +219,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutDuplicate"))
 """
-function PetscLayoutDuplicate(petsclib::PetscLibType, in::PetscLayout) end
+function PetscLayoutDuplicate(petsclib::PetscLibType, in::PetscLayout)
+    error("PetscLayoutDuplicate: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutDuplicate(petsclib::$UnionPetscLib, in::PetscLayout )
 	out_ = Ref{PetscLayout}()
@@ -246,7 +258,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutFindOwner"))
 """
-function PetscLayoutFindOwner(petsclib::PetscLibType, map::PetscLayout, idx::PetscInt) end
+function PetscLayoutFindOwner(petsclib::PetscLibType, map::PetscLayout, idx::Integer)
+    error("PetscLayoutFindOwner: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutFindOwner(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt )
 	owner_ = Ref{PetscMPIInt}()
@@ -284,7 +298,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutFindOwnerIndex"))
 """
-function PetscLayoutFindOwnerIndex(petsclib::PetscLibType, map::PetscLayout, idx::PetscInt) end
+function PetscLayoutFindOwnerIndex(petsclib::PetscLibType, map::PetscLayout, idx::Integer)
+    error("PetscLayoutFindOwnerIndex: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutFindOwnerIndex(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt )
 	owner_ = Ref{PetscMPIInt}()
@@ -323,7 +339,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutGetBlockSize"))
 """
-function PetscLayoutGetBlockSize(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutGetBlockSize(petsclib::PetscLibType, map::PetscLayout)
+    error("PetscLayoutGetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutGetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout )
 	bs_ = Ref{$PetscInt}()
@@ -360,7 +378,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutGetLocalSize"))
 """
-function PetscLayoutGetLocalSize(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutGetLocalSize(petsclib::PetscLibType, map::PetscLayout)
+    error("PetscLayoutGetLocalSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutGetLocalSize(petsclib::$UnionPetscLib, map::PetscLayout )
 	n_ = Ref{$PetscInt}()
@@ -398,7 +418,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutGetRange"))
 """
-function PetscLayoutGetRange(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutGetRange(petsclib::PetscLibType, map::PetscLayout)
+    error("PetscLayoutGetRange: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutGetRange(petsclib::$UnionPetscLib, map::PetscLayout )
 	rstart_ = Ref{$PetscInt}()
@@ -439,7 +461,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutGetRanges"))
 """
-function PetscLayoutGetRanges(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutGetRanges(petsclib::PetscLibType, map::PetscLayout)
+    error("PetscLayoutGetRanges: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutGetRanges(petsclib::$UnionPetscLib, map::PetscLayout )
 	range_ = Ref{Ptr{$PetscInt}}()
@@ -476,7 +500,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutGetSize"))
 """
-function PetscLayoutGetSize(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutGetSize(petsclib::PetscLibType, map::PetscLayout)
+    error("PetscLayoutGetSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutGetSize(petsclib::$UnionPetscLib, map::PetscLayout )
 	n_ = Ref{$PetscInt}()
@@ -499,7 +525,9 @@ end
 # External Links
 $(_doc_external("PetscSF/PetscLayoutMapLocal"))
 """
-function PetscLayoutMapLocal(petsclib::PetscLibType, map::PetscLayout, N::PetscInt, idxs::Vector{PetscInt}) end
+function PetscLayoutMapLocal(petsclib::PetscLibType, map::PetscLayout, N::Integer, idxs::AbstractVector{<:Number})
+    error("PetscLayoutMapLocal: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutMapLocal(petsclib::$UnionPetscLib, map::PetscLayout, N::$PetscInt, idxs::Vector{$PetscInt} )
 	on_ = Ref{$PetscInt}()
@@ -539,7 +567,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutReference"))
 """
-function PetscLayoutReference(petsclib::PetscLibType, in::PetscLayout) end
+function PetscLayoutReference(petsclib::PetscLibType, in::PetscLayout)
+    error("PetscLayoutReference: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutReference(petsclib::$UnionPetscLib, in::PetscLayout )
 	out_ = Ref{PetscLayout}()
@@ -574,7 +604,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutSetBlockSize"))
 """
-function PetscLayoutSetBlockSize(petsclib::PetscLibType, map::PetscLayout, bs::PetscInt) end
+function PetscLayoutSetBlockSize(petsclib::PetscLibType, map::PetscLayout, bs::Integer)
+    error("PetscLayoutSetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutSetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout, bs::$PetscInt )
 
@@ -606,7 +638,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutSetISLocalToGlobalMapping"))
 """
-function PetscLayoutSetISLocalToGlobalMapping(petsclib::PetscLibType, in::PetscLayout, ltog::ISLocalToGlobalMapping) end
+function PetscLayoutSetISLocalToGlobalMapping(petsclib::PetscLibType, in::PetscLayout, ltog::ISLocalToGlobalMapping)
+    error("PetscLayoutSetISLocalToGlobalMapping: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutSetISLocalToGlobalMapping(petsclib::$UnionPetscLib, in::PetscLayout, ltog::ISLocalToGlobalMapping )
 
@@ -639,7 +673,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutSetLocalSize"))
 """
-function PetscLayoutSetLocalSize(petsclib::PetscLibType, map::PetscLayout, n::PetscInt) end
+function PetscLayoutSetLocalSize(petsclib::PetscLibType, map::PetscLayout, n::Integer)
+    error("PetscLayoutSetLocalSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutSetLocalSize(petsclib::$UnionPetscLib, map::PetscLayout, n::$PetscInt )
 
@@ -672,7 +708,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutSetSize"))
 """
-function PetscLayoutSetSize(petsclib::PetscLibType, map::PetscLayout, n::PetscInt) end
+function PetscLayoutSetSize(petsclib::PetscLibType, map::PetscLayout, n::Integer)
+    error("PetscLayoutSetSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutSetSize(petsclib::$UnionPetscLib, map::PetscLayout, n::$PetscInt )
 
@@ -706,7 +744,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscLayoutSetUp"))
 """
-function PetscLayoutSetUp(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutSetUp(petsclib::PetscLibType, map::PetscLayout)
+    error("PetscLayoutSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PetscLayoutSetUp(petsclib::$UnionPetscLib, map::PetscLayout )
 

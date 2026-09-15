@@ -18,7 +18,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscTokenCreate"))
 """
-function PetscTokenCreate(petsclib::PetscLibType, a::String, b::Cchar) end
+function PetscTokenCreate(petsclib::PetscLibType, a::String, b::Cchar)
+    error("PetscTokenCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscTokenCreate(petsclib::$UnionPetscLib, a::String, b::Cchar )
 	t_ = Ref{PetscToken}()
@@ -51,7 +53,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscTokenDestroy"))
 """
-function PetscTokenDestroy(petsclib::PetscLibType, a::Union{PetscToken, Ref{PetscToken}}) end
+function PetscTokenDestroy(petsclib::PetscLibType, a::Union{PetscToken, Ref{PetscToken}})
+    error("PetscTokenDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscTokenDestroy(petsclib::$UnionPetscLib, a::Union{PetscToken, Ref{PetscToken}} )
 	a_ = a isa Base.RefValue ? a : Ref{PetscToken}(a)
@@ -86,7 +90,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscTokenFind"))
 """
-function PetscTokenFind(petsclib::PetscLibType, a::PetscToken) end
+function PetscTokenFind(petsclib::PetscLibType, a::PetscToken)
+    error("PetscTokenFind: no generated method for these argument types")
+end
 
 @for_petsc function PetscTokenFind(petsclib::$UnionPetscLib, a::PetscToken )
 	result_ = Ref{Ptr{Cchar}}()

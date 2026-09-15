@@ -17,7 +17,9 @@ Level: beginner
 # External Links
 $(_doc_external("Characteristic/CharacteristicCreate"))
 """
-function CharacteristicCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function CharacteristicCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("CharacteristicCreate: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	c_ = Ref{Characteristic}()
@@ -50,7 +52,9 @@ Level: beginner
 # External Links
 $(_doc_external("Characteristic/CharacteristicDestroy"))
 """
-function CharacteristicDestroy(petsclib::PetscLibType, c::Union{Characteristic, Ref{Characteristic}}) end
+function CharacteristicDestroy(petsclib::PetscLibType, c::Union{Characteristic, Ref{Characteristic}})
+    error("CharacteristicDestroy: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicDestroy(petsclib::$UnionPetscLib, c::Union{Characteristic, Ref{Characteristic}} )
 	c_ = c isa Base.RefValue ? c : Ref{Characteristic}(c)
@@ -78,7 +82,9 @@ Level: developer
 # External Links
 $(_doc_external("Characteristic/CharacteristicFinalizePackage"))
 """
-function CharacteristicFinalizePackage(petsclib::PetscLibType) end
+function CharacteristicFinalizePackage(petsclib::PetscLibType)
+    error("CharacteristicFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -105,7 +111,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/CharacteristicInitializePackage"))
 """
-function CharacteristicInitializePackage(petsclib::PetscLibType) end
+function CharacteristicInitializePackage(petsclib::PetscLibType)
+    error("CharacteristicInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicInitializePackage(petsclib::$UnionPetscLib)
 
@@ -136,7 +144,9 @@ Level: advanced
 # External Links
 $(_doc_external("Characteristic/CharacteristicRegister"))
 """
-function CharacteristicRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function CharacteristicRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("CharacteristicRegister: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -157,7 +167,9 @@ end
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetFieldInterpolation"))
 """
-function CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
+function CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::Integer, components::AbstractVector{<:Number}, interp::external, ctx::Ptr{Cvoid})
+    error("CharacteristicSetFieldInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicSetFieldInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
 
@@ -178,7 +190,9 @@ end
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetFieldInterpolationLocal"))
 """
-function CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
+function CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::Integer, components::AbstractVector{<:Number}, interp::external, ctx::Ptr{Cvoid})
+    error("CharacteristicSetFieldInterpolationLocal: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicSetFieldInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
 
@@ -214,7 +228,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetType"))
 """
-function CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::CharacteristicType) end
+function CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::CharacteristicType)
+    error("CharacteristicSetType: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicSetType(petsclib::$UnionPetscLib, c::Characteristic, type::CharacteristicType )
 
@@ -246,7 +262,9 @@ Level: developer
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetUp"))
 """
-function CharacteristicSetUp(petsclib::PetscLibType, c::Characteristic) end
+function CharacteristicSetUp(petsclib::PetscLibType, c::Characteristic)
+    error("CharacteristicSetUp: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicSetUp(petsclib::$UnionPetscLib, c::Characteristic )
 
@@ -267,7 +285,9 @@ end
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetVelocityInterpolation"))
 """
-function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
+function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::Integer, components::AbstractVector{<:Number}, interp::external, ctx::Ptr{Cvoid})
+    error("CharacteristicSetVelocityInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicSetVelocityInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
 
@@ -288,7 +308,9 @@ end
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetVelocityInterpolationLocal"))
 """
-function CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
+function CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::Integer, components::AbstractVector{<:Number}, interp::external, ctx::Ptr{Cvoid})
+    error("CharacteristicSetVelocityInterpolationLocal: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicSetVelocityInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
 
@@ -321,7 +343,9 @@ Level: developer
 # External Links
 $(_doc_external("Characteristic/CharacteristicSolve"))
 """
-function CharacteristicSolve(petsclib::PetscLibType, c::Characteristic, dt::PetscReal, solution::AbstractPetscVec) end
+function CharacteristicSolve(petsclib::PetscLibType, c::Characteristic, dt::Real, solution::AbstractPetscVec)
+    error("CharacteristicSolve: no generated method for these argument types")
+end
 
 @for_petsc function CharacteristicSolve(petsclib::$UnionPetscLib, c::Characteristic, dt::$PetscReal, solution::AbstractPetscVec )
 

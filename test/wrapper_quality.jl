@@ -82,7 +82,7 @@ end
     end
     # hand-written overrides (wrapping/generator/overrides/) that return a Union by design
     allowed = Set(["DMStagGetProductCoordinateArrays", "DMStagGetProductCoordinateArraysRead",
-                   "DMStagVecGetArray", "DMStagVecGetArrayRead", "PetscOptionsGetString"])
+                   "DMStagVecGetArray", "DMStagVecGetArrayRead", "PetscOptionsGetString", "KSPCreateVecs"])
     offenders = filter(u -> !(first(split(u, "Tuple{")) in allowed), unstable)
     @info "static inference sweep" checked unstable = length(unstable) not_allowed = length(offenders)
     if !isempty(offenders)

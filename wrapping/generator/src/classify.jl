@@ -114,6 +114,11 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
             return FArg(name, "$(name)_", "Ptr{Cvoid}", "Ptr{Ptr{Cvoid}}", true,
                         "$(name)_ = Ref{Ptr{Cvoid}}()", "$name = $(name)_[]", false, stars, isfnptr)
         elseif !isarray
+            if typename == "Cvoid" && stars == 1 && name in output_vars
+                # `void *ctx` documented as an output: PETSc writes a pointer through it
+                return FArg(name, "$(name)_", "Ptr{Cvoid}", "Ptr{Cvoid}", true,
+                            "$(name)_ = Ref{Ptr{Cvoid}}()", "$name = $(name)_[]", false, stars, false)
+            end
             return FArg(name, name, "Ptr{Cvoid}", "Ptr{Cvoid}", false, "", "", false, stars, isfnptr)
         end
     end
@@ -198,6 +203,11 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     end
     if isarray && isoutput && stars == 0 && haskey(ov, "len")
         init = "$name = Vector{$(replace(typename, "Vector{" => "", "}" => ""))}(undef, $(ov["len"]))"
+    end
+    if !isarray && stars == 1 && haskey(ov, "len") && is_simple(r, typename)
+        # `T *x` that PETSc fills with `len` values: a caller-allocated output array
+        return FArg(name, name, "Vector{$typename}", "Ptr{$typename}", true,
+                    "$name = Vector{$typename}(undef, $(ov["len"]))", "", true, stars, false)
     end
     if get(ov, "nullable", false) && !isoutput
         typename = startswith(typename, "Union{") ? typename : "Union{Ptr, $typename}"

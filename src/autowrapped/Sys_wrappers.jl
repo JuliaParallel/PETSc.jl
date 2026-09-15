@@ -4,7 +4,9 @@
 # External Links
 $(_doc_external("Log/PetscAddLogDouble"))
 """
-function PetscAddLogDouble(petsclib::PetscLibType, tmp::PetscLogDouble) end
+function PetscAddLogDouble(petsclib::PetscLibType, tmp::PetscLogDouble)
+    error("PetscAddLogDouble: no generated method for these argument types")
+end
 
 @for_petsc function PetscAddLogDouble(petsclib::$UnionPetscLib, tmp::PetscLogDouble )
 	tot_ = Ref{PetscLogDouble}()
@@ -29,7 +31,9 @@ end
 # External Links
 $(_doc_external("Log/PetscAddLogDoubleCnt"))
 """
-function PetscAddLogDoubleCnt(petsclib::PetscLibType, tmp::PetscLogDouble) end
+function PetscAddLogDoubleCnt(petsclib::PetscLibType, tmp::PetscLogDouble)
+    error("PetscAddLogDoubleCnt: no generated method for these argument types")
+end
 
 @for_petsc function PetscAddLogDoubleCnt(petsclib::$UnionPetscLib, tmp::PetscLogDouble )
 	cnt_ = Ref{PetscLogDouble}()
@@ -73,7 +77,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscAttachDebugger"))
 """
-function PetscAttachDebugger(petsclib::PetscLibType) end
+function PetscAttachDebugger(petsclib::PetscLibType)
+    error("PetscAttachDebugger: no generated method for these argument types")
+end
 
 @for_petsc function PetscAttachDebugger(petsclib::$UnionPetscLib)
 
@@ -101,7 +107,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscBLASGetNumThreads"))
 """
-function PetscBLASGetNumThreads(petsclib::PetscLibType) end
+function PetscBLASGetNumThreads(petsclib::PetscLibType)
+    error("PetscBLASGetNumThreads: no generated method for these argument types")
+end
 
 @for_petsc function PetscBLASGetNumThreads(petsclib::$UnionPetscLib)
 	nt_ = Ref{$PetscInt}()
@@ -124,7 +132,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBLASIntCast"))
 """
-function PetscBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscBLASInt) end
+function PetscBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscBLASInt)
+    error("PetscBLASIntCast: no generated method for these argument types")
+end
 
 @for_petsc function PetscBLASIntCast(petsclib::$UnionPetscLib, a::MPIU_Count, b::PetscBLASInt )
 
@@ -156,7 +166,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscBLASSetNumThreads"))
 """
-function PetscBLASSetNumThreads(petsclib::PetscLibType, nt::PetscInt) end
+function PetscBLASSetNumThreads(petsclib::PetscLibType, nt::Integer)
+    error("PetscBLASSetNumThreads: no generated method for these argument types")
+end
 
 @for_petsc function PetscBLASSetNumThreads(petsclib::$UnionPetscLib, nt::$PetscInt )
 
@@ -177,7 +189,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTClear"))
 """
-function PetscBTClear(petsclib::PetscLibType, array::PetscBT, index::PetscCount) end
+function PetscBTClear(petsclib::PetscLibType, array::PetscBT, index::PetscCount)
+    error("PetscBTClear: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTClear(petsclib::$UnionPetscLib, array::PetscBT, index::PetscCount )
 
@@ -198,7 +212,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTCopy"))
 """
-function PetscBTCopy(petsclib::PetscLibType, dest::PetscBT, m::PetscCount, source::PetscBT) end
+function PetscBTCopy(petsclib::PetscLibType, dest::PetscBT, m::PetscCount, source::PetscBT)
+    error("PetscBTCopy: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTCopy(petsclib::$UnionPetscLib, dest::PetscBT, m::PetscCount, source::PetscBT )
 
@@ -219,7 +235,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTCreate"))
 """
-function PetscBTCreate(petsclib::PetscLibType, m::PetscCount) end
+function PetscBTCreate(petsclib::PetscLibType, m::PetscCount)
+    error("PetscBTCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTCreate(petsclib::$UnionPetscLib, m::PetscCount )
 	array_ = Ref{PetscBT}()
@@ -242,7 +260,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTDestroy"))
 """
-function PetscBTDestroy(petsclib::PetscLibType, array::Union{PetscBT, Ref{PetscBT}}) end
+function PetscBTDestroy(petsclib::PetscLibType, array::Union{PetscBT, Ref{PetscBT}})
+    error("PetscBTDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTDestroy(petsclib::$UnionPetscLib, array::Union{PetscBT, Ref{PetscBT}} )
 	array_ = array isa Base.RefValue ? array : Ref{PetscBT}(array)
@@ -264,7 +284,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTMemzero"))
 """
-function PetscBTMemzero(petsclib::PetscLibType, m::PetscCount, array::PetscBT) end
+function PetscBTMemzero(petsclib::PetscLibType, m::PetscCount, array::PetscBT)
+    error("PetscBTMemzero: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTMemzero(petsclib::$UnionPetscLib, m::PetscCount, array::PetscBT )
 
@@ -285,7 +307,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTNegate"))
 """
-function PetscBTNegate(petsclib::PetscLibType, array::PetscBT, index::PetscCount) end
+function PetscBTNegate(petsclib::PetscLibType, array::PetscBT, index::PetscCount)
+    error("PetscBTNegate: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTNegate(petsclib::$UnionPetscLib, array::PetscBT, index::PetscCount )
 
@@ -306,7 +330,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTSet"))
 """
-function PetscBTSet(petsclib::PetscLibType, array::PetscBT, index::PetscCount) end
+function PetscBTSet(petsclib::PetscLibType, array::PetscBT, index::PetscCount)
+    error("PetscBTSet: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTSet(petsclib::$UnionPetscLib, array::PetscBT, index::PetscCount )
 
@@ -327,7 +353,9 @@ end
 # External Links
 $(_doc_external("Viewer/PetscBTView"))
 """
-function PetscBTView(petsclib::PetscLibType, m::PetscCount, bt::PetscBT, viewer::PetscViewer) end
+function PetscBTView(petsclib::PetscLibType, m::PetscCount, bt::PetscBT, viewer::PetscViewer)
+    error("PetscBTView: no generated method for these argument types")
+end
 
 @for_petsc function PetscBTView(petsclib::$UnionPetscLib, m::PetscCount, bt::PetscBT, viewer::PetscViewer )
 
@@ -356,7 +384,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscBarrier"))
 """
-function PetscBarrier(petsclib::PetscLibType, obj) end
+function PetscBarrier(petsclib::PetscLibType, obj)
+    error("PetscBarrier: no generated method for these argument types")
+end
 
 @for_petsc function PetscBarrier(petsclib::$UnionPetscLib, obj )
 
@@ -388,7 +418,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscBinaryClose"))
 """
-function PetscBinaryClose(petsclib::PetscLibType, fd::Cint) end
+function PetscBinaryClose(petsclib::PetscLibType, fd::Cint)
+    error("PetscBinaryClose: no generated method for these argument types")
+end
 
 @for_petsc function PetscBinaryClose(petsclib::$UnionPetscLib, fd::Cint )
 
@@ -424,7 +456,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscBinaryOpen"))
 """
-function PetscBinaryOpen(petsclib::PetscLibType, name::String, mode::PetscFileMode) end
+function PetscBinaryOpen(petsclib::PetscLibType, name::String, mode::PetscFileMode)
+    error("PetscBinaryOpen: no generated method for these argument types")
+end
 
 @for_petsc function PetscBinaryOpen(petsclib::$UnionPetscLib, name::String, mode::PetscFileMode )
 	fd_ = Ref{Cint}()
@@ -464,7 +498,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscBinaryRead"))
 """
-function PetscBinaryRead(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType) end
+function PetscBinaryRead(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType)
+    error("PetscBinaryRead: no generated method for these argument types")
+end
 
 @for_petsc function PetscBinaryRead(petsclib::$UnionPetscLib, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType )
 	dummy_ = Ref{Cint}()
@@ -482,7 +518,7 @@ function PetscBinaryRead(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::Cin
 end 
 
 """
-	count::PetscInt = PetscBinarySynchronizedRead(petsclib::PetscLibType,comm::MPI_Comm, fd::Cint, data::Ptr{Cvoid}, num::PetscInt, type::PetscDataType) 
+	data::Ptr{Cvoid},count::PetscInt = PetscBinarySynchronizedRead(petsclib::PetscLibType,comm::MPI_Comm, fd::Cint, num::PetscInt, type::PetscDataType) 
 Reads from a binary file, all MPI processes get the same values
 
 Collective, No Fortran Support
@@ -505,21 +541,25 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscBinarySynchronizedRead"))
 """
-function PetscBinarySynchronizedRead(petsclib::PetscLibType, comm::MPI_Comm, fd::Cint, data::Ptr{Cvoid}, num::PetscInt, type::PetscDataType) end
+function PetscBinarySynchronizedRead(petsclib::PetscLibType, comm::MPI_Comm, fd::Cint, num::Integer, type::PetscDataType)
+    error("PetscBinarySynchronizedRead: no generated method for these argument types")
+end
 
-@for_petsc function PetscBinarySynchronizedRead(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Cint, data::Ptr{Cvoid}, num::$PetscInt, type::PetscDataType )
+@for_petsc function PetscBinarySynchronizedRead(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Cint, num::$PetscInt, type::PetscDataType )
+	data_ = Ref{Ptr{Cvoid}}()
 	count_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscBinarySynchronizedRead, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, Cint, Ptr{Cvoid}, $PetscInt, Ptr{$PetscInt}, PetscDataType),
-               comm, fd, data, num, count_, type,
+               comm, fd, data_, num, count_, type,
               )
 
+	data = data_[]
 	count = count_[]
 
-	return count
+	return data,count
 end 
 
 """
@@ -543,7 +583,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscBinarySynchronizedWrite"))
 """
-function PetscBinarySynchronizedWrite(petsclib::PetscLibType, comm::MPI_Comm, fd::Cint, p::Ptr{Cvoid}, n::PetscInt, type::PetscDataType) end
+function PetscBinarySynchronizedWrite(petsclib::PetscLibType, comm::MPI_Comm, fd::Cint, p::Ptr{Cvoid}, n::Integer, type::PetscDataType)
+    error("PetscBinarySynchronizedWrite: no generated method for these argument types")
+end
 
 @for_petsc function PetscBinarySynchronizedWrite(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Cint, p::Ptr{Cvoid}, n::$PetscInt, type::PetscDataType )
 
@@ -578,7 +620,9 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscBinaryWrite"))
 """
-function PetscBinaryWrite(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType) end
+function PetscBinaryWrite(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType)
+    error("PetscBinaryWrite: no generated method for these argument types")
+end
 
 @for_petsc function PetscBinaryWrite(petsclib::$UnionPetscLib, fd::Cint, p::Ptr{Cvoid}, n::Cint, type::PetscDataType )
 
@@ -615,7 +659,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscBoxAuthorize"))
 """
-function PetscBoxAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t) end
+function PetscBoxAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t)
+    error("PetscBoxAuthorize: no generated method for these argument types")
+end
 
 @for_petsc function PetscBoxAuthorize(petsclib::$UnionPetscLib, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t )
 
@@ -653,7 +699,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscBoxRefresh"))
 """
-function PetscBoxRefresh(petsclib::PetscLibType, comm::MPI_Comm, refresh_token::String, access_token::String, new_refresh_token::String, tokensize::Csize_t) end
+function PetscBoxRefresh(petsclib::PetscLibType, comm::MPI_Comm, refresh_token::String, access_token::String, new_refresh_token::String, tokensize::Csize_t)
+    error("PetscBoxRefresh: no generated method for these argument types")
+end
 
 @for_petsc function PetscBoxRefresh(petsclib::$UnionPetscLib, comm::MPI_Comm, refresh_token::String, access_token::String, new_refresh_token::String, tokensize::Csize_t )
 
@@ -689,7 +737,9 @@ Options Database Key:
 # External Links
 $(_doc_external("Sys/PetscBoxUpload"))
 """
-function PetscBoxUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String) end
+function PetscBoxUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String)
+    error("PetscBoxUpload: no generated method for these argument types")
+end
 
 @for_petsc function PetscBoxUpload(petsclib::$UnionPetscLib, comm::MPI_Comm, access_token::String, filename::String )
 
@@ -710,7 +760,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscByteSwap"))
 """
-function PetscByteSwap(petsclib::PetscLibType, data::Ptr{Cvoid}, pdtype::PetscDataType, count::PetscCount) end
+function PetscByteSwap(petsclib::PetscLibType, data::Ptr{Cvoid}, pdtype::PetscDataType, count::PetscCount)
+    error("PetscByteSwap: no generated method for these argument types")
+end
 
 @for_petsc function PetscByteSwap(petsclib::$UnionPetscLib, data::Ptr{Cvoid}, pdtype::PetscDataType, count::PetscCount )
 
@@ -731,7 +783,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscCIntCast"))
 """
-function PetscCIntCast(petsclib::PetscLibType, a::MPIU_Count) end
+function PetscCIntCast(petsclib::PetscLibType, a::MPIU_Count)
+    error("PetscCIntCast: no generated method for these argument types")
+end
 
 @for_petsc function PetscCIntCast(petsclib::$UnionPetscLib, a::MPIU_Count )
 	b_ = Ref{Cint}()
@@ -768,7 +822,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscCheckDupsInt"))
 """
-function PetscCheckDupsInt(petsclib::PetscLibType, n::PetscInt, X::Vector{PetscInt}) end
+function PetscCheckDupsInt(petsclib::PetscLibType, n::Integer, X::AbstractVector{<:Number})
+    error("PetscCheckDupsInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscCheckDupsInt(petsclib::$UnionPetscLib, n::$PetscInt, X::Vector{$PetscInt} )
 	dups_ = Ref{PetscBool}()
@@ -804,7 +860,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscCheckPointerSetIntensity"))
 """
-function PetscCheckPointerSetIntensity(petsclib::PetscLibType, intensity::PetscInt) end
+function PetscCheckPointerSetIntensity(petsclib::PetscLibType, intensity::Integer)
+    error("PetscCheckPointerSetIntensity: no generated method for these argument types")
+end
 
 @for_petsc function PetscCheckPointerSetIntensity(petsclib::$UnionPetscLib, intensity::$PetscInt )
 
@@ -825,7 +883,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscCitationsRegister"))
 """
-function PetscCitationsRegister(petsclib::PetscLibType, cit::String) end
+function PetscCitationsRegister(petsclib::PetscLibType, cit::String)
+    error("PetscCitationsRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscCitationsRegister(petsclib::$UnionPetscLib, cit::String )
 	set_ = Ref{PetscBool}()
@@ -861,7 +921,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscClassIdRegister"))
 """
-function PetscClassIdRegister(petsclib::PetscLibType, name::String) end
+function PetscClassIdRegister(petsclib::PetscLibType, name::String)
+    error("PetscClassIdRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscClassIdRegister(petsclib::$UnionPetscLib, name::String )
 	oclass_ = Ref{PetscClassId}()
@@ -895,7 +957,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommBuildTwoSidedGetType"))
 """
-function PetscCommBuildTwoSidedGetType(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscCommBuildTwoSidedGetType(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscCommBuildTwoSidedGetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommBuildTwoSidedGetType(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	twosided_ = Ref{PetscBuildTwoSidedType}()
@@ -929,7 +993,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommBuildTwoSidedSetType"))
 """
-function PetscCommBuildTwoSidedSetType(petsclib::PetscLibType, comm::MPI_Comm, twosided::PetscBuildTwoSidedType) end
+function PetscCommBuildTwoSidedSetType(petsclib::PetscLibType, comm::MPI_Comm, twosided::PetscBuildTwoSidedType)
+    error("PetscCommBuildTwoSidedSetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommBuildTwoSidedSetType(petsclib::$UnionPetscLib, comm::MPI_Comm, twosided::PetscBuildTwoSidedType )
 
@@ -960,7 +1026,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommDestroy"))
 """
-function PetscCommDestroy(petsclib::PetscLibType) end
+function PetscCommDestroy(petsclib::PetscLibType)
+    error("PetscCommDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommDestroy(petsclib::$UnionPetscLib)
 	comm_ = Ref{MPI.MPI_Comm}()
@@ -997,7 +1065,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommDuplicate"))
 """
-function PetscCommDuplicate(petsclib::PetscLibType, comm_in::MPI_Comm) end
+function PetscCommDuplicate(petsclib::PetscLibType, comm_in::MPI_Comm)
+    error("PetscCommDuplicate: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommDuplicate(petsclib::$UnionPetscLib, comm_in::MPI_Comm )
 	comm_out_ = Ref{MPI.MPI_Comm}()
@@ -1035,7 +1105,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommGetComm"))
 """
-function PetscCommGetComm(petsclib::PetscLibType, comm_in::MPI_Comm) end
+function PetscCommGetComm(petsclib::PetscLibType, comm_in::MPI_Comm)
+    error("PetscCommGetComm: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommGetComm(petsclib::$UnionPetscLib, comm_in::MPI_Comm )
 	comm_out_ = Ref{MPI.MPI_Comm}()
@@ -1071,7 +1143,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommGetNewTag"))
 """
-function PetscCommGetNewTag(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscCommGetNewTag(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscCommGetNewTag: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommGetNewTag(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	tag_ = Ref{PetscMPIInt}()
@@ -1105,7 +1179,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommRestoreComm"))
 """
-function PetscCommRestoreComm(petsclib::PetscLibType, comm_in::MPI_Comm, comm_out::MPI_Comm) end
+function PetscCommRestoreComm(petsclib::PetscLibType, comm_in::MPI_Comm, comm_out::MPI_Comm)
+    error("PetscCommRestoreComm: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommRestoreComm(petsclib::$UnionPetscLib, comm_in::MPI_Comm, comm_out::MPI_Comm )
 	comm_out_ = Ref{MPI_Comm}(comm_out)
@@ -1137,7 +1213,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/PetscCommSplitReductionBegin"))
 """
-function PetscCommSplitReductionBegin(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscCommSplitReductionBegin(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscCommSplitReductionBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscCommSplitReductionBegin(petsclib::$UnionPetscLib, comm::MPI_Comm )
 
@@ -1158,7 +1236,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscCuBLASIntCast"))
 """
-function PetscCuBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscCuBLASInt) end
+function PetscCuBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscCuBLASInt)
+    error("PetscCuBLASIntCast: no generated method for these argument types")
+end
 
 @for_petsc function PetscCuBLASIntCast(petsclib::$UnionPetscLib, a::MPIU_Count, b::PetscCuBLASInt )
 
@@ -1193,7 +1273,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLAddr"))
 """
-function PetscDLAddr(petsclib::PetscLibType, func::Ptr{Cvoid}) end
+function PetscDLAddr(petsclib::PetscLibType, func::Ptr{Cvoid})
+    error("PetscDLAddr: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLAddr(petsclib::$UnionPetscLib, func::Ptr{Cvoid} )
 	name_ = Ref{Ptr{Cchar}}()
@@ -1226,7 +1308,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLClose"))
 """
-function PetscDLClose(petsclib::PetscLibType, handle::PetscDLHandle) end
+function PetscDLClose(petsclib::PetscLibType, handle::PetscDLHandle)
+    error("PetscDLClose: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLClose(petsclib::$UnionPetscLib, handle::PetscDLHandle )
 
@@ -1262,7 +1346,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLOpen"))
 """
-function PetscDLOpen(petsclib::PetscLibType, name::String, mode::PetscDLMode) end
+function PetscDLOpen(petsclib::PetscLibType, name::String, mode::PetscDLMode)
+    error("PetscDLOpen: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLOpen(petsclib::$UnionPetscLib, name::String, mode::PetscDLMode )
 	handle_ = Ref{PetscDLHandle}()
@@ -1300,7 +1386,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscDLSym"))
 """
-function PetscDLSym(petsclib::PetscLibType, handle::PetscDLHandle, symbol::String) end
+function PetscDLSym(petsclib::PetscLibType, handle::PetscDLHandle, symbol::String)
+    error("PetscDLSym: no generated method for these argument types")
+end
 
 @for_petsc function PetscDLSym(petsclib::$UnionPetscLib, handle::PetscDLHandle, symbol::String )
 	value_ = Ref{Ptr{Cvoid}}()
@@ -1339,7 +1427,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVApply"))
 """
-function PetscDTAltVApply(petsclib::PetscLibType, N::PetscInt, k::PetscInt, w::Vector{PetscReal}, v::Vector{PetscReal}) end
+function PetscDTAltVApply(petsclib::PetscLibType, N::Integer, k::Integer, w::AbstractVector{<:Number}, v::AbstractVector{<:Number})
+    error("PetscDTAltVApply: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVApply(petsclib::$UnionPetscLib, N::$PetscInt, k::$PetscInt, w::Vector{$PetscReal}, v::Vector{$PetscReal} )
 	wv_ = Ref{$PetscReal}()
@@ -1376,7 +1466,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVInterior"))
 """
-function PetscDTAltVInterior(petsclib::PetscLibType, N::PetscInt, k::PetscInt, w::Vector{PetscReal}, v::Vector{PetscReal}) end
+function PetscDTAltVInterior(petsclib::PetscLibType, N::Integer, k::Integer, w::AbstractVector{<:Number}, v::AbstractVector{<:Number})
+    error("PetscDTAltVInterior: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVInterior(petsclib::$UnionPetscLib, N::$PetscInt, k::$PetscInt, w::Vector{$PetscReal}, v::Vector{$PetscReal} )
 	wIntv_ = Ref{$PetscReal}()
@@ -1412,7 +1504,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVInteriorMatrix"))
 """
-function PetscDTAltVInteriorMatrix(petsclib::PetscLibType, N::PetscInt, k::PetscInt, v::Vector{PetscReal}) end
+function PetscDTAltVInteriorMatrix(petsclib::PetscLibType, N::Integer, k::Integer, v::AbstractVector{<:Number})
+    error("PetscDTAltVInteriorMatrix: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVInteriorMatrix(petsclib::$UnionPetscLib, N::$PetscInt, k::$PetscInt, v::Vector{$PetscReal} )
 	intvMat_ = Ref{$PetscReal}()
@@ -1449,7 +1543,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVInteriorPattern"))
 """
-function PetscDTAltVInteriorPattern(petsclib::PetscLibType, N::PetscInt, k::PetscInt, indices::Ptr{Cvoid}) end
+function PetscDTAltVInteriorPattern(petsclib::PetscLibType, N::Integer, k::Integer, indices::Ptr{Cvoid})
+    error("PetscDTAltVInteriorPattern: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVInteriorPattern(petsclib::$UnionPetscLib, N::$PetscInt, k::$PetscInt, indices::Ptr{Cvoid} )
 
@@ -1486,7 +1582,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVPullback"))
 """
-function PetscDTAltVPullback(petsclib::PetscLibType, N::PetscInt, M::PetscInt, L::Vector{PetscReal}, k::PetscInt, w::Vector{PetscReal}) end
+function PetscDTAltVPullback(petsclib::PetscLibType, N::Integer, M::Integer, L::AbstractVector{<:Number}, k::Integer, w::AbstractVector{<:Number})
+    error("PetscDTAltVPullback: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVPullback(petsclib::$UnionPetscLib, N::$PetscInt, M::$PetscInt, L::Vector{$PetscReal}, k::$PetscInt, w::Vector{$PetscReal} )
 	Lstarw_ = Ref{$PetscReal}()
@@ -1524,7 +1622,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVPullbackMatrix"))
 """
-function PetscDTAltVPullbackMatrix(petsclib::PetscLibType, N::PetscInt, M::PetscInt, L::Vector{PetscReal}, k::PetscInt) end
+function PetscDTAltVPullbackMatrix(petsclib::PetscLibType, N::Integer, M::Integer, L::AbstractVector{<:Number}, k::Integer)
+    error("PetscDTAltVPullbackMatrix: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVPullbackMatrix(petsclib::$UnionPetscLib, N::$PetscInt, M::$PetscInt, L::Vector{$PetscReal}, k::$PetscInt )
 	Lstar_ = Ref{$PetscReal}()
@@ -1561,7 +1661,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVStar"))
 """
-function PetscDTAltVStar(petsclib::PetscLibType, N::PetscInt, k::PetscInt, pow::PetscInt, w::Vector{PetscReal}) end
+function PetscDTAltVStar(petsclib::PetscLibType, N::Integer, k::Integer, pow::Integer, w::AbstractVector{<:Number})
+    error("PetscDTAltVStar: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVStar(petsclib::$UnionPetscLib, N::$PetscInt, k::$PetscInt, pow::$PetscInt, w::Vector{$PetscReal} )
 	starw_ = Ref{$PetscReal}()
@@ -1600,7 +1702,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVWedge"))
 """
-function PetscDTAltVWedge(petsclib::PetscLibType, N::PetscInt, j::PetscInt, k::PetscInt, a::Vector{PetscReal}, b::Vector{PetscReal}) end
+function PetscDTAltVWedge(petsclib::PetscLibType, N::Integer, j::Integer, k::Integer, a::AbstractVector{<:Number}, b::AbstractVector{<:Number})
+    error("PetscDTAltVWedge: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVWedge(petsclib::$UnionPetscLib, N::$PetscInt, j::$PetscInt, k::$PetscInt, a::Vector{$PetscReal}, b::Vector{$PetscReal} )
 	awedgeb_ = Ref{$PetscReal}()
@@ -1637,7 +1741,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTAltVWedgeMatrix"))
 """
-function PetscDTAltVWedgeMatrix(petsclib::PetscLibType, N::PetscInt, j::PetscInt, k::PetscInt, a::Vector{PetscReal}) end
+function PetscDTAltVWedgeMatrix(petsclib::PetscLibType, N::Integer, j::Integer, k::Integer, a::AbstractVector{<:Number})
+    error("PetscDTAltVWedgeMatrix: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTAltVWedgeMatrix(petsclib::$UnionPetscLib, N::$PetscInt, j::$PetscInt, k::$PetscInt, a::Vector{$PetscReal} )
 	awedgeMat_ = Ref{$PetscReal}()
@@ -1673,7 +1779,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDTBaryToIndex"))
 """
-function PetscDTBaryToIndex(petsclib::PetscLibType, len::PetscInt, sum::PetscInt, coord::Vector{PetscInt}) end
+function PetscDTBaryToIndex(petsclib::PetscLibType, len::Integer, sum::Integer, coord::AbstractVector{<:Number})
+    error("PetscDTBaryToIndex: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTBaryToIndex(petsclib::$UnionPetscLib, len::$PetscInt, sum::$PetscInt, coord::Vector{$PetscInt} )
 	index_ = Ref{$PetscInt}()
@@ -1696,7 +1804,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTBinomial"))
 """
-function PetscDTBinomial(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
+function PetscDTBinomial(petsclib::PetscLibType, n::Integer, k::Integer)
+    error("PetscDTBinomial: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTBinomial(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt )
 	binomial_ = Ref{$PetscReal}()
@@ -1719,7 +1829,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTBinomialInt"))
 """
-function PetscDTBinomialInt(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
+function PetscDTBinomialInt(petsclib::PetscLibType, n::Integer, k::Integer)
+    error("PetscDTBinomialInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTBinomialInt(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt )
 	binomial_ = Ref{$PetscInt}()
@@ -1757,7 +1869,9 @@ Level: developer
 # External Links
 $(_doc_external("DT/PetscDTCreateDefaultQuadrature"))
 """
-function PetscDTCreateDefaultQuadrature(petsclib::PetscLibType, ct::DMPolytopeType, qorder::PetscInt) end
+function PetscDTCreateDefaultQuadrature(petsclib::PetscLibType, ct::DMPolytopeType, qorder::Integer)
+    error("PetscDTCreateDefaultQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTCreateDefaultQuadrature(petsclib::$UnionPetscLib, ct::DMPolytopeType, qorder::$PetscInt )
 	q_ = Ref{PetscQuadrature}()
@@ -1798,7 +1912,9 @@ Level: developer
 # External Links
 $(_doc_external("DT/PetscDTCreateQuadratureByCell"))
 """
-function PetscDTCreateQuadratureByCell(petsclib::PetscLibType, ct::DMPolytopeType, qorder::PetscInt, qtype::PetscDTSimplexQuadratureType) end
+function PetscDTCreateQuadratureByCell(petsclib::PetscLibType, ct::DMPolytopeType, qorder::Integer, qtype::PetscDTSimplexQuadratureType)
+    error("PetscDTCreateQuadratureByCell: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTCreateQuadratureByCell(petsclib::$UnionPetscLib, ct::DMPolytopeType, qorder::$PetscInt, qtype::PetscDTSimplexQuadratureType )
 	q_ = Ref{PetscQuadrature}()
@@ -1823,7 +1939,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTEnumPerm"))
 """
-function PetscDTEnumPerm(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
+function PetscDTEnumPerm(petsclib::PetscLibType, n::Integer, k::Integer)
+    error("PetscDTEnumPerm: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTEnumPerm(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt )
 	perm_ = Ref{$PetscInt}()
@@ -1848,7 +1966,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTEnumSplit"))
 """
-function PetscDTEnumSplit(petsclib::PetscLibType, n::PetscInt, k::PetscInt, j::PetscInt) end
+function PetscDTEnumSplit(petsclib::PetscLibType, n::Integer, k::Integer, j::Integer)
+    error("PetscDTEnumSplit: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTEnumSplit(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt, j::$PetscInt )
 	perm_ = Ref{$PetscInt}()
@@ -1873,7 +1993,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTEnumSubset"))
 """
-function PetscDTEnumSubset(petsclib::PetscLibType, n::PetscInt, k::PetscInt, j::PetscInt) end
+function PetscDTEnumSubset(petsclib::PetscLibType, n::Integer, k::Integer, j::Integer)
+    error("PetscDTEnumSubset: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTEnumSubset(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt, j::$PetscInt )
 	subset_ = Ref{$PetscInt}()
@@ -1896,7 +2018,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTFactorial"))
 """
-function PetscDTFactorial(petsclib::PetscLibType, n::PetscInt) end
+function PetscDTFactorial(petsclib::PetscLibType, n::Integer)
+    error("PetscDTFactorial: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTFactorial(petsclib::$UnionPetscLib, n::$PetscInt )
 	factorial_ = Ref{$PetscReal}()
@@ -1919,7 +2043,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTFactorialInt"))
 """
-function PetscDTFactorialInt(petsclib::PetscLibType, n::PetscInt) end
+function PetscDTFactorialInt(petsclib::PetscLibType, n::Integer)
+    error("PetscDTFactorialInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTFactorialInt(petsclib::$UnionPetscLib, n::$PetscInt )
 	factorial_ = Ref{$PetscInt}()
@@ -1961,7 +2087,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTGaussJacobiQuadrature"))
 """
-function PetscDTGaussJacobiQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) end
+function PetscDTGaussJacobiQuadrature(petsclib::PetscLibType, npoints::Integer, a::Real, b::Real, alpha::Real, beta::Real, x::AbstractVector{<:Number}, w::AbstractVector{<:Number})
+    error("PetscDTGaussJacobiQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTGaussJacobiQuadrature(petsclib::$UnionPetscLib, npoints::$PetscInt, a::$PetscReal, b::$PetscReal, alpha::$PetscReal, beta::$PetscReal, x::Vector{$PetscReal}, w::Vector{$PetscReal} )
 
@@ -2001,7 +2129,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTGaussLobattoJacobiQuadrature"))
 """
-function PetscDTGaussLobattoJacobiQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) end
+function PetscDTGaussLobattoJacobiQuadrature(petsclib::PetscLibType, npoints::Integer, a::Real, b::Real, alpha::Real, beta::Real, x::AbstractVector{<:Number}, w::AbstractVector{<:Number})
+    error("PetscDTGaussLobattoJacobiQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTGaussLobattoJacobiQuadrature(petsclib::$UnionPetscLib, npoints::$PetscInt, a::$PetscReal, b::$PetscReal, alpha::$PetscReal, beta::$PetscReal, x::Vector{$PetscReal}, w::Vector{$PetscReal} )
 
@@ -2039,7 +2169,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTGaussLobattoLegendreQuadrature"))
 """
-function PetscDTGaussLobattoLegendreQuadrature(petsclib::PetscLibType, npoints::PetscInt, type::PetscGaussLobattoLegendreCreateType, x::Vector{PetscReal}, w::Vector{PetscReal}) end
+function PetscDTGaussLobattoLegendreQuadrature(petsclib::PetscLibType, npoints::Integer, type::PetscGaussLobattoLegendreCreateType, x::AbstractVector{<:Number}, w::AbstractVector{<:Number})
+    error("PetscDTGaussLobattoLegendreQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTGaussLobattoLegendreQuadrature(petsclib::$UnionPetscLib, npoints::$PetscInt, type::PetscGaussLobattoLegendreCreateType, x::Vector{$PetscReal}, w::Vector{$PetscReal} )
 
@@ -2076,7 +2208,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTGaussQuadrature"))
 """
-function PetscDTGaussQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) end
+function PetscDTGaussQuadrature(petsclib::PetscLibType, npoints::Integer, a::Real, b::Real, x::AbstractVector{<:Number}, w::AbstractVector{<:Number})
+    error("PetscDTGaussQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTGaussQuadrature(petsclib::$UnionPetscLib, npoints::$PetscInt, a::$PetscReal, b::$PetscReal, x::Vector{$PetscReal}, w::Vector{$PetscReal} )
 
@@ -2114,7 +2248,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTGaussTensorQuadrature"))
 """
-function PetscDTGaussTensorQuadrature(petsclib::PetscLibType, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal) end
+function PetscDTGaussTensorQuadrature(petsclib::PetscLibType, dim::Integer, Nc::Integer, npoints::Integer, a::Real, b::Real)
+    error("PetscDTGaussTensorQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTGaussTensorQuadrature(petsclib::$UnionPetscLib, dim::$PetscInt, Nc::$PetscInt, npoints::$PetscInt, a::$PetscReal, b::$PetscReal )
 	q_ = Ref{PetscQuadrature}()
@@ -2149,7 +2285,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDTGradedOrderToIndex"))
 """
-function PetscDTGradedOrderToIndex(petsclib::PetscLibType, len::PetscInt, degtup::Vector{PetscInt}) end
+function PetscDTGradedOrderToIndex(petsclib::PetscLibType, len::Integer, degtup::AbstractVector{<:Number})
+    error("PetscDTGradedOrderToIndex: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTGradedOrderToIndex(petsclib::$UnionPetscLib, len::$PetscInt, degtup::Vector{$PetscInt} )
 	index_ = Ref{$PetscInt}()
@@ -2185,7 +2323,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDTIndexToBary"))
 """
-function PetscDTIndexToBary(petsclib::PetscLibType, len::PetscInt, sum::PetscInt, index::PetscInt, coord::Vector{PetscInt}) end
+function PetscDTIndexToBary(petsclib::PetscLibType, len::Integer, sum::Integer, index::Integer, coord::AbstractVector{<:Number})
+    error("PetscDTIndexToBary: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTIndexToBary(petsclib::$UnionPetscLib, len::$PetscInt, sum::$PetscInt, index::$PetscInt, coord::Vector{$PetscInt} )
 
@@ -2219,7 +2359,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDTIndexToGradedOrder"))
 """
-function PetscDTIndexToGradedOrder(petsclib::PetscLibType, len::PetscInt, index::PetscInt, degtup::Vector{PetscInt}) end
+function PetscDTIndexToGradedOrder(petsclib::PetscLibType, len::Integer, index::Integer, degtup::AbstractVector{<:Number})
+    error("PetscDTIndexToGradedOrder: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTIndexToGradedOrder(petsclib::$UnionPetscLib, len::$PetscInt, index::$PetscInt, degtup::Vector{$PetscInt} )
 
@@ -2261,7 +2403,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTJacobiEval"))
 """
-function PetscDTJacobiEval(petsclib::PetscLibType, npoints::PetscInt, alpha::PetscReal, beta::PetscReal, points::Vector{PetscReal}, ndegree::PetscInt, degrees::Vector{PetscInt}, B::Vector{PetscReal}, D::Vector{PetscReal}, D2::Vector{PetscReal}) end
+function PetscDTJacobiEval(petsclib::PetscLibType, npoints::Integer, alpha::Real, beta::Real, points::AbstractVector{<:Number}, ndegree::Integer, degrees::AbstractVector{<:Number}, B::AbstractVector{<:Number}, D::AbstractVector{<:Number}, D2::AbstractVector{<:Number})
+    error("PetscDTJacobiEval: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTJacobiEval(petsclib::$UnionPetscLib, npoints::$PetscInt, alpha::$PetscReal, beta::$PetscReal, points::Vector{$PetscReal}, ndegree::$PetscInt, degrees::Vector{$PetscInt}, B::Vector{$PetscReal}, D::Vector{$PetscReal}, D2::Vector{$PetscReal} )
 
@@ -2301,7 +2445,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscDTJacobiEvalJet"))
 """
-function PetscDTJacobiEvalJet(petsclib::PetscLibType, alpha::PetscReal, beta::PetscReal, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt, p::Vector{PetscReal}) end
+function PetscDTJacobiEvalJet(petsclib::PetscLibType, alpha::Real, beta::Real, npoints::Integer, points::AbstractVector{<:Number}, degree::Integer, k::Integer, p::AbstractVector{<:Number})
+    error("PetscDTJacobiEvalJet: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTJacobiEvalJet(petsclib::$UnionPetscLib, alpha::$PetscReal, beta::$PetscReal, npoints::$PetscInt, points::Vector{$PetscReal}, degree::$PetscInt, k::$PetscInt, p::Vector{$PetscReal} )
 
@@ -2337,7 +2483,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDTJacobiNorm"))
 """
-function PetscDTJacobiNorm(petsclib::PetscLibType, alpha::PetscReal, beta::PetscReal, n::PetscInt) end
+function PetscDTJacobiNorm(petsclib::PetscLibType, alpha::Real, beta::Real, n::Integer)
+    error("PetscDTJacobiNorm: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTJacobiNorm(petsclib::$UnionPetscLib, alpha::$PetscReal, beta::$PetscReal, n::$PetscInt )
 	norm_ = Ref{$PetscReal}()
@@ -2378,7 +2526,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTLegendreEval"))
 """
-function PetscDTLegendreEval(petsclib::PetscLibType, npoints::PetscInt, points::Vector{PetscReal}, ndegree::PetscInt, degrees::Vector{PetscInt}, B::Vector{PetscReal}, D::Vector{PetscReal}, D2::Vector{PetscReal}) end
+function PetscDTLegendreEval(petsclib::PetscLibType, npoints::Integer, points::AbstractVector{<:Number}, ndegree::Integer, degrees::AbstractVector{<:Number}, B::AbstractVector{<:Number}, D::AbstractVector{<:Number}, D2::AbstractVector{<:Number})
+    error("PetscDTLegendreEval: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTLegendreEval(petsclib::$UnionPetscLib, npoints::$PetscInt, points::Vector{$PetscReal}, ndegree::$PetscInt, degrees::Vector{$PetscInt}, B::Vector{$PetscReal}, D::Vector{$PetscReal}, D2::Vector{$PetscReal} )
 
@@ -2419,7 +2569,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscDTPKDEvalJet"))
 """
-function PetscDTPKDEvalJet(petsclib::PetscLibType, dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt, p::Vector{PetscReal}) end
+function PetscDTPKDEvalJet(petsclib::PetscLibType, dim::Integer, npoints::Integer, points::AbstractVector{<:Number}, degree::Integer, k::Integer, p::AbstractVector{<:Number})
+    error("PetscDTPKDEvalJet: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTPKDEvalJet(petsclib::$UnionPetscLib, dim::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, degree::$PetscInt, k::$PetscInt, p::Vector{$PetscReal} )
 
@@ -2460,7 +2612,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscDTPTrimmedEvalJet"))
 """
-function PetscDTPTrimmedEvalJet(petsclib::PetscLibType, dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, formDegree::PetscInt, jetDegree::PetscInt, p::Vector{PetscReal}) end
+function PetscDTPTrimmedEvalJet(petsclib::PetscLibType, dim::Integer, npoints::Integer, points::AbstractVector{<:Number}, degree::Integer, formDegree::Integer, jetDegree::Integer, p::AbstractVector{<:Number})
+    error("PetscDTPTrimmedEvalJet: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTPTrimmedEvalJet(petsclib::$UnionPetscLib, dim::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, degree::$PetscInt, formDegree::$PetscInt, jetDegree::$PetscInt, p::Vector{$PetscReal} )
 
@@ -2495,7 +2649,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscDTPTrimmedSize"))
 """
-function PetscDTPTrimmedSize(petsclib::PetscLibType, dim::PetscInt, degree::PetscInt, formDegree::PetscInt) end
+function PetscDTPTrimmedSize(petsclib::PetscLibType, dim::Integer, degree::Integer, formDegree::Integer)
+    error("PetscDTPTrimmedSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTPTrimmedSize(petsclib::$UnionPetscLib, dim::$PetscInt, degree::$PetscInt, formDegree::$PetscInt )
 	size_ = Ref{$PetscInt}()
@@ -2518,7 +2674,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTPermIndex"))
 """
-function PetscDTPermIndex(petsclib::PetscLibType, n::PetscInt) end
+function PetscDTPermIndex(petsclib::PetscLibType, n::Integer)
+    error("PetscDTPermIndex: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTPermIndex(petsclib::$UnionPetscLib, n::$PetscInt )
 	perm_ = Ref{$PetscInt}()
@@ -2562,7 +2720,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscDTReconstructPoly"))
 """
-function PetscDTReconstructPoly(petsclib::PetscLibType, degree::PetscInt, nsource::PetscInt, sourcex::Vector{PetscReal}, ntarget::PetscInt, targetx::Vector{PetscReal}, R::Vector{PetscReal}) end
+function PetscDTReconstructPoly(petsclib::PetscLibType, degree::Integer, nsource::Integer, sourcex::AbstractVector{<:Number}, ntarget::Integer, targetx::AbstractVector{<:Number}, R::AbstractVector{<:Number})
+    error("PetscDTReconstructPoly: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTReconstructPoly(petsclib::$UnionPetscLib, degree::$PetscInt, nsource::$PetscInt, sourcex::Vector{$PetscReal}, ntarget::$PetscInt, targetx::Vector{$PetscReal}, R::Vector{$PetscReal} )
 
@@ -2600,7 +2760,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTSimplexQuadrature"))
 """
-function PetscDTSimplexQuadrature(petsclib::PetscLibType, dim::PetscInt, degree::PetscInt, type::PetscDTSimplexQuadratureType) end
+function PetscDTSimplexQuadrature(petsclib::PetscLibType, dim::Integer, degree::Integer, type::PetscDTSimplexQuadratureType)
+    error("PetscDTSimplexQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTSimplexQuadrature(petsclib::$UnionPetscLib, dim::$PetscInt, degree::$PetscInt, type::PetscDTSimplexQuadratureType )
 	quad_ = Ref{PetscQuadrature}()
@@ -2640,7 +2802,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTStroudConicalQuadrature"))
 """
-function PetscDTStroudConicalQuadrature(petsclib::PetscLibType, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal) end
+function PetscDTStroudConicalQuadrature(petsclib::PetscLibType, dim::Integer, Nc::Integer, npoints::Integer, a::Real, b::Real)
+    error("PetscDTStroudConicalQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTStroudConicalQuadrature(petsclib::$UnionPetscLib, dim::$PetscInt, Nc::$PetscInt, npoints::$PetscInt, a::$PetscReal, b::$PetscReal )
 	q_ = Ref{PetscQuadrature}()
@@ -2663,7 +2827,9 @@ end
 # External Links
 $(_doc_external("DM/PetscDTSubsetIndex"))
 """
-function PetscDTSubsetIndex(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
+function PetscDTSubsetIndex(petsclib::PetscLibType, n::Integer, k::Integer)
+    error("PetscDTSubsetIndex: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTSubsetIndex(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt )
 	subset_ = Ref{$PetscInt}()
@@ -2688,7 +2854,9 @@ end
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhIntegrate"))
 """
-function PetscDTTanhSinhIntegrate(petsclib::PetscLibType, func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) end
+function PetscDTTanhSinhIntegrate(petsclib::PetscLibType, func::external, a::Real, b::Real, digits::Integer, ctx::Ptr{Cvoid})
+    error("PetscDTTanhSinhIntegrate: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTTanhSinhIntegrate(petsclib::$UnionPetscLib, func::external, a::$PetscReal, b::$PetscReal, digits::$PetscInt, ctx::Ptr{Cvoid} )
 	sol_ = Ref{$PetscReal}()
@@ -2711,7 +2879,9 @@ end
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhIntegrateMPFR"))
 """
-function PetscDTTanhSinhIntegrateMPFR(petsclib::PetscLibType, func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) end
+function PetscDTTanhSinhIntegrateMPFR(petsclib::PetscLibType, func::external, a::Real, b::Real, digits::Integer, ctx::Ptr{Cvoid})
+    error("PetscDTTanhSinhIntegrateMPFR: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTTanhSinhIntegrateMPFR(petsclib::$UnionPetscLib, func::external, a::$PetscReal, b::$PetscReal, digits::$PetscInt, ctx::Ptr{Cvoid} )
 	sol_ = Ref{$PetscReal}()
@@ -2750,7 +2920,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhTensorQuadrature"))
 """
-function PetscDTTanhSinhTensorQuadrature(petsclib::PetscLibType, dim::PetscInt, level::PetscInt, a::PetscReal, b::PetscReal) end
+function PetscDTTanhSinhTensorQuadrature(petsclib::PetscLibType, dim::Integer, level::Integer, a::Real, b::Real)
+    error("PetscDTTanhSinhTensorQuadrature: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTTanhSinhTensorQuadrature(petsclib::$UnionPetscLib, dim::$PetscInt, level::$PetscInt, a::$PetscReal, b::$PetscReal )
 	q_ = Ref{PetscQuadrature}()
@@ -2787,7 +2959,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDTTensorQuadratureCreate"))
 """
-function PetscDTTensorQuadratureCreate(petsclib::PetscLibType, q1::PetscQuadrature, q2::PetscQuadrature) end
+function PetscDTTensorQuadratureCreate(petsclib::PetscLibType, q1::PetscQuadrature, q2::PetscQuadrature)
+    error("PetscDTTensorQuadratureCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscDTTensorQuadratureCreate(petsclib::$UnionPetscLib, q1::PetscQuadrature, q2::PetscQuadrature )
 	q_ = Ref{PetscQuadrature}()
@@ -2824,7 +2998,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscDataTypeFromString"))
 """
-function PetscDataTypeFromString(petsclib::PetscLibType, name::String) end
+function PetscDataTypeFromString(petsclib::PetscLibType, name::String)
+    error("PetscDataTypeFromString: no generated method for these argument types")
+end
 
 @for_petsc function PetscDataTypeFromString(petsclib::$UnionPetscLib, name::String )
 	ptype_ = Ref{PetscDataType}()
@@ -2862,7 +3038,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscDataTypeGetSize"))
 """
-function PetscDataTypeGetSize(petsclib::PetscLibType, ptype::PetscDataType) end
+function PetscDataTypeGetSize(petsclib::PetscLibType, ptype::PetscDataType)
+    error("PetscDataTypeGetSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscDataTypeGetSize(petsclib::$UnionPetscLib, ptype::PetscDataType )
 	size_ = Ref{Csize_t}()
@@ -2898,7 +3076,9 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscDataTypeToHDF5DataType"))
 """
-function PetscDataTypeToHDF5DataType(petsclib::PetscLibType, ptype::PetscDataType) end
+function PetscDataTypeToHDF5DataType(petsclib::PetscLibType, ptype::PetscDataType)
+    error("PetscDataTypeToHDF5DataType: no generated method for these argument types")
+end
 
 @for_petsc function PetscDataTypeToHDF5DataType(petsclib::$UnionPetscLib, ptype::PetscDataType )
 	htype_ = Ref{hid_t}()
@@ -2921,7 +3101,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscDemangleSymbol"))
 """
-function PetscDemangleSymbol(petsclib::PetscLibType, mangledName::String, name::Cchar) end
+function PetscDemangleSymbol(petsclib::PetscLibType, mangledName::String, name::Cchar)
+    error("PetscDemangleSymbol: no generated method for these argument types")
+end
 
 @for_petsc function PetscDemangleSymbol(petsclib::$UnionPetscLib, mangledName::String, name::Cchar )
 
@@ -2947,7 +3129,9 @@ Not Collective
 # External Links
 $(_doc_external("Sys/PetscDetermineInitialFPTrap"))
 """
-function PetscDetermineInitialFPTrap(petsclib::PetscLibType) end
+function PetscDetermineInitialFPTrap(petsclib::PetscLibType)
+    error("PetscDetermineInitialFPTrap: no generated method for these argument types")
+end
 
 @for_petsc function PetscDetermineInitialFPTrap(petsclib::$UnionPetscLib)
 
@@ -2983,7 +3167,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscEListFind"))
 """
-function PetscEListFind(petsclib::PetscLibType, n::PetscInt, list::Cchar, str::String) end
+function PetscEListFind(petsclib::PetscLibType, n::Integer, list::Cchar, str::String)
+    error("PetscEListFind: no generated method for these argument types")
+end
 
 @for_petsc function PetscEListFind(petsclib::$UnionPetscLib, n::$PetscInt, list::Cchar, str::String )
 	value_ = Ref{$PetscInt}()
@@ -3008,7 +3194,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscElementalFinalizePackage"))
 """
-function PetscElementalFinalizePackage(petsclib::PetscLibType) end
+function PetscElementalFinalizePackage(petsclib::PetscLibType)
+    error("PetscElementalFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscElementalFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -3028,7 +3216,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscElementalInitializePackage"))
 """
-function PetscElementalInitializePackage(petsclib::PetscLibType) end
+function PetscElementalInitializePackage(petsclib::PetscLibType)
+    error("PetscElementalInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscElementalInitializePackage(petsclib::$UnionPetscLib)
 
@@ -3048,7 +3238,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscElementalInitialized"))
 """
-function PetscElementalInitialized(petsclib::PetscLibType) end
+function PetscElementalInitialized(petsclib::PetscLibType)
+    error("PetscElementalInitialized: no generated method for these argument types")
+end
 
 @for_petsc function PetscElementalInitialized(petsclib::$UnionPetscLib)
 	isInitialized_ = Ref{PetscBool}()
@@ -3079,7 +3271,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscEnd"))
 """
-function PetscEnd(petsclib::PetscLibType) end
+function PetscEnd(petsclib::PetscLibType)
+    error("PetscEnd: no generated method for these argument types")
+end
 
 @for_petsc function PetscEnd(petsclib::$UnionPetscLib)
 
@@ -3114,7 +3308,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscEnumFind"))
 """
-function PetscEnumFind(petsclib::PetscLibType, enumlist::Cchar, str::String) end
+function PetscEnumFind(petsclib::PetscLibType, enumlist::Cchar, str::String)
+    error("PetscEnumFind: no generated method for these argument types")
+end
 
 @for_petsc function PetscEnumFind(petsclib::$UnionPetscLib, enumlist::Cchar, str::String )
 	value_ = Ref{PetscEnum}()
@@ -3139,7 +3335,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscErrorPrintfInitialize"))
 """
-function PetscErrorPrintfInitialize(petsclib::PetscLibType) end
+function PetscErrorPrintfInitialize(petsclib::PetscLibType)
+    error("PetscErrorPrintfInitialize: no generated method for these argument types")
+end
 
 @for_petsc function PetscErrorPrintfInitialize(petsclib::$UnionPetscLib)
 
@@ -3171,7 +3369,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFClose"))
 """
-function PetscFClose(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE) end
+function PetscFClose(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE)
+    error("PetscFClose: no generated method for these argument types")
+end
 
 @for_petsc function PetscFClose(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Libc.FILE )
 
@@ -3200,7 +3400,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscFFlush"))
 """
-function PetscFFlush(petsclib::PetscLibType, fd::Libc.FILE) end
+function PetscFFlush(petsclib::PetscLibType, fd::Libc.FILE)
+    error("PetscFFlush: no generated method for these argument types")
+end
 
 @for_petsc function PetscFFlush(petsclib::$UnionPetscLib, fd::Libc.FILE )
 
@@ -3238,7 +3440,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFOpen"))
 """
-function PetscFOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, mode::String) end
+function PetscFOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, mode::String)
+    error("PetscFOpen: no generated method for these argument types")
+end
 
 @for_petsc function PetscFOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, mode::String )
 	fp_ = Ref{Ptr{Libc.FILE}}()
@@ -3268,7 +3472,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscFPTrapPop"))
 """
-function PetscFPTrapPop(petsclib::PetscLibType) end
+function PetscFPTrapPop(petsclib::PetscLibType)
+    error("PetscFPTrapPop: no generated method for these argument types")
+end
 
 @for_petsc function PetscFPTrapPop(petsclib::$UnionPetscLib)
 
@@ -3298,7 +3504,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscFPTrapPush"))
 """
-function PetscFPTrapPush(petsclib::PetscLibType, trap::PetscFPTrap) end
+function PetscFPTrapPush(petsclib::PetscLibType, trap::PetscFPTrap)
+    error("PetscFPTrapPush: no generated method for these argument types")
+end
 
 @for_petsc function PetscFPTrapPush(petsclib::$UnionPetscLib, trap::PetscFPTrap )
 
@@ -3336,7 +3544,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFileRetrieve"))
 """
-function PetscFileRetrieve(petsclib::PetscLibType, comm::MPI_Comm, url::String, localname::String, llen::Csize_t) end
+function PetscFileRetrieve(petsclib::PetscLibType, comm::MPI_Comm, url::String, localname::String, llen::Csize_t)
+    error("PetscFileRetrieve: no generated method for these argument types")
+end
 
 @for_petsc function PetscFileRetrieve(petsclib::$UnionPetscLib, comm::MPI_Comm, url::String, localname::String, llen::Csize_t )
 	found_ = Ref{PetscBool}()
@@ -3376,7 +3586,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscFinalize"))
 """
-function PetscFinalize(petsclib::PetscLibType) end
+function PetscFinalize(petsclib::PetscLibType)
+    error("PetscFinalize: no generated method for these argument types")
+end
 
 @for_petsc function PetscFinalize(petsclib::$UnionPetscLib)
 
@@ -3404,7 +3616,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFinalized"))
 """
-function PetscFinalized(petsclib::PetscLibType) end
+function PetscFinalized(petsclib::PetscLibType)
+    error("PetscFinalized: no generated method for these argument types")
+end
 
 @for_petsc function PetscFinalized(petsclib::$UnionPetscLib)
 	isFinalized_ = Ref{PetscBool}()
@@ -3442,7 +3656,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscFindCount"))
 """
-function PetscFindCount(petsclib::PetscLibType, key::PetscCount, n::PetscCount, X::Vector{PetscCount}) end
+function PetscFindCount(petsclib::PetscLibType, key::PetscCount, n::PetscCount, X::Vector{PetscCount})
+    error("PetscFindCount: no generated method for these argument types")
+end
 
 @for_petsc function PetscFindCount(petsclib::$UnionPetscLib, key::PetscCount, n::PetscCount, X::Vector{PetscCount} )
 	loc_ = Ref{PetscCount}()
@@ -3480,7 +3696,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscFindInt"))
 """
-function PetscFindInt(petsclib::PetscLibType, key::PetscInt, n::PetscCount, X::Vector{PetscInt}) end
+function PetscFindInt(petsclib::PetscLibType, key::Integer, n::PetscCount, X::AbstractVector{<:Number})
+    error("PetscFindInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscFindInt(petsclib::$UnionPetscLib, key::$PetscInt, n::PetscCount, X::Vector{$PetscInt} )
 	loc_ = Ref{$PetscInt}()
@@ -3518,7 +3736,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscFindMPIInt"))
 """
-function PetscFindMPIInt(petsclib::PetscLibType, key::PetscMPIInt, n::PetscCount, X::Vector{PetscMPIInt}) end
+function PetscFindMPIInt(petsclib::PetscLibType, key::PetscMPIInt, n::PetscCount, X::Vector{PetscMPIInt})
+    error("PetscFindMPIInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscFindMPIInt(petsclib::$UnionPetscLib, key::PetscMPIInt, n::PetscCount, X::Vector{PetscMPIInt} )
 	loc_ = Ref{$PetscInt}()
@@ -3557,7 +3777,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscFindReal"))
 """
-function PetscFindReal(petsclib::PetscLibType, key::PetscReal, n::PetscCount, t::Vector{PetscReal}, eps::PetscReal) end
+function PetscFindReal(petsclib::PetscLibType, key::Real, n::PetscCount, t::AbstractVector{<:Number}, eps::Real)
+    error("PetscFindReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscFindReal(petsclib::$UnionPetscLib, key::$PetscReal, n::PetscCount, t::Vector{$PetscReal}, eps::$PetscReal )
 	loc_ = Ref{$PetscInt}()
@@ -3594,7 +3816,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFixFilename"))
 """
-function PetscFixFilename(petsclib::PetscLibType, filein::String, fileout::String) end
+function PetscFixFilename(petsclib::PetscLibType, filein::String, fileout::String)
+    error("PetscFixFilename: no generated method for these argument types")
+end
 
 @for_petsc function PetscFixFilename(petsclib::$UnionPetscLib, filein::String, fileout::String )
 
@@ -3626,7 +3850,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscFormKeySort"))
 """
-function PetscFormKeySort(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscFormKey}) end
+function PetscFormKeySort(petsclib::PetscLibType, n::Integer, arr::Vector{PetscFormKey})
+    error("PetscFormKeySort: no generated method for these argument types")
+end
 
 @for_petsc function PetscFormKeySort(petsclib::$UnionPetscLib, n::$PetscInt, arr::Vector{PetscFormKey} )
 
@@ -3660,7 +3886,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFormatConvert"))
 """
-function PetscFormatConvert(petsclib::PetscLibType, format::String, newformat::String) end
+function PetscFormatConvert(petsclib::PetscLibType, format::String, newformat::String)
+    error("PetscFormatConvert: no generated method for these argument types")
+end
 
 @for_petsc function PetscFormatConvert(petsclib::$UnionPetscLib, format::String, newformat::String )
 
@@ -3694,7 +3922,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFormatConvertGetSize"))
 """
-function PetscFormatConvertGetSize(petsclib::PetscLibType, format::String) end
+function PetscFormatConvertGetSize(petsclib::PetscLibType, format::String)
+    error("PetscFormatConvertGetSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscFormatConvertGetSize(petsclib::$UnionPetscLib, format::String )
 	size_ = Ref{Csize_t}()
@@ -3717,7 +3947,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscFormatRealArray"))
 """
-function PetscFormatRealArray(petsclib::PetscLibType, buf::String, len::Csize_t, fmt::String, n::PetscInt, x::Vector{PetscReal}) end
+function PetscFormatRealArray(petsclib::PetscLibType, buf::String, len::Csize_t, fmt::String, n::Integer, x::AbstractVector{<:Number})
+    error("PetscFormatRealArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscFormatRealArray(petsclib::$UnionPetscLib, buf::String, len::Csize_t, fmt::String, n::$PetscInt, x::Vector{$PetscReal} )
 
@@ -3748,7 +3980,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscFreeArguments"))
 """
-function PetscFreeArguments(petsclib::PetscLibType) end
+function PetscFreeArguments(petsclib::PetscLibType)
+    error("PetscFreeArguments: no generated method for these argument types")
+end
 
 @for_petsc function PetscFreeArguments(petsclib::$UnionPetscLib)
 	args_ = Ref{Ptr{Cchar}}()
@@ -3790,7 +4024,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGatherMessageLengths"))
 """
-function PetscGatherMessageLengths(petsclib::PetscLibType, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths::Vector{PetscMPIInt}) end
+function PetscGatherMessageLengths(petsclib::PetscLibType, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths::Vector{PetscMPIInt})
+    error("PetscGatherMessageLengths: no generated method for these argument types")
+end
 
 @for_petsc function PetscGatherMessageLengths(petsclib::$UnionPetscLib, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths::Vector{PetscMPIInt} )
 	onodes_ = Ref{Ptr{PetscMPIInt}}()
@@ -3836,7 +4072,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGatherMessageLengths2"))
 """
-function PetscGatherMessageLengths2(petsclib::PetscLibType, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths1::Vector{PetscMPIInt}, ilengths2::Vector{PetscMPIInt}) end
+function PetscGatherMessageLengths2(petsclib::PetscLibType, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths1::Vector{PetscMPIInt}, ilengths2::Vector{PetscMPIInt})
+    error("PetscGatherMessageLengths2: no generated method for these argument types")
+end
 
 @for_petsc function PetscGatherMessageLengths2(petsclib::$UnionPetscLib, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths1::Vector{PetscMPIInt}, ilengths2::Vector{PetscMPIInt} )
 	onodes_ = Ref{Ptr{PetscMPIInt}}()
@@ -3880,7 +4118,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGatherNumberOfMessages"))
 """
-function PetscGatherNumberOfMessages(petsclib::PetscLibType, comm::MPI_Comm, iflags::Vector{PetscMPIInt}, ilengths::Vector{PetscMPIInt}) end
+function PetscGatherNumberOfMessages(petsclib::PetscLibType, comm::MPI_Comm, iflags::Vector{PetscMPIInt}, ilengths::Vector{PetscMPIInt})
+    error("PetscGatherNumberOfMessages: no generated method for these argument types")
+end
 
 @for_petsc function PetscGatherNumberOfMessages(petsclib::$UnionPetscLib, comm::MPI_Comm, iflags::Vector{PetscMPIInt}, ilengths::Vector{PetscMPIInt} )
 	nrecvs_ = Ref{PetscMPIInt}()
@@ -3918,7 +4158,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementAdvectionCreate"))
 """
-function PetscGaussLobattoLegendreElementAdvectionCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) end
+function PetscGaussLobattoLegendreElementAdvectionCreate(petsclib::PetscLibType, n::Integer, nodes::AbstractVector{<:Number}, weights::AbstractVector{<:Number})
+    error("PetscGaussLobattoLegendreElementAdvectionCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementAdvectionCreate(petsclib::$UnionPetscLib, n::$PetscInt, nodes::Vector{$PetscReal}, weights::Vector{$PetscReal} )
 	AA_ = Ref{Ptr{$PetscReal}}()
@@ -3954,7 +4196,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementAdvectionDestroy"))
 """
-function PetscGaussLobattoLegendreElementAdvectionDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) end
+function PetscGaussLobattoLegendreElementAdvectionDestroy(petsclib::PetscLibType, n::Integer, nodes::AbstractVector{<:Number}, weights::AbstractVector{<:Number}, AA::Real)
+    error("PetscGaussLobattoLegendreElementAdvectionDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementAdvectionDestroy(petsclib::$UnionPetscLib, n::$PetscInt, nodes::Vector{$PetscReal}, weights::Vector{$PetscReal}, AA::$PetscReal )
 
@@ -3991,7 +4235,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementGradientCreate"))
 """
-function PetscGaussLobattoLegendreElementGradientCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) end
+function PetscGaussLobattoLegendreElementGradientCreate(petsclib::PetscLibType, n::Integer, nodes::AbstractVector{<:Number}, weights::AbstractVector{<:Number})
+    error("PetscGaussLobattoLegendreElementGradientCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementGradientCreate(petsclib::$UnionPetscLib, n::$PetscInt, nodes::Vector{$PetscReal}, weights::Vector{$PetscReal} )
 	AA_ = Ref{Ptr{$PetscReal}}()
@@ -4030,7 +4276,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementGradientDestroy"))
 """
-function PetscGaussLobattoLegendreElementGradientDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal, AAT::PetscReal) end
+function PetscGaussLobattoLegendreElementGradientDestroy(petsclib::PetscLibType, n::Integer, nodes::AbstractVector{<:Number}, weights::AbstractVector{<:Number}, AA::Real, AAT::Real)
+    error("PetscGaussLobattoLegendreElementGradientDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementGradientDestroy(petsclib::$UnionPetscLib, n::$PetscInt, nodes::Vector{$PetscReal}, weights::Vector{$PetscReal}, AA::$PetscReal, AAT::$PetscReal )
 
@@ -4066,7 +4314,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementLaplacianCreate"))
 """
-function PetscGaussLobattoLegendreElementLaplacianCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) end
+function PetscGaussLobattoLegendreElementLaplacianCreate(petsclib::PetscLibType, n::Integer, nodes::AbstractVector{<:Number}, weights::AbstractVector{<:Number})
+    error("PetscGaussLobattoLegendreElementLaplacianCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementLaplacianCreate(petsclib::$UnionPetscLib, n::$PetscInt, nodes::Vector{$PetscReal}, weights::Vector{$PetscReal} )
 	AA_ = Ref{Ptr{$PetscReal}}()
@@ -4102,7 +4352,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementLaplacianDestroy"))
 """
-function PetscGaussLobattoLegendreElementLaplacianDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) end
+function PetscGaussLobattoLegendreElementLaplacianDestroy(petsclib::PetscLibType, n::Integer, nodes::AbstractVector{<:Number}, weights::AbstractVector{<:Number}, AA::Real)
+    error("PetscGaussLobattoLegendreElementLaplacianDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementLaplacianDestroy(petsclib::$UnionPetscLib, n::$PetscInt, nodes::Vector{$PetscReal}, weights::Vector{$PetscReal}, AA::$PetscReal )
 
@@ -4123,7 +4375,9 @@ end
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementMassCreate"))
 """
-function PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType, n::PetscInt, AA::PetscReal) end
+function PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType, n::Integer, AA::Real)
+    error("PetscGaussLobattoLegendreElementMassCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementMassCreate(petsclib::$UnionPetscLib, n::$PetscInt, AA::$PetscReal )
 	nodes_ = Ref{$PetscReal}()
@@ -4148,7 +4402,9 @@ end
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementMassDestroy"))
 """
-function PetscGaussLobattoLegendreElementMassDestroy(petsclib::PetscLibType, n::PetscInt, AA::PetscReal) end
+function PetscGaussLobattoLegendreElementMassDestroy(petsclib::PetscLibType, n::Integer, AA::Real)
+    error("PetscGaussLobattoLegendreElementMassDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreElementMassDestroy(petsclib::$UnionPetscLib, n::$PetscInt, AA::$PetscReal )
 	nodes_ = Ref{$PetscReal}()
@@ -4189,7 +4445,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreIntegrate"))
 """
-function PetscGaussLobattoLegendreIntegrate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, f::Vector{PetscReal}) end
+function PetscGaussLobattoLegendreIntegrate(petsclib::PetscLibType, n::Integer, nodes::AbstractVector{<:Number}, weights::AbstractVector{<:Number}, f::AbstractVector{<:Number})
+    error("PetscGaussLobattoLegendreIntegrate: no generated method for these argument types")
+end
 
 @for_petsc function PetscGaussLobattoLegendreIntegrate(petsclib::$UnionPetscLib, n::$PetscInt, nodes::Vector{$PetscReal}, weights::Vector{$PetscReal}, f::Vector{$PetscReal} )
 	in_ = Ref{$PetscReal}()
@@ -4225,7 +4483,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetArchType"))
 """
-function PetscGetArchType(petsclib::PetscLibType, str::String, slen::Csize_t) end
+function PetscGetArchType(petsclib::PetscLibType, str::String, slen::Csize_t)
+    error("PetscGetArchType: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetArchType(petsclib::$UnionPetscLib, str::String, slen::Csize_t )
 
@@ -4258,7 +4518,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscGetArgs"))
 """
-function PetscGetArgs(petsclib::PetscLibType) end
+function PetscGetArgs(petsclib::PetscLibType)
+    error("PetscGetArgs: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetArgs(petsclib::$UnionPetscLib)
 	argc_ = Ref{Cint}()
@@ -4294,7 +4556,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscGetArguments"))
 """
-function PetscGetArguments(petsclib::PetscLibType) end
+function PetscGetArguments(petsclib::PetscLibType)
+    error("PetscGetArguments: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetArguments(petsclib::$UnionPetscLib)
 	args_ = Ref{Ptr{Cchar}}()
@@ -4326,7 +4590,9 @@ Example:
 # External Links
 $(_doc_external("Sys/PetscGetCPUTime"))
 """
-function PetscGetCPUTime(petsclib::PetscLibType) end
+function PetscGetCPUTime(petsclib::PetscLibType)
+    error("PetscGetCPUTime: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetCPUTime(petsclib::$UnionPetscLib)
 	t_ = Ref{PetscLogDouble}()
@@ -4362,7 +4628,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscGetDate"))
 """
-function PetscGetDate(petsclib::PetscLibType, date::String, len::Csize_t) end
+function PetscGetDate(petsclib::PetscLibType, date::String, len::Csize_t)
+    error("PetscGetDate: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetDate(petsclib::$UnionPetscLib, date::String, len::Csize_t )
 
@@ -4399,7 +4667,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscGetDisplay"))
 """
-function PetscGetDisplay(petsclib::PetscLibType, display::String, n::Csize_t) end
+function PetscGetDisplay(petsclib::PetscLibType, display::String, n::Csize_t)
+    error("PetscGetDisplay: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetDisplay(petsclib::$UnionPetscLib, display::String, n::Csize_t )
 
@@ -4431,7 +4701,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscGetFlops"))
 """
-function PetscGetFlops(petsclib::PetscLibType) end
+function PetscGetFlops(petsclib::PetscLibType)
+    error("PetscGetFlops: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetFlops(petsclib::$UnionPetscLib)
 	flops_ = Ref{PetscLogDouble}()
@@ -4468,7 +4740,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetFullPath"))
 """
-function PetscGetFullPath(petsclib::PetscLibType, path::String, fullpath::String, flen::Csize_t) end
+function PetscGetFullPath(petsclib::PetscLibType, path::String, fullpath::String, flen::Csize_t)
+    error("PetscGetFullPath: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetFullPath(petsclib::$UnionPetscLib, path::String, fullpath::String, flen::Csize_t )
 
@@ -4502,7 +4776,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetHomeDirectory"))
 """
-function PetscGetHomeDirectory(petsclib::PetscLibType, dir::String, maxlen::Csize_t) end
+function PetscGetHomeDirectory(petsclib::PetscLibType, dir::String, maxlen::Csize_t)
+    error("PetscGetHomeDirectory: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetHomeDirectory(petsclib::$UnionPetscLib, dir::String, maxlen::Csize_t )
 
@@ -4539,7 +4815,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetHostName"))
 """
-function PetscGetHostName(petsclib::PetscLibType, name::String, nlen::Csize_t) end
+function PetscGetHostName(petsclib::PetscLibType, name::String, nlen::Csize_t)
+    error("PetscGetHostName: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetHostName(petsclib::$UnionPetscLib, name::String, nlen::Csize_t )
 
@@ -4572,7 +4850,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Sys/PetscGetMemType"))
 """
-function PetscGetMemType(petsclib::PetscLibType, ptr::Ptr{Cvoid}) end
+function PetscGetMemType(petsclib::PetscLibType, ptr::Ptr{Cvoid})
+    error("PetscGetMemType: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetMemType(petsclib::$UnionPetscLib, ptr::Ptr{Cvoid} )
 	type_ = Ref{PetscMemType}()
@@ -4605,7 +4885,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetPetscDir"))
 """
-function PetscGetPetscDir(petsclib::PetscLibType) end
+function PetscGetPetscDir(petsclib::PetscLibType)
+    error("PetscGetPetscDir: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetPetscDir(petsclib::$UnionPetscLib)
 	dir_ = Ref{Ptr{Cchar}}()
@@ -4641,7 +4923,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscGetProgramName"))
 """
-function PetscGetProgramName(petsclib::PetscLibType, name::String, len::Csize_t) end
+function PetscGetProgramName(petsclib::PetscLibType, name::String, len::Csize_t)
+    error("PetscGetProgramName: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetProgramName(petsclib::$UnionPetscLib, name::String, len::Csize_t )
 
@@ -4675,7 +4959,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetRealPath"))
 """
-function PetscGetRealPath(petsclib::PetscLibType, path::String, rpath::String) end
+function PetscGetRealPath(petsclib::PetscLibType, path::String, rpath::String)
+    error("PetscGetRealPath: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetRealPath(petsclib::$UnionPetscLib, path::String, rpath::String )
 
@@ -4711,7 +4997,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetRelativePath"))
 """
-function PetscGetRelativePath(petsclib::PetscLibType, fullpath::String, path::String, flen::Csize_t) end
+function PetscGetRelativePath(petsclib::PetscLibType, fullpath::String, path::String, flen::Csize_t)
+    error("PetscGetRelativePath: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetRelativePath(petsclib::$UnionPetscLib, fullpath::String, path::String, flen::Csize_t )
 
@@ -4756,7 +5044,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetTmp"))
 """
-function PetscGetTmp(petsclib::PetscLibType, comm::MPI_Comm, dir::String, len::Csize_t) end
+function PetscGetTmp(petsclib::PetscLibType, comm::MPI_Comm, dir::String, len::Csize_t)
+    error("PetscGetTmp: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetTmp(petsclib::$UnionPetscLib, comm::MPI_Comm, dir::String, len::Csize_t )
 
@@ -4790,7 +5080,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetUserName"))
 """
-function PetscGetUserName(petsclib::PetscLibType, name::String, nlen::Csize_t) end
+function PetscGetUserName(petsclib::PetscLibType, name::String, nlen::Csize_t)
+    error("PetscGetUserName: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetUserName(petsclib::$UnionPetscLib, name::String, nlen::Csize_t )
 
@@ -4824,7 +5116,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetVersion"))
 """
-function PetscGetVersion(petsclib::PetscLibType, version::String, len::Csize_t) end
+function PetscGetVersion(petsclib::PetscLibType, version::String, len::Csize_t)
+    error("PetscGetVersion: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetVersion(petsclib::$UnionPetscLib, version::String, len::Csize_t )
 
@@ -4858,7 +5152,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetVersionNumber"))
 """
-function PetscGetVersionNumber(petsclib::PetscLibType) end
+function PetscGetVersionNumber(petsclib::PetscLibType)
+    error("PetscGetVersionNumber: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetVersionNumber(petsclib::$UnionPetscLib)
 	major_ = Ref{$PetscInt}()
@@ -4900,7 +5196,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscGetWorkingDirectory"))
 """
-function PetscGetWorkingDirectory(petsclib::PetscLibType, path::String, len::Csize_t) end
+function PetscGetWorkingDirectory(petsclib::PetscLibType, path::String, len::Csize_t)
+    error("PetscGetWorkingDirectory: no generated method for these argument types")
+end
 
 @for_petsc function PetscGetWorkingDirectory(petsclib::$UnionPetscLib, path::String, len::Csize_t )
 
@@ -4935,7 +5233,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscGlobalMinMaxInt"))
 """
-function PetscGlobalMinMaxInt(petsclib::PetscLibType, comm::MPI_Comm, minMaxVal::Vector{PetscInt}, minMaxValGlobal::Vector{PetscInt}) end
+function PetscGlobalMinMaxInt(petsclib::PetscLibType, comm::MPI_Comm, minMaxVal::AbstractVector{<:Number}, minMaxValGlobal::AbstractVector{<:Number})
+    error("PetscGlobalMinMaxInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscGlobalMinMaxInt(petsclib::$UnionPetscLib, comm::MPI_Comm, minMaxVal::Vector{$PetscInt}, minMaxValGlobal::Vector{$PetscInt} )
 
@@ -4970,7 +5270,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscGlobalMinMaxReal"))
 """
-function PetscGlobalMinMaxReal(petsclib::PetscLibType, comm::MPI_Comm, minMaxVal::Vector{PetscReal}, minMaxValGlobal::Vector{PetscReal}) end
+function PetscGlobalMinMaxReal(petsclib::PetscLibType, comm::MPI_Comm, minMaxVal::AbstractVector{<:Number}, minMaxValGlobal::AbstractVector{<:Number})
+    error("PetscGlobalMinMaxReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscGlobalMinMaxReal(petsclib::$UnionPetscLib, comm::MPI_Comm, minMaxVal::Vector{$PetscReal}, minMaxValGlobal::Vector{$PetscReal} )
 
@@ -5005,7 +5307,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscGlobusAuthorize"))
 """
-function PetscGlobusAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, tokensize::Csize_t) end
+function PetscGlobusAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, tokensize::Csize_t)
+    error("PetscGlobusAuthorize: no generated method for these argument types")
+end
 
 @for_petsc function PetscGlobusAuthorize(petsclib::$UnionPetscLib, comm::MPI_Comm, access_token::String, tokensize::Csize_t )
 
@@ -5042,7 +5346,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscGlobusGetTransfers"))
 """
-function PetscGlobusGetTransfers(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, buff::String, buffsize::Csize_t) end
+function PetscGlobusGetTransfers(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, buff::String, buffsize::Csize_t)
+    error("PetscGlobusGetTransfers: no generated method for these argument types")
+end
 
 @for_petsc function PetscGlobusGetTransfers(petsclib::$UnionPetscLib, comm::MPI_Comm, access_token::String, buff::String, buffsize::Csize_t )
 
@@ -5078,7 +5384,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscGlobusUpload"))
 """
-function PetscGlobusUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String) end
+function PetscGlobusUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String)
+    error("PetscGlobusUpload: no generated method for these argument types")
+end
 
 @for_petsc function PetscGlobusUpload(petsclib::$UnionPetscLib, comm::MPI_Comm, access_token::String, filename::String )
 
@@ -5115,7 +5423,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscGoogleDriveAuthorize"))
 """
-function PetscGoogleDriveAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t) end
+function PetscGoogleDriveAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t)
+    error("PetscGoogleDriveAuthorize: no generated method for these argument types")
+end
 
 @for_petsc function PetscGoogleDriveAuthorize(petsclib::$UnionPetscLib, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t )
 
@@ -5155,7 +5465,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscGoogleDriveRefresh"))
 """
-function PetscGoogleDriveRefresh(petsclib::PetscLibType, comm::MPI_Comm, refresh_token::String, access_token::String, tokensize::Csize_t) end
+function PetscGoogleDriveRefresh(petsclib::PetscLibType, comm::MPI_Comm, refresh_token::String, access_token::String, tokensize::Csize_t)
+    error("PetscGoogleDriveRefresh: no generated method for these argument types")
+end
 
 @for_petsc function PetscGoogleDriveRefresh(petsclib::$UnionPetscLib, comm::MPI_Comm, refresh_token::String, access_token::String, tokensize::Csize_t )
 
@@ -5189,7 +5501,9 @@ Options Database Key:
 # External Links
 $(_doc_external("Sys/PetscGoogleDriveUpload"))
 """
-function PetscGoogleDriveUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String) end
+function PetscGoogleDriveUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String)
+    error("PetscGoogleDriveUpload: no generated method for these argument types")
+end
 
 @for_petsc function PetscGoogleDriveUpload(petsclib::$UnionPetscLib, comm::MPI_Comm, access_token::String, filename::String )
 
@@ -5223,7 +5537,9 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscHDF5DataTypeToPetscDataType"))
 """
-function PetscHDF5DataTypeToPetscDataType(petsclib::PetscLibType, htype::hid_t) end
+function PetscHDF5DataTypeToPetscDataType(petsclib::PetscLibType, htype::hid_t)
+    error("PetscHDF5DataTypeToPetscDataType: no generated method for these argument types")
+end
 
 @for_petsc function PetscHDF5DataTypeToPetscDataType(petsclib::$UnionPetscLib, htype::hid_t )
 	ptype_ = Ref{PetscDataType}()
@@ -5246,7 +5562,9 @@ end
 # External Links
 $(_doc_external("Viewer/PetscHDF5IntCast"))
 """
-function PetscHDF5IntCast(petsclib::PetscLibType, a::PetscInt, b::hCsize_t) end
+function PetscHDF5IntCast(petsclib::PetscLibType, a::Integer, b::hCsize_t)
+    error("PetscHDF5IntCast: no generated method for these argument types")
+end
 
 @for_petsc function PetscHDF5IntCast(petsclib::$UnionPetscLib, a::$PetscInt, b::hCsize_t )
 
@@ -5284,7 +5602,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscHTTPRequest"))
 """
-function PetscHTTPRequest(petsclib::PetscLibType, type::String, url::String, header::String, ctype::String, body::String, sock::Cint, buff::String, buffsize::Csize_t) end
+function PetscHTTPRequest(petsclib::PetscLibType, type::String, url::String, header::String, ctype::String, body::String, sock::Cint, buff::String, buffsize::Csize_t)
+    error("PetscHTTPRequest: no generated method for these argument types")
+end
 
 @for_petsc function PetscHTTPRequest(petsclib::$UnionPetscLib, type::String, url::String, header::String, ctype::String, body::String, sock::Cint, buff::String, buffsize::Csize_t )
 
@@ -5319,7 +5639,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscHTTPSConnect"))
 """
-function PetscHTTPSConnect(petsclib::PetscLibType, host::String, port::Cint, ctx::SSL_CTX) end
+function PetscHTTPSConnect(petsclib::PetscLibType, host::String, port::Cint, ctx::SSL_CTX)
+    error("PetscHTTPSConnect: no generated method for these argument types")
+end
 
 @for_petsc function PetscHTTPSConnect(petsclib::$UnionPetscLib, host::String, port::Cint, ctx::SSL_CTX )
 	sock_ = Ref{Cint}()
@@ -5361,7 +5683,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscHTTPSRequest"))
 """
-function PetscHTTPSRequest(petsclib::PetscLibType, type::String, url::String, header::String, ctype::String, body::String, ssl::SSL, buff::String, buffsize::Csize_t) end
+function PetscHTTPSRequest(petsclib::PetscLibType, type::String, url::String, header::String, ctype::String, body::String, ssl::SSL, buff::String, buffsize::Csize_t)
+    error("PetscHTTPSRequest: no generated method for these argument types")
+end
 
 @for_petsc function PetscHTTPSRequest(petsclib::$UnionPetscLib, type::String, url::String, header::String, ctype::String, body::String, ssl::SSL, buff::String, buffsize::Csize_t )
 
@@ -5395,7 +5719,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscHasExternalPackage"))
 """
-function PetscHasExternalPackage(petsclib::PetscLibType, pkg::String) end
+function PetscHasExternalPackage(petsclib::PetscLibType, pkg::String)
+    error("PetscHasExternalPackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscHasExternalPackage(petsclib::$UnionPetscLib, pkg::String )
 	has_ = Ref{PetscBool}()
@@ -5418,7 +5744,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscHipBLASIntCast"))
 """
-function PetscHipBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscHipBLASInt) end
+function PetscHipBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscHipBLASInt)
+    error("PetscHipBLASIntCast: no generated method for these argument types")
+end
 
 @for_petsc function PetscHipBLASIntCast(petsclib::$UnionPetscLib, a::MPIU_Count, b::PetscHipBLASInt )
 
@@ -5452,7 +5780,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscInfoActivateClass"))
 """
-function PetscInfoActivateClass(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscInfoActivateClass(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscInfoActivateClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoActivateClass(petsclib::$UnionPetscLib, classid::PetscClassId )
 
@@ -5483,7 +5813,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscInfoAllow"))
 """
-function PetscInfoAllow(petsclib::PetscLibType, flag::PetscBool) end
+function PetscInfoAllow(petsclib::PetscLibType, flag::PetscBool)
+    error("PetscInfoAllow: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoAllow(petsclib::$UnionPetscLib, flag::PetscBool )
 
@@ -5517,7 +5849,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscInfoDeactivateClass"))
 """
-function PetscInfoDeactivateClass(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscInfoDeactivateClass(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscInfoDeactivateClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoDeactivateClass(petsclib::$UnionPetscLib, classid::PetscClassId )
 
@@ -5545,7 +5879,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscInfoDestroy"))
 """
-function PetscInfoDestroy(petsclib::PetscLibType) end
+function PetscInfoDestroy(petsclib::PetscLibType)
+    error("PetscInfoDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoDestroy(petsclib::$UnionPetscLib)
 
@@ -5578,7 +5914,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscInfoEnabled"))
 """
-function PetscInfoEnabled(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscInfoEnabled(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscInfoEnabled: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoEnabled(petsclib::$UnionPetscLib, classid::PetscClassId )
 	enabled_ = Ref{PetscBool}()
@@ -5614,7 +5952,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscInfoGetClass"))
 """
-function PetscInfoGetClass(petsclib::PetscLibType, classname::String) end
+function PetscInfoGetClass(petsclib::PetscLibType, classname::String)
+    error("PetscInfoGetClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoGetClass(petsclib::$UnionPetscLib, classname::String )
 	found_ = Ref{PetscBool}()
@@ -5648,7 +5988,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscInfoGetFile"))
 """
-function PetscInfoGetFile(petsclib::PetscLibType) end
+function PetscInfoGetFile(petsclib::PetscLibType)
+    error("PetscInfoGetFile: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoGetFile(petsclib::$UnionPetscLib)
 	filename_ = Ref{Ptr{Cchar}}()
@@ -5688,7 +6030,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscInfoGetInfo"))
 """
-function PetscInfoGetInfo(petsclib::PetscLibType) end
+function PetscInfoGetInfo(petsclib::PetscLibType)
+    error("PetscInfoGetInfo: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoGetInfo(petsclib::$UnionPetscLib)
 	infoEnabled_ = Ref{PetscBool}()
@@ -5734,7 +6078,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscInfoProcessClass"))
 """
-function PetscInfoProcessClass(petsclib::PetscLibType, classname::String, numClassID::PetscInt, classIDs::Vector{PetscClassId}) end
+function PetscInfoProcessClass(petsclib::PetscLibType, classname::String, numClassID::Integer, classIDs::Vector{PetscClassId})
+    error("PetscInfoProcessClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoProcessClass(petsclib::$UnionPetscLib, classname::String, numClassID::$PetscInt, classIDs::Vector{PetscClassId} )
 
@@ -5768,7 +6114,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscInfoSetClasses"))
 """
-function PetscInfoSetClasses(petsclib::PetscLibType, exclude::PetscBool, n::PetscInt, classnames::Cchar) end
+function PetscInfoSetClasses(petsclib::PetscLibType, exclude::PetscBool, n::Integer, classnames::Cchar)
+    error("PetscInfoSetClasses: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoSetClasses(petsclib::$UnionPetscLib, exclude::PetscBool, n::$PetscInt, classnames::Cchar )
 
@@ -5800,7 +6148,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscInfoSetFile"))
 """
-function PetscInfoSetFile(petsclib::PetscLibType, filename::String, mode::String) end
+function PetscInfoSetFile(petsclib::PetscLibType, filename::String, mode::String)
+    error("PetscInfoSetFile: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoSetFile(petsclib::$UnionPetscLib, filename::String, mode::String )
 
@@ -5834,7 +6184,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscInfoSetFilterCommSelf"))
 """
-function PetscInfoSetFilterCommSelf(petsclib::PetscLibType, commSelfFlag::PetscInfoCommFlag) end
+function PetscInfoSetFilterCommSelf(petsclib::PetscLibType, commSelfFlag::PetscInfoCommFlag)
+    error("PetscInfoSetFilterCommSelf: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoSetFilterCommSelf(petsclib::$UnionPetscLib, commSelfFlag::PetscInfoCommFlag )
 
@@ -5868,7 +6220,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscInfoSetFromOptions"))
 """
-function PetscInfoSetFromOptions(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscInfoSetFromOptions(petsclib::PetscLibType, options::AbstractPetscOptions)
+    error("PetscInfoSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscInfoSetFromOptions(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
@@ -5989,7 +6343,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscInitialize"))
 """
-function PetscInitialize(petsclib::PetscLibType, args::Cchar, file::String, help::String) end
+function PetscInitialize(petsclib::PetscLibType, args::Cchar, file::String, help::String)
+    error("PetscInitialize: no generated method for these argument types")
+end
 
 @for_petsc function PetscInitialize(petsclib::$UnionPetscLib, args::Cchar, file::String, help::String )
 	argc_ = Ref{Cint}()
@@ -6021,7 +6377,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscInitializeFortran"))
 """
-function PetscInitializeFortran(petsclib::PetscLibType) end
+function PetscInitializeFortran(petsclib::PetscLibType)
+    error("PetscInitializeFortran: no generated method for these argument types")
+end
 
 @for_petsc function PetscInitializeFortran(petsclib::$UnionPetscLib)
 
@@ -6049,7 +6407,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscInitializeNoArguments"))
 """
-function PetscInitializeNoArguments(petsclib::PetscLibType) end
+function PetscInitializeNoArguments(petsclib::PetscLibType)
+    error("PetscInitializeNoArguments: no generated method for these argument types")
+end
 
 @for_petsc function PetscInitializeNoArguments(petsclib::$UnionPetscLib)
 
@@ -6082,7 +6442,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscInitializeNoPointers"))
 """
-function PetscInitializeNoPointers(petsclib::PetscLibType, argc::Cint, args::Cchar, filename::String, help::String) end
+function PetscInitializeNoPointers(petsclib::PetscLibType, argc::Cint, args::Cchar, filename::String, help::String)
+    error("PetscInitializeNoPointers: no generated method for these argument types")
+end
 
 @for_petsc function PetscInitializeNoPointers(petsclib::$UnionPetscLib, argc::Cint, args::Cchar, filename::String, help::String )
 
@@ -6111,7 +6473,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscInitialized"))
 """
-function PetscInitialized(petsclib::PetscLibType) end
+function PetscInitialized(petsclib::PetscLibType)
+    error("PetscInitialized: no generated method for these argument types")
+end
 
 @for_petsc function PetscInitialized(petsclib::$UnionPetscLib)
 	isInitialized_ = Ref{PetscBool}()
@@ -6134,7 +6498,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscIntCast"))
 """
-function PetscIntCast(petsclib::PetscLibType, a::MPIU_Count) end
+function PetscIntCast(petsclib::PetscLibType, a::MPIU_Count)
+    error("PetscIntCast: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntCast(petsclib::$UnionPetscLib, a::MPIU_Count )
 	b_ = Ref{$PetscInt}()
@@ -6157,7 +6523,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscIntMultError"))
 """
-function PetscIntMultError(petsclib::PetscLibType, a::PetscInt, b::PetscInt) end
+function PetscIntMultError(petsclib::PetscLibType, a::Integer, b::Integer)
+    error("PetscIntMultError: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntMultError(petsclib::$UnionPetscLib, a::$PetscInt, b::$PetscInt )
 	result_ = Ref{$PetscInt}()
@@ -6194,7 +6562,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscIntSortSemiOrdered"))
 """
-function PetscIntSortSemiOrdered(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscInt}) end
+function PetscIntSortSemiOrdered(petsclib::PetscLibType, n::Integer, arr::AbstractVector{<:Number})
+    error("PetscIntSortSemiOrdered: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntSortSemiOrdered(petsclib::$UnionPetscLib, n::$PetscInt, arr::Vector{$PetscInt} )
 
@@ -6230,7 +6600,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscIntSortSemiOrderedWithArray"))
 """
-function PetscIntSortSemiOrderedWithArray(petsclib::PetscLibType, n::PetscInt, arr1::Vector{PetscInt}, arr2::Vector{PetscInt}) end
+function PetscIntSortSemiOrderedWithArray(petsclib::PetscLibType, n::Integer, arr1::AbstractVector{<:Number}, arr2::AbstractVector{<:Number})
+    error("PetscIntSortSemiOrderedWithArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntSortSemiOrderedWithArray(petsclib::$UnionPetscLib, n::$PetscInt, arr1::Vector{$PetscInt}, arr2::Vector{$PetscInt} )
 
@@ -6251,7 +6623,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscIntSumError"))
 """
-function PetscIntSumError(petsclib::PetscLibType, a::PetscInt, b::PetscInt) end
+function PetscIntSumError(petsclib::PetscLibType, a::Integer, b::Integer)
+    error("PetscIntSumError: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntSumError(petsclib::$UnionPetscLib, a::$PetscInt, b::$PetscInt )
 	result_ = Ref{$PetscInt}()
@@ -6286,7 +6660,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscIntView"))
 """
-function PetscIntView(petsclib::PetscLibType, N::PetscInt, idx::Vector{PetscInt}, viewer::PetscViewer) end
+function PetscIntView(petsclib::PetscLibType, N::Integer, idx::AbstractVector{<:Number}, viewer::PetscViewer)
+    error("PetscIntView: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntView(petsclib::$UnionPetscLib, N::$PetscInt, idx::Vector{$PetscInt}, viewer::PetscViewer )
 
@@ -6320,7 +6696,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscIntViewNumColumns"))
 """
-function PetscIntViewNumColumns(petsclib::PetscLibType, N::PetscInt, Ncol::PetscInt, idx::Vector{PetscInt}, viewer::PetscViewer) end
+function PetscIntViewNumColumns(petsclib::PetscLibType, N::Integer, Ncol::Integer, idx::AbstractVector{<:Number}, viewer::PetscViewer)
+    error("PetscIntViewNumColumns: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntViewNumColumns(petsclib::$UnionPetscLib, N::$PetscInt, Ncol::$PetscInt, idx::Vector{$PetscInt}, viewer::PetscViewer )
 
@@ -6341,7 +6719,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscKokkosInitializeCheck"))
 """
-function PetscKokkosInitializeCheck(petsclib::PetscLibType) end
+function PetscKokkosInitializeCheck(petsclib::PetscLibType)
+    error("PetscKokkosInitializeCheck: no generated method for these argument types")
+end
 
 @for_petsc function PetscKokkosInitializeCheck(petsclib::$UnionPetscLib)
 
@@ -6375,7 +6755,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscLinearRegression"))
 """
-function PetscLinearRegression(petsclib::PetscLibType, n::PetscInt, x::Vector{PetscReal}, y::Vector{PetscReal}) end
+function PetscLinearRegression(petsclib::PetscLibType, n::Integer, x::AbstractVector{<:Number}, y::AbstractVector{<:Number})
+    error("PetscLinearRegression: no generated method for these argument types")
+end
 
 @for_petsc function PetscLinearRegression(petsclib::$UnionPetscLib, n::$PetscInt, x::Vector{$PetscReal}, y::Vector{$PetscReal} )
 	slope_ = Ref{$PetscReal}()
@@ -6414,7 +6796,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogActions"))
 """
-function PetscLogActions(petsclib::PetscLibType, flag::PetscBool) end
+function PetscLogActions(petsclib::PetscLibType, flag::PetscBool)
+    error("PetscLogActions: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogActions(petsclib::$UnionPetscLib, flag::PetscBool )
 
@@ -6448,7 +6832,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogClassGetClassId"))
 """
-function PetscLogClassGetClassId(petsclib::PetscLibType, name::String) end
+function PetscLogClassGetClassId(petsclib::PetscLibType, name::String)
+    error("PetscLogClassGetClassId: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogClassGetClassId(petsclib::$UnionPetscLib, name::String )
 	classid_ = Ref{PetscClassId}()
@@ -6484,7 +6870,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogClassIdGetName"))
 """
-function PetscLogClassIdGetName(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscLogClassIdGetName(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscLogClassIdGetName: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogClassIdGetName(petsclib::$UnionPetscLib, classid::PetscClassId )
 	name_ = Ref{Ptr{Cchar}}()
@@ -6507,7 +6895,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscLogCpuToGpu"))
 """
-function PetscLogCpuToGpu(petsclib::PetscLibType, size::PetscLogDouble) end
+function PetscLogCpuToGpu(petsclib::PetscLibType, size::PetscLogDouble)
+    error("PetscLogCpuToGpu: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogCpuToGpu(petsclib::$UnionPetscLib, size::PetscLogDouble )
 
@@ -6528,7 +6918,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscLogCpuToGpuScalar"))
 """
-function PetscLogCpuToGpuScalar(petsclib::PetscLibType, size::PetscLogDouble) end
+function PetscLogCpuToGpuScalar(petsclib::PetscLibType, size::PetscLogDouble)
+    error("PetscLogCpuToGpuScalar: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogCpuToGpuScalar(petsclib::$UnionPetscLib, size::PetscLogDouble )
 
@@ -6560,7 +6952,9 @@ This option must be provided before `PetscInitialize()`.
 # External Links
 $(_doc_external("Log/PetscLogDefaultBegin"))
 """
-function PetscLogDefaultBegin(petsclib::PetscLibType) end
+function PetscLogDefaultBegin(petsclib::PetscLibType)
+    error("PetscLogDefaultBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogDefaultBegin(petsclib::$UnionPetscLib)
 
@@ -6589,7 +6983,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Log/PetscLogDump"))
 """
-function PetscLogDump(petsclib::PetscLibType, sname::String) end
+function PetscLogDump(petsclib::PetscLibType, sname::String)
+    error("PetscLogDump: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogDump(petsclib::$UnionPetscLib, sname::String )
 
@@ -6618,7 +7014,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Log/PetscLogEventActivate"))
 """
-function PetscLogEventActivate(petsclib::PetscLibType, event::PetscLogEvent) end
+function PetscLogEventActivate(petsclib::PetscLibType, event::PetscLogEvent)
+    error("PetscLogEventActivate: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventActivate(petsclib::$UnionPetscLib, event::PetscLogEvent )
 
@@ -6649,7 +7047,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogEventActivateClass"))
 """
-function PetscLogEventActivateClass(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscLogEventActivateClass(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscLogEventActivateClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventActivateClass(petsclib::$UnionPetscLib, classid::PetscClassId )
 
@@ -6678,7 +7078,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivate"))
 """
-function PetscLogEventDeactivate(petsclib::PetscLibType, event::PetscLogEvent) end
+function PetscLogEventDeactivate(petsclib::PetscLibType, event::PetscLogEvent)
+    error("PetscLogEventDeactivate: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventDeactivate(petsclib::$UnionPetscLib, event::PetscLogEvent )
 
@@ -6709,7 +7111,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivateClass"))
 """
-function PetscLogEventDeactivateClass(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscLogEventDeactivateClass(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscLogEventDeactivateClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventDeactivateClass(petsclib::$UnionPetscLib, classid::PetscClassId )
 
@@ -6738,7 +7142,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivatePop"))
 """
-function PetscLogEventDeactivatePop(petsclib::PetscLibType, event::PetscLogEvent) end
+function PetscLogEventDeactivatePop(petsclib::PetscLibType, event::PetscLogEvent)
+    error("PetscLogEventDeactivatePop: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventDeactivatePop(petsclib::$UnionPetscLib, event::PetscLogEvent )
 
@@ -6767,7 +7173,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivatePush"))
 """
-function PetscLogEventDeactivatePush(petsclib::PetscLibType, event::PetscLogEvent) end
+function PetscLogEventDeactivatePush(petsclib::PetscLibType, event::PetscLogEvent)
+    error("PetscLogEventDeactivatePush: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventDeactivatePush(petsclib::$UnionPetscLib, event::PetscLogEvent )
 
@@ -6798,7 +7206,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogEventExcludeClass"))
 """
-function PetscLogEventExcludeClass(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscLogEventExcludeClass(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscLogEventExcludeClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventExcludeClass(petsclib::$UnionPetscLib, classid::PetscClassId )
 
@@ -6832,7 +7242,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogEventGetId"))
 """
-function PetscLogEventGetId(petsclib::PetscLibType, name::String) end
+function PetscLogEventGetId(petsclib::PetscLibType, name::String)
+    error("PetscLogEventGetId: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventGetId(petsclib::$UnionPetscLib, name::String )
 	event_ = Ref{PetscLogEvent}()
@@ -6868,7 +7280,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogEventGetName"))
 """
-function PetscLogEventGetName(petsclib::PetscLibType, event::PetscLogEvent) end
+function PetscLogEventGetName(petsclib::PetscLibType, event::PetscLogEvent)
+    error("PetscLogEventGetName: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventGetName(petsclib::$UnionPetscLib, event::PetscLogEvent )
 	name_ = Ref{Ptr{Cchar}}()
@@ -6905,7 +7319,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogEventGetPerfInfo"))
 """
-function PetscLogEventGetPerfInfo(petsclib::PetscLibType, stage::PetscLogStage, event::PetscLogEvent) end
+function PetscLogEventGetPerfInfo(petsclib::PetscLibType, stage::PetscLogStage, event::PetscLogEvent)
+    error("PetscLogEventGetPerfInfo: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventGetPerfInfo(petsclib::$UnionPetscLib, stage::PetscLogStage, event::PetscLogEvent )
 	info_ = Ref{PetscEventPerfInfo}()
@@ -6938,7 +7354,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogEventIncludeClass"))
 """
-function PetscLogEventIncludeClass(petsclib::PetscLibType, classid::PetscClassId) end
+function PetscLogEventIncludeClass(petsclib::PetscLibType, classid::PetscClassId)
+    error("PetscLogEventIncludeClass: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventIncludeClass(petsclib::$UnionPetscLib, classid::PetscClassId )
 
@@ -6974,7 +7392,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Log/PetscLogEventRegister"))
 """
-function PetscLogEventRegister(petsclib::PetscLibType, name::String, classid::PetscClassId) end
+function PetscLogEventRegister(petsclib::PetscLibType, name::String, classid::PetscClassId)
+    error("PetscLogEventRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventRegister(petsclib::$UnionPetscLib, name::String, classid::PetscClassId )
 	event_ = Ref{PetscLogEvent}()
@@ -7008,7 +7428,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogEventSetActiveAll"))
 """
-function PetscLogEventSetActiveAll(petsclib::PetscLibType, event::PetscLogEvent, isActive::PetscBool) end
+function PetscLogEventSetActiveAll(petsclib::PetscLibType, event::PetscLogEvent, isActive::PetscBool)
+    error("PetscLogEventSetActiveAll: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventSetActiveAll(petsclib::$UnionPetscLib, event::PetscLogEvent, isActive::PetscBool )
 
@@ -7040,7 +7462,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogEventSetCollective"))
 """
-function PetscLogEventSetCollective(petsclib::PetscLibType, event::PetscLogEvent, collective::PetscBool) end
+function PetscLogEventSetCollective(petsclib::PetscLibType, event::PetscLogEvent, collective::PetscBool)
+    error("PetscLogEventSetCollective: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventSetCollective(petsclib::$UnionPetscLib, event::PetscLogEvent, collective::PetscBool )
 
@@ -7076,7 +7500,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogEventSetDof"))
 """
-function PetscLogEventSetDof(petsclib::PetscLibType, event::PetscLogEvent, n::PetscInt, dof::PetscLogDouble) end
+function PetscLogEventSetDof(petsclib::PetscLibType, event::PetscLogEvent, n::Integer, dof::PetscLogDouble)
+    error("PetscLogEventSetDof: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventSetDof(petsclib::$UnionPetscLib, event::PetscLogEvent, n::$PetscInt, dof::PetscLogDouble )
 
@@ -7112,7 +7538,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogEventSetError"))
 """
-function PetscLogEventSetError(petsclib::PetscLibType, event::PetscLogEvent, n::PetscInt, error::PetscLogDouble) end
+function PetscLogEventSetError(petsclib::PetscLibType, event::PetscLogEvent, n::Integer, error::PetscLogDouble)
+    error("PetscLogEventSetError: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventSetError(petsclib::$UnionPetscLib, event::PetscLogEvent, n::$PetscInt, error::PetscLogDouble )
 
@@ -7133,7 +7561,9 @@ end
 # External Links
 $(_doc_external("Log/PetscLogEventSync"))
 """
-function PetscLogEventSync(petsclib::PetscLibType, e::PetscLogEvent, comm::MPI_Comm) end
+function PetscLogEventSync(petsclib::PetscLibType, e::PetscLogEvent, comm::MPI_Comm)
+    error("PetscLogEventSync: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventSync(petsclib::$UnionPetscLib, e::PetscLogEvent, comm::MPI_Comm )
 
@@ -7161,7 +7591,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogEventsPause"))
 """
-function PetscLogEventsPause(petsclib::PetscLibType) end
+function PetscLogEventsPause(petsclib::PetscLibType)
+    error("PetscLogEventsPause: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventsPause(petsclib::$UnionPetscLib)
 
@@ -7188,7 +7620,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogEventsResume"))
 """
-function PetscLogEventsResume(petsclib::PetscLibType) end
+function PetscLogEventsResume(petsclib::PetscLibType)
+    error("PetscLogEventsResume: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogEventsResume(petsclib::$UnionPetscLib)
 
@@ -7208,7 +7642,9 @@ end
 # External Links
 $(_doc_external("Log/PetscLogFlops"))
 """
-function PetscLogFlops(petsclib::PetscLibType, f::PetscLogDouble) end
+function PetscLogFlops(petsclib::PetscLibType, f::PetscLogDouble)
+    error("PetscLogFlops: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogFlops(petsclib::$UnionPetscLib, f::PetscLogDouble )
 
@@ -7239,7 +7675,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogGetDefaultHandler"))
 """
-function PetscLogGetDefaultHandler(petsclib::PetscLibType) end
+function PetscLogGetDefaultHandler(petsclib::PetscLibType)
+    error("PetscLogGetDefaultHandler: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGetDefaultHandler(petsclib::$UnionPetscLib)
 	handler_ = Ref{PetscLogHandler}()
@@ -7277,7 +7715,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogGetState"))
 """
-function PetscLogGetState(petsclib::PetscLibType) end
+function PetscLogGetState(petsclib::PetscLibType)
+    error("PetscLogGetState: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGetState(petsclib::$UnionPetscLib)
 	state_ = Ref{PetscLogState}()
@@ -7300,7 +7740,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscLogGpuFlops"))
 """
-function PetscLogGpuFlops(petsclib::PetscLibType, n::PetscLogDouble) end
+function PetscLogGpuFlops(petsclib::PetscLibType, n::PetscLogDouble)
+    error("PetscLogGpuFlops: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGpuFlops(petsclib::$UnionPetscLib, n::PetscLogDouble )
 
@@ -7329,7 +7771,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogGpuTime"))
 """
-function PetscLogGpuTime(petsclib::PetscLibType) end
+function PetscLogGpuTime(petsclib::PetscLibType)
+    error("PetscLogGpuTime: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGpuTime(petsclib::$UnionPetscLib)
 
@@ -7349,7 +7793,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscLogGpuTimeAdd"))
 """
-function PetscLogGpuTimeAdd(petsclib::PetscLibType, t::PetscLogDouble) end
+function PetscLogGpuTimeAdd(petsclib::PetscLibType, t::PetscLogDouble)
+    error("PetscLogGpuTimeAdd: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGpuTimeAdd(petsclib::$UnionPetscLib, t::PetscLogDouble )
 
@@ -7375,7 +7821,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogGpuTimeBegin"))
 """
-function PetscLogGpuTimeBegin(petsclib::PetscLibType) end
+function PetscLogGpuTimeBegin(petsclib::PetscLibType)
+    error("PetscLogGpuTimeBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGpuTimeBegin(petsclib::$UnionPetscLib)
 
@@ -7400,7 +7848,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogGpuTimeEnd"))
 """
-function PetscLogGpuTimeEnd(petsclib::PetscLibType) end
+function PetscLogGpuTimeEnd(petsclib::PetscLibType)
+    error("PetscLogGpuTimeEnd: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGpuTimeEnd(petsclib::$UnionPetscLib)
 
@@ -7420,7 +7870,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscLogGpuToCpu"))
 """
-function PetscLogGpuToCpu(petsclib::PetscLibType, size::PetscLogDouble) end
+function PetscLogGpuToCpu(petsclib::PetscLibType, size::PetscLogDouble)
+    error("PetscLogGpuToCpu: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGpuToCpu(petsclib::$UnionPetscLib, size::PetscLogDouble )
 
@@ -7441,7 +7893,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscLogGpuToCpuScalar"))
 """
-function PetscLogGpuToCpuScalar(petsclib::PetscLibType, size::PetscLogDouble) end
+function PetscLogGpuToCpuScalar(petsclib::PetscLibType, size::PetscLogDouble)
+    error("PetscLogGpuToCpuScalar: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogGpuToCpuScalar(petsclib::$UnionPetscLib, size::PetscLogDouble )
 
@@ -7472,7 +7926,9 @@ Level: beginner
 # External Links
 $(_doc_external("Log/PetscLogIsActive"))
 """
-function PetscLogIsActive(petsclib::PetscLibType) end
+function PetscLogIsActive(petsclib::PetscLibType)
+    error("PetscLogIsActive: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogIsActive(petsclib::$UnionPetscLib)
 	isActive_ = Ref{PetscBool}()
@@ -7532,7 +7988,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogLegacyCallbacksBegin"))
 """
-function PetscLogLegacyCallbacksBegin(petsclib::PetscLibType, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external) end
+function PetscLogLegacyCallbacksBegin(petsclib::PetscLibType, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external)
+    error("PetscLogLegacyCallbacksBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogLegacyCallbacksBegin(petsclib::$UnionPetscLib, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external )
 
@@ -7565,7 +8023,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogMPEBegin"))
 """
-function PetscLogMPEBegin(petsclib::PetscLibType) end
+function PetscLogMPEBegin(petsclib::PetscLibType)
+    error("PetscLogMPEBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogMPEBegin(petsclib::$UnionPetscLib)
 
@@ -7595,7 +8055,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogMPEDump"))
 """
-function PetscLogMPEDump(petsclib::PetscLibType, sname::String) end
+function PetscLogMPEDump(petsclib::PetscLibType, sname::String)
+    error("PetscLogMPEDump: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogMPEDump(petsclib::$UnionPetscLib, sname::String )
 
@@ -7625,7 +8087,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("Log/PetscLogNestedBegin"))
 """
-function PetscLogNestedBegin(petsclib::PetscLibType) end
+function PetscLogNestedBegin(petsclib::PetscLibType)
+    error("PetscLogNestedBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogNestedBegin(petsclib::$UnionPetscLib)
 
@@ -7645,7 +8109,9 @@ end
 # External Links
 $(_doc_external("Log/PetscLogObjectCreate"))
 """
-function PetscLogObjectCreate(petsclib::PetscLibType, h) end
+function PetscLogObjectCreate(petsclib::PetscLibType, h)
+    error("PetscLogObjectCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogObjectCreate(petsclib::$UnionPetscLib, h )
 
@@ -7666,7 +8132,9 @@ end
 # External Links
 $(_doc_external("Log/PetscLogObjectDestroy"))
 """
-function PetscLogObjectDestroy(petsclib::PetscLibType, h) end
+function PetscLogObjectDestroy(petsclib::PetscLibType, h)
+    error("PetscLogObjectDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogObjectDestroy(petsclib::$UnionPetscLib, h )
 
@@ -7701,7 +8169,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogObjects"))
 """
-function PetscLogObjects(petsclib::PetscLibType, flag::PetscBool) end
+function PetscLogObjects(petsclib::PetscLibType, flag::PetscBool)
+    error("PetscLogObjects: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogObjects(petsclib::$UnionPetscLib, flag::PetscBool )
 
@@ -7732,7 +8202,9 @@ Level: advanced
 # External Links
 $(_doc_external("Log/PetscLogPerfstubsBegin"))
 """
-function PetscLogPerfstubsBegin(petsclib::PetscLibType) end
+function PetscLogPerfstubsBegin(petsclib::PetscLibType)
+    error("PetscLogPerfstubsBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogPerfstubsBegin(petsclib::$UnionPetscLib)
 
@@ -7768,7 +8240,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("Log/PetscLogSetThreshold"))
 """
-function PetscLogSetThreshold(petsclib::PetscLibType, newThresh::PetscLogDouble) end
+function PetscLogSetThreshold(petsclib::PetscLibType, newThresh::PetscLogDouble)
+    error("PetscLogSetThreshold: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogSetThreshold(petsclib::$UnionPetscLib, newThresh::PetscLogDouble )
 	oldThresh_ = Ref{PetscLogDouble}()
@@ -7804,7 +8278,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageGetActive"))
 """
-function PetscLogStageGetActive(petsclib::PetscLibType, stage::PetscLogStage) end
+function PetscLogStageGetActive(petsclib::PetscLibType, stage::PetscLogStage)
+    error("PetscLogStageGetActive: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageGetActive(petsclib::$UnionPetscLib, stage::PetscLogStage )
 	isActive_ = Ref{PetscBool}()
@@ -7840,7 +8316,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageGetId"))
 """
-function PetscLogStageGetId(petsclib::PetscLibType, name::String) end
+function PetscLogStageGetId(petsclib::PetscLibType, name::String)
+    error("PetscLogStageGetId: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageGetId(petsclib::$UnionPetscLib, name::String )
 	stage_ = Ref{PetscLogStage}()
@@ -7876,7 +8354,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageGetName"))
 """
-function PetscLogStageGetName(petsclib::PetscLibType, stage::PetscLogStage) end
+function PetscLogStageGetName(petsclib::PetscLibType, stage::PetscLogStage)
+    error("PetscLogStageGetName: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageGetName(petsclib::$UnionPetscLib, stage::PetscLogStage )
 	name_ = Ref{Ptr{Cchar}}()
@@ -7912,7 +8392,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageGetPerfInfo"))
 """
-function PetscLogStageGetPerfInfo(petsclib::PetscLibType, stage::PetscLogStage) end
+function PetscLogStageGetPerfInfo(petsclib::PetscLibType, stage::PetscLogStage)
+    error("PetscLogStageGetPerfInfo: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageGetPerfInfo(petsclib::$UnionPetscLib, stage::PetscLogStage )
 	info_ = Ref{PetscEventPerfInfo}()
@@ -7948,7 +8430,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageGetVisible"))
 """
-function PetscLogStageGetVisible(petsclib::PetscLibType, stage::PetscLogStage) end
+function PetscLogStageGetVisible(petsclib::PetscLibType, stage::PetscLogStage)
+    error("PetscLogStageGetVisible: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageGetVisible(petsclib::$UnionPetscLib, stage::PetscLogStage )
 	isVisible_ = Ref{PetscBool}()
@@ -7976,7 +8460,9 @@ Not Collective
 # External Links
 $(_doc_external("Log/PetscLogStagePop"))
 """
-function PetscLogStagePop(petsclib::PetscLibType) end
+function PetscLogStagePop(petsclib::PetscLibType)
+    error("PetscLogStagePop: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStagePop(petsclib::$UnionPetscLib)
 
@@ -8004,7 +8490,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Log/PetscLogStagePush"))
 """
-function PetscLogStagePush(petsclib::PetscLibType, stage::PetscLogStage) end
+function PetscLogStagePush(petsclib::PetscLibType, stage::PetscLogStage)
+    error("PetscLogStagePush: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStagePush(petsclib::$UnionPetscLib, stage::PetscLogStage )
 
@@ -8038,7 +8526,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageRegister"))
 """
-function PetscLogStageRegister(petsclib::PetscLibType, sname::String) end
+function PetscLogStageRegister(petsclib::PetscLibType, sname::String)
+    error("PetscLogStageRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageRegister(petsclib::$UnionPetscLib, sname::String )
 	stage_ = Ref{PetscLogStage}()
@@ -8072,7 +8562,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageSetActive"))
 """
-function PetscLogStageSetActive(petsclib::PetscLibType, stage::PetscLogStage, isActive::PetscBool) end
+function PetscLogStageSetActive(petsclib::PetscLibType, stage::PetscLogStage, isActive::PetscBool)
+    error("PetscLogStageSetActive: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageSetActive(petsclib::$UnionPetscLib, stage::PetscLogStage, isActive::PetscBool )
 
@@ -8104,7 +8596,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogStageSetVisible"))
 """
-function PetscLogStageSetVisible(petsclib::PetscLibType, stage::PetscLogStage, isVisible::PetscBool) end
+function PetscLogStageSetVisible(petsclib::PetscLibType, stage::PetscLogStage, isVisible::PetscBool)
+    error("PetscLogStageSetVisible: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogStageSetVisible(petsclib::$UnionPetscLib, stage::PetscLogStage, isVisible::PetscBool )
 
@@ -8139,7 +8633,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Log/PetscLogTraceBegin"))
 """
-function PetscLogTraceBegin(petsclib::PetscLibType, file::Libc.FILE) end
+function PetscLogTraceBegin(petsclib::PetscLibType, file::Libc.FILE)
+    error("PetscLogTraceBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogTraceBegin(petsclib::$UnionPetscLib, file::Libc.FILE )
 
@@ -8180,7 +8676,9 @@ Level: beginner
 # External Links
 $(_doc_external("Log/PetscLogView"))
 """
-function PetscLogView(petsclib::PetscLibType, viewer::PetscViewer) end
+function PetscLogView(petsclib::PetscLibType, viewer::PetscViewer)
+    error("PetscLogView: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogView(petsclib::$UnionPetscLib, viewer::PetscViewer )
 
@@ -8208,7 +8706,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogViewFromOptions"))
 """
-function PetscLogViewFromOptions(petsclib::PetscLibType) end
+function PetscLogViewFromOptions(petsclib::PetscLibType)
+    error("PetscLogViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscLogViewFromOptions(petsclib::$UnionPetscLib)
 
@@ -8244,7 +8744,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscLs"))
 """
-function PetscLs(petsclib::PetscLibType, comm::MPI_Comm, dirname::String, found::String, tlen::Csize_t) end
+function PetscLs(petsclib::PetscLibType, comm::MPI_Comm, dirname::String, found::String, tlen::Csize_t)
+    error("PetscLs: no generated method for these argument types")
+end
 
 @for_petsc function PetscLs(petsclib::$UnionPetscLib, comm::MPI_Comm, dirname::String, found::String, tlen::Csize_t )
 	flg_ = Ref{PetscBool}()
@@ -8281,7 +8783,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMPIDump"))
 """
-function PetscMPIDump(petsclib::PetscLibType, fd::Libc.FILE) end
+function PetscMPIDump(petsclib::PetscLibType, fd::Libc.FILE)
+    error("PetscMPIDump: no generated method for these argument types")
+end
 
 @for_petsc function PetscMPIDump(petsclib::$UnionPetscLib, fd::Libc.FILE )
 
@@ -8302,7 +8806,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscMPIIntCast"))
 """
-function PetscMPIIntCast(petsclib::PetscLibType, a::MPIU_Count) end
+function PetscMPIIntCast(petsclib::PetscLibType, a::MPIU_Count)
+    error("PetscMPIIntCast: no generated method for these argument types")
+end
 
 @for_petsc function PetscMPIIntCast(petsclib::$UnionPetscLib, a::MPIU_Count )
 	b_ = Ref{PetscMPIInt}()
@@ -8339,7 +8845,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMPIIntSortSemiOrdered"))
 """
-function PetscMPIIntSortSemiOrdered(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscMPIInt}) end
+function PetscMPIIntSortSemiOrdered(petsclib::PetscLibType, n::Integer, arr::Vector{PetscMPIInt})
+    error("PetscMPIIntSortSemiOrdered: no generated method for these argument types")
+end
 
 @for_petsc function PetscMPIIntSortSemiOrdered(petsclib::$UnionPetscLib, n::$PetscInt, arr::Vector{PetscMPIInt} )
 
@@ -8375,7 +8883,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMPIIntSortSemiOrderedWithArray"))
 """
-function PetscMPIIntSortSemiOrderedWithArray(petsclib::PetscLibType, n::PetscInt, arr1::Vector{PetscMPIInt}, arr2::Vector{PetscMPIInt}) end
+function PetscMPIIntSortSemiOrderedWithArray(petsclib::PetscLibType, n::Integer, arr1::Vector{PetscMPIInt}, arr2::Vector{PetscMPIInt})
+    error("PetscMPIIntSortSemiOrderedWithArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscMPIIntSortSemiOrderedWithArray(petsclib::$UnionPetscLib, n::$PetscInt, arr1::Vector{PetscMPIInt}, arr2::Vector{PetscMPIInt} )
 
@@ -8403,7 +8913,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocClear"))
 """
-function PetscMallocClear(petsclib::PetscLibType) end
+function PetscMallocClear(petsclib::PetscLibType)
+    error("PetscMallocClear: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocClear(petsclib::$UnionPetscLib)
 
@@ -8439,7 +8951,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMallocDump"))
 """
-function PetscMallocDump(petsclib::PetscLibType, fp::Libc.FILE) end
+function PetscMallocDump(petsclib::PetscLibType, fp::Libc.FILE)
+    error("PetscMallocDump: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocDump(petsclib::$UnionPetscLib, fp::Libc.FILE )
 
@@ -8471,7 +8985,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMallocGetCurrentUsage"))
 """
-function PetscMallocGetCurrentUsage(petsclib::PetscLibType) end
+function PetscMallocGetCurrentUsage(petsclib::PetscLibType)
+    error("PetscMallocGetCurrentUsage: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocGetCurrentUsage(petsclib::$UnionPetscLib)
 	space_ = Ref{PetscLogDouble}()
@@ -8506,7 +9022,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMallocGetDebug"))
 """
-function PetscMallocGetDebug(petsclib::PetscLibType) end
+function PetscMallocGetDebug(petsclib::PetscLibType)
+    error("PetscMallocGetDebug: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocGetDebug(petsclib::$UnionPetscLib)
 	basic_ = Ref{PetscBool}()
@@ -8545,7 +9063,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMallocGetMaximumUsage"))
 """
-function PetscMallocGetMaximumUsage(petsclib::PetscLibType) end
+function PetscMallocGetMaximumUsage(petsclib::PetscLibType)
+    error("PetscMallocGetMaximumUsage: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocGetMaximumUsage(petsclib::$UnionPetscLib)
 	space_ = Ref{PetscLogDouble}()
@@ -8578,7 +9098,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocLogRequestedSizeGet"))
 """
-function PetscMallocLogRequestedSizeGet(petsclib::PetscLibType) end
+function PetscMallocLogRequestedSizeGet(petsclib::PetscLibType)
+    error("PetscMallocLogRequestedSizeGet: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocLogRequestedSizeGet(petsclib::$UnionPetscLib)
 	flg_ = Ref{PetscBool}()
@@ -8614,7 +9136,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocLogRequestedSizeSet"))
 """
-function PetscMallocLogRequestedSizeSet(petsclib::PetscLibType, flg::PetscBool) end
+function PetscMallocLogRequestedSizeSet(petsclib::PetscLibType, flg::PetscBool)
+    error("PetscMallocLogRequestedSizeSet: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocLogRequestedSizeSet(petsclib::$UnionPetscLib, flg::PetscBool )
 
@@ -8649,7 +9173,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocPopMaximumUsage"))
 """
-function PetscMallocPopMaximumUsage(petsclib::PetscLibType, event::Cint) end
+function PetscMallocPopMaximumUsage(petsclib::PetscLibType, event::Cint)
+    error("PetscMallocPopMaximumUsage: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocPopMaximumUsage(petsclib::$UnionPetscLib, event::Cint )
 	mu_ = Ref{PetscLogDouble}()
@@ -8683,7 +9209,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocPushMaximumUsage"))
 """
-function PetscMallocPushMaximumUsage(petsclib::PetscLibType, event::Cint) end
+function PetscMallocPushMaximumUsage(petsclib::PetscLibType, event::Cint)
+    error("PetscMallocPushMaximumUsage: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocPushMaximumUsage(petsclib::$UnionPetscLib, event::Cint )
 
@@ -8711,7 +9239,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocResetDRAM"))
 """
-function PetscMallocResetDRAM(petsclib::PetscLibType) end
+function PetscMallocResetDRAM(petsclib::PetscLibType)
+    error("PetscMallocResetDRAM: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocResetDRAM(petsclib::$UnionPetscLib)
 
@@ -8743,7 +9273,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocSet"))
 """
-function PetscMallocSet(petsclib::PetscLibType, imalloc::external, ifree::external, iralloc::external) end
+function PetscMallocSet(petsclib::PetscLibType, imalloc::external, ifree::external, iralloc::external)
+    error("PetscMallocSet: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocSet(petsclib::$UnionPetscLib, imalloc::external, ifree::external, iralloc::external )
 
@@ -8777,7 +9309,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocSetCoalesce"))
 """
-function PetscMallocSetCoalesce(petsclib::PetscLibType, coalesce::PetscBool) end
+function PetscMallocSetCoalesce(petsclib::PetscLibType, coalesce::PetscBool)
+    error("PetscMallocSetCoalesce: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocSetCoalesce(petsclib::$UnionPetscLib, coalesce::PetscBool )
 
@@ -8808,7 +9342,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocSetDRAM"))
 """
-function PetscMallocSetDRAM(petsclib::PetscLibType) end
+function PetscMallocSetDRAM(petsclib::PetscLibType)
+    error("PetscMallocSetDRAM: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocSetDRAM(petsclib::$UnionPetscLib)
 
@@ -8845,7 +9381,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMallocSetDebug"))
 """
-function PetscMallocSetDebug(petsclib::PetscLibType, eachcall::PetscBool, initializenan::PetscBool) end
+function PetscMallocSetDebug(petsclib::PetscLibType, eachcall::PetscBool, initializenan::PetscBool)
+    error("PetscMallocSetDebug: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocSetDebug(petsclib::$UnionPetscLib, eachcall::PetscBool, initializenan::PetscBool )
 
@@ -8881,7 +9419,9 @@ This only does anything if `-malloc_debug` (or `-malloc_test` if PETSc was confi
 # External Links
 $(_doc_external("Sys/PetscMallocTraceGet"))
 """
-function PetscMallocTraceGet(petsclib::PetscLibType) end
+function PetscMallocTraceGet(petsclib::PetscLibType)
+    error("PetscMallocTraceGet: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocTraceGet(petsclib::$UnionPetscLib)
 	logging_ = Ref{PetscBool}()
@@ -8916,7 +9456,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMallocTraceSet"))
 """
-function PetscMallocTraceSet(petsclib::PetscLibType, viewer::PetscViewer, active::PetscBool, logmin::PetscLogDouble) end
+function PetscMallocTraceSet(petsclib::PetscLibType, viewer::PetscViewer, active::PetscBool, logmin::PetscLogDouble)
+    error("PetscMallocTraceSet: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocTraceSet(petsclib::$UnionPetscLib, viewer::PetscViewer, active::PetscBool, logmin::PetscLogDouble )
 
@@ -8951,7 +9493,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMallocValidate"))
 """
-function PetscMallocValidate(petsclib::PetscLibType, line::Cint, fnc::String, file::String) end
+function PetscMallocValidate(petsclib::PetscLibType, line::Cint, fnc::String, file::String)
+    error("PetscMallocValidate: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocValidate(petsclib::$UnionPetscLib, line::Cint, fnc::String, file::String )
 
@@ -8985,7 +9529,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMallocView"))
 """
-function PetscMallocView(petsclib::PetscLibType, fp::Libc.FILE) end
+function PetscMallocView(petsclib::PetscLibType, fp::Libc.FILE)
+    error("PetscMallocView: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocView(petsclib::$UnionPetscLib, fp::Libc.FILE )
 
@@ -9019,7 +9565,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMallocViewGet"))
 """
-function PetscMallocViewGet(petsclib::PetscLibType) end
+function PetscMallocViewGet(petsclib::PetscLibType)
+    error("PetscMallocViewGet: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocViewGet(petsclib::$UnionPetscLib)
 	logging_ = Ref{PetscBool}()
@@ -9057,7 +9605,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMallocViewSet"))
 """
-function PetscMallocViewSet(petsclib::PetscLibType, logmin::PetscLogDouble) end
+function PetscMallocViewSet(petsclib::PetscLibType, logmin::PetscLogDouble)
+    error("PetscMallocViewSet: no generated method for these argument types")
+end
 
 @for_petsc function PetscMallocViewSet(petsclib::$UnionPetscLib, logmin::PetscLogDouble )
 
@@ -9093,7 +9643,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscMaxSum"))
 """
-function PetscMaxSum(petsclib::PetscLibType, comm::MPI_Comm, array::Vector{PetscInt}) end
+function PetscMaxSum(petsclib::PetscLibType, comm::MPI_Comm, array::AbstractVector{<:Number})
+    error("PetscMaxSum: no generated method for these argument types")
+end
 
 @for_petsc function PetscMaxSum(petsclib::$UnionPetscLib, comm::MPI_Comm, array::Vector{$PetscInt} )
 	max_ = Ref{$PetscInt}()
@@ -9135,7 +9687,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMemcmp"))
 """
-function PetscMemcmp(petsclib::PetscLibType, str1::Ptr{Cvoid}, str2::Ptr{Cvoid}, len::Csize_t) end
+function PetscMemcmp(petsclib::PetscLibType, str1::Ptr{Cvoid}, str2::Ptr{Cvoid}, len::Csize_t)
+    error("PetscMemcmp: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemcmp(petsclib::$UnionPetscLib, str1::Ptr{Cvoid}, str2::Ptr{Cvoid}, len::Csize_t )
 	e_ = Ref{PetscBool}()
@@ -9158,7 +9712,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscMemcpy"))
 """
-function PetscMemcpy(petsclib::PetscLibType, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t) end
+function PetscMemcpy(petsclib::PetscLibType, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t)
+    error("PetscMemcpy: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemcpy(petsclib::$UnionPetscLib, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t )
 
@@ -9179,7 +9735,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscMemmove"))
 """
-function PetscMemmove(petsclib::PetscLibType, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t) end
+function PetscMemmove(petsclib::PetscLibType, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t)
+    error("PetscMemmove: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemmove(petsclib::$UnionPetscLib, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t )
 
@@ -9216,7 +9774,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMemoryGetCurrentUsage"))
 """
-function PetscMemoryGetCurrentUsage(petsclib::PetscLibType) end
+function PetscMemoryGetCurrentUsage(petsclib::PetscLibType)
+    error("PetscMemoryGetCurrentUsage: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemoryGetCurrentUsage(petsclib::$UnionPetscLib)
 	mem_ = Ref{PetscLogDouble}()
@@ -9256,7 +9816,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMemoryGetMaximumUsage"))
 """
-function PetscMemoryGetMaximumUsage(petsclib::PetscLibType) end
+function PetscMemoryGetMaximumUsage(petsclib::PetscLibType)
+    error("PetscMemoryGetMaximumUsage: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemoryGetMaximumUsage(petsclib::$UnionPetscLib)
 	mem_ = Ref{PetscLogDouble}()
@@ -9293,7 +9855,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMemorySetGetMaximumUsage"))
 """
-function PetscMemorySetGetMaximumUsage(petsclib::PetscLibType) end
+function PetscMemorySetGetMaximumUsage(petsclib::PetscLibType)
+    error("PetscMemorySetGetMaximumUsage: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemorySetGetMaximumUsage(petsclib::$UnionPetscLib)
 
@@ -9313,7 +9877,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscMemoryTrace"))
 """
-function PetscMemoryTrace(petsclib::PetscLibType, label::String) end
+function PetscMemoryTrace(petsclib::PetscLibType, label::String)
+    error("PetscMemoryTrace: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemoryTrace(petsclib::$UnionPetscLib, label::String )
 
@@ -9350,7 +9916,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMemoryView"))
 """
-function PetscMemoryView(petsclib::PetscLibType, viewer::PetscViewer, message::String) end
+function PetscMemoryView(petsclib::PetscLibType, viewer::PetscViewer, message::String)
+    error("PetscMemoryView: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemoryView(petsclib::$UnionPetscLib, viewer::PetscViewer, message::String )
 
@@ -9371,7 +9939,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscMemzero"))
 """
-function PetscMemzero(petsclib::PetscLibType, a::Ptr{Cvoid}, n::Csize_t) end
+function PetscMemzero(petsclib::PetscLibType, a::Ptr{Cvoid}, n::Csize_t)
+    error("PetscMemzero: no generated method for these argument types")
+end
 
 @for_petsc function PetscMemzero(petsclib::$UnionPetscLib, a::Ptr{Cvoid}, n::Csize_t )
 
@@ -9409,7 +9979,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMergeIntArray"))
 """
-function PetscMergeIntArray(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}) end
+function PetscMergeIntArray(petsclib::PetscLibType, an::Integer, aI::AbstractVector{<:Number}, bn::Integer, bI::AbstractVector{<:Number})
+    error("PetscMergeIntArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscMergeIntArray(petsclib::$UnionPetscLib, an::$PetscInt, aI::Vector{$PetscInt}, bn::$PetscInt, bI::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
@@ -9454,7 +10026,9 @@ Output Parameters:
 # External Links
 $(_doc_external("Sys/PetscMergeIntArrayPair"))
 """
-function PetscMergeIntArrayPair(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscInt}, aJ::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}, bJ::Vector{PetscInt}) end
+function PetscMergeIntArrayPair(petsclib::PetscLibType, an::Integer, aI::AbstractVector{<:Number}, aJ::AbstractVector{<:Number}, bn::Integer, bI::AbstractVector{<:Number}, bJ::AbstractVector{<:Number})
+    error("PetscMergeIntArrayPair: no generated method for these argument types")
+end
 
 @for_petsc function PetscMergeIntArrayPair(petsclib::$UnionPetscLib, an::$PetscInt, aI::Vector{$PetscInt}, aJ::Vector{$PetscInt}, bn::$PetscInt, bI::Vector{$PetscInt}, bJ::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
@@ -9498,7 +10072,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscMergeMPIIntArray"))
 """
-function PetscMergeMPIIntArray(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscMPIInt}, bn::PetscInt, bI::Vector{PetscMPIInt}) end
+function PetscMergeMPIIntArray(petsclib::PetscLibType, an::Integer, aI::Vector{PetscMPIInt}, bn::Integer, bI::Vector{PetscMPIInt})
+    error("PetscMergeMPIIntArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscMergeMPIIntArray(petsclib::$UnionPetscLib, an::$PetscInt, aI::Vector{PetscMPIInt}, bn::$PetscInt, bI::Vector{PetscMPIInt} )
 	n_ = Ref{$PetscInt}()
@@ -9533,7 +10109,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMkdir"))
 """
-function PetscMkdir(petsclib::PetscLibType, dir::String) end
+function PetscMkdir(petsclib::PetscLibType, dir::String)
+    error("PetscMkdir: no generated method for these argument types")
+end
 
 @for_petsc function PetscMkdir(petsclib::$UnionPetscLib, dir::String )
 
@@ -9562,7 +10140,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMkdtemp"))
 """
-function PetscMkdtemp(petsclib::PetscLibType, dir::String) end
+function PetscMkdtemp(petsclib::PetscLibType, dir::String)
+    error("PetscMkdtemp: no generated method for these argument types")
+end
 
 @for_petsc function PetscMkdtemp(petsclib::$UnionPetscLib, dir::String )
 
@@ -9601,7 +10181,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscMonitorCompare"))
 """
-function PetscMonitorCompare(petsclib::PetscLibType, nmon::external, nmctx::Ptr{Cvoid}, nmdestroy::Ptr{Cvoid}, mon::external, mctx::Ptr{Cvoid}, mdestroy::Ptr{Cvoid}) end
+function PetscMonitorCompare(petsclib::PetscLibType, nmon::external, nmctx::Ptr{Cvoid}, nmdestroy::Ptr{Cvoid}, mon::external, mctx::Ptr{Cvoid}, mdestroy::Ptr{Cvoid})
+    error("PetscMonitorCompare: no generated method for these argument types")
+end
 
 @for_petsc function PetscMonitorCompare(petsclib::$UnionPetscLib, nmon::external, nmctx::Ptr{Cvoid}, nmdestroy::Ptr{Cvoid}, mon::external, mctx::Ptr{Cvoid}, mdestroy::Ptr{Cvoid} )
 	identical_ = Ref{PetscBool}()
@@ -9634,7 +10216,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Viewer/PetscOpenSocket"))
 """
-function PetscOpenSocket(petsclib::PetscLibType, hostname::String, portnum::Cint) end
+function PetscOpenSocket(petsclib::PetscLibType, hostname::String, portnum::Cint)
+    error("PetscOpenSocket: no generated method for these argument types")
+end
 
 @for_petsc function PetscOpenSocket(petsclib::$UnionPetscLib, hostname::String, portnum::Cint )
 	t_ = Ref{Cint}()
@@ -9657,7 +10241,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsBegin"))
 """
-function PetscOptionsBegin(petsclib::PetscLibType, comm::MPI_Comm, prefix::String, mess::String, sec::String) end
+function PetscOptionsBegin(petsclib::PetscLibType, comm::MPI_Comm, prefix::String, mess::String, sec::String)
+    error("PetscOptionsBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsBegin(petsclib::$UnionPetscLib, comm::MPI_Comm, prefix::String, mess::String, sec::String )
 
@@ -9678,7 +10264,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsBool"))
 """
-function PetscOptionsBool(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscBool) end
+function PetscOptionsBool(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscBool)
+    error("PetscOptionsBool: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsBool(petsclib::$UnionPetscLib, opt::String, text::String, man::String, currentvalue::PetscBool )
 	value_ = Ref{PetscBool}()
@@ -9703,7 +10291,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsBool3"))
 """
-function PetscOptionsBool3(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscBool3) end
+function PetscOptionsBool3(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscBool3)
+    error("PetscOptionsBool3: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsBool3(petsclib::$UnionPetscLib, opt::String, text::String, man::String, currentvalue::PetscBool3 )
 	value_ = Ref{PetscBool3}()
@@ -9728,7 +10318,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsBoolArray"))
 """
-function PetscOptionsBoolArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscBool}) end
+function PetscOptionsBoolArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscBool})
+    error("PetscOptionsBoolArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsBoolArray(petsclib::$UnionPetscLib, opt::String, text::String, man::String, value::Vector{PetscBool} )
 	n_ = Ref{$PetscInt}()
@@ -9753,7 +10345,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsEnd"))
 """
-function PetscOptionsEnd(petsclib::PetscLibType) end
+function PetscOptionsEnd(petsclib::PetscLibType)
+    error("PetscOptionsEnd: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsEnd(petsclib::$UnionPetscLib)
 
@@ -9773,7 +10367,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsInt"))
 """
-function PetscOptionsInt(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscInt) end
+function PetscOptionsInt(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::Integer)
+    error("PetscOptionsInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsInt(petsclib::$UnionPetscLib, opt::String, text::String, man::String, currentvalue::$PetscInt )
 	value_ = Ref{$PetscInt}()
@@ -9798,7 +10394,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsIntArray"))
 """
-function PetscOptionsIntArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscInt}) end
+function PetscOptionsIntArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::AbstractVector{<:Number})
+    error("PetscOptionsIntArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsIntArray(petsclib::$UnionPetscLib, opt::String, text::String, man::String, value::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
@@ -9823,7 +10421,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsReal"))
 """
-function PetscOptionsReal(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscReal) end
+function PetscOptionsReal(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::Real)
+    error("PetscOptionsReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsReal(petsclib::$UnionPetscLib, opt::String, text::String, man::String, currentvalue::$PetscReal )
 	value_ = Ref{$PetscReal}()
@@ -9848,7 +10448,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsRealArray"))
 """
-function PetscOptionsRealArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscReal}) end
+function PetscOptionsRealArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::AbstractVector{<:Number})
+    error("PetscOptionsRealArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsRealArray(petsclib::$UnionPetscLib, opt::String, text::String, man::String, value::Vector{$PetscReal} )
 	n_ = Ref{$PetscInt}()
@@ -9873,7 +10475,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsScalar"))
 """
-function PetscOptionsScalar(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscScalar) end
+function PetscOptionsScalar(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::Number)
+    error("PetscOptionsScalar: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsScalar(petsclib::$UnionPetscLib, opt::String, text::String, man::String, currentvalue::$PetscScalar )
 	value_ = Ref{$PetscScalar}()
@@ -9898,7 +10502,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscOptionsScalarArray"))
 """
-function PetscOptionsScalarArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscScalar}) end
+function PetscOptionsScalarArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::AbstractVector{<:Number})
+    error("PetscOptionsScalarArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsScalarArray(petsclib::$UnionPetscLib, opt::String, text::String, man::String, value::Vector{$PetscScalar} )
 	n_ = Ref{$PetscInt}()
@@ -9934,7 +10540,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscPClose"))
 """
-function PetscPClose(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE) end
+function PetscPClose(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE)
+    error("PetscPClose: no generated method for these argument types")
+end
 
 @for_petsc function PetscPClose(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Libc.FILE )
 
@@ -9972,7 +10580,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscPOpen"))
 """
-function PetscPOpen(petsclib::PetscLibType, comm::MPI_Comm, machine::String, program::String, mode::String) end
+function PetscPOpen(petsclib::PetscLibType, comm::MPI_Comm, machine::String, program::String, mode::String)
+    error("PetscPOpen: no generated method for these argument types")
+end
 
 @for_petsc function PetscPOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, machine::String, program::String, mode::String )
 	fp_ = Ref{Ptr{Libc.FILE}}()
@@ -10008,7 +10618,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscPOpenSetMachine"))
 """
-function PetscPOpenSetMachine(petsclib::PetscLibType, machine::String) end
+function PetscPOpenSetMachine(petsclib::PetscLibType, machine::String)
+    error("PetscPOpenSetMachine: no generated method for these argument types")
+end
 
 @for_petsc function PetscPOpenSetMachine(petsclib::$UnionPetscLib, machine::String )
 
@@ -10044,7 +10656,9 @@ Level: developer
 # External Links
 $(_doc_external("IS/PetscParallelSortInt"))
 """
-function PetscParallelSortInt(petsclib::PetscLibType, mapin::PetscLayout, mapout::PetscLayout, keysin::Vector{PetscInt}, keysout::Vector{PetscInt}) end
+function PetscParallelSortInt(petsclib::PetscLibType, mapin::PetscLayout, mapout::PetscLayout, keysin::AbstractVector{<:Number}, keysout::AbstractVector{<:Number})
+    error("PetscParallelSortInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscParallelSortInt(petsclib::$UnionPetscLib, mapin::PetscLayout, mapout::PetscLayout, keysin::Vector{$PetscInt}, keysout::Vector{$PetscInt} )
 
@@ -10080,7 +10694,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscParallelSortedInt"))
 """
-function PetscParallelSortedInt(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, keys::Vector{PetscInt}) end
+function PetscParallelSortedInt(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, keys::AbstractVector{<:Number})
+    error("PetscParallelSortedInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscParallelSortedInt(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, keys::Vector{$PetscInt} )
 	is_sorted_ = Ref{PetscBool}()
@@ -10111,7 +10727,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscPopErrorHandler"))
 """
-function PetscPopErrorHandler(petsclib::PetscLibType) end
+function PetscPopErrorHandler(petsclib::PetscLibType)
+    error("PetscPopErrorHandler: no generated method for these argument types")
+end
 
 @for_petsc function PetscPopErrorHandler(petsclib::$UnionPetscLib)
 
@@ -10140,7 +10758,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscPopSignalHandler"))
 """
-function PetscPopSignalHandler(petsclib::PetscLibType) end
+function PetscPopSignalHandler(petsclib::PetscLibType)
+    error("PetscPopSignalHandler: no generated method for these argument types")
+end
 
 @for_petsc function PetscPopSignalHandler(petsclib::$UnionPetscLib)
 
@@ -10160,7 +10780,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscPostIrecvInt"))
 """
-function PetscPostIrecvInt(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::PetscInt, r_waits::MPI_Request) end
+function PetscPostIrecvInt(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::Integer, r_waits::MPI_Request)
+    error("PetscPostIrecvInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscPostIrecvInt(petsclib::$UnionPetscLib, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::$PetscInt, r_waits::MPI_Request )
 
@@ -10181,7 +10803,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscPostIrecvScalar"))
 """
-function PetscPostIrecvScalar(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::PetscScalar, r_waits::MPI_Request) end
+function PetscPostIrecvScalar(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::Number, r_waits::MPI_Request)
+    error("PetscPostIrecvScalar: no generated method for these argument types")
+end
 
 @for_petsc function PetscPostIrecvScalar(petsclib::$UnionPetscLib, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}, rbuf::$PetscScalar, r_waits::MPI_Request )
 
@@ -10216,7 +10840,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscProbComputeKSStatistic"))
 """
-function PetscProbComputeKSStatistic(petsclib::PetscLibType, v::AbstractPetscVec, cdf::Ptr{Cvoid}) end
+function PetscProbComputeKSStatistic(petsclib::PetscLibType, v::AbstractPetscVec, cdf::Ptr{Cvoid})
+    error("PetscProbComputeKSStatistic: no generated method for these argument types")
+end
 
 @for_petsc function PetscProbComputeKSStatistic(petsclib::$UnionPetscLib, v::AbstractPetscVec, cdf::Ptr{Cvoid} )
 	alpha_ = Ref{$PetscReal}()
@@ -10253,7 +10879,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscProbComputeKSStatisticMagnitude"))
 """
-function PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType, v::AbstractPetscVec, cdf::Ptr{Cvoid}) end
+function PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType, v::AbstractPetscVec, cdf::Ptr{Cvoid})
+    error("PetscProbComputeKSStatisticMagnitude: no generated method for these argument types")
+end
 
 @for_petsc function PetscProbComputeKSStatisticMagnitude(petsclib::$UnionPetscLib, v::AbstractPetscVec, cdf::Ptr{Cvoid} )
 	alpha_ = Ref{$PetscReal}()
@@ -10291,7 +10919,9 @@ Level: advanced
 # External Links
 $(_doc_external("DT/PetscProbComputeKSStatisticWeighted"))
 """
-function PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec, cdf::Ptr{Cvoid}) end
+function PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec, cdf::Ptr{Cvoid})
+    error("PetscProbComputeKSStatisticWeighted: no generated method for these argument types")
+end
 
 @for_petsc function PetscProbComputeKSStatisticWeighted(petsclib::$UnionPetscLib, v::AbstractPetscVec, w::AbstractPetscVec, cdf::Ptr{Cvoid} )
 	alpha_ = Ref{$PetscReal}()
@@ -10331,7 +10961,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscProbCreateFromOptions"))
 """
-function PetscProbCreateFromOptions(petsclib::PetscLibType, dim::PetscInt, prefix::String, name::String) end
+function PetscProbCreateFromOptions(petsclib::PetscLibType, dim::Integer, prefix::String, name::String)
+    error("PetscProbCreateFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscProbCreateFromOptions(petsclib::$UnionPetscLib, dim::$PetscInt, prefix::String, name::String )
 	pdf_ = Ref{Ptr{Cvoid}}()
@@ -10366,7 +10998,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscProcessPlacementView"))
 """
-function PetscProcessPlacementView(petsclib::PetscLibType, viewer::PetscViewer) end
+function PetscProcessPlacementView(petsclib::PetscLibType, viewer::PetscViewer)
+    error("PetscProcessPlacementView: no generated method for these argument types")
+end
 
 @for_petsc function PetscProcessPlacementView(petsclib::$UnionPetscLib, viewer::PetscViewer )
 
@@ -10406,7 +11040,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscProcessTree"))
 """
-function PetscProcessTree(petsclib::PetscLibType, n::PetscInt, mask::Vector{PetscBool}, parentid::Vector{PetscInt}) end
+function PetscProcessTree(petsclib::PetscLibType, n::Integer, mask::Vector{PetscBool}, parentid::AbstractVector{<:Number})
+    error("PetscProcessTree: no generated method for these argument types")
+end
 
 @for_petsc function PetscProcessTree(petsclib::$UnionPetscLib, n::$PetscInt, mask::Vector{PetscBool}, parentid::Vector{$PetscInt} )
 	Nlevels_ = Ref{$PetscInt}()
@@ -10451,7 +11087,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscPullJSONValue"))
 """
-function PetscPullJSONValue(petsclib::PetscLibType, buff::String, key::String, value::String, valuelen::Csize_t) end
+function PetscPullJSONValue(petsclib::PetscLibType, buff::String, key::String, value::String, valuelen::Csize_t)
+    error("PetscPullJSONValue: no generated method for these argument types")
+end
 
 @for_petsc function PetscPullJSONValue(petsclib::$UnionPetscLib, buff::String, key::String, value::String, valuelen::Csize_t )
 	found_ = Ref{PetscBool}()
@@ -10501,7 +11139,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscPushErrorHandler"))
 """
-function PetscPushErrorHandler(petsclib::PetscLibType, handler::external, ctx::Ptr{Cvoid}) end
+function PetscPushErrorHandler(petsclib::PetscLibType, handler::external, ctx::Ptr{Cvoid})
+    error("PetscPushErrorHandler: no generated method for these argument types")
+end
 
 @for_petsc function PetscPushErrorHandler(petsclib::$UnionPetscLib, handler::external, ctx::Ptr{Cvoid} )
 
@@ -10533,7 +11173,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscPushJSONValue"))
 """
-function PetscPushJSONValue(petsclib::PetscLibType, buff::String, key::String, value::String, bufflen::Csize_t) end
+function PetscPushJSONValue(petsclib::PetscLibType, buff::String, key::String, value::String, bufflen::Csize_t)
+    error("PetscPushJSONValue: no generated method for these argument types")
+end
 
 @for_petsc function PetscPushJSONValue(petsclib::$UnionPetscLib, buff::String, key::String, value::String, bufflen::Csize_t )
 
@@ -10566,7 +11208,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscPushSignalHandler"))
 """
-function PetscPushSignalHandler(petsclib::PetscLibType, routine::external, ctx::Ptr{Cvoid}) end
+function PetscPushSignalHandler(petsclib::PetscLibType, routine::external, ctx::Ptr{Cvoid})
+    error("PetscPushSignalHandler: no generated method for these argument types")
+end
 
 @for_petsc function PetscPushSignalHandler(petsclib::$UnionPetscLib, routine::external, ctx::Ptr{Cvoid} )
 
@@ -10592,7 +11236,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscPythonFinalize"))
 """
-function PetscPythonFinalize(petsclib::PetscLibType) end
+function PetscPythonFinalize(petsclib::PetscLibType)
+    error("PetscPythonFinalize: no generated method for these argument types")
+end
 
 @for_petsc function PetscPythonFinalize(petsclib::$UnionPetscLib)
 
@@ -10624,7 +11270,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscPythonInitialize"))
 """
-function PetscPythonInitialize(petsclib::PetscLibType, pyexe::String, pylib::String) end
+function PetscPythonInitialize(petsclib::PetscLibType, pyexe::String, pylib::String)
+    error("PetscPythonInitialize: no generated method for these argument types")
+end
 
 @for_petsc function PetscPythonInitialize(petsclib::$UnionPetscLib, pyexe::String, pylib::String )
 
@@ -10650,7 +11298,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscPythonMonitorSet"))
 """
-function PetscPythonMonitorSet(petsclib::PetscLibType, obj, url::String) end
+function PetscPythonMonitorSet(petsclib::PetscLibType, obj, url::String)
+    error("PetscPythonMonitorSet: no generated method for these argument types")
+end
 
 @for_petsc function PetscPythonMonitorSet(petsclib::$UnionPetscLib, obj, url::String )
 
@@ -10676,7 +11326,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscPythonPrintError"))
 """
-function PetscPythonPrintError(petsclib::PetscLibType) end
+function PetscPythonPrintError(petsclib::PetscLibType)
+    error("PetscPythonPrintError: no generated method for these argument types")
+end
 
 @for_petsc function PetscPythonPrintError(petsclib::$UnionPetscLib)
 
@@ -10704,7 +11356,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscRMTree"))
 """
-function PetscRMTree(petsclib::PetscLibType, dir::String) end
+function PetscRMTree(petsclib::PetscLibType, dir::String)
+    error("PetscRMTree: no generated method for these argument types")
+end
 
 @for_petsc function PetscRMTree(petsclib::$UnionPetscLib, dir::String )
 
@@ -10739,7 +11393,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRealSortSemiOrdered"))
 """
-function PetscRealSortSemiOrdered(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscReal}) end
+function PetscRealSortSemiOrdered(petsclib::PetscLibType, n::Integer, arr::AbstractVector{<:Number})
+    error("PetscRealSortSemiOrdered: no generated method for these argument types")
+end
 
 @for_petsc function PetscRealSortSemiOrdered(petsclib::$UnionPetscLib, n::$PetscInt, arr::Vector{$PetscReal} )
 
@@ -10775,7 +11431,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRealSortSemiOrderedWithArrayInt"))
 """
-function PetscRealSortSemiOrderedWithArrayInt(petsclib::PetscLibType, n::PetscInt, arr1::Vector{PetscReal}, arr2::Vector{PetscInt}) end
+function PetscRealSortSemiOrderedWithArrayInt(petsclib::PetscLibType, n::Integer, arr1::AbstractVector{<:Number}, arr2::AbstractVector{<:Number})
+    error("PetscRealSortSemiOrderedWithArrayInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscRealSortSemiOrderedWithArrayInt(petsclib::$UnionPetscLib, n::$PetscInt, arr1::Vector{$PetscReal}, arr2::Vector{$PetscInt} )
 
@@ -10808,7 +11466,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRealView"))
 """
-function PetscRealView(petsclib::PetscLibType, N::PetscInt, idx::Vector{PetscReal}, viewer::PetscViewer) end
+function PetscRealView(petsclib::PetscLibType, N::Integer, idx::AbstractVector{<:Number}, viewer::PetscViewer)
+    error("PetscRealView: no generated method for these argument types")
+end
 
 @for_petsc function PetscRealView(petsclib::$UnionPetscLib, N::$PetscInt, idx::Vector{$PetscReal}, viewer::PetscViewer )
 
@@ -10842,7 +11502,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRealViewNumColumns"))
 """
-function PetscRealViewNumColumns(petsclib::PetscLibType, N::PetscInt, Ncol::PetscInt, idx::Vector{PetscReal}, viewer::PetscViewer) end
+function PetscRealViewNumColumns(petsclib::PetscLibType, N::Integer, Ncol::Integer, idx::AbstractVector{<:Number}, viewer::PetscViewer)
+    error("PetscRealViewNumColumns: no generated method for these argument types")
+end
 
 @for_petsc function PetscRealViewNumColumns(petsclib::$UnionPetscLib, N::$PetscInt, Ncol::$PetscInt, idx::Vector{$PetscReal}, viewer::PetscViewer )
 
@@ -10873,7 +11535,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscRegisterFinalize"))
 """
-function PetscRegisterFinalize(petsclib::PetscLibType, f::external) end
+function PetscRegisterFinalize(petsclib::PetscLibType, f::external)
+    error("PetscRegisterFinalize: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegisterFinalize(petsclib::$UnionPetscLib, f::external )
 
@@ -10901,7 +11565,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscRegisterFinalizeAll"))
 """
-function PetscRegisterFinalizeAll(petsclib::PetscLibType) end
+function PetscRegisterFinalizeAll(petsclib::PetscLibType)
+    error("PetscRegisterFinalizeAll: no generated method for these argument types")
+end
 
 @for_petsc function PetscRegisterFinalizeAll(petsclib::$UnionPetscLib)
 
@@ -10928,7 +11594,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscSAWsBlock"))
 """
-function PetscSAWsBlock(petsclib::PetscLibType) end
+function PetscSAWsBlock(petsclib::PetscLibType)
+    error("PetscSAWsBlock: no generated method for these argument types")
+end
 
 @for_petsc function PetscSAWsBlock(petsclib::$UnionPetscLib)
 
@@ -10956,7 +11624,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscSSLDestroyContext"))
 """
-function PetscSSLDestroyContext(petsclib::PetscLibType, ctx::SSL_CTX) end
+function PetscSSLDestroyContext(petsclib::PetscLibType, ctx::SSL_CTX)
+    error("PetscSSLDestroyContext: no generated method for these argument types")
+end
 
 @for_petsc function PetscSSLDestroyContext(petsclib::$UnionPetscLib, ctx::SSL_CTX )
 
@@ -10986,7 +11656,9 @@ If PETSc was ./configure -with-ssl-certificate requires the user have created a 
 # External Links
 $(_doc_external("Sys/PetscSSLInitializeContext"))
 """
-function PetscSSLInitializeContext(petsclib::PetscLibType) end
+function PetscSSLInitializeContext(petsclib::PetscLibType)
+    error("PetscSSLInitializeContext: no generated method for these argument types")
+end
 
 @for_petsc function PetscSSLInitializeContext(petsclib::$UnionPetscLib)
 	octx_ = Ref{Ptr{SSL_CTX}}()
@@ -11021,7 +11693,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscScalarView"))
 """
-function PetscScalarView(petsclib::PetscLibType, N::PetscInt, idx::Vector{PetscScalar}, viewer::PetscViewer) end
+function PetscScalarView(petsclib::PetscLibType, N::Integer, idx::AbstractVector{<:Number}, viewer::PetscViewer)
+    error("PetscScalarView: no generated method for these argument types")
+end
 
 @for_petsc function PetscScalarView(petsclib::$UnionPetscLib, N::$PetscInt, idx::Vector{$PetscScalar}, viewer::PetscViewer )
 
@@ -11055,7 +11729,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscScalarViewNumColumns"))
 """
-function PetscScalarViewNumColumns(petsclib::PetscLibType, N::PetscInt, Ncol::PetscInt, idx::Vector{PetscScalar}, viewer::PetscViewer) end
+function PetscScalarViewNumColumns(petsclib::PetscLibType, N::Integer, Ncol::Integer, idx::AbstractVector{<:Number}, viewer::PetscViewer)
+    error("PetscScalarViewNumColumns: no generated method for these argument types")
+end
 
 @for_petsc function PetscScalarViewNumColumns(petsclib::$UnionPetscLib, N::$PetscInt, Ncol::$PetscInt, idx::Vector{$PetscScalar}, viewer::PetscViewer )
 
@@ -11088,7 +11764,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSequentialPhaseBegin"))
 """
-function PetscSequentialPhaseBegin(petsclib::PetscLibType, comm::MPI_Comm, ng::Cint) end
+function PetscSequentialPhaseBegin(petsclib::PetscLibType, comm::MPI_Comm, ng::Cint)
+    error("PetscSequentialPhaseBegin: no generated method for these argument types")
+end
 
 @for_petsc function PetscSequentialPhaseBegin(petsclib::$UnionPetscLib, comm::MPI_Comm, ng::Cint )
 
@@ -11121,7 +11799,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSequentialPhaseEnd"))
 """
-function PetscSequentialPhaseEnd(petsclib::PetscLibType, comm::MPI_Comm, ng::Cint) end
+function PetscSequentialPhaseEnd(petsclib::PetscLibType, comm::MPI_Comm, ng::Cint)
+    error("PetscSequentialPhaseEnd: no generated method for these argument types")
+end
 
 @for_petsc function PetscSequentialPhaseEnd(petsclib::$UnionPetscLib, comm::MPI_Comm, ng::Cint )
 
@@ -11157,7 +11837,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSetDebugTerminal"))
 """
-function PetscSetDebugTerminal(petsclib::PetscLibType, terminal::String) end
+function PetscSetDebugTerminal(petsclib::PetscLibType, terminal::String)
+    error("PetscSetDebugTerminal: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetDebugTerminal(petsclib::$UnionPetscLib, terminal::String )
 
@@ -11195,7 +11877,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSetDebugger"))
 """
-function PetscSetDebugger(petsclib::PetscLibType, debugger::String, usedebugterminal::PetscBool) end
+function PetscSetDebugger(petsclib::PetscLibType, debugger::String, usedebugterminal::PetscBool)
+    error("PetscSetDebugger: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetDebugger(petsclib::$UnionPetscLib, debugger::String, usedebugterminal::PetscBool )
 
@@ -11227,7 +11911,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSetDebuggerFromString"))
 """
-function PetscSetDebuggerFromString(petsclib::PetscLibType, string::String) end
+function PetscSetDebuggerFromString(petsclib::PetscLibType, string::String)
+    error("PetscSetDebuggerFromString: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetDebuggerFromString(petsclib::$UnionPetscLib, string::String )
 
@@ -11255,7 +11941,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSetDefaultDebugger"))
 """
-function PetscSetDefaultDebugger(petsclib::PetscLibType) end
+function PetscSetDefaultDebugger(petsclib::PetscLibType)
+    error("PetscSetDefaultDebugger: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetDefaultDebugger(petsclib::$UnionPetscLib)
 
@@ -11275,7 +11963,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscSetDisplay"))
 """
-function PetscSetDisplay(petsclib::PetscLibType) end
+function PetscSetDisplay(petsclib::PetscLibType)
+    error("PetscSetDisplay: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetDisplay(petsclib::$UnionPetscLib)
 
@@ -11303,7 +11993,9 @@ Input Parameter:
 # External Links
 $(_doc_external("Sys/PetscSetFPTrap"))
 """
-function PetscSetFPTrap(petsclib::PetscLibType, flag::PetscFPTrap) end
+function PetscSetFPTrap(petsclib::PetscLibType, flag::PetscFPTrap)
+    error("PetscSetFPTrap: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetFPTrap(petsclib::$UnionPetscLib, flag::PetscFPTrap )
 
@@ -11336,7 +12028,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSetHelpVersionFunctions"))
 """
-function PetscSetHelpVersionFunctions(petsclib::PetscLibType, help::external, version::external) end
+function PetscSetHelpVersionFunctions(petsclib::PetscLibType, help::external, version::external)
+    error("PetscSetHelpVersionFunctions: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetHelpVersionFunctions(petsclib::$UnionPetscLib, help::external, version::external )
 
@@ -11357,7 +12051,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscSetProgramName"))
 """
-function PetscSetProgramName(petsclib::PetscLibType, name::String) end
+function PetscSetProgramName(petsclib::PetscLibType, name::String)
+    error("PetscSetProgramName: no generated method for these argument types")
+end
 
 @for_petsc function PetscSetProgramName(petsclib::$UnionPetscLib, name::String )
 
@@ -11402,7 +12098,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSharedTmp"))
 """
-function PetscSharedTmp(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscSharedTmp(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscSharedTmp: no generated method for these argument types")
+end
 
 @for_petsc function PetscSharedTmp(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	shared_ = Ref{PetscBool}()
@@ -11446,7 +12144,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSharedWorkingDirectory"))
 """
-function PetscSharedWorkingDirectory(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscSharedWorkingDirectory(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscSharedWorkingDirectory: no generated method for these argument types")
+end
 
 @for_petsc function PetscSharedWorkingDirectory(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	shared_ = Ref{PetscBool}()
@@ -11475,7 +12175,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscShmgetAddressesFinalize"))
 """
-function PetscShmgetAddressesFinalize(petsclib::PetscLibType) end
+function PetscShmgetAddressesFinalize(petsclib::PetscLibType)
+    error("PetscShmgetAddressesFinalize: no generated method for these argument types")
+end
 
 @for_petsc function PetscShmgetAddressesFinalize(petsclib::$UnionPetscLib)
 
@@ -11509,7 +12211,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscShmgetAllocateArray"))
 """
-function PetscShmgetAllocateArray(petsclib::PetscLibType, sz::Csize_t, asz::Csize_t) end
+function PetscShmgetAllocateArray(petsclib::PetscLibType, sz::Csize_t, asz::Csize_t)
+    error("PetscShmgetAllocateArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscShmgetAllocateArray(petsclib::$UnionPetscLib, sz::Csize_t, asz::Csize_t )
 	addr_ = Ref{Ptr{Cvoid}}()
@@ -11542,7 +12246,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscShmgetDeallocateArray"))
 """
-function PetscShmgetDeallocateArray(petsclib::PetscLibType, addr::Union{Ptr, AbstractArray{Cvoid}}) end
+function PetscShmgetDeallocateArray(petsclib::PetscLibType, addr::Union{Ptr, AbstractArray{Cvoid}})
+    error("PetscShmgetDeallocateArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscShmgetDeallocateArray(petsclib::$UnionPetscLib, addr::Union{Ptr, AbstractArray{Cvoid}} )
 	addr_ = Ref{Ptr{Cvoid}}(addr isa Ptr ? addr : pointer(addr))
@@ -11578,7 +12284,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscShmgetMapAddresses"))
 """
-function PetscShmgetMapAddresses(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, baseaddres::Ptr{Ptr{Cvoid}}) end
+function PetscShmgetMapAddresses(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, baseaddres::Ptr{Ptr{Cvoid}})
+    error("PetscShmgetMapAddresses: no generated method for these argument types")
+end
 
 @for_petsc function PetscShmgetMapAddresses(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, baseaddres::Ptr{Ptr{Cvoid}} )
 	addres_ = Ref{Ptr{Cvoid}}()
@@ -11610,7 +12318,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscShmgetUnmapAddresses"))
 """
-function PetscShmgetUnmapAddresses(petsclib::PetscLibType, n::PetscInt, addres::Ptr{Ptr{Cvoid}}) end
+function PetscShmgetUnmapAddresses(petsclib::PetscLibType, n::Integer, addres::Ptr{Ptr{Cvoid}})
+    error("PetscShmgetUnmapAddresses: no generated method for these argument types")
+end
 
 @for_petsc function PetscShmgetUnmapAddresses(petsclib::$UnionPetscLib, n::$PetscInt, addres::Ptr{Ptr{Cvoid}} )
 
@@ -11642,7 +12352,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscSignalHandlerDefault"))
 """
-function PetscSignalHandlerDefault(petsclib::PetscLibType, sig::Cint, ptr::Ptr{Cvoid}) end
+function PetscSignalHandlerDefault(petsclib::PetscLibType, sig::Cint, ptr::Ptr{Cvoid})
+    error("PetscSignalHandlerDefault: no generated method for these argument types")
+end
 
 @for_petsc function PetscSignalHandlerDefault(petsclib::$UnionPetscLib, sig::Cint, ptr::Ptr{Cvoid} )
 
@@ -11673,7 +12385,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSleep"))
 """
-function PetscSleep(petsclib::PetscLibType, s::PetscReal) end
+function PetscSleep(petsclib::PetscLibType, s::Real)
+    error("PetscSleep: no generated method for these argument types")
+end
 
 @for_petsc function PetscSleep(petsclib::$UnionPetscLib, s::$PetscReal )
 
@@ -11703,7 +12417,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Sys/PetscSortCount"))
 """
-function PetscSortCount(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscCount}) end
+function PetscSortCount(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscCount})
+    error("PetscSortCount: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortCount(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscCount} )
 
@@ -11733,7 +12449,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Sys/PetscSortInt"))
 """
-function PetscSortInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) end
+function PetscSortInt(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number})
+    error("PetscSortInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt} )
 
@@ -11763,7 +12481,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Sys/PetscSortInt64"))
 """
-function PetscSortInt64(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt64}) end
+function PetscSortInt64(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt64})
+    error("PetscSortInt64: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortInt64(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt64} )
 
@@ -11797,7 +12517,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithArray"))
 """
-function PetscSortIntWithArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}) end
+function PetscSortIntWithArray(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number}, Y::AbstractVector{<:Number})
+    error("PetscSortIntWithArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithArray(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt}, Y::Vector{$PetscInt} )
 
@@ -11832,7 +12554,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithArrayPair"))
 """
-function PetscSortIntWithArrayPair(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}, Z::Vector{PetscInt}) end
+function PetscSortIntWithArrayPair(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number}, Y::AbstractVector{<:Number}, Z::AbstractVector{<:Number})
+    error("PetscSortIntWithArrayPair: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithArrayPair(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt}, Y::Vector{$PetscInt}, Z::Vector{$PetscInt} )
 
@@ -11866,7 +12590,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithCountArray"))
 """
-function PetscSortIntWithCountArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscCount}) end
+function PetscSortIntWithCountArray(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number}, Y::Vector{PetscCount})
+    error("PetscSortIntWithCountArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithCountArray(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt}, Y::Vector{PetscCount} )
 
@@ -11903,7 +12629,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithDataArray"))
 """
-function PetscSortIntWithDataArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Ptr{Cvoid}, size::Csize_t, t2::Ptr{Cvoid}) end
+function PetscSortIntWithDataArray(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number}, Y::Ptr{Cvoid}, size::Csize_t, t2::Ptr{Cvoid})
+    error("PetscSortIntWithDataArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithDataArray(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt}, Y::Ptr{Cvoid}, size::Csize_t, t2::Ptr{Cvoid} )
 
@@ -11938,7 +12666,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithIntCountArrayPair"))
 """
-function PetscSortIntWithIntCountArrayPair(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}, Z::Vector{PetscCount}) end
+function PetscSortIntWithIntCountArrayPair(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number}, Y::AbstractVector{<:Number}, Z::Vector{PetscCount})
+    error("PetscSortIntWithIntCountArrayPair: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithIntCountArrayPair(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt}, Y::Vector{$PetscInt}, Z::Vector{PetscCount} )
 
@@ -11972,7 +12702,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithMPIIntArray"))
 """
-function PetscSortIntWithMPIIntArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscMPIInt}) end
+function PetscSortIntWithMPIIntArray(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number}, Y::Vector{PetscMPIInt})
+    error("PetscSortIntWithMPIIntArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithMPIIntArray(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt}, Y::Vector{PetscMPIInt} )
 
@@ -12006,7 +12738,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithPermutation"))
 """
-function PetscSortIntWithPermutation(petsclib::PetscLibType, n::PetscInt, i::Vector{PetscInt}, idx::Vector{PetscInt}) end
+function PetscSortIntWithPermutation(petsclib::PetscLibType, n::Integer, i::AbstractVector{<:Number}, idx::AbstractVector{<:Number})
+    error("PetscSortIntWithPermutation: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithPermutation(petsclib::$UnionPetscLib, n::$PetscInt, i::Vector{$PetscInt}, idx::Vector{$PetscInt} )
 
@@ -12040,7 +12774,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortIntWithScalarArray"))
 """
-function PetscSortIntWithScalarArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscScalar}) end
+function PetscSortIntWithScalarArray(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number}, Y::AbstractVector{<:Number})
+    error("PetscSortIntWithScalarArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortIntWithScalarArray(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt}, Y::Vector{$PetscScalar} )
 
@@ -12072,7 +12808,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortMPIInt"))
 """
-function PetscSortMPIInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}) end
+function PetscSortMPIInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt})
+    error("PetscSortMPIInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortMPIInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscMPIInt} )
 
@@ -12106,7 +12844,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortMPIIntWithArray"))
 """
-function PetscSortMPIIntWithArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscMPIInt}) end
+function PetscSortMPIIntWithArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscMPIInt})
+    error("PetscSortMPIIntWithArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortMPIIntWithArray(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscMPIInt} )
 
@@ -12140,7 +12880,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortMPIIntWithIntArray"))
 """
-function PetscSortMPIIntWithIntArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscInt}) end
+function PetscSortMPIIntWithIntArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}, Y::AbstractVector{<:Number})
+    error("PetscSortMPIIntWithIntArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortMPIIntWithIntArray(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{$PetscInt} )
 
@@ -12172,7 +12914,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortReal"))
 """
-function PetscSortReal(petsclib::PetscLibType, n::PetscCount, v::Vector{PetscReal}) end
+function PetscSortReal(petsclib::PetscLibType, n::PetscCount, v::AbstractVector{<:Number})
+    error("PetscSortReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortReal(petsclib::$UnionPetscLib, n::PetscCount, v::Vector{$PetscReal} )
 
@@ -12206,7 +12950,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortRealWithArrayInt"))
 """
-function PetscSortRealWithArrayInt(petsclib::PetscLibType, n::PetscCount, r::Vector{PetscReal}, Ii::Vector{PetscInt}) end
+function PetscSortRealWithArrayInt(petsclib::PetscLibType, n::PetscCount, r::AbstractVector{<:Number}, Ii::AbstractVector{<:Number})
+    error("PetscSortRealWithArrayInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortRealWithArrayInt(petsclib::$UnionPetscLib, n::PetscCount, r::Vector{$PetscReal}, Ii::Vector{$PetscInt} )
 
@@ -12240,7 +12986,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortRealWithPermutation"))
 """
-function PetscSortRealWithPermutation(petsclib::PetscLibType, n::PetscInt, i::Vector{PetscReal}, idx::Vector{PetscInt}) end
+function PetscSortRealWithPermutation(petsclib::PetscLibType, n::Integer, i::AbstractVector{<:Number}, idx::AbstractVector{<:Number})
+    error("PetscSortRealWithPermutation: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortRealWithPermutation(petsclib::$UnionPetscLib, n::$PetscInt, i::Vector{$PetscReal}, idx::Vector{$PetscInt} )
 
@@ -12275,7 +13023,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortRemoveDupsInt"))
 """
-function PetscSortRemoveDupsInt(petsclib::PetscLibType, X::Vector{PetscInt}) end
+function PetscSortRemoveDupsInt(petsclib::PetscLibType, X::AbstractVector{<:Number})
+    error("PetscSortRemoveDupsInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortRemoveDupsInt(petsclib::$UnionPetscLib, X::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
@@ -12312,7 +13062,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortRemoveDupsMPIInt"))
 """
-function PetscSortRemoveDupsMPIInt(petsclib::PetscLibType, X::Vector{PetscMPIInt}) end
+function PetscSortRemoveDupsMPIInt(petsclib::PetscLibType, X::Vector{PetscMPIInt})
+    error("PetscSortRemoveDupsMPIInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortRemoveDupsMPIInt(petsclib::$UnionPetscLib, X::Vector{PetscMPIInt} )
 	n_ = Ref{$PetscInt}()
@@ -12344,7 +13096,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Sys/PetscSortRemoveDupsReal"))
 """
-function PetscSortRemoveDupsReal(petsclib::PetscLibType, v::Vector{PetscReal}) end
+function PetscSortRemoveDupsReal(petsclib::PetscLibType, v::AbstractVector{<:Number})
+    error("PetscSortRemoveDupsReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortRemoveDupsReal(petsclib::$UnionPetscLib, v::Vector{$PetscReal} )
 	n_ = Ref{$PetscInt}()
@@ -12378,7 +13132,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortReverseInt"))
 """
-function PetscSortReverseInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) end
+function PetscSortReverseInt(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number})
+    error("PetscSortReverseInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortReverseInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt} )
 
@@ -12416,7 +13172,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortSplit"))
 """
-function PetscSortSplit(petsclib::PetscLibType, ncut::PetscInt, n::PetscInt, a::Vector{PetscScalar}, idx::Vector{PetscInt}) end
+function PetscSortSplit(petsclib::PetscLibType, ncut::Integer, n::Integer, a::AbstractVector{<:Number}, idx::AbstractVector{<:Number})
+    error("PetscSortSplit: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortSplit(petsclib::$UnionPetscLib, ncut::$PetscInt, n::$PetscInt, a::Vector{$PetscScalar}, idx::Vector{$PetscInt} )
 
@@ -12454,7 +13212,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortSplitReal"))
 """
-function PetscSortSplitReal(petsclib::PetscLibType, ncut::PetscInt, n::PetscInt, a::Vector{PetscReal}, idx::Vector{PetscInt}) end
+function PetscSortSplitReal(petsclib::PetscLibType, ncut::Integer, n::Integer, a::AbstractVector{<:Number}, idx::AbstractVector{<:Number})
+    error("PetscSortSplitReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortSplitReal(petsclib::$UnionPetscLib, ncut::$PetscInt, n::$PetscInt, a::Vector{$PetscReal}, idx::Vector{$PetscInt} )
 
@@ -12488,7 +13248,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortStrWithPermutation"))
 """
-function PetscSortStrWithPermutation(petsclib::PetscLibType, n::PetscInt, i::String, idx::Vector{PetscInt}) end
+function PetscSortStrWithPermutation(petsclib::PetscLibType, n::Integer, i::String, idx::AbstractVector{<:Number})
+    error("PetscSortStrWithPermutation: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortStrWithPermutation(petsclib::$UnionPetscLib, n::$PetscInt, i::String, idx::Vector{$PetscInt} )
 	i_ = Ref{Ptr{Cchar}}(i isa Ptr ? i : pointer(i))
@@ -12524,7 +13286,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortedCheckDupsCount"))
 """
-function PetscSortedCheckDupsCount(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscCount}) end
+function PetscSortedCheckDupsCount(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscCount})
+    error("PetscSortedCheckDupsCount: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortedCheckDupsCount(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscCount} )
 	flg_ = Ref{PetscBool}()
@@ -12561,7 +13325,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortedCheckDupsInt"))
 """
-function PetscSortedCheckDupsInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) end
+function PetscSortedCheckDupsInt(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number})
+    error("PetscSortedCheckDupsInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortedCheckDupsInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt} )
 	flg_ = Ref{PetscBool}()
@@ -12598,7 +13364,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortedInt"))
 """
-function PetscSortedInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) end
+function PetscSortedInt(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number})
+    error("PetscSortedInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortedInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt} )
 	sorted_ = Ref{PetscBool}()
@@ -12635,7 +13403,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortedInt64"))
 """
-function PetscSortedInt64(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt64}) end
+function PetscSortedInt64(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt64})
+    error("PetscSortedInt64: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortedInt64(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt64} )
 	sorted_ = Ref{PetscBool}()
@@ -12672,7 +13442,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortedMPIInt"))
 """
-function PetscSortedMPIInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}) end
+function PetscSortedMPIInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt})
+    error("PetscSortedMPIInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortedMPIInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscMPIInt} )
 	sorted_ = Ref{PetscBool}()
@@ -12709,7 +13481,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortedReal"))
 """
-function PetscSortedReal(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscReal}) end
+function PetscSortedReal(petsclib::PetscLibType, n::PetscCount, X::AbstractVector{<:Number})
+    error("PetscSortedReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortedReal(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscReal} )
 	sorted_ = Ref{PetscBool}()
@@ -12746,7 +13520,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSortedRemoveDupsInt"))
 """
-function PetscSortedRemoveDupsInt(petsclib::PetscLibType, X::Vector{PetscInt}) end
+function PetscSortedRemoveDupsInt(petsclib::PetscLibType, X::AbstractVector{<:Number})
+    error("PetscSortedRemoveDupsInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscSortedRemoveDupsInt(petsclib::$UnionPetscLib, X::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
@@ -12782,7 +13558,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSplitOwnership"))
 """
-function PetscSplitOwnership(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscSplitOwnership(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscSplitOwnership: no generated method for these argument types")
+end
 
 @for_petsc function PetscSplitOwnership(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	n_ = Ref{$PetscInt}()
@@ -12822,7 +13600,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSplitOwnershipBlock"))
 """
-function PetscSplitOwnershipBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt) end
+function PetscSplitOwnershipBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer)
+    error("PetscSplitOwnershipBlock: no generated method for these argument types")
+end
 
 @for_petsc function PetscSplitOwnershipBlock(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt )
 	n_ = Ref{$PetscInt}()
@@ -12860,7 +13640,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSplitOwnershipEqual"))
 """
-function PetscSplitOwnershipEqual(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscSplitOwnershipEqual(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscSplitOwnershipEqual: no generated method for these argument types")
+end
 
 @for_petsc function PetscSplitOwnershipEqual(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	n_ = Ref{$PetscInt}()
@@ -12900,7 +13682,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStartMatlab"))
 """
-function PetscStartMatlab(petsclib::PetscLibType, comm::MPI_Comm, machine::String, script::String) end
+function PetscStartMatlab(petsclib::PetscLibType, comm::MPI_Comm, machine::String, script::String)
+    error("PetscStartMatlab: no generated method for these argument types")
+end
 
 @for_petsc function PetscStartMatlab(petsclib::$UnionPetscLib, comm::MPI_Comm, machine::String, script::String )
 	fp_ = Ref{Ptr{Libc.FILE}}()
@@ -12935,7 +13719,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscStopForDebugger"))
 """
-function PetscStopForDebugger(petsclib::PetscLibType) end
+function PetscStopForDebugger(petsclib::PetscLibType)
+    error("PetscStopForDebugger: no generated method for these argument types")
+end
 
 @for_petsc function PetscStopForDebugger(petsclib::$UnionPetscLib)
 
@@ -12965,7 +13751,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrArrayDestroy"))
 """
-function PetscStrArrayDestroy(petsclib::PetscLibType) end
+function PetscStrArrayDestroy(petsclib::PetscLibType)
+    error("PetscStrArrayDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrArrayDestroy(petsclib::$UnionPetscLib)
 	list_ = Ref{Ptr{Cchar}}()
@@ -13001,7 +13789,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrArrayallocpy"))
 """
-function PetscStrArrayallocpy(petsclib::PetscLibType, list::Cchar) end
+function PetscStrArrayallocpy(petsclib::PetscLibType, list::Cchar)
+    error("PetscStrArrayallocpy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrArrayallocpy(petsclib::$UnionPetscLib, list::Cchar )
 	t_ = Ref{Ptr{Cchar}}()
@@ -13039,7 +13829,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrInList"))
 """
-function PetscStrInList(petsclib::PetscLibType, str::String, list::String, sep::Cchar) end
+function PetscStrInList(petsclib::PetscLibType, str::String, list::String, sep::Cchar)
+    error("PetscStrInList: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrInList(petsclib::$UnionPetscLib, str::String, list::String, sep::Cchar )
 	found_ = Ref{PetscBool}()
@@ -13073,7 +13865,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrNArrayDestroy"))
 """
-function PetscStrNArrayDestroy(petsclib::PetscLibType, n::PetscInt) end
+function PetscStrNArrayDestroy(petsclib::PetscLibType, n::Integer)
+    error("PetscStrNArrayDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrNArrayDestroy(petsclib::$UnionPetscLib, n::$PetscInt )
 	list_ = Ref{Ptr{Cchar}}()
@@ -13110,7 +13904,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrNArrayallocpy"))
 """
-function PetscStrNArrayallocpy(petsclib::PetscLibType, n::PetscInt, list::Cchar) end
+function PetscStrNArrayallocpy(petsclib::PetscLibType, n::Integer, list::Cchar)
+    error("PetscStrNArrayallocpy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrNArrayallocpy(petsclib::$UnionPetscLib, n::$PetscInt, list::Cchar )
 	t_ = Ref{Ptr{Cchar}}()
@@ -13148,7 +13944,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrToArray"))
 """
-function PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) end
+function PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar)
+    error("PetscStrToArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrToArray(petsclib::$UnionPetscLib, s::String, sp::Cchar )
 	argc_ = Ref{Cint}()
@@ -13184,7 +13982,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrToArrayDestroy"))
 """
-function PetscStrToArrayDestroy(petsclib::PetscLibType, argc::Cint) end
+function PetscStrToArrayDestroy(petsclib::PetscLibType, argc::Cint)
+    error("PetscStrToArrayDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrToArrayDestroy(petsclib::$UnionPetscLib, argc::Cint )
 	args_ = Ref{Ptr{Cchar}}()
@@ -13207,7 +14007,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrallocpy"))
 """
-function PetscStrallocpy(petsclib::PetscLibType, s::String, t::String) end
+function PetscStrallocpy(petsclib::PetscLibType, s::String, t::String)
+    error("PetscStrallocpy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrallocpy(petsclib::$UnionPetscLib, s::String, t::String )
 	t_ = Ref{Ptr{Cchar}}(t isa Ptr ? t : pointer(t))
@@ -13229,7 +14031,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrbeginswith"))
 """
-function PetscStrbeginswith(petsclib::PetscLibType, a::String, b::String) end
+function PetscStrbeginswith(petsclib::PetscLibType, a::String, b::String)
+    error("PetscStrbeginswith: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrbeginswith(petsclib::$UnionPetscLib, a::String, b::String )
 	flg_ = Ref{PetscBool}()
@@ -13267,7 +14071,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrcasecmp"))
 """
-function PetscStrcasecmp(petsclib::PetscLibType, a::String, b::String) end
+function PetscStrcasecmp(petsclib::PetscLibType, a::String, b::String)
+    error("PetscStrcasecmp: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrcasecmp(petsclib::$UnionPetscLib, a::String, b::String )
 	t_ = Ref{PetscBool}()
@@ -13301,7 +14107,9 @@ Level: deprecated (since 3.18.5)
 # External Links
 $(_doc_external("Sys/PetscStrcat"))
 """
-function PetscStrcat(petsclib::PetscLibType, s::String, t::String) end
+function PetscStrcat(petsclib::PetscLibType, s::String, t::String)
+    error("PetscStrcat: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrcat(petsclib::$UnionPetscLib, s::String, t::String )
 
@@ -13322,7 +14130,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrchr"))
 """
-function PetscStrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String) end
+function PetscStrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String)
+    error("PetscStrchr: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrchr(petsclib::$UnionPetscLib, a::String, b::Cchar, c::String )
 	c_ = Ref{Ptr{Cchar}}(c isa Ptr ? c : pointer(c))
@@ -13344,7 +14154,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrcmp"))
 """
-function PetscStrcmp(petsclib::PetscLibType, a::String, b::String) end
+function PetscStrcmp(petsclib::PetscLibType, a::String, b::String)
+    error("PetscStrcmp: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrcmp(petsclib::$UnionPetscLib, a::String, b::String )
 	flg_ = Ref{PetscBool}()
@@ -13380,7 +14192,9 @@ Level: deprecated (since 3.18.5)
 # External Links
 $(_doc_external("Sys/PetscStrcpy"))
 """
-function PetscStrcpy(petsclib::PetscLibType, s::String, t::String) end
+function PetscStrcpy(petsclib::PetscLibType, s::String, t::String)
+    error("PetscStrcpy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrcpy(petsclib::$UnionPetscLib, s::String, t::String )
 
@@ -13401,7 +14215,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrendswith"))
 """
-function PetscStrendswith(petsclib::PetscLibType, a::String, b::String) end
+function PetscStrendswith(petsclib::PetscLibType, a::String, b::String)
+    error("PetscStrendswith: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrendswith(petsclib::$UnionPetscLib, a::String, b::String )
 	flg_ = Ref{PetscBool}()
@@ -13439,7 +14255,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscStrendswithwhich"))
 """
-function PetscStrendswithwhich(petsclib::PetscLibType, a::String, bs::Cchar) end
+function PetscStrendswithwhich(petsclib::PetscLibType, a::String, bs::Cchar)
+    error("PetscStrendswithwhich: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrendswithwhich(petsclib::$UnionPetscLib, a::String, bs::Cchar )
 	cnt_ = Ref{$PetscInt}()
@@ -13462,7 +14280,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrgrt"))
 """
-function PetscStrgrt(petsclib::PetscLibType, a::String, b::String) end
+function PetscStrgrt(petsclib::PetscLibType, a::String, b::String)
+    error("PetscStrgrt: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrgrt(petsclib::$UnionPetscLib, a::String, b::String )
 	t_ = Ref{PetscBool}()
@@ -13485,7 +14305,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrlcat"))
 """
-function PetscStrlcat(petsclib::PetscLibType, s::String, t::String, n::Csize_t) end
+function PetscStrlcat(petsclib::PetscLibType, s::String, t::String, n::Csize_t)
+    error("PetscStrlcat: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrlcat(petsclib::$UnionPetscLib, s::String, t::String, n::Csize_t )
 
@@ -13506,7 +14328,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrlen"))
 """
-function PetscStrlen(petsclib::PetscLibType, s::String) end
+function PetscStrlen(petsclib::PetscLibType, s::String)
+    error("PetscStrlen: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrlen(petsclib::$UnionPetscLib, s::String )
 	len_ = Ref{Csize_t}()
@@ -13529,7 +14353,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrncmp"))
 """
-function PetscStrncmp(petsclib::PetscLibType, a::String, b::String, n::Csize_t) end
+function PetscStrncmp(petsclib::PetscLibType, a::String, b::String, n::Csize_t)
+    error("PetscStrncmp: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrncmp(petsclib::$UnionPetscLib, a::String, b::String, n::Csize_t )
 	t_ = Ref{PetscBool}()
@@ -13552,7 +14378,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrncpy"))
 """
-function PetscStrncpy(petsclib::PetscLibType, s::String, t::String, n::Csize_t) end
+function PetscStrncpy(petsclib::PetscLibType, s::String, t::String, n::Csize_t)
+    error("PetscStrncpy: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrncpy(petsclib::$UnionPetscLib, s::String, t::String, n::Csize_t )
 
@@ -13573,7 +14401,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrrchr"))
 """
-function PetscStrrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String) end
+function PetscStrrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String)
+    error("PetscStrrchr: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrrchr(petsclib::$UnionPetscLib, a::String, b::Cchar, c::String )
 	c_ = Ref{Ptr{Cchar}}(c isa Ptr ? c : pointer(c))
@@ -13608,7 +14438,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscStrreplace"))
 """
-function PetscStrreplace(petsclib::PetscLibType, comm::MPI_Comm, aa::String, b::String, len::Csize_t) end
+function PetscStrreplace(petsclib::PetscLibType, comm::MPI_Comm, aa::String, b::String, len::Csize_t)
+    error("PetscStrreplace: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrreplace(petsclib::$UnionPetscLib, comm::MPI_Comm, aa::String, b::String, len::Csize_t )
 
@@ -13629,7 +14461,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrrstr"))
 """
-function PetscStrrstr(petsclib::PetscLibType, a::String, b::String, tmp::String) end
+function PetscStrrstr(petsclib::PetscLibType, a::String, b::String, tmp::String)
+    error("PetscStrrstr: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrrstr(petsclib::$UnionPetscLib, a::String, b::String, tmp::String )
 	tmp_ = Ref{Ptr{Cchar}}(tmp isa Ptr ? tmp : pointer(tmp))
@@ -13651,7 +14485,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrstr"))
 """
-function PetscStrstr(petsclib::PetscLibType, haystack::String, needle::String, tmp::String) end
+function PetscStrstr(petsclib::PetscLibType, haystack::String, needle::String, tmp::String)
+    error("PetscStrstr: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrstr(petsclib::$UnionPetscLib, haystack::String, needle::String, tmp::String )
 	tmp_ = Ref{Ptr{Cchar}}(tmp isa Ptr ? tmp : pointer(tmp))
@@ -13673,7 +14509,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrtolower"))
 """
-function PetscStrtolower(petsclib::PetscLibType, a::String) end
+function PetscStrtolower(petsclib::PetscLibType, a::String)
+    error("PetscStrtolower: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrtolower(petsclib::$UnionPetscLib, a::String )
 
@@ -13694,7 +14532,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscStrtoupper"))
 """
-function PetscStrtoupper(petsclib::PetscLibType, a::String) end
+function PetscStrtoupper(petsclib::PetscLibType, a::String)
+    error("PetscStrtoupper: no generated method for these argument types")
+end
 
 @for_petsc function PetscStrtoupper(petsclib::$UnionPetscLib, a::String )
 
@@ -13731,7 +14571,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSynchronizedFGets"))
 """
-function PetscSynchronizedFGets(petsclib::PetscLibType, comm::MPI_Comm, fp::Libc.FILE, len::Csize_t, string::String) end
+function PetscSynchronizedFGets(petsclib::PetscLibType, comm::MPI_Comm, fp::Libc.FILE, len::Csize_t, string::String)
+    error("PetscSynchronizedFGets: no generated method for these argument types")
+end
 
 @for_petsc function PetscSynchronizedFGets(petsclib::$UnionPetscLib, comm::MPI_Comm, fp::Libc.FILE, len::Csize_t, string::String )
 
@@ -13765,7 +14607,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscSynchronizedFlush"))
 """
-function PetscSynchronizedFlush(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE) end
+function PetscSynchronizedFlush(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE)
+    error("PetscSynchronizedFlush: no generated method for these argument types")
+end
 
 @for_petsc function PetscSynchronizedFlush(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Libc.FILE )
 
@@ -13792,7 +14636,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscSysFinalizePackage"))
 """
-function PetscSysFinalizePackage(petsclib::PetscLibType) end
+function PetscSysFinalizePackage(petsclib::PetscLibType)
+    error("PetscSysFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscSysFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -13819,7 +14665,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscSysInitializePackage"))
 """
-function PetscSysInitializePackage(petsclib::PetscLibType) end
+function PetscSysInitializePackage(petsclib::PetscLibType)
+    error("PetscSysInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PetscSysInitializePackage(petsclib::$UnionPetscLib)
 
@@ -13853,7 +14701,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscTestDirectory"))
 """
-function PetscTestDirectory(petsclib::PetscLibType, dirname::String, mode::Cchar) end
+function PetscTestDirectory(petsclib::PetscLibType, dirname::String, mode::Cchar)
+    error("PetscTestDirectory: no generated method for these argument types")
+end
 
 @for_petsc function PetscTestDirectory(petsclib::$UnionPetscLib, dirname::String, mode::Cchar )
 	flg_ = Ref{PetscBool}()
@@ -13890,7 +14740,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscTestFile"))
 """
-function PetscTestFile(petsclib::PetscLibType, fname::String, mode::Cchar) end
+function PetscTestFile(petsclib::PetscLibType, fname::String, mode::Cchar)
+    error("PetscTestFile: no generated method for these argument types")
+end
 
 @for_petsc function PetscTestFile(petsclib::$UnionPetscLib, fname::String, mode::Cchar )
 	flg_ = Ref{PetscBool}()
@@ -13908,7 +14760,7 @@ function PetscTestFile(petsclib::PetscLibType, fname::String, mode::Cchar) end
 end 
 
 """
-	PetscTimSort(petsclib::PetscLibType,n::PetscInt, arr::Ptr{Cvoid}, size::Csize_t, cmp::external, ctx::Ptr{Cvoid}) 
+	arr::Ptr{Cvoid} = PetscTimSort(petsclib::PetscLibType,n::PetscInt, size::Csize_t, cmp::external, ctx::Ptr{Cvoid}) 
 Sorts an array in place in increasing order using Tim Peters <https://bugs.python.org/file4451/timsort.txt> adaptive sorting algorithm.
 
 Not Collective, No Fortran Support
@@ -13930,19 +14782,23 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscTimSort"))
 """
-function PetscTimSort(petsclib::PetscLibType, n::PetscInt, arr::Ptr{Cvoid}, size::Csize_t, cmp::external, ctx::Ptr{Cvoid}) end
+function PetscTimSort(petsclib::PetscLibType, n::Integer, size::Csize_t, cmp::external, ctx::Ptr{Cvoid})
+    error("PetscTimSort: no generated method for these argument types")
+end
 
-@for_petsc function PetscTimSort(petsclib::$UnionPetscLib, n::$PetscInt, arr::Ptr{Cvoid}, size::Csize_t, cmp::external, ctx::Ptr{Cvoid} )
+@for_petsc function PetscTimSort(petsclib::$UnionPetscLib, n::$PetscInt, size::Csize_t, cmp::external, ctx::Ptr{Cvoid} )
+	arr_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PetscTimSort, $petsc_library),
                PetscErrorCode,
                ($PetscInt, Ptr{Cvoid}, Csize_t, external, Ptr{Cvoid}),
-               n, arr, size, cmp, ctx,
+               n, arr_, size, cmp, ctx,
               )
 
+	arr = arr_[]
 
-	return nothing
+	return arr
 end 
 
 """
@@ -13970,7 +14826,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscTimSortWithArray"))
 """
-function PetscTimSortWithArray(petsclib::PetscLibType, n::PetscInt, arr::Ptr{Cvoid}, asize::Csize_t, barr::Ptr{Cvoid}, bsize::Csize_t, cmp::external, ctx::Ptr{Cvoid}) end
+function PetscTimSortWithArray(petsclib::PetscLibType, n::Integer, arr::Ptr{Cvoid}, asize::Csize_t, barr::Ptr{Cvoid}, bsize::Csize_t, cmp::external, ctx::Ptr{Cvoid})
+    error("PetscTimSortWithArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscTimSortWithArray(petsclib::$UnionPetscLib, n::$PetscInt, arr::Ptr{Cvoid}, asize::Csize_t, barr::Ptr{Cvoid}, bsize::Csize_t, cmp::external, ctx::Ptr{Cvoid} )
 
@@ -13991,7 +14849,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscTime"))
 """
-function PetscTime(petsclib::PetscLibType) end
+function PetscTime(petsclib::PetscLibType)
+    error("PetscTime: no generated method for these argument types")
+end
 
 @for_petsc function PetscTime(petsclib::$UnionPetscLib)
 	v_ = Ref{PetscLogDouble}()
@@ -14014,7 +14874,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscTimeAdd"))
 """
-function PetscTimeAdd(petsclib::PetscLibType) end
+function PetscTimeAdd(petsclib::PetscLibType)
+    error("PetscTimeAdd: no generated method for these argument types")
+end
 
 @for_petsc function PetscTimeAdd(petsclib::$UnionPetscLib)
 	v_ = Ref{PetscLogDouble}()
@@ -14037,7 +14899,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscTimeSubtract"))
 """
-function PetscTimeSubtract(petsclib::PetscLibType) end
+function PetscTimeSubtract(petsclib::PetscLibType)
+    error("PetscTimeSubtract: no generated method for these argument types")
+end
 
 @for_petsc function PetscTimeSubtract(petsclib::$UnionPetscLib)
 	v_ = Ref{PetscLogDouble}()
@@ -14068,7 +14932,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscWaitOnError"))
 """
-function PetscWaitOnError(petsclib::PetscLibType) end
+function PetscWaitOnError(petsclib::PetscLibType)
+    error("PetscWaitOnError: no generated method for these argument types")
+end
 
 @for_petsc function PetscWaitOnError(petsclib::$UnionPetscLib)
 

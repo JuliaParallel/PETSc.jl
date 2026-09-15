@@ -14,7 +14,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscIntStackCreate"))
 """
-function PetscIntStackCreate(petsclib::PetscLibType) end
+function PetscIntStackCreate(petsclib::PetscLibType)
+    error("PetscIntStackCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntStackCreate(petsclib::$UnionPetscLib)
 	stack_ = Ref{$PetscIntStack}()
@@ -47,7 +49,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscIntStackDestroy"))
 """
-function PetscIntStackDestroy(petsclib::PetscLibType, stack::PetscIntStack) end
+function PetscIntStackDestroy(petsclib::PetscLibType, stack::PetscIntStack)
+    error("PetscIntStackDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntStackDestroy(petsclib::$UnionPetscLib, stack::$PetscIntStack )
 
@@ -81,7 +85,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscIntStackEmpty"))
 """
-function PetscIntStackEmpty(petsclib::PetscLibType, stack::PetscIntStack) end
+function PetscIntStackEmpty(petsclib::PetscLibType, stack::PetscIntStack)
+    error("PetscIntStackEmpty: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntStackEmpty(petsclib::$UnionPetscLib, stack::$PetscIntStack )
 	empty_ = Ref{PetscBool}()
@@ -117,7 +123,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscIntStackPop"))
 """
-function PetscIntStackPop(petsclib::PetscLibType, stack::PetscIntStack) end
+function PetscIntStackPop(petsclib::PetscLibType, stack::PetscIntStack)
+    error("PetscIntStackPop: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntStackPop(petsclib::$UnionPetscLib, stack::$PetscIntStack )
 	item_ = Ref{Cint}()
@@ -151,7 +159,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscIntStackPush"))
 """
-function PetscIntStackPush(petsclib::PetscLibType, stack::PetscIntStack, item::Cint) end
+function PetscIntStackPush(petsclib::PetscLibType, stack::PetscIntStack, item::Cint)
+    error("PetscIntStackPush: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntStackPush(petsclib::$UnionPetscLib, stack::$PetscIntStack, item::Cint )
 
@@ -185,7 +195,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscIntStackTop"))
 """
-function PetscIntStackTop(petsclib::PetscLibType, stack::PetscIntStack) end
+function PetscIntStackTop(petsclib::PetscLibType, stack::PetscIntStack)
+    error("PetscIntStackTop: no generated method for these argument types")
+end
 
 @for_petsc function PetscIntStackTop(petsclib::$UnionPetscLib, stack::$PetscIntStack )
 	top_ = Ref{Cint}()

@@ -19,7 +19,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferCreate"))
 """
-function PetscSegBufferCreate(petsclib::PetscLibType, unitbytes::Csize_t, expected::PetscCount) end
+function PetscSegBufferCreate(petsclib::PetscLibType, unitbytes::Csize_t, expected::PetscCount)
+    error("PetscSegBufferCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscSegBufferCreate(petsclib::$UnionPetscLib, unitbytes::Csize_t, expected::PetscCount )
 	seg_ = Ref{PetscSegBuffer}()
@@ -52,7 +54,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferDestroy"))
 """
-function PetscSegBufferDestroy(petsclib::PetscLibType, seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}}) end
+function PetscSegBufferDestroy(petsclib::PetscLibType, seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}})
+    error("PetscSegBufferDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscSegBufferDestroy(petsclib::$UnionPetscLib, seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}} )
 	seg_ = seg isa Base.RefValue ? seg : Ref{PetscSegBuffer}(seg)
@@ -69,7 +73,7 @@ function PetscSegBufferDestroy(petsclib::PetscLibType, seg::Union{PetscSegBuffer
 end 
 
 """
-	PetscSegBufferExtractAlloc(petsclib::PetscLibType,seg::PetscSegBuffer, contiguous::Ptr{Cvoid}) 
+	contiguous::Ptr{Cvoid} = PetscSegBufferExtractAlloc(petsclib::PetscLibType,seg::PetscSegBuffer) 
 extract contiguous data to new allocation and reset segmented buffer
 
 Not Collective, No Fortran Support
@@ -88,23 +92,27 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferExtractAlloc"))
 """
-function PetscSegBufferExtractAlloc(petsclib::PetscLibType, seg::PetscSegBuffer, contiguous::Ptr{Cvoid}) end
+function PetscSegBufferExtractAlloc(petsclib::PetscLibType, seg::PetscSegBuffer)
+    error("PetscSegBufferExtractAlloc: no generated method for these argument types")
+end
 
-@for_petsc function PetscSegBufferExtractAlloc(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contiguous::Ptr{Cvoid} )
+@for_petsc function PetscSegBufferExtractAlloc(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
+	contiguous_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PetscSegBufferExtractAlloc, $petsc_library),
                PetscErrorCode,
                (PetscSegBuffer, Ptr{Cvoid}),
-               seg, contiguous,
+               seg, contiguous_,
               )
 
+	contiguous = contiguous_[]
 
-	return nothing
+	return contiguous
 end 
 
 """
-	PetscSegBufferExtractInPlace(petsclib::PetscLibType,seg::PetscSegBuffer, contig::Ptr{Cvoid}) 
+	contig::Ptr{Cvoid} = PetscSegBufferExtractInPlace(petsclib::PetscLibType,seg::PetscSegBuffer) 
 extract in
 
 Not Collective, No Fortran Support
@@ -122,19 +130,23 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferExtractInPlace"))
 """
-function PetscSegBufferExtractInPlace(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Ptr{Cvoid}) end
+function PetscSegBufferExtractInPlace(petsclib::PetscLibType, seg::PetscSegBuffer)
+    error("PetscSegBufferExtractInPlace: no generated method for these argument types")
+end
 
-@for_petsc function PetscSegBufferExtractInPlace(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contig::Ptr{Cvoid} )
+@for_petsc function PetscSegBufferExtractInPlace(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
+	contig_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PetscSegBufferExtractInPlace, $petsc_library),
                PetscErrorCode,
                (PetscSegBuffer, Ptr{Cvoid}),
-               seg, contig,
+               seg, contig_,
               )
 
+	contig = contig_[]
 
-	return nothing
+	return contig
 end 
 
 """
@@ -155,7 +167,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferExtractTo"))
 """
-function PetscSegBufferExtractTo(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Ptr{Cvoid}) end
+function PetscSegBufferExtractTo(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Ptr{Cvoid})
+    error("PetscSegBufferExtractTo: no generated method for these argument types")
+end
 
 @for_petsc function PetscSegBufferExtractTo(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contig::Ptr{Cvoid} )
 
@@ -171,7 +185,7 @@ function PetscSegBufferExtractTo(petsclib::PetscLibType, seg::PetscSegBuffer, co
 end 
 
 """
-	PetscSegBufferGet(petsclib::PetscLibType,seg::PetscSegBuffer, count::PetscCount, buf::Ptr{Cvoid}) 
+	buf::Ptr{Cvoid} = PetscSegBufferGet(petsclib::PetscLibType,seg::PetscSegBuffer, count::PetscCount) 
 get new buffer space from a segmented buffer
 
 Not Collective, No Fortran Support
@@ -191,19 +205,23 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferGet"))
 """
-function PetscSegBufferGet(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, buf::Ptr{Cvoid}) end
+function PetscSegBufferGet(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount)
+    error("PetscSegBufferGet: no generated method for these argument types")
+end
 
-@for_petsc function PetscSegBufferGet(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount, buf::Ptr{Cvoid} )
+@for_petsc function PetscSegBufferGet(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount )
+	buf_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PetscSegBufferGet, $petsc_library),
                PetscErrorCode,
                (PetscSegBuffer, PetscCount, Ptr{Cvoid}),
-               seg, count, buf,
+               seg, count, buf_,
               )
 
+	buf = buf_[]
 
-	return nothing
+	return buf
 end 
 
 """
@@ -212,7 +230,9 @@ end
 # External Links
 $(_doc_external("Sys/PetscSegBufferGetInts"))
 """
-function PetscSegBufferGetInts(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, slot::PetscInt) end
+function PetscSegBufferGetInts(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, slot::Integer)
+    error("PetscSegBufferGetInts: no generated method for these argument types")
+end
 
 @for_petsc function PetscSegBufferGetInts(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount, slot::$PetscInt )
 
@@ -246,7 +266,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferGetSize"))
 """
-function PetscSegBufferGetSize(petsclib::PetscLibType, seg::PetscSegBuffer) end
+function PetscSegBufferGetSize(petsclib::PetscLibType, seg::PetscSegBuffer)
+    error("PetscSegBufferGetSize: no generated method for these argument types")
+end
 
 @for_petsc function PetscSegBufferGetSize(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
 	usedsize_ = Ref{PetscCount}()
@@ -280,7 +302,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferUnuse"))
 """
-function PetscSegBufferUnuse(petsclib::PetscLibType, seg::PetscSegBuffer, unused::PetscCount) end
+function PetscSegBufferUnuse(petsclib::PetscLibType, seg::PetscSegBuffer, unused::PetscCount)
+    error("PetscSegBufferUnuse: no generated method for these argument types")
+end
 
 @for_petsc function PetscSegBufferUnuse(petsclib::$UnionPetscLib, seg::PetscSegBuffer, unused::PetscCount )
 

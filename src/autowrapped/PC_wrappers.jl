@@ -19,7 +19,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMCreateSubdomains"))
 """
-function PCASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, n::PetscInt) end
+function PCASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, n::Integer)
+    error("PCASMCreateSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, n::$PetscInt )
 	outis_ = Ref{Ptr{IS}}()
@@ -64,7 +66,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMCreateSubdomains2D"))
 """
-function PCASMCreateSubdomains2D(petsclib::PetscLibType, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, dof::PetscInt, overlap::PetscInt) end
+function PCASMCreateSubdomains2D(petsclib::PetscLibType, m::Integer, n::Integer, M::Integer, N::Integer, dof::Integer, overlap::Integer)
+    error("PCASMCreateSubdomains2D: no generated method for these argument types")
+end
 
 @for_petsc function PCASMCreateSubdomains2D(petsclib::$UnionPetscLib, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
 	Nsub_ = Ref{$PetscInt}()
@@ -104,7 +108,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMDestroySubdomains"))
 """
-function PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}}) end
+function PCASMDestroySubdomains(petsclib::PetscLibType, n::Integer, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}})
+    error("PCASMDestroySubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}} )
 	is_ = Ref{Ptr{CIS}}(is isa Ptr ? is : pointer(is))
@@ -141,7 +147,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCASMGetDMSubdomains"))
 """
-function PCASMGetDMSubdomains(petsclib::PetscLibType, pc::PC) end
+function PCASMGetDMSubdomains(petsclib::PetscLibType, pc::PC)
+    error("PCASMGetDMSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCASMGetDMSubdomains(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -181,7 +189,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMGetLocalSubdomains"))
 """
-function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC) end
+function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC)
+    error("PCASMGetLocalSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCASMGetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
@@ -224,7 +234,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMGetLocalSubmatrices"))
 """
-function PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC) end
+function PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC)
+    error("PCASMGetLocalSubmatrices: no generated method for these argument types")
+end
 
 @for_petsc function PCASMGetLocalSubmatrices(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
@@ -259,7 +271,9 @@ Output Parameter:
 # External Links
 $(_doc_external("PC/PCASMGetLocalType"))
 """
-function PCASMGetLocalType(petsclib::PetscLibType, pc::PC) end
+function PCASMGetLocalType(petsclib::PetscLibType, pc::PC)
+    error("PCASMGetLocalType: no generated method for these argument types")
+end
 
 @for_petsc function PCASMGetLocalType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCCompositeType}()
@@ -299,7 +313,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMGetSubKSP"))
 """
-function PCASMGetSubKSP(petsclib::PetscLibType, pc::PC) end
+function PCASMGetSubKSP(petsclib::PetscLibType, pc::PC)
+    error("PCASMGetSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
@@ -339,7 +355,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMGetSubMatType"))
 """
-function PCASMGetSubMatType(petsclib::PetscLibType, pc::PC) end
+function PCASMGetSubMatType(petsclib::PetscLibType, pc::PC)
+    error("PCASMGetSubMatType: no generated method for these argument types")
+end
 
 @for_petsc function PCASMGetSubMatType(petsclib::$UnionPetscLib, pc::PC )
 	sub_mat_type_ = Ref{MatType}()
@@ -374,7 +392,9 @@ Output Parameter:
 # External Links
 $(_doc_external("PC/PCASMGetType"))
 """
-function PCASMGetType(petsclib::PetscLibType, pc::PC) end
+function PCASMGetType(petsclib::PetscLibType, pc::PC)
+    error("PCASMGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCASMGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCASMType}()
@@ -412,7 +432,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCASMSetDMSubdomains"))
 """
-function PCASMSetDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCASMSetDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCASMSetDMSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetDMSubdomains(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -453,7 +475,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMSetLocalSubdomains"))
 """
-function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) end
+function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::PC, n::Integer, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS})
+    error("PCASMSetLocalSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
 
@@ -482,7 +506,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCASMSetLocalType"))
 """
-function PCASMSetLocalType(petsclib::PetscLibType, pc::PC, type::PCCompositeType) end
+function PCASMSetLocalType(petsclib::PetscLibType, pc::PC, type::PCCompositeType)
+    error("PCASMSetLocalType: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetLocalType(petsclib::$UnionPetscLib, pc::PC, type::PCCompositeType )
 
@@ -519,7 +545,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCASMSetOverlap"))
 """
-function PCASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::PetscInt) end
+function PCASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::Integer)
+    error("PCASMSetOverlap: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetOverlap(petsclib::$UnionPetscLib, pc::PC, ovl::$PetscInt )
 
@@ -552,7 +580,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCASMSetSortIndices"))
 """
-function PCASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool) end
+function PCASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool)
+    error("PCASMSetSortIndices: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetSortIndices(petsclib::$UnionPetscLib, pc::PC, doSort::PetscBool )
 
@@ -586,7 +616,9 @@ If you specify a base name like aijviennacl, the corresponding sequential type i
 # External Links
 $(_doc_external("PC/PCASMSetSubMatType"))
 """
-function PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType) end
+function PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType)
+    error("PCASMSetSubMatType: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::MatType )
 
@@ -627,7 +659,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMSetTotalSubdomains"))
 """
-function PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) end
+function PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::Integer, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS})
+    error("PCASMSetTotalSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::PC, N::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
 
@@ -658,7 +692,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCASMSetType"))
 """
-function PCASMSetType(petsclib::PetscLibType, pc::PC, type::PCASMType) end
+function PCASMSetType(petsclib::PetscLibType, pc::PC, type::PCASMType)
+    error("PCASMSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCASMSetType(petsclib::$UnionPetscLib, pc::PC, type::PCASMType )
 
@@ -689,7 +725,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCAppendOptionsPrefix"))
 """
-function PCAppendOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String) end
+function PCAppendOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String)
+    error("PCAppendOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PCAppendOptionsPrefix(petsclib::$UnionPetscLib, pc::PC, prefix::String )
 
@@ -724,7 +762,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApply"))
 """
-function PCApply(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
+function PCApply(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("PCApply: no generated method for these argument types")
+end
 
 @for_petsc function PCApply(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -761,7 +801,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplyBAorAB"))
 """
-function PCApplyBAorAB(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) end
+function PCApplyBAorAB(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec)
+    error("PCApplyBAorAB: no generated method for these argument types")
+end
 
 @for_petsc function PCApplyBAorAB(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
 
@@ -800,7 +842,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplyBAorABTranspose"))
 """
-function PCApplyBAorABTranspose(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) end
+function PCApplyBAorABTranspose(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec)
+    error("PCApplyBAorABTranspose: no generated method for these argument types")
+end
 
 @for_petsc function PCApplyBAorABTranspose(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
 
@@ -845,7 +889,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplyRichardson"))
 """
-function PCApplyRichardson(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, its::PetscInt, guesszero::PetscBool) end
+function PCApplyRichardson(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::Real, abstol::Real, dtol::Real, its::Integer, guesszero::PetscBool)
+    error("PCApplyRichardson: no generated method for these argument types")
+end
 
 @for_petsc function PCApplyRichardson(petsclib::$UnionPetscLib, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, its::$PetscInt, guesszero::PetscBool )
 	outits_ = Ref{$PetscInt}()
@@ -884,7 +930,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplyRichardsonExists"))
 """
-function PCApplyRichardsonExists(petsclib::PetscLibType, pc::PC) end
+function PCApplyRichardsonExists(petsclib::PetscLibType, pc::PC)
+    error("PCApplyRichardsonExists: no generated method for these argument types")
+end
 
 @for_petsc function PCApplyRichardsonExists(petsclib::$UnionPetscLib, pc::PC )
 	exists_ = Ref{PetscBool}()
@@ -921,7 +969,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplySymmetricLeft"))
 """
-function PCApplySymmetricLeft(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
+function PCApplySymmetricLeft(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("PCApplySymmetricLeft: no generated method for these argument types")
+end
 
 @for_petsc function PCApplySymmetricLeft(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -956,7 +1006,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplySymmetricRight"))
 """
-function PCApplySymmetricRight(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
+function PCApplySymmetricRight(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("PCApplySymmetricRight: no generated method for these argument types")
+end
 
 @for_petsc function PCApplySymmetricRight(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -991,7 +1043,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplyTranspose"))
 """
-function PCApplyTranspose(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
+function PCApplyTranspose(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+    error("PCApplyTranspose: no generated method for these argument types")
+end
 
 @for_petsc function PCApplyTranspose(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
@@ -1025,7 +1079,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCApplyTransposeExists"))
 """
-function PCApplyTransposeExists(petsclib::PetscLibType, pc::PC) end
+function PCApplyTransposeExists(petsclib::PetscLibType, pc::PC)
+    error("PCApplyTransposeExists: no generated method for these argument types")
+end
 
 @for_petsc function PCApplyTransposeExists(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -1064,7 +1120,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCBDDCCreateFETIDPOperators"))
 """
-function PCBDDCCreateFETIDPOperators(petsclib::PetscLibType, pc::PC, fully_redundant::PetscBool, prefix::String) end
+function PCBDDCCreateFETIDPOperators(petsclib::PetscLibType, pc::PC, fully_redundant::PetscBool, prefix::String)
+    error("PCBDDCCreateFETIDPOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCCreateFETIDPOperators(petsclib::$UnionPetscLib, pc::PC, fully_redundant::PetscBool, prefix::String )
 	fetidp_mat_ = Ref{CMat}()
@@ -1095,7 +1153,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCBDDCFinalizePackage"))
 """
-function PCBDDCFinalizePackage(petsclib::PetscLibType) end
+function PCBDDCFinalizePackage(petsclib::PetscLibType)
+    error("PCBDDCFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -1128,7 +1188,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCGetDirichletBoundaries"))
 """
-function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::PC) end
+function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::PC)
+    error("PCBDDCGetDirichletBoundaries: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCGetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC )
 	DirichletBoundaries_ = Ref{CIS}()
@@ -1164,7 +1226,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCGetDirichletBoundariesLocal"))
 """
-function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC) end
+function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC)
+    error("PCBDDCGetDirichletBoundariesLocal: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCGetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC )
 	DirichletBoundaries_ = Ref{CIS}()
@@ -1200,7 +1264,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCGetNeumannBoundaries"))
 """
-function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::PC) end
+function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::PC)
+    error("PCBDDCGetNeumannBoundaries: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCGetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC )
 	NeumannBoundaries_ = Ref{CIS}()
@@ -1236,7 +1302,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCGetNeumannBoundariesLocal"))
 """
-function PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC) end
+function PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC)
+    error("PCBDDCGetNeumannBoundariesLocal: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCGetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC )
 	NeumannBoundaries_ = Ref{CIS}()
@@ -1272,7 +1340,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCGetPrimalVerticesIS"))
 """
-function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::PC) end
+function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::PC)
+    error("PCBDDCGetPrimalVerticesIS: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCGetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC )
 	is_ = Ref{CIS}()
@@ -1308,7 +1378,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCGetPrimalVerticesLocalIS"))
 """
-function PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC) end
+function PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC)
+    error("PCBDDCGetPrimalVerticesLocalIS: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCGetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC )
 	is_ = Ref{CIS}()
@@ -1337,7 +1409,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCBDDCInitializePackage"))
 """
-function PCBDDCInitializePackage(petsclib::PetscLibType) end
+function PCBDDCInitializePackage(petsclib::PetscLibType)
+    error("PCBDDCInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCInitializePackage(petsclib::$UnionPetscLib)
 
@@ -1371,7 +1445,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCBDDCMatFETIDPGetRHS"))
 """
-function PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType, fetidp_mat::AbstractPetscMat, standard_rhs::AbstractPetscVec, fetidp_flux_rhs::AbstractPetscVec) end
+function PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType, fetidp_mat::AbstractPetscMat, standard_rhs::AbstractPetscVec, fetidp_flux_rhs::AbstractPetscVec)
+    error("PCBDDCMatFETIDPGetRHS: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCMatFETIDPGetRHS(petsclib::$UnionPetscLib, fetidp_mat::AbstractPetscMat, standard_rhs::AbstractPetscVec, fetidp_flux_rhs::AbstractPetscVec )
 
@@ -1406,7 +1482,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCBDDCMatFETIDPGetSolution"))
 """
-function PCBDDCMatFETIDPGetSolution(petsclib::PetscLibType, fetidp_mat::AbstractPetscMat, fetidp_flux_sol::AbstractPetscVec, standard_sol::AbstractPetscVec) end
+function PCBDDCMatFETIDPGetSolution(petsclib::PetscLibType, fetidp_mat::AbstractPetscMat, fetidp_flux_sol::AbstractPetscVec, standard_sol::AbstractPetscVec)
+    error("PCBDDCMatFETIDPGetSolution: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCMatFETIDPGetSolution(petsclib::$UnionPetscLib, fetidp_mat::AbstractPetscMat, fetidp_flux_sol::AbstractPetscVec, standard_sol::AbstractPetscVec )
 
@@ -1439,7 +1517,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetChangeOfBasisMat"))
 """
-function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::PC, change::AbstractPetscMat, interior::PetscBool) end
+function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::PC, change::AbstractPetscMat, interior::PetscBool)
+    error("PCBDDCSetChangeOfBasisMat: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetChangeOfBasisMat(petsclib::$UnionPetscLib, pc::PC, change::AbstractPetscMat, interior::PetscBool )
 
@@ -1474,7 +1554,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetCoarseningRatio"))
 """
-function PCBDDCSetCoarseningRatio(petsclib::PetscLibType, pc::PC, k::PetscInt) end
+function PCBDDCSetCoarseningRatio(petsclib::PetscLibType, pc::PC, k::Integer)
+    error("PCBDDCSetCoarseningRatio: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetCoarseningRatio(petsclib::$UnionPetscLib, pc::PC, k::$PetscInt )
 
@@ -1506,7 +1588,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetDirichletBoundaries"))
 """
-function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) end
+function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS)
+    error("PCBDDCSetDirichletBoundaries: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
 
@@ -1538,7 +1622,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetDirichletBoundariesLocal"))
 """
-function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) end
+function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS)
+    error("PCBDDCSetDirichletBoundariesLocal: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
 
@@ -1574,7 +1660,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCBDDCSetDiscreteGradient"))
 """
-function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat, order::PetscInt, field::PetscInt, glob::PetscBool, conforming::PetscBool) end
+function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat, order::Integer, field::Integer, glob::PetscBool, conforming::PetscBool)
+    error("PCBDDCSetDiscreteGradient: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::AbstractPetscMat, order::$PetscInt, field::$PetscInt, glob::PetscBool, conforming::PetscBool )
 
@@ -1609,7 +1697,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCBDDCSetDivergenceMat"))
 """
-function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS) end
+function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS)
+    error("PCBDDCSetDivergenceMat: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetDivergenceMat(petsclib::$UnionPetscLib, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS )
 
@@ -1642,7 +1732,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetDofsSplitting"))
 """
-function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) end
+function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::PC, n_is::Integer, ISForDofs::Vector{<:AbstractIS})
+    error("PCBDDCSetDofsSplitting: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetDofsSplitting(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
 
@@ -1675,7 +1767,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetDofsSplittingLocal"))
 """
-function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) end
+function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::PC, n_is::Integer, ISForDofs::Vector{<:AbstractIS})
+    error("PCBDDCSetDofsSplittingLocal: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetDofsSplittingLocal(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
 
@@ -1710,7 +1804,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetLevels"))
 """
-function PCBDDCSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) end
+function PCBDDCSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer)
+    error("PCBDDCSetLevels: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt )
 
@@ -1745,7 +1841,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetLocalAdjacencyGraph"))
 """
-function PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::PC, nvtxs::PetscInt, xadj::Vector{PetscInt}, adjncy::Vector{PetscInt}, copymode::PetscCopyMode) end
+function PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::PC, nvtxs::Integer, xadj::AbstractVector{<:Number}, adjncy::AbstractVector{<:Number}, copymode::PetscCopyMode)
+    error("PCBDDCSetLocalAdjacencyGraph: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetLocalAdjacencyGraph(petsclib::$UnionPetscLib, pc::PC, nvtxs::$PetscInt, xadj::Vector{$PetscInt}, adjncy::Vector{$PetscInt}, copymode::PetscCopyMode )
 
@@ -1777,7 +1875,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetNeumannBoundaries"))
 """
-function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) end
+function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS)
+    error("PCBDDCSetNeumannBoundaries: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
 
@@ -1809,7 +1909,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetNeumannBoundariesLocal"))
 """
-function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) end
+function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS)
+    error("PCBDDCSetNeumannBoundariesLocal: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
 
@@ -1841,7 +1943,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetPrimalVerticesIS"))
 """
-function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS) end
+function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS)
+    error("PCBDDCSetPrimalVerticesIS: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::AbstractIS )
 
@@ -1873,7 +1977,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBDDCSetPrimalVerticesLocalIS"))
 """
-function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS) end
+function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS)
+    error("PCBDDCSetPrimalVerticesLocalIS: no generated method for these argument types")
+end
 
 @for_petsc function PCBDDCSetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::AbstractIS )
 
@@ -1894,7 +2000,9 @@ end
 # External Links
 $(_doc_external("KSP/PCBJKOKKOSGetKSP"))
 """
-function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
+function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+    error("PCBJKOKKOSGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCBJKOKKOSGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
@@ -1917,7 +2025,9 @@ end
 # External Links
 $(_doc_external("KSP/PCBJKOKKOSSetKSP"))
 """
-function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
+function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+    error("PCBJKOKKOSSetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCBJKOKKOSSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
@@ -1951,7 +2061,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBJacobiGetLocalBlocks"))
 """
-function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::Union{Ptr, AbstractArray{PetscInt}}) end
+function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::Union{Ptr, AbstractArray{<:Number}})
+    error("PCBJacobiGetLocalBlocks: no generated method for these argument types")
+end
 
 @for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, lens::Union{Ptr, AbstractArray{$PetscInt}} )
 	blocks_ = Ref{$PetscInt}()
@@ -1991,7 +2103,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCBJacobiGetSubKSP"))
 """
-function PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC) end
+function PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC)
+    error("PCBJacobiGetSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
@@ -2033,7 +2147,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBJacobiGetTotalBlocks"))
 """
-function PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::PC) end
+function PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::PC)
+    error("PCBJacobiGetTotalBlocks: no generated method for these argument types")
+end
 
 @for_petsc function PCBJacobiGetTotalBlocks(petsclib::$UnionPetscLib, pc::PC )
 	blocks_ = Ref{$PetscInt}()
@@ -2074,7 +2190,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBJacobiSetLocalBlocks"))
 """
-function PCBJacobiSetLocalBlocks(petsclib::PetscLibType, pc::PC, blocks::PetscInt, lens::Vector{PetscInt}) end
+function PCBJacobiSetLocalBlocks(petsclib::PetscLibType, pc::PC, blocks::Integer, lens::AbstractVector{<:Number})
+    error("PCBJacobiSetLocalBlocks: no generated method for these argument types")
+end
 
 @for_petsc function PCBJacobiSetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, blocks::$PetscInt, lens::Vector{$PetscInt} )
 
@@ -2111,7 +2229,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBJacobiSetTotalBlocks"))
 """
-function PCBJacobiSetTotalBlocks(petsclib::PetscLibType, pc::PC, blocks::PetscInt, lens::Vector{PetscInt}) end
+function PCBJacobiSetTotalBlocks(petsclib::PetscLibType, pc::PC, blocks::Integer, lens::AbstractVector{<:Number})
+    error("PCBJacobiSetTotalBlocks: no generated method for these argument types")
+end
 
 @for_petsc function PCBJacobiSetTotalBlocks(petsclib::$UnionPetscLib, pc::PC, blocks::$PetscInt, lens::Vector{$PetscInt} )
 
@@ -2143,7 +2263,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCCompositeAddPC"))
 """
-function PCCompositeAddPC(petsclib::PetscLibType, pc::PC, subpc::PC) end
+function PCCompositeAddPC(petsclib::PetscLibType, pc::PC, subpc::PC)
+    error("PCCompositeAddPC: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeAddPC(petsclib::$UnionPetscLib, pc::PC, subpc::PC )
 
@@ -2175,7 +2297,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCCompositeAddPCType"))
 """
-function PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::PCType) end
+function PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::PCType)
+    error("PCCompositeAddPCType: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeAddPCType(petsclib::$UnionPetscLib, pc::PC, type::PCType )
 
@@ -2209,7 +2333,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCCompositeGetNumberPC"))
 """
-function PCCompositeGetNumberPC(petsclib::PetscLibType, pc::PC) end
+function PCCompositeGetNumberPC(petsclib::PetscLibType, pc::PC)
+    error("PCCompositeGetNumberPC: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeGetNumberPC(petsclib::$UnionPetscLib, pc::PC )
 	num_ = Ref{$PetscInt}()
@@ -2246,7 +2372,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCCompositeGetPC"))
 """
-function PCCompositeGetPC(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCCompositeGetPC(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCCompositeGetPC: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeGetPC(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 	subpc_ = Ref{PC}()
@@ -2283,7 +2411,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCCompositeGetType"))
 """
-function PCCompositeGetType(petsclib::PetscLibType, pc::PC) end
+function PCCompositeGetType(petsclib::PetscLibType, pc::PC)
+    error("PCCompositeGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCCompositeType}()
@@ -2321,7 +2451,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCCompositeSetType"))
 """
-function PCCompositeSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType) end
+function PCCompositeSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType)
+    error("PCCompositeSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeSetType(petsclib::$UnionPetscLib, pc::PC, type::PCCompositeType )
 
@@ -2355,7 +2487,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCCompositeSpecialSetAlpha"))
 """
-function PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::PC, alpha::PetscScalar) end
+function PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::PC, alpha::Number)
+    error("PCCompositeSpecialSetAlpha: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeSpecialSetAlpha(petsclib::$UnionPetscLib, pc::PC, alpha::$PetscScalar )
 
@@ -2376,7 +2510,9 @@ end
 # External Links
 $(_doc_external("PC/PCCompositeSpecialSetAlphaMat"))
 """
-function PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::PC, alpha_mat::AbstractPetscMat) end
+function PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::PC, alpha_mat::AbstractPetscMat)
+    error("PCCompositeSpecialSetAlphaMat: no generated method for these argument types")
+end
 
 @for_petsc function PCCompositeSpecialSetAlphaMat(petsclib::$UnionPetscLib, pc::PC, alpha_mat::AbstractPetscMat )
 
@@ -2411,7 +2547,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCComputeOperator"))
 """
-function PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::MatType) end
+function PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::MatType)
+    error("PCComputeOperator: no generated method for these argument types")
+end
 
 @for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::PC, mattype::MatType )
 	mat_ = Ref{CMat}()
@@ -2447,7 +2585,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCCreate"))
 """
-function PCCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PCCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PCCreate: no generated method for these argument types")
+end
 
 @for_petsc function PCCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	newpc_ = Ref{PC}()
@@ -2483,7 +2623,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCDeflationGetCoarseKSP"))
 """
-function PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::PC) end
+function PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::PC)
+    error("PCDeflationGetCoarseKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationGetCoarseKSP(petsclib::$UnionPetscLib, pc::PC )
 	ksp_ = Ref{CKSP}()
@@ -2519,7 +2661,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCDeflationGetPC"))
 """
-function PCDeflationGetPC(petsclib::PetscLibType, pc::PC) end
+function PCDeflationGetPC(petsclib::PetscLibType, pc::PC)
+    error("PCDeflationGetPC: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationGetPC(petsclib::$UnionPetscLib, pc::PC )
 	apc_ = Ref{PC}()
@@ -2553,7 +2697,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCDeflationSetCoarseMat"))
 """
-function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat) end
+function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat)
+    error("PCDeflationSetCoarseMat: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetCoarseMat(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat )
 
@@ -2588,7 +2734,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("PC/PCDeflationSetCorrectionFactor"))
 """
-function PCDeflationSetCorrectionFactor(petsclib::PetscLibType, pc::PC, fact::PetscScalar) end
+function PCDeflationSetCorrectionFactor(petsclib::PetscLibType, pc::PC, fact::Number)
+    error("PCDeflationSetCorrectionFactor: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetCorrectionFactor(petsclib::$UnionPetscLib, pc::PC, fact::$PetscScalar )
 
@@ -2625,7 +2773,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCDeflationSetInitOnly"))
 """
-function PCDeflationSetInitOnly(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCDeflationSetInitOnly(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCDeflationSetInitOnly: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetInitOnly(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -2660,7 +2810,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCDeflationSetLevels"))
 """
-function PCDeflationSetLevels(petsclib::PetscLibType, pc::PC, max::PetscInt) end
+function PCDeflationSetLevels(petsclib::PetscLibType, pc::PC, max::Integer)
+    error("PCDeflationSetLevels: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetLevels(petsclib::$UnionPetscLib, pc::PC, max::$PetscInt )
 
@@ -2692,7 +2844,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCDeflationSetProjectionNullSpaceMat"))
 """
-function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat) end
+function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat)
+    error("PCDeflationSetProjectionNullSpaceMat: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetProjectionNullSpaceMat(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat )
 
@@ -2725,7 +2879,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PC/PCDeflationSetReductionFactor"))
 """
-function PCDeflationSetReductionFactor(petsclib::PetscLibType, pc::PC, red::PetscInt) end
+function PCDeflationSetReductionFactor(petsclib::PetscLibType, pc::PC, red::Integer)
+    error("PCDeflationSetReductionFactor: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetReductionFactor(petsclib::$UnionPetscLib, pc::PC, red::$PetscInt )
 
@@ -2758,7 +2914,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCDeflationSetSpace"))
 """
-function PCDeflationSetSpace(petsclib::PetscLibType, pc::PC, W::AbstractPetscMat, transpose::PetscBool) end
+function PCDeflationSetSpace(petsclib::PetscLibType, pc::PC, W::AbstractPetscMat, transpose::PetscBool)
+    error("PCDeflationSetSpace: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetSpace(petsclib::$UnionPetscLib, pc::PC, W::AbstractPetscMat, transpose::PetscBool )
 
@@ -2793,7 +2951,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("PC/PCDeflationSetSpaceToCompute"))
 """
-function PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::PC, type::PCDeflationSpaceType, size::PetscInt) end
+function PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::PC, type::PCDeflationSpaceType, size::Integer)
+    error("PCDeflationSetSpaceToCompute: no generated method for these argument types")
+end
 
 @for_petsc function PCDeflationSetSpaceToCompute(petsclib::$UnionPetscLib, pc::PC, type::PCDeflationSpaceType, size::$PetscInt )
 
@@ -2824,7 +2984,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCDestroy"))
 """
-function PCDestroy(petsclib::PetscLibType, pc::Union{PC, Ref{PC}}) end
+function PCDestroy(petsclib::PetscLibType, pc::Union{PC, Ref{PC}})
+    error("PCDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PCDestroy(petsclib::$UnionPetscLib, pc::Union{PC, Ref{PC}} )
 	pc_ = pc isa Base.RefValue ? pc : Ref{PC}(pc)
@@ -2858,7 +3020,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCDiagonalScaleLeft"))
 """
-function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) end
+function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec)
+    error("PCDiagonalScaleLeft: no generated method for these argument types")
+end
 
 @for_petsc function PCDiagonalScaleLeft(petsclib::$UnionPetscLib, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec )
 
@@ -2891,7 +3055,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCDiagonalScaleRight"))
 """
-function PCDiagonalScaleRight(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) end
+function PCDiagonalScaleRight(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec)
+    error("PCDiagonalScaleRight: no generated method for these argument types")
+end
 
 @for_petsc function PCDiagonalScaleRight(petsclib::$UnionPetscLib, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec )
 
@@ -2930,7 +3096,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCEisenstatGetNoDiagonalScaling"))
 """
-function PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::PC) end
+function PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::PC)
+    error("PCEisenstatGetNoDiagonalScaling: no generated method for these argument types")
+end
 
 @for_petsc function PCEisenstatGetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -2968,7 +3136,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PC/PCEisenstatGetOmega"))
 """
-function PCEisenstatGetOmega(petsclib::PetscLibType, pc::PC) end
+function PCEisenstatGetOmega(petsclib::PetscLibType, pc::PC)
+    error("PCEisenstatGetOmega: no generated method for these argument types")
+end
 
 @for_petsc function PCEisenstatGetOmega(petsclib::$UnionPetscLib, pc::PC )
 	omega_ = Ref{$PetscReal}()
@@ -3007,7 +3177,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCEisenstatSetNoDiagonalScaling"))
 """
-function PCEisenstatSetNoDiagonalScaling(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCEisenstatSetNoDiagonalScaling(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCEisenstatSetNoDiagonalScaling: no generated method for these argument types")
+end
 
 @for_petsc function PCEisenstatSetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -3043,7 +3215,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCEisenstatSetOmega"))
 """
-function PCEisenstatSetOmega(petsclib::PetscLibType, pc::PC, omega::PetscReal) end
+function PCEisenstatSetOmega(petsclib::PetscLibType, pc::PC, omega::Real)
+    error("PCEisenstatSetOmega: no generated method for these argument types")
+end
 
 @for_petsc function PCEisenstatSetOmega(petsclib::$UnionPetscLib, pc::PC, omega::$PetscReal )
 
@@ -3076,7 +3250,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("PC/PCExoticSetType"))
 """
-function PCExoticSetType(petsclib::PetscLibType, pc::PC, type::PCExoticType) end
+function PCExoticSetType(petsclib::PetscLibType, pc::PC, type::PCExoticType)
+    error("PCExoticSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCExoticSetType(petsclib::$UnionPetscLib, pc::PC, type::PCExoticType )
 
@@ -3109,7 +3285,9 @@ Output Parameter:
 # External Links
 $(_doc_external("PC/PCFactorGetAllowDiagonalFill"))
 """
-function PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetAllowDiagonalFill: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -3145,7 +3323,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorGetLevels"))
 """
-function PCFactorGetLevels(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetLevels(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetLevels: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetLevels(petsclib::$UnionPetscLib, pc::PC )
 	levels_ = Ref{$PetscInt}()
@@ -3182,7 +3362,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorGetMatSolverType"))
 """
-function PCFactorGetMatSolverType(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetMatSolverType(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetMatSolverType: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetMatSolverType(petsclib::$UnionPetscLib, pc::PC )
 	stype_ = Ref{MatSolverType}()
@@ -3220,7 +3402,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCFactorGetMatrix"))
 """
-function PCFactorGetMatrix(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetMatrix(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetMatrix: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetMatrix(petsclib::$UnionPetscLib, pc::PC )
 	mat_ = Ref{CMat}()
@@ -3256,7 +3440,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorGetShiftAmount"))
 """
-function PCFactorGetShiftAmount(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetShiftAmount(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetShiftAmount: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetShiftAmount(petsclib::$UnionPetscLib, pc::PC )
 	shift_ = Ref{$PetscReal}()
@@ -3292,7 +3478,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorGetShiftType"))
 """
-function PCFactorGetShiftType(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetShiftType(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetShiftType: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetShiftType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{MatFactorShiftType}()
@@ -3328,7 +3516,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorGetUseInPlace"))
 """
-function PCFactorGetUseInPlace(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetUseInPlace(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetUseInPlace: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetUseInPlace(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -3364,7 +3554,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorGetZeroPivot"))
 """
-function PCFactorGetZeroPivot(petsclib::PetscLibType, pc::PC) end
+function PCFactorGetZeroPivot(petsclib::PetscLibType, pc::PC)
+    error("PCFactorGetZeroPivot: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorGetZeroPivot(petsclib::$UnionPetscLib, pc::PC )
 	pivot_ = Ref{$PetscReal}()
@@ -3401,7 +3593,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorReorderForNonzeroDiagonal"))
 """
-function PCFactorReorderForNonzeroDiagonal(petsclib::PetscLibType, pc::PC, rtol::PetscReal) end
+function PCFactorReorderForNonzeroDiagonal(petsclib::PetscLibType, pc::PC, rtol::Real)
+    error("PCFactorReorderForNonzeroDiagonal: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorReorderForNonzeroDiagonal(petsclib::$UnionPetscLib, pc::PC, rtol::$PetscReal )
 
@@ -3435,7 +3629,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PC/PCFactorSetAllowDiagonalFill"))
 """
-function PCFactorSetAllowDiagonalFill(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCFactorSetAllowDiagonalFill(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCFactorSetAllowDiagonalFill: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -3472,7 +3668,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetColumnPivot"))
 """
-function PCFactorSetColumnPivot(petsclib::PetscLibType, pc::PC, dtcol::PetscReal) end
+function PCFactorSetColumnPivot(petsclib::PetscLibType, pc::PC, dtcol::Real)
+    error("PCFactorSetColumnPivot: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetColumnPivot(petsclib::$UnionPetscLib, pc::PC, dtcol::$PetscReal )
 
@@ -3511,7 +3709,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetDropTolerance"))
 """
-function PCFactorSetDropTolerance(petsclib::PetscLibType, pc::PC, dt::PetscReal, dtcol::PetscReal, maxrowcount::PetscInt) end
+function PCFactorSetDropTolerance(petsclib::PetscLibType, pc::PC, dt::Real, dtcol::Real, maxrowcount::Integer)
+    error("PCFactorSetDropTolerance: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetDropTolerance(petsclib::$UnionPetscLib, pc::PC, dt::$PetscReal, dtcol::$PetscReal, maxrowcount::$PetscInt )
 
@@ -3547,7 +3747,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetFill"))
 """
-function PCFactorSetFill(petsclib::PetscLibType, pc::PC, fill::PetscReal) end
+function PCFactorSetFill(petsclib::PetscLibType, pc::PC, fill::Real)
+    error("PCFactorSetFill: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetFill(petsclib::$UnionPetscLib, pc::PC, fill::$PetscReal )
 
@@ -3582,7 +3784,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetLevels"))
 """
-function PCFactorSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) end
+function PCFactorSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer)
+    error("PCFactorSetLevels: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt )
 
@@ -3618,7 +3822,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetMatOrderingType"))
 """
-function PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::MatOrderingType) end
+function PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::MatOrderingType)
+    error("PCFactorSetMatOrderingType: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetMatOrderingType(petsclib::$UnionPetscLib, pc::PC, ordering::MatOrderingType )
 
@@ -3654,7 +3860,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetMatSolverType"))
 """
-function PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::MatSolverType) end
+function PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::MatSolverType)
+    error("PCFactorSetMatSolverType: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetMatSolverType(petsclib::$UnionPetscLib, pc::PC, stype::MatSolverType )
 
@@ -3690,7 +3898,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetPivotInBlocks"))
 """
-function PCFactorSetPivotInBlocks(petsclib::PetscLibType, pc::PC, pivot::PetscBool) end
+function PCFactorSetPivotInBlocks(petsclib::PetscLibType, pc::PC, pivot::PetscBool)
+    error("PCFactorSetPivotInBlocks: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetPivotInBlocks(petsclib::$UnionPetscLib, pc::PC, pivot::PetscBool )
 
@@ -3726,7 +3936,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetReuseFill"))
 """
-function PCFactorSetReuseFill(petsclib::PetscLibType, pc::PC, flag::PetscBool) end
+function PCFactorSetReuseFill(petsclib::PetscLibType, pc::PC, flag::PetscBool)
+    error("PCFactorSetReuseFill: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetReuseFill(petsclib::$UnionPetscLib, pc::PC, flag::PetscBool )
 
@@ -3763,7 +3975,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetReuseOrdering"))
 """
-function PCFactorSetReuseOrdering(petsclib::PetscLibType, pc::PC, flag::PetscBool) end
+function PCFactorSetReuseOrdering(petsclib::PetscLibType, pc::PC, flag::PetscBool)
+    error("PCFactorSetReuseOrdering: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetReuseOrdering(petsclib::$UnionPetscLib, pc::PC, flag::PetscBool )
 
@@ -3799,7 +4013,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetShiftAmount"))
 """
-function PCFactorSetShiftAmount(petsclib::PetscLibType, pc::PC, shiftamount::PetscReal) end
+function PCFactorSetShiftAmount(petsclib::PetscLibType, pc::PC, shiftamount::Real)
+    error("PCFactorSetShiftAmount: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetShiftAmount(petsclib::$UnionPetscLib, pc::PC, shiftamount::$PetscReal )
 
@@ -3835,7 +4051,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetShiftType"))
 """
-function PCFactorSetShiftType(petsclib::PetscLibType, pc::PC, shifttype::MatFactorShiftType) end
+function PCFactorSetShiftType(petsclib::PetscLibType, pc::PC, shifttype::MatFactorShiftType)
+    error("PCFactorSetShiftType: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetShiftType(petsclib::$UnionPetscLib, pc::PC, shifttype::MatFactorShiftType )
 
@@ -3863,7 +4081,9 @@ Input Parameter:
 # External Links
 $(_doc_external("PC/PCFactorSetUpMatSolverType"))
 """
-function PCFactorSetUpMatSolverType(petsclib::PetscLibType, pc::PC) end
+function PCFactorSetUpMatSolverType(petsclib::PetscLibType, pc::PC)
+    error("PCFactorSetUpMatSolverType: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetUpMatSolverType(petsclib::$UnionPetscLib, pc::PC )
 
@@ -3896,7 +4116,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PC/PCFactorSetUseInPlace"))
 """
-function PCFactorSetUseInPlace(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCFactorSetUseInPlace(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCFactorSetUseInPlace: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetUseInPlace(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -3931,7 +4153,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFactorSetZeroPivot"))
 """
-function PCFactorSetZeroPivot(petsclib::PetscLibType, pc::PC, zero::PetscReal) end
+function PCFactorSetZeroPivot(petsclib::PetscLibType, pc::PC, zero::Real)
+    error("PCFactorSetZeroPivot: no generated method for these argument types")
+end
 
 @for_petsc function PCFactorSetZeroPivot(petsclib::$UnionPetscLib, pc::PC, zero::$PetscReal )
 
@@ -3965,7 +4189,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDMSplits"))
 """
-function PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetDMSplits: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetDMSplits(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -4001,7 +4227,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDetectSaddlePoint"))
 """
-function PCFieldSplitGetDetectSaddlePoint(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetDetectSaddlePoint(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetDetectSaddlePoint: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -4038,7 +4266,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDiagUseAmat"))
 """
-function PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetDiagUseAmat: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetDiagUseAmat(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -4075,7 +4305,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetIS"))
 """
-function PCFieldSplitGetIS(petsclib::PetscLibType, pc::PC, splitname::String) end
+function PCFieldSplitGetIS(petsclib::PetscLibType, pc::PC, splitname::String)
+    error("PCFieldSplitGetIS: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String )
 	is_ = Ref{CIS}()
@@ -4113,7 +4345,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetISByIndex"))
 """
-function PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::PC, index::PetscInt) end
+function PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::PC, index::Integer)
+    error("PCFieldSplitGetISByIndex: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetISByIndex(petsclib::$UnionPetscLib, pc::PC, index::$PetscInt )
 	is_ = Ref{CIS}()
@@ -4150,7 +4384,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetOffDiagUseAmat"))
 """
-function PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetOffDiagUseAmat: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -4189,7 +4425,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSchurBlocks"))
 """
-function PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetSchurBlocks: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetSchurBlocks(petsclib::$UnionPetscLib, pc::PC )
 	A00_ = Ref{CMat}()
@@ -4233,7 +4471,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSchurPre"))
 """
-function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetSchurPre: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetSchurPre(petsclib::$UnionPetscLib, pc::PC )
 	ptype_ = Ref{PCFieldSplitSchurPreType}()
@@ -4272,7 +4512,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSubKSP"))
 """
-function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
@@ -4311,7 +4553,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitGetType"))
 """
-function PCFieldSplitGetType(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitGetType(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCCompositeType}()
@@ -4343,7 +4587,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCFieldSplitRestrictIS"))
 """
-function PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::PC, isy::AbstractIS) end
+function PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::PC, isy::AbstractIS)
+    error("PCFieldSplitRestrictIS: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitRestrictIS(petsclib::$UnionPetscLib, pc::PC, isy::AbstractIS )
 
@@ -4378,7 +4624,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurGetS"))
 """
-function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitSchurGetS: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSchurGetS(petsclib::$UnionPetscLib, pc::PC )
 	S_ = Ref{CMat}()
@@ -4415,7 +4663,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurGetSubKSP"))
 """
-function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC) end
+function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC)
+    error("PCFieldSplitSchurGetSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
@@ -4451,7 +4701,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurRestoreS"))
 """
-function PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::PC, S::AbstractPetscMat) end
+function PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::PC, S::AbstractPetscMat)
+    error("PCFieldSplitSchurRestoreS: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSchurRestoreS(petsclib::$UnionPetscLib, pc::PC, S::AbstractPetscMat )
 	S_ = Ref(S.ptr)
@@ -4486,7 +4738,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetBlockSize"))
 """
-function PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::PC, bs::PetscInt) end
+function PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::PC, bs::Integer)
+    error("PCFieldSplitSetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetBlockSize(petsclib::$UnionPetscLib, pc::PC, bs::$PetscInt )
 
@@ -4521,7 +4775,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDMSplits"))
 """
-function PCFieldSplitSetDMSplits(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCFieldSplitSetDMSplits(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCFieldSplitSetDMSplits: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetDMSplits(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -4558,7 +4814,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDetectSaddlePoint"))
 """
-function PCFieldSplitSetDetectSaddlePoint(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCFieldSplitSetDetectSaddlePoint(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCFieldSplitSetDetectSaddlePoint: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -4594,7 +4852,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDiagUseAmat"))
 """
-function PCFieldSplitSetDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCFieldSplitSetDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCFieldSplitSetDiagUseAmat: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetDiagUseAmat(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -4634,7 +4894,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetFields"))
 """
-function PCFieldSplitSetFields(petsclib::PetscLibType, pc::PC, splitname::String, n::PetscInt, fields::Vector{PetscInt}, fields_col::Vector{PetscInt}) end
+function PCFieldSplitSetFields(petsclib::PetscLibType, pc::PC, splitname::String, n::Integer, fields::AbstractVector{<:Number}, fields_col::AbstractVector{<:Number})
+    error("PCFieldSplitSetFields: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetFields(petsclib::$UnionPetscLib, pc::PC, splitname::String, n::$PetscInt, fields::Vector{$PetscInt}, fields_col::Vector{$PetscInt} )
 
@@ -4670,7 +4932,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBDelay"))
 """
-function PCFieldSplitSetGKBDelay(petsclib::PetscLibType, pc::PC, delay::PetscInt) end
+function PCFieldSplitSetGKBDelay(petsclib::PetscLibType, pc::PC, delay::Integer)
+    error("PCFieldSplitSetGKBDelay: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetGKBDelay(petsclib::$UnionPetscLib, pc::PC, delay::$PetscInt )
 
@@ -4705,7 +4969,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBMaxit"))
 """
-function PCFieldSplitSetGKBMaxit(petsclib::PetscLibType, pc::PC, maxit::PetscInt) end
+function PCFieldSplitSetGKBMaxit(petsclib::PetscLibType, pc::PC, maxit::Integer)
+    error("PCFieldSplitSetGKBMaxit: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetGKBMaxit(petsclib::$UnionPetscLib, pc::PC, maxit::$PetscInt )
 
@@ -4741,7 +5007,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBNu"))
 """
-function PCFieldSplitSetGKBNu(petsclib::PetscLibType, pc::PC, nu::PetscReal) end
+function PCFieldSplitSetGKBNu(petsclib::PetscLibType, pc::PC, nu::Real)
+    error("PCFieldSplitSetGKBNu: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetGKBNu(petsclib::$UnionPetscLib, pc::PC, nu::$PetscReal )
 
@@ -4776,7 +5044,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBTol"))
 """
-function PCFieldSplitSetGKBTol(petsclib::PetscLibType, pc::PC, tolerance::PetscReal) end
+function PCFieldSplitSetGKBTol(petsclib::PetscLibType, pc::PC, tolerance::Real)
+    error("PCFieldSplitSetGKBTol: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetGKBTol(petsclib::$UnionPetscLib, pc::PC, tolerance::$PetscReal )
 
@@ -4809,7 +5079,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetIS"))
 """
-function PCFieldSplitSetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::AbstractIS) end
+function PCFieldSplitSetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::AbstractIS)
+    error("PCFieldSplitSetIS: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String, is::AbstractIS )
 
@@ -4845,7 +5117,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetOffDiagUseAmat"))
 """
-function PCFieldSplitSetOffDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCFieldSplitSetOffDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCFieldSplitSetOffDiagUseAmat: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -4881,7 +5155,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurFactType"))
 """
-function PCFieldSplitSetSchurFactType(petsclib::PetscLibType, pc::PC, ftype::PCFieldSplitSchurFactType) end
+function PCFieldSplitSetSchurFactType(petsclib::PetscLibType, pc::PC, ftype::PCFieldSplitSchurFactType)
+    error("PCFieldSplitSetSchurFactType: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetSchurFactType(petsclib::$UnionPetscLib, pc::PC, ftype::PCFieldSplitSchurFactType )
 
@@ -4922,7 +5198,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurPre"))
 """
-function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat) end
+function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat)
+    error("PCFieldSplitSetSchurPre: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetSchurPre(petsclib::$UnionPetscLib, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat )
 
@@ -4957,7 +5235,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurScale"))
 """
-function PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::PC, scale::PetscScalar) end
+function PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::PC, scale::Number)
+    error("PCFieldSplitSetSchurScale: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetSchurScale(petsclib::$UnionPetscLib, pc::PC, scale::$PetscScalar )
 
@@ -4994,7 +5274,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCFieldSplitSetType"))
 """
-function PCFieldSplitSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType) end
+function PCFieldSplitSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType)
+    error("PCFieldSplitSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCFieldSplitSetType(petsclib::$UnionPetscLib, pc::PC, type::PCCompositeType )
 
@@ -5021,7 +5303,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/PCFinalizePackage"))
 """
-function PCFinalizePackage(petsclib::PetscLibType) end
+function PCFinalizePackage(petsclib::PetscLibType)
+    error("PCFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -5055,7 +5339,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGASMSetHEM"))
 """
-function PCGAMGASMSetHEM(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCGAMGASMSetHEM(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCGAMGASMSetHEM: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGASMSetHEM(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -5091,7 +5377,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGASMSetUseAggs"))
 """
-function PCGAMGASMSetUseAggs(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCGAMGASMSetUseAggs(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCGAMGASMSetUseAggs: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGASMSetUseAggs(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -5125,7 +5413,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGClassicalGetType"))
 """
-function PCGAMGClassicalGetType(petsclib::PetscLibType, pc::PC) end
+function PCGAMGClassicalGetType(petsclib::PetscLibType, pc::PC)
+    error("PCGAMGClassicalGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGClassicalGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCGAMGClassicalType}()
@@ -5162,7 +5452,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGClassicalSetType"))
 """
-function PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGClassicalType) end
+function PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGClassicalType)
+    error("PCGAMGClassicalSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGClassicalSetType(petsclib::$UnionPetscLib, pc::PC, type::PCGAMGClassicalType )
 
@@ -5195,7 +5487,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGAMGCreateGraph"))
 """
-function PCGAMGCreateGraph(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) end
+function PCGAMGCreateGraph(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat)
+    error("PCGAMGCreateGraph: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGCreateGraph(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
 	G_ = Ref{CMat}()
@@ -5224,7 +5518,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCGAMGFinalizePackage"))
 """
-function PCGAMGFinalizePackage(petsclib::PetscLibType) end
+function PCGAMGFinalizePackage(petsclib::PetscLibType)
+    error("PCGAMGFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -5257,7 +5553,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGGetType"))
 """
-function PCGAMGGetType(petsclib::PetscLibType, pc::PC) end
+function PCGAMGGetType(petsclib::PetscLibType, pc::PC)
+    error("PCGAMGGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCGAMGType}()
@@ -5286,7 +5584,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCGAMGInitializePackage"))
 """
-function PCGAMGInitializePackage(petsclib::PetscLibType) end
+function PCGAMGInitializePackage(petsclib::PetscLibType)
+    error("PCGAMGInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGInitializePackage(petsclib::$UnionPetscLib)
 
@@ -5320,7 +5620,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGMISkSetAggressive"))
 """
-function PCGAMGMISkSetAggressive(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCGAMGMISkSetAggressive(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCGAMGMISkSetAggressive: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGMISkSetAggressive(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -5355,7 +5657,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGMISkSetMinDegreeOrdering"))
 """
-function PCGAMGMISkSetMinDegreeOrdering(petsclib::PetscLibType, pc::PC, b::PetscBool) end
+function PCGAMGMISkSetMinDegreeOrdering(petsclib::PetscLibType, pc::PC, b::PetscBool)
+    error("PCGAMGMISkSetMinDegreeOrdering: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGMISkSetMinDegreeOrdering(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
 
@@ -5385,7 +5689,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCGAMGRegister"))
 """
-function PCGAMGRegister(petsclib::PetscLibType, type::PCGAMGType, create::external) end
+function PCGAMGRegister(petsclib::PetscLibType, type::PCGAMGType, create::external)
+    error("PCGAMGRegister: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGRegister(petsclib::$UnionPetscLib, type::PCGAMGType, create::external )
 
@@ -5420,7 +5726,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetAggressiveLevels"))
 """
-function PCGAMGSetAggressiveLevels(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCGAMGSetAggressiveLevels(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCGAMGSetAggressiveLevels: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetAggressiveLevels(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -5455,7 +5763,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetAggressiveSquareGraph"))
 """
-function PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType, pc::PC, b::PetscBool) end
+function PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType, pc::PC, b::PetscBool)
+    error("PCGAMGSetAggressiveSquareGraph: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetAggressiveSquareGraph(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
 
@@ -5491,7 +5801,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetCoarseEqLim"))
 """
-function PCGAMGSetCoarseEqLim(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCGAMGSetCoarseEqLim(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCGAMGSetCoarseEqLim: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetCoarseEqLim(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -5526,7 +5838,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetCoarseGridLayoutType"))
 """
-function PCGAMGSetCoarseGridLayoutType(petsclib::PetscLibType, pc::PC, flg::PCGAMGLayoutType) end
+function PCGAMGSetCoarseGridLayoutType(petsclib::PetscLibType, pc::PC, flg::PCGAMGLayoutType)
+    error("PCGAMGSetCoarseGridLayoutType: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetCoarseGridLayoutType(petsclib::$UnionPetscLib, pc::PC, flg::PCGAMGLayoutType )
 
@@ -5561,7 +5875,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetCpuPinCoarseGrids"))
 """
-function PCGAMGSetCpuPinCoarseGrids(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCGAMGSetCpuPinCoarseGrids(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCGAMGSetCpuPinCoarseGrids: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetCpuPinCoarseGrids(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -5597,7 +5913,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetEigenvalues"))
 """
-function PCGAMGSetEigenvalues(petsclib::PetscLibType, pc::PC, emax::PetscReal, emin::PetscReal) end
+function PCGAMGSetEigenvalues(petsclib::PetscLibType, pc::PC, emax::Real, emin::Real)
+    error("PCGAMGSetEigenvalues: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetEigenvalues(petsclib::$UnionPetscLib, pc::PC, emax::$PetscReal, emin::$PetscReal )
 
@@ -5633,7 +5951,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetGraphSymmetrize"))
 """
-function PCGAMGSetGraphSymmetrize(petsclib::PetscLibType, pc::PC, b::PetscBool) end
+function PCGAMGSetGraphSymmetrize(petsclib::PetscLibType, pc::PC, b::PetscBool)
+    error("PCGAMGSetGraphSymmetrize: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetGraphSymmetrize(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
 
@@ -5669,7 +5989,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetInjectionIndex"))
 """
-function PCGAMGSetInjectionIndex(petsclib::PetscLibType, pc::PC, n::PetscInt, idx::Vector{PetscInt}) end
+function PCGAMGSetInjectionIndex(petsclib::PetscLibType, pc::PC, n::Integer, idx::AbstractVector{<:Number})
+    error("PCGAMGSetInjectionIndex: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetInjectionIndex(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, idx::Vector{$PetscInt} )
 
@@ -5705,7 +6027,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetLowMemoryFilter"))
 """
-function PCGAMGSetLowMemoryFilter(petsclib::PetscLibType, pc::PC, b::PetscBool) end
+function PCGAMGSetLowMemoryFilter(petsclib::PetscLibType, pc::PC, b::PetscBool)
+    error("PCGAMGSetLowMemoryFilter: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetLowMemoryFilter(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
 
@@ -5740,7 +6064,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetNSmooths"))
 """
-function PCGAMGSetNSmooths(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCGAMGSetNSmooths(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCGAMGSetNSmooths: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetNSmooths(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -5775,7 +6101,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetNlevels"))
 """
-function PCGAMGSetNlevels(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCGAMGSetNlevels(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCGAMGSetNlevels: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetNlevels(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -5810,7 +6138,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetParallelCoarseGridSolve"))
 """
-function PCGAMGSetParallelCoarseGridSolve(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCGAMGSetParallelCoarseGridSolve(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCGAMGSetParallelCoarseGridSolve: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetParallelCoarseGridSolve(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -5845,7 +6175,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetProcEqLim"))
 """
-function PCGAMGSetProcEqLim(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCGAMGSetProcEqLim(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCGAMGSetProcEqLim: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetProcEqLim(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -5881,7 +6213,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetRankReductionFactors"))
 """
-function PCGAMGSetRankReductionFactors(petsclib::PetscLibType, pc::PC, v::Vector{PetscInt}, n::PetscInt) end
+function PCGAMGSetRankReductionFactors(petsclib::PetscLibType, pc::PC, v::AbstractVector{<:Number}, n::Integer)
+    error("PCGAMGSetRankReductionFactors: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetRankReductionFactors(petsclib::$UnionPetscLib, pc::PC, v::Vector{$PetscInt}, n::$PetscInt )
 
@@ -5916,7 +6250,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGAMGSetRecomputeEstEig"))
 """
-function PCGAMGSetRecomputeEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool) end
+function PCGAMGSetRecomputeEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool)
+    error("PCGAMGSetRecomputeEstEig: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetRecomputeEstEig(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
 
@@ -5951,7 +6287,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetRepartition"))
 """
-function PCGAMGSetRepartition(petsclib::PetscLibType, pc::PC, n::PetscBool) end
+function PCGAMGSetRepartition(petsclib::PetscLibType, pc::PC, n::PetscBool)
+    error("PCGAMGSetRepartition: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetRepartition(petsclib::$UnionPetscLib, pc::PC, n::PetscBool )
 
@@ -5986,7 +6324,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetReuseInterpolation"))
 """
-function PCGAMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, n::PetscBool) end
+function PCGAMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, n::PetscBool)
+    error("PCGAMGSetReuseInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::PC, n::PetscBool )
 
@@ -6022,7 +6362,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetThreshold"))
 """
-function PCGAMGSetThreshold(petsclib::PetscLibType, pc::PC, v::Vector{PetscReal}, n::PetscInt) end
+function PCGAMGSetThreshold(petsclib::PetscLibType, pc::PC, v::AbstractVector{<:Number}, n::Integer)
+    error("PCGAMGSetThreshold: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetThreshold(petsclib::$UnionPetscLib, pc::PC, v::Vector{$PetscReal}, n::$PetscInt )
 
@@ -6057,7 +6399,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGAMGSetThresholdScale"))
 """
-function PCGAMGSetThresholdScale(petsclib::PetscLibType, pc::PC, v::PetscReal) end
+function PCGAMGSetThresholdScale(petsclib::PetscLibType, pc::PC, v::Real)
+    error("PCGAMGSetThresholdScale: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetThresholdScale(petsclib::$UnionPetscLib, pc::PC, v::$PetscReal )
 
@@ -6092,7 +6436,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGAMGSetType"))
 """
-function PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGType) end
+function PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGType)
+    error("PCGAMGSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetType(petsclib::$UnionPetscLib, pc::PC, type::PCGAMGType )
 
@@ -6127,7 +6473,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGAMGSetUseSAEstEig"))
 """
-function PCGAMGSetUseSAEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool) end
+function PCGAMGSetUseSAEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool)
+    error("PCGAMGSetUseSAEstEig: no generated method for these argument types")
+end
 
 @for_petsc function PCGAMGSetUseSAEstEig(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
 
@@ -6164,7 +6512,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGASMCreateSubdomains"))
 """
-function PCGASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, N::PetscInt) end
+function PCGASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, N::Integer)
+    error("PCGASMCreateSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
 	n_ = Ref{$PetscInt}()
@@ -6212,7 +6562,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGASMCreateSubdomains2D"))
 """
-function PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::PetscInt, N::PetscInt, Mdomains::PetscInt, Ndomains::PetscInt, dof::PetscInt, overlap::PetscInt) end
+function PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::Integer, N::Integer, Mdomains::Integer, Ndomains::Integer, dof::Integer, overlap::Integer)
+    error("PCGASMCreateSubdomains2D: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMCreateSubdomains2D(petsclib::$UnionPetscLib, pc::PC, M::$PetscInt, N::$PetscInt, Mdomains::$PetscInt, Ndomains::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
 	nsub_ = Ref{$PetscInt}()
@@ -6253,7 +6605,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGASMDestroySubdomains"))
 """
-function PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}}) end
+function PCGASMDestroySubdomains(petsclib::PetscLibType, n::Integer, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}})
+    error("PCGASMDestroySubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}} )
 	iis_ = Ref{Ptr{CIS}}(iis isa Ptr ? iis : pointer(iis))
@@ -6292,7 +6646,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGASMGetSubKSP"))
 """
-function PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC) end
+function PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC)
+    error("PCGASMGetSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
@@ -6336,7 +6692,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGASMGetSubdomains"))
 """
-function PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC) end
+function PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC)
+    error("PCGASMGetSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMGetSubdomains(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
@@ -6379,7 +6737,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGASMGetSubmatrices"))
 """
-function PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC) end
+function PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC)
+    error("PCGASMGetSubmatrices: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMGetSubmatrices(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
@@ -6418,7 +6778,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGASMGetUseDMSubdomains"))
 """
-function PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::PC) end
+function PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::PC)
+    error("PCGASMGetUseDMSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMGetUseDMSubdomains(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -6458,7 +6820,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGASMSetOverlap"))
 """
-function PCGASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::PetscInt) end
+function PCGASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::Integer)
+    error("PCGASMSetOverlap: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMSetOverlap(petsclib::$UnionPetscLib, pc::PC, ovl::$PetscInt )
 
@@ -6491,7 +6855,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGASMSetSortIndices"))
 """
-function PCGASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool) end
+function PCGASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool)
+    error("PCGASMSetSortIndices: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMSetSortIndices(petsclib::$UnionPetscLib, pc::PC, doSort::PetscBool )
 
@@ -6529,7 +6895,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGASMSetSubdomains"))
 """
-function PCGASMSetSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) end
+function PCGASMSetSubdomains(petsclib::PetscLibType, pc::PC, n::Integer, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS})
+    error("PCGASMSetSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMSetSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
 
@@ -6562,7 +6930,9 @@ Level: beginner
 # External Links
 $(_doc_external("PC/PCGASMSetTotalSubdomains"))
 """
-function PCGASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::PetscInt) end
+function PCGASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::Integer)
+    error("PCGASMSetTotalSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::PC, N::$PetscInt )
 
@@ -6593,7 +6963,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCGASMSetType"))
 """
-function PCGASMSetType(petsclib::PetscLibType, pc::PC, type::PCGASMType) end
+function PCGASMSetType(petsclib::PetscLibType, pc::PC, type::PCGASMType)
+    error("PCGASMSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMSetType(petsclib::$UnionPetscLib, pc::PC, type::PCGASMType )
 
@@ -6631,7 +7003,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGASMSetUseDMSubdomains"))
 """
-function PCGASMSetUseDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCGASMSetUseDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCGASMSetUseDMSubdomains: no generated method for these argument types")
+end
 
 @for_petsc function PCGASMSetUseDMSubdomains(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -6666,7 +7040,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGalerkinGetKSP"))
 """
-function PCGalerkinGetKSP(petsclib::PetscLibType, pc::PC) end
+function PCGalerkinGetKSP(petsclib::PetscLibType, pc::PC)
+    error("PCGalerkinGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCGalerkinGetKSP(petsclib::$UnionPetscLib, pc::PC )
 	ksp_ = Ref{CKSP}()
@@ -6709,7 +7085,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGalerkinSetComputeSubmatrix"))
 """
-function PCGalerkinSetComputeSubmatrix(petsclib::PetscLibType, pc::PC, computeAsub::external, ctx::Ptr{Cvoid}) end
+function PCGalerkinSetComputeSubmatrix(petsclib::PetscLibType, pc::PC, computeAsub::external, ctx::Ptr{Cvoid})
+    error("PCGalerkinSetComputeSubmatrix: no generated method for these argument types")
+end
 
 @for_petsc function PCGalerkinSetComputeSubmatrix(petsclib::$UnionPetscLib, pc::PC, computeAsub::external, ctx::Ptr{Cvoid} )
 
@@ -6742,7 +7120,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGalerkinSetInterpolation"))
 """
-function PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::PC, P::AbstractPetscMat) end
+function PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::PC, P::AbstractPetscMat)
+    error("PCGalerkinSetInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function PCGalerkinSetInterpolation(petsclib::$UnionPetscLib, pc::PC, P::AbstractPetscMat )
 
@@ -6775,7 +7155,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGalerkinSetRestriction"))
 """
-function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::PC, R::AbstractPetscMat) end
+function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::PC, R::AbstractPetscMat)
+    error("PCGalerkinSetRestriction: no generated method for these argument types")
+end
 
 @for_petsc function PCGalerkinSetRestriction(petsclib::$UnionPetscLib, pc::PC, R::AbstractPetscMat )
 
@@ -6809,7 +7191,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetApplicationContext"))
 """
-function PCGetApplicationContext(petsclib::PetscLibType, pc::PC, ctx::PeCtx) end
+function PCGetApplicationContext(petsclib::PetscLibType, pc::PC, ctx::PeCtx)
+    error("PCGetApplicationContext: no generated method for these argument types")
+end
 
 @for_petsc function PCGetApplicationContext(petsclib::$UnionPetscLib, pc::PC, ctx::PeCtx )
 
@@ -6844,7 +7228,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGetCoarseOperators"))
 """
-function PCGetCoarseOperators(petsclib::PetscLibType, pc::PC) end
+function PCGetCoarseOperators(petsclib::PetscLibType, pc::PC)
+    error("PCGetCoarseOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCGetCoarseOperators(petsclib::$UnionPetscLib, pc::PC )
 	num_levels_ = Ref{$PetscInt}()
@@ -6882,7 +7268,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetDM"))
 """
-function PCGetDM(petsclib::PetscLibType, pc::PC) end
+function PCGetDM(petsclib::PetscLibType, pc::PC)
+    error("PCGetDM: no generated method for these argument types")
+end
 
 @for_petsc function PCGetDM(petsclib::$UnionPetscLib, pc::PC )
 	dm_ = Ref{CDM}()
@@ -6919,7 +7307,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCGetDiagonalScale"))
 """
-function PCGetDiagonalScale(petsclib::PetscLibType, pc::PC) end
+function PCGetDiagonalScale(petsclib::PetscLibType, pc::PC)
+    error("PCGetDiagonalScale: no generated method for these argument types")
+end
 
 @for_petsc function PCGetDiagonalScale(petsclib::$UnionPetscLib, pc::PC )
 	flag_ = Ref{PetscBool}()
@@ -6955,7 +7345,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGetFailedReason"))
 """
-function PCGetFailedReason(petsclib::PetscLibType, pc::PC) end
+function PCGetFailedReason(petsclib::PetscLibType, pc::PC)
+    error("PCGetFailedReason: no generated method for these argument types")
+end
 
 @for_petsc function PCGetFailedReason(petsclib::$UnionPetscLib, pc::PC )
 	reason_ = Ref{PCFailedReason}()
@@ -6992,7 +7384,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGetInterpolations"))
 """
-function PCGetInterpolations(petsclib::PetscLibType, pc::PC) end
+function PCGetInterpolations(petsclib::PetscLibType, pc::PC)
+    error("PCGetInterpolations: no generated method for these argument types")
+end
 
 @for_petsc function PCGetInterpolations(petsclib::$UnionPetscLib, pc::PC )
 	num_levels_ = Ref{$PetscInt}()
@@ -7030,7 +7424,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCGetKSPNestLevel"))
 """
-function PCGetKSPNestLevel(petsclib::PetscLibType, pc::PC) end
+function PCGetKSPNestLevel(petsclib::PetscLibType, pc::PC)
+    error("PCGetKSPNestLevel: no generated method for these argument types")
+end
 
 @for_petsc function PCGetKSPNestLevel(petsclib::$UnionPetscLib, pc::PC )
 	level_ = Ref{$PetscInt}()
@@ -7068,7 +7464,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetOperators"))
 """
-function PCGetOperators(petsclib::PetscLibType, pc::PC) end
+function PCGetOperators(petsclib::PetscLibType, pc::PC)
+    error("PCGetOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCGetOperators(petsclib::$UnionPetscLib, pc::PC )
 	Amat_ = Ref{CMat}()
@@ -7108,7 +7506,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetOperatorsSet"))
 """
-function PCGetOperatorsSet(petsclib::PetscLibType, pc::PC) end
+function PCGetOperatorsSet(petsclib::PetscLibType, pc::PC)
+    error("PCGetOperatorsSet: no generated method for these argument types")
+end
 
 @for_petsc function PCGetOperatorsSet(petsclib::$UnionPetscLib, pc::PC )
 	mat_ = Ref{PetscBool}()
@@ -7147,7 +7547,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCGetOptionsPrefix"))
 """
-function PCGetOptionsPrefix(petsclib::PetscLibType, pc::PC) end
+function PCGetOptionsPrefix(petsclib::PetscLibType, pc::PC)
+    error("PCGetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PCGetOptionsPrefix(petsclib::$UnionPetscLib, pc::PC )
 	prefix_ = Ref{Ptr{Cchar}}()
@@ -7183,7 +7585,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetReusePreconditioner"))
 """
-function PCGetReusePreconditioner(petsclib::PetscLibType, pc::PC) end
+function PCGetReusePreconditioner(petsclib::PetscLibType, pc::PC)
+    error("PCGetReusePreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PCGetReusePreconditioner(petsclib::$UnionPetscLib, pc::PC )
 	flag_ = Ref{PetscBool}()
@@ -7220,7 +7624,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetType"))
 """
-function PCGetType(petsclib::PetscLibType, pc::PC) end
+function PCGetType(petsclib::PetscLibType, pc::PC)
+    error("PCGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCType}()
@@ -7258,7 +7664,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGetUseAmat"))
 """
-function PCGetUseAmat(petsclib::PetscLibType, pc::PC) end
+function PCGetUseAmat(petsclib::PetscLibType, pc::PC)
+    error("PCGetUseAmat: no generated method for these argument types")
+end
 
 @for_petsc function PCGetUseAmat(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -7295,7 +7703,9 @@ Level: beginner
 # External Links
 $(_doc_external("PC/PCHMGSetCoarseningComponent"))
 """
-function PCHMGSetCoarseningComponent(petsclib::PetscLibType, pc::PC, component::PetscInt) end
+function PCHMGSetCoarseningComponent(petsclib::PetscLibType, pc::PC, component::Integer)
+    error("PCHMGSetCoarseningComponent: no generated method for these argument types")
+end
 
 @for_petsc function PCHMGSetCoarseningComponent(petsclib::$UnionPetscLib, pc::PC, component::$PetscInt )
 
@@ -7331,7 +7741,9 @@ Level: beginner
 # External Links
 $(_doc_external("PC/PCHMGSetInnerPCType"))
 """
-function PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::PCType) end
+function PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::PCType)
+    error("PCHMGSetInnerPCType: no generated method for these argument types")
+end
 
 @for_petsc function PCHMGSetInnerPCType(petsclib::$UnionPetscLib, pc::PC, type::PCType )
 
@@ -7366,7 +7778,9 @@ Level: beginner
 # External Links
 $(_doc_external("PC/PCHMGSetReuseInterpolation"))
 """
-function PCHMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, reuse::PetscBool) end
+function PCHMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, reuse::PetscBool)
+    error("PCHMGSetReuseInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function PCHMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::PC, reuse::PetscBool )
 
@@ -7401,7 +7815,9 @@ Level: beginner
 # External Links
 $(_doc_external("PC/PCHMGSetUseSubspaceCoarsening"))
 """
-function PCHMGSetUseSubspaceCoarsening(petsclib::PetscLibType, pc::PC, subspace::PetscBool) end
+function PCHMGSetUseSubspaceCoarsening(petsclib::PetscLibType, pc::PC, subspace::PetscBool)
+    error("PCHMGSetUseSubspaceCoarsening: no generated method for these argument types")
+end
 
 @for_petsc function PCHMGSetUseSubspaceCoarsening(petsclib::$UnionPetscLib, pc::PC, subspace::PetscBool )
 
@@ -7436,7 +7852,9 @@ Level: beginner
 # External Links
 $(_doc_external("PC/PCHMGUseMatMAIJ"))
 """
-function PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::PC, usematmaij::PetscBool) end
+function PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::PC, usematmaij::PetscBool)
+    error("PCHMGUseMatMAIJ: no generated method for these argument types")
+end
 
 @for_petsc function PCHMGUseMatMAIJ(petsclib::$UnionPetscLib, pc::PC, usematmaij::PetscBool )
 
@@ -7457,7 +7875,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMFinalizePackage"))
 """
-function PCHPDDMFinalizePackage(petsclib::PetscLibType) end
+function PCHPDDMFinalizePackage(petsclib::PetscLibType)
+    error("PCHPDDMFinalizePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMFinalizePackage(petsclib::$UnionPetscLib)
 
@@ -7477,7 +7897,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMGetCoarseCorrectionType"))
 """
-function PCHPDDMGetCoarseCorrectionType(petsclib::PetscLibType, pc::PC) end
+function PCHPDDMGetCoarseCorrectionType(petsclib::PetscLibType, pc::PC)
+    error("PCHPDDMGetCoarseCorrectionType: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMGetCoarseCorrectionType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCHPDDMCoarseCorrectionType}()
@@ -7500,7 +7922,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMGetComplexities"))
 """
-function PCHPDDMGetComplexities(petsclib::PetscLibType, pc::PC) end
+function PCHPDDMGetComplexities(petsclib::PetscLibType, pc::PC)
+    error("PCHPDDMGetComplexities: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMGetComplexities(petsclib::$UnionPetscLib, pc::PC )
 	gc_ = Ref{$PetscReal}()
@@ -7525,7 +7949,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMGetSTShareSubKSP"))
 """
-function PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::PC) end
+function PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::PC)
+    error("PCHPDDMGetSTShareSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMGetSTShareSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	share_ = Ref{PetscBool}()
@@ -7548,7 +7974,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMHasNeumannMat"))
 """
-function PCHPDDMHasNeumannMat(petsclib::PetscLibType, pc::PC, has::PetscBool) end
+function PCHPDDMHasNeumannMat(petsclib::PetscLibType, pc::PC, has::PetscBool)
+    error("PCHPDDMHasNeumannMat: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMHasNeumannMat(petsclib::$UnionPetscLib, pc::PC, has::PetscBool )
 
@@ -7569,7 +7997,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMInitializePackage"))
 """
-function PCHPDDMInitializePackage(petsclib::PetscLibType) end
+function PCHPDDMInitializePackage(petsclib::PetscLibType)
+    error("PCHPDDMInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMInitializePackage(petsclib::$UnionPetscLib)
 
@@ -7589,7 +8019,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMSetAuxiliaryMat"))
 """
-function PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid}) end
+function PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid})
+    error("PCHPDDMSetAuxiliaryMat: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMSetAuxiliaryMat(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid} )
 
@@ -7610,7 +8042,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMSetCoarseCorrectionType"))
 """
-function PCHPDDMSetCoarseCorrectionType(petsclib::PetscLibType, pc::PC, type::PCHPDDMCoarseCorrectionType) end
+function PCHPDDMSetCoarseCorrectionType(petsclib::PetscLibType, pc::PC, type::PCHPDDMCoarseCorrectionType)
+    error("PCHPDDMSetCoarseCorrectionType: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMSetCoarseCorrectionType(petsclib::$UnionPetscLib, pc::PC, type::PCHPDDMCoarseCorrectionType )
 
@@ -7631,7 +8065,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMSetDeflationMat"))
 """
-function PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, U::AbstractPetscMat) end
+function PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, U::AbstractPetscMat)
+    error("PCHPDDMSetDeflationMat: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMSetDeflationMat(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS, U::AbstractPetscMat )
 
@@ -7652,7 +8088,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMSetRHSMat"))
 """
-function PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat) end
+function PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat)
+    error("PCHPDDMSetRHSMat: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMSetRHSMat(petsclib::$UnionPetscLib, pc::PC, B::AbstractPetscMat )
 
@@ -7673,7 +8111,9 @@ end
 # External Links
 $(_doc_external("KSP/PCHPDDMSetSTShareSubKSP"))
 """
-function PCHPDDMSetSTShareSubKSP(petsclib::PetscLibType, pc::PC, share::PetscBool) end
+function PCHPDDMSetSTShareSubKSP(petsclib::PetscLibType, pc::PC, share::PetscBool)
+    error("PCHPDDMSetSTShareSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCHPDDMSetSTShareSubKSP(petsclib::$UnionPetscLib, pc::PC, share::PetscBool )
 
@@ -7705,7 +8145,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPREAMSSetInteriorNodes"))
 """
-function PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::PC, interior::AbstractPetscVec) end
+function PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::PC, interior::AbstractPetscVec)
+    error("PCHYPREAMSSetInteriorNodes: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPREAMSSetInteriorNodes(petsclib::$UnionPetscLib, pc::PC, interior::AbstractPetscVec )
 
@@ -7740,7 +8182,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCHYPREGetCFMarkers"))
 """
-function PCHYPREGetCFMarkers(petsclib::PetscLibType, pc::PC) end
+function PCHYPREGetCFMarkers(petsclib::PetscLibType, pc::PC)
+    error("PCHYPREGetCFMarkers: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPREGetCFMarkers(petsclib::$UnionPetscLib, pc::PC )
 	n_per_level_ = Ref{Ptr{$PetscInt}}()
@@ -7776,7 +8220,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPREGetType"))
 """
-function PCHYPREGetType(petsclib::PetscLibType, pc::PC) end
+function PCHYPREGetType(petsclib::PetscLibType, pc::PC)
+    error("PCHYPREGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPREGetType(petsclib::$UnionPetscLib, pc::PC )
 	name_ = Ref{Ptr{Cchar}}()
@@ -7810,7 +8256,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPRESetAlphaPoissonMatrix"))
 """
-function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) end
+function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat)
+    error("PCHYPRESetAlphaPoissonMatrix: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPRESetAlphaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
 
@@ -7842,7 +8290,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPRESetBetaPoissonMatrix"))
 """
-function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) end
+function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat)
+    error("PCHYPRESetBetaPoissonMatrix: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPRESetBetaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
 
@@ -7874,7 +8324,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPRESetDiscreteCurl"))
 """
-function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::PC, C::AbstractPetscMat) end
+function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::PC, C::AbstractPetscMat)
+    error("PCHYPRESetDiscreteCurl: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPRESetDiscreteCurl(petsclib::$UnionPetscLib, pc::PC, C::AbstractPetscMat )
 
@@ -7906,7 +8358,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPRESetDiscreteGradient"))
 """
-function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat) end
+function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat)
+    error("PCHYPRESetDiscreteGradient: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPRESetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::AbstractPetscMat )
 
@@ -7940,7 +8394,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPRESetEdgeConstantVectors"))
 """
-function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec) end
+function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec)
+    error("PCHYPRESetEdgeConstantVectors: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPRESetEdgeConstantVectors(petsclib::$UnionPetscLib, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec )
 
@@ -7976,7 +8432,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPRESetInterpolations"))
 """
-function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::PC, dim::PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat}) end
+function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::PC, dim::Integer, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat})
+    error("PCHYPRESetInterpolations: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPRESetInterpolations(petsclib::$UnionPetscLib, pc::PC, dim::$PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat} )
 
@@ -8009,7 +8467,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCHYPRESetType"))
 """
-function PCHYPRESetType(petsclib::PetscLibType, pc::PC, name::String) end
+function PCHYPRESetType(petsclib::PetscLibType, pc::PC, name::String)
+    error("PCHYPRESetType: no generated method for these argument types")
+end
 
 @for_petsc function PCHYPRESetType(petsclib::$UnionPetscLib, pc::PC, name::String )
 
@@ -8044,7 +8504,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCISApplyInvSchur"))
 """
-function PCISApplyInvSchur(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec) end
+function PCISApplyInvSchur(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec)
+    error("PCISApplyInvSchur: no generated method for these argument types")
+end
 
 @for_petsc function PCISApplyInvSchur(petsclib::$UnionPetscLib, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec )
 
@@ -8080,7 +8542,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCISApplySchur"))
 """
-function PCISApplySchur(petsclib::PetscLibType, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec) end
+function PCISApplySchur(petsclib::PetscLibType, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec)
+    error("PCISApplySchur: no generated method for these argument types")
+end
 
 @for_petsc function PCISApplySchur(petsclib::$UnionPetscLib, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec )
 
@@ -8111,7 +8575,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCISInitialize"))
 """
-function PCISInitialize(petsclib::PetscLibType, pc::PC) end
+function PCISInitialize(petsclib::PetscLibType, pc::PC)
+    error("PCISInitialize: no generated method for these argument types")
+end
 
 @for_petsc function PCISInitialize(petsclib::$UnionPetscLib, pc::PC )
 
@@ -8141,7 +8607,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCISReset"))
 """
-function PCISReset(petsclib::PetscLibType, pc::PC) end
+function PCISReset(petsclib::PetscLibType, pc::PC)
+    error("PCISReset: no generated method for these argument types")
+end
 
 @for_petsc function PCISReset(petsclib::$UnionPetscLib, pc::PC )
 
@@ -8178,7 +8646,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCISScatterArrayNToVecB"))
 """
-function PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::PC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode) end
+function PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::PC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode)
+    error("PCISScatterArrayNToVecB: no generated method for these argument types")
+end
 
 @for_petsc function PCISScatterArrayNToVecB(petsclib::$UnionPetscLib, pc::PC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode )
 	array_N_ = Ref{$PetscScalar}()
@@ -8214,7 +8684,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCISSetSubdomainDiagonalScaling"))
 """
-function PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::PC, scaling_factors::AbstractPetscVec) end
+function PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::PC, scaling_factors::AbstractPetscVec)
+    error("PCISSetSubdomainDiagonalScaling: no generated method for these argument types")
+end
 
 @for_petsc function PCISSetSubdomainDiagonalScaling(petsclib::$UnionPetscLib, pc::PC, scaling_factors::AbstractPetscVec )
 
@@ -8248,7 +8720,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCISSetSubdomainScalingFactor"))
 """
-function PCISSetSubdomainScalingFactor(petsclib::PetscLibType, pc::PC, scal::PetscScalar) end
+function PCISSetSubdomainScalingFactor(petsclib::PetscLibType, pc::PC, scal::Number)
+    error("PCISSetSubdomainScalingFactor: no generated method for these argument types")
+end
 
 @for_petsc function PCISSetSubdomainScalingFactor(petsclib::$UnionPetscLib, pc::PC, scal::$PetscScalar )
 
@@ -8281,7 +8755,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCISSetUp"))
 """
-function PCISSetUp(petsclib::PetscLibType, pc::PC, computematrices::PetscBool, computesolvers::PetscBool) end
+function PCISSetUp(petsclib::PetscLibType, pc::PC, computematrices::PetscBool, computesolvers::PetscBool)
+    error("PCISSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PCISSetUp(petsclib::$UnionPetscLib, pc::PC, computematrices::PetscBool, computesolvers::PetscBool )
 
@@ -8316,7 +8792,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCISSetUseStiffnessScaling"))
 """
-function PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::PC, use::PetscBool) end
+function PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::PC, use::PetscBool)
+    error("PCISSetUseStiffnessScaling: no generated method for these argument types")
+end
 
 @for_petsc function PCISSetUseStiffnessScaling(petsclib::$UnionPetscLib, pc::PC, use::PetscBool )
 
@@ -8344,7 +8822,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/PCInitializePackage"))
 """
-function PCInitializePackage(petsclib::PetscLibType) end
+function PCInitializePackage(petsclib::PetscLibType)
+    error("PCInitializePackage: no generated method for these argument types")
+end
 
 @for_petsc function PCInitializePackage(petsclib::$UnionPetscLib)
 
@@ -8378,7 +8858,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCJacobiGetDiagonal"))
 """
-function PCJacobiGetDiagonal(petsclib::PetscLibType, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec) end
+function PCJacobiGetDiagonal(petsclib::PetscLibType, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec)
+    error("PCJacobiGetDiagonal: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiGetDiagonal(petsclib::$UnionPetscLib, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec )
 
@@ -8415,7 +8897,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCJacobiGetFixDiagonal"))
 """
-function PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::PC) end
+function PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::PC)
+    error("PCJacobiGetFixDiagonal: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiGetFixDiagonal(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -8451,7 +8935,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCJacobiGetRowl1Scale"))
 """
-function PCJacobiGetRowl1Scale(petsclib::PetscLibType, pc::PC) end
+function PCJacobiGetRowl1Scale(petsclib::PetscLibType, pc::PC)
+    error("PCJacobiGetRowl1Scale: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiGetRowl1Scale(petsclib::$UnionPetscLib, pc::PC )
 	scale_ = Ref{$PetscReal}()
@@ -8487,7 +8973,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCJacobiGetType"))
 """
-function PCJacobiGetType(petsclib::PetscLibType, pc::PC) end
+function PCJacobiGetType(petsclib::PetscLibType, pc::PC)
+    error("PCJacobiGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCJacobiType}()
@@ -8524,7 +9012,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCJacobiGetUseAbs"))
 """
-function PCJacobiGetUseAbs(petsclib::PetscLibType, pc::PC) end
+function PCJacobiGetUseAbs(petsclib::PetscLibType, pc::PC)
+    error("PCJacobiGetUseAbs: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiGetUseAbs(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -8559,7 +9049,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PC/PCJacobiSetFixDiagonal"))
 """
-function PCJacobiSetFixDiagonal(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCJacobiSetFixDiagonal(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCJacobiSetFixDiagonal: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiSetFixDiagonal(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -8595,7 +9087,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCJacobiSetRowl1Scale"))
 """
-function PCJacobiSetRowl1Scale(petsclib::PetscLibType, pc::PC, scale::PetscReal) end
+function PCJacobiSetRowl1Scale(petsclib::PetscLibType, pc::PC, scale::Real)
+    error("PCJacobiSetRowl1Scale: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiSetRowl1Scale(petsclib::$UnionPetscLib, pc::PC, scale::$PetscReal )
 
@@ -8631,7 +9125,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCJacobiSetType"))
 """
-function PCJacobiSetType(petsclib::PetscLibType, pc::PC, type::PCJacobiType) end
+function PCJacobiSetType(petsclib::PetscLibType, pc::PC, type::PCJacobiType)
+    error("PCJacobiSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiSetType(petsclib::$UnionPetscLib, pc::PC, type::PCJacobiType )
 
@@ -8665,7 +9161,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PC/PCJacobiSetUseAbs"))
 """
-function PCJacobiSetUseAbs(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCJacobiSetUseAbs(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCJacobiSetUseAbs: no generated method for these argument types")
+end
 
 @for_petsc function PCJacobiSetUseAbs(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -8697,7 +9195,9 @@ Output Parameter:
 # External Links
 $(_doc_external("PC/PCKSPGetKSP"))
 """
-function PCKSPGetKSP(petsclib::PetscLibType, pc::PC) end
+function PCKSPGetKSP(petsclib::PetscLibType, pc::PC)
+    error("PCKSPGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCKSPGetKSP(petsclib::$UnionPetscLib, pc::PC )
 	ksp_ = Ref{CKSP}()
@@ -8731,7 +9231,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCKSPSetKSP"))
 """
-function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
+function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+    error("PCKSPSetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
@@ -8760,7 +9262,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCLMVMClearIS"))
 """
-function PCLMVMClearIS(petsclib::PetscLibType, pc::PC) end
+function PCLMVMClearIS(petsclib::PetscLibType, pc::PC)
+    error("PCLMVMClearIS: no generated method for these argument types")
+end
 
 @for_petsc function PCLMVMClearIS(petsclib::$UnionPetscLib, pc::PC )
 
@@ -8792,7 +9296,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCLMVMGetMatLMVM"))
 """
-function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::PC) end
+function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::PC)
+    error("PCLMVMGetMatLMVM: no generated method for these argument types")
+end
 
 @for_petsc function PCLMVMGetMatLMVM(petsclib::$UnionPetscLib, pc::PC )
 	B_ = Ref{CMat}()
@@ -8824,7 +9330,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCLMVMSetIS"))
 """
-function PCLMVMSetIS(petsclib::PetscLibType, pc::PC, inactive::AbstractIS) end
+function PCLMVMSetIS(petsclib::PetscLibType, pc::PC, inactive::AbstractIS)
+    error("PCLMVMSetIS: no generated method for these argument types")
+end
 
 @for_petsc function PCLMVMSetIS(petsclib::$UnionPetscLib, pc::PC, inactive::AbstractIS )
 
@@ -8854,7 +9362,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCLMVMSetMatLMVM"))
 """
-function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat) end
+function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat)
+    error("PCLMVMSetMatLMVM: no generated method for these argument types")
+end
 
 @for_petsc function PCLMVMSetMatLMVM(petsclib::$UnionPetscLib, pc::PC, B::AbstractPetscMat )
 
@@ -8884,7 +9394,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCLMVMSetUpdateVec"))
 """
-function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::PC, X::AbstractPetscVec) end
+function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::PC, X::AbstractPetscVec)
+    error("PCLMVMSetUpdateVec: no generated method for these argument types")
+end
 
 @for_petsc function PCLMVMSetUpdateVec(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscVec )
 
@@ -8917,7 +9429,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCLoad"))
 """
-function PCLoad(petsclib::PetscLibType, newdm::PC, viewer::PetscViewer) end
+function PCLoad(petsclib::PetscLibType, newdm::PC, viewer::PetscViewer)
+    error("PCLoad: no generated method for these argument types")
+end
 
 @for_petsc function PCLoad(petsclib::$UnionPetscLib, newdm::PC, viewer::PetscViewer )
 
@@ -8951,7 +9465,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGGalerkinGetMatProductAlgorithm"))
 """
-function PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::PC) end
+function PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::PC)
+    error("PCMGGalerkinGetMatProductAlgorithm: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGalerkinGetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::PC )
 	name_ = Ref{Ptr{Cchar}}()
@@ -8988,7 +9504,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGGalerkinSetMatProductAlgorithm"))
 """
-function PCMGGalerkinSetMatProductAlgorithm(petsclib::PetscLibType, pc::PC, name::String) end
+function PCMGGalerkinSetMatProductAlgorithm(petsclib::PetscLibType, pc::PC, name::String)
+    error("PCMGGalerkinSetMatProductAlgorithm: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGalerkinSetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::PC, name::String )
 
@@ -9022,7 +9540,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGGetAdaptCR"))
 """
-function PCMGGetAdaptCR(petsclib::PetscLibType, pc::PC) end
+function PCMGGetAdaptCR(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetAdaptCR: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetAdaptCR(petsclib::$UnionPetscLib, pc::PC )
 	cr_ = Ref{PetscBool}()
@@ -9058,7 +9578,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGGetAdaptCoarseSpaceType"))
 """
-function PCMGGetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC) end
+function PCMGGetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetAdaptCoarseSpaceType: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::PC )
 	ctype_ = Ref{PCMGCoarseSpaceType}()
@@ -9095,7 +9617,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGGetAdaptInterpolation"))
 """
-function PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::PC) end
+function PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetAdaptInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetAdaptInterpolation(petsclib::$UnionPetscLib, pc::PC )
 	adapt_ = Ref{PetscBool}()
@@ -9131,7 +9655,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetCoarseSolve"))
 """
-function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::PC) end
+function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetCoarseSolve: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetCoarseSolve(petsclib::$UnionPetscLib, pc::PC )
 	ksp_ = Ref{CKSP}()
@@ -9167,7 +9693,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetCoarseSpaceConstructor"))
 """
-function PCMGGetCoarseSpaceConstructor(petsclib::PetscLibType, name::String) end
+function PCMGGetCoarseSpaceConstructor(petsclib::PetscLibType, name::String)
+    error("PCMGGetCoarseSpaceConstructor: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetCoarseSpaceConstructor(petsclib::$UnionPetscLib, name::String )
 	fnc_ = Ref{Ptr{Cvoid}}()
@@ -9203,7 +9731,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGGetGalerkin"))
 """
-function PCMGGetGalerkin(petsclib::PetscLibType, pc::PC) end
+function PCMGGetGalerkin(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetGalerkin: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetGalerkin(petsclib::$UnionPetscLib, pc::PC )
 	galerkin_ = Ref{PCMGGalerkinType}()
@@ -9238,7 +9768,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetGridComplexity"))
 """
-function PCMGGetGridComplexity(petsclib::PetscLibType, pc::PC) end
+function PCMGGetGridComplexity(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetGridComplexity: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetGridComplexity(petsclib::$UnionPetscLib, pc::PC )
 	gc_ = Ref{$PetscReal}()
@@ -9278,7 +9810,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetInjection"))
 """
-function PCMGGetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt) end
+function PCMGGetInjection(petsclib::PetscLibType, pc::PC, l::Integer)
+    error("PCMGGetInjection: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
 	mat_ = Ref{CMat}()
@@ -9316,7 +9850,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetInterpolation"))
 """
-function PCMGGetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt) end
+function PCMGGetInterpolation(petsclib::PetscLibType, pc::PC, l::Integer)
+    error("PCMGGetInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
 	mat_ = Ref{CMat}()
@@ -9352,7 +9888,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetLevels"))
 """
-function PCMGGetLevels(petsclib::PetscLibType, pc::PC) end
+function PCMGGetLevels(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetLevels: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetLevels(petsclib::$UnionPetscLib, pc::PC )
 	levels_ = Ref{$PetscInt}()
@@ -9387,7 +9925,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetRScale"))
 """
-function PCMGGetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::AbstractPetscVec) end
+function PCMGGetRScale(petsclib::PetscLibType, pc::PC, l::Integer, rscale::AbstractPetscVec)
+    error("PCMGGetRScale: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::AbstractPetscVec )
 	rscale_ = Ref(rscale.ptr)
@@ -9425,7 +9965,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetRestriction"))
 """
-function PCMGGetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt) end
+function PCMGGetRestriction(petsclib::PetscLibType, pc::PC, l::Integer)
+    error("PCMGGetRestriction: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
 	mat_ = Ref{CMat}()
@@ -9463,7 +10005,9 @@ Output Parameter:
 # External Links
 $(_doc_external("PC/PCMGGetSmoother"))
 """
-function PCMGGetSmoother(petsclib::PetscLibType, pc::PC, l::PetscInt) end
+function PCMGGetSmoother(petsclib::PetscLibType, pc::PC, l::Integer)
+    error("PCMGGetSmoother: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetSmoother(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
 	ksp_ = Ref{CKSP}()
@@ -9501,7 +10045,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetSmootherDown"))
 """
-function PCMGGetSmootherDown(petsclib::PetscLibType, pc::PC, l::PetscInt) end
+function PCMGGetSmootherDown(petsclib::PetscLibType, pc::PC, l::Integer)
+    error("PCMGGetSmootherDown: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetSmootherDown(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
 	ksp_ = Ref{CKSP}()
@@ -9539,7 +10085,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetSmootherUp"))
 """
-function PCMGGetSmootherUp(petsclib::PetscLibType, pc::PC, l::PetscInt) end
+function PCMGGetSmootherUp(petsclib::PetscLibType, pc::PC, l::Integer)
+    error("PCMGGetSmootherUp: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetSmootherUp(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
 	ksp_ = Ref{CKSP}()
@@ -9575,7 +10123,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGGetType"))
 """
-function PCMGGetType(petsclib::PetscLibType, pc::PC) end
+function PCMGGetType(petsclib::PetscLibType, pc::PC)
+    error("PCMGGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCMGGetType(petsclib::$UnionPetscLib, pc::PC )
 	type_ = Ref{PCMGType}()
@@ -9613,7 +10163,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMGMatResidualDefault"))
 """
-function PCMGMatResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat) end
+function PCMGMatResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat)
+    error("PCMGMatResidualDefault: no generated method for these argument types")
+end
 
 @for_petsc function PCMGMatResidualDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat )
 
@@ -9649,7 +10201,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMGMatResidualTransposeDefault"))
 """
-function PCMGMatResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat) end
+function PCMGMatResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat)
+    error("PCMGMatResidualTransposeDefault: no generated method for these argument types")
+end
 
 @for_petsc function PCMGMatResidualTransposeDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat )
 
@@ -9685,7 +10239,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGMultiplicativeSetCycles"))
 """
-function PCMGMultiplicativeSetCycles(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCMGMultiplicativeSetCycles(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCMGMultiplicativeSetCycles: no generated method for these argument types")
+end
 
 @for_petsc function PCMGMultiplicativeSetCycles(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -9717,7 +10273,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGRegisterCoarseSpaceConstructor"))
 """
-function PCMGRegisterCoarseSpaceConstructor(petsclib::PetscLibType, name::String, fnc::Ptr{Cvoid}) end
+function PCMGRegisterCoarseSpaceConstructor(petsclib::PetscLibType, name::String, fnc::Ptr{Cvoid})
+    error("PCMGRegisterCoarseSpaceConstructor: no generated method for these argument types")
+end
 
 @for_petsc function PCMGRegisterCoarseSpaceConstructor(petsclib::$UnionPetscLib, name::String, fnc::Ptr{Cvoid} )
 
@@ -9753,7 +10311,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMGResidualDefault"))
 """
-function PCMGResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) end
+function PCMGResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec)
+    error("PCMGResidualDefault: no generated method for these argument types")
+end
 
 @for_petsc function PCMGResidualDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
 
@@ -9789,7 +10349,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMGResidualTransposeDefault"))
 """
-function PCMGResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) end
+function PCMGResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec)
+    error("PCMGResidualTransposeDefault: no generated method for these argument types")
+end
 
 @for_petsc function PCMGResidualTransposeDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
 
@@ -9824,7 +10386,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGSetAdaptCR"))
 """
-function PCMGSetAdaptCR(petsclib::PetscLibType, pc::PC, cr::PetscBool) end
+function PCMGSetAdaptCR(petsclib::PetscLibType, pc::PC, cr::PetscBool)
+    error("PCMGSetAdaptCR: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetAdaptCR(petsclib::$UnionPetscLib, pc::PC, cr::PetscBool )
 
@@ -9862,7 +10426,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGSetAdaptCoarseSpaceType"))
 """
-function PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC, ctype::PCMGCoarseSpaceType) end
+function PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC, ctype::PCMGCoarseSpaceType)
+    error("PCMGSetAdaptCoarseSpaceType: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::PC, ctype::PCMGCoarseSpaceType )
 
@@ -9899,7 +10465,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGSetAdaptInterpolation"))
 """
-function PCMGSetAdaptInterpolation(petsclib::PetscLibType, pc::PC, adapt::PetscBool) end
+function PCMGSetAdaptInterpolation(petsclib::PetscLibType, pc::PC, adapt::PetscBool)
+    error("PCMGSetAdaptInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetAdaptInterpolation(petsclib::$UnionPetscLib, pc::PC, adapt::PetscBool )
 
@@ -9935,7 +10503,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetCycleType"))
 """
-function PCMGSetCycleType(petsclib::PetscLibType, pc::PC, n::PCMGCycleType) end
+function PCMGSetCycleType(petsclib::PetscLibType, pc::PC, n::PCMGCycleType)
+    error("PCMGSetCycleType: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetCycleType(petsclib::$UnionPetscLib, pc::PC, n::PCMGCycleType )
 
@@ -9968,7 +10538,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetCycleTypeOnLevel"))
 """
-function PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::PC, l::PetscInt, c::PCMGCycleType) end
+function PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::PC, l::Integer, c::PCMGCycleType)
+    error("PCMGSetCycleTypeOnLevel: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetCycleTypeOnLevel(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::PCMGCycleType )
 
@@ -10003,7 +10575,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetDistinctSmoothUp"))
 """
-function PCMGSetDistinctSmoothUp(petsclib::PetscLibType, pc::PC) end
+function PCMGSetDistinctSmoothUp(petsclib::PetscLibType, pc::PC)
+    error("PCMGSetDistinctSmoothUp: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetDistinctSmoothUp(petsclib::$UnionPetscLib, pc::PC )
 
@@ -10039,7 +10613,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGSetGalerkin"))
 """
-function PCMGSetGalerkin(petsclib::PetscLibType, pc::PC, use::PCMGGalerkinType) end
+function PCMGSetGalerkin(petsclib::PetscLibType, pc::PC, use::PCMGGalerkinType)
+    error("PCMGSetGalerkin: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetGalerkin(petsclib::$UnionPetscLib, pc::PC, use::PCMGGalerkinType )
 
@@ -10073,7 +10649,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetInjection"))
 """
-function PCMGSetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
+function PCMGSetInjection(petsclib::PetscLibType, pc::PC, l::Integer, mat::AbstractPetscMat)
+    error("PCMGSetInjection: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 
@@ -10107,7 +10685,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetInterpolation"))
 """
-function PCMGSetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
+function PCMGSetInterpolation(petsclib::PetscLibType, pc::PC, l::Integer, mat::AbstractPetscMat)
+    error("PCMGSetInterpolation: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 
@@ -10147,7 +10727,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMGSetLevels"))
 """
-function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) end
+function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer)
+    error("PCMGSetLevels: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt )
 	comms_ = Ref{MPI.MPI_Comm}()
@@ -10186,7 +10768,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetNumberSmooth"))
 """
-function PCMGSetNumberSmooth(petsclib::PetscLibType, pc::PC, n::PetscInt) end
+function PCMGSetNumberSmooth(petsclib::PetscLibType, pc::PC, n::Integer)
+    error("PCMGSetNumberSmooth: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetNumberSmooth(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
 
@@ -10220,7 +10804,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetOperators"))
 """
-function PCMGSetOperators(petsclib::PetscLibType, pc::PC, l::PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) end
+function PCMGSetOperators(petsclib::PetscLibType, pc::PC, l::Integer, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
+    error("PCMGSetOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetOperators(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
@@ -10253,7 +10839,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetR"))
 """
-function PCMGSetR(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) end
+function PCMGSetR(petsclib::PetscLibType, pc::PC, l::Integer, c::AbstractPetscVec)
+    error("PCMGSetR: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetR(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
 
@@ -10286,7 +10874,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetRScale"))
 """
-function PCMGSetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::AbstractPetscVec) end
+function PCMGSetRScale(petsclib::PetscLibType, pc::PC, l::Integer, rscale::AbstractPetscVec)
+    error("PCMGSetRScale: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::AbstractPetscVec )
 
@@ -10321,7 +10911,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetResidual"))
 """
-function PCMGSetResidual(petsclib::PetscLibType, pc::PC, l::PetscInt, residual::external, mat::AbstractPetscMat) end
+function PCMGSetResidual(petsclib::PetscLibType, pc::PC, l::Integer, residual::external, mat::AbstractPetscMat)
+    error("PCMGSetResidual: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetResidual(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residual::external, mat::AbstractPetscMat )
 
@@ -10357,7 +10949,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetResidualTranspose"))
 """
-function PCMGSetResidualTranspose(petsclib::PetscLibType, pc::PC, l::PetscInt, residualt::external, mat::AbstractPetscMat) end
+function PCMGSetResidualTranspose(petsclib::PetscLibType, pc::PC, l::Integer, residualt::external, mat::AbstractPetscMat)
+    error("PCMGSetResidualTranspose: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetResidualTranspose(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residualt::external, mat::AbstractPetscMat )
 
@@ -10391,7 +10985,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetRestriction"))
 """
-function PCMGSetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
+function PCMGSetRestriction(petsclib::PetscLibType, pc::PC, l::Integer, mat::AbstractPetscMat)
+    error("PCMGSetRestriction: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 
@@ -10424,7 +11020,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetRhs"))
 """
-function PCMGSetRhs(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) end
+function PCMGSetRhs(petsclib::PetscLibType, pc::PC, l::Integer, c::AbstractPetscVec)
+    error("PCMGSetRhs: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetRhs(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
 
@@ -10460,7 +11058,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetType"))
 """
-function PCMGSetType(petsclib::PetscLibType, pc::PC, form::PCMGType) end
+function PCMGSetType(petsclib::PetscLibType, pc::PC, form::PCMGType)
+    error("PCMGSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetType(petsclib::$UnionPetscLib, pc::PC, form::PCMGType )
 
@@ -10493,7 +11093,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMGSetX"))
 """
-function PCMGSetX(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) end
+function PCMGSetX(petsclib::PetscLibType, pc::PC, l::Integer, c::AbstractPetscVec)
+    error("PCMGSetX: no generated method for these argument types")
+end
 
 @for_petsc function PCMGSetX(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
 
@@ -10527,7 +11129,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCMPIGetKSP"))
 """
-function PCMPIGetKSP(petsclib::PetscLibType, pc::PC) end
+function PCMPIGetKSP(petsclib::PetscLibType, pc::PC)
+    error("PCMPIGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCMPIGetKSP(petsclib::$UnionPetscLib, pc::PC )
 	innerksp_ = Ref{CKSP}()
@@ -10550,7 +11154,9 @@ end
 # External Links
 $(_doc_external("Sys/PCMPIServerAddressesDestroy"))
 """
-function PCMPIServerAddressesDestroy(petsclib::PetscLibType, ctx::Ptr{Ptr{Cvoid}}) end
+function PCMPIServerAddressesDestroy(petsclib::PetscLibType, ctx::Ptr{Ptr{Cvoid}})
+    error("PCMPIServerAddressesDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PCMPIServerAddressesDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Ptr{Cvoid}} )
 
@@ -10584,7 +11190,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMPIServerBegin"))
 """
-function PCMPIServerBegin(petsclib::PetscLibType) end
+function PCMPIServerBegin(petsclib::PetscLibType)
+    error("PCMPIServerBegin: no generated method for these argument types")
+end
 
 @for_petsc function PCMPIServerBegin(petsclib::$UnionPetscLib)
 
@@ -10612,7 +11220,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMPIServerEnd"))
 """
-function PCMPIServerEnd(petsclib::PetscLibType) end
+function PCMPIServerEnd(petsclib::PetscLibType)
+    error("PCMPIServerEnd: no generated method for these argument types")
+end
 
 @for_petsc function PCMPIServerEnd(petsclib::$UnionPetscLib)
 
@@ -10646,7 +11256,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMatApply"))
 """
-function PCMatApply(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) end
+function PCMatApply(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat)
+    error("PCMatApply: no generated method for these argument types")
+end
 
 @for_petsc function PCMatApply(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat )
 
@@ -10681,7 +11293,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCMatApplyTranspose"))
 """
-function PCMatApplyTranspose(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) end
+function PCMatApplyTranspose(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat)
+    error("PCMatApplyTranspose: no generated method for these argument types")
+end
 
 @for_petsc function PCMatApplyTranspose(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat )
 
@@ -10715,7 +11329,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMatGetApplyOperation"))
 """
-function PCMatGetApplyOperation(petsclib::PetscLibType, pc::PC) end
+function PCMatGetApplyOperation(petsclib::PetscLibType, pc::PC)
+    error("PCMatGetApplyOperation: no generated method for these argument types")
+end
 
 @for_petsc function PCMatGetApplyOperation(petsclib::$UnionPetscLib, pc::PC )
 	matop_ = Ref{MatOperation}()
@@ -10749,7 +11365,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCMatSetApplyOperation"))
 """
-function PCMatSetApplyOperation(petsclib::PetscLibType, pc::PC, matop::MatOperation) end
+function PCMatSetApplyOperation(petsclib::PetscLibType, pc::PC, matop::MatOperation)
+    error("PCMatSetApplyOperation: no generated method for these argument types")
+end
 
 @for_petsc function PCMatSetApplyOperation(petsclib::$UnionPetscLib, pc::PC, matop::MatOperation )
 
@@ -10793,7 +11411,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCModifySubMatrices"))
 """
-function PCModifySubMatrices(petsclib::PetscLibType, pc::PC, nsub::PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid}) end
+function PCModifySubMatrices(petsclib::PetscLibType, pc::PC, nsub::Integer, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid})
+    error("PCModifySubMatrices: no generated method for these argument types")
+end
 
 @for_petsc function PCModifySubMatrices(petsclib::$UnionPetscLib, pc::PC, nsub::$PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid} )
 
@@ -10834,7 +11454,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCPARMSSetFill"))
 """
-function PCPARMSSetFill(petsclib::PetscLibType, pc::PC, lfil0::PetscInt, lfil1::PetscInt, lfil2::PetscInt) end
+function PCPARMSSetFill(petsclib::PetscLibType, pc::PC, lfil0::Integer, lfil1::Integer, lfil2::Integer)
+    error("PCPARMSSetFill: no generated method for these argument types")
+end
 
 @for_petsc function PCPARMSSetFill(petsclib::$UnionPetscLib, pc::PC, lfil0::$PetscInt, lfil1::$PetscInt, lfil2::$PetscInt )
 
@@ -10863,7 +11485,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCPARMSSetGlobal"))
 """
-function PCPARMSSetGlobal(petsclib::PetscLibType, pc::PC, type::PCPARMSGlobalType) end
+function PCPARMSSetGlobal(petsclib::PetscLibType, pc::PC, type::PCPARMSGlobalType)
+    error("PCPARMSSetGlobal: no generated method for these argument types")
+end
 
 @for_petsc function PCPARMSSetGlobal(petsclib::$UnionPetscLib, pc::PC, type::PCPARMSGlobalType )
 
@@ -10893,7 +11517,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCPARMSSetLocal"))
 """
-function PCPARMSSetLocal(petsclib::PetscLibType, pc::PC, type::PCPARMSLocalType) end
+function PCPARMSSetLocal(petsclib::PetscLibType, pc::PC, type::PCPARMSLocalType)
+    error("PCPARMSSetLocal: no generated method for these argument types")
+end
 
 @for_petsc function PCPARMSSetLocal(petsclib::$UnionPetscLib, pc::PC, type::PCPARMSLocalType )
 
@@ -10930,7 +11556,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCPARMSSetNonsymPerm"))
 """
-function PCPARMSSetNonsymPerm(petsclib::PetscLibType, pc::PC, nonsym::PetscBool) end
+function PCPARMSSetNonsymPerm(petsclib::PetscLibType, pc::PC, nonsym::PetscBool)
+    error("PCPARMSSetNonsymPerm: no generated method for these argument types")
+end
 
 @for_petsc function PCPARMSSetNonsymPerm(petsclib::$UnionPetscLib, pc::PC, nonsym::PetscBool )
 
@@ -10966,7 +11594,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCPARMSSetSolveRestart"))
 """
-function PCPARMSSetSolveRestart(petsclib::PetscLibType, pc::PC, restart::PetscInt) end
+function PCPARMSSetSolveRestart(petsclib::PetscLibType, pc::PC, restart::Integer)
+    error("PCPARMSSetSolveRestart: no generated method for these argument types")
+end
 
 @for_petsc function PCPARMSSetSolveRestart(petsclib::$UnionPetscLib, pc::PC, restart::$PetscInt )
 
@@ -11004,7 +11634,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCPARMSSetSolveTolerances"))
 """
-function PCPARMSSetSolveTolerances(petsclib::PetscLibType, pc::PC, tol::PetscReal, maxits::PetscInt) end
+function PCPARMSSetSolveTolerances(petsclib::PetscLibType, pc::PC, tol::Real, maxits::Integer)
+    error("PCPARMSSetSolveTolerances: no generated method for these argument types")
+end
 
 @for_petsc function PCPARMSSetSolveTolerances(petsclib::$UnionPetscLib, pc::PC, tol::$PetscReal, maxits::$PetscInt )
 
@@ -11025,7 +11657,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchGetCellNumbering"))
 """
-function PCPatchGetCellNumbering(petsclib::PetscLibType, pc::PC, cellNumbering::PetscSection) end
+function PCPatchGetCellNumbering(petsclib::PetscLibType, pc::PC, cellNumbering::PetscSection)
+    error("PCPatchGetCellNumbering: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchGetCellNumbering(petsclib::$UnionPetscLib, pc::PC, cellNumbering::PetscSection )
 
@@ -11046,7 +11680,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchGetPartitionOfUnity"))
 """
-function PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::PC) end
+function PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::PC)
+    error("PCPatchGetPartitionOfUnity: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchGetPartitionOfUnity(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -11069,7 +11705,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchGetPrecomputeElementTensors"))
 """
-function PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC) end
+function PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC)
+    error("PCPatchGetPrecomputeElementTensors: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchGetPrecomputeElementTensors(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -11092,7 +11730,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchGetSaveOperators"))
 """
-function PCPatchGetSaveOperators(petsclib::PetscLibType, pc::PC) end
+function PCPatchGetSaveOperators(petsclib::PetscLibType, pc::PC)
+    error("PCPatchGetSaveOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchGetSaveOperators(petsclib::$UnionPetscLib, pc::PC )
 	flg_ = Ref{PetscBool}()
@@ -11115,7 +11755,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchGetSubKSP"))
 """
-function PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
+function PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+    error("PCPatchGetSubKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	npatch_ = Ref{$PetscInt}()
@@ -11138,7 +11780,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchGetSubMatType"))
 """
-function PCPatchGetSubMatType(petsclib::PetscLibType, pc::PC) end
+function PCPatchGetSubMatType(petsclib::PetscLibType, pc::PC)
+    error("PCPatchGetSubMatType: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchGetSubMatType(petsclib::$UnionPetscLib, pc::PC )
 	sub_mat_type_ = Ref{MatType}()
@@ -11161,7 +11805,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchSetCellNumbering"))
 """
-function PCPatchSetCellNumbering(petsclib::PetscLibType, pc::PC, cellNumbering::PetscSection) end
+function PCPatchSetCellNumbering(petsclib::PetscLibType, pc::PC, cellNumbering::PetscSection)
+    error("PCPatchSetCellNumbering: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetCellNumbering(petsclib::$UnionPetscLib, pc::PC, cellNumbering::PetscSection )
 
@@ -11205,7 +11851,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCPatchSetComputeFunction"))
 """
-function PCPatchSetComputeFunction(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) end
+function PCPatchSetComputeFunction(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+    error("PCPatchSetComputeFunction: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetComputeFunction(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
 
@@ -11249,7 +11897,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCPatchSetComputeFunctionInteriorFacets"))
 """
-function PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) end
+function PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+    error("PCPatchSetComputeFunctionInteriorFacets: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetComputeFunctionInteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
 
@@ -11293,7 +11943,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCPatchSetComputeOperator"))
 """
-function PCPatchSetComputeOperator(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) end
+function PCPatchSetComputeOperator(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+    error("PCPatchSetComputeOperator: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetComputeOperator(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
 
@@ -11337,7 +11989,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCPatchSetComputeOperatorInteriorFacets"))
 """
-function PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) end
+function PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+    error("PCPatchSetComputeOperatorInteriorFacets: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetComputeOperatorInteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
 
@@ -11358,7 +12012,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchSetConstructType"))
 """
-function PCPatchSetConstructType(petsclib::PetscLibType, pc::PC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid}) end
+function PCPatchSetConstructType(petsclib::PetscLibType, pc::PC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid})
+    error("PCPatchSetConstructType: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetConstructType(petsclib::$UnionPetscLib, pc::PC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid} )
 
@@ -11379,7 +12035,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchSetDiscretisationInfo"))
 """
-function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::PetscInt, dms::AbstractPetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) end
+function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::Integer, dms::AbstractPetscDM, cellNodeMap::Integer, numGhostBcs::Integer, numGlobalBcs::Integer)
+    error("PCPatchSetDiscretisationInfo: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::PC, nsubspaces::$PetscInt, dms::AbstractPetscDM, cellNodeMap::$PetscInt, numGhostBcs::$PetscInt, numGlobalBcs::$PetscInt )
 	dms_ = Ref(dms.ptr)
@@ -11412,7 +12070,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchSetPartitionOfUnity"))
 """
-function PCPatchSetPartitionOfUnity(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCPatchSetPartitionOfUnity(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCPatchSetPartitionOfUnity: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetPartitionOfUnity(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -11433,7 +12093,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchSetPrecomputeElementTensors"))
 """
-function PCPatchSetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCPatchSetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCPatchSetPrecomputeElementTensors: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetPrecomputeElementTensors(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -11454,7 +12116,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchSetSaveOperators"))
 """
-function PCPatchSetSaveOperators(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCPatchSetSaveOperators(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCPatchSetSaveOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetSaveOperators(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -11475,7 +12139,9 @@ end
 # External Links
 $(_doc_external("PC/PCPatchSetSubMatType"))
 """
-function PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType) end
+function PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType)
+    error("PCPatchSetSubMatType: no generated method for these argument types")
+end
 
 @for_petsc function PCPatchSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::MatType )
 
@@ -11507,7 +12173,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCPostSolve"))
 """
-function PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
+function PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+    error("PCPostSolve: no generated method for these argument types")
+end
 
 @for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
@@ -11540,7 +12208,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCPreSolve"))
 """
-function PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
+function PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+    error("PCPreSolve: no generated method for these argument types")
+end
 
 @for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
@@ -11574,7 +12244,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCPythonGetType"))
 """
-function PCPythonGetType(petsclib::PetscLibType, pc::PC) end
+function PCPythonGetType(petsclib::PetscLibType, pc::PC)
+    error("PCPythonGetType: no generated method for these argument types")
+end
 
 @for_petsc function PCPythonGetType(petsclib::$UnionPetscLib, pc::PC )
 	pyname_ = Ref{Ptr{Cchar}}()
@@ -11611,7 +12283,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCPythonSetType"))
 """
-function PCPythonSetType(petsclib::PetscLibType, pc::PC, pyname::String) end
+function PCPythonSetType(petsclib::PetscLibType, pc::PC, pyname::String)
+    error("PCPythonSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCPythonSetType(petsclib::$UnionPetscLib, pc::PC, pyname::String )
 
@@ -11645,7 +12319,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCRedistributeGetKSP"))
 """
-function PCRedistributeGetKSP(petsclib::PetscLibType, pc::PC) end
+function PCRedistributeGetKSP(petsclib::PetscLibType, pc::PC)
+    error("PCRedistributeGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCRedistributeGetKSP(petsclib::$UnionPetscLib, pc::PC )
 	innerksp_ = Ref{CKSP}()
@@ -11678,7 +12354,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCReduceFailedReason"))
 """
-function PCReduceFailedReason(petsclib::PetscLibType, pc::PC) end
+function PCReduceFailedReason(petsclib::PetscLibType, pc::PC)
+    error("PCReduceFailedReason: no generated method for these argument types")
+end
 
 @for_petsc function PCReduceFailedReason(petsclib::$UnionPetscLib, pc::PC )
 
@@ -11712,7 +12390,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCRedundantGetKSP"))
 """
-function PCRedundantGetKSP(petsclib::PetscLibType, pc::PC) end
+function PCRedundantGetKSP(petsclib::PetscLibType, pc::PC)
+    error("PCRedundantGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCRedundantGetKSP(petsclib::$UnionPetscLib, pc::PC )
 	innerksp_ = Ref{CKSP}()
@@ -11749,7 +12429,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCRedundantGetOperators"))
 """
-function PCRedundantGetOperators(petsclib::PetscLibType, pc::PC) end
+function PCRedundantGetOperators(petsclib::PetscLibType, pc::PC)
+    error("PCRedundantGetOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCRedundantGetOperators(petsclib::$UnionPetscLib, pc::PC )
 	mat_ = Ref{CMat}()
@@ -11786,7 +12468,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCRedundantSetNumber"))
 """
-function PCRedundantSetNumber(petsclib::PetscLibType, pc::PC, nredundant::PetscInt) end
+function PCRedundantSetNumber(petsclib::PetscLibType, pc::PC, nredundant::Integer)
+    error("PCRedundantSetNumber: no generated method for these argument types")
+end
 
 @for_petsc function PCRedundantSetNumber(petsclib::$UnionPetscLib, pc::PC, nredundant::$PetscInt )
 
@@ -11821,7 +12505,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCRedundantSetScatter"))
 """
-function PCRedundantSetScatter(petsclib::PetscLibType, pc::PC, in::VecScatter, out::VecScatter) end
+function PCRedundantSetScatter(petsclib::PetscLibType, pc::PC, in::VecScatter, out::VecScatter)
+    error("PCRedundantSetScatter: no generated method for these argument types")
+end
 
 @for_petsc function PCRedundantSetScatter(petsclib::$UnionPetscLib, pc::PC, in::VecScatter, out::VecScatter )
 
@@ -11851,7 +12537,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCRegister"))
 """
-function PCRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function PCRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("PCRegister: no generated method for these argument types")
+end
 
 @for_petsc function PCRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -11882,7 +12570,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCReset"))
 """
-function PCReset(petsclib::PetscLibType, pc::PC) end
+function PCReset(petsclib::PetscLibType, pc::PC)
+    error("PCReset: no generated method for these argument types")
+end
 
 @for_petsc function PCReset(petsclib::$UnionPetscLib, pc::PC )
 
@@ -11922,7 +12612,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSORGetIterations"))
 """
-function PCSORGetIterations(petsclib::PetscLibType, pc::PC) end
+function PCSORGetIterations(petsclib::PetscLibType, pc::PC)
+    error("PCSORGetIterations: no generated method for these argument types")
+end
 
 @for_petsc function PCSORGetIterations(petsclib::$UnionPetscLib, pc::PC )
 	its_ = Ref{$PetscInt}()
@@ -11964,7 +12656,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSORGetOmega"))
 """
-function PCSORGetOmega(petsclib::PetscLibType, pc::PC) end
+function PCSORGetOmega(petsclib::PetscLibType, pc::PC)
+    error("PCSORGetOmega: no generated method for these argument types")
+end
 
 @for_petsc function PCSORGetOmega(petsclib::$UnionPetscLib, pc::PC )
 	omega_ = Ref{$PetscReal}()
@@ -11998,7 +12692,9 @@ Output Parameter:
 # External Links
 $(_doc_external("PC/PCSORGetSymmetric"))
 """
-function PCSORGetSymmetric(petsclib::PetscLibType, pc::PC) end
+function PCSORGetSymmetric(petsclib::PetscLibType, pc::PC)
+    error("PCSORGetSymmetric: no generated method for these argument types")
+end
 
 @for_petsc function PCSORGetSymmetric(petsclib::$UnionPetscLib, pc::PC )
 	flag_ = Ref{MatSORType}()
@@ -12038,7 +12734,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSORSetIterations"))
 """
-function PCSORSetIterations(petsclib::PetscLibType, pc::PC, its::PetscInt, lits::PetscInt) end
+function PCSORSetIterations(petsclib::PetscLibType, pc::PC, its::Integer, lits::Integer)
+    error("PCSORSetIterations: no generated method for these argument types")
+end
 
 @for_petsc function PCSORSetIterations(petsclib::$UnionPetscLib, pc::PC, its::$PetscInt, lits::$PetscInt )
 
@@ -12074,7 +12772,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSORSetOmega"))
 """
-function PCSORSetOmega(petsclib::PetscLibType, pc::PC, omega::PetscReal) end
+function PCSORSetOmega(petsclib::PetscLibType, pc::PC, omega::Real)
+    error("PCSORSetOmega: no generated method for these argument types")
+end
 
 @for_petsc function PCSORSetOmega(petsclib::$UnionPetscLib, pc::PC, omega::$PetscReal )
 
@@ -12105,7 +12805,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCSORSetSymmetric"))
 """
-function PCSORSetSymmetric(petsclib::PetscLibType, pc::PC, flag::MatSORType) end
+function PCSORSetSymmetric(petsclib::PetscLibType, pc::PC, flag::MatSORType)
+    error("PCSORSetSymmetric: no generated method for these argument types")
+end
 
 @for_petsc function PCSORSetSymmetric(petsclib::$UnionPetscLib, pc::PC, flag::MatSORType )
 
@@ -12135,7 +12837,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSPAISetBlockSize"))
 """
-function PCSPAISetBlockSize(petsclib::PetscLibType, pc::PC, block_size1::PetscInt) end
+function PCSPAISetBlockSize(petsclib::PetscLibType, pc::PC, block_size1::Integer)
+    error("PCSPAISetBlockSize: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetBlockSize(petsclib::$UnionPetscLib, pc::PC, block_size1::$PetscInt )
 
@@ -12165,7 +12869,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSPAISetCacheSize"))
 """
-function PCSPAISetCacheSize(petsclib::PetscLibType, pc::PC, cache_size::PetscInt) end
+function PCSPAISetCacheSize(petsclib::PetscLibType, pc::PC, cache_size::Integer)
+    error("PCSPAISetCacheSize: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetCacheSize(petsclib::$UnionPetscLib, pc::PC, cache_size::$PetscInt )
 
@@ -12195,7 +12901,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSPAISetEpsilon"))
 """
-function PCSPAISetEpsilon(petsclib::PetscLibType, pc::PC, epsilon1::PetscReal) end
+function PCSPAISetEpsilon(petsclib::PetscLibType, pc::PC, epsilon1::Real)
+    error("PCSPAISetEpsilon: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetEpsilon(petsclib::$UnionPetscLib, pc::PC, epsilon1::$PetscReal )
 
@@ -12225,7 +12933,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSPAISetMax"))
 """
-function PCSPAISetMax(petsclib::PetscLibType, pc::PC, max1::PetscInt) end
+function PCSPAISetMax(petsclib::PetscLibType, pc::PC, max1::Integer)
+    error("PCSPAISetMax: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetMax(petsclib::$UnionPetscLib, pc::PC, max1::$PetscInt )
 
@@ -12255,7 +12965,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSPAISetMaxNew"))
 """
-function PCSPAISetMaxNew(petsclib::PetscLibType, pc::PC, maxnew1::PetscInt) end
+function PCSPAISetMaxNew(petsclib::PetscLibType, pc::PC, maxnew1::Integer)
+    error("PCSPAISetMaxNew: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetMaxNew(petsclib::$UnionPetscLib, pc::PC, maxnew1::$PetscInt )
 
@@ -12284,7 +12996,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCSPAISetNBSteps"))
 """
-function PCSPAISetNBSteps(petsclib::PetscLibType, pc::PC, nbsteps1::PetscInt) end
+function PCSPAISetNBSteps(petsclib::PetscLibType, pc::PC, nbsteps1::Integer)
+    error("PCSPAISetNBSteps: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetNBSteps(petsclib::$UnionPetscLib, pc::PC, nbsteps1::$PetscInt )
 
@@ -12314,7 +13028,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSPAISetSp"))
 """
-function PCSPAISetSp(petsclib::PetscLibType, pc::PC, sp::PetscInt) end
+function PCSPAISetSp(petsclib::PetscLibType, pc::PC, sp::Integer)
+    error("PCSPAISetSp: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetSp(petsclib::$UnionPetscLib, pc::PC, sp::$PetscInt )
 
@@ -12344,7 +13060,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSPAISetVerbose"))
 """
-function PCSPAISetVerbose(petsclib::PetscLibType, pc::PC, verbose::PetscInt) end
+function PCSPAISetVerbose(petsclib::PetscLibType, pc::PC, verbose::Integer)
+    error("PCSPAISetVerbose: no generated method for these argument types")
+end
 
 @for_petsc function PCSPAISetVerbose(petsclib::$UnionPetscLib, pc::PC, verbose::$PetscInt )
 
@@ -12376,7 +13094,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCSetApplicationContext"))
 """
-function PCSetApplicationContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid}) end
+function PCSetApplicationContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid})
+    error("PCSetApplicationContext: no generated method for these argument types")
+end
 
 @for_petsc function PCSetApplicationContext(petsclib::$UnionPetscLib, pc::PC, ctx::Ptr{Cvoid} )
 
@@ -12410,7 +13130,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSetCoordinates"))
 """
-function PCSetCoordinates(petsclib::PetscLibType, pc::PC, dim::PetscInt, nloc::PetscInt, coords::Vector{PetscReal}) end
+function PCSetCoordinates(petsclib::PetscLibType, pc::PC, dim::Integer, nloc::Integer, coords::AbstractVector{<:Number})
+    error("PCSetCoordinates: no generated method for these argument types")
+end
 
 @for_petsc function PCSetCoordinates(petsclib::$UnionPetscLib, pc::PC, dim::$PetscInt, nloc::$PetscInt, coords::Vector{$PetscReal} )
 
@@ -12442,7 +13164,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSetDM"))
 """
-function PCSetDM(petsclib::PetscLibType, pc::PC, dm::AbstractPetscDM) end
+function PCSetDM(petsclib::PetscLibType, pc::PC, dm::AbstractPetscDM)
+    error("PCSetDM: no generated method for these argument types")
+end
 
 @for_petsc function PCSetDM(petsclib::$UnionPetscLib, pc::PC, dm::AbstractPetscDM )
 
@@ -12475,7 +13199,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSetDiagonalScale"))
 """
-function PCSetDiagonalScale(petsclib::PetscLibType, pc::PC, s::AbstractPetscVec) end
+function PCSetDiagonalScale(petsclib::PetscLibType, pc::PC, s::AbstractPetscVec)
+    error("PCSetDiagonalScale: no generated method for these argument types")
+end
 
 @for_petsc function PCSetDiagonalScale(petsclib::$UnionPetscLib, pc::PC, s::AbstractPetscVec )
 
@@ -12507,7 +13233,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCSetErrorIfFailure"))
 """
-function PCSetErrorIfFailure(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCSetErrorIfFailure(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCSetErrorIfFailure: no generated method for these argument types")
+end
 
 @for_petsc function PCSetErrorIfFailure(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -12539,7 +13267,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCSetFailedReason"))
 """
-function PCSetFailedReason(petsclib::PetscLibType, pc::PC, reason::PCFailedReason) end
+function PCSetFailedReason(petsclib::PetscLibType, pc::PC, reason::PCFailedReason)
+    error("PCSetFailedReason: no generated method for these argument types")
+end
 
 @for_petsc function PCSetFailedReason(petsclib::$UnionPetscLib, pc::PC, reason::PCFailedReason )
 
@@ -12573,7 +13303,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCSetFromOptions"))
 """
-function PCSetFromOptions(petsclib::PetscLibType, pc::PC) end
+function PCSetFromOptions(petsclib::PetscLibType, pc::PC)
+    error("PCSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PCSetFromOptions(petsclib::$UnionPetscLib, pc::PC )
 
@@ -12605,7 +13337,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCSetKSPNestLevel"))
 """
-function PCSetKSPNestLevel(petsclib::PetscLibType, pc::PC, level::PetscInt) end
+function PCSetKSPNestLevel(petsclib::PetscLibType, pc::PC, level::Integer)
+    error("PCSetKSPNestLevel: no generated method for these argument types")
+end
 
 @for_petsc function PCSetKSPNestLevel(petsclib::$UnionPetscLib, pc::PC, level::$PetscInt )
 
@@ -12639,7 +13373,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCSetModifySubMatrices"))
 """
-function PCSetModifySubMatrices(petsclib::PetscLibType, pc::PC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
+function PCSetModifySubMatrices(petsclib::PetscLibType, pc::PC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+    error("PCSetModifySubMatrices: no generated method for these argument types")
+end
 
 @for_petsc function PCSetModifySubMatrices(petsclib::$UnionPetscLib, pc::PC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
@@ -12673,7 +13409,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSetOperators"))
 """
-function PCSetOperators(petsclib::PetscLibType, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) end
+function PCSetOperators(petsclib::PetscLibType, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
+    error("PCSetOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCSetOperators(petsclib::$UnionPetscLib, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
@@ -12704,7 +13442,9 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCSetOptionsPrefix"))
 """
-function PCSetOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String) end
+function PCSetOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String)
+    error("PCSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PCSetOptionsPrefix(petsclib::$UnionPetscLib, pc::PC, prefix::String )
 
@@ -12739,7 +13479,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCSetPostSetUp"))
 """
-function PCSetPostSetUp(petsclib::PetscLibType, pc::PC, postsetup::external) end
+function PCSetPostSetUp(petsclib::PetscLibType, pc::PC, postsetup::external)
+    error("PCSetPostSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PCSetPostSetUp(petsclib::$UnionPetscLib, pc::PC, postsetup::external )
 
@@ -12771,7 +13513,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSetReusePreconditioner"))
 """
-function PCSetReusePreconditioner(petsclib::PetscLibType, pc::PC, flag::PetscBool) end
+function PCSetReusePreconditioner(petsclib::PetscLibType, pc::PC, flag::PetscBool)
+    error("PCSetReusePreconditioner: no generated method for these argument types")
+end
 
 @for_petsc function PCSetReusePreconditioner(petsclib::$UnionPetscLib, pc::PC, flag::PetscBool )
 
@@ -12804,7 +13548,9 @@ Options Database Key:
 # External Links
 $(_doc_external("PC/PCSetType"))
 """
-function PCSetType(petsclib::PetscLibType, pc::PC, type::PCType) end
+function PCSetType(petsclib::PetscLibType, pc::PC, type::PCType)
+    error("PCSetType: no generated method for these argument types")
+end
 
 @for_petsc function PCSetType(petsclib::$UnionPetscLib, pc::PC, type::PCType )
 
@@ -12836,7 +13582,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCSetUp"))
 """
-function PCSetUp(petsclib::PetscLibType, pc::PC) end
+function PCSetUp(petsclib::PetscLibType, pc::PC)
+    error("PCSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PCSetUp(petsclib::$UnionPetscLib, pc::PC )
 
@@ -12868,7 +13616,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCSetUpOnBlocks"))
 """
-function PCSetUpOnBlocks(petsclib::PetscLibType, pc::PC) end
+function PCSetUpOnBlocks(petsclib::PetscLibType, pc::PC)
+    error("PCSetUpOnBlocks: no generated method for these argument types")
+end
 
 @for_petsc function PCSetUpOnBlocks(petsclib::$UnionPetscLib, pc::PC )
 
@@ -12906,7 +13656,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCSetUseAmat"))
 """
-function PCSetUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
+function PCSetUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+    error("PCSetUseAmat: no generated method for these argument types")
+end
 
 @for_petsc function PCSetUseAmat(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
 
@@ -12922,7 +13674,7 @@ function PCSetUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool) end
 end 
 
 """
-	PCShellGetContext(petsclib::PetscLibType,pc::PC, ctx::Ptr{Cvoid}) 
+	ctx::Ptr{Cvoid} = PCShellGetContext(petsclib::PetscLibType,pc::PC) 
 Returns the user
 
 Not Collective
@@ -12940,19 +13692,23 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellGetContext"))
 """
-function PCShellGetContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid}) end
+function PCShellGetContext(petsclib::PetscLibType, pc::PC)
+    error("PCShellGetContext: no generated method for these argument types")
+end
 
-@for_petsc function PCShellGetContext(petsclib::$UnionPetscLib, pc::PC, ctx::Ptr{Cvoid} )
+@for_petsc function PCShellGetContext(petsclib::$UnionPetscLib, pc::PC )
+	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PCShellGetContext, $petsc_library),
                PetscErrorCode,
                (PC, Ptr{Cvoid}),
-               pc, ctx,
+               pc, ctx_,
               )
 
+	ctx = ctx_[]
 
-	return nothing
+	return ctx
 end 
 
 """
@@ -12975,7 +13731,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellGetName"))
 """
-function PCShellGetName(petsclib::PetscLibType, pc::PC) end
+function PCShellGetName(petsclib::PetscLibType, pc::PC)
+    error("PCShellGetName: no generated method for these argument types")
+end
 
 @for_petsc function PCShellGetName(petsclib::$UnionPetscLib, pc::PC )
 	name_ = Ref{Ptr{Cchar}}()
@@ -13014,7 +13772,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellSetApply"))
 """
-function PCShellSetApply(petsclib::PetscLibType, pc::PC, apply::external) end
+function PCShellSetApply(petsclib::PetscLibType, pc::PC, apply::external)
+    error("PCShellSetApply: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetApply(petsclib::$UnionPetscLib, pc::PC, apply::external )
 
@@ -13053,7 +13813,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellSetApplyBA"))
 """
-function PCShellSetApplyBA(petsclib::PetscLibType, pc::PC, applyBA::external) end
+function PCShellSetApplyBA(petsclib::PetscLibType, pc::PC, applyBA::external)
+    error("PCShellSetApplyBA: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetApplyBA(petsclib::$UnionPetscLib, pc::PC, applyBA::external )
 
@@ -13099,7 +13861,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetApplyRichardson"))
 """
-function PCShellSetApplyRichardson(petsclib::PetscLibType, pc::PC, apply::external) end
+function PCShellSetApplyRichardson(petsclib::PetscLibType, pc::PC, apply::external)
+    error("PCShellSetApplyRichardson: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetApplyRichardson(petsclib::$UnionPetscLib, pc::PC, apply::external )
 
@@ -13136,7 +13900,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetApplySymmetricLeft"))
 """
-function PCShellSetApplySymmetricLeft(petsclib::PetscLibType, pc::PC, apply::external) end
+function PCShellSetApplySymmetricLeft(petsclib::PetscLibType, pc::PC, apply::external)
+    error("PCShellSetApplySymmetricLeft: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetApplySymmetricLeft(petsclib::$UnionPetscLib, pc::PC, apply::external )
 
@@ -13173,7 +13939,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetApplySymmetricRight"))
 """
-function PCShellSetApplySymmetricRight(petsclib::PetscLibType, pc::PC, apply::external) end
+function PCShellSetApplySymmetricRight(petsclib::PetscLibType, pc::PC, apply::external)
+    error("PCShellSetApplySymmetricRight: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetApplySymmetricRight(petsclib::$UnionPetscLib, pc::PC, apply::external )
 
@@ -13210,7 +13978,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellSetApplyTranspose"))
 """
-function PCShellSetApplyTranspose(petsclib::PetscLibType, pc::PC, applytranspose::external) end
+function PCShellSetApplyTranspose(petsclib::PetscLibType, pc::PC, applytranspose::external)
+    error("PCShellSetApplyTranspose: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetApplyTranspose(petsclib::$UnionPetscLib, pc::PC, applytranspose::external )
 
@@ -13242,7 +14012,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetContext"))
 """
-function PCShellSetContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid}) end
+function PCShellSetContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid})
+    error("PCShellSetContext: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetContext(petsclib::$UnionPetscLib, pc::PC, ctx::Ptr{Cvoid} )
 
@@ -13277,7 +14049,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellSetDestroy"))
 """
-function PCShellSetDestroy(petsclib::PetscLibType, pc::PC, destroy::external) end
+function PCShellSetDestroy(petsclib::PetscLibType, pc::PC, destroy::external)
+    error("PCShellSetDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetDestroy(petsclib::$UnionPetscLib, pc::PC, destroy::external )
 
@@ -13314,7 +14088,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetMatApply"))
 """
-function PCShellSetMatApply(petsclib::PetscLibType, pc::PC, matapply::external) end
+function PCShellSetMatApply(petsclib::PetscLibType, pc::PC, matapply::external)
+    error("PCShellSetMatApply: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetMatApply(petsclib::$UnionPetscLib, pc::PC, matapply::external )
 
@@ -13351,7 +14127,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellSetMatApplyTranspose"))
 """
-function PCShellSetMatApplyTranspose(petsclib::PetscLibType, pc::PC, matapplytranspose::external) end
+function PCShellSetMatApplyTranspose(petsclib::PetscLibType, pc::PC, matapplytranspose::external)
+    error("PCShellSetMatApplyTranspose: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetMatApplyTranspose(petsclib::$UnionPetscLib, pc::PC, matapplytranspose::external )
 
@@ -13384,7 +14162,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellSetName"))
 """
-function PCShellSetName(petsclib::PetscLibType, pc::PC, name::String) end
+function PCShellSetName(petsclib::PetscLibType, pc::PC, name::String)
+    error("PCShellSetName: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetName(petsclib::$UnionPetscLib, pc::PC, name::String )
 
@@ -13418,7 +14198,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetPostSolve"))
 """
-function PCShellSetPostSolve(petsclib::PetscLibType, pc::PC, postsolve::Ptr{Cvoid}) end
+function PCShellSetPostSolve(petsclib::PetscLibType, pc::PC, postsolve::Ptr{Cvoid})
+    error("PCShellSetPostSolve: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetPostSolve(petsclib::$UnionPetscLib, pc::PC, postsolve::Ptr{Cvoid} )
 
@@ -13452,7 +14234,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetPreSolve"))
 """
-function PCShellSetPreSolve(petsclib::PetscLibType, pc::PC, presolve::Ptr{Cvoid}) end
+function PCShellSetPreSolve(petsclib::PetscLibType, pc::PC, presolve::Ptr{Cvoid})
+    error("PCShellSetPreSolve: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetPreSolve(petsclib::$UnionPetscLib, pc::PC, presolve::Ptr{Cvoid} )
 
@@ -13488,7 +14272,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCShellSetSetUp"))
 """
-function PCShellSetSetUp(petsclib::PetscLibType, pc::PC, setup::external) end
+function PCShellSetSetUp(petsclib::PetscLibType, pc::PC, setup::external)
+    error("PCShellSetSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetSetUp(petsclib::$UnionPetscLib, pc::PC, setup::external )
 
@@ -13524,7 +14310,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCShellSetView"))
 """
-function PCShellSetView(petsclib::PetscLibType, pc::PC, view::external) end
+function PCShellSetView(petsclib::PetscLibType, pc::PC, view::external)
+    error("PCShellSetView: no generated method for these argument types")
+end
 
 @for_petsc function PCShellSetView(petsclib::$UnionPetscLib, pc::PC, view::external )
 
@@ -13558,7 +14346,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeGetDM"))
 """
-function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC) end
+function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC)
+    error("PCTelescopeGetDM: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeGetDM(petsclib::$UnionPetscLib, pc::PC )
 	subdm_ = Ref{CDM}()
@@ -13595,7 +14385,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeGetIgnoreDM"))
 """
-function PCTelescopeGetIgnoreDM(petsclib::PetscLibType, pc::PC) end
+function PCTelescopeGetIgnoreDM(petsclib::PetscLibType, pc::PC)
+    error("PCTelescopeGetIgnoreDM: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeGetIgnoreDM(petsclib::$UnionPetscLib, pc::PC )
 	v_ = Ref{PetscBool}()
@@ -13632,7 +14424,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeGetIgnoreKSPComputeOperators"))
 """
-function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC) end
+function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC)
+    error("PCTelescopeGetIgnoreKSPComputeOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::PC )
 	v_ = Ref{PetscBool}()
@@ -13668,7 +14462,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeGetKSP"))
 """
-function PCTelescopeGetKSP(petsclib::PetscLibType, pc::PC) end
+function PCTelescopeGetKSP(petsclib::PetscLibType, pc::PC)
+    error("PCTelescopeGetKSP: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeGetKSP(petsclib::$UnionPetscLib, pc::PC )
 	subksp_ = Ref{CKSP}()
@@ -13705,7 +14501,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeGetReductionFactor"))
 """
-function PCTelescopeGetReductionFactor(petsclib::PetscLibType, pc::PC) end
+function PCTelescopeGetReductionFactor(petsclib::PetscLibType, pc::PC)
+    error("PCTelescopeGetReductionFactor: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeGetReductionFactor(petsclib::$UnionPetscLib, pc::PC )
 	fact_ = Ref{$PetscInt}()
@@ -13741,7 +14539,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeGetSubcommType"))
 """
-function PCTelescopeGetSubcommType(petsclib::PetscLibType, pc::PC) end
+function PCTelescopeGetSubcommType(petsclib::PetscLibType, pc::PC)
+    error("PCTelescopeGetSubcommType: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeGetSubcommType(petsclib::$UnionPetscLib, pc::PC )
 	subcommtype_ = Ref{PetscSubcommType}()
@@ -13778,7 +14578,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeGetUseCoarseDM"))
 """
-function PCTelescopeGetUseCoarseDM(petsclib::PetscLibType, pc::PC) end
+function PCTelescopeGetUseCoarseDM(petsclib::PetscLibType, pc::PC)
+    error("PCTelescopeGetUseCoarseDM: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeGetUseCoarseDM(petsclib::$UnionPetscLib, pc::PC )
 	v_ = Ref{PetscBool}()
@@ -13815,7 +14617,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeSetIgnoreDM"))
 """
-function PCTelescopeSetIgnoreDM(petsclib::PetscLibType, pc::PC, v::PetscBool) end
+function PCTelescopeSetIgnoreDM(petsclib::PetscLibType, pc::PC, v::PetscBool)
+    error("PCTelescopeSetIgnoreDM: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeSetIgnoreDM(petsclib::$UnionPetscLib, pc::PC, v::PetscBool )
 
@@ -13850,7 +14654,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeSetIgnoreKSPComputeOperators"))
 """
-function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC, v::PetscBool) end
+function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC, v::PetscBool)
+    error("PCTelescopeSetIgnoreKSPComputeOperators: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::PC, v::PetscBool )
 
@@ -13885,7 +14691,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeSetReductionFactor"))
 """
-function PCTelescopeSetReductionFactor(petsclib::PetscLibType, pc::PC, fact::PetscInt) end
+function PCTelescopeSetReductionFactor(petsclib::PetscLibType, pc::PC, fact::Integer)
+    error("PCTelescopeSetReductionFactor: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeSetReductionFactor(petsclib::$UnionPetscLib, pc::PC, fact::$PetscInt )
 
@@ -13918,7 +14726,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeSetSubcommType"))
 """
-function PCTelescopeSetSubcommType(petsclib::PetscLibType, pc::PC, subcommtype::PetscSubcommType) end
+function PCTelescopeSetSubcommType(petsclib::PetscLibType, pc::PC, subcommtype::PetscSubcommType)
+    error("PCTelescopeSetSubcommType: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeSetSubcommType(petsclib::$UnionPetscLib, pc::PC, subcommtype::PetscSubcommType )
 
@@ -13953,7 +14763,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCTelescopeSetUseCoarseDM"))
 """
-function PCTelescopeSetUseCoarseDM(petsclib::PetscLibType, pc::PC, v::PetscBool) end
+function PCTelescopeSetUseCoarseDM(petsclib::PetscLibType, pc::PC, v::PetscBool)
+    error("PCTelescopeSetUseCoarseDM: no generated method for these argument types")
+end
 
 @for_petsc function PCTelescopeSetUseCoarseDM(petsclib::$UnionPetscLib, pc::PC, v::PetscBool )
 
@@ -13985,7 +14797,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCView"))
 """
-function PCView(petsclib::PetscLibType, pc::PC, viewer::PetscViewer) end
+function PCView(petsclib::PetscLibType, pc::PC, viewer::PetscViewer)
+    error("PCView: no generated method for these argument types")
+end
 
 @for_petsc function PCView(petsclib::$UnionPetscLib, pc::PC, viewer::PetscViewer )
 
@@ -14018,7 +14832,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCViewFromOptions"))
 """
-function PCViewFromOptions(petsclib::PetscLibType, A::PC, obj, name::String) end
+function PCViewFromOptions(petsclib::PetscLibType, A::PC, obj, name::String)
+    error("PCViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PCViewFromOptions(petsclib::$UnionPetscLib, A::PC, obj, name::String )
 

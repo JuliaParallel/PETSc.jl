@@ -19,7 +19,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Viewer/PetscOptionsHelpPrintedCheck"))
 """
-function PetscOptionsHelpPrintedCheck(petsclib::PetscLibType, hp::PetscOptionsHelpPrCinted, pre::String, name::String) end
+function PetscOptionsHelpPrintedCheck(petsclib::PetscLibType, hp::PetscOptionsHelpPrCinted, pre::String, name::String)
+    error("PetscOptionsHelpPrintedCheck: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsHelpPrintedCheck(petsclib::$UnionPetscLib, hp::PetscOptionsHelpPrCinted, pre::String, name::String )
 	found_ = Ref{PetscBool}()
@@ -53,7 +55,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscOptionsHelpPrintedCreate"))
 """
-function PetscOptionsHelpPrintedCreate(petsclib::PetscLibType) end
+function PetscOptionsHelpPrintedCreate(petsclib::PetscLibType)
+    error("PetscOptionsHelpPrintedCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsHelpPrintedCreate(petsclib::$UnionPetscLib)
 	hp_ = Ref{PetscOptionsHelpPrCinted}()
@@ -76,7 +80,9 @@ end
 # External Links
 $(_doc_external("Viewer/PetscOptionsHelpPrintedDestroy"))
 """
-function PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) end
+function PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}})
+    error("PetscOptionsHelpPrintedDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscOptionsHelpPrintedDestroy(petsclib::$UnionPetscLib, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}} )
 	hp_ = hp isa Base.RefValue ? hp : Ref{PetscOptionsHelpPrCinted}(hp)

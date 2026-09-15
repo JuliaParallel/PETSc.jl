@@ -21,7 +21,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Bag/PetscBagCreate"))
 """
-function PetscBagCreate(petsclib::PetscLibType, comm::MPI_Comm, bagsize::Csize_t) end
+function PetscBagCreate(petsclib::PetscLibType, comm::MPI_Comm, bagsize::Csize_t)
+    error("PetscBagCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, bagsize::Csize_t )
 	bag_ = Ref{PetscBag}()
@@ -56,7 +58,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagDestroy"))
 """
-function PetscBagDestroy(petsclib::PetscLibType, bag::Union{PetscBag, Ref{PetscBag}}) end
+function PetscBagDestroy(petsclib::PetscLibType, bag::Union{PetscBag, Ref{PetscBag}})
+    error("PetscBagDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagDestroy(petsclib::$UnionPetscLib, bag::Union{PetscBag, Ref{PetscBag}} )
 	bag_ = bag isa Base.RefValue ? bag : Ref{PetscBag}(bag)
@@ -95,7 +99,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Bag/PetscBagGetData"))
 """
-function PetscBagGetData(petsclib::PetscLibType, bag::PetscBag, data::PeCtx) end
+function PetscBagGetData(petsclib::PetscLibType, bag::PetscBag, data::PeCtx)
+    error("PetscBagGetData: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagGetData(petsclib::$UnionPetscLib, bag::PetscBag, data::PeCtx )
 
@@ -131,7 +137,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Bag/PetscBagGetName"))
 """
-function PetscBagGetName(petsclib::PetscLibType, bag::PetscBag) end
+function PetscBagGetName(petsclib::PetscLibType, bag::PetscBag)
+    error("PetscBagGetName: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagGetName(petsclib::$UnionPetscLib, bag::PetscBag )
 	name_ = Ref{Ptr{Cchar}}()
@@ -168,7 +176,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Bag/PetscBagGetNames"))
 """
-function PetscBagGetNames(petsclib::PetscLibType, bag::PetscBag) end
+function PetscBagGetNames(petsclib::PetscLibType, bag::PetscBag)
+    error("PetscBagGetNames: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagGetNames(petsclib::$UnionPetscLib, bag::PetscBag )
 	names_ = Ref{Ptr{Cchar}}()
@@ -204,7 +214,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagLoad"))
 """
-function PetscBagLoad(petsclib::PetscLibType, view::PetscViewer, bag::PetscBag) end
+function PetscBagLoad(petsclib::PetscLibType, view::PetscViewer, bag::PetscBag)
+    error("PetscBagLoad: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagLoad(petsclib::$UnionPetscLib, view::PetscViewer, bag::PetscBag )
 
@@ -241,7 +253,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterBool"))
 """
-function PetscBagRegisterBool(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscBool, name::String, help::String) end
+function PetscBagRegisterBool(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscBool, name::String, help::String)
+    error("PetscBagRegisterBool: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterBool(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscBool, name::String, help::String )
 
@@ -278,7 +292,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterBoolArray"))
 """
-function PetscBagRegisterBoolArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) end
+function PetscBagRegisterBoolArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::Integer, name::String, help::String)
+    error("PetscBagRegisterBoolArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterBoolArray(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, msize::$PetscInt, name::String, help::String )
 
@@ -316,7 +332,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterEnum"))
 """
-function PetscBagRegisterEnum(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, list::Cchar, mdefault::PetscEnum, name::String, help::String) end
+function PetscBagRegisterEnum(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, list::Cchar, mdefault::PetscEnum, name::String, help::String)
+    error("PetscBagRegisterEnum: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterEnum(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, list::Cchar, mdefault::PetscEnum, name::String, help::String )
 
@@ -353,7 +371,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterInt"))
 """
-function PetscBagRegisterInt(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscInt, name::String, help::String) end
+function PetscBagRegisterInt(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::Integer, name::String, help::String)
+    error("PetscBagRegisterInt: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterInt(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::$PetscInt, name::String, help::String )
 
@@ -390,7 +410,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterInt64"))
 """
-function PetscBagRegisterInt64(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscInt64, name::String, help::String) end
+function PetscBagRegisterInt64(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscInt64, name::String, help::String)
+    error("PetscBagRegisterInt64: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterInt64(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::$PetscInt64, name::String, help::String )
 
@@ -427,7 +449,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterIntArray"))
 """
-function PetscBagRegisterIntArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) end
+function PetscBagRegisterIntArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::Integer, name::String, help::String)
+    error("PetscBagRegisterIntArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterIntArray(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, msize::$PetscInt, name::String, help::String )
 
@@ -464,7 +488,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterReal"))
 """
-function PetscBagRegisterReal(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscReal, name::String, help::String) end
+function PetscBagRegisterReal(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::Real, name::String, help::String)
+    error("PetscBagRegisterReal: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterReal(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::$PetscReal, name::String, help::String )
 
@@ -501,7 +527,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterRealArray"))
 """
-function PetscBagRegisterRealArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) end
+function PetscBagRegisterRealArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::Integer, name::String, help::String)
+    error("PetscBagRegisterRealArray: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterRealArray(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, msize::$PetscInt, name::String, help::String )
 
@@ -538,7 +566,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterScalar"))
 """
-function PetscBagRegisterScalar(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscScalar, name::String, help::String) end
+function PetscBagRegisterScalar(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::Number, name::String, help::String)
+    error("PetscBagRegisterScalar: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterScalar(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::$PetscScalar, name::String, help::String )
 
@@ -576,7 +606,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagRegisterString"))
 """
-function PetscBagRegisterString(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, mdefault::String, name::String, help::String) end
+function PetscBagRegisterString(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::Integer, mdefault::String, name::String, help::String)
+    error("PetscBagRegisterString: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagRegisterString(petsclib::$UnionPetscLib, bag::PetscBag, addr::Ptr{Cvoid}, msize::$PetscInt, mdefault::String, name::String, help::String )
 
@@ -609,7 +641,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagSetFromOptions"))
 """
-function PetscBagSetFromOptions(petsclib::PetscLibType, bag::PetscBag) end
+function PetscBagSetFromOptions(petsclib::PetscLibType, bag::PetscBag)
+    error("PetscBagSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagSetFromOptions(petsclib::$UnionPetscLib, bag::PetscBag )
 
@@ -644,7 +678,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Bag/PetscBagSetName"))
 """
-function PetscBagSetName(petsclib::PetscLibType, bag::PetscBag, name::String, help::String) end
+function PetscBagSetName(petsclib::PetscLibType, bag::PetscBag, name::String, help::String)
+    error("PetscBagSetName: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagSetName(petsclib::$UnionPetscLib, bag::PetscBag, name::String, help::String )
 
@@ -678,7 +714,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Bag/PetscBagSetOptionsPrefix"))
 """
-function PetscBagSetOptionsPrefix(petsclib::PetscLibType, bag::PetscBag, pre::String) end
+function PetscBagSetOptionsPrefix(petsclib::PetscLibType, bag::PetscBag, pre::String)
+    error("PetscBagSetOptionsPrefix: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagSetOptionsPrefix(petsclib::$UnionPetscLib, bag::PetscBag, pre::String )
 
@@ -712,7 +750,9 @@ Level: beginner
 # External Links
 $(_doc_external("Bag/PetscBagView"))
 """
-function PetscBagView(petsclib::PetscLibType, bag::PetscBag, view::PetscViewer) end
+function PetscBagView(petsclib::PetscLibType, bag::PetscBag, view::PetscViewer)
+    error("PetscBagView: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagView(petsclib::$UnionPetscLib, bag::PetscBag, view::PetscViewer )
 
@@ -745,7 +785,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Bag/PetscBagViewFromOptions"))
 """
-function PetscBagViewFromOptions(petsclib::PetscLibType, bag::PetscBag, bobj, optionname::String) end
+function PetscBagViewFromOptions(petsclib::PetscLibType, bag::PetscBag, bobj, optionname::String)
+    error("PetscBagViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscBagViewFromOptions(petsclib::$UnionPetscLib, bag::PetscBag, bobj, optionname::String )
 

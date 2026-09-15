@@ -17,7 +17,9 @@ Level: beginner
 # External Links
 $(_doc_external("SPACE/PetscSpaceCreate"))
 """
-function PetscSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm)
+    error("PetscSpaceCreate: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
 	sp_ = Ref{PetscSpace}()
@@ -57,7 +59,9 @@ Level: advanced
 # External Links
 $(_doc_external("SPACE/PetscSpaceCreateSubspace"))
 """
-function PetscSpaceCreateSubspace(petsclib::PetscLibType, origSpace::PetscSpace, dualSubspace::PetscDualSpace, copymode::PetscCopyMode) end
+function PetscSpaceCreateSubspace(petsclib::PetscLibType, origSpace::PetscSpace, dualSubspace::PetscDualSpace, copymode::PetscCopyMode)
+    error("PetscSpaceCreateSubspace: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceCreateSubspace(petsclib::$UnionPetscLib, origSpace::PetscSpace, dualSubspace::PetscDualSpace, copymode::PetscCopyMode )
 	x_ = Ref{$PetscReal}()
@@ -98,7 +102,9 @@ Level: beginner
 # External Links
 $(_doc_external("SPACE/PetscSpaceDestroy"))
 """
-function PetscSpaceDestroy(petsclib::PetscLibType, sp::Union{PetscSpace, Ref{PetscSpace}}) end
+function PetscSpaceDestroy(petsclib::PetscLibType, sp::Union{PetscSpace, Ref{PetscSpace}})
+    error("PetscSpaceDestroy: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceDestroy(petsclib::$UnionPetscLib, sp::Union{PetscSpace, Ref{PetscSpace}} )
 	sp_ = sp isa Base.RefValue ? sp : Ref{PetscSpace}(sp)
@@ -135,7 +141,9 @@ Level: beginner
 # External Links
 $(_doc_external("SPACE/PetscSpaceEvaluate"))
 """
-function PetscSpaceEvaluate(petsclib::PetscLibType, sp::PetscSpace, npoints::PetscInt, points::Vector{PetscReal}, B::Vector{PetscReal}, D::Vector{PetscReal}, H::Vector{PetscReal}) end
+function PetscSpaceEvaluate(petsclib::PetscLibType, sp::PetscSpace, npoints::Integer, points::AbstractVector{<:Number}, B::AbstractVector{<:Number}, D::AbstractVector{<:Number}, H::AbstractVector{<:Number})
+    error("PetscSpaceEvaluate: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceEvaluate(petsclib::$UnionPetscLib, sp::PetscSpace, npoints::$PetscInt, points::Vector{$PetscReal}, B::Vector{$PetscReal}, D::Vector{$PetscReal}, H::Vector{$PetscReal} )
 
@@ -168,7 +176,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetDegree"))
 """
-function PetscSpaceGetDegree(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceGetDegree(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceGetDegree: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceGetDegree(petsclib::$UnionPetscLib, sp::PetscSpace )
 	minDegree_ = Ref{$PetscInt}()
@@ -204,7 +214,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetDimension"))
 """
-function PetscSpaceGetDimension(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceGetDimension(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceGetDimension: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceGetDimension(petsclib::$UnionPetscLib, sp::PetscSpace )
 	dim_ = Ref{$PetscInt}()
@@ -241,7 +253,9 @@ Level: advanced
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetHeightSubspace"))
 """
-function PetscSpaceGetHeightSubspace(petsclib::PetscLibType, sp::PetscSpace, height::PetscInt) end
+function PetscSpaceGetHeightSubspace(petsclib::PetscLibType, sp::PetscSpace, height::Integer)
+    error("PetscSpaceGetHeightSubspace: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceGetHeightSubspace(petsclib::$UnionPetscLib, sp::PetscSpace, height::$PetscInt )
 	subsp_ = Ref{PetscSpace}()
@@ -275,7 +289,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetNumComponents"))
 """
-function PetscSpaceGetNumComponents(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceGetNumComponents(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceGetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceGetNumComponents(petsclib::$UnionPetscLib, sp::PetscSpace )
 	Nc_ = Ref{$PetscInt}()
@@ -309,7 +325,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetNumVariables"))
 """
-function PetscSpaceGetNumVariables(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceGetNumVariables(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceGetNumVariables: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceGetNumVariables(petsclib::$UnionPetscLib, sp::PetscSpace )
 	n_ = Ref{$PetscInt}()
@@ -345,7 +363,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetType"))
 """
-function PetscSpaceGetType(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceGetType(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceGetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceGetType(petsclib::$UnionPetscLib, sp::PetscSpace )
 	name_ = Ref{PetscSpaceType}()
@@ -379,7 +399,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpacePTrimmedGetFormDegree"))
 """
-function PetscSpacePTrimmedGetFormDegree(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpacePTrimmedGetFormDegree(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpacePTrimmedGetFormDegree: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpacePTrimmedGetFormDegree(petsclib::$UnionPetscLib, sp::PetscSpace )
 	formDegree_ = Ref{$PetscInt}()
@@ -414,7 +436,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpacePTrimmedSetFormDegree"))
 """
-function PetscSpacePTrimmedSetFormDegree(petsclib::PetscLibType, sp::PetscSpace, formDegree::PetscInt) end
+function PetscSpacePTrimmedSetFormDegree(petsclib::PetscLibType, sp::PetscSpace, formDegree::Integer)
+    error("PetscSpacePTrimmedSetFormDegree: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpacePTrimmedSetFormDegree(petsclib::$UnionPetscLib, sp::PetscSpace, formDegree::$PetscInt )
 
@@ -448,7 +472,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpacePointGetPoints"))
 """
-function PetscSpacePointGetPoints(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpacePointGetPoints(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpacePointGetPoints: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpacePointGetPoints(petsclib::$UnionPetscLib, sp::PetscSpace )
 	q_ = Ref{PetscQuadrature}()
@@ -482,7 +508,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpacePointSetPoints"))
 """
-function PetscSpacePointSetPoints(petsclib::PetscLibType, sp::PetscSpace, q::PetscQuadrature) end
+function PetscSpacePointSetPoints(petsclib::PetscLibType, sp::PetscSpace, q::PetscQuadrature)
+    error("PetscSpacePointSetPoints: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpacePointSetPoints(petsclib::$UnionPetscLib, sp::PetscSpace, q::PetscQuadrature )
 
@@ -515,7 +543,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpacePolynomialGetTensor"))
 """
-function PetscSpacePolynomialGetTensor(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpacePolynomialGetTensor(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpacePolynomialGetTensor: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpacePolynomialGetTensor(petsclib::$UnionPetscLib, sp::PetscSpace )
 	tensor_ = Ref{PetscBool}()
@@ -550,7 +580,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpacePolynomialSetTensor"))
 """
-function PetscSpacePolynomialSetTensor(petsclib::PetscLibType, sp::PetscSpace, tensor::PetscBool) end
+function PetscSpacePolynomialSetTensor(petsclib::PetscLibType, sp::PetscSpace, tensor::PetscBool)
+    error("PetscSpacePolynomialSetTensor: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpacePolynomialSetTensor(petsclib::$UnionPetscLib, sp::PetscSpace, tensor::PetscBool )
 
@@ -580,7 +612,9 @@ Input Parameters:
 # External Links
 $(_doc_external("SPACE/PetscSpaceRegister"))
 """
-function PetscSpaceRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function PetscSpaceRegister(petsclib::PetscLibType, sname::String, fnc::external)
+    error("PetscSpaceRegister: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
@@ -611,7 +645,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetDegree"))
 """
-function PetscSpaceSetDegree(petsclib::PetscLibType, sp::PetscSpace, degree::PetscInt, maxDegree::PetscInt) end
+function PetscSpaceSetDegree(petsclib::PetscLibType, sp::PetscSpace, degree::Integer, maxDegree::Integer)
+    error("PetscSpaceSetDegree: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSetDegree(petsclib::$UnionPetscLib, sp::PetscSpace, degree::$PetscInt, maxDegree::$PetscInt )
 
@@ -647,7 +683,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetFromOptions"))
 """
-function PetscSpaceSetFromOptions(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceSetFromOptions(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceSetFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSetFromOptions(petsclib::$UnionPetscLib, sp::PetscSpace )
 
@@ -677,7 +715,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetNumComponents"))
 """
-function PetscSpaceSetNumComponents(petsclib::PetscLibType, sp::PetscSpace, Nc::PetscInt) end
+function PetscSpaceSetNumComponents(petsclib::PetscLibType, sp::PetscSpace, Nc::Integer)
+    error("PetscSpaceSetNumComponents: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSetNumComponents(petsclib::$UnionPetscLib, sp::PetscSpace, Nc::$PetscInt )
 
@@ -707,7 +747,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetNumVariables"))
 """
-function PetscSpaceSetNumVariables(petsclib::PetscLibType, sp::PetscSpace, n::PetscInt) end
+function PetscSpaceSetNumVariables(petsclib::PetscLibType, sp::PetscSpace, n::Integer)
+    error("PetscSpaceSetNumVariables: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSetNumVariables(petsclib::$UnionPetscLib, sp::PetscSpace, n::$PetscInt )
 
@@ -742,7 +784,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetType"))
 """
-function PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::PetscSpaceType) end
+function PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::PetscSpaceType)
+    error("PetscSpaceSetType: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSetType(petsclib::$UnionPetscLib, sp::PetscSpace, name::PetscSpaceType )
 
@@ -773,7 +817,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetUp"))
 """
-function PetscSpaceSetUp(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceSetUp(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceSetUp: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSetUp(petsclib::$UnionPetscLib, sp::PetscSpace )
 
@@ -805,7 +851,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetConcatenate"))
 """
-function PetscSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceSumGetConcatenate: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumGetConcatenate(petsclib::$UnionPetscLib, sp::PetscSpace )
 	concatenate_ = Ref{PetscBool}()
@@ -843,7 +891,9 @@ Level: developer
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetInterleave"))
 """
-function PetscSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceSumGetInterleave: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumGetInterleave(petsclib::$UnionPetscLib, sp::PetscSpace )
 	interleave_basis_ = Ref{PetscBool}()
@@ -879,7 +929,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetNumSubspaces"))
 """
-function PetscSpaceSumGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceSumGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceSumGetNumSubspaces: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumGetNumSubspaces(petsclib::$UnionPetscLib, sp::PetscSpace )
 	numSumSpaces_ = Ref{$PetscInt}()
@@ -914,7 +966,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetSubspace"))
 """
-function PetscSpaceSumGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt) end
+function PetscSpaceSumGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::Integer)
+    error("PetscSpaceSumGetSubspace: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumGetSubspace(petsclib::$UnionPetscLib, sp::PetscSpace, s::$PetscInt )
 	subsp_ = Ref{PetscSpace}()
@@ -946,7 +1000,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetConcatenate"))
 """
-function PetscSpaceSumSetConcatenate(petsclib::PetscLibType, sp::PetscSpace, concatenate::PetscBool) end
+function PetscSpaceSumSetConcatenate(petsclib::PetscLibType, sp::PetscSpace, concatenate::PetscBool)
+    error("PetscSpaceSumSetConcatenate: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumSetConcatenate(petsclib::$UnionPetscLib, sp::PetscSpace, concatenate::PetscBool )
 
@@ -980,7 +1036,9 @@ Level: developer
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetInterleave"))
 """
-function PetscSpaceSumSetInterleave(petsclib::PetscLibType, sp::PetscSpace, interleave_basis::PetscBool, interleave_components::PetscBool) end
+function PetscSpaceSumSetInterleave(petsclib::PetscLibType, sp::PetscSpace, interleave_basis::PetscBool, interleave_components::PetscBool)
+    error("PetscSpaceSumSetInterleave: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumSetInterleave(petsclib::$UnionPetscLib, sp::PetscSpace, interleave_basis::PetscBool, interleave_components::PetscBool )
 
@@ -1010,7 +1068,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetNumSubspaces"))
 """
-function PetscSpaceSumSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numSumSpaces::PetscInt) end
+function PetscSpaceSumSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numSumSpaces::Integer)
+    error("PetscSpaceSumSetNumSubspaces: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumSetNumSubspaces(petsclib::$UnionPetscLib, sp::PetscSpace, numSumSpaces::$PetscInt )
 
@@ -1041,7 +1101,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetSubspace"))
 """
-function PetscSpaceSumSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) end
+function PetscSpaceSumSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::Integer, subsp::PetscSpace)
+    error("PetscSpaceSumSetSubspace: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceSumSetSubspace(petsclib::$UnionPetscLib, sp::PetscSpace, s::$PetscInt, subsp::PetscSpace )
 
@@ -1073,7 +1135,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorGetNumSubspaces"))
 """
-function PetscSpaceTensorGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace) end
+function PetscSpaceTensorGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace)
+    error("PetscSpaceTensorGetNumSubspaces: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceTensorGetNumSubspaces(petsclib::$UnionPetscLib, sp::PetscSpace )
 	numTensSpaces_ = Ref{$PetscInt}()
@@ -1108,7 +1172,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorGetSubspace"))
 """
-function PetscSpaceTensorGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt) end
+function PetscSpaceTensorGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::Integer)
+    error("PetscSpaceTensorGetSubspace: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceTensorGetSubspace(petsclib::$UnionPetscLib, sp::PetscSpace, s::$PetscInt )
 	subsp_ = Ref{PetscSpace}()
@@ -1140,7 +1206,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorSetNumSubspaces"))
 """
-function PetscSpaceTensorSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numTensSpaces::PetscInt) end
+function PetscSpaceTensorSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numTensSpaces::Integer)
+    error("PetscSpaceTensorSetNumSubspaces: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceTensorSetNumSubspaces(petsclib::$UnionPetscLib, sp::PetscSpace, numTensSpaces::$PetscInt )
 
@@ -1171,7 +1239,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorSetSubspace"))
 """
-function PetscSpaceTensorSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) end
+function PetscSpaceTensorSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::Integer, subsp::PetscSpace)
+    error("PetscSpaceTensorSetSubspace: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceTensorSetSubspace(petsclib::$UnionPetscLib, sp::PetscSpace, s::$PetscInt, subsp::PetscSpace )
 
@@ -1203,7 +1273,9 @@ Level: beginner
 # External Links
 $(_doc_external("SPACE/PetscSpaceView"))
 """
-function PetscSpaceView(petsclib::PetscLibType, sp::PetscSpace, v::PetscViewer) end
+function PetscSpaceView(petsclib::PetscLibType, sp::PetscSpace, v::PetscViewer)
+    error("PetscSpaceView: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceView(petsclib::$UnionPetscLib, sp::PetscSpace, v::PetscViewer )
 
@@ -1236,7 +1308,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceViewFromOptions"))
 """
-function PetscSpaceViewFromOptions(petsclib::PetscLibType, A::PetscSpace, obj, name::String) end
+function PetscSpaceViewFromOptions(petsclib::PetscLibType, A::PetscSpace, obj, name::String)
+    error("PetscSpaceViewFromOptions: no generated method for these argument types")
+end
 
 @for_petsc function PetscSpaceViewFromOptions(petsclib::$UnionPetscLib, A::PetscSpace, obj, name::String )
 

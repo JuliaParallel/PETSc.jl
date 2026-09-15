@@ -188,7 +188,7 @@ function ISBlockGetSize(petsclib::PetscLibType, is::AbstractIS) end
 end 
 
 """
-	idx::Ptr{PetscInt} = ISBlockRestoreIndices(petsclib::PetscLibType,is::AbstractIS) 
+	ISBlockRestoreIndices(petsclib::PetscLibType,is::AbstractIS, idx::AbstractArray{PetscInt}) 
 Restores the indices associated with each block  in an `ISBLOCK` obtained with `ISBlockGetIndices()`
 
 Not Collective
@@ -206,10 +206,10 @@ Level: intermediate
 # External Links
 $(_doc_external("IS/ISBlockRestoreIndices"))
 """
-function ISBlockRestoreIndices(petsclib::PetscLibType, is::AbstractIS) end
+function ISBlockRestoreIndices(petsclib::PetscLibType, is::AbstractIS, idx::AbstractArray{PetscInt}) end
 
-@for_petsc function ISBlockRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS )
-	idx_ = Ref{Ptr{$PetscInt}}()
+@for_petsc function ISBlockRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, idx::AbstractArray{$PetscInt} )
+	idx_ = Ref(pointer(idx))
 
     @chk ccall(
                (:ISBlockRestoreIndices, $petsc_library),
@@ -218,9 +218,8 @@ function ISBlockRestoreIndices(petsclib::PetscLibType, is::AbstractIS) end
                is, idx_,
               )
 
-	idx = idx_[]
 
-	return idx
+	return nothing
 end 
 
 """

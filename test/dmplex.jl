@@ -157,8 +157,7 @@ for petsclib in PETSc.petsclibs
             petsclib, dm, gvec, LibPETSc.INSERT_VALUES, lvec)
 
         # Low-level clone
-        dm2 = LibPETSc.PetscDM(petsclib)
-        LibPETSc.DMClone(petsclib, dm, dm2)
+        dm2 = LibPETSc.DMClone(petsclib, dm)
         @test convert(Ptr{Cvoid}, dm2) != C_NULL
         @test LibPETSc.DMGetDimension(petsclib, dm2) == 2
 
@@ -274,18 +273,16 @@ for petsclib in PETSc.petsclibs
         foreach(f -> LibPETSc.ISDestroy(petsclib, f), fields)
 
         # local-to-global mapping indices
-        ltog = Ref{LibPETSc.ISLocalToGlobalMapping}(C_NULL)
-        LibPETSc.DMGetLocalToGlobalMapping(petsclib, dm, ltog)
-        gidx = LibPETSc.ISLocalToGlobalMappingGetIndices(petsclib, ltog[])
+        ltog = LibPETSc.DMGetLocalToGlobalMapping(petsclib, dm)
+        gidx = LibPETSc.ISLocalToGlobalMappingGetIndices(petsclib, ltog)
         @test length(gidx) == nu + npr && sort(gidx) == collect(0:nu+npr-1)
-        LibPETSc.ISLocalToGlobalMappingRestoreIndices(petsclib, ltog[], gidx)
+        LibPETSc.ISLocalToGlobalMappingRestoreIndices(petsclib, ltog, gidx)
 
         # closure indices and closure values
-        gs = Ref{LibPETSc.PetscSection}()
-        LibPETSc.DMGetGlobalSection(petsclib, dm, gs)
-        ni, ind, offs = LibPETSc.DMPlexGetClosureIndices(petsclib, dm, s[], gs[], cStart, LibPETSc.PETSC_TRUE)
+        gs = LibPETSc.DMGetGlobalSection(petsclib, dm)
+        ni, ind, offs = LibPETSc.DMPlexGetClosureIndices(petsclib, dm, s[], gs, cStart, LibPETSc.PETSC_TRUE, C_NULL)
         @test ni == 7 && length(ind) == 7 && offs[2] == 6
-        LibPETSc.DMPlexRestoreClosureIndices(petsclib, dm, s[], gs[], cStart, LibPETSc.PETSC_TRUE, ni, ind)
+        LibPETSc.DMPlexRestoreClosureIndices(petsclib, dm, s[], gs, cStart, LibPETSc.PETSC_TRUE, ni, ind, C_NULL, C_NULL)
         lv = LibPETSc.DMCreateLocalVector(petsclib, dm)
         LibPETSc.VecSet(petsclib, lv, PetscScalar_t(3))
         cs, vals = LibPETSc.DMPlexVecGetClosure(petsclib, dm, s[], lv, cStart)
@@ -293,9 +290,8 @@ for petsclib in PETSc.petsclibs
         LibPETSc.DMPlexVecRestoreClosure(petsclib, dm, s[], lv, cStart, cs, vals)
 
         # section SF graph and (empty) constraint indices
-        sf = Ref{LibPETSc.PetscSF}(C_NULL)
-        LibPETSc.DMGetSectionSF(petsclib, dm, sf)
-        nr, nl, il, ir = LibPETSc.PetscSFGetGraph(petsclib, sf[])
+        sf = LibPETSc.DMGetSectionSF(petsclib, dm)
+        nr, nl, il, ir = LibPETSc.PetscSFGetGraph(petsclib, sf)
         @test nr == nu + npr && nl == nu + npr
         @test isempty(LibPETSc.PetscSectionGetConstraintIndices(petsclib, s[], vStart))
 

@@ -17296,7 +17296,7 @@ function MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<
 end 
 
 """
-	MatRestoreRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::AbstractArray{PetscInt}, vals::AbstractArray{PetscScalar}) 
+	MatRestoreRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::Union{Ptr, AbstractArray{PetscInt}}, vals::Union{Ptr, AbstractArray{PetscScalar}}) 
 Frees any temporary space allocated by `MatGetRow()`.
 
 Not Collective
@@ -17315,9 +17315,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatRestoreRow"))
 """
-function MatRestoreRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::AbstractArray{PetscInt}, vals::AbstractArray{PetscScalar}) end
+function MatRestoreRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::Union{Ptr, AbstractArray{PetscInt}}, vals::Union{Ptr, AbstractArray{PetscScalar}}) end
 
-@for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, ncols::$PetscInt, cols::AbstractArray{$PetscInt}, vals::AbstractArray{$PetscScalar} )
+@for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, ncols::$PetscInt, cols::Union{Ptr, AbstractArray{$PetscInt}}, vals::Union{Ptr, AbstractArray{$PetscScalar}} )
 	ncols_ = Ref{$PetscInt}(ncols)
 	cols_ = Ref(pointer(cols))
 	vals_ = Ref(pointer(vals))
@@ -19348,7 +19348,7 @@ function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, arra
 end 
 
 """
-	array::Ptr{PetscScalar} = MatSeqAIJRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat) 
+	MatSeqAIJRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 restore the read
 
 Not Collective; No Fortran Support
@@ -19366,10 +19366,10 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArrayRead"))
 """
-function MatSeqAIJRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) end
+function MatSeqAIJRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatSeqAIJRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+@for_petsc function MatSeqAIJRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
+	array_ = Ref(pointer(array))
 
     @chk ccall(
                (:MatSeqAIJRestoreArrayRead, $petsc_library),
@@ -19378,13 +19378,12 @@ function MatSeqAIJRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) 
                A, array_,
               )
 
-	array = array_[]
 
-	return array
+	return nothing
 end 
 
 """
-	array::Ptr{PetscScalar} = MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat) 
+	MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 restore the read
 
 Not Collective; No Fortran Support
@@ -19402,10 +19401,10 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArrayWrite"))
 """
-function MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat) end
+function MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatSeqAIJRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+@for_petsc function MatSeqAIJRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
+	array_ = Ref(pointer(array))
 
     @chk ccall(
                (:MatSeqAIJRestoreArrayWrite, $petsc_library),
@@ -19414,9 +19413,8 @@ function MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat)
                A, array_,
               )
 
-	array = array_[]
 
-	return array
+	return nothing
 end 
 
 """

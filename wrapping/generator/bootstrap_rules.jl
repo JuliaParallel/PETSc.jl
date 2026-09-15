@@ -113,9 +113,8 @@ end
 
 function write_toml(rules, path)
     open(path, "w") do io
-        println(io, "# Per-function argument overrides (bootstrapped from the hand-edited wrappers, then maintained by hand).")
-        println(io, "# Keys per argument: direction = \"in\"|\"out\", nullable, byref, size, prelude, nullinit, len.")
-        println(io, "# See wrapping/WRAPPING.md.\n")
+        println(io, "# Per-function argument overrides MINED from the hand-edited wrappers by bootstrap_rules.jl.")
+        println(io, "# Regenerated wholesale by that script: do not edit by hand, use rules/args.toml instead.\n")
         for fn in sort(collect(keys(rules)))
             for arg in sort(collect(keys(rules[fn])))
                 println(io, "[$fn.$arg]")
@@ -133,6 +132,6 @@ function write_toml(rules, path)
 end
 
 rules = mine(ARGS[1])
-write_toml(rules, joinpath(@__DIR__, "rules", "args.toml"))
+write_toml(rules, joinpath(@__DIR__, "rules", "args_mined.toml"))
 n = sum(length(v) for v in values(rules))
-println("wrote $n argument rules for $(length(rules)) functions to rules/args.toml")
+println("wrote $n argument rules for $(length(rules)) functions to rules/args_mined.toml")

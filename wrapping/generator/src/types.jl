@@ -28,7 +28,17 @@ end
 function load_rules(dir::AbstractString)
     t = TOML.parsefile(joinpath(dir, "types.toml"))
     f = TOML.parsefile(joinpath(dir, "files.toml"))
-    a = isfile(joinpath(dir, "args.toml")) ? TOML.parsefile(joinpath(dir, "args.toml")) : Dict{String,Any}()
+    # mined rules first, hand-written rules on top (argument tables merge, hand keys win)
+    a = Dict{String,Any}()
+    for f in ("args_mined.toml", "args.toml")
+        isfile(joinpath(dir, f)) || continue
+        for (fn, tab) in TOML.parsefile(joinpath(dir, f))
+            dst = get!(a, fn, Dict{String,Any}())
+            for (an, ov) in tab
+                merge!(get!(dst, an, Dict{String,Any}()), ov)
+            end
+        end
+    end
     rep = t["replace"]
     order = String.(rep["order"])
     rmap = Dict(k => String(rep[k]) for k in order)

@@ -27,7 +27,8 @@ wrapping/
     rules/                 declarative rules (TOML), the place for fixes
       files.toml             class -> output file, exclusions, include order
       types.toml             type maps, handle types, keyword renames, string-enum overrides
-      args.toml              per-function, per-argument overrides
+      args.toml              per-function, per-argument overrides (hand-maintained)
+      args_mined.toml        the same, mined once from the old hand-edited wrappers (do not edit)
     overrides/NAME.jl      verbatim replacement for one wrapper (last resort)
     prologue.jl            hand-written head of petsc_library.jl (handle structs, MPI, ...)
     petscarray.jl          hand-written PetscArray type (copied verbatim)
@@ -128,7 +129,8 @@ replacement), `[[handles]]` (C name, Julia struct, abstract type, C alias), `[re
 (Julia keywords used as C argument names), `[senum_overrides]` (`VecType = "Cstring"`), and
 `[predeclared]` names the generator must not declare as opaque types.
 
-`args.toml`: per argument, keyed `[FunctionName.argname]`:
+`args.toml` (hand-maintained) and `args_mined.toml` (written by `bootstrap_rules.jl`, never edited;
+`args.toml` wins on conflicts): per argument, keyed `[FunctionName.argname]`:
 
 | key | meaning |
 |---|---|

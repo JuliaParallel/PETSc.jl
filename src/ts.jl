@@ -429,8 +429,11 @@ The solution vector held by `ts`. It is owned by `ts`, so do not destroy it.
 # External Links
 $(_doc_external("TS/TSGetSolution"))
 """
-solution(ts::AbstractTS{PetscLib}) where {PetscLib} =
-    LibPETSc.TSGetSolution(getlib(PetscLib), ts)
+function solution(ts::AbstractTS{PetscLib}) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    u = LibPETSc.TSGetSolution(petsclib, ts)
+    return VecPtr(petsclib, u.ptr, false)   # owned by the TS
+end
 
 """
     set_solution!(ts::AbstractTS, u::AbstractPetscVec)

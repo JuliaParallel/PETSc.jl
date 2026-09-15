@@ -23,7 +23,8 @@ original generator's heuristics restricting that guess.
 function is_output(r::Rules, fn::String, name::String, typename::String, stars::Int, isarray::Bool, isconst::Bool, output_vars, input_vars)
     # a non-const `T *x` with scalar T is an output whatever the manual page says (PETSc docs
     # occasionally list one under Input Parameters, e.g. TSIRKGetNumStages), except in Restore*
-    if stars == 1 && !isarray && !isconst && is_simple(r, typename) && !occursin("Restore", fn)
+    occursin("Restore", fn) && return false        # Restore* hands everything back to PETSc
+    if stars == 1 && !isarray && !isconst && is_simple(r, typename)
         return true
     end
     name in input_vars && return false

@@ -206,15 +206,13 @@ end
             # every iteration after the first (mirroring how a real dtol/step-size check
             # would use them) and confirm the vector is usable.
             if it > 0
-                du = LibPETSc.PetscVec(petsclib)
-                LibPETSc.SNESGetSolutionUpdate(petsclib, snes, du)
+                du = LibPETSc.SNESGetSolutionUpdate(petsclib, snes)
                 solupdate_ptrs_nonnull[] &= (du.ptr != C_NULL)
                 duarr = LibPETSc.VecGetArrayRead(petsclib, du)
                 push!(solupdate_norms, maximum(abs, duarr))
                 LibPETSc.VecRestoreArrayRead(petsclib, du, duarr)
 
-                xsol = LibPETSc.PetscVec(petsclib)
-                LibPETSc.SNESGetSolution(petsclib, snes, xsol)
+                xsol = LibPETSc.SNESGetSolution(petsclib, snes)
                 solupdate_ptrs_nonnull[] &= (xsol.ptr != C_NULL)
                 xarr = LibPETSc.VecGetArrayRead(petsclib, xsol)
                 LibPETSc.VecRestoreArrayRead(petsclib, xsol, xarr)

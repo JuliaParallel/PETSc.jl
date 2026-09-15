@@ -855,8 +855,7 @@ function advect_mesh!(petsclib, dm, u, dt, dm_p1, vel_p1)
     # DMGetCoordinates fills an existing PetscVec wrapper's ptr with the DM's
     # internal coordinate vector — modifying it via VecAXPY updates the coords
     # in-place without a DMSetCoordinates call.
-    coords = LibPETSc.PetscVec{PL}(C_NULL)
-    LibPETSc.DMGetCoordinates(petsclib, dm, coords)
+    coords = LibPETSc.DMGetCoordinates(petsclib, dm)
     LibPETSc.VecAXPY(petsclib, coords, PetscScalar(dt), vel_p1)
 end
 

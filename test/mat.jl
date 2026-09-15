@@ -381,13 +381,13 @@ end
         arr_read = LibPETSc.MatDenseGetArrayRead(petsclib, A)
         @test size(arr_read) == (n, m)
         @test arr_read[2,2] == A[2,2]
-        LibPETSc.MatDenseRestoreArrayRead(petsclib, A)
+        LibPETSc.MatDenseRestoreArrayRead(petsclib, A, arr_read)
 
         # MatDenseGetArrayWrite
         arr_write = LibPETSc.MatDenseGetArrayWrite(petsclib, A)
         @test size(arr_write) == (n, m)
         arr_write[3,1] = PetscScalar(456)
-        LibPETSc.MatDenseRestoreArrayWrite(petsclib, A)
+        LibPETSc.MatDenseRestoreArrayWrite(petsclib, A, arr_write)
         PETSc.assemble!(A)
         @test A[3,1] == PetscScalar(456)
 
@@ -395,7 +395,7 @@ end
         arr_and_mem, mtype = LibPETSc.MatDenseGetArrayAndMemType(petsclib, A)
         @test size(arr_and_mem) == (n, m)
         arr_and_mem[4,2] = PetscScalar(789)
-        LibPETSc.MatDenseRestoreArrayAndMemType(petsclib, A)
+        LibPETSc.MatDenseRestoreArrayAndMemType(petsclib, A, arr_and_mem)
         PETSc.assemble!(A)
         @test A[4,2] == PetscScalar(789)
 
@@ -409,7 +409,7 @@ end
         arr_write_mem, mtype3 = LibPETSc.MatDenseGetArrayWriteAndMemType(petsclib, A)
         @test size(arr_write_mem) == (n, m)
         arr_write_mem[2,3] = PetscScalar(321)
-        LibPETSc.MatDenseRestoreArrayWrite(petsclib, A)
+        LibPETSc.MatDenseRestoreArrayWriteAndMemType(petsclib, A, arr_write_mem)
         PETSc.assemble!(A)
         @test A[2,3] == PetscScalar(321)
 
@@ -442,8 +442,8 @@ end
             @test length(vals) == ncols
             # PETSc uses 0-based indices, Julia uses 1-based
             @test all(Ajl[row, cols .+ 1] .== vals)
-            # MatRestoreRow only releases resources; it does not return row data
-            LibPETSc.MatRestoreRow(petsclib, A, PetscInt(row - 1))
+            # MatRestoreRow hands the row data back to PETSc
+            LibPETSc.MatRestoreRow(petsclib, A, PetscInt(row - 1), ncols, cols, vals)
         end
 
         # MatGetOwnershipRanges and MatGetOwnershipRangesColumn
@@ -583,7 +583,7 @@ end
             @test no == 0 && length(colmap) == 0
             ncols, cols, vals = LibPETSc.MatGetRow(petsclib, Ad, PetscInt(2))
             @test ncols == 1 && vals[1] == PetscScalar(9)
-            LibPETSc.MatRestoreRow(petsclib, Ad, PetscInt(2))
+            LibPETSc.MatRestoreRow(petsclib, Ad, PetscInt(2), ncols, cols, vals)
         end
         LibPETSc.MatDestroy(petsclib, B)
         PETSc.finalize(petsclib)

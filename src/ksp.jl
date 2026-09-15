@@ -311,8 +311,9 @@ end
 Returns the soluteion vector associated with the KSP object.
 """
 function get_solution(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
-    sol = LibPETSc.KSPGetSolution(getlib(PetscLib),ksp)
-    return sol
+    petsclib = getlib(PetscLib)
+    sol = LibPETSc.KSPGetSolution(petsclib, ksp)
+    return VecPtr(petsclib, sol.ptr, false)   # owned by the KSP
 end
 
 

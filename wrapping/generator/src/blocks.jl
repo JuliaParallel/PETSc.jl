@@ -144,6 +144,18 @@ function categorize(g::AbstractString, n::AbstractString)
     if occursin("::Cvoid", G) && occursin("::Ptr{Cvoid}", N)
         return "voidptr-fix"
     end
+    if occursin("== C_NULL ? \"\" : unsafe_string(", N) && occursin("unsafe_string(", G)
+        return "type-null-guard"
+    end
+    if occursin("VecGetLocalSize(petsclib, x)", G) && !occursin("VecGetLocalSize(petsclib, x)", N)
+        return "placeholder-removed"
+    end
+    if occursin(r"^\s*\w+_ = Ref\{\$?\w+\}\(\w+\)$"m, N) && !occursin(r"^\s*\w+_ = Ref\{\$?\w+\}\(\w+\)$"m, G)
+        return "scalar-byref-input"
+    end
+    if occursin(r"::Vector\{", N) && any(occursin(r"::\$?\w+(,|\s|\))", l) for l in go) && count("Vector{", N) > count("Vector{", G)
+        return "pointer-input-as-array"
+    end
     if occursin(r"::\w+Fn\b", G) && occursin("::Ptr{Cvoid}", N)
         return "fnptr-ptrcvoid-fix"
     end

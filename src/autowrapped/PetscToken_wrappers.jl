@@ -1,43 +1,3 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscToken end
-const PetscToken = Ptr{_n_PetscToken}
-
-# -------------------------------------------------------
-"""
-	PetscTokenFind(petsclib::PetscLibType,a::PetscToken, result::String) 
-Locates next "token" in a `PetscToken`
-
-Not Collective; No Fortran Support
-
-Input Parameter:
-- `a` - pointer to token
-
-Output Parameter:
-- `result` - location of occurrence, `NULL` if not found
-
-Level: intermediate
-
--seealso: `PetscToken`, `PetscTokenCreate()`, `PetscTokenDestroy()`
-
-# External Links
-$(_doc_external("Sys/PetscTokenFind"))
-"""
-function PetscTokenFind(petsclib::PetscLibType, a::PetscToken, result::String) end
-
-@for_petsc function PetscTokenFind(petsclib::$UnionPetscLib, a::PetscToken, result::String )
-	result_ = Ref(pointer(result))
-
-    @chk ccall(
-               (:PetscTokenFind, $petsc_library),
-               PetscErrorCode,
-               (PetscToken, Ptr{Ptr{Cchar}}),
-               a, result_,
-              )
-
-
-	return nothing
-end 
-
 """
 	t::PetscToken = PetscTokenCreate(petsclib::PetscLibType,a::String, b::Cchar) 
 Creates a `PetscToken` used to find tokens in a string
@@ -76,7 +36,7 @@ function PetscTokenCreate(petsclib::PetscLibType, a::String, b::Cchar) end
 end 
 
 """
-	PetscTokenDestroy(petsclib::PetscLibType,a::PetscToken) 
+	PetscTokenDestroy(petsclib::PetscLibType,a::Union{PetscToken, Ref{PetscToken}}) 
 Destroys a `PetscToken`
 
 Not Collective; No Fortran Support
@@ -105,5 +65,41 @@ function PetscTokenDestroy(petsclib::PetscLibType, a::Union{PetscToken, Ref{Pets
 
 
 	return nothing
+end 
+
+"""
+	result::Ptr{Cchar} = PetscTokenFind(petsclib::PetscLibType,a::PetscToken) 
+Locates next "token" in a `PetscToken`
+
+Not Collective; No Fortran Support
+
+Input Parameter:
+- `a` - pointer to token
+
+Output Parameter:
+- `result` - location of occurrence, `NULL` if not found
+
+Level: intermediate
+
+-seealso: `PetscToken`, `PetscTokenCreate()`, `PetscTokenDestroy()`
+
+# External Links
+$(_doc_external("Sys/PetscTokenFind"))
+"""
+function PetscTokenFind(petsclib::PetscLibType, a::PetscToken) end
+
+@for_petsc function PetscTokenFind(petsclib::$UnionPetscLib, a::PetscToken )
+	result_ = Ref{Ptr{Cchar}}()
+
+    @chk ccall(
+               (:PetscTokenFind, $petsc_library),
+               PetscErrorCode,
+               (PetscToken, Ptr{Ptr{Cchar}}),
+               a, result_,
+              )
+
+	result = result_[]
+
+	return result
 end 
 

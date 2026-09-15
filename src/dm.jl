@@ -314,8 +314,7 @@ $(_doc_external("DM/DMGetCoordinatesLocal"))
 """
 function coordinatesDMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     petsclib = getlib(PetscLib)
-    coord_vec = DMLocalVec(dm)
-    LibPETSc.DMGetCoordinatesLocal(PetscLib, dm, coord_vec)
+    coord_vec = LibPETSc.DMGetCoordinatesLocal(petsclib, dm)
 
     return coord_vec
 end

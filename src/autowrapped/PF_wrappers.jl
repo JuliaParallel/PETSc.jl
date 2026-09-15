@@ -1,70 +1,74 @@
-# autodefined type arguments for class ------
-# -------------------------------------------------------
 """
-	PFSet(petsclib::PetscLibType,pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid) 
-Sets the C/C++/Fortran functions to be used by the PF function
+	y::PetscScalar = PFApply(petsclib::PetscLibType,pf::AbstractPF, n::PetscInt, x::Vector{PetscScalar}) 
+Applies the mathematical function to an array of values.
 
 Collective
 
 Input Parameters:
-- `pf`       - the function context
-- `apply`    - function to apply to an array
-- `applyvec` - function to apply to a Vec
-- `view`     - function that prints information about the `PF`
-- `destroy`  - function to free the private function context
-- `ctx`      - private function context
+- `pf` - the function context
+- `n`  - number of pointwise function evaluations to perform, each pointwise function evaluation
+is a function of dimin variables and computes dimout variables where dimin and dimout are defined
+in the call to `PFCreate()`
+- `x`  - input array
+
+Output Parameter:
+- `y` - output array
 
 Level: beginner
 
--seealso: `PF`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFApply()`, `PFApplyVec()`
+-seealso: `PF`, `PFApplyVec()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
 
 # External Links
-$(_doc_external("Vec/PFSet"))
+$(_doc_external("PF/PFApply"))
 """
-function PFSet(petsclib::PetscLibType, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid) end
+function PFApply(petsclib::PetscLibType, pf::AbstractPF, n::PetscInt, x::Vector{PetscScalar}) end
 
-@for_petsc function PFSet(petsclib::$UnionPetscLib, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid )
+@for_petsc function PFApply(petsclib::$UnionPetscLib, pf::AbstractPF, n::$PetscInt, x::Vector{$PetscScalar} )
+	y_ = Ref{$PetscScalar}()
 
     @chk ccall(
-               (:PFSet, $petsc_library),
+               (:PFApply, $petsc_library),
                PetscErrorCode,
-               (CPF, external, external, external, external, Ptr{Cvoid}),
-               pf, apply, applyvec, view, destroy, ctx,
+               (CPF, $PetscInt, Ptr{$PetscScalar}, Ptr{$PetscScalar}),
+               pf, n, x, y_,
               )
 
+	y = y_[]
 
-	return nothing
+	return y
 end 
 
 """
-	PFDestroy(petsclib::PetscLibType,pf::AbstractPF) 
-Destroys `PF` context that was created with `PFCreate()`.
+	PFApplyVec(petsclib::PetscLibType,pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) 
+Applies the mathematical function to a vector
 
 Collective
 
-Input Parameter:
+Input Parameters:
 - `pf` - the function context
+- `x`  - input vector (or `NULL` for the vector (0,1, .... N-1)
+
+Output Parameter:
+- `y` - output vector
 
 Level: beginner
 
--seealso: `PF`, `PFCreate()`, `PFSet()`, `PFSetType()`
+-seealso: `PF`, `PFApply()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
 
 # External Links
-$(_doc_external("Vec/PFDestroy"))
+$(_doc_external("PF/PFApplyVec"))
 """
-function PFDestroy(petsclib::PetscLibType, pf::AbstractPF) end
+function PFApplyVec(petsclib::PetscLibType, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function PFDestroy(petsclib::$UnionPetscLib, pf::AbstractPF )
-	pf_ = Ref(pf.ptr)
+@for_petsc function PFApplyVec(petsclib::$UnionPetscLib, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
-               (:PFDestroy, $petsc_library),
+               (:PFApplyVec, $petsc_library),
                PetscErrorCode,
-               (Ptr{CPF},),
-               pf_,
+               (CPF, CVec, CVec),
+               pf, x, y,
               )
 
-	pf.ptr = C_NULL
 
 	return nothing
 end 
@@ -88,7 +92,7 @@ Level: developer
 -seealso: `PF`, `PFSet()`, `PFApply()`, `PFDestroy()`, `PFApplyVec()`
 
 # External Links
-$(_doc_external("Vec/PFCreate"))
+$(_doc_external("PF/PFCreate"))
 """
 function PFCreate(petsclib::PetscLibType, comm::MPI_Comm, dimin::PetscInt, dimout::PetscInt) end
 
@@ -108,169 +112,58 @@ function PFCreate(petsclib::PetscLibType, comm::MPI_Comm, dimin::PetscInt, dimou
 end 
 
 """
-	PFApplyVec(petsclib::PetscLibType,pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) 
-Applies the mathematical function to a vector
+	PFDestroy(petsclib::PetscLibType,pf::AbstractPF) 
+Destroys `PF` context that was created with `PFCreate()`.
 
 Collective
 
-Input Parameters:
+Input Parameter:
 - `pf` - the function context
-- `x`  - input vector (or `NULL` for the vector (0,1, .... N-1)
-
-Output Parameter:
-- `y` - output vector
 
 Level: beginner
 
--seealso: `PF`, `PFApply()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
+-seealso: `PF`, `PFCreate()`, `PFSet()`, `PFSetType()`
 
 # External Links
-$(_doc_external("Vec/PFApplyVec"))
+$(_doc_external("PF/PFDestroy"))
 """
-function PFApplyVec(petsclib::PetscLibType, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) end
+function PFDestroy(petsclib::PetscLibType, pf::AbstractPF) end
 
-@for_petsc function PFApplyVec(petsclib::$UnionPetscLib, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec )
+@for_petsc function PFDestroy(petsclib::$UnionPetscLib, pf::AbstractPF )
+	pf_ = Ref(pf.ptr)
 
     @chk ccall(
-               (:PFApplyVec, $petsc_library),
+               (:PFDestroy, $petsc_library),
                PetscErrorCode,
-               (CPF, CVec, CVec),
-               pf, x, y,
+               (Ptr{CPF},),
+               pf_,
               )
 
+	pf.ptr = C_NULL
 
 	return nothing
 end 
 
 """
-	y::PetscScalar = PFApply(petsclib::PetscLibType,pf::AbstractPF, n::PetscInt, x::PetscScalar) 
-Applies the mathematical function to an array of values.
-
-Collective
-
-Input Parameters:
-- `pf` - the function context
-- `n`  - number of pointwise function evaluations to perform, each pointwise function evaluation
-is a function of dimin variables and computes dimout variables where dimin and dimout are defined
-in the call to `PFCreate()`
-- `x`  - input array
-
-Output Parameter:
-- `y` - output array
-
-Level: beginner
-
--seealso: `PF`, `PFApplyVec()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
-
-# External Links
-$(_doc_external("Vec/PFApply"))
-"""
-function PFApply(petsclib::PetscLibType, pf::AbstractPF, n::PetscInt, x::PetscScalar) end
-
-@for_petsc function PFApply(petsclib::$UnionPetscLib, pf::AbstractPF, n::$PetscInt, x::$PetscScalar )
-	y_ = Ref{$PetscScalar}()
-
-    @chk ccall(
-               (:PFApply, $petsc_library),
-               PetscErrorCode,
-               (CPF, $PetscInt, Ptr{$PetscScalar}, Ptr{$PetscScalar}),
-               pf, n, x, y_,
-              )
-
-	y = y_[]
-
-	return y
-end 
-
-"""
-	PFViewFromOptions(petsclib::PetscLibType,A::AbstractPF, obj::PetscObject, name::String) 
-View a `PF` based on options set in the options database
-
-Collective
-
-Input Parameters:
-- `A`    - the `PF` context
-- `obj`  - Optional object that provides the prefix used to search the options database
-- `name` - command line option
-
-Level: intermediate
-
--seealso: `PF`, `PFView`, `PetscObjectViewFromOptions()`, `PFCreate()`
-
-# External Links
-$(_doc_external("Vec/PFViewFromOptions"))
-"""
-function PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj::PetscObject, name::String) end
-
-@for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPF, obj::PetscObject, name::String )
-
-    @chk ccall(
-               (:PFViewFromOptions, $petsc_library),
-               PetscErrorCode,
-               (CPF, PetscObject, Ptr{Cchar}),
-               A, obj, name,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PFView(petsclib::PetscLibType,pf::AbstractPF, viewer::PetscViewer) 
-Prints information about a mathematical function
-
-Collective unless `viewer` is `PETSC_VIEWER_STDOUT_SELF`
-
-Input Parameters:
-- `pf`     - the `PF` context
-- `viewer` - optional visualization context
+	PFFinalizePackage(petsclib::PetscLibType) 
+This function destroys everything in the PETSc `PF` package. It is
+called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PF`, `PetscViewerCreate()`, `PetscViewerASCIIOpen()`
+-seealso: `PF`, `PetscFinalize()`
 
 # External Links
-$(_doc_external("Vec/PFView"))
+$(_doc_external("PF/PFFinalizePackage"))
 """
-function PFView(petsclib::PetscLibType, pf::AbstractPF, viewer::PetscViewer) end
+function PFFinalizePackage(petsclib::PetscLibType) end
 
-@for_petsc function PFView(petsclib::$UnionPetscLib, pf::AbstractPF, viewer::PetscViewer )
+@for_petsc function PFFinalizePackage(petsclib::$UnionPetscLib)
 
     @chk ccall(
-               (:PFView, $petsc_library),
+               (:PFFinalizePackage, $petsc_library),
                PetscErrorCode,
-               (CPF, PetscViewer),
-               pf, viewer,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PFRegister(petsclib::PetscLibType,sname::String, fnc::external) 
-Adds a method to the mathematical function package.
-
-Not Collective
-
-Input Parameters:
-- `sname`    - name of a new user-defined solver
-- `function` - routine to create method context
-
--seealso: `PF`, `PFRegisterAll()`, `PFRegisterDestroy()`
-
-# External Links
-$(_doc_external("Vec/PFRegister"))
-"""
-function PFRegister(petsclib::PetscLibType, sname::String, fnc::external) end
-
-@for_petsc function PFRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
-
-    @chk ccall(
-               (:PFRegister, $petsc_library),
-               PetscErrorCode,
-               (Ptr{Cchar}, external),
-               sname, fnc,
+               (),
               )
 
 
@@ -295,7 +188,7 @@ Level: intermediate
 -seealso: `PF`, `PFSetType()`
 
 # External Links
-$(_doc_external("Vec/PFGetType"))
+$(_doc_external("PF/PFGetType"))
 """
 function PFGetType(petsclib::PetscLibType, pf::AbstractPF) end
 
@@ -309,41 +202,98 @@ function PFGetType(petsclib::PetscLibType, pf::AbstractPF) end
                pf, type_,
               )
 
-	type = unsafe_string(type_[])
+	type = type_[] == C_NULL ? "" : unsafe_string(type_[])
 
 	return type
 end 
 
 """
-	PFSetType(petsclib::PetscLibType,pf::AbstractPF, type::PFType, ctx::Cvoid) 
-Builds `PF` for a particular function
+	PFInitializePackage(petsclib::PetscLibType) 
+This function initializes everything in the `PF` package. It is called
+from PetscDLLibraryRegister_petscvec() when using dynamic libraries, and on the first call to `PFCreate()`
+when using shared or static libraries.
+
+Level: developer
+
+-seealso: `PF`, `PetscInitialize()`
+
+# External Links
+$(_doc_external("PF/PFInitializePackage"))
+"""
+function PFInitializePackage(petsclib::PetscLibType) end
+
+@for_petsc function PFInitializePackage(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PFInitializePackage, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PFRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+Adds a method to the mathematical function package.
+
+Not Collective
+
+Input Parameters:
+- `sname`    - name of a new user-defined solver
+- `function` - routine to create method context
+
+-seealso: `PF`, `PFRegisterAll()`, `PFRegisterDestroy()`
+
+# External Links
+$(_doc_external("PF/PFRegister"))
+"""
+function PFRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+
+@for_petsc function PFRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
+
+    @chk ccall(
+               (:PFRegister, $petsc_library),
+               PetscErrorCode,
+               (Ptr{Cchar}, external),
+               sname, fnc,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PFSet(petsclib::PetscLibType,pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Ptr{Cvoid}) 
+Sets the C/C++/Fortran functions to be used by the PF function
 
 Collective
 
 Input Parameters:
-- `pf`   - the function context.
-- `type` - a known method
-- `ctx`  - optional type dependent context
+- `pf`       - the function context
+- `apply`    - function to apply to an array
+- `applyvec` - function to apply to a Vec
+- `view`     - function that prints information about the `PF`
+- `destroy`  - function to free the private function context
+- `ctx`      - private function context
 
-Options Database Key:
-- `-pf_type <type>` - Sets PF type
+Level: beginner
 
-Level: intermediate
-
--seealso: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`
+-seealso: `PF`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFApply()`, `PFApplyVec()`
 
 # External Links
-$(_doc_external("Vec/PFSetType"))
+$(_doc_external("PF/PFSet"))
 """
-function PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::PFType, ctx::Cvoid) end
+function PFSet(petsclib::PetscLibType, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Ptr{Cvoid}) end
 
-@for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::AbstractPF, type::PFType, ctx::Cvoid )
+@for_petsc function PFSet(petsclib::$UnionPetscLib, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
-               (:PFSetType, $petsc_library),
+               (:PFSet, $petsc_library),
                PetscErrorCode,
-               (CPF, PFType, Ptr{Cvoid}),
-               pf, type, ctx,
+               (CPF, external, external, external, external, Ptr{Cvoid}),
+               pf, apply, applyvec, view, destroy, ctx,
               )
 
 
@@ -364,7 +314,7 @@ Level: intermediate
 -seealso: `PF`
 
 # External Links
-$(_doc_external("Vec/PFSetFromOptions"))
+$(_doc_external("PF/PFSetFromOptions"))
 """
 function PFSetFromOptions(petsclib::PetscLibType, pf::AbstractPF) end
 
@@ -382,52 +332,35 @@ function PFSetFromOptions(petsclib::PetscLibType, pf::AbstractPF) end
 end 
 
 """
-	PFFinalizePackage(petsclib::PetscLibType) 
-This function destroys everything in the PETSc `PF` package. It is
-called from `PetscFinalize()`.
+	PFSetType(petsclib::PetscLibType,pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid}) 
+Builds `PF` for a particular function
 
-Level: developer
+Collective
 
--seealso: `PF`, `PetscFinalize()`
+Input Parameters:
+- `pf`   - the function context.
+- `type` - a known method
+- `ctx`  - optional type dependent context
 
-# External Links
-$(_doc_external("Vec/PFFinalizePackage"))
-"""
-function PFFinalizePackage(petsclib::PetscLibType) end
+Options Database Key:
+- `-pf_type <type>` - Sets PF type
 
-@for_petsc function PFFinalizePackage(petsclib::$UnionPetscLib)
+Level: intermediate
 
-    @chk ccall(
-               (:PFFinalizePackage, $petsc_library),
-               PetscErrorCode,
-               (),
-              )
-
-
-	return nothing
-end 
-
-"""
-	PFInitializePackage(petsclib::PetscLibType) 
-This function initializes everything in the `PF` package. It is called
-from PetscDLLibraryRegister_petscvec() when using dynamic libraries, and on the first call to `PFCreate()`
-when using shared or static libraries.
-
-Level: developer
-
--seealso: `PF`, `PetscInitialize()`
+-seealso: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`
 
 # External Links
-$(_doc_external("Vec/PFInitializePackage"))
+$(_doc_external("PF/PFSetType"))
 """
-function PFInitializePackage(petsclib::PetscLibType) end
+function PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid}) end
 
-@for_petsc function PFInitializePackage(petsclib::$UnionPetscLib)
+@for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid} )
 
     @chk ccall(
-               (:PFInitializePackage, $petsc_library),
+               (:PFSetType, $petsc_library),
                PetscErrorCode,
-               (),
+               (CPF, PFType, Ptr{Cvoid}),
+               pf, type, ctx,
               )
 
 
@@ -449,7 +382,7 @@ Level: intermediate
 -seealso: `PFSetFromOptions()`
 
 # External Links
-$(_doc_external("Vec/PFStringSetFunction"))
+$(_doc_external("PF/PFStringSetFunction"))
 """
 function PFStringSetFunction(petsclib::PetscLibType, pf::AbstractPF, string::String) end
 
@@ -460,6 +393,71 @@ function PFStringSetFunction(petsclib::PetscLibType, pf::AbstractPF, string::Str
                PetscErrorCode,
                (CPF, Ptr{Cchar}),
                pf, string,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PFView(petsclib::PetscLibType,pf::AbstractPF, viewer::PetscViewer) 
+Prints information about a mathematical function
+
+Collective unless `viewer` is `PETSC_VIEWER_STDOUT_SELF`
+
+Input Parameters:
+- `pf`     - the `PF` context
+- `viewer` - optional visualization context
+
+Level: developer
+
+-seealso: `PF`, `PetscViewerCreate()`, `PetscViewerASCIIOpen()`
+
+# External Links
+$(_doc_external("PF/PFView"))
+"""
+function PFView(petsclib::PetscLibType, pf::AbstractPF, viewer::PetscViewer) end
+
+@for_petsc function PFView(petsclib::$UnionPetscLib, pf::AbstractPF, viewer::PetscViewer )
+
+    @chk ccall(
+               (:PFView, $petsc_library),
+               PetscErrorCode,
+               (CPF, PetscViewer),
+               pf, viewer,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PFViewFromOptions(petsclib::PetscLibType,A::AbstractPF, obj::PetscObject, name::String) 
+View a `PF` based on options set in the options database
+
+Collective
+
+Input Parameters:
+- `A`    - the `PF` context
+- `obj`  - Optional object that provides the prefix used to search the options database
+- `name` - command line option
+
+Level: intermediate
+
+-seealso: `PF`, `PFView`, `PetscObjectViewFromOptions()`, `PFCreate()`
+
+# External Links
+$(_doc_external("PF/PFViewFromOptions"))
+"""
+function PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj::PetscObject, name::String) end
+
+@for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPF, obj::PetscObject, name::String )
+
+    @chk ccall(
+               (:PFViewFromOptions, $petsc_library),
+               PetscErrorCode,
+               (CPF, PetscObject, Ptr{Cchar}),
+               A, obj, name,
               )
 
 

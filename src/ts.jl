@@ -1,40 +1,3 @@
-"""
-    TSSetRHSFunction(petsclib, ts, r, fptr::Ptr{Cvoid}, ctx = C_NULL)
-
-Convenience overload for low-level TS RHS callbacks created with `@cfunction`.
-
-The generated bindings currently accept the PETSc function-wrapper type directly,
-while Julia's `@cfunction` returns a raw pointer. This overload bridges that
-gap so callback-based TS examples can use the low-level interface naturally.
-"""
-function LibPETSc.TSSetRHSFunction(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-    r::AbstractPetscVec,
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSSetRHSFunction(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-    r::AbstractPetscVec{$PetscLib},
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-)
-    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSRHSFunctionFn}, fptr)
-    LibPETSc.@chk ccall(
-        (:TSSetRHSFunction, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, LibPETSc.CVec, Ptr{LibPETSc.TSRHSFunctionFn}, Ptr{Cvoid}),
-        ts,
-        r,
-        typed_fptr,
-        ctx,
-    )
-    return nothing
-end
-
 function LibPETSc.TSSetRHSFunction(
     petsclib::LibPETSc.PetscLibType,
     ts::LibPETSc.AbstractTS,
@@ -50,47 +13,13 @@ LibPETSc.@for_petsc function LibPETSc.TSSetRHSFunction(
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
 )
-    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSRHSFunctionFn}, fptr)
+    typed_fptr = fptr
     LibPETSc.@chk ccall(
         (:TSSetRHSFunction, $petsc_library),
         LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, LibPETSc.CVec, Ptr{LibPETSc.TSRHSFunctionFn}, Ptr{Cvoid}),
+        (LibPETSc.CTS, LibPETSc.CVec, Ptr{Cvoid}, Ptr{Cvoid}),
         ts,
         C_NULL,
-        typed_fptr,
-        ctx,
-    )
-    return nothing
-end
-
-"""
-    TSSetIFunction(petsclib, ts, r, fptr::Ptr{Cvoid}, ctx = C_NULL)
-
-Convenience overload for low-level TS implicit-function callbacks created with
-`@cfunction`.
-"""
-function LibPETSc.TSSetIFunction(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-    r::AbstractPetscVec,
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-    r::AbstractPetscVec{$PetscLib},
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-)
-    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSIFunctionFn}, fptr)
-    LibPETSc.@chk ccall(
-        (:TSSetIFunction, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, LibPETSc.CVec, Ptr{LibPETSc.TSIFunctionFn}, Ptr{Cvoid}),
-        ts,
-        r,
         typed_fptr,
         ctx,
     )
@@ -112,104 +41,17 @@ LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
 )
-    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSIFunctionFn}, fptr)
+    typed_fptr = fptr
     LibPETSc.@chk ccall(
         (:TSSetIFunction, $petsc_library),
         LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, LibPETSc.CVec, Ptr{LibPETSc.TSIFunctionFn}, Ptr{Cvoid}),
+        (LibPETSc.CTS, LibPETSc.CVec, Ptr{Cvoid}, Ptr{Cvoid}),
         ts,
         C_NULL,
         typed_fptr,
         ctx,
     )
     return nothing
-end
-
-"""
-    TSSetIJacobian(petsclib, ts, A, P, fptr::Ptr{Cvoid}, ctx = C_NULL)
-
-Convenience overload for low-level TS implicit-Jacobian callbacks created with
-`@cfunction`.
-"""
-function LibPETSc.TSSetIJacobian(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-    A::AbstractPetscMat,
-    P::AbstractPetscMat,
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSSetIJacobian(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-    A::AbstractPetscMat{$PetscLib},
-    P::AbstractPetscMat{$PetscLib},
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-)
-    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSIJacobianFn}, fptr)
-    LibPETSc.@chk ccall(
-        (:TSSetIJacobian, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, LibPETSc.CMat, LibPETSc.CMat, Ptr{LibPETSc.TSIJacobianFn}, Ptr{Cvoid}),
-        ts,
-        A,
-        P,
-        typed_fptr,
-        ctx,
-    )
-    return nothing
-end
-
-"""
-    adapt = TSGetAdapt(petsclib, ts)
-
-Return the adaptive time-step controller attached to `ts`.
-"""
-function LibPETSc.TSGetAdapt(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSGetAdapt(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-)
-    adapt_ref = Ref{LibPETSc.TSAdapt}()
-    LibPETSc.@chk ccall(
-        (:TSGetAdapt, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, Ptr{LibPETSc.TSAdapt}),
-        ts,
-        adapt_ref,
-    )
-    return adapt_ref[]
-end
-
-"""
-    TSIRKGetNumStages(petsclib, ts)
-
-Return the number of stages currently configured for a `TSIRK` method.
-"""
-function LibPETSc.TSIRKGetNumStages(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSIRKGetNumStages(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-)
-    nstages_ref = Ref{$PetscInt}()
-    LibPETSc.@chk ccall(
-        (:TSIRKGetNumStages, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, Ptr{$PetscInt}),
-        ts,
-        nstages_ref,
-    )
-    return nstages_ref[]
 end
 
 """
@@ -231,36 +73,12 @@ end
 """
     TSMonitorSet(petsclib, ts, monitor::Ptr{Cvoid}, ctx = C_NULL, mdestroy = C_NULL)
 
-Convenience overload for low-level TS monitor callbacks created with
-`@cfunction`.
+Defaults for the context and destroy-callback arguments of the generated `TSMonitorSet`.
 """
-function LibPETSc.TSMonitorSet(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-    monitor::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-    mdestroy::Ptr{Cvoid} = C_NULL,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSMonitorSet(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-    monitor::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-    mdestroy::Ptr{Cvoid} = C_NULL,
-)
-    typed_destroy = Ptr{LibPETSc.PetscCtxDestroyFn}(mdestroy)
-    LibPETSc.@chk ccall(
-        (:TSMonitorSet, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, LibPETSc.external, Ptr{Cvoid}, Ptr{LibPETSc.PetscCtxDestroyFn}),
-        ts,
-        monitor,
-        ctx,
-        typed_destroy,
-    )
-    return nothing
-end
+LibPETSc.TSMonitorSet(petsclib::LibPETSc.PetscLibType, ts::LibPETSc.AbstractTS, monitor::Ptr{Cvoid}) =
+    LibPETSc.TSMonitorSet(petsclib, ts, monitor, C_NULL, C_NULL)
+LibPETSc.TSMonitorSet(petsclib::LibPETSc.PetscLibType, ts::LibPETSc.AbstractTS, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}) =
+    LibPETSc.TSMonitorSet(petsclib, ts, monitor, ctx, C_NULL)
 
 """
     TSARKIMEXRegister(
@@ -604,35 +422,6 @@ function set_dm!(
 end
 
 """
-    TSGetSolution(petsclib, ts)
-
-Return the solution vector held by `ts`.
-
-The generated three-argument form takes the vector as an input and nulls 
-the caller's handle, so it cannot be used to read the solution back. 
-The vector is owned by `ts` and must not be destroyed.
-
-# External Links
-$(_doc_external("TS/TSGetSolution"))
-"""
-function LibPETSc.TSGetSolution(petsclib::LibPETSc.PetscLibType, ts::AbstractTS) end
-
-LibPETSc.@for_petsc function LibPETSc.TSGetSolution(
-    petsclib::$UnionPetscLib,
-    ts::AbstractTS,
-)
-    v_ = Ref{CVec}(C_NULL)
-    LibPETSc.@chk ccall(
-        (:TSGetSolution, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (CTS, Ptr{CVec}),
-        ts,
-        v_,
-    )
-    return PetscVec(v_[], petsclib)
-end
-
-"""
     solution(ts::AbstractTS)
 
 The solution vector held by `ts`. It is owned by `ts`, so do not destroy it.
@@ -889,67 +678,6 @@ snes_failures(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetSNESFailures(getlib(PetscLib), ts)
 
 """
-    TSGetSNES(petsclib, ts)
-
-Return the nonlinear solver held by `ts`.
-
-The generated three-argument form takes the solver as an input and nulls the
-caller's handle, so it cannot be used to read the solver back. 
-The `SNES` is owned by `ts` and must not be destroyed.
-
-# External Links
-$(_doc_external("TS/TSGetSNES"))
-"""
-function LibPETSc.TSGetSNES(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSGetSNES(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-)
-    snes_ = Ref{LibPETSc.CSNES}(C_NULL)
-    LibPETSc.@chk ccall(
-        (:TSGetSNES, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, Ptr{LibPETSc.CSNES}),
-        ts,
-        snes_,
-    )
-    return LibPETSc.PetscSNES(snes_[], petsclib)
-end
-
-"""
-    TSGetKSP(petsclib, ts)
-
-Return the linear solver held by `ts`.
-
-The generated three-argument form takes the solver as an input and nulls the
-caller's handle, so it cannot be used to read the solver back. 
-The `KSP` is owned by `ts` and must not be destroyed.
-
-# External Links
-$(_doc_external("TS/TSGetKSP"))
-"""
-function LibPETSc.TSGetKSP(petsclib::LibPETSc.PetscLibType, ts::LibPETSc.AbstractTS) end
-
-LibPETSc.@for_petsc function LibPETSc.TSGetKSP(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-)
-    ksp_ = Ref{LibPETSc.CKSP}(C_NULL)
-    LibPETSc.@chk ccall(
-        (:TSGetKSP, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CTS, Ptr{LibPETSc.CKSP}),
-        ts,
-        ksp_,
-    )
-    return LibPETSc.PetscKSP(ksp_[], petsclib)
-end
-
-"""
     snes(ts::AbstractTS)
 
 The nonlinear solver `ts` steps with. It is owned by `ts`, so do not destroy it.
@@ -1165,51 +893,6 @@ end
 # so the closure stays rooted for as long as the object lives. 
 
 # A callback may return an error code; anything else is treated as success.
-
-"""
-    TSSetRHSJacobian(petsclib, ts, A, P, fptr::Ptr{Cvoid}, ctx = C_NULL)
-
-Convenience overload for low-level TS RHS-Jacobian callbacks created with `@cfunction`.
-
-# External Links
-$(_doc_external("TS/TSSetRHSJacobian"))
-"""
-function LibPETSc.TSSetRHSJacobian(
-    petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.AbstractTS,
-    A::AbstractPetscMat,
-    P::AbstractPetscMat,
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-) end
-
-LibPETSc.@for_petsc function LibPETSc.TSSetRHSJacobian(
-    petsclib::$UnionPetscLib,
-    ts::LibPETSc.AbstractTS,
-    A::AbstractPetscMat{$PetscLib},
-    P::AbstractPetscMat{$PetscLib},
-    fptr::Ptr{Cvoid},
-    ctx::Ptr{Cvoid} = C_NULL,
-)
-    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSRHSJacobianFn}, fptr)
-    LibPETSc.@chk ccall(
-        (:TSSetRHSJacobian, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (
-            LibPETSc.CTS,
-            LibPETSc.CMat,
-            LibPETSc.CMat,
-            Ptr{LibPETSc.TSRHSJacobianFn},
-            Ptr{Cvoid},
-        ),
-        ts,
-        A,
-        P,
-        typed_fptr,
-        ctx,
-    )
-    return nothing
-end
 
 # A callback may return a PETSc error code; anything else counts as success.
 _errorcode(r) =

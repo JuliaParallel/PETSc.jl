@@ -39,7 +39,7 @@ function render_function(io::IO, r::Rules, fn::Fn, args::Vector{FArg}, doc_lines
     println(io, "\t$hdr ")
     if doc_lines !== nothing
         for c in doc_lines
-            println(io, c)
+            println(io, replace(c, "\\" => "\\\\"))   # backslashes would be escape sequences in the docstring
         end
     end
     println(io, "")

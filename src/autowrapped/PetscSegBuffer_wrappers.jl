@@ -1,7 +1,3 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscSegBuffer end
-const PetscSegBuffer = Ptr{_n_PetscSegBuffer}
-# -------------------------------------------------------
 """
 	seg::PetscSegBuffer = PetscSegBufferCreate(petsclib::PetscLibType,unitbytes::Csize_t, expected::PetscCount) 
 create a segmented buffer
@@ -41,43 +37,7 @@ function PetscSegBufferCreate(petsclib::PetscLibType, unitbytes::Csize_t, expect
 end 
 
 """
-	PetscSegBufferGet(petsclib::PetscLibType,seg::PetscSegBuffer, count::PetscCount, buf::Cvoid) 
-get new buffer space from a segmented buffer
-
-Not Collective, No Fortran Support
-
-Input Parameters:
-- `seg`   - `PetscSegBuffer` buffer
-- `count` - number of entries needed
-
-Output Parameter:
-- `buf` - address of new buffer for contiguous data
-
-Level: developer
-
--seealso: `PetscSegBufferCreate()`, `PetscSegBufferExtractAlloc()`, `PetscSegBufferExtractTo()`, `PetscSegBufferExtractInPlace()`, `PetscSegBufferDestroy()`,
-`PetscSegBuffer`, `PetscSegBufferGetInts()`
-
-# External Links
-$(_doc_external("Sys/PetscSegBufferGet"))
-"""
-function PetscSegBufferGet(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, buf::Cvoid) end
-
-@for_petsc function PetscSegBufferGet(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount, buf::Cvoid )
-
-    @chk ccall(
-               (:PetscSegBufferGet, $petsc_library),
-               PetscErrorCode,
-               (PetscSegBuffer, PetscCount, Ptr{Cvoid}),
-               seg, count, buf,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscSegBufferDestroy(petsclib::PetscLibType,seg::PetscSegBuffer) 
+	PetscSegBufferDestroy(petsclib::PetscLibType,seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}}) 
 destroy segmented buffer
 
 Not Collective, No Fortran Support
@@ -109,40 +69,7 @@ function PetscSegBufferDestroy(petsclib::PetscLibType, seg::Union{PetscSegBuffer
 end 
 
 """
-	PetscSegBufferExtractTo(petsclib::PetscLibType,seg::PetscSegBuffer, contig::Cvoid) 
-extract contiguous data to provided buffer and reset segmented buffer
-
-Not Collective, No Fortran Support
-
-Input Parameters:
-- `seg`    - segmented buffer
-- `contig` - allocated buffer to hold contiguous data
-
-Level: developer
-
--seealso: `PetscSegBufferCreate()`, `PetscSegBufferGet()`, `PetscSegBufferDestroy()`, `PetscSegBufferExtractAlloc()`, `PetscSegBufferExtractInPlace()`,
-`PetscSegBuffer`
-
-# External Links
-$(_doc_external("Sys/PetscSegBufferExtractTo"))
-"""
-function PetscSegBufferExtractTo(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Cvoid) end
-
-@for_petsc function PetscSegBufferExtractTo(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contig::Cvoid )
-
-    @chk ccall(
-               (:PetscSegBufferExtractTo, $petsc_library),
-               PetscErrorCode,
-               (PetscSegBuffer, Ptr{Cvoid}),
-               seg, contig,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscSegBufferExtractAlloc(petsclib::PetscLibType,seg::PetscSegBuffer, contiguous::Cvoid) 
+	PetscSegBufferExtractAlloc(petsclib::PetscLibType,seg::PetscSegBuffer, contiguous::Ptr{Cvoid}) 
 extract contiguous data to new allocation and reset segmented buffer
 
 Not Collective, No Fortran Support
@@ -161,9 +88,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferExtractAlloc"))
 """
-function PetscSegBufferExtractAlloc(petsclib::PetscLibType, seg::PetscSegBuffer, contiguous::Cvoid) end
+function PetscSegBufferExtractAlloc(petsclib::PetscLibType, seg::PetscSegBuffer, contiguous::Ptr{Cvoid}) end
 
-@for_petsc function PetscSegBufferExtractAlloc(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contiguous::Cvoid )
+@for_petsc function PetscSegBufferExtractAlloc(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contiguous::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscSegBufferExtractAlloc, $petsc_library),
@@ -177,7 +104,7 @@ function PetscSegBufferExtractAlloc(petsclib::PetscLibType, seg::PetscSegBuffer,
 end 
 
 """
-	PetscSegBufferExtractInPlace(petsclib::PetscLibType,seg::PetscSegBuffer, contig::Cvoid) 
+	PetscSegBufferExtractInPlace(petsclib::PetscLibType,seg::PetscSegBuffer, contig::Ptr{Cvoid}) 
 extract in
 
 Not Collective, No Fortran Support
@@ -195,9 +122,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferExtractInPlace"))
 """
-function PetscSegBufferExtractInPlace(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Cvoid) end
+function PetscSegBufferExtractInPlace(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Ptr{Cvoid}) end
 
-@for_petsc function PetscSegBufferExtractInPlace(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contig::Cvoid )
+@for_petsc function PetscSegBufferExtractInPlace(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contig::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscSegBufferExtractInPlace, $petsc_library),
@@ -211,7 +138,97 @@ function PetscSegBufferExtractInPlace(petsclib::PetscLibType, seg::PetscSegBuffe
 end 
 
 """
-	PetscSegBufferGetSize(petsclib::PetscLibType,seg::PetscSegBuffer, usedsize::PetscCount) 
+	PetscSegBufferExtractTo(petsclib::PetscLibType,seg::PetscSegBuffer, contig::Ptr{Cvoid}) 
+extract contiguous data to provided buffer and reset segmented buffer
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `seg`    - segmented buffer
+- `contig` - allocated buffer to hold contiguous data
+
+Level: developer
+
+-seealso: `PetscSegBufferCreate()`, `PetscSegBufferGet()`, `PetscSegBufferDestroy()`, `PetscSegBufferExtractAlloc()`, `PetscSegBufferExtractInPlace()`,
+`PetscSegBuffer`
+
+# External Links
+$(_doc_external("Sys/PetscSegBufferExtractTo"))
+"""
+function PetscSegBufferExtractTo(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Ptr{Cvoid}) end
+
+@for_petsc function PetscSegBufferExtractTo(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contig::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscSegBufferExtractTo, $petsc_library),
+               PetscErrorCode,
+               (PetscSegBuffer, Ptr{Cvoid}),
+               seg, contig,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscSegBufferGet(petsclib::PetscLibType,seg::PetscSegBuffer, count::PetscCount, buf::Ptr{Cvoid}) 
+get new buffer space from a segmented buffer
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `seg`   - `PetscSegBuffer` buffer
+- `count` - number of entries needed
+
+Output Parameter:
+- `buf` - address of new buffer for contiguous data
+
+Level: developer
+
+-seealso: `PetscSegBufferCreate()`, `PetscSegBufferExtractAlloc()`, `PetscSegBufferExtractTo()`, `PetscSegBufferExtractInPlace()`, `PetscSegBufferDestroy()`,
+`PetscSegBuffer`, `PetscSegBufferGetInts()`
+
+# External Links
+$(_doc_external("Sys/PetscSegBufferGet"))
+"""
+function PetscSegBufferGet(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, buf::Ptr{Cvoid}) end
+
+@for_petsc function PetscSegBufferGet(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount, buf::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:PetscSegBufferGet, $petsc_library),
+               PetscErrorCode,
+               (PetscSegBuffer, PetscCount, Ptr{Cvoid}),
+               seg, count, buf,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscSegBufferGetInts(petsclib::PetscLibType,seg::PetscSegBuffer, count::PetscCount, slot::PetscInt) 
+
+# External Links
+$(_doc_external("Sys/PetscSegBufferGetInts"))
+"""
+function PetscSegBufferGetInts(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, slot::PetscInt) end
+
+@for_petsc function PetscSegBufferGetInts(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount, slot::$PetscInt )
+
+    @chk ccall(
+               (:PetscSegBufferGetInts, $petsc_library),
+               PetscErrorCode,
+               (PetscSegBuffer, PetscCount, Ptr{Ptr{$PetscInt}}),
+               seg, count, slot,
+              )
+
+
+	return nothing
+end 
+
+"""
+	usedsize::PetscCount = PetscSegBufferGetSize(petsclib::PetscLibType,seg::PetscSegBuffer) 
 get currently used number of entries of a `PetscSegBuffer`
 
 Not Collective, No Fortran Support
@@ -229,19 +246,21 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferGetSize"))
 """
-function PetscSegBufferGetSize(petsclib::PetscLibType, seg::PetscSegBuffer, usedsize::PetscCount) end
+function PetscSegBufferGetSize(petsclib::PetscLibType, seg::PetscSegBuffer) end
 
-@for_petsc function PetscSegBufferGetSize(petsclib::$UnionPetscLib, seg::PetscSegBuffer, usedsize::PetscCount )
+@for_petsc function PetscSegBufferGetSize(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
+	usedsize_ = Ref{PetscCount}()
 
     @chk ccall(
                (:PetscSegBufferGetSize, $petsc_library),
                PetscErrorCode,
                (PetscSegBuffer, Ptr{PetscCount}),
-               seg, usedsize,
+               seg, usedsize_,
               )
 
+	usedsize = usedsize_[]
 
-	return nothing
+	return usedsize
 end 
 
 """
@@ -270,27 +289,6 @@ function PetscSegBufferUnuse(petsclib::PetscLibType, seg::PetscSegBuffer, unused
                PetscErrorCode,
                (PetscSegBuffer, PetscCount),
                seg, unused,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscSegBufferGetInts(petsclib::PetscLibType,seg::PetscSegBuffer, count::PetscCount, slot::PetscInt) 
-
-# External Links
-$(_doc_external("Sys/PetscSegBufferGetInts"))
-"""
-function PetscSegBufferGetInts(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, slot::PetscInt) end
-
-@for_petsc function PetscSegBufferGetInts(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount, slot::$PetscInt )
-
-    @chk ccall(
-               (:PetscSegBufferGetInts, $petsc_library),
-               PetscErrorCode,
-               (PetscSegBuffer, PetscCount, $PetscInt),
-               seg, count, slot,
               )
 
 

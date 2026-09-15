@@ -138,10 +138,10 @@ prelude = "n = ISGetSize(petsclib, is)"
 size = "n"
 
 [ISLocalToGlobalMappingApply.out]
-len = "Int(N"
+len = "Int(N)"
 
 [ISLocalToGlobalMappingApplyBlock.out]
-len = "Int(N"
+len = "Int(N)"
 
 [ISLocalToGlobalMappingGetBlockIndices.array]
 nullinit = true

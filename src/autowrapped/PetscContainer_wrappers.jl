@@ -1,8 +1,72 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscContainer end
-const PetscContainer = Ptr{_n_PetscContainer}
+"""
+	container::PetscContainer = PetscContainerCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+Creates a PETSc object that has room to hold a single pointer.
 
-# -------------------------------------------------------
+Collective, No Fortran Support
+
+Input Parameter:
+- `comm` - MPI communicator that shares the object
+
+Output Parameter:
+- `container` - the container created
+
+Level: advanced
+
+-seealso: `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
+`PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
+
+# External Links
+$(_doc_external("Sys/PetscContainerCreate"))
+"""
+function PetscContainerCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+
+@for_petsc function PetscContainerCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
+	container_ = Ref{PetscContainer}()
+
+    @chk ccall(
+               (:PetscContainerCreate, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Ptr{PetscContainer}),
+               comm, container_,
+              )
+
+	container = container_[]
+
+	return container
+end 
+
+"""
+	PetscContainerDestroy(petsclib::PetscLibType,obj::Union{PetscContainer, Ref{PetscContainer}}) 
+Destroys a PETSc container object.
+
+Collective, No Fortran Support
+
+Input Parameter:
+- `obj` - an object that was created with `PetscContainerCreate()`
+
+Level: advanced
+
+-seealso: `PetscContainerCreate()`, `PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
+
+# External Links
+$(_doc_external("Sys/PetscContainerDestroy"))
+"""
+function PetscContainerDestroy(petsclib::PetscLibType, obj::Union{PetscContainer, Ref{PetscContainer}}) end
+
+@for_petsc function PetscContainerDestroy(petsclib::$UnionPetscLib, obj::Union{PetscContainer, Ref{PetscContainer}} )
+	obj_ = obj isa Base.RefValue ? obj : Ref{PetscContainer}(obj)
+
+    @chk ccall(
+               (:PetscContainerDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscContainer},),
+               obj_,
+              )
+
+
+	return nothing
+end 
+
 """
 	PetscContainerGetPointer(petsclib::PetscLibType,obj::PetscContainer, ptr::PeCtx) 
 Gets the pointer value contained in the container that was provided with `PetscContainerSetPointer()`
@@ -39,72 +103,7 @@ function PetscContainerGetPointer(petsclib::PetscLibType, obj::PetscContainer, p
 end 
 
 """
-	PetscContainerSetPointer(petsclib::PetscLibType,obj::PetscContainer, ptr::Cvoid) 
-Sets the pointer value contained in the container.
-
-Logically Collective, No Fortran Support
-
-Input Parameters:
-- `obj` - the object created with `PetscContainerCreate()`
-- `ptr` - the pointer value
-
-Level: advanced
-
--seealso: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObject`,
-`PetscContainerGetPointer()`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
-
-# External Links
-$(_doc_external("Sys/PetscContainerSetPointer"))
-"""
-function PetscContainerSetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::Cvoid) end
-
-@for_petsc function PetscContainerSetPointer(petsclib::$UnionPetscLib, obj::PetscContainer, ptr::Cvoid )
-
-    @chk ccall(
-               (:PetscContainerSetPointer, $petsc_library),
-               PetscErrorCode,
-               (PetscContainer, Ptr{Cvoid}),
-               obj, ptr,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscContainerDestroy(petsclib::PetscLibType,obj::PetscContainer) 
-Destroys a PETSc container object.
-
-Collective, No Fortran Support
-
-Input Parameter:
-- `obj` - an object that was created with `PetscContainerCreate()`
-
-Level: advanced
-
--seealso: `PetscContainerCreate()`, `PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
-
-# External Links
-$(_doc_external("Sys/PetscContainerDestroy"))
-"""
-function PetscContainerDestroy(petsclib::PetscLibType, obj::Union{PetscContainer, Ref{PetscContainer}}) end
-
-@for_petsc function PetscContainerDestroy(petsclib::$UnionPetscLib, obj::Union{PetscContainer, Ref{PetscContainer}} )
-	obj_ = obj isa Base.RefValue ? obj : Ref{PetscContainer}(obj)
-
-    @chk ccall(
-               (:PetscContainerDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscContainer},),
-               obj_,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscContainerSetCtxDestroy(petsclib::PetscLibType,obj::PetscContainer, des::PetscCtxDestroyFn) 
+	PetscContainerSetCtxDestroy(petsclib::PetscLibType,obj::PetscContainer, des::Ptr{Cvoid}) 
 Sets the destroy function for the data provided to the `PetscContainer` with `PetscContainerSetPointer()`
 
 Logically Collective, No Fortran Support
@@ -121,14 +120,14 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerSetCtxDestroy"))
 """
-function PetscContainerSetCtxDestroy(petsclib::PetscLibType, obj::PetscContainer, des::PetscCtxDestroyFn) end
+function PetscContainerSetCtxDestroy(petsclib::PetscLibType, obj::PetscContainer, des::Ptr{Cvoid}) end
 
-@for_petsc function PetscContainerSetCtxDestroy(petsclib::$UnionPetscLib, obj::PetscContainer, des::PetscCtxDestroyFn )
+@for_petsc function PetscContainerSetCtxDestroy(petsclib::$UnionPetscLib, obj::PetscContainer, des::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscContainerSetCtxDestroy, $petsc_library),
                PetscErrorCode,
-               (PetscContainer, Ptr{PetscCtxDestroyFn}),
+               (PetscContainer, Ptr{Cvoid}),
                obj, des,
               )
 
@@ -137,39 +136,35 @@ function PetscContainerSetCtxDestroy(petsclib::PetscLibType, obj::PetscContainer
 end 
 
 """
-	container::PetscContainer = PetscContainerCreate(petsclib::PetscLibType,comm::MPI_Comm) 
-Creates a PETSc object that has room to hold a single pointer.
+	PetscContainerSetPointer(petsclib::PetscLibType,obj::PetscContainer, ptr::Ptr{Cvoid}) 
+Sets the pointer value contained in the container.
 
-Collective, No Fortran Support
+Logically Collective, No Fortran Support
 
-Input Parameter:
-- `comm` - MPI communicator that shares the object
-
-Output Parameter:
-- `container` - the container created
+Input Parameters:
+- `obj` - the object created with `PetscContainerCreate()`
+- `ptr` - the pointer value
 
 Level: advanced
 
--seealso: `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
-`PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
+-seealso: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObject`,
+`PetscContainerGetPointer()`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
 
 # External Links
-$(_doc_external("Sys/PetscContainerCreate"))
+$(_doc_external("Sys/PetscContainerSetPointer"))
 """
-function PetscContainerCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscContainerSetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::Ptr{Cvoid}) end
 
-@for_petsc function PetscContainerCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
-	container_ = Ref{PetscContainer}()
+@for_petsc function PetscContainerSetPointer(petsclib::$UnionPetscLib, obj::PetscContainer, ptr::Ptr{Cvoid} )
 
     @chk ccall(
-               (:PetscContainerCreate, $petsc_library),
+               (:PetscContainerSetPointer, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{PetscContainer}),
-               comm, container_,
+               (PetscContainer, Ptr{Cvoid}),
+               obj, ptr,
               )
 
-	container = container_[]
 
-	return container
+	return nothing
 end 
 

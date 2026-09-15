@@ -435,9 +435,7 @@ function plexdistribute!(
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
     PetscInt = inttype(PetscLib)
-    dm_par = LibPETSc.PetscDM(petsclib)
-    LibPETSc.DMPlexDistribute(petsclib, dm, PetscInt(overlap),
-                              Ptr{LibPETSc.PetscSF}(C_NULL), dm_par)
+    _, dm_par = LibPETSc.DMPlexDistribute(petsclib, dm, PetscInt(overlap))
     return dm_par
 end
 
@@ -861,9 +859,7 @@ end
 Return a new DM that is a clone of `dm` (same topology, no fields or DS).
 """
 function dmclone(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
-    newdm = LibPETSc.PetscDM(getlib(PetscLib))
-    LibPETSc.DMClone(getlib(PetscLib), dm, newdm)
-    return newdm
+    return LibPETSc.DMClone(getlib(PetscLib), dm)
 end
 
 """
@@ -934,7 +930,7 @@ function dm_coarsen_hook_add!(
     coarsenhook::Ptr{Cvoid},
     restricthook::Ptr{Cvoid} = C_NULL,
 ) where {PL}
-    LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook)
+    LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook, C_NULL)
 end
 
 """
@@ -964,8 +960,7 @@ LibPETSc.@for_petsc function create_split_boundary_labels!(
     names = ("markerBottom", "markerRight", "markerTop", "markerLeft")
     for (name, id) in zip(names, $PetscInt[1, 2, 3, 4])
         LibPETSc.DMCreateLabel(petsclib, dm, name)
-        is = LibPETSc.IS{$PetscLib}()
-        LibPETSc.DMGetStratumIS(petsclib, dm, "marker", id, is)
+        is = LibPETSc.DMGetStratumIS(petsclib, dm, "marker", id)
         is.ptr == C_NULL && continue
         label = LibPETSc.DMGetLabel(petsclib, dm, name)
         LibPETSc.DMLabelInsertIS(petsclib, label, is, $PetscInt(1))
@@ -1250,9 +1245,7 @@ function dm_get_coarse end
 
 LibPETSc.@for_petsc function dm_get_coarse(dm::AbstractPetscDM{$PetscLib})
     petsclib = getlib($PetscLib)
-    cdm = LibPETSc.PetscDM(petsclib)
-    LibPETSc.DMGetCoarseDM(petsclib, dm, cdm)
-    return cdm
+    return LibPETSc.DMGetCoarseDM(petsclib, dm)
 end
 
 """

@@ -1,3 +1,35 @@
+"""
+	stack::PetscIntStack = PetscIntStackCreate(petsclib::PetscLibType) 
+This function creates a stack.
+
+Not Collective, No Fortran Support
+
+Output Parameter:
+- `stack` - The stack
+
+Level: developer
+
+-seealso: `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`, `PetscIntStackPop()`, `PetscIntStackTop()`
+
+# External Links
+$(_doc_external("Log/PetscIntStackCreate"))
+"""
+function PetscIntStackCreate(petsclib::PetscLibType) end
+
+@for_petsc function PetscIntStackCreate(petsclib::$UnionPetscLib)
+	stack_ = Ref{$PetscIntStack}()
+
+    @chk ccall(
+               (:PetscIntStackCreate, $petsc_library),
+               PetscErrorCode,
+               (Ptr{$PetscIntStack},),
+               stack_,
+              )
+
+	stack = stack_[]
+
+	return stack
+end 
 
 """
 	PetscIntStackDestroy(petsclib::PetscLibType,stack::PetscIntStack) 
@@ -13,7 +45,7 @@ Level: developer
 -seealso: `PetscIntStackCreate()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`, `PetscIntStackPop()`, `PetscIntStackTop()`
 
 # External Links
-$(_doc_external("Sys/PetscIntStackDestroy"))
+$(_doc_external("Log/PetscIntStackDestroy"))
 """
 function PetscIntStackDestroy(petsclib::PetscLibType, stack::PetscIntStack) end
 
@@ -47,7 +79,7 @@ Level: developer
 -seealso: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackPush()`, `PetscIntStackPop()`, `PetscIntStackTop()`
 
 # External Links
-$(_doc_external("Sys/PetscIntStackEmpty"))
+$(_doc_external("Log/PetscIntStackEmpty"))
 """
 function PetscIntStackEmpty(petsclib::PetscLibType, stack::PetscIntStack) end
 
@@ -67,8 +99,8 @@ function PetscIntStackEmpty(petsclib::PetscLibType, stack::PetscIntStack) end
 end 
 
 """
-	PetscIntStackTop(petsclib::PetscLibType,stack::PetscIntStack, top::Cint) 
-This function returns the top of the stack.
+	item::Cint = PetscIntStackPop(petsclib::PetscLibType,stack::PetscIntStack) 
+This function pops an integer from the stack.
 
 Not Collective, No Fortran Support
 
@@ -76,28 +108,30 @@ Input Parameter:
 - `stack` - The stack
 
 Output Parameter:
-- `top` - The integer on top of the stack
+- `item` - The integer popped
 
 Level: developer
 
--seealso: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`, `PetscIntStackPop()`
+-seealso: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`, `PetscIntStackTop()`
 
 # External Links
-$(_doc_external("Sys/PetscIntStackTop"))
+$(_doc_external("Log/PetscIntStackPop"))
 """
-function PetscIntStackTop(petsclib::PetscLibType, stack::PetscIntStack, top::Cint) end
+function PetscIntStackPop(petsclib::PetscLibType, stack::PetscIntStack) end
 
-@for_petsc function PetscIntStackTop(petsclib::$UnionPetscLib, stack::$PetscIntStack, top::Cint )
+@for_petsc function PetscIntStackPop(petsclib::$UnionPetscLib, stack::$PetscIntStack )
+	item_ = Ref{Cint}()
 
     @chk ccall(
-               (:PetscIntStackTop, $petsc_library),
+               (:PetscIntStackPop, $petsc_library),
                PetscErrorCode,
                ($PetscIntStack, Ptr{Cint}),
-               stack, top,
+               stack, item_,
               )
 
+	item = item_[]
 
-	return nothing
+	return item
 end 
 
 """
@@ -115,7 +149,7 @@ Level: developer
 -seealso: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPop()`, `PetscIntStackTop()`
 
 # External Links
-$(_doc_external("Sys/PetscIntStackPush"))
+$(_doc_external("Log/PetscIntStackPush"))
 """
 function PetscIntStackPush(petsclib::PetscLibType, stack::PetscIntStack, item::Cint) end
 
@@ -133,8 +167,8 @@ function PetscIntStackPush(petsclib::PetscLibType, stack::PetscIntStack, item::C
 end 
 
 """
-	PetscIntStackPop(petsclib::PetscLibType,stack::PetscIntStack, item::Cint) 
-This function pops an integer from the stack.
+	top::Cint = PetscIntStackTop(petsclib::PetscLibType,stack::PetscIntStack) 
+This function returns the top of the stack.
 
 Not Collective, No Fortran Support
 
@@ -142,60 +176,29 @@ Input Parameter:
 - `stack` - The stack
 
 Output Parameter:
-- `item` - The integer popped
+- `top` - The integer on top of the stack
 
 Level: developer
 
--seealso: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`, `PetscIntStackTop()`
+-seealso: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`, `PetscIntStackPop()`
 
 # External Links
-$(_doc_external("Sys/PetscIntStackPop"))
+$(_doc_external("Log/PetscIntStackTop"))
 """
-function PetscIntStackPop(petsclib::PetscLibType, stack::PetscIntStack, item::Cint) end
+function PetscIntStackTop(petsclib::PetscLibType, stack::PetscIntStack) end
 
-@for_petsc function PetscIntStackPop(petsclib::$UnionPetscLib, stack::$PetscIntStack, item::Cint )
+@for_petsc function PetscIntStackTop(petsclib::$UnionPetscLib, stack::$PetscIntStack )
+	top_ = Ref{Cint}()
 
     @chk ccall(
-               (:PetscIntStackPop, $petsc_library),
+               (:PetscIntStackTop, $petsc_library),
                PetscErrorCode,
                ($PetscIntStack, Ptr{Cint}),
-               stack, item,
+               stack, top_,
               )
 
+	top = top_[]
 
-	return nothing
-end 
-
-"""
-	stack::PetscIntStack = PetscIntStackCreate(petsclib::PetscLibType) 
-This function creates a stack.
-
-Not Collective, No Fortran Support
-
-Output Parameter:
-- `stack` - The stack
-
-Level: developer
-
--seealso: `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`, `PetscIntStackPop()`, `PetscIntStackTop()`
-
-# External Links
-$(_doc_external("Sys/PetscIntStackCreate"))
-"""
-function PetscIntStackCreate(petsclib::PetscLibType) end
-
-@for_petsc function PetscIntStackCreate(petsclib::$UnionPetscLib)
-	stack_ = Ref{$PetscIntStack}()
-
-    @chk ccall(
-               (:PetscIntStackCreate, $petsc_library),
-               PetscErrorCode,
-               (Ptr{$PetscIntStack},),
-               stack_,
-              )
-
-	stack = stack_[]
-
-	return stack
+	return top
 end 
 

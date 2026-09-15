@@ -75,7 +75,7 @@ function mine(golden::AbstractString)
             end
             m = match(r"^(\w+)_ = Ref\{Ptr\{.*\}\}\(C_NULL\)", l)
             m === nothing || add!(fn, m.captures[1], "nullinit", true)
-            m = match(r"^(\w+) = Vector\{[^}]*\}\(undef, (.+?)\);?", l)
+            m = match(r"^(\w+) = Vector\{[^}]*\}\(undef, (.+)\)\s*;?\s*$", l)
             if m !== nothing && strip(m.captures[2]) != "ni" && !occursin("CHECK SIZE", l)
                 add!(fn, m.captures[1], "len", String(strip(m.captures[2])))
             end

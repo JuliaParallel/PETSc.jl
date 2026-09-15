@@ -1,5 +1,36 @@
 """
-	PetscFunctionListDestroy(petsclib::PetscLibType,fl::PetscFunctionList) 
+	PetscFunctionListClear(petsclib::PetscLibType,fl::PetscFunctionList) 
+Clear a `PetscFunctionList`
+
+Not Collective
+
+Input Parameter:
+- `fl` - The `PetscFunctionList` to clear
+
+Level: developer
+
+-seealso: `PetscFunctionList`, `PetscFunctionListDestroy()`, `PetscFunctionListAdd()`
+
+# External Links
+$(_doc_external("Sys/PetscFunctionListClear"))
+"""
+function PetscFunctionListClear(petsclib::PetscLibType, fl::PetscFunctionList) end
+
+@for_petsc function PetscFunctionListClear(petsclib::$UnionPetscLib, fl::PetscFunctionList )
+
+    @chk ccall(
+               (:PetscFunctionListClear, $petsc_library),
+               PetscErrorCode,
+               (PetscFunctionList,),
+               fl,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscFunctionListDestroy(petsclib::PetscLibType,fl::Union{PetscFunctionList, Ref{PetscFunctionList}}) 
 Destroys a list of registered routines.
 
 Input Parameter:
@@ -29,34 +60,77 @@ function PetscFunctionListDestroy(petsclib::PetscLibType, fl::Union{PetscFunctio
 end 
 
 """
-	PetscFunctionListClear(petsclib::PetscLibType,fl::PetscFunctionList) 
-Clear a `PetscFunctionList`
-
-Not Collective
+	nl::PetscFunctionList = PetscFunctionListDuplicate(petsclib::PetscLibType,fl::PetscFunctionList) 
+Creates a new list from a given function list `PetscFunctionList`.
 
 Input Parameter:
-- `fl` - The `PetscFunctionList` to clear
+- `fl` - pointer to list
+
+Output Parameter:
+- `nl` - the new list (should point to `NULL` to start, otherwise appends)
 
 Level: developer
 
--seealso: `PetscFunctionList`, `PetscFunctionListDestroy()`, `PetscFunctionListAdd()`
+-seealso: `PetscFunctionList`, `PetscFunctionListAdd()`, `PetscFlistDestroy()`
 
 # External Links
-$(_doc_external("Sys/PetscFunctionListClear"))
+$(_doc_external("Sys/PetscFunctionListDuplicate"))
 """
-function PetscFunctionListClear(petsclib::PetscLibType, fl::PetscFunctionList) end
+function PetscFunctionListDuplicate(petsclib::PetscLibType, fl::PetscFunctionList) end
 
-@for_petsc function PetscFunctionListClear(petsclib::$UnionPetscLib, fl::PetscFunctionList )
+@for_petsc function PetscFunctionListDuplicate(petsclib::$UnionPetscLib, fl::PetscFunctionList )
+	nl_ = Ref{PetscFunctionList}()
 
     @chk ccall(
-               (:PetscFunctionListClear, $petsc_library),
+               (:PetscFunctionListDuplicate, $petsc_library),
                PetscErrorCode,
-               (PetscFunctionList,),
-               fl,
+               (PetscFunctionList, Ptr{PetscFunctionList}),
+               fl, nl_,
               )
 
+	nl = nl_[]
 
-	return nothing
+	return nl
+end 
+
+"""
+	array::String,n::Cint = PetscFunctionListGet(petsclib::PetscLibType,list::PetscFunctionList) 
+Gets an array the contains the entries in `PetscFunctionList`, this is used
+by help etc.
+
+Not Collective, No Fortran Support
+
+Input Parameter:
+- `list` - list of types
+
+Output Parameters:
+- `array` - array of names
+- `n`     - length of `array`
+
+Level: developer
+
+-seealso: `PetscFunctionListAdd()`, `PetscFunctionList`
+
+# External Links
+$(_doc_external("Sys/PetscFunctionListGet"))
+"""
+function PetscFunctionListGet(petsclib::PetscLibType, list::PetscFunctionList) end
+
+@for_petsc function PetscFunctionListGet(petsclib::$UnionPetscLib, list::PetscFunctionList )
+	array_ = Ref{Ptr{Cchar}}()
+	n_ = Ref{Cint}()
+
+    @chk ccall(
+               (:PetscFunctionListGet, $petsc_library),
+               PetscErrorCode,
+               (PetscFunctionList, Ptr{Ptr{Cchar}}, Ptr{Cint}),
+               list, array_, n_,
+              )
+
+	array = unsafe_string(array_[])
+	n = n_[]
+
+	return array,n
 end 
 
 """
@@ -111,74 +185,6 @@ function PetscFunctionListPrintNonEmpty(petsclib::PetscLibType, fl::PetscFunctio
 end 
 
 """
-	PetscFunctionListView(petsclib::PetscLibType,list::PetscFunctionList, viewer::PetscViewer) 
-prints out contents of a `PetscFunctionList`
-
-Collective
-
-Input Parameters:
-- `list`   - the list of functions
-- `viewer` - the `PetscViewer` used to view the `PetscFunctionList`
-
-Level: developer
-
--seealso: `PetscFunctionListAdd()`, `PetscFunctionListPrintTypes()`, `PetscFunctionList`
-
-# External Links
-$(_doc_external("Sys/PetscFunctionListView"))
-"""
-function PetscFunctionListView(petsclib::PetscLibType, list::PetscFunctionList, viewer::PetscViewer) end
-
-@for_petsc function PetscFunctionListView(petsclib::$UnionPetscLib, list::PetscFunctionList, viewer::PetscViewer )
-
-    @chk ccall(
-               (:PetscFunctionListView, $petsc_library),
-               PetscErrorCode,
-               (PetscFunctionList, PetscViewer),
-               list, viewer,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscFunctionListGet(petsclib::PetscLibType,list::PetscFunctionList, array::Cchar, n::Cint) 
-Gets an array the contains the entries in `PetscFunctionList`, this is used
-by help etc.
-
-Not Collective, No Fortran Support
-
-Input Parameter:
-- `list` - list of types
-
-Output Parameters:
-- `array` - array of names
-- `n`     - length of `array`
-
-Level: developer
-
--seealso: `PetscFunctionListAdd()`, `PetscFunctionList`
-
-# External Links
-$(_doc_external("Sys/PetscFunctionListGet"))
-"""
-function PetscFunctionListGet(petsclib::PetscLibType, list::PetscFunctionList, array::Cchar, n::Cint) end
-
-@for_petsc function PetscFunctionListGet(petsclib::$UnionPetscLib, list::PetscFunctionList, array::Cchar, n::Cint )
-
-    @chk ccall(
-               (:PetscFunctionListGet, $petsc_library),
-               PetscErrorCode,
-               (PetscFunctionList, Cchar, Ptr{Cint}),
-               list, array, n,
-              )
-
-
-	return nothing
-end 
-
-"""
 	PetscFunctionListPrintTypes(petsclib::PetscLibType,comm::MPI_Comm, fd::Libc.FILE, prefix::String, name::String, text::String, man::String, list::PetscFunctionList, def::String, newv::String) 
 Prints the methods available in a list of functions
 
@@ -218,36 +224,34 @@ function PetscFunctionListPrintTypes(petsclib::PetscLibType, comm::MPI_Comm, fd:
 end 
 
 """
-	nl::PetscFunctionList = PetscFunctionListDuplicate(petsclib::PetscLibType,fl::PetscFunctionList) 
-Creates a new list from a given function list `PetscFunctionList`.
+	PetscFunctionListView(petsclib::PetscLibType,list::PetscFunctionList, viewer::PetscViewer) 
+prints out contents of a `PetscFunctionList`
 
-Input Parameter:
-- `fl` - pointer to list
+Collective
 
-Output Parameter:
-- `nl` - the new list (should point to `NULL` to start, otherwise appends)
+Input Parameters:
+- `list`   - the list of functions
+- `viewer` - the `PetscViewer` used to view the `PetscFunctionList`
 
 Level: developer
 
--seealso: `PetscFunctionList`, `PetscFunctionListAdd()`, `PetscFlistDestroy()`
+-seealso: `PetscFunctionListAdd()`, `PetscFunctionListPrintTypes()`, `PetscFunctionList`
 
 # External Links
-$(_doc_external("Sys/PetscFunctionListDuplicate"))
+$(_doc_external("Sys/PetscFunctionListView"))
 """
-function PetscFunctionListDuplicate(petsclib::PetscLibType, fl::PetscFunctionList) end
+function PetscFunctionListView(petsclib::PetscLibType, list::PetscFunctionList, viewer::PetscViewer) end
 
-@for_petsc function PetscFunctionListDuplicate(petsclib::$UnionPetscLib, fl::PetscFunctionList )
-	nl_ = Ref{PetscFunctionList}()
+@for_petsc function PetscFunctionListView(petsclib::$UnionPetscLib, list::PetscFunctionList, viewer::PetscViewer )
 
     @chk ccall(
-               (:PetscFunctionListDuplicate, $petsc_library),
+               (:PetscFunctionListView, $petsc_library),
                PetscErrorCode,
-               (PetscFunctionList, Ptr{PetscFunctionList}),
-               fl, nl_,
+               (PetscFunctionList, PetscViewer),
+               list, viewer,
               )
 
-	nl = nl_[]
 
-	return nl
+	return nothing
 end 
 

@@ -20,9 +20,14 @@ Is the argument an output? The manual page's `Input Parameters` / `Output Parame
 decide when they mention the argument; otherwise a pointer is guessed to be an output, with the
 original generator's heuristics restricting that guess.
 """
-function is_output(r::Rules, fn::String, name::String, typename::String, stars::Int, output_vars, input_vars)
+function is_output(r::Rules, fn::String, name::String, typename::String, stars::Int, isarray::Bool, isconst::Bool, output_vars, input_vars)
+    # a non-const `T *x` with scalar T is an output whatever the manual page says (PETSc docs
+    # occasionally list one under Input Parameters, e.g. TSIRKGetNumStages), except in Restore*
+    if stars == 1 && !isarray && !isconst && is_simple(r, typename) && !occursin("Restore", fn)
+        return true
+    end
     name in input_vars && return false
-    name in output_vars && return stars >= 1
+    name in output_vars && return stars >= 1 || isarray
     output = stars == 1
     if output
         simple = typename in SIMPLE_TYPES || typename in r.enum_types || typename in r.string_types ||
@@ -49,9 +54,10 @@ function init_extract(r::Rules, typename::String, name::String, isarray::Bool, i
         init = "$name_ccall = Ref($(name).ptr)"
         extract = "$(name).ptr = C_NULL"
     elseif isarray && isoutput && stars > 0
+        # a PETSc-owned array; without a size rule the raw pointer is returned rather than a guess
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{" * "Ptr{"^stars * typename * "}"^stars * "}()"
-        extract = "$name = unsafe_wrap(Array, $name_ccall[], VecGetLocalSize(petsclib, x); own = false)"
+        extract = "$name = $name_ccall[]"
     elseif isarray && isoutput && stars == 0
         init = "$name = Vector{$typename}(undef, ni);  # CHECK SIZE!!"
     elseif isarray && !isoutput && stars == 1
@@ -60,7 +66,7 @@ function init_extract(r::Rules, typename::String, name::String, isarray::Bool, i
     elseif !isarray && isoutput && typename in r.string_types
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{$typename}()"
-        extract = "$name = unsafe_string($(name_ccall)[])"
+        extract = "$name = $(name_ccall)[] == C_NULL ? \"\" : unsafe_string($(name_ccall)[])"
     elseif !isarray && isoutput
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{$typename}()"
@@ -76,7 +82,7 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     typename = map_type(r, a.typename)
     name = rename_arg(r, a.name)
     isarray = a.array
-    isoutput = is_output(r, fn.name, name, typename, stars, output_vars, input_vars)
+    isoutput = is_output(r, fn.name, name, typename, stars, isarray, a.isconst, output_vars, input_vars)
     ov = get(get(r.args, fn.name, Dict{String,Dict{String,Any}}()), name, Dict{String,Any}())
     if haskey(ov, "direction")
         isoutput = ov["direction"] == "out"
@@ -90,6 +96,10 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     end
     if isfnptr || typename == "Cvoid"
         if stars >= 2 && !isarray
+            if name in input_vars || (!(name in output_vars) && !occursin("Get", fn.name))
+                # an array of function pointers (or a `void **` buffer) passed in
+                return FArg(name, name, "Ptr{Ptr{Cvoid}}", "Ptr{Ptr{Cvoid}}", false, "", "", false, stars, isfnptr)
+            end
             return FArg(name, "$(name)_", "Ptr{Cvoid}", "Ptr{Ptr{Cvoid}}", true,
                         "$(name)_ = Ref{Ptr{Cvoid}}()", "$name = $(name)_[]", false, stars, isfnptr)
         elseif !isarray
@@ -110,10 +120,14 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
         return FArg(name, "$(name)_", "Ptr{$typename}", "Ptr{Ptr{$typename}}", true,
                     "$(name)_ = Ref{Ptr{$typename}}()", "$name = $(name)_[]", false, stars, false)
     end
-    # scalar passed by reference as an input (`PetscInt *n` documented as input, Restore functions)
-    if stars == 1 && !isarray && !isoutput && is_simple(r, typename) && (name in input_vars || occursin("Restore", fn.name))
-        return FArg(name, "$(name)_", typename, "Ptr{$typename}", false,
-                    "$(name)_ = Ref{$typename}($name)", "", false, stars, false)
+    # `T *x` as an input: in Restore functions a scalar handed back by reference, elsewhere an array
+    if stars == 1 && !isarray && !isoutput && !is_handle(r, typename) && typename != "Ptr{Cvoid}"
+        if occursin("Restore", fn.name) && is_simple(r, typename)
+            return FArg(name, "$(name)_", typename, "Ptr{$typename}", false,
+                        "$(name)_ = Ref{$typename}($name)", "", false, stars, false)
+        elseif is_simple(r, typename) || typename in r.struct_types
+            return FArg(name, name, "Vector{$typename}", "Ptr{$typename}", false, "", "", true, stars, false)
+        end
     end
     typename_ccall = is_handle(r, typename) ? r.handles[typename].c : typename
     init, extract, name_ccall = init_extract(r, typename, name, isarray, isoutput, stars)
@@ -122,6 +136,8 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
         ccall_str = "Ptr{$ccall_str}"
         if !isoutput
             typename = typename == "Cchar" ? "String" : "Vector{$typename}"
+        elseif stars > 0 && !haskey(ov, "size")
+            typename = "Ptr{"^stars * typename * "}"^stars    # raw pointer to a PETSc-owned array
         else
             typename = "Vector{$typename}"
         end
@@ -141,12 +157,14 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
         init = "$name_ccall = $name isa Base.RefValue ? $name : Ref{$(a.typename == typename ? typename : map_type(r, a.typename))}($name)"
         extract = ""
     end
-    if isarray && isoutput && stars > 0 && (haskey(ov, "size") || haskey(ov, "prelude") || get(ov, "nullinit", false))
-        base = "Ptr{"^stars * (is_handle(r, typename) ? r.handles[typename].c : replace(typename, "Vector{" => "", "}" => "")) * "}"^stars
+    if isarray && isoutput && stars > 0 && (haskey(ov, "size") || get(ov, "nullinit", false))
+        base = "Ptr{"^stars * (is_handle(r, typename) ? r.handles[typename].c : replace(typename, r"^(Vector|Ptr)\{" => "", "}" => "")) * "}"^stars
         init = get(ov, "nullinit", false) ? "$name_ccall = Ref{$base}(C_NULL)" : "$name_ccall = Ref{$base}()"
-        sz = get(ov, "size", "VecGetLocalSize(petsclib, x)")
-        pre = get(ov, "prelude", "")
-        extract = (isempty(pre) ? "" : pre * "\n\t") * "$name = unsafe_wrap(Array, $name_ccall[], $sz; own = false)"
+        if haskey(ov, "size")
+            pre = get(ov, "prelude", "")
+            extract = (isempty(pre) ? "" : pre * "\n\t") * "$name = unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"
+            typename = "Vector{" * replace(typename, r"^(Vector|Ptr)\{" => "", "}" => "") * "}"
+        end
     end
     if isarray && isoutput && stars == 0 && haskey(ov, "len")
         init = "$name = Vector{$(replace(typename, "Vector{" => "", "}" => ""))}(undef, $(ov["len"]))"
@@ -157,5 +175,23 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     FArg(name, name_ccall, typename, ccall_str, isoutput, init, extract, isarray, stars, a.isfunction)
 end
 
-classify_all(r::Rules, fn::Fn, input_vars, output_vars) =
-    FArg[classify(r, fn, a, input_vars, output_vars) for a in fn.args]
+function classify_all(r::Rules, fn::Fn, input_vars, output_vars)
+    args = FArg[classify(r, fn, a, input_vars, output_vars) for a in fn.args]
+    # make argument names unique and non-empty (getAPI.py mis-parses e.g. `unsigned char R[]`)
+    seen = Set{String}()
+    for (i, a) in enumerate(args)
+        name = isempty(a.name) ? "arg$i" : a.name
+        base = name; k = 2
+        while name in seen
+            name = "$(base)_$k"; k += 1
+        end
+        push!(seen, name)
+        if name != a.name
+            sub(x) = replace(x, Regex("\\b" * a.name * "\\b") => name)
+            args[i] = FArg(name, isempty(a.name) ? (a.name_ccall == a.name ? name : a.name_ccall) : sub(a.name_ccall),
+                           a.typename, a.ccall_str, a.output, isempty(a.name) ? a.init : sub(a.init),
+                           isempty(a.name) ? a.extract : sub(a.extract), a.isarray, a.stars, a.isfunction)
+        end
+    end
+    return args
+end

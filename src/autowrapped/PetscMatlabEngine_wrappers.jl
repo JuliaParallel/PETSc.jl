@@ -1,8 +1,3 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscMatlabEngine end
-const PetscMatlabEngine = Ptr{_n_PetscMatlabEngine}
-# -------------------------------------------------------
-
 """
 	mengine::PetscMatlabEngine = PetscMatlabEngineCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String) 
 Creates a MATLAB engine object
@@ -28,7 +23,7 @@ Level: advanced
 `PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
 
 # External Links
-$(_doc_external("Sys/PetscMatlabEngineCreate"))
+$(_doc_external("Matlab/PetscMatlabEngineCreate"))
 """
 function PetscMatlabEngineCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String) end
 
@@ -48,7 +43,7 @@ function PetscMatlabEngineCreate(petsclib::PetscLibType, comm::MPI_Comm, host::S
 end 
 
 """
-	PetscMatlabEngineDestroy(petsclib::PetscLibType,v::PetscMatlabEngine) 
+	PetscMatlabEngineDestroy(petsclib::PetscLibType,v::Union{PetscMatlabEngine, Ref{PetscMatlabEngine}}) 
 Shuts down a MATLAB engine.
 
 Collective
@@ -63,7 +58,7 @@ Level: advanced
 `PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
 
 # External Links
-$(_doc_external("Sys/PetscMatlabEngineDestroy"))
+$(_doc_external("Matlab/PetscMatlabEngineDestroy"))
 """
 function PetscMatlabEngineDestroy(petsclib::PetscLibType, v::Union{PetscMatlabEngine, Ref{PetscMatlabEngine}}) end
 
@@ -82,7 +77,78 @@ function PetscMatlabEngineDestroy(petsclib::PetscLibType, v::Union{PetscMatlabEn
 end 
 
 """
-	PetscMatlabEngineGetOutput(petsclib::PetscLibType,mengine::PetscMatlabEngine, string::String) 
+	PetscMatlabEngineGet(petsclib::PetscLibType,mengine::PetscMatlabEngine, obj::PetscObject) 
+Gets a variable from MATLAB into a PETSc object.
+
+Collective
+
+Input Parameters:
+- `mengine` - the MATLAB engine
+- `obj`     - the PETSc object, for example a `Vec`
+
+Level: advanced
+
+-seealso: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEngineCreate()`,
+`PetscMatlabEngineEvaluate()`, `PetscMatlabEngineGetOutput()`, `PetscMatlabEnginePrintOutput()`,
+`PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
+
+# External Links
+$(_doc_external("Matlab/PetscMatlabEngineGet"))
+"""
+function PetscMatlabEngineGet(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj::PetscObject) end
+
+@for_petsc function PetscMatlabEngineGet(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj::PetscObject )
+
+    @chk ccall(
+               (:PetscMatlabEngineGet, $petsc_library),
+               PetscErrorCode,
+               (PetscMatlabEngine, PetscObject),
+               mengine, obj,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscMatlabEngineGetArray(petsclib::PetscLibType,mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) 
+Gets a variable from MATLAB into an array
+
+Not Collective
+
+Input Parameters:
+- `mengine` - the MATLAB engine
+- `m`       - the x dimension of the array
+- `n`       - the y dimension of the array
+- `array`   - the array (represented in one dimension), much be large enough to hold all the data
+- `name`    - the name of the array
+
+Level: advanced
+
+-seealso: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEngineCreate()`,
+`PetscMatlabEngineEvaluate()`, `PetscMatlabEngineGetOutput()`, `PetscMatlabEnginePrintOutput()`,
+`PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGet()`, `PetscMatlabEngine`
+
+# External Links
+$(_doc_external("Matlab/PetscMatlabEngineGetArray"))
+"""
+function PetscMatlabEngineGetArray(petsclib::PetscLibType, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) end
+
+@for_petsc function PetscMatlabEngineGetArray(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{$PetscScalar}, name::String )
+
+    @chk ccall(
+               (:PetscMatlabEngineGetArray, $petsc_library),
+               PetscErrorCode,
+               (PetscMatlabEngine, Cint, Cint, Ptr{$PetscScalar}, Ptr{Cchar}),
+               mengine, m, n, array, name,
+              )
+
+
+	return nothing
+end 
+
+"""
+	string::Ptr{Cchar} = PetscMatlabEngineGetOutput(petsclib::PetscLibType,mengine::PetscMatlabEngine) 
 Gets a string buffer where the MATLAB output is
 printed
 
@@ -101,12 +167,12 @@ Level: advanced
 `PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
 
 # External Links
-$(_doc_external("Sys/PetscMatlabEngineGetOutput"))
+$(_doc_external("Matlab/PetscMatlabEngineGetOutput"))
 """
-function PetscMatlabEngineGetOutput(petsclib::PetscLibType, mengine::PetscMatlabEngine, string::String) end
+function PetscMatlabEngineGetOutput(petsclib::PetscLibType, mengine::PetscMatlabEngine) end
 
-@for_petsc function PetscMatlabEngineGetOutput(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, string::String )
-	string_ = Ref(pointer(string))
+@for_petsc function PetscMatlabEngineGetOutput(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine )
+	string_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PetscMatlabEngineGetOutput, $petsc_library),
@@ -115,8 +181,9 @@ function PetscMatlabEngineGetOutput(petsclib::PetscLibType, mengine::PetscMatlab
                mengine, string_,
               )
 
+	string = string_[]
 
-	return nothing
+	return string
 end 
 
 """
@@ -136,7 +203,7 @@ Level: advanced
 `PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
 
 # External Links
-$(_doc_external("Sys/PetscMatlabEnginePrintOutput"))
+$(_doc_external("Matlab/PetscMatlabEnginePrintOutput"))
 """
 function PetscMatlabEnginePrintOutput(petsclib::PetscLibType, mengine::PetscMatlabEngine, fd::Libc.FILE) end
 
@@ -171,7 +238,7 @@ Level: advanced
 `PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
 
 # External Links
-$(_doc_external("Sys/PetscMatlabEnginePut"))
+$(_doc_external("Matlab/PetscMatlabEnginePut"))
 """
 function PetscMatlabEnginePut(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj::PetscObject) end
 
@@ -179,40 +246,6 @@ function PetscMatlabEnginePut(petsclib::PetscLibType, mengine::PetscMatlabEngine
 
     @chk ccall(
                (:PetscMatlabEnginePut, $petsc_library),
-               PetscErrorCode,
-               (PetscMatlabEngine, PetscObject),
-               mengine, obj,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscMatlabEngineGet(petsclib::PetscLibType,mengine::PetscMatlabEngine, obj::PetscObject) 
-Gets a variable from MATLAB into a PETSc object.
-
-Collective
-
-Input Parameters:
-- `mengine` - the MATLAB engine
-- `obj`     - the PETSc object, for example a `Vec`
-
-Level: advanced
-
--seealso: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEngineCreate()`,
-`PetscMatlabEngineEvaluate()`, `PetscMatlabEngineGetOutput()`, `PetscMatlabEnginePrintOutput()`,
-`PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
-
-# External Links
-$(_doc_external("Sys/PetscMatlabEngineGet"))
-"""
-function PetscMatlabEngineGet(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj::PetscObject) end
-
-@for_petsc function PetscMatlabEngineGet(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj::PetscObject )
-
-    @chk ccall(
-               (:PetscMatlabEngineGet, $petsc_library),
                PetscErrorCode,
                (PetscMatlabEngine, PetscObject),
                mengine, obj,
@@ -243,7 +276,7 @@ Level: advanced
 `PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePut()`, `PetscMatlabEngineGetArray()`, `PetscMatlabEngine`
 
 # External Links
-$(_doc_external("Sys/PetscMatlabEnginePutArray"))
+$(_doc_external("Matlab/PetscMatlabEnginePutArray"))
 """
 function PetscMatlabEnginePutArray(petsclib::PetscLibType, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) end
 
@@ -251,43 +284,6 @@ function PetscMatlabEnginePutArray(petsclib::PetscLibType, mengine::PetscMatlabE
 
     @chk ccall(
                (:PetscMatlabEnginePutArray, $petsc_library),
-               PetscErrorCode,
-               (PetscMatlabEngine, Cint, Cint, Ptr{$PetscScalar}, Ptr{Cchar}),
-               mengine, m, n, array, name,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscMatlabEngineGetArray(petsclib::PetscLibType,mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) 
-Gets a variable from MATLAB into an array
-
-Not Collective
-
-Input Parameters:
-- `mengine` - the MATLAB engine
-- `m`       - the x dimension of the array
-- `n`       - the y dimension of the array
-- `array`   - the array (represented in one dimension), much be large enough to hold all the data
-- `name`    - the name of the array
-
-Level: advanced
-
--seealso: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEngineCreate()`,
-`PetscMatlabEngineEvaluate()`, `PetscMatlabEngineGetOutput()`, `PetscMatlabEnginePrintOutput()`,
-`PETSC_MATLAB_ENGINE_()`, `PetscMatlabEnginePutArray()`, `PetscMatlabEngineGet()`, `PetscMatlabEngine`
-
-# External Links
-$(_doc_external("Sys/PetscMatlabEngineGetArray"))
-"""
-function PetscMatlabEngineGetArray(petsclib::PetscLibType, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) end
-
-@for_petsc function PetscMatlabEngineGetArray(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{$PetscScalar}, name::String )
-
-    @chk ccall(
-               (:PetscMatlabEngineGetArray, $petsc_library),
                PetscErrorCode,
                (PetscMatlabEngine, Cint, Cint, Ptr{$PetscScalar}, Ptr{Cchar}),
                mengine, m, n, array, name,

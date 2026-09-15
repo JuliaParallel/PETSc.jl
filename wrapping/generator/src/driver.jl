@@ -26,6 +26,22 @@ function plan_files(api::API, r::Rules)
     return plans
 end
 
+"""Split a Julia argument list on commas that are not inside braces/parentheses."""
+function split_toplevel(str::AbstractString)
+    parts = String[]; depth = 0; buf = IOBuffer()
+    for c in str
+        (c == '{' || c == '(') && (depth += 1)
+        (c == '}' || c == ')') && (depth -= 1)
+        if c == ',' && depth == 0
+            push!(parts, String(take!(buf)))
+        else
+            write(buf, c)
+        end
+    end
+    push!(parts, String(take!(buf)))
+    return parts
+end
+
 """Type names an argument list refers to (as the original `extract_function_typeargs_from_class`)."""
 function referenced_types(args::Vector{FArg})
     ts = String[]
@@ -61,6 +77,7 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
     r = load_rules(joinpath(wrapping_dir, "rules"))
     union!(r.enum_types, keys(api.enums))
     union!(r.string_types, keys(api.senums))
+    union!(r.struct_types, keys(api.structs))
     overrides = load_overrides(joinpath(wrapping_dir, "overrides"))
     verbose && println("API $(api.version): $(length(api.functions)) functions; building docstring index ...")
     docs = build_docindex(petsc_dir)
@@ -70,8 +87,9 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
     prologue = read(joinpath(wrapping_dir, "prologue.jl"), String)
     structs = read(joinpath(wrapping_dir, "structs.jl"), String)
     petscbool = read(joinpath(wrapping_dir, "petscbool.jl"), String)
+    typedef_exclude = Set(["PetscGeom", "PetscInt32", "PetscBool"])
     known = defined_names(prologue) ∪ defined_names(structs) ∪ Set(["PetscBool", "PETSC_TRUE", "PETSC_FALSE"])
-    union!(known, keys(api.enums), keys(api.senums), keys(api.typedefs), keys(api.structs))
+    union!(known, keys(api.enums), keys(api.senums), setdiff(keys(api.typedefs), typedef_exclude), keys(api.structs))
     union!(known, r.predeclared)
     for h in values(r.handles)
         push!(known, h.julia); push!(known, h.abstract); push!(known, h.c)
@@ -121,7 +139,7 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
         write_senums(io, api, r)
     end
     open(joinpath(outdir, "typedefs_wrappers.jl"), "w") do io
-        write_typedefs(io, api, r, Set(["PetscGeom", "PetscInt32", "PetscBool"]), [petscbool])
+        write_typedefs(io, api, r, typedef_exclude, [petscbool])
     end
     write(joinpath(outdir, "struct_wrappers.jl"), structs)
     write(joinpath(outdir, "petscarray.jl"), read(joinpath(wrapping_dir, "petscarray.jl"), String))
@@ -140,6 +158,32 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
     open(joinpath(outdir, "petsc_library.jl"), "w") do io
         write_library_file(io, prologue, includes)
     end
+    # static sanity check: every type name used in a signature or ccall tuple must be defined somewhere
+    defined = copy(known)
+    union!(defined, opaque)
+    for f in readdir(outdir)
+        endswith(f, ".jl") || continue
+        f in ("petsc_library.jl",) && continue
+        union!(defined, defined_names(read(joinpath(outdir, f), String)))
+    end
+    missing = Set{String}()
+    for p in plans
+        txt = read(joinpath(outdir, p.file), String)
+        for m in eachmatch(r"(?m)^@for_petsc function \w+\((.*)\)\s*$", txt)
+            for arg in split_toplevel(m.captures[1])
+                occursin("::", arg) || continue
+                for id in eachmatch(r"[A-Za-z_]\w*", last(split(arg, "::"; limit = 2)))
+                    n = id.match
+                    (isknown(n) || n in defined || n in ("Union", "Ptr", "Ref", "Vector", "Nothing", "AbstractString")) || push!(missing, n)
+                end
+            end
+        end
+        for m in eachmatch(r"(?m)^\s+\(([^:].*)\),\s*$", txt), id in eachmatch(r"[A-Za-z_]\w*", m.captures[1])
+            n = id.match
+            (isknown(n) || n in defined || n in ("Ptr", "Ref", "Nothing")) || push!(missing, n)
+        end
+    end
+    isempty(missing) || @warn "type names used but not defined anywhere in the output" missing = sort!(collect(missing))
     verbose && println("wrote $nfun functions in $(length(plans)) files, $(length(opaque)) opaque types, $(length(extras)) extra wrappers to $outdir in $(round(time()-t0, digits=1)) s")
     return nothing
 end

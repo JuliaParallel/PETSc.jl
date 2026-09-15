@@ -22,6 +22,7 @@ struct Rules
     args::Dict{String,Dict{String,Dict{String,Any}}}   # fn => arg => overrides
     enum_types::Set{String}       # C enums (filled from the API snapshot)
     string_types::Set{String}     # PETSc string enums such as KSPType (filled from the API snapshot)
+    struct_types::Set{String}     # C structs passed by value/pointer (filled from the API snapshot)
 end
 
 function load_rules(dir::AbstractString)
@@ -48,7 +49,7 @@ function load_rules(dir::AbstractString)
         String.(t["dispatch_types"]),
         Dict(String(k) => String(v) for (k, v) in get(t, "senum_overrides", Dict())),
         Dict(String(k) => String(v) for (k, v) in get(f, "exclude", Dict())),
-        Vector{Dict{String,Any}}(f["file"]), args, Set{String}(), Set{String}())
+        Vector{Dict{String,Any}}(f["file"]), args, Set{String}(), Set{String}(), Set{String}())
 end
 
 """C type name -> Julia type name (the original generator's `replace_types`)."""

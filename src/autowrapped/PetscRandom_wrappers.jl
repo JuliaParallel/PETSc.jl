@@ -1,236 +1,4 @@
 """
-	PetscRandomDestroy(petsclib::PetscLibType,r::PetscRandom) 
-Destroys a `PetscRandom` object that was created by `PetscRandomCreate()`.
-
-Collective
-
-Input Parameter:
-- `r` - the random number generator object
-
-Level: intermediate
-
--seealso: `PetscRandom`, `PetscRandomGetValue()`, `PetscRandomCreate()`, `VecSetRandom()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomDestroy"))
-"""
-function PetscRandomDestroy(petsclib::PetscLibType, r::Union{PetscRandom, Ref{PetscRandom}}) end
-
-@for_petsc function PetscRandomDestroy(petsclib::$UnionPetscLib, r::Union{PetscRandom, Ref{PetscRandom}} )
-	r_ = r isa Base.RefValue ? r : Ref{PetscRandom}(r)
-
-    @chk ccall(
-               (:PetscRandomDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscRandom},),
-               r_,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscRandomGetSeed(petsclib::PetscLibType,r::PetscRandom, seed::PetscInt64) 
-Gets the random seed.
-
-Not collective
-
-Input Parameter:
-- `r` - The random number generator context
-
-Output Parameter:
-- `seed` - The random seed
-
-Level: intermediate
-
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetSeed()`, `PetscRandomSeed()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomGetSeed"))
-"""
-function PetscRandomGetSeed(petsclib::PetscLibType, r::PetscRandom, seed::PetscInt64) end
-
-@for_petsc function PetscRandomGetSeed(petsclib::$UnionPetscLib, r::PetscRandom, seed::$PetscInt64 )
-
-    @chk ccall(
-               (:PetscRandomGetSeed, $petsc_library),
-               PetscErrorCode,
-               (PetscRandom, Ptr{$PetscInt64}),
-               r, seed,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscRandomSetSeed(petsclib::PetscLibType,r::PetscRandom, seed::PetscInt64) 
-Sets the random seed. You MUST call `PetscRandomSeed()` after this call to have the new seed used.
-
-Not collective
-
-Input Parameters:
-- `r`    - The random number generator context
-- `seed` - The random seed
-
-Level: intermediate
-
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSeed()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomSetSeed"))
-"""
-function PetscRandomSetSeed(petsclib::PetscLibType, r::PetscRandom, seed::PetscInt64) end
-
-@for_petsc function PetscRandomSetSeed(petsclib::$UnionPetscLib, r::PetscRandom, seed::$PetscInt64 )
-
-    @chk ccall(
-               (:PetscRandomSetSeed, $petsc_library),
-               PetscErrorCode,
-               (PetscRandom, $PetscInt64),
-               r, seed,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscRandomSetFromOptions(petsclib::PetscLibType,rnd::PetscRandom) 
-Configures the random number generator from the options database.
-
-Collective
-
-Input Parameter:
-- `rnd` - The random number generator context
-
-Options Database Keys:
-- `-random_seed <integer>`    - provide a seed to the random number generator
-- `-random_no_imaginary_part` - makes the imaginary part of the random number zero, this is useful when you want the
-same code to produce the same result when run with real numbers or complex numbers for regression testing purposes
-
-Level: beginner
-
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetType()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomSetFromOptions"))
-"""
-function PetscRandomSetFromOptions(petsclib::PetscLibType, rnd::PetscRandom) end
-
-@for_petsc function PetscRandomSetFromOptions(petsclib::$UnionPetscLib, rnd::PetscRandom )
-
-    @chk ccall(
-               (:PetscRandomSetFromOptions, $petsc_library),
-               PetscErrorCode,
-               (PetscRandom,),
-               rnd,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscRandomSetOptionsPrefix(petsclib::PetscLibType,r::PetscRandom, prefix::String) 
-Sets the prefix used for searching for all
-`PetscRandom` options in the database.
-
-Logically Collective
-
-Input Parameters:
-- `r`      - the random number generator context
-- `prefix` - the prefix to prepend to all option names
-
-Level: advanced
-
--seealso: `PetscRandom`, `PetscRandomSetFromOptions()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomSetOptionsPrefix"))
-"""
-function PetscRandomSetOptionsPrefix(petsclib::PetscLibType, r::PetscRandom, prefix::String) end
-
-@for_petsc function PetscRandomSetOptionsPrefix(petsclib::$UnionPetscLib, r::PetscRandom, prefix::String )
-
-    @chk ccall(
-               (:PetscRandomSetOptionsPrefix, $petsc_library),
-               PetscErrorCode,
-               (PetscRandom, Ptr{Cchar}),
-               r, prefix,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscRandomViewFromOptions(petsclib::PetscLibType,A::PetscRandom, obj::PetscObject, name::String) 
-View a `PetscRandom` object based on the options database
-
-Collective
-
-Input Parameters:
-- `A`    - the random number generator context
-- `obj`  - Optional object
-- `name` - command line option
-
-Level: intermediate
-
--seealso: `PetscRandom`, `PetscRandomView`, `PetscObjectViewFromOptions()`, `PetscRandomCreate()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomViewFromOptions"))
-"""
-function PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj::PetscObject, name::String) end
-
-@for_petsc function PetscRandomViewFromOptions(petsclib::$UnionPetscLib, A::PetscRandom, obj::PetscObject, name::String )
-
-    @chk ccall(
-               (:PetscRandomViewFromOptions, $petsc_library),
-               PetscErrorCode,
-               (PetscRandom, PetscObject, Ptr{Cchar}),
-               A, obj, name,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscRandomView(petsclib::PetscLibType,rnd::PetscRandom, viewer::PetscViewer) 
-Views a random number generator object.
-
-Collective
-
-Input Parameters:
-- `rnd`    - The random number generator context
-- `viewer` - an optional visualization context
-
-Level: beginner
-
--seealso: `PetscRandom`, `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomView"))
-"""
-function PetscRandomView(petsclib::PetscLibType, rnd::PetscRandom, viewer::PetscViewer) end
-
-@for_petsc function PetscRandomView(petsclib::$UnionPetscLib, rnd::PetscRandom, viewer::PetscViewer )
-
-    @chk ccall(
-               (:PetscRandomView, $petsc_library),
-               PetscErrorCode,
-               (PetscRandom, PetscViewer),
-               rnd, viewer,
-              )
-
-
-	return nothing
-end 
-
-"""
 	r::PetscRandom = PetscRandomCreate(petsclib::PetscLibType,comm::MPI_Comm) 
 Creates an object for generating random numbers,
 and initializes the random-number generator.
@@ -269,30 +37,31 @@ function PetscRandomCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	PetscRandomSeed(petsclib::PetscLibType,r::PetscRandom) 
-Seed the random number generator.
+	PetscRandomDestroy(petsclib::PetscLibType,r::Union{PetscRandom, Ref{PetscRandom}}) 
+Destroys a `PetscRandom` object that was created by `PetscRandomCreate()`.
 
-Not collective
+Collective
 
 Input Parameter:
-- `r` - The random number generator context
+- `r` - the random number generator object
 
 Level: intermediate
 
--seealso: `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSetSeed()`
+-seealso: `PetscRandom`, `PetscRandomGetValue()`, `PetscRandomCreate()`, `VecSetRandom()`
 
 # External Links
-$(_doc_external("Sys/PetscRandomSeed"))
+$(_doc_external("Sys/PetscRandomDestroy"))
 """
-function PetscRandomSeed(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomDestroy(petsclib::PetscLibType, r::Union{PetscRandom, Ref{PetscRandom}}) end
 
-@for_petsc function PetscRandomSeed(petsclib::$UnionPetscLib, r::PetscRandom )
+@for_petsc function PetscRandomDestroy(petsclib::$UnionPetscLib, r::Union{PetscRandom, Ref{PetscRandom}} )
+	r_ = r isa Base.RefValue ? r : Ref{PetscRandom}(r)
 
     @chk ccall(
-               (:PetscRandomSeed, $petsc_library),
+               (:PetscRandomDestroy, $petsc_library),
                PetscErrorCode,
-               (PetscRandom,),
-               r,
+               (Ptr{PetscRandom},),
+               r_,
               )
 
 
@@ -300,39 +69,105 @@ function PetscRandomSeed(petsclib::PetscLibType, r::PetscRandom) end
 end 
 
 """
-	PetscRandomSetType(petsclib::PetscLibType,rnd::PetscRandom, type::PetscRandomType) 
-Builds a context for generating a particular type of random numbers.
+	PetscRandomFinalizePackage(petsclib::PetscLibType) 
+This function frees everything in the `PetscRandom` package. It is
+called from `PetscFinalize()`.
 
-Collective
+Level: developer
 
-Input Parameters:
-- `rnd`  - The random number generator context
-- `type` - The name of the random type
-
-Options Database Key:
-- `-random_type <type>` - Sets the random type; use -help for a list
-of available types
-
-Level: intermediate
-
--seealso: `PetscRandom`, `PetscRandomType`, `PetscRandomGetType()`, `PetscRandomCreate()`
+-seealso: `PetscFinalize()`
 
 # External Links
-$(_doc_external("Sys/PetscRandomSetType"))
+$(_doc_external("Sys/PetscRandomFinalizePackage"))
 """
-function PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::PetscRandomType) end
+function PetscRandomFinalizePackage(petsclib::PetscLibType) end
 
-@for_petsc function PetscRandomSetType(petsclib::$UnionPetscLib, rnd::PetscRandom, type::PetscRandomType )
+@for_petsc function PetscRandomFinalizePackage(petsclib::$UnionPetscLib)
 
     @chk ccall(
-               (:PetscRandomSetType, $petsc_library),
+               (:PetscRandomFinalizePackage, $petsc_library),
                PetscErrorCode,
-               (PetscRandom, PetscRandomType),
-               rnd, type,
+               (),
               )
 
 
 	return nothing
+end 
+
+"""
+	low::PetscScalar,high::PetscScalar = PetscRandomGetInterval(petsclib::PetscLibType,r::PetscRandom) 
+Gets the interval over which the random numbers
+will be distributed.  By default, this interval is [0,1).
+
+Not Collective
+
+Input Parameter:
+- `r` - the random number generator context
+
+Output Parameters:
+- `low`  - The lower bound of the interval
+- `high` - The upper bound of the interval
+
+Level: intermediate
+
+-seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetInterval()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomGetInterval"))
+"""
+function PetscRandomGetInterval(petsclib::PetscLibType, r::PetscRandom) end
+
+@for_petsc function PetscRandomGetInterval(petsclib::$UnionPetscLib, r::PetscRandom )
+	low_ = Ref{$PetscScalar}()
+	high_ = Ref{$PetscScalar}()
+
+    @chk ccall(
+               (:PetscRandomGetInterval, $petsc_library),
+               PetscErrorCode,
+               (PetscRandom, Ptr{$PetscScalar}, Ptr{$PetscScalar}),
+               r, low_, high_,
+              )
+
+	low = low_[]
+	high = high_[]
+
+	return low,high
+end 
+
+"""
+	seed::PetscInt64 = PetscRandomGetSeed(petsclib::PetscLibType,r::PetscRandom) 
+Gets the random seed.
+
+Not collective
+
+Input Parameter:
+- `r` - The random number generator context
+
+Output Parameter:
+- `seed` - The random seed
+
+Level: intermediate
+
+-seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetSeed()`, `PetscRandomSeed()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomGetSeed"))
+"""
+function PetscRandomGetSeed(petsclib::PetscLibType, r::PetscRandom) end
+
+@for_petsc function PetscRandomGetSeed(petsclib::$UnionPetscLib, r::PetscRandom )
+	seed_ = Ref{$PetscInt64}()
+
+    @chk ccall(
+               (:PetscRandomGetSeed, $petsc_library),
+               PetscErrorCode,
+               (PetscRandom, Ptr{$PetscInt64}),
+               r, seed_,
+              )
+
+	seed = seed_[]
+
+	return seed
 end 
 
 """
@@ -366,41 +201,9 @@ function PetscRandomGetType(petsclib::PetscLibType, rnd::PetscRandom) end
                rnd, type_,
               )
 
-	type = unsafe_string(type_[])
+	type = type_[] == C_NULL ? "" : unsafe_string(type_[])
 
 	return type
-end 
-
-"""
-	PetscRandomRegister(petsclib::PetscLibType,sname::String, fnc::external) 
-Adds a new `PetscRandom` implementation
-
-Not Collective, No Fortran Support
-
-Input Parameters:
-- `sname`    - The name of a new user-defined creation routine
-- `function` - The creation routine
-
-Level: advanced
-
--seealso: `PetscRandom`, `PetscRandomRegisterAll()`, `PetscRandomRegisterDestroy()`
-
-# External Links
-$(_doc_external("Sys/PetscRandomRegister"))
-"""
-function PetscRandomRegister(petsclib::PetscLibType, sname::String, fnc::external) end
-
-@for_petsc function PetscRandomRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
-
-    @chk ccall(
-               (:PetscRandomRegister, $petsc_library),
-               PetscErrorCode,
-               (Ptr{Cchar}, external),
-               sname, fnc,
-              )
-
-
-	return nothing
 end 
 
 """
@@ -554,43 +357,129 @@ function PetscRandomGetValuesReal(petsclib::PetscLibType, r::PetscRandom, n::Pet
 end 
 
 """
-	low::PetscScalar,high::PetscScalar = PetscRandomGetInterval(petsclib::PetscLibType,r::PetscRandom) 
-Gets the interval over which the random numbers
-will be distributed.  By default, this interval is [0,1).
+	PetscRandomInitializePackage(petsclib::PetscLibType) 
+This function initializes everything in the `PetscRandom` package. It is called
+from PetscDLLibraryRegister_petsc() when using dynamic libraries, and on the first call to `PetscRandomCreate()`
+when using shared or static libraries.
 
-Not Collective
+Level: developer
+
+-seealso: `PetscInitialize()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomInitializePackage"))
+"""
+function PetscRandomInitializePackage(petsclib::PetscLibType) end
+
+@for_petsc function PetscRandomInitializePackage(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscRandomInitializePackage, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscRandomRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+Adds a new `PetscRandom` implementation
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `sname`    - The name of a new user-defined creation routine
+- `function` - The creation routine
+
+Level: advanced
+
+-seealso: `PetscRandom`, `PetscRandomRegisterAll()`, `PetscRandomRegisterDestroy()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomRegister"))
+"""
+function PetscRandomRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+
+@for_petsc function PetscRandomRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
+
+    @chk ccall(
+               (:PetscRandomRegister, $petsc_library),
+               PetscErrorCode,
+               (Ptr{Cchar}, external),
+               sname, fnc,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscRandomSeed(petsclib::PetscLibType,r::PetscRandom) 
+Seed the random number generator.
+
+Not collective
 
 Input Parameter:
-- `r` - the random number generator context
-
-Output Parameters:
-- `low`  - The lower bound of the interval
-- `high` - The upper bound of the interval
+- `r` - The random number generator context
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetInterval()`
+-seealso: `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSetSeed()`
 
 # External Links
-$(_doc_external("Sys/PetscRandomGetInterval"))
+$(_doc_external("Sys/PetscRandomSeed"))
 """
-function PetscRandomGetInterval(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomSeed(petsclib::PetscLibType, r::PetscRandom) end
 
-@for_petsc function PetscRandomGetInterval(petsclib::$UnionPetscLib, r::PetscRandom )
-	low_ = Ref{$PetscScalar}()
-	high_ = Ref{$PetscScalar}()
+@for_petsc function PetscRandomSeed(petsclib::$UnionPetscLib, r::PetscRandom )
 
     @chk ccall(
-               (:PetscRandomGetInterval, $petsc_library),
+               (:PetscRandomSeed, $petsc_library),
                PetscErrorCode,
-               (PetscRandom, Ptr{$PetscScalar}, Ptr{$PetscScalar}),
-               r, low_, high_,
+               (PetscRandom,),
+               r,
               )
 
-	low = low_[]
-	high = high_[]
 
-	return low,high
+	return nothing
+end 
+
+"""
+	PetscRandomSetFromOptions(petsclib::PetscLibType,rnd::PetscRandom) 
+Configures the random number generator from the options database.
+
+Collective
+
+Input Parameter:
+- `rnd` - The random number generator context
+
+Options Database Keys:
+- `-random_seed <integer>`    - provide a seed to the random number generator
+- `-random_no_imaginary_part` - makes the imaginary part of the random number zero, this is useful when you want the
+same code to produce the same result when run with real numbers or complex numbers for regression testing purposes
+
+Level: beginner
+
+-seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetType()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomSetFromOptions"))
+"""
+function PetscRandomSetFromOptions(petsclib::PetscLibType, rnd::PetscRandom) end
+
+@for_petsc function PetscRandomSetFromOptions(petsclib::$UnionPetscLib, rnd::PetscRandom )
+
+    @chk ccall(
+               (:PetscRandomSetFromOptions, $petsc_library),
+               PetscErrorCode,
+               (PetscRandom,),
+               rnd,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -628,25 +517,32 @@ function PetscRandomSetInterval(petsclib::PetscLibType, r::PetscRandom, low::Pet
 end 
 
 """
-	PetscRandomFinalizePackage(petsclib::PetscLibType) 
-This function frees everything in the `PetscRandom` package. It is
-called from `PetscFinalize()`.
+	PetscRandomSetOptionsPrefix(petsclib::PetscLibType,r::PetscRandom, prefix::String) 
+Sets the prefix used for searching for all
+`PetscRandom` options in the database.
 
-Level: developer
+Logically Collective
 
--seealso: `PetscFinalize()`
+Input Parameters:
+- `r`      - the random number generator context
+- `prefix` - the prefix to prepend to all option names
+
+Level: advanced
+
+-seealso: `PetscRandom`, `PetscRandomSetFromOptions()`
 
 # External Links
-$(_doc_external("Sys/PetscRandomFinalizePackage"))
+$(_doc_external("Sys/PetscRandomSetOptionsPrefix"))
 """
-function PetscRandomFinalizePackage(petsclib::PetscLibType) end
+function PetscRandomSetOptionsPrefix(petsclib::PetscLibType, r::PetscRandom, prefix::String) end
 
-@for_petsc function PetscRandomFinalizePackage(petsclib::$UnionPetscLib)
+@for_petsc function PetscRandomSetOptionsPrefix(petsclib::$UnionPetscLib, r::PetscRandom, prefix::String )
 
     @chk ccall(
-               (:PetscRandomFinalizePackage, $petsc_library),
+               (:PetscRandomSetOptionsPrefix, $petsc_library),
                PetscErrorCode,
-               (),
+               (PetscRandom, Ptr{Cchar}),
+               r, prefix,
               )
 
 
@@ -654,26 +550,132 @@ function PetscRandomFinalizePackage(petsclib::PetscLibType) end
 end 
 
 """
-	PetscRandomInitializePackage(petsclib::PetscLibType) 
-This function initializes everything in the `PetscRandom` package. It is called
-from PetscDLLibraryRegister_petsc() when using dynamic libraries, and on the first call to `PetscRandomCreate()`
-when using shared or static libraries.
+	PetscRandomSetSeed(petsclib::PetscLibType,r::PetscRandom, seed::PetscInt64) 
+Sets the random seed. You MUST call `PetscRandomSeed()` after this call to have the new seed used.
 
-Level: developer
+Not collective
 
--seealso: `PetscInitialize()`
+Input Parameters:
+- `r`    - The random number generator context
+- `seed` - The random seed
+
+Level: intermediate
+
+-seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSeed()`
 
 # External Links
-$(_doc_external("Sys/PetscRandomInitializePackage"))
+$(_doc_external("Sys/PetscRandomSetSeed"))
 """
-function PetscRandomInitializePackage(petsclib::PetscLibType) end
+function PetscRandomSetSeed(petsclib::PetscLibType, r::PetscRandom, seed::PetscInt64) end
 
-@for_petsc function PetscRandomInitializePackage(petsclib::$UnionPetscLib)
+@for_petsc function PetscRandomSetSeed(petsclib::$UnionPetscLib, r::PetscRandom, seed::$PetscInt64 )
 
     @chk ccall(
-               (:PetscRandomInitializePackage, $petsc_library),
+               (:PetscRandomSetSeed, $petsc_library),
                PetscErrorCode,
-               (),
+               (PetscRandom, $PetscInt64),
+               r, seed,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscRandomSetType(petsclib::PetscLibType,rnd::PetscRandom, type::PetscRandomType) 
+Builds a context for generating a particular type of random numbers.
+
+Collective
+
+Input Parameters:
+- `rnd`  - The random number generator context
+- `type` - The name of the random type
+
+Options Database Key:
+- `-random_type <type>` - Sets the random type; use -help for a list
+of available types
+
+Level: intermediate
+
+-seealso: `PetscRandom`, `PetscRandomType`, `PetscRandomGetType()`, `PetscRandomCreate()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomSetType"))
+"""
+function PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::PetscRandomType) end
+
+@for_petsc function PetscRandomSetType(petsclib::$UnionPetscLib, rnd::PetscRandom, type::PetscRandomType )
+
+    @chk ccall(
+               (:PetscRandomSetType, $petsc_library),
+               PetscErrorCode,
+               (PetscRandom, PetscRandomType),
+               rnd, type,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscRandomView(petsclib::PetscLibType,rnd::PetscRandom, viewer::PetscViewer) 
+Views a random number generator object.
+
+Collective
+
+Input Parameters:
+- `rnd`    - The random number generator context
+- `viewer` - an optional visualization context
+
+Level: beginner
+
+-seealso: `PetscRandom`, `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomView"))
+"""
+function PetscRandomView(petsclib::PetscLibType, rnd::PetscRandom, viewer::PetscViewer) end
+
+@for_petsc function PetscRandomView(petsclib::$UnionPetscLib, rnd::PetscRandom, viewer::PetscViewer )
+
+    @chk ccall(
+               (:PetscRandomView, $petsc_library),
+               PetscErrorCode,
+               (PetscRandom, PetscViewer),
+               rnd, viewer,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscRandomViewFromOptions(petsclib::PetscLibType,A::PetscRandom, obj::PetscObject, name::String) 
+View a `PetscRandom` object based on the options database
+
+Collective
+
+Input Parameters:
+- `A`    - the random number generator context
+- `obj`  - Optional object
+- `name` - command line option
+
+Level: intermediate
+
+-seealso: `PetscRandom`, `PetscRandomView`, `PetscObjectViewFromOptions()`, `PetscRandomCreate()`
+
+# External Links
+$(_doc_external("Sys/PetscRandomViewFromOptions"))
+"""
+function PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj::PetscObject, name::String) end
+
+@for_petsc function PetscRandomViewFromOptions(petsclib::$UnionPetscLib, A::PetscRandom, obj::PetscObject, name::String )
+
+    @chk ccall(
+               (:PetscRandomViewFromOptions, $petsc_library),
+               PetscErrorCode,
+               (PetscRandom, PetscObject, Ptr{Cchar}),
+               A, obj, name,
               )
 
 

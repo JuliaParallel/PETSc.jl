@@ -1,8 +1,142 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscLimiter end
-const PetscLimiter = Ptr{_n_PetscLimiter}
+"""
+	lim::PetscLimiter = PetscLimiterCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+Creates an empty `PetscLimiter` object. The type can then be set with `PetscLimiterSetType()`.
 
-# -------------------------------------------------------
+Collective
+
+Input Parameter:
+- `comm` - The communicator for the `PetscLimiter` object
+
+Output Parameter:
+- `lim` - The `PetscLimiter` object
+
+Level: beginner
+
+-seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PETSCLIMITERSIN`
+
+# External Links
+$(_doc_external("FV/PetscLimiterCreate"))
+"""
+function PetscLimiterCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+
+@for_petsc function PetscLimiterCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
+	lim_ = Ref{PetscLimiter}()
+
+    @chk ccall(
+               (:PetscLimiterCreate, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Ptr{PetscLimiter}),
+               comm, lim_,
+              )
+
+	lim = lim_[]
+
+	return lim
+end 
+
+"""
+	PetscLimiterDestroy(petsclib::PetscLibType,lim::Union{PetscLimiter, Ref{PetscLimiter}}) 
+Destroys a `PetscLimiter` object
+
+Collective
+
+Input Parameter:
+- `lim` - the `PetscLimiter` object to destroy
+
+Level: beginner
+
+-seealso: `PetscLimiter`, `PetscLimiterView()`
+
+# External Links
+$(_doc_external("FV/PetscLimiterDestroy"))
+"""
+function PetscLimiterDestroy(petsclib::PetscLibType, lim::Union{PetscLimiter, Ref{PetscLimiter}}) end
+
+@for_petsc function PetscLimiterDestroy(petsclib::$UnionPetscLib, lim::Union{PetscLimiter, Ref{PetscLimiter}} )
+	lim_ = lim isa Base.RefValue ? lim : Ref{PetscLimiter}(lim)
+
+    @chk ccall(
+               (:PetscLimiterDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscLimiter},),
+               lim_,
+              )
+
+
+	return nothing
+end 
+
+"""
+	name::PetscLimiterType = PetscLimiterGetType(petsclib::PetscLibType,lim::PetscLimiter) 
+Gets the `PetscLimiterType` name (as a string) from the `PetscLimiter`.
+
+Not Collective
+
+Input Parameter:
+- `lim` - The `PetscLimiter`
+
+Output Parameter:
+- `name` - The `PetscLimiterType`
+
+Level: intermediate
+
+-seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PetscLimiterCreate()`
+
+# External Links
+$(_doc_external("FV/PetscLimiterGetType"))
+"""
+function PetscLimiterGetType(petsclib::PetscLibType, lim::PetscLimiter) end
+
+@for_petsc function PetscLimiterGetType(petsclib::$UnionPetscLib, lim::PetscLimiter )
+	name_ = Ref{PetscLimiterType}()
+
+    @chk ccall(
+               (:PetscLimiterGetType, $petsc_library),
+               PetscErrorCode,
+               (PetscLimiter, Ptr{PetscLimiterType}),
+               lim, name_,
+              )
+
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
+
+	return name
+end 
+
+"""
+	phi::PetscReal = PetscLimiterLimit(petsclib::PetscLibType,lim::PetscLimiter, flim::PetscReal) 
+Limit the flux
+
+Input Parameters:
+- `lim`  - The `PetscLimiter`
+- `flim` - The input field
+
+Output Parameter:
+- `phi` - The limited field
+
+Level: beginner
+
+-seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PetscLimiterCreate()`
+
+# External Links
+$(_doc_external("FV/PetscLimiterLimit"))
+"""
+function PetscLimiterLimit(petsclib::PetscLibType, lim::PetscLimiter, flim::PetscReal) end
+
+@for_petsc function PetscLimiterLimit(petsclib::$UnionPetscLib, lim::PetscLimiter, flim::$PetscReal )
+	phi_ = Ref{$PetscReal}()
+
+    @chk ccall(
+               (:PetscLimiterLimit, $petsc_library),
+               PetscErrorCode,
+               (PetscLimiter, $PetscReal, Ptr{$PetscReal}),
+               lim, flim, phi_,
+              )
+
+	phi = phi_[]
+
+	return phi
+end 
+
 """
 	PetscLimiterRegister(petsclib::PetscLibType,sname::String, fnc::external) 
 Adds a new `PetscLimiter` implementation
@@ -16,7 +150,7 @@ Input Parameters:
 -seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterRegisterAll()`, `PetscLimiterRegisterDestroy()`
 
 # External Links
-$(_doc_external("DM/PetscLimiterRegister"))
+$(_doc_external("FV/PetscLimiterRegister"))
 """
 function PetscLimiterRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 
@@ -27,6 +161,37 @@ function PetscLimiterRegister(petsclib::PetscLibType, sname::String, fnc::extern
                PetscErrorCode,
                (Ptr{Cchar}, external),
                sname, fnc,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscLimiterSetFromOptions(petsclib::PetscLibType,lim::PetscLimiter) 
+sets parameters in a `PetscLimiter` from the options database
+
+Collective
+
+Input Parameter:
+- `lim` - the `PetscLimiter` object to set options for
+
+Level: intermediate
+
+-seealso: `PetscLimiter`, `PetscLimiterView()`
+
+# External Links
+$(_doc_external("FV/PetscLimiterSetFromOptions"))
+"""
+function PetscLimiterSetFromOptions(petsclib::PetscLibType, lim::PetscLimiter) end
+
+@for_petsc function PetscLimiterSetFromOptions(petsclib::$UnionPetscLib, lim::PetscLimiter )
+
+    @chk ccall(
+               (:PetscLimiterSetFromOptions, $petsc_library),
+               PetscErrorCode,
+               (PetscLimiter,),
+               lim,
               )
 
 
@@ -51,7 +216,7 @@ Level: intermediate
 -seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterGetType()`, `PetscLimiterCreate()`
 
 # External Links
-$(_doc_external("DM/PetscLimiterSetType"))
+$(_doc_external("FV/PetscLimiterSetType"))
 """
 function PetscLimiterSetType(petsclib::PetscLibType, lim::PetscLimiter, name::PetscLimiterType) end
 
@@ -69,68 +234,30 @@ function PetscLimiterSetType(petsclib::PetscLibType, lim::PetscLimiter, name::Pe
 end 
 
 """
-	name::PetscLimiterType = PetscLimiterGetType(petsclib::PetscLibType,lim::PetscLimiter) 
-Gets the `PetscLimiterType` name (as a string) from the `PetscLimiter`.
-
-Not Collective
-
-Input Parameter:
-- `lim` - The `PetscLimiter`
-
-Output Parameter:
-- `name` - The `PetscLimiterType`
-
-Level: intermediate
-
--seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PetscLimiterCreate()`
-
-# External Links
-$(_doc_external("DM/PetscLimiterGetType"))
-"""
-function PetscLimiterGetType(petsclib::PetscLibType, lim::PetscLimiter) end
-
-@for_petsc function PetscLimiterGetType(petsclib::$UnionPetscLib, lim::PetscLimiter )
-	name_ = Ref{PetscLimiterType}()
-
-    @chk ccall(
-               (:PetscLimiterGetType, $petsc_library),
-               PetscErrorCode,
-               (PetscLimiter, Ptr{PetscLimiterType}),
-               lim, name_,
-              )
-
-	name = unsafe_string(name_[])
-
-	return name
-end 
-
-"""
-	PetscLimiterViewFromOptions(petsclib::PetscLibType,A::PetscLimiter, obj::PetscObject, name::String) 
-View a `PetscLimiter` based on values in the options database
+	PetscLimiterSetUp(petsclib::PetscLibType,lim::PetscLimiter) 
+Construct data structures for the `PetscLimiter`
 
 Collective
 
-Input Parameters:
-- `A`    - the `PetscLimiter` object to view
-- `obj`  - Optional object that provides the options prefix to use
-- `name` - command line option name
+Input Parameter:
+- `lim` - the `PetscLimiter` object to setup
 
 Level: intermediate
 
--seealso: `PetscLimiter`, `PetscLimiterView()`, `PetscObjectViewFromOptions()`, `PetscLimiterCreate()`
+-seealso: `PetscLimiter`, `PetscLimiterView()`, `PetscLimiterDestroy()`
 
 # External Links
-$(_doc_external("DM/PetscLimiterViewFromOptions"))
+$(_doc_external("FV/PetscLimiterSetUp"))
 """
-function PetscLimiterViewFromOptions(petsclib::PetscLibType, A::PetscLimiter, obj::PetscObject, name::String) end
+function PetscLimiterSetUp(petsclib::PetscLibType, lim::PetscLimiter) end
 
-@for_petsc function PetscLimiterViewFromOptions(petsclib::$UnionPetscLib, A::PetscLimiter, obj::PetscObject, name::String )
+@for_petsc function PetscLimiterSetUp(petsclib::$UnionPetscLib, lim::PetscLimiter )
 
     @chk ccall(
-               (:PetscLimiterViewFromOptions, $petsc_library),
+               (:PetscLimiterSetUp, $petsc_library),
                PetscErrorCode,
-               (PetscLimiter, PetscObject, Ptr{Cchar}),
-               A, obj, name,
+               (PetscLimiter,),
+               lim,
               )
 
 
@@ -152,7 +279,7 @@ Level: beginner
 -seealso: `PetscLimiter`, `PetscViewer`, `PetscLimiterDestroy()`, `PetscLimiterViewFromOptions()`
 
 # External Links
-$(_doc_external("DM/PetscLimiterView"))
+$(_doc_external("FV/PetscLimiterView"))
 """
 function PetscLimiterView(petsclib::PetscLibType, lim::PetscLimiter, v::PetscViewer) end
 
@@ -170,167 +297,35 @@ function PetscLimiterView(petsclib::PetscLibType, lim::PetscLimiter, v::PetscVie
 end 
 
 """
-	PetscLimiterSetFromOptions(petsclib::PetscLibType,lim::PetscLimiter) 
-sets parameters in a `PetscLimiter` from the options database
+	PetscLimiterViewFromOptions(petsclib::PetscLibType,A::PetscLimiter, obj::PetscObject, name::String) 
+View a `PetscLimiter` based on values in the options database
 
 Collective
-
-Input Parameter:
-- `lim` - the `PetscLimiter` object to set options for
-
-Level: intermediate
-
--seealso: `PetscLimiter`, `PetscLimiterView()`
-
-# External Links
-$(_doc_external("DM/PetscLimiterSetFromOptions"))
-"""
-function PetscLimiterSetFromOptions(petsclib::PetscLibType, lim::PetscLimiter) end
-
-@for_petsc function PetscLimiterSetFromOptions(petsclib::$UnionPetscLib, lim::PetscLimiter )
-
-    @chk ccall(
-               (:PetscLimiterSetFromOptions, $petsc_library),
-               PetscErrorCode,
-               (PetscLimiter,),
-               lim,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscLimiterSetUp(petsclib::PetscLibType,lim::PetscLimiter) 
-Construct data structures for the `PetscLimiter`
-
-Collective
-
-Input Parameter:
-- `lim` - the `PetscLimiter` object to setup
-
-Level: intermediate
-
--seealso: `PetscLimiter`, `PetscLimiterView()`, `PetscLimiterDestroy()`
-
-# External Links
-$(_doc_external("DM/PetscLimiterSetUp"))
-"""
-function PetscLimiterSetUp(petsclib::PetscLibType, lim::PetscLimiter) end
-
-@for_petsc function PetscLimiterSetUp(petsclib::$UnionPetscLib, lim::PetscLimiter )
-
-    @chk ccall(
-               (:PetscLimiterSetUp, $petsc_library),
-               PetscErrorCode,
-               (PetscLimiter,),
-               lim,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscLimiterDestroy(petsclib::PetscLibType,lim::PetscLimiter) 
-Destroys a `PetscLimiter` object
-
-Collective
-
-Input Parameter:
-- `lim` - the `PetscLimiter` object to destroy
-
-Level: beginner
-
--seealso: `PetscLimiter`, `PetscLimiterView()`
-
-# External Links
-$(_doc_external("DM/PetscLimiterDestroy"))
-"""
-function PetscLimiterDestroy(petsclib::PetscLibType, lim::Union{PetscLimiter, Ref{PetscLimiter}}) end
-
-@for_petsc function PetscLimiterDestroy(petsclib::$UnionPetscLib, lim::Union{PetscLimiter, Ref{PetscLimiter}} )
-	lim_ = lim isa Base.RefValue ? lim : Ref{PetscLimiter}(lim)
-
-    @chk ccall(
-               (:PetscLimiterDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscLimiter},),
-               lim_,
-              )
-
-
-	return nothing
-end 
-
-"""
-	lim::PetscLimiter = PetscLimiterCreate(petsclib::PetscLibType,comm::MPI_Comm) 
-Creates an empty `PetscLimiter` object. The type can then be set with `PetscLimiterSetType()`.
-
-Collective
-
-Input Parameter:
-- `comm` - The communicator for the `PetscLimiter` object
-
-Output Parameter:
-- `lim` - The `PetscLimiter` object
-
-Level: beginner
-
--seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PETSCLIMITERSIN`
-
-# External Links
-$(_doc_external("DM/PetscLimiterCreate"))
-"""
-function PetscLimiterCreate(petsclib::PetscLibType, comm::MPI_Comm) end
-
-@for_petsc function PetscLimiterCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
-	lim_ = Ref{PetscLimiter}()
-
-    @chk ccall(
-               (:PetscLimiterCreate, $petsc_library),
-               PetscErrorCode,
-               (MPI_Comm, Ptr{PetscLimiter}),
-               comm, lim_,
-              )
-
-	lim = lim_[]
-
-	return lim
-end 
-
-"""
-	phi::PetscReal = PetscLimiterLimit(petsclib::PetscLibType,lim::PetscLimiter, flim::PetscReal) 
-Limit the flux
 
 Input Parameters:
-- `lim`  - The `PetscLimiter`
-- `flim` - The input field
+- `A`    - the `PetscLimiter` object to view
+- `obj`  - Optional object that provides the options prefix to use
+- `name` - command line option name
 
-Output Parameter:
-- `phi` - The limited field
+Level: intermediate
 
-Level: beginner
-
--seealso: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PetscLimiterCreate()`
+-seealso: `PetscLimiter`, `PetscLimiterView()`, `PetscObjectViewFromOptions()`, `PetscLimiterCreate()`
 
 # External Links
-$(_doc_external("DM/PetscLimiterLimit"))
+$(_doc_external("FV/PetscLimiterViewFromOptions"))
 """
-function PetscLimiterLimit(petsclib::PetscLibType, lim::PetscLimiter, flim::PetscReal) end
+function PetscLimiterViewFromOptions(petsclib::PetscLibType, A::PetscLimiter, obj::PetscObject, name::String) end
 
-@for_petsc function PetscLimiterLimit(petsclib::$UnionPetscLib, lim::PetscLimiter, flim::$PetscReal )
-	phi_ = Ref{$PetscReal}()
+@for_petsc function PetscLimiterViewFromOptions(petsclib::$UnionPetscLib, A::PetscLimiter, obj::PetscObject, name::String )
 
     @chk ccall(
-               (:PetscLimiterLimit, $petsc_library),
+               (:PetscLimiterViewFromOptions, $petsc_library),
                PetscErrorCode,
-               (PetscLimiter, $PetscReal, Ptr{$PetscReal}),
-               lim, flim, phi_,
+               (PetscLimiter, PetscObject, Ptr{Cchar}),
+               A, obj, name,
               )
 
-	phi = phi_[]
 
-	return phi
+	return nothing
 end 
 

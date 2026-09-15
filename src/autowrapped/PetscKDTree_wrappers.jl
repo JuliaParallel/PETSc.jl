@@ -1,40 +1,3 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscKDTree end
-const PetscKDTree = Ptr{_n_PetscKDTree}
-
-# -------------------------------------------------------
-"""
-	PetscKDTreeDestroy(petsclib::PetscLibType,tree::PetscKDTree) 
-destroy a `PetscKDTree`
-
-Not Collective, No Fortran Support
-
-Input Parameters:
-- `tree` - tree to destroy
-
-Level: advanced
-
--seealso: `PetscKDTree`, `PetscKDTreeCreate()`
-
-# External Links
-$(_doc_external("Vec/PetscKDTreeDestroy"))
-"""
-function PetscKDTreeDestroy(petsclib::PetscLibType, tree::Union{PetscKDTree, Ref{PetscKDTree}}) end
-
-@for_petsc function PetscKDTreeDestroy(petsclib::$UnionPetscLib, tree::Union{PetscKDTree, Ref{PetscKDTree}} )
-	tree_ = tree isa Base.RefValue ? tree : Ref{PetscKDTree}(tree)
-
-    @chk ccall(
-               (:PetscKDTreeDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscKDTree},),
-               tree_,
-              )
-
-
-	return nothing
-end 
-
 """
 	new_tree::PetscKDTree = PetscKDTreeCreate(petsclib::PetscLibType,num_coords::PetscCount, dim::PetscInt, coords::Vector{PetscReal}, copy_mode::PetscCopyMode, max_bucket_size::PetscInt) 
 create a `PetscKDTree`
@@ -56,7 +19,7 @@ Level: advanced
 -seealso: `PetscKDTree`, `PetscKDTreeDestroy()`, `PetscKDTreeQueryPointsNearestNeighbor()`
 
 # External Links
-$(_doc_external("Vec/PetscKDTreeCreate"))
+$(_doc_external("IS/PetscKDTreeCreate"))
 """
 function PetscKDTreeCreate(petsclib::PetscLibType, num_coords::PetscCount, dim::PetscInt, coords::Vector{PetscReal}, copy_mode::PetscCopyMode, max_bucket_size::PetscInt) end
 
@@ -76,7 +39,39 @@ function PetscKDTreeCreate(petsclib::PetscLibType, num_coords::PetscCount, dim::
 end 
 
 """
-	distances::Vector{PetscReal} = PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType,tree::PetscKDTree, num_points::PetscCount, points::Vector{PetscReal}, tolerance::PetscReal, indices::Vector{PetscCount}) 
+	PetscKDTreeDestroy(petsclib::PetscLibType,tree::Union{PetscKDTree, Ref{PetscKDTree}}) 
+destroy a `PetscKDTree`
+
+Not Collective, No Fortran Support
+
+Input Parameters:
+- `tree` - tree to destroy
+
+Level: advanced
+
+-seealso: `PetscKDTree`, `PetscKDTreeCreate()`
+
+# External Links
+$(_doc_external("IS/PetscKDTreeDestroy"))
+"""
+function PetscKDTreeDestroy(petsclib::PetscLibType, tree::Union{PetscKDTree, Ref{PetscKDTree}}) end
+
+@for_petsc function PetscKDTreeDestroy(petsclib::$UnionPetscLib, tree::Union{PetscKDTree, Ref{PetscKDTree}} )
+	tree_ = tree isa Base.RefValue ? tree : Ref{PetscKDTree}(tree)
+
+    @chk ccall(
+               (:PetscKDTreeDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscKDTree},),
+               tree_,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType,tree::PetscKDTree, num_points::PetscCount, points::Vector{PetscReal}, tolerance::PetscReal, indices::Vector{PetscCount}, distances::Vector{PetscReal}) 
 find the nearest neighbor in a `PetscKDTree`
 
 Not Collective, No Fortran Support
@@ -96,12 +91,11 @@ Level: advanced
 -seealso: `PetscKDTree`, `PetscKDTreeCreate()`
 
 # External Links
-$(_doc_external("Vec/PetscKDTreeQueryPointsNearestNeighbor"))
+$(_doc_external("IS/PetscKDTreeQueryPointsNearestNeighbor"))
 """
-function PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType, tree::PetscKDTree, num_points::PetscCount, points::Vector{PetscReal}, tolerance::PetscReal, indices::Vector{PetscCount}) end
+function PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType, tree::PetscKDTree, num_points::PetscCount, points::Vector{PetscReal}, tolerance::PetscReal, indices::Vector{PetscCount}, distances::Vector{PetscReal}) end
 
-@for_petsc function PetscKDTreeQueryPointsNearestNeighbor(petsclib::$UnionPetscLib, tree::PetscKDTree, num_points::PetscCount, points::Vector{$PetscReal}, tolerance::$PetscReal, indices::Vector{PetscCount} )
-	distances = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
+@for_petsc function PetscKDTreeQueryPointsNearestNeighbor(petsclib::$UnionPetscLib, tree::PetscKDTree, num_points::PetscCount, points::Vector{$PetscReal}, tolerance::$PetscReal, indices::Vector{PetscCount}, distances::Vector{$PetscReal} )
 
     @chk ccall(
                (:PetscKDTreeQueryPointsNearestNeighbor, $petsc_library),
@@ -111,7 +105,7 @@ function PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType, tree::Pet
               )
 
 
-	return distances
+	return nothing
 end 
 
 """
@@ -129,7 +123,7 @@ Level: advanced
 -seealso: `PetscKDTree`, `PetscKDTreeCreate()`, `PetscViewer`
 
 # External Links
-$(_doc_external("Vec/PetscKDTreeView"))
+$(_doc_external("IS/PetscKDTreeView"))
 """
 function PetscKDTreeView(petsclib::PetscLibType, tree::PetscKDTree, viewer::PetscViewer) end
 

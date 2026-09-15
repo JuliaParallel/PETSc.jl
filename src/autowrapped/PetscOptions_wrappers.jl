@@ -1,754 +1,38 @@
-# autodefined type arguments for class ------
-# -------------------------------------------------------
-
 """
-	PetscOptionsPushCreateViewerOff(petsclib::PetscLibType,flg::PetscBool) 
-sets if `PetscOptionsCreateViewer()`, `PetscOptionsViewer()`, and `PetscOptionsCreateViewers()` return viewers.
-
-Logically Collective
-
-Input Parameter:
-- `flg` - `PETSC_TRUE` to turn off viewer creation, `PETSC_FALSE` to turn it on.
-
-Level: developer
-
--seealso: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPopCreateViewerOff()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsPushCreateViewerOff"))
-"""
-function PetscOptionsPushCreateViewerOff(petsclib::PetscLibType, flg::PetscBool) end
-
-@for_petsc function PetscOptionsPushCreateViewerOff(petsclib::$UnionPetscLib, flg::PetscBool )
-
-    @chk ccall(
-               (:PetscOptionsPushCreateViewerOff, $petsc_library),
-               PetscErrorCode,
-               (PetscBool,),
-               flg,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsPopCreateViewerOff(petsclib::PetscLibType) 
-reset whether `PetscOptionsCreateViewer()` returns a viewer.
-
-Logically Collective
-
-Level: developer
-
--seealso: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsPopCreateViewerOff"))
-"""
-function PetscOptionsPopCreateViewerOff(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsPopCreateViewerOff(petsclib::$UnionPetscLib)
-
-    @chk ccall(
-               (:PetscOptionsPopCreateViewerOff, $petsc_library),
-               PetscErrorCode,
-               (),
-              )
-
-
-	return nothing
-end 
-
-"""
-	flg::PetscBool = PetscOptionsGetCreateViewerOff(petsclib::PetscLibType) 
-do `PetscOptionsCreateViewer()`, `PetscOptionsViewer()`, and `PetscOptionsCreateViewers()` return viewers
-
-Logically Collective
-
-Output Parameter:
-- `flg` - whether viewers are returned.
-
-Level: developer
-
--seealso: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`, `PetscOptionsPopCreateViewerOff()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetCreateViewerOff"))
-"""
-function PetscOptionsGetCreateViewerOff(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsGetCreateViewerOff(petsclib::$UnionPetscLib)
-	flg_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetCreateViewerOff, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscBool},),
-               flg_,
-              )
-
-	flg = flg_[]
-
-	return flg
-end 
-
-"""
-	viewer::PetscViewer,format::PetscViewerFormat,set::PetscBool = PetscOptionsCreateViewer(petsclib::PetscLibType,comm::MPI_Comm, options::Union{Ptr,PetscOptions}, pre::String, name::String) 
-Creates a viewer appropriate for the type indicated by the user
-
-Collective
-
-Input Parameters:
-- `comm`    - the communicator to own the viewer
-- `options` - options database, use `NULL` for default global database
-- `pre`     - the string to prepend to the name or `NULL`
-- `name`    - the options database name that will be checked for
-
-Output Parameters:
-- `viewer` - the viewer, pass `NULL` if not needed
-- `format` - the `PetscViewerFormat` requested by the user, pass `NULL` if not needed
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: intermediate
-
--seealso: [](sec_viewers), `PetscViewerDestroy()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
-`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsPushCreateViewerOff()`, `PetscOptionsPopCreateViewerOff()`,
-`PetscOptionsCreateViewerOff()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsCreateViewer"))
-"""
-function PetscOptionsCreateViewer(petsclib::PetscLibType, comm::MPI_Comm, options::Union{Ptr,PetscOptions}, pre::String, name::String) end
-
-@for_petsc function PetscOptionsCreateViewer(petsclib::$UnionPetscLib, comm::MPI_Comm, options::Union{Ptr,PetscOptions}, pre::String, name::String)
-	viewer_ = Ref{PetscViewer}()
-	format_ = Ref{PetscViewerFormat}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsCreateViewer, $petsc_library),
-               PetscErrorCode,
-               (MPI_Comm, COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscViewer}, Ptr{PetscViewerFormat}, Ptr{PetscBool}),
-               comm, options, pre, name, viewer_, format_, set_,
-              )
-
-	viewer = viewer_[]
-	format = format_[]
-	set = set_[]
-
-	return viewer,format,set
-end 
-
-"""
-	viewers::Vector{PetscViewer},formats::Vector{PetscViewerFormat},set::PetscBool = PetscOptionsCreateViewers(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, n_max::PetscInt) 
-Create multiple viewers from a comma
-
-Collective
-
-Input Parameters:
-- `comm`    - the communicator to own the viewers
-- `options` - options database, use `NULL` for default global database
-- `pre`     - the string to prepend to the name or `NULL`
-- `name`    - the options database name that will be checked for
-- `n_max`   - on input: the maximum number of viewers; on output: the number of viewers in the comma-separated list
-
-Output Parameters:
-- `viewers` - an array to hold at least `n_max` `PetscViewer`s, or `NULL` if not needed; on output: if not `NULL`, the
-first `n_max` entries are initialized `PetscViewer`s
-- `formats` - an array to hold at least `n_max` `PetscViewerFormat`s, or `NULL` if not needed; on output: if not `NULL`, the first `n_max` entries are valid `PetscViewerFormat`s
-- `set`     - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: intermediate
-
--seealso: [](sec_viewers), `PetscOptionsCreateViewer()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsCreateViewers"))
-"""
-function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, n_max::PetscInt) end
-
-@for_petsc function PetscOptionsCreateViewers(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, n_max::$PetscInt )
-	viewers = Vector{PetscViewer}(undef, ni);  # CHECK SIZE!!
-	formats = Vector{PetscViewerFormat}(undef, ni);  # CHECK SIZE!!
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsCreateViewers, $petsc_library),
-               PetscErrorCode,
-               (MPI_Comm, COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscViewer}, Ptr{PetscViewerFormat}, Ptr{PetscBool}),
-               comm, options, pre, name, n_max, viewers, formats, set_,
-              )
-
-	set = set_[]
-
-	return viewers,formats,set
-end 
-
-"""
-	PetscOptionsInsertStringYAML(petsclib::PetscLibType,options::AbstractPetscOptions, in_str::String) 
-Inserts YAML
-
-Logically Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `in_str`  - YAML-formatted string options
-
-Level: intermediate
-
--seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsInsertFile()`, `PetscOptionsInsertFileYAML()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsInsertStringYAML"))
-"""
-function PetscOptionsInsertStringYAML(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
-
-@for_petsc function PetscOptionsInsertStringYAML(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
-
-    @chk ccall(
-               (:PetscOptionsInsertStringYAML, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}),
-               options, in_str,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsInsertFileYAML(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) 
-Insert a YAML
-
-Collective
-
-Input Parameters:
-- `comm`    - the processes that will share the options (usually `PETSC_COMM_WORLD`)
-- `options` - options database, use `NULL` for default global database
-- `file`    - name of file
-- `require` - if `PETSC_TRUE` will generate an error if the file does not exist
-
-Level: intermediate
-
--seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsInsertFile()`, `PetscOptionsInsertStringYAML()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsInsertFileYAML"))
-"""
-function PetscOptionsInsertFileYAML(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
-
-@for_petsc function PetscOptionsInsertFileYAML(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
-
-    @chk ccall(
-               (:PetscOptionsInsertFileYAML, $petsc_library),
-               PetscErrorCode,
-               (MPI_Comm, COptions, Ptr{Cchar}, PetscBool),
-               comm, options, file, require,
-              )
-
-
-	return nothing
-end 
-
-"""
-	options::PetscOptions = PetscOptionsCreate(petsclib::PetscLibType) 
-Creates an empty options database.
-
-Logically Collective
-
-Output Parameter:
-- `options` - Options database object
-
-Level: advanced
-
--seealso: `PetscOptionsDestroy()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsInsert()`, `PetscOptionsSetValue()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsCreate"))
-"""
-function PetscOptionsCreate(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsCreate(petsclib::$UnionPetscLib)
-	options_ = Ref{COptions}()
-
-    @chk ccall(
-               (:PetscOptionsCreate, $petsc_library),
-               PetscErrorCode,
-               (Ptr{COptions},),
-               options_,
-              )
-
-	options = PetscOptions(options_[], petsclib)
-
-	return options
-end 
-
-"""
-	PetscOptionsDestroy(petsclib::PetscLibType,options::AbstractPetscOptions) 
-Destroys an option database.
-
-Logically Collective on whatever communicator was associated with the call to `PetscOptionsCreate()`
-
-Input Parameter:
-- `options` - the `PetscOptions` object
-
-Level: advanced
-
--seealso: `PetscOptionsInsert()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsSetValue()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsDestroy"))
-"""
-function PetscOptionsDestroy(petsclib::PetscLibType, options::AbstractPetscOptions) end
-
-@for_petsc function PetscOptionsDestroy(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
-	options_ = Ref(options.ptr)
-
-    @chk ccall(
-               (:PetscOptionsDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{COptions},),
-               options_,
-              )
-
-	options.ptr = C_NULL
-
-	return nothing
-end 
-
-"""
-	PetscOptionsCreateDefault(petsclib::PetscLibType) 
-
-# External Links
-$(_doc_external("Sys/PetscOptionsCreateDefault"))
-"""
-function PetscOptionsCreateDefault(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsCreateDefault(petsclib::$UnionPetscLib)
-
-    @chk ccall(
-               (:PetscOptionsCreateDefault, $petsc_library),
-               PetscErrorCode,
-               (),
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsPush(petsclib::PetscLibType,opt::AbstractPetscOptions) 
-Push a new `PetscOptions` object as the default provider of options
-Allows using different parts of a code to use different options databases
-
-Logically Collective
-
-Input Parameter:
-- `opt` - the options obtained with `PetscOptionsCreate()`
-
-Level: advanced
-
--seealso: `PetscOptionsPop()`, `PetscOptionsCreate()`, `PetscOptionsInsert()`, `PetscOptionsSetValue()`, `PetscOptionsLeft()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsPush"))
-"""
-function PetscOptionsPush(petsclib::PetscLibType, opt::AbstractPetscOptions) end
-
-@for_petsc function PetscOptionsPush(petsclib::$UnionPetscLib, opt::AbstractPetscOptions )
-
-    @chk ccall(
-               (:PetscOptionsPush, $petsc_library),
-               PetscErrorCode,
-               (COptions,),
-               opt,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsPop(petsclib::PetscLibType) 
-Pop the most recent `PetscOptionsPush()` to return to the previous default options
-
-Logically Collective on whatever communicator was associated with the call to `PetscOptionsCreate()`
-
-Level: advanced
-
--seealso: `PetscOptionsCreate()`, `PetscOptionsInsert()`, `PetscOptionsSetValue()`, `PetscOptionsLeft()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsPop"))
-"""
-function PetscOptionsPop(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsPop(petsclib::$UnionPetscLib)
-
-    @chk ccall(
-               (:PetscOptionsPop, $petsc_library),
-               PetscErrorCode,
-               (),
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsDestroyDefault(petsclib::PetscLibType) 
-
-# External Links
-$(_doc_external("Sys/PetscOptionsDestroyDefault"))
-"""
-function PetscOptionsDestroyDefault(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsDestroyDefault(petsclib::$UnionPetscLib)
-
-    @chk ccall(
-               (:PetscOptionsDestroyDefault, $petsc_library),
-               PetscErrorCode,
-               (),
-              )
-
-
-	return nothing
-end 
-
-"""
-	valid::PetscBool = PetscOptionsValidKey(petsclib::PetscLibType,key::String) 
-PETSc Options database keys must begin with one or two dashes (
+	N::PetscInt = PetscOptionsAllUsed(petsclib::PetscLibType,options::AbstractPetscOptions) 
+Returns a count of the number of options in the
+database that have never been selected.
 
 Not Collective
 
 Input Parameter:
-- `key` - string to check if valid
+- `options` - options database, use `NULL` for default global database
 
 Output Parameter:
-- `valid` - `PETSC_TRUE` if a valid key
-
-Level: intermediate
-
--seealso: `PetscOptionsCreate()`, `PetscOptionsInsert()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsValidKey"))
-"""
-function PetscOptionsValidKey(petsclib::PetscLibType, key::String) end
-
-@for_petsc function PetscOptionsValidKey(petsclib::$UnionPetscLib, key::String )
-	valid_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsValidKey, $petsc_library),
-               PetscErrorCode,
-               (Ptr{Cchar}, Ptr{PetscBool}),
-               key, valid_,
-              )
-
-	valid = valid_[]
-
-	return valid
-end 
-
-"""
-	PetscOptionsInsertString(petsclib::PetscLibType,options::AbstractPetscOptions, in_str::String) 
-Inserts options into the database from a string
-
-Logically Collective
-
-Input Parameters:
-- `options` - options object
-- `in_str`  - string that contains options separated by blanks
-
-Level: intermediate
-
-The collectivity of this routine is complex; only the MPI processes that call this routine will
-have the affect of these options. If some processes that create objects call this routine and others do
-not the code may fail in complicated ways because the same parallel solvers may incorrectly use different options
-on different ranks.
-
-Contributed by Boyana Norris
-
--seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsInsertFile()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsInsertString"))
-"""
-function PetscOptionsInsertString(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
-
-@for_petsc function PetscOptionsInsertString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
-
-    @chk ccall(
-               (:PetscOptionsInsertString, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}),
-               options, in_str,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsInsertFile(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) 
-Inserts options into the database from a file.
-
-Collective
-
-Input Parameters:
-- `comm`    - the processes that will share the options (usually `PETSC_COMM_WORLD`)
-- `options` - options database, use `NULL` for default global database
-- `file`    - name of file,
-".yml" and ".yaml" filename extensions are inserted as YAML options,
-append ":yaml" to filename to force YAML options.
-- `require` - if `PETSC_TRUE` will generate an error if the file does not exist
-
-Level: developer
-
--seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsInsertFile"))
-"""
-function PetscOptionsInsertFile(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
-
-@for_petsc function PetscOptionsInsertFile(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
-
-    @chk ccall(
-               (:PetscOptionsInsertFile, $petsc_library),
-               PetscErrorCode,
-               (MPI_Comm, COptions, Ptr{Cchar}, PetscBool),
-               comm, options, file, require,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsInsertArgs(petsclib::PetscLibType,options::AbstractPetscOptions, argc::Cint, args::String) 
-Inserts options into the database from a array of strings
-
-Logically Collective
-
-Input Parameters:
-- `options` - options object
-- `argc`    - the array length
-- `args`    - the string array
-
-Level: intermediate
-
--seealso: `PetscOptions`, `PetscOptionsInsertString()`, `PetscOptionsInsertFile()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsInsertArgs"))
-"""
-function PetscOptionsInsertArgs(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::String) end
-
-@for_petsc function PetscOptionsInsertArgs(petsclib::$UnionPetscLib, options::AbstractPetscOptions, argc::Cint, args::String )
-	args_ = Ref(pointer(args))
-
-    @chk ccall(
-               (:PetscOptionsInsertArgs, $petsc_library),
-               PetscErrorCode,
-               (COptions, Cint, Ptr{Ptr{Cchar}}),
-               options, argc, args_,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsInsert(petsclib::PetscLibType,options::AbstractPetscOptions, argc::Cint, args::Cchar, file::String) 
-Inserts into the options database from the command line,
-the environmental variable and a file.
-
-Collective on `PETSC_COMM_WORLD`
-
-Input Parameters:
-- `options` - options database or `NULL` for the default global database
-- `argc`    - count of number of command line arguments
-- `args`    - the command line arguments
-- `file`    - [optional] PETSc database file, append ":yaml" to filename to specify YAML options format.
-Use `NULL` or empty string to not check for code specific file.
-Also checks ~/.petscrc, .petscrc and petscrc.
-Use -skip_petscrc in the code specific file (or command line) to skip ~/.petscrc, .petscrc and petscrc files.
-
-Options Database Keys:
-- `-options_file <filename>`      - read options from a file
-- `-options_file_yaml <filename>` - read options from a YAML file
+- `N` - count of options not used
 
 Level: advanced
 
--seealso: `PetscOptionsDestroy()`, `PetscOptionsView()`, `PetscOptionsInsertString()`, `PetscOptionsInsertFile()`,
-`PetscInitialize()`
+-seealso: `PetscOptionsView()`
 
 # External Links
-$(_doc_external("Sys/PetscOptionsInsert"))
+$(_doc_external("Sys/PetscOptionsAllUsed"))
 """
-function PetscOptionsInsert(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::Cchar, file::String) end
+function PetscOptionsAllUsed(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsInsert(petsclib::$UnionPetscLib, options::AbstractPetscOptions, argc::Cint, args::Cchar, file::String )
+@for_petsc function PetscOptionsAllUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
+	N_ = Ref{$PetscInt}()
 
     @chk ccall(
-               (:PetscOptionsInsert, $petsc_library),
+               (:PetscOptionsAllUsed, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{Cint}, Cchar, Ptr{Cchar}),
-               options, argc, args, file,
+               (COptions, Ptr{$PetscInt}),
+               options, N_,
               )
 
+	N = N_[]
 
-	return nothing
-end 
-
-"""
-	PetscOptionsView(petsclib::PetscLibType,options::AbstractPetscOptions, viewer::PetscViewerFormat) 
-Prints the options that have been loaded. This is
-useful for debugging purposes.
-
-Logically Collective, No Fortran Support
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `viewer`  - must be an `PETSCVIEWERASCII` viewer, can be `PETSC_VIEWER_DEFAULT`
-
-Options Database Key:
-- `-options_view` - Activates `PetscOptionsView()` within `PetscFinalize()`
-
-Level: advanced
-
--seealso: `PetscOptionsAllUsed()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsView"))
-"""
-function PetscOptionsView(petsclib::PetscLibType, options::AbstractPetscOptions, viewer::PetscViewer) end
-
-@for_petsc function PetscOptionsView(petsclib::$UnionPetscLib, options::AbstractPetscOptions, viewer::PetscViewerFormat )
-
-    @chk ccall(
-               (:PetscOptionsView, $petsc_library),
-               PetscErrorCode,
-               (COptions, PetscViewerFormat),
-               options, viewer,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsLeftError(petsclib::PetscLibType) 
-
-# External Links
-$(_doc_external("Sys/PetscOptionsLeftError"))
-"""
-function PetscOptionsLeftError(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsLeftError(petsclib::$UnionPetscLib)
-
-    @chk ccall(
-               (:PetscOptionsLeftError, $petsc_library),
-               PetscErrorCode,
-               (),
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsPrefixPush(petsclib::PetscLibType,options::AbstractPetscOptions, prefix::String) 
-Designate a prefix to be used by all options insertions to follow.
-
-Logically Collective
-
-Input Parameters:
-- `options` - options database, or `NULL` for the default global database
-- `prefix`  - The string to append to the existing prefix
-
-Options Database Keys:
-- `-prefix_push <some_prefix_>` - push the given prefix
-- `-prefix_pop`                 - pop the last prefix
-
-Level: advanced
-
--seealso: `PetscOptionsPrefixPop()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsCreate()`, `PetscOptionsSetValue()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsPrefixPush"))
-"""
-function PetscOptionsPrefixPush(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String) end
-
-@for_petsc function PetscOptionsPrefixPush(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String )
-
-    @chk ccall(
-               (:PetscOptionsPrefixPush, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}),
-               options, prefix,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsPrefixPop(petsclib::PetscLibType,options::AbstractPetscOptions) 
-Remove the latest options prefix, see `PetscOptionsPrefixPush()` for details
-
-Logically Collective on the `MPI_Comm` used when called `PetscOptionsPrefixPush()`
-
-Input Parameter:
-- `options` - options database, or `NULL` for the default global database
-
-Level: advanced
-
--seealso: `PetscOptionsPrefixPush()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsCreate()`, `PetscOptionsSetValue()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsPrefixPop"))
-"""
-function PetscOptionsPrefixPop(petsclib::PetscLibType, options::AbstractPetscOptions) end
-
-@for_petsc function PetscOptionsPrefixPop(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
-
-    @chk ccall(
-               (:PetscOptionsPrefixPop, $petsc_library),
-               PetscErrorCode,
-               (COptions,),
-               options,
-              )
-
-
-	return nothing
+	return N
 end 
 
 """
@@ -776,78 +60,6 @@ function PetscOptionsClear(petsclib::PetscLibType, options::AbstractPetscOptions
                PetscErrorCode,
                (COptions,),
                options,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsSetAlias(petsclib::PetscLibType,options::AbstractPetscOptions, newname::String, oldname::String) 
-Makes a key and alias for another key
-
-Logically Collective
-
-Input Parameters:
-- `options` - options database, or `NULL` for default global database
-- `newname` - the alias
-- `oldname` - the name that alias will refer to
-
-Level: advanced
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`,
-`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsSetAlias"))
-"""
-function PetscOptionsSetAlias(petsclib::PetscLibType, options::AbstractPetscOptions, newname::String, oldname::String) end
-
-@for_petsc function PetscOptionsSetAlias(petsclib::$UnionPetscLib, options::AbstractPetscOptions, newname::String, oldname::String )
-
-    @chk ccall(
-               (:PetscOptionsSetAlias, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}),
-               options, newname, oldname,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscOptionsSetValue(petsclib::PetscLibType,options::AbstractPetscOptions, name::String, value::Union{Ptr,String}) 
-Sets an option name
-database, overriding whatever is already present.
-
-Logically Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for the default global database
-- `name`    - name of option, this SHOULD have the - prepended
-- `value`   - the option value (not used for all options, so can be `NULL`)
-
-Level: intermediate
-
--seealso: `PetscOptionsInsert()`, `PetscOptionsClearValue()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsSetValue"))
-"""
-function PetscOptionsSetValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String, value::Union{Ptr,String}) end
-
-@for_petsc function PetscOptionsSetValue(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String, value::Union{Ptr,String} )
-
-    @chk ccall(
-               (:PetscOptionsSetValue, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}),
-               options, name, value,
               )
 
 
@@ -888,7 +100,211 @@ function PetscOptionsClearValue(petsclib::PetscLibType, options::AbstractPetscOp
 end 
 
 """
-	set::PetscBool = PetscOptionsFindPair(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, value::String) 
+	options::PetscOptions = PetscOptionsCreate(petsclib::PetscLibType) 
+Creates an empty options database.
+
+Logically Collective
+
+Output Parameter:
+- `options` - Options database object
+
+Level: advanced
+
+-seealso: `PetscOptionsDestroy()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsInsert()`, `PetscOptionsSetValue()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsCreate"))
+"""
+function PetscOptionsCreate(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsCreate(petsclib::$UnionPetscLib)
+	options_ = Ref{COptions}()
+
+    @chk ccall(
+               (:PetscOptionsCreate, $petsc_library),
+               PetscErrorCode,
+               (Ptr{COptions},),
+               options_,
+              )
+
+	options = PetscOptions(options_[], petsclib)
+
+	return options
+end 
+
+"""
+	PetscOptionsCreateDefault(petsclib::PetscLibType) 
+
+# External Links
+$(_doc_external("Sys/PetscOptionsCreateDefault"))
+"""
+function PetscOptionsCreateDefault(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsCreateDefault(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscOptionsCreateDefault, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	viewer::PetscViewer,format::PetscViewerFormat,set::PetscBool = PetscOptionsCreateViewer(petsclib::PetscLibType,comm::MPI_Comm, options::Union{Ptr, AbstractPetscOptions}, pre::String, name::String) 
+Creates a viewer appropriate for the type indicated by the user
+
+Collective
+
+Input Parameters:
+- `comm`    - the communicator to own the viewer
+- `options` - options database, use `NULL` for default global database
+- `pre`     - the string to prepend to the name or `NULL`
+- `name`    - the options database name that will be checked for
+
+Output Parameters:
+- `viewer` - the viewer, pass `NULL` if not needed
+- `format` - the `PetscViewerFormat` requested by the user, pass `NULL` if not needed
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: intermediate
+
+-seealso: [](sec_viewers), `PetscViewerDestroy()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsPushCreateViewerOff()`, `PetscOptionsPopCreateViewerOff()`,
+`PetscOptionsCreateViewerOff()`
+
+# External Links
+$(_doc_external("Viewer/PetscOptionsCreateViewer"))
+"""
+function PetscOptionsCreateViewer(petsclib::PetscLibType, comm::MPI_Comm, options::Union{Ptr, AbstractPetscOptions}, pre::String, name::String) end
+
+@for_petsc function PetscOptionsCreateViewer(petsclib::$UnionPetscLib, comm::MPI_Comm, options::Union{Ptr, AbstractPetscOptions}, pre::String, name::String )
+	viewer_ = Ref{PetscViewer}()
+	format_ = Ref{PetscViewerFormat}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsCreateViewer, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscViewer}, Ptr{PetscViewerFormat}, Ptr{PetscBool}),
+               comm, options, pre, name, viewer_, format_, set_,
+              )
+
+	viewer = viewer_[]
+	format = format_[]
+	set = set_[]
+
+	return viewer,format,set
+end 
+
+"""
+	n_max::PetscInt,set::PetscBool = PetscOptionsCreateViewers(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, viewers::Vector{PetscViewer}, formats::Vector{PetscViewerFormat}) 
+Create multiple viewers from a comma
+
+Collective
+
+Input Parameters:
+- `comm`    - the communicator to own the viewers
+- `options` - options database, use `NULL` for default global database
+- `pre`     - the string to prepend to the name or `NULL`
+- `name`    - the options database name that will be checked for
+- `n_max`   - on input: the maximum number of viewers; on output: the number of viewers in the comma-separated list
+
+Output Parameters:
+- `viewers` - an array to hold at least `n_max` `PetscViewer`s, or `NULL` if not needed; on output: if not `NULL`, the
+first `n_max` entries are initialized `PetscViewer`s
+- `formats` - an array to hold at least `n_max` `PetscViewerFormat`s, or `NULL` if not needed; on output: if not
+`NULL`, the first `n_max` entries are valid `PetscViewewFormat`s
+- `set`     - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: intermediate
+
+-seealso: [](sec_viewers), `PetscOptionsCreateViewer()`
+
+# External Links
+$(_doc_external("Viewer/PetscOptionsCreateViewers"))
+"""
+function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, viewers::Vector{PetscViewer}, formats::Vector{PetscViewerFormat}) end
+
+@for_petsc function PetscOptionsCreateViewers(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, viewers::Vector{PetscViewer}, formats::Vector{PetscViewerFormat} )
+	n_max_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsCreateViewers, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscViewer}, Ptr{PetscViewerFormat}, Ptr{PetscBool}),
+               comm, options, pre, name, n_max_, viewers, formats, set_,
+              )
+
+	n_max = n_max_[]
+	set = set_[]
+
+	return n_max,set
+end 
+
+"""
+	PetscOptionsDestroy(petsclib::PetscLibType,options::AbstractPetscOptions) 
+Destroys an option database.
+
+Logically Collective on whatever communicator was associated with the call to `PetscOptionsCreate()`
+
+Input Parameter:
+- `options` - the `PetscOptions` object
+
+Level: advanced
+
+-seealso: `PetscOptionsInsert()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsSetValue()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsDestroy"))
+"""
+function PetscOptionsDestroy(petsclib::PetscLibType, options::AbstractPetscOptions) end
+
+@for_petsc function PetscOptionsDestroy(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
+	options_ = Ref(options.ptr)
+
+    @chk ccall(
+               (:PetscOptionsDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{COptions},),
+               options_,
+              )
+
+	options.ptr = C_NULL
+
+	return nothing
+end 
+
+"""
+	PetscOptionsDestroyDefault(petsclib::PetscLibType) 
+
+# External Links
+$(_doc_external("Sys/PetscOptionsDestroyDefault"))
+"""
+function PetscOptionsDestroyDefault(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsDestroyDefault(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscOptionsDestroyDefault, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	value::Ptr{Cchar},set::PetscBool = PetscOptionsFindPair(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets an option name
 
 Not Collective
@@ -909,10 +325,10 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOptionsFindPair"))
 """
-function PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, value::String) end
+function PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsFindPair(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, value::String )
-	value_ = Ref(pointer(value))
+@for_petsc function PetscOptionsFindPair(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	value_ = Ref{Ptr{Cchar}}()
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -922,26 +338,530 @@ function PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOpti
                options, pre, name, value_, set_,
               )
 
+	value = value_[]
 	set = set_[]
 
-	return set
+	return value,set
 end 
 
 """
-	PetscOptionsReject(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, mess::String) 
-Generates an error if a certain option is given.
+	copts::Ptr{Cchar} = PetscOptionsGetAll(petsclib::PetscLibType,options::AbstractPetscOptions) 
+Lists all the options the program was run with in a single string.
+
+Not Collective
+
+Input Parameter:
+- `options` - the options database, use `NULL` for the default global database
+
+Output Parameter:
+- `copts` - pointer where string pointer is stored
+
+Level: advanced
+
+-seealso: `PetscOptionsAllUsed()`, `PetscOptionsView()`, `PetscOptionsPush()`, `PetscOptionsPop()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetAll"))
+"""
+function PetscOptionsGetAll(petsclib::PetscLibType, options::AbstractPetscOptions) end
+
+@for_petsc function PetscOptionsGetAll(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
+	copts_ = Ref{Ptr{Cchar}}()
+
+    @chk ccall(
+               (:PetscOptionsGetAll, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Ptr{Cchar}}),
+               options, copts_,
+              )
+
+	copts = copts_[]
+
+	return copts
+end 
+
+"""
+	ivalue::PetscBool,set::PetscBool = PetscOptionsGetBool(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
+Gets the Logical (true or false) value for a particular
+option in the database.
 
 Not Collective
 
 Input Parameters:
 - `options` - options database, use `NULL` for default global database
-- `pre`     - the option prefix (may be `NULL`)
-- `name`    - the option name one is seeking
-- `mess`    - error message (may be `NULL`)
+- `pre`     - the string to prepend to the name or `NULL`
+- `name`    - the option one is seeking
 
-Level: advanced
+Output Parameters:
+- `ivalue` - the logical value to return
+- `set`    - `PETSC_TRUE`  if found, else `PETSC_FALSE`
 
--seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`,
+Level: beginner
+
+-seealso: `PetscOptionsGetBool3()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsGetInt()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetBool"))
+"""
+function PetscOptionsGetBool(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+
+@for_petsc function PetscOptionsGetBool(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	ivalue_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetBool, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscBool}, Ptr{PetscBool}),
+               options, pre, name, ivalue_, set_,
+              )
+
+	ivalue = ivalue_[]
+	set = set_[]
+
+	return ivalue,set
+end 
+
+"""
+	ivalue::PetscBool3,set::PetscBool = PetscOptionsGetBool3(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
+Gets the ternary logical (true, false or unknown) value for a particular
+option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - the string to prepend to the name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `ivalue` - the ternary logical value to return
+- `set`    - `PETSC_TRUE`  if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetBool()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsGetInt()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetBool3"))
+"""
+function PetscOptionsGetBool3(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+
+@for_petsc function PetscOptionsGetBool3(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	ivalue_ = Ref{PetscBool3}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetBool3, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscBool3}, Ptr{PetscBool}),
+               options, pre, name, ivalue_, set_,
+              )
+
+	ivalue = ivalue_[]
+	set = set_[]
+
+	return ivalue,set
+end 
+
+"""
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetBoolArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool}) 
+Gets an array of Logical (true or false) values for a particular
+option in the database.  The values must be separated with commas with no intervening spaces.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to each name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `dvalue` - the Boolean values to return
+- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
+`PetscOptionsGetString()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetBoolArray"))
+"""
+function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool}) end
+
+@for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool} )
+	nmax_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetBoolArray, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscBool}, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, name, dvalue, nmax_, set_,
+              )
+
+	nmax = nmax_[]
+	set = set_[]
+
+	return nmax,set
+end 
+
+"""
+	flg::PetscBool = PetscOptionsGetCreateViewerOff(petsclib::PetscLibType) 
+do `PetscOptionsCreateViewer()`, `PetscOptionsViewer()`, and `PetscOptionsCreateViewers()` return viewers
+
+Logically Collective
+
+Output Parameter:
+- `flg` - whether viewers are returned.
+
+Level: developer
+
+-seealso: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`, `PetscOptionsPopCreateViewerOff()`
+
+# External Links
+$(_doc_external("Viewer/PetscOptionsGetCreateViewerOff"))
+"""
+function PetscOptionsGetCreateViewerOff(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsGetCreateViewerOff(petsclib::$UnionPetscLib)
+	flg_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetCreateViewerOff, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscBool},),
+               flg_,
+              )
+
+	flg = flg_[]
+
+	return flg
+end 
+
+"""
+	value::PetscInt,set::PetscBool = PetscOptionsGetEList(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) 
+Puts a list of option values that a single one may be selected from
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - the string to prepend to the name or `NULL`
+- `opt`     - option name
+- `list`    - the possible choices (one of these must be selected, anything else is invalid)
+- `ntext`   - number of choices
+
+Output Parameters:
+- `value` - the index of the value to return (defaults to zero if the option name is given but no choice is listed)
+- `set`   - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: intermediate
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`,
+`PetscOptionsHasName()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetEList"))
+"""
+function PetscOptionsGetEList(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) end
+
+@for_petsc function PetscOptionsGetEList(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::$PetscInt )
+	list_ = Ref(pointer(list))
+	value_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetEList, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, $PetscInt, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, opt, list_, ntext, value_, set_,
+              )
+
+	value = value_[]
+	set = set_[]
+
+	return value,set
+end 
+
+"""
+	value::PetscEnum,set::PetscBool = PetscOptionsGetEnum(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, opt::String, list::String) 
+Gets the enum value for a particular option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - option prefix or `NULL`
+- `opt`     - option name
+- `list`    - array containing the list of choices, followed by the enum name, followed by the enum prefix, followed by a null
+
+Output Parameters:
+- `value` - the value to return
+- `set`   - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`, `PetscOptionsGetInt()`,
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsGetEList()`, `PetscOptionsEnum()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetEnum"))
+"""
+function PetscOptionsGetEnum(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String) end
+
+@for_petsc function PetscOptionsGetEnum(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String )
+	list_ = Ref(pointer(list))
+	value_ = Ref{PetscEnum}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetEnum, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, Ptr{PetscEnum}, Ptr{PetscBool}),
+               options, pre, opt, list_, value_, set_,
+              )
+
+	value = value_[]
+	set = set_[]
+
+	return value,set
+end 
+
+"""
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetEnumArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) 
+Gets an array of enum values for a particular option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - option prefix or `NULL`
+- `name`    - option name
+- `list`    - array containing the list of choices, followed by the enum name, followed by the enum prefix, followed by a null
+
+Output Parameters:
+- `ivalue` - the  enum values to return
+- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`, `PetscOptionsGetInt()`,
+`PetscOptionsGetEnum()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`, `PetscOptionsName()`,
+`PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`, `PetscOptionsStringArray()`, `PetscOptionsRealArray()`,
+`PetscOptionsScalar()`, `PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsGetEList()`, `PetscOptionsEnum()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetEnumArray"))
+"""
+function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) end
+
+@for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
+	list_ = Ref(pointer(list))
+	nmax_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetEnumArray, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, Ptr{PetscEnum}, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, name, list_, ivalue, nmax_, set_,
+              )
+
+	nmax = nmax_[]
+	set = set_[]
+
+	return nmax,set
+end 
+
+"""
+	ivalue::PetscInt,set::PetscBool = PetscOptionsGetInt(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
+Gets the integer value for a particular option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - the string to prepend to the name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `ivalue` - the integer value to return
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetInt"))
+"""
+function PetscOptionsGetInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+
+@for_petsc function PetscOptionsGetInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	ivalue_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetInt, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, name, ivalue_, set_,
+              )
+
+	ivalue = ivalue_[]
+	set = set_[]
+
+	return ivalue,set
+end 
+
+"""
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetIntArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{PetscInt}) 
+Gets an array of integer values for a particular option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to each name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `ivalue` - the integer values to return
+- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
+`PetscOptionsGetString()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetIntArray"))
+"""
+function PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{PetscInt}) end
+
+@for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{$PetscInt} )
+	nmax_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetIntArray, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, name, ivalue, nmax_, set_,
+              )
+
+	nmax = nmax_[]
+	set = set_[]
+
+	return nmax,set
+end 
+
+"""
+	ivalue::PetscMPIInt,set::PetscBool = PetscOptionsGetMPIInt(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
+Gets the MPI integer value for a particular option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - the string to prepend to the name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `ivalue` - the MPI integer value to return
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
+`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetMPIInt"))
+"""
+function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+
+@for_petsc function PetscOptionsGetMPIInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	ivalue_ = Ref{PetscMPIInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetMPIInt, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscMPIInt}, Ptr{PetscBool}),
+               options, pre, name, ivalue_, set_,
+              )
+
+	ivalue = ivalue_[]
+	set = set_[]
+
+	return ivalue,set
+end 
+
+"""
+	dvalue::PetscReal,set::PetscBool = PetscOptionsGetReal(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
+Gets the double precision value for a particular
+option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to each name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `dvalue` - the double value to return
+- `set`    - `PETSC_TRUE` if found, `PETSC_FALSE` if not found
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
 `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
 `PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
@@ -949,21 +869,334 @@ Level: advanced
 `PetscOptionsFList()`, `PetscOptionsEList()`
 
 # External Links
-$(_doc_external("Sys/PetscOptionsReject"))
+$(_doc_external("Sys/PetscOptionsGetReal"))
 """
-function PetscOptionsReject(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, mess::String) end
+function PetscOptionsGetReal(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsReject(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, mess::String )
+@for_petsc function PetscOptionsGetReal(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	dvalue_ = Ref{$PetscReal}()
+	set_ = Ref{PetscBool}()
 
     @chk ccall(
-               (:PetscOptionsReject, $petsc_library),
+               (:PetscOptionsGetReal, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}),
-               options, pre, name, mess,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscReal}, Ptr{PetscBool}),
+               options, pre, name, dvalue_, set_,
               )
 
+	dvalue = dvalue_[]
+	set = set_[]
 
-	return nothing
+	return dvalue,set
+end 
+
+"""
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetRealArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscReal}) 
+Gets an array of double precision values for a
+particular option in the database.  The values must be separated with commas with no intervening spaces.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to each name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `dvalue` - the double values to return
+- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
+`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetRealArray"))
+"""
+function PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscReal}) end
+
+@for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscReal} )
+	nmax_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetRealArray, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscReal}, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, name, dvalue, nmax_, set_,
+              )
+
+	nmax = nmax_[]
+	set = set_[]
+
+	return nmax,set
+end 
+
+"""
+	dvalue::PetscScalar,set::PetscBool = PetscOptionsGetScalar(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
+Gets the scalar value for a particular
+option in the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to each name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `dvalue` - the scalar value to return
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
+`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetScalar"))
+"""
+function PetscOptionsGetScalar(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+
+@for_petsc function PetscOptionsGetScalar(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	dvalue_ = Ref{$PetscScalar}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetScalar, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscScalar}, Ptr{PetscBool}),
+               options, pre, name, dvalue_, set_,
+              )
+
+	dvalue = dvalue_[]
+	set = set_[]
+
+	return dvalue,set
+end 
+
+"""
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetScalarArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscScalar}) 
+Gets an array of scalars for a
+particular option in the database.  The values must be separated with commas with no intervening spaces.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to each name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `dvalue` - the scalar values to return
+- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
+- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
+`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetScalarArray"))
+"""
+function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscScalar}) end
+
+@for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscScalar} )
+	nmax_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetScalarArray, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscScalar}, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, name, dvalue, nmax_, set_,
+              )
+
+	nmax = nmax_[]
+	set = set_[]
+
+	return nmax,set
+end 
+
+# override for PetscOptionsGetString; C signature: PetscOptionsGetString(PetscOptions options, char pre[], char name[], char string[], size_t len, PetscBool* set)
+"""
+	string::Union{Bool,String} = PetscOptionsGetString(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, string::String, len::Csize_t) 
+Gets the string value for a particular option in
+the database.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to name or `NULL`
+- `name`    - the option one is seeking
+- `len`     - maximum length of the string including null termination
+
+Output Parameters:
+- `string` - returns the value of the parameter ifn set, otherwise `false`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`,
+`PetscOptionsHasName()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetString"))
+"""
+function PetscOptionsGetString(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+
+@for_petsc function PetscOptionsGetString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::Union{Ptr,String}, name::String)
+	set_ = Ref{PetscBool}()
+    val = Vector{UInt8}(undef, 256)
+
+    @chk ccall(
+               (:PetscOptionsGetString, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Csize_t, Ptr{PetscBool}),
+               options, pre, name, val, sizeof(val), set_,
+              )
+
+	set = set_[]
+    if set
+        val = GC.@preserve val unsafe_string(pointer(val))
+    else
+        val = false
+    end
+  
+
+	return val
+end
+
+"""
+	strings::Ptr{Cchar},nmax::PetscInt,set::PetscBool = PetscOptionsGetStringArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
+Gets an array of string values for a particular
+option in the database. The values must be separated with commas with no intervening spaces.
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - string to prepend to name or `NULL`
+- `name`    - the option one is seeking
+
+Output Parameters:
+- `strings` - location to copy strings
+- `nmax`    - On input maximum number of strings, on output the actual number of strings found
+- `set`     - `PETSC_TRUE` if found, else `PETSC_FALSE`
+
+Level: beginner
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`,
+`PetscOptionsHasName()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetStringArray"))
+"""
+function PetscOptionsGetStringArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+
+@for_petsc function PetscOptionsGetStringArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
+	strings_ = Ref{Ptr{Cchar}}()
+	nmax_ = Ref{$PetscInt}()
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetStringArray, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, Ptr{$PetscInt}, Ptr{PetscBool}),
+               options, pre, name, strings_, nmax_, set_,
+              )
+
+	strings = strings_[]
+	nmax = nmax_[]
+	set = set_[]
+
+	return strings,nmax,set
+end 
+
+"""
+	set::PetscBool = PetscOptionsGetVec(petsclib::PetscLibType,options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) 
+
+# External Links
+$(_doc_external("Vec/PetscOptionsGetVec"))
+"""
+function PetscOptionsGetVec(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) end
+
+@for_petsc function PetscOptionsGetVec(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec )
+	set_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetVec, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, CVec, Ptr{PetscBool}),
+               options, prefix, key, v, set_,
+              )
+
+	set = set_[]
+
+	return set
+end 
+
+"""
+	flag::PetscBool = PetscOptionsGetenv(petsclib::PetscLibType,comm::MPI_Comm, name::String, env::String, len::Csize_t) 
+Gets an environmental variable, broadcasts to all
+processors in communicator from MPI rank zero
+
+Collective
+
+Input Parameters:
+- `comm` - communicator to share variable
+- `name` - name of environmental variable
+- `len`  - amount of space allocated to hold variable
+
+Output Parameters:
+- `flag` - if not `NULL` indicates if the variable was found
+- `env`  - value of variable
+
+Level: advanced
+
+-seealso: `PetscOptionsHasName()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsGetenv"))
+"""
+function PetscOptionsGetenv(petsclib::PetscLibType, comm::MPI_Comm, name::String, env::String, len::Csize_t) end
+
+@for_petsc function PetscOptionsGetenv(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, env::String, len::Csize_t )
+	flag_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscOptionsGetenv, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Ptr{Cchar}, Ptr{Cchar}, Csize_t, Ptr{PetscBool}),
+               comm, name, env, len, flag_,
+              )
+
+	flag = flag_[]
+
+	return flag
 end 
 
 """
@@ -1047,34 +1280,78 @@ function PetscOptionsHasName(petsclib::PetscLibType, options::AbstractPetscOptio
 end 
 
 """
-	PetscOptionsGetAll(petsclib::PetscLibType,options::AbstractPetscOptions, copts::String) 
-Lists all the options the program was run with in a single string.
+	argc::Cint = PetscOptionsInsert(petsclib::PetscLibType,options::AbstractPetscOptions, args::Cchar, file::String) 
+Inserts into the options database from the command line,
+the environmental variable and a file.
 
-Not Collective
+Collective on `PETSC_COMM_WORLD`
 
-Input Parameter:
-- `options` - the options database, use `NULL` for the default global database
+Input Parameters:
+- `options` - options database or `NULL` for the default global database
+- `argc`    - count of number of command line arguments
+- `args`    - the command line arguments
+- `file`    - [optional] PETSc database file, append ":yaml" to filename to specify YAML options format.
+Use `NULL` or empty string to not check for code specific file.
+Also checks ~/.petscrc, .petscrc and petscrc.
+Use -skip_petscrc in the code specific file (or command line) to skip ~/.petscrc, .petscrc and petscrc files.
 
-Output Parameter:
-- `copts` - pointer where string pointer is stored
+Options Database Keys:
+- `-options_file <filename>`      - read options from a file
+- `-options_file_yaml <filename>` - read options from a YAML file
 
 Level: advanced
 
--seealso: `PetscOptionsAllUsed()`, `PetscOptionsView()`, `PetscOptionsPush()`, `PetscOptionsPop()`
+-seealso: `PetscOptionsDestroy()`, `PetscOptionsView()`, `PetscOptionsInsertString()`, `PetscOptionsInsertFile()`,
+`PetscInitialize()`
 
 # External Links
-$(_doc_external("Sys/PetscOptionsGetAll"))
+$(_doc_external("Sys/PetscOptionsInsert"))
 """
-function PetscOptionsGetAll(petsclib::PetscLibType, options::AbstractPetscOptions, copts::String) end
+function PetscOptionsInsert(petsclib::PetscLibType, options::AbstractPetscOptions, args::Cchar, file::String) end
 
-@for_petsc function PetscOptionsGetAll(petsclib::$UnionPetscLib, options::AbstractPetscOptions, copts::String )
-	copts_ = Ref(pointer(copts))
+@for_petsc function PetscOptionsInsert(petsclib::$UnionPetscLib, options::AbstractPetscOptions, args::Cchar, file::String )
+	argc_ = Ref{Cint}()
 
     @chk ccall(
-               (:PetscOptionsGetAll, $petsc_library),
+               (:PetscOptionsInsert, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{Ptr{Cchar}}),
-               options, copts_,
+               (COptions, Ptr{Cint}, Ptr{Ptr{Cchar}}, Ptr{Cchar}),
+               options, argc_, args, file,
+              )
+
+	argc = argc_[]
+
+	return argc
+end 
+
+"""
+	PetscOptionsInsertArgs(petsclib::PetscLibType,options::AbstractPetscOptions, argc::Cint, args::String) 
+Inserts options into the database from a array of strings
+
+Logically Collective
+
+Input Parameters:
+- `options` - options object
+- `argc`    - the array length
+- `args`    - the string array
+
+Level: intermediate
+
+-seealso: `PetscOptions`, `PetscOptionsInsertString()`, `PetscOptionsInsertFile()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsInsertArgs"))
+"""
+function PetscOptionsInsertArgs(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::String) end
+
+@for_petsc function PetscOptionsInsertArgs(petsclib::$UnionPetscLib, options::AbstractPetscOptions, argc::Cint, args::String )
+	args_ = Ref(pointer(args))
+
+    @chk ccall(
+               (:PetscOptionsInsertArgs, $petsc_library),
+               PetscErrorCode,
+               (COptions, Cint, Ptr{Ptr{Cchar}}),
+               options, argc, args_,
               )
 
 
@@ -1082,77 +1359,164 @@ function PetscOptionsGetAll(petsclib::PetscLibType, options::AbstractPetscOption
 end 
 
 """
-	used::PetscBool = PetscOptionsUsed(petsclib::PetscLibType,options::AbstractPetscOptions, name::String) 
-Indicates if PETSc has used a particular option set in the database
+	PetscOptionsInsertFile(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) 
+Inserts options into the database from a file.
 
-Not Collective
+Collective
 
 Input Parameters:
+- `comm`    - the processes that will share the options (usually `PETSC_COMM_WORLD`)
 - `options` - options database, use `NULL` for default global database
-- `name`    - string name of option
+- `file`    - name of file,
+".yml" and ".yaml" filename extensions are inserted as YAML options,
+append ":yaml" to filename to force YAML options.
+- `require` - if `PETSC_TRUE` will generate an error if the file does not exist
 
-Output Parameter:
-- `used` - `PETSC_TRUE` if the option was used, otherwise false, including if option was not found in options database
+Level: developer
 
-Level: advanced
-
--seealso: `PetscOptionsView()`, `PetscOptionsLeft()`, `PetscOptionsAllUsed()`
+-seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
+`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
 
 # External Links
-$(_doc_external("Sys/PetscOptionsUsed"))
+$(_doc_external("Sys/PetscOptionsInsertFile"))
 """
-function PetscOptionsUsed(petsclib::PetscLibType, options::AbstractPetscOptions, name::String) end
+function PetscOptionsInsertFile(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
 
-@for_petsc function PetscOptionsUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String )
-	used_ = Ref{PetscBool}()
+@for_petsc function PetscOptionsInsertFile(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
 
     @chk ccall(
-               (:PetscOptionsUsed, $petsc_library),
+               (:PetscOptionsInsertFile, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{PetscBool}),
-               options, name, used_,
+               (MPI_Comm, COptions, Ptr{Cchar}, PetscBool),
+               comm, options, file, require,
               )
 
-	used = used_[]
 
-	return used
+	return nothing
 end 
 
 """
-	N::PetscInt = PetscOptionsAllUsed(petsclib::PetscLibType,options::AbstractPetscOptions) 
-Returns a count of the number of options in the
-database that have never been selected.
+	PetscOptionsInsertFileYAML(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) 
+Insert a YAML
 
-Not Collective
+Collective
 
-Input Parameter:
+Input Parameters:
+- `comm`    - the processes that will share the options (usually `PETSC_COMM_WORLD`)
 - `options` - options database, use `NULL` for default global database
+- `file`    - name of file
+- `require` - if `PETSC_TRUE` will generate an error if the file does not exist
 
-Output Parameter:
-- `N` - count of options not used
+Level: intermediate
 
-Level: advanced
-
--seealso: `PetscOptionsView()`
+-seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
+`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsInsertFile()`, `PetscOptionsInsertStringYAML()`
 
 # External Links
-$(_doc_external("Sys/PetscOptionsAllUsed"))
+$(_doc_external("Sys/PetscOptionsInsertFileYAML"))
 """
-function PetscOptionsAllUsed(petsclib::PetscLibType, options::AbstractPetscOptions) end
+function PetscOptionsInsertFileYAML(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
 
-@for_petsc function PetscOptionsAllUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
-	N_ = Ref{$PetscInt}()
+@for_petsc function PetscOptionsInsertFileYAML(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
 
     @chk ccall(
-               (:PetscOptionsAllUsed, $petsc_library),
+               (:PetscOptionsInsertFileYAML, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{$PetscInt}),
-               options, N_,
+               (MPI_Comm, COptions, Ptr{Cchar}, PetscBool),
+               comm, options, file, require,
               )
 
-	N = N_[]
 
-	return N
+	return nothing
+end 
+
+"""
+	PetscOptionsInsertString(petsclib::PetscLibType,options::AbstractPetscOptions, in_str::String) 
+Inserts options into the database from a string
+
+Logically Collective
+
+Input Parameters:
+- `options` - options object
+- `in_str`  - string that contains options separated by blanks
+
+Level: intermediate
+
+The collectivity of this routine is complex; only the MPI processes that call this routine will
+have the affect of these options. If some processes that create objects call this routine and others do
+not the code may fail in complicated ways because the same parallel solvers may incorrectly use different options
+on different ranks.
+
+Contributed by Boyana Norris
+
+-seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
+`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsInsertFile()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsInsertString"))
+"""
+function PetscOptionsInsertString(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
+
+@for_petsc function PetscOptionsInsertString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
+
+    @chk ccall(
+               (:PetscOptionsInsertString, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}),
+               options, in_str,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsInsertStringYAML(petsclib::PetscLibType,options::AbstractPetscOptions, in_str::String) 
+Inserts YAML
+
+Logically Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `in_str`  - YAML-formatted string options
+
+Level: intermediate
+
+-seealso: `PetscOptionsSetValue()`, `PetscOptionsView()`, `PetscOptionsHasName()`, `PetscOptionsGetInt()`,
+`PetscOptionsGetReal()`, `PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsInsertFile()`, `PetscOptionsInsertFileYAML()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsInsertStringYAML"))
+"""
+function PetscOptionsInsertStringYAML(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
+
+@for_petsc function PetscOptionsInsertStringYAML(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
+
+    @chk ccall(
+               (:PetscOptionsInsertStringYAML, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}),
+               options, in_str,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -1190,7 +1554,27 @@ function PetscOptionsLeft(petsclib::PetscLibType, options::AbstractPetscOptions)
 end 
 
 """
-	N::PetscInt = PetscOptionsLeftGet(petsclib::PetscLibType,options::AbstractPetscOptions, names::String, values::String) 
+	PetscOptionsLeftError(petsclib::PetscLibType) 
+
+# External Links
+$(_doc_external("Sys/PetscOptionsLeftError"))
+"""
+function PetscOptionsLeftError(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsLeftError(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscOptionsLeftError, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	N::PetscInt,names::Ptr{Ptr{Cchar}},values::Ptr{Ptr{Cchar}} = PetscOptionsLeftGet(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Returns all options that were set and never used.
 
 Not Collective
@@ -1210,21 +1594,25 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsLeftGet"))
 """
-function PetscOptionsLeftGet(petsclib::PetscLibType, options::AbstractPetscOptions, names::String, values::String) end
+function PetscOptionsLeftGet(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsLeftGet(petsclib::$UnionPetscLib, options::AbstractPetscOptions, names::String, values::String )
+@for_petsc function PetscOptionsLeftGet(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	N_ = Ref{$PetscInt}()
+	names_ = Ref{Ptr{Ptr{Cchar}}}()
+	values_ = Ref{Ptr{Ptr{Cchar}}}()
 
     @chk ccall(
                (:PetscOptionsLeftGet, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{$PetscInt}, Ptr{Cchar}, Ptr{Cchar}),
-               options, N_, names, values,
+               (COptions, Ptr{$PetscInt}, Ptr{Ptr{Ptr{Cchar}}}, Ptr{Ptr{Ptr{Cchar}}}),
+               options, N_, names_, values_,
               )
 
 	N = N_[]
+	names = names_[]
+	values = values_[]
 
-	return N
+	return N,names,values
 end 
 
 """
@@ -1249,12 +1637,13 @@ $(_doc_external("Sys/PetscOptionsLeftRestore"))
 function PetscOptionsLeftRestore(petsclib::PetscLibType, options::AbstractPetscOptions, N::PetscInt, names::String, values::String) end
 
 @for_petsc function PetscOptionsLeftRestore(petsclib::$UnionPetscLib, options::AbstractPetscOptions, N::$PetscInt, names::String, values::String )
+	N_ = Ref{$PetscInt}(N)
 
     @chk ccall(
                (:PetscOptionsLeftRestore, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{$PetscInt}, Ptr{Cchar}, Ptr{Cchar}),
-               options, N, names, values,
+               (COptions, Ptr{$PetscInt}, Ptr{Ptr{Ptr{Cchar}}}, Ptr{Ptr{Ptr{Cchar}}}),
+               options, N_, names, values,
               )
 
 
@@ -1262,7 +1651,7 @@ function PetscOptionsLeftRestore(petsclib::PetscLibType, options::AbstractPetscO
 end 
 
 """
-	PetscOptionsMonitorDefault(petsclib::PetscLibType,name::String, value::String, source::PetscOptionSource, ctx::Cvoid) 
+	PetscOptionsMonitorDefault(petsclib::PetscLibType,name::String, value::String, source::PetscOptionSource, ctx::Ptr{Cvoid}) 
 Print all options set value events using the supplied `PetscViewer`.
 
 Logically Collective
@@ -1280,9 +1669,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsMonitorDefault"))
 """
-function PetscOptionsMonitorDefault(petsclib::PetscLibType, name::String, value::String, source::PetscOptionSource, ctx::Cvoid) end
+function PetscOptionsMonitorDefault(petsclib::PetscLibType, name::String, value::String, source::PetscOptionSource, ctx::Ptr{Cvoid}) end
 
-@for_petsc function PetscOptionsMonitorDefault(petsclib::$UnionPetscLib, name::String, value::String, source::PetscOptionSource, ctx::Cvoid )
+@for_petsc function PetscOptionsMonitorDefault(petsclib::$UnionPetscLib, name::String, value::String, source::PetscOptionSource, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscOptionsMonitorDefault, $petsc_library),
@@ -1296,7 +1685,7 @@ function PetscOptionsMonitorDefault(petsclib::PetscLibType, name::String, value:
 end 
 
 """
-	PetscOptionsMonitorSet(petsclib::PetscLibType,monitor::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) 
+	PetscOptionsMonitorSet(petsclib::PetscLibType,monitor::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function to be called at every method that
 modified the PETSc options database.
 
@@ -1326,15 +1715,310 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsMonitorSet"))
 """
-function PetscOptionsMonitorSet(petsclib::PetscLibType, monitor::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) end
+function PetscOptionsMonitorSet(petsclib::PetscLibType, monitor::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) end
 
-@for_petsc function PetscOptionsMonitorSet(petsclib::$UnionPetscLib, monitor::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn )
+@for_petsc function PetscOptionsMonitorSet(petsclib::$UnionPetscLib, monitor::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscOptionsMonitorSet, $petsc_library),
                PetscErrorCode,
-               (external, Ptr{Cvoid}, Ptr{PetscCtxDestroyFn}),
+               (external, Ptr{Cvoid}, Ptr{Cvoid}),
                monitor, mctx, monitordestroy,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsPop(petsclib::PetscLibType) 
+Pop the most recent `PetscOptionsPush()` to return to the previous default options
+
+Logically Collective on whatever communicator was associated with the call to `PetscOptionsCreate()`
+
+Level: advanced
+
+-seealso: `PetscOptionsCreate()`, `PetscOptionsInsert()`, `PetscOptionsSetValue()`, `PetscOptionsLeft()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsPop"))
+"""
+function PetscOptionsPop(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsPop(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscOptionsPop, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsPopCreateViewerOff(petsclib::PetscLibType) 
+reset whether `PetscOptionsCreateViewer()` returns a viewer.
+
+Logically Collective
+
+Level: developer
+
+-seealso: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`
+
+# External Links
+$(_doc_external("Viewer/PetscOptionsPopCreateViewerOff"))
+"""
+function PetscOptionsPopCreateViewerOff(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsPopCreateViewerOff(petsclib::$UnionPetscLib)
+
+    @chk ccall(
+               (:PetscOptionsPopCreateViewerOff, $petsc_library),
+               PetscErrorCode,
+               (),
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsPrefixPop(petsclib::PetscLibType,options::AbstractPetscOptions) 
+Remove the latest options prefix, see `PetscOptionsPrefixPush()` for details
+
+Logically Collective on the `MPI_Comm` used when called `PetscOptionsPrefixPush()`
+
+Input Parameter:
+- `options` - options database, or `NULL` for the default global database
+
+Level: advanced
+
+-seealso: `PetscOptionsPrefixPush()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsCreate()`, `PetscOptionsSetValue()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsPrefixPop"))
+"""
+function PetscOptionsPrefixPop(petsclib::PetscLibType, options::AbstractPetscOptions) end
+
+@for_petsc function PetscOptionsPrefixPop(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
+
+    @chk ccall(
+               (:PetscOptionsPrefixPop, $petsc_library),
+               PetscErrorCode,
+               (COptions,),
+               options,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsPrefixPush(petsclib::PetscLibType,options::AbstractPetscOptions, prefix::String) 
+Designate a prefix to be used by all options insertions to follow.
+
+Logically Collective
+
+Input Parameters:
+- `options` - options database, or `NULL` for the default global database
+- `prefix`  - The string to append to the existing prefix
+
+Options Database Keys:
+- `-prefix_push <some_prefix_>` - push the given prefix
+- `-prefix_pop`                 - pop the last prefix
+
+Level: advanced
+
+-seealso: `PetscOptionsPrefixPop()`, `PetscOptionsPush()`, `PetscOptionsPop()`, `PetscOptionsCreate()`, `PetscOptionsSetValue()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsPrefixPush"))
+"""
+function PetscOptionsPrefixPush(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String) end
+
+@for_petsc function PetscOptionsPrefixPush(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String )
+
+    @chk ccall(
+               (:PetscOptionsPrefixPush, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}),
+               options, prefix,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsPush(petsclib::PetscLibType,opt::AbstractPetscOptions) 
+Push a new `PetscOptions` object as the default provider of options
+Allows using different parts of a code to use different options databases
+
+Logically Collective
+
+Input Parameter:
+- `opt` - the options obtained with `PetscOptionsCreate()`
+
+Level: advanced
+
+-seealso: `PetscOptionsPop()`, `PetscOptionsCreate()`, `PetscOptionsInsert()`, `PetscOptionsSetValue()`, `PetscOptionsLeft()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsPush"))
+"""
+function PetscOptionsPush(petsclib::PetscLibType, opt::AbstractPetscOptions) end
+
+@for_petsc function PetscOptionsPush(petsclib::$UnionPetscLib, opt::AbstractPetscOptions )
+
+    @chk ccall(
+               (:PetscOptionsPush, $petsc_library),
+               PetscErrorCode,
+               (COptions,),
+               opt,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsPushCreateViewerOff(petsclib::PetscLibType,flg::PetscBool) 
+sets if `PetscOptionsCreateViewer()`, `PetscOptionsViewer()`, and `PetscOptionsCreateViewers()` return viewers.
+
+Logically Collective
+
+Input Parameter:
+- `flg` - `PETSC_TRUE` to turn off viewer creation, `PETSC_FALSE` to turn it on.
+
+Level: developer
+
+-seealso: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPopCreateViewerOff()`
+
+# External Links
+$(_doc_external("Viewer/PetscOptionsPushCreateViewerOff"))
+"""
+function PetscOptionsPushCreateViewerOff(petsclib::PetscLibType, flg::PetscBool) end
+
+@for_petsc function PetscOptionsPushCreateViewerOff(petsclib::$UnionPetscLib, flg::PetscBool )
+
+    @chk ccall(
+               (:PetscOptionsPushCreateViewerOff, $petsc_library),
+               PetscErrorCode,
+               (PetscBool,),
+               flg,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsReject(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, mess::String) 
+Generates an error if a certain option is given.
+
+Not Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `pre`     - the option prefix (may be `NULL`)
+- `name`    - the option name one is seeking
+- `mess`    - error message (may be `NULL`)
+
+Level: advanced
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`,
+`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsReject"))
+"""
+function PetscOptionsReject(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, mess::String) end
+
+@for_petsc function PetscOptionsReject(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, mess::String )
+
+    @chk ccall(
+               (:PetscOptionsReject, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}),
+               options, pre, name, mess,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsSetAlias(petsclib::PetscLibType,options::AbstractPetscOptions, newname::String, oldname::String) 
+Makes a key and alias for another key
+
+Logically Collective
+
+Input Parameters:
+- `options` - options database, or `NULL` for default global database
+- `newname` - the alias
+- `oldname` - the name that alias will refer to
+
+Level: advanced
+
+-seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`,
+`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
+`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
+`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
+`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
+`PetscOptionsFList()`, `PetscOptionsEList()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsSetAlias"))
+"""
+function PetscOptionsSetAlias(petsclib::PetscLibType, options::AbstractPetscOptions, newname::String, oldname::String) end
+
+@for_petsc function PetscOptionsSetAlias(petsclib::$UnionPetscLib, options::AbstractPetscOptions, newname::String, oldname::String )
+
+    @chk ccall(
+               (:PetscOptionsSetAlias, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}),
+               options, newname, oldname,
+              )
+
+
+	return nothing
+end 
+
+"""
+	PetscOptionsSetValue(petsclib::PetscLibType,options::AbstractPetscOptions, name::String, value::Union{Ptr, String}) 
+Sets an option name
+database, overriding whatever is already present.
+
+Logically Collective
+
+Input Parameters:
+- `options` - options database, use `NULL` for the default global database
+- `name`    - name of option, this SHOULD have the - prepended
+- `value`   - the option value (not used for all options, so can be `NULL`)
+
+Level: intermediate
+
+-seealso: `PetscOptionsInsert()`, `PetscOptionsClearValue()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsSetValue"))
+"""
+function PetscOptionsSetValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String, value::Union{Ptr, String}) end
+
+@for_petsc function PetscOptionsSetValue(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String, value::Union{Ptr, String} )
+
+    @chk ccall(
+               (:PetscOptionsSetValue, $petsc_library),
+               PetscErrorCode,
+               (COptions, Ptr{Cchar}, Ptr{Cchar}),
+               options, name, value,
               )
 
 
@@ -1434,784 +2118,111 @@ function PetscOptionsStringToScalar(petsclib::PetscLibType, name::String) end
 end 
 
 """
-	ivalue::PetscBool,set::PetscBool = PetscOptionsGetBool(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets the Logical (true or false) value for a particular
-option in the database.
+	used::PetscBool = PetscOptionsUsed(petsclib::PetscLibType,options::AbstractPetscOptions, name::String) 
+Indicates if PETSc has used a particular option set in the database
 
 Not Collective
 
 Input Parameters:
 - `options` - options database, use `NULL` for default global database
-- `pre`     - the string to prepend to the name or `NULL`
-- `name`    - the option one is seeking
+- `name`    - string name of option
 
-Output Parameters:
-- `ivalue` - the logical value to return
-- `set`    - `PETSC_TRUE`  if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetBool3()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsGetInt()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetBool"))
-"""
-function PetscOptionsGetBool(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetBool(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	ivalue_ = Ref{PetscBool}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetBool, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscBool}, Ptr{PetscBool}),
-               options, pre, name, ivalue_, set_,
-              )
-
-	ivalue = ivalue_[]
-	set = set_[]
-
-	return ivalue,set
-end 
-
-"""
-	set::PetscBool = PetscOptionsGetBool3(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscBool3) 
-Gets the ternary logical (true, false or unknown) value for a particular
-option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - the string to prepend to the name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `ivalue` - the ternary logical value to return
-- `set`    - `PETSC_TRUE`  if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetBool()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsGetInt()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetBool3"))
-"""
-function PetscOptionsGetBool3(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscBool3) end
-
-@for_petsc function PetscOptionsGetBool3(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscBool3 )
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetBool3, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscBool3}, Ptr{PetscBool}),
-               options, pre, name, ivalue, set_,
-              )
-
-	set = set_[]
-
-	return set
-end 
-
-"""
-	value::PetscInt,set::PetscBool = PetscOptionsGetEList(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) 
-Puts a list of option values that a single one may be selected from
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - the string to prepend to the name or `NULL`
-- `opt`     - option name
-- `list`    - the possible choices (one of these must be selected, anything else is invalid)
-- `ntext`   - number of choices
-
-Output Parameters:
-- `value` - the index of the value to return (defaults to zero if the option name is given but no choice is listed)
-- `set`   - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: intermediate
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`,
-`PetscOptionsHasName()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetEList"))
-"""
-function PetscOptionsGetEList(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) end
-
-@for_petsc function PetscOptionsGetEList(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::$PetscInt )
-	list_ = Ref(pointer(list))
-	value_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetEList, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, $PetscInt, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, opt, list_, ntext, value_, set_,
-              )
-
-	value = value_[]
-	set = set_[]
-
-	return value,set
-end 
-
-"""
-	set::PetscBool = PetscOptionsGetEnum(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, opt::String, list::String, value::PetscEnum) 
-Gets the enum value for a particular option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - option prefix or `NULL`
-- `opt`     - option name
-- `list`    - array containing the list of choices, followed by the enum name, followed by the enum prefix, followed by a null
-
-Output Parameters:
-- `value` - the value to return
-- `set`   - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
-`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsGetEList()`, `PetscOptionsEnum()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetEnum"))
-"""
-function PetscOptionsGetEnum(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, value::PetscEnum) end
-
-@for_petsc function PetscOptionsGetEnum(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String, value::PetscEnum )
-	list_ = Ref(pointer(list))
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetEnum, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, Ptr{PetscEnum}, Ptr{PetscBool}),
-               options, pre, opt, list_, value, set_,
-              )
-
-	set = set_[]
-
-	return set
-end 
-
-"""
-	ivalue::PetscInt,set::PetscBool = PetscOptionsGetInt(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets the integer value for a particular option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - the string to prepend to the name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `ivalue` - the integer value to return
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
-`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetInt"))
-"""
-function PetscOptionsGetInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	ivalue_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetInt, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, name, ivalue_, set_,
-              )
-
-	ivalue = ivalue_[]
-	set = set_[]
-
-	return ivalue,set
-end 
-
-"""
-	set::PetscBool = PetscOptionsGetMPIInt(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscMPIInt) 
-Gets the MPI integer value for a particular option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - the string to prepend to the name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `ivalue` - the MPI integer value to return
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
-`PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
-`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetMPIInt"))
-"""
-function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscMPIInt) end
-
-@for_petsc function PetscOptionsGetMPIInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscMPIInt )
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetMPIInt, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscMPIInt}, Ptr{PetscBool}),
-               options, pre, name, ivalue, set_,
-              )
-
-	set = set_[]
-
-	return set
-end 
-
-"""
-	dvalue::PetscReal,set::PetscBool = PetscOptionsGetReal(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets the double precision value for a particular
-option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to each name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `dvalue` - the double value to return
-- `set`    - `PETSC_TRUE` if found, `PETSC_FALSE` if not found
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
-`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetReal"))
-"""
-function PetscOptionsGetReal(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetReal(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	dvalue_ = Ref{$PetscReal}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetReal, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscReal}, Ptr{PetscBool}),
-               options, pre, name, dvalue_, set_,
-              )
-
-	dvalue = dvalue_[]
-	set = set_[]
-
-	return dvalue,set
-end 
-
-"""
-	dvalue::PetscScalar,set::PetscBool = PetscOptionsGetScalar(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets the scalar value for a particular
-option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to each name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `dvalue` - the scalar value to return
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
-`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetScalar"))
-"""
-function PetscOptionsGetScalar(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetScalar(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	dvalue_ = Ref{$PetscScalar}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetScalar, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscScalar}, Ptr{PetscBool}),
-               options, pre, name, dvalue_, set_,
-              )
-
-	dvalue = dvalue_[]
-	set = set_[]
-
-	return dvalue,set
-end 
-
-"""
-	string::Union{Bool,String} = PetscOptionsGetString(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, string::String, len::Csize_t) 
-Gets the string value for a particular option in
-the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to name or `NULL`
-- `name`    - the option one is seeking
-- `len`     - maximum length of the string including null termination
-
-Output Parameters:
-- `string` - returns the value of the parameter ifn set, otherwise `false`
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`,
-`PetscOptionsHasName()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetString"))
-"""
-function PetscOptionsGetString(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::Union{Ptr,String}, name::String)
-	set_ = Ref{PetscBool}()
-    val = Vector{UInt8}(undef, 256)
-
-    @chk ccall(
-               (:PetscOptionsGetString, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Csize_t, Ptr{PetscBool}),
-               options, pre, name, val, sizeof(val), set_,
-              )
-
-	set = set_[]
-    if set
-        val = GC.@preserve val unsafe_string(pointer(val))
-    else
-        val = false
-    end
-  
-
-	return val
-end 
-
-"""
-	dvalue::Vector{PetscBool},nmax::PetscInt,set::PetscBool = PetscOptionsGetBoolArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets an array of Logical (true or false) values for a particular
-option in the database.  The values must be separated with commas with no intervening spaces.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to each name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `dvalue` - the Boolean values to return
-- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
-`PetscOptionsGetString()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetBoolArray"))
-"""
-function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	dvalue = Vector{PetscBool}(undef, ni);  # CHECK SIZE!!
-	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetBoolArray, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{PetscBool}, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, name, dvalue, nmax_, set_,
-              )
-
-	nmax = nmax_[]
-	set = set_[]
-
-	return dvalue,nmax,set
-end 
-
-"""
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetEnumArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) 
-Gets an array of enum values for a particular option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - option prefix or `NULL`
-- `name`    - option name
-- `list`    - array containing the list of choices, followed by the enum name, followed by the enum prefix, followed by a null
-
-Output Parameters:
-- `ivalue` - the  enum values to return
-- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`, `PetscOptionsGetInt()`,
-`PetscOptionsGetEnum()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`
-`PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`, `PetscOptionsName()`,
-`PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`, `PetscOptionsStringArray()`, `PetscOptionsRealArray()`,
-`PetscOptionsScalar()`, `PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`, `PetscOptionsGetEList()`, `PetscOptionsEnum()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetEnumArray"))
-"""
-function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) end
-
-@for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
-	list_ = Ref(pointer(list))
-	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetEnumArray, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, Ptr{PetscEnum}, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, name, list_, ivalue, nmax_, set_,
-              )
-
-	nmax = nmax_[]
-	set = set_[]
-
-	return nmax,set
-end 
-
-"""
-	ivalue::Vector{PetscInt},nmax::PetscInt,set::PetscBool = PetscOptionsGetIntArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets an array of integer values for a particular option in the database.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to each name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `ivalue` - the integer values to return
-- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
-`PetscOptionsGetString()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetIntArray"))
-"""
-function PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	ivalue = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
-	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetIntArray, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, name, ivalue, nmax_, set_,
-              )
-
-	nmax = nmax_[]
-	set = set_[]
-
-	return ivalue,nmax,set
-end 
-
-"""
-	dvalue::Vector{PetscReal},nmax::PetscInt,set::PetscBool = PetscOptionsGetRealArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets an array of double precision values for a
-particular option in the database.  The values must be separated with commas with no intervening spaces.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to each name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `dvalue` - the double values to return
-- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
-`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetRealArray"))
-"""
-function PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	dvalue = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
-	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetRealArray, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscReal}, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, name, dvalue, nmax_, set_,
-              )
-
-	nmax = nmax_[]
-	set = set_[]
-
-	return dvalue,nmax,set
-end 
-
-"""
-	dvalue::Vector{PetscScalar},nmax::PetscInt,set::PetscBool = PetscOptionsGetScalarArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
-Gets an array of scalars for a
-particular option in the database.  The values must be separated with commas with no intervening spaces.
-
-Not Collective
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to each name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `dvalue` - the scalar values to return
-- `nmax`   - On input maximum number of values to retrieve, on output the actual number of values retrieved
-- `set`    - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
-`PetscOptionsGetString()`, `PetscOptionsGetIntArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetScalarArray"))
-"""
-function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
-
-@for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
-	dvalue = Vector{$PetscScalar}(undef, ni);  # CHECK SIZE!!
-	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetScalarArray, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{$PetscScalar}, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, name, dvalue, nmax_, set_,
-              )
-
-	nmax = nmax_[]
-	set = set_[]
-
-	return dvalue,nmax,set
-end 
-
-"""
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetStringArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, strings::String) 
-Gets an array of string values for a particular
-option in the database. The values must be separated with commas with no intervening spaces.
-
-Not Collective; No Fortran Support
-
-Input Parameters:
-- `options` - options database, use `NULL` for default global database
-- `pre`     - string to prepend to name or `NULL`
-- `name`    - the option one is seeking
-
-Output Parameters:
-- `strings` - location to copy strings
-- `nmax`    - On input maximum number of strings, on output the actual number of strings found
-- `set`     - `PETSC_TRUE` if found, else `PETSC_FALSE`
-
-Level: beginner
-
--seealso: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`,
-`PetscOptionsHasName()`, `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
-`PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
-`PetscOptionsStringArray()`, `PetscOptionsRealArray()`, `PetscOptionsScalar()`,
-`PetscOptionsBoolGroupBegin()`, `PetscOptionsBoolGroup()`, `PetscOptionsBoolGroupEnd()`,
-`PetscOptionsFList()`, `PetscOptionsEList()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsGetStringArray"))
-"""
-function PetscOptionsGetStringArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, strings::String) end
-
-@for_petsc function PetscOptionsGetStringArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, strings::String )
-	strings_ = Ref(pointer(strings))
-	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscOptionsGetStringArray, $petsc_library),
-               PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, Ptr{Ptr{Cchar}}, Ptr{$PetscInt}, Ptr{PetscBool}),
-               options, pre, name, strings_, nmax_, set_,
-              )
-
-	nmax = nmax_[]
-	set = set_[]
-
-	return nmax,set
-end 
-
-"""
-	flag::PetscBool = PetscOptionsGetenv(petsclib::PetscLibType,comm::MPI_Comm, name::String, env::String, len::Csize_t) 
-Gets an environmental variable, broadcasts to all
-processors in communicator from MPI rank zero
-
-Collective
-
-Input Parameters:
-- `comm` - communicator to share variable
-- `name` - name of environmental variable
-- `len`  - amount of space allocated to hold variable
-
-Output Parameters:
-- `flag` - if not `NULL` indicates if the variable was found
-- `env`  - value of variable
+Output Parameter:
+- `used` - `PETSC_TRUE` if the option was used, otherwise false, including if option was not found in options database
 
 Level: advanced
 
--seealso: `PetscOptionsHasName()`
+-seealso: `PetscOptionsView()`, `PetscOptionsLeft()`, `PetscOptionsAllUsed()`
 
 # External Links
-$(_doc_external("Sys/PetscOptionsGetenv"))
+$(_doc_external("Sys/PetscOptionsUsed"))
 """
-function PetscOptionsGetenv(petsclib::PetscLibType, comm::MPI_Comm, name::String, env::String, len::Csize_t) end
+function PetscOptionsUsed(petsclib::PetscLibType, options::AbstractPetscOptions, name::String) end
 
-@for_petsc function PetscOptionsGetenv(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, env::String, len::Csize_t )
-	flag_ = Ref{PetscBool}()
+@for_petsc function PetscOptionsUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String )
+	used_ = Ref{PetscBool}()
 
     @chk ccall(
-               (:PetscOptionsGetenv, $petsc_library),
+               (:PetscOptionsUsed, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{Cchar}, Ptr{Cchar}, Csize_t, Ptr{PetscBool}),
-               comm, name, env, len, flag_,
+               (COptions, Ptr{Cchar}, Ptr{PetscBool}),
+               options, name, used_,
               )
 
-	flag = flag_[]
+	used = used_[]
 
-	return flag
+	return used
 end 
 
 """
-	set::PetscBool = PetscOptionsGetVec(petsclib::PetscLibType,options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) 
+	valid::PetscBool = PetscOptionsValidKey(petsclib::PetscLibType,key::String) 
+PETSc Options database keys must begin with one or two dashes (
+
+Not Collective
+
+Input Parameter:
+- `key` - string to check if valid
+
+Output Parameter:
+- `valid` - `PETSC_TRUE` if a valid key
+
+Level: intermediate
+
+-seealso: `PetscOptionsCreate()`, `PetscOptionsInsert()`
 
 # External Links
-$(_doc_external("Vec/PetscOptionsGetVec"))
+$(_doc_external("Sys/PetscOptionsValidKey"))
 """
-function PetscOptionsGetVec(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) end
+function PetscOptionsValidKey(petsclib::PetscLibType, key::String) end
 
-@for_petsc function PetscOptionsGetVec(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec )
-	set_ = Ref{PetscBool}()
+@for_petsc function PetscOptionsValidKey(petsclib::$UnionPetscLib, key::String )
+	valid_ = Ref{PetscBool}()
 
     @chk ccall(
-               (:PetscOptionsGetVec, $petsc_library),
+               (:PetscOptionsValidKey, $petsc_library),
                PetscErrorCode,
-               (COptions, Ptr{Cchar}, Ptr{Cchar}, CVec, Ptr{PetscBool}),
-               options, prefix, key, v, set_,
+               (Ptr{Cchar}, Ptr{PetscBool}),
+               key, valid_,
               )
 
-	set = set_[]
+	valid = valid_[]
 
-	return set
+	return valid
+end 
+
+"""
+	PetscOptionsView(petsclib::PetscLibType,options::AbstractPetscOptions, viewer::PetscViewer) 
+Prints the options that have been loaded. This is
+useful for debugging purposes.
+
+Logically Collective, No Fortran Support
+
+Input Parameters:
+- `options` - options database, use `NULL` for default global database
+- `viewer`  - must be an `PETSCVIEWERASCII` viewer
+
+Options Database Key:
+- `-options_view` - Activates `PetscOptionsView()` within `PetscFinalize()`
+
+Level: advanced
+
+-seealso: `PetscOptionsAllUsed()`
+
+# External Links
+$(_doc_external("Sys/PetscOptionsView"))
+"""
+function PetscOptionsView(petsclib::PetscLibType, options::AbstractPetscOptions, viewer::PetscViewer) end
+
+@for_petsc function PetscOptionsView(petsclib::$UnionPetscLib, options::AbstractPetscOptions, viewer::PetscViewer )
+
+    @chk ccall(
+               (:PetscOptionsView, $petsc_library),
+               PetscErrorCode,
+               (COptions, PetscViewer),
+               options, viewer,
+              )
+
+
+	return nothing
 end 
 

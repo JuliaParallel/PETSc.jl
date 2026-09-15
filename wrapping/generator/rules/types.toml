@@ -9,13 +9,14 @@ fix_substring_replacements = false
 dispatch_types = ["PetscScalar", "PetscReal", "PetscInt", "PetscComplex"]
 
 [replace]
-order = ["size_t", "ptrdiff_t", "short", "int32_t", "float", "bool", "char", "void", "double", "int", "FILE"]
+order = ["size_t", "ptrdiff_t", "short", "int32_t", "float", "bool", "char", "unsigned", "void", "double", "int", "FILE"]
 size_t = "Csize_t"
 ptrdiff_t = "Cptrdiff_t"
 short = "Cshort"
 int32_t = "Int32"
 float = "Cfloat"
 bool = "Bool"
+unsigned = "Cuchar"   # getAPI.py splits `unsigned char` into type `unsigned`, name `char`
 char = "Cchar"
 void = "Cvoid"
 double = "Cdouble"
@@ -28,6 +29,36 @@ function = "fnc"
 end = "end_"
 global = "glob"
 local = "loc"
+begin = "begin_"
+type = "type"
+abstract = "abstract_"
+baremodule = "baremodule_"
+break = "break_"
+catch = "catch_"
+const = "const_"
+continue = "continue_"
+do = "do_"
+else = "else_"
+elseif = "elseif_"
+export = "export_"
+false = "false_"
+finally = "finally_"
+for = "for_"
+if = "if_"
+import = "import_"
+let = "let_"
+macro = "macro_"
+module = "module_"
+mutable = "mutable_"
+primitive = "primitive_"
+quote = "quote_"
+return = "return_"
+struct = "struct_"
+true = "true_"
+try = "try_"
+using = "using_"
+where = "where_"
+while = "while_"
 
 # PETSc handle types that have a Julia struct in the prologue.
 #   julia    : concrete struct name used in return positions

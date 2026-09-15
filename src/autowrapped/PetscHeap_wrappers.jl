@@ -1,8 +1,24 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscHeap end
-const PetscHeap = Ptr{_n_PetscHeap}
+"""
+	PetscHeapAdd(petsclib::PetscLibType,h::PetscHeap, id::PetscInt, val::PetscInt) 
 
-# -------------------------------------------------------
+# External Links
+$(_doc_external("Mat/PetscHeapAdd"))
+"""
+function PetscHeapAdd(petsclib::PetscLibType, h::PetscHeap, id::PetscInt, val::PetscInt) end
+
+@for_petsc function PetscHeapAdd(petsclib::$UnionPetscLib, h::PetscHeap, id::$PetscInt, val::$PetscInt )
+
+    @chk ccall(
+               (:PetscHeapAdd, $petsc_library),
+               PetscErrorCode,
+               (PetscHeap, $PetscInt, $PetscInt),
+               h, id, val,
+              )
+
+
+	return nothing
+end 
+
 """
 	heap::PetscHeap = PetscHeapCreate(petsclib::PetscLibType,maxsize::PetscInt) 
 
@@ -27,49 +43,25 @@ function PetscHeapCreate(petsclib::PetscLibType, maxsize::PetscInt) end
 end 
 
 """
-	PetscHeapAdd(petsclib::PetscLibType,h::PetscHeap, id::PetscInt, val::PetscInt) 
+	PetscHeapDestroy(petsclib::PetscLibType,heap::Union{PetscHeap, Ref{PetscHeap}}) 
 
 # External Links
-$(_doc_external("Mat/PetscHeapAdd"))
+$(_doc_external("Mat/PetscHeapDestroy"))
 """
-function PetscHeapAdd(petsclib::PetscLibType, h::PetscHeap, id::PetscInt, val::PetscInt) end
+function PetscHeapDestroy(petsclib::PetscLibType, heap::Union{PetscHeap, Ref{PetscHeap}}) end
 
-@for_petsc function PetscHeapAdd(petsclib::$UnionPetscLib, h::PetscHeap, id::$PetscInt, val::$PetscInt )
+@for_petsc function PetscHeapDestroy(petsclib::$UnionPetscLib, heap::Union{PetscHeap, Ref{PetscHeap}} )
+	heap_ = heap isa Base.RefValue ? heap : Ref{PetscHeap}(heap)
 
     @chk ccall(
-               (:PetscHeapAdd, $petsc_library),
+               (:PetscHeapDestroy, $petsc_library),
                PetscErrorCode,
-               (PetscHeap, $PetscInt, $PetscInt),
-               h, id, val,
+               (Ptr{PetscHeap},),
+               heap_,
               )
 
 
 	return nothing
-end 
-
-"""
-	id::PetscInt,val::PetscInt = PetscHeapPop(petsclib::PetscLibType,h::PetscHeap) 
-
-# External Links
-$(_doc_external("Mat/PetscHeapPop"))
-"""
-function PetscHeapPop(petsclib::PetscLibType, h::PetscHeap) end
-
-@for_petsc function PetscHeapPop(petsclib::$UnionPetscLib, h::PetscHeap )
-	id_ = Ref{$PetscInt}()
-	val_ = Ref{$PetscInt}()
-
-    @chk ccall(
-               (:PetscHeapPop, $petsc_library),
-               PetscErrorCode,
-               (PetscHeap, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               h, id_, val_,
-              )
-
-	id = id_[]
-	val = val_[]
-
-	return id,val
 end 
 
 """
@@ -86,6 +78,31 @@ function PetscHeapPeek(petsclib::PetscLibType, h::PetscHeap) end
 
     @chk ccall(
                (:PetscHeapPeek, $petsc_library),
+               PetscErrorCode,
+               (PetscHeap, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               h, id_, val_,
+              )
+
+	id = id_[]
+	val = val_[]
+
+	return id,val
+end 
+
+"""
+	id::PetscInt,val::PetscInt = PetscHeapPop(petsclib::PetscLibType,h::PetscHeap) 
+
+# External Links
+$(_doc_external("Mat/PetscHeapPop"))
+"""
+function PetscHeapPop(petsclib::PetscLibType, h::PetscHeap) end
+
+@for_petsc function PetscHeapPop(petsclib::$UnionPetscLib, h::PetscHeap )
+	id_ = Ref{$PetscInt}()
+	val_ = Ref{$PetscInt}()
+
+    @chk ccall(
+               (:PetscHeapPop, $petsc_library),
                PetscErrorCode,
                (PetscHeap, Ptr{$PetscInt}, Ptr{$PetscInt}),
                h, id_, val_,
@@ -133,28 +150,6 @@ function PetscHeapUnstash(petsclib::PetscLibType, h::PetscHeap) end
                PetscErrorCode,
                (PetscHeap,),
                h,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscHeapDestroy(petsclib::PetscLibType,heap::PetscHeap) 
-
-# External Links
-$(_doc_external("Mat/PetscHeapDestroy"))
-"""
-function PetscHeapDestroy(petsclib::PetscLibType, heap::Union{PetscHeap, Ref{PetscHeap}}) end
-
-@for_petsc function PetscHeapDestroy(petsclib::$UnionPetscLib, heap::Union{PetscHeap, Ref{PetscHeap}} )
-	heap_ = heap isa Base.RefValue ? heap : Ref{PetscHeap}(heap)
-
-    @chk ccall(
-               (:PetscHeapDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscHeap},),
-               heap_,
               )
 
 

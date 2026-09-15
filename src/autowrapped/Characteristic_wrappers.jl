@@ -1,8 +1,71 @@
-# autodefined type arguments for class ------
-mutable struct _n_Characteristic end
-const Characteristic = Ptr{_n_Characteristic}
+"""
+	c::Characteristic = CharacteristicCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+Creates a `Characteristic` context for use with the Method of Characteristics
 
-# -------------------------------------------------------
+Collective
+
+Input Parameter:
+- `comm` - MPI communicator
+
+Output Parameter:
+- `c` - the `Characteristic` context
+
+Level: beginner
+
+-seealso: `Characteristic`, `CharacteristicDestroy()`
+
+# External Links
+$(_doc_external("Characteristic/CharacteristicCreate"))
+"""
+function CharacteristicCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+
+@for_petsc function CharacteristicCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
+	c_ = Ref{Characteristic}()
+
+    @chk ccall(
+               (:CharacteristicCreate, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Ptr{Characteristic}),
+               comm, c_,
+              )
+
+	c = c_[]
+
+	return c
+end 
+
+"""
+	CharacteristicDestroy(petsclib::PetscLibType,c::Union{Characteristic, Ref{Characteristic}}) 
+Destroys a `Characteristic` context created with `CharacteristicCreate()`
+
+Collective
+
+Input Parameter:
+- `c` - the `Characteristic` context
+
+Level: beginner
+
+-seealso: `Characteristic`, `CharacteristicCreate()`
+
+# External Links
+$(_doc_external("Characteristic/CharacteristicDestroy"))
+"""
+function CharacteristicDestroy(petsclib::PetscLibType, c::Union{Characteristic, Ref{Characteristic}}) end
+
+@for_petsc function CharacteristicDestroy(petsclib::$UnionPetscLib, c::Union{Characteristic, Ref{Characteristic}} )
+	c_ = c isa Base.RefValue ? c : Ref{Characteristic}(c)
+
+    @chk ccall(
+               (:CharacteristicDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{Characteristic},),
+               c_,
+              )
+
+
+	return nothing
+end 
+
 """
 	CharacteristicFinalizePackage(petsclib::PetscLibType) 
 This function destroys everything in the `Characteristics` package. It is
@@ -13,7 +76,7 @@ Level: developer
 -seealso: [](ch_ts), `PetscFinalize()`, `CharacteristicInitializePackage()`
 
 # External Links
-$(_doc_external("Ts/CharacteristicFinalizePackage"))
+$(_doc_external("Characteristic/CharacteristicFinalizePackage"))
 """
 function CharacteristicFinalizePackage(petsclib::PetscLibType) end
 
@@ -40,7 +103,7 @@ Level: developer
 -seealso: [](ch_ts), `PetscInitialize()`, `CharacteristicFinalizePackage()`
 
 # External Links
-$(_doc_external("Ts/CharacteristicInitializePackage"))
+$(_doc_external("Sys/CharacteristicInitializePackage"))
 """
 function CharacteristicInitializePackage(petsclib::PetscLibType) end
 
@@ -57,31 +120,31 @@ function CharacteristicInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	CharacteristicDestroy(petsclib::PetscLibType,c::Characteristic) 
-Destroys a `Characteristic` context created with `CharacteristicCreate()`
+	CharacteristicRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+Adds an approarch to the method of characteristics package.
 
-Collective
+Not Collective, No Fortran Support
 
-Input Parameter:
-- `c` - the `Characteristic` context
+Input Parameters:
+- `sname`    - name of a new approach
+- `function` - routine to create method context
 
-Level: beginner
+Level: advanced
 
--seealso: `Characteristic`, `CharacteristicCreate()`
+-seealso: [](ch_ts), `CharacteristicRegisterAll()`, `CharacteristicRegisterDestroy()`
 
 # External Links
-$(_doc_external("Ts/CharacteristicDestroy"))
+$(_doc_external("Characteristic/CharacteristicRegister"))
 """
-function CharacteristicDestroy(petsclib::PetscLibType, c::Union{Characteristic, Ref{Characteristic}}) end
+function CharacteristicRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 
-@for_petsc function CharacteristicDestroy(petsclib::$UnionPetscLib, c::Union{Characteristic, Ref{Characteristic}} )
-	c_ = c isa Base.RefValue ? c : Ref{Characteristic}(c)
+@for_petsc function CharacteristicRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
 
     @chk ccall(
-               (:CharacteristicDestroy, $petsc_library),
+               (:CharacteristicRegister, $petsc_library),
                PetscErrorCode,
-               (Ptr{Characteristic},),
-               c_,
+               (Ptr{Cchar}, external),
+               sname, fnc,
               )
 
 
@@ -89,39 +152,45 @@ function CharacteristicDestroy(petsclib::PetscLibType, c::Union{Characteristic, 
 end 
 
 """
-	c::Characteristic = CharacteristicCreate(petsclib::PetscLibType,comm::MPI_Comm) 
-Creates a `Characteristic` context for use with the Method of Characteristics
-
-Collective
-
-Input Parameter:
-- `comm` - MPI communicator
-
-Output Parameter:
-- `c` - the `Characteristic` context
-
-Level: beginner
-
--seealso: `Characteristic`, `CharacteristicDestroy()`
+	CharacteristicSetFieldInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
 
 # External Links
-$(_doc_external("Ts/CharacteristicCreate"))
+$(_doc_external("Characteristic/CharacteristicSetFieldInterpolation"))
 """
-function CharacteristicCreate(petsclib::PetscLibType, comm::MPI_Comm) end
+function CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
 
-@for_petsc function CharacteristicCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
-	c_ = Ref{Characteristic}()
+@for_petsc function CharacteristicSetFieldInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
-               (:CharacteristicCreate, $petsc_library),
+               (:CharacteristicSetFieldInterpolation, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{Characteristic}),
-               comm, c_,
+               (Characteristic, CDM, CVec, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}),
+               c, da, v, numComponents, components, interp, ctx,
               )
 
-	c = c_[]
 
-	return c
+	return nothing
+end 
+
+"""
+	CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
+
+# External Links
+$(_doc_external("Characteristic/CharacteristicSetFieldInterpolationLocal"))
+"""
+function CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
+
+@for_petsc function CharacteristicSetFieldInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
+
+    @chk ccall(
+               (:CharacteristicSetFieldInterpolationLocal, $petsc_library),
+               PetscErrorCode,
+               (Characteristic, CDM, CVec, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}),
+               c, da, v, numComponents, components, interp, ctx,
+              )
+
+
+	return nothing
 end 
 
 """
@@ -143,7 +212,7 @@ Level: intermediate
 -seealso: [](ch_ts), `CharacteristicType`
 
 # External Links
-$(_doc_external("Ts/CharacteristicSetType"))
+$(_doc_external("Characteristic/CharacteristicSetType"))
 """
 function CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::CharacteristicType) end
 
@@ -175,7 +244,7 @@ Level: developer
 -seealso: [](ch_ts), `Characteristic`, `CharacteristicCreate()`, `CharacteristicSolve()`, `CharacteristicDestroy()`
 
 # External Links
-$(_doc_external("Ts/CharacteristicSetUp"))
+$(_doc_external("Characteristic/CharacteristicSetUp"))
 """
 function CharacteristicSetUp(petsclib::PetscLibType, c::Characteristic) end
 
@@ -193,46 +262,14 @@ function CharacteristicSetUp(petsclib::PetscLibType, c::Characteristic) end
 end 
 
 """
-	CharacteristicRegister(petsclib::PetscLibType,sname::String, fnc::external) 
-Adds an approarch to the method of characteristics package.
-
-Not Collective, No Fortran Support
-
-Input Parameters:
-- `sname`    - name of a new approach
-- `function` - routine to create method context
-
-Level: advanced
-
--seealso: [](ch_ts), `CharacteristicRegisterAll()`, `CharacteristicRegisterDestroy()`
+	CharacteristicSetVelocityInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
 
 # External Links
-$(_doc_external("Ts/CharacteristicRegister"))
+$(_doc_external("Characteristic/CharacteristicSetVelocityInterpolation"))
 """
-function CharacteristicRegister(petsclib::PetscLibType, sname::String, fnc::external) end
+function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
 
-@for_petsc function CharacteristicRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
-
-    @chk ccall(
-               (:CharacteristicRegister, $petsc_library),
-               PetscErrorCode,
-               (Ptr{Cchar}, external),
-               sname, fnc,
-              )
-
-
-	return nothing
-end 
-
-"""
-	CharacteristicSetVelocityInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
-
-# External Links
-$(_doc_external("Ts/CharacteristicSetVelocityInterpolation"))
-"""
-function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
-
-@for_petsc function CharacteristicSetVelocityInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
+@for_petsc function CharacteristicSetVelocityInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:CharacteristicSetVelocityInterpolation, $petsc_library),
@@ -246,62 +283,20 @@ function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Chara
 end 
 
 """
-	CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
+	CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
 
 # External Links
-$(_doc_external("Ts/CharacteristicSetVelocityInterpolationLocal"))
+$(_doc_external("Characteristic/CharacteristicSetVelocityInterpolationLocal"))
 """
-function CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
+function CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) end
 
-@for_petsc function CharacteristicSetVelocityInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
+@for_petsc function CharacteristicSetVelocityInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:CharacteristicSetVelocityInterpolationLocal, $petsc_library),
                PetscErrorCode,
                (Characteristic, CDM, CVec, CVec, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}),
                c, da, v, vOld, numComponents, components, interp, ctx,
-              )
-
-
-	return nothing
-end 
-
-"""
-	CharacteristicSetFieldInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
-
-# External Links
-$(_doc_external("Ts/CharacteristicSetFieldInterpolation"))
-"""
-function CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
-
-@for_petsc function CharacteristicSetFieldInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
-
-    @chk ccall(
-               (:CharacteristicSetFieldInterpolation, $petsc_library),
-               PetscErrorCode,
-               (Characteristic, CDM, CVec, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}),
-               c, da, v, numComponents, components, interp, ctx,
-              )
-
-
-	return nothing
-end 
-
-"""
-	CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
-
-# External Links
-$(_doc_external("Ts/CharacteristicSetFieldInterpolationLocal"))
-"""
-function CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
-
-@for_petsc function CharacteristicSetFieldInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
-
-    @chk ccall(
-               (:CharacteristicSetFieldInterpolationLocal, $petsc_library),
-               PetscErrorCode,
-               (Characteristic, CDM, CVec, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}),
-               c, da, v, numComponents, components, interp, ctx,
               )
 
 
@@ -324,7 +319,7 @@ Level: developer
 -seealso: [](ch_ts), `Characteristic`, `CharacteristicCreate()`, `CharacteristicDestroy()`
 
 # External Links
-$(_doc_external("Ts/CharacteristicSolve"))
+$(_doc_external("Characteristic/CharacteristicSolve"))
 """
 function CharacteristicSolve(petsclib::PetscLibType, c::Characteristic, dt::PetscReal, solution::AbstractPetscVec) end
 

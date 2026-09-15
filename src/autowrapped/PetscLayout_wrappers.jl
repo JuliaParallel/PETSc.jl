@@ -1,5 +1,41 @@
-# autodefined type arguments for class ------
-# -------------------------------------------------------
+"""
+	congruent::PetscBool = PetscLayoutCompare(petsclib::PetscLibType,mapa::PetscLayout, mapb::PetscLayout) 
+Compares two layouts
+
+Not Collective
+
+Input Parameters:
+- `mapa` - pointer to the first map
+- `mapb` - pointer to the second map
+
+Output Parameter:
+- `congruent` - `PETSC_TRUE` if the two layouts are congruent, `PETSC_FALSE` otherwise
+
+Level: beginner
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutCompare"))
+"""
+function PetscLayoutCompare(petsclib::PetscLibType, mapa::PetscLayout, mapb::PetscLayout) end
+
+@for_petsc function PetscLayoutCompare(petsclib::$UnionPetscLib, mapa::PetscLayout, mapb::PetscLayout )
+	congruent_ = Ref{PetscBool}()
+
+    @chk ccall(
+               (:PetscLayoutCompare, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, PetscLayout, Ptr{PetscBool}),
+               mapa, mapb, congruent_,
+              )
+
+	congruent = congruent_[]
+
+	return congruent
+end 
+
 """
 	map::PetscLayout = PetscLayoutCreate(petsclib::PetscLibType,comm::MPI_Comm) 
 Allocates `PetscLayout` object
@@ -20,7 +56,7 @@ Level: advanced
 `PetscLayoutCreateFromSizes()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutCreate"))
+$(_doc_external("IS/PetscLayoutCreate"))
 """
 function PetscLayoutCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
@@ -37,80 +73,6 @@ function PetscLayoutCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 	map = map_[]
 
 	return map
-end 
-
-"""
-	map::PetscLayout = PetscLayoutCreateFromSizes(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt, bs::PetscInt) 
-Allocates `PetscLayout` object and sets the layout sizes, and sets the layout up.
-
-Collective
-
-Input Parameters:
-- `comm` - the MPI communicator
-- `n`    - the local size (or `PETSC_DECIDE`)
-- `N`    - the global size (or `PETSC_DECIDE`)
-- `bs`   - the block size (or `PETSC_DECIDE`)
-
-Output Parameter:
-- `map` - the new `PetscLayout`
-
-Level: advanced
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayout`, `PetscLayoutDestroy()`,
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`, `PetscLayoutCreateFromRanges()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutCreateFromSizes"))
-"""
-function PetscLayoutCreateFromSizes(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N::PetscInt, bs::PetscInt) end
-
-@for_petsc function PetscLayoutCreateFromSizes(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt, bs::$PetscInt )
-	map_ = Ref{PetscLayout}()
-
-    @chk ccall(
-               (:PetscLayoutCreateFromSizes, $petsc_library),
-               PetscErrorCode,
-               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{PetscLayout}),
-               comm, n, N, bs, map_,
-              )
-
-	map = map_[]
-
-	return map
-end 
-
-"""
-	PetscLayoutDestroy(petsclib::PetscLibType,map::PetscLayout) 
-Frees a `PetscLayout` object and frees its range if that exists.
-
-Collective
-
-Input Parameter:
-- `map` - the `PetscLayout`
-
-Level: developer
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
-`PetscLayout`, `PetscLayoutCreate()`,
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutDestroy"))
-"""
-function PetscLayoutDestroy(petsclib::PetscLibType, map::Union{PetscLayout, Ref{PetscLayout}}) end
-
-@for_petsc function PetscLayoutDestroy(petsclib::$UnionPetscLib, map::Union{PetscLayout, Ref{PetscLayout}} )
-	map_ = map isa Base.RefValue ? map : Ref{PetscLayout}(map)
-
-    @chk ccall(
-               (:PetscLayoutDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscLayout},),
-               map_,
-              )
-
-
-	return nothing
 end 
 
 """
@@ -135,7 +97,7 @@ Level: developer
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`, `PetscLayoutCreateFromSizes()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutCreateFromRanges"))
+$(_doc_external("IS/PetscLayoutCreateFromRanges"))
 """
 function PetscLayoutCreateFromRanges(petsclib::PetscLibType, comm::MPI_Comm, range::Vector{PetscInt}, mode::PetscCopyMode, bs::PetscInt) end
 
@@ -155,33 +117,73 @@ function PetscLayoutCreateFromRanges(petsclib::PetscLibType, comm::MPI_Comm, ran
 end 
 
 """
-	PetscLayoutSetUp(petsclib::PetscLibType,map::PetscLayout) 
-given a map where you have set either the global or local
-size sets up the map so that it may be used.
+	map::PetscLayout = PetscLayoutCreateFromSizes(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, N::PetscInt, bs::PetscInt) 
+Allocates `PetscLayout` object and sets the layout sizes, and sets the layout up.
+
+Collective
+
+Input Parameters:
+- `comm` - the MPI communicator
+- `n`    - the local size (or `PETSC_DECIDE`)
+- `N`    - the global size (or `PETSC_DECIDE`)
+- `bs`   - the block size (or `PETSC_DECIDE`)
+
+Output Parameter:
+- `map` - the new `PetscLayout`
+
+Level: advanced
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayout`, `PetscLayoutDestroy()`,
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`, `PetscLayoutCreateFromRanges()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutCreateFromSizes"))
+"""
+function PetscLayoutCreateFromSizes(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N::PetscInt, bs::PetscInt) end
+
+@for_petsc function PetscLayoutCreateFromSizes(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, N::$PetscInt, bs::$PetscInt )
+	map_ = Ref{PetscLayout}()
+
+    @chk ccall(
+               (:PetscLayoutCreateFromSizes, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{PetscLayout}),
+               comm, n, N, bs, map_,
+              )
+
+	map = map_[]
+
+	return map
+end 
+
+"""
+	PetscLayoutDestroy(petsclib::PetscLibType,map::Union{PetscLayout, Ref{PetscLayout}}) 
+Frees a `PetscLayout` object and frees its range if that exists.
 
 Collective
 
 Input Parameter:
-- `map` - pointer to the map
+- `map` - the `PetscLayout`
 
 Level: developer
 
 -seealso: [PetscLayout](sec_matlayout), `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
-`PetscLayout`, `PetscLayoutDestroy()`,
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutCreate()`, `PetscSplitOwnership()`
+`PetscLayout`, `PetscLayoutCreate()`,
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutSetUp"))
+$(_doc_external("IS/PetscLayoutDestroy"))
 """
-function PetscLayoutSetUp(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutDestroy(petsclib::PetscLibType, map::Union{PetscLayout, Ref{PetscLayout}}) end
 
-@for_petsc function PetscLayoutSetUp(petsclib::$UnionPetscLib, map::PetscLayout )
+@for_petsc function PetscLayoutDestroy(petsclib::$UnionPetscLib, map::Union{PetscLayout, Ref{PetscLayout}} )
+	map_ = map isa Base.RefValue ? map : Ref{PetscLayout}(map)
 
     @chk ccall(
-               (:PetscLayoutSetUp, $petsc_library),
+               (:PetscLayoutDestroy, $petsc_library),
                PetscErrorCode,
-               (PetscLayout,),
-               map,
+               (Ptr{PetscLayout},),
+               map_,
               )
 
 
@@ -205,7 +207,7 @@ Level: developer
 -seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutReference()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutDuplicate"))
+$(_doc_external("IS/PetscLayoutDuplicate"))
 """
 function PetscLayoutDuplicate(petsclib::PetscLibType, in::PetscLayout) end
 
@@ -225,7 +227,301 @@ function PetscLayoutDuplicate(petsclib::PetscLibType, in::PetscLayout) end
 end 
 
 """
-	PetscLayoutReference(petsclib::PetscLibType,in::PetscLayout, out::PetscLayout) 
+	owner::PetscMPIInt = PetscLayoutFindOwner(petsclib::PetscLibType,map::PetscLayout, idx::PetscInt) 
+Find the owning MPI process for a global index
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `map` - the layout
+- `idx` - global index to find the owner of
+
+Output Parameter:
+- `owner` - the owning rank
+
+Level: developer
+
+-seealso: `PetscLayout`, `PetscLayoutFindOwnerIndex()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutFindOwner"))
+"""
+function PetscLayoutFindOwner(petsclib::PetscLibType, map::PetscLayout, idx::PetscInt) end
+
+@for_petsc function PetscLayoutFindOwner(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt )
+	owner_ = Ref{PetscMPIInt}()
+
+    @chk ccall(
+               (:PetscLayoutFindOwner, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, $PetscInt, Ptr{PetscMPIInt}),
+               map, idx, owner_,
+              )
+
+	owner = owner_[]
+
+	return owner
+end 
+
+"""
+	owner::PetscMPIInt,lidx::PetscInt = PetscLayoutFindOwnerIndex(petsclib::PetscLibType,map::PetscLayout, idx::PetscInt) 
+Find the owning MPI process and the local index on that process for a global index
+
+Not Collective; No Fortran Support
+
+Input Parameters:
+- `map` - the layout
+- `idx` - global index to find the owner of
+
+Output Parameters:
+- `owner` - the owning rank
+- `lidx`  - local index used by the owner for `idx`
+
+Level: developer
+
+-seealso: `PetscLayout`, `PetscLayoutFindOwner()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutFindOwnerIndex"))
+"""
+function PetscLayoutFindOwnerIndex(petsclib::PetscLibType, map::PetscLayout, idx::PetscInt) end
+
+@for_petsc function PetscLayoutFindOwnerIndex(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt )
+	owner_ = Ref{PetscMPIInt}()
+	lidx_ = Ref{$PetscInt}()
+
+    @chk ccall(
+               (:PetscLayoutFindOwnerIndex, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, $PetscInt, Ptr{PetscMPIInt}, Ptr{$PetscInt}),
+               map, idx, owner_, lidx_,
+              )
+
+	owner = owner_[]
+	lidx = lidx_[]
+
+	return owner,lidx
+end 
+
+"""
+	bs::PetscInt = PetscLayoutGetBlockSize(petsclib::PetscLibType,map::PetscLayout) 
+Gets the block size for a `PetscLayout` object.
+
+Not Collective
+
+Input Parameter:
+- `map` - pointer to the map
+
+Output Parameter:
+- `bs` - the size
+
+Level: developer
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetSize()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutGetBlockSize"))
+"""
+function PetscLayoutGetBlockSize(petsclib::PetscLibType, map::PetscLayout) end
+
+@for_petsc function PetscLayoutGetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout )
+	bs_ = Ref{$PetscInt}()
+
+    @chk ccall(
+               (:PetscLayoutGetBlockSize, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, Ptr{$PetscInt}),
+               map, bs_,
+              )
+
+	bs = bs_[]
+
+	return bs
+end 
+
+"""
+	n::PetscInt = PetscLayoutGetLocalSize(petsclib::PetscLibType,map::PetscLayout) 
+Gets the local size for a `PetscLayout` object.
+
+Not Collective
+
+Input Parameter:
+- `map` - pointer to the map
+
+Output Parameter:
+- `n` - the local size
+
+Level: developer
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutGetLocalSize"))
+"""
+function PetscLayoutGetLocalSize(petsclib::PetscLibType, map::PetscLayout) end
+
+@for_petsc function PetscLayoutGetLocalSize(petsclib::$UnionPetscLib, map::PetscLayout )
+	n_ = Ref{$PetscInt}()
+
+    @chk ccall(
+               (:PetscLayoutGetLocalSize, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, Ptr{$PetscInt}),
+               map, n_,
+              )
+
+	n = n_[]
+
+	return n
+end 
+
+"""
+	rstart::PetscInt,rend::PetscInt = PetscLayoutGetRange(petsclib::PetscLibType,map::PetscLayout) 
+gets the range of values owned by this process
+
+Not Collective
+
+Input Parameter:
+- `map` - pointer to the map
+
+Output Parameters:
+- `rstart` - first index owned by this process
+- `rend`   - one more than the last index owned by this process
+
+Level: developer
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
+`PetscLayoutGetSize()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutSetUp()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutGetRange"))
+"""
+function PetscLayoutGetRange(petsclib::PetscLibType, map::PetscLayout) end
+
+@for_petsc function PetscLayoutGetRange(petsclib::$UnionPetscLib, map::PetscLayout )
+	rstart_ = Ref{$PetscInt}()
+	rend_ = Ref{$PetscInt}()
+
+    @chk ccall(
+               (:PetscLayoutGetRange, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               map, rstart_, rend_,
+              )
+
+	rstart = rstart_[]
+	rend = rend_[]
+
+	return rstart,rend
+end 
+
+"""
+	range::Ptr{PetscInt} = PetscLayoutGetRanges(petsclib::PetscLibType,map::PetscLayout) 
+gets the ranges of values owned by all processes
+
+Not Collective
+
+Input Parameter:
+- `map` - pointer to the map
+
+Output Parameter:
+- `range` - start of each processors range of indices (the final entry is one more than the
+last index on the last process). The length of the array is one more than the number of processes in the MPI
+communicator owned by `map`
+
+Level: developer
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
+`PetscLayoutGetSize()`, `PetscLayoutGetRange()`, `PetscLayoutSetBlockSize()`, `PetscLayoutSetUp()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutGetRanges"))
+"""
+function PetscLayoutGetRanges(petsclib::PetscLibType, map::PetscLayout) end
+
+@for_petsc function PetscLayoutGetRanges(petsclib::$UnionPetscLib, map::PetscLayout )
+	range_ = Ref{Ptr{$PetscInt}}()
+
+    @chk ccall(
+               (:PetscLayoutGetRanges, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, Ptr{Ptr{$PetscInt}}),
+               map, range_,
+              )
+
+	range = range_[]
+
+	return range
+end 
+
+"""
+	n::PetscInt = PetscLayoutGetSize(petsclib::PetscLibType,map::PetscLayout) 
+Gets the global size for a `PetscLayout` object.
+
+Not Collective
+
+Input Parameter:
+- `map` - pointer to the map
+
+Output Parameter:
+- `n` - the global size
+
+Level: developer
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutGetSize"))
+"""
+function PetscLayoutGetSize(petsclib::PetscLibType, map::PetscLayout) end
+
+@for_petsc function PetscLayoutGetSize(petsclib::$UnionPetscLib, map::PetscLayout )
+	n_ = Ref{$PetscInt}()
+
+    @chk ccall(
+               (:PetscLayoutGetSize, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, Ptr{$PetscInt}),
+               map, n_,
+              )
+
+	n = n_[]
+
+	return n
+end 
+
+"""
+	on::PetscInt,oidxs::Ptr{PetscInt},ogidxs::Ptr{PetscInt} = PetscLayoutMapLocal(petsclib::PetscLibType,map::PetscLayout, N::PetscInt, idxs::Vector{PetscInt}) 
+
+# External Links
+$(_doc_external("PetscSF/PetscLayoutMapLocal"))
+"""
+function PetscLayoutMapLocal(petsclib::PetscLibType, map::PetscLayout, N::PetscInt, idxs::Vector{PetscInt}) end
+
+@for_petsc function PetscLayoutMapLocal(petsclib::$UnionPetscLib, map::PetscLayout, N::$PetscInt, idxs::Vector{$PetscInt} )
+	on_ = Ref{$PetscInt}()
+	oidxs_ = Ref{Ptr{$PetscInt}}()
+	ogidxs_ = Ref{Ptr{$PetscInt}}()
+
+    @chk ccall(
+               (:PetscLayoutMapLocal, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
+               map, N, idxs, on_, oidxs_, ogidxs_,
+              )
+
+	on = on_[]
+	oidxs = oidxs_[]
+	ogidxs = ogidxs_[]
+
+	return on,oidxs,ogidxs
+end 
+
+"""
+	out::PetscLayout = PetscLayoutReference(petsclib::PetscLibType,in::PetscLayout) 
 Causes a PETSc `Vec` or `Mat` to share a `PetscLayout` with one that already exists.
 
 Collective
@@ -241,17 +537,52 @@ Level: developer
 -seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutDuplicate()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutReference"))
+$(_doc_external("IS/PetscLayoutReference"))
 """
-function PetscLayoutReference(petsclib::PetscLibType, in::PetscLayout, out::PetscLayout) end
+function PetscLayoutReference(petsclib::PetscLibType, in::PetscLayout) end
 
-@for_petsc function PetscLayoutReference(petsclib::$UnionPetscLib, in::PetscLayout, out::PetscLayout )
+@for_petsc function PetscLayoutReference(petsclib::$UnionPetscLib, in::PetscLayout )
+	out_ = Ref{PetscLayout}()
 
     @chk ccall(
                (:PetscLayoutReference, $petsc_library),
                PetscErrorCode,
                (PetscLayout, Ptr{PetscLayout}),
-               in, out,
+               in, out_,
+              )
+
+	out = out_[]
+
+	return out
+end 
+
+"""
+	PetscLayoutSetBlockSize(petsclib::PetscLibType,map::PetscLayout, bs::PetscInt) 
+Sets the block size for a `PetscLayout` object.
+
+Logically Collective
+
+Input Parameters:
+- `map` - pointer to the map
+- `bs`  - the size
+
+Level: developer
+
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
+
+# External Links
+$(_doc_external("IS/PetscLayoutSetBlockSize"))
+"""
+function PetscLayoutSetBlockSize(petsclib::PetscLibType, map::PetscLayout, bs::PetscInt) end
+
+@for_petsc function PetscLayoutSetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout, bs::$PetscInt )
+
+    @chk ccall(
+               (:PetscLayoutSetBlockSize, $petsc_library),
+               PetscErrorCode,
+               (PetscLayout, $PetscInt),
+               map, bs,
               )
 
 
@@ -273,7 +604,7 @@ Level: developer
 -seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutDuplicate()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutSetISLocalToGlobalMapping"))
+$(_doc_external("IS/PetscLayoutSetISLocalToGlobalMapping"))
 """
 function PetscLayoutSetISLocalToGlobalMapping(petsclib::PetscLibType, in::PetscLayout, ltog::ISLocalToGlobalMapping) end
 
@@ -306,7 +637,7 @@ Level: developer
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutSetLocalSize"))
+$(_doc_external("IS/PetscLayoutSetLocalSize"))
 """
 function PetscLayoutSetLocalSize(petsclib::PetscLibType, map::PetscLayout, n::PetscInt) end
 
@@ -321,43 +652,6 @@ function PetscLayoutSetLocalSize(petsclib::PetscLibType, map::PetscLayout, n::Pe
 
 
 	return nothing
-end 
-
-"""
-	n::PetscInt = PetscLayoutGetLocalSize(petsclib::PetscLibType,map::PetscLayout) 
-Gets the local size for a `PetscLayout` object.
-
-Not Collective
-
-Input Parameter:
-- `map` - pointer to the map
-
-Output Parameter:
-- `n` - the local size
-
-Level: developer
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutGetLocalSize"))
-"""
-function PetscLayoutGetLocalSize(petsclib::PetscLibType, map::PetscLayout) end
-
-@for_petsc function PetscLayoutGetLocalSize(petsclib::$UnionPetscLib, map::PetscLayout )
-	n_ = Ref{$PetscInt}()
-
-    @chk ccall(
-               (:PetscLayoutGetLocalSize, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, Ptr{$PetscInt}),
-               map, n_,
-              )
-
-	n = n_[]
-
-	return n
 end 
 
 """
@@ -376,7 +670,7 @@ Level: developer
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutSetSize"))
+$(_doc_external("IS/PetscLayoutSetSize"))
 """
 function PetscLayoutSetSize(petsclib::PetscLibType, map::PetscLayout, n::PetscInt) end
 
@@ -394,326 +688,36 @@ function PetscLayoutSetSize(petsclib::PetscLibType, map::PetscLayout, n::PetscIn
 end 
 
 """
-	n::PetscInt = PetscLayoutGetSize(petsclib::PetscLibType,map::PetscLayout) 
-Gets the global size for a `PetscLayout` object.
+	PetscLayoutSetUp(petsclib::PetscLibType,map::PetscLayout) 
+given a map where you have set either the global or local
+size sets up the map so that it may be used.
 
-Not Collective
+Collective
 
 Input Parameter:
 - `map` - pointer to the map
 
-Output Parameter:
-- `n` - the global size
-
 Level: developer
 
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
+-seealso: [PetscLayout](sec_matlayout), `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
+`PetscLayout`, `PetscLayoutDestroy()`,
+`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutCreate()`, `PetscSplitOwnership()`
 
 # External Links
-$(_doc_external("Vec/PetscLayoutGetSize"))
+$(_doc_external("IS/PetscLayoutSetUp"))
 """
-function PetscLayoutGetSize(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutSetUp(petsclib::PetscLibType, map::PetscLayout) end
 
-@for_petsc function PetscLayoutGetSize(petsclib::$UnionPetscLib, map::PetscLayout )
-	n_ = Ref{$PetscInt}()
+@for_petsc function PetscLayoutSetUp(petsclib::$UnionPetscLib, map::PetscLayout )
 
     @chk ccall(
-               (:PetscLayoutGetSize, $petsc_library),
+               (:PetscLayoutSetUp, $petsc_library),
                PetscErrorCode,
-               (PetscLayout, Ptr{$PetscInt}),
-               map, n_,
-              )
-
-	n = n_[]
-
-	return n
-end 
-
-"""
-	PetscLayoutSetBlockSize(petsclib::PetscLibType,map::PetscLayout, bs::PetscInt) 
-Sets the block size for a `PetscLayout` object.
-
-Logically Collective
-
-Input Parameters:
-- `map` - pointer to the map
-- `bs`  - the size
-
-Level: developer
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutSetBlockSize"))
-"""
-function PetscLayoutSetBlockSize(petsclib::PetscLibType, map::PetscLayout, bs::PetscInt) end
-
-@for_petsc function PetscLayoutSetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout, bs::$PetscInt )
-
-    @chk ccall(
-               (:PetscLayoutSetBlockSize, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, $PetscInt),
-               map, bs,
+               (PetscLayout,),
+               map,
               )
 
 
 	return nothing
-end 
-
-"""
-	bs::PetscInt = PetscLayoutGetBlockSize(petsclib::PetscLibType,map::PetscLayout) 
-Gets the block size for a `PetscLayout` object.
-
-Not Collective
-
-Input Parameter:
-- `map` - pointer to the map
-
-Output Parameter:
-- `bs` - the size
-
-Level: developer
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetSize()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutGetBlockSize"))
-"""
-function PetscLayoutGetBlockSize(petsclib::PetscLibType, map::PetscLayout) end
-
-@for_petsc function PetscLayoutGetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout )
-	bs_ = Ref{$PetscInt}()
-
-    @chk ccall(
-               (:PetscLayoutGetBlockSize, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, Ptr{$PetscInt}),
-               map, bs_,
-              )
-
-	bs = bs_[]
-
-	return bs
-end 
-
-"""
-	rstart::PetscInt,rend_::PetscInt = PetscLayoutGetRange(petsclib::PetscLibType,map::PetscLayout) 
-gets the range of values owned by this process
-
-Not Collective
-
-Input Parameter:
-- `map` - pointer to the map
-
-Output Parameters:
-- `rstart` - first index owned by this process
-- `rend`   - one more than the last index owned by this process
-
-Level: developer
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
-`PetscLayoutGetSize()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutSetUp()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutGetRange"))
-"""
-function PetscLayoutGetRange(petsclib::PetscLibType, map::PetscLayout) end
-
-@for_petsc function PetscLayoutGetRange(petsclib::$UnionPetscLib, map::PetscLayout )
-	rstart_ = Ref{$PetscInt}()
-	rend__ = Ref{$PetscInt}()
-
-    @chk ccall(
-               (:PetscLayoutGetRange, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, Ptr{$PetscInt}, Ptr{$PetscInt}),
-               map, rstart_, rend__,
-              )
-
-	rstart = rstart_[]
-	rend_ = rend__[]
-
-	return rstart,rend_
-end 
-
-"""
-	range::Vector{PetscInt} = PetscLayoutGetRanges(petsclib::PetscLibType,map::PetscLayout) 
-gets the ranges of values owned by all processes
-
-Not Collective
-
-Input Parameter:
-- `map` - pointer to the map
-
-Output Parameter:
-- `range` - start of each processors range of indices (the final entry is one more than the
-last index on the last process). The length of the array is one more than the number of processes in the MPI
-communicator owned by `map`
-
-Level: developer
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
-`PetscLayoutGetSize()`, `PetscLayoutGetRange()`, `PetscLayoutSetBlockSize()`, `PetscLayoutSetUp()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutGetRanges"))
-"""
-function PetscLayoutGetRanges(petsclib::PetscLibType, map::PetscLayout) end
-
-@for_petsc function PetscLayoutGetRanges(petsclib::$UnionPetscLib, map::PetscLayout )
-	range_ = Ref{Ptr{$PetscInt}}()
-
-    @chk ccall(
-               (:PetscLayoutGetRanges, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, Ptr{Ptr{$PetscInt}}),
-               map, range_,
-              )
-
-	range = unsafe_wrap(Array, range_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return range
-end 
-
-"""
-	congruent::PetscBool = PetscLayoutCompare(petsclib::PetscLibType,mapa::PetscLayout, mapb::PetscLayout) 
-Compares two layouts
-
-Not Collective
-
-Input Parameters:
-- `mapa` - pointer to the first map
-- `mapb` - pointer to the second map
-
-Output Parameter:
-- `congruent` - `PETSC_TRUE` if the two layouts are congruent, `PETSC_FALSE` otherwise
-
-Level: beginner
-
--seealso: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
-`PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutCompare"))
-"""
-function PetscLayoutCompare(petsclib::PetscLibType, mapa::PetscLayout, mapb::PetscLayout) end
-
-@for_petsc function PetscLayoutCompare(petsclib::$UnionPetscLib, mapa::PetscLayout, mapb::PetscLayout )
-	congruent_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscLayoutCompare, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, PetscLayout, Ptr{PetscBool}),
-               mapa, mapb, congruent_,
-              )
-
-	congruent = congruent_[]
-
-	return congruent
-end 
-
-"""
-	PetscLayoutFindOwner(petsclib::PetscLibType,map::PetscLayout, idx::PetscInt, owner::PetscMPIInt) 
-Find the owning MPI process for a global index
-
-Not Collective; No Fortran Support
-
-Input Parameters:
-- `map` - the layout
-- `idx` - global index to find the owner of
-
-Output Parameter:
-- `owner` - the owning rank
-
-Level: developer
-
--seealso: `PetscLayout`, `PetscLayoutFindOwnerIndex()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutFindOwner"))
-"""
-function PetscLayoutFindOwner(petsclib::PetscLibType, map::PetscLayout, idx::PetscInt, owner::PetscMPIInt) end
-
-@for_petsc function PetscLayoutFindOwner(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt, owner::PetscMPIInt )
-
-    @chk ccall(
-               (:PetscLayoutFindOwner, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, $PetscInt, Ptr{PetscMPIInt}),
-               map, idx, owner,
-              )
-
-
-	return nothing
-end 
-
-"""
-	lidx::PetscInt = PetscLayoutFindOwnerIndex(petsclib::PetscLibType,map::PetscLayout, idx::PetscInt, owner::PetscMPIInt) 
-Find the owning MPI process and the local index on that process for a global index
-
-Not Collective; No Fortran Support
-
-Input Parameters:
-- `map` - the layout
-- `idx` - global index to find the owner of
-
-Output Parameters:
-- `owner` - the owning rank
-- `lidx`  - local index used by the owner for `idx`
-
-Level: developer
-
--seealso: `PetscLayout`, `PetscLayoutFindOwner()`
-
-# External Links
-$(_doc_external("Vec/PetscLayoutFindOwnerIndex"))
-"""
-function PetscLayoutFindOwnerIndex(petsclib::PetscLibType, map::PetscLayout, idx::PetscInt, owner::PetscMPIInt) end
-
-@for_petsc function PetscLayoutFindOwnerIndex(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt, owner::PetscMPIInt )
-	lidx_ = Ref{$PetscInt}()
-
-    @chk ccall(
-               (:PetscLayoutFindOwnerIndex, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, $PetscInt, Ptr{PetscMPIInt}, Ptr{$PetscInt}),
-               map, idx, owner, lidx_,
-              )
-
-	lidx = lidx_[]
-
-	return lidx
-end 
-
-"""
-	on::PetscInt,oidxs::Vector{PetscInt},ogidxs::Vector{PetscInt} = PetscLayoutMapLocal(petsclib::PetscLibType,map::PetscLayout, N::PetscInt, idxs::Vector{PetscInt}) 
-
-# External Links
-$(_doc_external("Vec/PetscLayoutMapLocal"))
-"""
-function PetscLayoutMapLocal(petsclib::PetscLibType, map::PetscLayout, N::PetscInt, idxs::Vector{PetscInt}) end
-
-@for_petsc function PetscLayoutMapLocal(petsclib::$UnionPetscLib, map::PetscLayout, N::$PetscInt, idxs::Vector{$PetscInt} )
-	on_ = Ref{$PetscInt}()
-	oidxs_ = Ref{Ptr{$PetscInt}}()
-	ogidxs_ = Ref{Ptr{$PetscInt}}()
-
-    @chk ccall(
-               (:PetscLayoutMapLocal, $petsc_library),
-               PetscErrorCode,
-               (PetscLayout, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
-               map, N, idxs, on_, oidxs_, ogidxs_,
-              )
-
-	on = on_[]
-	oidxs = unsafe_wrap(Array, oidxs_[], VecGetLocalSize(petsclib, x); own = false)
-	ogidxs = unsafe_wrap(Array, ogidxs_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return on,oidxs,ogidxs
 end 
 

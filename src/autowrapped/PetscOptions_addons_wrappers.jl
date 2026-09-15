@@ -1,68 +1,3 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscOptionsHelpPrCinted end
-const PetscOptionsHelpPrCinted = Ptr{_n_PetscOptionsHelpPrCinted}
-
-# -------------------------------------------------------
-# autodefined type arguments for class ------
-# -------------------------------------------------------
-# autodefined type arguments for class ------
-# -------------------------------------------------------
-"""
-	PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType,hp::PetscOptionsHelpPrCinted) 
-
-# External Links
-$(_doc_external("Sys/PetscOptionsHelpPrintedDestroy"))
-"""
-function PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) end
-
-@for_petsc function PetscOptionsHelpPrintedDestroy(petsclib::$UnionPetscLib, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}} )
-	hp_ = hp isa Base.RefValue ? hp : Ref{PetscOptionsHelpPrCinted}(hp)
-
-    @chk ccall(
-               (:PetscOptionsHelpPrintedDestroy, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscOptionsHelpPrCinted},),
-               hp_,
-              )
-
-
-	return nothing
-end 
-
-"""
-	hp::PetscOptionsHelpPrCinted = PetscOptionsHelpPrintedCreate(petsclib::PetscLibType) 
-Creates an object used to manage tracking which help messages have
-been printed so they will not be printed again.
-
-Output Parameter:
-- `hp` - the created object
-
-Not Collective
-
-Level: developer
-
--seealso: `PetscOptionsHelpPrintedCheck()`, `PetscOptionsHelpPrintChecked()`
-
-# External Links
-$(_doc_external("Sys/PetscOptionsHelpPrintedCreate"))
-"""
-function PetscOptionsHelpPrintedCreate(petsclib::PetscLibType) end
-
-@for_petsc function PetscOptionsHelpPrintedCreate(petsclib::$UnionPetscLib)
-	hp_ = Ref{PetscOptionsHelpPrCinted}()
-
-    @chk ccall(
-               (:PetscOptionsHelpPrintedCreate, $petsc_library),
-               PetscErrorCode,
-               (Ptr{PetscOptionsHelpPrCinted},),
-               hp_,
-              )
-
-	hp = hp_[]
-
-	return hp
-end 
-
 """
 	found::PetscBool = PetscOptionsHelpPrintedCheck(petsclib::PetscLibType,hp::PetscOptionsHelpPrCinted, pre::String, name::String) 
 Checks if a particular pre, name pair has previous been entered (meaning the help message was printed)
@@ -82,7 +17,7 @@ Level: intermediate
 -seealso: `PetscOptionsHelpPrintedCreate()`
 
 # External Links
-$(_doc_external("Sys/PetscOptionsHelpPrintedCheck"))
+$(_doc_external("Viewer/PetscOptionsHelpPrintedCheck"))
 """
 function PetscOptionsHelpPrintedCheck(petsclib::PetscLibType, hp::PetscOptionsHelpPrCinted, pre::String, name::String) end
 
@@ -99,5 +34,61 @@ function PetscOptionsHelpPrintedCheck(petsclib::PetscLibType, hp::PetscOptionsHe
 	found = found_[]
 
 	return found
+end 
+
+"""
+	hp::PetscOptionsHelpPrCinted = PetscOptionsHelpPrintedCreate(petsclib::PetscLibType) 
+Creates an object used to manage tracking which help messages have
+been printed so they will not be printed again.
+
+Output Parameter:
+- `hp` - the created object
+
+Not Collective
+
+Level: developer
+
+-seealso: `PetscOptionsHelpPrintedCheck()`, `PetscOptionsHelpPrintChecked()`
+
+# External Links
+$(_doc_external("Viewer/PetscOptionsHelpPrintedCreate"))
+"""
+function PetscOptionsHelpPrintedCreate(petsclib::PetscLibType) end
+
+@for_petsc function PetscOptionsHelpPrintedCreate(petsclib::$UnionPetscLib)
+	hp_ = Ref{PetscOptionsHelpPrCinted}()
+
+    @chk ccall(
+               (:PetscOptionsHelpPrintedCreate, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscOptionsHelpPrCinted},),
+               hp_,
+              )
+
+	hp = hp_[]
+
+	return hp
+end 
+
+"""
+	PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType,hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) 
+
+# External Links
+$(_doc_external("Viewer/PetscOptionsHelpPrintedDestroy"))
+"""
+function PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) end
+
+@for_petsc function PetscOptionsHelpPrintedDestroy(petsclib::$UnionPetscLib, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}} )
+	hp_ = hp isa Base.RefValue ? hp : Ref{PetscOptionsHelpPrCinted}(hp)
+
+    @chk ccall(
+               (:PetscOptionsHelpPrintedDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscOptionsHelpPrCinted},),
+               hp_,
+              )
+
+
+	return nothing
 end 
 

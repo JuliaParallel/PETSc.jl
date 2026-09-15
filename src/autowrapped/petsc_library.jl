@@ -403,12 +403,12 @@ end
 #
 
 # load all generated files
-#include("../src/LibPETSc_lib.jl")
 include("petscarray.jl")
 include("enums_wrappers.jl")
 include("senums_wrappers.jl")
 include("typedefs_wrappers.jl")
 include("struct_wrappers.jl")
+include("opaque_types.jl")
 include("Sys_wrappers.jl")
 include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
@@ -422,7 +422,6 @@ include("PetscDraw_wrappers.jl")
 include("PetscRegressor_wrappers.jl")
 include("PF_wrappers.jl")
 include("IS_wrappers.jl")
-# include("PC_wrappers.jl")  # excluded: PC type in ccall signatures needs fixing
 include("TS_wrappers.jl")
 include("AO_wrappers.jl")
 include("Tao_wrappers.jl")
@@ -465,3 +464,5 @@ include("PetscDualSpace_wrappers.jl")
 include("PetscOptions_addons_wrappers.jl")
 include("PetscIntStack_wrappers.jl")
 include("PetscLog_wrappers.jl")
+include("PC_wrappers.jl")
+include("extra_wrappers.jl")

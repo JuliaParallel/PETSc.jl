@@ -12,7 +12,6 @@ struct PetscArray{T,N,A<:AbstractArray{T,N},P} <: AbstractArray{T,N}
     ptr::P   # Ref holding the pointer to the underlying PETSc data; set to C_NULL on restore
 end
 
-PetscArray(data::AbstractArray{T,N}, ptr::P) where {T,N,P} = PetscArray{T,N,typeof(data),P}(data, ptr)
 
 # ============================================================================
 # Array interface - make PetscArray behave like a normal Julia array

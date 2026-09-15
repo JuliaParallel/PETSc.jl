@@ -1,7 +1,30 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscOmpCtrl end
-const PetscOmpCtrl = Ptr{_n_PetscOmpCtrl}
-# -------------------------------------------------------
+"""
+	PetscOmpCtrlBarrier(petsclib::PetscLibType,ctrl::PetscOmpCtrl) 
+Do barrier on MPI ranks in omp_comm contained by the PETSc OMP controller (to let slave ranks free their CPU)
+
+Input Parameter:
+- `ctrl` - a PETSc OMP controller
+
+-seealso: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`,
+
+# External Links
+$(_doc_external("Sys/PetscOmpCtrlBarrier"))
+"""
+function PetscOmpCtrlBarrier(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
+
+@for_petsc function PetscOmpCtrlBarrier(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
+
+    @chk ccall(
+               (:PetscOmpCtrlBarrier, $petsc_library),
+               PetscErrorCode,
+               (PetscOmpCtrl,),
+               ctrl,
+              )
+
+
+	return nothing
+end 
+
 """
 	pctrl::PetscOmpCtrl = PetscOmpCtrlCreate(petsclib::PetscLibType,petsc_comm::MPI_Comm, nthreads::PetscInt) 
 create a PETSc OpenMP controller, which manages PETSc's interaction with third party libraries that use OpenMP
@@ -38,7 +61,7 @@ function PetscOmpCtrlCreate(petsclib::PetscLibType, petsc_comm::MPI_Comm, nthrea
 end 
 
 """
-	PetscOmpCtrlDestroy(petsclib::PetscLibType,pctrl::PetscOmpCtrl) 
+	PetscOmpCtrlDestroy(petsclib::PetscLibType,pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}}) 
 destroy the PETSc OpenMP controller
 
 Input Parameter:
@@ -68,7 +91,7 @@ function PetscOmpCtrlDestroy(petsclib::PetscLibType, pctrl::Union{PetscOmpCtrl, 
 end 
 
 """
-	is_omp_master::PetscBool = PetscOmpCtrlGetOmpComms(petsclib::PetscLibType,ctrl::PetscOmpCtrl, omp_comm::MPI_Comm, omp_master_comm::MPI_Comm) 
+	omp_comm::MPI_Comm,omp_master_comm::MPI_Comm,is_omp_master::PetscBool = PetscOmpCtrlGetOmpComms(petsclib::PetscLibType,ctrl::PetscOmpCtrl) 
 Get MPI communicators from a PETSc OMP controller
 
 Input Parameter:
@@ -85,48 +108,25 @@ on slave ranks, `MPI_COMM_NULL` will be return in reality.
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlGetOmpComms"))
 """
-function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl, omp_comm::MPI_Comm, omp_master_comm::MPI_Comm) end
+function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
 
-@for_petsc function PetscOmpCtrlGetOmpComms(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl, omp_comm::MPI_Comm, omp_master_comm::MPI_Comm )
+@for_petsc function PetscOmpCtrlGetOmpComms(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
+	omp_comm_ = Ref{MPI_Comm}()
+	omp_master_comm_ = Ref{MPI_Comm}()
 	is_omp_master_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PetscOmpCtrlGetOmpComms, $petsc_library),
                PetscErrorCode,
                (PetscOmpCtrl, Ptr{MPI_Comm}, Ptr{MPI_Comm}, Ptr{PetscBool}),
-               ctrl, omp_comm, omp_master_comm, is_omp_master_,
+               ctrl, omp_comm_, omp_master_comm_, is_omp_master_,
               )
 
+	omp_comm = omp_comm_[]
+	omp_master_comm = omp_master_comm_[]
 	is_omp_master = is_omp_master_[]
 
-	return is_omp_master
-end 
-
-"""
-	PetscOmpCtrlBarrier(petsclib::PetscLibType,ctrl::PetscOmpCtrl) 
-Do barrier on MPI ranks in omp_comm contained by the PETSc OMP controller (to let slave ranks free their CPU)
-
-Input Parameter:
-- `ctrl` - a PETSc OMP controller
-
--seealso: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`,
-
-# External Links
-$(_doc_external("Sys/PetscOmpCtrlBarrier"))
-"""
-function PetscOmpCtrlBarrier(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
-
-@for_petsc function PetscOmpCtrlBarrier(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
-
-    @chk ccall(
-               (:PetscOmpCtrlBarrier, $petsc_library),
-               PetscErrorCode,
-               (PetscOmpCtrl,),
-               ctrl,
-              )
-
-
-	return nothing
+	return omp_comm,omp_master_comm,is_omp_master
 end 
 
 """

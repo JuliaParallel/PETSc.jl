@@ -287,10 +287,10 @@ end
         LibPETSc.DMStagRestrictSimple(petsclib, dmf,xf,dmc, xc)
         @test xc[5] == PetscScalar(1.0)
 
-        out = LibPETSc.DMStagSetUniformCoordinatesExplicit(petsclib, dm,0.1,1.1,1.3,3.1,2.1,2.8)
+        out = LibPETSc.DMStagSetUniformCoordinatesExplicit(petsclib, dm, PetscReal.((0.1, 1.1, 1.3, 3.1, 2.1, 2.8))...)
         @test isnothing(out)
 
-        xmin,xmax,ymin,ymax,zmin,zmax = 0.1,1.1,1.3,3.1,2.1,2.8
+        xmin,xmax,ymin,ymax,zmin,zmax = PetscReal.((0.1,1.1,1.3,3.1,2.1,2.8))
         out = LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dmc,xmin,xmax,ymin,ymax,zmin,zmax)
         @test isnothing(out)
 

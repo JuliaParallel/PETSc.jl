@@ -81,8 +81,8 @@ end
         end
     end
     # hand-written overrides (wrapping/generator/overrides/) that return a Union by design
-    allowed = Set(["DMStagGetProductCoordinateArrays", "DMStagGetProductCoordinateArraysRead",
-                   "DMStagVecGetArray", "DMStagVecGetArrayRead", "PetscOptionsGetString", "KSPCreateVecs"])
+    ovdir = joinpath(@__DIR__, "..", "wrapping", "generator", "overrides")
+    allowed = Set(f[1:end-3] for f in readdir(ovdir) if endswith(f, ".jl"))
     offenders = filter(u -> !(first(split(u, "Tuple{")) in allowed), unstable)
     @info "static inference sweep" checked unstable = length(unstable) not_allowed = length(offenders)
     if !isempty(offenders)

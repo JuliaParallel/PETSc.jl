@@ -2,12 +2,6 @@
 # Keys per argument: direction = "in"|"out", nullable, byref, size, prelude, nullinit, len.
 # See wrapping/WRAPPING.md.
 
-[DMCreateFieldIS.fieldNames]
-nullinit = true
-
-[DMCreateFieldIS.fields]
-nullinit = true
-
 [DMDACreate1d.lx]
 nullable = true
 
@@ -54,11 +48,6 @@ size = "n"
 nullinit = true
 prelude = "numCoveredPoints = numCoveredPoints_[]"
 size = "numCoveredPoints"
-
-[DMPlexGetFullMeet.coveringPoints]
-nullinit = true
-prelude = "numCoveringPoints = numCoveringPoints_[]"
-size = "numCoveringPoints"
 
 [DMPlexGetJoin.coveredPoints]
 nullinit = true
@@ -114,9 +103,6 @@ nullable = true
 len = "nRow * nCol"
 
 [DMStagStencilToIndexLocal.ix]
-len = "n"
-
-[DMStagVecGetValuesStencil.vals]
 len = "n"
 
 [ISBlockGetIndices.idx]
@@ -318,14 +304,6 @@ nullable = true
 [MatFactorGetSchurComplement.status]
 nullable = true
 
-[MatGetColumnIJ.ia]
-nullinit = true
-prelude = "n = n_[]\n\tdone = done_[]"
-size = "Int(n) + 1"
-
-[MatGetColumnIJ.ja]
-nullinit = true
-
 [MatGetDM.dm]
 direction = "out"
 
@@ -349,28 +327,11 @@ size = "Int(ncols)"
 prelude = "ncols = ncols_[]"
 size = "Int(ncols)"
 
-[MatGetRowIJ.ia]
-nullinit = true
-prelude = "n = n_[]\n\tdone = done_[]"
-size = "Int(n) + 1"
-
-[MatGetRowIJ.ja]
-nullinit = true
-
 [MatISSetPreallocation.d_nnz]
 nullable = true
 
 [MatISSetPreallocation.o_nnz]
 nullable = true
-
-[MatMPIAIJGetSeqAIJ.Ad]
-direction = "out"
-
-[MatMPIAIJGetSeqAIJ.Ao]
-direction = "out"
-
-[MatMPIAIJGetSeqAIJ.colmap]
-nullinit = true
 
 [MatMPIAIJSetPreallocation.d_nnz]
 nullable = true
@@ -488,20 +449,8 @@ direction = "out"
 [PetscOptionsCreateViewer.options]
 nullable = true
 
-[PetscOptionsGetString.pre]
-nullable = true
-
-[PetscOptionsGetString.val]
-len = "256"
-
 [PetscOptionsSetValue.value]
 nullable = true
-
-[PetscSFGetGraph.ilocal]
-nullinit = true
-
-[PetscSFGetGraph.iremote]
-nullinit = true
 
 [PetscSectionGetConstraintIndices.indices]
 nullinit = true
@@ -532,12 +481,6 @@ nullable = true
 nullable = true
 
 [TSGetDM.dm]
-direction = "out"
-
-[TSGetTolerances.vatol]
-direction = "out"
-
-[TSGetTolerances.vrtol]
 direction = "out"
 
 [VecGetDM.dm]

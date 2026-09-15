@@ -19,6 +19,7 @@ function mine(golden::AbstractString)
         startswith(key, "fn:") || continue
         fn = key[4:end]
         occursin("#", fn) && continue
+        isfile(joinpath(@__DIR__, "overrides", fn * ".jl")) && continue   # verbatim override, no rules needed
         _, code = split_doc(b.text)
         sm = match(r"(?m)^@for_petsc function \w+\(petsclib::\$UnionPetscLib,?", code)
         sm === nothing && continue

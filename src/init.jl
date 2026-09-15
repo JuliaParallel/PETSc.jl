@@ -204,7 +204,20 @@ end
 function _post_initialize(petsclib)
     # disable signal handler
     LibPETSc.PetscPopSignalHandler(petsclib)
+    _reset_stale_register_flags(petsclib)
     atexit(() -> finalize(petsclib))
+    return nothing
+end
+
+# PETSc 3.25.x: `TaoFinalizePackage` destroys the `TaoTerm` type list but never resets
+# `TaoTermRegisterAllCalled`, so after a finalize/initialize cycle `TaoCreate` fails with
+# "Unable to find requested TaoTerm type callbacks". Reset the flag so the list is rebuilt.
+function _reset_stale_register_flags(petsclib)
+    handle, _ = _ensure_library_handle(petsclib)
+    for sym in (:TaoTermRegisterAllCalled,)
+        p = Libdl.dlsym_e(_library_ptr(handle), sym)
+        p == C_NULL || unsafe_store!(Ptr{Int32}(p), Int32(0))
+    end
     return nothing
 end
 

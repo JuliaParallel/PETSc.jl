@@ -94,6 +94,35 @@ plain generator rule. **Merge #263 into `v0.5` before freezing the golden baseli
 - PETSc_jll 3.25.4 artifacts are in the depot; `Project.toml` still pins `PETSc_jll = "3.22"` while the
   wrappers say 3.24.0.
 
+### 1.7 `REGENERATING.md` from the PR #263 discussion
+
+filoferra attached [REGENERATING.md](REGENERATING.md) to PR #263 (kept verbatim next to this plan). It
+matches categories A-F and H above and adds these points, which become explicit rules or checks:
+
+- Output-ness must come from the man-page `Input Parameters:` / `Output Parameters:` sections, not from
+  the star count. The star heuristic caused PR #254 (`TSGetConvergedReason`, `TSGetTolerances` took outputs
+  as inputs) and the hand bindings for `TSGetSNES`/`TSGetKSP` in `src/ts.jl`. Once the generator gets this
+  right, those hand bindings in `src/ts.jl` can be retired (they would otherwise collide).
+- Never emit `x isa Ref ? ...`; `Ptr{T} <: Ref{T}`, so it must be `isa Base.RefValue` (82 places today).
+  Regression check: `grep -rn "isa Ref ?" src/autowrapped/` must be empty.
+- The `VecGetLocalSize(petsclib, x)` placeholder is a hard `UndefVarError` in 126 functions where `x` is not
+  an argument; the rule is "size from the paired count output or the documented size query, otherwise emit
+  nothing and hand-write", never a call that cannot run.
+- Type-name aliases: 2 are `Cstring` (`MatType`, `VecType`), 58 are `Ptr{Cchar}`. The `AbstractString`
+  overloads in `src/string_wrappers*.jl` stay hand-written unless the generator emits one per alias; the
+  plan keeps them hand-written in M2 and revisits in M4.
+- Struct fields in `struct_wrappers.jl` (`JacActionCtx`, `DMDALocalInfo`, `TSMonitorDMDARayCtx`) stay
+  concrete; only function inputs are widened.
+- Hand-written multi-line wrappers also exist in `DMaddons_wrappers.jl` (`DMProjectFunction`,
+  `DMComputeL2Diff`), and `Vecs_wrappers.jl` documents `VecSetValues` with a bare signature instead of a
+  stub. Both go to `overrides/`.
+- Prologue drift, five items: `computerhs!`/`computeops!`/`opts` on `PetscKSP`; `user_ctx`/`opts` on
+  `PetscSNES`; `Base.unsafe_convert(::Type{Ptr{CIS}}, ::AbstractIS)`; `const DMLabel = Ptr{Cvoid}`; the
+  commented-out `include("PC_wrappers.jl")`. These move back into `prologue.jl` in M0. `local_types.jl` is
+  unused and is deleted in M3.
+- Ambiguity budget: `length(detect_ambiguities(PETSc; recursive = true))` is 161 after #263; the
+  regenerate-and-diff CI job also asserts this number does not grow.
+
 ## 2. Design of the new generator
 
 Goal: `julia wrapping/generate.jl --petsc-dir <src>` reproduces `src/autowrapped/` exactly, and rerunning it
@@ -244,7 +273,7 @@ rule review plus a diff review. Supporting both `getAPI.py` layouts (3.24 vs 3.2
 |---|---|---|
 | M0 | PETSc 3.24.0 source, `getapi_dump.py`, `api/petsc-3.24.0.json`, PR #263 merged, golden copy | JSON loads in Julia; snapshot lists 6102+ functions |
 | M1 | `generate.jl` core: type maps, kinds, template, docstring index, file map, header blocks | Generates all files; diff vs golden ~600 functions; runtime < 5 min |
-| M2 | Rules + overrides encoding categories A-I | Zero diff modulo `DEVIATIONS.md`; tests + docs green; idempotent |
+| M2 | Rules + overrides encoding categories A-I and section 1.7 | Zero diff modulo `DEVIATIONS.md`; tests + docs green; idempotent; no `isa Ref ?`; ambiguities == 161 |
 | M3 | `apidiff.jl`, stale-rule check, CI regenerate-and-diff job, `wrapping/README.md`, delete old generator, `local_types.jl`, PythonCall manifest | CI green on v0.5 |
 | M4 | Hygiene fixes from section 4 (each its own PR) | Tests green, reviewed diffs |
 | M5 | Update to PETSc 3.25.x using the workflow in section 5 | Only changed functions in the diff; `PETSc_jll` compat updated |

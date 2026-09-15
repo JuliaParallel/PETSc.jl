@@ -123,6 +123,23 @@ matches categories A-F and H above and adds these points, which become explicit 
 - Ambiguity budget: `length(detect_ambiguities(PETSc; recursive = true))` is 161 after #263; the
   regenerate-and-diff CI job also asserts this number does not grow.
 
+### 1.8 Target version: PETSc 3.25.4
+
+The wrappers to ship are for **PETSc 3.25.4**, matching the PETSc_jll binaries being built for it
+(2026-09-15). Consequences:
+
+- `getapi_dump.py` treats the 3.25 layout (`lib/petsc/bin/getAPI.py`, `getAPI(dir)`, 10-tuple with
+  `functiontypedefs`) as the primary path; the 3.24 layout is only needed for the fidelity step.
+- The fidelity step (section 3) still runs on the 3.24.0 source, because that is the only PETSc version the
+  current hand-edited output corresponds to; it is the sole way to prove the rules reproduce the hand fixes.
+  It costs one 16 MB tarball. Immediately afterwards the release workflow (section 5) is run for 3.25.4, and
+  `apidiff.jl petsc-3.24.0.json petsc-3.25.4.json` explains every function that differs.
+- Milestone M5 therefore moves directly after M4 (regenerated output committed) and before the hygiene fixes
+  in M4-bis, and `Project.toml` gets `PETSc_jll = "3.25"` in the same PR. The full suite runs against the
+  new binaries, which also validates the wrappers on Int32/Float32/complex variants of 3.25.4.
+- The GitLab tag `v3.25.4` exists, and PETSc_jll 3.25.4 artifacts (with `include/petscversion.h`) are
+  already in the local depot, so the target library is available for testing today.
+
 ## 2. Design of the new generator
 
 Goal: `julia wrapping/generate.jl --petsc-dir <src>` reproduces `src/autowrapped/` exactly, and rerunning it
@@ -295,7 +312,7 @@ rule review plus a diff review. Supporting both `getAPI.py` layouts (3.24 vs 3.2
 | M2 | Rules + overrides encoding categories A-I and section 1.7 | Zero diff modulo `DEVIATIONS.md`; tests + docs green; idempotent; no `isa Ref ?`; ambiguities == 161 |
 | M3 | `apidiff.jl`, stale-rule check, CI regenerate-and-diff job, `wrapping/README.md`, delete old generator, `local_types.jl`, PythonCall manifest | CI green on v0.5 |
 | M4 | Hygiene fixes from section 4 (each its own PR) | Tests green, reviewed diffs |
-| M5 | Update to PETSc 3.25.x using the workflow in section 5 | Only changed functions in the diff; `PETSc_jll` compat updated |
+| M5 | Update to PETSc 3.25.4 using the workflow in section 5 (runs right after M3, before M4) | Only changed functions in the diff; `PETSc_jll = "3.25"`; suite green on the new binaries |
 
 ## 7. Decisions recommended (say so if you disagree)
 

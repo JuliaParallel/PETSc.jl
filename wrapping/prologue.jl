@@ -91,12 +91,15 @@ abstract type AbstractPetscKSP{T} end
 mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
     ptr::CKSP
     age::Int
+    computerhs!::Function
+    computeops!::Function
+    opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
     
-    # Constructor from pointer and age
-    PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
-    
+    # Constructor from pointer and age (with default callback placeholders)
+    PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0, computerhs!::Function = x -> error("computerhs! not defined"), computeops!::Function = x -> error("computeops! not defined"), opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, computerhs!, computeops!, opts)
+
     # Constructor for empty KSP (null pointer)
-    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0, x -> error("computerhs! not defined"), x -> error("computeops! not defined"), nothing)
 end
 
 # Convenience constructor from petsclib instance
@@ -116,22 +119,26 @@ mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
     age::Int
     f!::Function
     updateJ!::Function
+    user_ctx::Any
+    opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
 
-    # Constructor from pointer and age
-    #PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    # Constructor from pointer and age (with defaults for callbacks and context)
+    PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts)
     
     # Constructor for empty SNES (null pointer)
     PetscSNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
-                        ptr, 
+                        ptr,
                         age,
                         x -> error("function not defined"),
                         x -> error("function not defined"),
+                        nothing,
+                        nothing,
                         )                  
 end
 
 # Convenience constructor from petsclib instance
 PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}(C_NULL, lib.age)
-PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = lib.age) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!)
+PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx::Any=nothing, age::Int = lib.age) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
 PetscSNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
@@ -196,6 +203,11 @@ IS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = IS{PetscLib}(ptr)
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
 Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
+# Allows a mutable IS to be passed as Ptr{CIS} (= Ptr{Ptr{Cvoid}}) to C
+# functions that write the IS handle into the pointed-to slot, e.g.
+# DMGetStratumIS. Julia passes pointer_from_objref(v), which is the address of
+# v.ptr (the first and only field), so PETSc writes directly into v.ptr.
+Base.unsafe_convert(::Type{Ptr{CIS}}, v::AbstractIS) = Ptr{CIS}(Base.pointer_from_objref(v))
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -318,7 +330,7 @@ const void = Cvoid
 const char = Cchar
 
 mutable struct PetscDraw end
-mutable struct DMLabel end
+const DMLabel = Ptr{Cvoid}  # C typedef struct _n_DMLabel *DMLabel (pointer type)
 mutable struct TSMonitorLGCtx end
 mutable struct PetscCtxDestroyFn end
 mutable struct PetscErrorCodeFn end
@@ -410,6 +422,7 @@ include("PetscDraw_wrappers.jl")
 include("PetscRegressor_wrappers.jl")
 include("PF_wrappers.jl")
 include("IS_wrappers.jl")
+# include("PC_wrappers.jl")  # excluded: PC type in ccall signatures needs fixing
 include("TS_wrappers.jl")
 include("AO_wrappers.jl")
 include("Tao_wrappers.jl")

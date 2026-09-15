@@ -268,21 +268,18 @@ function unsafe_localarray(
         error("either read or write should be true")
     end
     
-    if write && read
-        finalizer(v) do v
-            LibPETSc.VecRestoreArray(PetscLib, vec, v)
-            return nothing
+    restore = write && read ? LibPETSc.VecRestoreArray :
+              write ? LibPETSc.VecRestoreArrayWrite : LibPETSc.VecRestoreArrayRead
+    # The finalizer may run after the library was finalized/re-initialized or after the
+    # vector's owner destroyed it (borrowed handles): then there is nothing to restore.
+    finalizer(v) do v
+        (vec.ptr == C_NULL || !isdestroyable(vec, PetscLib)) && return nothing
+        try
+            restore(PetscLib, vec, v)
+        catch err
+            err isa LibPETSc.PetscError || rethrow()
         end
-    elseif write
-        finalizer(v) do v
-            LibPETSc.VecRestoreArrayWrite(PetscLib, vec, v)         
-            return nothing
-        end
-    elseif read
-        finalizer(v) do v
-            LibPETSc.VecRestoreArrayRead(PetscLib, vec,  v)
-            return nothing
-        end
+        return nothing
     end
     return v
 end

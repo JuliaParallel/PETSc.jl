@@ -21,10 +21,8 @@ end
 # Do the MPI tests first so we do not have mpi running inside MPI
 mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")
 
+# PETSc_jll >= 3.25.4 has MPI-enabled Windows binaries (MicrosoftMPI), so the MPI tests run everywhere
 do_mpi = true
-if Sys.iswindows()
-    do_mpi = false
-end
 
 include("init.jl")
 include("lib.jl")

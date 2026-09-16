@@ -34,7 +34,7 @@ jobs:
         os:
           - macOS-15-intel        # with intel processors 
           - ubuntu-latest
-          # - windows-latest  # Disabled: Windows PETSc_jll built without MPI, requires WSL for testing
+          - windows-latest        # PETSc_jll >= 3.25.4 ships MPI-enabled (MicrosoftMPI) Windows binaries
         arch:
           - x64 
         include:

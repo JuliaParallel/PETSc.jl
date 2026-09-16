@@ -1463,5 +1463,5 @@ if !isinteractive()
     PETSc.finalize(petsclib)
     MPI.Barrier(comm)
     MPI.Finalize()
-    ccall(:quick_exit, Cvoid, (Cint,), 0)
+    Sys.isapple() && ccall(:quick_exit, Cvoid, (Cint,), 0)   # macOS MPICH teardown workaround; not in the Windows CRT
 end

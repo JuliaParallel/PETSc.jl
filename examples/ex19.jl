@@ -524,5 +524,5 @@ MPI.Finalize()
 # all C atexit() handlers and avoids the crash.  Skip when running interactively
 # (e.g. include("ex19.jl") in the REPL) so the Julia session isn't killed.
 if !isinteractive()
-    ccall(:quick_exit, Cvoid, (Cint,), 0)
+    Sys.isapple() && ccall(:quick_exit, Cvoid, (Cint,), 0)   # macOS MPICH teardown workaround; not in the Windows CRT
 end

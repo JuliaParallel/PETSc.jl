@@ -239,8 +239,9 @@ function _reset_stale_register_flags(petsclib)
         end
     end
     if !ok && _taoterm_resettable[] === nothing
-        @warn "PETSc 3.25.x loses its Tao/TaoTerm types at PetscFinalize and the workaround cannot be applied " *
-              "with these binaries (internal symbols not exported): Tao objects can only be created before the first finalize" maxlog = 1
+        # see tao_usable_after_reinitialize(); a warning here would repeat in every process
+        @debug "PETSc 3.25.x loses its Tao/TaoTerm types at PetscFinalize and the workaround cannot be applied " *
+               "with these binaries (internal symbols not exported): Tao objects can only be created before the first finalize"
     end
     _taoterm_resettable[] = ok
     return nothing

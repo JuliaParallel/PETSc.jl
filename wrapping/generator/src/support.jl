@@ -21,6 +21,16 @@ function write_senums(io::IO, api::API, r::Rules)
     for name in sort!(collect(keys(api.senums)))
         println(io, "const $name = $(get(r.senum_overrides, name, "Ptr{Cchar}"))")
     end
+    println(io, "\n# The registered names of each string enum, e.g. `PCSetType(petsclib, pc, PCMG)`.")
+    println(io, "# Deprecated names (PETSC_DEPRECATED_MACRO) are skipped.")
+    for name in sort!(collect(keys(api.senums)))
+        vals = api.senum_values[name]
+        for key in api.senums[name]
+            v = vals[key]
+            occursin(r"^\"[^\"\\\\]*\"$", v) || continue
+            println(io, "const $key = $v   # $name")
+        end
+    end
 end
 
 """Typedefs that can be emitted (name => Julia value) and the names that cannot because their value

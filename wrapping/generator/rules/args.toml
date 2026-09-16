@@ -1,5 +1,6 @@
 # Hand-maintained per-function argument overrides. Merged over rules/args_mined.toml (this file
-# wins). Keys per argument: direction = "in"|"out", nullable, byref, size, prelude, nullinit, len.
+# wins). Keys per argument: direction = "in"|"out"|"inout", nullable, byref, size, prelude, nullinit, len.
+# "inout": a `T *x` scalar PETSc reads and overwrites; it is an argument and is returned.
 # See wrapping/WRAPPING.md.
 
 # PETSc allows NULL for the optional arrays of MatRestoreRow
@@ -447,3 +448,44 @@ size = "dim + 1"
 [VecTaggerComputeBoxes.boxes]
 prelude = "bs = VecTaggerGetBlockSize(petsclib, tagger)"
 size = "numBoxes * bs"
+
+# PETSc's manual page lists `name` under Input Parameters, but PetscObjectGetName returns it
+[PetscObjectGetName.name]
+direction = "out"
+
+# PCMGSetLevels(pc, levels, MPI_Comm *comms): optional per-level communicators, normally NULL
+[PCMGSetLevels.comms]
+direction = "in"
+nullable = true
+
+# Scalars passed by pointer that PETSc reads (PETSC_DECIDE, the array length) and then overwrites
+[PetscSplitOwnership.n]
+direction = "inout"
+[PetscSplitOwnership.M_N]
+direction = "inout"
+[PetscSplitOwnershipBlock.n]
+direction = "inout"
+[PetscSplitOwnershipBlock.M_N]
+direction = "inout"
+[PetscSplitOwnershipEqual.n]
+direction = "inout"
+[PetscSplitOwnershipEqual.M_N]
+direction = "inout"
+[PetscSortRemoveDupsInt.n]
+direction = "inout"
+[PetscSortRemoveDupsMPIInt.n]
+direction = "inout"
+[PetscSortRemoveDupsReal.n]
+direction = "inout"
+[PetscSortedRemoveDupsInt.n]
+direction = "inout"
+[PetscOptionsGetIntArray.nmax]
+direction = "inout"
+[PetscOptionsGetRealArray.nmax]
+direction = "inout"
+[PetscOptionsGetScalarArray.nmax]
+direction = "inout"
+[PetscOptionsGetBoolArray.nmax]
+direction = "inout"
+[PetscOptionsGetEnumArray.nmax]
+direction = "inout"

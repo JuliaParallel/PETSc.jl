@@ -181,7 +181,7 @@ end
 end 
 
 """
-	type::PetscRandomType = PetscRandomGetType(petsclib::PetscLibType, rnd::PetscRandom) 
+	type::String = PetscRandomGetType(petsclib::PetscLibType, rnd::PetscRandom) 
 Gets the type name (as a string) from the `PetscRandom`.
 
 Not Collective
@@ -616,7 +616,7 @@ end
 end 
 
 """
-	PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::PetscRandomType) 
+	PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::String) 
 Builds a context for generating a particular type of random numbers.
 
 Collective
@@ -635,11 +635,11 @@ See also: `PetscRandom`, `PetscRandomType`, `PetscRandomGetType()`, `PetscRandom
 # External Links
 $(_doc_external("Sys/PetscRandomSetType"))
 """
-function PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::PetscRandomType)
+function PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::String)
     error("PetscRandomSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscRandomSetType(petsclib::$UnionPetscLib, rnd::PetscRandom, type::PetscRandomType )
+@for_petsc function PetscRandomSetType(petsclib::$UnionPetscLib, rnd::PetscRandom, type::String )
 
     @chk ccall(
                (:PetscRandomSetType, $petsc_library),

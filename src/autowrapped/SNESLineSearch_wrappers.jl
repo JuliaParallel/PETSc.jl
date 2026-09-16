@@ -414,7 +414,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = SNESLineSearchGetOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch) 
+	prefix::String = SNESLineSearchGetOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the prefix used for searching for all
 SNESLineSearch options in the database.
 
@@ -447,7 +447,7 @@ end
                linesearch, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -686,7 +686,7 @@ end
 end 
 
 """
-	type::SNESLineSearchType = SNESLineSearchGetType(petsclib::PetscLibType, linesearch::SNESLineSearch) 
+	type::String = SNESLineSearchGetType(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the `SNESLinesearchType` of a `SNESLineSearch`
 
 Logically Collective
@@ -1735,7 +1735,7 @@ end
 end 
 
 """
-	SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::SNESLineSearchType) 
+	SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::String) 
 Sets the `SNESLinesearchType` of a `SNESLineSearch` object to indicate the line search algorithm that should be used by a given `SNES` solver
 
 Logically Collective
@@ -1755,11 +1755,11 @@ See also: `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate(
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetType"))
 """
-function SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::SNESLineSearchType)
+function SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::String)
     error("SNESLineSearchSetType: no generated method for these argument types")
 end
 
-@for_petsc function SNESLineSearchSetType(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, type::SNESLineSearchType )
+@for_petsc function SNESLineSearchSetType(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, type::String )
 
     @chk ccall(
                (:SNESLineSearchSetType, $petsc_library),

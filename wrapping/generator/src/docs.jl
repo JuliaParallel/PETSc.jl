@@ -107,7 +107,8 @@ function _finish_block(comment::Vector{String})
     incode = false
     for c in comment
         c = replace(c, "\$" => "")
-        c = replace(c, r"\[\]\(ch_\w+\),?\s*" => "")          # empty chapter links of the PETSc docs
+        c = replace(c, r"\[\]\((ch|sec)_\w+\),?\s*" => "")    # empty chapter/section links of the PETSc docs
+        c = replace(c, r"\[([^\]]+)\]\((ch|sec)_\w+\)" => s"\1")  # [text](sec_x): keep the text (Documenter has no target)
         if startswith(c, "-vb") || startswith(c, ".vb")               # PETSc verbatim block
             push!(out, "```"); incode = true; continue
         elseif startswith(c, "-ve") || startswith(c, ".ve")

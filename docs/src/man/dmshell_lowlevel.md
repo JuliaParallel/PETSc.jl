@@ -48,12 +48,6 @@ MPI.Init()
 petsclib = PETSc.getlib()
 PETSc.initialize(petsclib)
 
-# Create component DMs
-dm1 = Ref{LibPETSc.CDM}()
-dm2 = Ref{LibPETSc.CDM}()
-# ... create dm1 and dm2 ...
-
-# Create DMProduct
 # Create two simple component DMs (here using small box DMPlex meshes)
 dm1 = LibPETSc.DMPlexCreateBoxMesh(
     petsclib, MPI.COMM_WORLD, 2, LibPETSc.PETSC_FALSE,

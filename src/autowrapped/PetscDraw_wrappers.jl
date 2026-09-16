@@ -1464,7 +1464,7 @@ end
 end 
 
 """
-	title::Ptr{Cchar} = PetscDrawGetTitle(petsclib::PetscLibType, draw::PetscDraw) 
+	title::String = PetscDrawGetTitle(petsclib::PetscLibType, draw::PetscDraw) 
 Gets pointer to title of a `PetscDraw` context.
 
 Not Collective
@@ -1496,13 +1496,13 @@ end
                draw, title_,
               )
 
-	title = title_[]
+	title = title_[] == C_NULL ? "" : unsafe_string(title_[])
 
 	return title
 end 
 
 """
-	type::PetscDrawType = PetscDrawGetType(petsclib::PetscLibType, draw::PetscDraw) 
+	type::String = PetscDrawGetType(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the `PetscDraw` type as a string from the `PetscDraw` object.
 
 Not Collective
@@ -4744,7 +4744,7 @@ end
 end 
 
 """
-	PetscDrawSetType(petsclib::PetscLibType, draw::PetscDraw, type::PetscDrawType) 
+	PetscDrawSetType(petsclib::PetscLibType, draw::PetscDraw, type::String) 
 Builds graphics object for a particular implementation
 
 Collective
@@ -4763,11 +4763,11 @@ See also: `PetscDraw`, `PETSC_DRAW_X`, `PETSC_DRAW_TIKZ`, `PETSC_DRAW_IMAGE`, `P
 # External Links
 $(_doc_external("Draw/PetscDrawSetType"))
 """
-function PetscDrawSetType(petsclib::PetscLibType, draw::PetscDraw, type::PetscDrawType)
+function PetscDrawSetType(petsclib::PetscLibType, draw::PetscDraw, type::String)
     error("PetscDrawSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscDrawSetType(petsclib::$UnionPetscLib, draw::PetscDraw, type::PetscDrawType )
+@for_petsc function PetscDrawSetType(petsclib::$UnionPetscLib, draw::PetscDraw, type::String )
 
     @chk ccall(
                (:PetscDrawSetType, $petsc_library),

@@ -542,7 +542,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_pipelineksp), `KSP`, `KSPCG`, `KSPGMRES`, `KSPPIPECG`, `KSPPIPECR`, `KSPGROPPCG`
+See also: `KSP`, `KSPCG`, `KSPGMRES`, `KSPPIPECG`, `KSPPIPECR`, `KSPGROPPCG`
 
 # External Links
 $(_doc_external("KSP/KSPCGUseSingleReduction"))
@@ -999,7 +999,7 @@ end
 end 
 
 """
-	mat::PetscMat = KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractKSP, mattype::MatType) 
+	mat::PetscMat = KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractKSP, mattype::String) 
 Computes the explicit preconditioned operator, including diagonal scaling and null
 space removal if applicable.
 
@@ -1019,11 +1019,11 @@ See also: `KSP`, `KSPSetOperators()`, `KSPComputeEigenvaluesExplicitly()`, `PCCo
 # External Links
 $(_doc_external("KSP/KSPComputeOperator"))
 """
-function KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractKSP, mattype::MatType)
+function KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractKSP, mattype::String)
     error("KSPComputeOperator: no generated method for these argument types")
 end
 
-@for_petsc function KSPComputeOperator(petsclib::$UnionPetscLib, ksp::AbstractKSP, mattype::MatType )
+@for_petsc function KSPComputeOperator(petsclib::$UnionPetscLib, ksp::AbstractKSP, mattype::String )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1526,7 +1526,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: `KSP`, `KSPCG`, `KSPBCGS`, `KSPConvergenceTestFn`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPSetNormType()`, [](sec_flexibleksp),
+See also: `KSP`, `KSPCG`, `KSPBCGS`, `KSPConvergenceTestFn`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPSetNormType()`,
 `KSPConvergedReason`
 
 # External Links
@@ -2113,7 +2113,7 @@ end
 
 """
 	KSPFlexibleModifyPCKSP(petsclib::PetscLibType, ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
-modifies the attributes of the `PCKSP` preconditioner, see [](sec_flexibleksp).
+modifies the attributes of the `PCKSP` preconditioner, see .
 
 Input Parameters:
 - `ksp`       - the ksp context being used.
@@ -2124,7 +2124,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`
+See also: `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`
 
 # External Links
 $(_doc_external("KSP/KSPFlexibleModifyPCKSP"))
@@ -2148,7 +2148,7 @@ end
 
 """
 	KSPFlexibleModifyPCNoChange(petsclib::PetscLibType, ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
-this is the default used by the flexible Krylov methods - it doesn't change the preconditioner. [](sec_flexibleksp)
+this is the default used by the flexible Krylov methods - it doesn't change the preconditioner. 
 
 Input Parameters:
 - `ksp`       - the ksp context being used.
@@ -2159,7 +2159,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`, `KSPFlexibleModifyPCKSP()`
+See also: `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`, `KSPFlexibleModifyPCKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPFlexibleModifyPCNoChange"))
@@ -2183,7 +2183,7 @@ end
 
 """
 	KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::AbstractKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
-Sets the routine used by flexible `KSP` methods to modify the preconditioner. [](sec_flexibleksp)
+Sets the routine used by flexible `KSP` methods to modify the preconditioner. 
 
 Logically Collective
 
@@ -2195,7 +2195,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleModifyPCNoChange()`, `KSPFlexibleModifyPCKSP()`
+See also: `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleModifyPCNoChange()`, `KSPFlexibleModifyPCKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPFlexibleSetModifyPC"))
@@ -3093,7 +3093,7 @@ end
 end 
 
 """
-	strreason::Ptr{Cchar} = KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::AbstractKSP) 
+	strreason::String = KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::AbstractKSP) 
 Return a human readable string for a `KSPConvergedReason`
 
 Not Collective
@@ -3125,7 +3125,7 @@ end
                ksp, strreason_,
               )
 
-	strreason = strreason_[]
+	strreason = strreason_[] == C_NULL ? "" : unsafe_string(strreason_[])
 
 	return strreason
 end 
@@ -3833,7 +3833,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP) 
+	prefix::String = KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the prefix used for searching for all
 `KSP` options in the database.
 
@@ -3866,7 +3866,7 @@ end
                ksp, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -4234,7 +4234,7 @@ end
 end 
 
 """
-	type::KSPType = KSPGetType(petsclib::PetscLibType, ksp::AbstractKSP) 
+	type::String = KSPGetType(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the `KSP` type as a string from the `KSP` object.
 
 Not Collective
@@ -5124,7 +5124,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicToleranceCreate()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
+See also: `KSP`, `KSPMonitorDynamicToleranceCreate()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicTolerance"))
@@ -5160,7 +5160,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
+See also: `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicToleranceCreate"))
@@ -5230,7 +5230,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceCreate()`
+See also: `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicToleranceSetCoefficient"))
@@ -5448,7 +5448,7 @@ end
 end 
 
 """
-	KSPMonitorRegister(petsclib::PetscLibType, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+	KSPMonitorRegister(petsclib::PetscLibType, name::String, vtype::String, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Registers a Krylov subspace solver monitor routine that may be accessed with `KSPMonitorSetFromOptions()`
 
 Not Collective
@@ -5468,11 +5468,11 @@ See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorRegisterAll()`, `KSPMonitorSetFro
 # External Links
 $(_doc_external("KSP/KSPMonitorRegister"))
 """
-function KSPMonitorRegister(petsclib::PetscLibType, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid})
+function KSPMonitorRegister(petsclib::PetscLibType, name::String, vtype::String, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid})
     error("KSPMonitorRegister: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorRegister(petsclib::$UnionPetscLib, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
+@for_petsc function KSPMonitorRegister(petsclib::$UnionPetscLib, name::String, vtype::String, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorRegister, $petsc_library),
@@ -7035,7 +7035,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = KSPPythonGetType(petsclib::PetscLibType, ksp::AbstractKSP) 
+	pyname::String = KSPPythonGetType(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get the type of a `KSP` object implemented in Python.
 
 Not Collective
@@ -7067,7 +7067,7 @@ end
                ksp, pyname_,
               )
 
-	pyname = pyname_[]
+	pyname = pyname_[] == C_NULL ? "" : unsafe_string(pyname_[])
 
 	return pyname
 end 
@@ -8793,7 +8793,7 @@ end
 end 
 
 """
-	KSPSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPType) 
+	KSPSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::String) 
 Sets the algorithm/method to be used to solve the linear system with the given `KSP`
 
 Logically Collective
@@ -8812,11 +8812,11 @@ See also: `PCSetType()`, `KSPType`, `KSPRegister()`, `KSPCreate()`, `KSP`
 # External Links
 $(_doc_external("KSP/KSPSetType"))
 """
-function KSPSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPType)
+function KSPSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::String)
     error("KSPSetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::KSPType )
+@for_petsc function KSPSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::String )
 
     @chk ccall(
                (:KSPSetType, $petsc_library),

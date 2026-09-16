@@ -31,9 +31,6 @@ export dmda_star_fd_coloring
 
 using Libdl
 
-# String convenience wrappers for SetType functions
-include("string_wrappers.jl")
-include("string_wrappers_extra.jl")
 
 include("init.jl")
 include("vec.jl")       

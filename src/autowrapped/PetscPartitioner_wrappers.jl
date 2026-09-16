@@ -141,7 +141,7 @@ end
 end 
 
 """
-	name::PetscPartitionerType = PetscPartitionerGetType(petsclib::PetscLibType, part::PetscPartitioner) 
+	name::String = PetscPartitionerGetType(petsclib::PetscLibType, part::PetscPartitioner) 
 Gets the PetscPartitioner type name (as a string) from the object.
 
 Not Collective
@@ -397,7 +397,7 @@ end
 end 
 
 """
-	PetscPartitionerSetType(petsclib::PetscLibType, part::PetscPartitioner, name::PetscPartitionerType) 
+	PetscPartitionerSetType(petsclib::PetscLibType, part::PetscPartitioner, name::String) 
 Builds a particular `PetscPartitioner`
 
 Collective
@@ -416,11 +416,11 @@ See also: `PetscPartitionerGetType()`, `PetscPartitionerCreate()`
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerSetType"))
 """
-function PetscPartitionerSetType(petsclib::PetscLibType, part::PetscPartitioner, name::PetscPartitionerType)
+function PetscPartitionerSetType(petsclib::PetscLibType, part::PetscPartitioner, name::String)
     error("PetscPartitionerSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscPartitionerSetType(petsclib::$UnionPetscLib, part::PetscPartitioner, name::PetscPartitionerType )
+@for_petsc function PetscPartitionerSetType(petsclib::$UnionPetscLib, part::PetscPartitioner, name::String )
 
     @chk ccall(
                (:PetscPartitionerSetType, $petsc_library),

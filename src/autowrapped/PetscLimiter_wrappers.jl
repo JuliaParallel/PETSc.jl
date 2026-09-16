@@ -71,7 +71,7 @@ end
 end 
 
 """
-	name::PetscLimiterType = PetscLimiterGetType(petsclib::PetscLibType, lim::PetscLimiter) 
+	name::String = PetscLimiterGetType(petsclib::PetscLibType, lim::PetscLimiter) 
 Gets the `PetscLimiterType` name (as a string) from the `PetscLimiter`.
 
 Not Collective
@@ -211,7 +211,7 @@ end
 end 
 
 """
-	PetscLimiterSetType(petsclib::PetscLibType, lim::PetscLimiter, name::PetscLimiterType) 
+	PetscLimiterSetType(petsclib::PetscLibType, lim::PetscLimiter, name::String) 
 Builds a `PetscLimiter` for a given `PetscLimiterType`
 
 Collective
@@ -230,11 +230,11 @@ See also: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterGetType()`, `PetscLim
 # External Links
 $(_doc_external("FV/PetscLimiterSetType"))
 """
-function PetscLimiterSetType(petsclib::PetscLibType, lim::PetscLimiter, name::PetscLimiterType)
+function PetscLimiterSetType(petsclib::PetscLibType, lim::PetscLimiter, name::String)
     error("PetscLimiterSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscLimiterSetType(petsclib::$UnionPetscLib, lim::PetscLimiter, name::PetscLimiterType )
+@for_petsc function PetscLimiterSetType(petsclib::$UnionPetscLib, lim::PetscLimiter, name::String )
 
     @chk ccall(
                (:PetscLimiterSetType, $petsc_library),

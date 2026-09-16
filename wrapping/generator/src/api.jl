@@ -26,6 +26,7 @@ struct API
     standalone::Vector{String}            # sorted names of functions not attached to a class
     enums::Dict{String,Vector{String}}    # enum name => values ("NAME" or "NAME = value")
     senums::Dict{String,Vector{String}}   # string-enum name => keys
+    senum_values::Dict{String,Dict{String,String}}  # string-enum name => (key => C string literal)
     typedefs::Dict{String,String}         # typedef name => C type
     structs::Dict{String,Vector{String}}  # struct name => raw record strings
 end
@@ -66,8 +67,10 @@ function load_api(path::AbstractString)
     sort!(standalone)
     enums = Dict(String(k) => String[_str(v) for v in e[:values]] for (k, e) in pairs(js[:enums]))
     senums = Dict(String(k) => sort!(String[String(kk) for kk in keys(e[:values])]) for (k, e) in pairs(js[:senums]))
+    senum_values = Dict(String(k) => Dict{String,String}(String(kk) => _str(v) for (kk, v) in pairs(e[:values]))
+                        for (k, e) in pairs(js[:senums]))
     typedefs = Dict(String(k) => _str(t[:value]) for (k, t) in pairs(js[:typedefs]))
     structs = Dict(String(k) => String[_str(r[:type]) for r in s[:records]] for (k, s) in pairs(js[:structs]))
     API(_str(js[:petsc_version]), _str(js[:getapi_layout]), functions, classes, standalone,
-        enums, senums, typedefs, structs)
+        enums, senums, senum_values, typedefs, structs)
 end

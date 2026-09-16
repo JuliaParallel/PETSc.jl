@@ -6,6 +6,7 @@ function doc_header(r::Rules, args::Vector{FArg}, fname::String)
         if a.output
             push!(outs, a.name)
             push!(outs_doc, "$(a.name)::$(a.typename)")
+            a.inout && push!(ins, "$(a.name)::$(abstract_arg_type(r, a.typename))")
         else
             push!(ins, isempty(a.typename) ? a.name : "$(a.name)::$(abstract_arg_type(r, a.typename))")
         end

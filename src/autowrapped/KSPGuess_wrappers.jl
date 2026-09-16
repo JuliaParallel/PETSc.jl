@@ -155,7 +155,7 @@ end
 end 
 
 """
-	type::KSPGuessType = KSPGuessGetType(petsclib::PetscLibType, guess::KSPGuess) 
+	type::String = KSPGuessGetType(petsclib::PetscLibType, guess::KSPGuess) 
 Gets the `KSPGuessType` as a string from the `KSPGuess` object.
 
 Not Collective
@@ -307,7 +307,7 @@ end
 end 
 
 """
-	KSPGuessSetType(petsclib::PetscLibType, guess::KSPGuess, type::KSPGuessType) 
+	KSPGuessSetType(petsclib::PetscLibType, guess::KSPGuess, type::String) 
 Sets the type of a `KSPGuess`. Each `KSPGuessType` provides a different algorithm for computing the initial guess.
 
 Logically Collective
@@ -326,11 +326,11 @@ See also: `KSP`, `KSPGuess`, `KSPGuessType`, `KSPGuessRegister()`, `KSPGuessCrea
 # External Links
 $(_doc_external("KSP/KSPGuessSetType"))
 """
-function KSPGuessSetType(petsclib::PetscLibType, guess::KSPGuess, type::KSPGuessType)
+function KSPGuessSetType(petsclib::PetscLibType, guess::KSPGuess, type::String)
     error("KSPGuessSetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPGuessSetType(petsclib::$UnionPetscLib, guess::KSPGuess, type::KSPGuessType )
+@for_petsc function KSPGuessSetType(petsclib::$UnionPetscLib, guess::KSPGuess, type::String )
 
     @chk ccall(
                (:KSPGuessSetType, $petsc_library),

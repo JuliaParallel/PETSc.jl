@@ -345,7 +345,7 @@ end
 end 
 
 """
-	name::PetscSpaceType = PetscSpaceGetType(petsclib::PetscLibType, sp::PetscSpace) 
+	name::String = PetscSpaceGetType(petsclib::PetscLibType, sp::PetscSpace) 
 Gets the `PetscSpaceType` (as a string) from the object.
 
 Not Collective
@@ -765,7 +765,7 @@ end
 end 
 
 """
-	PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::PetscSpaceType) 
+	PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::String) 
 Builds a particular `PetscSpace`
 
 Collective
@@ -784,11 +784,11 @@ See also: `PetscSpace`, `PetscSpaceType`, `PetscSpaceGetType()`, `PetscSpaceCrea
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetType"))
 """
-function PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::PetscSpaceType)
+function PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::String)
     error("PetscSpaceSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscSpaceSetType(petsclib::$UnionPetscLib, sp::PetscSpace, name::PetscSpaceType )
+@for_petsc function PetscSpaceSetType(petsclib::$UnionPetscLib, sp::PetscSpace, name::String )
 
     @chk ccall(
                (:PetscSpaceSetType, $petsc_library),

@@ -64,45 +64,42 @@ MPI.Finalize()
 
 ```julia
 # General index set from array
-LibPETSc.ISCreateGeneral(petsclib, comm, n, indices, copymode, is)
+is = LibPETSc.ISCreateGeneral(petsclib, comm, n, indices, copymode)
 
 # Stride index set: first, first+step, first+2*step, ...
-LibPETSc.ISCreateStride(petsclib, comm, n, first, step, is)
+is = LibPETSc.ISCreateStride(petsclib, comm, n, first, step)
 
 # Block index set: block-structured indices
-LibPETSc.ISCreateBlock(petsclib, comm, blocksize, n, indices, copymode, is)
+is = LibPETSc.ISCreateBlock(petsclib, comm, blocksize, n, indices, copymode)
 ```
 
 ### Set Operations
 
 ```julia
 # Union of two index sets
-LibPETSc.ISSum(petsclib, is1, is2, is_union)
+is_union = LibPETSc.ISSum(petsclib, is1, is2)
 
 # Difference: is1 - is2
-LibPETSc.ISDifference(petsclib, is1, is2, is_diff)
+is_diff = LibPETSc.ISDifference(petsclib, is1, is2)
 
 # Intersection
-LibPETSc.ISIntersect(petsclib, is1, is2, is_intersect)
+is_intersect = LibPETSc.ISIntersect(petsclib, is1, is2)
 
-# Complement: all indices in [0, n) not in is
-LibPETSc.ISComplement(petsclib, is, nmin, nmax, is_complement)
+# Complement: all indices in [nmin, nmax) not in is
+is_complement = LibPETSc.ISComplement(petsclib, is, nmin, nmax)
 ```
 
 ### Querying Properties
 
 ```julia
-# Check if index set is sorted
-is_sorted = Ref{PetscBool}()
-LibPETSc.ISSorted(petsclib, is, is_sorted)
+# Check if index set is sorted (returns a PetscBool)
+is_sorted = LibPETSc.ISSorted(petsclib, is) == LibPETSc.PETSC_TRUE
 
 # Check if identity permutation
-is_identity = Ref{PetscBool}()
-LibPETSc.ISIdentity(petsclib, is, is_identity)
+is_identity = LibPETSc.ISIdentity(petsclib, is) == LibPETSc.PETSC_TRUE
 
 # Check if a permutation
-is_perm = Ref{PetscBool}()
-LibPETSc.ISPermutation(petsclib, is, is_perm)
+is_perm = LibPETSc.ISPermutation(petsclib, is) == LibPETSc.PETSC_TRUE
 ```
 
 ## Index Set Types
@@ -118,12 +115,12 @@ Index sets are used to create scatter contexts for moving data between vectors:
 
 ```julia
 # Create scatter context
-scatter = Ref{LibPETSc.VecScatter}()
-LibPETSc.VecScatterCreate(petsclib, vec_from, is_from, vec_to, is_to, scatter)
+scatter = LibPETSc.VecScatterCreate(petsclib, vec_from, is_from, vec_to, is_to)
 
 # Perform scatter operation
-LibPETSc.VecScatterBegin(petsclib, scatter[], vec_from, vec_to, INSERT_VALUES, SCATTER_FORWARD)
-LibPETSc.VecScatterEnd(petsclib, scatter[], vec_from, vec_to, INSERT_VALUES, SCATTER_FORWARD)
+LibPETSc.VecScatterBegin(petsclib, scatter, vec_from, vec_to, LibPETSc.INSERT_VALUES, LibPETSc.SCATTER_FORWARD)
+LibPETSc.VecScatterEnd(petsclib, scatter, vec_from, vec_to, LibPETSc.INSERT_VALUES, LibPETSc.SCATTER_FORWARD)
+LibPETSc.VecScatterDestroy(petsclib, scatter)
 ```
 
 ## Parallel Considerations

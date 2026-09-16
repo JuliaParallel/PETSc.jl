@@ -57,7 +57,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`, `PetscViewerASCIIPushTab()`
 
@@ -95,7 +95,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscViewerASCIIOpen()`, `PetscViewerDestroy()`, `PetscViewerSetType()`,
+See also: `PETSCVIEWERASCII`, `PetscViewerASCIIOpen()`, `PetscViewerDestroy()`, `PetscViewerSetType()`,
 `PetscViewerCreate()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`
 
 # External Links
@@ -135,7 +135,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `PetscViewerASCIIGetStdout()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDERR_WORLD`,
+See also: `PetscViewerASCIIGetStdout()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDERR_WORLD`,
 `PETSC_VIEWER_STDERR_SELF`
 
 # External Links
@@ -175,7 +175,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `PetscViewerASCIIGetStderr()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDOUT_WORLD`,
+See also: `PetscViewerASCIIGetStderr()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDOUT_WORLD`,
 `PETSC_VIEWER_STDOUT_SELF`
 
 # External Links
@@ -214,7 +214,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIISetTab()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`, `PetscViewerASCIIPushTab()`
@@ -256,7 +256,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIRead()`, `PETSCVIEWERASCII`,
+See also: `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIRead()`, `PETSCVIEWERASCII`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerPushFormat()`, `PETSC_VIEWER_STDOUT_`, `PETSC_VIEWER_STDERR_`,
 `PETSC_VIEWER_STDOUT_WORLD`, `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIGetStdout()`, `PetscViewerASCIIGetStderr()`
 
@@ -297,7 +297,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIOpenWithFileUnit()`,
+See also: `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIOpenWithFileUnit()`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerPushFormat()`, `PETSC_VIEWER_STDOUT_`, `PETSC_VIEWER_STDERR_`,
 `PETSC_VIEWER_STDOUT_WORLD`, `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIOpen()`, `PetscViewerASCIISetFILE()`, `PETSCVIEWERASCII`
 
@@ -334,7 +334,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewerASCIIPushSynchronized()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`,
+See also: `PetscViewerASCIIPushSynchronized()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`,
 `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`
 
@@ -370,7 +370,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPushTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`
 
@@ -405,7 +405,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`, `PetscViewerASCIIPopSynchronized()`,
+See also: `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`, `PetscViewerASCIIPopSynchronized()`,
 `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`
 
@@ -441,7 +441,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`
 
@@ -482,7 +482,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`,
+See also: `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -556,7 +556,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIGetTab()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`,
@@ -594,7 +594,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`,
 `PetscViewerASCIIPushTab()`
@@ -631,7 +631,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIPushTab()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`
 
@@ -670,7 +670,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`,
+See also: `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`,
 `PetscViewerDrawOpen()`, `PetscViewerAndFormatDestroy()`
 
 # External Links
@@ -706,7 +706,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerAndFormatCreate()`, `PetscViewerSocketOpen()`,
+See also: `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerAndFormatCreate()`, `PetscViewerSocketOpen()`,
 `PetscViewerASCIIOpen()`, `PetscViewerCreate()`, `PetscViewerDrawOpen()`
 
 # External Links
@@ -742,7 +742,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerGetOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
+See also: `PetscViewer`, `PetscViewerGetOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerAppendOptionsPrefix"))
@@ -776,7 +776,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryAddMPIIOOffset"))
@@ -812,7 +812,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetDescriptor"))
@@ -850,7 +850,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetFlowControl()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetFlowControl()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetFlowControl"))
@@ -889,7 +889,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinaryGetSkipInfo()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinaryGetSkipInfo()`,
 `PetscViewerBinarySetSkipInfo()`
 
 # External Links
@@ -928,7 +928,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetMPIIODescriptor"))
@@ -966,7 +966,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryAddMPIIOOffset()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryAddMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetMPIIOOffset"))
@@ -1004,7 +1004,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinarySetSkipHeader()`
 
 # External Links
@@ -1043,7 +1043,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinarySetSkipOptions()`, `PetscViewerBinarySetSkipInfo()`, `PetscViewerBinaryGetInfoPointer()`
 
 # External Links
@@ -1082,7 +1082,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinarySetSkipOptions()`
 
 # External Links
@@ -1121,7 +1121,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetUseMPIIO"))
@@ -1173,7 +1173,7 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`, `PetscViewerBinarySetUseMPIIO()`,
 `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
@@ -1217,7 +1217,7 @@ Output Parameters:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`
 
@@ -1263,7 +1263,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWriteAll()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWriteAll()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryReadAll"))
@@ -1301,7 +1301,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -1322,7 +1322,7 @@ end
                viewer, data_,
               )
 
-	data = unsafe_string(data_[])
+	data = data_[] == C_NULL ? "" : unsafe_string(data_[])
 
 	return data
 end 
@@ -1339,7 +1339,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetFlowControl()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetFlowControl()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinarySetFlowControl"))
@@ -1376,7 +1376,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinaryGetSkipHeader()`
 
 # External Links
@@ -1414,7 +1414,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
 `PetscViewerBinaryGetSkipOptions()`, `PetscViewerBinaryGetSkipInfo()`, `PetscViewerBinaryGetInfoPointer()`
 
 # External Links
@@ -1452,7 +1452,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinaryGetSkipOptions()`
 
 # External Links
@@ -1491,7 +1491,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
 `PetscViewerBinaryGetUseMPIIO()`
 
 # External Links
@@ -1528,7 +1528,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
 `PetscViewerBinaryGetSkipOptions()`, `PetscViewerBinaryGetSkipInfo()`
 
 # External Links
@@ -1565,7 +1565,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`, `PetscDataType`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -1605,7 +1605,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryReadAll()`
+See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryReadAll()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryWriteAll"))
@@ -1639,7 +1639,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -1744,7 +1744,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerCGNSGetSolutionName(petsclib::PetscLibType, viewer::PetscViewer) 
+	name::String = PetscViewerCGNSGetSolutionName(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets name of FlowSolution of the viewer
 
 Collective
@@ -1776,7 +1776,7 @@ end
                viewer, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -1913,7 +1913,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCheckReadable"))
@@ -1946,7 +1946,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCheckWritable"))
@@ -1983,7 +1983,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerType`
+See also: `PetscViewer`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerType`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCreate"))
@@ -2018,7 +2018,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`
+See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDestroy"))
@@ -2053,7 +2053,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseSet()`
+See also: `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseSet()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawBaseAdd"))
@@ -2087,7 +2087,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseAdd()`
+See also: `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseAdd()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawBaseSet"))
@@ -2120,7 +2120,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawClear"))
@@ -2157,7 +2157,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetBounds()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetBounds()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetBounds"))
@@ -2199,7 +2199,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDraw"))
@@ -2239,7 +2239,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetLG()`, `PetscViewerDrawOpen()`
+See also: `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetLG()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDrawAxis"))
@@ -2279,7 +2279,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscDrawLG`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
+See also: `PetscDrawLG`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDrawLG"))
@@ -2304,7 +2304,7 @@ end
 end 
 
 """
-	drawtype::PetscDrawType = PetscViewerDrawGetDrawType(petsclib::PetscLibType, v::PetscViewer) 
+	drawtype::String = PetscViewerDrawGetDrawType(petsclib::PetscLibType, v::PetscViewer) 
 Get the underlying `PetscDrawType` used by a `PETSCVIEWERDRAW` viewer.
 
 Not Collective
@@ -2355,7 +2355,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetHold"))
@@ -2393,7 +2393,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetPause"))
@@ -2418,7 +2418,7 @@ end
 end 
 
 """
-	title::Ptr{Cchar} = PetscViewerDrawGetTitle(petsclib::PetscLibType, v::PetscViewer) 
+	title::String = PetscViewerDrawGetTitle(petsclib::PetscLibType, v::PetscViewer) 
 Get the default title used for `PetscDraw` windows created by a `PETSCVIEWERDRAW` viewer.
 
 Not Collective; No Fortran Support
@@ -2450,7 +2450,7 @@ end
                v, title_,
               )
 
-	title = title_[]
+	title = title_[] == C_NULL ? "" : unsafe_string(title_[])
 
 	return title
 end 
@@ -2485,7 +2485,7 @@ program pauses after `PetscDrawPause()` has been called
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscDrawCreate()`, `PetscViewerDestroy()`, `PetscViewerDrawGetDraw()`, `PetscViewerCreate()`, `PETSC_VIEWER_DRAW_`,
+See also: `PETSCVIEWERDRAW`, `PetscDrawCreate()`, `PetscViewerDestroy()`, `PetscViewerDrawGetDraw()`, `PetscViewerCreate()`, `PETSC_VIEWER_DRAW_`,
 `PETSC_VIEWER_DRAW_WORLD`, `PETSC_VIEWER_DRAW_SELF`
 
 # External Links
@@ -2561,7 +2561,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetBounds"))
@@ -2584,7 +2584,7 @@ end
 end 
 
 """
-	PetscViewerDrawSetDrawType(petsclib::PetscLibType, v::PetscViewer, drawtype::PetscDrawType) 
+	PetscViewerDrawSetDrawType(petsclib::PetscLibType, v::PetscViewer, drawtype::String) 
 Set the underlying `PetscDrawType` used by a `PETSCVIEWERDRAW` viewer.
 
 Logically Collective
@@ -2600,11 +2600,11 @@ See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawGet
 # External Links
 $(_doc_external("Draw/PetscViewerDrawSetDrawType"))
 """
-function PetscViewerDrawSetDrawType(petsclib::PetscLibType, v::PetscViewer, drawtype::PetscDrawType)
+function PetscViewerDrawSetDrawType(petsclib::PetscLibType, v::PetscViewer, drawtype::String)
     error("PetscViewerDrawSetDrawType: no generated method for these argument types")
 end
 
-@for_petsc function PetscViewerDrawSetDrawType(petsclib::$UnionPetscLib, v::PetscViewer, drawtype::PetscDrawType )
+@for_petsc function PetscViewerDrawSetDrawType(petsclib::$UnionPetscLib, v::PetscViewer, drawtype::String )
 
     @chk ccall(
                (:PetscViewerDrawSetDrawType, $petsc_library),
@@ -2629,7 +2629,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetHold"))
@@ -2703,7 +2703,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetPause"))
@@ -2875,7 +2875,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerExodusIIGetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt) 
+	name::String = PetscViewerExodusIIGetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt) 
 Gets the name of a nodal variable.
 
 Collective;
@@ -2908,7 +2908,7 @@ end
                viewer, idx, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -3068,7 +3068,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerExodusIIGetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt) 
+	name::String = PetscViewerExodusIIGetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt) 
 Gets the name of a zonal variable.
 
 Collective;
@@ -3101,7 +3101,7 @@ end
                viewer, idx, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -3454,7 +3454,7 @@ FILE_MODE_APPEND - open existing file for binary output
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+See also: `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFileGetMode"))
@@ -3479,7 +3479,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerFileGetName(petsclib::PetscLibType, viewer::PetscViewer) 
+	name::String = PetscViewerFileGetName(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the name of the file the `PetscViewer` is using
 
 Not Collective
@@ -3492,7 +3492,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerFileSetName()`
+See also: `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerFileSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFileGetName"))
@@ -3511,7 +3511,7 @@ end
                viewer, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -3533,7 +3533,7 @@ FILE_MODE_APPEND - open existing file for output
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+See also: `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFileSetMode"))
@@ -3567,7 +3567,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerDestroy()`,
+See also: `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerDestroy()`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIISynchronizedPrintf()`
 
 # External Links
@@ -3597,7 +3597,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
-See also: [](sec_viewers), `PetscViewer`, `PetscFinalize()`, `PetscViewerInitializePackage()`
+See also: `PetscViewer`, `PetscFinalize()`, `PetscViewerInitializePackage()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFinalizePackage"))
@@ -3831,7 +3831,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerWriteable()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerCreate()`, `PetscViewerDestroy()`,
+See also: `PetscViewer`, `PetscViewerWriteable()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerCreate()`, `PetscViewerDestroy()`,
 `PetscViewerSetType()`
 
 # External Links
@@ -3879,7 +3879,7 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerGLVisType`
+See also: `PETSCVIEWERGLVIS`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerGLVisType`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisOpen"))
@@ -3921,7 +3921,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectSetName()`
+See also: `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisSetFields"))
@@ -3956,7 +3956,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
+See also: `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisSetPrecision"))
@@ -3990,7 +3990,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
+See also: `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisSetSnapId"))
@@ -4026,7 +4026,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`, `PetscViewerType`,
+See also: `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`, `PetscViewerType`,
 `PetscViewerPushFormat()`, `PetscViewerPopFormat()`, `PetscViewerDrawOpen()`, `PetscViewerSocketOpen()`
 
 # External Links
@@ -4052,7 +4052,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = PetscViewerGetOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer) 
+	prefix::String = PetscViewerGetOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the prefix used for searching for
 `PetscViewer` options in the database during `PetscViewerSetFromOptions()`.
 
@@ -4066,7 +4066,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerAppendOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
+See also: `PetscViewer`, `PetscViewerAppendOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGetOptionsPrefix"))
@@ -4085,7 +4085,7 @@ end
                viewer, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -4106,7 +4106,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
+See also: `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
 `PetscViewerFlush()`, `PetscViewerRestoreSubViewer()`
 
 # External Links
@@ -4132,7 +4132,7 @@ end
 end 
 
 """
-	type::PetscViewerType = PetscViewerGetType(petsclib::PetscLibType, viewer::PetscViewer) 
+	type::String = PetscViewerGetType(petsclib::PetscLibType, viewer::PetscViewer) 
 Returns the type of a `PetscViewer`.
 
 Not Collective
@@ -4145,7 +4145,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewerType`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `PetscViewerType`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGetType"))
@@ -4184,7 +4184,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetBaseDimension2"))
@@ -4222,7 +4222,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetCollective"))
@@ -4260,7 +4260,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCompress()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCompress()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetCompress"))
@@ -4380,7 +4380,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5SetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetDefaultTimestepping"))
@@ -4418,7 +4418,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetFileId"))
@@ -4443,7 +4443,7 @@ end
 end 
 
 """
-	abspath::Ptr{Cchar} = PetscViewerHDF5GetGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String) 
+	abspath::String = PetscViewerHDF5GetGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String) 
 Get the current HDF5 group name (full path), set with `PetscViewerHDF5PushGroup()`/`PetscViewerHDF5PopGroup()`.
 
 Not Collective
@@ -4457,7 +4457,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetGroup"))
@@ -4476,7 +4476,7 @@ end
                viewer, path, abspath_,
               )
 
-	abspath = abspath_[]
+	abspath = abspath_[] == C_NULL ? "" : unsafe_string(abspath_[])
 
 	return abspath
 end 
@@ -4496,7 +4496,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
+See also: `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
 `PetscReal`, `PetscViewerHDF5SetSPOutput()`
 
 # External Links
@@ -4535,7 +4535,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5SetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5SetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetTimestep"))
@@ -4575,7 +4575,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasAttribute"))
@@ -4614,7 +4614,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasGroup()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasGroup()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasDataset"))
@@ -4653,7 +4653,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasGroup"))
@@ -4692,7 +4692,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasObject"))
@@ -4732,7 +4732,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasObjectAttribute"))
@@ -4767,7 +4767,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5IncrementTimestep"))
@@ -4803,7 +4803,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5IsTimestepping"))
@@ -4892,7 +4892,7 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerHDF5SetBaseDimension2()`,
+See also: `PETSCVIEWERHDF5`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerHDF5SetBaseDimension2()`,
 `PetscViewerHDF5SetSPOutput()`, `PetscViewerHDF5GetBaseDimension2()`, `VecView()`, `MatView()`, `VecLoad()`,
 `MatLoad()`, `PetscFileMode`, `PetscViewer`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`
 
@@ -4936,7 +4936,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5OpenGroup"))
@@ -4963,31 +4963,6 @@ end
 end 
 
 """
-	rel::PetscBool = PetscViewerHDF5PathIsRelative(petsclib::PetscLibType, path::String, emptyIsRelative::PetscBool) 
-
-# External Links
-$(_doc_external("Sys/PetscViewerHDF5PathIsRelative"))
-"""
-function PetscViewerHDF5PathIsRelative(petsclib::PetscLibType, path::String, emptyIsRelative::PetscBool)
-    error("PetscViewerHDF5PathIsRelative: no generated method for these argument types")
-end
-
-@for_petsc function PetscViewerHDF5PathIsRelative(petsclib::$UnionPetscLib, path::String, emptyIsRelative::PetscBool )
-	rel_ = Ref{PetscBool}()
-
-    @chk ccall(
-               (:PetscViewerHDF5PathIsRelative, $petsc_library),
-               PetscErrorCode,
-               (Ptr{Cchar}, PetscBool, Ptr{PetscBool}),
-               path, emptyIsRelative, rel_,
-              )
-
-	rel = rel_[]
-
-	return rel
-end 
-
-"""
 	PetscViewerHDF5PopGroup(petsclib::PetscLibType, viewer::PetscViewer) 
 Return the current HDF5 group for output to the previous value
 
@@ -4998,7 +4973,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PopGroup"))
@@ -5031,7 +5006,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PopTimestepping"))
@@ -5065,7 +5040,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PushGroup"))
@@ -5098,7 +5073,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PushTimestepping"))
@@ -5138,7 +5113,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5ReadAttribute"))
@@ -5180,7 +5155,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
 `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
@@ -5261,7 +5236,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetBaseDimension2"))
@@ -5298,7 +5273,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetCollective"))
@@ -5335,7 +5310,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCompress()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCompress()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetCompress"))
@@ -5440,7 +5415,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5GetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetDefaultTimestepping"))
@@ -5478,7 +5453,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
+See also: `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
 `PetscReal`, `PetscViewerHDF5GetSPOutput()`
 
 # External Links
@@ -5513,7 +5488,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetTimestep"))
@@ -5550,7 +5525,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5HasAttribute()`,
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5HasAttribute()`,
 `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
@@ -5585,7 +5560,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5WriteGroup"))
@@ -5622,7 +5597,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
+See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
 `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
@@ -5651,7 +5626,7 @@ This function initializes everything in the `PetscViewer` package.
 
 Level: developer
 
-See also: [](sec_viewers), `PetscViewer`, `PetscInitialize()`, `PetscViewerFinalizePackage()`
+See also: `PetscViewer`, `PetscInitialize()`, `PetscViewerFinalizePackage()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerInitializePackage"))
@@ -5762,7 +5737,7 @@ end
                viewer, name_,
               )
 
-	name = unsafe_string(name_[])
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -6201,7 +6176,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
+See also: `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
 `PetscViewerSetFormat()`, `PetscViewerPushFormat()`
 
 # External Links
@@ -6236,7 +6211,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
+See also: `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
 `PetscViewerSetFormat()`, `PetscViewerPopFormat()`
 
 # External Links
@@ -6274,7 +6249,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PETSCVIEWERPYTHON`, `PetscViewerPythonSetType()`, `PetscPythonInitialize()`, `PetscViewerPythonViewObject()`
+See also: `PetscViewer`, `PetscViewerType`, `PETSCVIEWERPYTHON`, `PetscViewerPythonSetType()`, `PetscPythonInitialize()`, `PetscViewerPythonViewObject()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonCreate"))
@@ -6299,7 +6274,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = PetscViewerPythonGetType(petsclib::PetscLibType, viewer::PetscViewer) 
+	pyname::String = PetscViewerPythonGetType(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the Python name of a `PetscViewer` object implemented in Python.
 
 Not Collective
@@ -6312,7 +6287,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`, `PetscViewerPythonSetType()`
+See also: `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`, `PetscViewerPythonSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonGetType"))
@@ -6331,7 +6306,7 @@ end
                viewer, pyname_,
               )
 
-	pyname = pyname_[]
+	pyname = pyname_[] == C_NULL ? "" : unsafe_string(pyname_[])
 
 	return pyname
 end 
@@ -6351,7 +6326,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`
+See also: `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonSetType"))
@@ -6385,7 +6360,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerPythonCreate()`
+See also: `PetscViewer`, `PetscViewerPythonCreate()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonViewObject"))
@@ -6424,7 +6399,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `PetscViewerReadable()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`
 
@@ -6464,7 +6439,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewerRead()`, `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: `PetscViewerRead()`, `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerReadable"))
@@ -6500,7 +6475,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscViewerRegisterAll()`
+See also: `PetscViewerRegisterAll()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerRegister"))
@@ -6535,7 +6510,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerGetSubViewer()`,
+See also: `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerGetSubViewer()`,
 `PetscViewerFlush()`
 
 # External Links
@@ -6578,7 +6553,7 @@ the user unblocks the problem with an external tool that access the object with 
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PETSC_VIEWER_SAWS_()`, `PetscObjectSAWsBlock()`,
+See also: `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PETSC_VIEWER_SAWS_()`, `PetscObjectSAWsBlock()`,
 `PetscObjectSAWsViewOff()`, `PetscObjectSAWsTakeAccess()`, `PetscObjectSAWsGrantAccess()`
 
 # External Links
@@ -6614,7 +6589,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerType`
+See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerType`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetFromOptions"))
@@ -6647,7 +6622,7 @@ Input Parameters:
 - `viewer` - the `PetscViewer` context
 - `prefix` - the prefix to prepend to all option names
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerSetFromOptions()`, `PetscViewerAppendOptionsPrefix()`
+See also: `PetscViewer`, `PetscViewerSetFromOptions()`, `PetscViewerAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetOptionsPrefix"))
@@ -6670,7 +6645,7 @@ end
 end 
 
 """
-	PetscViewerSetType(petsclib::PetscLibType, viewer::PetscViewer, type::PetscViewerType) 
+	PetscViewerSetType(petsclib::PetscLibType, viewer::PetscViewer, type::String) 
 Builds `PetscViewer` for a particular implementation.
 
 Collective
@@ -6684,16 +6659,16 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerGetType()`, `PetscViewerType`, `PetscViewerPushFormat()`
+See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerGetType()`, `PetscViewerType`, `PetscViewerPushFormat()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetType"))
 """
-function PetscViewerSetType(petsclib::PetscLibType, viewer::PetscViewer, type::PetscViewerType)
+function PetscViewerSetType(petsclib::PetscLibType, viewer::PetscViewer, type::String)
     error("PetscViewerSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscViewerSetType(petsclib::$UnionPetscLib, viewer::PetscViewer, type::PetscViewerType )
+@for_petsc function PetscViewerSetType(petsclib::$UnionPetscLib, viewer::PetscViewer, type::String )
 
     @chk ccall(
                (:PetscViewerSetType, $petsc_library),
@@ -6717,7 +6692,7 @@ Input Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`
+See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetUp"))
@@ -6767,7 +6742,7 @@ Environmental variables:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PETSCVIEWERSOCKET`, `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerSetType()`,
+See also: `PETSCVIEWERBINARY`, `PETSCVIEWERSOCKET`, `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerSetType()`,
 `PetscViewerSocketSetConnection()`, `PETSC_VIEWER_SOCKET_`, `PETSC_VIEWER_SOCKET_WORLD`,
 `PETSC_VIEWER_SOCKET_SELF`, `PetscViewerBinaryWrite()`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWriteStringArray()`,
 `PetscBinaryViewerGetDescriptor()`, `PetscMatlabEngineCreate()`
@@ -6809,7 +6784,7 @@ a connection from elsewhere
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERMATLAB`, `PETSCVIEWERSOCKET`, `PetscViewerSocketOpen()`
+See also: `PETSCVIEWERMATLAB`, `PETSCVIEWERSOCKET`, `PetscViewerSocketOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSocketSetConnection"))
@@ -6832,7 +6807,7 @@ end
 end 
 
 """
-	string::Ptr{Cchar},len::Csize_t = PetscViewerStringGetStringRead(petsclib::PetscLibType, viewer::PetscViewer) 
+	string::String,len::Csize_t = PetscViewerStringGetStringRead(petsclib::PetscLibType, viewer::PetscViewer) 
 Returns the string that a `PETSCVIEWERSTRING` uses
 
 Logically Collective
@@ -6846,7 +6821,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringSetString()`, `PetscViewerStringSPrintf()`,
+See also: `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringSetString()`, `PetscViewerStringSPrintf()`,
 `PetscViewerStringSetOwnString()`
 
 # External Links
@@ -6867,7 +6842,7 @@ end
                viewer, string_, len_,
               )
 
-	string = string_[]
+	string = string_[] == C_NULL ? "" : unsafe_string(string_[])
 	len = len_[]
 
 	return string,len
@@ -6891,7 +6866,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERSTRING`, `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSetString()`
+See also: `PETSCVIEWERSTRING`, `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSetString()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerStringOpen"))
@@ -6926,7 +6901,7 @@ Input Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
+See also: `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
 `PetscViewerStringSetString()`
 
 # External Links
@@ -6962,7 +6937,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
+See also: `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
 `PetscViewerStringSetOwnString()`
 
 # External Links
@@ -7002,7 +6977,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKGetDM()`
+See also: `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKGetDM()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVTKAddField"))
@@ -7036,7 +7011,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKAddField()`
+See also: `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKAddField()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVTKGetDM"))
@@ -7079,7 +7054,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: `PETSCVIEWERVTK`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`,
 `PetscFileMode`, `PetscViewer`
 
@@ -7116,7 +7091,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerVUPrintDeferred()`
+See also: `PETSCVIEWERVU`, `PetscViewerVUPrintDeferred()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUFlushDeferred"))
@@ -7152,7 +7127,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerASCIIGetPointer()`
+See also: `PETSCVIEWERVU`, `PetscViewerASCIIGetPointer()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUGetPointer"))
@@ -7191,7 +7166,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PETSCVIEWERVU`
+See also: `PETSCVIEWERVU`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUGetVecSeen"))
@@ -7228,7 +7203,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerVUGetVecSeen()`
+See also: `PETSCVIEWERVU`, `PetscViewerVUGetVecSeen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUSetVecSeen"))
@@ -7262,7 +7237,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
+See also: `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
 `PetscViewerSocketOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerLoad()`
 
 # External Links
@@ -7298,7 +7273,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerView`, `PetscObjectViewFromOptions()`, `PetscViewerCreate()`
+See also: `PetscViewer`, `PetscViewerView`, `PetscObjectViewFromOptions()`, `PetscViewerCreate()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerViewFromOptions"))
@@ -7334,7 +7309,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerWritable"))
@@ -7372,7 +7347,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewers`, `PetscViewerCreate()`, `PetscViewersDestroy()`
+See also: `PetscViewer`, `PetscViewers`, `PetscViewerCreate()`, `PetscViewersDestroy()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewersCreate"))
@@ -7407,7 +7382,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewerDestroy()`, `PetscViewers`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`, `PetscViewerDrawOpen()`, `PetscViewersCreate()`
+See also: `PetscViewer`, `PetscViewerDestroy()`, `PetscViewers`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`, `PetscViewerDrawOpen()`, `PetscViewersCreate()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewersDestroy"))
@@ -7445,7 +7420,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewer`, `PetscViewers`, `PetscViewersCreate()`, `PetscViewersDestroy()`
+See also: `PetscViewer`, `PetscViewers`, `PetscViewersCreate()`, `PetscViewersDestroy()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewersGetViewer"))

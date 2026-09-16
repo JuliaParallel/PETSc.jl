@@ -27,27 +27,26 @@ petsclib = PETSc.getlib()
 PETSc.initialize(petsclib)
 
 # Create a PC object
-pc = Ref{LibPETSc.PC}()
-LibPETSc.PCCreate(petsclib, LibPETSc.PETSC_COMM_SELF, pc)
+pc = LibPETSc.PCCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 
-# Set the preconditioner type
-LibPETSc.PCSetType(petsclib, pc[], "ilu")  # String convenience wrapper
+# Set the preconditioner type (a String or one of the LibPETSc.PC* constants)
+LibPETSc.PCSetType(petsclib, pc, LibPETSc.PCILU)
 
 # Set the operator matrix
-# LibPETSc.PCSetOperators(petsclib, pc[], A, A)
+# LibPETSc.PCSetOperators(petsclib, pc, A, A)
 
 # Configure preconditioner-specific options
 # For ILU: set fill level
-# LibPETSc.PCFactorSetLevels(petsclib, pc[], 2)
+# LibPETSc.PCFactorSetLevels(petsclib, pc, 2)
 
 # Set options from command line/options database
-LibPETSc.PCSetFromOptions(petsclib, pc[])
+LibPETSc.PCSetFromOptions(petsclib, pc)
 
 # Set up the preconditioner
-LibPETSc.PCSetUp(petsclib, pc[])
+LibPETSc.PCSetUp(petsclib, pc)
 
 # Apply the preconditioner: y = P^{-1} x
-# LibPETSc.PCApply(petsclib, pc[], x_vec, y_vec)
+# LibPETSc.PCApply(petsclib, pc, x_vec, y_vec)
 
 # Cleanup
 LibPETSc.PCDestroy(petsclib, pc)
@@ -62,19 +61,16 @@ MPI.Finalize()
 Preconditioners are typically used with KSP solvers:
 
 ```julia
-# Create KSP and get its PC
-ksp = Ref{LibPETSc.KSP}()
-LibPETSc.KSPCreate(petsclib, LibPETSc.PETSC_COMM_SELF, ksp)
-
-pc = Ref{LibPETSc.PC}()
-LibPETSc.KSPGetPC(petsclib, ksp[], pc)
+# Create KSP and get its PC (owned by the KSP)
+ksp = LibPETSc.KSPCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
+pc = LibPETSc.KSPGetPC(petsclib, ksp)
 
 # Configure the preconditioner
-LibPETSc.PCSetType(petsclib, pc[], "gamg")  # String convenience wrapper
+LibPETSc.PCSetType(petsclib, pc, "gamg")
 
 # For GAMG, set additional options
-LibPETSc.PCGAMGSetType(petsclib, pc[], LibPETSc.PCGAMGAGG)
-LibPETSc.PCGAMGSetNlevels(petsclib, pc[], 10)
+LibPETSc.PCGAMGSetType(petsclib, pc, LibPETSc.PCGAMGAGG)
+LibPETSc.PCGAMGSetNlevels(petsclib, pc, 10)
 ```
 
 ## Common Preconditioner Types
@@ -123,29 +119,29 @@ Available through `PCSetType`:
 
 For geometric multigrid (PCMG):
 ```julia
-LibPETSc.PCSetType(petsclib, pc[], LibPETSc.PCMG)
-LibPETSc.PCMGSetLevels(petsclib, pc[], nlevels, C_NULL)
+LibPETSc.PCSetType(petsclib, pc, LibPETSc.PCMG)
+LibPETSc.PCMGSetLevels(petsclib, pc, nlevels, C_NULL)  # C_NULL: one communicator for all levels
 # Set up grid hierarchy, smoothers, coarse solver
 ```
 
 For algebraic multigrid (PCGAMG):
 ```julia
-LibPETSc.PCSetType(petsclib, pc[], LibPETSc.PCGAMG)
-LibPETSc.PCGAMGSetType(petsclib, pc[], LibPETSc.PCGAMGAGG)  # Aggregation
-LibPETSc.PCGAMGSetNSmooths(petsclib, pc[], 1)
-LibPETSc.PCGAMGSetThreshold(petsclib, pc[], [0.0], 1)
+LibPETSc.PCSetType(petsclib, pc, LibPETSc.PCGAMG)
+LibPETSc.PCGAMGSetType(petsclib, pc, LibPETSc.PCGAMGAGG)  # Aggregation
+LibPETSc.PCGAMGSetNSmooths(petsclib, pc, 1)
+LibPETSc.PCGAMGSetThreshold(petsclib, pc, [0.0], 1)
 ```
 
 ## Field Split for Coupled Systems
 
 For systems with multiple fields (e.g., velocity-pressure):
 ```julia
-LibPETSc.PCSetType(petsclib, pc[], LibPETSc.PCFIELDSPLIT)
-LibPETSc.PCFieldSplitSetType(petsclib, pc[], LibPETSc.PC_COMPOSITE_SCHUR)
+LibPETSc.PCSetType(petsclib, pc, LibPETSc.PCFIELDSPLIT)
+LibPETSc.PCFieldSplitSetType(petsclib, pc, LibPETSc.PC_COMPOSITE_SCHUR)
 
 # Define fields using index sets
-# LibPETSc.PCFieldSplitSetIS(petsclib, pc[], "velocity", velocity_is)
-# LibPETSc.PCFieldSplitSetIS(petsclib, pc[], "pressure", pressure_is)
+# LibPETSc.PCFieldSplitSetIS(petsclib, pc, "velocity", velocity_is)
+# LibPETSc.PCFieldSplitSetIS(petsclib, pc, "pressure", pressure_is)
 ```
 
 ## External Solver Packages

@@ -11,7 +11,10 @@ struct FArg
     isarray::Bool
     stars::Int
     isfunction::Bool
+    inout::Bool           # passed in by pointer and handed back: in the signature and in the return list
 end
+FArg(name, name_ccall, typename, ccall_str, output, init, extract, isarray, stars, isfunction) =
+    FArg(name, name_ccall, typename, ccall_str, output, init, extract, isarray, stars, isfunction, false)
 
 const SIMPLE_TYPES = ("PetscScalar", "PetscBool", "PetscReal", "PetscComplex", "PetscInt")
 
@@ -99,8 +102,14 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     isarray = a.array
     isoutput = is_output(r, fn.name, name, typename, stars, isarray, a.isconst, output_vars, input_vars)
     ov = get(get(r.args, fn.name, Dict{String,Dict{String,Any}}()), name, Dict{String,Any}())
+    inout = get(ov, "direction", "") == "inout"
     if haskey(ov, "direction")
-        isoutput = ov["direction"] == "out"
+        isoutput = ov["direction"] == "out" || inout
+    end
+    # `T *n` read and then overwritten by PETSc (PetscSplitOwnership, PetscSortRemoveDupsInt, ...)
+    if inout && stars == 1 && !isarray && is_simple(r, typename)
+        return FArg(name, "$(name)_", typename, "Ptr{$typename}", true,
+                    "$(name)_ = Ref{$typename}($name)", "$name = $(name)_[]", false, stars, false, true)
     end
     # --- function pointers and void pointers -----------------------------------------
     # A function pointer is passed as a Ptr{Cvoid} (from @cfunction); `Fn **out` returns one.
@@ -130,10 +139,11 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     if isarray && isoutput && stars == 0 && !haskey(ov, "len") && !any(x.name == "ni" for x in fn.args)
         isoutput = false
     end
-    # `char **name` output: a C string PETSc owns
-    if typename == "Cchar" && stars == 2 && !isarray && isoutput
+    # `char **name` / `const char *name[]` output: a C string PETSc owns (a non-const `char *x[]` output
+    # is a caller-allocated array of strings and keeps the raw pointer)
+    if typename == "Cchar" && isoutput && ((stars == 2 && !isarray) || (stars == 1 && isarray && a.isconst))
         return FArg(name, "$(name)_", "String", "Ptr{Ptr{Cchar}}", true,
-                    "$(name)_ = Ref{Ptr{Cchar}}()", "$name = unsafe_string($(name)_[])", false, stars, false)
+                    "$(name)_ = Ref{Ptr{Cchar}}()", "$name = $(name)_[] == C_NULL ? \"\" : unsafe_string($(name)_[])", false, stars, false)
     end
     # `T **out` output that is not marked as an array: hand back the raw pointer
     if stars == 2 && !isarray && isoutput && !is_handle(r, typename)
@@ -147,7 +157,8 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
             return FArg(name, "$(name)_", sigt, "Ptr{$typename}", false,
                         "$(name)_ = Ref{$typename}($name)", "", false, stars, false)
         elseif is_simple(r, typename) || typename in r.struct_types
-            return FArg(name, name, "Vector{$typename}", "Ptr{$typename}", false, "", "", true, stars, false)
+            t = get(ov, "nullable", false) ? "Union{Ptr, Vector{$typename}}" : "Vector{$typename}"
+            return FArg(name, name, t, "Ptr{$typename}", false, "", "", true, stars, false)
         end
     end
     if typename == "PetscObject" && stars == 0 && !isarray
@@ -157,6 +168,11 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     init, extract, name_ccall = init_extract(r, typename, name, isarray, isoutput, stars)
     ccall_str = "Ptr{"^stars * typename_ccall * "}"^stars
     typename == "MPI_Comm" && isoutput && !isarray && (ccall_str = "Ptr{MPI.MPI_Comm}")
+    # a PETSc string enum (`typedef const char *PCType`): a Julia `String` converts in the ccall
+    # (input), and `XGetType` hands back a `String` (output)
+    if typename in r.string_types && !isarray && ((stars == 0 && !isoutput) || (stars == 1 && isoutput))
+        typename = "String"
+    end
     if isarray
         ccall_str = "Ptr{$ccall_str}"
         if !isoutput
@@ -253,7 +269,7 @@ function classify_all(r::Rules, fn::Fn, input_vars, output_vars)
             sub(x) = replace(x, Regex("\\b" * a.name * "\\b") => name)
             args[i] = FArg(name, isempty(a.name) ? (a.name_ccall == a.name ? name : a.name_ccall) : sub(a.name_ccall),
                            a.typename, a.ccall_str, a.output, isempty(a.name) ? a.init : sub(a.init),
-                           isempty(a.name) ? a.extract : sub(a.extract), a.isarray, a.stars, a.isfunction)
+                           isempty(a.name) ? a.extract : sub(a.extract), a.isarray, a.stars, a.isfunction, a.inout)
         end
     end
     return args

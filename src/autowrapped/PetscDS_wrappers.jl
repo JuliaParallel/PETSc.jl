@@ -2335,7 +2335,7 @@ end
 end 
 
 """
-	name::PetscDSType = PetscDSGetType(petsclib::PetscLibType, prob::PetscDS) 
+	name::String = PetscDSGetType(petsclib::PetscLibType, prob::PetscDS) 
 Gets the `PetscDSType` name (as a string) from the `PetscDS`
 
 Not Collective; No Fortran Support
@@ -3855,7 +3855,7 @@ end
 end 
 
 """
-	PetscDSSetType(petsclib::PetscLibType, prob::PetscDS, name::PetscDSType) 
+	PetscDSSetType(petsclib::PetscLibType, prob::PetscDS, name::String) 
 Builds a particular `PetscDS`
 
 Collective; No Fortran Support
@@ -3874,11 +3874,11 @@ See also: `PetscDSType`, `PetscDS`, `PetscDSGetType()`, `PetscDSCreate()`
 # External Links
 $(_doc_external("DT/PetscDSSetType"))
 """
-function PetscDSSetType(petsclib::PetscLibType, prob::PetscDS, name::PetscDSType)
+function PetscDSSetType(petsclib::PetscLibType, prob::PetscDS, name::String)
     error("PetscDSSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscDSSetType(petsclib::$UnionPetscLib, prob::PetscDS, name::PetscDSType )
+@for_petsc function PetscDSSetType(petsclib::$UnionPetscLib, prob::PetscDS, name::String )
 
     @chk ccall(
                (:PetscDSSetType, $petsc_library),

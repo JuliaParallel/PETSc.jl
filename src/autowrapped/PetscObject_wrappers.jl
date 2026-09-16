@@ -449,7 +449,7 @@ end
 end 
 
 """
-	classname::Ptr{Cchar} = PetscObjectGetClassName(petsclib::PetscLibType, obj) 
+	classname::String = PetscObjectGetClassName(petsclib::PetscLibType, obj) 
 Gets the class name for any `PetscObject`
 
 Not Collective
@@ -482,7 +482,7 @@ end
                obj, classname_,
               )
 
-	classname = classname_[]
+	classname = classname_[] == C_NULL ? "" : unsafe_string(classname_[])
 
 	return classname
 end 
@@ -565,7 +565,7 @@ end
 end 
 
 """
-	PetscObjectGetName(petsclib::PetscLibType, obj, name::String) 
+	name::String = PetscObjectGetName(petsclib::PetscLibType, obj) 
 Gets a string name associated with a PETSc object.
 
 Not Collective unless `obj` has not yet been named
@@ -582,12 +582,12 @@ See also: `PetscObjectSetName()`, `PetscObjectName()`, `PetscObject`, `PetscObje
 # External Links
 $(_doc_external("Sys/PetscObjectGetName"))
 """
-function PetscObjectGetName(petsclib::PetscLibType, obj, name::String)
+function PetscObjectGetName(petsclib::PetscLibType, obj)
     error("PetscObjectGetName: no generated method for these argument types")
 end
 
-@for_petsc function PetscObjectGetName(petsclib::$UnionPetscLib, obj, name::String )
-	name_ = Ref{Ptr{Cchar}}(name isa Ptr ? name : pointer(name))
+@for_petsc function PetscObjectGetName(petsclib::$UnionPetscLib, obj )
+	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PetscObjectGetName, $petsc_library),
@@ -596,8 +596,9 @@ end
                obj, name_,
               )
 
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
-	return nothing
+	return name
 end 
 
 """
@@ -682,7 +683,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = PetscObjectGetOptionsPrefix(petsclib::PetscLibType, obj) 
+	prefix::String = PetscObjectGetOptionsPrefix(petsclib::PetscLibType, obj) 
 Gets the prefix of the `PetscObject` used for searching in the options database
 
 Input Parameter:
@@ -713,7 +714,7 @@ end
                obj, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -797,7 +798,7 @@ end
 end 
 
 """
-	type::Ptr{Cchar} = PetscObjectGetType(petsclib::PetscLibType, obj) 
+	type::String = PetscObjectGetType(petsclib::PetscLibType, obj) 
 Gets the object type of any `PetscObject`.
 
 Not Collective
@@ -830,7 +831,7 @@ end
                obj, type_,
               )
 
-	type = type_[]
+	type = type_[] == C_NULL ? "" : unsafe_string(type_[])
 
 	return type
 end 
@@ -1287,174 +1288,6 @@ end
 end 
 
 """
-	PetscObjectSAWsBlock(petsclib::PetscLibType, obj) 
-Blocks the object if `PetscObjectSAWsSetBlock()` has been called
-
-Collective
-
-Input Parameter:
-- `obj` - the PETSc variable
-
-Level: advanced
-
-See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsSetBlock()`, `PetscSAWsBlock()`
-
-# External Links
-$(_doc_external("Sys/PetscObjectSAWsBlock"))
-"""
-function PetscObjectSAWsBlock(petsclib::PetscLibType, obj)
-    error("PetscObjectSAWsBlock: no generated method for these argument types")
-end
-
-@for_petsc function PetscObjectSAWsBlock(petsclib::$UnionPetscLib, obj )
-
-    @chk ccall(
-               (:PetscObjectSAWsBlock, $petsc_library),
-               PetscErrorCode,
-               (PetscObject,),
-               obj,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscObjectSAWsGrantAccess(petsclib::PetscLibType, obj) 
-Grants access of the data fields that have been published to
-SAWs called when the changes made during `PetscObjectSAWsTakeAccess()` are complete.
-
-Collective
-
-Input Parameter:
-- `obj` - the `PetscObject` variable. This must be cast with a (`PetscObject`), for example, `PetscObjectSAWSRestoreAccess`((`PetscObject`)mat);
-
-Level: advanced
-
-See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsTakeAccess()`
-
-# External Links
-$(_doc_external("Sys/PetscObjectSAWsGrantAccess"))
-"""
-function PetscObjectSAWsGrantAccess(petsclib::PetscLibType, obj)
-    error("PetscObjectSAWsGrantAccess: no generated method for these argument types")
-end
-
-@for_petsc function PetscObjectSAWsGrantAccess(petsclib::$UnionPetscLib, obj )
-
-    @chk ccall(
-               (:PetscObjectSAWsGrantAccess, $petsc_library),
-               PetscErrorCode,
-               (PetscObject,),
-               obj,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscObjectSAWsSetBlock(petsclib::PetscLibType, obj, flg::PetscBool) 
-Sets whether an object will block at `PetscObjectSAWsBlock()`
-
-Collective
-
-Input Parameters:
-- `obj` - the PETSc variable
-- `flg` - whether it should block
-
-Level: advanced
-
-See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsBlock()`, `PetscSAWsBlock()`
-
-# External Links
-$(_doc_external("Sys/PetscObjectSAWsSetBlock"))
-"""
-function PetscObjectSAWsSetBlock(petsclib::PetscLibType, obj, flg::PetscBool)
-    error("PetscObjectSAWsSetBlock: no generated method for these argument types")
-end
-
-@for_petsc function PetscObjectSAWsSetBlock(petsclib::$UnionPetscLib, obj, flg::PetscBool )
-
-    @chk ccall(
-               (:PetscObjectSAWsSetBlock, $petsc_library),
-               PetscErrorCode,
-               (PetscObject, PetscBool),
-               obj, flg,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscObjectSAWsTakeAccess(petsclib::PetscLibType, obj) 
-Take access of the data fields that have been published to SAWs
-by a `PetscObject` so their values may  be changed in the computation
-
-Collective
-
-Input Parameter:
-- `obj` - the `PetscObject` variable. This must be cast with a (`PetscObject`), for example, `PetscObjectSAWSTakeAccess`((`PetscObject`)mat);
-
-Level: advanced
-
-See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsGrantAccess()`
-
-# External Links
-$(_doc_external("Sys/PetscObjectSAWsTakeAccess"))
-"""
-function PetscObjectSAWsTakeAccess(petsclib::PetscLibType, obj)
-    error("PetscObjectSAWsTakeAccess: no generated method for these argument types")
-end
-
-@for_petsc function PetscObjectSAWsTakeAccess(petsclib::$UnionPetscLib, obj )
-
-    @chk ccall(
-               (:PetscObjectSAWsTakeAccess, $petsc_library),
-               PetscErrorCode,
-               (PetscObject,),
-               obj,
-              )
-
-
-	return nothing
-end 
-
-"""
-	PetscObjectSAWsViewOff(petsclib::PetscLibType, obj) 
-Remove a `PetscObject`'s SAWs (Scientific Application Web server) directory so the object is no longer published
-
-Logically Collective
-
-Input Parameter:
-- `obj` - the `PetscObject` whose SAWs publication should be torn down
-
-Level: developer
-
-See also: `PetscObject`, `PetscObjectSAWsBlock()`, `PetscObjectSAWsTakeAccess()`, `PetscObjectSAWsGrantAccess()`
-
-# External Links
-$(_doc_external("Sys/PetscObjectSAWsViewOff"))
-"""
-function PetscObjectSAWsViewOff(petsclib::PetscLibType, obj)
-    error("PetscObjectSAWsViewOff: no generated method for these argument types")
-end
-
-@for_petsc function PetscObjectSAWsViewOff(petsclib::$UnionPetscLib, obj )
-
-    @chk ccall(
-               (:PetscObjectSAWsViewOff, $petsc_library),
-               PetscErrorCode,
-               (PetscObject,),
-               obj,
-              )
-
-
-	return nothing
-end 
-
-"""
 	PetscObjectSetFromOptions(petsclib::PetscLibType, obj) 
 Sets generic parameters from user options.
 
@@ -1817,7 +1650,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscViewer`, `PetscObject`, `PetscObjectSetName()`
+See also: `PetscViewer`, `PetscObject`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscObjectViewSAWs"))
@@ -1875,7 +1708,7 @@ end
 end 
 
 """
-	obj::PetscObject,classname::Ptr{Cchar} = PetscObjectsGetObject(petsclib::PetscLibType, name::String) 
+	obj::PetscObject,classname::String = PetscObjectsGetObject(petsclib::PetscLibType, name::String) 
 Get a pointer to a named object
 
 Not Collective
@@ -1910,7 +1743,7 @@ end
               )
 
 	obj = obj_[]
-	classname = classname_[]
+	classname = classname_[] == C_NULL ? "" : unsafe_string(classname_[])
 
 	return obj,classname
 end 

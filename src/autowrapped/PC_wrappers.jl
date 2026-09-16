@@ -347,7 +347,7 @@ end
 end 
 
 """
-	sub_mat_type::MatType = PCASMGetSubMatType(petsclib::PetscLibType, pc::PC) 
+	sub_mat_type::String = PCASMGetSubMatType(petsclib::PetscLibType, pc::PC) 
 Gets the matrix type used for `PCASM` subsolves, as a string.
 
 Not Collective
@@ -630,7 +630,7 @@ end
 end 
 
 """
-	PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType) 
+	PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String) 
 Set the type of matrix used for `PCASM` subsolves
 
 Collective
@@ -648,11 +648,11 @@ See also: `PCASM`, `PCASMGetSubMatType()`, `PCSetType()`, `VecSetType()`, `MatTy
 # External Links
 $(_doc_external("PC/PCASMSetSubMatType"))
 """
-function PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType)
+function PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String)
     error("PCASMSetSubMatType: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::MatType )
+@for_petsc function PCASMSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::String )
 
     @chk ccall(
                (:PCASMSetSubMatType, $petsc_library),
@@ -2327,7 +2327,7 @@ end
 end 
 
 """
-	PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::PCType) 
+	PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::String) 
 Adds another `PC` of the given type to the composite `PC`.
 
 Collective
@@ -2343,11 +2343,11 @@ See also: `PCCOMPOSITE`, `PCCompositeAddPC()`, `PCCompositeGetNumberPC()`
 # External Links
 $(_doc_external("PC/PCCompositeAddPCType"))
 """
-function PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::PCType)
+function PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::String)
     error("PCCompositeAddPCType: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeAddPCType(petsclib::$UnionPetscLib, pc::PC, type::PCType )
+@for_petsc function PCCompositeAddPCType(petsclib::$UnionPetscLib, pc::PC, type::String )
 
     @chk ccall(
                (:PCCompositeAddPCType, $petsc_library),
@@ -2586,7 +2586,7 @@ end
 end 
 
 """
-	mat::PetscMat = PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::MatType) 
+	mat::PetscMat = PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::String) 
 Computes the explicit preconditioned operator as a matrix `Mat`.
 
 Collective
@@ -2605,11 +2605,11 @@ See also: `PC`, `KSPComputeOperator()`, `MatType`
 # External Links
 $(_doc_external("PC/PCComputeOperator"))
 """
-function PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::MatType)
+function PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::String)
     error("PCComputeOperator: no generated method for these argument types")
 end
 
-@for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::PC, mattype::MatType )
+@for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::PC, mattype::String )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -3401,7 +3401,7 @@ end
 end 
 
 """
-	stype::MatSolverType = PCFactorGetMatSolverType(petsclib::PetscLibType, pc::PC) 
+	stype::String = PCFactorGetMatSolverType(petsclib::PetscLibType, pc::PC) 
 gets the solver package that is used to perform the factorization
 
 Not Collective
@@ -3860,7 +3860,7 @@ end
 end 
 
 """
-	PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::MatOrderingType) 
+	PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::String) 
 Sets the ordering routine (to reduce fill) to
 be used in the `PCLU`, `PCCHOLESKY`, `PCILU`,  or `PCICC` preconditioners
 
@@ -3880,11 +3880,11 @@ See also: `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `MatOrderingType`, `MATORDERIN
 # External Links
 $(_doc_external("PC/PCFactorSetMatOrderingType"))
 """
-function PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::MatOrderingType)
+function PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::String)
     error("PCFactorSetMatOrderingType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetMatOrderingType(petsclib::$UnionPetscLib, pc::PC, ordering::MatOrderingType )
+@for_petsc function PCFactorSetMatOrderingType(petsclib::$UnionPetscLib, pc::PC, ordering::String )
 
     @chk ccall(
                (:PCFactorSetMatOrderingType, $petsc_library),
@@ -3898,7 +3898,7 @@ end
 end 
 
 """
-	PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::MatSolverType) 
+	PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::String) 
 sets the solver package that is used to perform the factorization
 
 Logically Collective
@@ -3918,11 +3918,11 @@ See also: `PCLU`, `PCCHOLESKY`, `MatGetFactor()`, `MatSolverType`, `PCFactorGetM
 # External Links
 $(_doc_external("PC/PCFactorSetMatSolverType"))
 """
-function PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::MatSolverType)
+function PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::String)
     error("PCFactorSetMatSolverType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetMatSolverType(petsclib::$UnionPetscLib, pc::PC, stype::MatSolverType )
+@for_petsc function PCFactorSetMatSolverType(petsclib::$UnionPetscLib, pc::PC, stype::String )
 
     @chk ccall(
                (:PCFactorSetMatSolverType, $petsc_library),
@@ -4244,7 +4244,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetDMSplits()`, `DMCreateFieldDecomposition()`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetDMSplits()`, `DMCreateFieldDecomposition()`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDMSplits"))
@@ -4282,7 +4282,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetDetectSaddlePoint()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetDetectSaddlePoint()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDetectSaddlePoint"))
@@ -4321,7 +4321,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitSetDiagUseAmat()`, `PCFieldSplitGetOffDiagUseAmat()`, `PCFIELDSPLIT`
+See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitSetDiagUseAmat()`, `PCFieldSplitGetOffDiagUseAmat()`, `PCFIELDSPLIT`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDiagUseAmat"))
@@ -4360,7 +4360,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetIS()`, `PCFieldSplitGetISByIndex()`
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetIS()`, `PCFieldSplitGetISByIndex()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetIS"))
@@ -4399,7 +4399,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitGetIS()`, `PCFieldSplitSetIS()`
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitGetIS()`, `PCFieldSplitSetIS()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetISByIndex"))
@@ -4438,7 +4438,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitSetOffDiagUseAmat()`, `PCFieldSplitGetDiagUseAmat()`, `PCFIELDSPLIT`
+See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitSetOffDiagUseAmat()`, `PCFieldSplitGetDiagUseAmat()`, `PCFIELDSPLIT`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetOffDiagUseAmat"))
@@ -4479,7 +4479,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `MatSchurComplementGetSubMatrices()`, `MatSchurComplementSetSubMatrices()`
+See also: `PC`, `PCFIELDSPLIT`, `MatSchurComplementGetSubMatrices()`, `MatSchurComplementSetSubMatrices()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSchurBlocks"))
@@ -4525,7 +4525,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitSetSchurPre()`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurPreType`, `PCLSC`
+See also: `PC`, `PCFieldSplitSetSchurPre()`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurPreType`, `PCLSC`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSchurPre"))
@@ -4566,7 +4566,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`, `PCFieldSplitSchurGetSubKSP()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`, `PCFieldSplitSchurGetSubKSP()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSubKSP"))
@@ -4606,7 +4606,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCCompositeSetType()`, `PCFIELDSPLIT`, `PCCompositeType`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
+See also: `PC`, `PCCompositeSetType()`, `PCFIELDSPLIT`, `PCCompositeType`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
 `PC_COMPOSITE_SYMMETRIC_MULTIPLICATIVE`, `PC_COMPOSITE_SPECIAL`, `PC_COMPOSITE_SCHUR`
 
 # External Links
@@ -4641,7 +4641,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_block_matrices), `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
+See also: `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitRestrictIS"))
@@ -4677,7 +4677,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSchurPreType`, `PCFieldSplitSetSchurPre()`, `MATSCHURCOMPLEMENT`, `PCFieldSplitSchurRestoreS()`,
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSchurPreType`, `PCFieldSplitSetSchurPre()`, `MATSCHURCOMPLEMENT`, `PCFieldSplitSchurRestoreS()`,
 `MatCreateSchurComplement()`, `MatSchurComplementGetKSP()`, `MatSchurComplementComputeExplicitOperator()`, `MatGetSchurComplement()`
 
 # External Links
@@ -4717,7 +4717,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`, `PCFieldSplitGetSubKSP()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`, `PCFieldSplitGetSubKSP()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurGetSubKSP"))
@@ -4755,7 +4755,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSchurPreType`, `PCFieldSplitSetSchurPre()`, `MatSchurComplement`, `PCFieldSplitSchurGetS()`
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSchurPreType`, `PCFieldSplitSetSchurPre()`, `MatSchurComplement`, `PCFieldSplitSchurGetS()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurRestoreS"))
@@ -4792,7 +4792,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetBlockSize"))
@@ -4829,7 +4829,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitGetDMSplits()`, `DMCreateFieldDecomposition()`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitGetDMSplits()`, `DMCreateFieldDecomposition()`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDMSplits"))
@@ -4868,7 +4868,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitGetDetectSaddlePoint()`, `PCFieldSplitSetType()`, `PCFieldSplitSetSchurPre()`, `PC_FIELDSPLIT_SCHUR_PRE_SELF`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitGetDetectSaddlePoint()`, `PCFieldSplitSetType()`, `PCFieldSplitSetSchurPre()`, `PC_FIELDSPLIT_SCHUR_PRE_SELF`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDetectSaddlePoint"))
@@ -4906,7 +4906,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitGetDiagUseAmat()`, `PCFieldSplitSetOffDiagUseAmat()`, `PCFIELDSPLIT`
+See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitGetDiagUseAmat()`, `PCFieldSplitSetOffDiagUseAmat()`, `PCFIELDSPLIT`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDiagUseAmat"))
@@ -4947,7 +4947,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetBlockSize()`, `PCFieldSplitSetIS()`, `PCFieldSplitRestrictIS()`,
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetBlockSize()`, `PCFieldSplitSetIS()`, `PCFieldSplitRestrictIS()`,
 `MatSetBlockSize()`, `MatCreateNest()`
 
 # External Links
@@ -4986,7 +4986,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBNu()`, `PCFieldSplitSetGKBTol()`, `PCFieldSplitSetGKBMaxit()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBNu()`, `PCFieldSplitSetGKBTol()`, `PCFieldSplitSetGKBMaxit()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBDelay"))
@@ -5023,7 +5023,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKBTol()`, `PCFieldSplitSetGKBNu()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKBTol()`, `PCFieldSplitSetGKBNu()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBMaxit"))
@@ -5061,7 +5061,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKBTol()`, `PCFieldSplitSetGKBMaxit()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKBTol()`, `PCFieldSplitSetGKBMaxit()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBNu"))
@@ -5098,7 +5098,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKBNu()`, `PCFieldSplitSetGKBMaxit()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKBNu()`, `PCFieldSplitSetGKBMaxit()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBTol"))
@@ -5133,7 +5133,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetBlockSize()`, `PCFieldSplitSetFields()`
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetBlockSize()`, `PCFieldSplitSetFields()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetIS"))
@@ -5171,7 +5171,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitGetOffDiagUseAmat()`, `PCFieldSplitSetDiagUseAmat()`, `PCFIELDSPLIT`
+See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitGetOffDiagUseAmat()`, `PCFieldSplitSetDiagUseAmat()`, `PCFIELDSPLIT`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetOffDiagUseAmat"))
@@ -5208,8 +5208,8 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurPreType`, `PCFieldSplitSetSchurScale()`,
-[](sec_flexibleksp), `PCFieldSplitSetSchurPre()`
+See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurPreType`, `PCFieldSplitSetSchurScale()`,
+`PCFieldSplitSetSchurPre()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurFactType"))
@@ -5251,7 +5251,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFieldSplitGetSchurPre()`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurPreType`,
+See also: `PC`, `PCFieldSplitGetSchurPre()`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurPreType`,
 `MatSchurComplementSetAinvType()`, `PCLSC`, `PCFieldSplitSetSchurFactType()`
 
 # External Links
@@ -5289,7 +5289,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurFactType`, `PCFieldSplitSetSchurFactType()`
+See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurFactType`, `PCFieldSplitSetSchurFactType()`
 
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurScale"))
@@ -5327,7 +5327,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_block_matrices), `PC`, `PCFIELDSPLIT`, `PCCompositeType`, `PCCompositeGetType()`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
+See also: `PC`, `PCFIELDSPLIT`, `PCCompositeType`, `PCCompositeGetType()`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
 `PC_COMPOSITE_SYMMETRIC_MULTIPLICATIVE`, `PC_COMPOSITE_SPECIAL`, `PC_COMPOSITE_SCHUR`, `PCFieldSplitSetSchurFactType()`
 
 # External Links
@@ -5393,7 +5393,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`
 
 # External Links
 $(_doc_external("PC/PCGAMGASMSetHEM"))
@@ -5431,7 +5431,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCASM`, `PCSetType`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCASM`, `PCSetType`
 
 # External Links
 $(_doc_external("PC/PCGAMGASMSetUseAggs"))
@@ -5454,7 +5454,7 @@ end
 end 
 
 """
-	type::PCGAMGClassicalType = PCGAMGClassicalGetType(petsclib::PetscLibType, pc::PC) 
+	type::String = PCGAMGClassicalGetType(petsclib::PetscLibType, pc::PC) 
 Gets the type of classical interpolation to use with `PCGAMG`
 
 Collective
@@ -5492,7 +5492,7 @@ end
 end 
 
 """
-	PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGClassicalType) 
+	PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::String) 
 Sets the type of classical interpolation to use with `PCGAMG`
 
 Collective
@@ -5511,11 +5511,11 @@ See also: `PCGAMG`, `PCGAMGClassicalType`, `PCGAMGClassicalGetType()`
 # External Links
 $(_doc_external("PC/PCGAMGClassicalSetType"))
 """
-function PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGClassicalType)
+function PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::String)
     error("PCGAMGClassicalSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGClassicalSetType(petsclib::$UnionPetscLib, pc::PC, type::PCGAMGClassicalType )
+@for_petsc function PCGAMGClassicalSetType(petsclib::$UnionPetscLib, pc::PC, type::String )
 
     @chk ccall(
                (:PCGAMGClassicalSetType, $petsc_library),
@@ -5594,7 +5594,7 @@ end
 end 
 
 """
-	type::PCGAMGType = PCGAMGGetType(petsclib::PetscLibType, pc::PC) 
+	type::String = PCGAMGGetType(petsclib::PetscLibType, pc::PC) 
 Get the type of algorithm `PCGAMG` will use
 
 Collective
@@ -5607,7 +5607,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetType()`, `PCGAMGType`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetType()`, `PCGAMGType`
 
 # External Links
 $(_doc_external("PC/PCGAMGGetType"))
@@ -5674,7 +5674,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`,
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`,
 `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
 
 # External Links
@@ -5712,7 +5712,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetThreshold()`,
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetThreshold()`,
 `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`, `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGSetLowMemoryFilter()`
 
 # External Links
@@ -5736,7 +5736,7 @@ end
 end 
 
 """
-	PCGAMGRegister(petsclib::PetscLibType, type::PCGAMGType, create::external) 
+	PCGAMGRegister(petsclib::PetscLibType, type::String, create::external) 
 Register a `PCGAMG` implementation.
 
 Input Parameters:
@@ -5750,11 +5750,11 @@ See also: `PCGAMGType`, `PCGAMG`, `PCGAMGSetType()`
 # External Links
 $(_doc_external("PC/PCGAMGRegister"))
 """
-function PCGAMGRegister(petsclib::PetscLibType, type::PCGAMGType, create::external)
+function PCGAMGRegister(petsclib::PetscLibType, type::String, create::external)
     error("PCGAMGRegister: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGRegister(petsclib::$UnionPetscLib, type::PCGAMGType, create::external )
+@for_petsc function PCGAMGRegister(petsclib::$UnionPetscLib, type::String, create::external )
 
     @chk ccall(
                (:PCGAMGRegister, $petsc_library),
@@ -5782,7 +5782,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGMISkSetAggressive()`,
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGMISkSetAggressive()`,
 `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
 
 # External Links
@@ -5820,7 +5820,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`, `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetLowMemoryFilter()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetAggressiveSquareGraph"))
@@ -5857,7 +5857,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetProcEqLim()`, `PCGAMGSetRankReductionFactors()`, `PCGAMGSetRepartition()`,
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetProcEqLim()`, `PCGAMGSetRankReductionFactors()`, `PCGAMGSetRepartition()`,
 `PCGAMGSetParallelCoarseGridSolve()`
 
 # External Links
@@ -5895,7 +5895,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetParallelCoarseGridSolve()`, `PCGAMGSetCpuPinCoarseGrids()`, `PCGAMGLayoutType`, `PCGAMG_LAYOUT_COMPACT`, `PCGAMG_LAYOUT_SPREAD`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetParallelCoarseGridSolve()`, `PCGAMGSetCpuPinCoarseGrids()`, `PCGAMGLayoutType`, `PCGAMG_LAYOUT_COMPACT`, `PCGAMG_LAYOUT_SPREAD`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetCoarseGridLayoutType"))
@@ -5932,7 +5932,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetCoarseGridLayoutType()`, `PCGAMGSetParallelCoarseGridSolve()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetCoarseGridLayoutType()`, `PCGAMGSetParallelCoarseGridSolve()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetCpuPinCoarseGrids"))
@@ -5970,7 +5970,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetUseSAEstEig()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetUseSAEstEig()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetEigenvalues"))
@@ -6007,7 +6007,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`, `MatCreateGraph()`,
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`, `MatCreateGraph()`,
 `PCGAMGMISkSetAggressive()`, `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`
 
 # External Links
@@ -6046,7 +6046,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetInjectionIndex"))
@@ -6083,7 +6083,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`,
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetThreshold()`, `PCGAMGSetAggressiveLevels()`,
 `PCGAMGMISkSetAggressive()`, `PCGAMGSetAggressiveSquareGraph()`, `PCGAMGMISkSetMinDegreeOrdering()`
 
 # External Links
@@ -6121,7 +6121,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCMG`, `PCGAMG`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCMG`, `PCGAMG`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetNSmooths"))
@@ -6158,7 +6158,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetNlevels"))
@@ -6195,7 +6195,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetCoarseGridLayoutType()`, `PCGAMGSetCpuPinCoarseGrids()`, `PCGAMGSetRankReductionFactors()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetCoarseGridLayoutType()`, `PCGAMGSetCpuPinCoarseGrids()`, `PCGAMGSetRankReductionFactors()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetParallelCoarseGridSolve"))
@@ -6232,7 +6232,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetCoarseEqLim()`, `PCGAMGSetRankReductionFactors()`, `PCGAMGSetRepartition()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetCoarseEqLim()`, `PCGAMGSetRankReductionFactors()`, `PCGAMGSetRepartition()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetProcEqLim"))
@@ -6270,7 +6270,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetProcEqLim()`, `PCGAMGSetCoarseEqLim()`, `PCGAMGSetParallelCoarseGridSolve()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetProcEqLim()`, `PCGAMGSetCoarseEqLim()`, `PCGAMGSetParallelCoarseGridSolve()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetRankReductionFactors"))
@@ -6307,7 +6307,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `KSPChebyshevSetEigenvalues()`, `KSPChebyshevEstEigSet()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `KSPChebyshevSetEigenvalues()`, `KSPChebyshevEstEigSet()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetRecomputeEstEig"))
@@ -6344,7 +6344,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetProcEqLim()`, `PCGAMGSetRankReductionFactors()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetProcEqLim()`, `PCGAMGSetRankReductionFactors()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetRepartition"))
@@ -6381,7 +6381,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetReuseInterpolation"))
@@ -6419,7 +6419,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`,
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetAggressiveLevels()`, `PCGAMGMISkSetAggressive()`,
 `PCGAMGMISkSetMinDegreeOrdering()`, `PCGAMGSetThresholdScale()`
 
 # External Links
@@ -6457,7 +6457,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `PCGAMGSetThreshold()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `PCGAMGSetThreshold()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetThresholdScale"))
@@ -6480,7 +6480,7 @@ end
 end 
 
 """
-	PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGType) 
+	PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::String) 
 Set the type of algorithm `PCGAMG` should use
 
 Collective
@@ -6494,16 +6494,16 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMGGetType()`, `PCGAMG`, `PCGAMGType`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMGGetType()`, `PCGAMG`, `PCGAMGType`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetType"))
 """
-function PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::PCGAMGType)
+function PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::String)
     error("PCGAMGSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetType(petsclib::$UnionPetscLib, pc::PC, type::PCGAMGType )
+@for_petsc function PCGAMGSetType(petsclib::$UnionPetscLib, pc::PC, type::String )
 
     @chk ccall(
                (:PCGAMGSetType, $petsc_library),
@@ -6531,7 +6531,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [the Users Manual section on PCGAMG](sec_amg), [the Users Manual section on PCMG](sec_mg), `PCGAMG`, `KSPChebyshevSetEigenvalues()`, `KSPChebyshevEstEigSet()`, `PCGAMGSetRecomputeEstEig()`
+See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, `PCGAMG`, `KSPChebyshevSetEigenvalues()`, `KSPChebyshevEstEigSet()`, `PCGAMGSetRecomputeEstEig()`
 
 # External Links
 $(_doc_external("PC/PCGAMGSetUseSAEstEig"))
@@ -7605,7 +7605,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = PCGetOptionsPrefix(petsclib::PetscLibType, pc::PC) 
+	prefix::String = PCGetOptionsPrefix(petsclib::PetscLibType, pc::PC) 
 Gets the prefix used for searching for all
 `PC` options in the database.
 
@@ -7638,7 +7638,7 @@ end
                pc, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -7682,7 +7682,7 @@ end
 end 
 
 """
-	type::PCType = PCGetType(petsclib::PetscLibType, pc::PC) 
+	type::String = PCGetType(petsclib::PetscLibType, pc::PC) 
 Gets the `PCType` (as a string) from the `PC`
 context.
 
@@ -7798,7 +7798,7 @@ end
 end 
 
 """
-	PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::PCType) 
+	PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::String) 
 Set an inner `PC` type to be used in the `PCHMG` preconditioner. That is the method used to compute
 the hierarchy of restriction operators.
 
@@ -7818,11 +7818,11 @@ See also: `PCHMG`, `PCType`, `PCHMGSetReuseInterpolation()`, `PCHMGSetUseSubspac
 # External Links
 $(_doc_external("PC/PCHMGSetInnerPCType"))
 """
-function PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::PCType)
+function PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::String)
     error("PCHMGSetInnerPCType: no generated method for these argument types")
 end
 
-@for_petsc function PCHMGSetInnerPCType(petsclib::$UnionPetscLib, pc::PC, type::PCType )
+@for_petsc function PCHMGSetInnerPCType(petsclib::$UnionPetscLib, pc::PC, type::String )
 
     @chk ccall(
                (:PCHMGSetInnerPCType, $petsc_library),
@@ -8281,7 +8281,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PCHYPREGetType(petsclib::PetscLibType, pc::PC) 
+	name::String = PCHYPREGetType(petsclib::PetscLibType, pc::PC) 
 Gets which hypre preconditioner you are using
 
 Input Parameter:
@@ -8311,7 +8311,7 @@ end
                pc, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -9524,7 +9524,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::PC) 
+	name::String = PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::PC) 
 Get type of sparse matrix-matrix product for hypre's BoomerAMG to use on GPUs
 
 Not Collective
@@ -9556,7 +9556,7 @@ end
                pc, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -10778,7 +10778,7 @@ end
 end 
 
 """
-	comms::MPI_Comm = PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) 
+	PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt, comms::Union{Ptr, Vector{MPI_Comm}}) 
 Sets the number of levels to use with `PCMG`.
 Must be called before any other `PCMG` routine.
 
@@ -10802,23 +10802,21 @@ See also: `PCMGSetType()`, `PCMGGetLevels()`
 # External Links
 $(_doc_external("PC/PCMGSetLevels"))
 """
-function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer)
+function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer, comms::Union{Ptr, Vector{MPI_Comm}})
     error("PCMGSetLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt )
-	comms_ = Ref{MPI.MPI_Comm}()
+@for_petsc function PCMGSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt, comms::Union{Ptr, Vector{MPI_Comm}} )
 
     @chk ccall(
                (:PCMGSetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{MPI.MPI_Comm}),
-               pc, levels, comms_,
+               (PC, $PetscInt, Ptr{MPI_Comm}),
+               pc, levels, comms,
               )
 
-	comms = MPI.Comm(comms_[])
 
-	return comms
+	return nothing
 end 
 
 """
@@ -11271,7 +11269,7 @@ Options Database Keys:
 
 Level: developer
 
-See also: [](sec_pcmpi), `PCMPIServerEnd()`, `PCMPI`, `KSPCheckPCMPI()`
+See also: `PCMPIServerEnd()`, `PCMPI`, `KSPCheckPCMPI()`
 
 # External Links
 $(_doc_external("PC/PCMPIServerBegin"))
@@ -11301,7 +11299,7 @@ Logically Collective on all MPI ranks except 0
 
 Level: developer
 
-See also: [](sec_pcmpi), `PCMPIServerBegin()`, `PCMPI`, `KSPCheckPCMPI()`
+See also: `PCMPIServerBegin()`, `PCMPI`, `KSPCheckPCMPI()`
 
 # External Links
 $(_doc_external("PC/PCMPIServerEnd"))
@@ -12000,7 +11998,7 @@ end
 end 
 
 """
-	sub_mat_type::MatType = PCPatchGetSubMatType(petsclib::PetscLibType, pc::PC) 
+	sub_mat_type::String = PCPatchGetSubMatType(petsclib::PetscLibType, pc::PC) 
 Get the `MatType` used to store the per-patch sub-matrices in a `PCPATCH` preconditioner
 
 Not Collective
@@ -12536,7 +12534,7 @@ end
 end 
 
 """
-	PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType) 
+	PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String) 
 Set the `MatType` used to store the per-patch sub-matrices in a `PCPATCH` preconditioner
 
 Logically Collective
@@ -12552,11 +12550,11 @@ See also: `PCPATCH`, `PCPatchGetSubMatType()`, `MatType`
 # External Links
 $(_doc_external("PC/PCPatchSetSubMatType"))
 """
-function PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::MatType)
+function PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String)
     error("PCPatchSetSubMatType: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::MatType )
+@for_petsc function PCPatchSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::String )
 
     @chk ccall(
                (:PCPatchSetSubMatType, $petsc_library),
@@ -12639,7 +12637,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = PCPythonGetType(petsclib::PetscLibType, pc::PC) 
+	pyname::String = PCPythonGetType(petsclib::PetscLibType, pc::PC) 
 Get the type of a `PC` object implemented in Python, a `PCPYTHON`.
 
 Not Collective
@@ -12671,7 +12669,7 @@ end
                pc, pyname_,
               )
 
-	pyname = pyname_[]
+	pyname = pyname_[] == C_NULL ? "" : unsafe_string(pyname_[])
 
 	return pyname
 end 
@@ -13978,7 +13976,7 @@ end
 end 
 
 """
-	PCSetType(petsclib::PetscLibType, pc::PC, type::PCType) 
+	PCSetType(petsclib::PetscLibType, pc::PC, type::String) 
 Builds `PC` for a particular preconditioner type
 
 Collective
@@ -13995,11 +13993,11 @@ See also: `KSPSetType()`, `PCType`, `PCRegister()`, `PCCreate()`, `KSPGetPC()`
 # External Links
 $(_doc_external("PC/PCSetType"))
 """
-function PCSetType(petsclib::PetscLibType, pc::PC, type::PCType)
+function PCSetType(petsclib::PetscLibType, pc::PC, type::String)
     error("PCSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCSetType(petsclib::$UnionPetscLib, pc::PC, type::PCType )
+@for_petsc function PCSetType(petsclib::$UnionPetscLib, pc::PC, type::String )
 
     @chk ccall(
                (:PCSetType, $petsc_library),
@@ -14159,7 +14157,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PCShellGetName(petsclib::PetscLibType, pc::PC) 
+	name::String = PCShellGetName(petsclib::PetscLibType, pc::PC) 
 Gets an optional name that the user has set for a `PCSHELL` with `PCShellSetName()`
 preconditioner.
 
@@ -14192,7 +14190,7 @@ end
                pc, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 

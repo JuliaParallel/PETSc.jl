@@ -121,28 +121,24 @@ err = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
 @chk err  # Throws an error if PETSc returned non-zero
 ```
 
-### 4. String Convenience Wrappers
+### 4. String-valued types
 
-Many PETSc `SetType` functions accept C string pointers. For convenience, PETSc.jl provides Julia `String` overloads:
+PETSc "string enums" such as `PCType`, `KSPType` or `MatType` are C strings
+(`typedef const char *PCType`). Every wrapper that takes one accepts a Julia `String`,
+and every `XGetType` returns a `String`. The registered names are available as constants
+in `LibPETSc`, so both spellings below are equivalent:
 
 ```julia
-# String convenience wrapper (recommended)
 LibPETSc.MatSetType(petsclib, mat, "seqaij")
-LibPETSc.VecSetType(petsclib, vec, "seq")
-LibPETSc.KSPSetType(petsclib, ksp, "gmres")
-LibPETSc.SNESSetType(petsclib, snes, "newtonls")
-LibPETSc.PCSetType(petsclib, pc[], "ilu")
-LibPETSc.TSSetType(petsclib, ts, "bdf")
-LibPETSc.TaoSetType(petsclib, tao, "lmvm")
-LibPETSc.DMSetType(petsclib, dm, "da")
-LibPETSc.PetscViewerSetType(petsclib, viewer, "ascii")
+LibPETSc.MatSetType(petsclib, mat, LibPETSc.MATSEQAIJ)
 
-# Equivalent low-level C pointer syntax (not recommended unless necessary)
-ptr = Base.unsafe_convert(Ptr{Int8}, pointer(Vector{UInt8}("seqaij\0")))
-LibPETSc.MatSetType(petsclib, mat, ptr)
+LibPETSc.KSPSetType(petsclib, ksp, LibPETSc.KSPGMRES)
+LibPETSc.PCSetType(petsclib, pc, LibPETSc.PCILU)
+LibPETSc.DMSetType(petsclib, dm, LibPETSc.DMPLEX)
+LibPETSc.PetscViewerSetType(petsclib, viewer, LibPETSc.PETSCVIEWERASCII)
+
+LibPETSc.KSPGetType(petsclib, ksp) == LibPETSc.KSPGMRES   # true
 ```
-
-The string wrappers handle the C string conversion internally, making the code cleaner and more Julia-friendly.
 
 Most wrapper functions already include error checking, but when calling C functions directly, use `@chk`.
 
@@ -213,7 +209,7 @@ LibPETSc.VecDestroy(petsclib, vec)
 # Create matrix
 mat = LibPETSc.MatCreate(petsclib, MPI.COMM_SELF)
 LibPETSc.MatSetSizes(petsclib, mat, 5, 5, 5, 5)
-LibPETSc.MatSetType(petsclib, mat, "seqaij")  # String convenience wrapper
+LibPETSc.MatSetType(petsclib, mat, "seqaij")
 LibPETSc.MatSetUp(petsclib, mat)
 
 # Set values (0-based indexing!)
@@ -301,10 +297,10 @@ PetscReal                # Real type (real part of PetscScalar)
 
 Detailed documentation for low-level functions by category:
 
-- [Vec (Vectors)](@ref vec_lowlevel.md) - ~293 functions for vector operations
-- [Mat (Matrices)](@ref mat_lowlevel.md) - ~756 functions for matrix operations
-- [KSP (Linear Solvers)](@ref ksp_lowlevel.md) - ~256 functions for iterative linear solvers
-- [SNES (Nonlinear Solvers)](@ref snes_lowlevel.md) - ~333 functions for nonlinear solvers
+- [Vec (Vectors)](vec_lowlevel.md) - ~293 functions for vector operations
+- [Mat (Matrices)](mat_lowlevel.md) - ~756 functions for matrix operations
+- [KSP (Linear Solvers)](ksp_lowlevel.md) - ~256 functions for iterative linear solvers
+- [SNES (Nonlinear Solvers)](snes_lowlevel.md) - ~333 functions for nonlinear solvers
 
 ## Getting Help
 

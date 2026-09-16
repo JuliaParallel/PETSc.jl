@@ -72,7 +72,7 @@ end
 end 
 
 """
-	result::Ptr{Cchar} = PetscTokenFind(petsclib::PetscLibType, a::PetscToken) 
+	result::String = PetscTokenFind(petsclib::PetscLibType, a::PetscToken) 
 Locates next "token" in a `PetscToken`
 
 Not Collective; No Fortran Support
@@ -104,7 +104,7 @@ end
                a, result_,
               )
 
-	result = result_[]
+	result = result_[] == C_NULL ? "" : unsafe_string(result_[])
 
 	return result
 end 

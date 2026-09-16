@@ -14,7 +14,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
+See also: `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
 
 # External Links
 $(_doc_external("IS/ISAllGather"))
@@ -96,7 +96,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISBLOCK`, `ISGetIndices()`, `ISBlockRestoreIndices()`, `ISBlockSetIndices()`, `ISCreateBlock()`
+See also: `IS`, `ISBLOCK`, `ISGetIndices()`, `ISBlockRestoreIndices()`, `ISBlockSetIndices()`, `ISCreateBlock()`
 
 # External Links
 $(_doc_external("IS/ISBlockGetIndices"))
@@ -135,7 +135,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISGetBlockSize()`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
+See also: `IS`, `ISGetBlockSize()`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
 
 # External Links
 $(_doc_external("IS/ISBlockGetLocalSize"))
@@ -173,7 +173,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISGetBlockSize()`, `ISBlockGetLocalSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
+See also: `IS`, `ISGetBlockSize()`, `ISBlockGetLocalSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
 
 # External Links
 $(_doc_external("IS/ISBlockGetSize"))
@@ -211,7 +211,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISBLOCK`, `ISRestoreIndices()`, `ISBlockGetIndices()`
+See also: `IS`, `ISBLOCK`, `ISRestoreIndices()`, `ISBlockGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISBlockRestoreIndices"))
@@ -249,7 +249,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISCreateBlock()`, `ISBLOCK`, `ISGeneralSetIndices()`
+See also: `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISCreateBlock()`, `ISBLOCK`, `ISGeneralSetIndices()`
 
 # External Links
 $(_doc_external("IS/ISBlockSetIndices"))
@@ -287,7 +287,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `ISPartitioningToNumbering()`, `ISPartitioningCount()`
+See also: `IS`, `MatPartitioningCreate()`, `ISPartitioningToNumbering()`, `ISPartitioningCount()`
 
 # External Links
 $(_doc_external("IS/ISBuildTwoSided"))
@@ -362,7 +362,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
+See also: `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
 
 # External Links
 $(_doc_external("IS/ISComplement"))
@@ -441,7 +441,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISExpandIndicesGeneral()`
+See also: `IS`, `ISGENERAL`, `ISExpandIndicesGeneral()`
 
 # External Links
 $(_doc_external("IS/ISCompressIndicesGeneral"))
@@ -479,7 +479,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISIntersect()`
+See also: `IS`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISIntersect()`
 
 # External Links
 $(_doc_external("IS/ISConcatenate"))
@@ -596,7 +596,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISType()`, `ISSetType()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
+See also: `IS`, `ISType()`, `ISSetType()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
 
 # External Links
 $(_doc_external("IS/ISCreate"))
@@ -639,7 +639,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISBlockSetIndices()`, `ISBLOCK`, `ISGENERAL`
+See also: `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISBlockSetIndices()`, `ISBLOCK`, `ISGENERAL`
 
 # External Links
 $(_doc_external("IS/ISCreateBlock"))
@@ -680,7 +680,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`, `PETSC_COPY_VALUES`, `PETSC_OWN_POINTER`,
+See also: `IS`, `ISGENERAL`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`, `PETSC_COPY_VALUES`, `PETSC_OWN_POINTER`,
 `PETSC_USE_POINTER`, `PetscCopyMode`, `ISGeneralSetIndicesFromMask()`
 
 # External Links
@@ -722,7 +722,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISStrideSetStride()`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`
+See also: `IS`, `ISStrideSetStride()`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`
 
 # External Links
 $(_doc_external("IS/ISCreateStride"))
@@ -843,7 +843,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISSum()`, `ISExpand()`
+See also: `IS`, `ISDestroy()`, `ISView()`, `ISSum()`, `ISExpand()`
 
 # External Links
 $(_doc_external("IS/ISDifference"))
@@ -964,7 +964,7 @@ or by the set of indices)
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISEqualUnsorted()`
+See also: `IS`, `ISEqualUnsorted()`
 
 # External Links
 $(_doc_external("IS/ISEqual"))
@@ -1005,7 +1005,7 @@ or by the set of indices)
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISEqual()`
+See also: `IS`, `ISEqual()`
 
 # External Links
 $(_doc_external("IS/ISEqualUnsorted"))
@@ -1045,7 +1045,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISIntersect()`
+See also: `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISIntersect()`
 
 # External Links
 $(_doc_external("IS/ISExpand"))
@@ -1085,7 +1085,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISCompressIndicesGeneral()`
+See also: `IS`, `ISGENERAL`, `ISCompressIndicesGeneral()`
 
 # External Links
 $(_doc_external("IS/ISExpandIndicesGeneral"))
@@ -1148,7 +1148,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISCreateGeneral()`, `ISGeneralSetIndices()`
+See also: `IS`, `ISGENERAL`, `ISCreateGeneral()`, `ISGeneralSetIndices()`
 
 # External Links
 $(_doc_external("IS/ISGeneralFilter"))
@@ -1184,7 +1184,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISBLOCK`, `ISCreateGeneral()`, `ISGeneralSetIndicesFromMask()`, `ISBlockSetIndices()`, `ISGENERAL`, `PetscCopyMode`
+See also: `IS`, `ISBLOCK`, `ISCreateGeneral()`, `ISGeneralSetIndicesFromMask()`, `ISBlockSetIndices()`, `ISGENERAL`, `PetscCopyMode`
 
 # External Links
 $(_doc_external("IS/ISGeneralSetIndices"))
@@ -1220,7 +1220,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISGeneralSetIndices()`, `ISGENERAL`
+See also: `IS`, `ISCreateGeneral()`, `ISGeneralSetIndices()`, `ISGENERAL`
 
 # External Links
 $(_doc_external("IS/ISGeneralSetIndicesFromMask"))
@@ -1615,7 +1615,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISRestorePointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
+See also: `IS`, `ISRestorePointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
 
 # External Links
 $(_doc_external("IS/ISGetPointRange"))
@@ -1660,7 +1660,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISGetPointRange()`, `ISRestorePointRange()`, `ISGetIndices()`, `ISCreateStride()`
+See also: `IS`, `ISGetPointRange()`, `ISRestorePointRange()`, `ISGetIndices()`, `ISCreateStride()`
 
 # External Links
 $(_doc_external("IS/ISGetPointSubrange"))
@@ -1761,7 +1761,7 @@ end
 end 
 
 """
-	type::ISType = ISGetType(petsclib::PetscLibType, is::AbstractIS) 
+	type::String = ISGetType(petsclib::PetscLibType, is::AbstractIS) 
 Gets the index set type name, `ISType`, (as a string) from the `IS`.
 
 Not Collective
@@ -1774,7 +1774,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `IS`, `ISType`, `ISSetType()`, `ISCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("IS/ISGetType"))
@@ -1822,7 +1822,7 @@ a second time to set the values.
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`
 
 # External Links
@@ -1871,7 +1871,7 @@ a second time to set the values.
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`
 
 # External Links
@@ -1915,7 +1915,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISGlobalToLocalMapping`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISGlobalToLocalMapping`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`
 
 # External Links
@@ -2022,7 +2022,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISConcatenate()`
+See also: `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISConcatenate()`
 
 # External Links
 $(_doc_external("IS/ISIntersect"))
@@ -2305,7 +2305,7 @@ to each partition, where size is the number of partitions generated
 
 Level: advanced
 
-See also: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningToNumbering()`,
+See also: `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningToNumbering()`,
 `MatPartitioningSetNParts()`, `MatPartitioningApply()`, `MatPartitioningApplyND()`
 
 # External Links
@@ -2345,7 +2345,7 @@ on that processor
 
 Level: advanced
 
-See also: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningCount()`
+See also: `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningCount()`
 
 # External Links
 $(_doc_external("IS/ISPartitioningToNumbering"))
@@ -2418,7 +2418,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine itself
 
-See also: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISRegisterAll()`, `ISRegisterDestroy()`
+See also: `IS`, `ISType`, `ISSetType()`, `ISRegisterAll()`, `ISRegisterDestroy()`
 
 # External Links
 $(_doc_external("IS/ISRegister"))
@@ -2448,7 +2448,7 @@ Not Collective
 
 Level: advanced
 
-See also: [](sec_scatter), `IS`, `ISType`, `ISRegister()`
+See also: `IS`, `ISType`, `ISRegister()`
 
 # External Links
 $(_doc_external("IS/ISRegisterAll"))
@@ -2631,7 +2631,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISGetPointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
+See also: `IS`, `ISGetPointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
 
 # External Links
 $(_doc_external("IS/ISRestorePointRange"))
@@ -2906,7 +2906,7 @@ end
 end 
 
 """
-	ISSetType(petsclib::PetscLibType, is::AbstractIS, method::ISType) 
+	ISSetType(petsclib::PetscLibType, is::AbstractIS, method::String) 
 Builds a index set, for a particular `ISType`
 
 Collective
@@ -2920,16 +2920,16 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISBLOCK`, `ISGetType()`, `ISCreate()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
+See also: `IS`, `ISGENERAL`, `ISBLOCK`, `ISGetType()`, `ISCreate()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
 
 # External Links
 $(_doc_external("IS/ISSetType"))
 """
-function ISSetType(petsclib::PetscLibType, is::AbstractIS, method::ISType)
+function ISSetType(petsclib::PetscLibType, is::AbstractIS, method::String)
     error("ISSetType: no generated method for these argument types")
 end
 
-@for_petsc function ISSetType(petsclib::$UnionPetscLib, is::AbstractIS, method::ISType )
+@for_petsc function ISSetType(petsclib::$UnionPetscLib, is::AbstractIS, method::String )
 
     @chk ccall(
                (:ISSetType, $petsc_library),
@@ -3138,7 +3138,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISCreateStride()`, `ISGetSize()`, `ISSTRIDE`
+See also: `IS`, `ISCreateStride()`, `ISGetSize()`, `ISSTRIDE`
 
 # External Links
 $(_doc_external("IS/ISStrideGetInfo"))
@@ -3178,7 +3178,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`, `ISCreateStride()`, `ISStrideGetInfo()`
+See also: `IS`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`, `ISCreateStride()`, `ISStrideGetInfo()`
 
 # External Links
 $(_doc_external("IS/ISStrideSetStride"))
@@ -3215,7 +3215,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISExpand()`
+See also: `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISExpand()`
 
 # External Links
 $(_doc_external("IS/ISSum"))

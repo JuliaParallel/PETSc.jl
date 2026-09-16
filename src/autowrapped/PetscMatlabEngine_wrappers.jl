@@ -156,7 +156,7 @@ end
 end 
 
 """
-	string::Ptr{Cchar} = PetscMatlabEngineGetOutput(petsclib::PetscLibType, mengine::PetscMatlabEngine) 
+	string::String = PetscMatlabEngineGetOutput(petsclib::PetscLibType, mengine::PetscMatlabEngine) 
 Gets a string buffer where the MATLAB output is
 printed
 
@@ -191,7 +191,7 @@ end
                mengine, string_,
               )
 
-	string = string_[]
+	string = string_[] == C_NULL ? "" : unsafe_string(string_[])
 
 	return string
 end 

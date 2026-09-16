@@ -149,7 +149,7 @@ end
 end 
 
 """
-	type::MatCoarsenType = MatCoarsenGetType(petsclib::PetscLibType, coarsen::MatCoarsen) 
+	type::String = MatCoarsenGetType(petsclib::PetscLibType, coarsen::MatCoarsen) 
 Gets the Coarsen method type and name (as a string)
 from the coarsen context.
 
@@ -554,7 +554,7 @@ end
 end 
 
 """
-	MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::MatCoarsenType) 
+	MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::String) 
 Sets the type of aggregator to use
 
 Collective
@@ -573,11 +573,11 @@ See also: `MatCoarsen`, `MatCoarsenCreate()`, `MatCoarsenApply()`, `MatCoarsenTy
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetType"))
 """
-function MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::MatCoarsenType)
+function MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::String)
     error("MatCoarsenSetType: no generated method for these argument types")
 end
 
-@for_petsc function MatCoarsenSetType(petsclib::$UnionPetscLib, coarser::MatCoarsen, type::MatCoarsenType )
+@for_petsc function MatCoarsenSetType(petsclib::$UnionPetscLib, coarser::MatCoarsen, type::String )
 
     @chk ccall(
                (:MatCoarsenSetType, $petsc_library),
@@ -1130,7 +1130,7 @@ end
 end 
 
 """
-	MatColoringSetType(petsclib::PetscLibType, mc::MatColoring, type::MatColoringType) 
+	MatColoringSetType(petsclib::PetscLibType, mc::MatColoring, type::String) 
 Sets the type of coloring algorithm used
 
 Collective
@@ -1149,11 +1149,11 @@ See also: `MatColoring`, `MatColoringSetFromOptions()`, `MatColoringType`, `MatC
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetType"))
 """
-function MatColoringSetType(petsclib::PetscLibType, mc::MatColoring, type::MatColoringType)
+function MatColoringSetType(petsclib::PetscLibType, mc::MatColoring, type::String)
     error("MatColoringSetType: no generated method for these argument types")
 end
 
-@for_petsc function MatColoringSetType(petsclib::$UnionPetscLib, mc::MatColoring, type::MatColoringType )
+@for_petsc function MatColoringSetType(petsclib::$UnionPetscLib, mc::MatColoring, type::String )
 
     @chk ccall(
                (:MatColoringSetType, $petsc_library),
@@ -1668,7 +1668,7 @@ end
 end 
 
 """
-	MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type::MatMFFDType) 
+	MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type::String) 
 Sets the approach for computing the finite difference parameter
 
 Collective
@@ -1687,11 +1687,11 @@ See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringView()`
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetType"))
 """
-function MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type::MatMFFDType)
+function MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type::String)
     error("MatFDColoringSetType: no generated method for these argument types")
 end
 
-@for_petsc function MatFDColoringSetType(petsclib::$UnionPetscLib, matfd::MatFDColoring, type::MatMFFDType )
+@for_petsc function MatFDColoringSetType(petsclib::$UnionPetscLib, matfd::MatFDColoring, type::String )
 
     @chk ccall(
                (:MatFDColoringSetType, $petsc_library),
@@ -2453,7 +2453,7 @@ end
 end 
 
 """
-	MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatMFFDType) 
+	MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::String) 
 Sets the method that is used to compute the
 differencing parameter for finite difference matrix-free formulations.
 
@@ -2469,11 +2469,11 @@ See also: `Mat`, `MATMFFD`, `MATMFFD_WP`, `MATMFFD_DS`, `MatCreateSNESMF()`, `Ma
 # External Links
 $(_doc_external("Mat/MatMFFDSetType"))
 """
-function MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatMFFDType)
+function MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::String)
     error("MatMFFDSetType: no generated method for these argument types")
 end
 
-@for_petsc function MatMFFDSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ftype::MatMFFDType )
+@for_petsc function MatMFFDSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ftype::String )
 
     @chk ccall(
                (:MatMFFDSetType, $petsc_library),
@@ -3400,7 +3400,7 @@ end
 end 
 
 """
-	type::MatPartitioningType = MatPartitioningGetType(petsclib::PetscLibType, partitioning::MatPartitioning) 
+	type::String = MatPartitioningGetType(petsclib::PetscLibType, partitioning::MatPartitioning) 
 Gets the Partitioning method type and name (as a string)
 from the partitioning context.
 
@@ -4329,7 +4329,7 @@ end
 end 
 
 """
-	MatPartitioningSetType(petsclib::PetscLibType, part::MatPartitioning, type::MatPartitioningType) 
+	MatPartitioningSetType(petsclib::PetscLibType, part::MatPartitioning, type::String) 
 Sets the type of partitioner to use
 
 Collective
@@ -4348,11 +4348,11 @@ See also: `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningA
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetType"))
 """
-function MatPartitioningSetType(petsclib::PetscLibType, part::MatPartitioning, type::MatPartitioningType)
+function MatPartitioningSetType(petsclib::PetscLibType, part::MatPartitioning, type::String)
     error("MatPartitioningSetType: no generated method for these argument types")
 end
 
-@for_petsc function MatPartitioningSetType(petsclib::$UnionPetscLib, part::MatPartitioning, type::MatPartitioningType )
+@for_petsc function MatPartitioningSetType(petsclib::$UnionPetscLib, part::MatPartitioning, type::String )
 
     @chk ccall(
                (:MatPartitioningSetType, $petsc_library),

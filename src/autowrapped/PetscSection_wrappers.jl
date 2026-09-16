@@ -11,7 +11,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddConstraintDof"))
@@ -46,7 +46,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddDof"))
@@ -82,7 +82,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddFieldConstraintDof"))
@@ -118,7 +118,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddFieldDof"))
@@ -190,7 +190,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionCopy()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionCopy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionClone"))
@@ -229,7 +229,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionCopy()`, `PetscSectionClone()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionCopy()`, `PetscSectionClone()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCompare"))
@@ -267,7 +267,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCopy"))
@@ -301,7 +301,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetChart()`, `PetscSectionDestroy()`, `PetscSectionCreateGlobalSection()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetChart()`, `PetscSectionDestroy()`, `PetscSectionCreateGlobalSection()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreate"))
@@ -341,7 +341,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateComponentSubsection"))
@@ -382,7 +382,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionCreateGlobalSectionCensored()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionCreateGlobalSectionCensored()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateGlobalSection"))
@@ -423,7 +423,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateGlobalSectionCensored"))
@@ -505,7 +505,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubmeshSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreateSubmeshSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSubdomainSection"))
@@ -544,7 +544,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubdomainSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreateSubdomainSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSubmeshSection"))
@@ -584,7 +584,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSubsection"))
@@ -623,7 +623,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubsection()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreateSubsection()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSupersection"))
@@ -658,7 +658,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionReset()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionReset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionDestroy"))
@@ -693,7 +693,7 @@ Input Parameter:
 Output Parameter:
 - `blockStarts` - The `PetscBT` with a 1 for each point that begins a block
 
-See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
+See also: `IS`, `PetscSection`, `PetscSectionSetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetBlockStarts"))
@@ -732,7 +732,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetChart()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetChart()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetChart"))
@@ -774,7 +774,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: PetscSection, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetClosureIndex"))
@@ -817,7 +817,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: PetscSection, `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetClosureInversePermutation"))
@@ -858,7 +858,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureInversePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: PetscSection, `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureInversePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetClosurePermutation"))
@@ -883,7 +883,7 @@ end
 end 
 
 """
-	compName::Ptr{Cchar} = PetscSectionGetComponentName(petsclib::PetscLibType, s::PetscSection, field::PetscInt, comp::PetscInt) 
+	compName::String = PetscSectionGetComponentName(petsclib::PetscLibType, s::PetscSection, field::PetscInt, comp::PetscInt) 
 Gets the name of a field component in the `PetscSection`
 
 Not Collective
@@ -898,7 +898,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
+See also: PetscSection, `PetscSection`, `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
 `PetscSectionSetComponentName()`, `PetscSectionSetFieldName()`, `PetscSectionGetFieldComponents()`, `PetscSectionSetFieldComponents()`
 
 # External Links
@@ -918,7 +918,7 @@ end
                s, field, comp, compName_,
               )
 
-	compName = compName_[]
+	compName = compName_[] == C_NULL ? "" : unsafe_string(compName_[])
 
 	return compName
 end 
@@ -937,7 +937,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetStorageSize()`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetStorageSize()`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetConstrainedStorageSize"))
@@ -976,7 +976,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetConstraintDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetConstraintDof"))
@@ -1015,7 +1015,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: PetscSection, `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetConstraintIndices"))
@@ -1055,7 +1055,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetDof"))
@@ -1092,7 +1092,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetNumFields()`
+See also: PetscSection, `PetscSection`, `IS`, `PetscSectionSetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetField"))
@@ -1131,7 +1131,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldComponents()`, `PetscSectionGetNumFields()`,
+See also: PetscSection, `PetscSection`, `PetscSectionSetFieldComponents()`, `PetscSectionGetNumFields()`,
 `PetscSectionSetComponentName()`, `PetscSectionGetComponentName()`
 
 # External Links
@@ -1172,7 +1172,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetFieldConstraintDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetFieldConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldConstraintDof"))
@@ -1212,7 +1212,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSetFieldConstraintIndices()`, `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: PetscSection, `PetscSectionSetFieldConstraintIndices()`, `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldConstraintIndices"))
@@ -1253,7 +1253,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldDof"))
@@ -1278,7 +1278,7 @@ end
 end 
 
 """
-	fieldName::Ptr{Cchar} = PetscSectionGetFieldName(petsclib::PetscLibType, s::PetscSection, field::PetscInt) 
+	fieldName::String = PetscSectionGetFieldName(petsclib::PetscLibType, s::PetscSection, field::PetscInt) 
 Returns the name of a field in the `PetscSection`
 
 Not Collective
@@ -1292,7 +1292,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldName"))
@@ -1311,7 +1311,7 @@ end
                s, field, fieldName_,
               )
 
-	fieldName = fieldName_[]
+	fieldName = fieldName_[] == C_NULL ? "" : unsafe_string(fieldName_[])
 
 	return fieldName
 end 
@@ -1332,7 +1332,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldPointOffset()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldPointOffset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldOffset"))
@@ -1373,7 +1373,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldOffset()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldOffset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldPointOffset"))
@@ -1418,7 +1418,7 @@ identity).
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionRestoreFieldPointSyms()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionRestoreFieldPointSyms()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldPointSyms"))
@@ -1459,7 +1459,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetFieldSym()`, `PetscSectionSymCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSetFieldSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldSym"))
@@ -1498,7 +1498,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetIncludesConstraints()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetIncludesConstraints()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetIncludesConstraints"))
@@ -1536,7 +1536,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetMaxDof"))
@@ -1574,7 +1574,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetNumFields()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetNumFields"))
@@ -1613,7 +1613,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetPointMajor()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetPointMajor()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetOffset"))
@@ -1652,7 +1652,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetOffsetRange"))
@@ -1692,7 +1692,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetPermutation()`, `PetscSectionCreate()`
+See also: `IS`, `PetscSection`, `PetscSectionSetPermutation()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPermutation"))
@@ -1731,7 +1731,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetValueLayout()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetValueLayout()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPointLayout"))
@@ -1769,7 +1769,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetPointMajor()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetPointMajor()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPointMajor"))
@@ -1858,7 +1858,7 @@ PetscSectionRestorePointSyms(section,numPoints,points,&perms,&rots);
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPointSyms"))
@@ -1898,7 +1898,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionGetConstrainedStorageSize()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionGetConstrainedStorageSize()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetStorageSize"))
@@ -1936,7 +1936,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetSym()`, `PetscSectionSymCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSetSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetSym"))
@@ -1974,7 +1974,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetChart()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSetChart()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetUseFieldOffsets"))
@@ -2013,7 +2013,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetPointLayout()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetPointLayout()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetValueLayout"))
@@ -2051,7 +2051,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: PetscSection, `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionHasConstraints"))
@@ -2087,7 +2087,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionView()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionView()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionLoad"))
@@ -2124,7 +2124,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `IS`, `PetscSection`, `MatPermute()`, `PetscSectionSetPermutation()`
+See also: PetscSection, `IS`, `PetscSection`, `MatPermute()`, `PetscSectionSetPermutation()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionPermute"))
@@ -2159,7 +2159,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionReset"))
@@ -2230,7 +2230,7 @@ context, see `DMPlexGetConeOrientation()`).
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `petscSectionGetFieldPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `petscSectionGetFieldPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionRestoreFieldPointSyms"))
@@ -2270,7 +2270,7 @@ context, see `DMPlexGetConeOrientation()`).
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionRestorePointSyms"))
@@ -2305,7 +2305,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionGetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
+See also: `IS`, `PetscSection`, `PetscSectionGetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetBlockStarts"))
@@ -2340,7 +2340,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetChart()`, `PetscSectionCreate()`, `PetscSectionSetNumFields()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetChart()`, `PetscSectionCreate()`, `PetscSectionSetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetChart"))
@@ -2376,7 +2376,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetClosureIndex"))
@@ -2412,7 +2412,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionGetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`, `PetscCopyMode`
+See also: PetscSection, `PetscSection`, `IS`, `PetscSectionGetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`, `PetscCopyMode`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetClosurePermutation"))
@@ -2448,7 +2448,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetComponentName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
+See also: PetscSection, `PetscSection`, `PetscSectionGetComponentName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
 `PetscSectionSetFieldName()`, `PetscSectionGetFieldComponents()`, `PetscSectionSetFieldComponents()`
 
 # External Links
@@ -2484,7 +2484,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetConstraintDof"))
@@ -2519,7 +2519,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: PetscSection, `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetConstraintIndices"))
@@ -2554,7 +2554,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetDof"))
@@ -2589,7 +2589,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldComponents()`, `PetscSectionSetComponentName()`,
+See also: PetscSection, `PetscSection`, `PetscSectionGetFieldComponents()`, `PetscSectionSetComponentName()`,
 `PetscSectionGetComponentName()`, `PetscSectionGetNumFields()`
 
 # External Links
@@ -2626,7 +2626,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldConstraintDof"))
@@ -2662,7 +2662,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetFieldConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: PetscSection, `PetscSectionSetConstraintIndices()`, `PetscSectionGetFieldConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldConstraintIndices"))
@@ -2698,7 +2698,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`, `PetscSectionAddDof()`, `PetscSectionSetDof()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`, `PetscSectionAddDof()`, `PetscSectionSetDof()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldDof"))
@@ -2733,7 +2733,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
+See also: PetscSection, `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldName"))
@@ -2769,7 +2769,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionSetOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionSetOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldOffset"))
@@ -2804,7 +2804,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetFieldSym()`, `PetscSectionSymCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionGetFieldSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldSym"))
@@ -2840,7 +2840,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFromOptions"))
@@ -2874,7 +2874,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetIncludesConstraints()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetIncludesConstraints()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetIncludesConstraints"))
@@ -2908,7 +2908,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetNumFields()`, `PetscSectionSetChart()`, `PetscSectionReset()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetNumFields()`, `PetscSectionSetChart()`, `PetscSectionReset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetNumFields"))
@@ -2943,7 +2943,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetOffset"))
@@ -2977,7 +2977,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetUp()`, `PetscSectionGetPermutation()`, `PetscSectionPermute()`, `PetscSectionCreate()`
+See also: `IS`, `PetscSection`, `PetscSectionSetUp()`, `PetscSectionGetPermutation()`, `PetscSectionPermute()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetPermutation"))
@@ -3011,7 +3011,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetPointMajor()`, `PetscSectionSetPermutation()`
+See also: PetscSection, `PetscSection`, `PetscSectionGetPointMajor()`, `PetscSectionSetPermutation()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetPointMajor"))
@@ -3045,7 +3045,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetSym()`, `PetscSectionSymCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionGetSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetSym"))
@@ -3078,7 +3078,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionSetPermutation()`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionSetPermutation()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetUp"))
@@ -3111,7 +3111,7 @@ Input Parameter:
 
 Level: advanced
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetUp()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSection`, `PetscSectionSetUp()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetUpBC"))
@@ -3145,7 +3145,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetUseFieldOffsets()`, `PetscSectionSetChart()`, `PetscSectionCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionGetUseFieldOffsets()`, `PetscSectionSetChart()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetUseFieldOffsets"))
@@ -3181,7 +3181,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymCopy"))
@@ -3217,7 +3217,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSym`, `PetscSectionSymDestroy()`
+See also: PetscSection, `PetscSection`, `PetscSectionSym`, `PetscSectionSymDestroy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymCreate"))
@@ -3291,7 +3291,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymDestroy"))
@@ -3329,7 +3329,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymDistribute"))
@@ -3354,7 +3354,7 @@ end
 end 
 
 """
-	type::PetscSectionSymType = PetscSectionSymGetType(petsclib::PetscLibType, sym::PetscSectionSym) 
+	type::String = PetscSectionSymGetType(petsclib::PetscLibType, sym::PetscSectionSym) 
 Gets the section symmetry type name (as a string) from the `PetscSectionSym`.
 
 Not Collective
@@ -3367,7 +3367,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymSetType()`, `PetscSectionSymCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymSetType()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymGetType"))
@@ -3528,7 +3528,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymCreate()`, `PetscSectionSymSetType()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymCreate()`, `PetscSectionSymSetType()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymRegister"))
@@ -3551,7 +3551,7 @@ end
 end 
 
 """
-	PetscSectionSymSetType(petsclib::PetscLibType, sym::PetscSectionSym, method::PetscSectionSymType) 
+	PetscSectionSymSetType(petsclib::PetscLibType, sym::PetscSectionSym, method::String) 
 Builds a `PetscSectionSym`, for a particular implementation.
 
 Collective
@@ -3562,16 +3562,16 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymGetType()`, `PetscSectionSymCreate()`
+See also: PetscSection, `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymGetType()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymSetType"))
 """
-function PetscSectionSymSetType(petsclib::PetscLibType, sym::PetscSectionSym, method::PetscSectionSymType)
+function PetscSectionSymSetType(petsclib::PetscLibType, sym::PetscSectionSym, method::String)
     error("PetscSectionSymSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscSectionSymSetType(petsclib::$UnionPetscLib, sym::PetscSectionSym, method::PetscSectionSymType )
+@for_petsc function PetscSectionSymSetType(petsclib::$UnionPetscLib, sym::PetscSectionSym, method::String )
 
     @chk ccall(
                (:PetscSectionSymSetType, $petsc_library),
@@ -3702,7 +3702,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionLoad()`, `PetscViewer`
+See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionLoad()`, `PetscViewer`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionView"))
@@ -3740,7 +3740,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionView`, `PetscObjectViewFromOptions()`, `PetscSectionCreate()`, `PetscSectionView()`
+See also: PetscSection, `PetscSection`, `PetscSectionView`, `PetscObjectViewFromOptions()`, `PetscSectionCreate()`, `PetscSectionView()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionViewFromOptions"))

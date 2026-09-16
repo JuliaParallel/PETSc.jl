@@ -3814,7 +3814,7 @@ end
 end 
 
 """
-	p::Ptr{Cchar} = TaoGetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao) 
+	p::String = TaoGetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao) 
 Gets the prefix used for searching for all
 Tao options in the database
 
@@ -3847,7 +3847,7 @@ end
                tao, p_,
               )
 
-	p = p_[]
+	p = p_[] == C_NULL ? "" : unsafe_string(p_[])
 
 	return p
 end 
@@ -4156,7 +4156,7 @@ end
 end 
 
 """
-	type::TaoType = TaoGetType(petsclib::PetscLibType, tao::AbstractTao) 
+	type::String = TaoGetType(petsclib::PetscLibType, tao::AbstractTao) 
 Gets the current `TaoType` being used in the `Tao` object
 
 Not Collective
@@ -5245,7 +5245,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = TaoPythonGetType(petsclib::PetscLibType, tao::AbstractTao) 
+	pyname::String = TaoPythonGetType(petsclib::PetscLibType, tao::AbstractTao) 
 Get the type of a `Tao` object implemented in Python.
 
 Not Collective
@@ -5277,7 +5277,7 @@ end
                tao, pyname_,
               )
 
-	pyname = pyname_[]
+	pyname = pyname_[] == C_NULL ? "" : unsafe_string(pyname_[])
 
 	return pyname
 end 
@@ -6854,7 +6854,7 @@ end
 end 
 
 """
-	TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoType) 
+	TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::String) 
 Sets the `TaoType` for the minimization solver.
 
 Collective
@@ -6873,11 +6873,11 @@ See also: `Tao`, `TaoCreate()`, `TaoGetType()`, `TaoType`
 # External Links
 $(_doc_external("Tao/TaoSetType"))
 """
-function TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoType)
+function TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::String)
     error("TaoSetType: no generated method for these argument types")
 end
 
-@for_petsc function TaoSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoType )
+@for_petsc function TaoSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::String )
 
     @chk ccall(
                (:TaoSetType, $petsc_library),

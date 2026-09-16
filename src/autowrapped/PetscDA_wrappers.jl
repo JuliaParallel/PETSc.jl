@@ -861,7 +861,7 @@ end
 end 
 
 """
-	p::Ptr{Cchar} = PetscDAGetOptionsPrefix(petsclib::PetscLibType, das::PetscDA) 
+	p::String = PetscDAGetOptionsPrefix(petsclib::PetscLibType, das::PetscDA) 
 Gets the prefix used for searching for all
 PetscDA options in the database
 
@@ -894,7 +894,7 @@ end
                das, p_,
               )
 
-	p = p_[]
+	p = p_[] == C_NULL ? "" : unsafe_string(p_[])
 
 	return p
 end 
@@ -941,7 +941,7 @@ end
 end 
 
 """
-	type::PetscDAType = PetscDAGetType(petsclib::PetscLibType, da::PetscDA) 
+	type::String = PetscDAGetType(petsclib::PetscLibType, da::PetscDA) 
 Gets the name of the implementation currently associated with a `PetscDA`.
 
 Not Collective
@@ -1410,7 +1410,7 @@ end
 end 
 
 """
-	PetscDASetType(petsclib::PetscLibType, da::PetscDA, type::PetscDAType) 
+	PetscDASetType(petsclib::PetscLibType, da::PetscDA, type::String) 
 Sets the data assimilation implementation used by a `PetscDA` object.
 
 Collective
@@ -1426,11 +1426,11 @@ See also: `PetscDAGetType()`, `PetscDARegister()`
 # External Links
 $(_doc_external("PetscDA/PetscDASetType"))
 """
-function PetscDASetType(petsclib::PetscLibType, da::PetscDA, type::PetscDAType)
+function PetscDASetType(petsclib::PetscLibType, da::PetscDA, type::String)
     error("PetscDASetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscDASetType(petsclib::$UnionPetscLib, da::PetscDA, type::PetscDAType )
+@for_petsc function PetscDASetType(petsclib::$UnionPetscLib, da::PetscDA, type::String )
 
     @chk ccall(
                (:PetscDASetType, $petsc_library),
@@ -1641,7 +1641,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_viewers), `PetscDataType`, `PetscHDF5DataTypeToPetscDataType()`
+See also: `PetscDataType`, `PetscHDF5DataTypeToPetscDataType()`
 
 # External Links
 $(_doc_external("Viewer/PetscDataTypeToHDF5DataType"))

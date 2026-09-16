@@ -54,21 +54,6 @@ LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
     return nothing
 end
 
-"""
-    TSAdaptSetType(petsclib, adapt, type::String)
-
-Convenience wrapper for setting the TS adaptivity controller using a Julia
-string such as `"none"` or `"basic"`.
-"""
-function LibPETSc.TSAdaptSetType(
-    petsclib::LibPETSc.PetscLibType,
-    adapt::LibPETSc.TSAdapt,
-    type::AbstractString,
-)
-    s = String(type)
-    GC.@preserve s LibPETSc.TSAdaptSetType(petsclib, adapt, Base.unsafe_convert(Ptr{Cchar}, s))
-    return nothing
-end
 
 """
     TSMonitorSet(petsclib, ts, monitor::Ptr{Cvoid}, ctx = C_NULL, mdestroy = C_NULL)
@@ -107,24 +92,7 @@ order, matching the layout used by C arrays. If you start from a Julia matrix,
 do not pass `vec(A)` directly since Julia stores matrices column-major; flatten
 row-by-row instead, for example with `vec(permutedims(A))`.
 """
-function LibPETSc.TSARKIMEXRegister(
-    petsclib::LibPETSc.PetscLibType,
-    name::String,
-    order::Integer,
-    s::Integer,
-    At::AbstractVector,
-    bt::Union{Nothing, AbstractVector},
-    ct::Union{Nothing, AbstractVector},
-    A::AbstractVector,
-    b::Union{Nothing, AbstractVector},
-    c::Union{Nothing, AbstractVector},
-    bembedt::Union{Nothing, AbstractVector},
-    bembed::Union{Nothing, AbstractVector},
-    pinterp::Integer,
-    binterpt::Union{Nothing, AbstractVector},
-    binterp::Union{Nothing, AbstractVector},
-) end
-
+# (the docstring stub is the generated one in TS_wrappers.jl; these methods add `nothing` for optional arrays)
 LibPETSc.@for_petsc function LibPETSc.TSARKIMEXRegister(
     petsclib::$UnionPetscLib,
     name::String,

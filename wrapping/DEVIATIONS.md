@@ -42,6 +42,22 @@ Other differences from the baseline that are not per-function:
 - non-const `T *x` scalar pointers are outputs even when listed as inputs (`TSIRKGetNumStages`);
 - `void *ctx` documented as an output returns the pointer (`MatShellGetContext`);
 - deprecated enum aliases are skipped rather than truncating the enum (`SNESConvergedReason`);
+- string-enum arguments (`PCType`, `MatType`, ...) are `String`s (the baseline needed
+  `Base.unsafe_convert(Ptr{Int8}, "ilu")` or the hand-written `src/string_wrappers.jl`, now removed)
+  and `senums_wrappers.jl` defines the registered names as constants (`LibPETSc.PCMG == "mg"`);
+- `const char *x[]` outputs (`PetscObjectGetType`, `KSPGetOptionsPrefix`, ...) return a `String`
+  instead of a raw pointer; `PetscObjectGetName` returns the name (the manual page lists it as an input);
+- `direction = "inout"` rules make `PetscSplitOwnership*`, `PetscSortRemoveDups*` and the `nmax` of
+  `PetscOptionsGet*Array` take and return the scalar (the baseline passed an uninitialised `Ref`);
+- `PCMGSetLevels` takes the optional `comms` (`C_NULL`) instead of returning garbage;
+- `PetscSFBcastBegin/End`, `PetscSFReduceBegin/End`, `PetscSFFetchAndOpBegin/End` exist as
+  hand-written extras (they are absent from the API snapshot);
+- `PetscDraw` and `TSMonitorLGCtx` are opaque pointer handles; the baseline's
+  `mutable struct PetscDraw end` placeholder made every `PetscDraw*` call fail (`Ref{PetscDraw}()`
+  is an undefined reference and the handle was passed as a Julia object pointer);
+- 95 header-inline functions and macros that have no symbol in `libpetsc` (`PetscStrcmp`,
+  `PetscTime`, `VecSetValue`, `MatSetValue`, `PetscOptionsBegin`, ...) are excluded; the baseline
+  had wrappers that failed with "could not load symbol";
 
 - type names are mapped with the old substring replacement by default (`fix_substring_replacements = false` in `types.toml`) so that `PetscPoCintFn`-style names are reproduced; flip the flag to get correct names (they are opaque placeholders, so nothing else changes);
 - the opaque type declarations that used to sit at the top of each file are collected in `opaque_types.jl`;

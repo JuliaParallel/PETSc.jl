@@ -32,7 +32,7 @@ PETSc.initialize(petsclib)
 
 # Create a viewer for ASCII output to stdout
 viewer = LibPETSc.PetscViewerCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.PetscViewerSetType(petsclib, viewer, "ascii")  # String convenience wrapper
+LibPETSc.PetscViewerSetType(petsclib, viewer, LibPETSc.PETSCVIEWERASCII)
 LibPETSc.PetscViewerFileSetMode(petsclib, viewer, LibPETSc.FILE_MODE_WRITE)
 
 # View a vector
@@ -41,9 +41,8 @@ LibPETSc.PetscViewerFileSetMode(petsclib, viewer, LibPETSc.FILE_MODE_WRITE)
 # View a matrix  
 # LibPETSc.MatView(petsclib, mat, viewer)
 
-# Cleanup - wrap in Ref since PetscViewerDestroy expects Ptr{PetscViewer}
-viewer_ref = Ref(viewer)
-LibPETSc.PetscViewerDestroy(petsclib, viewer_ref)
+# Cleanup
+LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
 # Finalize PETSc and MPI
 PETSc.finalize(petsclib)
@@ -89,14 +88,13 @@ MPI.Finalize()
 
 ```julia
 # Create ASCII file viewer
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerASCIIOpen(petsclib, LibPETSc.PETSC_COMM_SELF, "output.txt", viewer)
+viewer = LibPETSc.PetscViewerASCIIOpen(petsclib, LibPETSc.PETSC_COMM_SELF, "output.txt")
 
 # Set format (optional)
-LibPETSc.PetscViewerPushFormat(petsclib, viewer[], LibPETSc.PETSC_VIEWER_ASCII_MATLAB)
+LibPETSc.PetscViewerPushFormat(petsclib, viewer, LibPETSc.PETSC_VIEWER_ASCII_MATLAB)
 
 # View object
-# LibPETSc.MatView(petsclib, mat, viewer[])
+# LibPETSc.MatView(petsclib, mat, viewer)
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
@@ -109,15 +107,14 @@ MPI.Finalize()
 
 ```julia
 # Create binary viewer for checkpointing
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerBinaryOpen(petsclib, MPI.COMM_WORLD, "checkpoint.dat", 
-                               LibPETSc.FILE_MODE_WRITE, viewer)
+viewer = LibPETSc.PetscViewerBinaryOpen(petsclib, MPI.COMM_WORLD, "checkpoint.dat",
+                                        LibPETSc.FILE_MODE_WRITE)
 
 # Save vector
-# LibPETSc.VecView(petsclib, vec, viewer[])
+# LibPETSc.VecView(petsclib, vec, viewer)
 
 # Save matrix
-# LibPETSc.MatView(petsclib, mat, viewer[])
+# LibPETSc.MatView(petsclib, mat, viewer)
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
@@ -130,13 +127,12 @@ MPI.Finalize()
 
 ```julia
 # Open for reading
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerBinaryOpen(petsclib, MPI.COMM_WORLD, "checkpoint.dat",
-                               LibPETSc.FILE_MODE_READ, viewer)
+viewer = LibPETSc.PetscViewerBinaryOpen(petsclib, MPI.COMM_WORLD, "checkpoint.dat",
+                                        LibPETSc.FILE_MODE_READ)
 
 # Load vector
 vec = LibPETSc.VecCreate(petsclib, MPI.COMM_WORLD)
-LibPETSc.VecLoad(petsclib, vec, viewer[])
+LibPETSc.VecLoad(petsclib, vec, viewer)
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
@@ -151,13 +147,12 @@ MPI.Finalize()
 
 ```julia
 # Create VTK viewer for ParaView/VisIt
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerVTKOpen(petsclib, MPI.COMM_WORLD, "solution.vtu",
-                            LibPETSc.FILE_MODE_WRITE, viewer)
+viewer = LibPETSc.PetscViewerVTKOpen(petsclib, MPI.COMM_WORLD, "solution.vtu",
+                                     LibPETSc.FILE_MODE_WRITE)
 
 # View DM-based solution
-# LibPETSc.DMView(petsclib, dm, viewer[])
-# LibPETSc.VecView(petsclib, solution, viewer[])
+# LibPETSc.DMView(petsclib, dm, viewer)
+# LibPETSc.VecView(petsclib, solution, viewer)
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
@@ -170,14 +165,13 @@ MPI.Finalize()
 
 ```julia
 # Create HDF5 viewer for hierarchical data
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerHDF5Open(petsclib, MPI.COMM_WORLD, "data.h5",
-                             LibPETSc.FILE_MODE_WRITE, viewer)
+viewer = LibPETSc.PetscViewerHDF5Open(petsclib, MPI.COMM_WORLD, "data.h5",
+                                      LibPETSc.FILE_MODE_WRITE)
 
 # Organize data in groups
-LibPETSc.PetscViewerHDF5PushGroup(petsclib, viewer[], "/timestep_001")
-# LibPETSc.VecView(petsclib, vec, viewer[])
-LibPETSc.PetscViewerHDF5PopGroup(petsclib, viewer[])
+LibPETSc.PetscViewerHDF5PushGroup(petsclib, viewer, "/timestep_001")
+# LibPETSc.VecView(petsclib, vec, viewer)
+LibPETSc.PetscViewerHDF5PopGroup(petsclib, viewer)
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
@@ -219,15 +213,15 @@ For interactive 2D visualization:
 
 ```julia
 # Create draw viewer (X-window)
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerDrawOpen(petsclib, LibPETSc.PETSC_COMM_SELF, C_NULL, "Plot", 
-                              0, 0, 600, 600, viewer)
+# display "" selects the default display
+viewer = LibPETSc.PetscViewerDrawOpen(petsclib, LibPETSc.PETSC_COMM_SELF, "", "Plot",
+                                      Cint(0), Cint(0), Cint(600), Cint(600))
 
 # View vector as bar chart
-# LibPETSc.VecView(petsclib, vec, viewer[])
+# LibPETSc.VecView(petsclib, vec, viewer)
 
 # View matrix structure
-# LibPETSc.MatView(petsclib, mat, viewer[])
+# LibPETSc.MatView(petsclib, mat, viewer)
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
@@ -242,11 +236,10 @@ Stream data to external tools:
 
 ```julia
 # Create socket viewer
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerSocketOpen(petsclib, MPI.COMM_WORLD, "localhost", 5000, viewer)
+viewer = LibPETSc.PetscViewerSocketOpen(petsclib, MPI.COMM_WORLD, "localhost", Cint(5000))
 
 # Send data
-# LibPETSc.VecView(petsclib, vec, viewer[])
+# LibPETSc.VecView(petsclib, vec, viewer)
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 
@@ -260,9 +253,8 @@ MPI.Finalize()
 Viewers are used with KSP/SNES monitors:
 
 ```julia
-# Monitor KSP residuals (automatic viewer to stdout)
-# LibPETSc.KSPMonitorSet(petsclib, ksp, LibPETSc.KSPMonitorDefault, 
-#                        LibPETSc.PETSC_VIEWER_STDOUT_SELF(petsclib), C_NULL)
+# Monitor KSP residuals with a Julia callback (see the KSP page for the callback signature)
+# LibPETSc.KSPMonitorSet(petsclib, ksp, monitor_cfunction, C_NULL, C_NULL)
 ```
 
 ## Function Reference
@@ -271,4 +263,13 @@ Viewers are used with KSP/SNES monitors:
 Modules = [PETSc.LibPETSc]
 Pages   = ["autowrapped/PetscViewer_wrappers.jl"]
 Order   = [:function]
+```
+
+### Standard viewers (hand-written)
+
+```@autodocs
+Modules = [PETSc.LibPETSc]
+Pages   = ["autowrapped/extra_wrappers.jl"]
+Order   = [:function]
+Filter  = t -> startswith(string(nameof(t)), "PETSC_VIEWER")
 ```

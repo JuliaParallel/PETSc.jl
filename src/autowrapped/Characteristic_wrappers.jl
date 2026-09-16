@@ -256,7 +256,7 @@ end
 end 
 
 """
-	CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::CharacteristicType) 
+	CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::String) 
 Builds Characteristic for a particular solver.
 
 Logically Collective
@@ -276,11 +276,11 @@ See also: `CharacteristicType`
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetType"))
 """
-function CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::CharacteristicType)
+function CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::String)
     error("CharacteristicSetType: no generated method for these argument types")
 end
 
-@for_petsc function CharacteristicSetType(petsclib::$UnionPetscLib, c::Characteristic, type::CharacteristicType )
+@for_petsc function CharacteristicSetType(petsclib::$UnionPetscLib, c::Characteristic, type::String )
 
     @chk ccall(
                (:CharacteristicSetType, $petsc_library),

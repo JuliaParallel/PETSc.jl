@@ -181,7 +181,7 @@ end
 end 
 
 """
-	arktype::TSARKIMEXType = TSARKIMEXGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	arktype::String = TSARKIMEXGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSARKIMEX` scheme
 
 Logically Collective
@@ -247,7 +247,7 @@ end
 end 
 
 """
-	TSARKIMEXRegister(petsclib::PetscLibType, name::TSARKIMEXType, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembedt::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}, binterp::Vector{PetscReal}) 
+	TSARKIMEXRegister(petsclib::PetscLibType, name::String, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembedt::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}, binterp::Vector{PetscReal}) 
 register a `TSARKIMEX` scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
 
 Logically Collective
@@ -275,11 +275,11 @@ See also: `TSARKIMEX`, `TSType`, `TS`
 # External Links
 $(_doc_external("TS/TSARKIMEXRegister"))
 """
-function TSARKIMEXRegister(petsclib::PetscLibType, name::TSARKIMEXType, order::Integer, s::Integer, At::AbstractVector{<:Number}, bt::AbstractVector{<:Number}, ct::AbstractVector{<:Number}, A::AbstractVector{<:Number}, b::AbstractVector{<:Number}, c::AbstractVector{<:Number}, bembedt::AbstractVector{<:Number}, bembed::AbstractVector{<:Number}, pinterp::Integer, binterpt::AbstractVector{<:Number}, binterp::AbstractVector{<:Number})
+function TSARKIMEXRegister(petsclib::PetscLibType, name::String, order::Integer, s::Integer, At::AbstractVector{<:Number}, bt::AbstractVector{<:Number}, ct::AbstractVector{<:Number}, A::AbstractVector{<:Number}, b::AbstractVector{<:Number}, c::AbstractVector{<:Number}, bembedt::AbstractVector{<:Number}, bembed::AbstractVector{<:Number}, pinterp::Integer, binterpt::AbstractVector{<:Number}, binterp::AbstractVector{<:Number})
     error("TSARKIMEXRegister: no generated method for these argument types")
 end
 
-@for_petsc function TSARKIMEXRegister(petsclib::$UnionPetscLib, name::TSARKIMEXType, order::$PetscInt, s::$PetscInt, At::Vector{$PetscReal}, bt::Vector{$PetscReal}, ct::Vector{$PetscReal}, A::Vector{$PetscReal}, b::Vector{$PetscReal}, c::Vector{$PetscReal}, bembedt::Vector{$PetscReal}, bembed::Vector{$PetscReal}, pinterp::$PetscInt, binterpt::Vector{$PetscReal}, binterp::Vector{$PetscReal} )
+@for_petsc function TSARKIMEXRegister(petsclib::$UnionPetscLib, name::String, order::$PetscInt, s::$PetscInt, At::Vector{$PetscReal}, bt::Vector{$PetscReal}, ct::Vector{$PetscReal}, A::Vector{$PetscReal}, b::Vector{$PetscReal}, c::Vector{$PetscReal}, bembedt::Vector{$PetscReal}, bembed::Vector{$PetscReal}, pinterp::$PetscInt, binterpt::Vector{$PetscReal}, binterp::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSARKIMEXRegister, $petsc_library),
@@ -396,7 +396,7 @@ end
 end 
 
 """
-	TSARKIMEXSetType(petsclib::PetscLibType, ts::AbstractTS, arktype::TSARKIMEXType) 
+	TSARKIMEXSetType(petsclib::PetscLibType, ts::AbstractTS, arktype::String) 
 Set the type of `TSARKIMEX` scheme
 
 Logically Collective
@@ -416,11 +416,11 @@ See also: `TSARKIMEXGetType()`, `TSARKIMEX`, `TSARKIMEXType`, `TSARKIMEX1BEE`, `
 # External Links
 $(_doc_external("TS/TSARKIMEXSetType"))
 """
-function TSARKIMEXSetType(petsclib::PetscLibType, ts::AbstractTS, arktype::TSARKIMEXType)
+function TSARKIMEXSetType(petsclib::PetscLibType, ts::AbstractTS, arktype::String)
     error("TSARKIMEXSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSARKIMEXSetType(petsclib::$UnionPetscLib, ts::AbstractTS, arktype::TSARKIMEXType )
+@for_petsc function TSARKIMEXSetType(petsclib::$UnionPetscLib, ts::AbstractTS, arktype::String )
 
     @chk ccall(
                (:TSARKIMEXSetType, $petsc_library),
@@ -1486,7 +1486,7 @@ end
 end 
 
 """
-	TSBasicSymplecticRegister(petsclib::PetscLibType, name::TSRosWType, order::PetscInt, s::PetscInt, c::Vector{PetscReal}, d::Vector{PetscReal}) 
+	TSBasicSymplecticRegister(petsclib::PetscLibType, name::String, order::PetscInt, s::PetscInt, c::Vector{PetscReal}, d::Vector{PetscReal}) 
 register a basic symplectic integration scheme by providing the coefficients.
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used
@@ -1505,11 +1505,11 @@ See also: `TSBASICSYMPLECTIC`
 # External Links
 $(_doc_external("TS/TSBasicSymplecticRegister"))
 """
-function TSBasicSymplecticRegister(petsclib::PetscLibType, name::TSRosWType, order::Integer, s::Integer, c::AbstractVector{<:Number}, d::AbstractVector{<:Number})
+function TSBasicSymplecticRegister(petsclib::PetscLibType, name::String, order::Integer, s::Integer, c::AbstractVector{<:Number}, d::AbstractVector{<:Number})
     error("TSBasicSymplecticRegister: no generated method for these argument types")
 end
 
-@for_petsc function TSBasicSymplecticRegister(petsclib::$UnionPetscLib, name::TSRosWType, order::$PetscInt, s::$PetscInt, c::Vector{$PetscReal}, d::Vector{$PetscReal} )
+@for_petsc function TSBasicSymplecticRegister(petsclib::$UnionPetscLib, name::String, order::$PetscInt, s::$PetscInt, c::Vector{$PetscReal}, d::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSBasicSymplecticRegister, $petsc_library),
@@ -1581,7 +1581,7 @@ end
 end 
 
 """
-	TSBasicSymplecticSetType(petsclib::PetscLibType, ts::AbstractTS, bsymptype::TSBasicSymplecticType) 
+	TSBasicSymplecticSetType(petsclib::PetscLibType, ts::AbstractTS, bsymptype::String) 
 Set the type of the basic symplectic method
 
 Logically Collective
@@ -1600,11 +1600,11 @@ See also: `TSBASICSYMPLECTIC`, `TSBasicSymplecticType`
 # External Links
 $(_doc_external("TS/TSBasicSymplecticSetType"))
 """
-function TSBasicSymplecticSetType(petsclib::PetscLibType, ts::AbstractTS, bsymptype::TSBasicSymplecticType)
+function TSBasicSymplecticSetType(petsclib::PetscLibType, ts::AbstractTS, bsymptype::String)
     error("TSBasicSymplecticSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSBasicSymplecticSetType(petsclib::$UnionPetscLib, ts::AbstractTS, bsymptype::TSBasicSymplecticType )
+@for_petsc function TSBasicSymplecticSetType(petsclib::$UnionPetscLib, ts::AbstractTS, bsymptype::String )
 
     @chk ccall(
                (:TSBasicSymplecticSetType, $petsc_library),
@@ -2874,7 +2874,7 @@ end
 end 
 
 """
-	dirktype::TSDIRKType = TSDIRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	dirktype::String = TSDIRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSDIRK` scheme
 
 Logically Collective
@@ -2912,7 +2912,7 @@ end
 end 
 
 """
-	TSDIRKRegister(petsclib::PetscLibType, name::TSDIRKType, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, bembedt::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
+	TSDIRKRegister(petsclib::PetscLibType, name::String, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, bembedt::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
 register a `TSDIRK` scheme by providing the entries in its Butcher tableau and, optionally, embedded approximations and interpolation
 
 Logically Collective.
@@ -2935,11 +2935,11 @@ See also: `TSDIRK`, `TSType`, `TS`
 # External Links
 $(_doc_external("TS/TSDIRKRegister"))
 """
-function TSDIRKRegister(petsclib::PetscLibType, name::TSDIRKType, order::Integer, s::Integer, At::AbstractVector{<:Number}, bt::AbstractVector{<:Number}, ct::AbstractVector{<:Number}, bembedt::AbstractVector{<:Number}, pinterp::Integer, binterpt::AbstractVector{<:Number})
+function TSDIRKRegister(petsclib::PetscLibType, name::String, order::Integer, s::Integer, At::AbstractVector{<:Number}, bt::AbstractVector{<:Number}, ct::AbstractVector{<:Number}, bembedt::AbstractVector{<:Number}, pinterp::Integer, binterpt::AbstractVector{<:Number})
     error("TSDIRKRegister: no generated method for these argument types")
 end
 
-@for_petsc function TSDIRKRegister(petsclib::$UnionPetscLib, name::TSDIRKType, order::$PetscInt, s::$PetscInt, At::Vector{$PetscReal}, bt::Vector{$PetscReal}, ct::Vector{$PetscReal}, bembedt::Vector{$PetscReal}, pinterp::$PetscInt, binterpt::Vector{$PetscReal} )
+@for_petsc function TSDIRKRegister(petsclib::$UnionPetscLib, name::String, order::$PetscInt, s::$PetscInt, At::Vector{$PetscReal}, bt::Vector{$PetscReal}, ct::Vector{$PetscReal}, bembedt::Vector{$PetscReal}, pinterp::$PetscInt, binterpt::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSDIRKRegister, $petsc_library),
@@ -2953,7 +2953,7 @@ end
 end 
 
 """
-	TSDIRKSetType(petsclib::PetscLibType, ts::AbstractTS, dirktype::TSDIRKType) 
+	TSDIRKSetType(petsclib::PetscLibType, ts::AbstractTS, dirktype::String) 
 Set the type of `TSDIRK` scheme
 
 Logically Collective
@@ -2972,11 +2972,11 @@ See also: `TSDIRKGetType()`, `TSDIRK`, `TSDIRKType`
 # External Links
 $(_doc_external("TS/TSDIRKSetType"))
 """
-function TSDIRKSetType(petsclib::PetscLibType, ts::AbstractTS, dirktype::TSDIRKType)
+function TSDIRKSetType(petsclib::PetscLibType, ts::AbstractTS, dirktype::String)
     error("TSDIRKSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSDIRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, dirktype::TSDIRKType )
+@for_petsc function TSDIRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, dirktype::String )
 
     @chk ccall(
                (:TSDIRKSetType, $petsc_library),
@@ -3928,7 +3928,7 @@ end
 end 
 
 """
-	gleetype::TSGLEEType = TSGLEEGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	gleetype::String = TSGLEEGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSGLEE` scheme
 
 Logically Collective
@@ -3994,7 +3994,7 @@ end
 end 
 
 """
-	TSGLEERegister(petsclib::PetscLibType, name::TSGLEEType, order::PetscInt, s::PetscInt, r::PetscInt, gamma::PetscReal, A::Vector{PetscReal}, B::Vector{PetscReal}, U::Vector{PetscReal}, V::Vector{PetscReal}, M_S::Vector{PetscReal}, F::Vector{PetscReal}, c::Vector{PetscReal}, Fembed::Vector{PetscReal}, Ferror::Vector{PetscReal}, Serror::Vector{PetscReal}, pinterp::PetscInt, binterp::Vector{PetscReal}) 
+	TSGLEERegister(petsclib::PetscLibType, name::String, order::PetscInt, s::PetscInt, r::PetscInt, gamma::PetscReal, A::Vector{PetscReal}, B::Vector{PetscReal}, U::Vector{PetscReal}, V::Vector{PetscReal}, M_S::Vector{PetscReal}, F::Vector{PetscReal}, c::Vector{PetscReal}, Fembed::Vector{PetscReal}, Ferror::Vector{PetscReal}, Serror::Vector{PetscReal}, pinterp::PetscInt, binterp::Vector{PetscReal}) 
 register a new `TSGLEE` scheme by providing the entries in the Butcher tableau
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
@@ -4025,11 +4025,11 @@ See also: `TSGLEE`
 # External Links
 $(_doc_external("TS/TSGLEERegister"))
 """
-function TSGLEERegister(petsclib::PetscLibType, name::TSGLEEType, order::Integer, s::Integer, r::Integer, gamma::Real, A::AbstractVector{<:Number}, B::AbstractVector{<:Number}, U::AbstractVector{<:Number}, V::AbstractVector{<:Number}, M_S::AbstractVector{<:Number}, F::AbstractVector{<:Number}, c::AbstractVector{<:Number}, Fembed::AbstractVector{<:Number}, Ferror::AbstractVector{<:Number}, Serror::AbstractVector{<:Number}, pinterp::Integer, binterp::AbstractVector{<:Number})
+function TSGLEERegister(petsclib::PetscLibType, name::String, order::Integer, s::Integer, r::Integer, gamma::Real, A::AbstractVector{<:Number}, B::AbstractVector{<:Number}, U::AbstractVector{<:Number}, V::AbstractVector{<:Number}, M_S::AbstractVector{<:Number}, F::AbstractVector{<:Number}, c::AbstractVector{<:Number}, Fembed::AbstractVector{<:Number}, Ferror::AbstractVector{<:Number}, Serror::AbstractVector{<:Number}, pinterp::Integer, binterp::AbstractVector{<:Number})
     error("TSGLEERegister: no generated method for these argument types")
 end
 
-@for_petsc function TSGLEERegister(petsclib::$UnionPetscLib, name::TSGLEEType, order::$PetscInt, s::$PetscInt, r::$PetscInt, gamma::$PetscReal, A::Vector{$PetscReal}, B::Vector{$PetscReal}, U::Vector{$PetscReal}, V::Vector{$PetscReal}, M_S::Vector{$PetscReal}, F::Vector{$PetscReal}, c::Vector{$PetscReal}, Fembed::Vector{$PetscReal}, Ferror::Vector{$PetscReal}, Serror::Vector{$PetscReal}, pinterp::$PetscInt, binterp::Vector{$PetscReal} )
+@for_petsc function TSGLEERegister(petsclib::$UnionPetscLib, name::String, order::$PetscInt, s::$PetscInt, r::$PetscInt, gamma::$PetscReal, A::Vector{$PetscReal}, B::Vector{$PetscReal}, U::Vector{$PetscReal}, V::Vector{$PetscReal}, M_S::Vector{$PetscReal}, F::Vector{$PetscReal}, c::Vector{$PetscReal}, Fembed::Vector{$PetscReal}, Ferror::Vector{$PetscReal}, Serror::Vector{$PetscReal}, pinterp::$PetscInt, binterp::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSGLEERegister, $petsc_library),
@@ -4101,7 +4101,7 @@ end
 end 
 
 """
-	TSGLEESetType(petsclib::PetscLibType, ts::AbstractTS, gleetype::TSGLEEType) 
+	TSGLEESetType(petsclib::PetscLibType, ts::AbstractTS, gleetype::String) 
 Set the type of `TSGLEE` scheme
 
 Logically Collective
@@ -4117,11 +4117,11 @@ See also: `TSGLEEGetType()`, `TSGLEE`
 # External Links
 $(_doc_external("TS/TSGLEESetType"))
 """
-function TSGLEESetType(petsclib::PetscLibType, ts::AbstractTS, gleetype::TSGLEEType)
+function TSGLEESetType(petsclib::PetscLibType, ts::AbstractTS, gleetype::String)
     error("TSGLEESetType: no generated method for these argument types")
 end
 
-@for_petsc function TSGLEESetType(petsclib::$UnionPetscLib, ts::AbstractTS, gleetype::TSGLEEType )
+@for_petsc function TSGLEESetType(petsclib::$UnionPetscLib, ts::AbstractTS, gleetype::String )
 
     @chk ccall(
                (:TSGLEESetType, $petsc_library),
@@ -4297,7 +4297,7 @@ end
 end 
 
 """
-	TSGLLESetAcceptType(petsclib::PetscLibType, ts::AbstractTS, type::TSGLLEAcceptType) 
+	TSGLLESetAcceptType(petsclib::PetscLibType, ts::AbstractTS, type::String) 
 sets the acceptance test for `TSGLLE`
 
 Logically Collective
@@ -4316,11 +4316,11 @@ See also: `TS`, `TSGLLE`, `TSGLLEAcceptRegister()`, `TSGLLEAdapt`
 # External Links
 $(_doc_external("TS/TSGLLESetAcceptType"))
 """
-function TSGLLESetAcceptType(petsclib::PetscLibType, ts::AbstractTS, type::TSGLLEAcceptType)
+function TSGLLESetAcceptType(petsclib::PetscLibType, ts::AbstractTS, type::String)
     error("TSGLLESetAcceptType: no generated method for these argument types")
 end
 
-@for_petsc function TSGLLESetAcceptType(petsclib::$UnionPetscLib, ts::AbstractTS, type::TSGLLEAcceptType )
+@for_petsc function TSGLLESetAcceptType(petsclib::$UnionPetscLib, ts::AbstractTS, type::String )
 
     @chk ccall(
                (:TSGLLESetAcceptType, $petsc_library),
@@ -4334,7 +4334,7 @@ end
 end 
 
 """
-	TSGLLESetType(petsclib::PetscLibType, ts::AbstractTS, type::TSGLLEType) 
+	TSGLLESetType(petsclib::PetscLibType, ts::AbstractTS, type::String) 
 sets the class of general linear method, `TSGLLE` to use for time-stepping
 
 Collective
@@ -4354,11 +4354,11 @@ See also: `TS`, `TSGLLEType`, `TSGLLE`, `TSGLLERegister()`, `TSGLLE_IRKS`, `TSGL
 # External Links
 $(_doc_external("TS/TSGLLESetType"))
 """
-function TSGLLESetType(petsclib::PetscLibType, ts::AbstractTS, type::TSGLLEType)
+function TSGLLESetType(petsclib::PetscLibType, ts::AbstractTS, type::String)
     error("TSGLLESetType: no generated method for these argument types")
 end
 
-@for_petsc function TSGLLESetType(petsclib::$UnionPetscLib, ts::AbstractTS, type::TSGLLEType )
+@for_petsc function TSGLLESetType(petsclib::$UnionPetscLib, ts::AbstractTS, type::String )
 
     @chk ccall(
                (:TSGLLESetType, $petsc_library),
@@ -5369,7 +5369,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_ts_event), `TSEvent`, `TSSetEventHandler()`
+See also: `TSEvent`, `TSSetEventHandler()`
 
 # External Links
 $(_doc_external("TS/TSGetNumEvents"))
@@ -5394,7 +5394,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = TSGetOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS) 
+	prefix::String = TSGetOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS) 
 Sets the prefix used for searching for all
 `TS` options in the database.
 
@@ -5427,7 +5427,7 @@ end
                ts, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -6356,7 +6356,7 @@ end
 end 
 
 """
-	type::TSType = TSGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	type::String = TSGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the `TS` method type (as a string) that is being used to solve the ODE with the given `TS`
 
 Not Collective
@@ -6534,7 +6534,7 @@ end
 end 
 
 """
-	irktype::TSIRKType = TSIRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	irktype::String = TSIRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSIRK` IMEX scheme being used
 
 Logically Collective
@@ -6700,7 +6700,7 @@ end
 end 
 
 """
-	TSIRKSetType(petsclib::PetscLibType, ts::AbstractTS, irktype::TSIRKType) 
+	TSIRKSetType(petsclib::PetscLibType, ts::AbstractTS, irktype::String) 
 Set the type of `TSIRK` scheme to use
 
 Logically Collective
@@ -6719,11 +6719,11 @@ See also: `TSIRKGetType()`, `TSIRK`, `TSIRKType`, `TSIRKGAUSS`
 # External Links
 $(_doc_external("TS/TSIRKSetType"))
 """
-function TSIRKSetType(petsclib::PetscLibType, ts::AbstractTS, irktype::TSIRKType)
+function TSIRKSetType(petsclib::PetscLibType, ts::AbstractTS, irktype::String)
     error("TSIRKSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSIRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, irktype::TSIRKType )
+@for_petsc function TSIRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, irktype::String )
 
     @chk ccall(
                (:TSIRKSetType, $petsc_library),
@@ -6907,7 +6907,7 @@ end
 end 
 
 """
-	mprktype::TSMPRKType = TSMPRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	mprktype::String = TSMPRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSMPRK` scheme
 
 Not Collective
@@ -6974,7 +6974,7 @@ end
 end 
 
 """
-	TSMPRKRegister(petsclib::PetscLibType, name::TSMPRKType, order::PetscInt, sbase::PetscInt, ratio1::PetscInt, ratio2::PetscInt, Asb::Vector{PetscReal}, bsb::Vector{PetscReal}, csb::Vector{PetscReal}, rsb::Vector{PetscInt}, Amb::Vector{PetscReal}, bmb::Vector{PetscReal}, cmb::Vector{PetscReal}, rmb::Vector{PetscInt}, Af::Vector{PetscReal}, bf::Vector{PetscReal}, cf::Vector{PetscReal}) 
+	TSMPRKRegister(petsclib::PetscLibType, name::String, order::PetscInt, sbase::PetscInt, ratio1::PetscInt, ratio2::PetscInt, Asb::Vector{PetscReal}, bsb::Vector{PetscReal}, csb::Vector{PetscReal}, rsb::Vector{PetscInt}, Amb::Vector{PetscReal}, bmb::Vector{PetscReal}, cmb::Vector{PetscReal}, rmb::Vector{PetscInt}, Af::Vector{PetscReal}, bf::Vector{PetscReal}, cf::Vector{PetscReal}) 
 register a `TSMPRK` scheme by providing the entries in the Butcher tableau
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
@@ -7004,11 +7004,11 @@ See also: `TSMPRK`
 # External Links
 $(_doc_external("TS/TSMPRKRegister"))
 """
-function TSMPRKRegister(petsclib::PetscLibType, name::TSMPRKType, order::Integer, sbase::Integer, ratio1::Integer, ratio2::Integer, Asb::AbstractVector{<:Number}, bsb::AbstractVector{<:Number}, csb::AbstractVector{<:Number}, rsb::AbstractVector{<:Number}, Amb::AbstractVector{<:Number}, bmb::AbstractVector{<:Number}, cmb::AbstractVector{<:Number}, rmb::AbstractVector{<:Number}, Af::AbstractVector{<:Number}, bf::AbstractVector{<:Number}, cf::AbstractVector{<:Number})
+function TSMPRKRegister(petsclib::PetscLibType, name::String, order::Integer, sbase::Integer, ratio1::Integer, ratio2::Integer, Asb::AbstractVector{<:Number}, bsb::AbstractVector{<:Number}, csb::AbstractVector{<:Number}, rsb::AbstractVector{<:Number}, Amb::AbstractVector{<:Number}, bmb::AbstractVector{<:Number}, cmb::AbstractVector{<:Number}, rmb::AbstractVector{<:Number}, Af::AbstractVector{<:Number}, bf::AbstractVector{<:Number}, cf::AbstractVector{<:Number})
     error("TSMPRKRegister: no generated method for these argument types")
 end
 
-@for_petsc function TSMPRKRegister(petsclib::$UnionPetscLib, name::TSMPRKType, order::$PetscInt, sbase::$PetscInt, ratio1::$PetscInt, ratio2::$PetscInt, Asb::Vector{$PetscReal}, bsb::Vector{$PetscReal}, csb::Vector{$PetscReal}, rsb::Vector{$PetscInt}, Amb::Vector{$PetscReal}, bmb::Vector{$PetscReal}, cmb::Vector{$PetscReal}, rmb::Vector{$PetscInt}, Af::Vector{$PetscReal}, bf::Vector{$PetscReal}, cf::Vector{$PetscReal} )
+@for_petsc function TSMPRKRegister(petsclib::$UnionPetscLib, name::String, order::$PetscInt, sbase::$PetscInt, ratio1::$PetscInt, ratio2::$PetscInt, Asb::Vector{$PetscReal}, bsb::Vector{$PetscReal}, csb::Vector{$PetscReal}, rsb::Vector{$PetscInt}, Amb::Vector{$PetscReal}, bmb::Vector{$PetscReal}, cmb::Vector{$PetscReal}, rmb::Vector{$PetscInt}, Af::Vector{$PetscReal}, bf::Vector{$PetscReal}, cf::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSMPRKRegister, $petsc_library),
@@ -7051,7 +7051,7 @@ end
 end 
 
 """
-	TSMPRKSetType(petsclib::PetscLibType, ts::AbstractTS, mprktype::TSMPRKType) 
+	TSMPRKSetType(petsclib::PetscLibType, ts::AbstractTS, mprktype::String) 
 Set the type of `TSMPRK` scheme
 
 Not Collective
@@ -7070,11 +7070,11 @@ See also: `TSMPRKGetType()`, `TSMPRK`, `TSMPRKType`
 # External Links
 $(_doc_external("TS/TSMPRKSetType"))
 """
-function TSMPRKSetType(petsclib::PetscLibType, ts::AbstractTS, mprktype::TSMPRKType)
+function TSMPRKSetType(petsclib::PetscLibType, ts::AbstractTS, mprktype::String)
     error("TSMPRKSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSMPRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, mprktype::TSMPRKType )
+@for_petsc function TSMPRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, mprktype::String )
 
     @chk ccall(
                (:TSMPRKSetType, $petsc_library),
@@ -7735,7 +7735,7 @@ end
                ts, names_,
               )
 
-	names = unsafe_string(names_[])
+	names = names_[] == C_NULL ? "" : unsafe_string(names_[])
 
 	return names
 end 
@@ -8921,7 +8921,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = TSPythonGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	pyname::String = TSPythonGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of a `TS` object implemented in Python.
 
 Not Collective
@@ -8953,7 +8953,7 @@ end
                ts, pyname_,
               )
 
-	pyname = pyname_[]
+	pyname = pyname_[] == C_NULL ? "" : unsafe_string(pyname_[])
 
 	return pyname
 end 
@@ -9615,7 +9615,7 @@ end
 end 
 
 """
-	rktype::TSRKType = TSRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	rktype::String = TSRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSRK` scheme
 
 Not Collective
@@ -9681,7 +9681,7 @@ end
 end 
 
 """
-	TSRKRegister(petsclib::PetscLibType, name::TSRKType, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembed::Vector{PetscReal}, p::PetscInt, binterp::Vector{PetscReal}) 
+	TSRKRegister(petsclib::PetscLibType, name::String, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembed::Vector{PetscReal}, p::PetscInt, binterp::Vector{PetscReal}) 
 Register an `TSRK` scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
@@ -9704,11 +9704,11 @@ See also: `TSRK`
 # External Links
 $(_doc_external("TS/TSRKRegister"))
 """
-function TSRKRegister(petsclib::PetscLibType, name::TSRKType, order::Integer, s::Integer, A::AbstractVector{<:Number}, b::AbstractVector{<:Number}, c::AbstractVector{<:Number}, bembed::AbstractVector{<:Number}, p::Integer, binterp::AbstractVector{<:Number})
+function TSRKRegister(petsclib::PetscLibType, name::String, order::Integer, s::Integer, A::AbstractVector{<:Number}, b::AbstractVector{<:Number}, c::AbstractVector{<:Number}, bembed::AbstractVector{<:Number}, p::Integer, binterp::AbstractVector{<:Number})
     error("TSRKRegister: no generated method for these argument types")
 end
 
-@for_petsc function TSRKRegister(petsclib::$UnionPetscLib, name::TSRKType, order::$PetscInt, s::$PetscInt, A::Vector{$PetscReal}, b::Vector{$PetscReal}, c::Vector{$PetscReal}, bembed::Vector{$PetscReal}, p::$PetscInt, binterp::Vector{$PetscReal} )
+@for_petsc function TSRKRegister(petsclib::$UnionPetscLib, name::String, order::$PetscInt, s::$PetscInt, A::Vector{$PetscReal}, b::Vector{$PetscReal}, c::Vector{$PetscReal}, bembed::Vector{$PetscReal}, p::$PetscInt, binterp::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSRKRegister, $petsc_library),
@@ -9788,7 +9788,7 @@ end
 end 
 
 """
-	TSRKSetType(petsclib::PetscLibType, ts::AbstractTS, rktype::TSRKType) 
+	TSRKSetType(petsclib::PetscLibType, ts::AbstractTS, rktype::String) 
 Set the type of the `TSRK` scheme
 
 Logically Collective
@@ -9807,11 +9807,11 @@ See also: `TSRKGetType()`, `TSRK`, `TSRKType`, `TSRK1FE`, `TSRK2A`, `TSRK2B`, `T
 # External Links
 $(_doc_external("TS/TSRKSetType"))
 """
-function TSRKSetType(petsclib::PetscLibType, ts::AbstractTS, rktype::TSRKType)
+function TSRKSetType(petsclib::PetscLibType, ts::AbstractTS, rktype::String)
     error("TSRKSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, rktype::TSRKType )
+@for_petsc function TSRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, rktype::String )
 
     @chk ccall(
                (:TSRKSetType, $petsc_library),
@@ -10160,7 +10160,7 @@ end
 end 
 
 """
-	rostype::TSRosWType = TSRosWGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	rostype::String = TSRosWGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of Rosenbrock-W scheme
 
 Logically Collective
@@ -10226,7 +10226,7 @@ end
 end 
 
 """
-	TSRosWRegister(petsclib::PetscLibType, name::TSRosWType, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, Gamma::Vector{PetscReal}, b::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
+	TSRosWRegister(petsclib::PetscLibType, name::String, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, Gamma::Vector{PetscReal}, b::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
 register a `TSROSW`, Rosenbrock W scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used
@@ -10249,11 +10249,11 @@ See also: `TSROSW`
 # External Links
 $(_doc_external("TS/TSRosWRegister"))
 """
-function TSRosWRegister(petsclib::PetscLibType, name::TSRosWType, order::Integer, s::Integer, A::AbstractVector{<:Number}, Gamma::AbstractVector{<:Number}, b::AbstractVector{<:Number}, bembed::AbstractVector{<:Number}, pinterp::Integer, binterpt::AbstractVector{<:Number})
+function TSRosWRegister(petsclib::PetscLibType, name::String, order::Integer, s::Integer, A::AbstractVector{<:Number}, Gamma::AbstractVector{<:Number}, b::AbstractVector{<:Number}, bembed::AbstractVector{<:Number}, pinterp::Integer, binterpt::AbstractVector{<:Number})
     error("TSRosWRegister: no generated method for these argument types")
 end
 
-@for_petsc function TSRosWRegister(petsclib::$UnionPetscLib, name::TSRosWType, order::$PetscInt, s::$PetscInt, A::Vector{$PetscReal}, Gamma::Vector{$PetscReal}, b::Vector{$PetscReal}, bembed::Vector{$PetscReal}, pinterp::$PetscInt, binterpt::Vector{$PetscReal} )
+@for_petsc function TSRosWRegister(petsclib::$UnionPetscLib, name::String, order::$PetscInt, s::$PetscInt, A::Vector{$PetscReal}, Gamma::Vector{$PetscReal}, b::Vector{$PetscReal}, bembed::Vector{$PetscReal}, pinterp::$PetscInt, binterpt::Vector{$PetscReal} )
 
     @chk ccall(
                (:TSRosWRegister, $petsc_library),
@@ -10296,7 +10296,7 @@ end
 end 
 
 """
-	TSRosWRegisterRos4(petsclib::PetscLibType, name::TSRosWType, gamma::PetscReal, a2::PetscReal, a3::PetscReal, b3::PetscReal, e4::PetscReal) 
+	TSRosWRegisterRos4(petsclib::PetscLibType, name::String, gamma::PetscReal, a2::PetscReal, a3::PetscReal, b3::PetscReal, e4::PetscReal) 
 register a fourth order Rosenbrock scheme by providing parameter choices
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used
@@ -10316,11 +10316,11 @@ See also: `TSROSW`, `TSRosWRegister()`
 # External Links
 $(_doc_external("TS/TSRosWRegisterRos4"))
 """
-function TSRosWRegisterRos4(petsclib::PetscLibType, name::TSRosWType, gamma::Real, a2::Real, a3::Real, b3::Real, e4::Real)
+function TSRosWRegisterRos4(petsclib::PetscLibType, name::String, gamma::Real, a2::Real, a3::Real, b3::Real, e4::Real)
     error("TSRosWRegisterRos4: no generated method for these argument types")
 end
 
-@for_petsc function TSRosWRegisterRos4(petsclib::$UnionPetscLib, name::TSRosWType, gamma::$PetscReal, a2::$PetscReal, a3::$PetscReal, b3::$PetscReal, e4::$PetscReal )
+@for_petsc function TSRosWRegisterRos4(petsclib::$UnionPetscLib, name::String, gamma::$PetscReal, a2::$PetscReal, a3::$PetscReal, b3::$PetscReal, e4::$PetscReal )
 
     @chk ccall(
                (:TSRosWRegisterRos4, $petsc_library),
@@ -10368,7 +10368,7 @@ end
 end 
 
 """
-	TSRosWSetType(petsclib::PetscLibType, ts::AbstractTS, roswtype::TSRosWType) 
+	TSRosWSetType(petsclib::PetscLibType, ts::AbstractTS, roswtype::String) 
 Set the type of Rosenbrock-W, `TSROSW`, scheme
 
 Logically Collective
@@ -10384,11 +10384,11 @@ See also: `TSRosWGetType()`, `TSROSW`, `TSROSW2M`, `TSROSW2P`, `TSROSWRA3PW`, `T
 # External Links
 $(_doc_external("TS/TSRosWSetType"))
 """
-function TSRosWSetType(petsclib::PetscLibType, ts::AbstractTS, roswtype::TSRosWType)
+function TSRosWSetType(petsclib::PetscLibType, ts::AbstractTS, roswtype::String)
     error("TSRosWSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSRosWSetType(petsclib::$UnionPetscLib, ts::AbstractTS, roswtype::TSRosWType )
+@for_petsc function TSRosWSetType(petsclib::$UnionPetscLib, ts::AbstractTS, roswtype::String )
 
     @chk ccall(
                (:TSRosWSetType, $petsc_library),
@@ -10468,7 +10468,7 @@ end
 end 
 
 """
-	type::TSSSPType = TSSSPGetType(petsclib::PetscLibType, ts::AbstractTS) 
+	type::String = TSSSPGetType(petsclib::PetscLibType, ts::AbstractTS) 
 get the `TSSSP` time integration scheme
 
 Logically Collective
@@ -10573,7 +10573,7 @@ end
 end 
 
 """
-	TSSSPSetType(petsclib::PetscLibType, ts::AbstractTS, ssptype::TSSSPType) 
+	TSSSPSetType(petsclib::PetscLibType, ts::AbstractTS, ssptype::String) 
 set the `TSSSP` time integration scheme to use
 
 Logically Collective
@@ -10593,11 +10593,11 @@ See also: `TSSSP`, `TSSSPGetType()`, `TSSSPSetNumStages()`, `TSSSPRKS2`, `TSSSPR
 # External Links
 $(_doc_external("TS/TSSSPSetType"))
 """
-function TSSSPSetType(petsclib::PetscLibType, ts::AbstractTS, ssptype::TSSSPType)
+function TSSSPSetType(petsclib::PetscLibType, ts::AbstractTS, ssptype::String)
     error("TSSSPSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSSSPSetType(petsclib::$UnionPetscLib, ts::AbstractTS, ssptype::TSSSPType )
+@for_petsc function TSSSPSetType(petsclib::$UnionPetscLib, ts::AbstractTS, ssptype::String )
 
     @chk ccall(
                (:TSSSPSetType, $petsc_library),
@@ -11053,7 +11053,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: [](sec_ts_event), `TSEvent`, `TSCreate()`, `TSSetTimeStep()`, `TSSetConvergedReason()`
+See also: `TSEvent`, `TSCreate()`, `TSSetTimeStep()`, `TSSetConvergedReason()`
 
 # External Links
 $(_doc_external("TS/TSSetEventHandler"))
@@ -11091,7 +11091,7 @@ Options Database Key:
 
 Level: beginner
 
-See also: [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`
+See also: `TS`, `TSEvent`, `TSSetEventHandler()`
 
 # External Links
 $(_doc_external("TS/TSSetEventTolerances"))
@@ -11829,7 +11829,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventStep()`
+See also: `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPostEventSecondStep"))
@@ -11866,7 +11866,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventSecondStep()`
+See also: `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventSecondStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPostEventStep"))
@@ -12741,7 +12741,7 @@ end
 end 
 
 """
-	TSSetType(petsclib::PetscLibType, ts::AbstractTS, type::TSType) 
+	TSSetType(petsclib::PetscLibType, ts::AbstractTS, type::String) 
 Sets the algorithm/method to be used for integrating the ODE with the given `TS`.
 
 Collective
@@ -12760,11 +12760,11 @@ See also: `TS`, `TSSolve()`, `TSCreate()`, `TSSetFromOptions()`, `TSDestroy()`, 
 # External Links
 $(_doc_external("TS/TSSetType"))
 """
-function TSSetType(petsclib::PetscLibType, ts::AbstractTS, type::TSType)
+function TSSetType(petsclib::PetscLibType, ts::AbstractTS, type::String)
     error("TSSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSSetType(petsclib::$UnionPetscLib, ts::AbstractTS, type::TSType )
+@for_petsc function TSSetType(petsclib::$UnionPetscLib, ts::AbstractTS, type::String )
 
     @chk ccall(
                (:TSSetType, $petsc_library),

@@ -37,21 +37,21 @@ dm = LibPETSc.DMPlexCreateBoxMesh(
     LibPETSc.PETSC_FALSE         # sparseLocalize
 )
 
-# Distribute mesh across processes (for serial, this is a no-op)
-dmParallel = LibPETSc.PetscDM(C_NULL, petsclib)
-LibPETSc.DMPlexDistribute(petsclib, dm, 0, C_NULL, dmParallel)
+# Distribute mesh across processes; in serial no new DM is created (NULL handle).
+# `sf` is the point migration star forest (NULL in serial).
+sf, dmParallel = LibPETSc.DMPlexDistribute(petsclib, dm, 0)
 if dmParallel.ptr != C_NULL
     LibPETSc.DMDestroy(petsclib, dm)
     dm = dmParallel
+    LibPETSc.PetscSFDestroy(petsclib, sf)
 end
 
 # Set up
 LibPETSc.DMSetFromOptions(petsclib, dm)
 LibPETSc.DMSetUp(petsclib, dm)
 
-# Create section to define field layout
-section = Ref{LibPETSc.PetscSection}()
-LibPETSc.DMGetLocalSection(petsclib, dm, section)
+# The section describing the field layout (owned by the DM)
+section = LibPETSc.DMGetLocalSection(petsclib, dm)
 
 # Create vectors and matrices
 x = LibPETSc.DMCreateGlobalVector(petsclib, dm)

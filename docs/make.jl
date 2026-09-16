@@ -1,5 +1,9 @@
 using Documenter, PETSc
 
+# The maintainer guide for regenerating the LibPETSc wrappers lives next to the generator;
+# mirror it into the manual so it is published with the docs (docs/src/man/wrapping.md is ignored by git).
+cp(joinpath(@__DIR__, "..", "wrapping", "WRAPPING.md"), joinpath(@__DIR__, "src", "man", "wrapping.md"); force = true)
+
 makedocs(;
     modules=[PETSc],
     sitename="PETSc.jl",
@@ -40,6 +44,7 @@ makedocs(;
                 "DMShell and others" =>  "man/dmshell_lowlevel.md",
             ],
             "KSP" =>  "man/ksp_lowlevel.md",
+            "PC (Preconditioners)" =>  "man/pc_lowlevel.md",
             "SNES" =>  "man/snes_lowlevel.md",
             "TS (Time Stepping)" =>  "man/ts_lowlevel.md",
             "Tao (Optimization)" =>  "man/tao_lowlevel.md",
@@ -48,6 +53,13 @@ makedocs(;
             "PetscSection (DOF Layout)" =>  "man/petscsection_lowlevel.md",
             "PetscSF (Communication)" =>  "man/petscsf_lowlevel.md",
             "AO (Application Ordering)" =>  "man/ao_lowlevel.md",
+            "Discretization (PetscFE, PetscDS, ...)" =>  "man/discretization_lowlevel.md",
+            "PetscOptions" =>  "man/petscoptions_lowlevel.md",
+            "PetscObject, Logging, Devices" =>  "man/petscobject_lowlevel.md",
+            "PetscDraw (Graphics)" =>  "man/petscdraw_lowlevel.md",
+            "Sys (Runtime utilities)" =>  "man/sys_lowlevel.md",
+            "Utilities (Random, Layout, ...)" =>  "man/utilities_lowlevel.md",
+            "PF, Partitioner, Regressor, ..." =>  "man/otherclasses_lowlevel.md",
         ],
         "Utilities" => "man/utilities.md",
         "Running on HPC Systems" => "man/hpc.md",
@@ -55,6 +67,7 @@ makedocs(;
         "FAQ"  => "man/FAQ.md",
         "Naming Conventions" => "man/naming.md",
         "Contributing"  => "man/contributing.md",
+        "Regenerating the wrappers" => "man/wrapping.md",
         "Funding" => "man/funding.md",
     ],
 )

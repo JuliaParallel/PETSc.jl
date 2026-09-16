@@ -28,34 +28,33 @@ PETSc.initialize(petsclib)
 PetscInt = petsclib.PetscInt
 
 # Create a section
-section = Ref{LibPETSc.PetscSection}()
-LibPETSc.PetscSectionCreate(petsclib, LibPETSc.PETSC_COMM_SELF, section)
+section = LibPETSc.PetscSectionCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 
 # Set chart: range of valid point indices [pStart, pEnd)
-LibPETSc.PetscSectionSetChart(petsclib, section[], 0, 10)
+LibPETSc.PetscSectionSetChart(petsclib, section, 0, 10)
 
 # Set DOF count for each point
 for p in 0:9
     num_dofs = (p < 4) ? 1 : 2  # Different DOFs per point
-    LibPETSc.PetscSectionSetDof(petsclib, section[], p, num_dofs)
+    LibPETSc.PetscSectionSetDof(petsclib, section, p, num_dofs)
 end
 
 # Setup: compute offsets
-LibPETSc.PetscSectionSetUp(petsclib, section[])
+LibPETSc.PetscSectionSetUp(petsclib, section)
 
 # Query the section
-dof = LibPETSc.PetscSectionGetDof(petsclib, section[], 5)
+dof = LibPETSc.PetscSectionGetDof(petsclib, section, 5)
 println("DOF count for point 5: ", dof)
 
-offset = LibPETSc.PetscSectionGetOffset(petsclib, section[], 5)
+offset = LibPETSc.PetscSectionGetOffset(petsclib, section, 5)
 println("Offset for point 5: ", offset)
 
 # Get total storage size
-storage_size = LibPETSc.PetscSectionGetStorageSize(petsclib, section[])
+storage_size = LibPETSc.PetscSectionGetStorageSize(petsclib, section)
 println("Total storage size: ", storage_size)
 
 # Cleanup
-LibPETSc.PetscSectionDestroy(petsclib, section)  # pass the Ref directly
+LibPETSc.PetscSectionDestroy(petsclib, section)
 
 PETSc.finalize(petsclib)
 MPI.Finalize()
@@ -67,31 +66,29 @@ For problems with multiple fields (e.g., velocity + pressure):
 
 ```julia
 # Create section with 2 fields
-section = Ref{LibPETSc.PetscSection}()
-LibPETSc.PetscSectionCreate(petsclib, LibPETSc.PETSC_COMM_SELF, section)
-@assert section[] != C_NULL
+section = LibPETSc.PetscSectionCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 
-LibPETSc.PetscSectionSetNumFields(petsclib, section[], 2)
+LibPETSc.PetscSectionSetNumFields(petsclib, section, 2)
 
 # Set field names
-LibPETSc.PetscSectionSetFieldName(petsclib, section[], 0, "velocity")
-LibPETSc.PetscSectionSetFieldName(petsclib, section[], 1, "pressure")
+LibPETSc.PetscSectionSetFieldName(petsclib, section, 0, "velocity")
+LibPETSc.PetscSectionSetFieldName(petsclib, section, 1, "pressure")
 
 # Set chart
-LibPETSc.PetscSectionSetChart(petsclib, section[], 0, 10)
+LibPETSc.PetscSectionSetChart(petsclib, section, 0, 10)
 
 # Set field components: velocity has 3 components (vx, vy, vz), pressure has 1
-LibPETSc.PetscSectionSetFieldComponents(petsclib, section[], 0, 3)
-LibPETSc.PetscSectionSetFieldComponents(petsclib, section[], 1, 1)
+LibPETSc.PetscSectionSetFieldComponents(petsclib, section, 0, 3)
+LibPETSc.PetscSectionSetFieldComponents(petsclib, section, 1, 1)
 
 # Set DOFs per field per point
 for p in 0:9
-    LibPETSc.PetscSectionSetFieldDof(petsclib, section[], p, 0, 3)  # 3 velocity DOFs
-    LibPETSc.PetscSectionSetFieldDof(petsclib, section[], p, 1, 1)  # 1 pressure DOF
-    LibPETSc.PetscSectionSetDof(petsclib, section[], p, 4)          # Total: 4 DOFs
+    LibPETSc.PetscSectionSetFieldDof(petsclib, section, p, 0, 3)  # 3 velocity DOFs
+    LibPETSc.PetscSectionSetFieldDof(petsclib, section, p, 1, 1)  # 1 pressure DOF
+    LibPETSc.PetscSectionSetDof(petsclib, section, p, 4)          # Total: 4 DOFs
 end
 
-LibPETSc.PetscSectionSetUp(petsclib, section[])
+LibPETSc.PetscSectionSetUp(petsclib, section)
 ```
 
 ## Constrained DOFs
@@ -99,18 +96,18 @@ LibPETSc.PetscSectionSetUp(petsclib, section[])
 Mark certain DOFs as constrained (e.g., for boundary conditions):
 
 ```julia
-# Set chart and DOFs...
-# Note: Constraint-related functions may have wrapper issues
-
+# Set chart and DOFs, then before PetscSectionSetUp:
 # Set constraint DOF count
-# LibPETSc.PetscSectionSetConstraintDof(petsclib, section[], point, num_constrained)
+LibPETSc.PetscSectionSetConstraintDof(petsclib, section, point, num_constrained)
 
-# Specify which DOFs are constrained
-# constrained_indices = PetscInt[0, 2]
-# LibPETSc.PetscSectionSetConstraintIndices(petsclib, section[], point, constrained_indices)
+LibPETSc.PetscSectionSetUp(petsclib, section)
 
-# Query constrained storage size
-# LibPETSc.PetscSectionGetConstrainedStorageSize(petsclib, section[])
+# After set-up: specify which of the point's DOFs are constrained
+constrained_indices = PetscInt[0, 2]
+LibPETSc.PetscSectionSetConstraintIndices(petsclib, section, point, constrained_indices)
+
+# Storage size excluding the constrained DOFs
+LibPETSc.PetscSectionGetConstrainedStorageSize(petsclib, section)
 ```
 
 ## Integration with DM
@@ -118,16 +115,14 @@ Mark certain DOFs as constrained (e.g., for boundary conditions):
 Sections are commonly used with DM objects:
 
 ```julia
-# Get section from DM
-dm_section = Ref{LibPETSc.PetscSection}()
-# LibPETSc.DMGetSection(petsclib, dm, dm_section)
+# Get the local (ghosted) section of a DM; the DM owns it
+local_section = LibPETSc.DMGetLocalSection(petsclib, dm)
 
-# Set section on DM
-# LibPETSc.DMSetSection(petsclib, dm, section[])
+# Set a section on a DM
+LibPETSc.DMSetLocalSection(petsclib, dm, section)
 
-# Get local section (ghosted)
-# local_section = Ref{LibPETSc.PetscSection}()
-# LibPETSc.DMGetLocalSection(petsclib, dm, local_section)
+# Get the global section (owned DOFs only, built on demand)
+global_section = LibPETSc.DMGetGlobalSection(petsclib, dm)
 ```
 
 ## Common Workflows
@@ -139,18 +134,16 @@ dm_section = Ref{LibPETSc.PetscSection}()
 # - Vertices: 1 DOF each
 # - Cells: 0 DOFs
 
-section = Ref{LibPETSc.PetscSection}()
-LibPETSc.PetscSectionCreate(petsclib, comm, section)
-@assert section[] != C_NULL
+section = LibPETSc.PetscSectionCreate(petsclib, comm)
 
-LibPETSc.PetscSectionSetChart(petsclib, section[], vStart, cEnd)
+LibPETSc.PetscSectionSetChart(petsclib, section, vStart, cEnd)
 
 # Set DOFs (vStart to vEnd are vertices, vEnd to cEnd are cells)
 for v in vStart:vEnd-1
-    LibPETSc.PetscSectionSetDof(petsclib, section[], v, 1)
+    LibPETSc.PetscSectionSetDof(petsclib, section, v, 1)
 end
 
-LibPETSc.PetscSectionSetUp(petsclib, section[])
+LibPETSc.PetscSectionSetUp(petsclib, section)
 ```
 
 ### 2. Point Closure
@@ -158,41 +151,42 @@ LibPETSc.PetscSectionSetUp(petsclib, section[])
 Get all DOFs in the closure of a point (point + its boundary):
 
 ```julia
-# Get closure DOFs for a cell
-closure_size = Ref{PetscInt}()
-closure = Ref{Ptr{PetscInt}}()
-# LibPETSc.DMPlexGetTransitiveClosure(petsclib, dm, cell, PETSC_TRUE, closure_size, closure)
+# Get the closure of a cell: `closure` holds 2 * npoints entries, (point, orientation) pairs
+npoints, closure = LibPETSc.DMPlexGetTransitiveClosure(petsclib, dm, cell, LibPETSc.PETSC_TRUE)
 
-# Map closure points to DOF offsets using section
-# ... use section to get DOF offsets for each point in closure ...
+# Map closure points to DOF offsets using the section
+for i in 1:npoints
+    p = closure[2i - 1]
+    dof = LibPETSc.PetscSectionGetDof(petsclib, section, p)
+    off = LibPETSc.PetscSectionGetOffset(petsclib, section, p)
+    # ... DOFs of point p are off:off+dof-1 ...
+end
 
-# LibPETSc.DMPlexRestoreTransitiveClosure(petsclib, dm, cell, PETSC_TRUE, closure_size, closure)
+# Hand the closure array back to PETSc
+LibPETSc.DMPlexRestoreTransitiveClosure(petsclib, dm, cell, LibPETSc.PETSC_TRUE, npoints, closure)
 ```
 
 ## Querying Section Properties
 
 ```julia
 # Get total number of fields
-num_fields = LibPETSc.PetscSectionGetNumFields(petsclib, section[])
+num_fields = LibPETSc.PetscSectionGetNumFields(petsclib, section)
 
 # Get field components
-components = LibPETSc.PetscSectionGetFieldComponents(petsclib, section[], field)
+components = LibPETSc.PetscSectionGetFieldComponents(petsclib, section, field)
 
 # Get field name (returns String directly)
-name = LibPETSc.PetscSectionGetFieldName(petsclib, section[], field)
+name = LibPETSc.PetscSectionGetFieldName(petsclib, section, field)
 
 # Get maximum DOF count across all points
-max_dof = LibPETSc.PetscSectionGetMaxDof(petsclib, section[])
+max_dof = LibPETSc.PetscSectionGetMaxDof(petsclib, section)
 ```
 
 ## Cloning and Permutation
 
 ```julia
-# Clone a section (wrapper may have issues, use with caution)
-new_section = Ref{LibPETSc.PetscSection}()
-# LibPETSc.PetscSectionClone(petsclib, section[], new_section)
-
-# Note: Clone/Permute functions may require direct ccall if wrapper signatures are incorrect
+# Clone a section
+new_section = LibPETSc.PetscSectionClone(petsclib, section)
 ```
 
 ## Function Reference

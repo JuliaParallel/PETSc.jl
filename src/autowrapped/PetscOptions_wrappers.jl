@@ -188,7 +188,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscViewerDestroy()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+See also: `PetscViewerDestroy()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
 `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
@@ -245,7 +245,7 @@ first `n_max` entries are initialized `PetscViewer`s
 
 Level: intermediate
 
-See also: [](sec_viewers), `PetscOptionsCreateViewer()`
+See also: `PetscOptionsCreateViewer()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsCreateViewers"))
@@ -336,7 +336,7 @@ end
 end 
 
 """
-	value::Ptr{Cchar},set::PetscBool = PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) 
+	value::String,set::PetscBool = PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) 
 Gets an option name-value pair from the options database.
 
 Not Collective
@@ -372,7 +372,7 @@ end
                options, pre, name, value_, set_,
               )
 
-	value = value_[]
+	value = value_[] == C_NULL ? "" : unsafe_string(value_[])
 	set = set_[]
 
 	return value,set
@@ -516,7 +516,7 @@ end
 end 
 
 """
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool}) 
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool}, nmax::PetscInt) 
 Gets an array of Logical (true or false) values for a particular
 option in the database.  The values must be separated with commas with no intervening spaces.
 
@@ -544,12 +544,12 @@ See also: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
 # External Links
 $(_doc_external("Sys/PetscOptionsGetBoolArray"))
 """
-function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool})
+function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool}, nmax::Integer)
     error("PetscOptionsGetBoolArray: no generated method for these argument types")
 end
 
-@for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool} )
-	nmax_ = Ref{$PetscInt}()
+@for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscBool}, nmax::$PetscInt )
+	nmax_ = Ref{$PetscInt}(nmax)
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -576,7 +576,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`, `PetscOptionsPopCreateViewerOff()`
+See also: `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`, `PetscOptionsPopCreateViewerOff()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsGetCreateViewerOff"))
@@ -703,7 +703,7 @@ end
 end 
 
 """
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) 
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}, nmax::PetscInt) 
 Gets an array of enum values for a particular option in the database.
 
 Not Collective
@@ -731,13 +731,13 @@ See also: `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetStri
 # External Links
 $(_doc_external("Sys/PetscOptionsGetEnumArray"))
 """
-function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum})
+function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}, nmax::Integer)
     error("PetscOptionsGetEnumArray: no generated method for these argument types")
 end
 
-@for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
+@for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}, nmax::$PetscInt )
 	list_ = Ref{Ptr{Cchar}}(list isa Ptr ? list : pointer(list))
-	nmax_ = Ref{$PetscInt}()
+	nmax_ = Ref{$PetscInt}(nmax)
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -803,7 +803,7 @@ end
 end 
 
 """
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{PetscInt}) 
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{PetscInt}, nmax::PetscInt) 
 Gets an array of integer values for a particular option in the database.
 
 Not Collective
@@ -830,12 +830,12 @@ See also: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
 # External Links
 $(_doc_external("Sys/PetscOptionsGetIntArray"))
 """
-function PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::AbstractVector{<:Number})
+function PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::AbstractVector{<:Number}, nmax::Integer)
     error("PetscOptionsGetIntArray: no generated method for these argument types")
 end
 
-@for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{$PetscInt} )
-	nmax_ = Ref{$PetscInt}()
+@for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::Vector{$PetscInt}, nmax::$PetscInt )
+	nmax_ = Ref{$PetscInt}(nmax)
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -950,7 +950,7 @@ end
 end 
 
 """
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscReal}) 
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscReal}, nmax::PetscInt) 
 Gets an array of double precision values for a
 particular option in the database.  The values must be separated with commas with no intervening spaces.
 
@@ -978,12 +978,12 @@ See also: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
 # External Links
 $(_doc_external("Sys/PetscOptionsGetRealArray"))
 """
-function PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::AbstractVector{<:Number})
+function PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::AbstractVector{<:Number}, nmax::Integer)
     error("PetscOptionsGetRealArray: no generated method for these argument types")
 end
 
-@for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscReal} )
-	nmax_ = Ref{$PetscInt}()
+@for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscReal}, nmax::$PetscInt )
+	nmax_ = Ref{$PetscInt}(nmax)
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1049,7 +1049,7 @@ end
 end 
 
 """
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscScalar}) 
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{PetscScalar}, nmax::PetscInt) 
 Gets an array of scalars for a
 particular option in the database.  The values must be separated with commas with no intervening spaces.
 
@@ -1077,12 +1077,12 @@ See also: `PetscOptionsGetInt()`, `PetscOptionsHasName()`,
 # External Links
 $(_doc_external("Sys/PetscOptionsGetScalarArray"))
 """
-function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::AbstractVector{<:Number})
+function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, dvalue::AbstractVector{<:Number}, nmax::Integer)
     error("PetscOptionsGetScalarArray: no generated method for these argument types")
 end
 
-@for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscScalar} )
-	nmax_ = Ref{$PetscInt}()
+@for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, dvalue::Vector{$PetscScalar}, nmax::$PetscInt )
+	nmax_ = Ref{$PetscInt}(nmax)
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1127,7 +1127,7 @@ See also: `PetscOptionsGetInt()`, `PetscOptionsGetReal()`,
 # External Links
 $(_doc_external("Sys/PetscOptionsGetString"))
 """
-function PetscOptionsGetString(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetString(petsclib::PetscLibType, options::AbstractPetscOptions, pre::Union{Ptr, String}, name::String) end
 
 @for_petsc function PetscOptionsGetString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::Union{Ptr,String}, name::String)
 	set_ = Ref{PetscBool}()
@@ -1889,7 +1889,7 @@ Logically Collective
 
 Level: developer
 
-See also: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`
+See also: `PetscOptionsCreateViewer()`, `PetscOptionsPushCreateViewerOff()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsPopCreateViewerOff"))
@@ -2026,7 +2026,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [](sec_viewers), `PetscOptionsCreateViewer()`, `PetscOptionsPopCreateViewerOff()`
+See also: `PetscOptionsCreateViewer()`, `PetscOptionsPopCreateViewerOff()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsPushCreateViewerOff"))

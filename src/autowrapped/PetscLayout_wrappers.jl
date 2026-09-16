@@ -13,7 +13,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
 
 # External Links
@@ -52,7 +52,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
+See also: PetscLayout, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
 `PetscLayout`, `PetscLayoutDestroy()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutCreateFromSizes()`
@@ -96,7 +96,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`,
 `PetscLayoutGetLocalSize()`, `PetscLayout`, `PetscLayoutDestroy()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`, `PetscLayoutCreateFromSizes()`
 
@@ -139,7 +139,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayout`, `PetscLayoutDestroy()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayout`, `PetscLayoutDestroy()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`, `PetscLayoutCreateFromRanges()`
 
 # External Links
@@ -175,7 +175,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
+See also: PetscLayout, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
 `PetscLayout`, `PetscLayoutCreate()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutSetUp()`
 
@@ -214,7 +214,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutReference()`
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutReference()`
 
 # External Links
 $(_doc_external("IS/PetscLayoutDuplicate"))
@@ -333,7 +333,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetSize()`
 
 # External Links
@@ -372,7 +372,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
@@ -412,7 +412,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
 `PetscLayoutGetSize()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutSetUp()`
 
 # External Links
@@ -455,7 +455,7 @@ communicator owned by `map`
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`,
 `PetscLayoutGetSize()`, `PetscLayoutGetRange()`, `PetscLayoutSetBlockSize()`, `PetscLayoutSetUp()`
 
 # External Links
@@ -494,7 +494,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
@@ -579,7 +579,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutDuplicate()`
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutDuplicate()`
 
 # External Links
 $(_doc_external("IS/PetscLayoutReference"))
@@ -615,7 +615,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetBlockSize()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`
 
 # External Links
@@ -650,7 +650,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutDuplicate()`
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayoutSetUp()`, `PetscLayoutDuplicate()`
 
 # External Links
 $(_doc_external("IS/PetscLayoutSetISLocalToGlobalMapping"))
@@ -684,7 +684,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetUp()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
@@ -719,7 +719,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`,
+See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `PetscLayoutGetLocalSize()`, `PetscLayoutGetSize()`, `PetscLayoutSetUp()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`
 
 # External Links
@@ -754,7 +754,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [PetscLayout](sec_matlayout), `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
+See also: PetscLayout, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `PetscLayoutGetSize()`, `PetscLayoutGetLocalSize()`,
 `PetscLayout`, `PetscLayoutDestroy()`,
 `PetscLayoutGetRange()`, `PetscLayoutGetRanges()`, `PetscLayoutSetBlockSize()`, `PetscLayoutGetBlockSize()`, `PetscLayoutCreate()`, `PetscSplitOwnership()`
 

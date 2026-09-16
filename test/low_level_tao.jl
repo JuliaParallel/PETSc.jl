@@ -23,7 +23,7 @@ else
         tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         
         # Set Tao type (using NLS - Newton Line Search, always available)
-        @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
+        @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, "nls")
         
         # Get Tao type back
         taotype = PETSc.LibPETSc.TaoGetType(petsclib, tao)
@@ -36,7 +36,7 @@ else
         # Test various Tao solver types (using types that don't require special builds)
         for taotype in ["nls", "ntr", "cg", "nm"]
             tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
-            @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, taotype))
+            @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, taotype)
             retrieved_type = PETSc.LibPETSc.TaoGetType(petsclib, tao)
             @test retrieved_type == taotype
             PETSc.LibPETSc.TaoDestroy(petsclib, tao)
@@ -45,7 +45,7 @@ else
     
     @testset "Tao tolerances" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
-        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
+        PETSc.LibPETSc.TaoSetType(petsclib, tao, "nls")
         
         # Set tolerances (gatol, grtol, gttol)
         @test_nowarn PETSc.LibPETSc.TaoSetTolerances(petsclib, tao, 1e-8, 1e-8, 1e-8)
@@ -81,7 +81,7 @@ else
     
     @testset "Tao iteration count" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
-        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
+        PETSc.LibPETSc.TaoSetType(petsclib, tao, "nls")
         
         # Get iteration count (should be 0 before solving)
         iter = PETSc.LibPETSc.TaoGetIterationNumber(petsclib, tao)

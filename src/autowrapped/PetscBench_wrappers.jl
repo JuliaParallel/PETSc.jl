@@ -111,7 +111,7 @@ end
 end 
 
 """
-	type::PetscBenchType = PetscBenchGetType(petsclib::PetscLibType, bm::PetscBench) 
+	type::String = PetscBenchGetType(petsclib::PetscLibType, bm::PetscBench) 
 Gets the `PetscBenchType` (as a string) from the `PetscBench`
 context.
 
@@ -385,7 +385,7 @@ end
 end 
 
 """
-	PetscBenchSetType(petsclib::PetscLibType, bm::PetscBench, type::PetscBenchType) 
+	PetscBenchSetType(petsclib::PetscLibType, bm::PetscBench, type::String) 
 set the type of `PetscBench` benchmark to run
 
 Collective
@@ -405,11 +405,11 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 # External Links
 $(_doc_external("BM/PetscBenchSetType"))
 """
-function PetscBenchSetType(petsclib::PetscLibType, bm::PetscBench, type::PetscBenchType)
+function PetscBenchSetType(petsclib::PetscLibType, bm::PetscBench, type::String)
     error("PetscBenchSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscBenchSetType(petsclib::$UnionPetscLib, bm::PetscBench, type::PetscBenchType )
+@for_petsc function PetscBenchSetType(petsclib::$UnionPetscLib, bm::PetscBench, type::String )
 
     @chk ccall(
                (:PetscBenchSetType, $petsc_library),

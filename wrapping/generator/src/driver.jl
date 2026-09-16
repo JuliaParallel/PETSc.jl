@@ -206,7 +206,7 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
         write_version(io, api.version)
     end
     includes = Tuple{String,Bool}[("petscarray.jl", true), ("enums_wrappers.jl", true), ("senums_wrappers.jl", true),
-                                  ("typedefs_wrappers.jl", true), ("struct_wrappers.jl", true), ("opaque_types.jl", true)]
+                                  ("typedefs_wrappers.jl", true), ("opaque_types.jl", true), ("struct_wrappers.jl", true)]   # structs hold handles
     for f in r.files
         push!(includes, (f["name"], get(f, "include", true)))
     end

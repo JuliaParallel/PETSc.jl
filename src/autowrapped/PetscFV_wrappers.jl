@@ -285,7 +285,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscFVGetComponentName(petsclib::PetscLibType, fvm::PetscFV, comp::PetscInt) 
+	name::String = PetscFVGetComponentName(petsclib::PetscLibType, fvm::PetscFV, comp::PetscInt) 
 Get the name of a component (used in output and viewing) in a `PetscFV`
 
 Logically Collective
@@ -318,7 +318,7 @@ end
                fvm, comp, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -552,7 +552,7 @@ end
 end 
 
 """
-	name::PetscFVType = PetscFVGetType(petsclib::PetscLibType, fvm::PetscFV) 
+	name::String = PetscFVGetType(petsclib::PetscLibType, fvm::PetscFV) 
 Gets the `PetscFVType` (as a string) from a `PetscFV`.
 
 Not Collective
@@ -1043,7 +1043,7 @@ end
 end 
 
 """
-	PetscFVSetType(petsclib::PetscLibType, fvm::PetscFV, name::PetscFVType) 
+	PetscFVSetType(petsclib::PetscLibType, fvm::PetscFV, name::String) 
 Builds a particular `PetscFV`
 
 Collective
@@ -1062,11 +1062,11 @@ See also: `PetscFV`, `PetscFVType`, `PetscFVGetType()`, `PetscFVCreate()`
 # External Links
 $(_doc_external("FV/PetscFVSetType"))
 """
-function PetscFVSetType(petsclib::PetscLibType, fvm::PetscFV, name::PetscFVType)
+function PetscFVSetType(petsclib::PetscLibType, fvm::PetscFV, name::String)
     error("PetscFVSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscFVSetType(petsclib::$UnionPetscLib, fvm::PetscFV, name::PetscFVType )
+@for_petsc function PetscFVSetType(petsclib::$UnionPetscLib, fvm::PetscFV, name::String )
 
     @chk ccall(
                (:PetscFVSetType, $petsc_library),

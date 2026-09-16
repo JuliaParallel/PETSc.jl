@@ -24,7 +24,7 @@ PETSc.initialize(petsclib)
 
 # Create a DMSwarm in PIC mode
 swarm = LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD)
-LibPETSc.DMSetType(petsclib, swarm, "swarm")  # String convenience wrapper
+LibPETSc.DMSetType(petsclib, swarm, LibPETSc.DMSWARM)
 # Set the geometric/topological dimension for the swarm (required)
 LibPETSc.DMSetDimension(petsclib, swarm, 1)
 
@@ -50,22 +50,18 @@ LibPETSc.DMSwarmFinalizeFieldRegister(petsclib, swarm)
 nparticles = 100
 LibPETSc.DMSwarmSetLocalSizes(petsclib, swarm, nparticles, 0)
 
-# Access and set particle data using DMSwarmGetField / DMSwarmRestoreField
-# `DMSwarmGetField` returns the blocksize and fills a pointer to the underlying
-# data array. In Julia, pass a `Vector{Ptr{Cvoid}}(undef,1)` and a `Ref{PetscDataType}`
-# to receive the out parameters and then wrap the returned pointer with `unsafe_wrap`.
-ptr_store = Vector{Ptr{Cvoid}}(undef, 1)
-type_store = Ref{LibPETSc.PetscDataType}()
-blocksize = LibPETSc.DMSwarmGetField(petsclib, swarm, "velocity", type_store, pointer(ptr_store))
-# `ptr_store[1]` is a pointer to `PetscReal` (Float64 by default) array of length blocksize * nparticles
-@assert type_store[] == LibPETSc.PETSC_DOUBLE
-data = unsafe_wrap(Array, Ptr{Float64}(ptr_store[1]), (blocksize * nparticles,))
+# Access and set particle data using DMSwarmGetField / DMSwarmRestoreField.
+# `DMSwarmGetField` returns the block size, the data type and a raw pointer to the
+# field storage (blocksize * nparticles entries); wrap it with `unsafe_wrap`.
+blocksize, dtype, ptr = LibPETSc.DMSwarmGetField(petsclib, swarm, "velocity")
+@assert dtype == LibPETSc.PETSC_DOUBLE
+data = unsafe_wrap(Array, Ptr{Float64}(ptr), blocksize * nparticles)
 # Initialize velocity values
-for i in 1:length(data)
+for i in eachindex(data)
     data[i] = 0.1 * i
 end
 # Restore the field when done (unlocks internal storage)
-LibPETSc.DMSwarmRestoreField(petsclib, swarm, "velocity", type_store, pointer(ptr_store))
+LibPETSc.DMSwarmRestoreField(petsclib, swarm, "velocity", blocksize, dtype)
 
 # Cleanup
 LibPETSc.DMDestroy(petsclib, swarm)

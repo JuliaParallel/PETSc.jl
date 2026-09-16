@@ -18,7 +18,7 @@ else
         @test tao.ptr != C_NULL
         
         # Set the optimization algorithm (e.g., LMVM, BLMVM, NLS)
-        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
+        PETSc.LibPETSc.TaoSetType(petsclib, tao, "lmvm")
         
         # Set convergence tolerances
         PETSc.LibPETSc.TaoSetTolerances(petsclib, tao, 1e-8, 1e-8, 1e-8)
@@ -46,7 +46,7 @@ else
             tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
             
             # Set type using string
-            PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, tao_type))
+            PETSc.LibPETSc.TaoSetType(petsclib, tao, tao_type)
             
             # Verify type was set (TaoGetType already returns a String)
             type_str = PETSc.LibPETSc.TaoGetType(petsclib, tao)
@@ -62,7 +62,7 @@ else
             tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
             
             # Set type using string
-            PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, tao_type))
+            PETSc.LibPETSc.TaoSetType(petsclib, tao, tao_type)
             
             # Verify type was set (TaoGetType already returns a String)
             type_str = PETSc.LibPETSc.TaoGetType(petsclib, tao)
@@ -74,7 +74,7 @@ else
     
     @testset "Tolerance and Iteration Settings" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
-        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
+        PETSc.LibPETSc.TaoSetType(petsclib, tao, "lmvm")
         
         # Set convergence tolerances (gatol, grtol, gttol)
         PETSc.LibPETSc.TaoSetTolerances(petsclib, tao, 1e-6, 1e-6, 1e-6)
@@ -104,7 +104,7 @@ else
     
     @testset "Solution Vector Setup" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
-        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
+        PETSc.LibPETSc.TaoSetType(petsclib, tao, "lmvm")
         
         # Create a solution vector
         x = PETSc.LibPETSc.VecCreate(petsclib, test_comm)

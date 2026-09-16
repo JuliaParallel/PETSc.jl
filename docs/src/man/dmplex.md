@@ -328,10 +328,8 @@ vel_p1 = PETSc.DMGlobalVec(dm_p1)
 PETSc.dm_project_field!(petsclib, dm_p1, 0.0, u, [copy_vel_ptr],
     LibPETSc.INSERT_ALL_VALUES, vel_p1)
 
-# Move each mesh node by dt * v
-PL = typeof(petsclib)
-coords = LibPETSc.PetscVec{PL}(C_NULL)
-LibPETSc.DMGetCoordinates(petsclib, dm, coords)
+# Move each mesh node by dt * v (the coordinate vector is owned by the DM)
+coords = LibPETSc.DMGetCoordinates(petsclib, dm)
 LibPETSc.VecAXPY(petsclib, coords, PetscScalar(dt), vel_p1)
 ```
 

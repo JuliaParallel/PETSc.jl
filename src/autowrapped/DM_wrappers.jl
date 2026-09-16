@@ -1658,7 +1658,7 @@ end
 end 
 
 """
-	M::PetscDM = DMConvert(petsclib::PetscLibType, dm::AbstractPetscDM, newtype::DMType) 
+	M::PetscDM = DMConvert(petsclib::PetscLibType, dm::AbstractPetscDM, newtype::String) 
 Converts a `DM` to another `DM`, either of the same or different type.
 
 Collective
@@ -1677,11 +1677,11 @@ See also: `DM`, `DMSetType()`, `DMCreate()`, `DMClone()`
 # External Links
 $(_doc_external("DM/DMConvert"))
 """
-function DMConvert(petsclib::PetscLibType, dm::AbstractPetscDM, newtype::DMType)
+function DMConvert(petsclib::PetscLibType, dm::AbstractPetscDM, newtype::String)
     error("DMConvert: no generated method for these argument types")
 end
 
-@for_petsc function DMConvert(petsclib::$UnionPetscLib, dm::AbstractPetscDM, newtype::DMType )
+@for_petsc function DMConvert(petsclib::$UnionPetscLib, dm::AbstractPetscDM, newtype::String )
 	M_ = Ref{CDM}()
 
     @chk ccall(
@@ -2281,7 +2281,7 @@ end
               )
 
 	len = len_[]
-	namelist = unsafe_string(namelist_[])
+	namelist = namelist_[] == C_NULL ? "" : unsafe_string(namelist_[])
 	islist = islist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, islist_[], len; own = false)]
 	dmlist = dmlist_[] == C_NULL ? PetscDM{$PetscLib}[] : [PetscDM(p, petsclib) for p in unsafe_wrap(Array, dmlist_[], len; own = false)]
 
@@ -3083,7 +3083,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`
 
 # External Links
 $(_doc_external("DMDA/DMDAConvertToCell"))
@@ -3121,7 +3121,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMSetUp()`, `DMDASetSizes()`, `DMClone()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+See also: `DM`, `DMDA`, `DMSetUp()`, `DMDASetSizes()`, `DMClone()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("DMDA/DMDACreate"))
@@ -3174,7 +3174,7 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_struct), `DMDA`, `DM`, `DMDestroy()`, `DMView()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDASetRefinementFactor()`,
+See also: `DMDA`, `DM`, `DMDestroy()`, `DMView()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDASetRefinementFactor()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetRefinementFactor()`,
 `DMDAGetInfo()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMDACreateNaturalVector()`, `DMLoad()`, `DMDAGetOwnershipRanges()`,
 `DMStagCreate1d()`, `DMBoundaryType`
@@ -3240,7 +3240,7 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
+See also: `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDASetRefinementFactor()`,
 `DMDAGetInfo()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMDACreateNaturalVector()`, `DMLoad()`, `DMDAGetOwnershipRanges()`,
 `DMStagCreate2d()`, `DMBoundaryType`
@@ -3317,7 +3317,7 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
+See also: `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDASetRefinementFactor()`,
 `DMDAGetInfo()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMDACreateNaturalVector()`, `DMLoad()`, `DMDAGetOwnershipRanges()`,
 `DMStagCreate3d()`, `DMBoundaryType`
@@ -3360,7 +3360,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DMRefine()`, `DMCreateInjection()`, `DMCreateInterpolation()`
+See also: `DMRefine()`, `DMCreateInjection()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DMDA/DMDACreateAggregates"))
@@ -3399,7 +3399,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMSetCoordinates()`, `DMDASetUniformCoordinates()`, `DMGetCoordinates()`, `DMDAGetGhostedCoordinates()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMSetCoordinates()`, `DMDASetUniformCoordinates()`, `DMGetCoordinates()`, `DMDAGetGhostedCoordinates()`,
 `DMStagCreateCompatibleDMStag()`
 
 # External Links
@@ -3440,7 +3440,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMDANaturalToGlobalBegin()`, `DMDANaturalToGlobalEnd()`,
+See also: `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMDANaturalToGlobalBegin()`, `DMDANaturalToGlobalEnd()`,
 `DMCreateLocalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
 
@@ -3522,7 +3522,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMCreateDomainDecompositionScatters()`
+See also: `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMCreateDomainDecompositionScatters()`
 
 # External Links
 $(_doc_external("DMDA/DMDACreatePatchIS"))
@@ -3560,7 +3560,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDASetAOType()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
+See also: `DM`, `DMDA`, `DMDACreate2d()`, `DMDASetAOType()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetOwnershipRanges()`,
 `AO`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
@@ -3599,7 +3599,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDARestoreArray()`
+See also: `DM`, `DMDA`, `DMDARestoreArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetArray"))
@@ -3639,7 +3639,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DMDASetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
+See also: `DMDASetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetBoundaryType"))
@@ -3682,7 +3682,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetNumCells()`
+See also: `DM`, `DMDA`, `DMDAGetNumCells()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCellPoint"))
@@ -3720,7 +3720,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDARestoreCoordinateArray()`
+See also: `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDARestoreCoordinateArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCoordinateArray"))
@@ -3745,7 +3745,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMDAGetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::PetscInt) 
+	name::String = DMDAGetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::PetscInt) 
 Gets the name of a coordinate direction associated with a `DMDA`.
 
 Not Collective; name will contain a common value; No Fortran Support
@@ -3759,7 +3759,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
+See also: `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCoordinateName"))
@@ -3778,7 +3778,7 @@ end
                dm, nf, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -3803,7 +3803,7 @@ Output Parameters:
 
 Level: beginner
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetOwnershipRanges()`, `DMStagGetCorners()`, `DMSTAG`
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetOwnershipRanges()`, `DMStagGetCorners()`, `DMSTAG`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCorners"))
@@ -3894,7 +3894,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetDof()`, `DMDACreate()`, `DMDestroy()`
+See also: `DM`, `DMDA`, `DMDASetDof()`, `DMDACreate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetDof"))
@@ -3932,7 +3932,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
 `DMDA_ELEMENT_P1`, `DMDA_ELEMENT_Q1`
 
 # External Links
@@ -3975,7 +3975,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `VecSetValuesLocal()`, `MatSetValuesLocal()`,
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `VecSetValuesLocal()`, `MatSetValuesLocal()`,
 `DMGlobalToLocalBegin()`, `DMLocalToGlobalBegin()`, `DMDARestoreElements()`, `DMDA_ELEMENT_P1`, `DMDA_ELEMENT_Q1`, `DMDAGetElementsSizes()`,
 `DMDAGetElementsCorners()`
 
@@ -4022,7 +4022,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDAGetElementsSizes()`,
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDAGetElementsSizes()`,
 `DMDAGetElementsCornersIS()`, `DMDARestoreElementsCornersIS()`
 
 # External Links
@@ -4067,7 +4067,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetElementsCorners()`
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetElementsCorners()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetElementsSizes"))
@@ -4096,7 +4096,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMDAGetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::PetscInt) 
+	name::String = DMDAGetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::PetscInt) 
 Gets the names of individual field components in multicomponent
 vectors associated with a `DMDA`.
 
@@ -4112,7 +4112,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMSetUp()`
+See also: `DM`, `DMDA`, `DMDASetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetFieldName"))
@@ -4131,7 +4131,7 @@ end
                da, nf, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -4150,7 +4150,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDASetFieldNames()`
+See also: `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDASetFieldNames()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetFieldNames"))
@@ -4169,7 +4169,7 @@ end
                da, names_,
               )
 
-	names = unsafe_string(names_[])
+	names = names_[] == C_NULL ? "" : unsafe_string(names_[])
 
 	return names
 end 
@@ -4194,7 +4194,7 @@ Output Parameters:
 
 Level: beginner
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCorners()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDAGetOwnershipRanges()`, `DMStagGetGhostCorners()`, `DMSTAG`
+See also: `DM`, `DMDA`, `DMDAGetCorners()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDAGetOwnershipRanges()`, `DMStagGetGhostCorners()`, `DMSTAG`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetGhostCorners"))
@@ -4297,7 +4297,7 @@ Output Parameters:
 
 Level: beginner
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMView()`, `DMDAGetCorners()`, `DMDAGetLocalInfo()`
+See also: `DM`, `DMDA`, `DMView()`, `DMDAGetCorners()`, `DMDAGetLocalInfo()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetInfo"))
@@ -4360,7 +4360,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAInterpolationType`, `DMDASetInterpolationType()`, `DMCreateInterpolation()`,
+See also: `DM`, `DMDA`, `DMDAInterpolationType`, `DMDASetInterpolationType()`, `DMCreateInterpolation()`,
 `DMDA_Q1`, `DMDA_Q0`
 
 # External Links
@@ -4399,7 +4399,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetInfo()`, `DMDAGetCorners()`, `DMDALocalInfo`
+See also: `DM`, `DMDA`, `DMDAGetInfo()`, `DMDAGetCorners()`, `DMDALocalInfo`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetLocalInfo"))
@@ -4447,7 +4447,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`
+See also: `DM`, `DMDA`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetLogicalCoordinate"))
@@ -4496,7 +4496,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DMDA`, `DM`
+See also: `DMDA`, `DM`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNeighbors"))
@@ -4539,7 +4539,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
+See also: `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNonOverlappingRegion"))
@@ -4588,7 +4588,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCellPoint()`
+See also: `DM`, `DMDA`, `DMDAGetCellPoint()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumCells"))
@@ -4685,7 +4685,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetNumLocalSubDomains()`
+See also: `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetNumLocalSubDomains()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumLocalSubDomains"))
@@ -4775,7 +4775,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetOffset()`, `DMDAVecGetArray()`
+See also: `DM`, `DMDA`, `DMDASetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetOffset"))
@@ -4825,7 +4825,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetOverlap()`
+See also: `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetOverlap()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetOverlap"))
@@ -4869,7 +4869,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDACreate()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `VecGetOwnershipRanges()`
+See also: `DM`, `DMDA`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDACreate()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `VecGetOwnershipRanges()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetOwnershipRanges"))
@@ -4910,7 +4910,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`, `DMDASetPreallocationCenterDimension()`
+See also: `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`, `DMDASetPreallocationCenterDimension()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetPreallocationCenterDimension"))
@@ -4952,7 +4952,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `DM_X`, `DM_Y`, `DM_Z`, `DMDAGetProcessorSubsets()`
+See also: `DM`, `DMDA`, `DMDirection`, `DM_X`, `DM_Y`, `DM_Z`, `DMDAGetProcessorSubsets()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetProcessorSubset"))
@@ -4993,7 +4993,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `DMDAGetProcessorSubset()`, `DM_X`, `DM_Y`, `DM_Z`
+See also: `DM`, `DMDA`, `DMDirection`, `DMDAGetProcessorSubset()`, `DM_X`, `DM_Y`, `DM_Z`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetProcessorSubsets"))
@@ -5034,7 +5034,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `Vec`, `VecScatter`
+See also: `DM`, `DMDA`, `DMDirection`, `Vec`, `VecScatter`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetRay"))
@@ -5076,7 +5076,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMRefine()`, `DMDASetRefinementFactor()`
+See also: `DM`, `DMDA`, `DMRefine()`, `DMDASetRefinementFactor()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetRefinementFactor"))
@@ -5120,7 +5120,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
+See also: `DM`, `DMDA`, `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetScatter"))
@@ -5160,7 +5160,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetStencilType"))
@@ -5198,7 +5198,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetStencilWidth"))
@@ -5237,7 +5237,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElementsCornersIS()`,
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElementsCornersIS()`,
 `DMDAGetElementsSizes()`, `DMDAGetElementsCorners()`
 
 # External Links
@@ -5277,7 +5277,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDANaturalAllToGlobalCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: `DM`, `DMDA`, `DMDANaturalAllToGlobalCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5320,7 +5320,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5360,7 +5360,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5440,7 +5440,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `MatStencil`
+See also: `DM`, `DMDA`, `MatStencil`
 
 # External Links
 $(_doc_external("DMDA/DMDAMapMatStencilToGlobal"))
@@ -5477,7 +5477,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalAllCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: `DM`, `DMDA`, `DMDAGlobalToNaturalAllCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5520,7 +5520,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5560,7 +5560,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5594,7 +5594,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetArray()`
+See also: `DM`, `DMDA`, `DMDAGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreArray"))
@@ -5628,7 +5628,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDAGetCoordinateArray()`
+See also: `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDAGetCoordinateArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreCoordinateArray"))
@@ -5664,7 +5664,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreElements"))
@@ -5701,7 +5701,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetSubdomainCornersIS()`
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetSubdomainCornersIS()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreSubdomainCornersIS"))
@@ -5975,7 +5975,7 @@ end
 end 
 
 """
-	DMDASetAOType(petsclib::PetscLibType, da::AbstractPetscDM, aotype::AOType) 
+	DMDASetAOType(petsclib::PetscLibType, da::AbstractPetscDM, aotype::String) 
 Sets the type of application ordering to create with `DMDAGetAO()`, for a distributed array.
 
 Collective
@@ -5986,18 +5986,18 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDAGetAO()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
+See also: `DM`, `DMDA`, `DMDACreate2d()`, `DMDAGetAO()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetGlobalIndices()`, `DMDAGetOwnershipRanges()`,
 `AO`, `AOPetscToApplication()`, `AOApplicationToPetsc()`, `AOType`, `AOBASIC`, `AOADVANCED`, `AOMAPPING`, `AOMEMORYSCALABLE`
 
 # External Links
 $(_doc_external("DMDA/DMDASetAOType"))
 """
-function DMDASetAOType(petsclib::PetscLibType, da::AbstractPetscDM, aotype::AOType)
+function DMDASetAOType(petsclib::PetscLibType, da::AbstractPetscDM, aotype::String)
     error("DMDASetAOType: no generated method for these argument types")
 end
 
-@for_petsc function DMDASetAOType(petsclib::$UnionPetscLib, da::AbstractPetscDM, aotype::AOType )
+@for_petsc function DMDASetAOType(petsclib::$UnionPetscLib, da::AbstractPetscDM, aotype::String )
 
     @chk ccall(
                (:DMDASetAOType, $petsc_library),
@@ -6024,7 +6024,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMDASetBlockFillsSparse()`
+See also: `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMDASetBlockFillsSparse()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetBlockFills"))
@@ -6061,7 +6061,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetBlockFills()`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`
+See also: `DM`, `DMDA`, `DMDASetBlockFills()`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetBlockFillsSparse"))
@@ -6097,7 +6097,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DMDAGetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
+See also: `DMDAGetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
 
 # External Links
 $(_doc_external("DMDA/DMDASetBoundaryType"))
@@ -6132,7 +6132,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
+See also: `DM`, `DMDA`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetCoordinateName"))
@@ -6166,7 +6166,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetDof()`, `DMDACreate()`, `DMDestroy()`
+See also: `DM`, `DMDA`, `DMDAGetDof()`, `DMDACreate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetDof"))
@@ -6202,7 +6202,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDAGetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
+See also: `DM`, `DMDA`, `DMDAElementType`, `DMDAGetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
 `DMDA_ELEMENT_P1`, `DMDA_ELEMENT_Q1`
 
 # External Links
@@ -6240,7 +6240,7 @@ number of degrees of freedom per node within the `DMDA`
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldNames()`, `DMSetUp()`
+See also: `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldNames()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetFieldName"))
@@ -6274,7 +6274,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMSetUp()`
+See also: `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetFieldNames"))
@@ -6310,7 +6310,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `PetscDTGaussLobattoLegendreQuadrature()`, `DMGetCoordinates()`
+See also: `DM`, `DMDA`, `DMDACreate()`, `PetscDTGaussLobattoLegendreQuadrature()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetGLLCoordinates"))
@@ -6350,7 +6350,7 @@ Calling sequence of `f`:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetBlockFills()`
+See also: `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetBlockFills()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetGetMatrix"))
@@ -6385,7 +6385,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDestroy()`, `DMDAInterpolationType`,
+See also: `DM`, `DMDA`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDestroy()`, `DMDAInterpolationType`,
 `DMDA_Q1`, `DMDA_Q0`
 
 # External Links
@@ -6425,7 +6425,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
+See also: `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetNonOverlappingRegion"))
@@ -6459,7 +6459,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetNumLocalSubDomains()`
+See also: `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetNumLocalSubDomains()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetNumLocalSubDomains"))
@@ -6495,7 +6495,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDASetSizes()`, `PetscSplitOwnership()`
+See also: `DM`, `DMDA`, `DMDASetSizes()`, `PetscSplitOwnership()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetNumProcs"))
@@ -6534,7 +6534,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
+See also: `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetOffset"))
@@ -6570,7 +6570,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetOverlap()`
+See also: `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetOverlap()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetOverlap"))
@@ -6606,7 +6606,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`
+See also: `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetOwnershipRanges"))
@@ -6638,7 +6638,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`
+See also: `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetPreallocationCenterDimension"))
@@ -6680,7 +6680,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMRefine()`, `DMDAGetRefinementFactor()`
+See also: `DM`, `DMDA`, `DMRefine()`, `DMDAGetRefinementFactor()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetRefinementFactor"))
@@ -6716,7 +6716,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `PetscSplitOwnership()`
+See also: `DM`, `DMDA`, `PetscSplitOwnership()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetSizes"))
@@ -6750,7 +6750,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDASetStencilType"))
@@ -6784,7 +6784,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDASetStencilWidth"))
@@ -6823,7 +6823,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_struct), `DM`, `DMDA`, `DMSetCoordinates()`, `DMGetCoordinates()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMStagSetUniformCoordinates()`
+See also: `DM`, `DMDA`, `DMSetCoordinates()`, `DMGetCoordinates()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMStagSetUniformCoordinates()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetUniformCoordinates"))
@@ -7041,7 +7041,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_struct), `DMDA`, `DM`, `PETSCVIEWERVTK`, `DMDASetFieldName()`
+See also: `DMDA`, `DM`, `PETSCVIEWERVTK`, `DMDASetFieldName()`
 
 # External Links
 $(_doc_external("DMDA/DMDAVTKWriteAll"))
@@ -7079,7 +7079,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecRestoreArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayDOF()`, `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`,
 `DMStagVecGetArray()`
 
@@ -7121,7 +7121,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecRestoreArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`, `DMDAVecGetArrayDOFRead()`
 
 # External Links
@@ -7162,7 +7162,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7203,7 +7203,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`
 
 # External Links
@@ -7244,7 +7244,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`,
 `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayRead()`,
 `DMDAVecRestoreArrayDOF()`, `DMDAVecGetArrayDOF()`, `DMDAVecGetArray()`,
 `DMDAVecRestoreArray()`, `DMStagVecGetArrayRead()`
@@ -7287,7 +7287,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecRestoreArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayDOF()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7325,7 +7325,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`,
 `DMStagVecRestoreArray()`
 
@@ -7362,7 +7362,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7398,7 +7398,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7434,7 +7434,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`
 
 # External Links
@@ -7470,7 +7470,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayRead()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayRead()`,
 `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`,
 `DMStagVecRestoreArrayRead()`
 
@@ -7507,7 +7507,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayWrite()`,
+See also: `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayWrite()`,
 `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7864,7 +7864,7 @@ end
 end 
 
 """
-	adaptStrategy::DMForestAdaptivityStrategy = DMForestGetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	adaptStrategy::String = DMForestGetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the strategy for combining adaptivity labels from multiple processes.
 
 Not Collective
@@ -8497,7 +8497,7 @@ end
 end 
 
 """
-	topology::DMForestTopology = DMForestGetTopology(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	topology::String = DMForestGetTopology(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get a string describing the topology of a `DMFOREST`.
 
 Not Collective
@@ -8574,7 +8574,7 @@ end
 end 
 
 """
-	DMForestRegisterType(petsclib::PetscLibType, name::DMType) 
+	DMForestRegisterType(petsclib::PetscLibType, name::String) 
 Registers a `DMType` as a subtype of `DMFOREST` (so that `DMIsForest()` will be correct)
 
 Not Collective
@@ -8589,11 +8589,11 @@ See also: `DMFOREST`, `DMIsForest()`
 # External Links
 $(_doc_external("DMForest/DMForestRegisterType"))
 """
-function DMForestRegisterType(petsclib::PetscLibType, name::DMType)
+function DMForestRegisterType(petsclib::PetscLibType, name::String)
     error("DMForestRegisterType: no generated method for these argument types")
 end
 
-@for_petsc function DMForestRegisterType(petsclib::$UnionPetscLib, name::DMType )
+@for_petsc function DMForestRegisterType(petsclib::$UnionPetscLib, name::String )
 
     @chk ccall(
                (:DMForestRegisterType, $petsc_library),
@@ -8714,7 +8714,7 @@ end
 end 
 
 """
-	DMForestSetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy) 
+	DMForestSetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM, adaptStrategy::String) 
 During the pre-setup phase, set the strategy for combining adaptivity labels from multiple processes.
 
 Logically Collective
@@ -8730,11 +8730,11 @@ See also: `DM`, `DMFOREST`, `DMForestGetAdaptivityStrategy()`, `DMFORESTADAPTALL
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityStrategy"))
 """
-function DMForestSetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy)
+function DMForestSetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM, adaptStrategy::String)
     error("DMForestSetAdaptivityStrategy: no generated method for these argument types")
 end
 
-@for_petsc function DMForestSetAdaptivityStrategy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy )
+@for_petsc function DMForestSetAdaptivityStrategy(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adaptStrategy::String )
 
     @chk ccall(
                (:DMForestSetAdaptivityStrategy, $petsc_library),
@@ -9181,7 +9181,7 @@ end
 end 
 
 """
-	DMForestSetTopology(petsclib::PetscLibType, dm::AbstractPetscDM, topology::DMForestTopology) 
+	DMForestSetTopology(petsclib::PetscLibType, dm::AbstractPetscDM, topology::String) 
 Set the topology of a `DMFOREST` during the pre-setup phase.  The topology is a string (e.g.
 "cube", "shell") and can be interpreted by subtypes of `DMFOREST`) to construct the base DM of a forest during
 `DMSetUp()`.
@@ -9199,11 +9199,11 @@ See also: `DM`, `DMFOREST`, `DMForestGetTopology()`, `DMForestSetBaseDM()`
 # External Links
 $(_doc_external("DMForest/DMForestSetTopology"))
 """
-function DMForestSetTopology(petsclib::PetscLibType, dm::AbstractPetscDM, topology::DMForestTopology)
+function DMForestSetTopology(petsclib::PetscLibType, dm::AbstractPetscDM, topology::String)
     error("DMForestSetTopology: no generated method for these argument types")
 end
 
-@for_petsc function DMForestSetTopology(petsclib::$UnionPetscLib, dm::AbstractPetscDM, topology::DMForestTopology )
+@for_petsc function DMForestSetTopology(petsclib::$UnionPetscLib, dm::AbstractPetscDM, topology::String )
 
     @chk ccall(
                (:DMForestSetTopology, $petsc_library),
@@ -11307,7 +11307,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMGetLabelName(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) 
+	name::String = DMGetLabelName(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) 
 Return the name of nth label
 
 Not Collective
@@ -11340,7 +11340,7 @@ end
                dm, n, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -11620,7 +11620,7 @@ end
 end 
 
 """
-	ctype::MatType = DMGetMatType(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	ctype::String = DMGetMatType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the type of matrix that would be created with `DMCreateMatrix()`
 
 Logically Collective
@@ -12052,7 +12052,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = DMGetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	prefix::String = DMGetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the prefix used for searching for all
 DM options in the options database.
 
@@ -12085,7 +12085,7 @@ end
                dm, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -12574,7 +12574,7 @@ end
 end 
 
 """
-	type::DMType = DMGetType(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	type::String = DMGetType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the `DM` type name (as a string) from the `DM`.
 
 Not Collective
@@ -12650,7 +12650,7 @@ end
 end 
 
 """
-	ctype::VecType = DMGetVecType(petsclib::PetscLibType, da::AbstractPetscDM) 
+	ctype::String = DMGetVecType(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the type of vector created with `DMCreateLocalVector()` and `DMCreateGlobalVector()`
 
 Logically Collective
@@ -23136,7 +23136,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMPlexDistributionGetName(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	name::String = DMPlexDistributionGetName(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the name of the specific parallel distribution
 
 Input Parameter:
@@ -23166,7 +23166,7 @@ end
                dm, name_,
               )
 
-	name = name_[]
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
 end 
@@ -26301,7 +26301,7 @@ end
 end 
 
 """
-	perm::IS = DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel) 
+	perm::IS = DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::String, label::DMLabel) 
 Calculate a reordering of the mesh
 
 Collective
@@ -26321,11 +26321,11 @@ See also: `DMPLEX`, `DMPlexPermute()`, `MatOrderingType`, `MatGetOrdering()`
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrdering"))
 """
-function DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel)
+function DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::String, label::DMLabel)
     error("DMPlexGetOrdering: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexGetOrdering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel )
+@for_petsc function DMPlexGetOrdering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, otype::String, label::DMLabel )
 	perm_ = Ref{CIS}()
 
     @chk ccall(
@@ -27437,7 +27437,7 @@ end
 end 
 
 """
-	type::DMPlexTransformType = DMPlexGetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	type::String = DMPlexGetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the transform type for uniform refinement
 
 Input Parameter:
@@ -34057,29 +34057,6 @@ end
 end 
 
 """
-	DMPlexSetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) 
-
-# External Links
-$(_doc_external("DM/DMPlexSetGlobalToNaturalSF"))
-"""
-function DMPlexSetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF)
-    error("DMPlexSetGlobalToNaturalSF: no generated method for these argument types")
-end
-
-@for_petsc function DMPlexSetGlobalToNaturalSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, sf::PetscSF )
-
-    @chk ccall(
-               (:DMPlexSetGlobalToNaturalSF, $petsc_library),
-               PetscErrorCode,
-               (CDM, PetscSF),
-               dm, sf,
-              )
-
-
-	return nothing
-end 
-
-"""
 	DMPlexSetInterpolatePreferTensor(petsclib::PetscLibType, dm::AbstractPetscDM, preferTensor::PetscBool) 
 Set the flag to prefer tensor order when interpolating a cell
 
@@ -34859,7 +34836,7 @@ end
 end 
 
 """
-	DMPlexSetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMPlexTransformType) 
+	DMPlexSetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM, type::String) 
 Set the transform type for uniform refinement
 
 Input Parameters:
@@ -34873,11 +34850,11 @@ See also: `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRefine()`, `DMPlexGetTransfo
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTransformType"))
 """
-function DMPlexSetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMPlexTransformType)
+function DMPlexSetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM, type::String)
     error("DMPlexSetTransformType: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSetTransformType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, type::DMPlexTransformType )
+@for_petsc function DMPlexSetTransformType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, type::String )
 
     @chk ccall(
                (:DMPlexSetTransformType, $petsc_library),
@@ -37379,7 +37356,7 @@ end
 end 
 
 """
-	reorder::MatOrderingType = DMReorderSectionGetType(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	reorder::String = DMReorderSectionGetType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the reordering type for the local section
 
 Not collective
@@ -37451,7 +37428,7 @@ end
 end 
 
 """
-	DMReorderSectionSetType(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::MatOrderingType) 
+	DMReorderSectionSetType(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::String) 
 Set the type of local section reordering
 
 Logically collective
@@ -37467,11 +37444,11 @@ See also: `DMReorderSectionGetType()`, `DMReorderSectionSetDefault()`
 # External Links
 $(_doc_external("DM/DMReorderSectionSetType"))
 """
-function DMReorderSectionSetType(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::MatOrderingType)
+function DMReorderSectionSetType(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::String)
     error("DMReorderSectionSetType: no generated method for these argument types")
 end
 
-@for_petsc function DMReorderSectionSetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, reorder::MatOrderingType )
+@for_petsc function DMReorderSectionSetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, reorder::String )
 
     @chk ccall(
                (:DMReorderSectionSetType, $petsc_library),
@@ -39902,7 +39879,7 @@ end
 end 
 
 """
-	DMSetMatType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::MatType) 
+	DMSetMatType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::String) 
 Sets the type of matrix created with `DMCreateMatrix()`
 
 Logically Collective
@@ -39921,11 +39898,11 @@ See also: `DM`, `MatType`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`,
 # External Links
 $(_doc_external("DM/DMSetMatType"))
 """
-function DMSetMatType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::MatType)
+function DMSetMatType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::String)
     error("DMSetMatType: no generated method for these argument types")
 end
 
-@for_petsc function DMSetMatType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::MatType )
+@for_petsc function DMSetMatType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::String )
 
     @chk ccall(
                (:DMSetMatType, $petsc_library),
@@ -40580,7 +40557,7 @@ end
 end 
 
 """
-	DMSetType(petsclib::PetscLibType, dm::AbstractPetscDM, method::DMType) 
+	DMSetType(petsclib::PetscLibType, dm::AbstractPetscDM, method::String) 
 Builds a `DM`, for a particular `DM` implementation.
 
 Collective
@@ -40599,11 +40576,11 @@ See also: `DM`, `DMType`, `DMDA`, `DMPLEX`, `DMGetType()`, `DMCreate()`, `DMDACr
 # External Links
 $(_doc_external("DM/DMSetType"))
 """
-function DMSetType(petsclib::PetscLibType, dm::AbstractPetscDM, method::DMType)
+function DMSetType(petsclib::PetscLibType, dm::AbstractPetscDM, method::String)
     error("DMSetType: no generated method for these argument types")
 end
 
-@for_petsc function DMSetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, method::DMType )
+@for_petsc function DMSetType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, method::String )
 
     @chk ccall(
                (:DMSetType, $petsc_library),
@@ -40759,7 +40736,7 @@ end
 end 
 
 """
-	DMSetVecType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::VecType) 
+	DMSetVecType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::String) 
 Sets the type of vector to be created with `DMCreateLocalVector()` and `DMCreateGlobalVector()`
 
 Logically Collective
@@ -40779,11 +40756,11 @@ See also: `DM`, `DMCreate()`, `DMDestroy()`, `DMDAInterpolationType`, `VecType`,
 # External Links
 $(_doc_external("DM/DMSetVecType"))
 """
-function DMSetVecType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::VecType)
+function DMSetVecType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::String)
     error("DMSetVecType: no generated method for these argument types")
 end
 
-@for_petsc function DMSetVecType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::VecType )
+@for_petsc function DMSetVecType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, ctype::String )
 
     @chk ccall(
                (:DMSetVecType, $petsc_library),
@@ -43780,7 +43757,7 @@ end
 end 
 
 """
-	DMStagSetCoordinateDMType(petsclib::PetscLibType, dm::AbstractPetscDM, dmtype::DMType) 
+	DMStagSetCoordinateDMType(petsclib::PetscLibType, dm::AbstractPetscDM, dmtype::String) 
 set DM type to store coordinates
 
 Logically Collective; `dmtype` must contain common value
@@ -43796,11 +43773,11 @@ See also: `DMSTAG`, `DMPRODUCT`, `DMGetCoordinateDM()`, `DMStagSetUniformCoordin
 # External Links
 $(_doc_external("DMStag/DMStagSetCoordinateDMType"))
 """
-function DMStagSetCoordinateDMType(petsclib::PetscLibType, dm::AbstractPetscDM, dmtype::DMType)
+function DMStagSetCoordinateDMType(petsclib::PetscLibType, dm::AbstractPetscDM, dmtype::String)
     error("DMStagSetCoordinateDMType: no generated method for these argument types")
 end
 
-@for_petsc function DMStagSetCoordinateDMType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmtype::DMType )
+@for_petsc function DMStagSetCoordinateDMType(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmtype::String )
 
     @chk ccall(
                (:DMStagSetCoordinateDMType, $petsc_library),

@@ -349,9 +349,9 @@ const PETSCSTACKSIZE = 64
 const void = Cvoid
 const char = Cchar
 
-mutable struct PetscDraw end
+# PetscDraw and TSMonitorLGCtx are opaque pointer handles declared by the generator (opaque_types.jl);
+# the former `mutable struct PetscDraw end` placeholders made `Ref{PetscDraw}()` an undefined reference.
 const DMLabel = Ptr{Cvoid}  # C typedef struct _n_DMLabel *DMLabel (pointer type)
-mutable struct TSMonitorLGCtx end
 mutable struct PetscCtxDestroyFn end
 mutable struct PetscErrorCodeFn end
 

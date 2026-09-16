@@ -24,22 +24,23 @@ MPI.Init()
 petsclib = PETSc.getlib()
 PETSc.initialize(petsclib)
 
-# Define the mapping
+# Define the mapping (indices must have the library's integer type)
 # application[i] is the application index for PETSc index i
+PetscInt = petsclib.PetscInt
 n = 10
-application = Int32[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]  # Reverse ordering
-petsc = Int32[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]        # Natural PETSc ordering
+application = PetscInt[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]  # Reverse ordering
+petsc = PetscInt[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]        # Natural PETSc ordering
 
 # Create AO object
 ao = LibPETSc.AOCreateBasic(petsclib, LibPETSc.PETSC_COMM_SELF, n, application, petsc)
 
 # Convert application indices to PETSc indices
-app_indices = Int32[0, 5, 9]
+app_indices = PetscInt[0, 5, 9]
 LibPETSc.AOApplicationToPetsc(petsclib, ao, length(app_indices), app_indices)
 # app_indices now contains corresponding PETSc indices
 
 # Convert PETSc indices to application indices  
-petsc_indices = Int32[0, 1, 2]
+petsc_indices = PetscInt[0, 1, 2]
 LibPETSc.AOPetscToApplication(petsclib, ao, length(petsc_indices), petsc_indices)
 # petsc_indices now contains corresponding application indices
 
@@ -86,7 +87,7 @@ ao = LibPETSc.AOCreateMemoryScalable(petsclib, comm, n, app_indices, petsc_indic
 
 ```julia
 # Convert array of application indices to PETSc indices
-indices = Int32[10, 20, 30, 40]
+indices = PetscInt[10, 20, 30, 40]
 # Create forward conversion example
 LibPETSc.AOApplicationToPetsc(petsclib, ao, length(indices), indices)
 # indices are now in PETSc ordering (modified in-place)
@@ -96,7 +97,7 @@ LibPETSc.AOApplicationToPetsc(petsclib, ao, length(indices), indices)
 
 ```julia
 # Convert array of PETSc indices to application indices
-indices = Int32[0, 5, 10, 15]
+indices = PetscInt[0, 5, 10, 15]
 # Reverse conversion example
 LibPETSc.AOPetscToApplication(petsclib, ao, length(indices), indices)
 # indices are now in application ordering (modified in-place)
@@ -105,12 +106,12 @@ LibPETSc.AOPetscToApplication(petsclib, ao, length(indices), indices)
 ### Index Set Conversion
 
 ```julia
-# Convert IS (index set) from application to PETSc ordering
-is_app = Ref{LibPETSc.IS}()
-# ... create IS with application indices ...
-
-LibPETSc.AOApplicationToPetscIS(petsclib, ao, is_app[])
+# Convert an IS (index set) from application to PETSc ordering, in place
+is_app = LibPETSc.ISCreateGeneral(petsclib, LibPETSc.PETSC_COMM_SELF, 3, PetscInt[0, 5, 9],
+                                  LibPETSc.PETSC_COPY_VALUES)
+LibPETSc.AOApplicationToPetscIS(petsclib, ao, is_app)
 # is_app now contains PETSc indices
+LibPETSc.ISDestroy(petsclib, is_app)
 ```
 
 ## Parallel Considerations
@@ -134,8 +135,8 @@ ao = LibPETSc.AOCreateBasic(petsclib, MPI.COMM_WORLD, local_n,
 # Then convert to PETSc ordering for assembly
 
 # Application-ordered rows/cols
-app_rows = Int32[...]
-app_cols = Int32[...]
+app_rows = PetscInt[...]
+app_cols = PetscInt[...]
 
 # Convert to PETSc ordering
 LibPETSc.AOApplicationToPetsc(petsclib, ao, length(app_rows), app_rows)
@@ -148,7 +149,7 @@ LibPETSc.AOApplicationToPetsc(petsclib, ao, length(app_cols), app_cols)
 
 ```julia
 # After solve, convert solution indices for output
-solution_indices = Int32[0, 1, 2, 3, 4]  # PETSc ordering
+solution_indices = PetscInt[0, 1, 2, 3, 4]  # PETSc ordering
 
 # Convert to application ordering for display
 LibPETSc.AOPetscToApplication(petsclib, ao, length(solution_indices), solution_indices)
@@ -162,9 +163,8 @@ LibPETSc.AOPetscToApplication(petsclib, ao, length(solution_indices), solution_i
 ### 3. Integration with DM
 
 ```julia
-# Get AO from DM
-dm_ao = Ref{LibPETSc.AO}()
-# LibPETSc.DMGetAO(petsclib, dm, dm_ao)
+# Get the AO of a DMDA (natural <-> PETSc ordering); the DM owns it
+# dm_ao = LibPETSc.DMDAGetAO(petsclib, da)
 
 # Use for converting between natural and distributed orderings
 ```

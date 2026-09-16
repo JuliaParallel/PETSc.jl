@@ -1476,7 +1476,7 @@ end
 end 
 
 """
-	name::PetscFEType = PetscFEGetType(petsclib::PetscLibType, fem::PetscFE) 
+	name::String = PetscFEGetType(petsclib::PetscLibType, fem::PetscFE) 
 Gets the `PetscFEType` (as a string) from the `PetscFE` object.
 
 Not Collective
@@ -2475,7 +2475,7 @@ end
 end 
 
 """
-	PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::PetscFEType) 
+	PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::String) 
 Builds a particular `PetscFE`
 
 Collective
@@ -2494,11 +2494,11 @@ See also: `PetscFEType`, `PetscFE`, `PetscFEGetType()`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFESetType"))
 """
-function PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::PetscFEType)
+function PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::String)
     error("PetscFESetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscFESetType(petsclib::$UnionPetscLib, fem::PetscFE, name::PetscFEType )
+@for_petsc function PetscFESetType(petsclib::$UnionPetscLib, fem::PetscFE, name::String )
 
     @chk ccall(
                (:PetscFESetType, $petsc_library),

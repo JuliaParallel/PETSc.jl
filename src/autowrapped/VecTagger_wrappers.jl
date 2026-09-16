@@ -639,7 +639,7 @@ end
 end 
 
 """
-	type::VecTaggerType = VecTaggerGetType(petsclib::PetscLibType, tagger::VecTagger) 
+	type::String = VecTaggerGetType(petsclib::PetscLibType, tagger::VecTagger) 
 Gets the `VecTaggerType` name (as a string) from the `VecTagger`.
 
 Not Collective
@@ -1026,7 +1026,7 @@ end
 end 
 
 """
-	VecTaggerSetType(petsclib::PetscLibType, tagger::VecTagger, type::VecTaggerType) 
+	VecTaggerSetType(petsclib::PetscLibType, tagger::VecTagger, type::String) 
 set the Vec tagger implementation
 
 Collective
@@ -1045,11 +1045,11 @@ See also: `VecTaggerType`, `VecTaggerCreate()`, `VecTagger`
 # External Links
 $(_doc_external("Vec/VecTaggerSetType"))
 """
-function VecTaggerSetType(petsclib::PetscLibType, tagger::VecTagger, type::VecTaggerType)
+function VecTaggerSetType(petsclib::PetscLibType, tagger::VecTagger, type::String)
     error("VecTaggerSetType: no generated method for these argument types")
 end
 
-@for_petsc function VecTaggerSetType(petsclib::$UnionPetscLib, tagger::VecTagger, type::VecTaggerType )
+@for_petsc function VecTaggerSetType(petsclib::$UnionPetscLib, tagger::VecTagger, type::String )
 
     @chk ccall(
                (:VecTaggerSetType, $petsc_library),

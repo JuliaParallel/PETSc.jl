@@ -11,7 +11,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFComposeInverse()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`
+See also: `PetscSF`, `PetscSFComposeInverse()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCompose"))
@@ -48,7 +48,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFCreateInverseSF()`
+See also: `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFCreateInverseSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComposeInverse"))
@@ -86,7 +86,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeEnd()`
+See also: `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeEnd()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeDegreeBegin"))
@@ -124,7 +124,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeBegin()`
+See also: `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeBegin()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeDegreeEnd"))
@@ -165,7 +165,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFComputeDegreeBegin()`, `PetscSFComputeDegreeEnd()`, `PetscSFGetMultiSF()`
+See also: `PetscSF`, `PetscSFComputeDegreeBegin()`, `PetscSFComputeDegreeEnd()`, `PetscSFGetMultiSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeMultiRootOriginalNumbering"))
@@ -207,7 +207,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFConcatenateRootMode`
+See also: `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFConcatenateRootMode`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFConcatenate"))
@@ -249,7 +249,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFSetType`, `PetscSFSetGraph()`, `PetscSFSetGraphWithPattern()`, `PetscSFDestroy()`
+See also: `PetscSF`, `PetscSFSetType`, `PetscSFSetGraph()`, `PetscSFSetGraphWithPattern()`, `PetscSFDestroy()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreate"))
@@ -348,7 +348,7 @@ would build the following PetscSF
 [2] 601 <- (2,300)
 ``
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
+See also: `PetscSF`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateByMatchingIndices"))
@@ -390,7 +390,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreateEmbeddedRootSF()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: `PetscSF`, `PetscSFCreateEmbeddedRootSF()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedLeafSF"))
@@ -430,7 +430,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedRootSF"))
@@ -469,7 +469,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscLayout`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscLayoutCreate()`, `PetscSFSetGraphLayout()`
+See also: `PetscSF`, `PetscLayout`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscLayoutCreate()`, `PetscSFSetGraphLayout()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateFromLayouts"))
@@ -507,7 +507,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetGraph()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateInverseSF"))
@@ -547,7 +547,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
+See also: `PetscSF`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateRemoteOffsets"))
@@ -588,7 +588,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFDistributeSection()`
+See also: `PetscSF`, `PetscSFCreate()`, `PetscSFDistributeSection()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateSectionSF"))
@@ -629,7 +629,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`
+See also: `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateStridedSF"))
@@ -664,7 +664,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFReset()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFReset()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDestroy"))
@@ -703,7 +703,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFCreateSectionSF()`
+See also: `PetscSF`, `PetscSFCreate()`, `PetscSFCreateSectionSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDistributeSection"))
@@ -742,7 +742,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFSetType()`, `PetscSFSetGraph()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFSetType()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDuplicate"))
@@ -898,7 +898,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFGetWindow()`, `PetscSFRestoreWindow()`
+See also: `PetscSF`, `PetscSFGetWindow()`, `PetscSFRestoreWindow()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetGroups"))
@@ -939,7 +939,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetLeafRange"))
@@ -982,7 +982,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
+See also: `PetscSF`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetLeafRanks"))
@@ -1026,7 +1026,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`, `PetscSFComputeMultiRootOriginalNumbering()`
+See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`, `PetscSFComputeMultiRootOriginalNumbering()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetMultiSF"))
@@ -1064,7 +1064,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetRootRanks()`
+See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetRanksSF"))
@@ -1106,7 +1106,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFGetLeafRanks()`
+See also: `PetscSF`, `PetscSFGetLeafRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetRootRanks"))
@@ -1178,7 +1178,7 @@ end
 end 
 
 """
-	type::PetscSFType = PetscSFGetType(petsclib::PetscLibType, sf::PetscSF) 
+	type::String = PetscSFGetType(petsclib::PetscLibType, sf::PetscSF) 
 Get the `PetscSF` communication implementation
 
 Not Collective
@@ -1191,7 +1191,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetType()`, `PetscSFCreate()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFSetType()`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetType"))
@@ -1259,7 +1259,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`
+See also: `PetscSF`, `PetscSFCompose()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFMerge"))
@@ -1326,7 +1326,7 @@ Input Parameter:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFDestroy()`
+See also: `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFDestroy()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFReset"))
@@ -1370,7 +1370,7 @@ On other devices, the only available is `kokkos`.
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetType()`
+See also: `PetscSF`, `PetscSFCreate()`, `PetscSFSetType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetFromOptions"))
@@ -1409,7 +1409,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`, `PetscSFSetGraphWithPattern()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`, `PetscSFSetGraphWithPattern()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraph"))
@@ -1484,7 +1484,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFGetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: `PetscSF`, `PetscSFGetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphLayout"))
@@ -1517,7 +1517,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFSetGraphLayout()`
+See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFSetGraphLayout()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphSection"))
@@ -1552,7 +1552,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
+See also: `PetscSF`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphWithPattern"))
@@ -1586,7 +1586,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetRankOrder"))
@@ -1609,7 +1609,7 @@ end
 end 
 
 """
-	PetscSFSetType(petsclib::PetscLibType, sf::PetscSF, type::PetscSFType) 
+	PetscSFSetType(petsclib::PetscLibType, sf::PetscSF, type::String) 
 Set the `PetscSF` communication implementation
 
 Collective
@@ -1627,16 +1627,16 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetType"))
 """
-function PetscSFSetType(petsclib::PetscLibType, sf::PetscSF, type::PetscSFType)
+function PetscSFSetType(petsclib::PetscLibType, sf::PetscSF, type::String)
     error("PetscSFSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscSFSetType(petsclib::$UnionPetscLib, sf::PetscSF, type::PetscSFType )
+@for_petsc function PetscSFSetType(petsclib::$UnionPetscLib, sf::PetscSF, type::String )
 
     @chk ccall(
                (:PetscSFSetType, $petsc_library),
@@ -1660,7 +1660,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetFromOptions()`, `PetscSFSetType()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFSetFromOptions()`, `PetscSFSetType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetUp"))
@@ -1694,7 +1694,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
+See also: `PetscSF`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetUpRanks"))
@@ -1728,7 +1728,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_petscsf), `PetscSF`, `PetscViewer`, `PetscSFCreate()`, `PetscSFSetGraph()`
+See also: `PetscSF`, `PetscViewer`, `PetscSFCreate()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFView"))
@@ -1766,7 +1766,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_petscsf), `PetscSF`, `PetscSFView`, `PetscObjectViewFromOptions()`, `PetscSFCreate()`
+See also: `PetscSF`, `PetscSFView`, `PetscObjectViewFromOptions()`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFViewFromOptions"))

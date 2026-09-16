@@ -27,7 +27,7 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetString"))
 """
-function PetscOptionsGetString(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
+function PetscOptionsGetString(petsclib::PetscLibType, options::AbstractPetscOptions, pre::Union{Ptr, String}, name::String) end
 
 @for_petsc function PetscOptionsGetString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::Union{Ptr,String}, name::String)
 	set_ = Ref{PetscBool}()

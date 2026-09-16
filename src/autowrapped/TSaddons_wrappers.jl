@@ -15,7 +15,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidateAdd"))
@@ -48,7 +48,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptCreate()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidatesClear"))
@@ -88,7 +88,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidatesGet"))
@@ -137,7 +137,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_ts_error_control), `TSAdapt`
+See also: `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptCheckStage"))
@@ -179,7 +179,7 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`
+See also: `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`
 
 # External Links
 $(_doc_external("TS/TSAdaptChoose"))
@@ -221,7 +221,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptDestroy()`
+See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCreate"))
@@ -338,7 +338,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSGetAdapt()`
+See also: `TSAdapt`, `TSAdaptCreate()`, `TSGetAdapt()`
 
 # External Links
 $(_doc_external("TS/TSAdaptDestroy"))
@@ -404,7 +404,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`
+See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetClip"))
@@ -445,7 +445,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetMaxIgnore()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptSetMaxIgnore()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetMaxIgnore"))
@@ -484,7 +484,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetSafety()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptSetSafety()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetSafety"))
@@ -524,7 +524,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetClip()`
+See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetClip()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetScaleSolveFailed"))
@@ -563,7 +563,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetStepLimits()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptSetStepLimits()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetStepLimits"))
@@ -590,7 +590,7 @@ end
 end 
 
 """
-	type::TSAdaptType = TSAdaptGetType(petsclib::PetscLibType, adapt::TSAdapt) 
+	type::String = TSAdaptGetType(petsclib::PetscLibType, adapt::TSAdapt) 
 gets the `TS` adapter method type (as a string).
 
 Not Collective
@@ -603,7 +603,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptType`, `TSAdaptSetType()`
+See also: `TSAdapt`, `TSAdaptType`, `TSAdaptSetType()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetType"))
@@ -816,7 +816,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_ts_error_control), `TSAdaptRegisterAll()`
+See also: `TSAdaptRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSAdaptRegister"))
@@ -849,7 +849,7 @@ Input Parameter:
 
 Level: developer
 
-See also: [](sec_ts_error_control), `TSGetAdapt()`, `TSAdapt`, `TSAdaptCreate()`, `TSAdaptDestroy()`
+See also: `TSGetAdapt()`, `TSAdapt`, `TSAdaptCreate()`, `TSAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSAdaptReset"))
@@ -887,7 +887,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetAlwaysAccept"))
@@ -928,7 +928,7 @@ Calling sequence:
 
 Level: advanced
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetCheckStage"))
@@ -966,7 +966,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetClip()`, `TSAdaptSetScaleSolveFailed()`
+See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetClip()`, `TSAdaptSetScaleSolveFailed()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetClip"))
@@ -1012,7 +1012,7 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptSetAlwaysAccept()`, `TSAdaptSetSafety()`,
+See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptSetAlwaysAccept()`, `TSAdaptSetSafety()`,
 `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetStepLimits()`, `TSAdaptSetMonitor()`
 
 # External Links
@@ -1051,7 +1051,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetMaxIgnore()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptGetMaxIgnore()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetMaxIgnore"))
@@ -1088,7 +1088,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetMonitor"))
@@ -1122,7 +1122,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSSetOptionsPrefix()`
+See also: `TSAdapt`, `TSGetAdapt()`, `TSSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetOptionsPrefix"))
@@ -1161,7 +1161,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetSafety()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptGetSafety()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetSafety"))
@@ -1198,7 +1198,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetScaleSolveFailed()`, `TSAdaptGetClip()`
+See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetScaleSolveFailed()`, `TSAdaptGetClip()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetScaleSolveFailed"))
@@ -1237,7 +1237,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetStepLimits()`, `TSAdaptChoose()`
+See also: `TSAdapt`, `TSAdaptGetStepLimits()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetStepLimits"))
@@ -1275,7 +1275,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_ts_error_control), `TSAdapt`
+See also: `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetTimeStepIncreaseDelay"))
@@ -1298,7 +1298,7 @@ end
 end 
 
 """
-	TSAdaptSetType(petsclib::PetscLibType, adapt::TSAdapt, type::TSAdaptType) 
+	TSAdaptSetType(petsclib::PetscLibType, adapt::TSAdapt, type::String) 
 sets the approach used for the error adapter
 
 Logicially Collective
@@ -1312,16 +1312,16 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ts_error_control), `TSGetAdapt()`, `TSAdaptDestroy()`, `TSAdaptType`, `TSAdaptGetType()`
+See also: `TSGetAdapt()`, `TSAdaptDestroy()`, `TSAdaptType`, `TSAdaptGetType()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetType"))
 """
-function TSAdaptSetType(petsclib::PetscLibType, adapt::TSAdapt, type::TSAdaptType)
+function TSAdaptSetType(petsclib::PetscLibType, adapt::TSAdapt, type::String)
     error("TSAdaptSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSAdaptSetType(petsclib::$UnionPetscLib, adapt::TSAdapt, type::TSAdaptType )
+@for_petsc function TSAdaptSetType(petsclib::$UnionPetscLib, adapt::TSAdapt, type::String )
 
     @chk ccall(
                (:TSAdaptSetType, $petsc_library),
@@ -1349,7 +1349,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_ts_error_control), `TSAdapt`, `TSView()`, `PetscViewer`, `PetscViewerASCIIOpen()`
+See also: `TSAdapt`, `TSView()`, `PetscViewer`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("TS/TSAdaptView"))
@@ -1656,7 +1656,7 @@ end
 end 
 
 """
-	TSGLLEAdaptSetType(petsclib::PetscLibType, adapt::TSGLLEAdapt, type::TSGLLEAdaptType) 
+	TSGLLEAdaptSetType(petsclib::PetscLibType, adapt::TSGLLEAdapt, type::String) 
 Sets the type of a `TSGLLEAdapt` step-size and order adaptivity object
 
 Logically Collective
@@ -1672,11 +1672,11 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptType`, `TS
 # External Links
 $(_doc_external("TS/TSGLLEAdaptSetType"))
 """
-function TSGLLEAdaptSetType(petsclib::PetscLibType, adapt::TSGLLEAdapt, type::TSGLLEAdaptType)
+function TSGLLEAdaptSetType(petsclib::PetscLibType, adapt::TSGLLEAdapt, type::String)
     error("TSGLLEAdaptSetType: no generated method for these argument types")
 end
 
-@for_petsc function TSGLLEAdaptSetType(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, type::TSGLLEAdaptType )
+@for_petsc function TSGLLEAdaptSetType(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, type::String )
 
     @chk ccall(
                (:TSGLLEAdaptSetType, $petsc_library),
@@ -2634,7 +2634,7 @@ end
 end 
 
 """
-	type::TSTrajectoryType = TSTrajectoryGetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) 
+	type::String = TSTrajectoryGetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) 
 Gets the trajectory type
 
 Collective
@@ -3368,7 +3368,7 @@ end
 end 
 
 """
-	TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType) 
+	TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, type::String) 
 Sets the storage method to be used as in a trajectory
 
 Collective
@@ -3388,11 +3388,11 @@ See also: `TSTrajectory`, `TSTrajectoryType`, `TS`, `TSTrajectoryCreate()`, `TST
 # External Links
 $(_doc_external("TS/TSTrajectorySetType"))
 """
-function TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType)
+function TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, type::String)
     error("TSTrajectorySetType: no generated method for these argument types")
 end
 
-@for_petsc function TSTrajectorySetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType )
+@for_petsc function TSTrajectorySetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, type::String )
 
     @chk ccall(
                (:TSTrajectorySetType, $petsc_library),

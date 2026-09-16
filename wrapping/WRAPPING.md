@@ -89,7 +89,11 @@ releases can be diffed.
 2. Otherwise a single pointer (`T *x`) is guessed to be an output, unless the function is not a
    `Create`/`Duplicate`/`*Type*` function and `T` is not a scalar/enum/string type, or the
    function name contains `Restore` or `Copy` (the old generator's heuristics).
-3. `[FunctionName.arg] direction = "in" | "out"` in `args.toml` overrides both.
+3. `[FunctionName.arg] direction = "in" | "out" | "inout"` in `args.toml` overrides both;
+   `"inout"` is for a `T *x` scalar PETSc reads and then overwrites (`PetscSplitOwnership`,
+   `PetscSortRemoveDupsInt`, the `nmax` of `PetscOptionsGet*Array`): it is an argument and is returned.
+   A non-const `T *x` scalar is otherwise always an output, so such functions *must* have this rule
+   or PETSc reads an uninitialised value.
 
 ### Argument kinds (how each C shape is wrapped)
 
@@ -98,6 +102,8 @@ releases can be diffed.
 | `T x` scalar | `x::T` | `T` | |
 | `T *x` output, scalar/enum | return `x::T` | `Ptr{T}` | `x_ = Ref{T}()` ... `x = x_[]` |
 | `XType *x` output (string enum) | return `x::String` | `Ptr{XType}` | `unsafe_string`, `""` when NULL |
+| `XType x` input (string enum) | `x::String` | `XType` | the `String` converts in the ccall; `senums_wrappers.jl` also defines the registered names (`const PCMG = "mg"`) |
+| `const char *x[]` output | return `x::String` | `Ptr{Ptr{Cchar}}` | PETSc-owned string (`PetscObjectGetType`); a non-const `char *x[]` output stays a raw pointer (caller-allocated array of strings) |
 | `Vec x` (handle) | `x::AbstractPetscVec` | `CVec` | via `unsafe_convert` |
 | `Vec *x` output | return `x::PetscVec` | `Ptr{CVec}` | `x_ = Ref{CVec}()` ... `x = PetscVec(x_[], petsclib)` |
 | `Vec *x` in `XDestroy` | `x::AbstractPetscVec` | `Ptr{CVec}` | `x_ = Ref(x.ptr)` ... `x.ptr = C_NULL` |
@@ -144,7 +150,7 @@ replacement), `[[handles]]` (C name, Julia struct, abstract type, C alias), `[re
 
 | key | meaning |
 |---|---|
-| `direction = "in"/"out"` | force the classification |
+| `direction = "in"/"out"/"inout"` | force the classification (`inout`: scalar passed in by pointer and returned) |
 | `nullable = true` | input also accepts a `Ptr` (so `C_NULL` can be passed) |
 | `byref = true` | opaque handle passed as `Union{X, Ref{X}}` |
 | `size = "expr"` | length or dims to `unsafe_wrap` a PETSc-owned output array; may use other arguments/outputs |
@@ -161,7 +167,9 @@ A file `NAME.jl` replaces the generated block for `NAME` verbatim (docstring, st
 `@for_petsc` method). Its first line records the C signature it was written against, so a
 changed signature can be flagged. Files whose name is not a function in the snapshot are
 collected into `extra_wrappers.jl` (macros such as `PETSC_VIEWER_STDOUT_WORLD`, hand-written
-helpers such as `DMProjectFunction`). Use an override only when no rule can express the wrapper
+helpers such as `DMProjectFunction`, and the `PetscSFBcast*`/`PetscSFReduce*`/`PetscSFFetchAndOp*`
+communication routines, which `getAPI.py` rejects because they take an `MPI_Datatype`). Use an
+override only when no rule can express the wrapper
 (multi-dimensional `PetscArray` views, `MatGetRowIJ`, `PetscOptionsGetString`, ...).
 
 ## Tools
@@ -174,6 +182,7 @@ helpers such as `DMProjectFunction`). Use an override only when no rule can expr
 | `check_callers.jl [DIR]` | every `LibPETSc.X(...)` call in `src/`, `ext/`, `test/`, `examples/` whose argument count does not match the generated stub (first thing to run after a regeneration that changed conventions) |
 | `bootstrap_rules.jl GOLDEN` | one-off: mine `rules/args_mined.toml` from a hand-edited directory |
 | `make_overrides.jl GOLDEN NAME...` | copy hand-written blocks into `overrides/` |
+| `check_symbols.jl` (run with `--project=.`) | wrapped functions that are not symbols of the PETSc_jll library: header inlines and macros belong in `[exclude]`, optional-package functions are fine |
 
 `.github/workflows/wrappers.yml` regenerates from the PETSc tarball on every change to
 `src/autowrapped` or `wrapping/generator` and fails if the committed files differ.
@@ -234,7 +243,17 @@ julia --project=. -e 'using Pkg; Pkg.test()'             # includes test/wrapper
   substring replacement (`dispatch_types`), exactly like the old generator.
 - `struct_wrappers.jl` is hand-maintained (`generator/structs.jl`): field order must match the
   C struct. Check `api/petsc-X.Y.Z.json` (`structs`) when moving to a new release.
-- The prologue (`generator/prologue.jl`) is the only copy of the handle structs.
+- The prologue (`generator/prologue.jl`) is the only copy of the handle structs. Never declare a
+  PETSc handle there as an empty `mutable struct X end`: `Ref{X}()` is then an undefined reference
+  and a ccall passes a Julia object pointer. Leave it to `opaque_types.jl` (`const X = Ptr{_n_X}`).
+- `getAPI.py` lists some `static inline` header functions (`PetscStrcmp`, `PetscTime`, `VecSetValue`,
+  `MatSetValue`) and macros (`PetscOptionsBegin`): they have no symbol in `libpetsc`, so they are in
+  `[exclude]`. Run `check_symbols.jl` after moving to a new release.
+- `getAPI.py` drops every function with an `MPI_Datatype` argument (`rejects` list), so the
+  `PetscSF` communication routines are overrides.
+- PETSc's manual pages are not always right about directions: `PetscObjectGetName` lists its
+  output under Input Parameters, `PCMGSetLevels`' optional `comms` is a `MPI_Comm *` that would be
+  taken as an output. Both are fixed in `args.toml`.
 
 ## History
 

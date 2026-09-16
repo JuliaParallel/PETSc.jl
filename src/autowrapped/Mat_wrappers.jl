@@ -237,7 +237,7 @@ Input Parameters:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
 `PetscObjectGetOptionsPrefix()`, `TSAppendOptionsPrefix()`, `SNESAppendOptionsPrefix()`, `KSPAppendOptionsPrefix()`, `MatSetOptionsPrefixFactor()`,
 `MatSetOptionsPrefix()`
 
@@ -582,7 +582,7 @@ Input Parameters:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatFactorInfo`, `MatLUFactor()`, `MatCholeskyFactorSymbolic()`, `MatCholeskyFactorNumeric()`,
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatFactorInfo`, `MatLUFactor()`, `MatCholeskyFactorSymbolic()`, `MatCholeskyFactorNumeric()`,
 `MatGetOrdering()`
 
 # External Links
@@ -620,7 +620,7 @@ Input Parameters:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorInfo`, `MatGetFactor()`, `MatCholeskyFactorSymbolic()`, `MatCholeskyFactor()`, `MatLUFactorNumeric()`
+See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatCholeskyFactorSymbolic()`, `MatCholeskyFactor()`, `MatLUFactorNumeric()`
 
 # External Links
 $(_doc_external("Mat/MatCholeskyFactorNumeric"))
@@ -662,7 +662,7 @@ Run with the option -info to determine an optimal value to use
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorInfo`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactor()`, `MatCholeskyFactorNumeric()`,
+See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactor()`, `MatCholeskyFactorNumeric()`,
 `MatGetOrdering()`
 
 # External Links
@@ -1088,7 +1088,7 @@ end
 end 
 
 """
-	mat::PetscMat = MatComputeOperator(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::MatType) 
+	mat::PetscMat = MatComputeOperator(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::String) 
 Computes the explicit matrix
 
 Collective
@@ -1107,11 +1107,11 @@ See also: `Mat`, `MatConvert()`, `MatMult()`, `MatComputeOperatorTranspose()`
 # External Links
 $(_doc_external("Mat/MatComputeOperator"))
 """
-function MatComputeOperator(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::MatType)
+function MatComputeOperator(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::String)
     error("MatComputeOperator: no generated method for these argument types")
 end
 
-@for_petsc function MatComputeOperator(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::MatType )
+@for_petsc function MatComputeOperator(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::String )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1127,7 +1127,7 @@ end
 end 
 
 """
-	mat::PetscMat = MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::MatType) 
+	mat::PetscMat = MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::String) 
 Computes the explicit matrix representation of
 a give matrix that can apply `MatMultTranspose()`
 
@@ -1147,11 +1147,11 @@ See also: `Mat`, `MatConvert()`, `MatMult()`, `MatComputeOperator()`
 # External Links
 $(_doc_external("Mat/MatComputeOperatorTranspose"))
 """
-function MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::MatType)
+function MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::String)
     error("MatComputeOperatorTranspose: no generated method for these argument types")
 end
 
-@for_petsc function MatComputeOperatorTranspose(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::MatType )
+@for_petsc function MatComputeOperatorTranspose(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::String )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1272,7 +1272,7 @@ end
 end 
 
 """
-	M::PetscMat = MatConvert(petsclib::PetscLibType, mat::AbstractPetscMat, newtype::MatType, reuse::MatReuse) 
+	M::PetscMat = MatConvert(petsclib::PetscLibType, mat::AbstractPetscMat, newtype::String, reuse::MatReuse) 
 Converts a matrix to another matrix, either of the same
 or different type.
 
@@ -1296,11 +1296,11 @@ See also: `Mat`, `MatCopy()`, `MatDuplicate()`, `MAT_INITIAL_MATRIX`, `MAT_REUSE
 # External Links
 $(_doc_external("Mat/MatConvert"))
 """
-function MatConvert(petsclib::PetscLibType, mat::AbstractPetscMat, newtype::MatType, reuse::MatReuse)
+function MatConvert(petsclib::PetscLibType, mat::AbstractPetscMat, newtype::String, reuse::MatReuse)
     error("MatConvert: no generated method for these argument types")
 end
 
-@for_petsc function MatConvert(petsclib::$UnionPetscLib, mat::AbstractPetscMat, newtype::MatType, reuse::MatReuse )
+@for_petsc function MatConvert(petsclib::$UnionPetscLib, mat::AbstractPetscMat, newtype::String, reuse::MatReuse )
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -1494,7 +1494,7 @@ to be viewed as a matrix. Entry (i,j) is the size of message (in bytes) rank i s
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrix Creation](sec_matsparse), `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatMPIAIJSetPreallocation()`, `MatMPIAIJSetPreallocationCSR()`,
+See also: `Mat`, Sparse Matrix Creation, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatMPIAIJSetPreallocation()`, `MatMPIAIJSetPreallocationCSR()`,
 `MATMPIAIJ`, `MatCreateMPIAIJWithArrays()`, `MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `MatGetOwnershipRangeColumn()`,
 `MatGetOwnershipRangesColumn()`, `PetscLayout`
 
@@ -2000,7 +2000,7 @@ end
 end 
 
 """
-	data::PetscScalar,A::PetscMat = MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype::VecType, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, lda::PetscInt) 
+	data::PetscScalar,A::PetscMat = MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype::String, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, lda::PetscInt) 
 Create a matrix that matches the type of a `Vec`.
 
 Collective
@@ -2025,11 +2025,11 @@ See also: `Mat`, `MatCreateDense()`, `MatCreateDenseCUDA()`, `MatCreateDenseHIP(
 # External Links
 $(_doc_external("Mat/MatCreateDenseFromVecType"))
 """
-function MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype::VecType, m::Integer, n::Integer, M_M::Integer, M_N::Integer, lda::Integer)
+function MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype::String, m::Integer, n::Integer, M_M::Integer, M_N::Integer, lda::Integer)
     error("MatCreateDenseFromVecType: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateDenseFromVecType(petsclib::$UnionPetscLib, comm::MPI_Comm, vtype::VecType, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, lda::$PetscInt )
+@for_petsc function MatCreateDenseFromVecType(petsclib::$UnionPetscLib, comm::MPI_Comm, vtype::String, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, lda::$PetscInt )
 	data_ = Ref{$PetscScalar}()
 	A_ = Ref{CMat}()
 
@@ -2161,7 +2161,7 @@ end
 end 
 
 """
-	A::PetscMat = MatCreateFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::PetscInt, dim::Vector{PetscInt}, mattype::MatType) 
+	A::PetscMat = MatCreateFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::PetscInt, dim::Vector{PetscInt}, mattype::String) 
 Creates a matrix object that provides FFT via an external package
 
 Collective
@@ -2185,11 +2185,11 @@ See also: `Mat`, `MATFFTW`, `MATSEQCUFFT`, `MatCreateVecsFFTW()`
 # External Links
 $(_doc_external("Mat/MatCreateFFT"))
 """
-function MatCreateFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::Integer, dim::AbstractVector{<:Number}, mattype::MatType)
+function MatCreateFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::Integer, dim::AbstractVector{<:Number}, mattype::String)
     error("MatCreateFFT: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateFFT(petsclib::$UnionPetscLib, comm::MPI_Comm, ndim::$PetscInt, dim::Vector{$PetscInt}, mattype::MatType )
+@for_petsc function MatCreateFFT(petsclib::$UnionPetscLib, comm::MPI_Comm, ndim::$PetscInt, dim::Vector{$PetscInt}, mattype::String )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -2981,7 +2981,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MatCreate()`, `MATLMVM`, `MATLMVMSYMBROYDEN`, `MatCreateLMVMDFP()`, `MatCreateLMVMSR1()`,
+See also: LMVM Matrices, `MatCreate()`, `MATLMVM`, `MATLMVMSYMBROYDEN`, `MatCreateLMVMDFP()`, `MatCreateLMVMSR1()`,
 `MatCreateLMVMBFGS()`, `MatCreateLMVMBroyden()`, `MatCreateLMVMBadBroyden()`
 
 # External Links
@@ -3304,7 +3304,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrix Creation](sec_matsparse), `MATAIJ`, `MATAIJSELL`, `MATAIJPERM`, `MATAIJMKL`, `MatCreate()`, `MatCreateMPIAIJPERM()`, `MatSetValues()`
+See also: `Mat`, Sparse Matrix Creation, `MATAIJ`, `MATAIJSELL`, `MATAIJPERM`, `MATAIJMKL`, `MatCreate()`, `MatCreateMPIAIJPERM()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJCRL"))
@@ -3370,7 +3370,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrix Creation](sec_matsparse), `MATMPIAIJMKL`, `MatCreate()`, `MatCreateSeqAIJMKL()`,
+See also: `Mat`, Sparse Matrix Creation, `MATMPIAIJMKL`, `MatCreate()`, `MatCreateSeqAIJMKL()`,
 `MatSetValues()`, `MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `MatGetOwnershipRangeColumn()`,
 `MatGetOwnershipRangesColumn()`, `PetscLayout`
 
@@ -3440,7 +3440,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrix Creation](sec_matsparse), `MATMPIAIJPERM`, `MatCreate()`, `MatCreateSeqAIJPERM()`, `MatSetValues()`
+See also: `Mat`, Sparse Matrix Creation, `MATMPIAIJPERM`, `MatCreate()`, `MatCreateSeqAIJPERM()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJPERM"))
@@ -3507,7 +3507,7 @@ time the matrix is applied
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrix Creation](sec_matsparse), `MATSEQAIJSELL`, `MATMPIAIJSELL`, `MATAIJSELL`, `MatCreate()`, `MatCreateSeqAIJSELL()`, `MatSetValues()`
+See also: `Mat`, Sparse Matrix Creation, `MATSEQAIJSELL`, `MATMPIAIJSELL`, `MATAIJSELL`, `MatCreate()`, `MatCreateSeqAIJSELL()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJSELL"))
@@ -4686,7 +4686,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrix Creation](sec_matsparse), `MatCreate()`, `MatCreateAIJ()`, `MatSetValues()`, `MatSeqAIJSetColumnIndices()`, `MatCreateSeqAIJWithArrays()`
+See also: `Mat`, Sparse Matrix Creation, `MatCreate()`, `MatCreateAIJ()`, `MatSetValues()`, `MatSeqAIJSetColumnIndices()`, `MatCreateSeqAIJWithArrays()`
 
 # External Links
 $(_doc_external("Mat/MatCreateSeqAIJ"))
@@ -5120,7 +5120,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrices](sec_matsparse), `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateBAIJ()`
+See also: `Mat`, Sparse Matrices, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateBAIJ()`
 
 # External Links
 $(_doc_external("Mat/MatCreateSeqBAIJ"))
@@ -5173,7 +5173,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: [Sparse Matrices](sec_matsparse), `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateBAIJ()`
+See also: Sparse Matrices, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateBAIJ()`
 
 # External Links
 $(_doc_external("Mat/MatCreateSeqBAIJMKL"))
@@ -5391,7 +5391,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrices](sec_matsparse), `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateSBAIJ()`
+See also: `Mat`, Sparse Matrices, `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateSBAIJ()`
 
 # External Links
 $(_doc_external("Mat/MatCreateSeqSBAIJ"))
@@ -8195,7 +8195,7 @@ Output Parameter:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`
+See also: `Mat`, Matrix Factorization, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`
 
 # External Links
 $(_doc_external("Mat/MatFactorGetCanUseOrdering"))
@@ -8303,7 +8303,7 @@ end
 end 
 
 """
-	otype::MatOrderingType = MatFactorGetPreferredOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatFactorType) 
+	otype::String = MatFactorGetPreferredOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatFactorType) 
 The preferred ordering for a particular matrix factor object
 
 Logically Collective
@@ -8317,7 +8317,7 @@ Output Parameter:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorType`, `MatOrderingType`, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`
+See also: `Mat`, Matrix Factorization, `MatFactorType`, `MatOrderingType`, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`
 
 # External Links
 $(_doc_external("Mat/MatFactorGetPreferredOrdering"))
@@ -8381,7 +8381,7 @@ end
 end 
 
 """
-	type::MatSolverType = MatFactorGetSolverType(petsclib::PetscLibType, mat::AbstractPetscMat) 
+	type::String = MatFactorGetSolverType(petsclib::PetscLibType, mat::AbstractPetscMat) 
 Returns name of the package providing the factorization routines
 
 Not Collective
@@ -8394,7 +8394,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatSolverType`, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSolverType`, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`
 
 # External Links
 $(_doc_external("Mat/MatFactorGetSolverType"))
@@ -9608,7 +9608,7 @@ end
 end 
 
 """
-	f::PetscMat = MatGetFactor(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType) 
+	f::PetscMat = MatGetFactor(petsclib::PetscLibType, mat::AbstractPetscMat, type::String, ftype::MatFactorType) 
 Returns a matrix suitable to calls to routines such as `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`, `MatILUFactorSymbolic()`,
 `MatICCFactorSymbolic()`, `MatLUFactorNumeric()`, and `MatCholeskyFactorNumeric()`
 
@@ -9630,7 +9630,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `KSP`, `MatSolverType`, `MatFactorType`, `MatCopy()`, `MatDuplicate()`,
+See also: `Mat`, Matrix Factorization, `KSP`, `MatSolverType`, `MatFactorType`, `MatCopy()`, `MatDuplicate()`,
 `MatGetFactorAvailable()`, `MatFactorGetCanUseOrdering()`, `MatSolverTypeRegister()`, `MatSolverTypeGet()`,
 `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ICC`, `MAT_FACTOR_ILU`, `MAT_FACTOR_QR`, `MatInitializePackage()`,
 `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`, `MatILUFactorSymbolic()`,
@@ -9639,11 +9639,11 @@ See also: `Mat`, [Matrix Factorization](sec_matfactor), `KSP`, `MatSolverType`, 
 # External Links
 $(_doc_external("Mat/MatGetFactor"))
 """
-function MatGetFactor(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType)
+function MatGetFactor(petsclib::PetscLibType, mat::AbstractPetscMat, type::String, ftype::MatFactorType)
     error("MatGetFactor: no generated method for these argument types")
 end
 
-@for_petsc function MatGetFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType )
+@for_petsc function MatGetFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String, ftype::MatFactorType )
 	f_ = Ref{CMat}()
 
     @chk ccall(
@@ -9659,7 +9659,7 @@ end
 end 
 
 """
-	flg::PetscBool = MatGetFactorAvailable(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType) 
+	flg::PetscBool = MatGetFactorAvailable(petsclib::PetscLibType, mat::AbstractPetscMat, type::String, ftype::MatFactorType) 
 Returns a flag if matrix supports particular type and factor type
 
 Not Collective
@@ -9674,17 +9674,17 @@ Output Parameter:
 
 Level: intermediate
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatSolverType`, `MatFactorType`, `MatGetFactor()`, `MatCopy()`, `MatDuplicate()`, `MatSolverTypeRegister()`,
+See also: `Mat`, Matrix Factorization, `MatSolverType`, `MatFactorType`, `MatGetFactor()`, `MatCopy()`, `MatDuplicate()`, `MatSolverTypeRegister()`,
 `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ICC`, `MAT_FACTOR_ILU`, `MAT_FACTOR_QR`, `MatSolverTypeGet()`
 
 # External Links
 $(_doc_external("Mat/MatGetFactorAvailable"))
 """
-function MatGetFactorAvailable(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType)
+function MatGetFactorAvailable(petsclib::PetscLibType, mat::AbstractPetscMat, type::String, ftype::MatFactorType)
     error("MatGetFactorAvailable: no generated method for these argument types")
 end
 
-@for_petsc function MatGetFactorAvailable(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType )
+@for_petsc function MatGetFactorAvailable(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String, ftype::MatFactorType )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9713,7 +9713,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorType`, `MatGetFactor()`, `MatSetFactorType()`, `MAT_FACTOR_NONE`, `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ILU`,
+See also: `Mat`, Matrix Factorization, `MatFactorType`, `MatGetFactor()`, `MatSetFactorType()`, `MAT_FACTOR_NONE`, `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ILU`,
 `MAT_FACTOR_ICC`, `MAT_FACTOR_ILUDT`, `MAT_FACTOR_QR`
 
 # External Links
@@ -9882,7 +9882,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: `Mat`, [Matrix Layouts](sec_matlayout), `PetscLayout`, `MatCreateVecs()`, `MatGetLocalToGlobalMapping()`, `MatSetLayouts()`
+See also: `Mat`, Matrix Layouts, `PetscLayout`, `MatCreateVecs()`, `MatGetLocalToGlobalMapping()`, `MatSetLayouts()`
 
 # External Links
 $(_doc_external("Mat/MatGetLayouts"))
@@ -10303,7 +10303,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = MatGetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat) 
+	prefix::String = MatGetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat) 
 Gets the prefix used for searching for all
 matrix options in the database.
 
@@ -10336,13 +10336,13 @@ end
                A, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
 
 """
-	rperm::IS,cperm::IS = MatGetOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatOrderingType) 
+	rperm::IS,cperm::IS = MatGetOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, type::String) 
 Gets a reordering for a matrix to reduce fill or to
 improve numerical stability of LU factorization.
 
@@ -10376,11 +10376,11 @@ See also: `MatOrderingRegister()`, `PCFactorSetMatOrderingType()`, `MatColoring`
 # External Links
 $(_doc_external("MatGraphOperations/MatGetOrdering"))
 """
-function MatGetOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatOrderingType)
+function MatGetOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, type::String)
     error("MatGetOrdering: no generated method for these argument types")
 end
 
-@for_petsc function MatGetOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatOrderingType )
+@for_petsc function MatGetOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String )
 	rperm_ = Ref{CIS}()
 	cperm_ = Ref{CIS}()
 
@@ -11295,31 +11295,6 @@ function MatGetType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 end
 
 """
-	va::PetscScalar = MatGetValue(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, col::PetscInt) 
-
-# External Links
-$(_doc_external("Mat/MatGetValue"))
-"""
-function MatGetValue(petsclib::PetscLibType, mat::AbstractPetscMat, row::Integer, col::Integer)
-    error("MatGetValue: no generated method for these argument types")
-end
-
-@for_petsc function MatGetValue(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, col::$PetscInt )
-	va_ = Ref{$PetscScalar}()
-
-    @chk ccall(
-               (:MatGetValue, $petsc_library),
-               PetscErrorCode,
-               (CMat, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               mat, row, col, va_,
-              )
-
-	va = va_[]
-
-	return va
-end 
-
-"""
 	MatGetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Gets a block of local values from a matrix.
 
@@ -11442,7 +11417,7 @@ end
 end 
 
 """
-	vtype::VecType = MatGetVecType(petsclib::PetscLibType, mat::AbstractPetscMat) 
+	vtype::String = MatGetVecType(petsclib::PetscLibType, mat::AbstractPetscMat) 
 Gets the vector type the matrix will return with `MatCreateVecs()`
 
 Not Collective
@@ -12241,7 +12216,7 @@ missing diagonal entries)
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatILUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`, `MatFactorInfo`
+See also: `Mat`, Matrix Factorization, `MatILUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`, `MatFactorInfo`
 
 # External Links
 $(_doc_external("Mat/MatILUFactor"))
@@ -12286,7 +12261,7 @@ missing diagonal entries)
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`,
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatLUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`,
 `MatGetOrdering()`, `MatFactorInfo`
 
 # External Links
@@ -12565,7 +12540,7 @@ end
 end 
 
 """
-	MatISSetLocalMatType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::MatType) 
+	MatISSetLocalMatType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::String) 
 Specifies the type of local matrix inside the `MATIS`
 
 Logically Collective.
@@ -12581,11 +12556,11 @@ See also: `Mat`, `MATIS`, `MatSetType()`, `MatType`
 # External Links
 $(_doc_external("Mat/MatISSetLocalMatType"))
 """
-function MatISSetLocalMatType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::MatType)
+function MatISSetLocalMatType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::String)
     error("MatISSetLocalMatType: no generated method for these argument types")
 end
 
-@for_petsc function MatISSetLocalMatType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::MatType )
+@for_petsc function MatISSetLocalMatType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::String )
 
     @chk ccall(
                (:MatISSetLocalMatType, $petsc_library),
@@ -14087,7 +14062,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMReset()`, `MatLMVMUpdate()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMReset()`, `MatLMVMUpdate()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMAllocate"))
@@ -14123,7 +14098,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetJ0()`, `MatLMVMSetJ0Scale()`, `MatLMVMSetJ0ScaleDiag()`,
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`, `MatLMVMSetJ0Scale()`, `MatLMVMSetJ0ScaleDiag()`,
 `MatLMVMSetJ0PC()`, `MatLMVMSetJ0KSP()`, `MatLMVMApplyJ0Inv()`
 
 # External Links
@@ -14160,7 +14135,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetJ0()`, `MatLMVMSetJ0Scale()`, `MatLMVMSetJ0ScaleDiag()`,
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`, `MatLMVMSetJ0Scale()`, `MatLMVMSetJ0ScaleDiag()`,
 `MatLMVMSetJ0PC()`, `MatLMVMSetJ0KSP()`, `MatLMVMApplyJ0Fwd()`
 
 # External Links
@@ -14193,7 +14168,7 @@ Input Parameter:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetJ0()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMClearJ0"))
@@ -14270,7 +14245,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetHistorySize()`, `MatLMVMGetUpdateCount()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetHistorySize()`, `MatLMVMGetUpdateCount()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMGetHistorySize"))
@@ -14306,7 +14281,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetJ0()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMGetJ0"))
@@ -14343,7 +14318,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetJ0KSP()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0KSP()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMGetJ0KSP"))
@@ -14380,7 +14355,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetJ0PC()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0PC()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMGetJ0PC"))
@@ -14496,7 +14471,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMReset()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMReset()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMGetRejectCount"))
@@ -14532,7 +14507,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMGetRejectCount()`, `MatLMVMReset()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetRejectCount()`, `MatLMVMReset()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMGetUpdateCount"))
@@ -14569,7 +14544,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMReset()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMReset()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMIsAllocated"))
@@ -14604,7 +14579,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMUpdate()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMUpdate()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMReset"))
@@ -14635,7 +14610,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMUpdate()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMUpdate()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMResetShift"))
@@ -14671,7 +14646,7 @@ Options Database Key:
 
 Level: beginner
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMGetUpdateCount()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetUpdateCount()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMSetHistorySize"))
@@ -14704,7 +14679,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetJ0PC()`, `MatLMVMSetJ0KSP()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0PC()`, `MatLMVMSetJ0KSP()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMSetJ0"))
@@ -14737,7 +14712,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetScale()`, `MatLMVMSetJ0()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetScale()`, `MatLMVMSetJ0()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMSetJ0Diag"))
@@ -14770,7 +14745,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMGetJ0KSP()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetJ0KSP()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMSetJ0KSP"))
@@ -14802,7 +14777,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMGetJ0PC()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetJ0PC()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMSetJ0PC"))
@@ -14835,7 +14810,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMSetDiagScale()`, `MatLMVMSetJ0()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetDiagScale()`, `MatLMVMSetJ0()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMSetJ0Scale"))
@@ -15150,7 +15125,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [LMVM Matrices](sec_matlmvm), `MATLMVM`, `MatLMVMReset()`, `MatLMVMAllocate()`
+See also: LMVM Matrices, `MATLMVM`, `MatLMVMReset()`, `MatLMVMAllocate()`
 
 # External Links
 $(_doc_external("KSP/MatLMVMUpdate"))
@@ -15275,7 +15250,7 @@ Run with the option -info to determine an optimal value to use
 
 Level: developer
 
-See also: [Matrix Factorization](sec_matfactor), `Mat`, `MatFactorType`, `MatLUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`,
+See also: Matrix Factorization, `Mat`, `MatFactorType`, `MatLUFactorSymbolic()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`,
 `MatGetOrdering()`, `MatSetUnfactored()`, `MatFactorInfo`, `MatGetFactor()`
 
 # External Links
@@ -15312,7 +15287,7 @@ Input Parameters:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatFactorInfo`, `MatLUFactorSymbolic()`, `MatLUFactor()`, `MatCholeskyFactor()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatFactorInfo`, `MatLUFactorSymbolic()`, `MatLUFactor()`, `MatCholeskyFactor()`
 
 # External Links
 $(_doc_external("Mat/MatLUFactorNumeric"))
@@ -15354,7 +15329,7 @@ dtcol - pivot tolerance (0 no pivot, 1 full column pivoting)
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatLUFactor()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`, `MatFactorInfo`, `MatFactorInfoInitialize()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatLUFactor()`, `MatLUFactorNumeric()`, `MatCholeskyFactor()`, `MatFactorInfo`, `MatFactorInfoInitialize()`
 
 # External Links
 $(_doc_external("Mat/MatLUFactorSymbolic"))
@@ -15732,7 +15707,7 @@ each row) or `NULL` (`PETSC_NULL_INTEGER` in Fortran), if `o_nz` is used to spec
 structure. The size of this array is equal to the number
 of local rows, i.e 'm'.
 
-See also: `Mat`, [Sparse Matrices](sec_matsparse), `MATMPIAIJ`, `MATAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateAIJ()`, `MatMPIAIJSetPreallocationCSR()`,
+See also: `Mat`, Sparse Matrices, `MATMPIAIJ`, `MATAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateAIJ()`, `MatMPIAIJSetPreallocationCSR()`,
 `MatGetInfo()`, `PetscSplitOwnership()`, `MatSetPreallocationCOO()`, `MatSetValuesCOO()`
 
 # External Links
@@ -16749,7 +16724,7 @@ Output Parameter:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatSolve()`, `MatMatSolveTranspose()`, `MatLUFactor()`, `MatCholeskyFactor()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSolve()`, `MatMatSolveTranspose()`, `MatLUFactor()`, `MatCholeskyFactor()`
 
 # External Links
 $(_doc_external("Mat/MatMatSolve"))
@@ -16786,7 +16761,7 @@ Output Parameter:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatSolveTranspose()`, `MatMatSolve()`, `MatLUFactor()`, `MatCholeskyFactor()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSolveTranspose()`, `MatMatSolve()`, `MatLUFactor()`, `MatCholeskyFactor()`
 
 # External Links
 $(_doc_external("Mat/MatMatSolveTranspose"))
@@ -16910,7 +16885,7 @@ Output Parameter:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatMatSolve()`, `MatMatSolveTranspose()`, `MatLUFactor()`, `MatCholeskyFactor()`
+See also: `Mat`, Matrix Factorization, `MatMatSolve()`, `MatMatSolveTranspose()`, `MatLUFactor()`, `MatCholeskyFactor()`
 
 # External Links
 $(_doc_external("Mat/MatMatTransposeSolve"))
@@ -17777,7 +17752,7 @@ end
                F, tmpdir_,
               )
 
-	tmpdir = unsafe_string(tmpdir_[])
+	tmpdir = tmpdir_[] == C_NULL ? "" : unsafe_string(tmpdir_[])
 
 	return tmpdir
 end 
@@ -18286,7 +18261,7 @@ end
 end 
 
 """
-	MatNestSetVecType(petsclib::PetscLibType, A::AbstractPetscMat, vtype::VecType) 
+	MatNestSetVecType(petsclib::PetscLibType, A::AbstractPetscMat, vtype::String) 
 Sets the type of `Vec` returned by `MatCreateVecs()`
 
 Not Collective
@@ -18302,11 +18277,11 @@ See also: `Mat`, `MATNEST`, `MatCreateVecs()`, `MatCreateNest()`, `VecType`
 # External Links
 $(_doc_external("Mat/MatNestSetVecType"))
 """
-function MatNestSetVecType(petsclib::PetscLibType, A::AbstractPetscMat, vtype::VecType)
+function MatNestSetVecType(petsclib::PetscLibType, A::AbstractPetscMat, vtype::String)
     error("MatNestSetVecType: no generated method for these argument types")
 end
 
-@for_petsc function MatNestSetVecType(petsclib::$UnionPetscLib, A::AbstractPetscMat, vtype::VecType )
+@for_petsc function MatNestSetVecType(petsclib::$UnionPetscLib, A::AbstractPetscMat, vtype::String )
 
     @chk ccall(
                (:MatNestSetVecType, $petsc_library),
@@ -18668,7 +18643,7 @@ end
 end 
 
 """
-	alg::MatProductAlgorithm = MatProductGetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat) 
+	alg::String = MatProductGetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat) 
 Returns the selected algorithm for a matrix-matrix product operation
 
 Not Collective
@@ -18857,7 +18832,7 @@ end
 end 
 
 """
-	MatProductSetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, alg::MatProductAlgorithm) 
+	MatProductSetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, alg::String) 
 Requests a particular algorithm for a matrix-matrix product operation that will perform to compute the given matrix
 
 Collective
@@ -18876,11 +18851,11 @@ See also: `MatProduct`, `Mat`, `MatProductClear()`, `MatProductSetType()`, `MatP
 # External Links
 $(_doc_external("Mat/MatProductSetAlgorithm"))
 """
-function MatProductSetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, alg::MatProductAlgorithm)
+function MatProductSetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, alg::String)
     error("MatProductSetAlgorithm: no generated method for these argument types")
 end
 
-@for_petsc function MatProductSetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, alg::MatProductAlgorithm )
+@for_petsc function MatProductSetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, alg::String )
 
     @chk ccall(
                (:MatProductSetAlgorithm, $petsc_library),
@@ -19233,7 +19208,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = MatPythonGetType(petsclib::PetscLibType, mat::AbstractPetscMat) 
+	pyname::String = MatPythonGetType(petsclib::PetscLibType, mat::AbstractPetscMat) 
 Get the Python name of a `Mat` object implemented in Python.
 
 Not Collective
@@ -19265,7 +19240,7 @@ end
                mat, pyname_,
               )
 
-	pyname = pyname_[]
+	pyname = pyname_[] == C_NULL ? "" : unsafe_string(pyname_[])
 
 	return pyname
 end 
@@ -19325,7 +19300,7 @@ Run with the option -info to determine an optimal value to use
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorInfo`, `MatGetFactor()`, `MatQRFactorSymbolic()`, `MatQRFactorNumeric()`, `MatLUFactor()`,
+See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatQRFactorSymbolic()`, `MatQRFactorNumeric()`, `MatLUFactor()`,
 `MatSetUnfactored()`
 
 # External Links
@@ -19362,7 +19337,7 @@ Input Parameters:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorInfo`, `MatGetFactor()`, `MatQRFactor()`, `MatQRFactorSymbolic()`, `MatLUFactor()`
+See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatQRFactor()`, `MatQRFactorSymbolic()`, `MatLUFactor()`
 
 # External Links
 $(_doc_external("Mat/MatQRFactorNumeric"))
@@ -19404,7 +19379,7 @@ Run with the option -info to determine an optimal value to use
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatFactorInfo`, `MatQRFactor()`, `MatQRFactorNumeric()`, `MatLUFactor()`, `MatFactorInfoInitialize()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatFactorInfo`, `MatQRFactor()`, `MatQRFactorNumeric()`, `MatLUFactor()`, `MatFactorInfoInitialize()`
 
 # External Links
 $(_doc_external("Mat/MatQRFactorSymbolic"))
@@ -22665,7 +22640,7 @@ end
 end 
 
 """
-	MatSeqAIJSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::MatType) 
+	MatSeqAIJSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::String) 
 Converts a `MATSEQAIJ` matrix to a subtype
 
 Collective
@@ -22684,11 +22659,11 @@ See also: `Mat`, `PCSetType()`, `VecSetType()`, `MatCreate()`, `MatType`
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetType"))
 """
-function MatSeqAIJSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::MatType)
+function MatSeqAIJSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::String)
     error("MatSeqAIJSetType: no generated method for these argument types")
 end
 
-@for_petsc function MatSeqAIJSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::MatType )
+@for_petsc function MatSeqAIJSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::String )
 
     @chk ccall(
                (:MatSeqAIJSetType, $petsc_library),
@@ -22871,7 +22846,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrices](sec_matsparse), `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateBAIJ()`, `MatGetInfo()`
+See also: `Mat`, Sparse Matrices, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateBAIJ()`, `MatGetInfo()`
 
 # External Links
 $(_doc_external("Mat/MatSeqBAIJSetPreallocation"))
@@ -23128,7 +23103,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: `Mat`, [Sparse Matrices](sec_matsparse), `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateSBAIJ()`
+See also: `Mat`, Sparse Matrices, `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatCreateSBAIJ()`
 
 # External Links
 $(_doc_external("Mat/MatSeqSBAIJSetPreallocation"))
@@ -23622,7 +23597,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorType`, `MatGetFactor()`, `MatGetFactorType()`, `MAT_FACTOR_NONE`, `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ILU`,
+See also: `Mat`, Matrix Factorization, `MatFactorType`, `MatGetFactor()`, `MatGetFactorType()`, `MAT_FACTOR_NONE`, `MAT_FACTOR_LU`, `MAT_FACTOR_CHOLESKY`, `MAT_FACTOR_ILU`,
 `MAT_FACTOR_ICC`, `MAT_FACTOR_ILUDT`, `MAT_FACTOR_QR`
 
 # External Links
@@ -24060,7 +24035,7 @@ Input Parameters:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatSetFromOptions()`, `MatSetOptionsPrefix()`, `MatAppendOptionsPrefixFactor()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSetFromOptions()`, `MatSetOptionsPrefix()`, `MatAppendOptionsPrefixFactor()`
 
 # External Links
 $(_doc_external("Mat/MatSetOptionsPrefixFactor"))
@@ -24312,7 +24287,7 @@ end
 end 
 
 """
-	MatSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::MatType) 
+	MatSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::String) 
 Builds matrix object for a particular matrix type
 
 Collective
@@ -24331,11 +24306,11 @@ See also: `Mat`, `PCSetType()`, `VecSetType()`, `MatCreate()`, `MatType`
 # External Links
 $(_doc_external("Mat/MatSetType"))
 """
-function MatSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::MatType)
+function MatSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::String)
     error("MatSetType: no generated method for these argument types")
 end
 
-@for_petsc function MatSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::MatType )
+@for_petsc function MatSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::String )
 
     @chk ccall(
                (:MatSetType, $petsc_library),
@@ -24408,52 +24383,6 @@ end
                PetscErrorCode,
                (CMat,),
                A,
-              )
-
-
-	return nothing
-end 
-
-"""
-	MatSetValue(petsclib::PetscLibType, mat::AbstractPetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) 
-
-# External Links
-$(_doc_external("Mat/MatSetValue"))
-"""
-function MatSetValue(petsclib::PetscLibType, mat::AbstractPetscMat, i::Integer, j::Integer, va::Number, mode::InsertMode)
-    error("MatSetValue: no generated method for these argument types")
-end
-
-@for_petsc function MatSetValue(petsclib::$UnionPetscLib, mat::AbstractPetscMat, i::$PetscInt, j::$PetscInt, va::$PetscScalar, mode::InsertMode )
-
-    @chk ccall(
-               (:MatSetValue, $petsc_library),
-               PetscErrorCode,
-               (CMat, $PetscInt, $PetscInt, $PetscScalar, InsertMode),
-               mat, i, j, va, mode,
-              )
-
-
-	return nothing
-end 
-
-"""
-	MatSetValueLocal(petsclib::PetscLibType, mat::AbstractPetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) 
-
-# External Links
-$(_doc_external("Mat/MatSetValueLocal"))
-"""
-function MatSetValueLocal(petsclib::PetscLibType, mat::AbstractPetscMat, i::Integer, j::Integer, va::Number, mode::InsertMode)
-    error("MatSetValueLocal: no generated method for these argument types")
-end
-
-@for_petsc function MatSetValueLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, i::$PetscInt, j::$PetscInt, va::$PetscScalar, mode::InsertMode )
-
-    @chk ccall(
-               (:MatSetValueLocal, $petsc_library),
-               PetscErrorCode,
-               (CMat, $PetscInt, $PetscInt, $PetscScalar, InsertMode),
-               mat, i, j, va, mode,
               )
 
 
@@ -24936,7 +24865,7 @@ end
 end 
 
 """
-	MatSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::VecType) 
+	MatSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::String) 
 Set the vector type the matrix will return with `MatCreateVecs()`
 
 Collective
@@ -24955,11 +24884,11 @@ See also: `Mat`, `VecType`, `VecSetType()`, `MatGetVecType()`, `MatCreateVecs()`
 # External Links
 $(_doc_external("Mat/MatSetVecType"))
 """
-function MatSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::VecType)
+function MatSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::String)
     error("MatSetVecType: no generated method for these argument types")
 end
 
-@for_petsc function MatSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::VecType )
+@for_petsc function MatSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::String )
 
     @chk ccall(
                (:MatSetVecType, $petsc_library),
@@ -25153,7 +25082,7 @@ end
 end 
 
 """
-	MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::MatType, Ctype::Union{Ptr, MatType}) 
+	MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::String, Ctype::Union{Ptr, String}) 
 Allows user to set a matrix matrix operation for a `MATSHELL` shell matrix.
 
 Logically Collective; No Fortran Support
@@ -25174,11 +25103,11 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShe
 # External Links
 $(_doc_external("Mat/MatShellSetMatProductOperation"))
 """
-function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::MatType, Ctype::Union{Ptr, MatType})
+function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::String, Ctype::Union{Ptr, String})
     error("MatShellSetMatProductOperation: no generated method for these argument types")
 end
 
-@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::MatType, Ctype::Union{Ptr, MatType} )
+@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::String, Ctype::Union{Ptr, String} )
 
     @chk ccall(
                (:MatShellSetMatProductOperation, $petsc_library),
@@ -25226,7 +25155,7 @@ function MatShellSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op:
 end
 
 """
-	MatShellSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::VecType) 
+	MatShellSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::String) 
 Sets the `VecType` of `Vec` returned by `MatCreateVecs()`
 
 Logically Collective
@@ -25242,11 +25171,11 @@ See also: `Mat`, `MATSHELL`, `MatCreateVecs()`
 # External Links
 $(_doc_external("Mat/MatShellSetVecType"))
 """
-function MatShellSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::VecType)
+function MatShellSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::String)
     error("MatShellSetVecType: no generated method for these argument types")
 end
 
-@for_petsc function MatShellSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::VecType )
+@for_petsc function MatShellSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::String )
 
     @chk ccall(
                (:MatShellSetVecType, $petsc_library),
@@ -25396,7 +25325,7 @@ Output Parameter:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatGetFactor()`, `MatLUFactor()`, `MatSolveAdd()`, `MatSolveTranspose()`, `MatSolveTransposeAdd()`
+See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatLUFactor()`, `MatSolveAdd()`, `MatSolveTranspose()`, `MatSolveTransposeAdd()`
 
 # External Links
 $(_doc_external("Mat/MatSolve"))
@@ -25434,7 +25363,7 @@ Output Parameter:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatSolve()`, `MatGetFactor()`, `MatSolveTranspose()`, `MatSolveTransposeAdd()`
+See also: `Mat`, Matrix Factorization, `MatSolve()`, `MatGetFactor()`, `MatSolveTranspose()`, `MatSolveTransposeAdd()`
 
 # External Links
 $(_doc_external("Mat/MatSolveAdd"))
@@ -25533,7 +25462,7 @@ end
 end 
 
 """
-	foundtype::PetscBool,foundmtype::PetscBool = MatSolverTypeGet(petsclib::PetscLibType, type::MatSolverType, mtype::MatType, ftype::MatFactorType, noname::Ptr{Cvoid}) 
+	foundtype::PetscBool,foundmtype::PetscBool = MatSolverTypeGet(petsclib::PetscLibType, type::String, mtype::String, ftype::MatFactorType, noname::Ptr{Cvoid}) 
 Gets the function that creates the factor matrix if it exist
 
 Input Parameters:
@@ -25559,11 +25488,11 @@ See also: `Mat`, `MatFactorType`, `MatType`, `MatCopy()`, `MatDuplicate()`, `Mat
 # External Links
 $(_doc_external("Mat/MatSolverTypeGet"))
 """
-function MatSolverTypeGet(petsclib::PetscLibType, type::MatSolverType, mtype::MatType, ftype::MatFactorType, noname::Ptr{Cvoid})
+function MatSolverTypeGet(petsclib::PetscLibType, type::String, mtype::String, ftype::MatFactorType, noname::Ptr{Cvoid})
     error("MatSolverTypeGet: no generated method for these argument types")
 end
 
-@for_petsc function MatSolverTypeGet(petsclib::$UnionPetscLib, type::MatSolverType, mtype::MatType, ftype::MatFactorType, noname::Ptr{Cvoid} )
+@for_petsc function MatSolverTypeGet(petsclib::$UnionPetscLib, type::String, mtype::String, ftype::MatFactorType, noname::Ptr{Cvoid} )
 	foundtype_ = Ref{PetscBool}()
 	foundmtype_ = Ref{PetscBool}()
 
@@ -25581,7 +25510,7 @@ end
 end 
 
 """
-	MatSolverTypeRegister(petsclib::PetscLibType, package::MatSolverType, mtype::MatType, ftype::MatFactorType, createfactor::external) 
+	MatSolverTypeRegister(petsclib::PetscLibType, package::String, mtype::String, ftype::MatFactorType, createfactor::external) 
 Registers a `MatSolverType` that works for a particular matrix type
 
 Logically Collective, No Fortran Support
@@ -25594,17 +25523,17 @@ Input Parameters:
 
 Level: developer
 
-See also: `Mat`, [Matrix Factorization](sec_matfactor), `MatFactorGetSolverType()`, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`,
+See also: `Mat`, Matrix Factorization, `MatFactorGetSolverType()`, `MatCopy()`, `MatDuplicate()`, `MatGetFactorAvailable()`,
 `MatGetFactor()`
 
 # External Links
 $(_doc_external("Mat/MatSolverTypeRegister"))
 """
-function MatSolverTypeRegister(petsclib::PetscLibType, package::MatSolverType, mtype::MatType, ftype::MatFactorType, createfactor::external)
+function MatSolverTypeRegister(petsclib::PetscLibType, package::String, mtype::String, ftype::MatFactorType, createfactor::external)
     error("MatSolverTypeRegister: no generated method for these argument types")
 end
 
-@for_petsc function MatSolverTypeRegister(petsclib::$UnionPetscLib, package::MatSolverType, mtype::MatType, ftype::MatFactorType, createfactor::external )
+@for_petsc function MatSolverTypeRegister(petsclib::$UnionPetscLib, package::String, mtype::String, ftype::MatFactorType, createfactor::external )
 
     @chk ccall(
                (:MatSolverTypeRegister, $petsc_library),

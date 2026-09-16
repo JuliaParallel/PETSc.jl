@@ -56,3 +56,12 @@ Modules = [PETSc.LibPETSc]
 Pages   = ["autowrapped/SNES_wrappers.jl", "autowrapped/SNESLineSearch_wrappers.jl"]
 Order   = [:function]
 ```
+
+### Hand-written helpers
+
+```@autodocs
+Modules = [PETSc.LibPETSc]
+Pages   = ["autowrapped/extra_wrappers.jl"]
+Order   = [:function]
+Filter  = t -> startswith(string(nameof(t)), "SNES")
+```

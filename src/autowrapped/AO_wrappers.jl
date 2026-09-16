@@ -15,7 +15,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
+See also: `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
 `AOPetscToApplicationIS()`
 
 # External Links
@@ -54,7 +54,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
+See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
 `AOPetscToApplicationIS()`, `AOApplicationToPetsc()`, `ISSTRIDE`, `ISBLOCK`
 
 # External Links
@@ -94,7 +94,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplicationIS()`, `AOApplicationToPetsc()`
+See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplicationIS()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOApplicationToPetscPermuteInt"))
@@ -133,7 +133,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
+See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
 
 # External Links
 $(_doc_external("AO/AOApplicationToPetscPermuteReal"))
@@ -173,7 +173,7 @@ Options Database Key:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOView()`, `AOSetIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: `AO`, `AOView()`, `AOSetIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOCreate"))
@@ -215,7 +215,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreateBasicIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: `AO`, `AOCreateBasicIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOCreateBasic"))
@@ -254,7 +254,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), [](sec_scatter), `IS`, `AO`, `AOCreateBasic()`, `AODestroy()`
+See also: `IS`, `AO`, `AOCreateBasic()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateBasicIS"))
@@ -296,7 +296,7 @@ Options Database Key:
 
 Level: beginner
 
-See also: [](sec_ao), `AOCreateBasic()`, `AOCreateMappingIS()`, `AODestroy()`
+See also: `AOCreateBasic()`, `AOCreateMappingIS()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateMapping"))
@@ -336,7 +336,7 @@ Options Database Key:
 
 Level: beginner
 
-See also: [](sec_ao), [](sec_scatter), `AOCreateBasic()`, `AOCreateMapping()`, `AODestroy()`
+See also: `AOCreateBasic()`, `AOCreateMapping()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateMappingIS"))
@@ -377,7 +377,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreateMemoryScalableIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: `AO`, `AOCreateMemoryScalableIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOCreateMemoryScalable"))
@@ -416,7 +416,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreateBasicIS()`, `AOCreateMemoryScalable()`, `AODestroy()`
+See also: `AO`, `AOCreateBasicIS()`, `AOCreateMemoryScalable()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateMemoryScalableIS"))
@@ -451,7 +451,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreate()`
+See also: `AO`, `AOCreate()`
 
 # External Links
 $(_doc_external("AO/AODestroy"))
@@ -504,7 +504,7 @@ end
 end 
 
 """
-	type::AOType = AOGetType(petsclib::PetscLibType, ao::AbstractAO) 
+	type::String = AOGetType(petsclib::PetscLibType, ao::AbstractAO) 
 Gets the `AO` type name (as a string) from the `AO`.
 
 Not Collective
@@ -585,7 +585,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_ao), `AOMappingHasPetscIndex()`, `AOCreateMapping()`, `AO`
+See also: `AOMappingHasPetscIndex()`, `AOCreateMapping()`, `AO`
 
 # External Links
 $(_doc_external("AO/AOMappingHasApplicationIndex"))
@@ -624,7 +624,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_ao), `AOMappingHasApplicationIndex()`, `AOCreateMapping()`
+See also: `AOMappingHasApplicationIndex()`, `AOCreateMapping()`
 
 # External Links
 $(_doc_external("AO/AOMappingHasPetscIndex"))
@@ -665,7 +665,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
+See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
 `AOPetscToApplicationIS()`
 
 # External Links
@@ -704,7 +704,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
+See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
 `AOApplicationToPetscIS()`, `AOPetscToApplication()`, `ISSTRIDE`, `ISBLOCK`
 
 # External Links
@@ -744,7 +744,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
+See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
 
 # External Links
 $(_doc_external("AO/AOPetscToApplicationPermuteInt"))
@@ -783,7 +783,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
+See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
 
 # External Links
 $(_doc_external("AO/AOPetscToApplicationPermuteReal"))
@@ -882,7 +882,7 @@ Options Database Key:
 
 Level: beginner
 
-See also: [](sec_ao), `AO`, `AOCreate()`, `AOSetType()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: `AO`, `AOCreate()`, `AOSetType()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOSetFromOptions"))
@@ -917,7 +917,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreate()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: `AO`, `AOCreate()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOSetIS"))
@@ -940,7 +940,7 @@ end
 end 
 
 """
-	AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::AOType) 
+	AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::String) 
 Builds an application ordering for a particular `AOType`
 
 Collective
@@ -959,11 +959,11 @@ See also: `AO`, `AOType`, `AOCreateBasic()`, `AOCreateMemoryScalable()`, `AOGetT
 # External Links
 $(_doc_external("AO/AOSetType"))
 """
-function AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::AOType)
+function AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::String)
     error("AOSetType: no generated method for these argument types")
 end
 
-@for_petsc function AOSetType(petsclib::$UnionPetscLib, ao::AbstractAO, method::AOType )
+@for_petsc function AOSetType(petsclib::$UnionPetscLib, ao::AbstractAO, method::String )
 
     @chk ccall(
                (:AOSetType, $petsc_library),
@@ -991,7 +991,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ao), `AO`, `PetscViewer`, `PetscViewerASCIIOpen()`, `AOViewFromOptions()`
+See also: `AO`, `PetscViewer`, `PetscViewerASCIIOpen()`, `AOViewFromOptions()`
 
 # External Links
 $(_doc_external("AO/AOView"))
@@ -1029,7 +1029,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_ao), `AO`, `AOView()`, `PetscObjectViewFromOptions()`, `AOCreate()`
+See also: `AO`, `AOView()`, `PetscObjectViewFromOptions()`, `AOCreate()`
 
 # External Links
 $(_doc_external("AO/AOViewFromOptions"))

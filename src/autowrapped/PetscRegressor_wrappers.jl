@@ -169,7 +169,7 @@ end
 end 
 
 """
-	p::Ptr{Cchar} = PetscRegressorGetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor) 
+	p::String = PetscRegressorGetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor) 
 Gets the prefix used for searching for all
 PetscRegressor options in the database
 
@@ -200,7 +200,7 @@ end
                regressor, p_,
               )
 
-	p = p_[]
+	p = p_[] == C_NULL ? "" : unsafe_string(p_[])
 
 	return p
 end 
@@ -244,7 +244,7 @@ end
 end 
 
 """
-	type::PetscRegressorType = PetscRegressorGetType(petsclib::PetscLibType, regressor::PetscRegressor) 
+	type::String = PetscRegressorGetType(petsclib::PetscLibType, regressor::PetscRegressor) 
 Gets the current `PetscRegressorType` being used in the `PetscRegressor` object
 
 Not Collective
@@ -710,7 +710,7 @@ end
 end 
 
 """
-	PetscRegressorSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorType) 
+	PetscRegressorSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::String) 
 Sets the type for the regressor.
 
 Collective
@@ -729,11 +729,11 @@ See also: `PetscRegressorType`
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetType"))
 """
-function PetscRegressorSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorType)
+function PetscRegressorSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::String)
     error("PetscRegressorSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscRegressorSetType(petsclib::$UnionPetscLib, regressor::PetscRegressor, type::PetscRegressorType )
+@for_petsc function PetscRegressorSetType(petsclib::$UnionPetscLib, regressor::PetscRegressor, type::String )
 
     @chk ccall(
                (:PetscRegressorSetType, $petsc_library),

@@ -429,7 +429,7 @@ end
 end 
 
 """
-	p::Ptr{Cchar} = TaoLineSearchGetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch) 
+	p::String = TaoLineSearchGetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch) 
 Gets the prefix used for searching for all
 `TaoLineSearch` options in the database
 
@@ -462,7 +462,7 @@ end
                ls, p_,
               )
 
-	p = p_[]
+	p = p_[] == C_NULL ? "" : unsafe_string(p_[])
 
 	return p
 end 
@@ -630,7 +630,7 @@ end
 end 
 
 """
-	type::TaoLineSearchType = TaoLineSearchGetType(petsclib::PetscLibType, ls::TaoLineSearch) 
+	type::String = TaoLineSearchGetType(petsclib::PetscLibType, ls::TaoLineSearch) 
 Gets the current line search algorithm
 
 Not Collective
@@ -1130,7 +1130,7 @@ end
 end 
 
 """
-	TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::TaoLineSearchType) 
+	TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::String) 
 Sets the algorithm used in a line search
 
 Collective
@@ -1150,11 +1150,11 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchType`, `TaoLineSearchCreate()`, 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetType"))
 """
-function TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::TaoLineSearchType)
+function TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::String)
     error("TaoLineSearchSetType: no generated method for these argument types")
 end
 
-@for_petsc function TaoLineSearchSetType(petsclib::$UnionPetscLib, ls::TaoLineSearch, type::TaoLineSearchType )
+@for_petsc function TaoLineSearchSetType(petsclib::$UnionPetscLib, ls::TaoLineSearch, type::String )
 
     @chk ccall(
                (:TaoLineSearchSetType, $petsc_library),
@@ -1445,7 +1445,6 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermComputeObjectiveAndGradient()`,
@@ -1492,7 +1491,13 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_tao_term),
+Notes:
+This routine is slow and expensive, and is not optimized to take advantage of
+sparsity in the problem.  Although not recommended for general use in
+large-scale applications, it can be useful in checking the correctness of a
+user-provided gradient.  Call `TaoTermComputeGradientSetUseFD()` to start using
+this routine in `TaoTermComputeGradient()`.
+
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1534,7 +1539,6 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1581,7 +1585,6 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1629,7 +1632,10 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
+Note:
+If there is no separate matrix from which to construct the preconditioner, then `TaoTermComputeHessian(term, x, params, H, NULL)`
+and `TaoTermComputeHessian(term, x, params, H, H)` are equivalent.
+
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermComputeGradient()`,
@@ -1677,7 +1683,13 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_tao_term),
+Notes:
+This routine is slow and expensive, and is not optimized to take advantage of
+sparsity in the problem.  Although not recommended for general use in
+large-scale applications, it can be useful in checking the correctness of a
+user-provided Hessian.  Call `TaoTermComputeHessianSetUseFD()` to start using
+this routine in `TaoTermComputeHessian()`.
+
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermGetFDDelta()`,
@@ -1719,7 +1731,6 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1806,7 +1817,6 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1852,7 +1862,6 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeGradient()`,
 `TaoTermComputeObjectiveAndGradient()`,
@@ -1899,7 +1908,6 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermComputeGradient()`,
@@ -1942,7 +1950,6 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetType()`,
 `TaoAddTerm()`,
@@ -1989,7 +1996,19 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_tao_term),
+Note:
+If you would like to add a Tikhonov regularization term \\alpha \\tfrac{1}{2}\\|x\\|_2^2 to the objective function of a `Tao`, do the following:
+``
+VecGetSizes(x, &n, &N);
+TaoTermCreateHalfL2Squared(PetscObjectComm((PetscObject)x), n, N, &term);
+TaoAddTerm(tao, "reg_", alpha, term, NULL, NULL);
+TaoTermDestroy(&term);
+``
+If you would like to add a biased regularization term \\alpha \\tfrac{1}{2}\\|x - p \\|_2^2, do the same but pass `p` as the parameters of the term:
+``
+TaoAddTerm(tao, "reg_", alpha, term, p, NULL);
+``
+
 `TaoTerm`,
 `TAOTERMHALFL2SQUARED`,
 `TaoTermCreateL1()`,
@@ -2031,7 +2050,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term), `TaoTerm`, `TaoTermComputeHessianFD()`
+See also: `TaoTerm`, `TaoTermComputeHessianFD()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermCreateHessianMFFD"))
@@ -2070,7 +2089,14 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_tao_term),
+Note:
+Before Hessian matrices can be created, the size of the solution vector space
+must be set (see the ways this can be done in `TaoTermCreateSolutionVec()`).  If the
+term is a `TAOTERMSHELL`, `TaoTermShellSetCreateHessianMatrices()` must be
+called.  Most `TaoTerm`s use `TaoTermCreateHessianMatricesDefault()` to create
+their Hessian matrices: the behavior of that function can be controlled by
+`TaoTermSetCreateHessianMode()`.
+
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermShellSetCreateHessianMatrices()`,
@@ -2119,7 +2145,12 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
+Developer Note:
+The behavior of this routine is determined by `TaoTermSetCreateHessianMode()`.
+If `Hpre_is_H`, then the same matrix will be returned for `H` and `Hpre`,
+otherwise they will be separate matrices, with the matrix types `H_mattype` and `Hpre_mattype`.
+If either type is `MATMFFD`, then it will create a shell matrix with `TaoTermCreateHessianMFFD()`.
+
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermCreateHessianMatrices()`,
@@ -2167,7 +2198,24 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_tao_term),
+Note:
+If you would like to add an L1 regularization term \\alpha \\|x\\|_1 to the objective function of a `Tao`, do the following:
+``
+VecGetLocalSize(x, &n);
+VecGetSize(x, &N);
+TaoTermCreateL1(PetscObjectComm((PetscObject)x), n, N, 0.0, &term);
+TaoAddTerm(tao, "reg_", alpha, term, NULL, NULL);
+TaoTermDestroy(&term);
+``
+If you would like to have a dictionary matrix term \\alpha \\|D x\\|_1, do the same but pass `D` as the map of the term:
+``
+MatGetLocalSize(D, &m, NULL);
+MatGetSize(D, &M, NULL);
+TaoTermCreateL1(PetscObjectComm((PetscObject)D), m, M, 0.0, &term);
+TaoAddTerm(tao, "reg_", alpha, term, NULL, D);
+TaoTermDestroy(&term);
+``
+
 `TaoTerm`,
 `TAOTERML1`,
 `TaoTermL1GetEpsilon()`,
@@ -2211,7 +2259,17 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term),
+Notes:
+Before a `TaoTerm` can create a parameter vector, you must do one of the following:
+
+* Call `TaoTermSetParametersSizes()` to describe the size and parallel layout of a parameters vector.
+* Call `TaoTermSetParametersLayout()` to directly set `PetscLayout`s for the parameters vector.
+* Call `TaoTermSetParametersTemplate()` to set the parameters vector spaces to match existing `Vec`.
+* If the `TaoTerm` is a `TAOTERMSHELL`, you can call `TaoTermShellSetCreateParametersVec()` to use your
+own code for creating vectors.
+
+You can also call `TaoTermSetParametersVecType()` to set the type of vector created (e.g. `VECCUDA`).
+
 `TaoTerm`,
 `TaoTermShellSetCreateParametersVec()`,
 `TaoTermGetParametersSizes()`,
@@ -2259,7 +2317,6 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TAOTERMQUADRATIC`,
@@ -2304,7 +2361,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`
+See also: `TaoTerm`, `TAOTERMSHELL`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermCreateShell"))
@@ -2342,7 +2399,17 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term),
+Note:
+Before a `TaoTerm` can create a solution vector, you must do one of the following:
+
+* Call `TaoTermSetSolutionSizes()` to describe the size and parallel layout of a solution vector.
+* Call `TaoTermSetSolutionLayout()` to directly set `PetscLayout`s for the solution vector.
+* Call `TaoTermSetSolutionTemplate()` to set the solution vector spaces to match existing `Vec`.
+* If the `TaoTerm` is a `TAOTERMSHELL`, you can call `TaoTermShellSetCreateSolutionVec()` to use
+your own code for creating vectors.
+
+You can also call `TaoTermSetSolutionVecType()` to set the type of vector created (e.g. `VECCUDA`).
+
 `TaoTerm`,
 `TaoTermShellSetCreateSolutionVec()`,
 `TaoTermGetSolutionSizes()`,
@@ -2387,7 +2454,6 @@ Input Parameter:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,
@@ -2429,7 +2495,17 @@ Input Parameters:
 Output Parameter:
 - `newterm` - the duplicate `TaoTerm`
 
-See also: [](sec_tao_term),
+Notes:
+This function duplicates the solution space layout and vector type, but does not duplicate
+parameters-related configuration such as the parameters layout, `TaoTermParametersMode`,
+Hessian matrix types, or finite-difference settings. These must be set separately on the
+new `TaoTerm` if needed.
+
+If `TAOTERM_DUPLICATE_SIZEONLY` is used, then the duplicated term must have proper `TaoTermType`
+set with `TaoTermSetType()`.
+
+Level: intermediate
+
 `TaoTerm`,
 `TaoTermDuplicateOption`
 
@@ -2456,7 +2532,7 @@ end
 end 
 
 """
-	Hpre_is_H::PetscBool,H_mattype::MatType,Hpre_mattype::MatType = TaoTermGetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm) 
+	Hpre_is_H::PetscBool,H_mattype::String,Hpre_mattype::String = TaoTermGetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm) 
 Get the behavior of `TaoTermCreateHessianMatricesDefault()`.
 
 Not collective
@@ -2471,7 +2547,6 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermCreateHessianMatrices()`,
@@ -2521,7 +2596,6 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetFDDelta()`,
 `TaoTermComputeGradientFD()`,
@@ -2564,7 +2638,6 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersVecType()`,
@@ -2609,7 +2682,6 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermParametersMode`,
 `TaoTermSetParametersMode()`
@@ -2652,7 +2724,6 @@ Output Parameters:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetParametersSizes()`,
 `TaoTermSetParametersTemplate()`,
@@ -2689,7 +2760,7 @@ end
 end 
 
 """
-	parameters_type::VecType = TaoTermGetParametersVecType(petsclib::PetscLibType, term::TaoTerm) 
+	parameters_type::String = TaoTermGetParametersVecType(petsclib::PetscLibType, term::TaoTerm) 
 Get the vector types of the parameter vector of a `TaoTerm`
 
 Not collective
@@ -2702,7 +2773,6 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetParametersVecType()`,
 `TaoTermGetParametersLayout()`,
@@ -2747,7 +2817,6 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionVecType()`,
@@ -2794,7 +2863,6 @@ Output Parameters:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetSolutionSizes()`,
 `TaoTermSetSolutionTemplate()`,
@@ -2831,7 +2899,7 @@ end
 end 
 
 """
-	solution_type::VecType = TaoTermGetSolutionVecType(petsclib::PetscLibType, term::TaoTerm) 
+	solution_type::String = TaoTermGetSolutionVecType(petsclib::PetscLibType, term::TaoTerm) 
 Get the vector types of the solution vector of a `TaoTerm`
 
 Not collective
@@ -2844,7 +2912,6 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetSolutionVecType()`,
 `TaoTermGetSolutionLayout()`,
@@ -2876,7 +2943,7 @@ end
 end 
 
 """
-	type::TaoTermType = TaoTermGetType(petsclib::PetscLibType, term::TaoTerm) 
+	type::String = TaoTermGetType(petsclib::PetscLibType, term::TaoTerm) 
 Get the type of a `TaoTerm`
 
 Not collective
@@ -2889,7 +2956,6 @@ Output Parameter:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermType`,
 `TaoTermCreate()`,
@@ -2936,7 +3002,6 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermShellSetObjective()`,
@@ -2980,7 +3045,6 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreateHessianMatrices()`,
 `TaoTermShellSetCreateHessianMatrices()`,
@@ -3023,7 +3087,14 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the gradient is defined
 
-See also: [](sec_tao_term),
+Note:
+This function strictly checks whether a dedicated gradient operation is defined. It does not check whether the
+gradient could be computed via other operations (e.g., an objective-and-gradient callback or finite differences).
+`TaoTermComputeGradient()` may still succeed even if this function returns `PETSC_FALSE`, by falling back to
+`TaoTermComputeObjectiveAndGradient()` or finite-difference approximation.
+
+Level: developer
+
 `TaoTerm`,
 `TaoTermComputeGradient()`,
 `TaoTermShellSetGradient()`,
@@ -3065,7 +3136,13 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the Hessian is defined
 
-See also: [](sec_tao_term),
+Note:
+This function strictly checks whether a dedicated Hessian operation is defined. It does not check whether the
+Hessian could be computed via finite differences. `TaoTermComputeHessian()` may still succeed even if this function
+returns `PETSC_FALSE`, if finite-difference Hessian computation has been enabled.
+
+Level: developer
+
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermShellSetHessian()`,
@@ -3107,7 +3184,14 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the objective/gradient is defined
 
-See also: [](sec_tao_term),
+Note:
+This function strictly checks whether a dedicated combined objective-and-gradient operation is defined. It does not
+check whether the objective and gradient could be computed via separate objective and gradient operations.
+`TaoTermComputeObjectiveAndGradient()` may still succeed even if this function returns `PETSC_FALSE`, by falling back
+to separate `TaoTermComputeObjective()` and `TaoTermComputeGradient()` calls.
+
+Level: developer
+
 `TaoTerm`,
 `TaoTermComputeObjectiveAndGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -3149,7 +3233,13 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the objective is defined
 
-See also: [](sec_tao_term),
+Note:
+This function strictly checks whether a dedicated objective operation is defined. It does not check whether the
+objective could be computed via other operations (e.g., an objective-and-gradient callback). `TaoTermComputeObjective()`
+may still succeed even if this function returns `PETSC_FALSE`, by falling back to `TaoTermComputeObjectiveAndGradient()`.
+
+Level: developer
+
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermShellSetObjective()`,
@@ -3193,7 +3283,6 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERML1`,
 `TaoTermL1SetEpsilon()`
@@ -3238,7 +3327,6 @@ Level: advanced
 If \\epsilon = 0 (the default), then `term` computes \\|x - p\\|_1, but if \\epsilon > 0, then it computes
 \\sum_{i=0}^{n-1} \\left(\\sqrt{(x_i-p_i)^2 + \\epsilon^2} - \\epsilon\\right).
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERML1`,
 `TaoTermL1GetEpsilon()`
@@ -3277,7 +3365,9 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
+Note:
+This function will return `NULL` if the term is not a `TAOTERMQUADRATIC`.
+
 `TaoTerm`,
 `TAOTERMQUADRATIC`,
 `TaoTermQuadraticSetMat()`
@@ -3316,7 +3406,6 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMQUADRATIC`,
 `TaoTermQuadraticGetMat()`
@@ -3351,7 +3440,7 @@ Input Parameters:
 - `sname` - name of a new user-defined term
 - `func`  - routine to create the context for the `TaoTermType`
 
-See also: [](sec_tao_term), `TaoTerm`, `TaoTermSetType()`
+See also: `TaoTerm`, `TaoTermSetType()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermRegister"))
@@ -3374,7 +3463,7 @@ end
 end 
 
 """
-	TaoTermSetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::MatType, Hpre_mattype::MatType) 
+	TaoTermSetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::String, Hpre_mattype::String) 
 Determine the behavior of `TaoTermCreateHessianMatricesDefault()`.
 
 Logically collective
@@ -3392,7 +3481,6 @@ Options Database Keys:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermCreateHessianMatrices()`,
@@ -3402,11 +3490,11 @@ See also: [](sec_tao_term),
 # External Links
 $(_doc_external("TaoTerm/TaoTermSetCreateHessianMode"))
 """
-function TaoTermSetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::MatType, Hpre_mattype::MatType)
+function TaoTermSetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::String, Hpre_mattype::String)
     error("TaoTermSetCreateHessianMode: no generated method for these argument types")
 end
 
-@for_petsc function TaoTermSetCreateHessianMode(petsclib::$UnionPetscLib, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::MatType, Hpre_mattype::MatType )
+@for_petsc function TaoTermSetCreateHessianMode(petsclib::$UnionPetscLib, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::String, Hpre_mattype::String )
 
     @chk ccall(
                (:TaoTermSetCreateHessianMode, $petsc_library),
@@ -3434,7 +3522,6 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermComputeGradientFD()`,
@@ -3487,7 +3574,6 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,
@@ -3527,7 +3613,15 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
+Notes:
+The "parameter space" of a `TaoTerm` is the vector space of the fixed data p in f(x; p).
+Parameters are not optimized over. This is distinct from the "solution space" (set with
+`TaoTermSetSolutionSizes()`), which is the space of the optimization variable x.
+Some `TaoTermType`s require the solution and parameter spaces to be related (e.g., have the same size);
+see the documentation for each type.
+
+Alternatively, one may use `TaoTermSetParametersSizes()` or `TaoTermSetParametersTemplate()` to define the vector sizes.
+
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersVecType()`,
@@ -3571,7 +3665,6 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermParametersMode`,
 `TaoTermGetParametersMode()`
@@ -3610,7 +3703,15 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_tao_term),
+Notes:
+The "parameter space" of a `TaoTerm` is the vector space of the fixed data p in f(x; p).
+Parameters are not optimized over. This is distinct from the "solution space" (set with
+`TaoTermSetSolutionSizes()`), which is the space of the optimization variable x.
+Some `TaoTermType`s require the solution and parameter spaces to be related (e.g., have the same size);
+see the documentation for each type.
+
+Alternatively, one may use `TaoTermSetParametersLayout()` or `TaoTermSetParametersTemplate()` to define the vector sizes.
+
 `TaoTerm`,
 `TaoTermGetParametersSizes()`,
 `TaoTermSetParametersTemplate()`,
@@ -3652,7 +3753,15 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
+Notes:
+The "parameter space" of a `TaoTerm` is the vector space of the fixed data p in f(x; p).
+Parameters are not optimized over. This is distinct from the "solution space" (set with
+`TaoTermSetSolutionSizes()`), which is the space of the optimization variable x.
+Some `TaoTermType`s require the solution and parameter spaces to be related (e.g., have the same size);
+see the documentation for each type.
+
+Alternatively, one may use `TaoTermSetParametersSizes()` or `TaoTermSetParametersLayout()` to define the vector sizes.
+
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersVecType()`,
@@ -3682,7 +3791,7 @@ end
 end 
 
 """
-	TaoTermSetParametersVecType(petsclib::PetscLibType, term::TaoTerm, parameters_type::VecType) 
+	TaoTermSetParametersVecType(petsclib::PetscLibType, term::TaoTerm, parameters_type::String) 
 Set the vector types of the parameters vector of a `TaoTerm`
 
 Logically collective
@@ -3696,7 +3805,6 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersLayout()`,
@@ -3707,11 +3815,11 @@ See also: [](sec_tao_term),
 # External Links
 $(_doc_external("TaoTerm/TaoTermSetParametersVecType"))
 """
-function TaoTermSetParametersVecType(petsclib::PetscLibType, term::TaoTerm, parameters_type::VecType)
+function TaoTermSetParametersVecType(petsclib::PetscLibType, term::TaoTerm, parameters_type::String)
     error("TaoTermSetParametersVecType: no generated method for these argument types")
 end
 
-@for_petsc function TaoTermSetParametersVecType(petsclib::$UnionPetscLib, term::TaoTerm, parameters_type::VecType )
+@for_petsc function TaoTermSetParametersVecType(petsclib::$UnionPetscLib, term::TaoTerm, parameters_type::String )
 
     @chk ccall(
                (:TaoTermSetParametersVecType, $petsc_library),
@@ -3736,7 +3844,20 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
+Notes:
+The "solution space" of a `TaoTerm` is the vector space of the optimization variable x in
+f(x; p). This is distinct from the "parameter space" (the space of the fixed data p, set
+with `TaoTermSetParametersSizes()`). Some `TaoTermType`s require the solution and parameter
+spaces to be related (e.g., have the same size); see the documentation for each type.
+
+When a mapping matrix A is used to add a term to a `Tao` via `TaoAddTerm()`, the mapping
+transforms the `Tao` solution vector into this term's solution space.  For example, if the
+`Tao` solution vector is x \\in \\mathbb{R}^n and the mapping matrix is A \\in \\mathbb{R}^{m \\times n},
+then the term evaluates f(Ax; p) with Ax \\in \\mathbb{R}^m.  The term's solution space is
+therefore \\mathbb{R}^m, and `TaoTermView()` will report N = m for this term.
+
+Alternatively, one may use `TaoTermSetSolutionSizes()` or `TaoTermSetSolutionTemplate()` to define the vector sizes.
+
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionVecType()`,
@@ -3779,7 +3900,20 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_tao_term),
+Notes:
+The "solution space" of a `TaoTerm` is the vector space of the optimization variable x in
+f(x; p). This is distinct from the "parameter space" (the space of the fixed data p, set
+with `TaoTermSetParametersSizes()`). Some `TaoTermType`s require the solution and parameter
+spaces to be related (e.g., have the same size); see the documentation for each type.
+
+When a mapping matrix A is used to add a term to a `Tao` via `TaoAddTerm()`, the mapping
+transforms the `Tao` solution vector into this term's solution space.  For example, if the
+`Tao` solution vector is x \\in \\mathbb{R}^n and the mapping matrix is A \\in \\mathbb{R}^{m \\times n},
+then the term evaluates f(Ax; p) with Ax \\in \\mathbb{R}^m.  The term's solution space is
+therefore \\mathbb{R}^m, and `TaoTermView()` will report N = m for this term.
+
+Alternatively, one may use `TaoTermSetSolutionLayout()` or `TaoTermSetSolutionTemplate()` to define the vector sizes.
+
 `TaoTerm`,
 `TaoTermGetSolutionSizes()`,
 `TaoTermSetSolutionTemplate()`,
@@ -3821,7 +3955,20 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
+Notes:
+The "solution space" of a `TaoTerm` is the vector space of the optimization variable x in
+f(x; p). This is distinct from the "parameter space" (the space of the fixed data p, set
+with `TaoTermSetParametersSizes()`). Some `TaoTermType`s require the solution and parameter
+spaces to be related (e.g., have the same size); see the documentation for each type.
+
+When a mapping matrix A is used to add a term to a `Tao` via `TaoAddTerm()`, the mapping
+transforms the `Tao` solution vector into this term's solution space.  For example, if the
+`Tao` solution vector is x \\in \\mathbb{R}^n and the mapping matrix is A \\in \\mathbb{R}^{m \\times n},
+then the term evaluates f(Ax; p) with Ax \\in \\mathbb{R}^m.  The term's solution space is
+therefore \\mathbb{R}^m, and `TaoTermView()` will report N = m for this term.
+
+Alternatively, one may use `TaoTermSetSolutionSizes()` or `TaoTermSetSolutionLayout()` to define the vector sizes.
+
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionVecType()`,
@@ -3851,7 +3998,7 @@ end
 end 
 
 """
-	TaoTermSetSolutionVecType(petsclib::PetscLibType, term::TaoTerm, solution_type::VecType) 
+	TaoTermSetSolutionVecType(petsclib::PetscLibType, term::TaoTerm, solution_type::String) 
 Set the vector types of the solution vector of a `TaoTerm`
 
 Logically collective
@@ -3865,7 +4012,6 @@ Options Database Keys:
 
 Level: advanced
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionLayout()`,
@@ -3877,11 +4023,11 @@ See also: [](sec_tao_term),
 # External Links
 $(_doc_external("TaoTerm/TaoTermSetSolutionVecType"))
 """
-function TaoTermSetSolutionVecType(petsclib::PetscLibType, term::TaoTerm, solution_type::VecType)
+function TaoTermSetSolutionVecType(petsclib::PetscLibType, term::TaoTerm, solution_type::String)
     error("TaoTermSetSolutionVecType: no generated method for these argument types")
 end
 
-@for_petsc function TaoTermSetSolutionVecType(petsclib::$UnionPetscLib, term::TaoTerm, solution_type::VecType )
+@for_petsc function TaoTermSetSolutionVecType(petsclib::$UnionPetscLib, term::TaoTerm, solution_type::String )
 
     @chk ccall(
                (:TaoTermSetSolutionVecType, $petsc_library),
@@ -3895,7 +4041,7 @@ end
 end 
 
 """
-	TaoTermSetType(petsclib::PetscLibType, term::TaoTerm, type::TaoTermType) 
+	TaoTermSetType(petsclib::PetscLibType, term::TaoTerm, type::String) 
 Set the type of a `TaoTerm`
 
 Collective
@@ -3909,7 +4055,11 @@ Options Database Keys:
 
 Level: beginner
 
-See also: [](sec_tao_term),
+Notes:
+Use `TaoTermCreateShell()` to define a custom term using your own function definition
+
+New types of `TaoTerm` can be created with `TaoTermRegister()`
+
 `TaoTerm`,
 `TaoTermType`,
 `TaoTermCreate()`,
@@ -3922,11 +4072,11 @@ See also: [](sec_tao_term),
 # External Links
 $(_doc_external("TaoTerm/TaoTermSetType"))
 """
-function TaoTermSetType(petsclib::PetscLibType, term::TaoTerm, type::TaoTermType)
+function TaoTermSetType(petsclib::PetscLibType, term::TaoTerm, type::String)
     error("TaoTermSetType: no generated method for these argument types")
 end
 
-@for_petsc function TaoTermSetType(petsclib::$UnionPetscLib, term::TaoTerm, type::TaoTermType )
+@for_petsc function TaoTermSetType(petsclib::$UnionPetscLib, term::TaoTerm, type::String )
 
     @chk ccall(
                (:TaoTermSetType, $petsc_library),
@@ -3950,7 +4100,6 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,
@@ -3992,7 +4141,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellSetContextDestroy()`
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellSetContextDestroy()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermShellGetContext"))
@@ -4028,7 +4177,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermShellSetContext"))
@@ -4062,7 +4211,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellGetContext()`
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellGetContext()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermShellSetContextDestroy"))
@@ -4101,7 +4250,7 @@ Calling sequence of `createmats`:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetCreateSolutionVec()`, `TaoTermShellSetCreateParametersVec()`
 
 # External Links
@@ -4140,7 +4289,7 @@ Calling sequence of `createparametersvec`:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetCreateHessianMatrices()`
 
 # External Links
@@ -4179,7 +4328,7 @@ Calling sequence of `createsolutionvec`:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetCreateHessianMatrices()`
 
 # External Links
@@ -4214,7 +4363,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetObjectiveAndGradient()`,
 `TaoTermShellSetHessian()`,
@@ -4253,7 +4402,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -4292,7 +4441,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -4331,7 +4480,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
 `TaoTermShellSetHessian()`,
@@ -4370,7 +4519,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetHessian()`,
@@ -4413,7 +4562,7 @@ Calling sequence of `view`:
 
 Level: intermediate
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -4457,7 +4606,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSUM`
+See also: `TaoTerm`, `TAOTERMSUM`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermSumAddTerm"))
@@ -4496,7 +4645,6 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`
 
@@ -4536,7 +4684,6 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumSetNumberTerms()`
@@ -4581,7 +4728,6 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumSetTerm()`,
@@ -4607,7 +4753,7 @@ end
                sumterm, index, prefix_, scale_, term_, map_,
               )
 
-	prefix = unsafe_string(prefix_[])
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 	scale = scale_[]
 	term = term_[]
 	map = PetscMat(map_[], petsclib)
@@ -4633,7 +4779,6 @@ Output Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermComputeHessian()`,
@@ -4682,7 +4827,6 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumSetTermMask()`
@@ -4724,7 +4868,10 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_tao_term),
+Note:
+This is a wrapper around `VecCreateNest()`, but that function does not allow `NULL` for any of the `Vec`s in the array.  A 0-length
+vector will be created for each `NULL` `Vec` that will be internally ignored by `TAOTERMSUM`.
+
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumParametersUnpack()`,
@@ -4769,7 +4916,6 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumParametersPack()`,
@@ -4809,7 +4955,9 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
+Note:
+If `n_terms` is smaller than the current number of terms, the trailing terms will be dropped.
+
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumGetNumberTerms()`
@@ -4850,7 +4998,6 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumGetTerm()`,
@@ -4892,7 +5039,11 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_tao_term),
+Notes:
+If the inner term has the form g(x) = \\alpha f(Ax; p), the "mapped" Hessians should be able to hold the Hessian
+\\nabla^2 g and the unmapped Hessians should be able to hold the Hessian \\nabla_x^2 f.  If the term is not mapped,
+just pass the unmapped Hessians (e.g. `TaoTermSumSetTermHessianMatrices(term, 0, H, Hpre, NULL, NULL)`).
+
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermComputeHessian()`,
@@ -4934,7 +5085,12 @@ Options Database Keys:
 
 Level: developer
 
-See also: [](sec_tao_term),
+Note:
+Some optimization methods may add a damping term to the Hessian of an
+objective function without affecting the objective or gradient.  If, e.g.,
+the regularizer has index `1`, then this can be accomplished with
+`TaoTermSumSetTermMask(term, 1, TAOTERM_MASK_OBJECTIVE | TAOTERM_MASK_GRADIENT)`.
+
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumGetTermMask()`
@@ -4971,7 +5127,6 @@ Input Parameters:
 
 Level: beginner
 
-See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,

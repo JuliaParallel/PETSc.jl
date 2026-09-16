@@ -1180,7 +1180,7 @@ end
 end 
 
 """
-	name::PetscDualSpaceType = PetscDualSpaceGetType(petsclib::PetscLibType, sp::PetscDualSpace) 
+	name::String = PetscDualSpaceGetType(petsclib::PetscLibType, sp::PetscDualSpace) 
 Gets the `PetscDualSpaceType` name (as a string) from the object.
 
 Not Collective
@@ -2111,7 +2111,7 @@ end
 end 
 
 """
-	PetscDualSpaceSetType(petsclib::PetscLibType, sp::PetscDualSpace, name::PetscDualSpaceType) 
+	PetscDualSpaceSetType(petsclib::PetscLibType, sp::PetscDualSpace, name::String) 
 Builds a particular `PetscDualSpace` based on its `PetscDualSpaceType`
 
 Collective
@@ -2130,11 +2130,11 @@ See also: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceGetType()`, `Pe
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetType"))
 """
-function PetscDualSpaceSetType(petsclib::PetscLibType, sp::PetscDualSpace, name::PetscDualSpaceType)
+function PetscDualSpaceSetType(petsclib::PetscLibType, sp::PetscDualSpace, name::String)
     error("PetscDualSpaceSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscDualSpaceSetType(petsclib::$UnionPetscLib, sp::PetscDualSpace, name::PetscDualSpaceType )
+@for_petsc function PetscDualSpaceSetType(petsclib::$UnionPetscLib, sp::PetscDualSpace, name::String )
 
     @chk ccall(
                (:PetscDualSpaceSetType, $petsc_library),

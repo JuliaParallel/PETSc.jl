@@ -216,7 +216,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = PFGetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF) 
+	prefix::String = PFGetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF) 
 Gets the prefix used for searching for all
 `PF` options in the database.
 
@@ -249,13 +249,13 @@ end
                pf, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
 
 """
-	type::PFType = PFGetType(petsclib::PetscLibType, pf::AbstractPF) 
+	type::String = PFGetType(petsclib::PetscLibType, pf::AbstractPF) 
 Gets the `PFType` name (as a string) from the `PF`
 context.
 
@@ -461,7 +461,7 @@ end
 end 
 
 """
-	PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid}) 
+	PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::String, ctx::Ptr{Cvoid}) 
 Builds `PF` for a particular function
 
 Collective
@@ -481,11 +481,11 @@ See also: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`, `PFTy
 # External Links
 $(_doc_external("PF/PFSetType"))
 """
-function PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid})
+function PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::String, ctx::Ptr{Cvoid})
     error("PFSetType: no generated method for these argument types")
 end
 
-@for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid} )
+@for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::AbstractPF, type::String, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PFSetType, $petsc_library),

@@ -88,7 +88,7 @@ not scattered to retains its old value; i.e. the vector is NOT first zeroed.
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `InsertMode`, `ScatterMode`
+See also: `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `InsertMode`, `ScatterMode`
 
 # External Links
 $(_doc_external("Vec/VecScatterBegin"))
@@ -124,7 +124,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterCreate()`, `VecScatterDestroy()`
+See also: `VecScatter`, `VecScatterType`, `VecScatterCreate()`, `VecScatterDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecScatterCopy"))
@@ -171,7 +171,7 @@ eliminates the chance for overlap of computation and communication
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterDestroy()`, `VecScatterCreateToAll()`, `VecScatterCreateToZero()`, `PetscSFCreate()`,
+See also: `VecScatter`, `VecScatterDestroy()`, `VecScatterCreateToAll()`, `VecScatterCreateToZero()`, `PetscSFCreate()`,
 `VecScatterType`, `InsertMode`, `ScatterMode`, `VecScatterBegin()`, `VecScatterEnd()`
 
 # External Links
@@ -212,7 +212,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToZero()`, `VecScatterBegin()`, `VecScatterEnd()`
+See also: `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToZero()`, `VecScatterBegin()`, `VecScatterEnd()`
 
 # External Links
 $(_doc_external("Vec/VecScatterCreateToAll"))
@@ -255,7 +255,7 @@ of length zero on all other processors
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToAll()`, `VecScatterBegin()`, `VecScatterEnd()`
+See also: `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToAll()`, `VecScatterBegin()`, `VecScatterEnd()`
 
 # External Links
 $(_doc_external("Vec/VecScatterCreateToZero"))
@@ -292,7 +292,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
+See also: `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
 
 # External Links
 $(_doc_external("Vec/VecScatterDestroy"))
@@ -331,7 +331,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterBegin()`, `VecScatterCreate()`
+See also: `VecScatter`, `VecScatterBegin()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterEnd"))
@@ -405,7 +405,7 @@ Output Parameter:
 
 Level: developer
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `VecScatterBegin()`
+See also: `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `VecScatterBegin()`
 
 # External Links
 $(_doc_external("Vec/VecScatterGetMerged"))
@@ -443,7 +443,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterSetType()`, `VecScatterCreate()`
+See also: `VecScatter`, `VecScatterType`, `VecScatterSetType()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterGetType"))
@@ -516,7 +516,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecRegister()`
+See also: `VecScatter`, `VecScatterType`, `VecRegister()`
 
 # External Links
 $(_doc_external("Vec/VecScatterRegister"))
@@ -552,7 +552,7 @@ Input Parameters:
 
 Level: developer
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`
+See also: `VecScatter`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterRemap"))
@@ -583,7 +583,7 @@ Collective
 Input Parameter:
 - `sf` - The vector scatter
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterDestroy()`, `VecScatterSetUp()`
+See also: `VecScatter`, `VecScatterCreate()`, `VecScatterDestroy()`, `VecScatterSetUp()`
 
 # External Links
 $(_doc_external("Vec/VecScatterSetFromOptions"))
@@ -620,7 +620,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterGetType()`, `VecScatterCreate()`
+See also: `VecScatter`, `VecScatterType`, `VecScatterGetType()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterSetType"))
@@ -653,7 +653,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
+See also: `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
 
 # External Links
 $(_doc_external("Vec/VecScatterSetUp"))
@@ -687,7 +687,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `PetscViewer`, `VecScatterViewFromOptions()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
+See also: `VecScatter`, `PetscViewer`, `VecScatterViewFromOptions()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterView"))
@@ -725,7 +725,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_scatter), `VecScatter`, `VecScatterView()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
+See also: `VecScatter`, `VecScatterView()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterViewFromOptions"))
@@ -876,29 +876,6 @@ end
                PetscErrorCode,
                (CVec, CDM),
                v, dm,
-              )
-
-
-	return nothing
-end 
-
-"""
-	VecSetErrorIfLocked(petsclib::PetscLibType, x::AbstractPetscVec, arg::PetscInt) 
-
-# External Links
-$(_doc_external("Vec/VecSetErrorIfLocked"))
-"""
-function VecSetErrorIfLocked(petsclib::PetscLibType, x::AbstractPetscVec, arg::Integer)
-    error("VecSetErrorIfLocked: no generated method for these argument types")
-end
-
-@for_petsc function VecSetErrorIfLocked(petsclib::$UnionPetscLib, x::AbstractPetscVec, arg::$PetscInt )
-
-    @chk ccall(
-               (:VecSetErrorIfLocked, $petsc_library),
-               PetscErrorCode,
-               (CVec, $PetscInt),
-               x, arg,
               )
 
 
@@ -1338,7 +1315,7 @@ end
 end 
 
 """
-	VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::VecType) 
+	VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::String) 
 Builds a vector, for a particular vector implementation.
 
 Collective
@@ -1357,11 +1334,11 @@ See also: `Vec`, `VecType`, `VecGetType()`, `VecCreate()`, `VecDuplicate()`, `Ve
 # External Links
 $(_doc_external("Vec/VecSetType"))
 """
-function VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::VecType)
+function VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::String)
     error("VecSetType: no generated method for these argument types")
 end
 
-@for_petsc function VecSetType(petsclib::$UnionPetscLib, vec::AbstractPetscVec, newType::VecType )
+@for_petsc function VecSetType(petsclib::$UnionPetscLib, vec::AbstractPetscVec, newType::String )
 
     @chk ccall(
                (:VecSetType, $petsc_library),
@@ -1401,52 +1378,6 @@ end
                PetscErrorCode,
                (CVec,),
                v,
-              )
-
-
-	return nothing
-end 
-
-"""
-	VecSetValue(petsclib::PetscLibType, v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) 
-
-# External Links
-$(_doc_external("Vec/VecSetValue"))
-"""
-function VecSetValue(petsclib::PetscLibType, v::AbstractPetscVec, i::Integer, va::Number, mode::InsertMode)
-    error("VecSetValue: no generated method for these argument types")
-end
-
-@for_petsc function VecSetValue(petsclib::$UnionPetscLib, v::AbstractPetscVec, i::$PetscInt, va::$PetscScalar, mode::InsertMode )
-
-    @chk ccall(
-               (:VecSetValue, $petsc_library),
-               PetscErrorCode,
-               (CVec, $PetscInt, $PetscScalar, InsertMode),
-               v, i, va, mode,
-              )
-
-
-	return nothing
-end 
-
-"""
-	VecSetValueLocal(petsclib::PetscLibType, v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) 
-
-# External Links
-$(_doc_external("Vec/VecSetValueLocal"))
-"""
-function VecSetValueLocal(petsclib::PetscLibType, v::AbstractPetscVec, i::Integer, va::Number, mode::InsertMode)
-    error("VecSetValueLocal: no generated method for these argument types")
-end
-
-@for_petsc function VecSetValueLocal(petsclib::$UnionPetscLib, v::AbstractPetscVec, i::$PetscInt, va::$PetscScalar, mode::InsertMode )
-
-    @chk ccall(
-               (:VecSetValueLocal, $petsc_library),
-               PetscErrorCode,
-               (CVec, $PetscInt, $PetscScalar, InsertMode),
-               v, i, va, mode,
               )
 
 

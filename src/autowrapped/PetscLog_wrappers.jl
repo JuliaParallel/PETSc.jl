@@ -630,7 +630,7 @@ end
 end 
 
 """
-	name::PetscLogHandlerType = PetscLogHandlerGetType(petsclib::PetscLibType, handler::PetscLogHandler) 
+	name::String = PetscLogHandlerGetType(petsclib::PetscLibType, handler::PetscLogHandler) 
 Gets the `PetscLoagHandlerType` (as a string) from the `PetscLogHandler` object.
 
 Not collective
@@ -870,7 +870,7 @@ end
 end 
 
 """
-	PetscLogHandlerSetType(petsclib::PetscLibType, handler::PetscLogHandler, name::PetscLogHandlerType) 
+	PetscLogHandlerSetType(petsclib::PetscLibType, handler::PetscLogHandler, name::String) 
 Set the type of a `PetscLogHandler`
 
 Input Parameters:
@@ -884,11 +884,11 @@ See also: `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerRegister
 # External Links
 $(_doc_external("Log/PetscLogHandlerSetType"))
 """
-function PetscLogHandlerSetType(petsclib::PetscLibType, handler::PetscLogHandler, name::PetscLogHandlerType)
+function PetscLogHandlerSetType(petsclib::PetscLibType, handler::PetscLogHandler, name::String)
     error("PetscLogHandlerSetType: no generated method for these argument types")
 end
 
-@for_petsc function PetscLogHandlerSetType(petsclib::$UnionPetscLib, handler::PetscLogHandler, name::PetscLogHandlerType )
+@for_petsc function PetscLogHandlerSetType(petsclib::$UnionPetscLib, handler::PetscLogHandler, name::String )
 
     @chk ccall(
                (:PetscLogHandlerSetType, $petsc_library),

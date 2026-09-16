@@ -309,29 +309,6 @@ end
 end 
 
 """
-	ISColoringValueCast(petsclib::PetscLibType, a::PetscCount, b::ISColoringValue) 
-
-# External Links
-$(_doc_external("Vec/ISColoringValueCast"))
-"""
-function ISColoringValueCast(petsclib::PetscLibType, a::PetscCount, b::ISColoringValue)
-    error("ISColoringValueCast: no generated method for these argument types")
-end
-
-@for_petsc function ISColoringValueCast(petsclib::$UnionPetscLib, a::PetscCount, b::ISColoringValue )
-
-    @chk ccall(
-               (:ISColoringValueCast, $petsc_library),
-               PetscErrorCode,
-               (PetscCount, Ptr{ISColoringValue}),
-               a, b,
-              )
-
-
-	return nothing
-end 
-
-"""
 	ISColoringView(petsclib::PetscLibType, iscoloring::ISColoring, viewer::PetscViewer) 
 Views an `ISColoring` coloring context.
 
@@ -420,7 +397,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
 `ISLocalToGlobalMappingApplyIS()`, `AOCreateBasic()`, `AOApplicationToPetsc()`,
 `AOPetscToApplication()`, `ISGlobalToLocalMappingApply()`
 
@@ -465,7 +442,7 @@ If the index values are {0,1,6,7} set with a call to `ISLocalToGlobalMappingCrea
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
+See also: `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
 `ISLocalToGlobalMappingApplyIS()`, `AOCreateBasic()`, `AOApplicationToPetsc()`,
 `AOPetscToApplication()`, `ISGlobalToLocalMappingApply()`
 
@@ -507,7 +484,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`, `ISGlobalToLocalMappingApply()`
 
 # External Links
@@ -548,7 +525,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingConcatenate"))
@@ -591,7 +568,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`,
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`,
 `ISLOCALTOGLOBALMAPPINGBASIC`, `ISLOCALTOGLOBALMAPPINGHASH`,
 `ISLocalToGlobalMappingSetType()`, `ISLocalToGlobalMappingType`
 
@@ -632,7 +609,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetFromOptions()`
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetFromOptions()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingCreateIS"))
@@ -671,7 +648,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `PetscSF`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`
+See also: `PetscSF`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingCreateSF"))
@@ -707,7 +684,7 @@ Input Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingDestroy"))
@@ -744,7 +721,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingDuplicate"))
@@ -782,7 +759,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`,
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`,
 `ISLocalToGlobalMappingRestoreBlockIndices()`
 
 # External Links
@@ -825,7 +802,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingRestoreBlockInfo()`, `ISLocalToGlobalMappingGetBlockMultiLeavesSF()`
 
 # External Links
@@ -870,7 +847,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingGetBlockNodeInfo()`, `PetscSF`
+See also: `ISLocalToGlobalMappingGetBlockNodeInfo()`, `PetscSF`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockMultiLeavesSF"))
@@ -954,7 +931,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockSize"))
@@ -992,7 +969,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingRestoreIndices()`,
+See also: `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingRestoreIndices()`,
 `ISLocalToGlobalMappingGetBlockIndices()`, `ISLocalToGlobalMappingRestoreBlockIndices()`
 
 # External Links
@@ -1035,7 +1012,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingRestoreInfo()`, `ISLocalToGlobalMappingGetNodeInfo()`
 
 # External Links
@@ -1082,7 +1059,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`, `ISLocalToGlobalMappingRestoreNodeInfo()`, `ISLocalToGlobalMappingGetBlockNodeInfo()`
 
 # External Links
@@ -1125,7 +1102,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingGetSize"))
@@ -1150,7 +1127,7 @@ end
 end 
 
 """
-	type::ISLocalToGlobalMappingType = ISLocalToGlobalMappingGetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) 
+	type::String = ISLocalToGlobalMappingGetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) 
 Get the type of the `ISLocalToGlobalMapping`
 
 Not Collective
@@ -1163,7 +1140,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetType()`,
+See also: `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetType()`,
 `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
@@ -1200,7 +1177,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView()`, `ISLocalToGlobalMappingCreate()`
+See also: `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingLoad"))
@@ -1232,7 +1209,7 @@ Input Parameters:
 - `sname`    - name of a new method
 - `function` - routine to create method context
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingRegisterAll()`, `ISLocalToGlobalMappingRegisterDestroy()`, `ISLOCALTOGLOBALMAPPINGBASIC`,
+See also: `ISLocalToGlobalMappingRegisterAll()`, `ISLocalToGlobalMappingRegisterDestroy()`, `ISLOCALTOGLOBALMAPPINGBASIC`,
 `ISLOCALTOGLOBALMAPPINGHASH`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`
 
 # External Links
@@ -1263,7 +1240,7 @@ Not Collective
 
 Level: advanced
 
-See also: [](sec_scatter), `ISRegister()`, `ISLocalToGlobalRegister()`
+See also: `ISRegister()`, `ISLocalToGlobalRegister()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRegisterAll"))
@@ -1296,7 +1273,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
+See also: `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockIndices"))
@@ -1334,7 +1311,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`
 
 # External Links
@@ -1411,7 +1388,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
+See also: `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreIndices"))
@@ -1449,7 +1426,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`
 
 # External Links
@@ -1489,7 +1466,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`
 
 # External Links
@@ -1526,7 +1503,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingSetBlockSize"))
@@ -1562,7 +1539,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`,
+See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`,
 `ISLocalToGlobalMappingCreateIS()`, `ISLOCALTOGLOBALMAPPINGBASIC`,
 `ISLOCALTOGLOBALMAPPINGHASH`, `ISLocalToGlobalMappingSetType()`, `ISLocalToGlobalMappingType`
 
@@ -1587,7 +1564,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingSetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, type::ISLocalToGlobalMappingType) 
+	ISLocalToGlobalMappingSetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, type::String) 
 Sets the implementation type `ISLocalToGlobalMapping` will use
 
 Logically Collective
@@ -1601,16 +1578,16 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingGetType()`
+See also: `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingGetType()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingSetType"))
 """
-function ISLocalToGlobalMappingSetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, type::ISLocalToGlobalMappingType)
+function ISLocalToGlobalMappingSetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, type::String)
     error("ISLocalToGlobalMappingSetType: no generated method for these argument types")
 end
 
-@for_petsc function ISLocalToGlobalMappingSetType(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, type::ISLocalToGlobalMappingType )
+@for_petsc function ISLocalToGlobalMappingSetType(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, type::String )
 
     @chk ccall(
                (:ISLocalToGlobalMappingSetType, $petsc_library),
@@ -1635,7 +1612,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
+See also: `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingView"))
@@ -1673,7 +1650,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView`, `PetscObjectViewFromOptions()`, `ISLocalToGlobalMappingCreate()`
+See also: `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView`, `PetscObjectViewFromOptions()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingViewFromOptions"))

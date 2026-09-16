@@ -314,7 +314,7 @@ end
 end 
 
 """
-	type::DMAdaptorType = DMAdaptorGetType(petsclib::PetscLibType, adaptor::DMAdaptor) 
+	type::String = DMAdaptorGetType(petsclib::PetscLibType, adaptor::DMAdaptor) 
 Gets the type name (as a string) from the adaptor.
 
 Not Collective
@@ -597,7 +597,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorRegister(petsclib::PetscLibType, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::external, create::external, destroy::external) 
+	DMAdaptorMonitorRegister(petsclib::PetscLibType, name::String, vtype::String, format::PetscViewerFormat, monitor::external, create::external, destroy::external) 
 Registers a mesh adaptation monitor routine that may be accessed with `DMAdaptorMonitorSetFromOptions()`
 
 Not Collective
@@ -617,11 +617,11 @@ See also: `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorRegisterAll()`,
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorRegister"))
 """
-function DMAdaptorMonitorRegister(petsclib::PetscLibType, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::external, create::external, destroy::external)
+function DMAdaptorMonitorRegister(petsclib::PetscLibType, name::String, vtype::String, format::PetscViewerFormat, monitor::external, create::external, destroy::external)
     error("DMAdaptorMonitorRegister: no generated method for these argument types")
 end
 
-@for_petsc function DMAdaptorMonitorRegister(petsclib::$UnionPetscLib, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::external, create::external, destroy::external )
+@for_petsc function DMAdaptorMonitorRegister(petsclib::$UnionPetscLib, name::String, vtype::String, format::PetscViewerFormat, monitor::external, create::external, destroy::external )
 
     @chk ccall(
                (:DMAdaptorMonitorRegister, $petsc_library),
@@ -1173,7 +1173,7 @@ end
 end 
 
 """
-	DMAdaptorSetType(petsclib::PetscLibType, adaptor::DMAdaptor, method::DMAdaptorType) 
+	DMAdaptorSetType(petsclib::PetscLibType, adaptor::DMAdaptor, method::String) 
 Sets the particular implementation for a adaptor.
 
 Collective
@@ -1192,11 +1192,11 @@ See also: `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorType`, `DMAdaptorGetType()`, `D
 # External Links
 $(_doc_external("DM/DMAdaptorSetType"))
 """
-function DMAdaptorSetType(petsclib::PetscLibType, adaptor::DMAdaptor, method::DMAdaptorType)
+function DMAdaptorSetType(petsclib::PetscLibType, adaptor::DMAdaptor, method::String)
     error("DMAdaptorSetType: no generated method for these argument types")
 end
 
-@for_petsc function DMAdaptorSetType(petsclib::$UnionPetscLib, adaptor::DMAdaptor, method::DMAdaptorType )
+@for_petsc function DMAdaptorSetType(petsclib::$UnionPetscLib, adaptor::DMAdaptor, method::String )
 
     @chk ccall(
                (:DMAdaptorSetType, $petsc_library),
@@ -1909,7 +1909,7 @@ end
 end 
 
 """
-	type::DMFieldType = DMFieldGetType(petsclib::PetscLibType, field::DMField) 
+	type::String = DMFieldGetType(petsclib::PetscLibType, field::DMField) 
 Gets the `DMFieldType` name (as a string) from the `DMField`.
 
 Not Collective
@@ -2008,7 +2008,7 @@ end
 end 
 
 """
-	DMFieldSetType(petsclib::PetscLibType, field::DMField, type::DMFieldType) 
+	DMFieldSetType(petsclib::PetscLibType, field::DMField, type::String) 
 set the `DMField` implementation
 
 Collective
@@ -2024,11 +2024,11 @@ See also: `DMField`, `DMFieldGetType()`, `DMFieldType`
 # External Links
 $(_doc_external("DM/DMFieldSetType"))
 """
-function DMFieldSetType(petsclib::PetscLibType, field::DMField, type::DMFieldType)
+function DMFieldSetType(petsclib::PetscLibType, field::DMField, type::String)
     error("DMFieldSetType: no generated method for these argument types")
 end
 
-@for_petsc function DMFieldSetType(petsclib::$UnionPetscLib, field::DMField, type::DMFieldType )
+@for_petsc function DMFieldSetType(petsclib::$UnionPetscLib, field::DMField, type::String )
 
     @chk ccall(
                (:DMFieldSetType, $petsc_library),
@@ -2657,7 +2657,7 @@ end
               )
 
 	equal = equal_[]
-	message = unsafe_string(message_[])
+	message = message_[] == C_NULL ? "" : unsafe_string(message_[])
 
 	return equal,message
 end 
@@ -3489,7 +3489,7 @@ end
 end 
 
 """
-	type::DMLabelType = DMLabelGetType(petsclib::PetscLibType, label::DMLabel) 
+	type::String = DMLabelGetType(petsclib::PetscLibType, label::DMLabel) 
 Gets the type name (as a string) from the label.
 
 Not Collective
@@ -4325,7 +4325,7 @@ end
 end 
 
 """
-	DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::DMLabelType) 
+	DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::String) 
 Sets the particular implementation for a label.
 
 Collective
@@ -4344,11 +4344,11 @@ See also: `DMLabel`, `DM`, `DMLabelGetType()`, `DMLabelCreate()`, `DMLabelType`
 # External Links
 $(_doc_external("DMLabel/DMLabelSetType"))
 """
-function DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::DMLabelType)
+function DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::String)
     error("DMLabelSetType: no generated method for these argument types")
 end
 
-@for_petsc function DMLabelSetType(petsclib::$UnionPetscLib, label::DMLabel, method::DMLabelType )
+@for_petsc function DMLabelSetType(petsclib::$UnionPetscLib, label::DMLabel, method::String )
 
     @chk ccall(
                (:DMLabelSetType, $petsc_library),
@@ -6722,7 +6722,7 @@ end
 end 
 
 """
-	type::DMPlexTransformType = DMPlexTransformGetType(petsclib::PetscLibType, tr::DMPlexTransform) 
+	type::String = DMPlexTransformGetType(petsclib::PetscLibType, tr::DMPlexTransform) 
 Gets the type name (as a string) from the transform.
 
 Not Collective
@@ -7136,7 +7136,7 @@ end
 end 
 
 """
-	DMPlexTransformSetType(petsclib::PetscLibType, tr::DMPlexTransform, method::DMPlexTransformType) 
+	DMPlexTransformSetType(petsclib::PetscLibType, tr::DMPlexTransform, method::String) 
 Sets the particular implementation for a transform.
 
 Collective
@@ -7155,11 +7155,11 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTrans
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetType"))
 """
-function DMPlexTransformSetType(petsclib::PetscLibType, tr::DMPlexTransform, method::DMPlexTransformType)
+function DMPlexTransformSetType(petsclib::PetscLibType, tr::DMPlexTransform, method::String)
     error("DMPlexTransformSetType: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexTransformSetType(petsclib::$UnionPetscLib, tr::DMPlexTransform, method::DMPlexTransformType )
+@for_petsc function DMPlexTransformSetType(petsclib::$UnionPetscLib, tr::DMPlexTransform, method::String )
 
     @chk ccall(
                (:DMPlexTransformSetType, $petsc_library),
@@ -7355,7 +7355,7 @@ end
 end 
 
 """
-	cellid::Ptr{Cchar} = DMSwarmCellDMGetCellID(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
+	cellid::String = DMSwarmCellDMGetCellID(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the cell id field name for the `DMSwarm`
 
 Not Collective
@@ -7387,7 +7387,7 @@ end
                celldm, cellid_,
               )
 
-	cellid = cellid_[]
+	cellid = cellid_[] == C_NULL ? "" : unsafe_string(cellid_[])
 
 	return cellid
 end 

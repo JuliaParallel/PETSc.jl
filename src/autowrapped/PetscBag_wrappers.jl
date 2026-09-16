@@ -153,48 +153,9 @@ end
                bag, name_,
               )
 
-	name = unsafe_string(name_[])
+	name = name_[] == C_NULL ? "" : unsafe_string(name_[])
 
 	return name
-end 
-
-"""
-	names::Ptr{Cchar} = PetscBagGetNames(petsclib::PetscLibType, bag::PetscBag) 
-Get the names of all entries in the bag
-
-Not Collective
-
-Input Parameter:
-- `bag` - the bag of values
-
-Output Parameter:
-- `names` - pass in an array of char pointers to hold the names. The array must be as long as the number of items in the bag.
-
-Level: intermediate
-
-See also: `PetscBag`, `PetscBagGetName()`, `PetscBagSetName()`, `PetscBagCreate()`, `PetscBagGetData()`,
-`PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`, `PetscBagRegisterEnum()`
-
-# External Links
-$(_doc_external("Bag/PetscBagGetNames"))
-"""
-function PetscBagGetNames(petsclib::PetscLibType, bag::PetscBag)
-    error("PetscBagGetNames: no generated method for these argument types")
-end
-
-@for_petsc function PetscBagGetNames(petsclib::$UnionPetscLib, bag::PetscBag )
-	names_ = Ref{Ptr{Cchar}}()
-
-    @chk ccall(
-               (:PetscBagGetNames, $petsc_library),
-               PetscErrorCode,
-               (PetscBag, Ptr{Ptr{Cchar}}),
-               bag, names_,
-              )
-
-	names = names_[]
-
-	return names
 end 
 
 """

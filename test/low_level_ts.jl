@@ -23,7 +23,7 @@ using MPI
         @test_nowarn PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_LINEAR)
         
         # Set TS type
-        @test_nowarn PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, "bdf"))
+        @test_nowarn PETSc.LibPETSc.TSSetType(petsclib, ts, "bdf")
         
         # Get TS type back
         tstype = PETSc.LibPETSc.TSGetType(petsclib, ts)
@@ -34,7 +34,7 @@ using MPI
     
     @testset "TS time parameters" begin
         ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
-        PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, "bdf"))
+        PETSc.LibPETSc.TSSetType(petsclib, ts, "bdf")
         
         # Set time parameters
         @test_nowarn PETSc.LibPETSc.TSSetTime(petsclib, ts, 0.0)
@@ -54,7 +54,7 @@ using MPI
     @testset "TS with different solver types" begin
         for tstype in ["euler", "bdf", "rk"]
             ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
-            @test_nowarn PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, tstype))
+            @test_nowarn PETSc.LibPETSc.TSSetType(petsclib, ts, tstype)
             retrieved_type = PETSc.LibPETSc.TSGetType(petsclib, ts)
             @test retrieved_type == tstype
             PETSc.LibPETSc.TSDestroy(petsclib, ts)

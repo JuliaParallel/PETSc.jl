@@ -24,7 +24,7 @@ PETSc.initialize(petsclib)
 
 # Create a DMForest
 forest = LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD)
-LibPETSc.DMSetType(petsclib, forest, "forest")  # String convenience wrapper
+LibPETSc.DMSetType(petsclib, forest, LibPETSc.DMFOREST)
 # Set^ the geometric/topological dimension (e.g., 2 for a surface)
 LibPETSc.DMSetDimension(petsclib, forest, 2)
 
@@ -50,12 +50,9 @@ LibPETSc.DMForestSetPartitionOverlap(petsclib, forest, 0)
 # (Skip DMSetFromOptions in this simple example to avoid parsing unexpected runtime options)
 LibPETSc.DMSetUp(petsclib, forest)
 
-# Adapt based on some criterion
-# Create adapted forest (returns via out-parameter)
-tdm = LibPETSc.PetscDM(C_NULL, petsclib)
-LibPETSc.DMForestTemplate(petsclib, forest, MPI.COMM_WORLD, tdm)
-adapted = tdm
-# `adapted` now points to the adapted DM (if any) and should be checked before use.
+# Create a new forest templated on this one (same base DM and settings); adapt it
+# with DMForestSetAdaptivityForest / DMForestSetAdaptivityLabel before DMSetUp
+adapted = LibPETSc.DMForestTemplate(petsclib, forest, MPI.COMM_WORLD)
 
 # Cleanup
 LibPETSc.DMDestroy(petsclib, adapted)

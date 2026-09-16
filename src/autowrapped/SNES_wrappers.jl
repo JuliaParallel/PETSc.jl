@@ -108,7 +108,7 @@ end
 end 
 
 """
-	SNESCompositeAddSNES(petsclib::PetscLibType, snes::AbstractSNES, type::SNESType) 
+	SNESCompositeAddSNES(petsclib::PetscLibType, snes::AbstractSNES, type::String) 
 Adds another `SNES` to the `SNESCOMPOSITE`
 
 Collective
@@ -124,11 +124,11 @@ See also: `SNES`, `SNESCOMPOSITE`, `SNESCompositeGetSNES()`
 # External Links
 $(_doc_external("SNES/SNESCompositeAddSNES"))
 """
-function SNESCompositeAddSNES(petsclib::PetscLibType, snes::AbstractSNES, type::SNESType)
+function SNESCompositeAddSNES(petsclib::PetscLibType, snes::AbstractSNES, type::String)
     error("SNESCompositeAddSNES: no generated method for these argument types")
 end
 
-@for_petsc function SNESCompositeAddSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, type::SNESType )
+@for_petsc function SNESCompositeAddSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, type::String )
 
     @chk ccall(
                (:SNESCompositeAddSNES, $petsc_library),
@@ -2742,7 +2742,7 @@ end
                snes, strreason_,
               )
 
-	strreason = unsafe_string(strreason_[])
+	strreason = strreason_[] == C_NULL ? "" : unsafe_string(strreason_[])
 
 	return strreason
 end 
@@ -3819,7 +3819,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = SNESGetOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES) 
+	prefix::String = SNESGetOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES) 
 Gets the prefix used for searching for all
 `SNES` options in the database.
 
@@ -3852,7 +3852,7 @@ end
                snes, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -4116,7 +4116,7 @@ end
 end 
 
 """
-	type::SNESType = SNESGetType(petsclib::PetscLibType, snes::AbstractSNES) 
+	type::String = SNESGetType(petsclib::PetscLibType, snes::AbstractSNES) 
 Gets the `SNES` method type and name (as a string).
 
 Not Collective
@@ -4588,7 +4588,7 @@ end
 end 
 
 """
-	mstype::SNESMSType = SNESMSGetType(petsclib::PetscLibType, snes::AbstractSNES) 
+	mstype::String = SNESMSGetType(petsclib::PetscLibType, snes::AbstractSNES) 
 Get the type of multistage smoother `SNESMS`
 
 Not Collective
@@ -4654,7 +4654,7 @@ end
 end 
 
 """
-	SNESMSRegister(petsclib::PetscLibType, name::SNESMSType, nstages::PetscInt, nregisters::PetscInt, stability::PetscReal, gamma::Vector{PetscReal}, delta::Vector{PetscReal}, betasub::Vector{PetscReal}) 
+	SNESMSRegister(petsclib::PetscLibType, name::String, nstages::PetscInt, nregisters::PetscInt, stability::PetscReal, gamma::Vector{PetscReal}, delta::Vector{PetscReal}, betasub::Vector{PetscReal}) 
 register a multistage scheme for `SNESMS`
 
 Logically Collective, No Fortran Support
@@ -4675,11 +4675,11 @@ See also: `SNES`, `SNESMS`
 # External Links
 $(_doc_external("SNES/SNESMSRegister"))
 """
-function SNESMSRegister(petsclib::PetscLibType, name::SNESMSType, nstages::Integer, nregisters::Integer, stability::Real, gamma::AbstractVector{<:Number}, delta::AbstractVector{<:Number}, betasub::AbstractVector{<:Number})
+function SNESMSRegister(petsclib::PetscLibType, name::String, nstages::Integer, nregisters::Integer, stability::Real, gamma::AbstractVector{<:Number}, delta::AbstractVector{<:Number}, betasub::AbstractVector{<:Number})
     error("SNESMSRegister: no generated method for these argument types")
 end
 
-@for_petsc function SNESMSRegister(petsclib::$UnionPetscLib, name::SNESMSType, nstages::$PetscInt, nregisters::$PetscInt, stability::$PetscReal, gamma::Vector{$PetscReal}, delta::Vector{$PetscReal}, betasub::Vector{$PetscReal} )
+@for_petsc function SNESMSRegister(petsclib::$UnionPetscLib, name::String, nstages::$PetscInt, nregisters::$PetscInt, stability::$PetscReal, gamma::Vector{$PetscReal}, delta::Vector{$PetscReal}, betasub::Vector{$PetscReal} )
 
     @chk ccall(
                (:SNESMSRegister, $petsc_library),
@@ -4785,7 +4785,7 @@ end
 end 
 
 """
-	SNESMSSetType(petsclib::PetscLibType, snes::AbstractSNES, mstype::SNESMSType) 
+	SNESMSSetType(petsclib::PetscLibType, snes::AbstractSNES, mstype::String) 
 Set the type of multistage smoother `SNESMS`
 
 Logically Collective
@@ -4801,11 +4801,11 @@ See also: `SNESMS`, `SNESMSGetType()`, `SNESMSType`
 # External Links
 $(_doc_external("SNES/SNESMSSetType"))
 """
-function SNESMSSetType(petsclib::PetscLibType, snes::AbstractSNES, mstype::SNESMSType)
+function SNESMSSetType(petsclib::PetscLibType, snes::AbstractSNES, mstype::String)
     error("SNESMSSetType: no generated method for these argument types")
 end
 
-@for_petsc function SNESMSSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, mstype::SNESMSType )
+@for_petsc function SNESMSSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, mstype::String )
 
     @chk ccall(
                (:SNESMSSetType, $petsc_library),
@@ -7994,7 +7994,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = SNESPythonGetType(petsclib::PetscLibType, snes::AbstractSNES) 
+	pyname::String = SNESPythonGetType(petsclib::PetscLibType, snes::AbstractSNES) 
 Get the type of a `SNES` object implemented in Python set with `SNESPythonSetType()`
 
 Not Collective
@@ -8026,7 +8026,7 @@ end
                snes, pyname_,
               )
 
-	pyname = pyname_[]
+	pyname = pyname_[] == C_NULL ? "" : unsafe_string(pyname_[])
 
 	return pyname
 end 
@@ -9888,7 +9888,7 @@ end
 end 
 
 """
-	SNESSetType(petsclib::PetscLibType, snes::AbstractSNES, type::SNESType) 
+	SNESSetType(petsclib::PetscLibType, snes::AbstractSNES, type::String) 
 Sets the algorithm/method to be used to solve the nonlinear system with the given `SNES`
 
 Collective
@@ -9907,11 +9907,11 @@ See also: `SNES`, `SNESSolve()`, `SNESType`, `SNESCreate()`, `SNESDestroy()`, `S
 # External Links
 $(_doc_external("SNES/SNESSetType"))
 """
-function SNESSetType(petsclib::PetscLibType, snes::AbstractSNES, type::SNESType)
+function SNESSetType(petsclib::PetscLibType, snes::AbstractSNES, type::String)
     error("SNESSetType: no generated method for these argument types")
 end
 
-@for_petsc function SNESSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::SNESType )
+@for_petsc function SNESSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::String )
 
     @chk ccall(
                (:SNESSetType, $petsc_library),
@@ -10683,7 +10683,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_vi), `SNES`, `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
+See also: `SNES`, `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
 
 # External Links
 $(_doc_external("SNES/SNESVIGetVariableBounds"))
@@ -10725,7 +10725,7 @@ Calling sequence of `compute`:
 
 Level: advanced
 
-See also: [](sec_vi), `SNES`, `SNESVISetVariableBounds()`, `DMSetVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`,
+See also: `SNES`, `SNESVISetVariableBounds()`, `DMSetVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`,
 `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
 
 # External Links
@@ -10801,7 +10801,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: [](sec_vi), `SNES`, `SNESVIGetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
+See also: `SNES`, `SNESVIGetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
 
 # External Links
 $(_doc_external("SNES/SNESVISetVariableBounds"))

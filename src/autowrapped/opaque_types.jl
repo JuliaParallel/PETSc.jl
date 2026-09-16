@@ -110,6 +110,9 @@ const PetscDevice = Ptr{_n_PetscDevice}
 mutable struct _n_PetscDeviceContext end
 const PetscDeviceContext = Ptr{_n_PetscDeviceContext}
 
+mutable struct _n_PetscDraw end
+const PetscDraw = Ptr{_n_PetscDraw}
+
 mutable struct _n_PetscDrawAxis end
 const PetscDrawAxis = Ptr{_n_PetscDrawAxis}
 
@@ -239,6 +242,9 @@ const TSMonitorEnvelopeCtx = Ptr{_n_TSMonitorEnvelopeCtx}
 mutable struct _n_TSMonitorHGCtx end
 const TSMonitorHGCtx = Ptr{_n_TSMonitorHGCtx}
 
+mutable struct _n_TSMonitorLGCtx end
+const TSMonitorLGCtx = Ptr{_n_TSMonitorLGCtx}
+
 mutable struct _n_TSMonitorLGCtxNetwork end
 const TSMonitorLGCtxNetwork = Ptr{_n_TSMonitorLGCtxNetwork}
 
@@ -280,9 +286,6 @@ const cudaStream_t = Ptr{_n_cudaStream_t}
 
 mutable struct _n_cusolverDnHandle_t end
 const cusolverDnHandle_t = Ptr{_n_cusolverDnHandle_t}
-
-mutable struct _n_hCsize_t end
-const hCsize_t = Ptr{_n_hCsize_t}
 
 mutable struct _n_hid_t end
 const hid_t = Ptr{_n_hid_t}

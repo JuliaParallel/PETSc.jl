@@ -13,7 +13,7 @@ using MPI
         @test viewer isa PETSc.LibPETSc.PetscViewer
         @test viewer != C_NULL
         
-        PETSc.LibPETSc.PetscViewerSetType(petsclib, viewer, Base.unsafe_convert(Ptr{Int8}, "ascii"))
+        PETSc.LibPETSc.PetscViewerSetType(petsclib, viewer, "ascii")
         PETSc.LibPETSc.PetscViewerFileSetMode(petsclib, viewer, PETSc.LibPETSc.FILE_MODE_WRITE)
         
         # Note: PetscViewerDestroy has API issues with raw Ptr types

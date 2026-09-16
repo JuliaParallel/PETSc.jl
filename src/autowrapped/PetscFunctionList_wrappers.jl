@@ -135,7 +135,7 @@ end
                list, array_, n_,
               )
 
-	array = unsafe_string(array_[])
+	array = array_[] == C_NULL ? "" : unsafe_string(array_[])
 	n = n_[]
 
 	return array,n

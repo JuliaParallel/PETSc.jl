@@ -2508,33 +2508,6 @@ end
 end 
 
 """
-	xv::Vector{PetscScalar},yv::Vector{PetscScalar} = VecGetArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
-
-# External Links
-$(_doc_external("Vec/VecGetArrayPair"))
-"""
-function VecGetArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("VecGetArrayPair: no generated method for these argument types")
-end
-
-@for_petsc function VecGetArrayPair(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
-	xv_ = Ref{Ptr{$PetscScalar}}()
-	yv_ = Ref{Ptr{$PetscScalar}}()
-
-    @chk ccall(
-               (:VecGetArrayPair, $petsc_library),
-               PetscErrorCode,
-               (CVec, CVec, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}),
-               x, y, xv_, yv_,
-              )
-
-	xv = xv_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, xv_[], VecGetLocalSize(petsclib, x); own = false)
-	yv = yv_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, yv_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return xv,yv
-end 
-
-"""
 	a::Vector{PetscScalar} = VecGetArrayRead(petsclib::PetscLibType, x::AbstractPetscVec) 
 Get read-only pointer to contiguous array containing this processor's portion of the vector data.
 
@@ -3078,7 +3051,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = VecGetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec) 
+	prefix::String = VecGetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec) 
 Sets the prefix used for searching for all
 Vec options in the database.
 
@@ -3111,7 +3084,7 @@ end
                v, prefix_,
               )
 
-	prefix = prefix_[]
+	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 
 	return prefix
 end 
@@ -3360,7 +3333,7 @@ end
 end 
 
 """
-	type::VecType = VecGetType(petsclib::PetscLibType, vec::AbstractPetscVec) 
+	type::String = VecGetType(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Gets the vector type name (as a string) from a `Vec`.
 
 Not Collective
@@ -4038,7 +4011,7 @@ end
 end 
 
 """
-	file::Ptr{Cchar},func::Ptr{Cchar},line::Cint = VecLockGetLocation(petsclib::PetscLibType, x::AbstractPetscVec) 
+	file::String,func::String,line::Cint = VecLockGetLocation(petsclib::PetscLibType, x::AbstractPetscVec) 
 Return the source code location where a `Vec` was most recently read-locked
 
 Not Collective
@@ -4074,8 +4047,8 @@ end
                x, file_, func_, line_,
               )
 
-	file = file_[]
-	func = func_[]
+	file = file_[] == C_NULL ? "" : unsafe_string(file_[])
+	func = func_[] == C_NULL ? "" : unsafe_string(func_[])
 	line = line_[]
 
 	return file,func,line
@@ -4949,7 +4922,11 @@ Output Parameter:
 
 Level: intermediate
 
-See also: [](sec_tao_term),
+Note:
+`VecNestGetSubVec()` cannot return `NULL` for the subvec.  If `params` was
+created by `TaoTermSumParametersPack()`, then any `NULL` subvecs that were passed
+to that function will be returned `NULL` by this function.
+
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumParametersPack()`,
@@ -6416,31 +6393,6 @@ end
                PetscErrorCode,
                (CVec, Ptr{Ptr{$PetscScalar}}),
                x, a_,
-              )
-
-
-	return nothing
-end 
-
-"""
-	VecRestoreArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, xv::Union{Ptr, AbstractArray{PetscScalar}}, yv::Union{Ptr, AbstractArray{PetscScalar}}) 
-
-# External Links
-$(_doc_external("Vec/VecRestoreArrayPair"))
-"""
-function VecRestoreArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, xv::Union{Ptr, AbstractArray{<:Number}}, yv::Union{Ptr, AbstractArray{<:Number}})
-    error("VecRestoreArrayPair: no generated method for these argument types")
-end
-
-@for_petsc function VecRestoreArrayPair(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, xv::Union{Ptr, AbstractArray{$PetscScalar}}, yv::Union{Ptr, AbstractArray{$PetscScalar}} )
-	xv_ = Ref{Ptr{$PetscScalar}}(xv isa Ptr ? xv : pointer(xv))
-	yv_ = Ref{Ptr{$PetscScalar}}(yv isa Ptr ? yv : pointer(yv))
-
-    @chk ccall(
-               (:VecRestoreArrayPair, $petsc_library),
-               PetscErrorCode,
-               (CVec, CVec, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}),
-               x, y, xv_, yv_,
               )
 
 

@@ -32,7 +32,7 @@ ts = LibPETSc.TSCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 LibPETSc.TSSetProblemType(petsclib, ts, LibPETSc.TS_NONLINEAR)
 
 # Set the time stepping method (e.g., BDF, RK, Theta)
-LibPETSc.TSSetType(petsclib, ts, "bdf")  # String convenience wrapper
+LibPETSc.TSSetType(petsclib, ts, "bdf")
 
 # Set time span
 LibPETSc.TSSetTime(petsclib, ts, 0.0)  # Initial time

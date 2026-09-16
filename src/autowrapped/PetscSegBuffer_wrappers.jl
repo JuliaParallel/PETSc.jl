@@ -225,29 +225,6 @@ end
 end 
 
 """
-	PetscSegBufferGetInts(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, slot::PetscInt) 
-
-# External Links
-$(_doc_external("Sys/PetscSegBufferGetInts"))
-"""
-function PetscSegBufferGetInts(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount, slot::Integer)
-    error("PetscSegBufferGetInts: no generated method for these argument types")
-end
-
-@for_petsc function PetscSegBufferGetInts(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount, slot::$PetscInt )
-
-    @chk ccall(
-               (:PetscSegBufferGetInts, $petsc_library),
-               PetscErrorCode,
-               (PetscSegBuffer, PetscCount, Ptr{Ptr{$PetscInt}}),
-               seg, count, slot,
-              )
-
-
-	return nothing
-end 
-
-"""
 	usedsize::PetscCount = PetscSegBufferGetSize(petsclib::PetscLibType, seg::PetscSegBuffer) 
 get currently used number of entries of a `PetscSegBuffer`
 

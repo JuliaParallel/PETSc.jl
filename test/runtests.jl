@@ -61,6 +61,7 @@ include("ts_ex16.jl")           # Regression test for the van der Pol IMEX examp
 include("ts_scenarios.jl")      # High-level TS: ex16 equivalence + a damping sweep
 include("low_level_is.jl")      # Low-level IS functions
 include("low_level_petscsection.jl")  # Low-level PetscSection functions
+include("low_level_petscsf.jl")      # Low-level PetscSF graph and communication functions
 include("low_level_tao.jl")     # Low-level Tao functions
 include("test_destroy.jl")      # destroy guards: stale cycle, double destroy
 

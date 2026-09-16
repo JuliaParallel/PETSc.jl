@@ -176,7 +176,7 @@ function f0_stokes_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     f0[1] = 0.0
     f0[2] = -sin(real(cst[2]) * pi * x[2]) * cos(real(cst[1]) * pi * x[1])
 end
-const f0_stokes_u_ptr = PETSc.@petsc_residual_fn(f0_stokes_u, dim_)
+const f0_stokes_u_ptr = PETSc.@residual_fn(f0_stokes_u, dim_)
 
 # Momentum flux σ = 2μ ε(u) − pI  for SolKx (μ = exp(2Bx), cst[3]=B)
 function stokes_momentum_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -189,7 +189,7 @@ function stokes_momentum_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_+c+1] -= u[dim_+1]      # subtract pressure
     end
 end
-const stokes_momentum_kx_ptr = PETSc.@petsc_residual_fn(stokes_momentum_kx, dim_*dim_)
+const stokes_momentum_kx_ptr = PETSc.@residual_fn(stokes_momentum_kx, dim_*dim_)
 
 # Momentum flux for SolCx (μ = etaA or etaB, cst[3]=etaA, cst[4]=etaB, cst[5]=xc)
 function stokes_momentum_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -202,7 +202,7 @@ function stokes_momentum_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_+c+1] -= u[dim_+1]
     end
 end
-const stokes_momentum_cx_ptr = PETSc.@petsc_residual_fn(stokes_momentum_cx, dim_*dim_)
+const stokes_momentum_cx_ptr = PETSc.@residual_fn(stokes_momentum_cx, dim_*dim_)
 
 # Continuity: f0 = −∇·u
 function stokes_mass(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -212,14 +212,14 @@ function stokes_mass(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[1] -= u_x[d*dim_+d+1]
     end
 end
-const stokes_mass_ptr = PETSc.@petsc_residual_fn(stokes_mass, 1)
+const stokes_mass_ptr = PETSc.@residual_fn(stokes_mass, 1)
 
 # Zero f1 for pressure field
 function f1_zero_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                    aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f1)
     for d in 1:dim_; f1[d] = 0.0; end
 end
-const f1_zero_p_ptr = PETSc.@petsc_residual_fn(f1_zero_p, dim_)
+const f1_zero_p_ptr = PETSc.@residual_fn(f1_zero_p, dim_)
 
 # ── Pointwise functions: Jacobians ────────────────────────────────────────────
 
@@ -232,7 +232,7 @@ function stokes_vel_J_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((cI*dim_+d)*dim_+d)*dim_+cI+1] += mu
     end
 end
-const stokes_vel_J_kx_ptr = PETSc.@petsc_jacobian_fn(stokes_vel_J_kx, dim_*dim_*dim_*dim_)
+const stokes_vel_J_kx_ptr = PETSc.@jacobian_fn(stokes_vel_J_kx, dim_*dim_*dim_*dim_)
 
 function stokes_vel_J_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                           aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g3)
@@ -242,35 +242,35 @@ function stokes_vel_J_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((cI*dim_+d)*dim_+d)*dim_+cI+1] += mu
     end
 end
-const stokes_vel_J_cx_ptr = PETSc.@petsc_jacobian_fn(stokes_vel_J_cx, dim_*dim_*dim_*dim_)
+const stokes_vel_J_cx_ptr = PETSc.@jacobian_fn(stokes_vel_J_cx, dim_*dim_*dim_*dim_)
 
 # J_up (g2): −⟨∇·v, p⟩  →  g2[d*dim+d] = -1
 function stokes_pres_J(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                         aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g2)
     for d in 0:dim_-1; g2[d*dim_+d+1] = -1.0; end
 end
-const stokes_pres_J_ptr = PETSc.@petsc_jacobian_fn(stokes_pres_J, dim_*dim_)
+const stokes_pres_J_ptr = PETSc.@jacobian_fn(stokes_pres_J, dim_*dim_)
 
 # J_pu (g1): ⟨q, ∇·u⟩  →  g1[d*dim+d] = -1
 function stokes_mass_J(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                         aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g1)
     for d in 0:dim_-1; g1[d*dim_+d+1] = -1.0; end
 end
-const stokes_mass_J_ptr = PETSc.@petsc_jacobian_fn(stokes_mass_J, dim_*dim_)
+const stokes_mass_J_ptr = PETSc.@jacobian_fn(stokes_mass_J, dim_*dim_)
 
 # J_pp preconditioner (g0): (1/μ)⟨q, p⟩
 function stokes_id_J_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                           aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g0)
     g0[1] = 1.0 / exp(2.0 * real(cst[3]) * x[1])
 end
-const stokes_id_J_kx_ptr = PETSc.@petsc_jacobian_fn(stokes_id_J_kx, 1)
+const stokes_id_J_kx_ptr = PETSc.@jacobian_fn(stokes_id_J_kx, 1)
 
 function stokes_id_J_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                           aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g0)
     mu = x[1] < real(cst[5]) ? real(cst[3]) : real(cst[4])
     g0[1] = 1.0 / mu
 end
-const stokes_id_J_cx_ptr = PETSc.@petsc_jacobian_fn(stokes_id_J_cx, 1)
+const stokes_id_J_cx_ptr = PETSc.@jacobian_fn(stokes_id_J_cx, 1)
 
 # ── Exact solution / BC callbacks ─────────────────────────────────────────────
 # PetscSimplePointFn: f(t, x, u, ctx) → nothing
@@ -278,38 +278,38 @@ const stokes_id_J_cx_ptr = PETSc.@petsc_jacobian_fn(stokes_id_J_cx, 1)
 function zero_vel(t, x, u, ctx)
     for c in 1:length(u); u[c] = 0.0; end
 end
-const zero_vel_ptr = PETSc.@petsc_simple_fn(zero_vel)
+const zero_vel_ptr = PETSc.@simple_fn(zero_vel)
 
 function one_pres(t, x, u, ctx)
     u[1] = 1.0
 end
-const one_pres_ptr = PETSc.@petsc_simple_fn(one_pres)
+const one_pres_ptr = PETSc.@simple_fn(one_pres)
 
 # SolKx exact solution (captures parameters via module-level globals)
 function exact_vel_kx(t, x, u, ctx)
     vx, vz, _ = SolKxSolution(x, m_val, n_val, B_val)
     u[1] = vx; u[2] = vz
 end
-const exact_vel_kx_ptr = PETSc.@petsc_simple_fn(exact_vel_kx)
+const exact_vel_kx_ptr = PETSc.@simple_fn(exact_vel_kx)
 
 function exact_pres_kx(t, x, u, ctx)
     _, _, p = SolKxSolution(x, m_val, n_val, B_val)
     u[1] = p
 end
-const exact_pres_kx_ptr = PETSc.@petsc_simple_fn(exact_pres_kx)
+const exact_pres_kx_ptr = PETSc.@simple_fn(exact_pres_kx)
 
 # SolCx exact solution
 function exact_vel_cx(t, x, u, ctx)
     vx, vz, _ = SolCxSolution(x, m_val, n_val, xc_val, etaA_val, etaB_val)
     u[1] = vx; u[2] = vz
 end
-const exact_vel_cx_ptr = PETSc.@petsc_simple_fn(exact_vel_cx)
+const exact_vel_cx_ptr = PETSc.@simple_fn(exact_vel_cx)
 
 function exact_pres_cx(t, x, u, ctx)
     _, _, p = SolCxSolution(x, m_val, n_val, xc_val, etaA_val, etaB_val)
     u[1] = p
 end
-const exact_pres_cx_ptr = PETSc.@petsc_simple_fn(exact_pres_cx)
+const exact_pres_cx_ptr = PETSc.@simple_fn(exact_pres_cx)
 
 exact_vel_ptr  = sol_type == "solkx" ? exact_vel_kx_ptr  : exact_vel_cx_ptr
 exact_pres_ptr = sol_type == "solkx" ? exact_pres_kx_ptr : exact_pres_cx_ptr
@@ -325,16 +325,16 @@ function pressure_nsp_constructor(
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     # Project constant pressure = 1 onto the DM's global vector
-    nvec = PETSc.DMGlobalVec(dm_w)
-    PETSc.dm_project_function!(petsclib, dm_w, 0.0,
+    nvec = PETSc.global_vec(dm_w)
+    PETSc.project_function!(petsclib, dm_w, 0.0,
         [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, nvec)
     LibPETSc.VecNormalize(petsclib, nvec)
     # Build MatNullSpace from the normalized vector
     GC.@preserve nvec begin
-        nsp = PETSc.mat_null_space_create(petsclib, MPI.COMM_WORLD, (nvec,))
+        nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))
         unsafe_store!(nsp_pp, nsp)
     end
-    PETSc.destroy(nvec)
+    PETSc.destroy!(nvec)
     return PetscInt(0)
 end
 const pressure_nsp_ptr = Base.@cfunction(pressure_nsp_constructor, PetscInt,
@@ -347,7 +347,7 @@ dm = PETSc.DMPlex(petsclib, comm; opts...)
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
         PETSc.create_split_boundary_labels!(cdm)
-        cdm = PETSc.dm_get_coarse(cdm)
+        cdm = PETSc.coarse_dm(cdm)
     end
 end
 
@@ -364,14 +364,14 @@ fe_pres = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_pres), "pressure")
 
 # Copy quadrature from velocity to pressure for consistent integration
-PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_pres)
+PETSc.copy_quadrature!(petsclib, fe_vel, fe_pres)
 
-PETSc.setfield!(dm, 0, fe_vel)
-PETSc.setfield!(dm, 1, fe_pres)
-PETSc.createds!(dm)
+PETSc.set_field!(dm, 0, fe_vel)
+PETSc.set_field!(dm, 1, fe_pres)
+PETSc.create_ds!(dm)
 
 # ── PetscDS setup ─────────────────────────────────────────────────────────────
-ds = PETSc.getds(dm)
+ds = PETSc.ds(dm)
 
 if sol_type == "solkx"
     PETSc.set_constants!(ds, [m_val, Float64(n_val), B_val])
@@ -403,7 +403,7 @@ end
 # Component index (0-based): 0 = v_x,  1 = v_z.
 for (wall, comp) in (("markerBottom", 1), ("markerRight", 0),
                      ("markerTop",    1), ("markerLeft",  0))
-    label = PETSc.getlabel(dm, wall)
+    label = PETSc.label(dm, wall)
     PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, wall, label,
                         PetscInt[1], 0, PetscInt[comp], exact_vel_ptr)
 end
@@ -411,24 +411,24 @@ end
 # Propagate discretisation and pressure null space constructor to coarser levels
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.dm_copy_disc!(dm, cdm)
+        PETSc.copy_disc!(dm, cdm)
         LibPETSc.DMSetNullSpaceConstructor(petsclib, cdm, PetscInt(1), pressure_nsp_ptr)
-        cdm = PETSc.dm_get_coarse(cdm)
+        cdm = PETSc.coarse_dm(cdm)
     end
 end
 
 # Attach a constant (trivial) null space to the pressure FE object.
 # This informs the fieldsplit preconditioner that the pressure block has a
 # constant null space, enabling proper Schur complement approximations.
-PETSc.fe_compose_constant_null_space!(petsclib, comm, fe_pres)
+PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ──────────────────
-null_vec = PETSc.DMGlobalVec(dm)
-PETSc.dm_project_function!(petsclib, dm, 0.0,
+null_vec = PETSc.global_vec(dm)
+PETSc.project_function!(petsclib, dm, 0.0,
     [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, null_vec)
 LibPETSc.VecNormalize(petsclib, null_vec)
 
-nullspace = GC.@preserve null_vec PETSc.mat_null_space_create(petsclib, comm, (null_vec,))
+nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 
 # ── SNES + linear algebra ────────────────────────────────────────────────────
 # Do NOT call SNESSetJacobian with J,J — that forces a single matrix for both
@@ -436,12 +436,12 @@ nullspace = GC.@preserve null_vec PETSc.mat_null_space_create(petsclib, comm, (n
 # Jacobian (PetscDSSetJacobianPreconditioner).  Instead, let DMPlexSetSNESLocalFEM
 # + SNESSetUp create separate Amat and Pmat internally from the DM.
 snes = PETSc.SNES(petsclib, comm; opts...)
-PETSc.setDM!(snes, dm)
-u = PETSc.DMGlobalVec(dm)
-PETSc.plex_set_snes_local_fem!(petsclib, dm)
+PETSc.set_dm!(snes, dm)
+u = PETSc.global_vec(dm)
+PETSc.set_snes_local_fem!(petsclib, dm)
 
 # ── Initial guess: zero ───────────────────────────────────────────────────────
-PETSc.dm_project_function!(petsclib, dm, 0.0,
+PETSc.project_function!(petsclib, dm, 0.0,
     [zero_vel_ptr, zero_vel_ptr], nothing, LibPETSc.INSERT_VALUES, u)
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
@@ -453,7 +453,7 @@ push!(snes.opts)
 try
     LibPETSc.SNESSetFromOptions(petsclib, snes)
     LibPETSc.SNESSetUp(petsclib, snes)
-    PETSc.snes_set_jacobian_null_space!(snes, nullspace)
+    PETSc.set_jacobian_nullspace!(snes, nullspace)
     LibPETSc.SNESSolve(petsclib, snes, C_NULL, u)
 finally
     pop!(snes.opts)
@@ -466,7 +466,7 @@ end
 
 # ── L² errors ────────────────────────────────────────────────────────────────
 # Combined L²-norm of the error across both velocity and pressure fields.
-l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0,
+l2err = PETSc.l2diff(petsclib, dm, 0.0,
     [exact_vel_ptr, exact_pres_ptr], nothing, u)
 
 if MPI.Comm_rank(comm) == 0
@@ -477,10 +477,10 @@ end
 GC.gc(true)
 MPI.Barrier(comm)
 PETSc.mat_null_space_destroy!(petsclib, nullspace)
-PETSc.destroy(snes)
-PETSc.destroy(u)
-PETSc.destroy(null_vec)
-PETSc.destroy(dm)
+PETSc.destroy!(snes)
+PETSc.destroy!(u)
+PETSc.destroy!(null_vec)
+PETSc.destroy!(dm)
 
 if !isinteractive()
     flush(stdout); flush(stderr)

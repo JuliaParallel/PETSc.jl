@@ -140,16 +140,16 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     ksp = PETSc.KSP(da; opts...)
 
     # Print the final grid size after any refinement (only on rank 0)
-    final_grid_size = PETSc.getinfo(da).global_size[1:2]
+    final_grid_size = PETSc.info(da).global_size[1:2]
     if MPI.Comm_rank(comm) == 0
         @printf("Solving on %d × %d grid\n", final_grid_size[1], final_grid_size[2])
     end
 
     # Set the Jacobian/operator
-    PETSc.setcomputeoperators!(ksp) do J, jac, ksp
-        dm = PETSc.getDM(ksp)
-        corners = PETSc.getcorners(dm)
-        global_size = PETSc.getinfo(dm).global_size[1:2]
+    PETSc.set_compute_operators!(ksp) do J, jac, ksp
+        dm = PETSc.dm(ksp)
+        corners = PETSc.corners(dm)
+        global_size = PETSc.info(dm).global_size[1:2]
 
         # Grid spacing in each direction
         h = PetscScalar(1) ./ global_size
@@ -209,26 +209,26 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         PETSc.assemble!(jac)
         
         # Set a constant nullspace on the matrix for Neumann BCs
-        nullspace = PETSc.mat_null_space_create(petsclib, MPI.COMM_WORLD; has_const = true)
+        nullspace = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD; has_const = true)
         LibPETSc.MatSetNullSpace(petsclib, jac, nullspace)
         LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
-        # Don't destroy nullspace here - let the matrix manage it
+        # Do not destroy the nullspace here - let the matrix manage it
         
         return 0
     end
 
     # Set the right-hand side
-    PETSc.setcomputerhs!(ksp) do b_vec, ksp
-        dm = PETSc.getDM(ksp)
-        comm = PETSc.getcomm(ksp)
-        corners = PETSc.getcorners(dm)
-        global_size = PETSc.getinfo(dm).global_size[1:2]
+    PETSc.set_compute_rhs!(ksp) do b_vec, ksp
+        dm = PETSc.dm(ksp)
+        comm = PETSc.comm(ksp)
+        corners = PETSc.corners(dm)
+        global_size = PETSc.info(dm).global_size[1:2]
         
         # Grid spacing in each direction
         h = PetscScalar(1) ./ global_size
 
         # Build the RHS vector with forcing function
-        PETSc.withlocalarray!(b_vec; read = false) do b
+        PETSc.with_local_array!(b_vec; read = false) do b
             b = reshape(b, Int64(corners.size[1]), Int64(corners.size[2]))
             
             for (iy, y) in enumerate(corners.lower[2]:corners.upper[2])
@@ -263,7 +263,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         if bc_type == "neumann"
             LibPETSc.VecAssemblyBegin(petsclib, b_vec)
             LibPETSc.VecAssemblyEnd(petsclib, b_vec)
-            nullspace = PETSc.mat_null_space_create(petsclib, MPI.COMM_WORLD; has_const = true)
+            nullspace = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD; has_const = true)
             LibPETSc.MatNullSpaceRemove(petsclib, nullspace, b_vec)
             LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
         end
@@ -281,16 +281,16 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     end
 
     # Compute L2 norm of the error and extrema
-    dm = PETSc.getDM(ksp)
-    corners = PETSc.getcorners(dm)
-    global_size = PETSc.getinfo(dm).global_size[1:2]
+    dm = PETSc.dm(ksp)
+    corners = PETSc.corners(dm)
+    global_size = PETSc.info(dm).global_size[1:2]
     h = PetscScalar(1) ./ global_size
 
-    sol = PETSc.get_solution(ksp)
+    sol = PETSc.solution(ksp)
     
     # Get local solution array for analysis
     sol2D = nothing
-    PETSc.withlocalarray!(sol; read=true) do s
+    PETSc.with_local_array!(sol; read=true) do s
         sol2D = copy(s)
         sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
     end
@@ -298,7 +298,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     # Prepare container for L2 and max error results
     l2_error = 0.0
     global_max = 0.0
-    PETSc.withlocalarray!(sol; read=true) do s
+    PETSc.with_local_array!(sol; read=true) do s
         nx, ny = corners.size[1:2]
         s2D = reshape(s, Int64(corners.size[1]), Int64(corners.size[2]))
         
@@ -358,7 +358,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     # Get residual norm before destroying KSP
     norm = LibPETSc.KSPGetResidualNorm(petsclib, ksp)
     # Clean up
-    PETSc.destroy(ksp)
+    PETSc.destroy!(ksp)
 
     # Return a NamedTuple matching `solve_ex45` fields: (norm, final_grid, niter, solve_time, L2, max)
     return (; norm = norm, final_grid = final_grid_size, niter = niter, solve_time = solve_time, L2 = l2_error, max = global_max)

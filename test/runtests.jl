@@ -63,7 +63,8 @@ include("low_level_is.jl")      # Low-level IS functions
 include("low_level_petscsection.jl")  # Low-level PetscSection functions
 include("low_level_petscsf.jl")      # Low-level PetscSF graph and communication functions
 include("low_level_tao.jl")     # Low-level Tao functions
-include("test_destroy.jl")      # destroy guards: stale cycle, double destroy
+include("test_destroy.jl")      # destroy! guards: stale cycle, double destroy
+include("test_deprecations.jl") # the v0.4 names still work and warn (the only file calling them)
 
 include("testutils.jl")
 

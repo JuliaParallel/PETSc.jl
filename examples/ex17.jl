@@ -154,39 +154,39 @@ VALID_SOL = ("vlap_quad", "elas_quad", "vlap_trig", "elas_trig",
 function zero_u(t, x, u, ctx)
     fill!(u, 0)
 end
-const zero_u_ptr = PETSc.@petsc_simple_fn(zero_u)
+const zero_u_ptr = PETSc.@simple_fn(zero_u)
 
 function ge_shift_u(t, x, u, ctx)
     u[1] = 0.1
     for d in 2:length(u); u[d] = 0.0; end
 end
-const ge_shift_u_ptr = PETSc.@petsc_simple_fn(ge_shift_u)
+const ge_shift_u_ptr = PETSc.@simple_fn(ge_shift_u)
 
 function quadratic_2d_u(t, x, u, ctx)
     u[1] = x[1]^2
     u[2] = x[2]^2 - 2*x[1]*x[2]
 end
-const quadratic_2d_u_ptr = PETSc.@petsc_simple_fn(quadratic_2d_u)
+const quadratic_2d_u_ptr = PETSc.@simple_fn(quadratic_2d_u)
 
 function quadratic_3d_u(t, x, u, ctx)
     u[1] = x[1]^2
     u[2] = x[2]^2 - 2*x[1]*x[2]
     u[3] = x[3]^2 - 2*x[2]*x[3]
 end
-const quadratic_3d_u_ptr = PETSc.@petsc_simple_fn(quadratic_3d_u)
+const quadratic_3d_u_ptr = PETSc.@simple_fn(quadratic_3d_u)
 
 function trig_2d_u(t, x, u, ctx)
     u[1] = sin(2π * x[1])
     u[2] = sin(2π * x[2]) - 2*x[1]*x[2]
 end
-const trig_2d_u_ptr = PETSc.@petsc_simple_fn(trig_2d_u)
+const trig_2d_u_ptr = PETSc.@simple_fn(trig_2d_u)
 
 function trig_3d_u(t, x, u, ctx)
     u[1] = sin(2π * x[1])
     u[2] = sin(2π * x[2]) - 2*x[1]*x[2]
     u[3] = sin(2π * x[3]) - 2*x[2]*x[3]
 end
-const trig_3d_u_ptr = PETSc.@petsc_simple_fn(trig_3d_u)
+const trig_3d_u_ptr = PETSc.@simple_fn(trig_3d_u)
 
 function axial_disp_u(t, x, u, ctx)
     mu = mu_val; lambda = lambda_val; N = N_val
@@ -195,7 +195,7 @@ function axial_disp_u(t, x, u, ctx)
     u[2] = 0.25*lambda / (mu*(lambda+mu)) * N * x[2]
     for d in 3:length(u); u[d] = 0.0; end
 end
-const axial_disp_u_ptr = PETSc.@petsc_simple_fn(axial_disp_u)
+const axial_disp_u_ptr = PETSc.@simple_fn(axial_disp_u)
 
 function uniform_strain_u(t, x, u, ctx)
     eps_xx = 0.1; eps_xy = 0.3; eps_yy = 0.25
@@ -203,7 +203,7 @@ function uniform_strain_u(t, x, u, ctx)
     u[2] = eps_xy * x[1] + eps_yy * x[2]
     for d in 3:length(u); u[d] = 0.0; end
 end
-const uniform_strain_u_ptr = PETSc.@petsc_simple_fn(uniform_strain_u)
+const uniform_strain_u_ptr = PETSc.@simple_fn(uniform_strain_u)
 
 # ── Residual functions f0 (zeroth-order) ───────────────────────────────────────
 # f0 output size = Nc = dim (one entry per displacement component).
@@ -214,7 +214,7 @@ function f0_vlap_quadratic(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                            aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f0)
     for d in 1:dim_; f0[d] += 2.0; end
 end
-const f0_vlap_quadratic_ptr = PETSc.@petsc_residual_fn(f0_vlap_quadratic, dim_)
+const f0_vlap_quadratic_ptr = PETSc.@residual_fn(f0_vlap_quadratic, dim_)
 
 # Linear elasticity, quadratic solution: body force from −∇·σ.
 function f0_elas_quadratic(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -223,14 +223,14 @@ function f0_elas_quadratic(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     for d in 1:dim_-1; f0[d] += 2.0*mu; end
     f0[dim_] += 2.0*lambda + 4.0*mu
 end
-const f0_elas_quadratic_ptr = PETSc.@petsc_residual_fn(f0_elas_quadratic, dim_)
+const f0_elas_quadratic_ptr = PETSc.@residual_fn(f0_elas_quadratic, dim_)
 
 # Vector Laplacian, trig solution: body force = 4π² sin(2πx_d) per component.
 function f0_vlap_trig(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                       aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f0)
     for d in 1:dim_; f0[d] += -4.0*π^2 * sin(2π * x[d]); end
 end
-const f0_vlap_trig_ptr = PETSc.@petsc_residual_fn(f0_vlap_trig, dim_)
+const f0_vlap_trig_ptr = PETSc.@residual_fn(f0_vlap_trig, dim_)
 
 # Linear elasticity, trig solution: body force from −∇·σ.
 function f0_elas_trig(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -242,7 +242,7 @@ function f0_elas_trig(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                  (d < dim_ ? 2.0*(mu + lambda) : 0.0)
     end
 end
-const f0_elas_trig_ptr = PETSc.@petsc_residual_fn(f0_elas_trig, dim_)
+const f0_elas_trig_ptr = PETSc.@residual_fn(f0_elas_trig, dim_)
 
 # ── Residual functions f1 (first-order, diffusion flux) ────────────────────────
 # f1 output size = Nc * dim = dim * dim (gradient of Nc-component field).
@@ -254,7 +254,7 @@ function f1_vlap(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_ + d + 1] += u_x[c*dim_ + d + 1]
     end
 end
-const f1_vlap_ptr = PETSc.@petsc_residual_fn(f1_vlap, dim_*dim_)
+const f1_vlap_ptr = PETSc.@residual_fn(f1_vlap, dim_*dim_)
 
 function f1_elas(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                  aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f1)
@@ -264,7 +264,7 @@ function f1_elas(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_ + c + 1] += lambda * u_x[d*dim_ + d + 1]
     end
 end
-const f1_elas_ptr = PETSc.@petsc_residual_fn(f1_elas, dim_*dim_)
+const f1_elas_ptr = PETSc.@residual_fn(f1_elas, dim_*dim_)
 
 # ── Jacobian functions ─────────────────────────────────────────────────────────
 # g3 output size = Nc*Nc*dim*dim = dim^4 (full stiffness tensor).
@@ -277,7 +277,7 @@ function g3_vlap(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((c*dim_ + c)*dim_ + d)*dim_ + d + 1] = 1.0
     end
 end
-const g3_vlap_ptr = PETSc.@petsc_jacobian_fn(g3_vlap, dim_*dim_*dim_*dim_)
+const g3_vlap_ptr = PETSc.@jacobian_fn(g3_vlap, dim_*dim_*dim_*dim_)
 
 function g3_elas(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                  aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, g3)
@@ -289,7 +289,7 @@ function g3_elas(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((c*dim_ + d)*dim_ + c)*dim_ + d + 1] += lambda
     end
 end
-const g3_elas_ptr = PETSc.@petsc_jacobian_fn(g3_elas, dim_*dim_*dim_*dim_)
+const g3_elas_ptr = PETSc.@jacobian_fn(g3_elas, dim_*dim_*dim_*dim_)
 
 # ── VTK post-processing: displacement (3-vector) and stress (3×3 tensor) ──────
 #
@@ -307,7 +307,7 @@ function copy_displacement_3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     for c in 1:dim_; out[c] = u[c]; end
     for c in dim_+1:3; out[c] = 0.0; end
 end
-const copy_displacement_3_ptr = PETSc.@petsc_residual_fn(copy_displacement_3, 3)
+const copy_displacement_3_ptr = PETSc.@residual_fn(copy_displacement_3, 3)
 
 # Compute Cauchy stress σ_{cd} = μ(∂u_c/∂x_d + ∂u_d/∂x_c) + λ tr(ε) δ_{cd}
 # and place it in a 3×3 output (9 components, row-major).
@@ -323,7 +323,7 @@ function compute_stress_3x3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     end
     for c in 0:dim_-1; out[c*3+c+1] += lambda * div_u; end
 end
-const compute_stress_3x3_ptr = PETSc.@petsc_residual_fn(compute_stress_3x3, 9)
+const compute_stress_3x3_ptr = PETSc.@residual_fn(compute_stress_3x3, 9)
 
 # ── Neumann BC for elas_axial_disp: traction N on right wall ──────────────────
 # f0_bd output size = Nc = dim.
@@ -332,7 +332,7 @@ function f0_elas_axial_disp_bd(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                                 numConstants, constants, f0)
     f0[1] = real(constants[3])   # N — tension force, constants[3] = N (1-indexed)
 end
-const f0_elas_axial_disp_bd_ptr = PETSc.@petsc_bd_fn(f0_elas_axial_disp_bd, dim_)
+const f0_elas_axial_disp_bd_ptr = PETSc.@bd_fn(f0_elas_axial_disp_bd, dim_)
 
 # ── Near-null space constructor for AMG ────────────────────────────────────────
 # Called by PETSc for each level when setting up the preconditioner.
@@ -362,12 +362,12 @@ dm = PETSc.DMPlex(petsclib, comm; opts...)
 # the polynomial degree (default 1 = Q1/P1).
 fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim, simplex;
                               prefix = "displacement")
-PETSc.petsc_setname!(petsclib, fe, "displacement")
-PETSc.setfield!(dm, 0, fe)
-PETSc.createds!(dm)
+PETSc.set_name!(petsclib, fe, "displacement")
+PETSc.set_field!(dm, 0, fe)
+PETSc.create_ds!(dm)
 
 # ── PetscDS: residual, Jacobian, exact solution, material constants ─────────────
-ds = PETSc.getds(dm)
+ds = PETSc.ds(dm)
 
 # Constants: [mu, lambda, N] — accessible in all pointwise functions.
 PETSc.set_constants!(ds, [mu_val, lambda_val, N_val])
@@ -413,7 +413,7 @@ end
 PETSc.set_exact_solution!(ds, 0, exact_ptr)
 
 # ── Boundary conditions ─────────────────────────────────────────────────────────
-label = PETSc.getlabel(dm, "marker")
+label = PETSc.label(dm, "marker")
 
 # Face marker IDs with -dm_plex_separate_marker:
 #   2D: bottom=1, right=2, top=3, left=4
@@ -453,14 +453,14 @@ else  # elas_ge — requires -dm_plex_separate_marker
 end
 
 # ── Propagate disc + near-null space to coarser DMs (for GMG / GAMG hierarchy) ──
-let cdm = PETSc.dm_get_coarse(dm)
+let cdm = PETSc.coarse_dm(dm)
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.dm_copy_disc!(dm, cdm)
+        PETSc.copy_disc!(dm, cdm)
         if use_near_nullspace
             LibPETSc.DMSetNearNullSpaceConstructor(
                 petsclib, cdm, PetscInt(0), elasticity_nsp_ptr)
         end
-        cdm = PETSc.dm_get_coarse(cdm)
+        cdm = PETSc.coarse_dm(cdm)
     end
 end
 if use_near_nullspace
@@ -470,18 +470,18 @@ end
 
 # ── SNES + matrix ───────────────────────────────────────────────────────────────
 snes = PETSc.SNES(petsclib, comm; opts...)
-PETSc.setDM!(snes, dm)
-u = PETSc.DMGlobalVec(dm)
+PETSc.set_dm!(snes, dm)
+u = PETSc.global_vec(dm)
 J = PETSc.MatAIJ(dm)
-PETSc.plex_set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(petsclib, dm)
 LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 
 # ── Initial guess ───────────────────────────────────────────────────────────────
 # Seed constrained DOFs with the exact solution (or zero for elas_ge).
-PETSc.dm_project_function!(petsclib, dm, 0.0, [exact_ptr], nothing,
+PETSc.project_function!(petsclib, dm, 0.0, [exact_ptr], nothing,
                             LibPETSc.INSERT_ALL_VALUES, u)
 # Reset free DOFs to zero so SNES has a well-posed starting point.
-PETSc.dm_project_function!(petsclib, dm, 0.0, [zero_u_ptr], nothing,
+PETSc.project_function!(petsclib, dm, 0.0, [zero_u_ptr], nothing,
                             LibPETSc.INSERT_VALUES, u)
 
 # ── Solve ───────────────────────────────────────────────────────────────────────
@@ -493,7 +493,7 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── L² error ────────────────────────────────────────────────────────────────────
-l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0, [exact_ptr], nothing, u)
+l2err = PETSc.l2diff(petsclib, dm, 0.0, [exact_ptr], nothing, u)
 if MPI.Comm_rank(comm) == 0
     if sol_type == "elas_ge"
         println("(elas_ge has no exact solution; L² comparison is against zero.)")
@@ -513,31 +513,31 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
         # VTK arrays produced (row-major 3×3, zero-padded in 2D):
         #   "displacement"  NumberOfComponents=3  → Vector in ParaView
         #   "stress"        NumberOfComponents=9  → 3×3 Tensor in ParaView
-        dm_out = PETSc.dmclone(dm)
+        dm_out = PETSc.clone(dm)
 
         fe_disp = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
                       dim, dim, simplex; prefix = "displacement")
-        PETSc.petsc_setname!(petsclib, fe_disp, "displacement")
+        PETSc.set_name!(petsclib, fe_disp, "displacement")
 
         fe_stress = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
                         dim, 9, simplex; prefix = "stress")
-        PETSc.petsc_setname!(petsclib, fe_stress, "stress")
+        PETSc.set_name!(petsclib, fe_stress, "stress")
 
-        PETSc.setfield!(dm_out, 0, fe_disp)
-        PETSc.setfield!(dm_out, 1, fe_stress)
-        PETSc.createds!(dm_out)
+        PETSc.set_field!(dm_out, 0, fe_disp)
+        PETSc.set_field!(dm_out, 1, fe_stress)
+        PETSc.create_ds!(dm_out)
 
-        out_vec = PETSc.dm_create_global_vec(dm_out)
+        out_vec = PETSc.global_vec(dm_out)
         # Empty vector name: VTK array names come purely from the FE names above.
-        PETSc.petsc_setname!(petsclib, out_vec, "")
+        PETSc.set_name!(petsclib, out_vec, "")
 
         # DMProjectField projects functions of the displacement solution (u, 1 field)
         # into both output fields simultaneously.
-        PETSc.dm_project_field!(petsclib, dm_out, 0.0, u,
+        PETSc.project_field!(petsclib, dm_out, 0.0, u,
                                 [copy_displacement_3_ptr, compute_stress_3x3_ptr],
                                 LibPETSc.INSERT_ALL_VALUES, out_vec)
 
-        PETSc.vtk_save!(petsclib, comm, fname, out_vec)
+        PETSc.save_vtk!(petsclib, comm, fname, out_vec)
 
         MPI.Comm_rank(comm) == 0 && PETSc.vtk_merge_tensor!(fname, "stress")
 
@@ -549,10 +549,10 @@ end
 # ── Cleanup ─────────────────────────────────────────────────────────────────────
 GC.gc(true)
 MPI.Barrier(comm)
-PETSc.destroy(snes)
-PETSc.destroy(J)
-PETSc.destroy(u)
-PETSc.destroy(dm)
+PETSc.destroy!(snes)
+PETSc.destroy!(J)
+PETSc.destroy!(u)
+PETSc.destroy!(dm)
 if !isinteractive()
     PETSc.finalize(petsclib)
     MPI.Barrier(comm)

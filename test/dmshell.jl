@@ -10,7 +10,7 @@ using PETSc, MPI
  try
      local petsclib = PETSc.getlib()
      petsc_started = false
-     if !PETSc.initialized(petsclib)
+     if !PETSc.isinitialized(petsclib)
          PETSc.initialize(petsclib)
          petsc_started = true
      end

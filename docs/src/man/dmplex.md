@@ -57,7 +57,7 @@ quads / hexahedra.
 
 ```julia
 dim     = LibPETSc.DMGetDimension(petsclib, dm)
-simplex = PETSc.isplexsimplex(dm)
+simplex = PETSc.issimplex(dm)
 
 # P2 velocity (dim components, degree 2)
 fe_vel = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim, simplex;
@@ -75,22 +75,22 @@ end
 fe_p1 = PETSc.fe_create_lagrange(petsclib, MPI.COMM_SELF, dim, dim, simplex, 1)
 
 # Copy quadrature rule from velocity to pressure for consistency
-PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_pres)
+PETSc.copy_quadrature!(petsclib, fe_vel, fe_pres)
 ```
 
 ### Attaching FE spaces to the DM
 
 ```julia
-PETSc.setfield!(dm, 0, fe_vel)    # field 0 = velocity
-PETSc.setfield!(dm, 1, fe_pres)   # field 1 = pressure
-PETSc.createds!(dm)               # finalise the PetscDS
+PETSc.set_field!(dm, 0, fe_vel)    # field 0 = velocity
+PETSc.set_field!(dm, 1, fe_pres)   # field 1 = pressure
+PETSc.create_ds!(dm)               # finalise the PetscDS
 ```
 
 ### Naming objects
 
 ```julia
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_vel), "velocity")
-PETSc.petsc_setname!(petsclib, dm, "stokes")
+PETSc.set_name!(petsclib, dm, "stokes")
 ```
 
 ---
@@ -101,7 +101,7 @@ PETSc's FEM assembly calls user-supplied C function pointers at each
 quadrature point.  Three macros generate the required `@cfunction` wrappers
 from plain Julia functions.
 
-### `@petsc_simple_fn` — boundary / exact-solution functions
+### `@simple_fn` — boundary / exact-solution functions
 
 Signature: `f(t, x, u, ctx)` where `x` is the coordinate vector and `u` is
 the output vector.
@@ -111,10 +111,10 @@ function bg_vel(t, x, u, ctx)
     u[1] = x[1] * 0.1    # Vx = exx * x
     u[2] = x[2] * (-0.1) # Vy = eyy * y
 end
-const bg_vel_ptr = PETSc.@petsc_simple_fn(bg_vel)
+const bg_vel_ptr = PETSc.@simple_fn(bg_vel)
 ```
 
-### `@petsc_residual_fn` — f0 / f1 residual and post-processing functions
+### `@residual_fn` — f0 / f1 residual and post-processing functions
 
 Signature: full PETSc pointwise signature with `dim_`, `Nf`, `NfAux`,
 `uOff`, `uOff_x`, `u`, `u_t`, `u_x`, `aOff`, `aOff_x`, `a`, `a_t`, `a_x`,
@@ -127,12 +127,12 @@ function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     f0[1] = 0.0
     for d in 0:dim_-1; f0[1] -= u_x[d*dim_+d+1]; end
 end
-const f0_p_ptr = PETSc.@petsc_residual_fn(f0_p, 1)
+const f0_p_ptr = PETSc.@residual_fn(f0_p, 1)
 ```
 
-### `@petsc_jacobian_fn` — g0/g1/g2/g3 Jacobian functions
+### `@jacobian_fn` — g0/g1/g2/g3 Jacobian functions
 
-Same signature as `@petsc_residual_fn` but with an extra `utShift` argument
+Same signature as `@residual_fn` but with an extra `utShift` argument
 before `x`.
 
 ```julia
@@ -140,7 +140,7 @@ function g1_pu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g1)
     for d in 0:dim_-1; g1[d*dim_+d+1] = -1.0; end
 end
-const g1_pu_ptr = PETSc.@petsc_jacobian_fn(g1_pu, dim_*dim_)
+const g1_pu_ptr = PETSc.@jacobian_fn(g1_pu, dim_*dim_)
 ```
 
 !!! note "Automatic differentiation"
@@ -157,7 +157,7 @@ const g1_pu_ptr = PETSc.@petsc_jacobian_fn(g1_pu, dim_*dim_)
 ## PetscDS: Residuals, Jacobians, and Constants
 
 ```julia
-ds = PETSc.getds(dm)
+ds = PETSc.ds(dm)
 
 # Residual callbacks (f0 = volume source, f1 = flux)
 PETSc.set_residual!(ds, 0, f0_u_ptr, f1_u_ptr)   # momentum
@@ -185,7 +185,7 @@ PETSc.set_constants!(ds, [mu, rho, gravity, dt])
 
 ```julia
 # Get the boundary label (created by Gmsh or DMPlexCreateBoxMesh)
-label = PETSc.getlabel(dm, "Face Sets")
+label = PETSc.label(dm, "Face Sets")
 
 # Dirichlet (essential) BC on velocity (field 0), boundary tag 1
 PETSc.add_boundary!(petsclib, dm,
@@ -207,17 +207,17 @@ Auxiliary fields carry per-cell data (phase, history stress, etc.) that callback
 
 ```julia
 # Clone the primary DM and set up DG-P0 auxiliary fields
-dm_aux = PETSc.dmclone(dm)
+dm_aux = PETSc.clone(dm)
 
 fe_phase = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
                                     degree = 0, prefix = "phase_")
 fe_tau   = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim*dim, simplex;
                                     degree = 0, prefix = "tau_")
-PETSc.setfield!(dm_aux, 0, fe_phase)
-PETSc.setfield!(dm_aux, 1, fe_tau)
-PETSc.createds!(dm_aux)
+PETSc.set_field!(dm_aux, 0, fe_phase)
+PETSc.set_field!(dm_aux, 1, fe_tau)
+PETSc.create_ds!(dm_aux)
 
-aux_vec = PETSc.DMGlobalVec(dm_aux)
+aux_vec = PETSc.global_vec(dm_aux)
 
 # Attach aux_vec so callbacks see it via `a`
 LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
@@ -230,16 +230,16 @@ LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
 
 ```julia
 # Project exact functions onto a DM vector (initialisation / BCs)
-PETSc.dm_project_function!(petsclib, dm, 0.0,
+PETSc.project_function!(petsclib, dm, 0.0,
     [vel_fn_ptr, pres_fn_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, u)
 
 # Project residual-style callbacks onto a DM vector (post-processing)
-PETSc.dm_project_field!(petsclib, dm_out, t, u,
+PETSc.project_field!(petsclib, dm_out, t, u,
     [copy_vel_ptr, copy_pres_ptr, compute_tau_3x3_ptr],
     LibPETSc.INSERT_ALL_VALUES, out_vec)
 
 # L² error vs. exact solution
-err = PETSc.dm_compute_l2diff(petsclib, dm, t,
+err = PETSc.l2diff(petsclib, dm, t,
     [exact_vel_ptr, exact_pres_ptr], nothing, u)
 ```
 
@@ -249,24 +249,24 @@ err = PETSc.dm_compute_l2diff(petsclib, dm, t,
 
 ```julia
 # Wire FEM residual/Jacobian assembly into the SNES
-PETSc.plex_set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(petsclib, dm)
 
 # Constant-pressure null space (for incompressible flow)
-null_vec = PETSc.DMGlobalVec(dm)
-PETSc.dm_project_function!(petsclib, dm, 0.0,
+null_vec = PETSc.global_vec(dm)
+PETSc.project_function!(petsclib, dm, 0.0,
     [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, null_vec)
 LibPETSc.VecNormalize(petsclib, null_vec)
-nullspace = GC.@preserve null_vec PETSc.mat_null_space_create(petsclib, comm, (null_vec,))
-PETSc.snes_set_jacobian_null_space!(snes, nullspace)
+nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
+PETSc.set_jacobian_nullspace!(snes, nullspace)
 
 # Attach constant null space directly to the pressure FE
-PETSc.fe_compose_constant_null_space!(petsclib, comm, fe_pres)
+PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # Propagate discretisation to coarser MG levels
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.dm_copy_disc!(dm, cdm)
-        cdm = PETSc.dm_get_coarse(cdm)
+        PETSc.copy_disc!(dm, cdm)
+        cdm = PETSc.coarse_dm(cdm)
     end
 end
 
@@ -280,13 +280,13 @@ PETSc.mat_null_space_destroy!(petsclib, nullspace)
 
 ```julia
 # Write a named vector to a VTU file (merges parallel pieces automatically)
-PETSc.vtk_save!(petsclib, comm, "solution.vtu", out_vec)
+PETSc.save_vtk!(petsclib, comm, "solution.vtu", out_vec)
 
 # Mark tensor fields so ParaView shows them as tensors
 PETSc.vtk_merge_tensor!(fname, "strainrate", "tau")
 ```
 
-`vtk_save!` calls `PetscViewerVTKOpen` + `DMView` / `VecView` internally and works in parallel (each rank writes its own piece; PETSc merges the XML).
+`save_vtk!` calls `PetscViewerVTKOpen` + `DMView` / `VecView` internally and works in parallel (each rank writes its own piece; PETSc merges the XML).
 `vtk_merge_tensor!` post-processes the XML header to annotate multiple tensor fields so ParaView's tensor glyph filter recognises them.
 
 ### Writing a ParaView PVD animation file
@@ -296,7 +296,7 @@ pvd_entries = Tuple{Float64,String}[]
 for step in 1:nsteps
     # ... solve ...
     fname = "out_$(lpad(step, 4, '0')).vtu"
-    PETSc.vtk_save!(petsclib, comm, fname, out_vec)
+    PETSc.save_vtk!(petsclib, comm, fname, out_vec)
     push!(pvd_entries, (t, abspath(fname)))
     # rewrite PVD after every step so it is always playable
     open("sim.pvd", "w") do io
@@ -321,11 +321,11 @@ For moving-mesh simulations, update the coordinate vector directly:
 
 ```julia
 # Project P2 velocity onto P1 (vertex-based) to get nodal velocities
-dm_p1 = PETSc.dmclone(dm)
-PETSc.setfield!(dm_p1, 0, PETSc.fe_create_lagrange(petsclib, MPI.COMM_SELF, dim, dim, simplex, 1))
-PETSc.createds!(dm_p1)
-vel_p1 = PETSc.DMGlobalVec(dm_p1)
-PETSc.dm_project_field!(petsclib, dm_p1, 0.0, u, [copy_vel_ptr],
+dm_p1 = PETSc.clone(dm)
+PETSc.set_field!(dm_p1, 0, PETSc.fe_create_lagrange(petsclib, MPI.COMM_SELF, dim, dim, simplex, 1))
+PETSc.create_ds!(dm_p1)
+vel_p1 = PETSc.global_vec(dm_p1)
+PETSc.project_field!(petsclib, dm_p1, 0.0, u, [copy_vel_ptr],
     LibPETSc.INSERT_ALL_VALUES, vel_p1)
 
 # Move each mesh node by dt * v (the coordinate vector is owned by the DM)
@@ -625,7 +625,7 @@ mpiexec -n 4 julia --project=examples examples/ex62b.jl \
 The mesh is partitioned automatically by PETSc's DMPlex.  The direct solver
 (`-fieldsplit_velocity_pc_type lu`) works in serial only; use GAMG or GMG for
 parallel runs.  VTK output is written per-rank and merged into a single XML
-collection automatically by `vtk_save!`.
+collection automatically by `save_vtk!`.
 
 For large HPC runs, see [Running on HPC Systems](@ref) for MPI launch syntax
 on different cluster schedulers.

@@ -32,7 +32,7 @@ PETSc.finalize(petsclib)
 ```
 
 Elements are attached to a DM with `DMSetField` / `DMCreateDS`; the high-level helpers
-`PETSc.fe_create_default`, `PETSc.setfield!` and `PETSc.createds!` on the
+`PETSc.fe_create_default`, `PETSc.set_field!` and `PETSc.create_ds!` on the
 [DMPlex](dmplex.md) page wrap this workflow.
 
 ## Function Reference

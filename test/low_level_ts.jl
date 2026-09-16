@@ -98,7 +98,7 @@ using MPI
         @test v.ptr != C_NULL
         @test vatol2.ptr == v.ptr
 
-        PETSc.destroy(v)
+        PETSc.destroy!(v)
         PETSc.LibPETSc.TSDestroy(petsclib, ts)
     end
 

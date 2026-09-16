@@ -35,5 +35,5 @@ The audit utilities help identify potential memory leaks by tracking PETSc objec
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["audit.jl"]
+Pages   = ["audit.jl", "audit_names.jl"]
 ```

@@ -42,13 +42,13 @@ if bnd[1] == PETSc.DM_BOUNDARY_PERIODIC  # bnd is now a tuple, check first eleme
 end
 
 #Compute reference solution on the grid, using direct array access
-xa        = PETSc.DMGlobalVec(dm);
-xa_Local  = PETSc.DMLocalVec(dm);
+xa        = PETSc.global_vec(dm);
+xa_Local  = PETSc.local_vec(dm);
 xa_array  = LibPETSc.DMStagVecGetArray(petsclib, dm, xa_Local);
 dm_coord  = LibPETSc.DMGetCoordinateDM(petsclib, dm)
 X_coord,_,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, dm)
 
-corners    =    PETSc.getcorners(dm);
+corners    =    PETSc.corners(dm);
 
 # Get the correct entries for each of our variables in local element-wise storage
 iu = LibPETSc.DMStagGetLocationSlot(petsclib, dm, LibPETSc.DMSTAG_LEFT, PetscInt(0));
@@ -69,17 +69,17 @@ xa_array[1:end-1,ip+1] .= b .- a .- (c./2.0) .+ c .* X_coord[1:end-1,ixp+1];
 LibPETSc.DMStagVecRestoreArray(petsclib, dm, xa_Local, xa_array)
 LibPETSc.DMLocalToGlobalBegin(petsclib, dm, xa_Local, LibPETSc.INSERT_VALUES, xa)
 LibPETSc.DMLocalToGlobalEnd(petsclib, dm, xa_Local, LibPETSc.INSERT_VALUES, xa)
-#PETSc.dm_local_to_global!(xa_Local, xa, dm)
+#PETSc.local_to_global!(xa_Local, xa, dm)
 
 
 dmForcing = LibPETSc.DMStagCreateCompatibleDMStag(petsclib, dm, PetscInt(1), PetscInt(0), PetscInt(0), PetscInt(0));
-f         = PETSc.DMGlobalVec(dmForcing);
-fLocal    = PETSc.DMLocalVec(dmForcing);
+f         = PETSc.global_vec(dmForcing);
+fLocal    = PETSc.local_vec(dmForcing);
 f        .= c;
 fLocal   .= c;
 
 A   = LibPETSc.DMCreateMatrix(petsclib, dm);
-rhs = PETSc.DMGlobalVec(dm);
+rhs = PETSc.global_vec(dm);
 
 
 # Construct rhs vector
@@ -158,14 +158,14 @@ PETSc.assemble!(A)
 
 
 
-x   = PETSc.DMGlobalVec(dm);
+x   = PETSc.global_vec(dm);
 ksp = PETSc.KSP(A);
 PETSc.solve!(x,ksp,rhs);
 
-xLocal    = PETSc.DMLocalVec(dm);
+xLocal    = PETSc.local_vec(dm);
 LibPETSc.DMGlobalToLocalBegin(petsclib, dm, x, LibPETSc.INSERT_VALUES, xLocal)
 LibPETSc.DMGlobalToLocalEnd(petsclib, dm, x, LibPETSc.INSERT_VALUES, xLocal)
-#PETSc.dm_global_to_local!(x, xLocal, dm)
+#PETSc.global_to_local!(x, xLocal, dm)
 
 
 # get the local solution array:
@@ -188,18 +188,18 @@ errRel     = error_norm/xa_norm;
 
 print("Error (abs): ",error_norm,"\nError (rel): ",errRel,"\n");
 
-PETSc.destroy(dmForcing);
-PETSc.destroy(dm_coord);
-PETSc.destroy(fLocal);
-PETSc.destroy(f);
-PETSc.destroy(dm);
-PETSc.destroy(xa_Local);
-PETSc.destroy(xa);
-PETSc.destroy(xLocal);
-PETSc.destroy(x);
-PETSc.destroy(rhs);
-#PETSc.destroy(ksp);
-PETSc.destroy(A);
+PETSc.destroy!(dmForcing);
+PETSc.destroy!(dm_coord);
+PETSc.destroy!(fLocal);
+PETSc.destroy!(f);
+PETSc.destroy!(dm);
+PETSc.destroy!(xa_Local);
+PETSc.destroy!(xa);
+PETSc.destroy!(xLocal);
+PETSc.destroy!(x);
+PETSc.destroy!(rhs);
+#PETSc.destroy!(ksp);
+PETSc.destroy!(A);
 PETSc.finalize(petsclib)
 
 return nothing

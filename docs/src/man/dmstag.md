@@ -60,46 +60,46 @@ dm = DMStag(
 
 ```julia
 # Get local grid extent (without ghost points)
-corners = getcorners_dmstag(dm)
-# Returns (lower=CartesianIndex, upper=CartesianIndex, size=Tuple)
+c = PETSc.corners(dm)
+# Returns (lower=CartesianIndex, upper=CartesianIndex, size=Tuple, nextra=Tuple)
 
-# Get local grid extent (with ghost points)  
-ghost_corners = getghostcorners_dmstag(dm)
+# Get local grid extent (with ghost points)
+gc = PETSc.ghost_corners(dm)
 ```
 
 ### Working with Vectors
 
 ```julia
 # Create global and local vectors
-global_vec = DMGlobalVec(dm)
-local_vec = DMLocalVec(dm)
+gvec = PETSc.global_vec(dm)
+lvec = PETSc.local_vec(dm)
 
 # Transfer data between global and local
-dm_global_to_local!(dm, global_vec, INSERT_VALUES, local_vec)
-dm_local_to_global!(dm, local_vec, ADD_VALUES, global_vec)
+PETSc.global_to_local!(gvec, lvec, dm, PETSc.INSERT_VALUES)
+PETSc.local_to_global!(lvec, gvec, dm, PETSc.ADD_VALUES)
 ```
 
 ### Getting Location Indices
 
 ```julia
 # Get indices (ghost-aware) for accessing specific DOF locations in a local array
-indices = local_indices_dmstag(dm)
+indices = local_indices(dm)
 # Use indices to access vertex, edge, face, or element DOFs
 
 # Get indices (no ghosts) for accessing specific DOF locations in a global array
-indices = global_indices_dmstag(dm)
+indices = global_indices(dm)
 ```
 
 ## Setting Coordinates
 
 ```julia
 # Set uniform coordinates
-setuniformcoordinates_stag!(dm, xmin, xmax)           # 1D
-setuniformcoordinates_stag!(dm, xmin, xmax, ymin, ymax)  # 2D
-setuniformcoordinates_stag!(dm, xmin, xmax, ymin, ymax, zmin, zmax)  # 3D
+set_uniform_coordinates!(dm, xmin, xmax)           # 1D
+set_uniform_coordinates!(dm, xmin, xmax, ymin, ymax)  # 2D
+set_uniform_coordinates!(dm, xmin, xmax, ymin, ymax, zmin, zmax)  # 3D
 
 # Get local coordinate array
-coords = getlocalcoordinatearray(dm)
+coords = local_coordinate_array(dm)
 ```
 
 ## Stencil Types
@@ -121,11 +121,11 @@ dm = DMStag(
     DMSTAG_STENCIL_BOX
 )
 
-setuniformcoordinates_stag!(dm, 0.0, 1.0, 0.0, 1.0)
+set_uniform_coordinates!(dm, 0.0, 1.0, 0.0, 1.0)
 
 # Create vectors and matrix
-x = DMGlobalVec(dm)
-b = DMGlobalVec(dm)
+x = global_vec(dm)
+b = global_vec(dm)
 A = DMCreateMatrix(dm)
 ```
 

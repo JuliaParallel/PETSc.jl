@@ -61,8 +61,8 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
             @test LibPETSc.VecSum(petsclib,v3) ≈ expected_sum rtol=1e-10
             @test LibPETSc.VecSum(petsclib,v4) ≈ expected_sum rtol=1e-10
             
-            PETSc.destroy(v3)
-            PETSc.destroy(v4)
+            PETSc.destroy!(v3)
+            PETSc.destroy!(v4)
         end
 
         # Julia candy:
@@ -75,9 +75,9 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         fill!(v5, PetscScalar(1.11))
         @test v5[1] == PetscScalar(1.11)
 
-        PETSc.destroy(v1)
-        PETSc.destroy(v2)
-        PETSc.destroy(v5)
+        PETSc.destroy!(v1)
+        PETSc.destroy!(v2)
+        PETSc.destroy!(v5)
         PETSc.finalize(petsclib)
     end
 end
@@ -129,7 +129,7 @@ end
             x2 = LibPETSc.VecGetArray(petsclib,petsc_x)
             @test x2 == x
             
-            PETSc.destroy(petsc_x)
+            PETSc.destroy!(petsc_x)
         end
         
         PETSc.finalize(petsclib)
@@ -161,9 +161,9 @@ end
         v = PETSc.VecSeq(petsclib, 10)
         @test v !== nothing
         @test LibPETSc.VecGetSize(petsclib, v) == 10
-        PETSc.destroy(v)
+        PETSc.destroy!(v)
 
-        PETSc.destroy(petsc_x)
+        PETSc.destroy!(petsc_x)
         PETSc.finalize(petsclib)
     end
 end
@@ -194,7 +194,7 @@ end
             v[1] = PetscScalar(42.0)
             @test x[1] == PetscScalar(42.0)
             
-            PETSc.destroy(v)
+            PETSc.destroy!(v)
         end
         
         # Test with different array values
@@ -210,7 +210,7 @@ end
             @test v2[1:5] == x2
             @test LibPETSc.VecNorm(petsclib, v2, PETSc.NORM_2) ≈ norm(x2)
             
-            PETSc.destroy(v2)
+            PETSc.destroy!(v2)
         end
         
         # Test with blocksize parameter
@@ -220,7 +220,7 @@ end
             @test LibPETSc.VecGetSize(petsclib, v3) == 6
             @test LibPETSc.VecGetBlockSize(petsclib, v3) == 2
             
-            PETSc.destroy(v3)
+            PETSc.destroy!(v3)
         end
         
         PETSc.finalize(petsclib)
@@ -228,7 +228,7 @@ end
 end
 
 
-@testset "withlocalarray!" begin
+@testset "with_local_array!" begin
     for petsclib in PETSc.petsclibs
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
@@ -240,7 +240,7 @@ end
         petsc_y     = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
 
         # extract one array, write
-        PETSc.withlocalarray!(
+        PETSc.with_local_array!(
             petsc_x;
             read = false, write = true,
         ) do x
@@ -252,7 +252,7 @@ end
         @test petsc_x[1:N] == PetscScalar.(1:N)
         
         # with tuple as input
-        PETSc.withlocalarray!(
+        PETSc.with_local_array!(
             (petsc_x, );
             read = (false,), write = (true,),
         ) do x
@@ -263,7 +263,7 @@ end
         @test petsc_x[1:N] == PetscScalar.(1:N)
 
         # with 2-variable tuple as input
-        PETSc.withlocalarray!(
+        PETSc.with_local_array!(
             (petsc_x, petsc_y);
             read = (false,false), write = (true,true),
         ) do x, y
@@ -276,7 +276,7 @@ end
         @test petsc_y[1:N] == PetscScalar.(2:2:2N)
 
         # with 2-variable tuple as input
-        PETSc.withlocalarray!(
+        PETSc.with_local_array!(
             petsc_x, petsc_y;
             read = (false,false), write = (true,true),
         ) do x, y
@@ -289,14 +289,14 @@ end
         @test petsc_y[1:N] == PetscScalar.(2:2:2N)
 
 
-        PETSc.destroy(petsc_x)
-        PETSc.destroy(petsc_y)
+        PETSc.destroy!(petsc_x)
+        PETSc.destroy!(petsc_y)
 
         PETSc.finalize(petsclib)
     end
 end
 
-@testset "withlocalarray! typed (Array)" begin
+@testset "with_local_array! typed (Array)" begin
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
@@ -306,12 +306,12 @@ end
         petsc_x = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
         petsc_y = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
 
-        # determine_memtype returns Vector for CPU vecs
-        @test PETSc.determine_memtype(petsc_x) === Vector
-        @test PETSc.determine_memtype(petsc_x, petsc_y) === Vector
+        # memtype returns Vector for CPU vecs
+        @test PETSc.memtype(petsc_x) === Vector
+        @test PETSc.memtype(petsc_x, petsc_y) === Vector
 
         # typed single vec — write
-        PETSc.withlocalarray!(Vector, petsc_x; read = false, write = true) do x
+        PETSc.with_local_array!(Vector, petsc_x; read = false, write = true) do x
             @test x isa Vector
             for i in eachindex(x)
                 x[i] = PetscScalar(i)
@@ -320,7 +320,7 @@ end
         @test petsc_x[1:N] == PetscScalar.(1:N)
 
         # typed two vecs as NTuple
-        PETSc.withlocalarray!(
+        PETSc.with_local_array!(
             Vector,
             (petsc_x, petsc_y);
             read = (false, false), write = (true, true),
@@ -336,7 +336,7 @@ end
         @test petsc_y[1:N] == PetscScalar.(2:2:2N)
 
         # typed two vecs as splat
-        PETSc.withlocalarray!(
+        PETSc.with_local_array!(
             Vector, petsc_x, petsc_y;
             read = (false, false), write = (true, true),
         ) do x, y
@@ -351,14 +351,14 @@ end
         @test petsc_y[1:N] == PetscScalar.(3:3:3N)
 
         # wrong type raises ArgumentError (Matrix is not Vector)
-        @test_throws ArgumentError PETSc.withlocalarray!(
+        @test_throws ArgumentError PETSc.with_local_array!(
             Matrix, petsc_x; read = true, write = false,
         ) do x
             nothing
         end
 
-        PETSc.destroy(petsc_x)
-        PETSc.destroy(petsc_y)
+        PETSc.destroy!(petsc_x)
+        PETSc.destroy!(petsc_y)
         PETSc.finalize(petsclib)
     end
 end

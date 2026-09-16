@@ -40,7 +40,7 @@ MPI.Initialized() || MPI.Init()
 
                 # NOTE: here I explicitly call the individual functions; below we use the convenience function DMDA
                 da = LibPETSc.DMDACreate1d(petsclib,comm, boundary_type, global_size, dof_per_node, stencil_width, points_per_proc)
-                PETSc.setfromoptions!(da)   # set options (if any)
+                PETSc.set_from_options!(da)   # set options (if any)
                 PETSc.setup!(da)            # we need to call this to finalize the DMDA
           
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
@@ -52,7 +52,7 @@ MPI.Initialized() || MPI.Init()
                 
                 stencil_type = [LibPETSc.DMDA_STENCIL_STAR]
 
-                da_info = PETSc.getinfo(da)
+                da_info = PETSc.info(da)
 
                 @test da_info.dim == 1
                 @test da_info.global_size == (global_size, 1, 1)
@@ -65,14 +65,14 @@ MPI.Initialized() || MPI.Init()
                 @test da_info.stencil_type == PETSc.DMDA_STENCIL_BOX
                 @test da_info.stencil_width == stencil_width
 
-                corners = PETSc.getcorners(da)
+                corners = PETSc.corners(da)
                 @test corners.lower ==
                       CartesianIndex(proc_global_offsets[mpirank + 1] + 1, 1, 1)
                 @test corners.upper ==
                       CartesianIndex(proc_global_offsets[mpirank + 2], 1, 1)
                 @test corners.size == (points_per_proc[mpirank + 1], 1, 1)
 
-                ghost_corners = PETSc.getghostcorners(da)
+                ghost_corners = PETSc.ghost_corners(da)
                 @test ghost_corners.lower == CartesianIndex(
                     proc_global_offsets[mpirank + 1] + 1 - gl,
                     1,
@@ -86,7 +86,7 @@ MPI.Initialized() || MPI.Init()
                 @test ghost_corners.size ==
                       (points_per_proc[mpirank + 1] + gl + gr, 1, 1)
 
-                PETSc.destroy(da)
+                PETSc.destroy!(da)
 
                 # Use DMDA convenience function
                 da = PETSc.DMDA(
@@ -100,7 +100,7 @@ MPI.Initialized() || MPI.Init()
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
                 @test LibPETSc.DMGetDimension(petsclib, da) == 1
 
-                da_info = PETSc.getinfo(da)
+                da_info = PETSc.info(da)
 
                 @test da_info.dim == 1
                 if boundary_type == PETSc.DM_BOUNDARY_PERIODIC
@@ -118,7 +118,7 @@ MPI.Initialized() || MPI.Init()
                 )
                 @test da_info.stencil_type == PETSc.DMDA_STENCIL_BOX
                 @test da_info.stencil_width == stencil_width
-                PETSc.destroy(da)
+                PETSc.destroy!(da)
 
             end
         end
@@ -170,7 +170,7 @@ end
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
                 @test LibPETSc.DMGetDimension(petsclib, da) == 2
 
-                da_info = PETSc.getinfo(da)
+                da_info = PETSc.info(da)
 
                 @test da_info.global_size == (global_size_x, global_size_y, 1)
                 @test da_info.dim == 2
@@ -180,7 +180,7 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
-                PETSc.destroy(da)
+                PETSc.destroy!(da)
 
                 # test refinement
                 da_refine = 2
@@ -197,8 +197,8 @@ end
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
                 @test LibPETSc.DMGetDimension(petsclib, da) == 2
 
-                da_info = PETSc.getinfo(da)
-                PETSc.destroy(da)
+                da_info = PETSc.info(da)
+                PETSc.destroy!(da)
 
                 # Compute refined global size
                 ref_global_size_x =
@@ -220,7 +220,7 @@ end
 
               
                 
-                PETSc.destroy(da)
+                PETSc.destroy!(da)
             end
         end
         PETSc.finalize(petsclib)
@@ -270,7 +270,7 @@ end
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
                 @test LibPETSc.DMGetDimension(petsclib, da) == 3
 
-                da_info = PETSc.getinfo(da)
+                da_info = PETSc.info(da)
 
                 @test da_info.global_size ==
                       (global_size_x, global_size_y, global_size_z)
@@ -281,7 +281,7 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
-                PETSc.destroy(da)
+                PETSc.destroy!(da)
                 # test refinement
                 da_refine = 2
                 da = PETSc.DMDA(
@@ -297,7 +297,7 @@ end
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
                 @test LibPETSc.DMGetDimension(petsclib, da) == 3
 
-                da_info = PETSc.getinfo(da)
+                da_info = PETSc.info(da)
 
                 # Compute refined global size
                 ref_global_size_x =
@@ -321,13 +321,13 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
-                PETSc.destroy(da)
+                PETSc.destroy!(da)
                 # TODO: Test with specific distribution of processors and sizes
 
                 # TODO: Need a better test?
                 #=
                 ksp = PETSc.KSP(da)
-                @test PETSc.gettype(ksp) == "gmres"
+                @test PETSc.type_name(ksp) == "gmres"
                 =#
             end
         end
@@ -371,7 +371,7 @@ end
             mat = LibPETSc.DMCreateMatrix(petsclib, da)
 
             # Build the dim-dimensional Laplacian FD matrix
-            corners = PETSc.getcorners(da)
+            corners = PETSc.corners(da)
 
             # test setting mat values with a MatStencil
             #i = corners.lower
@@ -415,8 +415,8 @@ end
                 end
             end
 
-            PETSc.destroy(mat)
-            PETSc.destroy(da)
+            PETSc.destroy!(mat)
+            PETSc.destroy!(da)
         end
         PETSc.finalize(petsclib)
     end
@@ -450,13 +450,13 @@ end
             points_per_proc = (points_per_proc,),
         )
 
-        corners = PETSc.getcorners(da)
+        corners = PETSc.corners(da)
 
         # Create the local and global vectors
         #vec = LibPETSc.DMCreateLocalVector(petsclib,da)
 
-        local_vec = PETSc.DMLocalVec(da)
-        global_vec = PETSc.DMGlobalVec(da)
+        local_vec = PETSc.local_vec(da)
+        global_vec = PETSc.global_vec(da)
 
         bot_val = 0
         top_val = 0
@@ -467,7 +467,7 @@ end
 
         # add the local values to the global values
         #PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
-        PETSc.dm_local_to_global!(local_vec, global_vec, da, PETSc.ADD_VALUES)
+        PETSc.local_to_global!(local_vec, global_vec, da, PETSc.ADD_VALUES)
 
         # end points added with neighbor due to ghost of size 1
         bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
@@ -482,8 +482,8 @@ end
 
         # reset the local values with the global values
         #PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
-        #PETSc.dm_global_to_local!(local_vec, global_vec, da, PETSc.INSERT_VALUES)
-        PETSc.dm_global_to_local!(global_vec, local_vec, da, PETSc.INSERT_VALUES)
+        #PETSc.global_to_local!(local_vec, global_vec, da, PETSc.INSERT_VALUES)
+        PETSc.global_to_local!(global_vec, local_vec, da, PETSc.INSERT_VALUES)
 
         # My first value and my ghost should be the bot/top values
         @test local_vec[1] == bot_val
@@ -496,16 +496,16 @@ end
             @test local_vec[i] == mpisize + mpirank
         end
 
-        PETSc.destroy(global_vec)
-        PETSc.destroy(local_vec)
+        PETSc.destroy!(global_vec)
+        PETSc.destroy!(local_vec)
 
 
         # Test DM Coordinates
 
         # Crank it up to 11!
         xmin, xmax = 0, 11
-        PETSc.setuniformcoordinates_dmda!(da, (xmin,), (xmax,))
-        coord_vec = PETSc.coordinatesDMLocalVec(da)
+        PETSc.set_uniform_coordinates!(da, (xmin,), (xmax,))
+        coord_vec = PETSc.local_coordinates(da)
         Δx = (xmax - xmin) / (global_size - 1)
 
         # Figure out the values we should have in the coordinate vector
@@ -536,24 +536,24 @@ end
         Δx = (xmax - xmin) / (global_size_x - 1)     # only needed for testing
         Δy = (ymax - ymin) / (global_size_y - 1)     # only needed for testing
 
-        PETSc.setuniformcoordinates_dmda!(da_2D, (xmin, ymin), (xmax, ymax))
+        PETSc.set_uniform_coordinates!(da_2D, (xmin, ymin), (xmax, ymax))
 
          # Retrieve local coordinate array (shaped accordingly)
-        coord = PETSc.getlocalcoordinatearray(da_2D)
+        coord = PETSc.local_coordinate_array(da_2D)
 
         # Check
-        corners = PETSc.getcorners(da_2D)
+        corners = PETSc.corners(da_2D)
         for i in ((corners.lower):(corners.upper))
             @test coord[1, i] ≈ (i[1] - 1) * Δx + xmin
             @test coord[2, i] ≈ (i[2] - 1) * Δy + ymin
         end
 
         # Retrieve local array of the 2 DOF DMDA and set values
-        x_g = PETSc.DMGlobalVec(da_2D)
-        x_l = PETSc.DMLocalVec(da_2D)
+        x_g = PETSc.global_vec(da_2D)
+        x_l = PETSc.local_vec(da_2D)
 
-        PETSc.withlocalarray!(x_l; read = false) do l_x
-            x = PETSc.reshapelocalarray(l_x, da_2D)
+        PETSc.with_local_array!(x_l; read = false) do l_x
+            x = PETSc.reshape_local_array(l_x, da_2D)
             @test 2 == size(x, 1)
 
             Array_1 = @view x[1, :, :, :]
@@ -562,18 +562,18 @@ end
             Array_2 = @view x[2, :, :, :]
             Array_2 .= 22.2
         end
-        #PETSc.dm_local_to_global!(x_g, x_l, da_2D, PETSc.INSERT_VALUES)
-        PETSc.dm_local_to_global!(x_l,x_g, da_2D, PETSc.INSERT_VALUES)
+        #PETSc.local_to_global!(x_g, x_l, da_2D, PETSc.INSERT_VALUES)
+        PETSc.local_to_global!(x_l,x_g, da_2D, PETSc.INSERT_VALUES)
 
         sum_val = PETSc.LibPETSc.VecSum(petsclib, x_g)
         @test sum_val ≈ PetscScalar(3996)            # check sum of global vector
 
-        PETSc.destroy(coord_vec)
-        #PETSc.destroy(coord_da)
-        PETSc.destroy(da)
-        PETSc.destroy(da_2D)
-        PETSc.destroy(x_g)
-        PETSc.destroy(x_l)
+        PETSc.destroy!(coord_vec)
+        #PETSc.destroy!(coord_da)
+        PETSc.destroy!(da)
+        PETSc.destroy!(da_2D)
+        PETSc.destroy!(x_g)
+        PETSc.destroy!(x_l)
 
         PETSc.finalize(petsclib)
 

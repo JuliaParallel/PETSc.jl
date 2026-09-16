@@ -123,8 +123,8 @@ snes = PETSc.SNES(petsclib,comm;
         snes_rtol=1e-12, 
         snes_monitor=nothing,
         snes_converged_reason=nothing);
-PETSc.setfunction!(snes, FormResidual1!, res)
-PETSc.setjacobian!(snes, FormJacobian1!, PJ)
+PETSc.set_function!(snes, FormResidual1!, res)
+PETSc.set_snes_jacobian!(snes, FormJacobian1!, PJ)
 
 # solve
 PETSc.solve!(x_s, snes);
@@ -136,11 +136,11 @@ FormResidual1!(res,snes, x_s)
 @show norm(res[:])
 
 # cleanup
-PETSc.destroy(x_s)
-PETSc.destroy(res)
-PETSc.destroy(b)
-PETSc.destroy(PJ)
-PETSc.destroy(snes)
+PETSc.destroy!(x_s)
+PETSc.destroy!(res)
+PETSc.destroy!(b)
+PETSc.destroy!(PJ)
+PETSc.destroy!(snes)
 PETSc.finalize(petsclib)
 
 # plot solution in REPL

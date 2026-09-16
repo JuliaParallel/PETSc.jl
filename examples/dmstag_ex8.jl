@@ -22,7 +22,7 @@ if !MPI.Initialized()
 end
 
 petsclib = first(PETSc.petsclibs)
-PETSc.initialized(petsclib) || PETSc.initialize(petsclib)
+PETSc.isinitialized(petsclib) || PETSc.initialize(petsclib)
 
 PetscScalar = PETSc.scalartype(petsclib)
 PetscInt    = PETSc.inttype(petsclib)
@@ -47,9 +47,9 @@ dm = PETSc.DMStag(petsclib, comm,
 
 function assemble_system!(dm, petsclib, PetscScalar, PetscInt)
     A   = LibPETSc.DMCreateMatrix(petsclib, dm)
-    b   = PETSc.DMGlobalVec(dm)
+    b   = PETSc.global_vec(dm)
 
-    corners = PETSc.getcorners_dmstag(dm)
+    corners = PETSc.corners(dm)
     N       = size(dm)[1]       # global element count  (= number of intervals)
     n_extra = corners.nextra[1] # 1 on the rightmost rank, 0 elsewhere
 
@@ -150,8 +150,8 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── Cleanup ──────────────────────────────────────────────────────────────────
-PETSc.destroy(ksp)
-PETSc.destroy(A)
-PETSc.destroy(b)
-PETSc.destroy(x)
-PETSc.destroy(dm)
+PETSc.destroy!(ksp)
+PETSc.destroy!(A)
+PETSc.destroy!(b)
+PETSc.destroy!(x)
+PETSc.destroy!(dm)

@@ -167,7 +167,7 @@ using ForwardDiff, LinearAlgebra
 const HAS_CAIROMAKIE = try using CairoMakie; true catch; false end
 
 petsclib = first(PETSc.petsclibs);
-PETSc.initialized(petsclib) || PETSc.initialize(petsclib)
+PETSc.isinitialized(petsclib) || PETSc.initialize(petsclib)
 
 
 """
@@ -228,9 +228,9 @@ end
                                  (dv, de, dc),
                                  1,
                                  PETSc.DMSTAG_STENCIL_BOX)
-    PETSc.setuniformcoordinates_stag!(dm_coeff_rank0, (user_ctx.xlim[1],user_ctx.zlim[1]), (user_ctx.xlim[2],user_ctx.zlim[2]))
+    PETSc.set_uniform_coordinates!(dm_coeff_rank0, (user_ctx.xlim[1],user_ctx.zlim[1]), (user_ctx.xlim[2],user_ctx.zlim[2]))
 
-    vrep_coeff = PETSc.DMGlobalVec(dm_coeff_rank0)
+    vrep_coeff = PETSc.global_vec(dm_coeff_rank0)
 
 Residual function that calls `local_residuals` and can be used with ForwardDiff.
 It also sets ghost point values if needed. 
@@ -271,14 +271,14 @@ function local_residual_vec(x_in::Vector, params, I, N)
 end
 
 function FormRes!(r_g, snes, x_g, user_ctx)
-    dm = PETSc.getDM(snes)
+    dm = PETSc.dm(snes)
     
     # Copy global to local vectors
     LibPETSc.VecSet(petsclib, user_ctx.r_l, 0.0) # set residual to zero before accumulating contributions
     LibPETSc.VecSet(petsclib, r_g, 0.0) # set residual to zero before accumulating contributions
     
     LibPETSc.VecSet(petsclib, user_ctx.x_l, 0.0) # set solution to zero before accumulating contributions
-    PETSc.dm_global_to_local!(x_g, user_ctx.x_l, dm)
+    PETSc.global_to_local!(x_g, user_ctx.x_l, dm)
 
     # ghost point values
     set_ghostpoint_values!(user_ctx.x_l, dm, petsclib, user_ctx.BC )
@@ -287,28 +287,28 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
 
     # get the corners and global sizes
-    corners       = PETSc.getcorners_dmstag(dm)
+    corners       = PETSc.corners(dm)
     Nx, Nz        = size(dm)[1:2]
 
     LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0) # set residual to zero before accumulating contributions
     Xlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
     Rlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.r_l)
     
-    P  = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-    Vx = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
-    Vz = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
+    P  = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
+    Vx = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
+    Vz = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
-    rP  = @view(Rlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-    rVx = @view(Rlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
-    rVz = @view(Rlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
+    rP  = @view(Rlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
+    rVx = @view(Rlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
+    rVz = @view(Rlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
     Δx, Δz = user_ctx.dx, user_ctx.dz;
 
     # Get coefficient array for density and eta (stored in user_ctx.coeff_l)
     coeff_array = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l)
-    rho_vz     = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT, 0)])
-    eta_center = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)])
-    eta_vertex = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)])
+    rho_vz     = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT, 0)])
+    eta_center = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)])
+    eta_vertex = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)])
 
 #=
     # ----
@@ -428,37 +428,37 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dm, X_coord,Z_coord,nothing)
 
     # Copy local into global residual vector
-    PETSc.dm_local_to_global!(user_ctx.r_l, r_g, dm)
+    PETSc.local_to_global!(user_ctx.r_l, r_g, dm)
     
     return 0
 end
 
 
 function FormJacobian!(J, snes, x_g, user_ctx)
-    dm = PETSc.getDM(snes)
+    dm = PETSc.dm(snes)
 
     # Extract the local vector
-    PETSc.dm_global_to_local!(x_g, user_ctx.x_l, dm, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(x_g, user_ctx.x_l, dm, PETSc.INSERT_VALUES)
 
     # get coordinates
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
 
     # get the corners and global sizes
-    corners = PETSc.getcorners_dmstag(dm)
+    corners = PETSc.corners(dm)
     Nx, Nz  = size(dm)[1:2]
     Xlocal  = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
     
-    P  = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-    Vx = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
-    Vz = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
+    P  = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
+    Vx = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
+    Vz = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
     Δx, Δz = user_ctx.dx, user_ctx.dz;
 
     # Get coefficient array for density and eta (stored in user_ctx.coeff_l)
     coeff_array = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l)
-    rho_vz    = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT, 0)])
-    iee = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)
-    iec = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)
+    rho_vz    = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT, 0)])
+    iee = PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)
+    iec = PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)
     eta_center = @view(coeff_array[:,:,iee])
     eta_vertex = @view(coeff_array[:,:,iec])
 
@@ -626,15 +626,15 @@ function FormJacobian!(J, P, snes, x_g, user_ctx)
     # Fill J exactly as in the 4-arg method
     FormJacobian!(J, snes, x_g, user_ctx)
 
-    dm = PETSc.getDM(snes)
+    dm = PETSc.dm(snes)
 
     # Copy J → P (same sparsity, both from DMCreateMatrix)
     LibPETSc.MatCopy(petsclib, J, P, LibPETSc.SAME_NONZERO_PATTERN)
 
     # Add 1/η_center to the pressure diagonal of P
-    corners = PETSc.getcorners_dmstag(dm)
+    corners = PETSc.corners(dm)
     coeff_array = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l)
-    iee = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT, 0)
+    iee = PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT, 0)
     eta_center = @view(coeff_array[:,:,iee])
 
     for ix = corners.lower[1] : corners.upper[1]
@@ -684,19 +684,19 @@ end
 user_ctx = Data_Stokes2D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 function PopulateCoefficientData!(user_ctx)
-    ghost_corners = PETSc.getghostcorners_dmstag(user_ctx.dmCoeff)
-    corners = PETSc.getcorners_dmstag(user_ctx.dmCoeff)
+    ghost_corners = PETSc.ghost_corners(user_ctx.dmCoeff)
+    corners = PETSc.corners(user_ctx.dmCoeff)
   
-    user_ctx.coeff_l    =   PETSc.DMLocalVec(user_ctx.dmCoeff);
+    user_ctx.coeff_l    =   PETSc.local_vec(user_ctx.dmCoeff);
     coeff_array         =   LibPETSc.DMStagVecGetArray(petsclib,user_ctx.dmCoeff,user_ctx.coeff_l);
 
     # Get 1D coordinate arrays of the DM that contain the coordinates of the vertex and center points
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dmCoeff)
     
     # Get the correct entries for each of our variables in local element-wise storage
-    η_center = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)]);
-    η_vertex = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)]);
-    rho_vz   = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)]);
+    η_center = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)]);
+    η_vertex = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)]);
+    rho_vz   = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)]);
 
     # Fill coefficients over the FULL ghost range so inter-rank ghosts also have valid data.
     # The coordinate arrays from DMStagGetProductCoordinateArrays span the ghost range,
@@ -759,16 +759,16 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     # Sets 
     LibPETSc.VecSet(petsclib, x_g, 0.0) # set global solution vector to zero (including ghost points)
     
-    corners       = PETSc.getcorners_dmstag(user_ctx.dm)
+    corners       = PETSc.corners(user_ctx.dm)
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
 
     LibPETSc.VecSet(petsclib,user_ctx.x_l, 0.0)
     X_write = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dm, user_ctx.x_l)
     
     # add views (makes the code below more readable)
-    P  = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-    Vx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
-    Vz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
+    P  = @view(X_write[:,:,PETSc.dof_slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
+    Vx = @view(X_write[:,:,PETSc.dof_slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
+    Vz = @view(X_write[:,:,PETSc.dof_slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
     # Loop over P points (center)
     for ix=corners.lower[1] : corners.upper[1] 
@@ -804,7 +804,7 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     # set ghost point values
     set_ghostpoint_values!(user_ctx.x_l, user_ctx.dm, petsclib, user_ctx.BC )
 
-    PETSc.dm_local_to_global!(user_ctx.x_l,x_g, user_ctx.dm)
+    PETSc.local_to_global!(user_ctx.x_l,x_g, user_ctx.dm)
 
     return nothing
 end
@@ -812,15 +812,15 @@ end
 # sets ghostpoint values for a DMStag vector for free slip BCs
 # Only sets ghost points at PHYSICAL boundaries (not inter-rank boundaries)
 function set_ghostpoint_values!(x_l, dm, petsclib, BC )
-    corners       = PETSc.getcorners_dmstag(dm)
-    ghost_corners = PETSc.getghostcorners_dmstag(dm)
+    corners       = PETSc.corners(dm)
+    ghost_corners = PETSc.ghost_corners(dm)
     Nx, Nz        = size(dm)[1:2]   # global sizes
     
     X_write = LibPETSc.DMStagVecGetArray(petsclib, dm, x_l)
     
     # add views (makes the code below more readable)
-    Vx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
-    Vz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
+    Vx = @view(X_write[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
+    Vz = @view(X_write[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
     # set ghost points for Vx on bottom & top PHYSICAL boundary (free slip)
     for ix=corners.lower[1] : corners.upper[1] 
@@ -865,15 +865,15 @@ function extract_solution_julia(x_g::LibPETSc.PetscVec{PetscsLib}, user_ctx) whe
 
     dm = user_ctx.dm
     Nx, Nz = size(dm)[1:2]
-    corners = PETSc.getcorners_dmstag(dm)
+    corners = PETSc.corners(dm)
 
     # ----- Solution extraction via global-to-local + owned-cell copy -----
-    PETSc.dm_global_to_local!(x_g, user_ctx.x_l, dm)
+    PETSc.global_to_local!(x_g, user_ctx.x_l, dm)
     Xlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
 
-    P_view  = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT, 0)])
-    Vx_view = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,    0)])
-    Vz_view = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,    0)])
+    P_view  = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_ELEMENT, 0)])
+    Vx_view = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_LEFT,    0)])
+    Vz_view = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_DOWN,    0)])
 
     ix_lo, ix_hi = corners.lower[1], corners.upper[1]
     iy_lo, iy_hi = corners.lower[2], corners.upper[2]
@@ -905,9 +905,9 @@ function extract_solution_julia(x_g::LibPETSc.PetscVec{PetscsLib}, user_ctx) whe
 
     # ----- Coefficient extraction (same approach as solution) -----
     coeff_array = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l)
-    ρ_vz_view = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)])
-    η_c_view  = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)])
-    η_v_view  = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)])
+    ρ_vz_view = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)])
+    η_c_view  = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)])
+    η_v_view  = @view(coeff_array[:,:,PETSc.dof_slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)])
 
     ρ_buf = zeros(Nx,   Nz+1)
     ηc_buf = zeros(Nx,  Nz  )
@@ -1005,22 +1005,22 @@ user_ctx.dm = PETSc.DMStag(petsclib, comm,
                       opts...)
 
 # set coordinates
-PETSc.setuniformcoordinates_stag!( user_ctx.dm, (xlim[1],zlim[1]), (xlim[2],zlim[2]))
+PETSc.set_uniform_coordinates!( user_ctx.dm, (xlim[1],zlim[1]), (xlim[2],zlim[2]))
 
 # create coefficient DM (for rho and eta)
 user_ctx.dmCoeff      =   LibPETSc.DMStagCreateCompatibleDMStag(petsclib, user_ctx.dm,1,1,1,0);   # rho and eta on VERTEX, eta on ELEMENT
-PETSc.setuniformcoordinates_stag!(user_ctx.dmCoeff, (xlim[1],zlim[1]), (xlim[2],zlim[2]))
+PETSc.set_uniform_coordinates!(user_ctx.dmCoeff, (xlim[1],zlim[1]), (xlim[2],zlim[2]))
 
 # Populate phases
 PopulateCoefficientData!(user_ctx);
 
 # Create solution and residual vectors
-x_g             =   PETSc.DMGlobalVec(user_ctx.dm);
-r_g             =   PETSc.DMGlobalVec(user_ctx.dm);
+x_g             =   PETSc.global_vec(user_ctx.dm);
+r_g             =   PETSc.global_vec(user_ctx.dm);
 LibPETSc.VecSet(petsclib,x_g, 0.0)
 LibPETSc.VecSet(petsclib,r_g, 0.0)
-user_ctx.x_l    =   PETSc.DMLocalVec(user_ctx.dm);
-user_ctx.r_l    =   PETSc.DMLocalVec(user_ctx.dm);
+user_ctx.x_l    =   PETSc.local_vec(user_ctx.dm);
+user_ctx.r_l    =   PETSc.local_vec(user_ctx.dm);
 LibPETSc.VecSet(petsclib,user_ctx.x_l, 0.0)
 LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0)
 
@@ -1072,13 +1072,13 @@ snes = PETSc.SNES(petsclib,comm;
 
 snes.user_ctx  =       user_ctx;       # crashes
 
-PETSc.setDM!(snes, user_ctx.dm)
+PETSc.set_dm!(snes, user_ctx.dm)
 
 # Set first guess values for solution vector
 set_initial_solution!(x_g, user_ctx, petsclib)
 
-PETSc.setfunction!(snes, FormRes!, r_g)
-PETSc.setjacobian!(snes, FormJacobian!, J, Pmat)
+PETSc.set_function!(snes, FormRes!, r_g)
+PETSc.set_snes_jacobian!(snes, FormJacobian!, J, Pmat)
 
 PETSc.solve!(x_g, snes);
 

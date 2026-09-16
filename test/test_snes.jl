@@ -65,23 +65,23 @@ MPI.Initialized() || MPI.Init()
       PJ = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
 
       r = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
-      PETSc.setfunction!(S, fn!, r)
-      PETSc.setjacobian!(S, update_jac!, PJ, PJ)
+      PETSc.set_function!(S, fn!, r)
+      PETSc.set_snes_jacobian!(S, update_jac!, PJ, PJ)
  
       x = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
       b = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), PetscScalar.([0, 0]))
       PETSc.solve!(x, S, b)
 
-      #sol = PETSc.unsafe_localarray(PetscScalar, x.ptr)
+      #sol = PETSc.unsafe_local_array(PetscScalar, x.ptr)
       sol = x[:]
       @test sol ≈ [1.0,2.0] rtol=1e-4
 
-      # cleanup - destroy SNES first, then the vectors/matrices it references
-      PETSc.destroy(S);
-      PETSc.destroy(x);
-      PETSc.destroy(b);
-      PETSc.destroy(r);
-      PETSc.destroy(PJ);
+      # cleanup - destroy the SNES first, then the vectors/matrices it references
+      PETSc.destroy!(S);
+      PETSc.destroy!(x);
+      PETSc.destroy!(b);
+      PETSc.destroy!(r);
+      PETSc.destroy!(PJ);
 
       PETSc.finalize(petsclib)
       GC.gc()  # Force garbage collection to clean up any remaining objects

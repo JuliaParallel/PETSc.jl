@@ -36,7 +36,7 @@ function ex51_rhs!(
     # types must match the low-level PETSc ABI. In particular, the state and RHS
     # vectors arrive as raw `CVec` pointers. We immediately wrap them using
     # PETSc.jl's higher-level `VecPtr(..., own = false)` helper so we can use
-    # Julia-friendly helpers such as `withlocalarray!` without taking ownership
+    # Julia-friendly helpers such as `with_local_array!` without taking ownership
     # away from PETSc.
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51Context
     petsclib = ctx.petsclib
@@ -44,7 +44,7 @@ function ex51_rhs!(
     u = PETSc.VecPtr(petsclib, u_ptr, false)
     f = PETSc.VecPtr(petsclib, f_ptr, false)
 
-    PETSc.withlocalarray!(
+    PETSc.with_local_array!(
         (u, f);
         read = (true, false),
         write = (false, true),
@@ -69,7 +69,7 @@ const EX51_RHS_FUNCTION_PTR = @cfunction(
 )
 
 function set_initial_condition!(u::PETSc.LibPETSc.PetscVec)
-    PETSc.withlocalarray!(u; read = false, write = true) do u_array
+    PETSc.with_local_array!(u; read = false, write = true) do u_array
         u_array[1] = 0.0
         u_array[2] = 1.0
     end
@@ -77,7 +77,7 @@ function set_initial_condition!(u::PETSc.LibPETSc.PetscVec)
 end
 
 function exact_solution!(u::PETSc.LibPETSc.PetscVec, t::Real)
-    PETSc.withlocalarray!(u; read = false, write = true) do u_array
+    PETSc.with_local_array!(u; read = false, write = true) do u_array
         u_array[1] = sin(t)
         u_array[2] = 2 * atan(exp(t) * tan(0.5))
     end
@@ -124,7 +124,7 @@ function solve_ex51(;
     PetscScalar = petsclib.PetscScalar
 
     # `did_initialize`: whether we initialized the library in this call
-    did_initialize = !PETSc.initialized(petsclib)
+    did_initialize = !PETSc.isinitialized(petsclib)
     if did_initialize
         PETSc.initialize(petsclib)
     end
@@ -218,13 +218,13 @@ function solve_ex51(;
             pop!(petsc_options)
         end
         if petsc_options.ptr != C_NULL
-            PETSc.destroy(petsc_options)
+            PETSc.destroy!(petsc_options)
         end
         if u_exact.ptr != C_NULL
-            PETSc.destroy(u_exact)
+            PETSc.destroy!(u_exact)
         end
         if u.ptr != C_NULL
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
         end
         if ts.ptr != C_NULL
             PETSc.LibPETSc.TSDestroy(petsclib, ts)

@@ -216,10 +216,10 @@ In order to solve this using the PETSc nonlinear equation solvers, you first def
 ```julia
 julia> snes = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
 julia> r = PETSc.VecSeq(petsclib, zeros(PetscScalar, 2))
-julia> PETSc.setfunction!(snes, Residual!, r)
+julia> PETSc.set_function!(snes, Residual!, r)
 julia> J = zeros(2,2)
 julia> PJ = PETSc.MatSeqDense(petsclib,J)
-julia> PETSc.setjacobian!(updateJ!, snes, PJ)
+julia> PETSc.set_snes_jacobian!(updateJ!, snes, PJ)
 ```
 
 You can solve this as:

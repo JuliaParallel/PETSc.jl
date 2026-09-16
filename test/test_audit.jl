@@ -4,8 +4,8 @@ using PETSc
 const LEAKY = joinpath(@__DIR__, "fixtures", "leaky.jl")
 const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
 
-@testset "audit_petsc_file" begin
-    report = PETSc.audit_petsc_file(LEAKY; verbose = false)
+@testset "audit_file" begin
+    report = PETSc.audit_file(LEAKY; verbose = false)
 
     created = Set(v for (_, v, _) in report.created if v !== nothing)
     destroyed = Set(v for (_, v) in report.destroyed)
@@ -50,17 +50,17 @@ const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
                 io,
                 """
                 v = LibPETSc.VecCreateSeq(petsclib, comm, 10)
-                finalizer(destroy, v)
+                finalizer(destroy!, v)
 
                 mat = PETSc.MatSeqAIJ(petsclib, 10, 10, 3)
-                finalizer(m -> (destroy(m); data), mat)
+                finalizer(m -> (destroy!(m); data), mat)
 
                 dm = PETSc.DMStag(petsclib, comm, bt, sz, 1, 1)
                 """,
             )
             close(io)
             # v and mat are handed to the garbage collector; only dm leaks
-            @test PETSc.audit_petsc_file(path; verbose = false).leaked == [:dm]
+            @test PETSc.audit_file(path; verbose = false).leaked == [:dm]
         end
     end
 
@@ -70,7 +70,7 @@ const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
             # not be reported as objects needing a destroy
             write(io, "f = PETSc.VecPtr(petsclib, f_ptr, false)\n")
             close(io)
-            @test isempty(PETSc.audit_petsc_file(path; verbose = false).leaked)
+            @test isempty(PETSc.audit_file(path; verbose = false).leaked)
         end
     end
 
@@ -84,14 +84,14 @@ const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
                 """,
             )
             close(io)
-            @test isempty(PETSc.audit_petsc_file(path; verbose = false).leaked)
+            @test isempty(PETSc.audit_file(path; verbose = false).leaked)
         end
     end
 
     @testset "language constructs" begin
         # Every construct in the fixture is released except the two named here.
         # A failure names the construct that broke.
-        report = PETSc.audit_petsc_file(CONSTRUCTS; verbose = false)
+        report = PETSc.audit_file(CONSTRUCTS; verbose = false)
         @test report.leaked == [:never_freed, :quoted_v]
     end
 
@@ -100,7 +100,7 @@ const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
             write(io, "v = LibPETSc.VecCreateSeq(petsclib, comm, 10\nfunction broken(\n")
             close(io)
             # a syntax error must not silently read as a clean bill of health
-            @test_logs (:warn, r"does not parse") PETSc.audit_petsc_file(
+            @test_logs (:warn, r"does not parse") PETSc.audit_file(
                 path;
                 verbose = false,
             )
@@ -113,7 +113,7 @@ const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
         @test PETSc.audit_creator(:DMStag) == "DM"
         @test PETSc.audit_creator(:solve!) === nothing
 
-        @test PETSc.audit_destroyer(:destroy)
+        @test PETSc.audit_destroyer(:destroy!)
         @test PETSc.audit_destroyer(:destroy!)
         @test PETSc.audit_destroyer(:VecDestroy)
         @test PETSc.audit_destroyer(:finalizer)

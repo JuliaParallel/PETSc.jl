@@ -99,8 +99,8 @@ end
         shell = PETSc.MatShell(petsclib, (y, x) -> (y .= x), wrapper_comm, 4, 4)
         @test LibPETSc.MatGetLocalSize(petsclib, shell) == (4, 4)
 
-        PETSc.destroy(v)
-        PETSc.destroy(shell)
+        PETSc.destroy!(v)
+        PETSc.destroy!(shell)
         PETSc.finalize(petsclib)
     end
 end

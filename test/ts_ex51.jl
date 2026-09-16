@@ -54,7 +54,7 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51.jl"))
         @test length(result_5dp.solution) == 2
         @test result_5dp.error < 5.0e-8
     finally
-        if PETSc.initialized(petsclib) && !PETSc.finalized(petsclib)
+        if PETSc.isinitialized(petsclib) && !PETSc.isfinalized(petsclib)
             PETSc.finalize(petsclib)
         end
     end

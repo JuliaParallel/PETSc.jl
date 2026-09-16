@@ -89,9 +89,9 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         y = DJ * x
         @test vec_y[:] ≈ y rtol=1e-5
         
-        PETSc.destroy(D)
-        PETSc.destroy(vec_x)
-        PETSc.destroy(vec_y)
+        PETSc.destroy!(D)
+        PETSc.destroy!(vec_x)
+        PETSc.destroy!(vec_y)
         finalize(xc)
         finalize(yc)
 
@@ -110,8 +110,8 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
             @test ishermitian(Asym)
             @test !issymmetric(Bsym)
             @test !ishermitian(Bsym)
-            PETSc.destroy(Asym)
-            PETSc.destroy(Bsym)
+            PETSc.destroy!(Asym)
+            PETSc.destroy!(Bsym)
         else
             Asym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
             Asym[1, 1] = PetscScalar(1)
@@ -125,8 +125,8 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
             PETSc.assemble!(Bsym)
             @test !issymmetric(Asym)
             @test !issymmetric(Bsym)
-            PETSc.destroy(Asym)
-            PETSc.destroy(Bsym)
+            PETSc.destroy!(Asym)
+            PETSc.destroy!(Bsym)
         end
 
         Random.seed!(777)
@@ -135,11 +135,11 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         sleep(0.1)
         @test sum(B1[:,:] - Matrix(A1)) == 0.0
 
-        PETSc.destroy(A)
-        PETSc.destroy(B)
-        PETSc.destroy(B1)
-        PETSc.destroy(C)
-        PETSc.destroy(E)
+        PETSc.destroy!(A)
+        PETSc.destroy!(B)
+        PETSc.destroy!(B1)
+        PETSc.destroy!(C)
+        PETSc.destroy!(E)
         PETSc.finalize(petsclib)
     end
 end
@@ -167,8 +167,8 @@ end
         @test sum(A[:,:] - Ajl) == 0.0
         #@test all(A * x .≈ Ajl * x)
 
-        PETSc.destroy(A)
-        PETSc.destroy(vec_x)
+        PETSc.destroy!(A)
+        PETSc.destroy!(vec_x)
         PETSc.finalize(petsclib)
     end
 end
@@ -189,7 +189,7 @@ end
         A = PETSc.MatCreateSeqAIJ(petsclib, comm, A_sp)
        
         @test sum(A[1:10,1:10] - Matrix(A_sp)) == 0.0 == 0.0
-        PETSc.destroy(A)
+        PETSc.destroy!(A)
         PETSc.finalize(petsclib)
     end
 end
@@ -216,7 +216,7 @@ end
         @test A[2, 3] == PetscScalar(2.0)
         @test A[3, 5] == PetscScalar(3.0)
         
-        PETSc.destroy(A)
+        PETSc.destroy!(A)
         
         # Test with vector of nonzeros (one per row)
         nz_vec = PetscInt.([2, 3, 1, 4, 2])
@@ -235,7 +235,7 @@ end
         @test B[1, 2] == PetscScalar(11.0)
         @test B[2, 1] == PetscScalar(20.0)
         
-        PETSc.destroy(B)
+        PETSc.destroy!(B)
         
         PETSc.finalize(petsclib)
     end
@@ -300,10 +300,10 @@ end
         PETSc.assemble!(A)
         @test A[1, 1] == PetscScalar(100.0)
         
-        # Explicitly destroy objects
-        PETSc.destroy(vec_x)
-        PETSc.destroy(vec_y)
-        PETSc.destroy(A)
+        # Explicitly destroy the objects
+        PETSc.destroy!(vec_x)
+        PETSc.destroy!(vec_y)
+        PETSc.destroy!(A)
         
         PETSc.finalize(petsclib)
     end
@@ -351,7 +351,7 @@ end
 
         @test A[:, :] ≈ A2_jl
 
-        PETSc.destroy(A)
+        PETSc.destroy!(A)
         PETSc.finalize(petsclib)
     end
 end
@@ -409,7 +409,7 @@ end
         PETSc.assemble!(A)
         @test A[2,3] == PetscScalar(321)
 
-        PETSc.destroy(A)
+        PETSc.destroy!(A)
         PETSc.finalize(petsclib)
     end
 end
@@ -459,7 +459,7 @@ end
         # For sequential, usually zero ghosts
         @test Int(nghosts) == 0 || all(isa.(ghosts, Int))
 
-        PETSc.destroy(A)
+        PETSc.destroy!(A)
         PETSc.finalize(petsclib)
     end
 end
@@ -499,7 +499,7 @@ end
         # 5. Verify PETSc sees the change
         @test A[1, 1] == new_val
 
-        PETSc.destroy(A)
+        PETSc.destroy!(A)
         PETSc.finalize(petsclib)
     end
 end
@@ -557,7 +557,7 @@ end
         outb = LibPETSc.ISLocalToGlobalMappingApplyBlock(petsclib, rmap, PetscInt(2), PetscInt[1, 3])
         @test outb == PetscInt[3, 1]
         LibPETSc.ISLocalToGlobalMappingDestroy(petsclib, ltog)
-        PETSc.destroy(A)
+        PETSc.destroy!(A)
 
         # MatMPIAIJGetSeqAIJ on a one-process mpiaij matrix: the diagonal block is the whole matrix
         B = LibPETSc.MatCreate(petsclib, comm)

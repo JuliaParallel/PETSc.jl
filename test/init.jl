@@ -8,8 +8,8 @@ using PETSc
         initial_finalized_value = false
 
         # since we haven't called anything these should be false!
-        @test !(PETSc.initialized(petsclib))
-        @test PETSc.finalized(petsclib) == initial_finalized_value
+        @test !(PETSc.isinitialized(petsclib))
+        @test PETSc.isfinalized(petsclib) == initial_finalized_value
 
         # The second time through  time through finalize should be true since
         # we have initialized petsclib yet...
@@ -19,20 +19,20 @@ using PETSc
         PETSc.initialize(petsclib)
 
         # Check values again
-        @test PETSc.initialized(petsclib)
-        @test !(PETSc.finalized(petsclib))
+        @test PETSc.isinitialized(petsclib)
+        @test !(PETSc.isfinalized(petsclib))
 
         PETSc.finalize(petsclib)
 
         # Check values again
-        @test !(PETSc.initialized(petsclib))
-        @test PETSc.finalized(petsclib)
+        @test !(PETSc.isinitialized(petsclib))
+        @test PETSc.isfinalized(petsclib)
     end
 
     # Test initialize with log_view enabled
     for petsclib in PETSc.petsclibs
         # Test basic initialize with log_view
-        @test !(PETSc.initialized(petsclib))
+        @test !(PETSc.isinitialized(petsclib))
         
         # Store original PETSC_OPTIONS if it exists
         original_opts = get(ENV, "PETSC_OPTIONS", nothing)
@@ -45,8 +45,8 @@ using PETSc
             PETSc.initialize(petsclib; log_view = true, options = [":$test_log_file"])
             
             # Check initialization succeeded
-            @test PETSc.initialized(petsclib)
-            @test !(PETSc.finalized(petsclib))
+            @test PETSc.isinitialized(petsclib)
+            @test !(PETSc.isfinalized(petsclib))
             
             # Check that PETSC_OPTIONS was cleaned up
             current_opts = get(ENV, "PETSC_OPTIONS", nothing)
@@ -54,8 +54,8 @@ using PETSc
             
             # Finalize
             PETSc.finalize(petsclib)
-            @test !(PETSc.initialized(petsclib))
-            @test PETSc.finalized(petsclib)
+            @test !(PETSc.isinitialized(petsclib))
+            @test PETSc.isfinalized(petsclib)
             
             # Check that log file was created
             # Note: On some platforms/configurations, PETSc may not create the log file
@@ -74,7 +74,7 @@ using PETSc
     
     # Test initialize with options but without log_view
     for petsclib in PETSc.petsclibs
-        @test !(PETSc.initialized(petsclib))
+        @test !(PETSc.isinitialized(petsclib))
         
         # Store original PETSC_OPTIONS
         original_opts = get(ENV, "PETSC_OPTIONS", nothing)
@@ -82,7 +82,7 @@ using PETSc
         # Initialize with custom options only (no log_view)
         PETSc.initialize(petsclib; options = ["-malloc_debug"])
         
-        @test PETSc.initialized(petsclib)
+        @test PETSc.isinitialized(petsclib)
         
         # Check that PETSC_OPTIONS was cleaned up
         current_opts = get(ENV, "PETSC_OPTIONS", nothing)
@@ -91,7 +91,7 @@ using PETSc
         PETSc.finalize(petsclib)
                 @testset "wrappers_version" begin
                     # Ensure the wrappers version check runs and returns the expected fields
-                    result = PETSc.check_petsc_wrappers_version()
+                    result = PETSc.check_wrappers_version()
                     @test isa(result, NamedTuple)
                     @test :wrappers_version in keys(result)
                     @test :installed_version in keys(result)
@@ -102,7 +102,7 @@ using PETSc
     
     # Test initialize with multiple options and log_view
     for petsclib in PETSc.petsclibs
-        @test !(PETSc.initialized(petsclib))
+        @test !(PETSc.isinitialized(petsclib))
         
         # Initialize with multiple options
         # Use current directory to avoid Windows temp directory issues
@@ -111,7 +111,7 @@ using PETSc
         try
             PETSc.initialize(petsclib; log_view = true, options = [":$test_log_file", "-log_view_memory"])
             
-            @test PETSc.initialized(petsclib)
+            @test PETSc.isinitialized(petsclib)
             
             PETSc.finalize(petsclib)
             
@@ -132,7 +132,7 @@ using PETSc
     
     # Test that PETSC_OPTIONS is preserved if it already exists
     for petsclib in PETSc.petsclibs
-        @test !(PETSc.initialized(petsclib))
+        @test !(PETSc.isinitialized(petsclib))
         
         # Set a custom PETSC_OPTIONS with a valid but harmless option
         ENV["PETSC_OPTIONS"] = "-malloc_debug 0"
@@ -143,7 +143,7 @@ using PETSc
         try
             PETSc.initialize(petsclib; log_view = true, options = [":$test_log_file"])
             
-            @test PETSc.initialized(petsclib)
+            @test PETSc.isinitialized(petsclib)
             
             # After initialization, original option should be restored
             @test get(ENV, "PETSC_OPTIONS", "") == "-malloc_debug 0"
@@ -173,9 +173,9 @@ using PETSc
         @test PETSc.inttype(custom_lib) == Int64
         
         # Test that it can be initialized and works
-        @test !PETSc.initialized(custom_lib)
+        @test !PETSc.isinitialized(custom_lib)
         PETSc.initialize(custom_lib)
-        @test PETSc.initialized(custom_lib)
+        @test PETSc.isinitialized(custom_lib)
         
         # Test basic functionality
         version = PETSc.LibPETSc.PetscGetVersionNumber(custom_lib)
@@ -183,7 +183,7 @@ using PETSc
         @test version[2] >= 0  # Minor version
         
         PETSc.finalize(custom_lib)
-        @test !PETSc.initialized(custom_lib)
+        @test !PETSc.isinitialized(custom_lib)
         
         # Test with different scalar/int types
         lib_path_f32 = PETSc.petsclibs[2].petsc_library  # Float32 library

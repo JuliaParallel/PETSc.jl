@@ -64,17 +64,17 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
     global_size = dim == 3 ? (Nx, Ny, Nz) : (Nx, Ny, 1)
     da = PETSc.DMDA(petsclib, comm, boundary, global_size, 1, 1, stencil; opts...)
 
-    final_grid = PETSc.getinfo(da).global_size
+    final_grid = PETSc.info(da).global_size
     if MPI.Comm_rank(comm) == 0
         @printf("Solving on %d × %d × %d grid\n", final_grid[1], final_grid[2], final_grid[3])
     end
 
     ksp = PETSc.KSP(da; opts...)
 
-    PETSc.setcomputeoperators!(ksp) do J, jac, ksp
-        dm      = PETSc.getDM(ksp)
-        corners = PETSc.getcorners(dm)
-        info    = PETSc.getinfo(dm)
+    PETSc.set_compute_operators!(ksp) do J, jac, ksp
+        dm      = PETSc.dm(ksp)
+        corners = PETSc.corners(dm)
+        info    = PETSc.info(dm)
         N       = info.global_size
 
         # Grid spacings (uniform)
@@ -133,10 +133,10 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
         return 0
     end
 
-    PETSc.setcomputerhs!(ksp) do b_vec, ksp
-        dm      = PETSc.getDM(ksp)
-        corners = PETSc.getcorners(dm)
-        info    = PETSc.getinfo(dm)
+    PETSc.set_compute_rhs!(ksp) do b_vec, ksp
+        dm      = PETSc.dm(ksp)
+        corners = PETSc.corners(dm)
+        info    = PETSc.info(dm)
         N       = info.global_size
 
         Hx, Hy, Hz = 1.0 ./ (N .- 1)
@@ -150,7 +150,7 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
         l_y = g_y[(corners.lower[2]):(corners.upper[2])]
         l_z = g_z[(corners.lower[3]):(corners.upper[3])]
 
-        PETSc.withlocalarray!(b_vec; read=false) do b
+        PETSc.with_local_array!(b_vec; read=false) do b
             sz = corners.size
 
             if dim == 3
@@ -189,21 +189,21 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
 
     solve_time = @elapsed PETSc.solve!(ksp)
     niter      = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
-    final_grid = PETSc.getinfo(da).global_size
+    final_grid = PETSc.info(da).global_size
 
     x    = LibPETSc.KSPGetSolution(petsclib, ksp)
     norm = LibPETSc.KSPGetResidualNorm(petsclib, ksp)
 
     # Compute L2 and max error against analytic solution
-    info  = PETSc.getinfo(da)
+    info  = PETSc.info(da)
     Nglob = info.global_size
     Hx, Hy, Hz = 1.0 ./ (Nglob .- 1)
     vol = Hx * Hy * Hz
 
     local_err2 = 0.0
     local_max  = 0.0
-    PETSc.withlocalarray!(x; read=true) do xu
-        corners = PETSc.getcorners(da)
+    PETSc.with_local_array!(x; read=true) do xu
+        corners = PETSc.corners(da)
         dims    = corners.size
         uas     = reshape(xu, dims...)
         for kk = 1:dims[3], jj = 1:dims[2], ii = 1:dims[1]
@@ -232,7 +232,7 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
         @printf("Solve time: %.6f seconds\n", solve_time)
     end
 
-    PETSc.destroy(ksp)
+    PETSc.destroy!(ksp)
     return (; norm, final_grid, niter, solve_time, L2, global_max)
 end
 

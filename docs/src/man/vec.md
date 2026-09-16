@@ -27,8 +27,8 @@ v = VecSeq(petsclib, julia_array)
 
 ```julia
 # Create global and local vectors from a DM
-global_vec = DMGlobalVec(dm)
-local_vec = DMLocalVec(dm)
+gvec = PETSc.global_vec(dm)
+lvec = PETSc.local_vec(dm)
 ```
 
 ## Julia Array Interface
@@ -59,12 +59,12 @@ For vectors with ghost points (from DMDA/DMStag):
 
 ```julia
 # Update ghost values from neighboring processes
-ghostupdate!(vec, INSERT_VALUES, SCATTER_FORWARD)
+ghost_update!(vec, INSERT_VALUES, SCATTER_FORWARD)
 
 # Or use begin/end for non-blocking:
-ghostupdatebegin!(vec, INSERT_VALUES, SCATTER_FORWARD)
+ghost_update_begin!(vec, INSERT_VALUES, SCATTER_FORWARD)
 # ... do other work ...
-ghostupdateend!(vec, INSERT_VALUES, SCATTER_FORWARD)
+ghost_update_end!(vec, INSERT_VALUES, SCATTER_FORWARD)
 ```
 
 ## Functions

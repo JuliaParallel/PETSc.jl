@@ -73,7 +73,7 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51_implicit.jl"))
         @test err isa ArgumentError
         @test occursin("TSIRK/Gauss", sprint(showerror, err))
     finally
-        if PETSc.initialized(petsclib) && !PETSc.finalized(petsclib)
+        if PETSc.isinitialized(petsclib) && !PETSc.isfinalized(petsclib)
             PETSc.finalize(petsclib)
         end
     end

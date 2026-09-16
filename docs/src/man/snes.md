@@ -37,7 +37,7 @@ function residual!(fx, snes, x)
     return 0
 end
 
-setfunction!(snes, residual!, f_vec)
+set_function!(snes, residual!, f_vec)
 ```
 
 ## Setting the Jacobian
@@ -55,7 +55,7 @@ function jacobian!(J, snes, x)
     return 0
 end
 
-setjacobian!(snes, jacobian!, J, J)  # (J, P) where P is preconditioner matrix
+set_snes_jacobian!(snes, jacobian!, J, J)  # (J, P) where P is preconditioner matrix
 ```
 
 ## Using a DM
@@ -63,10 +63,11 @@ setjacobian!(snes, jacobian!, J, J)  # (J, P) where P is preconditioner matrix
 For PDE problems, associate the SNES with a DM:
 
 ```julia
-setDM!(snes, dm)
+PETSc.set_dm!(snes, dm)
 
-# Get the DM from SNES
-dm = getDM(snes)
+# Get the DM from SNES. `dm` is both the accessor and the usual variable name,
+# so bind the result to something else (see the naming conventions, §3.2).
+d = PETSc.dm(snes)
 ```
 
 ## Solving
@@ -76,7 +77,7 @@ dm = getDM(snes)
 solve!(x, snes)
 
 # Get solution vector
-sol = get_solution(snes)
+sol = solution(snes)
 ```
 
 ## Common Solver Options
@@ -110,9 +111,9 @@ snes = SNES(petsclib, MPI.COMM_WORLD;
     pc_type = "ilu"
 )
 
-setfunction!(snes, residual!, f)
-setjacobian!(snes, jacobian!, J, J)
-setfromoptions!(snes)
+set_function!(snes, residual!, f)
+set_snes_jacobian!(snes, jacobian!, J, J)
+set_from_options!(snes)
 
 solve!(x, snes)
 ```

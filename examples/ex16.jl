@@ -81,7 +81,7 @@ function ex16_runtime_options(
             monitor = Bool(monitor_set) ? Bool(monitor_value) : monitor,
         )
     finally
-        PETSc.destroy(query_options)
+        PETSc.destroy!(query_options)
     end
 end
 
@@ -140,7 +140,7 @@ function ex16_rhs!(
     x = PETSc.VecPtr(petsclib, x_ptr, false)
     f = PETSc.VecPtr(petsclib, f_ptr, false)
 
-    PETSc.withlocalarray!(
+    PETSc.with_local_array!(
         (x, f);
         read = (true, false),
         write = (false, true),
@@ -183,7 +183,7 @@ function ex16_ifunction!(
     xdot = PETSc.VecPtr(petsclib, xdot_ptr, false)
     f = PETSc.VecPtr(petsclib, f_ptr, false)
 
-    PETSc.withlocalarray!(
+    PETSc.with_local_array!(
         (x, xdot, f);
         read = (true, true, false),
         write = (false, false, true),
@@ -268,7 +268,7 @@ function ex16_ijacobian!(
     A = PETSc.LibPETSc.PetscMat(A_ptr, petsclib)
     B = PETSc.LibPETSc.PetscMat(B_ptr, petsclib)
 
-    x1, x2 = PETSc.withlocalarray!(x; read = true, write = false) do x_array
+    x1, x2 = PETSc.with_local_array!(x; read = true, write = false) do x_array
         (x_array[1], x_array[2])
     end
 
@@ -322,7 +322,7 @@ function ex16_monitor!(
                 petsclib.PetscReal(ctx.next_output),
                 interpolated_x,
             )
-            PETSc.withlocalarray!(interpolated_x; read = true, write = false) do x_array
+            PETSc.with_local_array!(interpolated_x; read = true, write = false) do x_array
                 @printf(
                     "[%.1f] %d TS %.6f (dt = %.6f) X % 12.6e % 12.6e\n",
                     ctx.next_output,
@@ -334,7 +334,7 @@ function ex16_monitor!(
                 )
             end
         finally
-            PETSc.destroy(interpolated_x)
+            PETSc.destroy!(interpolated_x)
         end
 
         ctx.next_output += 0.1
@@ -366,7 +366,7 @@ function ex16_create_jacobian_template(petsclib)
 end
 
 function ex16_initial_condition!(u::PETSc.LibPETSc.PetscVec, mu::Real)
-    PETSc.withlocalarray!(u; read = false, write = true) do u_array
+    PETSc.with_local_array!(u; read = false, write = true) do u_array
         u_array[1] = 2.0
         u_array[2] = -2.0 / 3.0 + 10.0 / (81.0 * mu) - 292.0 / (2187.0 * mu * mu)
     end
@@ -414,7 +414,7 @@ function solve_ex16(;
     comm = MPI.COMM_WORLD
     PetscScalar = petsclib.PetscScalar
 
-    did_initialize = !PETSc.initialized(petsclib)
+    did_initialize = !PETSc.isinitialized(petsclib)
     if did_initialize
         PETSc.initialize(petsclib)
     end
@@ -548,13 +548,13 @@ function solve_ex16(;
             pop!(petsc_options)
         end
         if petsc_options.ptr != C_NULL
-            PETSc.destroy(petsc_options)
+            PETSc.destroy!(petsc_options)
         end
         if jac.ptr != C_NULL
-            PETSc.destroy(jac)
+            PETSc.destroy!(jac)
         end
         if u.ptr != C_NULL
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
         end
         if ts.ptr != C_NULL
             PETSc.LibPETSc.TSDestroy(petsclib, ts)

@@ -114,7 +114,7 @@ end
         @test occursin("[0.5]", monitor_output)
         @test length(split(chomp(monitor_output), "\n")) >= 6
     finally
-        if PETSc.initialized(petsclib) && !PETSc.finalized(petsclib)
+        if PETSc.isinitialized(petsclib) && !PETSc.isfinalized(petsclib)
             PETSc.finalize(petsclib)
         end
     end

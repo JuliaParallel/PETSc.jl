@@ -1,12 +1,12 @@
 # test/test_destroy.jl
 # Destroying PETSc objects must stay safe in the awkward cases: a second
-# explicit destroy, and an object left over from an earlier
+# explicit destroy!, and an object left over from an earlier
 # initialize/finalize cycle.
 #
 # The stale-cycle case is the one that used to crash. `initialize` and
 # `finalize` each bump `petsclib.age`, and `PetscFinalize` frees the inner
 # communicator. An object created before that still holds a non-null pointer,
-# so without an age check `destroy` called `XXXDestroy` on a dead communicator
+# so without an age check `destroy!` called `XXXDestroy` on a dead communicator
 # and PETSc aborted the process. Because leaked objects are destroyed by GC
 # finalizers, the abort landed at an arbitrary later point, typically inside
 # whichever test file happened to trigger a collection.
@@ -17,7 +17,7 @@ using MPI
 
 MPI.Initialized() || MPI.Init()
 
-@testset "destroy" begin
+@testset "destroy!" begin
 
 for petsclib in PETSc.petsclibs
     PetscScalar = PETSc.scalartype(petsclib)
@@ -34,15 +34,15 @@ for petsclib in PETSc.petsclibs
             PETSc.finalize(petsclib)
 
             # A new cycle: the library is live again, so a `finalized` check
-            # alone would wrongly conclude these are safe to destroy.
+            # alone would wrongly conclude these are safe to destroy!.
             PETSc.initialize(petsclib)
             @test PETSc.LibPETSc.getlib(typeof(petsclib)).age > age_created
             @test !PETSc.isdestroyable(v, typeof(petsclib))
             @test !PETSc.isdestroyable(m, typeof(petsclib))
 
             # Must be a no-op rather than a call into the dead communicator.
-            @test PETSc.destroy(v) === nothing
-            @test PETSc.destroy(m) === nothing
+            @test PETSc.destroy!(v) === nothing
+            @test PETSc.destroy!(m) === nothing
             @test v.ptr == C_NULL
             @test m.ptr == C_NULL
 
@@ -55,17 +55,17 @@ for petsclib in PETSc.petsclibs
 
             v = PETSc.VecSeq(petsclib, PetscScalar[1, 2, 3, 4])
             @test PETSc.isdestroyable(v, typeof(petsclib))
-            PETSc.destroy(v)
+            PETSc.destroy!(v)
             @test v.ptr == C_NULL
             @test !PETSc.isdestroyable(v, typeof(petsclib))
             # The finalizer will reach this object again after the explicit
-            # destroy, so a repeat call has to stay harmless.
-            @test PETSc.destroy(v) === nothing
+            # destroy!, so a repeat call has to stay harmless.
+            @test PETSc.destroy!(v) === nothing
 
             m = PETSc.MatSeqAIJ(petsclib, 4, 4, 1)
-            PETSc.destroy(m)
+            PETSc.destroy!(m)
             @test m.ptr == C_NULL
-            @test PETSc.destroy(m) === nothing
+            @test PETSc.destroy!(m) === nothing
 
             PETSc.finalize(petsclib)
         end
@@ -91,7 +91,7 @@ for petsclib in PETSc.petsclibs
         # ── wrappers that borrow a handle instead of owning it ───────────────
         # VecPtr and MatPtr wrap a pointer PETSc still owns, which is how the
         # TS and SNES callbacks hand their arguments to Julia. Destroying one of
-        # those frees an object the solver is still using, so `destroy` consults
+        # those frees an object the solver is still using, so `destroy!` consults
         # `own` and leaves the wrapper untouched.
         @testset "borrowed handles" begin
             PETSc.initialize(petsclib)
@@ -100,18 +100,18 @@ for petsclib in PETSc.petsclibs
             borrowed_v = PETSc.VecPtr(petsclib, v.ptr, false)
             @test PETSc.owns(v)
             @test !PETSc.owns(borrowed_v)
-            @test PETSc.destroy(borrowed_v) === nothing
+            @test PETSc.destroy!(borrowed_v) === nothing
             @test borrowed_v.ptr == v.ptr
             @test PETSc.LibPETSc.VecGetSize(petsclib, v) == 4
 
             m = PETSc.MatSeqAIJ(petsclib, 4, 4, 1)
             borrowed_m = PETSc.MatPtr(petsclib, m.ptr, false)
             @test !PETSc.owns(borrowed_m)
-            @test PETSc.destroy(borrowed_m) === nothing
+            @test PETSc.destroy!(borrowed_m) === nothing
             @test borrowed_m.ptr == m.ptr
 
-            PETSc.destroy(v)
-            PETSc.destroy(m)
+            PETSc.destroy!(v)
+            PETSc.destroy!(m)
             PETSc.finalize(petsclib)
         end
 
@@ -130,9 +130,9 @@ for petsclib in PETSc.petsclibs
             @test PETSc.owns(owned)
             @test PETSc.isdestroyable(owned, typeof(petsclib))
 
-            PETSc.destroy(owned)
+            PETSc.destroy!(owned)
             @test owned.ptr == C_NULL
-            @test PETSc.destroy(owned) === nothing
+            @test PETSc.destroy!(owned) === nothing
 
             raw.ptr = C_NULL  # the VecPtr freed it; keep the finalizer off it
             PETSc.finalize(petsclib)
@@ -145,10 +145,10 @@ for petsclib in PETSc.petsclibs
             PETSc.finalize(petsclib)
 
             @test !PETSc.isdestroyable(v, typeof(petsclib))
-            @test PETSc.destroy(v) === nothing
+            @test PETSc.destroy!(v) === nothing
         end
 
     end # @testset "$(PetscScalar)/$(PetscInt)"
 end # for petsclib
 
-end # @testset "destroy"
+end # @testset "destroy!"

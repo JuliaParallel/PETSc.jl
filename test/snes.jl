@@ -15,7 +15,7 @@ MPI.Initialized() || MPI.Init()
         PetscInt = petsclib.PetscInt
 
         # Note: there are multiple ways to set the function and Jacobian
-        # This is method 1 using withlocalarray! to access the local vector  
+        # This is method 1 using with_local_array! to access the local vector  
         # See below for other methods
         snes = PETSc.SNES(
             petsclib,
@@ -30,7 +30,7 @@ MPI.Initialized() || MPI.Init()
 
         r = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
         function fn!(cfx, snes, cx)
-            PETSc.withlocalarray!(
+            PETSc.with_local_array!(
                     cfx, cx;
                     read = (false, true),
                     write = (true, false),
@@ -41,10 +41,10 @@ MPI.Initialized() || MPI.Init()
             
             return PetscInt(0)
         end
-        PETSc.setfunction!(snes, fn!, r)
+        PETSc.set_function!(snes, fn!, r)
         
        function jacobian!(J, snes, x)
-            PETSc.withlocalarray!(x; write = false) do x
+            PETSc.with_local_array!(x; write = false) do x
                 J[1, 1] = 2x[1] + x[2]
                 J[1, 2] = x[1]
                 J[2, 1] = x[2]
@@ -54,7 +54,7 @@ MPI.Initialized() || MPI.Init()
             return PetscInt(0)
         end
         J = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
-        PETSc.setjacobian!(jacobian!, snes, J)
+        PETSc.set_snes_jacobian!(jacobian!, snes, J)
 
         x = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
         b = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), PetscScalar.([0, 0]))
@@ -88,7 +88,7 @@ MPI.Initialized() || MPI.Init()
   
             return PetscInt(0)
         end
-        PETSc.setfunction!(snes2, fn2!, r2)
+        PETSc.set_function!(snes2, fn2!, r2)
 
         function jacobian2!(J, snes2, x)
             J[1, 1] = 2x[1] + x[2]
@@ -100,7 +100,7 @@ MPI.Initialized() || MPI.Init()
             return PetscInt(0)
         end
         J2 = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
-        PETSc.setjacobian!(jacobian2!, snes2, J2)
+        PETSc.set_snes_jacobian!(jacobian2!, snes2, J2)
 
 
         # 
@@ -128,7 +128,7 @@ MPI.Initialized() || MPI.Init()
         )
 
         r3 = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
-        PETSc.setfunction!(snes3, r3) do fx, snes, x
+        PETSc.set_function!(snes3, r3) do fx, snes, x
             fx[1] = x[1]^2 + x[1] * x[2] - 3
             fx[2] = x[1] * x[2] + x[2]^2 - 6
             return PetscInt(0)
@@ -136,7 +136,7 @@ MPI.Initialized() || MPI.Init()
 
 
         J3 = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
-        PETSc.setjacobian!(snes3, J3) do J, snes, x
+        PETSc.set_snes_jacobian!(snes3, J3) do J, snes, x
             J[1, 1] = 2x[1] + x[2]
             J[1, 2] = x[1]
             J[2, 1] = x[2]
@@ -157,7 +157,7 @@ MPI.Initialized() || MPI.Init()
         @test x3[:] ≈ [1, 2] rtol = 1e-4
         # ----------------------------------------------------------------
 
-        # setconvergencetest! — custom Julia-closure convergence test
+        # set_convergence_test! — custom Julia-closure convergence test
         snes4 = PETSc.SNES(
             petsclib,
             comm;
@@ -169,16 +169,16 @@ MPI.Initialized() || MPI.Init()
             ksp_converged_reason = false,
         )
         r4 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
-        PETSc.setfunction!(snes4, r4) do fx, snes, x
-            PETSc.withlocalarray!(fx, x; read = (false, true), write = (true, false)) do fx, x
+        PETSc.set_function!(snes4, r4) do fx, snes, x
+            PETSc.with_local_array!(fx, x; read = (false, true), write = (true, false)) do fx, x
                 fx[1] = x[1]^2 + x[1] * x[2] - PetscScalar(3)
                 fx[2] = x[1] * x[2] + x[2]^2 - PetscScalar(6)
             end
             return PetscInt(0)
         end
         J4 = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
-        PETSc.setjacobian!(snes4, J4) do J, snes, x
-            PETSc.withlocalarray!(x; write = false) do x
+        PETSc.set_snes_jacobian!(snes4, J4) do J, snes, x
+            PETSc.with_local_array!(x; write = false) do x
                 J[1, 1] = 2x[1] + x[2]
                 J[1, 2] = x[1]
                 J[2, 1] = x[2]
@@ -192,7 +192,7 @@ MPI.Initialized() || MPI.Init()
         seen_its = Int[]
         solupdate_ptrs_nonnull = Ref(true)
         solupdate_norms = Float64[]
-        PETSc.setconvergencetest!(snes4) do snes, it, xnorm, gnorm, fnorm
+        PETSc.set_convergence_test!(snes4) do snes, it, xnorm, gnorm, fnorm
             ntest_calls[] += 1
             push!(seen_its, it)
 
@@ -245,16 +245,16 @@ MPI.Initialized() || MPI.Init()
             ksp_converged_reason = false,
         )
         r5 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
-        PETSc.setfunction!(snes5, r5) do fx, snes, x
-            PETSc.withlocalarray!(fx, x; read = (false, true), write = (true, false)) do fx, x
+        PETSc.set_function!(snes5, r5) do fx, snes, x
+            PETSc.with_local_array!(fx, x; read = (false, true), write = (true, false)) do fx, x
                 fx[1] = x[1]^2 + x[1] * x[2] - PetscScalar(3)
                 fx[2] = x[1] * x[2] + x[2]^2 - PetscScalar(6)
             end
             return PetscInt(0)
         end
         J5 = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
-        PETSc.setjacobian!(snes5, J5) do J, snes, x
-            PETSc.withlocalarray!(x; write = false) do x
+        PETSc.set_snes_jacobian!(snes5, J5) do J, snes, x
+            PETSc.with_local_array!(x; write = false) do x
                 J[1, 1] = 2x[1] + x[2]
                 J[1, 2] = x[1]
                 J[2, 1] = x[2]
@@ -263,7 +263,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.assemble!(J)
             return PetscInt(0)
         end
-        PETSc.setconvergencetest!(snes5) do snes, it, xnorm, gnorm, fnorm
+        PETSc.set_convergence_test!(snes5) do snes, it, xnorm, gnorm, fnorm
             return LibPETSc.SNES_DIVERGED_LOCAL_MIN
         end
         x5 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
@@ -273,36 +273,36 @@ MPI.Initialized() || MPI.Init()
         # ----------------------------------------------------------------
 
         # cleanup
-        PETSc.destroy(x)
-        PETSc.destroy(b)
-        PETSc.destroy(r)
-        PETSc.destroy(J)
+        PETSc.destroy!(x)
+        PETSc.destroy!(b)
+        PETSc.destroy!(r)
+        PETSc.destroy!(J)
         
-        PETSc.destroy(x2)
-        PETSc.destroy(b2)
-        PETSc.destroy(r2)
-        PETSc.destroy(J2)
+        PETSc.destroy!(x2)
+        PETSc.destroy!(b2)
+        PETSc.destroy!(r2)
+        PETSc.destroy!(J2)
      
-        PETSc.destroy(x3)
-        PETSc.destroy(b3)
-        PETSc.destroy(r3)
-        PETSc.destroy(J3)
+        PETSc.destroy!(x3)
+        PETSc.destroy!(b3)
+        PETSc.destroy!(r3)
+        PETSc.destroy!(J3)
      
-        PETSc.destroy(x4)
-        PETSc.destroy(b4)
-        PETSc.destroy(r4)
-        PETSc.destroy(J4)
+        PETSc.destroy!(x4)
+        PETSc.destroy!(b4)
+        PETSc.destroy!(r4)
+        PETSc.destroy!(J4)
 
-        PETSc.destroy(x5)
-        PETSc.destroy(b5)
-        PETSc.destroy(r5)
-        PETSc.destroy(J5)
+        PETSc.destroy!(x5)
+        PETSc.destroy!(b5)
+        PETSc.destroy!(r5)
+        PETSc.destroy!(J5)
 
-        PETSc.destroy(snes)
-        PETSc.destroy(snes2)
-        PETSc.destroy(snes3)
-        PETSc.destroy(snes4)
-        PETSc.destroy(snes5)
+        PETSc.destroy!(snes)
+        PETSc.destroy!(snes2)
+        PETSc.destroy!(snes3)
+        PETSc.destroy!(snes4)
+        PETSc.destroy!(snes5)
 
         PETSc.finalize(petsclib)
         

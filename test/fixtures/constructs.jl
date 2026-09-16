@@ -48,9 +48,9 @@ PETSc.destroy!(kwarg_v; force = true)
 
 # handed to the garbage collector, in both finalizer spellings
 fin_v = LibPETSc.VecCreateSeq(petsclib, comm, 10)
-finalizer(destroy, fin_v)
+finalizer(destroy!, fin_v)
 fin_m = PETSc.MatSeqAIJ(petsclib, 10, 10, 3)
-finalizer(m -> (destroy(m); data), fin_m)
+finalizer(m -> (destroy!(m); data), fin_m)
 
 # borrowed pointer: the caller does not own it
 borrowed = PETSc.VecPtr(petsclib, some_ptr, false)

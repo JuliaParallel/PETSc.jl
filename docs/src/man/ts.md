@@ -25,7 +25,7 @@ ts = PETSc.TS(petsclib, MPI.COMM_WORLD;
 )
 ```
 
-Options given here are held and applied inside [`PETSc.solve!`](@ref) rather than at construction, so a DM and the callbacks attached afterwards are in place before PETSc reads them. Until then the object has no type, and [`PETSc.type`](@ref) answers `nothing`.
+Options given here are held and applied inside [`PETSc.solve!`](@ref) rather than at construction, so a DM and the callbacks attached afterwards are in place before PETSc reads them. Until then the object has no type, and [`PETSc.type_name`](@ref) answers `nothing`.
 
 On a communicator of size 1 the garbage collector calls [`PETSc.destroy!`](@ref). On a larger one, destruction is yours to do, since collection is asynchronous and the call is collective.
 
@@ -42,7 +42,7 @@ u[1] = 1.0
 PETSc.assemble!(u)
 
 PETSc.set_rhs_function!(ts) do F, ts, t, u
-    PETSc.withlocalarray!((u, F); read = (true, false), write = (false, true)) do ua, Fa
+    PETSc.with_local_array!((u, F); read = (true, false), write = (false, true)) do ua, Fa
         Fa[1] = -ua[1]
     end
     return 0
@@ -68,7 +68,7 @@ PETSc.set_type!(ts, :beuler)
 J = PETSc.MatSeqAIJ(petsclib, 1, 1, petsclib.PetscInt(1))
 
 PETSc.set_ifunction!(ts) do F, ts, t, u, u_t
-    PETSc.withlocalarray!(
+    PETSc.with_local_array!(
         (u, u_t, F);
         read = (true, true, false),
         write = (false, false, true),
@@ -163,7 +163,7 @@ For finer control, [`PETSc.step!`](@ref) takes a single step and [`PETSc.interpo
 PETSc.destroy!(ts)
 ```
 
-Safe to call more than once, and a no-op on a handle left over from a previous initialize/finalize cycle. `PETSc.destroy` also works, for consistency with the rest of the package.
+Safe to call more than once, and a no-op on a handle left over from a previous initialize/finalize cycle.
 
 ## Functions
 

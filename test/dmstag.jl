@@ -48,9 +48,9 @@ MPI.Initialized() || MPI.Init()
                     dof_per_nodec,
                 )
 
-                @test PETSc.gettype(dm) == "stag"
-                @test PETSc.gettype(dmnew) == "stag"
-                @test PETSc.getdimension(dm) == 1
+                @test PETSc.type_name(dm) == "stag"
+                @test PETSc.type_name(dmnew) == "stag"
+                @test PETSc.ndims(dm) == 1
                 @test LibPETSc.DMStagGetDOF(petsclib,dm) == (3, 4,0,0)
                 @test LibPETSc.DMStagGetDOF(petsclib,dmnew) == (4, 3,0,0)
                 @test LibPETSc.DMStagGetGlobalSizes(petsclib,dm) ===
@@ -59,7 +59,7 @@ MPI.Initialized() || MPI.Init()
                 @test LibPETSc.DMStagGetLocalSizes(petsclib,dm) ===
                       (points_per_proc[mpirank + 1], PetscInt(0), PetscInt(0))
 
-                corners = PETSc.getcorners(dm)
+                corners = PETSc.corners(dm)
                 @test corners.lower ==
                       CartesianIndex(proc_global_offsets[mpirank + 1] + 1, 1, 1)
                 @test corners.upper ==
@@ -78,7 +78,7 @@ MPI.Initialized() || MPI.Init()
                 gr =
                     boundary_type == PETSc.DM_BOUNDARY_NONE &&
                     mpirank == mpisize - 1 ? 1 : stencil_width
-                ghost_corners = PETSc.getghostcorners(dm)
+                ghost_corners = PETSc.ghost_corners(dm)
 
                 @test ghost_corners.lower == CartesianIndex(
                     proc_global_offsets[mpirank + 1] + 1 - gl,
@@ -98,8 +98,8 @@ MPI.Initialized() || MPI.Init()
                 #    PETSc.DM_BOUNDARY_NONE,
                 #    PETSc.DM_BOUNDARY_NONE,
                 #)
-                PETSc.destroy(dm)
-                PETSc.destroy(dmnew)
+                PETSc.destroy!(dm)
+                PETSc.destroy!(dmnew)
             end
 
         end
@@ -149,9 +149,9 @@ end
                     dof_per_nodec,
                 )
 
-                @test PETSc.gettype(dm) == "stag"
-                @test PETSc.gettype(dmnew) == "stag"
-                @test PETSc.getdimension(dm) == 2
+                @test PETSc.type_name(dm) == "stag"
+                @test PETSc.type_name(dmnew) == "stag"
+                @test PETSc.ndims(dm) == 2
                 @test LibPETSc.DMStagGetDOF(petsclib, dm) == (3, 4, 5,0)
                 @test LibPETSc.DMStagGetDOF(petsclib, dmnew) == (4, 3, 0,0)
                 @test size(dm) === (
@@ -160,8 +160,8 @@ end
                     PetscInt(0),
                 )
                 
-                corners = PETSc.getcorners(dm)
-                ghost_corners = PETSc.getghostcorners(dm)
+                corners = PETSc.corners(dm)
+                ghost_corners = PETSc.ghost_corners(dm)
                 
                 isfirst = LibPETSc.DMStagGetIsFirstRank(petsclib,dm)
                 islast = LibPETSc.DMStagGetIsLastRank(petsclib,dm)
@@ -203,8 +203,8 @@ end
                 #@test LibPETSc.DMStagGetBoundaryTypes(petsclib, dm) ===
                 #      (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
 
-                PETSc.destroy(dm)
-                PETSc.destroy(dmnew)
+                PETSc.destroy!(dm)
+                PETSc.destroy!(dmnew)
             end
         end
         PETSc.finalize(petsclib)
@@ -257,9 +257,9 @@ end
                     dof_per_nodec
                 )
 
-                @test PETSc.gettype(dm) == "stag"
-                @test PETSc.gettype(dmnew) == "stag"
-                @test PETSc.getdimension(dm) == 3
+                @test PETSc.type_name(dm) == "stag"
+                @test PETSc.type_name(dmnew) == "stag"
+                @test PETSc.ndims(dm) == 3
                 @test LibPETSc.DMStagGetDOF(petsclib,dm) == (2, 3, 4, 5)
                 @test LibPETSc.DMStagGetDOF(petsclib,dmnew) == (4, 3, 0, 0)
                 @test size(dm) === (
@@ -268,8 +268,8 @@ end
                     PetscInt(global_size_z),
                 )
 
-                corners = PETSc.getcorners(dm)
-                ghost_corners = PETSc.getghostcorners(dm)
+                corners = PETSc.corners(dm)
+                ghost_corners = PETSc.ghost_corners(dm)
                 isfirst = LibPETSc.DMStagGetIsFirstRank(petsclib,dm)
                 islast = LibPETSc.DMStagGetIsLastRank(petsclib,dm)
 
@@ -305,8 +305,8 @@ end
                 #@test PETSc.boundarytypes(dm) ===
                 #      (boundary_type_x, boundary_type_y, boundary_type_z)
 
-                PETSc.destroy(dm)
-                PETSc.destroy(dmnew)
+                PETSc.destroy!(dm)
+                PETSc.destroy!(dmnew)
             end
         end
         PETSc.finalize(petsclib)

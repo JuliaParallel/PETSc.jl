@@ -128,9 +128,9 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
     
     # Define the operator assembly function
     function assemble_operator!(A, _, ksp)
-        da = PETSc.getDM(ksp)
-        corners = PETSc.getcorners(da)
-        Nq = PETSc.getinfo(da).global_size[1:2]
+        da = PETSc.dm(ksp)
+        corners = PETSc.corners(da)
+        Nq = PETSc.info(da).global_size[1:2]
         
         Δx = PetscScalar(1 / (Nq[1] - 1))
         Δy = PetscScalar(1 / (Nq[2] - 1))
@@ -160,13 +160,13 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
         return 0
     end
     
-    PETSc.setcomputeoperators!(ksp, assemble_operator!)
+    PETSc.set_compute_operators!(ksp, assemble_operator!)
     
     # Set the right-hand side
-    PETSc.setcomputerhs!(ksp) do petsc_b, ksp
-        da = PETSc.getDM(ksp)
-        corners = PETSc.getcorners(da)
-        Nq = PETSc.getinfo(da).global_size[1:2]
+    PETSc.set_compute_rhs!(ksp) do petsc_b, ksp
+        da = PETSc.dm(ksp)
+        corners = PETSc.corners(da)
+        Nq = PETSc.info(da).global_size[1:2]
         
         g_x = range(PetscScalar(0), length = Nq[1], stop = 1)
         g_y = range(PetscScalar(0), length = Nq[2], stop = 1)
@@ -174,7 +174,7 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
         l_x = g_x[(corners.lower[1]):(corners.upper[1])]
         l_y = g_y[(corners.lower[2]):(corners.upper[2])]
         
-        PETSc.withlocalarray!(petsc_b; read = false) do b
+        PETSc.with_local_array!(petsc_b; read = false) do b
             b = reshape(b, Int64(corners.size[1]), Int64(corners.size[2]))
             b .= forcing.(l_x, l_y')
             
@@ -208,9 +208,9 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
     end
     
     # Get the solution and compute error
-    sol = PETSc.get_solution(ksp)
-    corners = PETSc.getcorners(da)
-    Nq = PETSc.getinfo(da).global_size[1:2]
+    sol = PETSc.solution(ksp)
+    corners = PETSc.corners(da)
+    Nq = PETSc.info(da).global_size[1:2]
     
     g_x = range(PetscScalar(0), length = Nq[1], stop = 1)
     g_y = range(PetscScalar(0), length = Nq[2], stop = 1)
@@ -296,8 +296,8 @@ function run_convergence_analysis(petsclib, comm, grid_sizes, opts; mg_levels_li
         if i == 1
             # Warmup run (discard results)
             L2_err_warmup, max_err_warmup, h_warmup, reason_warmup, niter_warmup, t_warmup, u_warmup, l_x_warmup, l_y_warmup, ksp_warmup, da_warmup = solve_laplacian(petsclib, comm, N, opts; mg_levels=mg_levels)
-            PETSc.destroy(ksp_warmup)
-            PETSc.destroy(da_warmup)
+            PETSc.destroy!(ksp_warmup)
+            PETSc.destroy!(da_warmup)
         end
         
         # Actual run (record results)
@@ -313,8 +313,8 @@ function run_convergence_analysis(petsclib, comm, grid_sizes, opts; mg_levels_li
         end
         
         # Clean up
-        PETSc.destroy(ksp)
-        PETSc.destroy(da)
+        PETSc.destroy!(ksp)
+        PETSc.destroy!(da)
     end
     
     return L2_errors, max_errors, h_values, iterations, solve_times, mg_levels_used
@@ -516,8 +516,8 @@ else
     end
     
     # Clean up
-    PETSc.destroy(ksp)
-    PETSc.destroy(da)
+    PETSc.destroy!(ksp)
+    PETSc.destroy!(da)
 end
 
 PETSc.finalize(petsclib)

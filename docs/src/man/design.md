@@ -26,9 +26,9 @@
   - Objects which wrap Julia objects will also need a reference to those objects to prevent GC.
 
 
-- For convenience, attach finalizers to call `destroy` for single-process ("sequential") objects (`VecSeq`, `MatSeqXXX`, or any others where `comm = MPI.COMM_SELF`).
-  - We can't attach finalizers for distributed objects (i.e. `VecMPI`), as `destroy` needs to be called collectively on all MPI ranks.
-  - Safe for users to call `destroy` manually if finalizer already defined
+- For convenience, attach finalizers to call `destroy!` for single-process ("sequential") objects (`VecSeq`, `MatSeqXXX`, or any others where `comm = MPI.COMM_SELF`).
+  - We can't attach finalizers for distributed objects (i.e. `VecMPI`), as `destroy!` needs to be called collectively on all MPI ranks.
+  - Safe for users to call `destroy!` manually if finalizer already defined
     * TODO: check this with PETSc devs
       - yes.
   - Unclear how to handle objects that are contained within others, e.g. `PC` from `KSPGetPC`, `KSP` from `SNESGetKSP`, etc.

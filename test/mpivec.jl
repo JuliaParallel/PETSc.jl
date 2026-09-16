@@ -32,7 +32,7 @@ using LinearAlgebra: norm
 
                 # check the data ownership
                 rng = n0:n1
-                @test rng == PETSc.ownershiprange(petsc_x, false)
+                @test rng == PETSc.ownership_range(petsc_x, false)
             else
                 # Create using global size
                 petsc_x = LibPETSc.VecCreateMPI(
@@ -43,7 +43,7 @@ using LinearAlgebra: norm
                 )
 
                 # get the data ownership
-                rng = PETSc.ownershiprange(petsc_x, false)
+                rng = PETSc.ownership_range(petsc_x, false)
             end
 
             # insert some values
@@ -66,12 +66,12 @@ using LinearAlgebra: norm
             # 1-based
             @test petsc_x[rng .+ 1] == julia_x
 
-            PETSc.withlocalarray!(petsc_x) do x
+            PETSc.with_local_array!(petsc_x) do x
                 @test x == julia_x
             end
 
-            @test "mpi" == PETSc.type(petsc_x)
-            PETSc.destroy(petsc_x)
+            @test "mpi" == PETSc.type_name(petsc_x)
+            PETSc.destroy!(petsc_x)
 
         end
         PETSc.finalize(petsclib)
@@ -118,7 +118,7 @@ end
 
 
 
-                rng = PetscInt.(PETSc.ownershiprange(petsc_x))
+                rng = PetscInt.(PETSc.ownership_range(petsc_x))
                 julia_x = PetscScalar.(rng)
                 LibPETSc.VecSetValues(petsclib,petsc_x, PetscInt(length(rng)), PetscInt.(rng .- 1), julia_x, PETSc.INSERT_VALUES)
 
@@ -137,7 +137,7 @@ end
             
           #  LibPETSc.VecGetLocalVector(petsclib,petsc_x, petsc_x_local)
 
-            PETSc.withlocalarray!(petsc_x_local) do l_x
+            PETSc.with_local_array!(petsc_x_local) do l_x
                 @test length(l_x) == local_length + length(ghost)
 
                 # Check the ghost has propagated
@@ -150,8 +150,8 @@ end
                     @test !(vals == ghost)
 
                     # propagate the ghost
-                    PETSc.ghostupdatebegin!(petsc_x)
-                    PETSc.ghostupdateend!(petsc_x)
+                    PETSc.ghost_update_begin!(petsc_x)
+                    PETSc.ghost_update_end!(petsc_x)
 
                     # Recheck the numbers
                     vals = l_x[inds .+ 1]  
@@ -160,7 +160,7 @@ end
             end
             
 
-            PETSc.destroy(petsc_x)
+            PETSc.destroy!(petsc_x)
         end
         PETSc.finalize(petsclib)
     end

@@ -35,7 +35,7 @@ comm = MPI.COMM_WORLD
   ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=false)
   #PETSc.settolerances!(ksp; rtol=1e-8)
 
-  @test PETSc.type(ksp) == "gmres" # default
+  @test PETSc.type_name(ksp) == "gmres" # default
 
   y = ksp \ w
   @test S*y[:] ≈ w[:]  rtol=1e-6
@@ -59,8 +59,8 @@ comm = MPI.COMM_WORLD
 
 
   function F!(cfx, snes, cx)
-    fx = PETSc.unsafe_localarray(cfx; read = false, write = true)
-    x = PETSc.unsafe_localarray(cx;  read = true,  write = false)
+    fx = PETSc.unsafe_local_array(cfx; read = false, write = true)
+    x = PETSc.unsafe_local_array(cx;  read = true,  write = false)
  
     fx[1] = x[1]^2 + x[1] * x[2] - 3
     fx[2] = x[1] * x[2] + x[2]^2 - 6
@@ -77,7 +77,7 @@ comm = MPI.COMM_WORLD
 
   
   function updateJ!(J, snes, x)
-    PETSc.unsafe_localarray(x; read = true, write = false)
+    PETSc.unsafe_local_array(x; read = true, write = false)
 
     J[1, 1] = 2x[1] + x[2]
     J[1, 2] = x[1]
@@ -96,16 +96,16 @@ comm = MPI.COMM_WORLD
   
   # You can do this to set the callback functions.
   # Please be aware that the functions above MUST return 0
-  PETSc.setfunction!(F!, S, r)
-  PETSc.setjacobian!(updateJ!, S, PJ, PJ)
+  PETSc.set_function!(F!, S, r)
+  PETSc.set_snes_jacobian!(updateJ!, S, PJ, PJ)
 
   # The alternative is to do this (tested below):
-  #PETSc.setfunction!(S, r) do cfx, snes, cx
+  #PETSc.set_function!(S, r) do cfx, snes, cx
   #    F!(cfx, snes, cx)
   #    return 0
   #end
 
-  #PETSc.setjacobian!(S, PJ) do J, S, x
+  #PETSc.set_snes_jacobian!(S, PJ) do J, S, x
   #  updateJ!(J, S, x)
   #  return 0
   #end
@@ -118,23 +118,23 @@ comm = MPI.COMM_WORLD
 
 
   # Test the alternative is to do this:
-  PETSc.setfunction!(S, r) do cfx, snes, cx
+  PETSc.set_function!(S, r) do cfx, snes, cx
       F!(cfx, snes, cx)
       return 0
   end
 
-  PETSc.setjacobian!(S, PJ) do J, S, x
+  PETSc.set_snes_jacobian!(S, PJ) do J, S, x
     updateJ!(J, S, x)
     return 0
   end
   sol1 = PETSc.solve!(a, S)
   @test sol1[:] ≈ [1.0,2.0] rtol=1e-4
 
-  PETSc.destroy(S)
-  PETSc.destroy(M)
-  PETSc.destroy(ksp)
-  PETSc.destroy(V)
-  PETSc.destroy(r)
+  PETSc.destroy!(S)
+  PETSc.destroy!(M)
+  PETSc.destroy!(ksp)
+  PETSc.destroy!(V)
+  PETSc.destroy!(r)
 
 end
 

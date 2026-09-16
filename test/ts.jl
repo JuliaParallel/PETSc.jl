@@ -33,19 +33,19 @@ MPI.Initialized() || MPI.Init()
             @test ts.ptr != C_NULL
             @test occursin("TS", sprint(show, ts))
             # No method has been chosen yet.
-            @test PETSc.type(ts) === nothing
+            @test PETSc.type_name(ts) === nothing
 
             PETSc.set_type!(ts, :beuler)
-            @test PETSc.type(ts) === :beuler
+            @test PETSc.type_name(ts) === :beuler
             PETSc.set_type!(ts, :bdf)
-            @test PETSc.type(ts) === :bdf
+            @test PETSc.type_name(ts) === :bdf
 
             @test PETSc.comm(ts) isa MPI.Comm
             @test PETSc.dm(ts).ptr != C_NULL
 
             # Nothing is read from the options database until `solve!`.
             ts_opt = PETSc.TS(petsclib, comm; ts_type = "rk")
-            @test PETSc.type(ts_opt) === nothing
+            @test PETSc.type_name(ts_opt) === nothing
             PETSc.destroy!(ts_opt)
 
             PETSc.destroy!(ts)
@@ -99,7 +99,7 @@ MPI.Initialized() || MPI.Init()
             @test tol.vatol.ptr == vatol.ptr
 
             PETSc.destroy!(ts)
-            PETSc.destroy(vatol)
+            PETSc.destroy!(vatol)
         end
 
         @testset "explicit right-hand side" begin
@@ -116,7 +116,7 @@ MPI.Initialized() || MPI.Init()
             calls = Ref(0)
             PETSc.set_rhs_function!(ts) do F, _ts, _t, x
                 calls[] += 1
-                PETSc.withlocalarray!(
+                PETSc.with_local_array!(
                     (x, F);
                     read = (true, false),
                     write = (false, true),
@@ -141,7 +141,7 @@ MPI.Initialized() || MPI.Init()
             @test u[1] ≈ exp(-one(PetscReal)) rtol = 1e-3
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
 
             # Reversed argument order, for a callback that is already a value.
             ts2 = PETSc.TS(petsclib, comm)
@@ -158,7 +158,7 @@ MPI.Initialized() || MPI.Init()
             @test u2[1] ≈ exp(-one(PetscReal)) rtol = 1e-3
 
             PETSc.destroy!(ts2)
-            PETSc.destroy(u2)
+            PETSc.destroy!(u2)
         end
 
         @testset "implicit residual and Jacobian" begin
@@ -177,7 +177,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.assemble!(J)
 
             PETSc.set_ifunction!(ts) do F, _ts, _t, x, xdot
-                PETSc.withlocalarray!(
+                PETSc.with_local_array!(
                     (x, xdot, F);
                     read = (true, true, false),
                     write = (false, false, true),
@@ -206,8 +206,8 @@ MPI.Initialized() || MPI.Init()
             @test PETSc.snes_failures(ts) == 0
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
-            PETSc.destroy(J)
+            PETSc.destroy!(u)
+            PETSc.destroy!(J)
         end
 
         @testset "right-hand side Jacobian" begin
@@ -243,8 +243,8 @@ MPI.Initialized() || MPI.Init()
             @test u[1] ≈ decay(dt, n) rtol = rtol
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
-            PETSc.destroy(J)
+            PETSc.destroy!(u)
+            PETSc.destroy!(J)
         end
 
         @testset "coupled system exercises the shift" begin
@@ -271,7 +271,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.assemble!(J)
 
             PETSc.set_ifunction!(ts) do F, _ts, _t, x, xdot
-                PETSc.withlocalarray!(
+                PETSc.with_local_array!(
                     (x, xdot, F);
                     read = (true, true, false),
                     write = (false, false, true),
@@ -300,8 +300,8 @@ MPI.Initialized() || MPI.Init()
             @test u[2] ≈ expected[2] rtol = rtol
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
-            PETSc.destroy(J)
+            PETSc.destroy!(u)
+            PETSc.destroy!(J)
         end
 
         @testset "user context" begin
@@ -336,7 +336,7 @@ MPI.Initialized() || MPI.Init()
             @test u[1] ≈ PetscReal(1 / (1 + 2dt)^n) rtol = rtol
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
         end
 
         @testset "monitor" begin
@@ -369,7 +369,7 @@ MPI.Initialized() || MPI.Init()
             @test times[end] ≈ 1.0
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
         end
 
         @testset "solve! without a vector" begin
@@ -393,7 +393,7 @@ MPI.Initialized() || MPI.Init()
             @test u[1] ≈ decay(dt, n) rtol = rtol
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
         end
 
         @testset "options are applied at solve time" begin
@@ -415,11 +415,11 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_max_time!(ts, 1.0)
             PETSc.solve!(u, ts)
 
-            @test PETSc.type(ts) === :beuler
+            @test PETSc.type_name(ts) === :beuler
             @test u[1] ≈ decay(dt, n) rtol = rtol
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
         end
 
         @testset "stepping by hand" begin
@@ -451,8 +451,8 @@ MPI.Initialized() || MPI.Init()
             PETSc.reset!(ts)
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
-            PETSc.destroy(w)
+            PETSc.destroy!(u)
+            PETSc.destroy!(w)
         end
 
         @testset "sub-solvers" begin
@@ -485,10 +485,10 @@ MPI.Initialized() || MPI.Init()
             PETSc.destroy!(ts)
             @test ts.ptr == C_NULL
 
-            # `destroy` keeps working for code written against the rest of the
-            # package.
+            # A TS that never solved is destroyable too. (The v0.4 `destroy`
+            # spelling is covered by test/test_deprecations.jl.)
             ts2 = PETSc.TS(petsclib, comm)
-            PETSc.destroy(ts2)
+            PETSc.destroy!(ts2)
             @test ts2.ptr == C_NULL
         end
 
@@ -516,7 +516,7 @@ MPI.Initialized() || MPI.Init()
             end
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
+            PETSc.destroy!(u)
         end
 
         PETSc.finalize(petsclib)

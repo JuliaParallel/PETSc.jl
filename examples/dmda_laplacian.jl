@@ -106,9 +106,9 @@ ksp = PETSc.KSP(da; opts...)
 
 # Define the operator assembly function
 function assemble_operator!(A, _, ksp)
-    da = PETSc.getDM(ksp)
-    corners = PETSc.getcorners(da)
-    Nq = PETSc.getinfo(da).global_size[1:2]
+    da = PETSc.dm(ksp)
+    corners = PETSc.corners(da)
+    Nq = PETSc.info(da).global_size[1:2]
     
     Δx = PetscScalar(1 / (Nq[1] - 1))
     Δy = PetscScalar(1 / (Nq[2] - 1))
@@ -138,13 +138,13 @@ function assemble_operator!(A, _, ksp)
     return 0
 end
 
-PETSc.setcomputeoperators!(ksp, assemble_operator!)
+PETSc.set_compute_operators!(ksp, assemble_operator!)
 
 # Set the right-hand side
-PETSc.setcomputerhs!(ksp) do petsc_b, ksp
-    da = PETSc.getDM(ksp)
-    corners = PETSc.getcorners(da)
-    Nq = PETSc.getinfo(da).global_size[1:2]
+PETSc.set_compute_rhs!(ksp) do petsc_b, ksp
+    da = PETSc.dm(ksp)
+    corners = PETSc.corners(da)
+    Nq = PETSc.info(da).global_size[1:2]
     
     g_x = range(PetscScalar(0), length = Nq[1], stop = 1)
     g_y = range(PetscScalar(0), length = Nq[2], stop = 1)
@@ -152,7 +152,7 @@ PETSc.setcomputerhs!(ksp) do petsc_b, ksp
     l_x = g_x[(corners.lower[1]):(corners.upper[1])]
     l_y = g_y[(corners.lower[2]):(corners.upper[2])]
     
-    PETSc.withlocalarray!(petsc_b; read = false) do b
+    PETSc.with_local_array!(petsc_b; read = false) do b
         b = reshape(b, Int64(corners.size[1]), Int64(corners.size[2]))
         b .= forcing.(l_x, l_y')
         
@@ -180,9 +180,9 @@ PETSc.solve!(ksp)
 reason = PETSc.LibPETSc.KSPGetConvergedReason(petsclib, ksp)
 
 # Get the solution and compute error
-sol = PETSc.get_solution(ksp)
-corners = PETSc.getcorners(da)
-Nq = PETSc.getinfo(da).global_size[1:2]
+sol = PETSc.solution(ksp)
+corners = PETSc.corners(da)
+Nq = PETSc.info(da).global_size[1:2]
 
 g_x = range(PetscScalar(0), length = Nq[1], stop = 1)
 g_y = range(PetscScalar(0), length = Nq[2], stop = 1)
@@ -249,8 +249,8 @@ if root == MPI.Comm_rank(comm)
 end
 
 # Clean up
-PETSc.destroy(ksp)
-PETSc.destroy(da)
+PETSc.destroy!(ksp)
+PETSc.destroy!(da)
 
 PETSc.finalize(petsclib)
 

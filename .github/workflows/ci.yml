@@ -52,4 +52,8 @@ jobs:
       - uses: julia-actions/cache@v3
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
+        with:
+          # The v0.5 shims warn through `@warn` rather than `Base.depwarn`, but
+          # anything still on `Base.@deprecate` is silent without this.
+          depwarn: yes
         

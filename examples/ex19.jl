@@ -45,7 +45,7 @@
         -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
 
   Jacobian strategy:
-    Fine-grid level: manual FD coloring via PETSc.dmda_star_fd_coloring +
+    Fine-grid level: manual FD coloring via PETSc.star_fd_coloring +
       MatSetPreallocationCOOLocal + MatSetValuesCOO.  On GPU the entire
       perturb → F(x+h) → accumulate loop runs on-device with no host copies.
     Coarser MG levels: fall back to SNESComputeJacobianDefaultColor
@@ -226,12 +226,12 @@ function fd_coloring_jac!(
     inv_h :: T,
 ) where T
     LibPETSc.SNESComputeFunction(petsclib, snes, g_x, f0_vec)
-    PETSc.withlocalarray!(f0_vec; read=true, write=false) do f0
+    PETSc.with_local_array!(f0_vec; read=true, write=false) do f0
         for c in 1:n_colors
             isempty(perturb_cols_dev[c]) && continue
 
             LibPETSc.VecCopy(petsclib, g_x, x_pert_vec)
-            PETSc.withlocalarray!(x_pert_vec; read=true, write=true) do xp
+            PETSc.with_local_array!(x_pert_vec; read=true, write=true) do xp
                 kb = KernelAbstractions.get_backend(xp)
                 scatter_perturb_kernel!(kb, 64)(
                     xp, perturb_cols_dev[c], h_eps;
@@ -241,7 +241,7 @@ function fd_coloring_jac!(
 
             LibPETSc.SNESComputeFunction(petsclib, snes, x_pert_vec, f1_vec)
 
-            PETSc.withlocalarray!(f1_vec; read=true, write=false) do f1
+            PETSc.with_local_array!(f1_vec; read=true, write=false) do f1
                 kb = KernelAbstractions.get_backend(f1)
                 fd_accumulate_kernel!(kb, 64)(
                     val_dev, f0, f1,
@@ -284,10 +284,10 @@ if useCUDA
 end
 
 snes = PETSc.SNES(petsclib, comm; opts...)
-PETSc.setDM!(snes, da)
+PETSc.set_dm!(snes, da)
 
 # Actual grid size after setfromoptions (may differ from the 4×4 default)
-info = PETSc.getinfo(da)
+info = PETSc.info(da)
 mx   = Int(info.global_size[1])
 my   = Int(info.global_size[2])
 
@@ -303,10 +303,10 @@ hx    = one(_T) / dhx; hy    = one(_T) / dhy
 hydhx = hy * dhx;    hxdhy = hx * dhy
 
 # ── Initial condition: u = v = ω = 0, T linear in x ─────────────────────────
-x = PETSc.DMGlobalVec(da)
+x = PETSc.global_vec(da)
 
-PETSc.withlocalarray!(x; read = false) do x_arr
-    corners = PETSc.getcorners(da)
+PETSc.with_local_array!(x; read = false) do x_arr
+    corners = PETSc.corners(da)
     xs = corners.lower[1];  ys = corners.lower[2]
     xe = corners.upper[1];  ye = corners.upper[2]
     nx_own = xe - xs + 1;   ny_own = ye - ys + 1
@@ -328,14 +328,14 @@ end
 # ── Residual callback ─────────────────────────────────────────────────────────
 r = similar(x)
 
-PETSc.setfunction!(snes, r) do g_fx, snes, g_x
-    da = PETSc.getDM(snes)
+PETSc.set_function!(snes, r) do g_fx, snes, g_x
+    da = PETSc.dm(snes)
 
-    l_x = PETSc.DMLocalVec(da)
-    PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
+    l_x = PETSc.local_vec(da)
+    PETSc.global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
-    corners       = PETSc.getcorners(da)
-    ghost_corners = PETSc.getghostcorners(da)
+    corners       = PETSc.corners(da)
+    ghost_corners = PETSc.ghost_corners(da)
 
     xs  = corners.lower[1];        ys  = corners.lower[2]
     xe  = corners.upper[1];        ye  = corners.upper[2]
@@ -349,7 +349,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     # Recompute grid metrics from the DM so this callback is correct on every
     # MG level (coarsen/refine changes mx/my; capturing outer-scope values
     # would give wrong stencil weights and lid velocity on coarse grids).
-    info_  = PETSc.getinfo(da)
+    info_  = PETSc.info(da)
     mx_    = Int(info_.global_size[1])
     my_    = Int(info_.global_size[2])
     dhx_   = _T(mx_ - 1);   dhy_   = _T(my_ - 1)
@@ -357,9 +357,9 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     hydhx_ = hy_ * dhx_;    hxdhy_ = hx_ * dhy_
     lid_   = _T(1) / dhx_    # lidvelocity = 1/(mx-1)
 
-    # withlocalarray! handles CPU/GPU dispatch: returns Vector on host, CuArray
+    # with_local_array! handles CPU/GPU dispatch: returns Vector on host, CuArray
     # on device.  Both vecs must be on the same device (guaranteed per MG level).
-    PETSc.withlocalarray!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
+    PETSc.with_local_array!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
         kern  = KernelAbstractions.get_backend(fx)
         x_par = reshape(lx, 4, nx_g,   ny_g)
         f_par = reshape(fx, 4, nx_own, ny_own)
@@ -373,14 +373,14 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
         KernelAbstractions.synchronize(kern)
     end
 
-    PETSc.destroy(l_x)
+    PETSc.destroy!(l_x)
     return PetscInt(0)
 end
 
 # ── Jacobian: manual FD coloring with GPU-efficient COO matrix assembly ───────
 #
 # Setup (one-time):
-#   dmda_star_fd_coloring  — builds IS_COLORING_LOCAL coloring and analytically
+#   star_fd_coloring  — builds IS_COLORING_LOCAL coloring and analytically
 #     derives the STAR-stencil COO (row, col) triplets; returns per-color index
 #     arrays for the owned columns and COO slots to fill.
 #   MatSetPreallocationCOOLocal  — registers the COO pattern (enables on-device
@@ -397,8 +397,8 @@ end
 # ── Coloring + COO index setup ────────────────────────────────────────────────
 # Builds the IS_COLORING_LOCAL coloring for da's STAR stencil, ghost-local COO
 # (row, col) pairs, and per-color owned-column / COO-entry index arrays.
-# 2-D DMDA STAR stencil only; see PETSc.dmda_star_fd_coloring for 3-D notes.
-coloring      = PETSc.dmda_star_fd_coloring(petsclib, da)
+# 2-D DMDA STAR stencil only; see PETSc.star_fd_coloring for 3-D notes.
+coloring      = PETSc.star_fd_coloring(petsclib, da)
 n_colors      = coloring.n_colors
 n_local_dofs  = coloring.n_local_dofs
 nnz_coo       = coloring.nnz_coo
@@ -437,10 +437,10 @@ h_eps      = _T(sqrt(eps(_T)))
 inv_h      = _T(1) / h_eps
 
 # ── Jacobian callback ────────────────────────────────────────────────────────
-PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
+PETSc.set_snes_jacobian!(snes, J) do Jmat, actual_snes, g_x
     # For MG: if this is a coarser level (different DM than the fine-grid da),
     # fall back to PETSc's built-in FD coloring (correct for that level's DM).
-    da_level = PETSc.getDM(actual_snes)
+    da_level = PETSc.dm(actual_snes)
     if da_level.ptr != da.ptr
         LibPETSc.SNESComputeJacobianDefaultColor(petsclib, actual_snes, g_x, Jmat, Jmat, C_NULL)
         return PetscInt(0)
@@ -495,7 +495,7 @@ end
 # runs it after PETSc/MPI are finalized the process crashes.  Destroying here
 # while PETSc is still active is always safe.
 if !isnothing(snes.opts)
-    PETSc.destroy(snes.opts)
+    PETSc.destroy!(snes.opts)
     snes.opts = nothing
 end
 
@@ -506,14 +506,14 @@ MPI.Barrier(comm)
 
 # SNES holds internal PETSc references to J, da, and r — destroy it first so
 # those reference counts are decremented before we explicitly free the objects.
-PETSc.destroy(snes)
-PETSc.destroy(J)
-PETSc.destroy(x_pert_vec)
-PETSc.destroy(f0_vec)
-PETSc.destroy(f1_vec)
-PETSc.destroy(x)
-PETSc.destroy(r)
-PETSc.destroy(da)
+PETSc.destroy!(snes)
+PETSc.destroy!(J)
+PETSc.destroy!(x_pert_vec)
+PETSc.destroy!(f0_vec)
+PETSc.destroy!(f1_vec)
+PETSc.destroy!(x)
+PETSc.destroy!(r)
+PETSc.destroy!(da)
 PETSc.finalize(petsclib)
 
 MPI.Barrier(comm)

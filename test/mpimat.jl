@@ -26,7 +26,7 @@ using LinearAlgebra: mul!, norm
         right,left = LibPETSc.MatCreateVecs(petsclib,mat)
 
         # Fill the matrix and right vector
-        row_rng = PETSc.ownershiprange(mat, false)
+        row_rng = PETSc.ownership_range(mat, false)
         for i in row_rng
             if i == 0
                 vals = [-2, 1]
@@ -41,7 +41,7 @@ using LinearAlgebra: mul!, norm
                 row0idxs = [i]
                 col0idxs = [i - 1, i, i + 1]
             end
-            PETSc.setvalues!(
+            PETSc.set_values!(
                 mat,
                 PetscInt.(row0idxs),
                 PetscInt.(col0idxs),
@@ -70,9 +70,9 @@ using LinearAlgebra: mul!, norm
         exact_norm = sqrt(sz * 2^2 + 2 * (sz - 1))
         @test norm(mat) ≈ exact_norm
 
-        PETSc.destroy(mat)
-        PETSc.destroy(right)
-        PETSc.destroy(left)
+        PETSc.destroy!(mat)
+        PETSc.destroy!(right)
+        PETSc.destroy!(left)
 
         PETSc.finalize(petsclib)
     end

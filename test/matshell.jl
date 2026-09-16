@@ -13,7 +13,7 @@ using MPI
         local_rows = 10
         local_cols = 5
         function f!(p_x, p_y)
-            PETSc.withlocalarray!((p_x, p_y), write=(true,false)) do x, y
+            PETSc.with_local_array!((p_x, p_y), write=(true,false)) do x, y
                 x .= [2y; 3y]
             end
         end
@@ -27,9 +27,9 @@ using MPI
         @test petsc_y[:] == [2x; 3x]
         @test matshell * x == [2x; 3x]
 
-        PETSc.destroy(petsc_x)
-        PETSc.destroy(petsc_y)
-        PETSc.destroy(matshell)
+        PETSc.destroy!(petsc_x)
+        PETSc.destroy!(petsc_y)
+        PETSc.destroy!(matshell)
         PETSc.finalize(petsclib)
     end
 end

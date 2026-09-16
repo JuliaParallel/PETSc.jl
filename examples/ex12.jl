@@ -148,13 +148,13 @@ let _b = get(NamedTuple(pairs(opts)), :bc,    nothing); global bc    = _b === no
 function quadratic_u(t, x, u, ctx)
     u[1] = sum(xi^2 for xi in x)
 end
-const quadratic_u_ptr = PETSc.@petsc_simple_fn(quadratic_u)
+const quadratic_u_ptr = PETSc.@simple_fn(quadratic_u)
 
 # Zero initial guess for the interior DOFs.
 function zero_u(t, x, u, ctx)
     fill!(u, 0)
 end
-const zero_u_ptr = PETSc.@petsc_simple_fn(zero_u)
+const zero_u_ptr = PETSc.@simple_fn(zero_u)
 
 # ── COEFF_FIELD:  κ(x) = x₂ + 1 ─────────────────────────────────────────────
 #
@@ -166,14 +166,14 @@ function f0_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                   aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f0)
     f0[1] = (2*dim_+2)*x[2] + 2*dim_
 end
-const f0_field_ptr = PETSc.@petsc_residual_fn(f0_field, Nf)
+const f0_field_ptr = PETSc.@residual_fn(f0_field, Nf)
 
 function f1_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                   aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f1)
     kap = x[2] + 1.0
     @inbounds for d in 1:dim_; f1[d] = kap * u_x[d]; end
 end
-const f1_field_ptr = PETSc.@petsc_residual_fn(f1_field, dim_)
+const f1_field_ptr = PETSc.@residual_fn(f1_field, dim_)
 
 function g3_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                   aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, g3)
@@ -181,7 +181,7 @@ function g3_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     fill!(g3, 0)
     @inbounds for d in 1:dim_; g3[(d-1)*dim_ + d] = kap; end
 end
-const g3_field_ptr = PETSc.@petsc_jacobian_fn(g3_field, dim_*dim_)
+const g3_field_ptr = PETSc.@jacobian_fn(g3_field, dim_*dim_)
 
 # Neumann flux for COEFF_FIELD:  h = κ(x)·∇u·n = (x₂+1)·2(x·n)
 # Convention: f0_bd = −h  (PETSc boundary residual sign)
@@ -192,7 +192,7 @@ function f0_bd_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     @inbounds for d in 1:dim_; xdotn += x[d]*n[d]; end
     f0[1] = -kap * 2.0 * xdotn
 end
-const f0_bd_field_ptr = PETSc.@petsc_bd_fn(f0_bd_field, Nf)
+const f0_bd_field_ptr = PETSc.@bd_fn(f0_bd_field, Nf)
 
 # ── COEFF_NONLINEAR:  κ(u) = u + 1 ──────────────────────────────────────────
 #
@@ -214,28 +214,28 @@ function f0_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     u_val = u[Int(uOff[1])+1]
     f0[1] = (2*dim_+4)*u_val + 2*dim_
 end
-const f0_nl_ptr = PETSc.@petsc_residual_fn(f0_nl, Nf)
+const f0_nl_ptr = PETSc.@residual_fn(f0_nl, Nf)
 
 function f1_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f1)
     kap = u[Int(uOff[1])+1] + 1.0
     @inbounds for d in 1:dim_; f1[d] = kap * u_x[d]; end
 end
-const f1_nl_ptr = PETSc.@petsc_residual_fn(f1_nl, dim_)
+const f1_nl_ptr = PETSc.@residual_fn(f1_nl, dim_)
 
 # g0: ∂f0/∂u = 2·dim+4
 function g0_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, g0)
     g0[1] = 2*dim_ + 4
 end
-const g0_nl_ptr = PETSc.@petsc_jacobian_fn(g0_nl, Nf*Nf)
+const g0_nl_ptr = PETSc.@jacobian_fn(g0_nl, Nf*Nf)
 
 # g2: ∂f1[d]/∂u = u_x[d]   (κ′(u)=1, so ∂((u+1)·u_x[d])/∂u = u_x[d])
 function g2_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, g2)
     @inbounds for d in 1:dim_; g2[d] = u_x[d]; end
 end
-const g2_nl_ptr = PETSc.@petsc_jacobian_fn(g2_nl, Nf*Nf*dim_)
+const g2_nl_ptr = PETSc.@jacobian_fn(g2_nl, Nf*Nf*dim_)
 
 # g3: ∂f1[d]/∂(∂u/∂xd′) = (u+1)·δ_{dd′}
 function g3_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -244,7 +244,7 @@ function g3_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     fill!(g3, 0)
     @inbounds for d in 1:dim_; g3[(d-1)*dim_ + d] = kap; end
 end
-const g3_nl_ptr = PETSc.@petsc_jacobian_fn(g3_nl, dim_*dim_)
+const g3_nl_ptr = PETSc.@jacobian_fn(g3_nl, dim_*dim_)
 
 # Neumann flux for COEFF_NONLINEAR:  h = (u+1)·2(x·n)
 # f0_bd = −h
@@ -255,7 +255,7 @@ function f0_bd_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     @inbounds for d in 1:dim_; xdotn += x[d]*n[d]; end
     f0[1] = -kap * 2.0 * xdotn
 end
-const f0_bd_nl_ptr = PETSc.@petsc_bd_fn(f0_bd_nl, Nf)
+const f0_bd_nl_ptr = PETSc.@bd_fn(f0_bd_nl, Nf)
 
 # ── Build the mesh ────────────────────────────────────────────────────────────
 # 3-D simplex (TetGen) is broken in the current PETSc_jll; use hexahedra for 3D.
@@ -268,11 +268,11 @@ dm = PETSc.DMPlex(petsclib, comm, dim, simplex, faces; opts...)
 # ── Discretization ────────────────────────────────────────────────────────────
 fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex; prefix = "")
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe), "potential")
-PETSc.setfield!(dm, 0, fe)
-PETSc.createds!(dm)
+PETSc.set_field!(dm, 0, fe)
+PETSc.create_ds!(dm)
 
 # ── DS: residual / Jacobian / exact solution ──────────────────────────────────
-ds = PETSc.getds(dm)
+ds = PETSc.ds(dm)
 
 if coeff == "field"
     PETSc.set_residual!(ds, 0, f0_field_ptr, f1_field_ptr)
@@ -284,7 +284,7 @@ end
 PETSc.set_exact_solution!(ds, 0, quadratic_u_ptr)
 
 # ── Boundary conditions ───────────────────────────────────────────────────────
-label = PETSc.getlabel(dm, "marker")
+label = PETSc.label(dm, "marker")
 
 if bc == "dirichlet"
     PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label,
@@ -303,9 +303,9 @@ function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cv
     PL  = typeof(petsclib)
     cdm = LibPETSc.PetscDM{PL}(coarse_ptr)
     fe_c = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex; prefix = "")
-    PETSc.setfield!(cdm, 0, fe_c)
-    PETSc.createds!(cdm)
-    cds = PETSc.getds(cdm)
+    PETSc.set_field!(cdm, 0, fe_c)
+    PETSc.create_ds!(cdm)
+    cds = PETSc.ds(cdm)
     if coeff == "field"
         PETSc.set_residual!(cds, 0, f0_field_ptr, f1_field_ptr)
         PETSc.set_jacobian!(cds, 0, 0, C_NULL, C_NULL, C_NULL, g3_field_ptr)
@@ -314,7 +314,7 @@ function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cv
         PETSc.set_jacobian!(cds, 0, 0, g0_nl_ptr, C_NULL, g2_nl_ptr, g3_nl_ptr)
     end
     PETSc.set_exact_solution!(cds, 0, quadratic_u_ptr)
-    c_label = PETSc.getlabel(cdm, "marker")
+    c_label = PETSc.label(cdm, "marker")
     if c_label != Ptr{Cvoid}(C_NULL)
         if bc == "dirichlet"
             PETSc.add_boundary!(petsclib, cdm, LibPETSc.DM_BC_ESSENTIAL, "wall",
@@ -328,14 +328,14 @@ function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cv
 end
 const fas_coarsen_hook_ptr = Base.@cfunction(fas_coarsen_hook, Cint,
     (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))
-PETSc.dm_coarsen_hook_add!(dm, fas_coarsen_hook_ptr)
+PETSc.add_coarsen_hook!(dm, fas_coarsen_hook_ptr)
 
 # ── SNES + matrix + vectors ───────────────────────────────────────────────────
 snes = PETSc.SNES(petsclib, comm; opts...)
-PETSc.setDM!(snes, dm)
-u = PETSc.DMGlobalVec(dm)
+PETSc.set_dm!(snes, dm)
+u = PETSc.global_vec(dm)
 J = PETSc.MatAIJ(dm)
-PETSc.plex_set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(petsclib, dm)
 LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 
 # For pure Neumann: the assembled matrix is singular (null space = constants).
@@ -343,7 +343,7 @@ LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 # MatSetTransposeNullSpace → projects null space from the RHS (b) each KSP solve.
 # Both are required for the residual to converge to zero.
 if bc == "neumann"
-    nsp = PETSc.mat_null_space_create(petsclib, comm; has_const = true)
+    nsp = PETSc.mat_nullspace_create(petsclib, comm; has_const = true)
     LibPETSc.MatSetNullSpace(petsclib, J, nsp)
     LibPETSc.MatSetTransposeNullSpace(petsclib, J, nsp)
 end
@@ -354,10 +354,10 @@ end
 # Neumann:   no constrained DOFs exist, so start directly from the L²-projected
 # exact solution.  The solution is unique only up to a constant; starting near
 # the answer avoids the singular-system pitfall of a pure-zero initial guess.
-PETSc.dm_project_function!(petsclib, dm, 0.0, [quadratic_u_ptr], nothing,
+PETSc.project_function!(petsclib, dm, 0.0, [quadratic_u_ptr], nothing,
                             LibPETSc.INSERT_ALL_VALUES, u)
 if bc == "dirichlet"
-    PETSc.dm_project_function!(petsclib, dm, 0.0, [zero_u_ptr], nothing,
+    PETSc.project_function!(petsclib, dm, 0.0, [zero_u_ptr], nothing,
                                 LibPETSc.INSERT_VALUES, u)
 end
 
@@ -370,7 +370,7 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── L² error ──────────────────────────────────────────────────────────────────
-l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0, [quadratic_u_ptr], nothing, u)
+l2err = PETSc.l2diff(petsclib, dm, 0.0, [quadratic_u_ptr], nothing, u)
 if MPI.Comm_rank(comm) == 0
     println("L2 error: $l2err")
 end
@@ -382,7 +382,7 @@ end
 let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
     if _vtk !== nothing
         fname = string(_vtk)
-        PETSc.vtk_save!(petsclib, comm, fname, u)
+        PETSc.save_vtk!(petsclib, comm, fname, u)
         MPI.Comm_rank(comm) == 0 && println("Solution written to $fname")
     end
 end
@@ -390,10 +390,10 @@ end
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 GC.gc(true)
 MPI.Barrier(comm)
-PETSc.destroy(snes)
-PETSc.destroy(J)
-PETSc.destroy(u)
-PETSc.destroy(dm)
+PETSc.destroy!(snes)
+PETSc.destroy!(J)
+PETSc.destroy!(u)
+PETSc.destroy!(dm)
 if !isinteractive()
     PETSc.finalize(petsclib)
     MPI.Barrier(comm)

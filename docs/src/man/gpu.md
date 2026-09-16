@@ -33,22 +33,22 @@ PETSc manages where vector data lives (host or device). The extension inspects t
 
 ## Public API
 
-### `withlocalarray!`
+### `with_local_array!`
 
-`withlocalarray!` gives callback-based access to the underlying array of one or more Vecs.
+`with_local_array!` gives callback-based access to the underlying array of one or more Vecs.
 When CUDA.jl is loaded, it automatically returns a `CuArray` for device-resident Vecs and a plain `Vector` for host-resident Vecs:
 
 ```julia
 using PETSc, CUDA, KernelAbstractions
 
 # single Vec
-withlocalarray!(my_vec; write=true) do arr
+with_local_array!(my_vec; write=true) do arr
     # arr is CuArray on GPU, Vector on CPU
     fill!(arr, 42)
 end
 
 # two Vecs — backend selected from the array type at runtime
-withlocalarray!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
+with_local_array!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
     kern = KernelAbstractions.get_backend(fx)
     my_kernel!(kern, 256)(fx, lx; ndrange = length(fx))
     KernelAbstractions.synchronize(kern)
@@ -73,7 +73,7 @@ using PETSc, CUDA, KernelAbstractions
     out[i] = inp[i] * 2
 end
 
-withlocalarray!(out_vec, inp_vec; read=(true, true), write=(true, false)) do out, inp
+with_local_array!(out_vec, inp_vec; read=(true, true), write=(true, false)) do out, inp
     kern = KernelAbstractions.get_backend(out)
     my_kernel!(kern, 256)(out, inp; ndrange = length(out))
     KernelAbstractions.synchronize(kern)
@@ -88,7 +88,7 @@ The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are
 
 - Switching between CPU and GPU with a single `useCUDA` flag.
 - FD coloring-based Jacobian assembly running entirely on-device.
-- `withlocalarray!` in the residual callback for transparent CPU/GPU dispatch.
+- `with_local_array!` in the residual callback for transparent CPU/GPU dispatch.
   
 - Using [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl) to run kernels on various flavors of GPUs or CPUs.
   

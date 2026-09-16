@@ -79,18 +79,18 @@ using SparseArrays: spdiagm
         
         # Verify solution
         @test y[1:10] ≈ x[1:10]
-        PETSc.destroy(x)
+        PETSc.destroy!(x)
 
         # do the same with backslash
         x1 = ksp \ b
         @test y ≈ x1
-        #PETSc.destroy(x)
+        #PETSc.destroy!(x)
 
         # Create a KSP solver in a simpler way --
         ksp1 = PETSc.KSP(A; ksp_rtol = 1e-16, pc_type = "jacobi", ksp_monitor=false)
         x2 = ksp1 \ b
         @test y ≈ x2
-        #PETSc.destroy(ksp1)
+        #PETSc.destroy!(ksp1)
         # ------------------------------
 
         # test some of the get functions:
@@ -100,8 +100,8 @@ using SparseArrays: spdiagm
         # this segfaults:
         x3 = LibPETSc.KSPGetSolution(petsclib, ksp) 
         @test x3 ≈ x2
-        PETSc.destroy(x2)
-        PETSc.destroy(x3)
+        PETSc.destroy!(x2)
+        PETSc.destroy!(x3)
         
 
         A1, P1 = LibPETSc.KSPGetOperators(petsclib, ksp) 
@@ -144,12 +144,12 @@ using SparseArrays: spdiagm
             @test maxits1 == maxits
         end
 
-        PETSc.destroy(y)
-        PETSc.destroy(b)
-        PETSc.destroy(b1)
-        PETSc.destroy(A)
-        PETSc.destroy(A1)
-        PETSc.destroy(ksp)
+        PETSc.destroy!(y)
+        PETSc.destroy!(b)
+        PETSc.destroy!(b1)
+        PETSc.destroy!(A)
+        PETSc.destroy!(A1)
+        PETSc.destroy!(ksp)
         PETSc.finalize(petsclib)
         
 
@@ -185,9 +185,9 @@ if MPI.Comm_rank(MPI.COMM_WORLD) == 0
             # test with julia b vecror
             @test ksp \ b ≈ Matrix(A) \ b
 
-            PETSc.destroy(ksp)
-            PETSc.destroy(petsc_x)
-            PETSc.destroy(petsc_b)
+            PETSc.destroy!(ksp)
+            PETSc.destroy!(petsc_x)
+            PETSc.destroy!(petsc_b)
             PETSc.finalize(petsclib)
         end
     end

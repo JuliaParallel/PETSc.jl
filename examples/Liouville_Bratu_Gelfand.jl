@@ -66,16 +66,16 @@ da = PETSc.DMDA(
 snes = PETSc.SNES(petsclib, comm; opts...)
 
 # add the da to the snes
-PETSc.setDM!(snes, da)
+PETSc.set_dm!(snes, da)
 
 # Set up the initial guess
-x = PETSc.DMGlobalVec(da)
-xl = PETSc.DMLocalVec(da)
-PETSc.withlocalarray!(xl; read = false) do l_x
-    corners = PETSc.getcorners(da)
+x = PETSc.global_vec(da)
+xl = PETSc.local_vec(da)
+PETSc.with_local_array!(xl; read = false) do l_x
+    corners = PETSc.corners(da)
 
     # Get the global grid dimensions
-    Nq = PETSc.getinfo(da).global_size
+    Nq = PETSc.info(da).global_size
 
     # Figure out the interior points 
     int_min = min(CartesianIndex(corners.size), CartesianIndex(2, 2, 2))
@@ -83,7 +83,7 @@ PETSc.withlocalarray!(xl; read = false) do l_x
     interior = (int_min):(int_max)
 
     # Allows us to adress the local array with global indexing
-    ox = @view PETSc.reshapelocalarray(l_x, da)[1, :, :, :]
+    ox = @view PETSc.reshape_local_array(l_x, da)[1, :, :, :]
 
     # Set up the global coordinates in each direction
     # -1 to 1 when Nq > 1 and 0 otherwise
@@ -109,37 +109,37 @@ PETSc.withlocalarray!(xl; read = false) do l_x
             )
     end
 end
-PETSc.dm_local_to_global!(xl, x, da, PETSc.INSERT_VALUES)
+PETSc.local_to_global!(xl, x, da, PETSc.INSERT_VALUES)
 
 # Set up the nonlinear function
 r = similar(x)
-PETSc.setfunction!(snes, r) do g_fx, snes, g_x
+PETSc.set_function!(snes, r) do g_fx, snes, g_x
     # Get the DMDA associated with the snes
-    da = PETSc.getDM(snes)
+    da = PETSc.dm(snes)
 
     # Get a local vector and transfer the data from the global vector into it
-    l_x = PETSc.DMLocalVec(da)
-    PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
+    l_x = PETSc.local_vec(da)
+    PETSc.global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
-    ghostcorners = PETSc.getghostcorners(da)
-    corners = PETSc.getcorners(da)
+    ghostcorners = PETSc.ghost_corners(da)
+    corners = PETSc.corners(da)
 
     # Global grid size
-    Nq = PETSc.getinfo(da).global_size
+    Nq = PETSc.info(da).global_size
 
     # grid spacing in each dimension
     Δx, Δy, Δz = PetscScalar(1) ./ Nq
 
     # Get local arrays
-    PETSc.withlocalarray!(
+    PETSc.with_local_array!(
         (g_fx, l_x);
         read = (false, true),
         write = (true, false),
     ) do fx, x
 
         # reshape the array and allow for global indexing
-        x = @view PETSc.reshapelocalarray(x, da)[1, :, :, :]
-        fx = @view PETSc.reshapelocalarray(fx, da)[1, :, :, :]
+        x = @view PETSc.reshape_local_array(x, da)[1, :, :, :]
+        fx = @view PETSc.reshape_local_array(fx, da)[1, :, :, :]
 
         # Store a tuple of stencils in each direction
         stencils = (
@@ -183,20 +183,20 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     end
 
     # Clean up the local vector
-    PETSc.destroy(l_x)
+    PETSc.destroy!(l_x)
     return 0
 end
 
 J = LibPETSc.DMCreateMatrix(petsclib, da)
-PETSc.setjacobian!(snes, J) do J, snes, g_x
+PETSc.set_snes_jacobian!(snes, J) do J, snes, g_x
     # Get the DMDA associated with the snes
-    da = PETSc.getDM(snes)
+    da = PETSc.dm(snes)
 
     # Get the corners of the points we own
-    corners = PETSc.getcorners(da)
+    corners = PETSc.corners(da)
 
     # Global grid size
-    Nq = PETSc.getinfo(da).global_size
+    Nq = PETSc.info(da).global_size
 
     # grid spacing in each dimension
     Δx, Δy, Δz = PetscScalar(1) ./ Nq
@@ -223,9 +223,9 @@ PETSc.setjacobian!(snes, J) do J, snes, g_x
     weights = (Δy * Δz / Δx, Δx * Δz / Δy, Δx * Δy / Δz)
 
     # Get a local array of the solution vector
-    PETSc.withlocalarray!(g_x; write = false) do l_x
+    PETSc.with_local_array!(g_x; write = false) do l_x
         # reshape so we can use multi-D indexing
-        x = @view PETSc.reshapelocalarray(l_x, da)[1, :, :, :]
+        x = @view PETSc.reshape_local_array(l_x, da)[1, :, :, :]
 
         # loop over indices and set the function value
         for ind in ((corners.lower):(corners.upper))
@@ -266,12 +266,12 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # Do some clean up
-PETSc.destroy(J)
-PETSc.destroy(x)
-PETSc.destroy(g)
-PETSc.destroy(r)
-PETSc.destroy(da)
-PETSc.destroy(snes)
+PETSc.destroy!(J)
+PETSc.destroy!(x)
+PETSc.destroy!(g)
+PETSc.destroy!(r)
+PETSc.destroy!(da)
+PETSc.destroy!(snes)
 
 PETSc.finalize(petsclib)
 

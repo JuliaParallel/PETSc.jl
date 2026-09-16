@@ -135,7 +135,7 @@ function f1_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_+c+1] -= u[dim_+1]   # subtract pressure (field 1)
     end
 end
-const f1_u_ptr = PETSc.@petsc_residual_fn(f1_u, dim_*dim_)
+const f1_u_ptr = PETSc.@residual_fn(f1_u, dim_*dim_)
 
 # Continuity: f0 = −∇·u
 function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -145,7 +145,7 @@ function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[1] -= u_x[d*dim_+d+1]
     end
 end
-const f0_p_ptr = PETSc.@petsc_residual_fn(f0_p, 1)
+const f0_p_ptr = PETSc.@residual_fn(f0_p, 1)
 
 # ── Body-force functions (one per MMS solution type) ──────────────────────────
 #
@@ -163,7 +163,7 @@ function f0_quadratic_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[d] = 4mu - 1.0
     end
 end
-const f0_quadratic_u_ptr = PETSc.@petsc_residual_fn(f0_quadratic_u, dim_)
+const f0_quadratic_u_ptr = PETSc.@residual_fn(f0_quadratic_u, dim_)
 
 # Trigonometric MMS body force:
 #   f_x = 2π cos(2πx) + μ(dim−1)π² sin(πx) + μπ² Σ_{d>0} sin(πx_d)
@@ -178,7 +178,7 @@ function f0_trig_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[d]  = -2π*cos(2π*x[d]) + mu*π^3*cos(π*x[1])*x[d]
     end
 end
-const f0_trig_u_ptr = PETSc.@petsc_residual_fn(f0_trig_u, dim_)
+const f0_trig_u_ptr = PETSc.@residual_fn(f0_trig_u, dim_)
 
 # ── Jacobians ─────────────────────────────────────────────────────────────────
 
@@ -191,28 +191,28 @@ function g3_uu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((c*dim_+d)*dim_+d)*dim_+c+1] += mu
     end
 end
-const g3_uu_ptr = PETSc.@petsc_jacobian_fn(g3_uu, dim_*dim_*dim_*dim_)
+const g3_uu_ptr = PETSc.@jacobian_fn(g3_uu, dim_*dim_*dim_*dim_)
 
 # J_up (g2): −⟨∇·v, p⟩
 function g2_up(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g2)
     for d in 0:dim_-1; g2[d*dim_+d+1] = -1.0; end
 end
-const g2_up_ptr = PETSc.@petsc_jacobian_fn(g2_up, dim_*dim_)
+const g2_up_ptr = PETSc.@jacobian_fn(g2_up, dim_*dim_)
 
 # J_pu (g1): ⟨q, −∇·u⟩
 function g1_pu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g1)
     for d in 0:dim_-1; g1[d*dim_+d+1] = -1.0; end
 end
-const g1_pu_ptr = PETSc.@petsc_jacobian_fn(g1_pu, dim_*dim_)
+const g1_pu_ptr = PETSc.@jacobian_fn(g1_pu, dim_*dim_)
 
 # J_pp preconditioner (g0): (1/μ)⟨q, p⟩
 function g0_pp(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g0)
     g0[1] = 1.0 / real(cst[1])
 end
-const g0_pp_ptr = PETSc.@petsc_jacobian_fn(g0_pp, 1)
+const g0_pp_ptr = PETSc.@jacobian_fn(g0_pp, 1)
 
 # ── Exact solutions ───────────────────────────────────────────────────────────
 #
@@ -228,12 +228,12 @@ function quadratic_vel(t, x, u, ctx)
         u[c]  = 2*x[1]^2 - 2*x[1]*x[c]
     end
 end
-const quadratic_vel_ptr = PETSc.@petsc_simple_fn(quadratic_vel)
+const quadratic_vel_ptr = PETSc.@simple_fn(quadratic_vel)
 
 function quadratic_pres(t, x, u, ctx)
     u[1] = sum(x) - 0.5*length(x)
 end
-const quadratic_pres_ptr = PETSc.@petsc_simple_fn(quadratic_pres)
+const quadratic_pres_ptr = PETSc.@simple_fn(quadratic_pres)
 
 #
 # Trigonometric MMS:
@@ -249,23 +249,23 @@ function trig_vel(t, x, u, ctx)
         u[c]  = -π*cos(π*x[1])*x[c]
     end
 end
-const trig_vel_ptr = PETSc.@petsc_simple_fn(trig_vel)
+const trig_vel_ptr = PETSc.@simple_fn(trig_vel)
 
 function trig_pres(t, x, u, ctx)
     u[1] = sum(sin(2π*xi) for xi in x)
 end
-const trig_pres_ptr = PETSc.@petsc_simple_fn(trig_pres)
+const trig_pres_ptr = PETSc.@simple_fn(trig_pres)
 
 # Helper functions for the pressure null space constructor
 function zero_vel(t, x, u, ctx)
     for c in 1:length(u); u[c] = 0.0; end
 end
-const zero_vel_ptr = PETSc.@petsc_simple_fn(zero_vel)
+const zero_vel_ptr = PETSc.@simple_fn(zero_vel)
 
 function one_pres(t, x, u, ctx)
     u[1] = 1.0
 end
-const one_pres_ptr = PETSc.@petsc_simple_fn(one_pres)
+const one_pres_ptr = PETSc.@simple_fn(one_pres)
 
 # ── Select exact solution functions based on sol_type ─────────────────────────
 exact_vel_ptr  = sol_type == "quadratic" ? quadratic_vel_ptr  : trig_vel_ptr
@@ -278,15 +278,15 @@ function pressure_nsp_constructor(
 )::PetscInt
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
-    nvec = PETSc.DMGlobalVec(dm_w)
-    PETSc.dm_project_function!(petsclib, dm_w, 0.0,
+    nvec = PETSc.global_vec(dm_w)
+    PETSc.project_function!(petsclib, dm_w, 0.0,
         [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, nvec)
     LibPETSc.VecNormalize(petsclib, nvec)
     GC.@preserve nvec begin
-        nsp = PETSc.mat_null_space_create(petsclib, MPI.COMM_WORLD, (nvec,))
+        nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))
         unsafe_store!(nsp_pp, nsp)
     end
-    PETSc.destroy(nvec)
+    PETSc.destroy!(nvec)
     return PetscInt(0)
 end
 const pressure_nsp_ptr = Base.@cfunction(pressure_nsp_constructor, PetscInt,
@@ -297,7 +297,7 @@ dm = PETSc.DMPlex(petsclib, comm; opts...)
 
 # ── Discretisation ────────────────────────────────────────────────────────────
 dim     = LibPETSc.DMGetDimension(petsclib, dm)
-simplex = PETSc.isplexsimplex(dm)
+simplex = PETSc.issimplex(dm)
 
 fe_vel  = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim, simplex;
                                    degree = vel_degree, prefix = "vel_")
@@ -308,14 +308,14 @@ fe_pres = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_pres), "pressure")
 
 # Copy quadrature from velocity to pressure for consistent integration
-PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_pres)
+PETSc.copy_quadrature!(petsclib, fe_vel, fe_pres)
 
-PETSc.setfield!(dm, 0, fe_vel)
-PETSc.setfield!(dm, 1, fe_pres)
-PETSc.createds!(dm)
+PETSc.set_field!(dm, 0, fe_vel)
+PETSc.set_field!(dm, 1, fe_pres)
+PETSc.create_ds!(dm)
 
 # ── PetscDS setup ─────────────────────────────────────────────────────────────
-ds = PETSc.getds(dm)
+ds = PETSc.ds(dm)
 
 PETSc.set_constants!(ds, [mu_val])
 
@@ -337,40 +337,40 @@ PETSc.set_exact_solution!(ds, 1, exact_pres_ptr)
 
 # ── Boundary condition: Dirichlet on all walls (marker label, id=1) ───────────
 # All velocity components are constrained; pressure is free.
-label = PETSc.getlabel(dm, "marker")
+label = PETSc.label(dm, "marker")
 PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label,
                     PetscInt[1], 0, PetscInt[], exact_vel_ptr)
 
 # ── Propagate discretisation and null space constructor to coarser levels ─────
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.dm_copy_disc!(dm, cdm)
+        PETSc.copy_disc!(dm, cdm)
         LibPETSc.DMSetNullSpaceConstructor(petsclib, cdm, PetscInt(1), pressure_nsp_ptr)
-        cdm = PETSc.dm_get_coarse(cdm)
+        cdm = PETSc.coarse_dm(cdm)
     end
 end
 
 # Attach constant null space to the pressure FE for the fieldsplit preconditioner
-PETSc.fe_compose_constant_null_space!(petsclib, comm, fe_pres)
+PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ───────────────────
-null_vec = PETSc.DMGlobalVec(dm)
-PETSc.dm_project_function!(petsclib, dm, 0.0,
+null_vec = PETSc.global_vec(dm)
+PETSc.project_function!(petsclib, dm, 0.0,
     [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, null_vec)
 LibPETSc.VecNormalize(petsclib, null_vec)
-nullspace = GC.@preserve null_vec PETSc.mat_null_space_create(petsclib, comm, (null_vec,))
+nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 
 # ── SNES + solve ─────────────────────────────────────────────────────────────
 snes = PETSc.SNES(petsclib, comm; opts...)
-PETSc.setDM!(snes, dm)
-u = PETSc.DMGlobalVec(dm)
-PETSc.plex_set_snes_local_fem!(petsclib, dm)
+PETSc.set_dm!(snes, dm)
+u = PETSc.global_vec(dm)
+PETSc.set_snes_local_fem!(petsclib, dm)
 
 push!(snes.opts)
 try
     LibPETSc.SNESSetFromOptions(petsclib, snes)
     LibPETSc.SNESSetUp(petsclib, snes)
-    PETSc.snes_set_jacobian_null_space!(snes, nullspace)
+    PETSc.set_jacobian_nullspace!(snes, nullspace)
     LibPETSc.SNESSolve(petsclib, snes, C_NULL, u)
 finally
     pop!(snes.opts)
@@ -382,7 +382,7 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── L² errors ────────────────────────────────────────────────────────────────
-l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0,
+l2err = PETSc.l2diff(petsclib, dm, 0.0,
     [exact_vel_ptr, exact_pres_ptr], nothing, u)
 
 if MPI.Comm_rank(comm) == 0
@@ -393,10 +393,10 @@ end
 GC.gc(true)
 MPI.Barrier(comm)
 PETSc.mat_null_space_destroy!(petsclib, nullspace)
-PETSc.destroy(snes)
-PETSc.destroy(u)
-PETSc.destroy(null_vec)
-PETSc.destroy(dm)
+PETSc.destroy!(snes)
+PETSc.destroy!(u)
+PETSc.destroy!(null_vec)
+PETSc.destroy!(dm)
 
 if !isinteractive()
     flush(stdout); flush(stderr)

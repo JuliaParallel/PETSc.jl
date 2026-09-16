@@ -56,11 +56,11 @@ A = MatShell(petsclib, m, n, mult_function, context)
 # Set individual element (0-based internally, 1-based in Julia)
 A[i, j] = value
 
-# Use setvalues! for efficient batch insertion
-setvalues!(A, rows, cols, values, INSERT_VALUES)
+# Use set_values! for efficient batch insertion
+set_values!(A, rows, cols, values, INSERT_VALUES)
 
 # For stencil-based assembly
-setvalues!(A, stencil_row, stencil_col, value, INSERT_VALUES)
+set_values!(A, stencil_row, stencil_col, value, INSERT_VALUES)
 ```
 
 ## Assembly
@@ -81,7 +81,7 @@ assemble!(A)
 
 ```julia
 size(A)              # Get (rows, cols)
-ownershiprange(A)    # Get rows owned by this process
+ownership_range(A)    # Get rows owned by this process
 setup!(A)            # Complete matrix setup
 ```
 

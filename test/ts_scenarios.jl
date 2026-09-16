@@ -45,7 +45,7 @@ end
         PETSc.set_user_ctx!(ts, (; mu, imex))
 
         u = PETSc.VecSeq(petsclib, 2)
-        PETSc.withlocalarray!(u; read = false, write = true) do ua
+        PETSc.with_local_array!(u; read = false, write = true) do ua
             ua[1] = 2.0
             ua[2] = -2.0 / 3.0 + 10.0 / (81.0 * mu) - 292.0 / (2187.0 * mu * mu)
         end
@@ -59,7 +59,7 @@ end
 
         # G(u, t), the explicit half of the IMEX split.
         PETSc.set_rhs_function!(ts) do F, _ts, _t, x, ctx
-            PETSc.withlocalarray!(
+            PETSc.with_local_array!(
                 (x, F);
                 read = (true, false),
                 write = (false, true),
@@ -72,7 +72,7 @@ end
 
         # F(u_t, u, t), the implicit half.
         PETSc.set_ifunction!(ts) do F, _ts, _t, x, xdot, ctx
-            PETSc.withlocalarray!(
+            PETSc.with_local_array!(
                 (x, xdot, F);
                 read = (true, true, false),
                 write = (false, false, true),
@@ -87,7 +87,7 @@ end
         end
 
         PETSc.set_ijacobian!(ts, jac) do A, _P, _ts, _t, x, _xdot, shift, ctx
-            x1, x2 = PETSc.withlocalarray!(x; read = true, write = false) do xa
+            x1, x2 = PETSc.with_local_array!(x; read = true, write = false) do xa
                 (xa[1], xa[2])
             end
             A[1, 1] = PetscScalar(shift)
@@ -132,8 +132,8 @@ end
         @test PETSc.snes_iterations(ts) >= steps
 
         PETSc.destroy!(ts)
-        PETSc.destroy(u)
-        PETSc.destroy(jac)
+        PETSc.destroy!(u)
+        PETSc.destroy!(jac)
     end
 
     @testset "damping sweep, closures and a recorded trajectory" begin
@@ -172,7 +172,7 @@ end
 
             # F(t, u, u_t) = u_t - A(k) u
             PETSc.set_ifunction!(ts) do F, _ts, _t, x, xdot
-                PETSc.withlocalarray!(
+                PETSc.with_local_array!(
                     (x, xdot, F);
                     read = (true, true, false),
                     write = (false, false, true),
@@ -226,8 +226,8 @@ end
             end
 
             PETSc.destroy!(ts)
-            PETSc.destroy(u)
-            PETSc.destroy(J)
+            PETSc.destroy!(u)
+            PETSc.destroy!(J)
         end
     end
 

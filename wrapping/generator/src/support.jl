@@ -17,9 +17,9 @@ function write_enums(io::IO, api::API, exclude::Set{String})
 end
 
 function write_senums(io::IO, api::API, r::Rules)
-    println(io, "# not quite sure yet how to deal with this")
+    println(io, "# PETSc string enums (XType) are C strings; `const` so that uses of them infer")
     for name in sort!(collect(keys(api.senums)))
-        println(io, "$name=$(get(r.senum_overrides, name, "Ptr{Cchar}"))")
+        println(io, "const $name = $(get(r.senum_overrides, name, "Ptr{Cchar}"))")
     end
 end
 

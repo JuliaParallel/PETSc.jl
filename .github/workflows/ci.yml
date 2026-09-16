@@ -33,7 +33,7 @@ jobs:
         os:
           - macOS-15-intel        # with intel processors 
           - ubuntu-latest
-          # - windows-latest  # Disabled: Windows PETSc_jll built without MPI, requires WSL for testing
+          - windows-latest
         arch:
           - x64 
         include:
@@ -42,7 +42,7 @@ jobs:
             version: 1
           - os: ubuntu-latest
             arch: x64
-            version: 'lts'
+            version: 'min'
             
     steps:
       - uses: actions/checkout@v7

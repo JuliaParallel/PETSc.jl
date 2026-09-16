@@ -1,5 +1,5 @@
 """
-	box::PetscGridHash = PetscGridHashCreate(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, point::Vector{PetscScalar}) 
+	box::PetscGridHash = PetscGridHashCreate(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, point::Vector{PetscScalar}) 
 Create a `PetscGridHash` for spatially locating points in a mesh.
 
 Collective
@@ -14,7 +14,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscGridHash`, `PetscGridHashEnlarge()`, `PetscGridHashDestroy()`
+See also: `DMPLEX`, `PetscGridHash`, `PetscGridHashEnlarge()`, `PetscGridHashDestroy()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashCreate"))
@@ -39,7 +39,7 @@ end
 end 
 
 """
-	PetscGridHashDestroy(petsclib::PetscLibType,box::Union{PetscGridHash, Ref{PetscGridHash}}) 
+	PetscGridHashDestroy(petsclib::PetscLibType, box::Union{PetscGridHash, Ref{PetscGridHash}}) 
 Destroy a `PetscGridHash` and free its resources.
 
 Collective
@@ -49,7 +49,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscGridHash`, `PetscGridHashCreate()`, `PetscGridHashEnlarge()`
+See also: `DMPLEX`, `PetscGridHash`, `PetscGridHashCreate()`, `PetscGridHashEnlarge()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashDestroy"))
@@ -73,7 +73,7 @@ end
 end 
 
 """
-	PetscGridHashEnlarge(petsclib::PetscLibType,box::PetscGridHash, point::Vector{PetscScalar}) 
+	PetscGridHashEnlarge(petsclib::PetscLibType, box::PetscGridHash, point::Vector{PetscScalar}) 
 Enlarge the bounding box of a `PetscGridHash` to include a new point.
 
 Not Collective
@@ -84,7 +84,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscGridHash`, `PetscGridHashCreate()`, `PetscGridHashDestroy()`
+See also: `DMPLEX`, `PetscGridHash`, `PetscGridHashCreate()`, `PetscGridHashDestroy()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashEnlarge"))
@@ -107,7 +107,7 @@ end
 end 
 
 """
-	PetscGridHashGetEnclosingBox(petsclib::PetscLibType,box::PetscGridHash, numPoints::PetscInt, points::Vector{PetscScalar}, dboxes::Vector{PetscInt}, boxes::Vector{PetscInt}) 
+	PetscGridHashGetEnclosingBox(petsclib::PetscLibType, box::PetscGridHash, numPoints::PetscInt, points::Vector{PetscScalar}, dboxes::Vector{PetscInt}, boxes::Vector{PetscInt}) 
 Find the grid boxes containing each input point
 
 Not Collective
@@ -123,7 +123,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscGridHashCreate()`
+See also: `DMPLEX`, `PetscGridHashCreate()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashGetEnclosingBox"))
@@ -146,7 +146,7 @@ end
 end 
 
 """
-	PetscGridHashSetGrid(petsclib::PetscLibType,box::PetscGridHash, n::Vector{PetscInt}, h::Vector{PetscReal}) 
+	PetscGridHashSetGrid(petsclib::PetscLibType, box::PetscGridHash, n::Vector{PetscInt}, h::Vector{PetscReal}) 
 Divide the grid into boxes
 
 Not Collective
@@ -158,7 +158,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscGridHashCreate()`
+See also: `DMPLEX`, `PetscGridHashCreate()`
 
 # External Links
 $(_doc_external("DMPlex/PetscGridHashSetGrid"))

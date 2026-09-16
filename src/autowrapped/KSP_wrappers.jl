@@ -1,5 +1,5 @@
 """
-	KSPAppendOptionsPrefix(petsclib::PetscLibType,ksp::AbstractKSP, prefix::String) 
+	KSPAppendOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP, prefix::String) 
 Appends to the prefix used for searching for all
 `KSP` options in the database.
 
@@ -11,7 +11,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSetOptionsPrefix()`, `KSPGetOptionsPrefix()`, `KSPSetFromOptions()`
+See also: `KSP`, `KSPSetOptionsPrefix()`, `KSPGetOptionsPrefix()`, `KSPSetFromOptions()`
 
 # External Links
 $(_doc_external("KSP/KSPAppendOptionsPrefix"))
@@ -34,7 +34,7 @@ end
 end 
 
 """
-	KSPBCGSLSetEll(petsclib::PetscLibType,ksp::AbstractKSP, ell::PetscInt) 
+	KSPBCGSLSetEll(petsclib::PetscLibType, ksp::AbstractKSP, ell::PetscInt) 
 Sets the number of search directions to use in the `KSPBCGSL` Krylov solver
 
 Logically Collective
@@ -48,7 +48,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPBCGSLSetUsePseudoinverse()`, `KSP`, `KSPBCGSL`, `KSPBCGSLSetPol()`, `KSPBCGSLSetXRes()`
+See also: `KSPBCGSLSetUsePseudoinverse()`, `KSP`, `KSPBCGSL`, `KSPBCGSLSetPol()`, `KSPBCGSLSetXRes()`
 
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetEll"))
@@ -71,7 +71,7 @@ end
 end 
 
 """
-	KSPBCGSLSetPol(petsclib::PetscLibType,ksp::AbstractKSP, uMROR::PetscBool) 
+	KSPBCGSLSetPol(petsclib::PetscLibType, ksp::AbstractKSP, uMROR::PetscBool) 
 Sets the type of polynomial part that will
 be used in the `KSPCBGSL` `KSPSolve()`
 
@@ -87,7 +87,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPBCGSL`, `KSPCreate()`, `KSPSetType()`, `KSPCBGSL`, `KSPBCGSLSetUsePseudoinverse()`, `KSPBCGSLSetEll()`, `KSPBCGSLSetXRes()`
+See also: `KSP`, `KSPBCGSL`, `KSPCreate()`, `KSPSetType()`, `KSPCBGSL`, `KSPBCGSLSetUsePseudoinverse()`, `KSPBCGSLSetEll()`, `KSPBCGSLSetXRes()`
 
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetPol"))
@@ -110,7 +110,7 @@ end
 end 
 
 """
-	KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType,ksp::AbstractKSP, use_pinv::PetscBool) 
+	KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType, ksp::AbstractKSP, use_pinv::PetscBool) 
 Use pseudoinverse (via SVD) to solve polynomial part of the update in `KSPCBGSL` solver
 
 Logically Collective
@@ -124,7 +124,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPBCGSLSetEll()`, `KSP`, `KSPCBGSL`, `KSPBCGSLSetPol()`, `KSPBCGSLSetXRes()`
+See also: `KSPBCGSLSetEll()`, `KSP`, `KSPCBGSL`, `KSPBCGSLSetPol()`, `KSPBCGSLSetXRes()`
 
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetUsePseudoinverse"))
@@ -147,7 +147,7 @@ end
 end 
 
 """
-	KSPBCGSLSetXRes(petsclib::PetscLibType,ksp::AbstractKSP, delta::PetscReal) 
+	KSPBCGSLSetXRes(petsclib::PetscLibType, ksp::AbstractKSP, delta::PetscReal) 
 Sets the parameter governing when
 exact residuals will be used instead of computed residuals for `KSPCBGSL`.
 
@@ -162,7 +162,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPBCGSLSetEll()`, `KSPBCGSLSetPol()`, `KSP`, `KSPCBGSL`, `KSPBCGSLSetUsePseudoinverse()`
+See also: `KSPBCGSLSetEll()`, `KSPBCGSLSetPol()`, `KSP`, `KSPCBGSL`, `KSPBCGSLSetUsePseudoinverse()`
 
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetXRes"))
@@ -185,7 +185,7 @@ end
 end 
 
 """
-	KSPBuildResidual(petsclib::PetscLibType,ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildResidual(petsclib::PetscLibType, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Builds the residual in a vector provided.
 
 Collective
@@ -200,7 +200,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPBuildSolution()`
+See also: `KSP`, `KSPBuildSolution()`
 
 # External Links
 $(_doc_external("KSP/KSPBuildResidual"))
@@ -225,7 +225,7 @@ end
 end 
 
 """
-	KSPBuildResidualDefault(petsclib::PetscLibType,ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildResidualDefault(petsclib::PetscLibType, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Default code to compute the residual.
 
 Collecive on ksp
@@ -240,7 +240,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPBuildSolutionDefault()`
+See also: `KSP`, `KSPBuildSolutionDefault()`
 
 # External Links
 $(_doc_external("KSP/KSPBuildResidualDefault"))
@@ -265,7 +265,7 @@ end
 end 
 
 """
-	KSPBuildSolution(petsclib::PetscLibType,ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildSolution(petsclib::PetscLibType, ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Builds the approximate solution in a vector provided.
 
 Collective
@@ -280,7 +280,7 @@ Provide exactly one of
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGetSolution()`, `KSPBuildResidual()`, `KSP`
+See also: `KSPGetSolution()`, `KSPBuildResidual()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPBuildSolution"))
@@ -305,7 +305,7 @@ end
 end 
 
 """
-	KSPBuildSolutionDefault(petsclib::PetscLibType,ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Default code to build/move the solution.
 
 Collective
@@ -319,7 +319,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPGetSolution()`, `KSPBuildResidualDefault()`
+See also: `KSP`, `KSPGetSolution()`, `KSPBuildResidualDefault()`
 
 # External Links
 $(_doc_external("KSP/KSPBuildSolutionDefault"))
@@ -344,7 +344,7 @@ end
 end 
 
 """
-	norm_d::PetscReal = KSPCGGetNormD(petsclib::PetscLibType,ksp::AbstractKSP) 
+	norm_d::PetscReal = KSPCGGetNormD(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get norm of the direction when the solver is used inside `SNESNEWTONTR`
 
 Not collective
@@ -355,7 +355,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `SNESNEWTONTR`
+See also: `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `SNESNEWTONTR`
 
 # External Links
 $(_doc_external("KSP/KSPCGGetNormD"))
@@ -380,7 +380,7 @@ end
 end 
 
 """
-	o_fcn::PetscReal = KSPCGGetObjFcn(petsclib::PetscLibType,ksp::AbstractKSP) 
+	o_fcn::PetscReal = KSPCGGetObjFcn(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get the conjugate gradient objective function value
 
 Not collective
@@ -391,7 +391,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `KSPMonitorSet`
+See also: `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `KSPMonitorSet`
 
 # External Links
 $(_doc_external("KSP/KSPCGGetObjFcn"))
@@ -416,7 +416,7 @@ end
 end 
 
 """
-	KSPCGSetObjectiveTarget(petsclib::PetscLibType,ksp::AbstractKSP, obj::PetscReal) 
+	KSPCGSetObjectiveTarget(petsclib::PetscLibType, ksp::AbstractKSP, obj::PetscReal) 
 Sets the target value for the CG quadratic model
 
 Logically Collective
@@ -427,7 +427,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `SNESNEWTONTR`
+See also: `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `SNESNEWTONTR`
 
 # External Links
 $(_doc_external("KSP/KSPCGSetObjectiveTarget"))
@@ -450,7 +450,7 @@ end
 end 
 
 """
-	KSPCGSetRadius(petsclib::PetscLibType,ksp::AbstractKSP, radius::PetscReal) 
+	KSPCGSetRadius(petsclib::PetscLibType, ksp::AbstractKSP, radius::PetscReal) 
 Sets the radius of the trust region used by the `KSPCG` when the solver is used inside `SNESNEWTONTR`
 
 Logically Collective
@@ -461,7 +461,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `SNESNEWTONTR`
+See also: `KSP`, `KSPCG`, `KSPNASH`, `KSPSTCG`, `KSPGLTR`, `SNESNEWTONTR`
 
 # External Links
 $(_doc_external("KSP/KSPCGSetRadius"))
@@ -484,7 +484,7 @@ end
 end 
 
 """
-	KSPCGSetType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPCGType) 
+	KSPCGSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPCGType) 
 Sets the variant of the conjugate gradient method to
 use for solving a linear system with a complex coefficient matrix.
 This option is irrelevant when solving a real system.
@@ -494,7 +494,18 @@ Logically Collective
 Input Parameters:
 - `ksp`  - the iterative context
 - `type` - the variant of CG to use, one of
--seealso: [](ch_ksp), `KSP`, `KSPCG`
+``
+KSP_CG_HERMITIAN - complex, Hermitian matrix (default)
+KSP_CG_SYMMETRIC - complex, symmetric matrix
+``
+
+Options Database Keys:
+- `-ksp_cg_type hermitian` - Indicates Hermitian matrix
+- `-ksp_cg_type symmetric` - Indicates symmetric matrix
+
+Level: intermediate
+
+See also: `KSP`, `KSPCG`
 
 # External Links
 $(_doc_external("KSP/KSPCGSetType"))
@@ -517,7 +528,7 @@ end
 end 
 
 """
-	KSPCGUseSingleReduction(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPCGUseSingleReduction(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Merge the two inner products needed in `KSPCG` into a single `MPI_Allreduce()` call.
 
 Logically Collective
@@ -531,7 +542,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), [](sec_pipelineksp), `KSP`, `KSPCG`, `KSPGMRES`, `KSPPIPECG`, `KSPPIPECR`, `KSPGROPPCG`
+See also: [](sec_pipelineksp), `KSP`, `KSPCG`, `KSPGMRES`, `KSPPIPECG`, `KSPPIPECR`, `KSPGROPPCG`
 
 # External Links
 $(_doc_external("KSP/KSPCGUseSingleReduction"))
@@ -554,7 +565,7 @@ end
 end 
 
 """
-	kspest::KSP = KSPChebyshevEstEigGetKSP(petsclib::PetscLibType,ksp::AbstractKSP) 
+	kspest::KSP = KSPChebyshevEstEigGetKSP(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get the Krylov method context used to estimate the eigenvalues for the Chebyshev method.
 
 Input Parameter:
@@ -565,7 +576,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`
+See also: `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`
 
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigGetKSP"))
@@ -590,7 +601,7 @@ end
 end 
 
 """
-	KSPChebyshevEstEigSet(petsclib::PetscLibType,ksp::AbstractKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) 
+	KSPChebyshevEstEigSet(petsclib::PetscLibType, ksp::AbstractKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) 
 Automatically estimate the eigenvalues to use for Chebyshev
 
 Logically Collective
@@ -605,7 +616,7 @@ Input Parameters:
 Options Database Key:
 - `-ksp_chebyshev_esteig a,b,c,d` - estimate eigenvalues using a Krylov method, then use this transform for Chebyshev eigenvalue bounds
 
--seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevEstEigSetUseNoisy()`, `KSPChebyshevEstEigGetKSP()`
+See also: `KSPCHEBYSHEV`, `KSPChebyshevEstEigSetUseNoisy()`, `KSPChebyshevEstEigGetKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigSet"))
@@ -628,8 +639,8 @@ end
 end 
 
 """
-	KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType,ksp::AbstractKSP, use::PetscBool) 
-use a noisy random number generated right
+	KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType, ksp::AbstractKSP, use::PetscBool) 
+use a noisy random number generated right-hand side to estimate the extreme eigenvalues instead of the given right-hand side
 
 Logically Collective
 
@@ -642,7 +653,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`, `KSPChebyshevEstEigGetKSP()`
+See also: `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`, `KSPChebyshevEstEigGetKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigSetUseNoisy"))
@@ -665,7 +676,7 @@ end
 end 
 
 """
-	kind::KSPChebyshevKind = KSPChebyshevGetKind(petsclib::PetscLibType,ksp::AbstractKSP) 
+	kind::KSPChebyshevKind = KSPChebyshevGetKind(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the kind of Chebyshev polynomial to use
 
 Logically Collective
@@ -676,7 +687,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevKind`, `KSPChebyshevSetKind()`, `KSP_CHEBYSHEV_FIRST`, `KSP_CHEBYSHEV_FOURTH`, `KSP_CHEBYSHEV_OPT_FOURTH`
+See also: `KSPCHEBYSHEV`, `KSPChebyshevKind`, `KSPChebyshevSetKind()`, `KSP_CHEBYSHEV_FIRST`, `KSP_CHEBYSHEV_FOURTH`, `KSP_CHEBYSHEV_OPT_FOURTH`
 
 # External Links
 $(_doc_external("KSP/KSPChebyshevGetKind"))
@@ -701,7 +712,7 @@ end
 end 
 
 """
-	KSPChebyshevSetEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP, emax::PetscReal, emin::PetscReal) 
+	KSPChebyshevSetEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, emax::PetscReal, emin::PetscReal) 
 Sets estimates for the extreme eigenvalues of the preconditioned problem.
 
 Logically Collective
@@ -716,7 +727,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`
+See also: `KSPCHEBYSHEV`, `KSPChebyshevEstEigSet()`
 
 # External Links
 $(_doc_external("KSP/KSPChebyshevSetEigenvalues"))
@@ -739,7 +750,7 @@ end
 end 
 
 """
-	KSPChebyshevSetKind(petsclib::PetscLibType,ksp::AbstractKSP, kind::KSPChebyshevKind) 
+	KSPChebyshevSetKind(petsclib::PetscLibType, ksp::AbstractKSP, kind::KSPChebyshevKind) 
 set the kind of Chebyshev polynomial to use
 
 Logically Collective
@@ -753,7 +764,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCHEBYSHEV`, `KSPChebyshevKind`, `KSPChebyshevGetKind()`, `KSP_CHEBYSHEV_FIRST`, `KSP_CHEBYSHEV_FOURTH`, `KSP_CHEBYSHEV_OPT_FOURTH`
+See also: `KSPCHEBYSHEV`, `KSPChebyshevKind`, `KSPChebyshevGetKind()`, `KSP_CHEBYSHEV_FIRST`, `KSP_CHEBYSHEV_FOURTH`, `KSP_CHEBYSHEV_OPT_FOURTH`
 
 # External Links
 $(_doc_external("KSP/KSPChebyshevSetKind"))
@@ -776,7 +787,7 @@ end
 end 
 
 """
-	KSPCheckSolve(petsclib::PetscLibType,ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec) 
+	KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec) 
 Checks if the `PCSetUp()` or `KSPSolve()` failed and set the error flag for the outer `PC`. A `KSP_DIVERGED_ITS` is
 not considered a failure in this context
 
@@ -789,7 +800,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPCreate()`, `KSPSetType()`, `KSPCheckNorm()`, `KSPCheckDot()`
+See also: `KSP`, `KSPCreate()`, `KSPSetType()`, `KSPCheckNorm()`, `KSPCheckDot()`
 
 # External Links
 $(_doc_external("KSP/KSPCheckSolve"))
@@ -812,7 +823,7 @@ end
 end 
 
 """
-	cr::PetscReal,rRsq::PetscReal,ce::PetscReal,eRsq::PetscReal = KSPComputeConvergenceRate(petsclib::PetscLibType,ksp::AbstractKSP) 
+	cr::PetscReal,rRsq::PetscReal,ce::PetscReal,eRsq::PetscReal = KSPComputeConvergenceRate(petsclib::PetscLibType, ksp::AbstractKSP) 
 Compute the convergence rate for the iteration <https:/en.wikipedia.org/wiki/Coefficient_of_determination>
 
 Not Collective
@@ -828,7 +839,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedRateView()`
+See also: `KSP`, `KSPConvergedRateView()`
 
 # External Links
 $(_doc_external("KSP/KSPComputeConvergenceRate"))
@@ -859,7 +870,7 @@ end
 end 
 
 """
-	neig::PetscInt = KSPComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
+	neig::PetscInt = KSPComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
 Computes the extreme eigenvalues for the
 preconditioned operator. Called after or during `KSPSolve()`.
 
@@ -879,7 +890,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetComputeEigenvalues()`, `KSPSetComputeSingularValues()`, `KSPMonitorSingularValue()`, `KSPComputeExtremeSingularValues()`, `KSP`, `KSPComputeRitz()`
+See also: `KSPSetComputeEigenvalues()`, `KSPSetComputeSingularValues()`, `KSPMonitorSingularValue()`, `KSPComputeExtremeSingularValues()`, `KSP`, `KSPComputeRitz()`
 
 # External Links
 $(_doc_external("KSP/KSPComputeEigenvalues"))
@@ -904,7 +915,7 @@ end
 end 
 
 """
-	KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType,ksp::AbstractKSP, nmax::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
+	KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType, ksp::AbstractKSP, nmax::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
 Computes all of the eigenvalues of the
 preconditioned operator using LAPACK.
 
@@ -920,7 +931,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPComputeEigenvalues()`, `KSPMonitorSingularValue()`, `KSPComputeExtremeSingularValues()`, `KSPSetOperators()`, `KSPSolve()`
+See also: `KSP`, `KSPComputeEigenvalues()`, `KSPMonitorSingularValue()`, `KSPComputeExtremeSingularValues()`, `KSPSetOperators()`, `KSPSolve()`
 
 # External Links
 $(_doc_external("KSP/KSPComputeEigenvaluesExplicitly"))
@@ -943,7 +954,7 @@ end
 end 
 
 """
-	emax::PetscReal,emin::PetscReal = KSPComputeExtremeSingularValues(petsclib::PetscLibType,ksp::AbstractKSP) 
+	emax::PetscReal,emin::PetscReal = KSPComputeExtremeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP) 
 Computes the extreme singular values
 for the preconditioned operator. Called after or during `KSPSolve()`.
 
@@ -961,7 +972,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetComputeSingularValues()`, `KSPMonitorSingularValue()`, `KSPComputeEigenvalues()`, `KSP`, `KSPComputeRitz()`
+See also: `KSPSetComputeSingularValues()`, `KSPMonitorSingularValue()`, `KSPComputeEigenvalues()`, `KSP`, `KSPComputeRitz()`
 
 # External Links
 $(_doc_external("KSP/KSPComputeExtremeSingularValues"))
@@ -988,7 +999,7 @@ end
 end 
 
 """
-	mat::PetscMat = KSPComputeOperator(petsclib::PetscLibType,ksp::AbstractKSP, mattype::MatType) 
+	mat::PetscMat = KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractKSP, mattype::MatType) 
 Computes the explicit preconditioned operator, including diagonal scaling and null
 space removal if applicable.
 
@@ -1003,7 +1014,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPSetOperators()`, `KSPComputeEigenvaluesExplicitly()`, `PCComputeOperator()`, `KSPSetDiagonalScale()`, `KSPSetNullSpace()`, `MatType`
+See also: `KSP`, `KSPSetOperators()`, `KSPComputeEigenvaluesExplicitly()`, `PCComputeOperator()`, `KSPSetDiagonalScale()`, `KSPSetNullSpace()`, `MatType`
 
 # External Links
 $(_doc_external("KSP/KSPComputeOperator"))
@@ -1028,7 +1039,7 @@ end
 end 
 
 """
-	nrit::PetscInt = KSPComputeRitz(petsclib::PetscLibType,ksp::AbstractKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::Vector{PetscReal}, tetai::Vector{PetscReal}) 
+	nrit::PetscInt = KSPComputeRitz(petsclib::PetscLibType, ksp::AbstractKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::Vector{PetscReal}, tetai::Vector{PetscReal}) 
 Computes the Ritz or harmonic Ritz pairs associated with the
 smallest or largest in modulus, for the preconditioned operator.
 
@@ -1047,7 +1058,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetComputeRitz()`, `KSP`, `KSPGMRES`, `KSPComputeEigenvalues()`, `KSPSetComputeSingularValues()`, `KSPMonitorSingularValue()`
+See also: `KSPSetComputeRitz()`, `KSP`, `KSPGMRES`, `KSPComputeEigenvalues()`, `KSPSetComputeSingularValues()`, `KSPMonitorSingularValue()`
 
 # External Links
 $(_doc_external("KSP/KSPComputeRitz"))
@@ -1072,7 +1083,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPConvergedDefault(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	reason::KSPConvergedReason = KSPConvergedDefault(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
 Default code to determine convergence of the linear iterative solvers
 
 Collective
@@ -1099,7 +1110,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`,
+See also: `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`,
 `KSPSetMinimumIterations()`, `KSPConvergenceTestFn`,
 `KSPConvergedDefaultSetUIRNorm()`, `KSPConvergedDefaultSetUMIRNorm()`, `KSPConvergedDefaultSetConvergedMaxits()`, `KSPConvergedDefaultCreate()`, `KSPConvergedDefaultDestroy()`
 
@@ -1136,7 +1147,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedDefault()`, `KSPConvergedDefaultDestroy()`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`,
+See also: `KSP`, `KSPConvergedDefault()`, `KSPConvergedDefaultDestroy()`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`,
 `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUIRNorm()`, `KSPConvergedDefaultSetUMIRNorm()`,
 `KSPConvergedDefaultSetConvergedMaxits()`
 
@@ -1163,7 +1174,7 @@ end
 end 
 
 """
-	KSPConvergedDefaultDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
+	KSPConvergedDefaultDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid}) 
 Frees the space used by the `KSPConvergedDefault()` function context
 
 Not Collective
@@ -1173,7 +1184,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedDefault()`, `KSPConvergedDefaultCreate()`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`,
+See also: `KSP`, `KSPConvergedDefault()`, `KSPConvergedDefaultCreate()`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`,
 `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUIRNorm()`, `KSPConvergedDefaultSetUMIRNorm()`
 
 # External Links
@@ -1197,7 +1208,7 @@ end
 end 
 
 """
-	KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 allows the default convergence test to declare convergence and return `KSP_CONVERGED_ITS` if the maximum number of iterations is reached
 
 Collective
@@ -1211,7 +1222,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUMIRNorm()`, `KSPConvergedDefaultSetUIRNorm()`
+See also: `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUMIRNorm()`, `KSPConvergedDefaultSetUIRNorm()`
 
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetConvergedMaxits"))
@@ -1234,8 +1245,8 @@ end
 end 
 
 """
-	KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
-makes the default convergence test use  || B*(b
+	KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType, ksp::AbstractKSP) 
+makes the default convergence test use  || B*(b - A*(initial guess))||
 instead of  || B*b ||. In the case of right preconditioner or if `KSPSetNormType`(ksp,`KSP_NORM_UNPRECONDITIONED`)
 is used there is no B in the above formula.
 
@@ -1249,7 +1260,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUMIRNorm()`, `KSPConvergedDefaultSetConvergedMaxits()`
+See also: `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUMIRNorm()`, `KSPConvergedDefaultSetConvergedMaxits()`
 
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetUIRNorm"))
@@ -1272,8 +1283,8 @@ end
 end 
 
 """
-	KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
-makes the default convergence test use \\min(|| B*(b
+	KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType, ksp::AbstractKSP) 
+makes the default convergence test use \\min(|| B*(b - A*(initial guess))||,|| B*b ||)
 In the case of right preconditioner or if `KSPSetNormType`(ksp,`KSP_NORM_UNPRECONDITIONED`)
 is used there is no B in the above formula.
 
@@ -1287,7 +1298,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUIRNorm()`, `KSPConvergedDefaultSetConvergedMaxits()`
+See also: `KSP`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`, `KSPConvergedDefaultSetUIRNorm()`, `KSPConvergedDefaultSetConvergedMaxits()`
 
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetUMIRNorm"))
@@ -1310,7 +1321,7 @@ end
 end 
 
 """
-	KSPConvergedRateView(petsclib::PetscLibType,ksp::AbstractKSP, viewer::PetscViewer) 
+	KSPConvergedRateView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::PetscViewer) 
 Displays the convergence rate <https://en.wikipedia.org/wiki/Coefficient_of_determination> of `KSPSolve()` to a viewer
 
 Collective
@@ -1324,7 +1335,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPConvergedReasonView()`, `KSPGetConvergedRate()`, `KSPSetTolerances()`, `KSPConvergedDefault()`
+See also: `KSPConvergedReasonView()`, `KSPGetConvergedRate()`, `KSPSetTolerances()`, `KSPConvergedDefault()`
 
 # External Links
 $(_doc_external("KSP/KSPConvergedRateView"))
@@ -1347,7 +1358,7 @@ end
 end 
 
 """
-	KSPConvergedReasonView(petsclib::PetscLibType,ksp::AbstractKSP, viewer::PetscViewer) 
+	KSPConvergedReasonView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::PetscViewer) 
 Displays the reason a `KSP` solve converged or diverged, `KSPConvergedReason` to a `PetscViewer`
 
 Collective
@@ -1362,7 +1373,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPConvergedReasonViewFromOptions()`, `KSPCreate()`, `KSPSetUp()`, `KSPDestroy()`, `KSPSetTolerances()`, `KSPConvergedDefault()`,
+See also: `KSPConvergedReasonViewFromOptions()`, `KSPCreate()`, `KSPSetUp()`, `KSPDestroy()`, `KSPSetTolerances()`, `KSPConvergedDefault()`,
 `KSPSolveTranspose()`, `KSPGetIterationNumber()`, `KSP`, `KSPGetConvergedReason()`, `PetscViewerPushFormat()`, `PetscViewerPopFormat()`
 
 # External Links
@@ -1386,7 +1397,7 @@ end
 end 
 
 """
-	KSPConvergedReasonViewCancel(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPConvergedReasonViewCancel(petsclib::PetscLibType, ksp::AbstractKSP) 
 Clears all the `KSPConvergedReason` view functions for a `KSP` object set with `KSPConvergedReasonViewSet()`
 as well as the default viewer.
 
@@ -1397,7 +1408,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPDestroy()`, `KSPReset()`, `KSPConvergedReasonViewSet()`
+See also: `KSPCreate()`, `KSPDestroy()`, `KSPReset()`, `KSPConvergedReasonViewSet()`
 
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewCancel"))
@@ -1420,7 +1431,7 @@ end
 end 
 
 """
-	KSPConvergedReasonViewFromOptions(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPConvergedReasonViewFromOptions(petsclib::PetscLibType, ksp::AbstractKSP) 
 Processes command line options to determine if/how a `KSPConvergedReason` is to be viewed.
 
 Collective
@@ -1430,7 +1441,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPConvergedReasonView()`, `KSPConvergedReasonViewSet()`
+See also: `KSPConvergedReasonView()`, `KSPConvergedReasonViewSet()`
 
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewFromOptions"))
@@ -1453,7 +1464,7 @@ end
 end 
 
 """
-	KSPConvergedReasonViewSet(petsclib::PetscLibType,ksp::AbstractKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid}) 
+	KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::AbstractKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function that is to be used at the
 end of the linear solver to display the convergence reason of the linear solver.
 
@@ -1472,7 +1483,7 @@ calls to `KSPConvergedReasonViewSet()`, but does not cancel those set via the op
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPConvergedReasonView()`, `KSPConvergedReasonViewFn`, `KSPConvergedReasonViewCancel()`, `PetscCtxDestroyFn`
+See also: `KSPConvergedReasonView()`, `KSPConvergedReasonViewFn`, `KSPConvergedReasonViewCancel()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewSet"))
@@ -1495,7 +1506,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPConvergedSkip(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, dtx::Ptr{Cvoid}) 
+	reason::KSPConvergedReason = KSPConvergedSkip(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, dtx::Ptr{Cvoid}) 
 Convergence test that do not return as converged
 until the maximum number of iterations is reached.
 
@@ -1515,7 +1526,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPCG`, `KSPBCGS`, `KSPConvergenceTestFn`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPSetNormType()`, [](sec_flexibleksp),
+See also: `KSP`, `KSPCG`, `KSPBCGS`, `KSPConvergenceTestFn`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPSetNormType()`, [](sec_flexibleksp),
 `KSPConvergedReason`
 
 # External Links
@@ -1541,7 +1552,7 @@ end
 end 
 
 """
-	inksp::KSP = KSPCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	inksp::KSP = KSPCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates the `KSP` context. This `KSP` context is used in PETSc to solve linear systems with `KSPSolve()`
 
 Collective
@@ -1554,7 +1565,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPType`, `KSPSetType()`
+See also: `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPType`, `KSPSetType()`
 
 # External Links
 $(_doc_external("KSP/KSPCreate"))
@@ -1580,7 +1591,7 @@ end
 
 # override for KSPCreateVecs; C signature: KSPCreateVecs(KSP ksp, PetscInt rightn, Vec* right[], PetscInt leftn, Vec* left[])
 """
-	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType,ksp::AbstractKSP, rightn::PetscInt, leftn::PetscInt) 
+	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractKSP, rightn::PetscInt, leftn::PetscInt) 
 Gets a number of work vectors suitably sized for the operator in the `KSP`
 
 Collective
@@ -1596,7 +1607,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `MatCreateVecs()`, `VecDestroyVecs()`, `KSPSetWorkVecs()`
+See also: `MatCreateVecs()`, `VecDestroyVecs()`, `KSPSetWorkVecs()`
 
 # External Links
 $(_doc_external("KSP/KSPCreateVecs"))
@@ -1635,7 +1646,7 @@ function KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractKSP, rightn::PetscIn
 end
 
 """
-	KSPDestroy(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPDestroy(petsclib::PetscLibType, ksp::AbstractKSP) 
 Destroys a `KSP` context.
 
 Collective
@@ -1645,7 +1656,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSetUp()`, `KSPSolve()`, `KSP`
+See also: `KSPCreate()`, `KSPSetUp()`, `KSPSolve()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPDestroy"))
@@ -1670,7 +1681,7 @@ end
 end 
 
 """
-	KSPDestroyDefault(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPDestroyDefault(petsclib::PetscLibType, ksp::AbstractKSP) 
 Destroys an iterative context variable for methods with no separate context.  Preferred calling sequence `KSPDestroy()`.
 
 Collective
@@ -1680,7 +1691,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPDestroy()`
+See also: `KSP`, `KSPDestroy()`
 
 # External Links
 $(_doc_external("KSP/KSPDestroyDefault"))
@@ -1703,7 +1714,7 @@ end
 end 
 
 """
-	mmax::PetscInt = KSPFCGGetMmax(petsclib::PetscLibType,ksp::AbstractKSP) 
+	mmax::PetscInt = KSPFCGGetMmax(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the maximum number of previous directions `KSPFCG` will store
 
 Not Collective
@@ -1716,7 +1727,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGSetMmax()`
+See also: `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGSetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPFCGGetMmax"))
@@ -1741,7 +1752,7 @@ end
 end 
 
 """
-	nprealloc::PetscInt = KSPFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP) 
+	nprealloc::PetscInt = KSPFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the number of directions preallocate by `KSPFCG`
 
 Not Collective
@@ -1754,7 +1765,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`
+See also: `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPFCGGetNprealloc"))
@@ -1779,7 +1790,7 @@ end
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	truncstrat::KSPFCDTruncationType = KSPFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the truncation strategy employed by `KSPFCG`
 
 Not Collective
@@ -1792,7 +1803,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPFCG`, `KSPFCGSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+See also: `KSPFCG`, `KSPFCGSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPFCGGetTruncationType"))
@@ -1817,7 +1828,7 @@ end
 end 
 
 """
-	KSPFCGSetMmax(petsclib::PetscLibType,ksp::AbstractKSP, mmax::PetscInt) 
+	KSPFCGSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPFCG` will store for orthogonalization
 
 Logically Collective
@@ -1831,7 +1842,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCDTruncationType`, `KSPFCGSetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGGetMmax()`
+See also: `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCDTruncationType`, `KSPFCGSetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGGetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPFCGSetMmax"))
@@ -1854,7 +1865,7 @@ end
 end 
 
 """
-	KSPFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP, nprealloc::PetscInt) 
+	KSPFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPFCG`
 
 Logically Collective
@@ -1868,7 +1879,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`
+See also: `KSPFCG`, `KSPFCGGetTruncationType()`, `KSPFCGGetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPFCGSetNprealloc"))
@@ -1891,7 +1902,7 @@ end
 end 
 
 """
-	KSPFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
+	KSPFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPFCG` uses during orthogonalization
 
 Logically Collective
@@ -1899,7 +1910,17 @@ Logically Collective
 Input Parameters:
 - `ksp`        - the Krylov space context
 - `truncstrat` - the choice of strategy
--seealso: [](ch_ksp), `KSPFCG`, `KSPFCDTruncationType`, `KSPFCGGetTruncationType()`, `KSPFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`,
+``
+KSP_FCD_TRUNC_TYPE_STANDARD uses all (up to `mmax`) stored directions
+KSP_FCD_TRUNC_TYPE_NOTAY uses the last `max(1,mod(i,mmax))` stored directions at iteration i = 0, 1, ...
+``
+
+Options Database Key:
+- `-ksp_fcg_truncation_type (standard|notay)` - specify how many of its stored previous directions `KSPFCG` uses during orthogonalization
+
+Level: intermediate
+
+See also: `KSPFCG`, `KSPFCDTruncationType`, `KSPFCGGetTruncationType()`, `KSPFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`,
 `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
@@ -1923,7 +1944,7 @@ end
 end 
 
 """
-	pc::PC = KSPFETIDPGetInnerBDDC(petsclib::PetscLibType,ksp::AbstractKSP) 
+	pc::PC = KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the `PCBDDC` preconditioner used to set up the `KSPFETIDP` matrix for the Lagrange multipliers
 
 Input Parameter:
@@ -1934,7 +1955,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `MATIS`, `PCBDDC`, `KSPFETIDP`, `KSPFETIDPSetInnerBDDC()`, `KSPFETIDPGetInnerKSP()`
+See also: `MATIS`, `PCBDDC`, `KSPFETIDP`, `KSPFETIDPSetInnerBDDC()`, `KSPFETIDPGetInnerKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPFETIDPGetInnerBDDC"))
@@ -1959,7 +1980,7 @@ end
 end 
 
 """
-	innerksp::KSP = KSPFETIDPGetInnerKSP(petsclib::PetscLibType,ksp::AbstractKSP) 
+	innerksp::KSP = KSPFETIDPGetInnerKSP(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the `KSP` object for the Lagrange multipliers from inside a `KSPFETIDP`
 
 Input Parameter:
@@ -1970,7 +1991,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPFETIDP`, `MATIS`, `PCBDDC`, `KSPFETIDPSetInnerBDDC()`, `KSPFETIDPGetInnerBDDC()`
+See also: `KSPFETIDP`, `MATIS`, `PCBDDC`, `KSPFETIDPSetInnerBDDC()`, `KSPFETIDPGetInnerBDDC()`
 
 # External Links
 $(_doc_external("KSP/KSPFETIDPGetInnerKSP"))
@@ -1995,7 +2016,7 @@ end
 end 
 
 """
-	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType,ksp::AbstractKSP, pc::PC) 
+	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC) 
 Provides the `PCBDDC` preconditioner used to set up the `KSPFETIDP` matrix for the Lagrange multipliers
 
 Collective
@@ -2006,7 +2027,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `MATIS`, `PCBDDC`, `KSPFETIDPGetInnerBDDC()`, `KSPFETIDPGetInnerKSP()`
+See also: `MATIS`, `PCBDDC`, `KSPFETIDPGetInnerBDDC()`, `KSPFETIDPGetInnerKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPFETIDPSetInnerBDDC"))
@@ -2029,7 +2050,7 @@ end
 end 
 
 """
-	KSPFETIDPSetPressureOperator(petsclib::PetscLibType,ksp::AbstractKSP, P::AbstractPetscMat) 
+	KSPFETIDPSetPressureOperator(petsclib::PetscLibType, ksp::AbstractKSP, P::AbstractPetscMat) 
 Sets the operator used to set up the pressure preconditioner for the saddle point `KSPFETIDP` solver,
 
 Collective
@@ -2040,7 +2061,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPFETIDP`, `MATIS`, `PCBDDC`, `KSPFETIDPGetInnerBDDC()`, `KSPFETIDPGetInnerKSP()`, `KSPSetOperators()`
+See also: `KSPFETIDP`, `MATIS`, `PCBDDC`, `KSPFETIDPGetInnerBDDC()`, `KSPFETIDPGetInnerKSP()`, `KSPSetOperators()`
 
 # External Links
 $(_doc_external("KSP/KSPFETIDPSetPressureOperator"))
@@ -2069,7 +2090,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ksp), `PetscFinalize()`, `KSPInitializePackage()`
+See also: `PetscFinalize()`, `KSPInitializePackage()`
 
 # External Links
 $(_doc_external("KSP/KSPFinalizePackage"))
@@ -2091,7 +2112,7 @@ end
 end 
 
 """
-	KSPFlexibleModifyPCKSP(petsclib::PetscLibType,ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
+	KSPFlexibleModifyPCKSP(petsclib::PetscLibType, ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
 modifies the attributes of the `PCKSP` preconditioner, see [](sec_flexibleksp).
 
 Input Parameters:
@@ -2103,7 +2124,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`
+See also: [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`
 
 # External Links
 $(_doc_external("KSP/KSPFlexibleModifyPCKSP"))
@@ -2126,8 +2147,8 @@ end
 end 
 
 """
-	KSPFlexibleModifyPCNoChange(petsclib::PetscLibType,ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
-this is the default used by the flexible Krylov methods
+	KSPFlexibleModifyPCNoChange(petsclib::PetscLibType, ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
+this is the default used by the flexible Krylov methods - it doesn't change the preconditioner. [](sec_flexibleksp)
 
 Input Parameters:
 - `ksp`       - the ksp context being used.
@@ -2138,7 +2159,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`, `KSPFlexibleModifyPCKSP()`
+See also: [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleSetModifyPC()`, `KSPFlexibleModifyPCKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPFlexibleModifyPCNoChange"))
@@ -2161,7 +2182,7 @@ end
 end 
 
 """
-	KSPFlexibleSetModifyPC(petsclib::PetscLibType,ksp::AbstractKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+	KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::AbstractKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Sets the routine used by flexible `KSP` methods to modify the preconditioner. [](sec_flexibleksp)
 
 Logically Collective
@@ -2174,7 +2195,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleModifyPCNoChange()`, `KSPFlexibleModifyPCKSP()`
+See also: [](sec_flexibleksp), `KSPFGMRES`, `KSPFCG`, `KSPPIPEFCG`, `KSPGCR`, `KSPPIPEGCR`, `KSPFlexibleModifyPCFn`, `KSPFlexibleModifyPCNoChange()`, `KSPFlexibleModifyPCKSP()`
 
 # External Links
 $(_doc_external("KSP/KSPFlexibleSetModifyPC"))
@@ -2197,7 +2218,7 @@ end
 end 
 
 """
-	restart::PetscInt = KSPGCRGetRestart(petsclib::PetscLibType,ksp::AbstractKSP) 
+	restart::PetscInt = KSPGCRGetRestart(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets number of iterations at which `KSPGCR` restarts.
 
 Not Collective
@@ -2210,7 +2231,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGCR`, `KSPSetTolerances()`, `KSPGCRSetRestart()`, `KSPGMRESGetRestart()`
+See also: `KSPGCR`, `KSPSetTolerances()`, `KSPGCRSetRestart()`, `KSPGMRESGetRestart()`
 
 # External Links
 $(_doc_external("KSP/KSPGCRGetRestart"))
@@ -2235,7 +2256,7 @@ end
 end 
 
 """
-	KSPGCRSetRestart(petsclib::PetscLibType,ksp::AbstractKSP, restart::PetscInt) 
+	KSPGCRSetRestart(petsclib::PetscLibType, ksp::AbstractKSP, restart::PetscInt) 
 Sets number of iterations at which `KSPGCR` restarts.
 
 Not Collective
@@ -2249,7 +2270,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGCR`, `KSPSetTolerances()`, `KSPGCRGetRestart()`, `KSPGMRESSetRestart()`
+See also: `KSPGCR`, `KSPSetTolerances()`, `KSPGCRGetRestart()`, `KSPGMRESSetRestart()`
 
 # External Links
 $(_doc_external("KSP/KSPGCRSetRestart"))
@@ -2272,8 +2293,8 @@ end
 end 
 
 """
-	lambda::PetscReal = KSPGLTRGetLambda(petsclib::PetscLibType,ksp::AbstractKSP) 
-Get the multiplier on the trust
+	lambda::PetscReal = KSPGLTRGetLambda(petsclib::PetscLibType, ksp::AbstractKSP) 
+Get the multiplier on the trust-region constraint when using `KSPGLTR`
 
 Not Collective
 
@@ -2285,7 +2306,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPGLTR`, `KSPGLTRGetMinEig()`
+See also: `KSP`, `KSPGLTR`, `KSPGLTRGetMinEig()`
 
 # External Links
 $(_doc_external("KSP/KSPGLTRGetLambda"))
@@ -2310,7 +2331,7 @@ end
 end 
 
 """
-	e_min::PetscReal = KSPGLTRGetMinEig(petsclib::PetscLibType,ksp::AbstractKSP) 
+	e_min::PetscReal = KSPGLTRGetMinEig(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get minimum eigenvalue computed by `KSPGLTR`
 
 Collective
@@ -2323,7 +2344,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPGLTR`, `KSPGLTRGetLambda()`
+See also: `KSP`, `KSPGLTR`, `KSPGLTRGetLambda()`
 
 # External Links
 $(_doc_external("KSP/KSPGLTRGetMinEig"))
@@ -2348,7 +2369,7 @@ end
 end 
 
 """
-	KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt) 
+	KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, it::PetscInt) 
 This is the basic orthogonalization routine
 using classical Gram-Schmidt with possible iterative refinement to improve the stability
 
@@ -2365,7 +2386,7 @@ used to increase the stability of the classical Gram-Schmidt  orthogonalization.
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRESCGSRefinementType`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESSetCGSRefinementType()`,
+See also: `KSPGMRESCGSRefinementType`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESSetCGSRefinementType()`,
 `KSPGMRESGetCGSRefinementType()`, `KSPGMRESGetOrthogonalization()`, `KSPGMRESModifiedGramSchmidtOrthogonalization()`
 
 # External Links
@@ -2389,7 +2410,7 @@ end
 end 
 
 """
-	type::KSPGMRESCGSRefinementType = KSPGMRESGetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	type::KSPGMRESCGSRefinementType = KSPGMRESGetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the type of iterative refinement to use
 in the classical Gram-Schmidt orthogonalization used by `KSPGMRES` and other PETSc GMRES implementations.
 
@@ -2403,7 +2424,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRES`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESCGSRefinementType`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESSetCGSRefinementType()`,
+See also: `KSPGMRES`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESCGSRefinementType`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESSetCGSRefinementType()`,
 `KSPGMRESGetOrthogonalization()`
 
 # External Links
@@ -2429,7 +2450,7 @@ end
 end 
 
 """
-	KSPGMRESGetOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, noname::Ptr{Cvoid}) 
+	KSPGMRESGetOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, noname::Ptr{Cvoid}) 
 Gets the orthogonalization routine used by `KSPGMRES` and `KSPFGMRES`.
 
 Not Collective
@@ -2446,7 +2467,7 @@ Calling sequence of `fcn`:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRESSetRestart()`, `KSPGMRESSetPreAllocateVectors()`, `KSPGMRESSetCGSRefinementType()`, `KSPGMRESSetOrthogonalization()`,
+See also: `KSPGMRESSetRestart()`, `KSPGMRESSetPreAllocateVectors()`, `KSPGMRESSetCGSRefinementType()`, `KSPGMRESSetOrthogonalization()`,
 `KSPGMRESModifiedGramSchmidtOrthogonalization()`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESGetCGSRefinementType()`
 
 # External Links
@@ -2470,7 +2491,7 @@ end
 end 
 
 """
-	restart::PetscInt = KSPGMRESGetRestart(petsclib::PetscLibType,ksp::AbstractKSP) 
+	restart::PetscInt = KSPGMRESGetRestart(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets number of iterations at which GMRES (`KSPGMRES`, `KSPFGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`,
 and `KSPLGMRES`) restarts.
 
@@ -2484,7 +2505,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRES`, `KSPSetTolerances()`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESSetPreAllocateVectors()`, `KSPGMRESSetRestart()`,
+See also: `KSPGMRES`, `KSPSetTolerances()`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESSetPreAllocateVectors()`, `KSPGMRESSetRestart()`,
 `KSPFGMRES`, `KSPLGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`
 
 # External Links
@@ -2510,7 +2531,7 @@ end
 end 
 
 """
-	KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt) 
+	KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, it::PetscInt) 
 This is the basic orthogonalization routine
 using modified Gram-Schmidt.
 
@@ -2525,7 +2546,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRESSetOrthogonalization()`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESGetOrthogonalization()`
+See also: `KSPGMRESSetOrthogonalization()`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESGetOrthogonalization()`
 
 # External Links
 $(_doc_external("KSP/KSPGMRESModifiedGramSchmidtOrthogonalization"))
@@ -2548,7 +2569,7 @@ end
 end 
 
 """
-	KSPGMRESMonitorKrylov(petsclib::PetscLibType,ksp::AbstractKSP, its::PetscInt, fgnorm::PetscReal, Viewers::Ptr{Cvoid}) 
+	KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::AbstractKSP, its::PetscInt, fgnorm::PetscReal, Viewers::Ptr{Cvoid}) 
 Calls `VecView()` to monitor each new direction in the `KSPGMRES` accumulated Krylov space.
 
 Collective
@@ -2564,7 +2585,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRES`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `VecView()`, `PetscViewersCreate()`, `PetscViewersDestroy()`
+See also: `KSPGMRES`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `VecView()`, `PetscViewersCreate()`, `PetscViewersDestroy()`
 
 # External Links
 $(_doc_external("KSP/KSPGMRESMonitorKrylov"))
@@ -2587,7 +2608,7 @@ end
 end 
 
 """
-	KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType,ksp::AbstractKSP, tol::PetscReal) 
+	KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType, ksp::AbstractKSP, tol::PetscReal) 
 Sets the tolerance for determining divergence breakdown in `KSPGMRES` at restart.
 
 Logically Collective
@@ -2601,7 +2622,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRES`, `KSPSetTolerances()`, `KSPGMRESSetHapTol()`, `KSPConvergedReason`
+See also: `KSPGMRES`, `KSPSetTolerances()`, `KSPGMRESSetHapTol()`, `KSPConvergedReason`
 
 # External Links
 $(_doc_external("KSP/KSPGMRESSetBreakdownTolerance"))
@@ -2624,7 +2645,7 @@ end
 end 
 
 """
-	KSPGMRESSetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPGMRESCGSRefinementType) 
+	KSPGMRESSetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPGMRESCGSRefinementType) 
 Sets the type of iterative refinement to use
 in the classical Gram-Schmidt orthogonalization used by `KSPGMRES` and other PETSc GMRES implementations.
 
@@ -2633,7 +2654,18 @@ Logically Collective
 Input Parameters:
 - `ksp`  - the Krylov space solver context
 - `type` - the type of refinement
--seealso: [](ch_ksp), `KSPGMRES`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESCGSRefinementType`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESGetCGSRefinementType()`,
+``
+KSP_GMRES_CGS_REFINE_NEVER
+KSP_GMRES_CGS_REFINE_IFNEEDED
+KSP_GMRES_CGS_REFINE_ALWAYS
+``
+
+Options Database Key:
+- `-ksp_gmres_cgs_refinement_type (refine_never|refine_ifneeded|refine_always)` - refinement type
+
+Level: intermediate
+
+See also: `KSPGMRES`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESCGSRefinementType`, `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESGetCGSRefinementType()`,
 `KSPGMRESGetOrthogonalization()`
 
 # External Links
@@ -2657,7 +2689,7 @@ end
 end 
 
 """
-	KSPGMRESSetHapTol(petsclib::PetscLibType,ksp::AbstractKSP, tol::PetscReal) 
+	KSPGMRESSetHapTol(petsclib::PetscLibType, ksp::AbstractKSP, tol::PetscReal) 
 Sets the tolerance for detecting a happy breakdown in GMRES (`KSPGMRES`, `KSPFGMRES` and `KSPLGMRES` and others)
 
 Logically Collective
@@ -2671,7 +2703,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRES`, `KSPSetTolerances()`
+See also: `KSPGMRES`, `KSPSetTolerances()`
 
 # External Links
 $(_doc_external("KSP/KSPGMRESSetHapTol"))
@@ -2694,7 +2726,7 @@ end
 end 
 
 """
-	KSPGMRESSetOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, fcn::external) 
+	KSPGMRESSetOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, fcn::external) 
 Sets the orthogonalization routine used by `KSPGMRES` and `KSPFGMRES`.
 
 Logically Collective
@@ -2713,7 +2745,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRESSetRestart()`, `KSPGMRESSetPreAllocateVectors()`,
+See also: `KSPGMRESSetRestart()`, `KSPGMRESSetPreAllocateVectors()`,
 `KSPGMRESSetCGSRefinementType()`, `KSPGMRESModifiedGramSchmidtOrthogonalization()`,
 `KSPGMRESClassicalGramSchmidtOrthogonalization()`, `KSPGMRESGetCGSRefinementType()`
 
@@ -2738,7 +2770,7 @@ end
 end 
 
 """
-	KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType, ksp::AbstractKSP) 
 Causes `KSPGMRES` and `KSPFGMRES` to preallocate all its
 needed work vectors at initial setup rather than the default, which
 is to allocate several at a time when needed.
@@ -2753,7 +2785,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRESSetRestart()`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESGetOrthogonalization()`,
+See also: `KSPGMRESSetRestart()`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESGetOrthogonalization()`,
 `VecMDot()`, `VecMAXPY()`
 
 # External Links
@@ -2777,7 +2809,7 @@ end
 end 
 
 """
-	KSPGMRESSetRestart(petsclib::PetscLibType,ksp::AbstractKSP, restart::PetscInt) 
+	KSPGMRESSetRestart(petsclib::PetscLibType, ksp::AbstractKSP, restart::PetscInt) 
 Sets number of iterations at which GMRES (`KSPGMRES`, `KSPFGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`,
 and `KSPLGMRES`) restarts.
 
@@ -2792,7 +2824,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGMRES`, `KSPSetTolerances()`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESSetPreAllocateVectors()`, `KSPGMRESGetRestart()`,
+See also: `KSPGMRES`, `KSPSetTolerances()`, `KSPGMRESSetOrthogonalization()`, `KSPGMRESSetPreAllocateVectors()`, `KSPGMRESGetRestart()`,
 `KSPFGMRES`, `KSPLGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`
 
 # External Links
@@ -2816,7 +2848,7 @@ end
 end 
 
 """
-	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetAndClearConvergenceTest(petsclib::PetscLibType,ksp::AbstractKSP) 
+	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetAndClearConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the function to be used to determine convergence. Removes the current test without calling destroy on the test context
 
 Logically Collective
@@ -2831,7 +2863,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedDefault()`, `KSPGetConvergenceContext()`, `KSPSetTolerances()`, `KSPSetConvergenceTest()`, `KSPGetConvergenceTest()`
+See also: `KSP`, `KSPConvergedDefault()`, `KSPGetConvergenceContext()`, `KSPSetTolerances()`, `KSPSetConvergenceTest()`, `KSPGetConvergenceTest()`
 
 # External Links
 $(_doc_external("KSP/KSPGetAndClearConvergenceTest"))
@@ -2860,8 +2892,8 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPGetApplicationContext(petsclib::PetscLibType,ksp::AbstractKSP) 
-Gets the user
+	ctx::Ptr{Cvoid} = KSPGetApplicationContext(petsclib::PetscLibType, ksp::AbstractKSP) 
+Gets the user-defined context for the linear solver set with `KSPSetApplicationContext()`
 
 Not Collective
 
@@ -2873,7 +2905,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSetApplicationContext()`
+See also: `KSP`, `KSPSetApplicationContext()`
 
 # External Links
 $(_doc_external("KSP/KSPGetApplicationContext"))
@@ -2898,7 +2930,7 @@ end
 end 
 
 """
-	flg::PetscBool = KSPGetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP) 
+	flg::PetscBool = KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the flag indicating that the extreme eigenvalues
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -2913,7 +2945,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPComputeEigenvalues()`, `KSPComputeEigenvaluesExplicitly()`, `KSP`, `KSPSetComputeRitz()`
+See also: `KSPComputeEigenvalues()`, `KSPComputeEigenvaluesExplicitly()`, `KSP`, `KSPSetComputeRitz()`
 
 # External Links
 $(_doc_external("KSP/KSPGetComputeEigenvalues"))
@@ -2938,7 +2970,7 @@ end
 end 
 
 """
-	flg::PetscBool = KSPGetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractKSP) 
+	flg::PetscBool = KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the flag indicating whether the extreme singular
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -2956,7 +2988,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPComputeExtremeSingularValues()`, `KSPMonitorSingularValue()`, `KSP`
+See also: `KSPComputeExtremeSingularValues()`, `KSPMonitorSingularValue()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetComputeSingularValues"))
@@ -2981,7 +3013,7 @@ end
 end 
 
 """
-	flg::PetscBool = KSPGetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractKSP) 
+	flg::PetscBool = KSPGetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get the flag to declare convergence if negative curvature is detected
 
 Collective
@@ -2994,7 +3026,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedReason`, `KSPSetConvergedNegativeCurvature()`
+See also: `KSP`, `KSPConvergedReason`, `KSPSetConvergedNegativeCurvature()`
 
 # External Links
 $(_doc_external("KSP/KSPGetConvergedNegativeCurvature"))
@@ -3019,7 +3051,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPGetConvergedReason(petsclib::PetscLibType,ksp::AbstractKSP) 
+	reason::KSPConvergedReason = KSPGetConvergedReason(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the reason the `KSP` iteration was stopped.
 
 Not Collective
@@ -3035,7 +3067,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPConvergedReason`, `KSP`, `KSPSetConvergenceTest()`, `KSPConvergedDefault()`, `KSPSetTolerances()`,
+See also: `KSPConvergedReason`, `KSP`, `KSPSetConvergenceTest()`, `KSPConvergedDefault()`, `KSPSetTolerances()`,
 `KSPConvergedReasonView()`, `KSPGetConvergedReasonString()`
 
 # External Links
@@ -3061,7 +3093,7 @@ end
 end 
 
 """
-	strreason::Ptr{Cchar} = KSPGetConvergedReasonString(petsclib::PetscLibType,ksp::AbstractKSP) 
+	strreason::Ptr{Cchar} = KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::AbstractKSP) 
 Return a human readable string for a `KSPConvergedReason`
 
 Not Collective
@@ -3074,7 +3106,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `KSPGetConvergedReason()`
+See also: `KSP`, `KSPGetConvergedReason()`
 
 # External Links
 $(_doc_external("KSP/KSPGetConvergedReasonString"))
@@ -3099,7 +3131,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPGetConvergenceContext(petsclib::PetscLibType,ksp::AbstractKSP) 
+	ctx::Ptr{Cvoid} = KSPGetConvergenceContext(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the convergence context set with `KSPSetConvergenceTest()`.
 
 Not Collective
@@ -3112,7 +3144,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSPGetConvergenceTest()`
+See also: `KSP`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSPGetConvergenceTest()`
 
 # External Links
 $(_doc_external("KSP/KSPGetConvergenceContext"))
@@ -3137,7 +3169,7 @@ end
 end 
 
 """
-	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetConvergenceTest(petsclib::PetscLibType,ksp::AbstractKSP) 
+	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the function to be used to determine convergence.
 
 Logically Collective
@@ -3152,7 +3184,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedDefault()`, `KSPGetConvergenceContext()`, `KSPSetTolerances()`, `KSPSetConvergenceTest()`, `KSPGetAndClearConvergenceTest()`
+See also: `KSP`, `KSPConvergedDefault()`, `KSPGetConvergenceContext()`, `KSPSetTolerances()`, `KSPSetConvergenceTest()`, `KSPGetAndClearConvergenceTest()`
 
 # External Links
 $(_doc_external("KSP/KSPGetConvergenceTest"))
@@ -3181,7 +3213,7 @@ end
 end 
 
 """
-	dm::PetscDM = KSPGetDM(petsclib::PetscLibType,ksp::AbstractKSP) 
+	dm::PetscDM = KSPGetDM(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
 
 Not Collective
@@ -3194,7 +3226,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `DM`, `KSPSetDM()`, `KSPSetDMActive()`
+See also: `KSP`, `DM`, `KSPSetDM()`, `KSPSetDMActive()`
 
 # External Links
 $(_doc_external("KSP/KSPGetDM"))
@@ -3219,8 +3251,8 @@ end
 end 
 
 """
-	scale::PetscBool = KSPGetDiagonalScale(petsclib::PetscLibType,ksp::AbstractKSP) 
-Checks if `KSP` solver scales the matrix and right
+	scale::PetscBool = KSPGetDiagonalScale(petsclib::PetscLibType, ksp::AbstractKSP) 
+Checks if `KSP` solver scales the matrix and right-hand side, that is if `KSPSetDiagonalScale()` has been called
 
 Not Collective
 
@@ -3232,7 +3264,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSetDiagonalScale()`, `KSPSetDiagonalScaleFix()`
+See also: `KSP`, `KSPSetDiagonalScale()`, `KSPSetDiagonalScaleFix()`
 
 # External Links
 $(_doc_external("KSP/KSPGetDiagonalScale"))
@@ -3257,7 +3289,7 @@ end
 end 
 
 """
-	fix::PetscBool = KSPGetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractKSP) 
+	fix::PetscBool = KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractKSP) 
 Determines if `KSP` diagonally scales the system back after solving. That is `KSPSetDiagonalScaleFix()` has been called
 
 Not Collective
@@ -3271,7 +3303,7 @@ rescale (default)
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGetDiagonalScale()`, `KSPSetDiagonalScale()`, `KSPSetDiagonalScaleFix()`, `KSP`
+See also: `KSPGetDiagonalScale()`, `KSPSetDiagonalScale()`, `KSPSetDiagonalScaleFix()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetDiagonalScaleFix"))
@@ -3296,7 +3328,7 @@ end
 end 
 
 """
-	a::Ptr{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType,ksp::AbstractKSP) 
+	a::Ptr{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the array used to hold the error history and the number of residuals it contains.
 
 Not Collective
@@ -3310,7 +3342,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetErrorHistory()`, `KSPGetResidualHistory()`, `KSP`
+See also: `KSPSetErrorHistory()`, `KSPGetResidualHistory()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetErrorHistory"))
@@ -3337,7 +3369,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractKSP) 
+	flag::PetscBool = KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractKSP) 
 Will `KSPSolve()` generate an error if the solver does not converge?
 
 Not Collective
@@ -3350,7 +3382,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSetErrorIfNotConverged()`, `KSP`
+See also: `KSPSetErrorIfNotConverged()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetErrorIfNotConverged"))
@@ -3375,7 +3407,7 @@ end
 end 
 
 """
-	guess::KSPGuess = KSPGetGuess(petsclib::PetscLibType,ksp::AbstractKSP) 
+	guess::KSPGuess = KSPGetGuess(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the initial guess generator for the `KSP`.
 
 Not Collective
@@ -3388,7 +3420,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuess`, `KSP`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`, `KSPSetUseFischerGuess()`, `KSPSetGuess()`
+See also: `KSPGuess`, `KSP`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`, `KSPSetUseFischerGuess()`, `KSPSetGuess()`
 
 # External Links
 $(_doc_external("KSP/KSPGetGuess"))
@@ -3413,7 +3445,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractKSP) 
+	flag::PetscBool = KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractKSP) 
 Determines whether the `KSP` solver is using the Knoll trick (using PCApply(pc,b,...) to compute
 the initial guess
 
@@ -3427,7 +3459,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetInitialGuessKnoll()`, `KSPSetInitialGuessNonzero()`, `KSPGetInitialGuessNonzero()`, `KSP`
+See also: `KSPSetInitialGuessKnoll()`, `KSPSetInitialGuessNonzero()`, `KSPGetInitialGuessNonzero()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetInitialGuessKnoll"))
@@ -3452,7 +3484,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractKSP) 
+	flag::PetscBool = KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractKSP) 
 Determines whether the `KSP` solver is using
 a zero initial guess.
 
@@ -3466,7 +3498,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSetInitialGuessNonzero()`, `KSP`
+See also: `KSPSetInitialGuessNonzero()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetInitialGuessNonzero"))
@@ -3491,7 +3523,7 @@ end
 end 
 
 """
-	its::PetscInt = KSPGetIterationNumber(petsclib::PetscLibType,ksp::AbstractKSP) 
+	its::PetscInt = KSPGetIterationNumber(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the current iteration number; if the `KSPSolve()` is complete, returns the number of iterations used.
 
 Not Collective
@@ -3504,7 +3536,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPGetResidualNorm()`, `KSPBuildResidual()`, `KSPGetTotalIterations()`
+See also: `KSP`, `KSPGetResidualNorm()`, `KSPBuildResidual()`, `KSPGetTotalIterations()`
 
 # External Links
 $(_doc_external("KSP/KSPGetIterationNumber"))
@@ -3529,7 +3561,7 @@ end
 end 
 
 """
-	bs::PetscInt = KSPGetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractKSP) 
+	bs::PetscInt = KSPGetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the maximum number of columns treated simultaneously in `KSPMatSolve()`.
 
 Input Parameter:
@@ -3540,7 +3572,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPMatSolve()`, `KSPSetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matproduct_batch_size`
+See also: `KSPMatSolve()`, `KSPSetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matproduct_batch_size`
 
 # External Links
 $(_doc_external("KSP/KSPGetMatSolveBatchSize"))
@@ -3565,8 +3597,8 @@ end
 end 
 
 """
-	minit::PetscInt = KSPGetMinimumIterations(petsclib::PetscLibType,ksp::AbstractKSP) 
-Gets the minimum number of iterations to use, regardless of the tolerances, that was set with `KSPSetMinimumIterations()` or `
+	minit::PetscInt = KSPGetMinimumIterations(petsclib::PetscLibType, ksp::AbstractKSP) 
+Gets the minimum number of iterations to use, regardless of the tolerances, that was set with `KSPSetMinimumIterations()` or `-ksp_min_it`
 
 Not Collective
 
@@ -3578,7 +3610,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGetTolerances()`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSP`, `KSPSetTolerances()`, `KSPSetMinimumIterations()`
+See also: `KSPGetTolerances()`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSP`, `KSPSetTolerances()`, `KSPSetMinimumIterations()`
 
 # External Links
 $(_doc_external("KSP/KSPGetMinimumIterations"))
@@ -3603,7 +3635,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPGetMonitorContext(petsclib::PetscLibType,ksp::AbstractKSP) 
+	ctx::Ptr{Cvoid} = KSPGetMonitorContext(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the monitoring context, as set by `KSPMonitorSet()` for the FIRST monitor only.
 
 Not Collective
@@ -3616,7 +3648,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPMonitorResidual()`, `KSP`
+See also: `KSPMonitorResidual()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetMonitorContext"))
@@ -3641,7 +3673,7 @@ end
 end 
 
 """
-	level::PetscInt = KSPGetNestLevel(petsclib::PetscLibType,ksp::AbstractKSP) 
+	level::PetscInt = KSPGetNestLevel(petsclib::PetscLibType, ksp::AbstractKSP) 
 gets the amount of nesting the `KSP` has
 
 Not Collective
@@ -3654,7 +3686,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPType`, `KSPSetNestLevel()`, `PCSetKSPNestLevel()`, `PCGetKSPNestLevel()`
+See also: `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPType`, `KSPSetNestLevel()`, `PCSetKSPNestLevel()`, `PCGetKSPNestLevel()`
 
 # External Links
 $(_doc_external("KSP/KSPGetNestLevel"))
@@ -3679,7 +3711,7 @@ end
 end 
 
 """
-	normtype::KSPNormType = KSPGetNormType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	normtype::KSPNormType = KSPGetNormType(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the `KSPNormType` that is used for convergence testing during `KSPSolve()` for this `KSP` context
 
 Not Collective
@@ -3692,7 +3724,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPNormType`, `KSPSetNormType()`, `KSPConvergedSkip()`
+See also: `KSPNormType`, `KSPSetNormType()`, `KSPConvergedSkip()`
 
 # External Links
 $(_doc_external("KSP/KSPGetNormType"))
@@ -3717,7 +3749,7 @@ end
 end 
 
 """
-	Amat::PetscMat,Pmat::PetscMat = KSPGetOperators(petsclib::PetscLibType,ksp::AbstractKSP) 
+	Amat::PetscMat,Pmat::PetscMat = KSPGetOperators(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the matrix associated with the linear system
 and a (possibly) different one used to construct the preconditioner from the `KSP` context
 
@@ -3732,7 +3764,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSolve()`, `KSPGetPC()`, `PCSetOperators()`, `KSPSetOperators()`, `KSPGetOperatorsSet()`
+See also: `KSP`, `KSPSolve()`, `KSPGetPC()`, `PCSetOperators()`, `KSPSetOperators()`, `KSPGetOperatorsSet()`
 
 # External Links
 $(_doc_external("KSP/KSPGetOperators"))
@@ -3759,7 +3791,7 @@ end
 end 
 
 """
-	mat::PetscBool,pmat::PetscBool = KSPGetOperatorsSet(petsclib::PetscLibType,ksp::AbstractKSP) 
+	mat::PetscBool,pmat::PetscBool = KSPGetOperatorsSet(petsclib::PetscLibType, ksp::AbstractKSP) 
 Determines if the matrix associated with the linear system and
 possibly a different one from which the preconditioner will be built have been set in the `KSP` with `KSPSetOperators()`
 
@@ -3774,7 +3806,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `PCSetOperators()`, `KSPGetOperators()`, `KSPSetOperators()`, `PCGetOperators()`, `PCGetOperatorsSet()`
+See also: `KSP`, `PCSetOperators()`, `KSPGetOperators()`, `KSPSetOperators()`, `PCGetOperators()`, `PCGetOperatorsSet()`
 
 # External Links
 $(_doc_external("KSP/KSPGetOperatorsSet"))
@@ -3801,7 +3833,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = KSPGetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractKSP) 
+	prefix::Ptr{Cchar} = KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the prefix used for searching for all
 `KSP` options in the database.
 
@@ -3815,7 +3847,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPSetFromOptions()`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`
+See also: `KSP`, `KSPSetFromOptions()`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("KSP/KSPGetOptionsPrefix"))
@@ -3840,7 +3872,7 @@ end
 end 
 
 """
-	pc::PC = KSPGetPC(petsclib::PetscLibType,ksp::AbstractKSP) 
+	pc::PC = KSPGetPC(petsclib::PetscLibType, ksp::AbstractKSP) 
 Returns a pointer to the preconditioner context with the `KSP`
 
 Not Collective
@@ -3853,7 +3885,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPSetPC()`, `KSP`, `PC`
+See also: `KSPSetPC()`, `KSP`, `PC`
 
 # External Links
 $(_doc_external("KSP/KSPGetPC"))
@@ -3878,7 +3910,7 @@ end
 end 
 
 """
-	side::PCSide = KSPGetPCSide(petsclib::PetscLibType,ksp::AbstractKSP) 
+	side::PCSide = KSPGetPCSide(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the preconditioning side.
 
 Not Collective
@@ -3888,7 +3920,15 @@ Input Parameter:
 
 Output Parameter:
 - `side` - the preconditioning side, where side is one of
--seealso: [](ch_ksp), `KSPSetPCSide()`, `KSP`
+``
+PC_LEFT      - left preconditioning (default)
+PC_RIGHT     - right preconditioning
+PC_SYMMETRIC - symmetric preconditioning
+``
+
+Level: intermediate
+
+See also: `KSPSetPCSide()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetPCSide"))
@@ -3913,7 +3953,7 @@ end
 end 
 
 """
-	a::Ptr{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType,ksp::AbstractKSP) 
+	a::Ptr{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the array used to hold the residual history and the number of residuals it contains.
 
 Not Collective
@@ -3927,7 +3967,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetResidualHistory()`, `KSP`, `KSPGetIterationNumber()`, `KSPSTCG`, `KSPBCGSL`
+See also: `KSPSetResidualHistory()`, `KSP`, `KSPGetIterationNumber()`, `KSPSTCG`, `KSPBCGSL`
 
 # External Links
 $(_doc_external("KSP/KSPGetResidualHistory"))
@@ -3954,7 +3994,7 @@ end
 end 
 
 """
-	rnorm::PetscReal = KSPGetResidualNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
+	rnorm::PetscReal = KSPGetResidualNorm(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the last (possibly approximate and/or preconditioned) residual norm that has been computed.
 
 Not Collective
@@ -3967,7 +4007,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPSetNormType()`, `KSPBuildResidual()`, `KSPNormType`
+See also: `KSP`, `KSPSetNormType()`, `KSPBuildResidual()`, `KSPNormType`
 
 # External Links
 $(_doc_external("KSP/KSPGetResidualNorm"))
@@ -3992,7 +4032,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractKSP) 
+	flag::PetscBool = KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractKSP) 
 Determines if the `KSP` reuses the current preconditioner even if the `Mat` operator in the `KSP` has changed.
 
 Collective
@@ -4005,7 +4045,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `KSPSetReusePreconditioner()`, `KSP`
+See also: `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `KSPSetReusePreconditioner()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetReusePreconditioner"))
@@ -4030,8 +4070,8 @@ end
 end 
 
 """
-	r::PetscVec = KSPGetRhs(petsclib::PetscLibType,ksp::AbstractKSP) 
-Gets the right
+	r::PetscVec = KSPGetRhs(petsclib::PetscLibType, ksp::AbstractKSP) 
+Gets the right-hand-side vector for the linear system to
 be solved.
 
 Not Collective
@@ -4044,7 +4084,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGetSolution()`, `KSPSolve()`, `KSP`
+See also: `KSPGetSolution()`, `KSPSolve()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetRhs"))
@@ -4069,7 +4109,7 @@ end
 end 
 
 """
-	v::PetscVec = KSPGetSolution(petsclib::PetscLibType,ksp::AbstractKSP) 
+	v::PetscVec = KSPGetSolution(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the location of the solution for the
 linear system to be solved.
 
@@ -4083,7 +4123,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGetRhs()`, `KSPBuildSolution()`, `KSPSolve()`, `KSP`
+See also: `KSPGetRhs()`, `KSPBuildSolution()`, `KSPSolve()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGetSolution"))
@@ -4108,7 +4148,7 @@ end
 end 
 
 """
-	rtol::PetscReal,abstol::PetscReal,dtol::PetscReal,maxits::PetscInt = KSPGetTolerances(petsclib::PetscLibType,ksp::AbstractKSP) 
+	rtol::PetscReal,abstol::PetscReal,dtol::PetscReal,maxits::PetscInt = KSPGetTolerances(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the relative, absolute, divergence, and maximum
 iteration tolerances used by the default `KSP` convergence tests.
 
@@ -4125,7 +4165,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSetTolerances()`, `KSP`, `KSPSetMinimumIterations()`, `KSPGetMinimumIterations()`
+See also: `KSPSetTolerances()`, `KSP`, `KSPSetMinimumIterations()`, `KSPGetMinimumIterations()`
 
 # External Links
 $(_doc_external("KSP/KSPGetTolerances"))
@@ -4156,7 +4196,7 @@ end
 end 
 
 """
-	its::PetscInt = KSPGetTotalIterations(petsclib::PetscLibType,ksp::AbstractKSP) 
+	its::PetscInt = KSPGetTotalIterations(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the total number of iterations this `KSP` object has performed since was created, counted over all linear solves
 
 Not Collective
@@ -4169,7 +4209,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPBuildResidual()`, `KSPGetResidualNorm()`, `KSPGetIterationNumber()`
+See also: `KSP`, `KSPBuildResidual()`, `KSPGetResidualNorm()`, `KSPGetIterationNumber()`
 
 # External Links
 $(_doc_external("KSP/KSPGetTotalIterations"))
@@ -4194,7 +4234,7 @@ end
 end 
 
 """
-	type::KSPType = KSPGetType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	type::KSPType = KSPGetType(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the `KSP` type as a string from the `KSP` object.
 
 Not Collective
@@ -4207,7 +4247,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPType`, `KSP`, `KSPSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `KSPType`, `KSP`, `KSPSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("KSP/KSPGetType"))
@@ -4232,7 +4272,7 @@ end
 end 
 
 """
-	KSPHPDDMGetDeflationMat(petsclib::PetscLibType,ksp::AbstractKSP, U::AbstractPetscMat) 
+	KSPHPDDMGetDeflationMat(petsclib::PetscLibType, ksp::AbstractKSP, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMGetDeflationMat"))
@@ -4257,7 +4297,7 @@ end
 end 
 
 """
-	type::KSPHPDDMType = KSPHPDDMGetType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	type::KSPHPDDMType = KSPHPDDMGetType(petsclib::PetscLibType, ksp::AbstractKSP) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMGetType"))
@@ -4282,7 +4322,7 @@ end
 end 
 
 """
-	KSPHPDDMSetDeflationMat(petsclib::PetscLibType,ksp::AbstractKSP, U::AbstractPetscMat) 
+	KSPHPDDMSetDeflationMat(petsclib::PetscLibType, ksp::AbstractKSP, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMSetDeflationMat"))
@@ -4305,7 +4345,7 @@ end
 end 
 
 """
-	KSPHPDDMSetType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPHPDDMType) 
+	KSPHPDDMSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPHPDDMType) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMSetType"))
@@ -4328,8 +4368,8 @@ end
 end 
 
 """
-	KSPInitialResidual(petsclib::PetscLibType,ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec) 
-Computes the residual. Either b
+	KSPInitialResidual(petsclib::PetscLibType, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec) 
+Computes the residual. Either b - A*C*u = b - A*x with right
 preconditioning or C*(b - A*x) with left preconditioning; the latter
 residual is often called the "preconditioned residual".
 
@@ -4347,7 +4387,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPSolve()`, `KSPMonitor()`
+See also: `KSP`, `KSPSolve()`, `KSPMonitor()`
 
 # External Links
 $(_doc_external("KSP/KSPInitialResidual"))
@@ -4377,7 +4417,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: [](ch_ksp), `PetscInitialize()`, `KSPFinalizePackage()`
+See also: `PetscInitialize()`, `KSPFinalizePackage()`
 
 # External Links
 $(_doc_external("KSP/KSPInitializePackage"))
@@ -4399,7 +4439,7 @@ end
 end 
 
 """
-	KSPLGMRESSetAugDim(petsclib::PetscLibType,ksp::AbstractKSP, dim::PetscInt) 
+	KSPLGMRESSetAugDim(petsclib::PetscLibType, ksp::AbstractKSP, dim::PetscInt) 
 Set the number of error approximations to include in the approximation space (default is 2) for `KSPLGMRES`
 
 Collective
@@ -4413,7 +4453,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPLGMRES`, `KSPLGMRESSetConstant()`
+See also: `KSPLGMRES`, `KSPLGMRESSetConstant()`
 
 # External Links
 $(_doc_external("KSP/KSPLGMRESSetAugDim"))
@@ -4436,7 +4476,7 @@ end
 end 
 
 """
-	KSPLGMRESSetConstant(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPLGMRESSetConstant(petsclib::PetscLibType, ksp::AbstractKSP) 
 keep the error approximation space a constant size for every restart cycle
 
 Collective
@@ -4449,7 +4489,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPLGMRES`, `KSPLGMRESSetAugDim()`
+See also: `KSPLGMRES`, `KSPLGMRESSetAugDim()`
 
 # External Links
 $(_doc_external("KSP/KSPLGMRESSetConstant"))
@@ -4472,7 +4512,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPLSQRConvergedDefault(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	reason::KSPConvergedReason = KSPLSQRConvergedDefault(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
 Determines convergence of the `KSPLSQR` Krylov method, including a check on the residual norm of the normal equations.
 
 Collective
@@ -4488,7 +4528,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPLSQR`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`,
+See also: `KSPLSQR`, `KSPSetConvergenceTest()`, `KSPSetTolerances()`, `KSPConvergedSkip()`, `KSPConvergedReason`, `KSPGetConvergedReason()`,
 `KSPConvergedDefaultSetUIRNorm()`, `KSPConvergedDefaultSetUMIRNorm()`, `KSPConvergedDefaultCreate()`, `KSPConvergedDefaultDestroy()`,
 `KSPConvergedDefault()`, `KSPLSQRGetNorms()`, `KSPLSQRSetExactMatNorm()`
 
@@ -4515,7 +4555,7 @@ end
 end 
 
 """
-	arnorm::PetscReal,anorm::PetscReal = KSPLSQRGetNorms(petsclib::PetscLibType,ksp::AbstractKSP) 
+	arnorm::PetscReal,anorm::PetscReal = KSPLSQRGetNorms(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get the norm estimates that `KSPLSQR` computes internally during `KSPSolve()`.
 
 Not Collective
@@ -4529,7 +4569,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSolve()`, `KSPLSQR`, `KSPLSQRSetExactMatNorm()`
+See also: `KSPSolve()`, `KSPLSQR`, `KSPLSQRSetExactMatNorm()`
 
 # External Links
 $(_doc_external("KSP/KSPLSQRGetNorms"))
@@ -4556,7 +4596,7 @@ end
 end 
 
 """
-	se::PetscVec = KSPLSQRGetStandardErrorVec(petsclib::PetscLibType,ksp::AbstractKSP) 
+	se::PetscVec = KSPLSQRGetStandardErrorVec(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get vector of standard error estimates.
 Only available if -ksp_lsqr_set_standard_error was set to true
 or `KSPLSQRSetComputeStandardErrorVec`(ksp, `PETSC_TRUE`) was called.
@@ -4572,7 +4612,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSolve()`, `KSPLSQR`, `KSPLSQRSetComputeStandardErrorVec()`
+See also: `KSPSolve()`, `KSPLSQR`, `KSPLSQRSetComputeStandardErrorVec()`
 
 # External Links
 $(_doc_external("KSP/KSPLSQRGetStandardErrorVec"))
@@ -4597,7 +4637,7 @@ end
 end 
 
 """
-	KSPLSQRMonitorResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPLSQRMonitorResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the residual norm, as well as the normal equation residual norm, at each iteration of an iterative solver for the `KSPLSQR` solver
 
 Collective
@@ -4613,7 +4653,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPLSQR`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`, `KSPLSQRMonitorResidualDrawLG()`
+See also: `KSPLSQR`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`, `KSPLSQRMonitorResidualDrawLG()`
 
 # External Links
 $(_doc_external("KSP/KSPLSQRMonitorResidual"))
@@ -4636,7 +4676,7 @@ end
 end 
 
 """
-	KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the true residual norm at each iteration of an iterative solver for the `KSPLSQR` solver
 
 Collective
@@ -4652,7 +4692,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPLSQR`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPLSQRMonitorResidual()`, `KSPLSQRMonitorResidualDrawLGCreate()`
+See also: `KSPLSQR`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPLSQRMonitorResidual()`, `KSPLSQRMonitorResidualDrawLGCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPLSQRMonitorResidualDrawLG"))
@@ -4675,7 +4715,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = KSPLSQRMonitorResidualDrawLGCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = KSPLSQRMonitorResidualDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the line graph object for the `KSPLSQR` residual and normal equation residual norm
 
 Collective
@@ -4690,7 +4730,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPLSQR`, `KSPMonitorSet()`, `KSPLSQRMonitorResidual()`, `KSPLSQRMonitorResidualDrawLG()`
+See also: `KSPLSQR`, `KSPMonitorSet()`, `KSPLSQRMonitorResidual()`, `KSPLSQRMonitorResidualDrawLG()`
 
 # External Links
 $(_doc_external("KSP/KSPLSQRMonitorResidualDrawLGCreate"))
@@ -4715,7 +4755,7 @@ end
 end 
 
 """
-	KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Compute a vector of standard error estimates during `KSPSolve()` for  `KSPLSQR`.
 
 Logically Collective
@@ -4726,7 +4766,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSolve()`, `KSPLSQR`, `KSPLSQRGetStandardErrorVec()`
+See also: `KSPSolve()`, `KSPLSQR`, `KSPLSQRGetStandardErrorVec()`
 
 # External Links
 $(_doc_external("KSP/KSPLSQRSetComputeStandardErrorVec"))
@@ -4749,7 +4789,7 @@ end
 end 
 
 """
-	KSPLSQRSetExactMatNorm(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPLSQRSetExactMatNorm(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Compute exact matrix norm instead of iteratively refined estimate.
 
 Not Collective
@@ -4760,7 +4800,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSolve()`, `KSPLSQR`, `KSPLSQRGetNorms()`, `KSPLSQRConvergedDefault()`
+See also: `KSPSolve()`, `KSPLSQR`, `KSPLSQRGetNorms()`, `KSPLSQRConvergedDefault()`
 
 # External Links
 $(_doc_external("KSP/KSPLSQRSetExactMatNorm"))
@@ -4783,7 +4823,7 @@ end
 end 
 
 """
-	KSPLoad(petsclib::PetscLibType,newdm::AbstractKSP, viewer::PetscViewer) 
+	KSPLoad(petsclib::PetscLibType, newdm::AbstractKSP, viewer::PetscViewer) 
 Loads a `KSP` that has been stored in a `PETSCVIEWERBINARY`  with `KSPView()`.
 
 Collective
@@ -4795,7 +4835,7 @@ some related function before a call to `KSPLoad()`.
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `PetscViewerBinaryOpen()`, `KSPView()`, `MatLoad()`, `VecLoad()`
+See also: `KSP`, `PetscViewerBinaryOpen()`, `KSPView()`, `MatLoad()`, `VecLoad()`
 
 # External Links
 $(_doc_external("KSP/KSPLoad"))
@@ -4818,7 +4858,7 @@ end
 end 
 
 """
-	qlp::PetscBool = KSPMINRESGetUseQLP(petsclib::PetscLibType,ksp::AbstractKSP) 
+	qlp::PetscBool = KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get the flag that indicates if the QLP variant is being used
 
 Logically Collective
@@ -4831,7 +4871,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `KSPMINRES`, `KSPMINRESSetUseQLP()`
+See also: `KSP`, `KSPMINRES`, `KSPMINRESSetUseQLP()`
 
 # External Links
 $(_doc_external("KSP/KSPMINRESGetUseQLP"))
@@ -4856,7 +4896,7 @@ end
 end 
 
 """
-	KSPMINRESSetRadius(petsclib::PetscLibType,ksp::AbstractKSP, radius::PetscReal) 
+	KSPMINRESSetRadius(petsclib::PetscLibType, ksp::AbstractKSP, radius::PetscReal) 
 Set the maximum solution norm allowed for use with trust region methods
 
 Logically Collective
@@ -4870,7 +4910,7 @@ Level: beginner
 Options Database Key:
 - `-ksp_minres_radius radius` - maximum allowed solution norm
 
--seealso: [](ch_ksp), `KSP`, `KSPMINRES`, `KSPMINRESSetUseQLP()`
+See also: `KSP`, `KSPMINRES`, `KSPMINRESSetUseQLP()`
 
 # External Links
 $(_doc_external("KSP/KSPMINRESSetRadius"))
@@ -4893,7 +4933,7 @@ end
 end 
 
 """
-	KSPMINRESSetUseQLP(petsclib::PetscLibType,ksp::AbstractKSP, qlp::PetscBool) 
+	KSPMINRESSetUseQLP(petsclib::PetscLibType, ksp::AbstractKSP, qlp::PetscBool) 
 Use the QLP variant of `KSPMINRES`
 
 Logically Collective
@@ -4904,7 +4944,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `KSPMINRES`, `KSPMINRESGetUseQLP()`
+See also: `KSP`, `KSPMINRES`, `KSPMINRESGetUseQLP()`
 
 # External Links
 $(_doc_external("KSP/KSPMINRESSetUseQLP"))
@@ -4927,8 +4967,8 @@ end
 end 
 
 """
-	KSPMatSolve(petsclib::PetscLibType,ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
-Solves a linear system with multiple right
+	KSPMatSolve(petsclib::PetscLibType, ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
+Solves a linear system with multiple right-hand sides stored as a `MATDENSE`.
 
 Input Parameters:
 - `ksp` - iterative solver
@@ -4939,7 +4979,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSolve()`, `MatMatSolve()`, `KSPMatSolveTranspose()`, `MATDENSE`, `KSPHPDDM`, `PCBJACOBI`, `PCASM`, `KSPSetMatSolveBatchSize()`
+See also: `KSPSolve()`, `MatMatSolve()`, `KSPMatSolveTranspose()`, `MATDENSE`, `KSPHPDDM`, `PCBJACOBI`, `PCASM`, `KSPSetMatSolveBatchSize()`
 
 # External Links
 $(_doc_external("KSP/KSPMatSolve"))
@@ -4962,8 +5002,8 @@ end
 end 
 
 """
-	KSPMatSolveTranspose(petsclib::PetscLibType,ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
-Solves a linear system with the transposed matrix with multiple right
+	KSPMatSolveTranspose(petsclib::PetscLibType, ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
+Solves a linear system with the transposed matrix with multiple right-hand sides stored as a `MATDENSE`.
 
 Input Parameters:
 - `ksp` - iterative solver
@@ -4974,7 +5014,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPSolveTranspose()`, `MatMatTransposeSolve()`, `KSPMatSolve()`, `MATDENSE`, `KSPHPDDM`, `PCBJACOBI`, `PCASM`
+See also: `KSPSolveTranspose()`, `MatMatTransposeSolve()`, `KSPMatSolve()`, `MATDENSE`, `KSPHPDDM`, `PCBJACOBI`, `PCASM`
 
 # External Links
 $(_doc_external("KSP/KSPMatSolveTranspose"))
@@ -4997,7 +5037,7 @@ end
 end 
 
 """
-	KSPMonitor(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt, rnorm::PetscReal) 
+	KSPMonitor(petsclib::PetscLibType, ksp::AbstractKSP, it::PetscInt, rnorm::PetscReal) 
 runs the user provided monitor routines, if they exist
 
 Collective
@@ -5009,7 +5049,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPMonitorSet()`
+See also: `KSPMonitorSet()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitor"))
@@ -5032,7 +5072,7 @@ end
 end 
 
 """
-	KSPMonitorCancel(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPMonitorCancel(petsclib::PetscLibType, ksp::AbstractKSP) 
 Clears all monitors for a `KSP` object.
 
 Logically Collective
@@ -5045,7 +5085,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPMonitorResidual()`, `KSPMonitorSet()`, `KSP`
+See also: `KSPMonitorResidual()`, `KSPMonitorSet()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorCancel"))
@@ -5068,7 +5108,7 @@ end
 end 
 
 """
-	KSPMonitorDynamicTolerance(petsclib::PetscLibType,ksp::AbstractKSP, its::PetscInt, fnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	KSPMonitorDynamicTolerance(petsclib::PetscLibType, ksp::AbstractKSP, its::PetscInt, fnorm::PetscReal, ctx::Ptr{Cvoid}) 
 A monitor that changes the inner tolerance of nested preconditioners in every outer iteration in an adaptive way.
 
 Collective
@@ -5084,7 +5124,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicToleranceCreate()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
+See also: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicToleranceCreate()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicTolerance"))
@@ -5120,7 +5160,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
+See also: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceSetCoefficient()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicToleranceCreate"))
@@ -5145,7 +5185,7 @@ end
 end 
 
 """
-	KSPMonitorDynamicToleranceDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
+	KSPMonitorDynamicToleranceDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid}) 
 Destroy the monitor context used in `KSPMonitorDynamicTolerance()`
 
 Input Parameter:
@@ -5153,7 +5193,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorSet()`, `KSPMonitorDynamicToleranceCreate()`
+See also: `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorSet()`, `KSPMonitorDynamicToleranceCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicToleranceDestroy"))
@@ -5176,7 +5216,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPMonitorDynamicToleranceSetCoefficient(petsclib::PetscLibType,coeff::PetscReal) 
+	ctx::Ptr{Cvoid} = KSPMonitorDynamicToleranceSetCoefficient(petsclib::PetscLibType, coeff::PetscReal) 
 Sets the coefficient in the context used by `KSPMonitorDynamicTolerance()`
 
 Logically Collective
@@ -5190,7 +5230,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceCreate()`
+See also: [](sec_flexibleksp), `KSP`, `KSPMonitorDynamicTolerance()`, `KSPMonitorDynamicToleranceDestroy()`, `KSPMonitorDynamicToleranceCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicToleranceSetCoefficient"))
@@ -5215,7 +5255,7 @@ end
 end 
 
 """
-	KSPMonitorError(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorError(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the error norm, as well as the (possibly preconditioned) residual norm, at each iteration of an iterative solver.
 
 Collective
@@ -5231,7 +5271,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorError"))
@@ -5254,7 +5294,7 @@ end
 end 
 
 """
-	KSPMonitorErrorDraw(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorErrorDraw(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the error at each iteration of an iterative solver.
 
 Collective
@@ -5270,7 +5310,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorErrorDrawLG()`
+See also: `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorErrorDrawLG()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorErrorDraw"))
@@ -5293,7 +5333,7 @@ end
 end 
 
 """
-	KSPMonitorErrorDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorErrorDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the error and residual norm at each iteration of an iterative solver.
 
 Collective
@@ -5309,7 +5349,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorErrorDraw()`
+See also: `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorErrorDraw()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorErrorDrawLG"))
@@ -5332,7 +5372,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = KSPMonitorErrorDrawLGCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = KSPMonitorErrorDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the context for the error and preconditioned residual plotter `KSPMonitorErrorDrawLG()`
 
 Collective
@@ -5347,7 +5387,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorErrorDrawLG()`
+See also: `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorErrorDrawLG()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorErrorDrawLGCreate"))
@@ -5372,7 +5412,7 @@ end
 end 
 
 """
-	KSPMonitorLGRange(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, monctx::Ptr{Cvoid}) 
+	KSPMonitorLGRange(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, monctx::Ptr{Cvoid}) 
 Prints line graphs summarizing the residual norm, the fraction of elements that dominate the residual, and the convergence factor at each iteration of the `KSP` solver
 
 Collective
@@ -5385,7 +5425,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `PETSCVIEWERDRAW`, `PetscDrawLG`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `PETSCVIEWERDRAW`, `PetscDrawLG`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorLGRange"))
@@ -5408,7 +5448,7 @@ end
 end 
 
 """
-	KSPMonitorRegister(petsclib::PetscLibType,name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+	KSPMonitorRegister(petsclib::PetscLibType, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::Ptr{Cvoid}, create::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Registers a Krylov subspace solver monitor routine that may be accessed with `KSPMonitorSetFromOptions()`
 
 Not Collective
@@ -5423,7 +5463,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorRegisterAll()`, `KSPMonitorSetFromOptions()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorRegisterAll()`, `KSPMonitorSetFromOptions()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorRegister"))
@@ -5446,7 +5486,7 @@ end
 end 
 
 """
-	KSPMonitorResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Print the (possibly preconditioned, possibly approximate) residual norm at each iteration of an iterative solver.
 
 Collective
@@ -5462,7 +5502,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidualView()`, `KSPMonitorResidualDrawLG()`,
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidualView()`, `KSPMonitorResidualDrawLG()`,
 `KSPMonitorResidualRange()`, `KSPMonitorTrueResidualDraw()`, `KSPMonitorTrueResidualDrawLG()`, `KSPMonitorTrueResidualMax()`,
 `KSPMonitorSingularValue()`, `KSPMonitorSolutionDrawLG()`, `KSPMonitorSolutionDraw()`, `KSPMonitorSolution()`,
 `KSPMonitorErrorDrawLG()`, `KSPMonitorErrorDraw()`, `KSPMonitorError()`
@@ -5488,7 +5528,7 @@ end
 end 
 
 """
-	KSPMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the (possibly preconditioned) residual norm at each iteration of an iterative solver.
 
 Collective
@@ -5504,7 +5544,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `PETSCVIEWERDRAW`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidualView()`, `KSPMonitorResidual()`
+See also: `KSP`, `PETSCVIEWERDRAW`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidualView()`, `KSPMonitorResidual()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualDrawLG"))
@@ -5527,7 +5567,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = KSPMonitorResidualDrawLGCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = KSPMonitorResidualDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the context for the (possibly preconditioned) residual norm monitor `KSPMonitorResidualDrawLG()`
 
 Collective
@@ -5542,7 +5582,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `PETSCVIEWERDRAW`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidualDrawLG()`,
+See also: `KSP`, `PETSCVIEWERDRAW`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidualDrawLG()`,
 `PetscViewerFormat`, `PetscViewer`, `PetscViewerAndFormat`
 
 # External Links
@@ -5568,7 +5608,7 @@ end
 end 
 
 """
-	KSPMonitorResidualRange(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualRange(petsclib::PetscLibType, ksp::AbstractKSP, it::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the percentage of residual elements that are more than 10 percent of the maximum value.
 
 Collective
@@ -5584,7 +5624,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualRange"))
@@ -5607,7 +5647,7 @@ end
 end 
 
 """
-	KSPMonitorResidualShort(petsclib::PetscLibType,ksp::AbstractKSP, its::PetscInt, fnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualShort(petsclib::PetscLibType, ksp::AbstractKSP, its::PetscInt, fnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualShort"))
@@ -5630,7 +5670,7 @@ end
 end 
 
 """
-	KSPMonitorResidualView(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualView(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the (possibly preconditioned) residual at each iteration of an iterative solver.
 
 Collective
@@ -5646,7 +5686,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidual()`, `KSPMonitorResidualDrawLG()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidual()`, `KSPMonitorResidualDrawLG()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualView"))
@@ -5669,7 +5709,7 @@ end
 end 
 
 """
-	KSPMonitorSAWs(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	KSPMonitorSAWs(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
 monitor `KSP` solution using SAWs
 
 Logically Collective
@@ -5682,7 +5722,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorSAWsCreate()`, `KSPMonitorSAWsDestroy()`, `KSPMonitorSingularValue()`, `KSPComputeExtremeSingularValues()`, `PetscViewerSAWsOpen()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorSAWsCreate()`, `KSPMonitorSAWsDestroy()`, `KSPMonitorSingularValue()`, `KSPComputeExtremeSingularValues()`, `PetscViewerSAWsOpen()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWs"))
@@ -5705,7 +5745,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPMonitorSAWsCreate(petsclib::PetscLibType,ksp::AbstractKSP) 
+	ctx::Ptr{Cvoid} = KSPMonitorSAWsCreate(petsclib::PetscLibType, ksp::AbstractKSP) 
 create an SAWs monitor context for `KSP`
 
 Collective
@@ -5718,7 +5758,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorSAWs()`, `KSPMonitorSAWsDestroy()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorSAWs()`, `KSPMonitorSAWsDestroy()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWsCreate"))
@@ -5743,7 +5783,7 @@ end
 end 
 
 """
-	KSPMonitorSAWsDestroy(petsclib::PetscLibType,ctx::Ptr{Cvoid}) 
+	KSPMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid}) 
 destroy a monitor context created with `KSPMonitorSAWsCreate()`
 
 Collective
@@ -5753,7 +5793,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorSAWsCreate()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorSAWsCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWsDestroy"))
@@ -5776,7 +5816,7 @@ end
 end 
 
 """
-	KSPMonitorSNESResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSNESResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the `SNES` residual norm, as well as the `KSP` residual norm, at each iteration of a `KSPSolve()` called within a `SNESSolve()`.
 
 Collective
@@ -5792,7 +5832,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`, `KSPMonitor()`, `SNESMonitor()`, `PetscViewerAndFormat()`
+See also: `SNES`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`, `KSPMonitor()`, `SNESMonitor()`, `PetscViewerAndFormat()`
 
 # External Links
 $(_doc_external("SNES/KSPMonitorSNESResidual"))
@@ -5815,7 +5855,7 @@ end
 end 
 
 """
-	KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the linear `KSP` residual norm and the `SNES` residual norm of a `KSPSolve()` called within a `SNESSolve()`.
 
 Collective
@@ -5831,7 +5871,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `SNESMonitor()`, `KSPMonitor()`, `KSPMonitorSNESResidualDrawLGCreate()`
+See also: `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `SNESMonitor()`, `KSPMonitor()`, `KSPMonitorSNESResidualDrawLGCreate()`
 
 # External Links
 $(_doc_external("SNES/KSPMonitorSNESResidualDrawLG"))
@@ -5854,7 +5894,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = KSPMonitorSNESResidualDrawLGCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = KSPMonitorSNESResidualDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the `PetscViewer` used by `KSPMonitorSNESResidualDrawLG()`
 
 Collective
@@ -5869,7 +5909,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `KSP`, `SNES`, `PetscViewerFormat`, `PetscViewerAndFormat`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
+See also: `KSP`, `SNES`, `PetscViewerFormat`, `PetscViewerAndFormat`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
 
 # External Links
 $(_doc_external("SNES/KSPMonitorSNESResidualDrawLGCreate"))
@@ -5894,7 +5934,7 @@ end
 end 
 
 """
-	KSPMonitorSet(petsclib::PetscLibType,ksp::AbstractKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
+	KSPMonitorSet(petsclib::PetscLibType, ksp::AbstractKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function to be called at every iteration to monitor, i.e. display in some way, perhaps by printing in the terminal,
 the residual norm computed in a `KSPSolve()`
 
@@ -5921,7 +5961,7 @@ does not cancel those set via the options database.
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPMonitorResidual()`, `KSPMonitorRegister()`, `KSPMonitorCancel()`, `KSP`, `PetscCtxDestroyFn`
+See also: `KSPMonitorResidual()`, `KSPMonitorRegister()`, `KSPMonitorCancel()`, `KSP`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSet"))
@@ -5944,7 +5984,7 @@ end
 end 
 
 """
-	KSPMonitorSetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP, opt::String, name::String, ctx::Ptr{Cvoid}) 
+	KSPMonitorSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP, opt::String, name::String, ctx::Ptr{Cvoid}) 
 Sets a monitor function and viewer appropriate for the type indicated by the user in the options database
 
 Collective
@@ -5957,7 +5997,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPMonitorRegister()`, `KSPMonitorSet()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+See also: `KSPMonitorRegister()`, `KSPMonitorSet()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
 `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
@@ -5986,7 +6026,7 @@ end
 end 
 
 """
-	KSPMonitorSingularValue(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSingularValue(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the two norm of the true residual and estimation of the extreme singular values of the preconditioned problem at each iteration.
 
 Logically Collective
@@ -6002,7 +6042,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPComputeExtremeSingularValues()`, `KSPMonitorSingularValueCreate()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPComputeExtremeSingularValues()`, `KSPMonitorSingularValueCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSingularValue"))
@@ -6025,7 +6065,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = KSPMonitorSingularValueCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = KSPMonitorSingularValueCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the singular value monitor context needed by `KSPMonitorSingularValue()`
 
 Collective
@@ -6040,7 +6080,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorSingularValue()`, `PetscViewer`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorSingularValue()`, `PetscViewer`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSingularValueCreate"))
@@ -6065,7 +6105,7 @@ end
 end 
 
 """
-	KSPMonitorSolution(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSolution(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Print the solution norm at each iteration of an iterative solver.
 
 Collective
@@ -6081,7 +6121,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
+See also: `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSolution"))
@@ -6104,7 +6144,7 @@ end
 end 
 
 """
-	KSPMonitorSolutionDraw(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSolutionDraw(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the solution at each iteration of an iterative solver.
 
 Collective
@@ -6120,7 +6160,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
+See also: `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSolutionDraw"))
@@ -6143,7 +6183,7 @@ end
 end 
 
 """
-	KSPMonitorSolutionDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSolutionDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the solution norm at each iteration of an iterative solver.
 
 Collective
@@ -6159,7 +6199,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorSolutionDrawLGCreate()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorSolutionDrawLGCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSolutionDrawLG"))
@@ -6182,7 +6222,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = KSPMonitorSolutionDrawLGCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = KSPMonitorSolutionDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the context for the `KSP` monitor `KSPMonitorSolutionDrawLG()`
 
 Collective
@@ -6197,7 +6237,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
+See also: `KSPMonitorSet()`, `KSPMonitorTrueResidual()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorSolutionDrawLGCreate"))
@@ -6222,7 +6262,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the true residual norm, as well as the (possibly preconditioned, possibly approximate) residual norm,
 at each iteration of a `KSPSolve()` iterative solver.
 
@@ -6239,7 +6279,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`, `PetscViewerAndFormat`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`, `PetscViewerAndFormat`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidual"))
@@ -6262,7 +6302,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the true residual norm at each iteration of an iterative solver.
 
 Collective
@@ -6278,7 +6318,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorTrueResidualDraw()`, `KSPMonitorResidual`,
+See also: `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorTrueResidualDraw()`, `KSPMonitorResidual`,
 `KSPMonitorTrueResidualDrawLGCreate()`
 
 # External Links
@@ -6302,7 +6342,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = KSPMonitorTrueResidualDrawLGCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = KSPMonitorTrueResidualDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the context for the true residual monitor `KSPMonitorTrueResidualDrawLG()`
 
 Collective
@@ -6317,7 +6357,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `PetscViewerAndFormat`
+See also: `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `PetscViewerAndFormat`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualDrawLGCreate"))
@@ -6342,7 +6382,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidualMax(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidualMax(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the true residual max norm at each iteration of an iterative solver.
 
 Collective
@@ -6358,7 +6398,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`
+See also: `KSP`, `KSPMonitorSet()`, `KSPMonitorResidual()`, `KSPMonitorTrueResidualMaxNorm()`
 
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualMax"))
@@ -6381,7 +6421,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidualView(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidualView(petsclib::PetscLibType, ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the true residual at each iteration of an iterative solver.
 
 Collective
@@ -6397,7 +6437,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidual()`,
+See also: `PETSCVIEWERDRAW`, `KSP`, `KSPMonitorSet()`, `KSPMonitorTrueResidual()`, `KSPMonitorResidual()`,
 `KSPMonitorTrueResidualDrawLG()`, `PetscViewerAndFormat`
 
 # External Links
@@ -6421,7 +6461,7 @@ end
 end 
 
 """
-	mmax::PetscInt = KSPPIPEFCGGetMmax(petsclib::PetscLibType,ksp::AbstractKSP) 
+	mmax::PetscInt = KSPPIPEFCGGetMmax(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the maximum number of previous directions `KSPPIPEFCG` will store
 
 Not Collective
@@ -6434,7 +6474,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGGetTruncationType()`, `KSPPIPEFCGGetNprealloc()`, `KSPPIPEFCGSetMmax()`, `KSPFCGGetMmax()`, `KSPFCGSetMmax()`
+See also: `KSPPIPEFCG`, `KSPPIPEFCGGetTruncationType()`, `KSPPIPEFCGGetNprealloc()`, `KSPPIPEFCGSetMmax()`, `KSPFCGGetMmax()`, `KSPFCGSetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetMmax"))
@@ -6459,7 +6499,7 @@ end
 end 
 
 """
-	nprealloc::PetscInt = KSPPIPEFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP) 
+	nprealloc::PetscInt = KSPPIPEFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the number of directions to preallocate by `KSPPIPEFCG`
 
 Not Collective
@@ -6472,7 +6512,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGGetTruncationType()`, `KSPPIPEFCGSetNprealloc()`, `KSPPIPEFCGSetMmax()`, `KSPPIPEFCGGetMmax()`
+See also: `KSPPIPEFCG`, `KSPPIPEFCGGetTruncationType()`, `KSPPIPEFCGSetNprealloc()`, `KSPPIPEFCGSetMmax()`, `KSPPIPEFCGGetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetNprealloc"))
@@ -6497,7 +6537,7 @@ end
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPPIPEFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	truncstrat::KSPFCDTruncationType = KSPPIPEFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the truncation strategy employed by `KSPPIPEFCG`
 
 Not Collective
@@ -6510,7 +6550,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+See also: `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetTruncationType"))
@@ -6535,7 +6575,7 @@ end
 end 
 
 """
-	KSPPIPEFCGSetMmax(petsclib::PetscLibType,ksp::AbstractKSP, mmax::PetscInt) 
+	KSPPIPEFCGSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPPIPEFCG` will store for orthogonalization
 
 Logically Collective
@@ -6549,7 +6589,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType()`, `KSPPIPEFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`
+See also: `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType()`, `KSPPIPEFCGSetNprealloc()`, `KSPFCGSetMmax()`, `KSPFCGGetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetMmax"))
@@ -6572,7 +6612,7 @@ end
 end 
 
 """
-	KSPPIPEFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP, nprealloc::PetscInt) 
+	KSPPIPEFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPPIPEFCG`
 
 Logically Collective
@@ -6586,7 +6626,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType()`, `KSPPIPEFCGGetNprealloc()`, `KSPPIPEFCGSetMmax()`, `KSPPIPEFCGGetMmax()`
+See also: `KSPPIPEFCG`, `KSPPIPEFCGSetTruncationType()`, `KSPPIPEFCGGetNprealloc()`, `KSPPIPEFCGSetMmax()`, `KSPPIPEFCGGetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetNprealloc"))
@@ -6609,7 +6649,7 @@ end
 end 
 
 """
-	KSPPIPEFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
+	KSPPIPEFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPPIPEFCG` uses during orthogonalization
 
 Logically Collective
@@ -6617,7 +6657,17 @@ Logically Collective
 Input Parameters:
 - `ksp`        - the Krylov space context
 - `truncstrat` - the choice of strategy
--seealso: [](ch_ksp), `KSPPIPEFCG`, `KSPPIPEFCGGetTruncationType`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+``
+KSP_FCD_TRUNC_TYPE_STANDARD uses all (up to `mmax`) stored directions
+KSP_FCD_TRUNC_TYPE_NOTAY uses `max(1,mod(i,mmax))` stored directions at iteration i = 0, 1, ...
+``
+
+Options Database Key:
+- `-ksp_pipefcg_truncation_type (standard|notay)` - which stored search directions to orthogonalize against
+
+Level: intermediate
+
+See also: `KSPPIPEFCG`, `KSPPIPEFCGGetTruncationType`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetTruncationType"))
@@ -6640,7 +6690,7 @@ end
 end 
 
 """
-	KSPPIPEFGMRESSetShift(petsclib::PetscLibType,ksp::AbstractKSP, shift::PetscScalar) 
+	KSPPIPEFGMRESSetShift(petsclib::PetscLibType, ksp::AbstractKSP, shift::PetscScalar) 
 Set the shift parameter for the flexible, pipelined `KSPPIPEFGMRES` solver.
 
 Logically Collective
@@ -6654,7 +6704,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEFGMRES`, `KSPComputeEigenvalues()`
+See also: `KSPPIPEFGMRES`, `KSPComputeEigenvalues()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEFGMRESSetShift"))
@@ -6677,7 +6727,7 @@ end
 end 
 
 """
-	mmax::PetscInt = KSPPIPEGCRGetMmax(petsclib::PetscLibType,ksp::AbstractKSP) 
+	mmax::PetscInt = KSPPIPEGCRGetMmax(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the maximum number of previous directions `KSPPIPEGCR` will store
 
 Not Collective
@@ -6690,7 +6740,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRGetNprealloc()`, `KSPPIPEGCRSetMmax()`
+See also: `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRGetNprealloc()`, `KSPPIPEGCRSetMmax()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetMmax"))
@@ -6715,7 +6765,7 @@ end
 end 
 
 """
-	nprealloc::PetscInt = KSPPIPEGCRGetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP) 
+	nprealloc::PetscInt = KSPPIPEGCRGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the number of directions preallocate by `KSPPIPEGCR`
 
 Not Collective
@@ -6728,7 +6778,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRSetNprealloc()`
+See also: `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRSetNprealloc()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetNprealloc"))
@@ -6753,7 +6803,7 @@ end
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPPIPEGCRGetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	truncstrat::KSPFCDTruncationType = KSPPIPEGCRGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP) 
 get the truncation strategy employed by `KSPPIPEGCR`
 
 Not Collective
@@ -6763,7 +6813,14 @@ Input Parameter:
 
 Output Parameter:
 - `truncstrat` - the strategy type
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+``
+KSP_FCD_TRUNC_TYPE_STANDARD uses all (up to `mmax`) stored directions
+KSP_FCD_TRUNC_TYPE_NOTAY uses the last `max(1,mod(i,mmax))` directions at iteration i =0, 1, ..
+``
+
+Level: intermediate
+
+See also: `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPFCDTruncationType`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetTruncationType"))
@@ -6788,7 +6845,7 @@ end
 end 
 
 """
-	unroll_w::PetscBool = KSPPIPEGCRGetUnrollW(petsclib::PetscLibType,ksp::AbstractKSP) 
+	unroll_w::PetscBool = KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get information on `KSPPIPEGCR` if it uses unrolling the w vector
 
 Logically Collective
@@ -6801,7 +6858,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRGetNprealloc()`, `KSPPIPEGCRSetUnrollW()`
+See also: `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRGetNprealloc()`, `KSPPIPEGCRSetUnrollW()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetUnrollW"))
@@ -6826,7 +6883,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetMmax(petsclib::PetscLibType,ksp::AbstractKSP, mmax::PetscInt) 
+	KSPPIPEGCRSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPPIPEGCR` will store for orthogonalization
 
 Logically Collective
@@ -6840,7 +6897,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPPIPEGCRSetNprealloc()`
+See also: `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPPIPEGCRSetNprealloc()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetMmax"))
@@ -6863,7 +6920,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP, nprealloc::PetscInt) 
+	KSPPIPEGCRSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPPIPEGCR`
 
 Logically Collective
@@ -6877,7 +6934,7 @@ Level: advanced
 Options Database Key:
 - `-ksp_pipegcr_nprealloc N` - number of vectors to preallocate
 
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRGetNprealloc()`
+See also: `KSPPIPEGCR`, `KSPPIPEGCRGetTruncationType()`, `KSPPIPEGCRGetNprealloc()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetNprealloc"))
@@ -6900,7 +6957,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
+	KSPPIPEGCRSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPPIPEGCR` uses during orthogonalization
 
 Logically Collective
@@ -6908,7 +6965,17 @@ Logically Collective
 Input Parameters:
 - `ksp`        - the Krylov space context
 - `truncstrat` - the choice of strategy
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPFCDTruncationType`, `KSPPIPEGCRGetTruncationType()`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
+``
+KSP_FCD_TRUNC_TYPE_STANDARD uses all (up to `mmax`) stored directions
+KSP_FCD_TRUNC_TYPE_NOTAY uses the last `max(1,mod(i,mmax))` directions at iteration i = 0, 1, ..
+``
+
+Options Database Key:
+- `-ksp_pipegcr_truncation_type (standard|notay)` - which stored basis vectors to orthogonalize against
+
+Level: intermediate
+
+See also: `KSPPIPEGCR`, `KSPFCDTruncationType`, `KSPPIPEGCRGetTruncationType()`, `KSP_FCD_TRUNC_TYPE_STANDARD`, `KSP_FCD_TRUNC_TYPE_NOTAY`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetTruncationType"))
@@ -6931,7 +6998,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetUnrollW(petsclib::PetscLibType,ksp::AbstractKSP, unroll_w::PetscBool) 
+	KSPPIPEGCRSetUnrollW(petsclib::PetscLibType, ksp::AbstractKSP, unroll_w::PetscBool) 
 Set to `PETSC_TRUE` to use `KSPPIPEGCR` with unrolling of the w vector
 
 Logically Collective
@@ -6945,7 +7012,7 @@ Level: intermediate
 Options Database Key:
 - `-ksp_pipegcr_unroll_w (true|false)` - use unrolling
 
--seealso: [](ch_ksp), `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPPIPEGCRSetNprealloc()`, `KSPPIPEGCRGetUnrollW()`
+See also: `KSPPIPEGCR`, `KSPPIPEGCRSetTruncationType()`, `KSPPIPEGCRSetNprealloc()`, `KSPPIPEGCRGetUnrollW()`
 
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetUnrollW"))
@@ -6968,7 +7035,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = KSPPythonGetType(petsclib::PetscLibType,ksp::AbstractKSP) 
+	pyname::Ptr{Cchar} = KSPPythonGetType(petsclib::PetscLibType, ksp::AbstractKSP) 
 Get the type of a `KSP` object implemented in Python.
 
 Not Collective
@@ -6981,7 +7048,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSetType()`, `KSPPYTHON`, `PetscPythonInitialize()`, `KSPPythonSetType()`
+See also: `KSPCreate()`, `KSPSetType()`, `KSPPYTHON`, `PetscPythonInitialize()`, `KSPPythonSetType()`
 
 # External Links
 $(_doc_external("KSP/KSPPythonGetType"))
@@ -7006,7 +7073,7 @@ end
 end 
 
 """
-	KSPPythonSetType(petsclib::PetscLibType,ksp::AbstractKSP, pyname::String) 
+	KSPPythonSetType(petsclib::PetscLibType, ksp::AbstractKSP, pyname::String) 
 Initialize a `KSP` object to a type implemented in Python.
 
 Collective
@@ -7020,7 +7087,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSetType()`, `KSPPYTHON`, `PetscPythonInitialize()`
+See also: `KSPCreate()`, `KSPSetType()`, `KSPPYTHON`, `PetscPythonInitialize()`
 
 # External Links
 $(_doc_external("KSP/KSPPythonSetType"))
@@ -7043,7 +7110,7 @@ end
 end 
 
 """
-	quadratic::PetscReal = KSPQCGGetQuadratic(petsclib::PetscLibType,ksp::AbstractKSP) 
+	quadratic::PetscReal = KSPQCGGetQuadratic(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the value of the quadratic function, evaluated at the new iterate
 
 Collective
@@ -7056,7 +7123,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPQCG`
+See also: `KSPQCG`
 
 # External Links
 $(_doc_external("KSP/KSPQCGGetQuadratic"))
@@ -7081,7 +7148,7 @@ end
 end 
 
 """
-	tsnorm::PetscReal = KSPQCGGetTrialStepNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
+	tsnorm::PetscReal = KSPQCGGetTrialStepNorm(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the norm of a trial step vector in `KSPQCG`.  The WCG step may be
 constrained, so this is not necessarily the length of the ultimate step taken in `KSPQCG`.
 
@@ -7095,7 +7162,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPQCG`, `KSPQCGSetTrustRegionRadius()`
+See also: `KSPQCG`, `KSPQCGSetTrustRegionRadius()`
 
 # External Links
 $(_doc_external("KSP/KSPQCGGetTrialStepNorm"))
@@ -7120,7 +7187,7 @@ end
 end 
 
 """
-	KSPQCGSetTrustRegionRadius(petsclib::PetscLibType,ksp::AbstractKSP, delta::PetscReal) 
+	KSPQCGSetTrustRegionRadius(petsclib::PetscLibType, ksp::AbstractKSP, delta::PetscReal) 
 Sets the radius of the trust region for `KSPQCG`
 
 Logically Collective
@@ -7134,7 +7201,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPQCG`, `KSPQCGGetTrialStepNorm()`
+See also: `KSPQCG`, `KSPQCGGetTrialStepNorm()`
 
 # External Links
 $(_doc_external("KSP/KSPQCGSetTrustRegionRadius"))
@@ -7157,7 +7224,7 @@ end
 end 
 
 """
-	KSPRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	KSPRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a method, `KSPType`, to the Krylov subspace solver package.
 
 Not Collective, No Fortran Support
@@ -7168,7 +7235,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPType`, `KSPSetType`, `KSPRegisterAll()`
+See also: `KSP`, `KSPType`, `KSPSetType`, `KSPRegisterAll()`
 
 # External Links
 $(_doc_external("KSP/KSPRegister"))
@@ -7191,7 +7258,7 @@ end
 end 
 
 """
-	KSPReset(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPReset(petsclib::PetscLibType, ksp::AbstractKSP) 
 Removes any allocated `Vec` and `Mat` from the `KSP` data structures.
 
 Collective
@@ -7201,7 +7268,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSetUp()`, `KSPSolve()`, `KSP`
+See also: `KSPCreate()`, `KSPSetUp()`, `KSPSolve()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPReset"))
@@ -7224,7 +7291,7 @@ end
 end 
 
 """
-	KSPResetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPResetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP) 
 Sets `KSP` parameters from user options ONLY if the `KSP` was previously set from options
 
 Collective
@@ -7234,7 +7301,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetFromOptions()`, `KSPSetOptionsPrefix()`
+See also: `KSPSetFromOptions()`, `KSPSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("KSP/KSPResetFromOptions"))
@@ -7257,7 +7324,7 @@ end
 end 
 
 """
-	KSPResetViewers(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPResetViewers(petsclib::PetscLibType, ksp::AbstractKSP) 
 Resets all the viewers set from the options database during `KSPSetFromOptions()`
 
 Collective
@@ -7267,7 +7334,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSetUp()`, `KSPSolve()`, `KSPSetFromOptions()`, `KSP`
+See also: `KSPCreate()`, `KSPSetUp()`, `KSPSolve()`, `KSPSetFromOptions()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPResetViewers"))
@@ -7290,7 +7357,7 @@ end
 end 
 
 """
-	KSPRichardsonSetScale(petsclib::PetscLibType,ksp::AbstractKSP, scale::PetscReal) 
+	KSPRichardsonSetScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::PetscReal) 
 Set the damping factor; if this routine is not called, the factor defaults to 1.0.
 
 Logically Collective
@@ -7304,7 +7371,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPRICHARDSON`, `KSPRichardsonSetSelfScale()`
+See also: `KSPRICHARDSON`, `KSPRichardsonSetSelfScale()`
 
 # External Links
 $(_doc_external("KSP/KSPRichardsonSetScale"))
@@ -7327,8 +7394,8 @@ end
 end 
 
 """
-	KSPRichardsonSetSelfScale(petsclib::PetscLibType,ksp::AbstractKSP, scale::PetscBool) 
-Sets Richardson to automatically determine optimal scaling at each iteration to minimize the 2
+	KSPRichardsonSetSelfScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::PetscBool) 
+Sets Richardson to automatically determine optimal scaling at each iteration to minimize the 2-norm of the
 preconditioned residual
 
 Logically Collective
@@ -7342,7 +7409,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPRICHARDSON`, `KSPRichardsonSetScale()`
+See also: `KSPRICHARDSON`, `KSPRichardsonSetScale()`
 
 # External Links
 $(_doc_external("KSP/KSPRichardsonSetSelfScale"))
@@ -7365,8 +7432,8 @@ end
 end 
 
 """
-	KSPSetApplicationContext(petsclib::PetscLibType,ksp::AbstractKSP, ctx::Ptr{Cvoid}) 
-Sets the optional user
+	KSPSetApplicationContext(petsclib::PetscLibType, ksp::AbstractKSP, ctx::Ptr{Cvoid}) 
+Sets the optional user-defined context for the linear solver.
 
 Logically Collective
 
@@ -7376,7 +7443,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPGetApplicationContext()`
+See also: `KSP`, `KSPGetApplicationContext()`
 
 # External Links
 $(_doc_external("KSP/KSPSetApplicationContext"))
@@ -7399,7 +7466,7 @@ end
 end 
 
 """
-	KSPSetCheckNormIteration(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt) 
+	KSPSetCheckNormIteration(petsclib::PetscLibType, ksp::AbstractKSP, it::PetscInt) 
 Sets the first iteration at which the norm of the residual will be
 computed and used in the convergence test of `KSPSolve()` for the given `KSP` context
 
@@ -7411,7 +7478,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSPConvergedSkip()`, `KSPSetNormType()`, `KSPSetLagNorm()`
+See also: `KSP`, `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSPConvergedSkip()`, `KSPSetNormType()`, `KSPSetLagNorm()`
 
 # External Links
 $(_doc_external("KSP/KSPSetCheckNormIteration"))
@@ -7434,7 +7501,7 @@ end
 end 
 
 """
-	KSPSetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Sets a flag so that the extreme eigenvalues
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -7447,7 +7514,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPComputeEigenvalues()`, `KSPComputeEigenvaluesExplicitly()`, `KSP`, `KSPSetComputeRitz()`
+See also: `KSPComputeEigenvalues()`, `KSPComputeEigenvaluesExplicitly()`, `KSP`, `KSPSetComputeRitz()`
 
 # External Links
 $(_doc_external("KSP/KSPSetComputeEigenvalues"))
@@ -7470,7 +7537,7 @@ end
 end 
 
 """
-	KSPSetComputeInitialGuess(petsclib::PetscLibType,ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set routine to compute the initial guess of the linear system
 
 Logically Collective
@@ -7482,7 +7549,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `KSPSolve()`, `KSPSetComputeRHS()`, `KSPSetComputeOperators()`, `DMKSPSetComputeInitialGuess()`, `KSPSetInitialGuessNonzero()`,
+See also: `KSP`, `KSPSolve()`, `KSPSetComputeRHS()`, `KSPSetComputeOperators()`, `DMKSPSetComputeInitialGuess()`, `KSPSetInitialGuessNonzero()`,
 `KSPComputeInitialGuessFn`
 
 # External Links
@@ -7506,7 +7573,7 @@ end
 end 
 
 """
-	KSPSetComputeOperators(petsclib::PetscLibType,ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetComputeOperators(petsclib::PetscLibType, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set routine to compute the linear operators
 
 Logically Collective
@@ -7518,7 +7585,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `KSPSetOperators()`, `KSPSetComputeRHS()`, `DMKSPSetComputeOperators()`, `KSPSetComputeInitialGuess()`, `KSPComputeOperatorsFn`
+See also: `KSP`, `KSPSetOperators()`, `KSPSetComputeRHS()`, `DMKSPSetComputeOperators()`, `KSPSetComputeInitialGuess()`, `KSPComputeOperatorsFn`
 
 # External Links
 $(_doc_external("KSP/KSPSetComputeOperators"))
@@ -7541,8 +7608,8 @@ end
 end 
 
 """
-	KSPSetComputeRHS(petsclib::PetscLibType,ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
-set routine to compute the right
+	KSPSetComputeRHS(petsclib::PetscLibType, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+set routine to compute the right-hand side of the linear system
 
 Logically Collective
 
@@ -7553,7 +7620,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `KSPSolve()`, `DMKSPSetComputeRHS()`, `KSPSetComputeOperators()`, `KSPSetOperators()`, `KSPComputeRHSFn`
+See also: `KSP`, `KSPSolve()`, `DMKSPSetComputeRHS()`, `KSPSetComputeOperators()`, `KSPSetOperators()`, `KSPComputeRHSFn`
 
 # External Links
 $(_doc_external("KSP/KSPSetComputeRHS"))
@@ -7576,7 +7643,7 @@ end
 end 
 
 """
-	KSPSetComputeRitz(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetComputeRitz(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Sets a flag so that the Ritz or harmonic Ritz pairs
 will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -7589,7 +7656,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPComputeRitz()`, `KSP`, `KSPComputeEigenvalues()`, `KSPComputeExtremeSingularValues()`
+See also: `KSPComputeRitz()`, `KSP`, `KSPComputeEigenvalues()`, `KSPComputeExtremeSingularValues()`
 
 # External Links
 $(_doc_external("KSP/KSPSetComputeRitz"))
@@ -7612,7 +7679,7 @@ end
 end 
 
 """
-	KSPSetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Sets a flag so that the extreme singular
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -7628,7 +7695,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPComputeExtremeSingularValues()`, `KSPMonitorSingularValue()`, `KSP`, `KSPSetComputeRitz()`
+See also: `KSPComputeExtremeSingularValues()`, `KSPMonitorSingularValue()`, `KSP`, `KSPSetComputeRitz()`
 
 # External Links
 $(_doc_external("KSP/KSPSetComputeSingularValues"))
@@ -7651,7 +7718,7 @@ end
 end 
 
 """
-	KSPSetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Allows to declare convergence and return `KSP_CONVERGED_NEG_CURVE` when negative curvature is detected
 
 Collective
@@ -7665,7 +7732,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergedReason`, `KSPGetConvergedNegativeCurvature()`
+See also: `KSP`, `KSPConvergedReason`, `KSPGetConvergedNegativeCurvature()`
 
 # External Links
 $(_doc_external("KSP/KSPSetConvergedNegativeCurvature"))
@@ -7688,7 +7755,7 @@ end
 end 
 
 """
-	KSPSetConvergenceTest(petsclib::PetscLibType,ksp::AbstractKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+	KSPSetConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Sets the function to be used to determine convergence of `KSPSolve()`
 
 Logically Collective
@@ -7701,7 +7768,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPConvergenceTestFn`, `KSPConvergedDefault()`, `KSPGetConvergenceContext()`, `KSPSetTolerances()`, `KSPGetConvergenceTest()`, `KSPGetAndClearConvergenceTest()`
+See also: `KSP`, `KSPConvergenceTestFn`, `KSPConvergedDefault()`, `KSPGetConvergenceContext()`, `KSPSetTolerances()`, `KSPGetConvergenceTest()`, `KSPGetAndClearConvergenceTest()`
 
 # External Links
 $(_doc_external("KSP/KSPSetConvergenceTest"))
@@ -7724,7 +7791,7 @@ end
 end 
 
 """
-	KSPSetDM(petsclib::PetscLibType,ksp::AbstractKSP, dm::AbstractPetscDM) 
+	KSPSetDM(petsclib::PetscLibType, ksp::AbstractKSP, dm::AbstractPetscDM) 
 Sets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
 
 Logically Collective
@@ -7735,7 +7802,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `DM`, `KSPGetDM()`, `KSPSetDMActive()`, `KSPSetComputeOperators()`, `KSPSetComputeRHS()`, `KSPSetComputeInitialGuess()`, `DMKSPSetComputeOperators()`, `DMKSPSetComputeRHS()`, `DMKSPSetComputeInitialGuess()`
+See also: `KSP`, `DM`, `KSPGetDM()`, `KSPSetDMActive()`, `KSPSetComputeOperators()`, `KSPSetComputeRHS()`, `KSPSetComputeInitialGuess()`, `DMKSPSetComputeOperators()`, `DMKSPSetComputeRHS()`, `DMKSPSetComputeInitialGuess()`
 
 # External Links
 $(_doc_external("KSP/KSPSetDM"))
@@ -7758,8 +7825,8 @@ end
 end 
 
 """
-	KSPSetDMActive(petsclib::PetscLibType,ksp::AbstractKSP, active::KSPDMActive, flg::PetscBool) 
-Indicates the `DM` should be used to generate the linear system matrix, the right
+	KSPSetDMActive(petsclib::PetscLibType, ksp::AbstractKSP, active::KSPDMActive, flg::PetscBool) 
+Indicates the `DM` should be used to generate the linear system matrix, the right-hand side vector, and the initial guess
 
 Logically Collective
 
@@ -7770,7 +7837,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `DM`, `KSPGetDM()`, `KSPSetDM()`, `SNESSetDM()`, `KSPSetComputeOperators()`, `KSPSetComputeRHS()`, `KSPSetComputeInitialGuess()`
+See also: `KSP`, `DM`, `KSPGetDM()`, `KSPSetDM()`, `SNESSetDM()`, `KSPSetComputeOperators()`, `KSPSetComputeRHS()`, `KSPSetComputeInitialGuess()`
 
 # External Links
 $(_doc_external("KSP/KSPSetDMActive"))
@@ -7793,7 +7860,7 @@ end
 end 
 
 """
-	KSPSetDiagonalScale(petsclib::PetscLibType,ksp::AbstractKSP, scale::PetscBool) 
+	KSPSetDiagonalScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::PetscBool) 
 Tells `KSP` to symmetrically diagonally scale the system
 before solving. This actually CHANGES the matrix (and right-hand side).
 
@@ -7809,7 +7876,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPGetDiagonalScale()`, `KSPSetDiagonalScaleFix()`, `KSP`
+See also: `KSPGetDiagonalScale()`, `KSPSetDiagonalScaleFix()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetDiagonalScale"))
@@ -7832,7 +7899,7 @@ end
 end 
 
 """
-	KSPSetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractKSP, fix::PetscBool) 
+	KSPSetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractKSP, fix::PetscBool) 
 Tells `KSP` to diagonally scale the system back after solving.
 
 Logically Collective
@@ -7844,7 +7911,7 @@ rescale (default)
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGetDiagonalScale()`, `KSPSetDiagonalScale()`, `KSPGetDiagonalScaleFix()`, `KSP`
+See also: `KSPGetDiagonalScale()`, `KSPSetDiagonalScale()`, `KSPGetDiagonalScaleFix()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetDiagonalScaleFix"))
@@ -7867,7 +7934,7 @@ end
 end 
 
 """
-	KSPSetErrorHistory(petsclib::PetscLibType,ksp::AbstractKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
+	KSPSetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
 Sets the array used to hold the error history. If set, this array will contain the error norms computed at each iteration of the solver.
 
 Not Collective
@@ -7880,7 +7947,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPGetErrorHistory()`, `KSPSetResidualHistory()`, `KSP`
+See also: `KSPGetErrorHistory()`, `KSPSetResidualHistory()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetErrorHistory"))
@@ -7903,7 +7970,7 @@ end
 end 
 
 """
-	KSPSetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Causes `KSPSolve()` to generate an error if the solver has not converged as soon as the error is detected.
 
 Logically Collective
@@ -7917,7 +7984,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGetErrorIfNotConverged()`, `KSP`
+See also: `KSPGetErrorIfNotConverged()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetErrorIfNotConverged"))
@@ -7940,7 +8007,7 @@ end
 end 
 
 """
-	KSPSetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP) 
 Sets `KSP` options from the options database.
 This routine must be called before `KSPSetUp()` if the user is to be
 allowed to set the Krylov type.
@@ -7991,7 +8058,7 @@ is not treated as an error on inner solves
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `KSPSetOptionsPrefix()`, `KSPResetFromOptions()`, `KSPSetUseFischerGuess()`
+See also: `KSP`, `KSPSetOptionsPrefix()`, `KSPResetFromOptions()`, `KSPSetUseFischerGuess()`
 
 # External Links
 $(_doc_external("KSP/KSPSetFromOptions"))
@@ -8014,7 +8081,7 @@ end
 end 
 
 """
-	KSPSetGuess(petsclib::PetscLibType,ksp::AbstractKSP, guess::KSPGuess) 
+	KSPSetGuess(petsclib::PetscLibType, ksp::AbstractKSP, guess::KSPGuess) 
 Set the initial guess object `KSPGuess` to be used by the `KSP` object to generate initial guesses
 
 Logically Collective
@@ -8025,7 +8092,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPGuess`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`, `KSPSetUseFischerGuess()`, `KSPGetGuess()`
+See also: `KSP`, `KSPGuess`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`, `KSPSetUseFischerGuess()`, `KSPGetGuess()`
 
 # External Links
 $(_doc_external("KSP/KSPSetGuess"))
@@ -8048,7 +8115,7 @@ end
 end 
 
 """
-	KSPSetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Tells the iterative solver to use `PCApply()` on the right hand side vector to compute the initial guess (The Knoll trick)
 
 Logically Collective
@@ -8059,7 +8126,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPGetInitialGuessKnoll()`, `KSPGuess`, `KSPSetInitialGuessNonzero()`, `KSPGetInitialGuessNonzero()`, `KSP`
+See also: `KSPGetInitialGuessKnoll()`, `KSPGuess`, `KSPSetInitialGuessNonzero()`, `KSPGetInitialGuessNonzero()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetInitialGuessKnoll"))
@@ -8082,7 +8149,7 @@ end
 end 
 
 """
-	KSPSetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Tells the iterative solver that the
 initial guess is nonzero; otherwise `KSP` assumes the initial guess
 is to be zero (and thus zeros it out before solving).
@@ -8098,7 +8165,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPGetInitialGuessNonzero()`, `KSPGuessSetType()`, `KSPGuessType`, `KSP`
+See also: `KSPGetInitialGuessNonzero()`, `KSPGuessSetType()`, `KSPGuessType`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetInitialGuessNonzero"))
@@ -8121,7 +8188,7 @@ end
 end 
 
 """
-	KSPSetLagNorm(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetLagNorm(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Lags the residual norm calculation so that it is computed as part of the `MPI_Allreduce()` used for
 computing the inner products needed for the next iteration.
 
@@ -8136,7 +8203,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSPConvergedSkip()`, `KSPSetNormType()`, `KSPSetCheckNormIteration()`
+See also: `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSPConvergedSkip()`, `KSPSetNormType()`, `KSPSetCheckNormIteration()`
 
 # External Links
 $(_doc_external("KSP/KSPSetLagNorm"))
@@ -8159,7 +8226,7 @@ end
 end 
 
 """
-	KSPSetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractKSP, bs::PetscInt) 
+	KSPSetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractKSP, bs::PetscInt) 
 Sets the maximum number of columns treated simultaneously in `KSPMatSolve()`.
 
 Logically Collective
@@ -8170,7 +8237,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPMatSolve()`, `KSPGetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matproduct_batch_size`
+See also: `KSPMatSolve()`, `KSPGetMatSolveBatchSize()`, `-mat_mumps_icntl_27`, `-matproduct_batch_size`
 
 # External Links
 $(_doc_external("KSP/KSPSetMatSolveBatchSize"))
@@ -8193,7 +8260,7 @@ end
 end 
 
 """
-	KSPSetMinimumIterations(petsclib::PetscLibType,ksp::AbstractKSP, minit::PetscInt) 
+	KSPSetMinimumIterations(petsclib::PetscLibType, ksp::AbstractKSP, minit::PetscInt) 
 Sets the minimum number of iterations to use, regardless of the tolerances
 
 Logically Collective
@@ -8207,7 +8274,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGetTolerances()`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSP`, `KSPSetTolerances()`, `KSPGetMinimumIterations()`
+See also: `KSPGetTolerances()`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSP`, `KSPSetTolerances()`, `KSPGetMinimumIterations()`
 
 # External Links
 $(_doc_external("KSP/KSPSetMinimumIterations"))
@@ -8230,7 +8297,7 @@ end
 end 
 
 """
-	KSPSetNestLevel(petsclib::PetscLibType,ksp::AbstractKSP, level::PetscInt) 
+	KSPSetNestLevel(petsclib::PetscLibType, ksp::AbstractKSP, level::PetscInt) 
 sets the amount of nesting the `KSP` has. That is the number of levels of `KSP` above this `KSP` in a linear solve.
 
 Collective
@@ -8241,7 +8308,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPType`, `KSPGetNestLevel()`, `PCSetKSPNestLevel()`, `PCGetKSPNestLevel()`
+See also: `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPType`, `KSPGetNestLevel()`, `PCSetKSPNestLevel()`, `PCGetKSPNestLevel()`
 
 # External Links
 $(_doc_external("KSP/KSPSetNestLevel"))
@@ -8264,7 +8331,7 @@ end
 end 
 
 """
-	KSPSetNormType(petsclib::PetscLibType,ksp::AbstractKSP, normtype::KSPNormType) 
+	KSPSetNormType(petsclib::PetscLibType, ksp::AbstractKSP, normtype::KSPNormType) 
 Sets the type of residual norm that is used for convergence testing in `KSPSolve()` for the given `KSP` context
 
 Logically Collective
@@ -8272,7 +8339,25 @@ Logically Collective
 Input Parameters:
 - `ksp`      - Krylov solver context
 - `normtype` - one of
--seealso: [](ch_ksp), `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSPConvergedSkip()`, `KSPSetCheckNormIteration()`, `KSPSetPCSide()`, `KSPGetPCSide()`, `KSPNormType`
+``
+KSP_NORM_NONE             - skips computing the norm, this should generally only be used if you are using
+the Krylov method as a smoother with a fixed small number of iterations.
+Implicitly sets `KSPConvergedSkip()` as the `KSP` convergence test.
+Note that certain algorithms such as `KSPGMRES` ALWAYS require the norm calculation,
+for these methods the norms are still computed, they are just not used in
+the convergence test.
+KSP_NORM_PRECONDITIONED   - the default for left-preconditioned solves, uses the 2-norm
+of the preconditioned residual  B^{-1}(b - A x).
+KSP_NORM_UNPRECONDITIONED - uses the 2-norm of the true b - Ax residual.
+KSP_NORM_NATURAL          - uses the A norm of the true b - Ax residual; supported by `KSPCG`, `KSPCR`, `KSPCGNE`, `KSPCGS`
+``
+
+Options Database Key:
+- `-ksp_norm_type (none|preconditioned|unpreconditioned|natural)` - set `KSP` norm type
+
+Level: advanced
+
+See also: `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSPConvergedSkip()`, `KSPSetCheckNormIteration()`, `KSPSetPCSide()`, `KSPGetPCSide()`, `KSPNormType`
 
 # External Links
 $(_doc_external("KSP/KSPSetNormType"))
@@ -8295,7 +8380,7 @@ end
 end 
 
 """
-	KSPSetOperators(petsclib::PetscLibType,ksp::AbstractKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
+	KSPSetOperators(petsclib::PetscLibType, ksp::AbstractKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets the matrix associated with the linear system
 and a (possibly) different one from which the preconditioner will be built into the `KSP` context. The matrix will then be used during `KSPSolve()`
 
@@ -8308,7 +8393,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `Mat`, `KSPSolve()`, `KSPGetPC()`, `PCGetOperators()`, `PCSetOperators()`, `KSPGetOperators()`, `KSPSetComputeOperators()`, `KSPSetComputeInitialGuess()`, `KSPSetComputeRHS()`
+See also: `KSP`, `Mat`, `KSPSolve()`, `KSPGetPC()`, `PCGetOperators()`, `PCSetOperators()`, `KSPGetOperators()`, `KSPSetComputeOperators()`, `KSPSetComputeInitialGuess()`, `KSPSetComputeRHS()`
 
 # External Links
 $(_doc_external("KSP/KSPSetOperators"))
@@ -8331,7 +8416,7 @@ end
 end 
 
 """
-	KSPSetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractKSP, prefix::String) 
+	KSPSetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP, prefix::String) 
 Sets the prefix used for searching for all
 `KSP` options in the database.
 
@@ -8343,7 +8428,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPAppendOptionsPrefix()`, `KSPGetOptionsPrefix()`, `KSPSetFromOptions()`
+See also: `KSP`, `KSPAppendOptionsPrefix()`, `KSPGetOptionsPrefix()`, `KSPSetFromOptions()`
 
 # External Links
 $(_doc_external("KSP/KSPSetOptionsPrefix"))
@@ -8366,7 +8451,7 @@ end
 end 
 
 """
-	KSPSetPC(petsclib::PetscLibType,ksp::AbstractKSP, pc::PC) 
+	KSPSetPC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC) 
 Sets the preconditioner to be used to calculate the
 application of the preconditioner on a vector into a `KSP`.
 
@@ -8378,7 +8463,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGetPC()`, `KSP`
+See also: `KSPGetPC()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetPC"))
@@ -8401,7 +8486,7 @@ end
 end 
 
 """
-	KSPSetPCSide(petsclib::PetscLibType,ksp::AbstractKSP, side::PCSide) 
+	KSPSetPCSide(petsclib::PetscLibType, ksp::AbstractKSP, side::PCSide) 
 Sets the preconditioning side.
 
 Logically Collective
@@ -8411,7 +8496,18 @@ Input Parameter:
 
 Output Parameter:
 - `side` - the preconditioning side, where side is one of
--seealso: [](ch_ksp), `KSPGetPCSide()`, `KSPSetNormType()`, `KSPGetNormType()`, `KSP`, `KSPSetPreSolve()`, `KSPSetPostSolve()`
+``
+PC_LEFT      - left preconditioning (default)
+PC_RIGHT     - right preconditioning
+PC_SYMMETRIC - symmetric preconditioning
+``
+
+Options Database Key:
+- `-ksp_pc_side (right|left|symmetric)` - `KSP` preconditioner side
+
+Level: intermediate
+
+See also: `KSPGetPCSide()`, `KSPSetNormType()`, `KSPGetNormType()`, `KSP`, `KSPSetPreSolve()`, `KSPSetPostSolve()`
 
 # External Links
 $(_doc_external("KSP/KSPSetPCSide"))
@@ -8434,7 +8530,7 @@ end
 end 
 
 """
-	KSPSetPostSolve(petsclib::PetscLibType,ksp::AbstractKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetPostSolve(petsclib::PetscLibType, ksp::AbstractKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets a function that is called at the end of each `KSPSolve()` (whether it converges or not). Used in conjunction with `KSPSetPreSolve()`.
 
 Logically Collective
@@ -8446,7 +8542,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPPSolveFn`, `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPSetPreSolve()`, `PCEISENSTAT`
+See also: `KSPPSolveFn`, `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPSetPreSolve()`, `PCEISENSTAT`
 
 # External Links
 $(_doc_external("KSP/KSPSetPostSolve"))
@@ -8469,7 +8565,7 @@ end
 end 
 
 """
-	KSPSetPreSolve(petsclib::PetscLibType,ksp::AbstractKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetPreSolve(petsclib::PetscLibType, ksp::AbstractKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets a function that is called at the beginning of each `KSPSolve()`. Used in conjunction with `KSPSetPostSolve()`.
 
 Logically Collective
@@ -8481,7 +8577,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPPSolveFn`, `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPSetPostSolve()`, `PCEISENSTAT`, `PCPreSolve()`, `PCPostSolve()`
+See also: `KSPPSolveFn`, `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPSetPostSolve()`, `PCEISENSTAT`, `PCPreSolve()`, `PCPostSolve()`
 
 # External Links
 $(_doc_external("KSP/KSPSetPreSolve"))
@@ -8504,7 +8600,7 @@ end
 end 
 
 """
-	KSPSetResidualHistory(petsclib::PetscLibType,ksp::AbstractKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
+	KSPSetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
 Sets the array used to hold the residual history.
 If set, this array will contain the residual norms computed at each
 iteration of the solver.
@@ -8520,7 +8616,7 @@ for each new linear solve
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPGetResidualHistory()`, `KSP`
+See also: `KSPGetResidualHistory()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetResidualHistory"))
@@ -8543,7 +8639,7 @@ end
 end 
 
 """
-	KSPSetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractKSP, flag::PetscBool) 
+	KSPSetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractKSP, flag::PetscBool) 
 reuse the current preconditioner for future `KSPSolve()`, do not construct a new preconditioner even if the `Mat` operator
 in the `KSP` has different values
 
@@ -8558,7 +8654,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGetReusePreconditioner()`,
+See also: `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGetReusePreconditioner()`,
 `SNESSetLagPreconditioner()`, `SNES`
 
 # External Links
@@ -8582,7 +8678,7 @@ end
 end 
 
 """
-	KSPSetSkipPCSetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP, flag::PetscBool) 
+	KSPSetSkipPCSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP, flag::PetscBool) 
 prevents `KSPSetFromOptions()` from calling `PCSetFromOptions()`.
 This is used if the same `PC` is shared by more than one `KSP` so its options are not reset for each `KSP`
 
@@ -8594,7 +8690,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `PCSetReusePreconditioner()`, `KSP`
+See also: `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `PCSetReusePreconditioner()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetSkipPCSetFromOptions"))
@@ -8617,7 +8713,7 @@ end
 end 
 
 """
-	KSPSetSupportedNorm(petsclib::PetscLibType,ksp::AbstractKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) 
+	KSPSetSupportedNorm(petsclib::PetscLibType, ksp::AbstractKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) 
 Sets a norm and preconditioner side supported by a `KSPType`
 
 Logically Collective
@@ -8630,7 +8726,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPNormType`, `PCSide`, `KSPSetNormType()`, `KSPSetPCSide()`
+See also: `KSP`, `KSPNormType`, `PCSide`, `KSPSetNormType()`, `KSPSetPCSide()`
 
 # External Links
 $(_doc_external("KSP/KSPSetSupportedNorm"))
@@ -8653,7 +8749,7 @@ end
 end 
 
 """
-	KSPSetTolerances(petsclib::PetscLibType,ksp::AbstractKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) 
+	KSPSetTolerances(petsclib::PetscLibType, ksp::AbstractKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) 
 Sets the relative, absolute, divergence, and maximum
 iteration tolerances used by the default `KSP` convergence testers.
 
@@ -8674,7 +8770,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSPGetTolerances()`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSP`, `KSPSetMinimumIterations()`
+See also: `KSPGetTolerances()`, `KSPConvergedDefault()`, `KSPSetConvergenceTest()`, `KSP`, `KSPSetMinimumIterations()`
 
 # External Links
 $(_doc_external("KSP/KSPSetTolerances"))
@@ -8697,7 +8793,7 @@ end
 end 
 
 """
-	KSPSetType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPType) 
+	KSPSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPType) 
 Sets the algorithm/method to be used to solve the linear system with the given `KSP`
 
 Logically Collective
@@ -8711,7 +8807,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `PCSetType()`, `KSPType`, `KSPRegister()`, `KSPCreate()`, `KSP`
+See also: `PCSetType()`, `KSPType`, `KSPRegister()`, `KSPCreate()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetType"))
@@ -8734,7 +8830,7 @@ end
 end 
 
 """
-	KSPSetUp(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPSetUp(petsclib::PetscLibType, ksp::AbstractKSP) 
 Sets up the internal data structures for the
 later use `KSPSolve()` the `KSP` linear iterative solver.
 
@@ -8745,7 +8841,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPSetUpOnBlocks()`
+See also: `KSPCreate()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPSetUpOnBlocks()`
 
 # External Links
 $(_doc_external("KSP/KSPSetUp"))
@@ -8768,7 +8864,7 @@ end
 end 
 
 """
-	KSPSetUpOnBlocks(petsclib::PetscLibType,ksp::AbstractKSP) 
+	KSPSetUpOnBlocks(petsclib::PetscLibType, ksp::AbstractKSP) 
 Sets up the preconditioner for each block in
 the block Jacobi `PCJACOBI`, overlapping Schwarz `PCASM`, and fieldsplit `PCFIELDSPLIT` preconditioners
 
@@ -8779,7 +8875,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PCSetUpOnBlocks()`, `KSPSetUp()`, `PCSetUp()`, `KSP`
+See also: `PCSetUpOnBlocks()`, `KSPSetUp()`, `PCSetUp()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetUpOnBlocks"))
@@ -8802,7 +8898,7 @@ end
 end 
 
 """
-	KSPSetUseExplicitTranspose(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
+	KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool) 
 Determines the explicit transpose of the operator is formed in `KSPSolveTranspose()`. In some configurations (like GPUs) it may
 be explicitly formed since the solve is much more efficient.
 
@@ -8816,7 +8912,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPSolveTranspose()`, `KSP`
+See also: `KSPSolveTranspose()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPSetUseExplicitTranspose"))
@@ -8839,8 +8935,8 @@ end
 end 
 
 """
-	KSPSetUseFischerGuess(petsclib::PetscLibType,ksp::AbstractKSP, model::PetscInt, size::PetscInt) 
-Use the Paul Fischer algorithm or its variants to compute initial guesses for a set of solves with related right
+	KSPSetUseFischerGuess(petsclib::PetscLibType, ksp::AbstractKSP, model::PetscInt, size::PetscInt) 
+Use the Paul Fischer algorithm or its variants to compute initial guesses for a set of solves with related right-hand sides
 
 Logically Collective
 
@@ -8854,7 +8950,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`, `KSPSetGuess()`, `KSPGetGuess()`, `KSPGuess`
+See also: `KSP`, `KSPSetOptionsPrefix()`, `KSPAppendOptionsPrefix()`, `KSPSetGuess()`, `KSPGetGuess()`, `KSPGuess`
 
 # External Links
 $(_doc_external("KSP/KSPSetUseFischerGuess"))
@@ -8877,7 +8973,7 @@ end
 end 
 
 """
-	KSPSetWorkVecs(petsclib::PetscLibType,ksp::AbstractKSP, nw::PetscInt) 
+	KSPSetWorkVecs(petsclib::PetscLibType, ksp::AbstractKSP, nw::PetscInt) 
 Sets a number of work vectors into a `KSP` object
 
 Collective
@@ -8888,7 +8984,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPCreateVecs()`
+See also: `KSP`, `KSPCreateVecs()`
 
 # External Links
 $(_doc_external("KSP/KSPSetWorkVecs"))
@@ -8911,7 +9007,7 @@ end
 end 
 
 """
-	KSPSolve(petsclib::PetscLibType,ksp::AbstractKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec}) 
+	KSPSolve(petsclib::PetscLibType, ksp::AbstractKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec}) 
 Solves a linear system associated with `KSP` object
 
 Collective
@@ -8941,7 +9037,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSetUp()`, `KSPDestroy()`, `KSPSetTolerances()`, `KSPConvergedDefault()`,
+See also: `KSPCreate()`, `KSPSetUp()`, `KSPDestroy()`, `KSPSetTolerances()`, `KSPConvergedDefault()`,
 `KSPSolveTranspose()`, `KSPGetIterationNumber()`, `MatNullSpaceCreate()`, `MatSetNullSpace()`, `MatSetTransposeNullSpace()`, `KSP`,
 `KSPConvergedReasonView()`, `KSPCheckSolve()`, `KSPSetErrorIfNotConverged()`
 
@@ -8966,7 +9062,7 @@ end
 end 
 
 """
-	KSPSolveTranspose(petsclib::PetscLibType,ksp::AbstractKSP, b::AbstractPetscVec, x::AbstractPetscVec) 
+	KSPSolveTranspose(petsclib::PetscLibType, ksp::AbstractKSP, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves a linear system with the transpose of the matrix associated with the `KSP` object, A^T x = b.
 
 Collective
@@ -8978,7 +9074,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPCreate()`, `KSPSetUp()`, `KSPDestroy()`, `KSPSetTolerances()`, `KSPConvergedDefault()`,
+See also: `KSPCreate()`, `KSPSetUp()`, `KSPDestroy()`, `KSPSetTolerances()`, `KSPConvergedDefault()`,
 `KSPSolve()`, `KSP`, `KSPSetOperators()`
 
 # External Links
@@ -9002,7 +9098,7 @@ end
 end 
 
 """
-	KSPUnwindPreconditioner(petsclib::PetscLibType,ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec) 
+	KSPUnwindPreconditioner(petsclib::PetscLibType, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec) 
 Unwinds the preconditioning in the solution. That is,
 takes solution to the preconditioned problem and gets the solution to the
 original problem from it.
@@ -9019,7 +9115,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSP`, `KSPSetPCSide()`
+See also: `KSP`, `KSPSetPCSide()`
 
 # External Links
 $(_doc_external("KSP/KSPUnwindPreconditioner"))
@@ -9042,7 +9138,7 @@ end
 end 
 
 """
-	KSPView(petsclib::PetscLibType,ksp::AbstractKSP, viewer::PetscViewer) 
+	KSPView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::PetscViewer) 
 Prints the various parameters currently set in the `KSP` object. For example, the convergence tolerances and `KSPType`.
 Also views the `PC` and `Mat` contained by the `KSP` with `PCView()` and `MatView()`.
 
@@ -9057,7 +9153,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_ksp), `KSP`, `PetscViewer`, `PCView()`, `PetscViewerASCIIOpen()`, `KSPViewFromOptions()`
+See also: `KSP`, `PetscViewer`, `PCView()`, `PetscViewerASCIIOpen()`, `KSPViewFromOptions()`
 
 # External Links
 $(_doc_external("KSP/KSPView"))
@@ -9080,7 +9176,7 @@ end
 end 
 
 """
-	KSPViewFromOptions(petsclib::PetscLibType,A::AbstractKSP, obj, name::String) 
+	KSPViewFromOptions(petsclib::PetscLibType, A::AbstractKSP, obj, name::String) 
 View (print) a `KSP` object based on values in the options database. Also views the `PC` and `Mat` contained by the `KSP`
 with `PCView()` and `MatView()`.
 
@@ -9096,7 +9192,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ksp), `KSP`, `KSPView()`, `PetscObjectViewFromOptions()`, `KSPCreate()`
+See also: `KSP`, `KSPView()`, `PetscObjectViewFromOptions()`, `KSPCreate()`
 
 # External Links
 $(_doc_external("KSP/KSPViewFromOptions"))

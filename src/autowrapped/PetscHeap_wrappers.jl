@@ -1,5 +1,5 @@
 """
-	PetscHeapAdd(petsclib::PetscLibType,h::PetscHeap, id::PetscInt, val::PetscInt) 
+	PetscHeapAdd(petsclib::PetscLibType, h::PetscHeap, id::PetscInt, val::PetscInt) 
 Insert an item into a `PetscHeap`.
 
 Not Collective
@@ -11,7 +11,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapPop()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
+See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapPop()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapAdd"))
@@ -34,8 +34,8 @@ end
 end 
 
 """
-	heap::PetscHeap = PetscHeapCreate(petsclib::PetscLibType,maxsize::PetscInt) 
-Creates a `PetscHeap` object, a simple min
+	heap::PetscHeap = PetscHeapCreate(petsclib::PetscLibType, maxsize::PetscInt) 
+Creates a `PetscHeap` object, a simple min-heap for `(id, value)` pairs.
 
 Not Collective
 
@@ -47,7 +47,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapAdd()`, `PetscHeapPop()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapView()`, `PetscHeapDestroy()`
+See also: `PetscHeap`, `PetscHeapAdd()`, `PetscHeapPop()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapView()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapCreate"))
@@ -72,7 +72,7 @@ end
 end 
 
 """
-	PetscHeapDestroy(petsclib::PetscLibType,heap::Union{PetscHeap, Ref{PetscHeap}}) 
+	PetscHeapDestroy(petsclib::PetscLibType, heap::Union{PetscHeap, Ref{PetscHeap}}) 
 Destroys a `PetscHeap` created with `PetscHeapCreate()`.
 
 Not Collective
@@ -82,7 +82,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapCreate()`
+See also: `PetscHeap`, `PetscHeapCreate()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapDestroy"))
@@ -106,7 +106,7 @@ end
 end 
 
 """
-	id::PetscInt,val::PetscInt = PetscHeapPeek(petsclib::PetscLibType,h::PetscHeap) 
+	id::PetscInt,val::PetscInt = PetscHeapPeek(petsclib::PetscLibType, h::PetscHeap) 
 Return the minimum item of a `PetscHeap` without removing it.
 
 Not Collective
@@ -120,7 +120,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`, `PetscHeapDestroy()`
+See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapPeek"))
@@ -147,7 +147,7 @@ end
 end 
 
 """
-	id::PetscInt,val::PetscInt = PetscHeapPop(petsclib::PetscLibType,h::PetscHeap) 
+	id::PetscInt,val::PetscInt = PetscHeapPop(petsclib::PetscLibType, h::PetscHeap) 
 Remove and return the minimum item from a `PetscHeap`.
 
 Not Collective
@@ -161,7 +161,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
+See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPeek()`, `PetscHeapStash()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapPop"))
@@ -188,7 +188,7 @@ end
 end 
 
 """
-	PetscHeapStash(petsclib::PetscLibType,h::PetscHeap, id::PetscInt, val::PetscInt) 
+	PetscHeapStash(petsclib::PetscLibType, h::PetscHeap, id::PetscInt, val::PetscInt) 
 Set aside an item in a `PetscHeap` for later insertion via `PetscHeapUnstash()`.
 
 Not Collective
@@ -200,7 +200,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
+See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapUnstash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapStash"))
@@ -223,7 +223,7 @@ end
 end 
 
 """
-	PetscHeapUnstash(petsclib::PetscLibType,h::PetscHeap) 
+	PetscHeapUnstash(petsclib::PetscLibType, h::PetscHeap) 
 Reinsert all items previously stashed with `PetscHeapStash()` into the heap.
 
 Not Collective
@@ -233,7 +233,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapStash()`, `PetscHeapDestroy()`
+See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapStash()`, `PetscHeapDestroy()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapUnstash"))
@@ -256,7 +256,7 @@ end
 end 
 
 """
-	PetscHeapView(petsclib::PetscLibType,h::PetscHeap, viewer::PetscViewer) 
+	PetscHeapView(petsclib::PetscLibType, h::PetscHeap, viewer::PetscViewer) 
 View the contents of a `PetscHeap`, including any stashed items.
 
 Not Collective
@@ -267,7 +267,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`
+See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`
 
 # External Links
 $(_doc_external("Mat/PetscHeapView"))

@@ -1,6 +1,6 @@
 """
-	AOApplicationToPetsc(petsclib::PetscLibType,ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) 
-Maps a set of integers in the application
+	AOApplicationToPetsc(petsclib::PetscLibType, ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) 
+Maps a set of integers in the application-defined
 ordering to the PETSc ordering.
 
 Collective
@@ -15,7 +15,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
+See also: [](sec_ao), `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
 `AOPetscToApplicationIS()`
 
 # External Links
@@ -39,8 +39,8 @@ end
 end 
 
 """
-	AOApplicationToPetscIS(petsclib::PetscLibType,ao::AbstractAO, is::AbstractIS) 
-Maps an index set in the application
+	AOApplicationToPetscIS(petsclib::PetscLibType, ao::AbstractAO, is::AbstractIS) 
+Maps an index set in the application-defined
 ordering to the PETSc ordering.
 
 Collective
@@ -54,7 +54,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
+See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
 `AOPetscToApplicationIS()`, `AOApplicationToPetsc()`, `ISSTRIDE`, `ISBLOCK`
 
 # External Links
@@ -78,7 +78,7 @@ end
 end 
 
 """
-	AOApplicationToPetscPermuteInt(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) 
+	AOApplicationToPetscPermuteInt(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) 
 Permutes an array of blocks of integers
 in the application-defined ordering to the PETSc ordering.
 
@@ -94,7 +94,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplicationIS()`, `AOApplicationToPetsc()`
+See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplicationIS()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOApplicationToPetscPermuteInt"))
@@ -117,7 +117,7 @@ end
 end 
 
 """
-	AOApplicationToPetscPermuteReal(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) 
+	AOApplicationToPetscPermuteReal(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) 
 Permutes an array of blocks of reals
 in the application-defined ordering to the PETSc ordering.
 
@@ -133,7 +133,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
+See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
 
 # External Links
 $(_doc_external("AO/AOApplicationToPetscPermuteReal"))
@@ -156,7 +156,7 @@ end
 end 
 
 """
-	ao::AO = AOCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	ao::AO = AOCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an application ordering. That is an object that maps from an application ordering to a PETSc ordering and vice versa
 
 Collective
@@ -173,7 +173,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOView()`, `AOSetIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: [](sec_ao), `AO`, `AOView()`, `AOSetIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOCreate"))
@@ -198,7 +198,7 @@ end
 end 
 
 """
-	aoout::AO = AOCreateBasic(petsclib::PetscLibType,comm::MPI_Comm, napp::PetscInt, myapp::Vector{PetscInt}, mypetsc::Vector{PetscInt}) 
+	aoout::AO = AOCreateBasic(petsclib::PetscLibType, comm::MPI_Comm, napp::PetscInt, myapp::Vector{PetscInt}, mypetsc::Vector{PetscInt}) 
 Creates a basic application ordering using two integer arrays.
 
 Collective
@@ -215,7 +215,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), [](sec_scatter), `AO`, `AOCreateBasicIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreateBasicIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOCreateBasic"))
@@ -240,7 +240,7 @@ end
 end 
 
 """
-	aoout::AO = AOCreateBasicIS(petsclib::PetscLibType,isapp::AbstractIS, ispetsc::AbstractIS) 
+	aoout::AO = AOCreateBasicIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS) 
 Creates a basic application ordering using two `IS` index sets.
 
 Collective
@@ -254,7 +254,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), [](sec_scatter), `IS`, `AO`, `AOCreateBasic()`, `AODestroy()`
+See also: [](sec_ao), [](sec_scatter), `IS`, `AO`, `AOCreateBasic()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateBasicIS"))
@@ -279,7 +279,7 @@ end
 end 
 
 """
-	aoout::AO = AOCreateMapping(petsclib::PetscLibType,comm::MPI_Comm, napp::PetscInt, myapp::Vector{PetscInt}, mypetsc::Vector{PetscInt}) 
+	aoout::AO = AOCreateMapping(petsclib::PetscLibType, comm::MPI_Comm, napp::PetscInt, myapp::Vector{PetscInt}, mypetsc::Vector{PetscInt}) 
 Creates an application mapping using two integer arrays.
 
 Input Parameters:
@@ -296,7 +296,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](sec_ao), `AOCreateBasic()`, `AOCreateMappingIS()`, `AODestroy()`
+See also: [](sec_ao), `AOCreateBasic()`, `AOCreateMappingIS()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateMapping"))
@@ -321,7 +321,7 @@ end
 end 
 
 """
-	aoout::AO = AOCreateMappingIS(petsclib::PetscLibType,isapp::AbstractIS, ispetsc::AbstractIS) 
+	aoout::AO = AOCreateMappingIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS) 
 Creates an application mapping using two index sets.
 
 Input Parameters:
@@ -336,7 +336,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](sec_ao), [](sec_scatter), `AOCreateBasic()`, `AOCreateMapping()`, `AODestroy()`
+See also: [](sec_ao), [](sec_scatter), `AOCreateBasic()`, `AOCreateMapping()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateMappingIS"))
@@ -361,7 +361,7 @@ end
 end 
 
 """
-	aoout::AO = AOCreateMemoryScalable(petsclib::PetscLibType,comm::MPI_Comm, napp::PetscInt, myapp::Vector{PetscInt}, mypetsc::Vector{PetscInt}) 
+	aoout::AO = AOCreateMemoryScalable(petsclib::PetscLibType, comm::MPI_Comm, napp::PetscInt, myapp::Vector{PetscInt}, mypetsc::Vector{PetscInt}) 
 Creates a memory scalable application ordering using two integer arrays.
 
 Collective
@@ -377,7 +377,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), [](sec_scatter), `AO`, `AOCreateMemoryScalableIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreateMemoryScalableIS()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOCreateMemoryScalable"))
@@ -402,7 +402,7 @@ end
 end 
 
 """
-	aoout::AO = AOCreateMemoryScalableIS(petsclib::PetscLibType,isapp::AbstractIS, ispetsc::AbstractIS) 
+	aoout::AO = AOCreateMemoryScalableIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS) 
 Creates a memory scalable application ordering using two index sets.
 
 Collective
@@ -416,7 +416,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), [](sec_scatter), `AO`, `AOCreateBasicIS()`, `AOCreateMemoryScalable()`, `AODestroy()`
+See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreateBasicIS()`, `AOCreateMemoryScalable()`, `AODestroy()`
 
 # External Links
 $(_doc_external("AO/AOCreateMemoryScalableIS"))
@@ -441,7 +441,7 @@ end
 end 
 
 """
-	AODestroy(petsclib::PetscLibType,ao::AbstractAO) 
+	AODestroy(petsclib::PetscLibType, ao::AbstractAO) 
 Destroys an application ordering.
 
 Collective
@@ -451,7 +451,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreate()`
+See also: [](sec_ao), `AO`, `AOCreate()`
 
 # External Links
 $(_doc_external("AO/AODestroy"))
@@ -482,7 +482,7 @@ from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `AOInitializePackage()`, `PetscInitialize()`
+See also: `AOInitializePackage()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("AO/AOFinalizePackage"))
@@ -504,7 +504,7 @@ end
 end 
 
 """
-	type::AOType = AOGetType(petsclib::PetscLibType,ao::AbstractAO) 
+	type::AOType = AOGetType(petsclib::PetscLibType, ao::AbstractAO) 
 Gets the `AO` type name (as a string) from the `AO`.
 
 Not Collective
@@ -517,7 +517,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `AO`, `AOType`, `AOSetType()`, `AOCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `AO`, `AOType`, `AOSetType()`, `AOCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("AO/AOGetType"))
@@ -549,7 +549,7 @@ when using static or shared libraries.
 
 Level: developer
 
--seealso: `AOFinalizePackage()`, `PetscInitialize()`
+See also: `AOFinalizePackage()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/AOInitializePackage"))
@@ -571,7 +571,7 @@ end
 end 
 
 """
-	hasIndex::PetscBool = AOMappingHasApplicationIndex(petsclib::PetscLibType,ao::AbstractAO, idex::PetscInt) 
+	hasIndex::PetscBool = AOMappingHasApplicationIndex(petsclib::PetscLibType, ao::AbstractAO, idex::PetscInt) 
 Checks if an `AO` has a requested application index.
 
 Not Collective
@@ -585,7 +585,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_ao), `AOMappingHasPetscIndex()`, `AOCreateMapping()`, `AO`
+See also: [](sec_ao), `AOMappingHasPetscIndex()`, `AOCreateMapping()`, `AO`
 
 # External Links
 $(_doc_external("AO/AOMappingHasApplicationIndex"))
@@ -610,7 +610,7 @@ end
 end 
 
 """
-	hasIndex::PetscBool = AOMappingHasPetscIndex(petsclib::PetscLibType,ao::AbstractAO, idex::PetscInt) 
+	hasIndex::PetscBool = AOMappingHasPetscIndex(petsclib::PetscLibType, ao::AbstractAO, idex::PetscInt) 
 checks if an `AO` has a requested PETSc index.
 
 Not Collective
@@ -624,7 +624,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_ao), `AOMappingHasApplicationIndex()`, `AOCreateMapping()`
+See also: [](sec_ao), `AOMappingHasApplicationIndex()`, `AOCreateMapping()`
 
 # External Links
 $(_doc_external("AO/AOMappingHasPetscIndex"))
@@ -649,7 +649,7 @@ end
 end 
 
 """
-	AOPetscToApplication(petsclib::PetscLibType,ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) 
+	AOPetscToApplication(petsclib::PetscLibType, ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) 
 Maps a set of integers in the PETSc ordering to
 the application-defined ordering.
 
@@ -665,7 +665,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
+See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
 `AOPetscToApplicationIS()`
 
 # External Links
@@ -689,7 +689,7 @@ end
 end 
 
 """
-	AOPetscToApplicationIS(petsclib::PetscLibType,ao::AbstractAO, is::AbstractIS) 
+	AOPetscToApplicationIS(petsclib::PetscLibType, ao::AbstractAO, is::AbstractIS) 
 Maps an index set in the PETSc ordering to
 the application-defined ordering.
 
@@ -704,7 +704,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
+See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
 `AOApplicationToPetscIS()`, `AOPetscToApplication()`, `ISSTRIDE`, `ISBLOCK`
 
 # External Links
@@ -728,7 +728,7 @@ end
 end 
 
 """
-	AOPetscToApplicationPermuteInt(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) 
+	AOPetscToApplicationPermuteInt(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) 
 Permutes an array of blocks of integers
 in the PETSc ordering to the application-defined ordering.
 
@@ -744,7 +744,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
+See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
 
 # External Links
 $(_doc_external("AO/AOPetscToApplicationPermuteInt"))
@@ -767,7 +767,7 @@ end
 end 
 
 """
-	AOPetscToApplicationPermuteReal(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) 
+	AOPetscToApplicationPermuteReal(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) 
 Permutes an array of blocks of reals
 in the PETSc ordering to the application-defined ordering.
 
@@ -783,7 +783,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
+See also: [](sec_ao), `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPetscToApplicationIS()`
 
 # External Links
 $(_doc_external("AO/AOPetscToApplicationPermuteReal"))
@@ -806,7 +806,7 @@ end
 end 
 
 """
-	AORegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	AORegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Register  an application ordering method
 
 Not Collective, No Fortran Support
@@ -817,7 +817,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `AO`, `AOType`, `AOCreate()`, `AORegisterAll()`, `AOBASIC`, `AOADVANCED`, `AOMAPPING`, `AOMEMORYSCALABLE`
+See also: `AO`, `AOType`, `AOCreate()`, `AORegisterAll()`, `AOBASIC`, `AOADVANCED`, `AOMAPPING`, `AOMEMORYSCALABLE`
 
 # External Links
 $(_doc_external("AO/AORegister"))
@@ -847,7 +847,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `AO`, `AOType`, `AORegister()`, `AORegisterDestroy()`
+See also: `AO`, `AOType`, `AORegister()`, `AORegisterDestroy()`
 
 # External Links
 $(_doc_external("AO/AORegisterAll"))
@@ -869,7 +869,7 @@ end
 end 
 
 """
-	AOSetFromOptions(petsclib::PetscLibType,ao::AbstractAO) 
+	AOSetFromOptions(petsclib::PetscLibType, ao::AbstractAO) 
 Sets `AO` options from the options database.
 
 Collective
@@ -882,7 +882,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](sec_ao), `AO`, `AOCreate()`, `AOSetType()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: [](sec_ao), `AO`, `AOCreate()`, `AOSetType()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOSetFromOptions"))
@@ -905,7 +905,7 @@ end
 end 
 
 """
-	AOSetIS(petsclib::PetscLibType,ao::AbstractAO, isapp::AbstractIS, ispetsc::AbstractIS) 
+	AOSetIS(petsclib::PetscLibType, ao::AbstractAO, isapp::AbstractIS, ispetsc::AbstractIS) 
 Sets the `IS` associated with the application ordering.
 
 Collective
@@ -917,7 +917,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_ao), [](sec_scatter), `AO`, `AOCreate()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
+See also: [](sec_ao), [](sec_scatter), `AO`, `AOCreate()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
 # External Links
 $(_doc_external("AO/AOSetIS"))
@@ -940,7 +940,7 @@ end
 end 
 
 """
-	AOSetType(petsclib::PetscLibType,ao::AbstractAO, method::AOType) 
+	AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::AOType) 
 Builds an application ordering for a particular `AOType`
 
 Collective
@@ -954,7 +954,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `AO`, `AOType`, `AOCreateBasic()`, `AOCreateMemoryScalable()`, `AOGetType()`, `AOCreate()`
+See also: `AO`, `AOType`, `AOCreateBasic()`, `AOCreateMemoryScalable()`, `AOGetType()`, `AOCreate()`
 
 # External Links
 $(_doc_external("AO/AOSetType"))
@@ -977,7 +977,7 @@ end
 end 
 
 """
-	AOView(petsclib::PetscLibType,ao::AbstractAO, viewer::PetscViewer) 
+	AOView(petsclib::PetscLibType, ao::AbstractAO, viewer::PetscViewer) 
 Displays an application ordering.
 
 Collective
@@ -991,7 +991,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_ao), `AO`, `PetscViewer`, `PetscViewerASCIIOpen()`, `AOViewFromOptions()`
+See also: [](sec_ao), `AO`, `PetscViewer`, `PetscViewerASCIIOpen()`, `AOViewFromOptions()`
 
 # External Links
 $(_doc_external("AO/AOView"))
@@ -1014,7 +1014,7 @@ end
 end 
 
 """
-	AOViewFromOptions(petsclib::PetscLibType,ao::AbstractAO, obj, name::String) 
+	AOViewFromOptions(petsclib::PetscLibType, ao::AbstractAO, obj, name::String) 
 View an `AO` based on values in the options database
 
 Collective
@@ -1029,7 +1029,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_ao), `AO`, `AOView()`, `PetscObjectViewFromOptions()`, `AOCreate()`
+See also: [](sec_ao), `AO`, `AOView()`, `PetscObjectViewFromOptions()`, `AOCreate()`
 
 # External Links
 $(_doc_external("AO/AOViewFromOptions"))

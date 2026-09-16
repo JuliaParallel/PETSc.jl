@@ -15,7 +15,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PETSC_VIEWER_STDERR_WORLD`, `PetscViewerASCIIGetStderr()`
+See also: `PETSC_VIEWER_STDERR_WORLD`, `PetscViewerASCIIGetStderr()`
 """
 function PETSC_VIEWER_STDERR_SELF(petsclib::PetscLibType) end
 
@@ -46,7 +46,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PETSC_VIEWER_STDERR_SELF`, `PetscViewerASCIIGetStderr()`
+See also: `PETSC_VIEWER_STDERR_SELF`, `PetscViewerASCIIGetStderr()`
 """
 function PETSC_VIEWER_STDERR_WORLD(petsclib::PetscLibType) end
 
@@ -77,7 +77,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PETSC_VIEWER_STDOUT_WORLD`, `PetscViewerASCIIGetStdout()`
+See also: `PETSC_VIEWER_STDOUT_WORLD`, `PetscViewerASCIIGetStdout()`
 """
 function PETSC_VIEWER_STDOUT_SELF(petsclib::PetscLibType) end
 
@@ -108,7 +108,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIGetStdout()`
+See also: `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIGetStdout()`
 """
 function PETSC_VIEWER_STDOUT_WORLD(petsclib::PetscLibType) end
 

@@ -1,5 +1,5 @@
 """
-	bag::PetscBag = PetscBagCreate(petsclib::PetscLibType,comm::MPI_Comm, bagsize::Csize_t) 
+	bag::PetscBag = PetscBagCreate(petsclib::PetscLibType, comm::MPI_Comm, bagsize::Csize_t) 
 Create a bag of values. A `PetscBag` is a representation of a C struct that can be saved to and read from files,
 can have values set from the options database
 
@@ -14,7 +14,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
@@ -41,7 +41,7 @@ end
 end 
 
 """
-	PetscBagDestroy(petsclib::PetscLibType,bag::Union{PetscBag, Ref{PetscBag}}) 
+	PetscBagDestroy(petsclib::PetscLibType, bag::Union{PetscBag, Ref{PetscBag}}) 
 Destroys a `PetscBag`
 
 Collective
@@ -51,7 +51,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -77,8 +77,8 @@ end
 end 
 
 """
-	data::Ptr{Cvoid} = PetscBagGetData(petsclib::PetscLibType,bag::PetscBag) 
-Gives back the user
+	data::Ptr{Cvoid} = PetscBagGetData(petsclib::PetscLibType, bag::PetscBag) 
+Gives back the user - access to memory that
 can be used for storing user-data-structure
 
 Not Collective
@@ -92,7 +92,7 @@ defining the bag
 
 Level: intermediate
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
@@ -119,7 +119,7 @@ end
 end 
 
 """
-	name::String = PetscBagGetName(petsclib::PetscLibType,bag::PetscBag) 
+	name::String = PetscBagGetName(petsclib::PetscLibType, bag::PetscBag) 
 Gets the name of a bag of values
 
 Not Collective
@@ -132,7 +132,7 @@ Input Parameter:
 Output Parameter:
 - `name` - the name assigned to the bag
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
@@ -159,7 +159,7 @@ end
 end 
 
 """
-	names::Ptr{Cchar} = PetscBagGetNames(petsclib::PetscLibType,bag::PetscBag) 
+	names::Ptr{Cchar} = PetscBagGetNames(petsclib::PetscLibType, bag::PetscBag) 
 Get the names of all entries in the bag
 
 Not Collective
@@ -172,7 +172,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagSetName()`, `PetscBagCreate()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagGetName()`, `PetscBagSetName()`, `PetscBagCreate()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -198,7 +198,7 @@ end
 end 
 
 """
-	PetscBagLoad(petsclib::PetscLibType,view::PetscViewer, bag::PetscBag) 
+	PetscBagLoad(petsclib::PetscLibType, view::PetscViewer, bag::PetscBag) 
 Loads a bag of values from a binary file
 
 Collective
@@ -209,7 +209,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagView()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagView()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -234,7 +234,7 @@ end
 end 
 
 """
-	PetscBagRegisterBool(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscBool, name::String, help::String) 
+	PetscBagRegisterBool(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscBool, name::String, help::String) 
 add a `PetscBool` to a `PetscBag`
 
 Logically Collective
@@ -248,7 +248,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -273,7 +273,7 @@ end
 end 
 
 """
-	PetscBagRegisterBoolArray(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) 
+	PetscBagRegisterBoolArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) 
 add a n `PetscBool` values to a `PetscBag`
 
 Logically Collective
@@ -287,7 +287,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -312,7 +312,7 @@ end
 end 
 
 """
-	PetscBagRegisterEnum(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, list::Cchar, mdefault::PetscEnum, name::String, help::String) 
+	PetscBagRegisterEnum(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, list::Cchar, mdefault::PetscEnum, name::String, help::String) 
 add an enum value to a `PetscBag`
 
 Logically Collective
@@ -327,7 +327,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`
 
@@ -352,7 +352,7 @@ end
 end 
 
 """
-	PetscBagRegisterInt(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscInt, name::String, help::String) 
+	PetscBagRegisterInt(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscInt, name::String, help::String) 
 add a `PetscInt` value to a `PetscBag`
 
 Logically Collective
@@ -366,7 +366,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt64()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -391,7 +391,7 @@ end
 end 
 
 """
-	PetscBagRegisterInt64(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscInt64, name::String, help::String) 
+	PetscBagRegisterInt64(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscInt64, name::String, help::String) 
 add a `PetscInt64` value to a `PetscBag`
 
 Logically Collective
@@ -405,7 +405,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -430,7 +430,7 @@ end
 end 
 
 """
-	PetscBagRegisterIntArray(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) 
+	PetscBagRegisterIntArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) 
 add a `PetscInt` array to a `PetscBag`
 
 Logically Collective
@@ -444,7 +444,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -469,7 +469,7 @@ end
 end 
 
 """
-	PetscBagRegisterReal(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscReal, name::String, help::String) 
+	PetscBagRegisterReal(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscReal, name::String, help::String) 
 add a `PetscReal` value to a `PetscBag`
 
 Logically Collective
@@ -483,7 +483,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -508,7 +508,7 @@ end
 end 
 
 """
-	PetscBagRegisterRealArray(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) 
+	PetscBagRegisterRealArray(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, name::String, help::String) 
 add a `PetscReal` array to a `PetscBag`
 
 Logically Collective
@@ -522,7 +522,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -547,7 +547,7 @@ end
 end 
 
 """
-	PetscBagRegisterScalar(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscScalar, name::String, help::String) 
+	PetscBagRegisterScalar(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, mdefault::PetscScalar, name::String, help::String) 
 add a `PetscScalar` value to a `PetscBag`
 
 Logically Collective
@@ -561,7 +561,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagSetFromOptions()`,
 `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -586,7 +586,7 @@ end
 end 
 
 """
-	PetscBagRegisterString(petsclib::PetscLibType,bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, mdefault::String, name::String, help::String) 
+	PetscBagRegisterString(petsclib::PetscLibType, bag::PetscBag, addr::Ptr{Cvoid}, msize::PetscInt, mdefault::String, name::String, help::String) 
 add a string value to a `PetscBag`
 
 Logically Collective
@@ -601,7 +601,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagRegisterEnum()`
 
@@ -626,7 +626,7 @@ end
 end 
 
 """
-	PetscBagSetFromOptions(petsclib::PetscLibType,bag::PetscBag) 
+	PetscBagSetFromOptions(petsclib::PetscLibType, bag::PetscBag) 
 Allows setting entries to a `PetscBag` using the options database
 
 Collective
@@ -636,7 +636,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagCreate()`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagRegisterEnum()`
 
@@ -661,7 +661,7 @@ end
 end 
 
 """
-	PetscBagSetName(petsclib::PetscLibType,bag::PetscBag, name::String, help::String) 
+	PetscBagSetName(petsclib::PetscLibType, bag::PetscBag, name::String, help::String) 
 Sets the name of a bag of values
 
 Not Collective
@@ -673,7 +673,7 @@ Input Parameters:
 - `name` - the name assigned to the bag
 - `help` - help message for bag
 
--seealso: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagGetName()`, `PetscBagView()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
@@ -698,7 +698,7 @@ end
 end 
 
 """
-	PetscBagSetOptionsPrefix(petsclib::PetscLibType,bag::PetscBag, pre::String) 
+	PetscBagSetOptionsPrefix(petsclib::PetscLibType, bag::PetscBag, pre::String) 
 Sets the prefix used for searching for all
 `PetscBag` items in the options database.
 
@@ -710,7 +710,7 @@ Input Parameters:
 - `bag` - the bag of values
 - `pre` - the prefix to prepend all Bag item names with.
 
--seealso: `PetscBag`, `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
+See also: `PetscBag`, `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagDestroy()`, `PetscBagRegisterEnum()`
 
 # External Links
@@ -734,7 +734,7 @@ end
 end 
 
 """
-	PetscBagView(petsclib::PetscLibType,bag::PetscBag, view::PetscViewer) 
+	PetscBagView(petsclib::PetscLibType, bag::PetscBag, view::PetscViewer) 
 Views a bag of values as either ASCII text or a binary file
 
 Collective
@@ -745,7 +745,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`,
+See also: `PetscBag`, `PetscBagSetName()`, `PetscBagDestroy()`, `PetscBagLoad()`, `PetscBagGetData()`,
 `PetscBagRegisterReal()`, `PetscBagRegisterInt()`, `PetscBagRegisterBool()`, `PetscBagRegisterScalar()`, `PetscBagRegisterEnum()`,
 `PetscBagSetFromOptions()`, `PetscBagCreate()`, `PetscBagGetName()`
 
@@ -770,7 +770,7 @@ end
 end 
 
 """
-	PetscBagViewFromOptions(petsclib::PetscLibType,bag::PetscBag, bobj, name::String) 
+	PetscBagViewFromOptions(petsclib::PetscLibType, bag::PetscBag, bobj, name::String) 
 Processes command line options to determine if/how a `PetscBag` is to be viewed.
 
 Collective
@@ -785,7 +785,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscBagCreate()`, `PetscBag`, `PetscViewer`, `PetscBagView()`, `PetscObjectViewFromOptions()`
+See also: `PetscBagCreate()`, `PetscBag`, `PetscViewer`, `PetscBagView()`, `PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("Bag/PetscBagViewFromOptions"))

@@ -1,5 +1,5 @@
 """
-	found::PetscBool = PetscOptionsHelpPrintedCheck(petsclib::PetscLibType,hp::PetscOptionsHelpPrCinted, pre::String, name::String) 
+	found::PetscBool = PetscOptionsHelpPrintedCheck(petsclib::PetscLibType, hp::PetscOptionsHelpPrCinted, pre::String, name::String) 
 Checks if a particular pre, name pair has previous been entered (meaning the help message was printed)
 
 Not Collective
@@ -14,7 +14,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscOptionsHelpPrintedCreate()`
+See also: `PetscOptionsHelpPrintedCreate()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsHelpPrintedCheck"))
@@ -50,7 +50,7 @@ Not Collective
 
 Level: developer
 
--seealso: `PetscOptionsHelpPrintedCheck()`, `PetscOptionsHelpPrintChecked()`
+See also: `PetscOptionsHelpPrintedCheck()`, `PetscOptionsHelpPrintChecked()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsHelpPrintedCreate"))
@@ -75,7 +75,7 @@ end
 end 
 
 """
-	PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType,hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) 
+	PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) 
 Destroys the object used to track which help messages have already been printed
 
 Not Collective
@@ -85,7 +85,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscOptionsHelpPrintedCreate()`, `PetscOptionsHelpPrintedCheck()`
+See also: `PetscOptionsHelpPrintedCreate()`, `PetscOptionsHelpPrintedCheck()`
 
 # External Links
 $(_doc_external("Viewer/PetscOptionsHelpPrintedDestroy"))

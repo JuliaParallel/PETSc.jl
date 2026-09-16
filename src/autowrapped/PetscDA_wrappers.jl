@@ -1,5 +1,5 @@
 """
-	PetscDAAppendOptionsPrefix(petsclib::PetscLibType,das::PetscDA, p::String) 
+	PetscDAAppendOptionsPrefix(petsclib::PetscLibType, das::PetscDA, p::String) 
 Appends to the prefix used for searching for all PetscDA options in the database.
 
 Logically Collective
@@ -10,7 +10,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDA`, `PetscDASetFromOptions()`, `PetscDASetOptionsPrefix()`, `PetscDAGetOptionsPrefix()`
+See also: `PetscDA`, `PetscDASetFromOptions()`, `PetscDASetOptionsPrefix()`, `PetscDAGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAAppendOptionsPrefix"))
@@ -33,7 +33,7 @@ end
 end 
 
 """
-	da_out::PetscDA = PetscDACreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	da_out::PetscDA = PetscDACreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a new `PetscDA` object for data assimilation.
 
 Collective
@@ -46,7 +46,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDADestroy()`, `PetscDASetType()`, `PetscDASetUp()`
+See also: `PetscDADestroy()`, `PetscDASetType()`, `PetscDASetUp()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDACreate"))
@@ -71,7 +71,7 @@ end
 end 
 
 """
-	PetscDADestroy(petsclib::PetscLibType,da::Union{PetscDA, Ref{PetscDA}}) 
+	PetscDADestroy(petsclib::PetscLibType, da::Union{PetscDA, Ref{PetscDA}}) 
 Destroys a `PetscDA` object and releases its resources.
 
 Collective
@@ -81,7 +81,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDACreate()`
+See also: `PetscDACreate()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDADestroy"))
@@ -105,7 +105,7 @@ end
 end 
 
 """
-	PetscDAEnsembleAnalysis(petsclib::PetscLibType,da::PetscDA, observation::AbstractPetscVec, H::AbstractPetscMat) 
+	PetscDAEnsembleAnalysis(petsclib::PetscLibType, da::PetscDA, observation::AbstractPetscVec, H::AbstractPetscMat) 
 Executes the analysis (update) step using sparse observation matrix H
 
 Collective
@@ -115,7 +115,7 @@ Input Parameters:
 - `observation` - observation vector y in R^P
 - `H`           - observation operator matrix (P x N), sparse AIJ format
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleForecast()`, `PetscDASetObsErrorVariance()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleForecast()`, `PetscDASetObsErrorVariance()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleAnalysis"))
@@ -138,8 +138,8 @@ end
 end 
 
 """
-	PetscDAEnsembleApplySqrtTInverse(petsclib::PetscLibType,da::PetscDA, U::AbstractPetscMat, Y::AbstractPetscMat) 
-Apply T^{
+	PetscDAEnsembleApplySqrtTInverse(petsclib::PetscLibType, da::PetscDA, U::AbstractPetscMat, Y::AbstractPetscMat) 
+Apply T^{-1/2} to a matrix U [Alg 6.4 line 9]
 
 Collective
 
@@ -150,7 +150,7 @@ Input Parameters:
 Output Parameter:
 - `Y` - output matrix Y = T^{-1/2} * U
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleTFactor()`, `PetscDAEnsembleApplyTInverse()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleTFactor()`, `PetscDAEnsembleApplyTInverse()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleApplySqrtTInverse"))
@@ -173,8 +173,8 @@ end
 end 
 
 """
-	PetscDAEnsembleApplyTInverse(petsclib::PetscLibType,da::PetscDA, sdel::AbstractPetscVec, w::AbstractPetscVec) 
-Apply T^{
+	PetscDAEnsembleApplyTInverse(petsclib::PetscLibType, da::PetscDA, sdel::AbstractPetscVec, w::AbstractPetscVec) 
+Apply T^{-1} to a vector [Alg 6.4 line 8]
 
 Collective
 
@@ -185,7 +185,7 @@ Input Parameters:
 Output Parameter:
 - `w` - output vector w = T^{-1} * sdel
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleTFactor()`, `PetscDAEnsembleApplySqrtTInverse()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleTFactor()`, `PetscDAEnsembleApplySqrtTInverse()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleApplyTInverse"))
@@ -208,8 +208,8 @@ end
 end 
 
 """
-	anomalies_out::PetscMat = PetscDAEnsembleComputeAnomalies(petsclib::PetscLibType,da::PetscDA, mean_in::AbstractPetscVec) 
-Forms the state
+	anomalies_out::PetscMat = PetscDAEnsembleComputeAnomalies(petsclib::PetscLibType, da::PetscDA, mean_in::AbstractPetscVec) 
+Forms the state-space anomalies matrix for a `PetscDA`.
 
 Collective
 
@@ -220,7 +220,7 @@ Input Parameters:
 Output Parameter:
 - `anomalies_out` - location to store the newly created anomalies matrix
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleComputeMean()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleComputeMean()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleComputeAnomalies"))
@@ -245,7 +245,7 @@ end
 end 
 
 """
-	PetscDAEnsembleComputeMean(petsclib::PetscLibType,da::PetscDA, mean::AbstractPetscVec) 
+	PetscDAEnsembleComputeMean(petsclib::PetscLibType, da::PetscDA, mean::AbstractPetscVec) 
 Computes ensemble mean for a `PetscDA`
 
 Collective
@@ -258,7 +258,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleComputeAnomalies()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleComputeAnomalies()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleComputeMean"))
@@ -281,8 +281,8 @@ end
 end 
 
 """
-	PetscDAEnsembleComputeNormalizedInnovationMatrix(petsclib::PetscLibType,Z::AbstractPetscMat, y_mean::AbstractPetscVec, r_inv_sqrt::AbstractPetscVec, m::PetscInt, scale::PetscScalar, S::AbstractPetscMat) 
-Computes S = R^{
+	PetscDAEnsembleComputeNormalizedInnovationMatrix(petsclib::PetscLibType, Z::AbstractPetscMat, y_mean::AbstractPetscVec, r_inv_sqrt::AbstractPetscVec, m::PetscInt, scale::PetscScalar, S::AbstractPetscMat) 
+Computes S = R^{-1/2}(Z - y_mean * 1')/sqrt(m-1) [Alg 6.4 line 5]
 
 Collective
 
@@ -298,7 +298,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASetSizes()`, `PetscDAGetSizes()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASetSizes()`, `PetscDAGetSizes()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleComputeNormalizedInnovationMatrix"))
@@ -321,8 +321,8 @@ end
 end 
 
 """
-	PetscDAEnsembleForecast(petsclib::PetscLibType,da::PetscDA, model::external, ctx::Ptr{Cvoid}) 
-Advances every ensemble member through the user
+	PetscDAEnsembleForecast(petsclib::PetscLibType, da::PetscDA, model::external, ctx::Ptr{Cvoid}) 
+Advances every ensemble member through the user-supplied forecast model.
 
 Collective
 
@@ -333,7 +333,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleAnalysis()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleAnalysis()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleForecast"))
@@ -356,7 +356,7 @@ end
 end 
 
 """
-	inflation::PetscReal = PetscDAEnsembleGetInflation(petsclib::PetscLibType,da::PetscDA) 
+	inflation::PetscReal = PetscDAEnsembleGetInflation(petsclib::PetscLibType, da::PetscDA) 
 Gets the inflation factor for the data assimilation method.
 
 Not Collective
@@ -369,7 +369,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleSetInflation()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleSetInflation()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleGetInflation"))
@@ -394,8 +394,8 @@ end
 end 
 
 """
-	member::PetscVec = PetscDAEnsembleGetMember(petsclib::PetscLibType,da::PetscDA, member_idx::PetscInt) 
-Returns a read
+	member::PetscVec = PetscDAEnsembleGetMember(petsclib::PetscLibType, da::PetscDA, member_idx::PetscInt) 
+Returns a read-only view of an ensemble member stored in the `PetscDA`.
 
 Collective
 
@@ -408,7 +408,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleRestoreMember()`, `PetscDAEnsembleSetMember()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleRestoreMember()`, `PetscDAEnsembleSetMember()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleGetMember"))
@@ -433,7 +433,7 @@ end
 end 
 
 """
-	ensemble_size::PetscInt = PetscDAEnsembleGetSize(petsclib::PetscLibType,da::PetscDA) 
+	ensemble_size::PetscInt = PetscDAEnsembleGetSize(petsclib::PetscLibType, da::PetscDA) 
 Retrieves the dimension of the ensemble in a `PetscDA`.
 
 Not Collective
@@ -446,7 +446,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASetSizes()`, `PetscDAGetSizes()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASetSizes()`, `PetscDAGetSizes()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleGetSize"))
@@ -471,8 +471,8 @@ end
 end 
 
 """
-	type::PetscDASqrtType = PetscDAEnsembleGetSqrtType(petsclib::PetscLibType,da::PetscDA) 
-Retrieves the current square
+	type::PetscDASqrtType = PetscDAEnsembleGetSqrtType(petsclib::PetscLibType, da::PetscDA) 
+Retrieves the current square-root implementation configured for analysis.
 
 Not Collective
 
@@ -484,7 +484,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleSetSqrtType()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleSetSqrtType()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleGetSqrtType"))
@@ -509,7 +509,7 @@ end
 end 
 
 """
-	PetscDAEnsembleInitialize(petsclib::PetscLibType,da::PetscDA, x0::AbstractPetscVec, obs_error_std::PetscReal, rng::PetscRandom) 
+	PetscDAEnsembleInitialize(petsclib::PetscLibType, da::PetscDA, x0::AbstractPetscVec, obs_error_std::PetscReal, rng::PetscRandom) 
 Initialize ensemble members with Gaussian perturbations
 
 Input Parameters:
@@ -520,7 +520,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_da), `PETSCDAETKF`, `PETSCDALETKF`, `PetscDA`
+See also: `PETSCDAETKF`, `PETSCDALETKF`, `PetscDA`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleInitialize"))
@@ -543,7 +543,7 @@ end
 end 
 
 """
-	PetscDAEnsembleRestoreMember(petsclib::PetscLibType,da::PetscDA, member_idx::PetscInt, member::AbstractPetscVec) 
+	PetscDAEnsembleRestoreMember(petsclib::PetscLibType, da::PetscDA, member_idx::PetscInt, member::AbstractPetscVec) 
 Returns a column view obtained with `PetscDAEnsembleGetMember()`.
 
 Collective
@@ -555,7 +555,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetMember()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetMember()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleRestoreMember"))
@@ -580,7 +580,7 @@ end
 end 
 
 """
-	PetscDAEnsembleSetInflation(petsclib::PetscLibType,da::PetscDA, inflation::PetscReal) 
+	PetscDAEnsembleSetInflation(petsclib::PetscLibType, da::PetscDA, inflation::PetscReal) 
 Sets the inflation factor for the data assimilation method.
 
 Logically Collective
@@ -591,7 +591,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetInflation()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetInflation()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleSetInflation"))
@@ -614,8 +614,8 @@ end
 end 
 
 """
-	PetscDAEnsembleSetMember(petsclib::PetscLibType,da::PetscDA, member_idx::PetscInt, member::AbstractPetscVec) 
-Overwrites an ensemble member with user
+	PetscDAEnsembleSetMember(petsclib::PetscLibType, da::PetscDA, member_idx::PetscInt, member::AbstractPetscVec) 
+Overwrites an ensemble member with user-provided state data.
 
 Collective
 
@@ -626,7 +626,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetMember()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetMember()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleSetMember"))
@@ -649,7 +649,7 @@ end
 end 
 
 """
-	PetscDAEnsembleSetSize(petsclib::PetscLibType,da::PetscDA, ensemble_size::PetscInt) 
+	PetscDAEnsembleSetSize(petsclib::PetscLibType, da::PetscDA, ensemble_size::PetscInt) 
 Sets the ensemble dimensions used by a `PetscDA`.
 
 Collective
@@ -663,7 +663,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAGetSizes()`, `PetscDASetSizes()`, `PetscDASetUp()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAGetSizes()`, `PetscDASetSizes()`, `PetscDASetUp()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleSetSize"))
@@ -686,8 +686,8 @@ end
 end 
 
 """
-	PetscDAEnsembleSetSqrtType(petsclib::PetscLibType,da::PetscDA, type::PetscDASqrtType) 
-Selects the reduced
+	PetscDAEnsembleSetSqrtType(petsclib::PetscLibType, da::PetscDA, type::PetscDASqrtType) 
+Selects the reduced-space square-root algorithm used during analysis.
 
 Logically Collective
 
@@ -700,7 +700,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASqrtType`, `PetscDAEnsembleGetSqrtType()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASqrtType`, `PetscDAEnsembleGetSqrtType()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleSetSqrtType"))
@@ -723,7 +723,7 @@ end
 end 
 
 """
-	PetscDAEnsembleTFactor(petsclib::PetscLibType,da::PetscDA, S::AbstractPetscMat) 
+	PetscDAEnsembleTFactor(petsclib::PetscLibType, da::PetscDA, S::AbstractPetscMat) 
 Compute and store factorization of T matrix
 
 Collective
@@ -732,7 +732,7 @@ Input Parameters:
 - `da` - the `PetscDA` context
 - `S`  - normalized innovation matrix (obs_size x m)
 
--seealso: [](ch_da), `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleApplyTInverse()`, `PetscDAEnsembleApplySqrtTInverse()`
+See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleApplyTInverse()`, `PetscDAEnsembleApplySqrtTInverse()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAEnsembleTFactor"))
@@ -763,7 +763,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `PetscDAInitializePackage()`, `PetscInitialize()`
+See also: `PetscDAInitializePackage()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAFinalizePackage"))
@@ -785,7 +785,7 @@ end
 end 
 
 """
-	ndof::PetscInt = PetscDAGetNDOF(petsclib::PetscLibType,da::PetscDA) 
+	ndof::PetscInt = PetscDAGetNDOF(petsclib::PetscLibType, da::PetscDA) 
 Get the number of degrees of freedom per grid point
 
 Not Collective
@@ -798,7 +798,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDA`, `PetscDASetNDOF()`
+See also: `PetscDA`, `PetscDASetNDOF()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAGetNDOF"))
@@ -823,8 +823,8 @@ end
 end 
 
 """
-	obs_error_var::PetscVec = PetscDAGetObsErrorVariance(petsclib::PetscLibType,da::PetscDA) 
-Returns a borrowed reference to the observation
+	obs_error_var::PetscVec = PetscDAGetObsErrorVariance(petsclib::PetscLibType, da::PetscDA) 
+Returns a borrowed reference to the observation-error variance vector.
 
 Not Collective
 
@@ -836,7 +836,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDASetObsErrorVariance()`
+See also: `PetscDASetObsErrorVariance()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAGetObsErrorVariance"))
@@ -861,7 +861,7 @@ end
 end 
 
 """
-	p::Ptr{Cchar} = PetscDAGetOptionsPrefix(petsclib::PetscLibType,das::PetscDA) 
+	p::Ptr{Cchar} = PetscDAGetOptionsPrefix(petsclib::PetscLibType, das::PetscDA) 
 Gets the prefix used for searching for all
 PetscDA options in the database
 
@@ -875,7 +875,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDA`, `PetscDASetFromOptions()`, `PetscDASetOptionsPrefix()`, `PetscDAAppendOptionsPrefix()`
+See also: `PetscDA`, `PetscDASetFromOptions()`, `PetscDASetOptionsPrefix()`, `PetscDAAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAGetOptionsPrefix"))
@@ -900,7 +900,7 @@ end
 end 
 
 """
-	state_size::PetscInt,obs_size::PetscInt = PetscDAGetSizes(petsclib::PetscLibType,da::PetscDA) 
+	state_size::PetscInt,obs_size::PetscInt = PetscDAGetSizes(petsclib::PetscLibType, da::PetscDA) 
 Retrieves the state size and observation size from a `PetscDA`.
 
 Not Collective
@@ -914,7 +914,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDASetSizes()`
+See also: `PetscDASetSizes()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAGetSizes"))
@@ -941,7 +941,7 @@ end
 end 
 
 """
-	type::PetscDAType = PetscDAGetType(petsclib::PetscLibType,da::PetscDA) 
+	type::PetscDAType = PetscDAGetType(petsclib::PetscLibType, da::PetscDA) 
 Gets the name of the implementation currently associated with a `PetscDA`.
 
 Not Collective
@@ -954,7 +954,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDASetType()`
+See also: `PetscDASetType()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAGetType"))
@@ -988,7 +988,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `PetscDAFinalizePackage()`, `PetscInitialize()`
+See also: `PetscDAFinalizePackage()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAInitializePackage"))
@@ -1010,7 +1010,7 @@ end
 end 
 
 """
-	PetscDALETKFGetLocalizationMatrix(petsclib::PetscLibType,n_obs_vertex::PetscInt, n_dof::PetscInt, Vecxyz::Vector{<:AbstractPetscVec}, bd::Vector{PetscReal}, H::AbstractPetscMat, Q::AbstractPetscMat) 
+	PetscDALETKFGetLocalizationMatrix(petsclib::PetscLibType, n_obs_vertex::PetscInt, n_dof::PetscInt, Vecxyz::Vector{<:AbstractPetscVec}, bd::Vector{PetscReal}, H::AbstractPetscMat, Q::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("PC/PetscDALETKFGetLocalizationMatrix"))
@@ -1035,7 +1035,7 @@ end
 end 
 
 """
-	n_obs_vertex::PetscInt = PetscDALETKFGetObsPerVertex(petsclib::PetscLibType,da::PetscDA) 
+	n_obs_vertex::PetscInt = PetscDALETKFGetObsPerVertex(petsclib::PetscLibType, da::PetscDA) 
 Gets the number of local observations per vertex for the LETKF algorithm.
 
 Not Collective
@@ -1048,7 +1048,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_da), `PETSCDALETKF`, `PetscDA`, `PetscDALETKFSetObsPerVertex()`
+See also: `PETSCDALETKF`, `PetscDA`, `PetscDALETKFSetObsPerVertex()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDALETKFGetObsPerVertex"))
@@ -1073,7 +1073,7 @@ end
 end 
 
 """
-	PetscDALETKFSetLocalization(petsclib::PetscLibType,da::PetscDA, Q::AbstractPetscMat, H::AbstractPetscMat) 
+	PetscDALETKFSetLocalization(petsclib::PetscLibType, da::PetscDA, Q::AbstractPetscMat, H::AbstractPetscMat) 
 Sets the localization matrix for the LETKF algorithm.
 
 Collective
@@ -1085,7 +1085,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_da), `PETSCDALETKF`, `PetscDA`
+See also: `PETSCDALETKF`, `PetscDA`
 
 # External Links
 $(_doc_external("PetscDA/PetscDALETKFSetLocalization"))
@@ -1108,7 +1108,7 @@ end
 end 
 
 """
-	PetscDALETKFSetObsPerVertex(petsclib::PetscLibType,da::PetscDA, n_obs_vertex::PetscInt) 
+	PetscDALETKFSetObsPerVertex(petsclib::PetscLibType, da::PetscDA, n_obs_vertex::PetscInt) 
 Sets the number of local observations per vertex for the LETKF algorithm.
 
 Logically Collective
@@ -1119,7 +1119,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_da), `PETSCDALETKF`, `PetscDA`, `PetscDALETKFSetLocalization()`
+See also: `PETSCDALETKF`, `PetscDA`, `PetscDALETKFSetLocalization()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDALETKFSetObsPerVertex"))
@@ -1142,7 +1142,7 @@ end
 end 
 
 """
-	PetscDARegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscDARegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Registers a constructor for a `PetscDA` implementation with the
 dispatcher.
 
@@ -1154,7 +1154,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_da), `PetscDARegisterAll()`, `PetscDASetType()`
+See also: `PetscDARegisterAll()`, `PetscDASetType()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDARegister"))
@@ -1184,7 +1184,7 @@ Not Collective
 
 Level: developer
 
--seealso: [](ch_da), `PetscDARegister()`
+See also: `PetscDARegister()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDARegisterAll"))
@@ -1206,7 +1206,7 @@ end
 end 
 
 """
-	PetscDASetFromOptions(petsclib::PetscLibType,da::PetscDA) 
+	PetscDASetFromOptions(petsclib::PetscLibType, da::PetscDA) 
 Configures a `PetscDA` object from the options database.
 
 Collective
@@ -1216,7 +1216,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDASetType()`, `PetscObjectOptionsBegin()`
+See also: `PetscDASetType()`, `PetscObjectOptionsBegin()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetFromOptions"))
@@ -1239,7 +1239,7 @@ end
 end 
 
 """
-	PetscDASetLocalSizes(petsclib::PetscLibType,da::PetscDA, local_state_size::PetscInt, local_obs_size::PetscInt) 
+	PetscDASetLocalSizes(petsclib::PetscLibType, da::PetscDA, local_state_size::PetscInt, local_obs_size::PetscInt) 
 Sets the local state and observation dimensions used by a `PetscDA`.
 
 Collective
@@ -1251,7 +1251,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDASetSizes()`, `PetscDASetUp()`
+See also: `PetscDASetSizes()`, `PetscDASetUp()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetLocalSizes"))
@@ -1274,7 +1274,7 @@ end
 end 
 
 """
-	PetscDASetNDOF(petsclib::PetscLibType,da::PetscDA, ndof::PetscInt) 
+	PetscDASetNDOF(petsclib::PetscLibType, da::PetscDA, ndof::PetscInt) 
 Set the number of degrees of freedom per grid point
 
 Logically Collective
@@ -1285,7 +1285,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDA`, `PetscDAGetNDOF()`, `PetscDASetUp()`, `PetscDASetSizes()`
+See also: `PetscDA`, `PetscDAGetNDOF()`, `PetscDASetUp()`, `PetscDASetSizes()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetNDOF"))
@@ -1308,8 +1308,8 @@ end
 end 
 
 """
-	PetscDASetObsErrorVariance(petsclib::PetscLibType,da::PetscDA, obs_error_var::AbstractPetscVec) 
-Sets the observation
+	PetscDASetObsErrorVariance(petsclib::PetscLibType, da::PetscDA, obs_error_var::AbstractPetscVec) 
+Sets the observation-error variances associated with a `PetscDA`.
 
 Collective
 
@@ -1317,7 +1317,7 @@ Input Parameters:
 - `da`            - the `PetscDA` context
 - `obs_error_var` - vector containing observation error variances (assumes R is a diagonal matrix)
 
--seealso: [](ch_da), `PetscDAGetObsErrorVariance()`
+See also: `PetscDAGetObsErrorVariance()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetObsErrorVariance"))
@@ -1340,7 +1340,7 @@ end
 end 
 
 """
-	PetscDASetOptionsPrefix(petsclib::PetscLibType,das::PetscDA, p::String) 
+	PetscDASetOptionsPrefix(petsclib::PetscLibType, das::PetscDA, p::String) 
 Sets the prefix used for searching for all
 PetscDA options in the database.
 
@@ -1352,7 +1352,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDA`, `PetscDASetFromOptions()`, `PetscDAAppendOptionsPrefix()`, `PetscDAGetOptionsPrefix()`
+See also: `PetscDA`, `PetscDASetFromOptions()`, `PetscDAAppendOptionsPrefix()`, `PetscDAGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetOptionsPrefix"))
@@ -1375,7 +1375,7 @@ end
 end 
 
 """
-	PetscDASetSizes(petsclib::PetscLibType,da::PetscDA, state_size::PetscInt, obs_size::PetscInt) 
+	PetscDASetSizes(petsclib::PetscLibType, da::PetscDA, state_size::PetscInt, obs_size::PetscInt) 
 Sets the state and observation sizes for a `PetscDA`
 
 Collective
@@ -1387,7 +1387,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDAGetSizes()`, `PetscDASetUp()`, `PetscDAEnsembleSetSize()`
+See also: `PetscDAGetSizes()`, `PetscDASetUp()`, `PetscDAEnsembleSetSize()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetSizes"))
@@ -1410,7 +1410,7 @@ end
 end 
 
 """
-	PetscDASetType(petsclib::PetscLibType,da::PetscDA, type::PetscDAType) 
+	PetscDASetType(petsclib::PetscLibType, da::PetscDA, type::PetscDAType) 
 Sets the data assimilation implementation used by a `PetscDA` object.
 
 Collective
@@ -1421,7 +1421,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_da), `PetscDAGetType()`, `PetscDARegister()`
+See also: `PetscDAGetType()`, `PetscDARegister()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetType"))
@@ -1444,7 +1444,7 @@ end
 end 
 
 """
-	PetscDASetUp(petsclib::PetscLibType,da::PetscDA) 
+	PetscDASetUp(petsclib::PetscLibType, da::PetscDA) 
 Allocates internal data structures for a `PetscDA` based on the previously provided sizes.
 
 Collective
@@ -1454,7 +1454,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDASetSizes()`, `PetscDASetType()`
+See also: `PetscDASetSizes()`, `PetscDASetType()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDASetUp"))
@@ -1477,8 +1477,8 @@ end
 end 
 
 """
-	PetscDAView(petsclib::PetscLibType,da::PetscDA, viewer::PetscViewer) 
-Views a `PetscDA` and its implementation
+	PetscDAView(petsclib::PetscLibType, da::PetscDA, viewer::PetscViewer) 
+Views a `PetscDA` and its implementation-specific data structure.
 
 Collective
 
@@ -1488,7 +1488,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDAViewFromOptions()`
+See also: `PetscDAViewFromOptions()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAView"))
@@ -1511,8 +1511,8 @@ end
 end 
 
 """
-	PetscDAViewFromOptions(petsclib::PetscLibType,da::PetscDA, obj, name::String) 
-Processes command
+	PetscDAViewFromOptions(petsclib::PetscLibType, da::PetscDA, obj, name::String) 
+Processes command-line options to determine if a `PetscDA` should be viewed.
 
 Collective
 
@@ -1526,7 +1526,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_da), `PetscDAView()`, `PetscObjectViewFromOptions()`
+See also: `PetscDAView()`, `PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("PetscDA/PetscDAViewFromOptions"))
@@ -1549,7 +1549,7 @@ end
 end 
 
 """
-	ptype::PetscDataType,found::PetscBool = PetscDataTypeFromString(petsclib::PetscLibType,name::String) 
+	ptype::PetscDataType,found::PetscBool = PetscDataTypeFromString(petsclib::PetscLibType, name::String) 
 Gets the enum value of a PETSc datatype represented as a string
 
 Not Collective
@@ -1563,7 +1563,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscDataType`, `PetscDataTypeToMPIDataType()`, `PetscDataTypeGetSize()`
+See also: `PetscDataType`, `PetscDataTypeToMPIDataType()`, `PetscDataTypeGetSize()`
 
 # External Links
 $(_doc_external("Sys/PetscDataTypeFromString"))
@@ -1590,7 +1590,7 @@ end
 end 
 
 """
-	size::Csize_t = PetscDataTypeGetSize(petsclib::PetscLibType,ptype::PetscDataType) 
+	size::Csize_t = PetscDataTypeGetSize(petsclib::PetscLibType, ptype::PetscDataType) 
 Gets the size (in bytes) of a PETSc datatype
 
 Not Collective
@@ -1603,7 +1603,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDataType`, `PetscDataTypeToMPIDataType()`
+See also: `PetscDataType`, `PetscDataTypeToMPIDataType()`
 
 # External Links
 $(_doc_external("Sys/PetscDataTypeGetSize"))
@@ -1628,7 +1628,7 @@ end
 end 
 
 """
-	htype::hid_t = PetscDataTypeToHDF5DataType(petsclib::PetscLibType,ptype::PetscDataType) 
+	htype::hid_t = PetscDataTypeToHDF5DataType(petsclib::PetscLibType, ptype::PetscDataType) 
 Converts the PETSc name of a datatype to its HDF5 name.
 
 Not Collective
@@ -1641,7 +1641,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscDataType`, `PetscHDF5DataTypeToPetscDataType()`
+See also: [](sec_viewers), `PetscDataType`, `PetscHDF5DataTypeToPetscDataType()`
 
 # External Links
 $(_doc_external("Viewer/PetscDataTypeToHDF5DataType"))

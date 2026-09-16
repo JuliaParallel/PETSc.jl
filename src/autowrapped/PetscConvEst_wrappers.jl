@@ -1,6 +1,6 @@
 """
-	PetscConvEstComputeError(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{PetscReal}) 
-Compute per
+	PetscConvEstComputeError(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{PetscReal}) 
+Compute per-field discretization errors of `u` on refinement level `r`
 
 Collective
 
@@ -15,7 +15,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscConvEst`, `PetscConvEstComputeInitialGuess()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstComputeInitialGuess()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstComputeError"))
@@ -38,8 +38,8 @@ end
 end 
 
 """
-	PetscConvEstComputeInitialGuess(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec) 
-Fill `u` with the initial guess to use on refinement level `r` of a convergence
+	PetscConvEstComputeInitialGuess(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec) 
+Fill `u` with the initial guess to use on refinement level `r` of a convergence-estimation run
 
 Collective
 
@@ -53,7 +53,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscConvEst`, `PetscConvEstComputeError()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstComputeError()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstComputeInitialGuess"))
@@ -76,7 +76,7 @@ end
 end 
 
 """
-	ce::PetscConvEst = PetscConvEstCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	ce::PetscConvEst = PetscConvEstCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a `PetscConvEst` object. This is used to study the convergence rate of approximations on grids to a continuum solution
 
 Collective
@@ -89,7 +89,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscConvEst`, `PetscConvEstDestroy()`, `PetscConvEstGetConvRate()`, `DMAdaptorCreate()`, `DMAdaptor`
+See also: `PetscConvEst`, `PetscConvEstDestroy()`, `PetscConvEstGetConvRate()`, `DMAdaptorCreate()`, `DMAdaptor`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstCreate"))
@@ -114,7 +114,7 @@ end
 end 
 
 """
-	PetscConvEstDestroy(petsclib::PetscLibType,ce::Union{PetscConvEst, Ref{PetscConvEst}}) 
+	PetscConvEstDestroy(petsclib::PetscLibType, ce::Union{PetscConvEst, Ref{PetscConvEst}}) 
 Destroys a PETSc convergence estimator `PetscConvEst` object
 
 Collective
@@ -124,7 +124,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstDestroy"))
@@ -148,7 +148,7 @@ end
 end 
 
 """
-	PetscConvEstGetConvRate(petsclib::PetscLibType,ce::PetscConvEst, alpha::Vector{PetscReal}) 
+	PetscConvEstGetConvRate(petsclib::PetscLibType, ce::PetscConvEst, alpha::Vector{PetscReal}) 
 Returns an estimate of the convergence rate for the discretization
 
 Not Collective
@@ -165,7 +165,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscConvEstSetSolver()`, `PetscConvEstCreate()`, `SNESSolve()`, `TSSolve()`
+See also: `PetscConvEstSetSolver()`, `PetscConvEstCreate()`, `SNESSolve()`, `TSSolve()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstGetConvRate"))
@@ -188,7 +188,7 @@ end
 end 
 
 """
-	solver::PetscObject = PetscConvEstGetSolver(petsclib::PetscLibType,ce::PetscConvEst) 
+	solver::PetscObject = PetscConvEstGetSolver(petsclib::PetscLibType, ce::PetscConvEst) 
 Gets the solver used to produce discrete solutions
 
 Not Collective
@@ -201,7 +201,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscConvEst`, `PetscConvEstSetSolver()`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstSetSolver()`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstGetSolver"))
@@ -226,7 +226,7 @@ end
 end 
 
 """
-	PetscConvEstMonitorDefault(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt) 
+	PetscConvEstMonitorDefault(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt) 
 Monitors the convergence estimation loop
 
 Collective
@@ -240,7 +240,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`, `SNESSolve()`, `TSSolve()`
+See also: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`, `SNESSolve()`, `TSSolve()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstMonitorDefault"))
@@ -263,7 +263,7 @@ end
 end 
 
 """
-	PetscConvEstRateView(petsclib::PetscLibType,ce::PetscConvEst, alpha::Vector{PetscReal}, viewer::PetscViewer) 
+	PetscConvEstRateView(petsclib::PetscLibType, ce::PetscConvEst, alpha::Vector{PetscReal}, viewer::PetscViewer) 
 Displays the convergence rate obtained from `PetscConvEstGetConvRate()` using a `PetscViewer`
 
 Collective
@@ -278,7 +278,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscConvEst`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstRateView"))
@@ -301,7 +301,7 @@ end
 end 
 
 """
-	PetscConvEstSetFromOptions(petsclib::PetscLibType,ce::PetscConvEst) 
+	PetscConvEstSetFromOptions(petsclib::PetscLibType, ce::PetscConvEst) 
 Sets a convergence estimator `PetscConvEst` object based on values in the options database
 
 Collective
@@ -311,7 +311,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstSetFromOptions"))
@@ -334,7 +334,7 @@ end
 end 
 
 """
-	PetscConvEstSetSolver(petsclib::PetscLibType,ce::PetscConvEst, solver) 
+	PetscConvEstSetSolver(petsclib::PetscLibType, ce::PetscConvEst, solver) 
 Sets the solver used to produce discrete solutions
 
 Not Collective
@@ -345,7 +345,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscConvEst`, `PetscConvEstGetSNES()`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstGetSNES()`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstSetSolver"))
@@ -368,7 +368,7 @@ end
 end 
 
 """
-	PetscConvEstSetUp(petsclib::PetscLibType,ce::PetscConvEst) 
+	PetscConvEstSetUp(petsclib::PetscLibType, ce::PetscConvEst) 
 After the solver is specified, create data structures needed for estimating convergence
 
 Collective
@@ -378,7 +378,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstSetUp"))
@@ -401,7 +401,7 @@ end
 end 
 
 """
-	PetscConvEstUseTS(petsclib::PetscLibType,ce::PetscConvEst, checkTemporal::PetscBool) 
+	PetscConvEstUseTS(petsclib::PetscLibType, ce::PetscConvEst, checkTemporal::PetscBool) 
 Configure a `PetscConvEst` object to use a `TS` solver for a convergence study
 
 Not Collective
@@ -412,7 +412,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `PetscConvEst`, `TS`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `TS`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("TS/PetscConvEstUseTS"))
@@ -435,7 +435,7 @@ end
 end 
 
 """
-	PetscConvEstView(petsclib::PetscLibType,ce::PetscConvEst, viewer::PetscViewer) 
+	PetscConvEstView(petsclib::PetscLibType, ce::PetscConvEst, viewer::PetscViewer) 
 Views a `PetscConvEst` object
 
 Collective
@@ -446,7 +446,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscConvEst`, `PetscViewer`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
+See also: `PetscConvEst`, `PetscViewer`, `PetscConvEstCreate()`, `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("SNES/PetscConvEstView"))

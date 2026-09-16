@@ -1,5 +1,5 @@
 """
-	guess::KSPGuess = KSPGuessCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	guess::KSPGuess = KSPGuessCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `KSPGuess` context.
 
 Collective
@@ -23,7 +23,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPSolve()`, `KSPGuessDestroy()`, `KSPGuess`, `KSPGuessType`, `KSP`
+See also: `KSPSolve()`, `KSPGuessDestroy()`, `KSPGuess`, `KSPGuessType`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGuessCreate"))
@@ -48,7 +48,7 @@ end
 end 
 
 """
-	KSPGuessDestroy(petsclib::PetscLibType,guess::Union{KSPGuess, Ref{KSPGuess}}) 
+	KSPGuessDestroy(petsclib::PetscLibType, guess::Union{KSPGuess, Ref{KSPGuess}}) 
 Destroys `KSPGuess` context.
 
 Collective
@@ -58,7 +58,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuessCreate()`, `KSPGuess`, `KSPGuessType`
+See also: `KSPGuessCreate()`, `KSPGuess`, `KSPGuessType`
 
 # External Links
 $(_doc_external("KSP/KSPGuessDestroy"))
@@ -82,7 +82,7 @@ end
 end 
 
 """
-	KSPGuessFischerSetModel(petsclib::PetscLibType,guess::KSPGuess, model::PetscInt, size::PetscInt) 
+	KSPGuessFischerSetModel(petsclib::PetscLibType, guess::KSPGuess, model::PetscInt, size::PetscInt) 
 Set the Paul Fischer algorithm or its variants to compute the initial guess for a `KSPSolve()`
 
 Logically Collective
@@ -97,7 +97,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ksp), `KSPGuess`, `KSPGuessCreate()`, `KSPSetUseFischerGuess()`, `KSPSetGuess()`, `KSPGetGuess()`, `KSP`
+See also: `KSPGuess`, `KSPGuessCreate()`, `KSPSetUseFischerGuess()`, `KSPSetGuess()`, `KSPGetGuess()`, `KSP`
 
 # External Links
 $(_doc_external("KSP/KSPGuessFischerSetModel"))
@@ -120,7 +120,7 @@ end
 end 
 
 """
-	KSPGuessFormGuess(petsclib::PetscLibType,guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
+	KSPGuessFormGuess(petsclib::PetscLibType, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
 Form the initial guess
 
 Collective
@@ -132,7 +132,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuessCreate()`, `KSPGuess`
+See also: `KSPGuessCreate()`, `KSPGuess`
 
 # External Links
 $(_doc_external("KSP/KSPGuessFormGuess"))
@@ -155,7 +155,7 @@ end
 end 
 
 """
-	type::KSPGuessType = KSPGuessGetType(petsclib::PetscLibType,guess::KSPGuess) 
+	type::KSPGuessType = KSPGuessGetType(petsclib::PetscLibType, guess::KSPGuess) 
 Gets the `KSPGuessType` as a string from the `KSPGuess` object.
 
 Not Collective
@@ -168,7 +168,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuess`, `KSPGuessSetType()`
+See also: `KSPGuess`, `KSPGuessSetType()`
 
 # External Links
 $(_doc_external("KSP/KSPGuessGetType"))
@@ -193,7 +193,7 @@ end
 end 
 
 """
-	KSPGuessRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	KSPGuessRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Registers a method for initial guess computation in Krylov subspace solver package.
 
 Not Collective, No Fortran Support
@@ -202,7 +202,7 @@ Input Parameters:
 - `sname`    - name of a new user-defined solver
 - `function` - routine to create method context
 
--seealso: [](ch_ksp), `KSPGuess`, `KSPGuessRegisterAll()`
+See also: `KSPGuess`, `KSPGuessRegisterAll()`
 
 # External Links
 $(_doc_external("KSP/KSPGuessRegister"))
@@ -225,7 +225,7 @@ end
 end 
 
 """
-	KSPGuessSetFromOptions(petsclib::PetscLibType,guess::KSPGuess) 
+	KSPGuessSetFromOptions(petsclib::PetscLibType, guess::KSPGuess) 
 Sets the options for a `KSPGuess` from the options database
 
 Collective
@@ -246,7 +246,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuess`, `KSPGetGuess()`, `KSPGuessSetType()`, `KSPGuessType`
+See also: `KSPGuess`, `KSPGetGuess()`, `KSPGuessSetType()`, `KSPGuessType`
 
 # External Links
 $(_doc_external("KSP/KSPGuessSetFromOptions"))
@@ -269,7 +269,7 @@ end
 end 
 
 """
-	KSPGuessSetTolerance(petsclib::PetscLibType,guess::KSPGuess, tol::PetscReal) 
+	KSPGuessSetTolerance(petsclib::PetscLibType, guess::KSPGuess, tol::PetscReal) 
 Sets the relative tolerance used in either eigenvalue (POD) or singular value (Fischer type 3) calculations.
 
 Collective
@@ -284,7 +284,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuess`, `KSPGuessType`, `KSPGuessSetFromOptions()`
+See also: `KSPGuess`, `KSPGuessType`, `KSPGuessSetFromOptions()`
 
 # External Links
 $(_doc_external("KSP/KSPGuessSetTolerance"))
@@ -307,7 +307,7 @@ end
 end 
 
 """
-	KSPGuessSetType(petsclib::PetscLibType,guess::KSPGuess, type::KSPGuessType) 
+	KSPGuessSetType(petsclib::PetscLibType, guess::KSPGuess, type::KSPGuessType) 
 Sets the type of a `KSPGuess`. Each `KSPGuessType` provides a different algorithm for computing the initial guess.
 
 Logically Collective
@@ -321,7 +321,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPGuess`, `KSPGuessType`, `KSPGuessRegister()`, `KSPGuessCreate()`, `KSPGUESSFISCHER`, `KSPGUESSPOD`
+See also: `KSP`, `KSPGuess`, `KSPGuessType`, `KSPGuessRegister()`, `KSPGuessCreate()`, `KSPGUESSFISCHER`, `KSPGUESSPOD`
 
 # External Links
 $(_doc_external("KSP/KSPGuessSetType"))
@@ -344,7 +344,7 @@ end
 end 
 
 """
-	KSPGuessSetUp(petsclib::PetscLibType,guess::KSPGuess) 
+	KSPGuessSetUp(petsclib::PetscLibType, guess::KSPGuess) 
 Setup the initial guess object
 
 Collective
@@ -354,7 +354,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuessCreate()`, `KSPGuess`
+See also: `KSPGuessCreate()`, `KSPGuess`
 
 # External Links
 $(_doc_external("KSP/KSPGuessSetUp"))
@@ -377,7 +377,7 @@ end
 end 
 
 """
-	KSPGuessUpdate(petsclib::PetscLibType,guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
+	KSPGuessUpdate(petsclib::PetscLibType, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
 Updates the guess object with the current solution and rhs vector
 
 Collective
@@ -389,7 +389,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSPGuessCreate()`, `KSPGuess`
+See also: `KSPGuessCreate()`, `KSPGuess`
 
 # External Links
 $(_doc_external("KSP/KSPGuessUpdate"))
@@ -412,7 +412,7 @@ end
 end 
 
 """
-	KSPGuessView(petsclib::PetscLibType,guess::KSPGuess, view::PetscViewer) 
+	KSPGuessView(petsclib::PetscLibType, guess::KSPGuess, view::PetscViewer) 
 View the `KSPGuess` object
 
 Logically Collective
@@ -426,7 +426,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ksp), `KSP`, `KSPGuess`, `KSPGuessType`, `KSPGuessRegister()`, `KSPGuessCreate()`, `PetscViewer`
+See also: `KSP`, `KSPGuess`, `KSPGuessType`, `KSPGuessRegister()`, `KSPGuessCreate()`, `PetscViewer`
 
 # External Links
 $(_doc_external("KSP/KSPGuessView"))

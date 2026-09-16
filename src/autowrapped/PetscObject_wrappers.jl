@@ -1,5 +1,5 @@
 """
-	PetscObjectAddOptionsHandler(petsclib::PetscLibType,obj, handle::external, destroy::external, ctx::Ptr{Cvoid}) 
+	PetscObjectAddOptionsHandler(petsclib::PetscLibType, obj, handle::external, destroy::external, ctx::Ptr{Cvoid}) 
 Adds an additional function to check for options when `XXXSetFromOptions()` is called.
 
 Not Collective
@@ -21,7 +21,7 @@ Calling sequence of `destroy`:
 
 Level: developer
 
--seealso: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `PetscObjectProcessOptionsHandlers()`, `PetscObjectDestroyOptionsHandlers()`,
+See also: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `PetscObjectProcessOptionsHandlers()`, `PetscObjectDestroyOptionsHandlers()`,
 `PetscObject`
 
 # External Links
@@ -45,7 +45,7 @@ end
 end 
 
 """
-	PetscObjectAppendOptionsPrefix(petsclib::PetscLibType,obj, prefix::String) 
+	PetscObjectAppendOptionsPrefix(petsclib::PetscLibType, obj, prefix::String) 
 Appends to the prefix used for searching for options for the given object in the database.
 
 Input Parameters:
@@ -54,7 +54,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
+See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
 `PetscObjectGetOptionsPrefix()`, `TSAppendOptionsPrefix()`, `SNESAppendOptionsPrefix()`, `KSPAppendOptionsPrefix()`
 
 # External Links
@@ -78,7 +78,7 @@ end
 end 
 
 """
-	same::PetscBool = PetscObjectBaseTypeCompare(petsclib::PetscLibType,obj, type_name::String) 
+	same::PetscBool = PetscObjectBaseTypeCompare(petsclib::PetscLibType, obj, type_name::String) 
 Determines whether a `PetscObject` is of a given base type. For example the base type of `MATSEQAIJPERM` is `MATSEQAIJ`
 
 Not Collective
@@ -92,7 +92,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscObject`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`, `PetscObjectBaseTypeCompareAny()`
+See also: `PetscObject`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`, `PetscObjectBaseTypeCompareAny()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectBaseTypeCompare"))
@@ -117,7 +117,7 @@ end
 end 
 
 """
-	PetscObjectChangeTypeName(petsclib::PetscLibType,obj, type_name::String) 
+	PetscObjectChangeTypeName(petsclib::PetscLibType, obj, type_name::String) 
 Changes the type name stored on a `PetscObject`
 
 Logically collective
@@ -128,7 +128,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscObject`, `PetscObjectGetType()`, `PetscObjectSetName()`
+See also: `PetscObject`, `PetscObjectGetType()`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectChangeTypeName"))
@@ -151,7 +151,7 @@ end
 end 
 
 """
-	eq::PetscBool = PetscObjectCompareId(petsclib::PetscLibType,obj, id::PetscObjectId) 
+	eq::PetscBool = PetscObjectCompareId(petsclib::PetscLibType, obj, id::PetscObjectId) 
 compares the objects ID with a given id
 
 Not Collective
@@ -165,7 +165,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscObjectStateGet()`, `PetscObjectGetId()`
+See also: `PetscObjectStateGet()`, `PetscObjectGetId()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectCompareId"))
@@ -190,7 +190,7 @@ end
 end 
 
 """
-	PetscObjectCompose(petsclib::PetscLibType,obj, name::String, ptr) 
+	PetscObjectCompose(petsclib::PetscLibType, obj, name::String, ptr) 
 Associates another PETSc object with a given PETSc object.
 
 Not Collective
@@ -204,7 +204,7 @@ cast with (`PetscObject`)
 
 Level: advanced
 
--seealso: `PetscObjectQuery()`, `PetscContainerCreate()`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`, `PetscContainer`,
+See also: `PetscObjectQuery()`, `PetscContainerCreate()`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`, `PetscContainer`,
 `PetscContainerSetPointer()`, `PetscObject`, `PetscObjectContainerCompose()`
 
 # External Links
@@ -228,7 +228,7 @@ end
 end 
 
 """
-	PetscObjectContainerCompose(petsclib::PetscLibType,obj, name::String, pointer::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+	PetscObjectContainerCompose(petsclib::PetscLibType, obj, name::String, pointer::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Creates a `PetscContainer`, provides all of its values and composes it with a `PetscObject`
 
 Collective
@@ -241,7 +241,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
+See also: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
 `PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerQuery()`
 
 # External Links
@@ -265,7 +265,7 @@ end
 end 
 
 """
-	ptr::Ptr{Cvoid} = PetscObjectContainerQuery(petsclib::PetscLibType,obj, name::String) 
+	ptr::Ptr{Cvoid} = PetscObjectContainerQuery(petsclib::PetscLibType, obj, name::String) 
 Accesses the pointer in a container composed to a `PetscObject` with `PetscObjectContainerCompose()`
 
 Collective
@@ -279,7 +279,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
+See also: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
 `PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`
 
 # External Links
@@ -305,7 +305,7 @@ end
 end 
 
 """
-	PetscObjectDereference(petsclib::PetscLibType,obj) 
+	PetscObjectDereference(petsclib::PetscLibType, obj) 
 Indicates to any `PetscObject` that it is being
 referenced by one less `PetscObject`. This decreases the reference
 count for that object by one.
@@ -318,7 +318,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscObjectCompose()`, `PetscObjectReference()`, `PetscObjectDestroy()`, `PetscObject`
+See also: `PetscObjectCompose()`, `PetscObjectReference()`, `PetscObjectDestroy()`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectDereference"))
@@ -341,7 +341,7 @@ end
 end 
 
 """
-	PetscObjectDestroy(petsclib::PetscLibType,obj::Union{PetscObject, Ref{PetscObject}}) 
+	PetscObjectDestroy(petsclib::PetscLibType, obj::Union{PetscObject, Ref{PetscObject}}) 
 Destroys a `PetscObject`, regardless of the class.
 
 Collective
@@ -352,7 +352,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscObject`
+See also: `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectDestroy"))
@@ -376,7 +376,7 @@ end
 end 
 
 """
-	PetscObjectDestroyOptionsHandlers(petsclib::PetscLibType,obj) 
+	PetscObjectDestroyOptionsHandlers(petsclib::PetscLibType, obj) 
 Destroys all the option handlers attached to an object
 
 Not Collective
@@ -386,7 +386,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `PetscObjectAddOptionsHandler()`, `PetscObjectProcessOptionsHandlers()`,
+See also: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `PetscObjectAddOptionsHandler()`, `PetscObjectProcessOptionsHandlers()`,
 `PetscObject`
 
 # External Links
@@ -410,7 +410,7 @@ end
 end 
 
 """
-	classid::PetscClassId = PetscObjectGetClassId(petsclib::PetscLibType,obj) 
+	classid::PetscClassId = PetscObjectGetClassId(petsclib::PetscLibType, obj) 
 Gets the classid for any `PetscObject`
 
 Not Collective
@@ -424,7 +424,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscObject`, `PetscClassId`, `PetscObjectGetClassName()`, `PetscObjectGetType()`
+See also: `PetscObject`, `PetscClassId`, `PetscObjectGetClassName()`, `PetscObjectGetType()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetClassId"))
@@ -449,7 +449,7 @@ end
 end 
 
 """
-	classname::Ptr{Cchar} = PetscObjectGetClassName(petsclib::PetscLibType,obj) 
+	classname::Ptr{Cchar} = PetscObjectGetClassName(petsclib::PetscLibType, obj) 
 Gets the class name for any `PetscObject`
 
 Not Collective
@@ -463,7 +463,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscObject`, `PetscClassId`, `PetscObjectGetType()`, `PetscObjectGetClassId()`
+See also: `PetscObject`, `PetscClassId`, `PetscObjectGetType()`, `PetscObjectGetClassId()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetClassName"))
@@ -488,7 +488,7 @@ end
 end 
 
 """
-	comm::MPI_Comm = PetscObjectGetComm(petsclib::PetscLibType,obj) 
+	comm::MPI_Comm = PetscObjectGetComm(petsclib::PetscLibType, obj) 
 Gets the MPI communicator for any `PetscObject` regardless of the type.
 
 Not Collective
@@ -502,7 +502,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscObject`, `PetscObjectComm()`
+See also: `PetscObject`, `PetscObjectComm()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetComm"))
@@ -527,7 +527,7 @@ end
 end 
 
 """
-	id::PetscObjectId = PetscObjectGetId(petsclib::PetscLibType,obj) 
+	id::PetscObjectId = PetscObjectGetId(petsclib::PetscLibType, obj) 
 get a unique object ID for the `PetscObject`
 
 Not Collective
@@ -540,7 +540,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscObjectStateGet()`, `PetscObjectCompareId()`
+See also: `PetscObjectStateGet()`, `PetscObjectCompareId()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetId"))
@@ -565,7 +565,7 @@ end
 end 
 
 """
-	PetscObjectGetName(petsclib::PetscLibType,obj, name::String) 
+	PetscObjectGetName(petsclib::PetscLibType, obj, name::String) 
 Gets a string name associated with a PETSc object.
 
 Not Collective unless `obj` has not yet been named
@@ -577,7 +577,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscObjectSetName()`, `PetscObjectName()`, `PetscObject`, `PetscObjectGetId()`
+See also: `PetscObjectSetName()`, `PetscObjectName()`, `PetscObject`, `PetscObjectGetId()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetName"))
@@ -601,7 +601,7 @@ end
 end 
 
 """
-	tag::PetscMPIInt = PetscObjectGetNewTag(petsclib::PetscLibType,obj) 
+	tag::PetscMPIInt = PetscObjectGetNewTag(petsclib::PetscLibType, obj) 
 Gets a unique new tag from a PETSc object. All
 processors that share the object MUST call this routine EXACTLY the same
 number of times.  This tag should only be used with the current objects
@@ -618,7 +618,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscCommGetNewTag()`
+See also: `PetscCommGetNewTag()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetNewTag"))
@@ -643,7 +643,7 @@ end
 end 
 
 """
-	options::PetscOptions = PetscObjectGetOptions(petsclib::PetscLibType,obj) 
+	options::PetscOptions = PetscObjectGetOptions(petsclib::PetscLibType, obj) 
 Gets the options database used by the object that has been set with `PetscObjectSetOptions()`
 
 Collective
@@ -656,7 +656,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
+See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
 `PetscObjectGetOptionsPrefix()`, `PetscObjectSetOptions()`
 
 # External Links
@@ -682,7 +682,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = PetscObjectGetOptionsPrefix(petsclib::PetscLibType,obj) 
+	prefix::Ptr{Cchar} = PetscObjectGetOptionsPrefix(petsclib::PetscLibType, obj) 
 Gets the prefix of the `PetscObject` used for searching in the options database
 
 Input Parameter:
@@ -693,7 +693,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
+See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
 `TSGetOptionsPrefix()`, `SNESGetOptionsPrefix()`, `KSPGetOptionsPrefix()`
 
 # External Links
@@ -719,7 +719,7 @@ end
 end 
 
 """
-	cnt::PetscInt = PetscObjectGetReference(petsclib::PetscLibType,obj) 
+	cnt::PetscInt = PetscObjectGetReference(petsclib::PetscLibType, obj) 
 Gets the current reference count for a PETSc object.
 
 Not Collective
@@ -733,7 +733,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscObjectCompose()`, `PetscObjectDereference()`, `PetscObjectReference()`, `PetscObject`
+See also: `PetscObjectCompose()`, `PetscObjectDereference()`, `PetscObjectReference()`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetReference"))
@@ -758,7 +758,7 @@ end
 end 
 
 """
-	tab::PetscInt = PetscObjectGetTabLevel(petsclib::PetscLibType,obj) 
+	tab::PetscInt = PetscObjectGetTabLevel(petsclib::PetscLibType, obj) 
 Gets the number of tabs that `PETSCVIEWERASCII` output for that object uses
 
 Not Collective
@@ -772,7 +772,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscObjectIncrementTabLevel()`, `PetscObjectSetTabLevel()`, `PETSCVIEWERASCII`, `PetscObject`
+See also: `PetscObjectIncrementTabLevel()`, `PetscObjectSetTabLevel()`, `PETSCVIEWERASCII`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetTabLevel"))
@@ -797,7 +797,7 @@ end
 end 
 
 """
-	type::Ptr{Cchar} = PetscObjectGetType(petsclib::PetscLibType,obj) 
+	type::Ptr{Cchar} = PetscObjectGetType(petsclib::PetscLibType, obj) 
 Gets the object type of any `PetscObject`.
 
 Not Collective
@@ -811,7 +811,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscObject`, `PetscClassId`, `PetscObjectGetClassName()`, `PetscObjectGetClassId()`
+See also: `PetscObject`, `PetscClassId`, `PetscObjectGetClassName()`, `PetscObjectGetClassId()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectGetType"))
@@ -836,7 +836,7 @@ end
 end 
 
 """
-	has::PetscBool = PetscObjectHasFunction(petsclib::PetscLibType,obj, name::String) 
+	has::PetscBool = PetscObjectHasFunction(petsclib::PetscLibType, obj, name::String) 
 Query if a function is associated with a given object.
 
 Logically Collective
@@ -850,7 +850,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscObject`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`
+See also: `PetscObject`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectHasFunction"))
@@ -875,7 +875,7 @@ end
 end 
 
 """
-	PetscObjectIncrementTabLevel(petsclib::PetscLibType,obj, oldobj, tab::PetscInt) 
+	PetscObjectIncrementTabLevel(petsclib::PetscLibType, obj, oldobj, tab::PetscInt) 
 Increments the number of tabs that `PETSCVIEWERASCII` output for that object use based on
 the tablevel of another object. This should be called immediately after the object is created.
 
@@ -888,7 +888,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PETSCVIEWERASCII`, `PetscObjectSetTabLevel()`, `PetscObjectGetTabLevel()`
+See also: `PETSCVIEWERASCII`, `PetscObjectSetTabLevel()`, `PetscObjectGetTabLevel()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectIncrementTabLevel"))
@@ -911,7 +911,7 @@ end
 end 
 
 """
-	PetscObjectInheritPrintedOptions(petsclib::PetscLibType,pobj, obj) 
+	PetscObjectInheritPrintedOptions(petsclib::PetscLibType, pobj, obj) 
 If the child object is not on the MPI rank 0 process of the parent object and the child is sequential then the child gets it set.
 
 Input Parameters:
@@ -920,7 +920,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscOptionsInsert()`, `PetscObjectSetPrintedOptions()`, `PetscObject`
+See also: `PetscOptionsInsert()`, `PetscObjectSetPrintedOptions()`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectInheritPrintedOptions"))
@@ -943,7 +943,7 @@ end
 end 
 
 """
-	PetscObjectName(petsclib::PetscLibType,obj) 
+	PetscObjectName(petsclib::PetscLibType, obj) 
 Gives `obj` a name if it does not have one
 
 Collective
@@ -953,7 +953,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscObjectGetName()`, `PetscObjectSetName()`
+See also: `PetscObjectGetName()`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectName"))
@@ -976,7 +976,7 @@ end
 end 
 
 """
-	same::PetscBool = PetscObjectObjectTypeCompare(petsclib::PetscLibType,obj1, obj2) 
+	same::PetscBool = PetscObjectObjectTypeCompare(petsclib::PetscLibType, obj1, obj2) 
 Determines whether two PETSc objects are of the same type
 
 Logically Collective
@@ -990,7 +990,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscObjectTypeCompare()`, `VecGetType()`, `KSPGetType()`, `PCGetType()`, `SNESGetType()`, `PetscObjectBaseTypeCompare()`, `PetscObjectTypeCompareAny()`, `PetscObjectBaseTypeCompareAny()`
+See also: `PetscObjectTypeCompare()`, `VecGetType()`, `KSPGetType()`, `PCGetType()`, `SNESGetType()`, `PetscObjectBaseTypeCompare()`, `PetscObjectTypeCompareAny()`, `PetscObjectBaseTypeCompareAny()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectObjectTypeCompare"))
@@ -1015,7 +1015,7 @@ end
 end 
 
 """
-	PetscObjectPrependOptionsPrefix(petsclib::PetscLibType,obj, prefix::String) 
+	PetscObjectPrependOptionsPrefix(petsclib::PetscLibType, obj, prefix::String) 
 Sets the prefix used for searching for options of for this object in the database.
 
 Input Parameters:
@@ -1024,7 +1024,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`,
+See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`,
 `PetscObjectGetOptionsPrefix()`
 
 # External Links
@@ -1048,7 +1048,7 @@ end
 end 
 
 """
-	PetscObjectPrintClassNamePrefixType(petsclib::PetscLibType,obj, viewer::PetscViewer) 
+	PetscObjectPrintClassNamePrefixType(petsclib::PetscLibType, obj, viewer::PetscViewer) 
 used in the `XXXView()` methods to display information about the class, name, prefix and type of an object
 
 Input Parameters:
@@ -1057,7 +1057,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscObjectSetName()`, `PetscObjectName()`
+See also: `PetscObjectSetName()`, `PetscObjectName()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectPrintClassNamePrefixType"))
@@ -1080,7 +1080,7 @@ end
 end 
 
 """
-	PetscObjectProcessOptionsHandlers(petsclib::PetscLibType,obj, PetscOptionsObject::PetscOptionItems) 
+	PetscObjectProcessOptionsHandlers(petsclib::PetscLibType, obj, PetscOptionsObject::PetscOptionItems) 
 Calls all the options handlers attached to an object
 
 Not Collective
@@ -1091,7 +1091,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `PetscObjectAddOptionsHandler()`, `PetscObjectDestroyOptionsHandlers()`,
+See also: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `PetscObjectAddOptionsHandler()`, `PetscObjectDestroyOptionsHandlers()`,
 `PetscObject`
 
 # External Links
@@ -1115,7 +1115,7 @@ end
 end 
 
 """
-	PetscObjectQuery(petsclib::PetscLibType,obj, name::String, ptr::PetscObject) 
+	PetscObjectQuery(petsclib::PetscLibType, obj, name::String, ptr::PetscObject) 
 Gets a PETSc object associated with a given object that was composed with `PetscObjectCompose()`
 
 Not Collective
@@ -1129,7 +1129,7 @@ cast with (`PetscObject`*)
 
 Level: advanced
 
--seealso: `PetscObjectCompose()`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`, `PetscContainer`,
+See also: `PetscObjectCompose()`, `PetscObjectComposeFunction()`, `PetscObjectQueryFunction()`, `PetscContainer`,
 `PetscContainerGetPointer()`, `PetscObject`
 
 # External Links
@@ -1153,7 +1153,7 @@ end
 end 
 
 """
-	PetscObjectReference(petsclib::PetscLibType,obj) 
+	PetscObjectReference(petsclib::PetscLibType, obj) 
 Indicates to a `PetscObject` that it is being
 referenced by another `PetscObject`. This increases the reference
 count for that object by one.
@@ -1165,7 +1165,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscObjectCompose()`, `PetscObjectDereference()`, `PetscObject`
+See also: `PetscObjectCompose()`, `PetscObjectDereference()`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectReference"))
@@ -1188,7 +1188,7 @@ end
 end 
 
 """
-	PetscObjectRegisterDestroy(petsclib::PetscLibType,obj) 
+	PetscObjectRegisterDestroy(petsclib::PetscLibType, obj) 
 Registers a PETSc object to be destroyed when
 `PetscFinalize()` is called.
 
@@ -1200,7 +1200,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscObjectRegisterDestroyAll()`
+See also: `PetscObjectRegisterDestroyAll()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectRegisterDestroy"))
@@ -1231,7 +1231,7 @@ Logically Collective on the individual `PetscObject`s that are being processed
 
 Level: developer
 
--seealso: `PetscObjectRegisterDestroy()`
+See also: `PetscObjectRegisterDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectRegisterDestroyAll"))
@@ -1253,7 +1253,7 @@ end
 end 
 
 """
-	PetscObjectRemoveReference(petsclib::PetscLibType,obj, name::String) 
+	PetscObjectRemoveReference(petsclib::PetscLibType, obj, name::String) 
 Removes a reference link from a `PetscObject`'s object list without dereferencing the referenced object
 
 Logically collective
@@ -1264,7 +1264,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscObject`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObjectReference()`, `PetscObjectDereference()`
+See also: `PetscObject`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObjectReference()`, `PetscObjectDereference()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectRemoveReference"))
@@ -1287,7 +1287,7 @@ end
 end 
 
 """
-	PetscObjectSAWsBlock(petsclib::PetscLibType,obj) 
+	PetscObjectSAWsBlock(petsclib::PetscLibType, obj) 
 Blocks the object if `PetscObjectSAWsSetBlock()` has been called
 
 Collective
@@ -1297,7 +1297,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsSetBlock()`, `PetscSAWsBlock()`
+See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsSetBlock()`, `PetscSAWsBlock()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSAWsBlock"))
@@ -1320,7 +1320,7 @@ end
 end 
 
 """
-	PetscObjectSAWsGrantAccess(petsclib::PetscLibType,obj) 
+	PetscObjectSAWsGrantAccess(petsclib::PetscLibType, obj) 
 Grants access of the data fields that have been published to
 SAWs called when the changes made during `PetscObjectSAWsTakeAccess()` are complete.
 
@@ -1331,7 +1331,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsTakeAccess()`
+See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsTakeAccess()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSAWsGrantAccess"))
@@ -1354,7 +1354,7 @@ end
 end 
 
 """
-	PetscObjectSAWsSetBlock(petsclib::PetscLibType,obj, flg::PetscBool) 
+	PetscObjectSAWsSetBlock(petsclib::PetscLibType, obj, flg::PetscBool) 
 Sets whether an object will block at `PetscObjectSAWsBlock()`
 
 Collective
@@ -1365,7 +1365,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsBlock()`, `PetscSAWsBlock()`
+See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsBlock()`, `PetscSAWsBlock()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSAWsSetBlock"))
@@ -1388,7 +1388,7 @@ end
 end 
 
 """
-	PetscObjectSAWsTakeAccess(petsclib::PetscLibType,obj) 
+	PetscObjectSAWsTakeAccess(petsclib::PetscLibType, obj) 
 Take access of the data fields that have been published to SAWs
 by a `PetscObject` so their values may  be changed in the computation
 
@@ -1399,7 +1399,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsGrantAccess()`
+See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsGrantAccess()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSAWsTakeAccess"))
@@ -1422,7 +1422,7 @@ end
 end 
 
 """
-	PetscObjectSAWsViewOff(petsclib::PetscLibType,obj) 
+	PetscObjectSAWsViewOff(petsclib::PetscLibType, obj) 
 Remove a `PetscObject`'s SAWs (Scientific Application Web server) directory so the object is no longer published
 
 Logically Collective
@@ -1432,7 +1432,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscObject`, `PetscObjectSAWsBlock()`, `PetscObjectSAWsTakeAccess()`, `PetscObjectSAWsGrantAccess()`
+See also: `PetscObject`, `PetscObjectSAWsBlock()`, `PetscObjectSAWsTakeAccess()`, `PetscObjectSAWsGrantAccess()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSAWsViewOff"))
@@ -1455,7 +1455,7 @@ end
 end 
 
 """
-	PetscObjectSetFromOptions(petsclib::PetscLibType,obj) 
+	PetscObjectSetFromOptions(petsclib::PetscLibType, obj) 
 Sets generic parameters from user options.
 
 Collective
@@ -1465,7 +1465,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscObjectSetOptionsPrefix()`, `PetscObjectGetOptionsPrefix()`, `PetscObject`
+See also: `PetscObjectSetOptionsPrefix()`, `PetscObjectGetOptionsPrefix()`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSetFromOptions"))
@@ -1488,7 +1488,7 @@ end
 end 
 
 """
-	PetscObjectSetName(petsclib::PetscLibType,obj, name::String) 
+	PetscObjectSetName(petsclib::PetscLibType, obj, name::String) 
 Sets a string name for a PETSc object.
 
 Not Collective
@@ -1500,7 +1500,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscObjectGetName()`, `PetscObjectName()`
+See also: `PetscObjectGetName()`, `PetscObjectName()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSetName"))
@@ -1523,7 +1523,7 @@ end
 end 
 
 """
-	PetscObjectSetOptions(petsclib::PetscLibType,obj, options::AbstractPetscOptions) 
+	PetscObjectSetOptions(petsclib::PetscLibType, obj, options::AbstractPetscOptions) 
 Sets the options database used by the object. Call immediately after creating the object.
 
 Collective
@@ -1534,7 +1534,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
+See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
 `PetscObjectGetOptionsPrefix()`, `PetscObjectGetOptions()`
 
 # External Links
@@ -1558,7 +1558,7 @@ end
 end 
 
 """
-	PetscObjectSetOptionsPrefix(petsclib::PetscLibType,obj, prefix::String) 
+	PetscObjectSetOptionsPrefix(petsclib::PetscLibType, obj, prefix::String) 
 Sets the prefix used for searching for all
 options for the given object in the database.
 
@@ -1570,7 +1570,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
+See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectAppendOptionsPrefix()`, `PetscObjectPrependOptionsPrefix()`,
 `PetscObjectGetOptionsPrefix()`, `TSSetOptionsPrefix()`, `SNESSetOptionsPrefix()`, `KSPSetOptionsPrefix()`
 
 # External Links
@@ -1594,7 +1594,7 @@ end
 end 
 
 """
-	PetscObjectSetPrintedOptions(petsclib::PetscLibType,obj) 
+	PetscObjectSetPrintedOptions(petsclib::PetscLibType, obj) 
 indicate to an object that it should behave as if it has already printed the help for its options so it will not display the help message
 
 Input Parameter:
@@ -1602,7 +1602,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscOptionsInsert()`, `PetscObject`
+See also: `PetscOptionsInsert()`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSetPrintedOptions"))
@@ -1625,7 +1625,7 @@ end
 end 
 
 """
-	PetscObjectSetTabLevel(petsclib::PetscLibType,obj, tab::PetscInt) 
+	PetscObjectSetTabLevel(petsclib::PetscLibType, obj, tab::PetscInt) 
 Sets the number of tabs that `PETSCVIEWERASCII` output for that object uses
 
 Not Collective
@@ -1637,7 +1637,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscObjectIncrementTabLevel()`, `PetscObjectGetTabLevel()`
+See also: `PetscObjectIncrementTabLevel()`, `PetscObjectGetTabLevel()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSetTabLevel"))
@@ -1660,7 +1660,7 @@ end
 end 
 
 """
-	PetscObjectSetUp(petsclib::PetscLibType,obj) 
+	PetscObjectSetUp(petsclib::PetscLibType, obj) 
 Sets up the internal data structures for later use of the object
 
 Collective
@@ -1670,7 +1670,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscObjectDestroy()`, `PetscObject`
+See also: `PetscObjectDestroy()`, `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectSetUp"))
@@ -1693,7 +1693,7 @@ end
 end 
 
 """
-	same::PetscBool = PetscObjectTypeCompare(petsclib::PetscLibType,obj, type_name::String) 
+	same::PetscBool = PetscObjectTypeCompare(petsclib::PetscLibType, obj, type_name::String) 
 Determines whether a PETSc object is of a particular type.
 
 Not Collective
@@ -1708,7 +1708,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscObject`, `VecGetType()`, `KSPGetType()`, `PCGetType()`, `SNESGetType()`, `PetscObjectBaseTypeCompare()`, `PetscObjectTypeCompareAny()`, `PetscObjectBaseTypeCompareAny()`, `PetscObjectObjectTypeCompare()`
+See also: `PetscObject`, `VecGetType()`, `KSPGetType()`, `PCGetType()`, `SNESGetType()`, `PetscObjectBaseTypeCompare()`, `PetscObjectTypeCompareAny()`, `PetscObjectBaseTypeCompareAny()`, `PetscObjectObjectTypeCompare()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectTypeCompare"))
@@ -1733,7 +1733,7 @@ end
 end 
 
 """
-	PetscObjectView(petsclib::PetscLibType,obj, viewer::PetscViewer) 
+	PetscObjectView(petsclib::PetscLibType, obj, viewer::PetscViewer) 
 Views, that is displays or stores information about a `PetscObject`.
 
 Collective
@@ -1745,7 +1745,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscObject`, `PetscObjectViewFromOptions()`, `PetscViewer`
+See also: `PetscObject`, `PetscObjectViewFromOptions()`, `PetscViewer`
 
 # External Links
 $(_doc_external("Sys/PetscObjectView"))
@@ -1768,7 +1768,7 @@ end
 end 
 
 """
-	PetscObjectViewFromOptions(petsclib::PetscLibType,obj, bobj, name::String) 
+	PetscObjectViewFromOptions(petsclib::PetscLibType, obj, bobj, name::String) 
 Processes command line options to determine if/how a `PetscObject` is to be viewed.
 
 Collective
@@ -1783,7 +1783,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscObject`, `PetscObjectView()`, `PetscOptionsCreateViewer()`
+See also: `PetscObject`, `PetscObjectView()`, `PetscOptionsCreateViewer()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectViewFromOptions"))
@@ -1806,7 +1806,7 @@ end
 end 
 
 """
-	PetscObjectViewSAWs(petsclib::PetscLibType,obj, viewer::PetscViewer) 
+	PetscObjectViewSAWs(petsclib::PetscLibType, obj, viewer::PetscViewer) 
 View the base portion of any object with an SAWs viewer
 
 Collective
@@ -1817,7 +1817,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscObject`, `PetscObjectSetName()`
+See also: [](sec_viewers), `PetscViewer`, `PetscObject`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscObjectViewSAWs"))
@@ -1840,7 +1840,7 @@ end
 end 
 
 """
-	PetscObjectsDump(petsclib::PetscLibType,fd::Libc.FILE, all::PetscBool) 
+	PetscObjectsDump(petsclib::PetscLibType, fd::Libc.FILE, all::PetscBool) 
 Prints all the currently existing objects.
 
 Input Parameters:
@@ -1852,7 +1852,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscObject`
+See also: `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectsDump"))
@@ -1875,7 +1875,7 @@ end
 end 
 
 """
-	obj::PetscObject,classname::Ptr{Cchar} = PetscObjectsGetObject(petsclib::PetscLibType,name::String) 
+	obj::PetscObject,classname::Ptr{Cchar} = PetscObjectsGetObject(petsclib::PetscLibType, name::String) 
 Get a pointer to a named object
 
 Not Collective
@@ -1889,7 +1889,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscObject`
+See also: `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectsGetObject"))
@@ -1916,7 +1916,7 @@ end
 end 
 
 """
-	count::PetscInt,numbering::PetscInt = PetscObjectsListGetGlobalNumbering(petsclib::PetscLibType,comm::MPI_Comm, len::PetscInt, objlist::Vector{PetscObject}) 
+	count::PetscInt,numbering::PetscInt = PetscObjectsListGetGlobalNumbering(petsclib::PetscLibType, comm::MPI_Comm, len::PetscInt, objlist::Vector{PetscObject}) 
 computes a global numbering
 of `PetscObject`s living on subcommunicators of a given communicator.
 
@@ -1934,7 +1934,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscCommDuplicate()`, `PetscObjectDestroy()`
+See also: `PetscCommDuplicate()`, `PetscObjectDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscObjectsListGetGlobalNumbering"))
@@ -1961,7 +1961,7 @@ end
 end 
 
 """
-	PetscObjectsView(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscObjectsView(petsclib::PetscLibType, viewer::PetscViewer) 
 Prints the currently existing objects.
 
 Logically Collective
@@ -1971,7 +1971,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscObject`
+See also: `PetscObject`
 
 # External Links
 $(_doc_external("Sys/PetscObjectsView"))

@@ -1,5 +1,5 @@
 """
-	t::PetscToken = PetscTokenCreate(petsclib::PetscLibType,a::String, b::Cchar) 
+	t::PetscToken = PetscTokenCreate(petsclib::PetscLibType, a::String, b::Cchar) 
 Creates a `PetscToken` used to find tokens in a string
 
 Not Collective; No Fortran Support
@@ -13,7 +13,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscToken`, `PetscTokenFind()`, `PetscTokenDestroy()`
+See also: `PetscToken`, `PetscTokenFind()`, `PetscTokenDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscTokenCreate"))
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	PetscTokenDestroy(petsclib::PetscLibType,a::Union{PetscToken, Ref{PetscToken}}) 
+	PetscTokenDestroy(petsclib::PetscLibType, a::Union{PetscToken, Ref{PetscToken}}) 
 Destroys a `PetscToken`
 
 Not Collective; No Fortran Support
@@ -48,7 +48,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscToken`, `PetscTokenCreate()`, `PetscTokenFind()`
+See also: `PetscToken`, `PetscTokenCreate()`, `PetscTokenFind()`
 
 # External Links
 $(_doc_external("Sys/PetscTokenDestroy"))
@@ -72,7 +72,7 @@ end
 end 
 
 """
-	result::Ptr{Cchar} = PetscTokenFind(petsclib::PetscLibType,a::PetscToken) 
+	result::Ptr{Cchar} = PetscTokenFind(petsclib::PetscLibType, a::PetscToken) 
 Locates next "token" in a `PetscToken`
 
 Not Collective; No Fortran Support
@@ -85,7 +85,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscToken`, `PetscTokenCreate()`, `PetscTokenDestroy()`
+See also: `PetscToken`, `PetscTokenCreate()`, `PetscTokenDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscTokenFind"))

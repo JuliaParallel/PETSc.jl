@@ -1,5 +1,5 @@
 """
-	handler::PetscLogHandler = PetscLogHandlerCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	handler::PetscLogHandler = PetscLogHandlerCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a log handler for profiling events and stages.  PETSc
 provides several implementations of `PetscLogHandler` that interface to different ways to
 summarize or visualize profiling data: see `PetscLogHandlerType` for a list.
@@ -14,7 +14,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogHandlerSetType()`, `PetscLogHandlerStart()`, `PetscLogHandlerStop()`
+See also: `PetscLogHandler`, `PetscLogHandlerSetType()`, `PetscLogHandlerStart()`, `PetscLogHandlerStop()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerCreate"))
@@ -39,7 +39,7 @@ end
 end 
 
 """
-	handler::PetscLogHandler = PetscLogHandlerCreateLegacy(petsclib::PetscLibType,comm::MPI_Comm, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external) 
+	handler::PetscLogHandler = PetscLogHandlerCreateLegacy(petsclib::PetscLibType, comm::MPI_Comm, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external) 
 Create a `PetscLogHandler` from callbacks matching PETSc's legacy log handler callbacks
 
 Collective
@@ -78,7 +78,12 @@ Calling sequence of `PetscLogPHD`:
 
 Level: developer
 
--seealso: [](ch_profiling)
+Notes:
+This is for transitioning from the deprecated function `PetscLogSet()` and should not be used in new code.
+
+`PetscLogLegacyCallbacksBegin()`, which calls this function, creates and starts (`PetscLogHandlerStart()`) a log handler,
+should be used in almost all cases.
+
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerCreateLegacy"))
@@ -103,7 +108,7 @@ end
 end 
 
 """
-	file::Libc.FILE,handler::PetscLogHandler = PetscLogHandlerCreateTrace(petsclib::PetscLibType,comm::MPI_Comm) 
+	file::Libc.FILE,handler::PetscLogHandler = PetscLogHandlerCreateTrace(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a logger that traces events and stages to a given file descriptor
 
 Collective, No Fortran Support
@@ -117,7 +122,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogHandlerTraceBegin()`
+See also: `PetscLogHandler`, `PetscLogHandlerTraceBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerCreateTrace"))
@@ -144,7 +149,7 @@ end
 end 
 
 """
-	PetscLogHandlerDestroy(petsclib::PetscLibType,handler::Union{PetscLogHandler, Ref{PetscLogHandler}}) 
+	PetscLogHandlerDestroy(petsclib::PetscLibType, handler::Union{PetscLogHandler, Ref{PetscLogHandler}}) 
 Destroy a `PetscLogHandler`
 
 Logically collective
@@ -154,7 +159,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogHandlerCreate()`
+See also: `PetscLogHandler`, `PetscLogHandlerCreate()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerDestroy"))
@@ -178,7 +183,7 @@ end
 end 
 
 """
-	PetscLogHandlerDump(petsclib::PetscLibType,handler::PetscLogHandler, sname::String) 
+	PetscLogHandlerDump(petsclib::PetscLibType, handler::PetscLogHandler, sname::String) 
 Dump the records of a log handler to file
 
 Not collective
@@ -189,7 +194,11 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling)
+Note:
+The default log handler `PETSCLOGHANDLERDEFAULT` implements this function, but others generally do not.  You can use
+`PetscLogDump()` to call this function for the default log handler that is connected to the global
+logging state (`PetscLogGetState()`).
+
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerDump"))
@@ -212,7 +221,7 @@ end
 end 
 
 """
-	PetscLogHandlerEventBegin(petsclib::PetscLibType,h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) 
+	PetscLogHandlerEventBegin(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) 
 Record the beginning of an event in a log handler
 
 Not collective
@@ -227,7 +236,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventSync()`, `PetscLogHandlerEventEnd()`, `PetscLogHandlerEventSync()`
+See also: `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventSync()`, `PetscLogHandlerEventEnd()`, `PetscLogHandlerEventSync()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventBegin"))
@@ -250,7 +259,7 @@ end
 end 
 
 """
-	PetscLogHandlerEventDeactivatePop(petsclib::PetscLibType,handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent) 
+	PetscLogHandlerEventDeactivatePop(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent) 
 Undo temporary deactivation a logging event for a log handler
 
 Not collective
@@ -262,7 +271,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandlerEventDeactivatePush()`
+See also: `PetscLogHandlerEventDeactivatePush()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventDeactivatePop"))
@@ -285,7 +294,7 @@ end
 end 
 
 """
-	PetscLogHandlerEventDeactivatePush(petsclib::PetscLibType,handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent) 
+	PetscLogHandlerEventDeactivatePush(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent) 
 Temporarily deactivate a logging event for a log handler
 
 Not collective
@@ -297,7 +306,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandlerEventDeactivatePop()`
+See also: `PetscLogHandlerEventDeactivatePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventDeactivatePush"))
@@ -320,7 +329,7 @@ end
 end 
 
 """
-	PetscLogHandlerEventEnd(petsclib::PetscLibType,h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) 
+	PetscLogHandlerEventEnd(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) 
 Record the end of an event in a log handler
 
 Not collective
@@ -335,7 +344,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventSync()`, `PetscLogHandlerEventBegin()`, `PetscLogHandlerEventSync()`
+See also: `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventSync()`, `PetscLogHandlerEventBegin()`, `PetscLogHandlerEventSync()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventEnd"))
@@ -358,7 +367,7 @@ end
 end 
 
 """
-	PetscLogHandlerEventSync(petsclib::PetscLibType,h::PetscLogHandler, e::PetscLogEvent, comm::MPI_Comm) 
+	PetscLogHandlerEventSync(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, comm::MPI_Comm) 
 Synchronize a logging event
 
 Collective
@@ -370,7 +379,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventSync()`, `PetscLogHandlerEventBegin()`, `PetscLogHandlerEventEnd()`
+See also: `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventSync()`, `PetscLogHandlerEventBegin()`, `PetscLogHandlerEventEnd()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventSync"))
@@ -393,7 +402,7 @@ end
 end 
 
 """
-	PetscLogHandlerEventsPause(petsclib::PetscLibType,handler::PetscLogHandler) 
+	PetscLogHandlerEventsPause(petsclib::PetscLibType, handler::PetscLogHandler) 
 Put event logging into "paused" mode (see `PetscLogEventsPause()` for details.) for a log handler
 
 Not collective
@@ -403,7 +412,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandlerEventsResume()`
+See also: `PetscLogHandlerEventsResume()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventsPause"))
@@ -426,7 +435,7 @@ end
 end 
 
 """
-	PetscLogHandlerEventsResume(petsclib::PetscLibType,handler::PetscLogHandler) 
+	PetscLogHandlerEventsResume(petsclib::PetscLibType, handler::PetscLogHandler) 
 Resume event logging that had been put into "paused" mode (see `PetscLogEventsPause()` for details.) for a log handler
 
 Not collective
@@ -436,7 +445,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandlerEventsPause()`
+See also: `PetscLogHandlerEventsPause()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventsResume"))
@@ -459,7 +468,7 @@ end
 end 
 
 """
-	event_info::Ptr{PetscEventPerfInfo} = PetscLogHandlerGetEventPerfInfo(petsclib::PetscLibType,handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent) 
+	event_info::Ptr{PetscEventPerfInfo} = PetscLogHandlerGetEventPerfInfo(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent) 
 Get a direct reference to the `PetscEventPerfInfo` of a stage and event
 
 Not collective, No Fortran Support
@@ -476,7 +485,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventGetPerfInfo()`, `PETSCLOGHANDLERDEFAULT`
+See also: `PetscLogEventGetPerfInfo()`, `PETSCLOGHANDLERDEFAULT`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerGetEventPerfInfo"))
@@ -501,7 +510,7 @@ end
 end 
 
 """
-	num_objects::PetscInt = PetscLogHandlerGetNumObjects(petsclib::PetscLibType,handler::PetscLogHandler) 
+	num_objects::PetscInt = PetscLogHandlerGetNumObjects(petsclib::PetscLibType, handler::PetscLogHandler) 
 Get the number of objects that were logged with a log handler
 
 Not Collective
@@ -516,7 +525,9 @@ if the handler does not keep track of this number.
 
 Level: developer
 
--seealso: [](ch_profiling)
+Note:
+The default log handler `PETSCLOGHANDLERDEFAULT` implements this function, but others generally do not.
+
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerGetNumObjects"))
@@ -541,7 +552,7 @@ end
 end 
 
 """
-	stage_info::Ptr{PetscEventPerfInfo} = PetscLogHandlerGetStagePerfInfo(petsclib::PetscLibType,handler::PetscLogHandler, stage::PetscLogStage) 
+	stage_info::Ptr{PetscEventPerfInfo} = PetscLogHandlerGetStagePerfInfo(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage) 
 Get a direct reference to the `PetscEventPerfInfo` of a stage
 
 Not collective, No Fortran Support
@@ -556,7 +567,7 @@ to record performance data); writing to `stage_info` will change the record in `
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventGetPerfInfo()`, `PETSCLOGHANDLERDEFAULT`
+See also: `PetscLogEventGetPerfInfo()`, `PETSCLOGHANDLERDEFAULT`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerGetStagePerfInfo"))
@@ -581,7 +592,7 @@ end
 end 
 
 """
-	state::PetscLogState = PetscLogHandlerGetState(petsclib::PetscLibType,h::PetscLogHandler) 
+	state::PetscLogState = PetscLogHandlerGetState(petsclib::PetscLibType, h::PetscLogHandler) 
 Get the logging state that provides the stream of events and stages for a log handler.
 
 Logically collective
@@ -594,7 +605,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogState`, `PetscLogEventBegin()`, `PetscLogHandlerStart()`
+See also: `PetscLogHandler`, `PetscLogState`, `PetscLogEventBegin()`, `PetscLogHandlerStart()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerGetState"))
@@ -619,7 +630,7 @@ end
 end 
 
 """
-	name::PetscLogHandlerType = PetscLogHandlerGetType(petsclib::PetscLibType,handler::PetscLogHandler) 
+	name::PetscLogHandlerType = PetscLogHandlerGetType(petsclib::PetscLibType, handler::PetscLogHandler) 
 Gets the `PetscLoagHandlerType` (as a string) from the `PetscLogHandler` object.
 
 Not collective
@@ -632,7 +643,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerRegister()`, `PetscLogHandlerSetType()`
+See also: `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerRegister()`, `PetscLogHandlerSetType()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerGetType"))
@@ -657,7 +668,7 @@ end
 end 
 
 """
-	PetscLogHandlerObjectCreate(petsclib::PetscLibType,h::PetscLogHandler, obj) 
+	PetscLogHandlerObjectCreate(petsclib::PetscLibType, h::PetscLogHandler, obj) 
 Record the creation of an object in a log handler.
 
 Not collective
@@ -668,7 +679,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogObjectCreate()`, `PetscLogObjectDestroy()`, `PetscLogHandlerObjectDestroy()`
+See also: `PetscLogHandler`, `PetscLogObjectCreate()`, `PetscLogObjectDestroy()`, `PetscLogHandlerObjectDestroy()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerObjectCreate"))
@@ -691,7 +702,7 @@ end
 end 
 
 """
-	PetscLogHandlerObjectDestroy(petsclib::PetscLibType,h::PetscLogHandler, obj) 
+	PetscLogHandlerObjectDestroy(petsclib::PetscLibType, h::PetscLogHandler, obj) 
 Record the destruction of an object in a log handler.
 
 Not collective
@@ -702,7 +713,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogObjectCreate()`, `PetscLogObjectDestroy()`, `PetscLogHandlerObjectCreate()`
+See also: `PetscLogHandler`, `PetscLogObjectCreate()`, `PetscLogObjectDestroy()`, `PetscLogHandlerObjectCreate()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerObjectDestroy"))
@@ -725,7 +736,7 @@ end
 end 
 
 """
-	PetscLogHandlerRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscLogHandlerRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Register a new `PetscLogHandler`
 
 Not Collective, No Fortran Support
@@ -734,7 +745,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerSetType()`, `PetscLogHandlerGetType()`
+See also: `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerSetType()`, `PetscLogHandlerGetType()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerRegister"))
@@ -757,7 +768,7 @@ end
 end 
 
 """
-	PetscLogHandlerSetLogActions(petsclib::PetscLibType,handler::PetscLogHandler, flag::PetscBool) 
+	PetscLogHandlerSetLogActions(petsclib::PetscLibType, handler::PetscLogHandler, flag::PetscBool) 
 Determines whether actions are logged for a log handler.
 
 Not Collective
@@ -768,7 +779,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogSetLogActions()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogSetLogActions()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerSetLogActions"))
@@ -791,7 +802,7 @@ end
 end 
 
 """
-	PetscLogHandlerSetLogObjects(petsclib::PetscLibType,handler::PetscLogHandler, flag::PetscBool) 
+	PetscLogHandlerSetLogObjects(petsclib::PetscLibType, handler::PetscLogHandler, flag::PetscBool) 
 Determines whether objects are logged for a log handler.
 
 Not Collective
@@ -802,7 +813,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogSetLogObjects()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogSetLogObjects()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerSetLogObjects"))
@@ -825,7 +836,7 @@ end
 end 
 
 """
-	PetscLogHandlerSetState(petsclib::PetscLibType,h::PetscLogHandler, state::PetscLogState) 
+	PetscLogHandlerSetState(petsclib::PetscLibType, h::PetscLogHandler, state::PetscLogState) 
 Set the logging state that provides the stream of events and stages for a log handler.
 
 Logically collective
@@ -836,7 +847,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogState`, `PetscLogEventBegin()`, `PetscLogHandlerStart()`
+See also: `PetscLogHandler`, `PetscLogState`, `PetscLogEventBegin()`, `PetscLogHandlerStart()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerSetState"))
@@ -859,7 +870,7 @@ end
 end 
 
 """
-	PetscLogHandlerSetType(petsclib::PetscLibType,handler::PetscLogHandler, name::PetscLogHandlerType) 
+	PetscLogHandlerSetType(petsclib::PetscLibType, handler::PetscLogHandler, name::PetscLogHandlerType) 
 Set the type of a `PetscLogHandler`
 
 Input Parameters:
@@ -868,7 +879,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerRegister()`, `PetscLogHandlerGetType()`
+See also: `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerRegister()`, `PetscLogHandlerGetType()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerSetType"))
@@ -891,7 +902,7 @@ end
 end 
 
 """
-	isVisible::PetscBool = PetscLogHandlerStageGetVisible(petsclib::PetscLibType,handler::PetscLogHandler, stage::PetscLogStage) 
+	isVisible::PetscBool = PetscLogHandlerStageGetVisible(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage) 
 Get the visibility of logging stage in `PetscLogHandlerView()` for a log handler
 
 Not collective
@@ -905,7 +916,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandlerStageSetVisible()`
+See also: `PetscLogHandlerStageSetVisible()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerStageGetVisible"))
@@ -930,7 +941,7 @@ end
 end 
 
 """
-	PetscLogHandlerStagePop(petsclib::PetscLibType,h::PetscLogHandler, stage::PetscLogStage) 
+	PetscLogHandlerStagePop(petsclib::PetscLibType, h::PetscLogHandler, stage::PetscLogStage) 
 End the current logging stage in a log handler.
 
 Not collective
@@ -941,7 +952,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogHandlerStagePush()`
+See also: `PetscLogHandler`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogHandlerStagePush()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerStagePop"))
@@ -964,7 +975,7 @@ end
 end 
 
 """
-	PetscLogHandlerStagePush(petsclib::PetscLibType,h::PetscLogHandler, stage::PetscLogStage) 
+	PetscLogHandlerStagePush(petsclib::PetscLibType, h::PetscLogHandler, stage::PetscLogStage) 
 Begin a new logging stage in a log handler.
 
 Not collective
@@ -975,7 +986,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogHandlerStagePop()`
+See also: `PetscLogHandler`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogHandlerStagePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerStagePush"))
@@ -998,7 +1009,7 @@ end
 end 
 
 """
-	PetscLogHandlerStageSetVisible(petsclib::PetscLibType,handler::PetscLogHandler, stage::PetscLogStage, isVisible::PetscBool) 
+	PetscLogHandlerStageSetVisible(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, isVisible::PetscBool) 
 Set the visibility of logging stage in `PetscLogHandlerView()` for a log handler
 
 Not collective
@@ -1010,7 +1021,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandlerStageGetVisible()`
+See also: `PetscLogHandlerStageGetVisible()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerStageSetVisible"))
@@ -1033,7 +1044,7 @@ end
 end 
 
 """
-	PetscLogHandlerStart(petsclib::PetscLibType,h::PetscLogHandler) 
+	PetscLogHandlerStart(petsclib::PetscLibType, h::PetscLogHandler) 
 Connect a log handler to PETSc's global logging stream and state.
 
 Logically collective
@@ -1043,7 +1054,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogState`, `PetscLogHandlerStop()`, `PetscInitialize()`
+See also: `PetscLogHandler`, `PetscLogState`, `PetscLogHandlerStop()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerStart"))
@@ -1066,7 +1077,7 @@ end
 end 
 
 """
-	PetscLogHandlerStop(petsclib::PetscLibType,h::PetscLogHandler) 
+	PetscLogHandlerStop(petsclib::PetscLibType, h::PetscLogHandler) 
 Disconnect a log handler from PETSc's global logging stream.
 
 Logically collective
@@ -1076,7 +1087,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogState`, `PetscLogHandlerStart()`
+See also: `PetscLogHandler`, `PetscLogState`, `PetscLogHandlerStart()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerStop"))
@@ -1099,7 +1110,7 @@ end
 end 
 
 """
-	PetscLogHandlerView(petsclib::PetscLibType,h::PetscLogHandler, viewer::PetscViewer) 
+	PetscLogHandlerView(petsclib::PetscLibType, h::PetscLogHandler, viewer::PetscViewer) 
 View the data recorded in a log handler.
 
 Collective
@@ -1110,7 +1121,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogView()`
+See also: `PetscLogHandler`, `PetscLogView()`
 
 # External Links
 $(_doc_external("Log/PetscLogHandlerView"))
@@ -1133,7 +1144,7 @@ end
 end 
 
 """
-	info::PetscLogClassInfo = PetscLogStateClassGetInfo(petsclib::PetscLibType,state::PetscLogState, clss::PetscLogClass) 
+	info::PetscLogClassInfo = PetscLogStateClassGetInfo(petsclib::PetscLibType, state::PetscLogState, clss::PetscLogClass) 
 Get the registration information of an class
 
 Not collective
@@ -1147,7 +1158,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateGetClassFromName()`
+See also: `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateGetClassFromName()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateClassGetInfo"))
@@ -1172,7 +1183,7 @@ end
 end 
 
 """
-	logclass::PetscLogClass = PetscLogStateClassRegister(petsclib::PetscLibType,state::PetscLogState, name::String, id::PetscClassId) 
+	logclass::PetscLogClass = PetscLogStateClassRegister(petsclib::PetscLibType, state::PetscLogState, name::String, id::PetscClassId) 
 Register a class to with a `PetscLogState` used by `PetscLogHandler`s.
 
 Logically collective on `PETSC_COMM_WORLD`
@@ -1187,7 +1198,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogStateClassGetInfo()`, `PetscLogStateGetClassFromName()`, `PetscLogStateGetClassFromClassId()`
+See also: `PetscLogStateClassGetInfo()`, `PetscLogStateGetClassFromName()`, `PetscLogStateGetClassFromClassId()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateClassRegister"))
@@ -1212,7 +1223,7 @@ end
 end 
 
 """
-	PetscLogStateClassSetActive(petsclib::PetscLibType,state::PetscLogState, stage::PetscLogStage, classid::PetscClassId, isActive::PetscBool) 
+	PetscLogStateClassSetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, classid::PetscClassId, isActive::PetscBool) 
 Set logging events associated with an event as active or inactive during a logging stage.
 
 Not collective
@@ -1228,7 +1239,7 @@ with this class when they were registered (see
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateEventSetActive()`
+See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateEventSetActive()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateClassSetActive"))
@@ -1251,7 +1262,7 @@ end
 end 
 
 """
-	PetscLogStateClassSetActiveAll(petsclib::PetscLibType,state::PetscLogState, classid::PetscClassId, isActive::PetscBool) 
+	PetscLogStateClassSetActiveAll(petsclib::PetscLibType, state::PetscLogState, classid::PetscClassId, isActive::PetscBool) 
 Set logging events associated with an event as active or inactive for all logging stages
 
 Not collective
@@ -1265,7 +1276,7 @@ were registered (see `PetscLogStateEventRegister()`).
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateClassSetActive()`
+See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateClassSetActive()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateClassSetActiveAll"))
@@ -1298,7 +1309,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateDestroy()`
+See also: `PetscLogState`, `PetscLogStateDestroy()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateCreate"))
@@ -1323,7 +1334,7 @@ end
 end 
 
 """
-	PetscLogStateDestroy(petsclib::PetscLibType,state::Union{PetscLogState, Ref{PetscLogState}}) 
+	PetscLogStateDestroy(petsclib::PetscLibType, state::Union{PetscLogState, Ref{PetscLogState}}) 
 Destroy a logging state.
 
 Not collective
@@ -1333,7 +1344,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateCreate()`
+See also: `PetscLogState`, `PetscLogStateCreate()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateDestroy"))
@@ -1357,7 +1368,7 @@ end
 end 
 
 """
-	isActive::PetscBool = PetscLogStateEventGetActive(petsclib::PetscLibType,state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent) 
+	isActive::PetscBool = PetscLogStateEventGetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent) 
 Check if a logging event is active or inactive during a logging stage.
 
 Not collective
@@ -1372,7 +1383,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateGetCurrentStage()`, `PetscLogHandler()`
+See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateGetCurrentStage()`, `PetscLogHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateEventGetActive"))
@@ -1397,7 +1408,7 @@ end
 end 
 
 """
-	info::PetscLogEventInfo = PetscLogStateEventGetInfo(petsclib::PetscLibType,state::PetscLogState, event::PetscLogEvent) 
+	info::PetscLogEventInfo = PetscLogStateEventGetInfo(petsclib::PetscLibType, state::PetscLogState, event::PetscLogEvent) 
 Get the registration information of an event
 
 Not collective
@@ -1411,7 +1422,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateEventRegister()`, `PetscLogStateGetEventFromName()`
+See also: `PetscLogState`, `PetscLogStateEventRegister()`, `PetscLogStateGetEventFromName()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateEventGetInfo"))
@@ -1436,7 +1447,7 @@ end
 end 
 
 """
-	event::PetscLogEvent = PetscLogStateEventRegister(petsclib::PetscLibType,state::PetscLogState, sname::String, id::PetscClassId) 
+	event::PetscLogEvent = PetscLogStateEventRegister(petsclib::PetscLibType, state::PetscLogState, sname::String, id::PetscClassId) 
 Register a new event with a logging state
 
 Not collective
@@ -1451,7 +1462,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStageRegister()`
+See also: `PetscLogState`, `PetscLogStageRegister()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateEventRegister"))
@@ -1476,7 +1487,7 @@ end
 end 
 
 """
-	PetscLogStateEventSetActive(petsclib::PetscLibType,state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent, isActive::PetscBool) 
+	PetscLogStateEventSetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent, isActive::PetscBool) 
 Set a logging event as active or inactive during a logging stage.
 
 Not collective
@@ -1489,7 +1500,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateGetCurrentStage()`, `PetscLogEventSetActiveAll()`
+See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateGetCurrentStage()`, `PetscLogEventSetActiveAll()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateEventSetActive"))
@@ -1512,7 +1523,7 @@ end
 end 
 
 """
-	PetscLogStateEventSetActiveAll(petsclib::PetscLibType,state::PetscLogState, event::PetscLogEvent, isActive::PetscBool) 
+	PetscLogStateEventSetActiveAll(petsclib::PetscLibType, state::PetscLogState, event::PetscLogEvent, isActive::PetscBool) 
 Set logging event as active or inactive for all logging stages
 
 Not collective
@@ -1524,7 +1535,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogEventGetActive()`
+See also: `PetscLogState`, `PetscLogEventGetActive()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateEventSetActiveAll"))
@@ -1547,7 +1558,7 @@ end
 end 
 
 """
-	PetscLogStateEventSetCollective(petsclib::PetscLibType,state::PetscLogState, event::PetscLogEvent, collective::PetscBool) 
+	PetscLogStateEventSetCollective(petsclib::PetscLibType, state::PetscLogState, event::PetscLogEvent, collective::PetscBool) 
 Set the collective nature of a logging event
 
 Logically collective
@@ -1559,7 +1570,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogEventRegister()`
+See also: `PetscLogState`, `PetscLogEventRegister()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateEventSetCollective"))
@@ -1582,7 +1593,7 @@ end
 end 
 
 """
-	clss::PetscLogClass = PetscLogStateGetClassFromClassId(petsclib::PetscLibType,state::PetscLogState, classid::PetscClassId) 
+	clss::PetscLogClass = PetscLogStateGetClassFromClassId(petsclib::PetscLibType, state::PetscLogState, classid::PetscClassId) 
 Get a `PetscLogClass` from the `PetscClassId` it was registered with.
 
 Not collective
@@ -1596,7 +1607,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateClassGetInfo()`
+See also: `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateClassGetInfo()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetClassFromClassId"))
@@ -1621,7 +1632,7 @@ end
 end 
 
 """
-	clss::PetscLogClass = PetscLogStateGetClassFromName(petsclib::PetscLibType,state::PetscLogState, name::String) 
+	clss::PetscLogClass = PetscLogStateGetClassFromName(petsclib::PetscLibType, state::PetscLogState, name::String) 
 Get a `PetscLogClass` from the name of the class it was registered with.
 
 Not collective
@@ -1635,7 +1646,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateClassGetInfo()`
+See also: `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateClassGetInfo()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetClassFromName"))
@@ -1660,7 +1671,7 @@ end
 end 
 
 """
-	current::PetscLogStage = PetscLogStateGetCurrentStage(petsclib::PetscLibType,state::PetscLogState) 
+	current::PetscLogStage = PetscLogStateGetCurrentStage(petsclib::PetscLibType, state::PetscLogState) 
 Get the last stage that was started
 
 Not collective
@@ -1673,7 +1684,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePush()`, `PetscLogStateStagePop()`
+See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePush()`, `PetscLogStateStagePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetCurrentStage"))
@@ -1698,7 +1709,7 @@ end
 end 
 
 """
-	event::PetscLogEvent = PetscLogStateGetEventFromName(petsclib::PetscLibType,state::PetscLogState, name::String) 
+	event::PetscLogEvent = PetscLogStateGetEventFromName(petsclib::PetscLibType, state::PetscLogState, name::String) 
 Get a `PetscLogEvent` from the name it was registered with.
 
 Not collective
@@ -1712,7 +1723,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateEventRegister()`, `PetscLogStateEventGetInfo()`
+See also: `PetscLogState`, `PetscLogStateEventRegister()`, `PetscLogStateEventGetInfo()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetEventFromName"))
@@ -1737,7 +1748,7 @@ end
 end 
 
 """
-	numClasses::PetscInt = PetscLogStateGetNumClasses(petsclib::PetscLibType,state::PetscLogState) 
+	numClasses::PetscInt = PetscLogStateGetNumClasses(petsclib::PetscLibType, state::PetscLogState) 
 Get the number of registered classes in a logging state.
 
 Not collective
@@ -1750,7 +1761,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateClassRegister()`
+See also: `PetscLogState`, `PetscLogStateClassRegister()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetNumClasses"))
@@ -1775,7 +1786,7 @@ end
 end 
 
 """
-	numEvents::PetscInt = PetscLogStateGetNumEvents(petsclib::PetscLibType,state::PetscLogState) 
+	numEvents::PetscInt = PetscLogStateGetNumEvents(petsclib::PetscLibType, state::PetscLogState) 
 Get the number of registered events in a logging state.
 
 Not collective
@@ -1788,7 +1799,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateEventRegister()`
+See also: `PetscLogState`, `PetscLogStateEventRegister()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetNumEvents"))
@@ -1813,7 +1824,7 @@ end
 end 
 
 """
-	numStages::PetscInt = PetscLogStateGetNumStages(petsclib::PetscLibType,state::PetscLogState) 
+	numStages::PetscInt = PetscLogStateGetNumStages(petsclib::PetscLibType, state::PetscLogState) 
 Get the number of registered stages in a logging state.
 
 Not collective
@@ -1826,7 +1837,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateStageRegister()`
+See also: `PetscLogState`, `PetscLogStateStageRegister()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetNumStages"))
@@ -1851,7 +1862,7 @@ end
 end 
 
 """
-	stage::PetscLogStage = PetscLogStateGetStageFromName(petsclib::PetscLibType,state::PetscLogState, name::String) 
+	stage::PetscLogStage = PetscLogStateGetStageFromName(petsclib::PetscLibType, state::PetscLogState, name::String) 
 Get a `PetscLogStage` from the name it was registered with.
 
 Not collective
@@ -1865,7 +1876,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStageGetInfo()`
+See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStageGetInfo()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateGetStageFromName"))
@@ -1890,7 +1901,7 @@ end
 end 
 
 """
-	isActive::PetscBool = PetscLogStateStageGetActive(petsclib::PetscLibType,state::PetscLogState, stage::PetscLogStage) 
+	isActive::PetscBool = PetscLogStateStageGetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage) 
 Check if a logging stage is active or inactive.
 
 Not collective
@@ -1904,7 +1915,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStageSetActive()`, `PetscLogHandler`, `PetscLogHandlerStart()`, `PetscLogHandlerEventBegin()`, `PetscLogHandlerEventEnd()`
+See also: `PetscLogState`, `PetscLogStageSetActive()`, `PetscLogHandler`, `PetscLogHandlerStart()`, `PetscLogHandlerEventBegin()`, `PetscLogHandlerEventEnd()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateStageGetActive"))
@@ -1929,7 +1940,7 @@ end
 end 
 
 """
-	info::PetscLogStageInfo = PetscLogStateStageGetInfo(petsclib::PetscLibType,state::PetscLogState, stage::PetscLogStage) 
+	info::PetscLogStageInfo = PetscLogStateStageGetInfo(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage) 
 Get the registration information of an stage
 
 Not collective
@@ -1943,7 +1954,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateGetStageFromName()`
+See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateGetStageFromName()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateStageGetInfo"))
@@ -1968,7 +1979,7 @@ end
 end 
 
 """
-	PetscLogStateStagePop(petsclib::PetscLibType,state::PetscLogState) 
+	PetscLogStateStagePop(petsclib::PetscLibType, state::PetscLogState) 
 End a running logging stage.
 
 Not collective
@@ -1978,7 +1989,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePush()`, `PetscLogStateGetCurrentStage()`
+See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePush()`, `PetscLogStateGetCurrentStage()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateStagePop"))
@@ -2001,7 +2012,7 @@ end
 end 
 
 """
-	PetscLogStateStagePush(petsclib::PetscLibType,state::PetscLogState, stage::PetscLogStage) 
+	PetscLogStateStagePush(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage) 
 Start a new logging stage.
 
 Not collective
@@ -2012,7 +2023,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePop()`, `PetscLogStateGetCurrentStage()`
+See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePop()`, `PetscLogStateGetCurrentStage()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateStagePush"))
@@ -2035,7 +2046,7 @@ end
 end 
 
 """
-	stage::PetscLogStage = PetscLogStateStageRegister(petsclib::PetscLibType,state::PetscLogState, sname::String) 
+	stage::PetscLogStage = PetscLogStateStageRegister(petsclib::PetscLibType, state::PetscLogState, sname::String) 
 Register a new stage with a logging state
 
 Not collective
@@ -2049,7 +2060,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateStagePush()`, `PetscLogStateStagePop()`
+See also: `PetscLogState`, `PetscLogStateStagePush()`, `PetscLogStateStagePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateStageRegister"))
@@ -2074,7 +2085,7 @@ end
 end 
 
 """
-	PetscLogStateStageSetActive(petsclib::PetscLibType,state::PetscLogState, stage::PetscLogStage, isActive::PetscBool) 
+	PetscLogStateStageSetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, isActive::PetscBool) 
 Mark a stage as active or inactive.
 
 Not collective
@@ -2086,7 +2097,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`, `PetscLogStateEventSetActive()`
+See also: `PetscLogState`, `PetscLogStateEventSetActive()`
 
 # External Links
 $(_doc_external("Log/PetscLogStateStageSetActive"))

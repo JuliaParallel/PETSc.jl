@@ -1,5 +1,5 @@
 """
-	sfBA::PetscSF = PetscSFCompose(petsclib::PetscLibType,sfA::PetscSF, sfB::PetscSF) 
+	sfBA::PetscSF = PetscSFCompose(petsclib::PetscLibType, sfA::PetscSF, sfB::PetscSF) 
 Compose a new `PetscSF` by putting the second `PetscSF` under the first one in a top (roots) down (leaves) view
 
 Input Parameters:
@@ -11,7 +11,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFComposeInverse()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFComposeInverse()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCompose"))
@@ -36,7 +36,7 @@ end
 end 
 
 """
-	sfBA::PetscSF = PetscSFComposeInverse(petsclib::PetscLibType,sfA::PetscSF, sfB::PetscSF) 
+	sfBA::PetscSF = PetscSFComposeInverse(petsclib::PetscLibType, sfA::PetscSF, sfB::PetscSF) 
 Compose a new `PetscSF` by putting the inverse of the second `PetscSF` under the first one
 
 Input Parameters:
@@ -48,7 +48,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFCreateInverseSF()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFCreateInverseSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComposeInverse"))
@@ -73,7 +73,7 @@ end
 end 
 
 """
-	degree::Ptr{PetscInt} = PetscSFComputeDegreeBegin(petsclib::PetscLibType,sf::PetscSF) 
+	degree::Ptr{PetscInt} = PetscSFComputeDegreeBegin(petsclib::PetscLibType, sf::PetscSF) 
 begin computation of the degree of each root vertex, to be completed with `PetscSFComputeDegreeEnd()`
 
 Collective
@@ -86,7 +86,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeEnd()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeEnd()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeDegreeBegin"))
@@ -111,7 +111,7 @@ end
 end 
 
 """
-	degree::Ptr{PetscInt} = PetscSFComputeDegreeEnd(petsclib::PetscLibType,sf::PetscSF) 
+	degree::Ptr{PetscInt} = PetscSFComputeDegreeEnd(petsclib::PetscLibType, sf::PetscSF) 
 complete computation of degree for each root vertex, started with `PetscSFComputeDegreeBegin()`
 
 Collective
@@ -124,7 +124,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeBegin()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeBegin()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeDegreeEnd"))
@@ -149,8 +149,8 @@ end
 end 
 
 """
-	nMultiRoots::PetscInt,multiRootsOrigNumbering::Ptr{PetscInt} = PetscSFComputeMultiRootOriginalNumbering(petsclib::PetscLibType,sf::PetscSF, degree::Vector{PetscInt}) 
-Returns original numbering of multi
+	nMultiRoots::PetscInt,multiRootsOrigNumbering::Ptr{PetscInt} = PetscSFComputeMultiRootOriginalNumbering(petsclib::PetscLibType, sf::PetscSF, degree::Vector{PetscInt}) 
+Returns original numbering of multi-roots (roots of multi-`PetscSF` returned by `PetscSFGetMultiSF()`).
 Each multi-root is assigned index of the corresponding original root.
 
 Collective
@@ -165,7 +165,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFComputeDegreeBegin()`, `PetscSFComputeDegreeEnd()`, `PetscSFGetMultiSF()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFComputeDegreeBegin()`, `PetscSFComputeDegreeEnd()`, `PetscSFGetMultiSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFComputeMultiRootOriginalNumbering"))
@@ -192,7 +192,7 @@ end
 end 
 
 """
-	newsf::PetscSF = PetscSFConcatenate(petsclib::PetscLibType,comm::MPI_Comm, nsfs::PetscInt, sfs::Vector{PetscSF}, rootMode::PetscSFConcatenateRootMode, leafOffsets::Vector{PetscInt}) 
+	newsf::PetscSF = PetscSFConcatenate(petsclib::PetscLibType, comm::MPI_Comm, nsfs::PetscInt, sfs::Vector{PetscSF}, rootMode::PetscSFConcatenateRootMode, leafOffsets::Vector{PetscInt}) 
 concatenate multiple `PetscSF` into a new `PetscSF`
 
 Input Parameters:
@@ -207,7 +207,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFConcatenateRootMode`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()`, `PetscSFConcatenateRootMode`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFConcatenate"))
@@ -232,7 +232,7 @@ end
 end 
 
 """
-	sf::PetscSF = PetscSFCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	sf::PetscSF = PetscSFCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 create a star forest communication context
 
 Collective
@@ -249,7 +249,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetType`, `PetscSFSetGraph()`, `PetscSFSetGraphWithPattern()`, `PetscSFDestroy()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFSetType`, `PetscSFSetGraph()`, `PetscSFSetGraphWithPattern()`, `PetscSFDestroy()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreate"))
@@ -274,7 +274,7 @@ end
 end 
 
 """
-	sfA::PetscSF,sf::PetscSF = PetscSFCreateByMatchingIndices(petsclib::PetscLibType,layout::PetscLayout, numRootIndices::PetscInt, rootIndices::Vector{PetscInt}, rootLocalIndices::Vector{PetscInt}, rootLocalOffset::PetscInt, numLeafIndices::PetscInt, leafIndices::Vector{PetscInt}, leafLocalIndices::Vector{PetscInt}, leafLocalOffset::PetscInt) 
+	sfA::PetscSF,sf::PetscSF = PetscSFCreateByMatchingIndices(petsclib::PetscLibType, layout::PetscLayout, numRootIndices::PetscInt, rootIndices::Vector{PetscInt}, rootLocalIndices::Vector{PetscInt}, rootLocalOffset::PetscInt, numLeafIndices::PetscInt, leafIndices::Vector{PetscInt}, leafLocalIndices::Vector{PetscInt}, leafLocalOffset::PetscInt) 
 Create `PetscSF` by matching root and leaf indices
 
 Collective
@@ -297,7 +297,58 @@ Output Parameters:
 Level: advanced
 
 Example 1:
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
+``
+rank             : 0            1            2
+rootIndices      : [1 0 2]      [3]          [3]
+rootLocalOffset  : 100          200          300
+layout           : [0 1]        [2]          [3]
+leafIndices      : [0]          [2]          [0 3]
+leafLocalOffset  : 400          500          600
+
+would build the following PetscSF
+
+[0] 400 <- (0,101)
+[1] 500 <- (0,102)
+[2] 600 <- (0,101)
+[2] 601 <- (2,300)
+``
+
+Example 2:
+``
+rank             : 0               1               2
+rootIndices      : [1 0 2]         [3]             [3]
+rootLocalOffset  : 100             200             300
+layout           : [0 1]           [2]             [3]
+leafIndices      : rootIndices     rootIndices     rootIndices
+leafLocalOffset  : rootLocalOffset rootLocalOffset rootLocalOffset
+
+would build the following PetscSF
+
+[1] 200 <- (2,300)
+``
+
+Example 3:
+``
+No process requests ownership of global index 1, but no process needs it.
+
+rank             : 0            1            2
+numRootIndices   : 2            1            1
+rootIndices      : [0 2]        [3]          [3]
+rootLocalOffset  : 100          200          300
+layout           : [0 1]        [2]          [3]
+numLeafIndices   : 1            1            2
+leafIndices      : [0]          [2]          [0 3]
+leafLocalOffset  : 400          500          600
+
+would build the following PetscSF
+
+[0] 400 <- (0,100)
+[1] 500 <- (0,101)
+[2] 600 <- (0,100)
+[2] 601 <- (2,300)
+``
+
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateByMatchingIndices"))
@@ -324,7 +375,7 @@ end
 end 
 
 """
-	newsf::PetscSF = PetscSFCreateEmbeddedLeafSF(petsclib::PetscLibType,sf::PetscSF, nselected::PetscInt, selected::Vector{PetscInt}) 
+	newsf::PetscSF = PetscSFCreateEmbeddedLeafSF(petsclib::PetscLibType, sf::PetscSF, nselected::PetscInt, selected::Vector{PetscInt}) 
 removes edges from all but the selected leaves of a `PetscSF`, does not remap indices
 
 Collective
@@ -339,7 +390,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreateEmbeddedRootSF()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreateEmbeddedRootSF()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedLeafSF"))
@@ -364,7 +415,7 @@ end
 end 
 
 """
-	esf::PetscSF = PetscSFCreateEmbeddedRootSF(petsclib::PetscLibType,sf::PetscSF, nselected::PetscInt, selected::Vector{PetscInt}) 
+	esf::PetscSF = PetscSFCreateEmbeddedRootSF(petsclib::PetscLibType, sf::PetscSF, nselected::PetscInt, selected::Vector{PetscInt}) 
 removes edges from all but the selected roots of a `PetscSF`, does not remap indices
 
 Collective
@@ -379,7 +430,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedRootSF"))
@@ -404,7 +455,7 @@ end
 end 
 
 """
-	sf::PetscSF = PetscSFCreateFromLayouts(petsclib::PetscLibType,rmap::PetscLayout, lmap::PetscLayout) 
+	sf::PetscSF = PetscSFCreateFromLayouts(petsclib::PetscLibType, rmap::PetscLayout, lmap::PetscLayout) 
 Creates a parallel star forest mapping between two `PetscLayout` objects
 
 Collective
@@ -418,7 +469,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscLayout`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscLayoutCreate()`, `PetscSFSetGraphLayout()`
+See also: [](sec_petscsf), `PetscSF`, `PetscLayout`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscLayoutCreate()`, `PetscSFSetGraphLayout()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateFromLayouts"))
@@ -443,7 +494,7 @@ end
 end 
 
 """
-	isf::PetscSF = PetscSFCreateInverseSF(petsclib::PetscLibType,sf::PetscSF) 
+	isf::PetscSF = PetscSFCreateInverseSF(petsclib::PetscLibType, sf::PetscSF) 
 given a `PetscSF` in which all roots have degree 1 (exactly one leaf), creates the inverse map
 
 Collective
@@ -456,7 +507,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateInverseSF"))
@@ -481,7 +532,7 @@ end
 end 
 
 """
-	remoteOffsets::Ptr{PetscInt} = PetscSFCreateRemoteOffsets(petsclib::PetscLibType,sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection) 
+	remoteOffsets::Ptr{PetscInt} = PetscSFCreateRemoteOffsets(petsclib::PetscLibType, sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection) 
 Create offsets for point data on remote processes
 
 Collective
@@ -496,7 +547,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateRemoteOffsets"))
@@ -521,7 +572,7 @@ end
 end 
 
 """
-	sectionSF::PetscSF = PetscSFCreateSectionSF(petsclib::PetscLibType,sf::PetscSF, rootSection::PetscSection, remoteOffsets::Vector{PetscInt}, leafSection::PetscSection) 
+	sectionSF::PetscSF = PetscSFCreateSectionSF(petsclib::PetscLibType, sf::PetscSF, rootSection::PetscSection, remoteOffsets::Vector{PetscInt}, leafSection::PetscSection) 
 Create an expanded `PetscSF` of dofs, assuming the input `PetscSF` relates points
 
 Collective
@@ -537,7 +588,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFDistributeSection()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFDistributeSection()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateSectionSF"))
@@ -562,7 +613,7 @@ end
 end 
 
 """
-	vsf::PetscSF = PetscSFCreateStridedSF(petsclib::PetscLibType,sf::PetscSF, bs::PetscInt, ldr::PetscInt, ldl::PetscInt) 
+	vsf::PetscSF = PetscSFCreateStridedSF(petsclib::PetscLibType, sf::PetscSF, bs::PetscInt, ldr::PetscInt, ldl::PetscInt) 
 Create an `PetscSF` to communicate interleaved blocks of data
 
 Collective
@@ -578,7 +629,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFCreateStridedSF"))
@@ -603,7 +654,7 @@ end
 end 
 
 """
-	PetscSFDestroy(petsclib::PetscLibType,sf::Union{PetscSF, Ref{PetscSF}}) 
+	PetscSFDestroy(petsclib::PetscLibType, sf::Union{PetscSF, Ref{PetscSF}}) 
 destroy a star forest
 
 Collective
@@ -613,7 +664,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFReset()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFReset()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDestroy"))
@@ -637,7 +688,7 @@ end
 end 
 
 """
-	remoteOffsets::Ptr{PetscInt} = PetscSFDistributeSection(petsclib::PetscLibType,sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection) 
+	remoteOffsets::Ptr{PetscInt} = PetscSFDistributeSection(petsclib::PetscLibType, sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection) 
 Create a new `PetscSection` reorganized, moving from the root to the leaves of the `PetscSF`
 
 Collective
@@ -652,7 +703,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFCreateSectionSF()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFCreateSectionSF()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDistributeSection"))
@@ -677,7 +728,7 @@ end
 end 
 
 """
-	newsf::PetscSF = PetscSFDuplicate(petsclib::PetscLibType,sf::PetscSF, opt::PetscSFDuplicateOption) 
+	newsf::PetscSF = PetscSFDuplicate(petsclib::PetscLibType, sf::PetscSF, opt::PetscSFDuplicateOption) 
 duplicate a `PetscSF`, optionally preserving rank connectivity and graph
 
 Collective
@@ -691,7 +742,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFSetType()`, `PetscSFSetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFSetType()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFDuplicate"))
@@ -723,7 +774,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFInitializePackage()`
+See also: `PetscSF`, `PetscSFInitializePackage()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFFinalizePackage"))
@@ -746,7 +797,7 @@ end
 
 # override for PetscSFGetGraph; C signature: PetscSFGetGraph(PetscSF sf, PetscInt* nroots, PetscInt* nleaves, PetscInt* ilocal[], PetscSFNode* iremote[])
 """
-	nroots::PetscInt,nleaves::PetscInt,iloc::Vector{PetscInt} = PetscSFGetGraph(petsclib::PetscLibType,sf::PetscSF, iremote::Vector{PetscSFNode}) 
+	nroots::PetscInt,nleaves::PetscInt,iloc::Vector{PetscInt} = PetscSFGetGraph(petsclib::PetscLibType, sf::PetscSF, iremote::Vector{PetscSFNode}) 
 Get the graph specifying a parallel star forest
 
 Not Collective
@@ -762,7 +813,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("Vec/PetscSFGetGraph"))
@@ -790,7 +841,7 @@ end
 
 # override for PetscSFGetGraphLayout; C signature: PetscSFGetGraphLayout(PetscSF sf, PetscLayout* layout, PetscInt* nleaves, PetscInt* ilocal[], PetscInt* gremote[])
 """
-	nleaves::PetscInt,iloc::Vector{PetscInt},gremote::Vector{PetscInt} = PetscSFGetGraphLayout(petsclib::PetscLibType,sf::PetscSF, layout::PetscLayout) 
+	nleaves::PetscInt,iloc::Vector{PetscInt},gremote::Vector{PetscInt} = PetscSFGetGraphLayout(petsclib::PetscLibType, sf::PetscSF, layout::PetscLayout) 
 Get the global indices and `PetscLayout` that describe this star forest
 
 Collective
@@ -806,7 +857,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscSF`, `PetscSFSetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: `PetscSF`, `PetscSFSetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("Vec/PetscSFGetGraphLayout"))
@@ -833,7 +884,7 @@ function PetscSFGetGraphLayout(petsclib::PetscLibType, sf::PetscSF, layout::Pets
 end
 
 """
-	incoming::MPI_Group,outgoing::MPI_Group = PetscSFGetGroups(petsclib::PetscLibType,sf::PetscSF) 
+	incoming::MPI_Group,outgoing::MPI_Group = PetscSFGetGroups(petsclib::PetscLibType, sf::PetscSF) 
 gets incoming and outgoing process groups
 
 Collective
@@ -847,7 +898,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetWindow()`, `PetscSFRestoreWindow()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFGetWindow()`, `PetscSFRestoreWindow()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetGroups"))
@@ -874,7 +925,7 @@ end
 end 
 
 """
-	minleaf::PetscInt,maxleaf::PetscInt = PetscSFGetLeafRange(petsclib::PetscLibType,sf::PetscSF) 
+	minleaf::PetscInt,maxleaf::PetscInt = PetscSFGetLeafRange(petsclib::PetscLibType, sf::PetscSF) 
 Get the active leaf ranges
 
 Not Collective
@@ -888,7 +939,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetLeafRange"))
@@ -915,7 +966,7 @@ end
 end 
 
 """
-	niranks::PetscMPIInt,iranks::Ptr{PetscMPIInt},ioffset::Ptr{PetscInt},irootloc::Ptr{PetscInt} = PetscSFGetLeafRanks(petsclib::PetscLibType,sf::PetscSF) 
+	niranks::PetscMPIInt,iranks::Ptr{PetscMPIInt},ioffset::Ptr{PetscInt},irootloc::Ptr{PetscInt} = PetscSFGetLeafRanks(petsclib::PetscLibType, sf::PetscSF) 
 Get leaf MPI ranks referencing roots on this process
 
 Not Collective
@@ -931,7 +982,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetLeafRanks"))
@@ -962,7 +1013,7 @@ end
 end 
 
 """
-	multi::PetscSF = PetscSFGetMultiSF(petsclib::PetscLibType,sf::PetscSF) 
+	multi::PetscSF = PetscSFGetMultiSF(petsclib::PetscLibType, sf::PetscSF) 
 gets the inner `PetscSF` implementing gathers and scatters
 
 Collective
@@ -975,7 +1026,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`, `PetscSFComputeMultiRootOriginalNumbering()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`, `PetscSFComputeMultiRootOriginalNumbering()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetMultiSF"))
@@ -1000,7 +1051,7 @@ end
 end 
 
 """
-	rsf::PetscSF = PetscSFGetRanksSF(petsclib::PetscLibType,sf::PetscSF) 
+	rsf::PetscSF = PetscSFGetRanksSF(petsclib::PetscLibType, sf::PetscSF) 
 gets the `PetscSF` to perform communications with root ranks
 
 Collective
@@ -1013,7 +1064,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetRootRanks()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetRanksSF"))
@@ -1038,7 +1089,7 @@ end
 end 
 
 """
-	nranks::PetscMPIInt,ranks::Ptr{PetscMPIInt},roffset::Ptr{PetscInt},rmine::Ptr{PetscInt},rremote::Ptr{PetscInt} = PetscSFGetRootRanks(petsclib::PetscLibType,sf::PetscSF) 
+	nranks::PetscMPIInt,ranks::Ptr{PetscMPIInt},roffset::Ptr{PetscInt},rmine::Ptr{PetscInt},rremote::Ptr{PetscInt} = PetscSFGetRootRanks(petsclib::PetscLibType, sf::PetscSF) 
 Get the root MPI ranks and number of vertices referenced by leaves on this process
 
 Not Collective
@@ -1055,7 +1106,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetLeafRanks()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFGetLeafRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetRootRanks"))
@@ -1088,8 +1139,8 @@ end
 end 
 
 """
-	subSF::PetscSF = PetscSFGetSubSF(petsclib::PetscLibType,mainsf::PetscSF, map::ISLocalToGlobalMapping) 
-Returns an `PetscSF` for a specific subset of points. Leaves are re
+	subSF::PetscSF = PetscSFGetSubSF(petsclib::PetscLibType, mainsf::PetscSF, map::ISLocalToGlobalMapping) 
+Returns an `PetscSF` for a specific subset of points. Leaves are re-numbered to reflect the new ordering
 
 Collective
 
@@ -1102,7 +1153,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSF`
+See also: `PetscSF`
 
 # External Links
 $(_doc_external("DMNetwork/PetscSFGetSubSF"))
@@ -1127,7 +1178,7 @@ end
 end 
 
 """
-	type::PetscSFType = PetscSFGetType(petsclib::PetscLibType,sf::PetscSF) 
+	type::PetscSFType = PetscSFGetType(petsclib::PetscLibType, sf::PetscSF) 
 Get the `PetscSF` communication implementation
 
 Not Collective
@@ -1140,7 +1191,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetType()`, `PetscSFCreate()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetType()`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFGetType"))
@@ -1172,7 +1223,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `PetscSF`, `PetscSFFinalizePackage()`
+See also: `PetscSF`, `PetscSFFinalizePackage()`
 
 # External Links
 $(_doc_external("Sys/PetscSFInitializePackage"))
@@ -1194,7 +1245,7 @@ end
 end 
 
 """
-	merged::PetscSF = PetscSFMerge(petsclib::PetscLibType,sfa::PetscSF, sfb::PetscSF) 
+	merged::PetscSF = PetscSFMerge(petsclib::PetscLibType, sfa::PetscSF, sfb::PetscSF) 
 append/merge indices of `sfb` into `sfa`, with preference for `sfb`
 
 Collective
@@ -1208,7 +1259,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCompose()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFMerge"))
@@ -1233,7 +1284,7 @@ end
 end 
 
 """
-	PetscSFRegister(petsclib::PetscLibType,name::String, create::external) 
+	PetscSFRegister(petsclib::PetscLibType, name::String, create::external) 
 Adds an implementation of the `PetscSF` communication protocol.
 
 Not Collective, No Fortran Support
@@ -1242,7 +1293,7 @@ Input Parameters:
 - `name`   - name of a new user-defined implementation
 - `create` - routine to create method context
 
--seealso: `PetscSF`, `PetscSFType`, `PetscSFRegisterAll()`, `PetscSFInitializePackage()`
+See also: `PetscSF`, `PetscSFType`, `PetscSFRegisterAll()`, `PetscSFInitializePackage()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFRegister"))
@@ -1265,7 +1316,7 @@ end
 end 
 
 """
-	PetscSFReset(petsclib::PetscLibType,sf::PetscSF) 
+	PetscSFReset(petsclib::PetscLibType, sf::PetscSF) 
 Reset a star forest so that different sizes or neighbors can be used
 
 Collective
@@ -1275,7 +1326,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFDestroy()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFDestroy()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFReset"))
@@ -1298,7 +1349,7 @@ end
 end 
 
 """
-	PetscSFSetFromOptions(petsclib::PetscLibType,sf::PetscSF) 
+	PetscSFSetFromOptions(petsclib::PetscLibType, sf::PetscSF) 
 set `PetscSF` options using the options database
 
 Logically Collective
@@ -1319,7 +1370,7 @@ On other devices, the only available is `kokkos`.
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetType()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFSetType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetFromOptions"))
@@ -1342,7 +1393,7 @@ end
 end 
 
 """
-	PetscSFSetGraph(petsclib::PetscLibType,sf::PetscSF, nroots::PetscInt, nleaves::PetscInt, ilocal::Vector{PetscInt}, localmode::PetscCopyMode, iremote::Vector{PetscSFNode}, remotemode::PetscCopyMode) 
+	PetscSFSetGraph(petsclib::PetscLibType, sf::PetscSF, nroots::PetscInt, nleaves::PetscInt, ilocal::Vector{PetscInt}, localmode::PetscCopyMode, iremote::Vector{PetscSFNode}, remotemode::PetscCopyMode) 
 Set a parallel star forest
 
 Collective
@@ -1358,7 +1409,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`, `PetscSFSetGraphWithPattern()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`, `PetscSFSetGraphWithPattern()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraph"))
@@ -1381,7 +1432,7 @@ end
 end 
 
 """
-	PetscSFSetGraphFromCoordinates(petsclib::PetscLibType,sf::PetscSF, nroots::PetscInt, nleaves::PetscInt, dim::PetscInt, tol::PetscReal, rootcoords::Vector{PetscReal}, leafcoords::Vector{PetscReal}) 
+	PetscSFSetGraphFromCoordinates(petsclib::PetscLibType, sf::PetscSF, nroots::PetscInt, nleaves::PetscInt, dim::PetscInt, tol::PetscReal, rootcoords::Vector{PetscReal}, leafcoords::Vector{PetscReal}) 
 Create SF by fuzzy matching leaf coordinates to root coordinates
 
 Collective
@@ -1395,7 +1446,7 @@ Input Parameters:
 - `rootcoords` - array of root coordinates in which root i component d is [i*dim+d]
 - `leafcoords` - array of root coordinates in which leaf i component d is [i*dim+d]
 
--seealso: `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFCreateByMatchingIndices()`
+See also: `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFCreateByMatchingIndices()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphFromCoordinates"))
@@ -1418,7 +1469,7 @@ end
 end 
 
 """
-	PetscSFSetGraphLayout(petsclib::PetscLibType,sf::PetscSF, layout::PetscLayout, nleaves::PetscInt, ilocal::Vector{PetscInt}, localmode::PetscCopyMode, gremote::Vector{PetscInt}) 
+	PetscSFSetGraphLayout(petsclib::PetscLibType, sf::PetscSF, layout::PetscLayout, nleaves::PetscInt, ilocal::Vector{PetscInt}, localmode::PetscCopyMode, gremote::Vector{PetscInt}) 
 Set a `PetscSF` communication pattern using global indices and a `PetscLayout`
 
 Collective
@@ -1433,7 +1484,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFGetGraphLayout()`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphLayout"))
@@ -1456,7 +1507,7 @@ end
 end 
 
 """
-	PetscSFSetGraphSection(petsclib::PetscLibType,sf::PetscSF, localSection::PetscSection, globalSection::PetscSection) 
+	PetscSFSetGraphSection(petsclib::PetscLibType, sf::PetscSF, localSection::PetscSection, globalSection::PetscSection) 
 Sets the `PetscSF` graph (communication pattern) encoding the parallel dof overlap based upon the `PetscSection` describing the data layout.
 
 Input Parameters:
@@ -1466,7 +1517,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFSetGraphLayout()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFSetGraph()`, `PetscSFSetGraphLayout()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphSection"))
@@ -1489,7 +1540,7 @@ end
 end 
 
 """
-	PetscSFSetGraphWithPattern(petsclib::PetscLibType,sf::PetscSF, map::PetscLayout, pattern::PetscSFPattern) 
+	PetscSFSetGraphWithPattern(petsclib::PetscLibType, sf::PetscSF, map::PetscLayout, pattern::PetscSFPattern) 
 Sets the graph of a `PetscSF` with a specific pattern
 
 Collective
@@ -1501,7 +1552,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetGraphWithPattern"))
@@ -1524,8 +1575,8 @@ end
 end 
 
 """
-	PetscSFSetRankOrder(petsclib::PetscLibType,sf::PetscSF, flg::PetscBool) 
-sort multi
+	PetscSFSetRankOrder(petsclib::PetscLibType, sf::PetscSF, flg::PetscBool) 
+sort multi-points for gathers and scatters by MPI rank order
 
 Logically Collective
 
@@ -1535,7 +1586,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFGatherBegin()`, `PetscSFScatterBegin()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetRankOrder"))
@@ -1558,7 +1609,7 @@ end
 end 
 
 """
-	PetscSFSetType(petsclib::PetscLibType,sf::PetscSF, type::PetscSFType) 
+	PetscSFSetType(petsclib::PetscLibType, sf::PetscSF, type::PetscSFType) 
 Set the `PetscSF` communication implementation
 
 Collective
@@ -1566,7 +1617,17 @@ Collective
 Input Parameters:
 - `sf`   - the `PetscSF` context
 - `type` - a known method
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`
+``
+PETSCSFWINDOW - MPI-2/3 one-sided
+PETSCSFBASIC - basic implementation using MPI-1 two-sided
+``
+
+Options Database Key:
+- `-sf_type (basic|window|neighbor)` - Sets the method; see `PetscSFType`
+
+Level: intermediate
+
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetType"))
@@ -1589,7 +1650,7 @@ end
 end 
 
 """
-	PetscSFSetUp(petsclib::PetscLibType,sf::PetscSF) 
+	PetscSFSetUp(petsclib::PetscLibType, sf::PetscSF) 
 set up communication structures for a `PetscSF`, after this is done it may be used to perform communication
 
 Collective
@@ -1599,7 +1660,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetFromOptions()`, `PetscSFSetType()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFType`, `PetscSFSetFromOptions()`, `PetscSFSetType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetUp"))
@@ -1622,7 +1683,7 @@ end
 end 
 
 """
-	PetscSFSetUpRanks(petsclib::PetscLibType,sf::PetscSF, dgroup::MPI_Group) 
+	PetscSFSetUpRanks(petsclib::PetscLibType, sf::PetscSF, dgroup::MPI_Group) 
 Set up data structures associated with MPI ranks; this is for internal use by `PetscSF` implementations.
 
 Collective
@@ -1633,7 +1694,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFSetUpRanks"))
@@ -1656,7 +1717,7 @@ end
 end 
 
 """
-	PetscSFView(petsclib::PetscLibType,sf::PetscSF, viewer::PetscViewer) 
+	PetscSFView(petsclib::PetscLibType, sf::PetscSF, viewer::PetscViewer) 
 view a star forest
 
 Collective
@@ -1667,7 +1728,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscViewer`, `PetscSFCreate()`, `PetscSFSetGraph()`
+See also: [](sec_petscsf), `PetscSF`, `PetscViewer`, `PetscSFCreate()`, `PetscSFSetGraph()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFView"))
@@ -1690,7 +1751,7 @@ end
 end 
 
 """
-	PetscSFViewFromOptions(petsclib::PetscLibType,A::PetscSF, obj, name::String) 
+	PetscSFViewFromOptions(petsclib::PetscLibType, A::PetscSF, obj, name::String) 
 View a `PetscSF` based on arguments in the options database
 
 Collective
@@ -1705,7 +1766,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_petscsf), `PetscSF`, `PetscSFView`, `PetscObjectViewFromOptions()`, `PetscSFCreate()`
+See also: [](sec_petscsf), `PetscSF`, `PetscSFView`, `PetscObjectViewFromOptions()`, `PetscSFCreate()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFViewFromOptions"))
@@ -1728,7 +1789,7 @@ end
 end 
 
 """
-	flavor::PetscSFWindowFlavorType = PetscSFWindowGetFlavorType(petsclib::PetscLibType,sf::PetscSF) 
+	flavor::PetscSFWindowFlavorType = PetscSFWindowGetFlavorType(petsclib::PetscLibType, sf::PetscSF) 
 Get  `PETSCSFWINDOW` flavor type for `PetscSF` communication
 
 Logically Collective
@@ -1741,7 +1802,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowSetFlavorType()`
+See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowSetFlavorType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFWindowGetFlavorType"))
@@ -1766,7 +1827,7 @@ end
 end 
 
 """
-	info::MPI_Info = PetscSFWindowGetInfo(petsclib::PetscLibType,sf::PetscSF) 
+	info::MPI_Info = PetscSFWindowGetInfo(petsclib::PetscLibType, sf::PetscSF) 
 Get the `MPI_Info` handle used for windows allocation
 
 Logically Collective
@@ -1779,7 +1840,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowSetInfo()`
+See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowSetInfo()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFWindowGetInfo"))
@@ -1804,7 +1865,7 @@ end
 end 
 
 """
-	sync::PetscSFWindowSyncType = PetscSFWindowGetSyncType(petsclib::PetscLibType,sf::PetscSF) 
+	sync::PetscSFWindowSyncType = PetscSFWindowGetSyncType(petsclib::PetscLibType, sf::PetscSF) 
 Get synchronization type for `PetscSF` communication of type `PETSCSFWINDOW`
 
 Logically Collective
@@ -1817,7 +1878,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowSetSyncType()`, `PetscSFWindowSyncType`
+See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowSetSyncType()`, `PetscSFWindowSyncType`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFWindowGetSyncType"))
@@ -1842,7 +1903,7 @@ end
 end 
 
 """
-	PetscSFWindowSetFlavorType(petsclib::PetscLibType,sf::PetscSF, flavor::PetscSFWindowFlavorType) 
+	PetscSFWindowSetFlavorType(petsclib::PetscLibType, sf::PetscSF, flavor::PetscSFWindowFlavorType) 
 Set flavor type for `MPI_Win` creation
 
 Logically Collective
@@ -1856,7 +1917,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowGetFlavorType()`
+See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowGetFlavorType()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFWindowSetFlavorType"))
@@ -1879,7 +1940,7 @@ end
 end 
 
 """
-	PetscSFWindowSetInfo(petsclib::PetscLibType,sf::PetscSF, info::MPI_Info) 
+	PetscSFWindowSetInfo(petsclib::PetscLibType, sf::PetscSF, info::MPI_Info) 
 Set the `MPI_Info` handle that will be used for subsequent windows allocation
 
 Logically Collective
@@ -1890,7 +1951,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowGetInfo()`
+See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowGetInfo()`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFWindowSetInfo"))
@@ -1913,7 +1974,7 @@ end
 end 
 
 """
-	PetscSFWindowSetSyncType(petsclib::PetscLibType,sf::PetscSF, sync::PetscSFWindowSyncType) 
+	PetscSFWindowSetSyncType(petsclib::PetscLibType, sf::PetscSF, sync::PetscSFWindowSyncType) 
 Set synchronization type for `PetscSF` communication of type  `PETSCSFWINDOW`
 
 Logically Collective
@@ -1927,7 +1988,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowGetSyncType()`, `PetscSFWindowSyncType`
+See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowGetSyncType()`, `PetscSFWindowSyncType`
 
 # External Links
 $(_doc_external("PetscSF/PetscSFWindowSetSyncType"))

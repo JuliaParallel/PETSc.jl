@@ -1,5 +1,5 @@
 """
-	MatCoarsenApply(petsclib::PetscLibType,coarser::MatCoarsen) 
+	MatCoarsenApply(petsclib::PetscLibType, coarser::MatCoarsen) 
 Gets a coarsen for a matrix.
 
 Collective
@@ -13,7 +13,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`, `MatCoarsenRegister()`, `MatCoarsenCreate()`,
+See also: `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`, `MatCoarsenRegister()`, `MatCoarsenCreate()`,
 `MatCoarsenDestroy()`, `MatCoarsenSetAdjacency()`,
 `MatCoarsenGetData()`
 
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	newcrs::MatCoarsen = MatCoarsenCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	newcrs::MatCoarsen = MatCoarsenCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a coarsen context.
 
 Collective
@@ -51,7 +51,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenSetType()`, `MatCoarsenApply()`, `MatCoarsenDestroy()`,
+See also: `MatCoarsen`, `MatCoarsenSetType()`, `MatCoarsenApply()`, `MatCoarsenDestroy()`,
 `MatCoarsenSetAdjacency()`, `MatCoarsenGetData()`
 
 # External Links
@@ -77,7 +77,7 @@ end
 end 
 
 """
-	MatCoarsenDestroy(petsclib::PetscLibType,agg::Union{MatCoarsen, Ref{MatCoarsen}}) 
+	MatCoarsenDestroy(petsclib::PetscLibType, agg::Union{MatCoarsen, Ref{MatCoarsen}}) 
 Destroys the coarsen context.
 
 Collective
@@ -87,7 +87,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenCreate()`
+See also: `MatCoarsen`, `MatCoarsenCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenDestroy"))
@@ -111,7 +111,7 @@ end
 end 
 
 """
-	llist::Ptr{PetscCoarsenData} = MatCoarsenGetData(petsclib::PetscLibType,coarser::MatCoarsen) 
+	llist::Ptr{PetscCoarsenData} = MatCoarsenGetData(petsclib::PetscLibType, coarser::MatCoarsen) 
 Gets the weights for vertices for a coarsener.
 
 Logically Collective, No Fortran Support
@@ -124,7 +124,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`, `PetscCoarsenData`
+See also: `MatCoarsen`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`, `PetscCoarsenData`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenGetData"))
@@ -149,7 +149,7 @@ end
 end 
 
 """
-	type::MatCoarsenType = MatCoarsenGetType(petsclib::PetscLibType,coarsen::MatCoarsen) 
+	type::MatCoarsenType = MatCoarsenGetType(petsclib::PetscLibType, coarsen::MatCoarsen) 
 Gets the Coarsen method type and name (as a string)
 from the coarsen context.
 
@@ -163,7 +163,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenCreate()`, `MatCoarsenType`, `MatCoarsenSetType()`, `MatCoarsenRegister()`
+See also: `MatCoarsen`, `MatCoarsenCreate()`, `MatCoarsenType`, `MatCoarsenSetType()`, `MatCoarsenRegister()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenGetType"))
@@ -188,7 +188,7 @@ end
 end 
 
 """
-	k::PetscInt = MatCoarsenMISKGetDistance(petsclib::PetscLibType,crs::MatCoarsen) 
+	k::PetscInt = MatCoarsenMISKGetDistance(petsclib::PetscLibType, crs::MatCoarsen) 
 gets the distance to be used by MISK
 
 Collective
@@ -201,7 +201,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MATCOARSENMISK`, `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`,
+See also: `MATCOARSENMISK`, `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`,
 `MatCoarsenRegister()`, `MatCoarsenCreate()`, `MatCoarsenDestroy()`,
 `MatCoarsenSetAdjacency()`, `MatCoarsenGetData()`
 
@@ -228,7 +228,7 @@ end
 end 
 
 """
-	MatCoarsenMISKSetDistance(petsclib::PetscLibType,crs::MatCoarsen, k::PetscInt) 
+	MatCoarsenMISKSetDistance(petsclib::PetscLibType, crs::MatCoarsen, k::PetscInt) 
 the distance to be used by MISK
 
 Collective
@@ -242,7 +242,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MATCOARSENMISK`, `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`, `MatCoarsenRegister()`, `MatCoarsenCreate()`,
+See also: `MATCOARSENMISK`, `MatCoarsen`, `MatCoarsenSetFromOptions()`, `MatCoarsenSetType()`, `MatCoarsenRegister()`, `MatCoarsenCreate()`,
 `MatCoarsenDestroy()`, `MatCoarsenSetAdjacency()`, `MatCoarsenMISKGetDistance()`,
 `MatCoarsenGetData()`
 
@@ -267,7 +267,7 @@ end
 end 
 
 """
-	MatCoarsenRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	MatCoarsenRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new sparse matrix coarsening algorithm to the matrix package.
 
 Logically Collective, No Fortran Support
@@ -278,7 +278,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenSetType()`, `MatCoarsenCreate()`, `MatCoarsenRegisterDestroy()`, `MatCoarsenRegisterAll()`
+See also: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenSetType()`, `MatCoarsenCreate()`, `MatCoarsenRegisterDestroy()`, `MatCoarsenRegisterAll()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenRegister"))
@@ -301,7 +301,7 @@ end
 end 
 
 """
-	MatCoarsenSetAdjacency(petsclib::PetscLibType,agg::MatCoarsen, adj::AbstractPetscMat) 
+	MatCoarsenSetAdjacency(petsclib::PetscLibType, agg::MatCoarsen, adj::AbstractPetscMat) 
 Sets the adjacency graph (matrix) of the thing to be coarsened.
 
 Collective
@@ -312,7 +312,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenSetFromOptions()`, `Mat`, `MatCoarsenCreate()`, `MatCoarsenApply()`
+See also: `MatCoarsen`, `MatCoarsenSetFromOptions()`, `Mat`, `MatCoarsenCreate()`, `MatCoarsenApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetAdjacency"))
@@ -335,7 +335,7 @@ end
 end 
 
 """
-	MatCoarsenSetFromOptions(petsclib::PetscLibType,coarser::MatCoarsen) 
+	MatCoarsenSetFromOptions(petsclib::PetscLibType, coarser::MatCoarsen) 
 Sets various coarsen options from the options database.
 
 Collective
@@ -350,7 +350,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`,
+See also: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`,
 `MatCoarsenSetMaximumIterations()`, `MATCOARSENHEM`, `MATCOARSENMIS`, `MATCOARSENMISK`
 
 # External Links
@@ -374,7 +374,7 @@ end
 end 
 
 """
-	MatCoarsenSetGreedyOrdering(petsclib::PetscLibType,coarser::MatCoarsen, perm::AbstractIS) 
+	MatCoarsenSetGreedyOrdering(petsclib::PetscLibType, coarser::MatCoarsen, perm::AbstractIS) 
 Sets the ordering of the vertices to use with a greedy coarsening method
 
 Logically Collective
@@ -385,7 +385,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
+See also: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetGreedyOrdering"))
@@ -408,7 +408,7 @@ end
 end 
 
 """
-	MatCoarsenSetMaximumIterations(petsclib::PetscLibType,coarse::MatCoarsen, n::PetscInt) 
+	MatCoarsenSetMaximumIterations(petsclib::PetscLibType, coarse::MatCoarsen, n::PetscInt) 
 Maximum `MATCOARSENHEM` iterations to use
 
 Logically Collective
@@ -422,7 +422,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
+See also: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetMaximumIterations"))
@@ -445,7 +445,7 @@ end
 end 
 
 """
-	MatCoarsenSetStrengthIndex(petsclib::PetscLibType,coarse::MatCoarsen, n::PetscInt, idx::Vector{PetscInt}) 
+	MatCoarsenSetStrengthIndex(petsclib::PetscLibType, coarse::MatCoarsen, n::PetscInt, idx::Vector{PetscInt}) 
 Index array to use for index to use for strength of connection
 
 Logically Collective
@@ -460,7 +460,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
+See also: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetStrengthIndex"))
@@ -483,7 +483,7 @@ end
 end 
 
 """
-	MatCoarsenSetStrictAggs(petsclib::PetscLibType,agg::MatCoarsen, str::PetscBool) 
+	MatCoarsenSetStrictAggs(petsclib::PetscLibType, agg::MatCoarsen, str::PetscBool) 
 Set whether to keep strict (non overlapping) aggregates in the linked list of aggregates for a coarsen context
 
 Logically Collective
@@ -494,7 +494,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenCreate()`, `MatCoarsenSetFromOptions()`
+See also: `MatCoarsen`, `MatCoarsenCreate()`, `MatCoarsenSetFromOptions()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetStrictAggs"))
@@ -517,7 +517,7 @@ end
 end 
 
 """
-	MatCoarsenSetThreshold(petsclib::PetscLibType,coarse::MatCoarsen, b::PetscReal) 
+	MatCoarsenSetThreshold(petsclib::PetscLibType, coarse::MatCoarsen, b::PetscReal) 
 Set the threshold for HEM
 
 Logically Collective
@@ -531,7 +531,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
+See also: `MatCoarsen`, `MatCoarsenType`, `MatCoarsenApply()`, `MatCoarsenCreate()`, `MatCoarsenSetType()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetThreshold"))
@@ -554,7 +554,7 @@ end
 end 
 
 """
-	MatCoarsenSetType(petsclib::PetscLibType,coarser::MatCoarsen, type::MatCoarsenType) 
+	MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::MatCoarsenType) 
 Sets the type of aggregator to use
 
 Collective
@@ -568,7 +568,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MatCoarsen`, `MatCoarsenCreate()`, `MatCoarsenApply()`, `MatCoarsenType`, `MatCoarsenGetType()`
+See also: `MatCoarsen`, `MatCoarsenCreate()`, `MatCoarsenApply()`, `MatCoarsenType`, `MatCoarsenGetType()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenSetType"))
@@ -591,7 +591,7 @@ end
 end 
 
 """
-	MatCoarsenView(petsclib::PetscLibType,agg::MatCoarsen, viewer::PetscViewer) 
+	MatCoarsenView(petsclib::PetscLibType, agg::MatCoarsen, viewer::PetscViewer) 
 Prints the coarsen data structure.
 
 Collective
@@ -604,7 +604,7 @@ For viewing the options database see `MatCoarsenViewFromOptions()`
 
 Level: advanced
 
--seealso: `MatCoarsen`, `PetscViewer`, `PetscViewerASCIIOpen()`, `MatCoarsenViewFromOptions`
+See also: `MatCoarsen`, `PetscViewer`, `PetscViewerASCIIOpen()`, `MatCoarsenViewFromOptions`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenView"))
@@ -627,7 +627,7 @@ end
 end 
 
 """
-	MatCoarsenViewFromOptions(petsclib::PetscLibType,A::MatCoarsen, obj, name::String) 
+	MatCoarsenViewFromOptions(petsclib::PetscLibType, A::MatCoarsen, obj, name::String) 
 View the coarsener from the options database
 
 Collective
@@ -642,7 +642,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `MatCoarsen`, `MatCoarsenView()`, `PetscObjectViewFromOptions()`, `MatCoarsenCreate()`
+See also: `MatCoarsen`, `MatCoarsenView()`, `PetscObjectViewFromOptions()`, `MatCoarsenCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenViewFromOptions"))
@@ -665,7 +665,7 @@ end
 end 
 
 """
-	coloring::ISColoring = MatColoringApply(petsclib::PetscLibType,mc::MatColoring) 
+	coloring::ISColoring = MatColoringApply(petsclib::PetscLibType, mc::MatColoring) 
 Apply the coloring to the matrix, producing index
 sets corresponding to a number of independent sets in the induced
 graph.
@@ -680,7 +680,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `ISColoring`, `MatColoring`, `MatColoringCreate()`
+See also: `ISColoring`, `MatColoring`, `MatColoringCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringApply"))
@@ -705,7 +705,7 @@ end
 end 
 
 """
-	mcptr::MatColoring = MatColoringCreate(petsclib::PetscLibType,m::AbstractPetscMat) 
+	mcptr::MatColoring = MatColoringCreate(petsclib::PetscLibType, m::AbstractPetscMat) 
 Creates a matrix coloring context.
 
 Collective
@@ -726,7 +726,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: `MatColoringSetFromOptions()`, `MatColoring`, `MatColoringApply()`, `MatFDColoringCreate()`, `DMCreateColoring()`, `MatColoringType`
+See also: `MatColoringSetFromOptions()`, `MatColoring`, `MatColoringApply()`, `MatFDColoringCreate()`, `DMCreateColoring()`, `MatColoringType`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringCreate"))
@@ -751,8 +751,8 @@ end
 end 
 
 """
-	weights::Ptr{PetscReal},lperm::Ptr{PetscInt} = MatColoringCreateWeights(petsclib::PetscLibType,mc::MatColoring) 
-Create per
+	weights::Ptr{PetscReal},lperm::Ptr{PetscInt} = MatColoringCreateWeights(petsclib::PetscLibType, mc::MatColoring) 
+Create per-row weights and, optionally, a decreasing-order permutation of them
 for a `MatColoring`, using the weight scheme set on the `MatColoring`.
 
 Collective
@@ -766,7 +766,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `MatColoring`, `MatColoringWeightType`, `MatColoringSetWeights()`, `MatColoringGetDegrees()`
+See also: `MatColoring`, `MatColoringWeightType`, `MatColoringSetWeights()`, `MatColoringGetDegrees()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringCreateWeights"))
@@ -793,7 +793,7 @@ end
 end 
 
 """
-	MatColoringDestroy(petsclib::PetscLibType,mc::Union{MatColoring, Ref{MatColoring}}) 
+	MatColoringDestroy(petsclib::PetscLibType, mc::Union{MatColoring, Ref{MatColoring}}) 
 Destroys the matrix coloring context
 
 Collective
@@ -803,7 +803,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringCreate()`, `MatColoringApply()`
+See also: `MatColoring`, `MatColoringCreate()`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringDestroy"))
@@ -827,7 +827,7 @@ end
 end 
 
 """
-	degrees::PetscInt = MatColoringGetDegrees(petsclib::PetscLibType,G::AbstractPetscMat, distance::PetscInt) 
+	degrees::PetscInt = MatColoringGetDegrees(petsclib::PetscLibType, G::AbstractPetscMat, distance::PetscInt) 
 Compute the number of vertices reachable in the graph within a given distance for each locally owned row.
 
 Collective
@@ -841,7 +841,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `MatColoring`, `MatColoringCreateWeights()`, `MatColoringSetWeights()`
+See also: `MatColoring`, `MatColoringCreateWeights()`, `MatColoringSetWeights()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringGetDegrees"))
@@ -866,7 +866,7 @@ end
 end 
 
 """
-	dist::PetscInt = MatColoringGetDistance(petsclib::PetscLibType,mc::MatColoring) 
+	dist::PetscInt = MatColoringGetDistance(petsclib::PetscLibType, mc::MatColoring) 
 Gets the distance of the coloring
 
 Logically Collective
@@ -879,7 +879,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringSetDistance()`, `MatColoringApply()`
+See also: `MatColoring`, `MatColoringSetDistance()`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringGetDistance"))
@@ -904,7 +904,7 @@ end
 end 
 
 """
-	maxcolors::PetscInt = MatColoringGetMaxColors(petsclib::PetscLibType,mc::MatColoring) 
+	maxcolors::PetscInt = MatColoringGetMaxColors(petsclib::PetscLibType, mc::MatColoring) 
 Gets the maximum number of colors
 
 Logically Collective
@@ -917,7 +917,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringSetMaxColors()`, `MatColoringApply()`
+See also: `MatColoring`, `MatColoringSetMaxColors()`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringGetMaxColors"))
@@ -942,7 +942,7 @@ end
 end 
 
 """
-	iscoloring::ISColoring = MatColoringPatch(petsclib::PetscLibType,mat::AbstractPetscMat, ncolors::PetscInt, n::PetscInt, colorarray::Vector{ISColoringValue}) 
+	iscoloring::ISColoring = MatColoringPatch(petsclib::PetscLibType, mat::AbstractPetscMat, ncolors::PetscInt, n::PetscInt, colorarray::Vector{ISColoringValue}) 
 Used inside matrix coloring routines that use `MatGetRowIJ()` and/or
 `MatGetColumnIJ()`.
 
@@ -959,7 +959,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`, `MatGetRowIJ()`, `MatGetColumnIJ()`
+See also: `Mat`, `MatGetRowIJ()`, `MatGetColumnIJ()`
 
 # External Links
 $(_doc_external("Mat/MatColoringPatch"))
@@ -984,7 +984,7 @@ end
 end 
 
 """
-	MatColoringRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	MatColoringRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new sparse matrix coloring to the  matrix package.
 
 Not Collective, No Fortran Support
@@ -995,7 +995,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `MatColoringType`, `MatColoringRegisterDestroy()`, `MatColoringRegisterAll()`
+See also: `MatColoringType`, `MatColoringRegisterDestroy()`, `MatColoringRegisterAll()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringRegister"))
@@ -1018,7 +1018,7 @@ end
 end 
 
 """
-	MatColoringSetDistance(petsclib::PetscLibType,mc::MatColoring, dist::PetscInt) 
+	MatColoringSetDistance(petsclib::PetscLibType, mc::MatColoring, dist::PetscInt) 
 Sets the distance of the coloring
 
 Logically Collective
@@ -1032,7 +1032,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringSetFromOptions()`, `MatColoringGetDistance()`, `MatColoringApply()`
+See also: `MatColoring`, `MatColoringSetFromOptions()`, `MatColoringGetDistance()`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetDistance"))
@@ -1055,7 +1055,7 @@ end
 end 
 
 """
-	MatColoringSetFromOptions(petsclib::PetscLibType,mc::MatColoring) 
+	MatColoringSetFromOptions(petsclib::PetscLibType, mc::MatColoring) 
 Sets `MatColoring` options from options database
 
 Collective
@@ -1073,7 +1073,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringApply()`, `MatColoringSetDistance()`, `MatColoringSetType()`, `SNESComputeJacobianDefaultColor()`, `MatColoringType`
+See also: `MatColoring`, `MatColoringApply()`, `MatColoringSetDistance()`, `MatColoringSetType()`, `SNESComputeJacobianDefaultColor()`, `MatColoringType`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetFromOptions"))
@@ -1096,7 +1096,7 @@ end
 end 
 
 """
-	MatColoringSetMaxColors(petsclib::PetscLibType,mc::MatColoring, maxcolors::PetscInt) 
+	MatColoringSetMaxColors(petsclib::PetscLibType, mc::MatColoring, maxcolors::PetscInt) 
 Sets the maximum number of colors to produce
 
 Logically Collective
@@ -1107,7 +1107,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringGetMaxColors()`, `MatColoringApply()`
+See also: `MatColoring`, `MatColoringGetMaxColors()`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetMaxColors"))
@@ -1130,7 +1130,7 @@ end
 end 
 
 """
-	MatColoringSetType(petsclib::PetscLibType,mc::MatColoring, type::MatColoringType) 
+	MatColoringSetType(petsclib::PetscLibType, mc::MatColoring, type::MatColoringType) 
 Sets the type of coloring algorithm used
 
 Collective
@@ -1144,7 +1144,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringSetFromOptions()`, `MatColoringType`, `MatColoringCreate()`, `MatColoringApply()`
+See also: `MatColoring`, `MatColoringSetFromOptions()`, `MatColoringType`, `MatColoringCreate()`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetType"))
@@ -1167,7 +1167,7 @@ end
 end 
 
 """
-	MatColoringSetWeightType(petsclib::PetscLibType,mc::MatColoring, wt::MatColoringWeightType) 
+	MatColoringSetWeightType(petsclib::PetscLibType, mc::MatColoring, wt::MatColoringWeightType) 
 Set the type of weight computation used while computing the coloring
 
 Logically Collective
@@ -1178,7 +1178,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `MatColoring`, `MatColoringWeightType`, `MatColoringApply()`
+See also: `MatColoring`, `MatColoringWeightType`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetWeightType"))
@@ -1201,7 +1201,7 @@ end
 end 
 
 """
-	weights::PetscReal,lperm::PetscInt = MatColoringSetWeights(petsclib::PetscLibType,mc::MatColoring) 
+	weights::PetscReal,lperm::PetscInt = MatColoringSetWeights(petsclib::PetscLibType, mc::MatColoring) 
 Provide user weights (and optionally a permutation ordering) for a `MatColoring`.
 
 Collective
@@ -1213,7 +1213,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `MatColoring`, `MatColoringCreateWeights()`, `MatColoringGetDegrees()`
+See also: `MatColoring`, `MatColoringCreateWeights()`, `MatColoringGetDegrees()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringSetWeights"))
@@ -1240,7 +1240,7 @@ end
 end 
 
 """
-	MatColoringView(petsclib::PetscLibType,mc::MatColoring, viewer::PetscViewer) 
+	MatColoringView(petsclib::PetscLibType, mc::MatColoring, viewer::PetscViewer) 
 Output details about the `MatColoring`.
 
 Collective
@@ -1251,7 +1251,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscViewer`, `MatColoring`, `MatColoringApply()`
+See also: `PetscViewer`, `MatColoring`, `MatColoringApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatColoringView"))
@@ -1274,7 +1274,7 @@ end
 end 
 
 """
-	MatFDColoringApply(petsclib::PetscLibType,J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Ptr{Cvoid}) 
+	MatFDColoringApply(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Ptr{Cvoid}) 
 Given a matrix for which a `MatFDColoring` context
 has been created, computes the Jacobian for a function via finite differences.
 
@@ -1294,7 +1294,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringDestroy()`, `MatFDColoringView()`, `MatFDColoringSetFunction()`, `MatFDColoringSetValues()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringDestroy()`, `MatFDColoringView()`, `MatFDColoringSetFunction()`, `MatFDColoringSetValues()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringApply"))
@@ -1317,7 +1317,7 @@ end
 end 
 
 """
-	color::MatFDColoring = MatFDColoringCreate(petsclib::PetscLibType,mat::AbstractPetscMat, iscoloring::ISColoring) 
+	color::MatFDColoring = MatFDColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring) 
 Creates a matrix coloring context for finite difference
 computation of Jacobians.
 
@@ -1332,7 +1332,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringDestroy()`, `SNESComputeJacobianDefaultColor()`, `ISColoringCreate()`,
+See also: `Mat`, `MatFDColoring`, `MatFDColoringDestroy()`, `SNESComputeJacobianDefaultColor()`, `ISColoringCreate()`,
 `MatFDColoringSetFunction()`, `MatFDColoringSetFromOptions()`, `MatFDColoringApply()`,
 `MatFDColoringView()`, `MatFDColoringSetParameters()`, `MatColoringCreate()`, `DMCreateColoring()`, `MatFDColoringSetValues()`
 
@@ -1359,7 +1359,7 @@ end
 end 
 
 """
-	MatFDColoringDestroy(petsclib::PetscLibType,c::Union{MatFDColoring, Ref{MatFDColoring}}) 
+	MatFDColoringDestroy(petsclib::PetscLibType, c::Union{MatFDColoring, Ref{MatFDColoring}}) 
 Destroys a matrix coloring context that was created
 via `MatFDColoringCreate()`.
 
@@ -1370,7 +1370,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringDestroy"))
@@ -1394,7 +1394,7 @@ end
 end 
 
 """
-	f::Ptr{Cvoid},fctx::Ptr{Cvoid} = MatFDColoringGetFunction(petsclib::PetscLibType,matfd::MatFDColoring) 
+	f::Ptr{Cvoid},fctx::Ptr{Cvoid} = MatFDColoringGetFunction(petsclib::PetscLibType, matfd::MatFDColoring) 
 Gets the function to use for computing the Jacobian.
 
 Not Collective
@@ -1408,7 +1408,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringSetFunction()`, `MatFDColoringSetFromOptions()`, `MatFDColoringFn`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringSetFunction()`, `MatFDColoringSetFromOptions()`, `MatFDColoringFn`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringGetFunction"))
@@ -1435,7 +1435,7 @@ end
 end 
 
 """
-	n::PetscInt,cols::Ptr{PetscInt} = MatFDColoringGetPerturbedColumns(petsclib::PetscLibType,coloring::MatFDColoring) 
+	n::PetscInt,cols::Ptr{PetscInt} = MatFDColoringGetPerturbedColumns(petsclib::PetscLibType, coloring::MatFDColoring) 
 Returns the indices of the columns that
 that are currently being perturbed.
 
@@ -1450,7 +1450,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringDestroy()`, `MatFDColoringView()`, `MatFDColoringApply()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringDestroy()`, `MatFDColoringView()`, `MatFDColoringApply()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringGetPerturbedColumns"))
@@ -1477,7 +1477,7 @@ end
 end 
 
 """
-	MatFDColoringSetBlockSize(petsclib::PetscLibType,matfd::MatFDColoring, brows::PetscInt, bcols::PetscInt) 
+	MatFDColoringSetBlockSize(petsclib::PetscLibType, matfd::MatFDColoring, brows::PetscInt, bcols::PetscInt) 
 Sets block size for efficient inserting entries of Jacobian matrix.
 
 Logically Collective
@@ -1489,7 +1489,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringSetFromOptions()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringSetFromOptions()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetBlockSize"))
@@ -1512,8 +1512,8 @@ end
 end 
 
 """
-	MatFDColoringSetF(petsclib::PetscLibType,fd::MatFDColoring, F::AbstractPetscVec) 
-Cache the current function value used by the finite
+	MatFDColoringSetF(petsclib::PetscLibType, fd::MatFDColoring, F::AbstractPetscVec) 
+Cache the current function value used by the finite-difference coloring context to
 avoid recomputing `F(x)` during a Jacobian evaluation.
 
 Logically Collective
@@ -1524,7 +1524,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringApply()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringApply()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetF"))
@@ -1547,14 +1547,34 @@ end
 end 
 
 """
-	MatFDColoringSetFromOptions(petsclib::PetscLibType,matfd::MatFDColoring) 
+	MatFDColoringSetFromOptions(petsclib::PetscLibType, matfd::MatFDColoring) 
 Sets coloring finite difference parameters from
 the options database.
 
 Collective
 
 The Jacobian, F'(u), is estimated with the differencing approximation
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringView()`, `MatFDColoringSetParameters()`
+``
+F'(u)_{:,i} = [F(u+h*dx_{i}) - F(u)]/h where
+h = error_rel*u[i]                 if  abs(u[i]) > umin
+= +/- error_rel*umin             otherwise, with +/- determined by the sign of u[i]
+dx_{i} = (0, ... 1, .... 0)
+``
+
+Input Parameter:
+- `matfd` - the coloring context
+
+Options Database Keys:
+- `-mat_fd_coloring_err err`           - Sets err (square root of relative error in the function)
+- `-mat_fd_coloring_umin umin`         - Sets umin, the minimum allowable u-value magnitude
+- `-mat_fd_type (wp|ds)`               - See `MATMFFD_WP` and `MATMFFD_DS`
+- `-mat_fd_coloring_view`              - Activates basic viewing
+- `-mat_fd_coloring_view ::ascii_info` - Activates viewing info
+- `-mat_fd_coloring_view draw`         - Activates drawing
+
+Level: intermediate
+
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringView()`, `MatFDColoringSetParameters()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetFromOptions"))
@@ -1577,7 +1597,7 @@ end
 end 
 
 """
-	MatFDColoringSetFunction(petsclib::PetscLibType,matfd::MatFDColoring, f::Ptr{Cvoid}, fctx::Ptr{Cvoid}) 
+	MatFDColoringSetFunction(petsclib::PetscLibType, matfd::MatFDColoring, f::Ptr{Cvoid}, fctx::Ptr{Cvoid}) 
 Sets the function to use for computing the Jacobian.
 
 Logically Collective
@@ -1589,7 +1609,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringGetFunction()`, `MatFDColoringSetFromOptions()`, `MatFDColoringFn`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringGetFunction()`, `MatFDColoringSetFromOptions()`, `MatFDColoringFn`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetFunction"))
@@ -1612,7 +1632,7 @@ end
 end 
 
 """
-	MatFDColoringSetParameters(petsclib::PetscLibType,matfd::MatFDColoring, error::PetscReal, umin::PetscReal) 
+	MatFDColoringSetParameters(petsclib::PetscLibType, matfd::MatFDColoring, error::PetscReal, umin::PetscReal) 
 Sets the parameters for the approximation of
 a sparse Jacobian matrix using finite differences and matrix coloring
 
@@ -1625,7 +1645,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringSetFromOptions()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringSetFromOptions()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetParameters"))
@@ -1648,7 +1668,7 @@ end
 end 
 
 """
-	MatFDColoringSetType(petsclib::PetscLibType,matfd::MatFDColoring, type::MatMFFDType) 
+	MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type::MatMFFDType) 
 Sets the approach for computing the finite difference parameter
 
 Collective
@@ -1662,7 +1682,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringView()`, `MatFDColoringSetParameters()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringView()`, `MatFDColoringSetParameters()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetType"))
@@ -1685,7 +1705,7 @@ end
 end 
 
 """
-	MatFDColoringSetUp(petsclib::PetscLibType,mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring) 
+	MatFDColoringSetUp(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring) 
 Sets up the internal data structures of matrix coloring context for the later use.
 
 Collective
@@ -1697,7 +1717,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringDestroy()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`, `MatFDColoringDestroy()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringSetUp"))
@@ -1720,7 +1740,7 @@ end
 end 
 
 """
-	MatFDColoringSetValues(petsclib::PetscLibType,J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{PetscScalar}) 
+	MatFDColoringSetValues(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{PetscScalar}) 
 takes a matrix in compressed color format and enters the matrix into a PETSc `Mat`
 
 Collective
@@ -1733,7 +1753,7 @@ the number of local rows of `J` and the number of columns is the number of color
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatFDColoringCreate()`, `ISColoring`, `ISColoringCreate()`, `ISColoringSetType()`, `IS_COLORING_LOCAL`, `MatFDColoringSetBlockSize()`
+See also: `Mat`, `MatFDColoringCreate()`, `ISColoring`, `ISColoringCreate()`, `ISColoringSetType()`, `IS_COLORING_LOCAL`, `MatFDColoringSetBlockSize()`
 
 # External Links
 $(_doc_external("Mat/MatFDColoringSetValues"))
@@ -1756,7 +1776,7 @@ end
 end 
 
 """
-	MatFDColoringUseDM(petsclib::PetscLibType,coloring::AbstractPetscMat, fdcoloring::MatFDColoring) 
+	MatFDColoringUseDM(petsclib::PetscLibType, coloring::AbstractPetscMat, fdcoloring::MatFDColoring) 
 allows a `MatFDColoring` object to use the `DM` associated with the matrix to compute a `IS_COLORING_LOCAL` coloring
 
 Input Parameters:
@@ -1765,12 +1785,7 @@ Input Parameters:
 
 Level: advanced
 
-Developer Note:
-This routine exists because the PETSc `Mat` library does not know about the `DM` objects
-
-See also: 
-=== 
-`DM`, `MatFDColoring`, `MatFDColoringCreate()`, `ISColoringType`
+See also: `DM`, `MatFDColoring`, `MatFDColoringCreate()`, `ISColoringType`
 
 # External Links
 $(_doc_external("DM/MatFDColoringUseDM"))
@@ -1793,7 +1808,7 @@ end
 end 
 
 """
-	MatFDColoringView(petsclib::PetscLibType,c::MatFDColoring, viewer::PetscViewer) 
+	MatFDColoringView(petsclib::PetscLibType, c::MatFDColoring, viewer::PetscViewer) 
 Views a finite difference coloring context.
 
 Collective
@@ -1804,7 +1819,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`
+See also: `Mat`, `MatFDColoring`, `MatFDColoringCreate()`
 
 # External Links
 $(_doc_external("MatFD/MatFDColoringView"))
@@ -1827,7 +1842,7 @@ end
 end 
 
 """
-	h::PetscScalar = MatMFFDCheckPositivity(petsclib::PetscLibType,dummy::Ptr{Cvoid}, U::AbstractPetscVec, a::AbstractPetscVec) 
+	h::PetscScalar = MatMFFDCheckPositivity(petsclib::PetscLibType, dummy::Ptr{Cvoid}, U::AbstractPetscVec, a::AbstractPetscVec) 
 Checks that all entries in U + h*a  are positive or
 zero, decreases `h` until this is satisfied for a `MATMFFD` matrix
 
@@ -1844,7 +1859,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMFFDSetCheckh()`
+See also: `Mat`, `MATMFFD`, `MatMFFDSetCheckh()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDCheckPositivity"))
@@ -1869,8 +1884,8 @@ end
 end 
 
 """
-	MatMFFDComputeJacobian(petsclib::PetscLibType,snes::AbstractSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid}) 
-Tells the matrix
+	MatMFFDComputeJacobian(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid}) 
+Tells the matrix-free Jacobian object the new location at which
 Jacobian matrix-vector products will be computed at, i.e. J(x) * a. The x is obtained
 from the `SNES` object (using `SNESGetSolution()`).
 
@@ -1888,7 +1903,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_snes), `MatMFFDGetH()`, `MatCreateSNESMF()`, `MatMFFDSetBase()`, `MatCreateMFFD()`, `MATMFFD`,
+See also: `MatMFFDGetH()`, `MatCreateSNESMF()`, `MatMFFDSetBase()`, `MatCreateMFFD()`, `MATMFFD`,
 `MatMFFDSetHHistory()`, `MatMFFDSetFunctionError()`, `SNESSetJacobian()`
 
 # External Links
@@ -1912,7 +1927,7 @@ end
 end 
 
 """
-	MatMFFDDSSetUmin(petsclib::PetscLibType,A::AbstractPetscMat, umin::PetscReal) 
+	MatMFFDDSSetUmin(petsclib::PetscLibType, A::AbstractPetscMat, umin::PetscReal) 
 Sets the "umin" parameter used by the
 PETSc routine for computing the differencing parameter, h, which is used
 for matrix-free Jacobian-vector products for a `MATMFFD` matrix.
@@ -1923,7 +1938,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `MATMFFD`, `MatMFFDSetFunctionError()`, `MatCreateSNESMF()`
+See also: `MATMFFD`, `MatMFFDSetFunctionError()`, `MatCreateSNESMF()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDDSSetUmin"))
@@ -1952,7 +1967,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `PetscFinalize()`, `MatCreateMFFD()`, `MatCreateSNESMF()`
+See also: `Mat`, `MATMFFD`, `PetscFinalize()`, `MatCreateMFFD()`, `MatCreateSNESMF()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDFinalizePackage"))
@@ -1974,7 +1989,7 @@ end
 end 
 
 """
-	h::PetscScalar = MatMFFDGetH(petsclib::PetscLibType,mat::AbstractPetscMat) 
+	h::PetscScalar = MatMFFDGetH(petsclib::PetscLibType, mat::AbstractPetscMat) 
 Gets the last value that was used as the differencing for a `MATMFFD` matrix
 parameter.
 
@@ -1988,7 +2003,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDSetHHistory()`, `MatCreateMFFD()`, `MatMFFDResetHHistory()`
+See also: `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDSetHHistory()`, `MatCreateMFFD()`, `MatMFFDResetHHistory()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDGetH"))
@@ -2019,7 +2034,7 @@ from `MatInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `PetscInitialize()`
+See also: `Mat`, `MATMFFD`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDInitializePackage"))
@@ -2041,7 +2056,7 @@ end
 end 
 
 """
-	MatMFFDRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	MatMFFDRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a method to the `MATMFFD` registry.
 
 Not Collective, No Fortran Support
@@ -2052,7 +2067,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMFFDRegisterAll()`, `MatMFFDRegisterDestroy()`
+See also: `Mat`, `MATMFFD`, `MatMFFDRegisterAll()`, `MatMFFDRegisterDestroy()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDRegister"))
@@ -2075,7 +2090,7 @@ end
 end 
 
 """
-	MatMFFDResetHHistory(petsclib::PetscLibType,J::AbstractPetscMat) 
+	MatMFFDResetHHistory(petsclib::PetscLibType, J::AbstractPetscMat) 
 Resets the counter to zero to begin
 collecting a new set of differencing histories for the `MATMFFD` matrix
 
@@ -2086,7 +2101,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMFFDGetH()`, `MatCreateSNESMF()`,
+See also: `Mat`, `MATMFFD`, `MatMFFDGetH()`, `MatCreateSNESMF()`,
 `MatMFFDSetHHistory()`, `MatMFFDSetFunctionError()`
 
 # External Links
@@ -2110,7 +2125,7 @@ end
 end 
 
 """
-	MatMFFDSetBase(petsclib::PetscLibType,J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec) 
+	MatMFFDSetBase(petsclib::PetscLibType, J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec) 
 Sets the vector `U` at which matrix vector products of the
 Jacobian are computed for the `MATMFFD` matrix
 
@@ -2123,7 +2138,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMult()`
+See also: `Mat`, `MATMFFD`, `MatMult()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDSetBase"))
@@ -2146,7 +2161,7 @@ end
 end 
 
 """
-	MatMFFDSetCheckh(petsclib::PetscLibType,J::AbstractPetscMat, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	MatMFFDSetCheckh(petsclib::PetscLibType, J::AbstractPetscMat, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets a function that checks the computed `h` and adjusts
 it to satisfy some criteria for the `MATMFFD` matrix
 
@@ -2162,7 +2177,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMFFDCheckhFn`, `MatMFFDCheckPositivity()`
+See also: `Mat`, `MATMFFD`, `MatMFFDCheckhFn`, `MatMFFDCheckPositivity()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDSetCheckh"))
@@ -2185,8 +2200,8 @@ end
 end 
 
 """
-	MatMFFDSetFunction(petsclib::PetscLibType,mat::AbstractPetscMat, func::Ptr{Cvoid}, funcctx::Ptr{Cvoid}) 
-Sets the function used in applying the matrix
+	MatMFFDSetFunction(petsclib::PetscLibType, mat::AbstractPetscMat, func::Ptr{Cvoid}, funcctx::Ptr{Cvoid}) 
+Sets the function used in applying the matrix-free `MATMFFD` matrix.
 
 Logically Collective
 
@@ -2197,7 +2212,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMFFDFn`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatCreateMFFD()`,
+See also: `Mat`, `MATMFFD`, `MatMFFDFn`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatCreateMFFD()`,
 `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`, `SNESSetFunction()`
 
 # External Links
@@ -2221,8 +2236,8 @@ end
 end 
 
 """
-	MatMFFDSetFunctionError(petsclib::PetscLibType,mat::AbstractPetscMat, error::PetscReal) 
-Sets the error_rel for the approximation of matrix
+	MatMFFDSetFunctionError(petsclib::PetscLibType, mat::AbstractPetscMat, error::PetscReal) 
+Sets the error_rel for the approximation of matrix-vector products using finite differences with the `MATMFFD` matrix
 
 Logically Collective
 
@@ -2235,7 +2250,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatCreateMFFD()`,
+See also: `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatCreateMFFD()`,
 `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`
 
 # External Links
@@ -2259,7 +2274,7 @@ end
 end 
 
 """
-	MatMFFDSetFunctioni(petsclib::PetscLibType,mat::AbstractPetscMat, funci::Ptr{Cvoid}) 
+	MatMFFDSetFunctioni(petsclib::PetscLibType, mat::AbstractPetscMat, funci::Ptr{Cvoid}) 
 Sets the function for computing a single component for a `MATMFFD` matrix
 
 Logically Collective
@@ -2270,7 +2285,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMFFDiFn`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`,
+See also: `Mat`, `MATMFFD`, `MatMFFDiFn`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`,
 `SNESSetFunction()`, `MatGetDiagonal()`
 
 # External Links
@@ -2294,7 +2309,7 @@ end
 end 
 
 """
-	MatMFFDSetFunctioniBase(petsclib::PetscLibType,mat::AbstractPetscMat, func::Ptr{Cvoid}) 
+	MatMFFDSetFunctioniBase(petsclib::PetscLibType, mat::AbstractPetscMat, func::Ptr{Cvoid}) 
 Sets the function to compute the base vector for a single component function evaluation for a `MATMFFD` matrix
 
 Logically Collective
@@ -2305,7 +2320,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatCreateMFFD()`,
+See also: `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDGetH()`, `MatCreateMFFD()`,
 `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`, `SNESSetFunction()`, `MatGetDiagonal()`
 
 # External Links
@@ -2329,7 +2344,7 @@ end
 end 
 
 """
-	MatMFFDSetHHistory(petsclib::PetscLibType,J::AbstractPetscMat, history::Vector{PetscScalar}, nhistory::PetscInt) 
+	MatMFFDSetHHistory(petsclib::PetscLibType, J::AbstractPetscMat, history::Vector{PetscScalar}, nhistory::PetscInt) 
 Sets an array to collect a history of the
 differencing values (h) computed for the matrix-free product `MATMFFD` matrix
 
@@ -2343,7 +2358,7 @@ nhistory, then the later ones are discarded
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatMFFDGetH()`, `MatCreateSNESMF()`,
+See also: `Mat`, `MATMFFD`, `MatMFFDGetH()`, `MatCreateSNESMF()`,
 `MatMFFDResetHHistory()`, `MatMFFDSetFunctionError()`
 
 # External Links
@@ -2367,7 +2382,7 @@ end
 end 
 
 """
-	MatMFFDSetOptionsPrefix(petsclib::PetscLibType,mat::AbstractPetscMat, prefix::String) 
+	MatMFFDSetOptionsPrefix(petsclib::PetscLibType, mat::AbstractPetscMat, prefix::String) 
 Sets the prefix used for searching for all
 MATMFFD` options in the database.
 
@@ -2377,7 +2392,7 @@ Input Parameters:
 - `mat`    - the `MATMFFD` context
 - `prefix` - the prefix to prepend to all option names
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatSetFromOptions()`, `MatCreateSNESMF()`, `MatCreateMFFD()`
+See also: `Mat`, `MATMFFD`, `MatSetFromOptions()`, `MatCreateSNESMF()`, `MatCreateMFFD()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDSetOptionsPrefix"))
@@ -2400,8 +2415,8 @@ end
 end 
 
 """
-	MatMFFDSetPeriod(petsclib::PetscLibType,mat::AbstractPetscMat, period::PetscInt) 
-Sets how often the step
+	MatMFFDSetPeriod(petsclib::PetscLibType, mat::AbstractPetscMat, period::PetscInt) 
+Sets how often the step-size `h` is recomputed for a `MATMFFD` matrix, by default it is every time
 
 Logically Collective
 
@@ -2414,7 +2429,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDGetH()`,
+See also: `Mat`, `MATMFFD`, `MatCreateSNESMF()`, `MatMFFDGetH()`,
 `MatMFFDSetHHistory()`, `MatMFFDResetHHistory()`
 
 # External Links
@@ -2438,7 +2453,7 @@ end
 end 
 
 """
-	MatMFFDSetType(petsclib::PetscLibType,mat::AbstractPetscMat, ftype::MatMFFDType) 
+	MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatMFFDType) 
 Sets the method that is used to compute the
 differencing parameter for finite difference matrix-free formulations.
 
@@ -2449,7 +2464,7 @@ or `MatSetType`(mat,`MATMFFD`);
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MATMFFD`, `MATMFFD_WP`, `MATMFFD_DS`, `MatCreateSNESMF()`, `MatMFFDRegister()`, `MatMFFDSetFunction()`, `MatCreateMFFD()`
+See also: `Mat`, `MATMFFD`, `MATMFFD_WP`, `MATMFFD_DS`, `MatCreateSNESMF()`, `MatMFFDRegister()`, `MatMFFDSetFunction()`, `MatCreateMFFD()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDSetType"))
@@ -2472,8 +2487,8 @@ end
 end 
 
 """
-	MatMFFDWPSetComputeNormU(petsclib::PetscLibType,A::AbstractPetscMat, flag::PetscBool) 
-Sets whether it computes the ||U|| used by the Walker
+	MatMFFDWPSetComputeNormU(petsclib::PetscLibType, A::AbstractPetscMat, flag::PetscBool) 
+Sets whether it computes the ||U|| used by the Walker-Pernice {cite}`pw98`
 PETSc routine for computing h. With any Krylov solver this need only
 be computed during the first iteration and kept for later.
 
@@ -2487,7 +2502,7 @@ must be sure that ||U|| has not changed in the mean time.
 
 Level: advanced
 
--seealso: `MATMFFD_WP`, `MATMFFD`, `MatMFFDSetFunctionError()`, `MatCreateSNESMF()`
+See also: `MATMFFD_WP`, `MATMFFD`, `MatMFFDSetFunctionError()`, `MatCreateSNESMF()`
 
 # External Links
 $(_doc_external("Mat/MatMFFDWPSetComputeNormU"))
@@ -2510,7 +2525,7 @@ end
 end 
 
 """
-	SP::MatNullSpace = MatNullSpaceCreate(petsclib::PetscLibType,comm::MPI_Comm, has_cnst::PetscBool, n::PetscInt, vecs::Vector{<:AbstractPetscVec}) 
+	SP::MatNullSpace = MatNullSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm, has_cnst::PetscBool, n::PetscInt, vecs::Vector{<:AbstractPetscVec}) 
 Creates a `MatNullSpace` data structure used to project vectors out of null spaces.
 
 Collective
@@ -2529,7 +2544,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `MatNullSpaceDestroy()`, `MatNullSpaceRemove()`, `MatSetNullSpace()`, `MatNullSpaceSetFunction()`
+See also: `Mat`, `MatNullSpace`, `MatNullSpaceDestroy()`, `MatNullSpaceRemove()`, `MatSetNullSpace()`, `MatNullSpaceSetFunction()`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceCreate"))
@@ -2554,7 +2569,7 @@ end
 end 
 
 """
-	sp::MatNullSpace = MatNullSpaceCreateRigidBody(petsclib::PetscLibType,coords::AbstractPetscVec) 
+	sp::MatNullSpace = MatNullSpaceCreateRigidBody(petsclib::PetscLibType, coords::AbstractPetscVec) 
 create rigid body modes from coordinates
 
 Collective
@@ -2567,7 +2582,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`, `MatSetNullSpace()`, `PCGAMG`
+See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`, `MatSetNullSpace()`, `PCGAMG`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceCreateRigidBody"))
@@ -2592,7 +2607,7 @@ end
 end 
 
 """
-	MatNullSpaceDestroy(petsclib::PetscLibType,sp::Union{MatNullSpace, Ref{MatNullSpace}}) 
+	MatNullSpaceDestroy(petsclib::PetscLibType, sp::Union{MatNullSpace, Ref{MatNullSpace}}) 
 Destroys a data structure used to project vectors out of null spaces.
 
 Collective
@@ -2602,7 +2617,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceRemove()`, `MatNullSpaceSetFunction()`
+See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceRemove()`, `MatNullSpaceSetFunction()`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceDestroy"))
@@ -2626,7 +2641,7 @@ end
 end 
 
 """
-	has_const::PetscBool,n::PetscInt,vecs::Ptr{PetscVec} = MatNullSpaceGetVecs(petsclib::PetscLibType,sp::MatNullSpace) 
+	has_const::PetscBool,n::PetscInt,vecs::Ptr{PetscVec} = MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace) 
 get the vectors defining the null space
 
 Not Collective
@@ -2641,7 +2656,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatGetNullSpace()`, `MatGetNearNullSpace()`
+See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatGetNullSpace()`, `MatGetNearNullSpace()`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceGetVecs"))
@@ -2670,7 +2685,7 @@ end
 end 
 
 """
-	MatNullSpaceRemove(petsclib::PetscLibType,sp::MatNullSpace, vec::AbstractPetscVec) 
+	MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::AbstractPetscVec) 
 Removes all the components of a null space from a vector.
 
 Collective
@@ -2681,7 +2696,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceDestroy()`, `MatNullSpaceSetFunction()`
+See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceDestroy()`, `MatNullSpaceSetFunction()`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceRemove"))
@@ -2704,7 +2719,7 @@ end
 end 
 
 """
-	MatNullSpaceSetFunction(petsclib::PetscLibType,sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	MatNullSpaceSetFunction(petsclib::PetscLibType, sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a function that removes a null space from a vector
 out of null spaces.
 
@@ -2717,7 +2732,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `MatNullSpaceDestroy()`, `MatNullSpaceRemove()`, `MatSetNullSpace()`, `MatNullSpaceCreate()`, `MatNullSpaceRemoveFn`
+See also: `Mat`, `MatNullSpace`, `MatNullSpaceDestroy()`, `MatNullSpaceRemove()`, `MatSetNullSpace()`, `MatNullSpaceCreate()`, `MatNullSpaceRemoveFn`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceSetFunction"))
@@ -2740,7 +2755,7 @@ end
 end 
 
 """
-	isNull::PetscBool = MatNullSpaceTest(petsclib::PetscLibType,sp::MatNullSpace, mat::AbstractPetscMat) 
+	isNull::PetscBool = MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::AbstractPetscMat) 
 Tests if the claimed null space is really a null space of a matrix
 
 Collective
@@ -2754,7 +2769,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceDestroy()`, `MatNullSpaceSetFunction()`
+See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceDestroy()`, `MatNullSpaceSetFunction()`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceTest"))
@@ -2779,7 +2794,7 @@ end
 end 
 
 """
-	MatNullSpaceView(petsclib::PetscLibType,sp::MatNullSpace, viewer::PetscViewer) 
+	MatNullSpaceView(petsclib::PetscLibType, sp::MatNullSpace, viewer::PetscViewer) 
 Visualizes a null space object.
 
 Collective
@@ -2790,7 +2805,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_matrices), `Mat`, `MatNullSpace`, `PetscViewer`, `MatNullSpaceCreate()`, `PetscViewerASCIIOpen()`
+See also: `Mat`, `MatNullSpace`, `PetscViewer`, `MatNullSpaceCreate()`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("Mat/MatNullSpaceView"))
@@ -2813,7 +2828,7 @@ end
 end 
 
 """
-	partitioning::IS = MatPartitioningApply(petsclib::PetscLibType,matp::MatPartitioning) 
+	partitioning::IS = MatPartitioningApply(petsclib::PetscLibType, matp::MatPartitioning) 
 Gets a partitioning for the graph represented by a sparse matrix.
 
 Collective
@@ -2832,7 +2847,7 @@ Level: beginner
 
 The user can define additional partitionings; see `MatPartitioningRegister()`.
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningRegister()`, `MatPartitioningCreate()`,
+See also: `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningRegister()`, `MatPartitioningCreate()`,
 `MatPartitioningDestroy()`, `MatPartitioningSetAdjacency()`, `ISPartitioningToNumbering()`,
 `ISPartitioningCount()`
 
@@ -2859,7 +2874,7 @@ end
 end 
 
 """
-	partitioning::IS = MatPartitioningApplyND(petsclib::PetscLibType,matp::MatPartitioning) 
+	partitioning::IS = MatPartitioningApplyND(petsclib::PetscLibType, matp::MatPartitioning) 
 Gets a nested dissection partitioning for a matrix.
 
 Collective
@@ -2873,7 +2888,7 @@ number the node has been assigned to. Negative x values indicate the separator l
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioningRegister()`, `MatPartitioningCreate()`,
+See also: `Mat`, `MatPartitioningRegister()`, `MatPartitioningCreate()`,
 `MatPartitioningDestroy()`, `MatPartitioningSetAdjacency()`, `ISPartitioningToNumbering()`,
 `ISPartitioningCount()`
 
@@ -2900,7 +2915,7 @@ end
 end 
 
 """
-	num::PetscInt = MatPartitioningChacoGetEigenNumber(petsclib::PetscLibType,part::MatPartitioning) 
+	num::PetscInt = MatPartitioningChacoGetEigenNumber(petsclib::PetscLibType, part::MatPartitioning) 
 Gets the number of eigenvectors used by Chaco.
 
 Not Collective
@@ -2913,7 +2928,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenNumber()`
+See also: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenNumber()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetEigenNumber"))
@@ -2938,7 +2953,7 @@ end
 end 
 
 """
-	method::MPChacoEigenType = MatPartitioningChacoGetEigenSolver(petsclib::PetscLibType,part::MatPartitioning) 
+	method::MPChacoEigenType = MatPartitioningChacoGetEigenSolver(petsclib::PetscLibType, part::MatPartitioning) 
 Get the eigensolver used by the Chaco partitioner.
 
 Not Collective
@@ -2951,7 +2966,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`
+See also: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetEigenSolver"))
@@ -2976,7 +2991,7 @@ end
 end 
 
 """
-	tol::PetscReal = MatPartitioningChacoGetEigenTol(petsclib::PetscLibType,part::MatPartitioning) 
+	tol::PetscReal = MatPartitioningChacoGetEigenTol(petsclib::PetscLibType, part::MatPartitioning) 
 Gets the eigensolver tolerance used by Chaco
 
 Not Collective
@@ -2989,7 +3004,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenTol()`
+See also: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenTol()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetEigenTol"))
@@ -3014,7 +3029,7 @@ end
 end 
 
 """
-	method::MPChacoGlobalType = MatPartitioningChacoGetGlobal(petsclib::PetscLibType,part::MatPartitioning) 
+	method::MPChacoGlobalType = MatPartitioningChacoGetGlobal(petsclib::PetscLibType, part::MatPartitioning) 
 Get the global method used by the Chaco partitioner.
 
 Not Collective
@@ -3027,7 +3042,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetGlobal()`
+See also: `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetGlobal()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetGlobal"))
@@ -3052,7 +3067,7 @@ end
 end 
 
 """
-	method::MPChacoLocalType = MatPartitioningChacoGetLocal(petsclib::PetscLibType,part::MatPartitioning) 
+	method::MPChacoLocalType = MatPartitioningChacoGetLocal(petsclib::PetscLibType, part::MatPartitioning) 
 Get local method used by the Chaco partitioner.
 
 Not Collective
@@ -3065,7 +3080,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetLocal()`
+See also: `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetLocal()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoGetLocal"))
@@ -3090,7 +3105,7 @@ end
 end 
 
 """
-	MatPartitioningChacoSetCoarseLevel(petsclib::PetscLibType,part::MatPartitioning, level::PetscReal) 
+	MatPartitioningChacoSetCoarseLevel(petsclib::PetscLibType, part::MatPartitioning, level::PetscReal) 
 Set the coarse level parameter for the
 Chaco partitioner.
 
@@ -3105,7 +3120,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`
+See also: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetCoarseLevel"))
@@ -3128,7 +3143,7 @@ end
 end 
 
 """
-	MatPartitioningChacoSetEigenNumber(petsclib::PetscLibType,part::MatPartitioning, num::PetscInt) 
+	MatPartitioningChacoSetEigenNumber(petsclib::PetscLibType, part::MatPartitioning, num::PetscInt) 
 Sets the number of eigenvectors to compute by Chaco during partitioning
 during partitioning.
 
@@ -3141,7 +3156,7 @@ Input Parameters:
 Options Database Key:
 - `-mat_partitioning_chaco_eigen_number n` - Number of eigenvectors
 
--seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`, `MatPartitioningChacoGetEigenTol()`
+See also: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`, `MatPartitioningChacoGetEigenTol()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetEigenNumber"))
@@ -3164,7 +3179,7 @@ end
 end 
 
 """
-	MatPartitioningChacoSetEigenSolver(petsclib::PetscLibType,part::MatPartitioning, method::MPChacoEigenType) 
+	MatPartitioningChacoSetEigenSolver(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoEigenType) 
 Set the eigensolver method for Chaco partitioner.
 
 Collective
@@ -3178,7 +3193,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenTol()`, `MatPartitioningChacoSetEigenNumber()`,
+See also: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenTol()`, `MatPartitioningChacoSetEigenNumber()`,
 `MatPartitioningChacoGetEigenSolver()`
 
 # External Links
@@ -3202,7 +3217,7 @@ end
 end 
 
 """
-	MatPartitioningChacoSetEigenTol(petsclib::PetscLibType,part::MatPartitioning, tol::PetscReal) 
+	MatPartitioningChacoSetEigenTol(petsclib::PetscLibType, part::MatPartitioning, tol::PetscReal) 
 Sets the tolerance for the eigensolver used by Chaco
 
 Collective
@@ -3214,7 +3229,7 @@ Input Parameters:
 Options Database Key:
 - `-mat_partitioning_chaco_eigen_tol tol` - Tolerance for eigensolver
 
--seealso: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`, `MatPartitioningChacoGetEigenTol()`
+See also: `MatPartitioningType`, `MatPartitioning`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetEigenSolver()`, `MatPartitioningChacoGetEigenTol()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetEigenTol"))
@@ -3237,7 +3252,7 @@ end
 end 
 
 """
-	MatPartitioningChacoSetGlobal(petsclib::PetscLibType,part::MatPartitioning, method::MPChacoGlobalType) 
+	MatPartitioningChacoSetGlobal(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoGlobalType) 
 Set the global method for Chaco partitioner.
 
 Collective
@@ -3252,7 +3267,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MatPartitioning`, `MatPartioningSetType()`, `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetLocal()`, `MatPartitioningChacoGetGlobal()`
+See also: `MatPartitioning`, `MatPartioningSetType()`, `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetLocal()`, `MatPartitioningChacoGetGlobal()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetGlobal"))
@@ -3275,7 +3290,7 @@ end
 end 
 
 """
-	MatPartitioningChacoSetLocal(petsclib::PetscLibType,part::MatPartitioning, method::MPChacoLocalType) 
+	MatPartitioningChacoSetLocal(petsclib::PetscLibType, part::MatPartitioning, method::MPChacoLocalType) 
 Set the local method for the Chaco partitioner.
 
 Collective
@@ -3289,7 +3304,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetGlobal()`, `MatPartitioningChacoGetLocal()`
+See also: `MatPartitioningType`, `MATPARTITIONINGCHACO`, `MatPartitioningChacoSetGlobal()`, `MatPartitioningChacoGetLocal()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningChacoSetLocal"))
@@ -3312,7 +3327,7 @@ end
 end 
 
 """
-	newp::MatPartitioning = MatPartitioningCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	newp::MatPartitioning = MatPartitioningCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a partitioning context.
 
 Collective
@@ -3325,7 +3340,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningSetType()`, `MatPartitioningApply()`, `MatPartitioningDestroy()`,
+See also: `Mat`, `MatPartitioning`, `MatPartitioningSetType()`, `MatPartitioningApply()`, `MatPartitioningDestroy()`,
 `MatPartitioningSetAdjacency()`
 
 # External Links
@@ -3351,7 +3366,7 @@ end
 end 
 
 """
-	MatPartitioningDestroy(petsclib::PetscLibType,part::Union{MatPartitioning, Ref{MatPartitioning}}) 
+	MatPartitioningDestroy(petsclib::PetscLibType, part::Union{MatPartitioning, Ref{MatPartitioning}}) 
 Destroys the partitioning context.
 
 Collective
@@ -3361,7 +3376,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningDestroy"))
@@ -3385,7 +3400,7 @@ end
 end 
 
 """
-	type::MatPartitioningType = MatPartitioningGetType(petsclib::PetscLibType,partitioning::MatPartitioning) 
+	type::MatPartitioningType = MatPartitioningGetType(petsclib::PetscLibType, partitioning::MatPartitioning) 
 Gets the Partitioning method type and name (as a string)
 from the partitioning context.
 
@@ -3399,7 +3414,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`, `MatPartitioningRegisterDestroy()`, `MatPartitioningRegisterAll()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`, `MatPartitioningRegisterDestroy()`, `MatPartitioningRegisterAll()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningGetType"))
@@ -3424,7 +3439,7 @@ end
 end 
 
 """
-	use_edge_weights::PetscBool = MatPartitioningGetUseEdgeWeights(petsclib::PetscLibType,part::MatPartitioning) 
+	use_edge_weights::PetscBool = MatPartitioningGetUseEdgeWeights(petsclib::PetscLibType, part::MatPartitioning) 
 Get a flag that indicates whether or not to edge weights are used.
 
 Logically Collective
@@ -3437,7 +3452,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningSetType()`, `MatPartitioningSetVertexWeights()`, `MatPartitioningSetPartitionWeights()`,
+See also: `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningSetType()`, `MatPartitioningSetVertexWeights()`, `MatPartitioningSetPartitionWeights()`,
 `MatPartitioningSetUseEdgeWeights`
 
 # External Links
@@ -3463,8 +3478,8 @@ end
 end 
 
 """
-	coarseparts::IS = MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType,part::MatPartitioning) 
-Get the coarse
+	coarseparts::IS = MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType, part::MatPartitioning) 
+Get the coarse-level partitioning of a hierarchical `MatPartitioning`.
 
 Not Collective
 
@@ -3476,7 +3491,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalGetFineparts()`, `MatPartitioningHierarchicalSetNcoarseparts()`
+See also: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalGetFineparts()`, `MatPartitioningHierarchicalSetNcoarseparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalGetCoarseparts"))
@@ -3501,8 +3516,8 @@ end
 end 
 
 """
-	fineparts::IS = MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType,part::MatPartitioning) 
-Get the fine
+	fineparts::IS = MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::MatPartitioning) 
+Get the fine-level partitioning of a hierarchical `MatPartitioning`.
 
 Not Collective
 
@@ -3514,7 +3529,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalGetCoarseparts()`, `MatPartitioningHierarchicalSetNfineparts()`
+See also: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalGetCoarseparts()`, `MatPartitioningHierarchicalSetNfineparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalGetFineparts"))
@@ -3539,7 +3554,7 @@ end
 end 
 
 """
-	MatPartitioningHierarchicalSetNcoarseparts(petsclib::PetscLibType,part::MatPartitioning, ncoarseparts::PetscInt) 
+	MatPartitioningHierarchicalSetNcoarseparts(petsclib::PetscLibType, part::MatPartitioning, ncoarseparts::PetscInt) 
 Set the number of coarse partitions produced by a hierarchical `MatPartitioning`.
 
 Logically Collective
@@ -3550,7 +3565,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalSetNfineparts()`, `MatPartitioningHierarchicalGetCoarseparts()`
+See also: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalSetNfineparts()`, `MatPartitioningHierarchicalGetCoarseparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalSetNcoarseparts"))
@@ -3573,7 +3588,7 @@ end
 end 
 
 """
-	MatPartitioningHierarchicalSetNfineparts(petsclib::PetscLibType,part::MatPartitioning, nfineparts::PetscInt) 
+	MatPartitioningHierarchicalSetNfineparts(petsclib::PetscLibType, part::MatPartitioning, nfineparts::PetscInt) 
 Set the number of fine partitions per coarse partition produced by a hierarchical `MatPartitioning`.
 
 Logically Collective
@@ -3584,7 +3599,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalSetNcoarseparts()`, `MatPartitioningHierarchicalGetFineparts()`
+See also: `MatPartitioning`, `MATPARTITIONINGHIERARCH`, `MatPartitioningHierarchicalSetNcoarseparts()`, `MatPartitioningHierarchicalGetFineparts()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningHierarchicalSetNfineparts"))
@@ -3607,7 +3622,7 @@ end
 end 
 
 """
-	MatPartitioningImprove(petsclib::PetscLibType,matp::MatPartitioning, partitioning::AbstractIS) 
+	MatPartitioningImprove(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) 
 Improves the quality of a given partition.
 
 Collective
@@ -3622,7 +3637,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningApply()`, `MatPartitioningCreate()`,
+See also: `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningApply()`, `MatPartitioningCreate()`,
 `MatPartitioningDestroy()`, `MatPartitioningSetAdjacency()`, `ISPartitioningToNumbering()`,
 `ISPartitioningCount()`
 
@@ -3649,7 +3664,7 @@ end
 end 
 
 """
-	imb::PetscReal = MatPartitioningPTScotchGetImbalance(petsclib::PetscLibType,part::MatPartitioning) 
+	imb::PetscReal = MatPartitioningPTScotchGetImbalance(petsclib::PetscLibType, part::MatPartitioning) 
 Gets the value of the load imbalance
 ratio used during strategy selection.
 
@@ -3663,7 +3678,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetImbalance()`
+See also: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetImbalance()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchGetImbalance"))
@@ -3688,7 +3703,7 @@ end
 end 
 
 """
-	strategy::MPPTScotchStrategyType = MatPartitioningPTScotchGetStrategy(petsclib::PetscLibType,part::MatPartitioning) 
+	strategy::MPPTScotchStrategyType = MatPartitioningPTScotchGetStrategy(petsclib::PetscLibType, part::MatPartitioning) 
 Gets the strategy used in PTScotch.
 
 Not Collective
@@ -3701,7 +3716,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetStrategy()`
+See also: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetStrategy()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchGetStrategy"))
@@ -3726,7 +3741,7 @@ end
 end 
 
 """
-	MatPartitioningPTScotchSetImbalance(petsclib::PetscLibType,part::MatPartitioning, imb::PetscReal) 
+	MatPartitioningPTScotchSetImbalance(petsclib::PetscLibType, part::MatPartitioning, imb::PetscReal) 
 Sets the value of the load imbalance
 ratio to be used during strategy selection.
 
@@ -3739,7 +3754,7 @@ Input Parameters:
 Options Database Key:
 - `-mat_partitioning_ptscotch_imbalance imb` - set load imbalance ratio
 
--seealso: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetStrategy()`, `MatPartitioningPTScotchGetImbalance()`
+See also: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetStrategy()`, `MatPartitioningPTScotchGetImbalance()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchSetImbalance"))
@@ -3762,7 +3777,7 @@ end
 end 
 
 """
-	MatPartitioningPTScotchSetStrategy(petsclib::PetscLibType,part::MatPartitioning, strategy::MPPTScotchStrategyType) 
+	MatPartitioningPTScotchSetStrategy(petsclib::PetscLibType, part::MatPartitioning, strategy::MPPTScotchStrategyType) 
 Sets the strategy to be used in PTScotch.
 
 Collective
@@ -3770,7 +3785,21 @@ Collective
 Input Parameters:
 - `part`     - the partitioning context
 - `strategy` - the strategy, one of
--seealso: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetImbalance()`, `MatPartitioningPTScotchGetStrategy()`
+``
+MP_PTSCOTCH_DEFAULT     - Default behavior
+MP_PTSCOTCH_QUALITY     - Prioritize quality over speed
+MP_PTSCOTCH_SPEED       - Prioritize speed over quality
+MP_PTSCOTCH_BALANCE     - Enforce load balance
+MP_PTSCOTCH_SAFETY      - Avoid methods that may fail
+MP_PTSCOTCH_SCALABILITY - Favor scalability as much as possible
+``
+
+Options Database Key:
+- `-mat_partitioning_ptscotch_strategy [quality,speed,balance,safety,scalability]` - strategy
+
+Level: advanced
+
+See also: `MATPARTITIONINGSCOTCH`, `MatPartitioningPTScotchSetImbalance()`, `MatPartitioningPTScotchGetStrategy()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPTScotchSetStrategy"))
@@ -3793,7 +3822,7 @@ end
 end 
 
 """
-	cut::PetscInt = MatPartitioningParmetisGetEdgeCut(petsclib::PetscLibType,part::MatPartitioning) 
+	cut::PetscInt = MatPartitioningParmetisGetEdgeCut(petsclib::PetscLibType, part::MatPartitioning) 
 Returns the number of edge cuts in the vertex partition.
 
 Input Parameter:
@@ -3804,7 +3833,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARMETIS`
+See also: `MATPARTITIONINGPARMETIS`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningParmetisGetEdgeCut"))
@@ -3829,7 +3858,7 @@ end
 end 
 
 """
-	MatPartitioningParmetisSetCoarseSequential(petsclib::PetscLibType,part::MatPartitioning) 
+	MatPartitioningParmetisSetCoarseSequential(petsclib::PetscLibType, part::MatPartitioning) 
 Use the sequential code to
 do the partitioning of the coarse grid.
 
@@ -3840,7 +3869,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARMETIS`
+See also: `MATPARTITIONINGPARMETIS`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningParmetisSetCoarseSequential"))
@@ -3863,7 +3892,7 @@ end
 end 
 
 """
-	MatPartitioningParmetisSetRepartition(petsclib::PetscLibType,part::MatPartitioning) 
+	MatPartitioningParmetisSetRepartition(petsclib::PetscLibType, part::MatPartitioning) 
 Repartition
 current mesh to rebalance computation.
 
@@ -3874,7 +3903,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARMETIS`
+See also: `MATPARTITIONINGPARMETIS`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningParmetisSetRepartition"))
@@ -3897,7 +3926,7 @@ end
 end 
 
 """
-	MatPartitioningPartySetBipart(petsclib::PetscLibType,part::MatPartitioning, bp::PetscBool) 
+	MatPartitioningPartySetBipart(petsclib::PetscLibType, part::MatPartitioning, bp::PetscBool) 
 Activate or deactivate recursive bisection in the Party partitioner
 
 Collective
@@ -3911,7 +3940,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARTY`
+See also: `MATPARTITIONINGPARTY`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetBipart"))
@@ -3934,7 +3963,7 @@ end
 end 
 
 """
-	MatPartitioningPartySetCoarseLevel(petsclib::PetscLibType,part::MatPartitioning, level::PetscReal) 
+	MatPartitioningPartySetCoarseLevel(petsclib::PetscLibType, part::MatPartitioning, level::PetscReal) 
 Set the coarse level parameter for the
 Party partitioner.
 
@@ -3949,7 +3978,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARTY`
+See also: `MATPARTITIONINGPARTY`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetCoarseLevel"))
@@ -3972,7 +4001,7 @@ end
 end 
 
 """
-	MatPartitioningPartySetGlobal(petsclib::PetscLibType,part::MatPartitioning, glob::String) 
+	MatPartitioningPartySetGlobal(petsclib::PetscLibType, part::MatPartitioning, glob::String) 
 Set global method for Party partitioner.
 
 Collective
@@ -3986,7 +4015,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARTY`, `MatPartitioningPartySetLocal()`
+See also: `MATPARTITIONINGPARTY`, `MatPartitioningPartySetLocal()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetGlobal"))
@@ -4009,7 +4038,7 @@ end
 end 
 
 """
-	MatPartitioningPartySetLocal(petsclib::PetscLibType,part::MatPartitioning, loc::String) 
+	MatPartitioningPartySetLocal(petsclib::PetscLibType, part::MatPartitioning, loc::String) 
 Set local method used by the Party partitioner.
 
 Collective
@@ -4023,7 +4052,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARTY`, `MatPartitioningPartySetGlobal()`
+See also: `MATPARTITIONINGPARTY`, `MatPartitioningPartySetGlobal()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetLocal"))
@@ -4046,7 +4075,7 @@ end
 end 
 
 """
-	MatPartitioningPartySetMatchOptimization(petsclib::PetscLibType,part::MatPartitioning, opt::PetscBool) 
+	MatPartitioningPartySetMatchOptimization(petsclib::PetscLibType, part::MatPartitioning, opt::PetscBool) 
 Activate matching optimization for
 graph reduction.
 
@@ -4061,7 +4090,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `MATPARTITIONINGPARTY`
+See also: `MATPARTITIONINGPARTY`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningPartySetMatchOptimization"))
@@ -4084,7 +4113,7 @@ end
 end 
 
 """
-	MatPartitioningRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	MatPartitioningRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new sparse matrix partitioning to the  matrix package.
 
 Not Collective, No Fortran Support
@@ -4095,7 +4124,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`, `MatPartitioningRegisterDestroy()`, `MatPartitioningRegisterAll()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`, `MatPartitioningRegisterDestroy()`, `MatPartitioningRegisterAll()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningRegister"))
@@ -4118,7 +4147,7 @@ end
 end 
 
 """
-	MatPartitioningSetAdjacency(petsclib::PetscLibType,part::MatPartitioning, adj::AbstractPetscMat) 
+	MatPartitioningSetAdjacency(petsclib::PetscLibType, part::MatPartitioning, adj::AbstractPetscMat) 
 Sets the adjacency graph (matrix) of the thing to be
 partitioned.
 
@@ -4130,7 +4159,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetAdjacency"))
@@ -4153,7 +4182,7 @@ end
 end 
 
 """
-	MatPartitioningSetFromOptions(petsclib::PetscLibType,part::MatPartitioning) 
+	MatPartitioningSetFromOptions(petsclib::PetscLibType, part::MatPartitioning) 
 Sets various partitioning options from the
 options database for the partitioning object
 
@@ -4168,7 +4197,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`
+See also: `Mat`, `MatPartitioning`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetFromOptions"))
@@ -4191,7 +4220,7 @@ end
 end 
 
 """
-	MatPartitioningSetNParts(petsclib::PetscLibType,part::MatPartitioning, n::PetscInt) 
+	MatPartitioningSetNParts(petsclib::PetscLibType, part::MatPartitioning, n::PetscInt) 
 Set how many partitions need to be created;
 by default this is one per processor. Certain partitioning schemes may
 in fact only support that option.
@@ -4204,7 +4233,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningApply()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningApply()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetNParts"))
@@ -4227,7 +4256,7 @@ end
 end 
 
 """
-	MatPartitioningSetNumberVertexWeights(petsclib::PetscLibType,partitioning::MatPartitioning, ncon::PetscInt) 
+	MatPartitioningSetNumberVertexWeights(petsclib::PetscLibType, partitioning::MatPartitioning, ncon::PetscInt) 
 Sets the number of weights per vertex
 
 Not Collective
@@ -4238,7 +4267,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningSetVertexWeights()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningSetVertexWeights()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetNumberVertexWeights"))
@@ -4261,7 +4290,7 @@ end
 end 
 
 """
-	MatPartitioningSetPartitionWeights(petsclib::PetscLibType,part::MatPartitioning, weights::Vector{PetscReal}) 
+	MatPartitioningSetPartitionWeights(petsclib::PetscLibType, part::MatPartitioning, weights::Vector{PetscReal}) 
 Sets the weights for each partition.
 
 Logically Collective
@@ -4277,7 +4306,7 @@ should be one.
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningSetVertexWeights()`, `MatPartitioningCreate()`, `MatPartitioningSetType()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningSetVertexWeights()`, `MatPartitioningCreate()`, `MatPartitioningSetType()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetPartitionWeights"))
@@ -4300,7 +4329,7 @@ end
 end 
 
 """
-	MatPartitioningSetType(petsclib::PetscLibType,part::MatPartitioning, type::MatPartitioningType) 
+	MatPartitioningSetType(petsclib::PetscLibType, part::MatPartitioning, type::MatPartitioningType) 
 Sets the type of partitioner to use
 
 Collective
@@ -4314,7 +4343,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningApply()`, `MatPartitioningType`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningApply()`, `MatPartitioningType`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetType"))
@@ -4337,7 +4366,7 @@ end
 end 
 
 """
-	MatPartitioningSetUseEdgeWeights(petsclib::PetscLibType,part::MatPartitioning, use_edge_weights::PetscBool) 
+	MatPartitioningSetUseEdgeWeights(petsclib::PetscLibType, part::MatPartitioning, use_edge_weights::PetscBool) 
 Set a flag to indicate whether or not to use edge weights.
 
 Logically Collective
@@ -4353,7 +4382,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningSetType()`, `MatPartitioningSetVertexWeights()`, `MatPartitioningSetPartitionWeights()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningSetType()`, `MatPartitioningSetVertexWeights()`, `MatPartitioningSetPartitionWeights()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetUseEdgeWeights"))
@@ -4376,7 +4405,7 @@ end
 end 
 
 """
-	MatPartitioningSetVertexWeights(petsclib::PetscLibType,part::MatPartitioning, weights::Vector{PetscInt}) 
+	MatPartitioningSetVertexWeights(petsclib::PetscLibType, part::MatPartitioning, weights::Vector{PetscInt}) 
 Sets the weights for vertices for a partitioning.
 
 Logically Collective
@@ -4388,7 +4417,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningSetType()`, `MatPartitioningSetPartitionWeights()`, `MatPartitioningSetNumberVertexWeights()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningCreate()`, `MatPartitioningSetType()`, `MatPartitioningSetPartitionWeights()`, `MatPartitioningSetNumberVertexWeights()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningSetVertexWeights"))
@@ -4411,7 +4440,7 @@ end
 end 
 
 """
-	MatPartitioningView(petsclib::PetscLibType,part::MatPartitioning, viewer::PetscViewer) 
+	MatPartitioningView(petsclib::PetscLibType, part::MatPartitioning, viewer::PetscViewer) 
 Prints the partitioning data structure.
 
 Collective
@@ -4422,7 +4451,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `PetscViewer`, `PetscViewerASCIIOpen()`
+See also: `Mat`, `MatPartitioning`, `PetscViewer`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningView"))
@@ -4445,7 +4474,7 @@ end
 end 
 
 """
-	MatPartitioningViewFromOptions(petsclib::PetscLibType,A::MatPartitioning, obj, name::String) 
+	MatPartitioningViewFromOptions(petsclib::PetscLibType, A::MatPartitioning, obj, name::String) 
 View a partitioning context from the options database
 
 Collective
@@ -4460,7 +4489,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningView()`, `PetscObjectViewFromOptions()`, `MatPartitioningCreate()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningView()`, `PetscObjectViewFromOptions()`, `MatPartitioningCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningViewFromOptions"))
@@ -4483,7 +4512,7 @@ end
 end 
 
 """
-	MatPartitioningViewImbalance(petsclib::PetscLibType,matp::MatPartitioning, partitioning::AbstractIS) 
+	MatPartitioningViewImbalance(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) 
 Display partitioning imbalance information.
 
 Collective
@@ -4497,7 +4526,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_matrices), `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningApply()`, `MatPartitioningView()`
+See also: `Mat`, `MatPartitioning`, `MatPartitioningType`, `MatPartitioningApply()`, `MatPartitioningView()`
 
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningViewImbalance"))
@@ -4520,7 +4549,7 @@ end
 end 
 
 """
-	color::MatTransposeColoring = MatTransposeColoringCreate(petsclib::PetscLibType,mat::AbstractPetscMat, iscoloring::ISColoring) 
+	color::MatTransposeColoring = MatTransposeColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring) 
 Creates a matrix coloring context for the matrix product C = A*B^T.
 
 Collective
@@ -4534,7 +4563,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatTransposeColoringDestroy()`, `MatTransColoringApplySpToDen()`,
+See also: `Mat`, `MatTransposeColoringDestroy()`, `MatTransColoringApplySpToDen()`,
 `MatTransColoringApplyDenToSp()`
 
 # External Links
@@ -4560,7 +4589,7 @@ end
 end 
 
 """
-	MatTransposeColoringDestroy(petsclib::PetscLibType,c::Union{MatTransposeColoring, Ref{MatTransposeColoring}}) 
+	MatTransposeColoringDestroy(petsclib::PetscLibType, c::Union{MatTransposeColoring, Ref{MatTransposeColoring}}) 
 Destroys a coloring context for matrix product C = A*B^T that was created
 via `MatTransposeColoringCreate()`.
 
@@ -4571,7 +4600,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatTransposeColoringCreate()`
+See also: `Mat`, `MatTransposeColoringCreate()`
 
 # External Links
 $(_doc_external("Mat/MatTransposeColoringDestroy"))

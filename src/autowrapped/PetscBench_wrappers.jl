@@ -1,5 +1,5 @@
 """
-	bm::PetscBench = PetscBenchCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	bm::PetscBench = PetscBenchCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a PETSc benchmark `PetscBench` object
 
 Collective
@@ -12,7 +12,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetSize()`, `PetscBenchGetSize()`
 
 # External Links
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	PetscBenchDestroy(petsclib::PetscLibType,bm::Union{PetscBench, Ref{PetscBench}}) 
+	PetscBenchDestroy(petsclib::PetscLibType, bm::Union{PetscBench, Ref{PetscBench}}) 
 Destroys a `PetscBench`
 
 Collective
@@ -48,7 +48,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`
+See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`
 
 # External Links
 $(_doc_external("BM/PetscBenchDestroy"))
@@ -72,7 +72,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscBenchGetSize(petsclib::PetscLibType,bm::PetscBench) 
+	n::PetscInt = PetscBenchGetSize(petsclib::PetscLibType, bm::PetscBench) 
 Gets the size of the `PetscBench` benchmark to run
 
 Logically Collective
@@ -85,7 +85,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetOptionsPrefix()`, `PetscBenchSetSize()`
 
 # External Links
@@ -111,7 +111,7 @@ end
 end 
 
 """
-	type::PetscBenchType = PetscBenchGetType(petsclib::PetscLibType,bm::PetscBench) 
+	type::PetscBenchType = PetscBenchGetType(petsclib::PetscLibType, bm::PetscBench) 
 Gets the `PetscBenchType` (as a string) from the `PetscBench`
 context.
 
@@ -125,7 +125,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscBench`, `PetscBenchType`, `PetscBenchSetType()`, `PetscBenchCreate()`
+See also: `PetscBench`, `PetscBenchType`, `PetscBenchSetType()`, `PetscBenchCreate()`
 
 # External Links
 $(_doc_external("BM/PetscBenchGetType"))
@@ -155,7 +155,7 @@ This function initializes everything in the `PetscBench` package.
 
 Level: developer
 
--seealso: `PetscInitialize()`, `PetscBenchCreate()`, `PetscBench`, `PetscBenchType`
+See also: `PetscInitialize()`, `PetscBenchCreate()`, `PetscBench`, `PetscBenchType`
 
 # External Links
 $(_doc_external("BM/PetscBenchInitializePackage"))
@@ -177,7 +177,7 @@ end
 end 
 
 """
-	PetscBenchRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscBenchRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a benchmark test, `PetscBenchType`, to the `PetscBench` package
 
 Not Collective, No Fortran Support
@@ -191,7 +191,7 @@ Calling sequence of function:
 
 Level: advanced
 
--seealso: `PetscBenchInitializePackage()`, `PetscBenchCreate()`, `PetscBench`, `PetscBenchType`, `PetscBenchSetType()`, `PetscBenchGetType()`
+See also: `PetscBenchInitializePackage()`, `PetscBenchCreate()`, `PetscBench`, `PetscBenchType`, `PetscBenchSetType()`, `PetscBenchGetType()`
 
 # External Links
 $(_doc_external("BM/PetscBenchRegister"))
@@ -214,7 +214,7 @@ end
 end 
 
 """
-	PetscBenchReset(petsclib::PetscLibType,bm::PetscBench) 
+	PetscBenchReset(petsclib::PetscLibType, bm::PetscBench) 
 removes all the intermediate data structures in a `PetscBench`
 
 Collective
@@ -224,7 +224,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`
+See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`
 
 # External Links
 $(_doc_external("BM/PetscBenchReset"))
@@ -247,7 +247,7 @@ end
 end 
 
 """
-	PetscBenchRun(petsclib::PetscLibType,bm::PetscBench) 
+	PetscBenchRun(petsclib::PetscLibType, bm::PetscBench) 
 runs the `PetscBench`
 
 Collective
@@ -257,7 +257,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetSize()`, `PetscBenchGetSize()`
 
 # External Links
@@ -281,7 +281,7 @@ end
 end 
 
 """
-	PetscBenchSetFromOptions(petsclib::PetscLibType,bm::PetscBench) 
+	PetscBenchSetFromOptions(petsclib::PetscLibType, bm::PetscBench) 
 Sets options to a `PetscBench` using the options database
 
 Collective
@@ -291,7 +291,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchView()`, `PetscBenchRun()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchView()`, `PetscBenchRun()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetSize()`, `PetscBenchGetSize()`
 
 # External Links
@@ -315,7 +315,7 @@ end
 end 
 
 """
-	PetscBenchSetOptionsPrefix(petsclib::PetscLibType,bm::PetscBench, pre::String) 
+	PetscBenchSetOptionsPrefix(petsclib::PetscLibType, bm::PetscBench, pre::String) 
 Sets the prefix used for searching for all `PetscBench` items in the options database.
 
 Logically Collective
@@ -326,7 +326,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetSize()`, `PetscBenchGetSize()`
 
 # External Links
@@ -350,7 +350,7 @@ end
 end 
 
 """
-	PetscBenchSetSize(petsclib::PetscLibType,bm::PetscBench, n::PetscInt) 
+	PetscBenchSetSize(petsclib::PetscLibType, bm::PetscBench, n::PetscInt) 
 Sets the size of the `PetscBench` benchmark to run
 
 Logically Collective
@@ -361,7 +361,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetOptionsPrefix()`, `PetscBenchGetSize()`
 
 # External Links
@@ -385,7 +385,7 @@ end
 end 
 
 """
-	PetscBenchSetType(petsclib::PetscLibType,bm::PetscBench, type::PetscBenchType) 
+	PetscBenchSetType(petsclib::PetscLibType, bm::PetscBench, type::PetscBenchType) 
 set the type of `PetscBench` benchmark to run
 
 Collective
@@ -399,7 +399,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchGetSize()`,
+See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchViewFromOptions()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchGetSize()`,
 `PetscBenchSetOptionsPrefix()`, `PetscBenchSetSize()`, `PetscBenchGetType()`, `PetscBenchCreate()`
 
 # External Links
@@ -423,7 +423,7 @@ end
 end 
 
 """
-	PetscBenchSetUp(petsclib::PetscLibType,bm::PetscBench) 
+	PetscBenchSetUp(petsclib::PetscLibType, bm::PetscBench) 
 sets up the `PetscBench`
 
 Collective
@@ -433,7 +433,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetType()`,
 `PetscBenchRun()`, `PetscBenchSetSize()`, `PetscBenchGetSize()`
 
 # External Links
@@ -457,7 +457,7 @@ end
 end 
 
 """
-	PetscBenchView(petsclib::PetscLibType,bm::PetscBench, viewer::PetscViewer) 
+	PetscBenchView(petsclib::PetscLibType, bm::PetscBench, viewer::PetscViewer) 
 Views a PETSc benchmark `PetscBench`
 
 Collective
@@ -468,7 +468,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetSize()`, `PetscBenchGetSize()`, `PetscBenchViewFromOptions()`
 
 # External Links
@@ -492,7 +492,7 @@ end
 end 
 
 """
-	PetscBenchViewFromOptions(petsclib::PetscLibType,bm::PetscBench, bobj, name::String) 
+	PetscBenchViewFromOptions(petsclib::PetscLibType, bm::PetscBench, bobj, name::String) 
 Processes command line options to determine if/how a `PetscBench` is to be viewed.
 
 Collective
@@ -507,7 +507,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
+See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscBenchCreate()`, `PetscBenchDestroy()`, `PetscBenchSetUp()`, `PetscBenchSetType()`,
 `PetscBenchSetSize()`, `PetscBenchGetSize()`, `PetscObjectViewFromOptions()`, `PetscViewer`, `PetscBenchView()`
 
 # External Links

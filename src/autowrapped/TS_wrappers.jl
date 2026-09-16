@@ -1,5 +1,5 @@
 """
-	u::PetscVec,v::PetscVec = TS2GetSolution(petsclib::PetscLibType,ts::AbstractTS) 
+	u::PetscVec,v::PetscVec = TS2GetSolution(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the solution and time derivative at the present timestep
 for second order equations.
 
@@ -14,7 +14,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TS2SetSolution()`, `TSGetTimeStep()`, `TSGetTime()`
+See also: `TS`, `TS2SetSolution()`, `TSGetTimeStep()`, `TSGetTime()`
 
 # External Links
 $(_doc_external("TS/TS2GetSolution"))
@@ -41,7 +41,7 @@ end
 end 
 
 """
-	TS2SetSolution(petsclib::PetscLibType,ts::AbstractTS, u::AbstractPetscVec, v::AbstractPetscVec) 
+	TS2SetSolution(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec, v::AbstractPetscVec) 
 Sets the initial solution and time derivative vectors
 for use by the `TS` routines handling second order equations.
 
@@ -54,7 +54,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`
+See also: `TS`
 
 # External Links
 $(_doc_external("TS/TS2SetSolution"))
@@ -83,7 +83,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`, `TSARKIMEXInitializePackage()`
+See also: `PetscFinalize()`, `TSARKIMEXInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXFinalizePackage"))
@@ -105,8 +105,8 @@ end
 end 
 
 """
-	fastslow::PetscBool = TSARKIMEXGetFastSlowSplit(petsclib::PetscLibType,ts::AbstractTS) 
-Gets whether to use `TSARKIMEX` for a fast
+	fastslow::PetscBool = TSARKIMEXGetFastSlowSplit(petsclib::PetscLibType, ts::AbstractTS) 
+Gets whether to use `TSARKIMEX` for a fast-slow system
 
 Not Collective
 
@@ -118,7 +118,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEX`, `TSARKIMEXSetFastSlowSplit()`
+See also: `TSARKIMEX`, `TSARKIMEXSetFastSlowSplit()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXGetFastSlowSplit"))
@@ -143,7 +143,7 @@ end
 end 
 
 """
-	flg::PetscBool = TSARKIMEXGetFullyImplicit(petsclib::PetscLibType,ts::AbstractTS) 
+	flg::PetscBool = TSARKIMEXGetFullyImplicit(petsclib::PetscLibType, ts::AbstractTS) 
 Inquires if both parts of the equation are solved implicitly
 
 Logically Collective
@@ -156,7 +156,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEXGetType()`, `TSARKIMEXSetFullyImplicit()`
+See also: `TSARKIMEXGetType()`, `TSARKIMEXSetFullyImplicit()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXGetFullyImplicit"))
@@ -181,7 +181,7 @@ end
 end 
 
 """
-	arktype::TSARKIMEXType = TSARKIMEXGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	arktype::TSARKIMEXType = TSARKIMEXGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSARKIMEX` scheme
 
 Logically Collective
@@ -194,7 +194,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEX`
+See also: `TSARKIMEX`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXGetType"))
@@ -225,7 +225,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`, `TSARKIMEXFinalizePackage()`
+See also: `PetscInitialize()`, `TSARKIMEXFinalizePackage()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXInitializePackage"))
@@ -247,7 +247,7 @@ end
 end 
 
 """
-	TSARKIMEXRegister(petsclib::PetscLibType,name::TSARKIMEXType, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembedt::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}, binterp::Vector{PetscReal}) 
+	TSARKIMEXRegister(petsclib::PetscLibType, name::TSARKIMEXType, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembedt::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}, binterp::Vector{PetscReal}) 
 register a `TSARKIMEX` scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
 
 Logically Collective
@@ -270,7 +270,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSARKIMEX`, `TSType`, `TS`
+See also: `TSARKIMEX`, `TSType`, `TS`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXRegister"))
@@ -300,7 +300,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_ts), `TSARKIMEX`, `TSARKIMEXRegister()`, `TSARKIMEXRegisterAll()`
+See also: `TSARKIMEX`, `TSARKIMEXRegister()`, `TSARKIMEXRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXRegisterDestroy"))
@@ -322,8 +322,8 @@ end
 end 
 
 """
-	TSARKIMEXSetFastSlowSplit(petsclib::PetscLibType,ts::AbstractTS, fastslow::PetscBool) 
-Use `TSARKIMEX` for solving a fast
+	TSARKIMEXSetFastSlowSplit(petsclib::PetscLibType, ts::AbstractTS, fastslow::PetscBool) 
+Use `TSARKIMEX` for solving a fast-slow system
 
 Logically Collective
 
@@ -336,7 +336,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEX`, `TSARKIMEXGetFastSlowSplit()`, `TSRHSSplitSetIS()`
+See also: `TSARKIMEX`, `TSARKIMEXGetFastSlowSplit()`, `TSRHSSplitSetIS()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXSetFastSlowSplit"))
@@ -359,7 +359,7 @@ end
 end 
 
 """
-	TSARKIMEXSetFullyImplicit(petsclib::PetscLibType,ts::AbstractTS, flg::PetscBool) 
+	TSARKIMEXSetFullyImplicit(petsclib::PetscLibType, ts::AbstractTS, flg::PetscBool) 
 Solve both parts of the equation implicitly, including the part that is normally solved explicitly
 
 Logically Collective
@@ -373,7 +373,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEX`, `TSARKIMEXGetType()`, `TSARKIMEXGetFullyImplicit()`
+See also: `TSARKIMEX`, `TSARKIMEXGetType()`, `TSARKIMEXGetFullyImplicit()`
 
 # External Links
 $(_doc_external("TS/TSARKIMEXSetFullyImplicit"))
@@ -396,7 +396,7 @@ end
 end 
 
 """
-	TSARKIMEXSetType(petsclib::PetscLibType,ts::AbstractTS, arktype::TSARKIMEXType) 
+	TSARKIMEXSetType(petsclib::PetscLibType, ts::AbstractTS, arktype::TSARKIMEXType) 
 Set the type of `TSARKIMEX` scheme
 
 Logically Collective
@@ -410,7 +410,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSARKIMEXGetType()`, `TSARKIMEX`, `TSARKIMEXType`, `TSARKIMEX1BEE`, `TSARKIMEXA2`, `TSARKIMEXL2`, `TSARKIMEXARS122`, `TSARKIMEX2C`, `TSARKIMEX2D`,
+See also: `TSARKIMEXGetType()`, `TSARKIMEX`, `TSARKIMEXType`, `TSARKIMEX1BEE`, `TSARKIMEXA2`, `TSARKIMEXL2`, `TSARKIMEXARS122`, `TSARKIMEX2C`, `TSARKIMEX2D`,
 `TSARKIMEX2E`, `TSARKIMEXPRSSP2`, `TSARKIMEX3`, `TSARKIMEXBPR3`, `TSARKIMEXARS443`, `TSARKIMEX4`, `TSARKIMEX5`
 
 # External Links
@@ -434,7 +434,7 @@ end
 end 
 
 """
-	TSAdjointCostIntegral(petsclib::PetscLibType,ts::AbstractTS) 
+	TSAdjointCostIntegral(petsclib::PetscLibType, ts::AbstractTS) 
 Evaluate the cost integral in the adjoint run.
 
 Collective
@@ -444,7 +444,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSAdjointSolve()`, `TSAdjointStep()`
+See also: `TSAdjointSolve()`, `TSAdjointStep()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointCostIntegral"))
@@ -467,8 +467,8 @@ end
 end 
 
 """
-	TSAdjointMonitor(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}) 
-Runs all user
+	TSAdjointMonitor(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}) 
+Runs all user-provided adjoint monitor routines set using `TSAdjointMonitorSet()`
 
 Collective
 
@@ -483,7 +483,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `TSAdjointMonitorSet()`, `TSAdjointSolve()`
+See also: `TSAdjointMonitorSet()`, `TSAdjointSolve()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointMonitor"))
@@ -506,15 +506,15 @@ end
 end 
 
 """
-	TSAdjointMonitorCancel(petsclib::PetscLibType,ts::AbstractTS) 
-Clears all the adjoint monitors that have been set on a time
+	TSAdjointMonitorCancel(petsclib::PetscLibType, ts::AbstractTS) 
+Clears all the adjoint monitors that have been set on a time-step object.
 
 Logically Collective
 
 Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
 
--seealso: [](ch_ts), `TS`, `TSAdjointSolve()`, `TSAdjointMonitorSet()`
+See also: `TS`, `TSAdjointSolve()`, `TSAdjointMonitorSet()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointMonitorCancel"))
@@ -537,7 +537,7 @@ end
 end 
 
 """
-	TSAdjointMonitorDefault(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, time::PetscReal, v::AbstractPetscVec, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}, vf::Vector{PetscViewerAndFormat}) 
+	TSAdjointMonitorDefault(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, time::PetscReal, v::AbstractPetscVec, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}, vf::Vector{PetscViewerAndFormat}) 
 the default monitor of adjoint computations
 
 Input Parameters:
@@ -553,7 +553,7 @@ step of -1, this is at the final time which may have been interpolated to)
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSAdjointSolve()`, `TSAdjointMonitorSet()`
+See also: `TS`, `TSAdjointSolve()`, `TSAdjointMonitorSet()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointMonitorDefault"))
@@ -576,7 +576,7 @@ end
 end 
 
 """
-	TSAdjointMonitorDrawSensi(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}, dummy::Ptr{Cvoid}) 
+	TSAdjointMonitorDrawSensi(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}, dummy::Ptr{Cvoid}) 
 Monitors progress of the adjoint `TS` solvers by calling
 `VecView()` for the sensitivities to initial states at each timestep
 
@@ -594,7 +594,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdjointSolve()`, `TSAdjointMonitorSet()`, `TSAdjointMonitorDefault()`, `VecView()`
+See also: `TSAdjointSolve()`, `TSAdjointMonitorSet()`, `TSAdjointMonitorDefault()`, `VecView()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointMonitorDrawSensi"))
@@ -617,7 +617,7 @@ end
 end 
 
 """
-	TSAdjointMonitorSet(petsclib::PetscLibType,ts::AbstractTS, adjointmonitor::external, adjointmctx::Ptr{Cvoid}, adjointmdestroy::Ptr{Cvoid}) 
+	TSAdjointMonitorSet(petsclib::PetscLibType, ts::AbstractTS, adjointmonitor::external, adjointmctx::Ptr{Cvoid}, adjointmdestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function that is to be used at every
 timestep to display the iteration's  progress.
 
@@ -642,7 +642,7 @@ a step of -1, this is at the final time which may have been interpolated to)
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSAdjointSolve()`, `TSAdjointMonitorCancel()`, `PetscCtxDestroyFn`
+See also: `TS`, `TSAdjointSolve()`, `TSAdjointMonitorCancel()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointMonitorSet"))
@@ -665,7 +665,7 @@ end
 end 
 
 """
-	TSAdjointMonitorSetFromOptions(petsclib::PetscLibType,ts::AbstractTS, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
+	TSAdjointMonitorSetFromOptions(petsclib::PetscLibType, ts::AbstractTS, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
 Sets a monitor function and viewer appropriate for the type indicated by the user
 
 Collective
@@ -695,7 +695,7 @@ Calling sequence of `monitorsetup`:
 
 Level: developer
 
--seealso: [](ch_ts), `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+See also: `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
 `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
@@ -724,7 +724,7 @@ end
 end 
 
 """
-	TSAdjointReset(petsclib::PetscLibType,ts::AbstractTS) 
+	TSAdjointReset(petsclib::PetscLibType, ts::AbstractTS) 
 Resets a `TS` adjoint context and removes any allocated `Vec`s and `Mat`s.
 
 Collective
@@ -734,7 +734,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSCreate()`, `TSAdjointSetUp()`, `TSDestroy()`
+See also: `TSCreate()`, `TSAdjointSetUp()`, `TSDestroy()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointReset"))
@@ -757,7 +757,7 @@ end
 end 
 
 """
-	TSAdjointResetForward(petsclib::PetscLibType,ts::AbstractTS) 
+	TSAdjointResetForward(petsclib::PetscLibType, ts::AbstractTS) 
 Reset the tangent linear solver and destroy the tangent linear context
 
 Logically Collective
@@ -767,7 +767,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdjointSetForward()`
+See also: `TSAdjointSetForward()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointResetForward"))
@@ -790,7 +790,7 @@ end
 end 
 
 """
-	TSAdjointSetForward(petsclib::PetscLibType,ts::AbstractTS, didp::AbstractPetscMat) 
+	TSAdjointSetForward(petsclib::PetscLibType, ts::AbstractTS, didp::AbstractPetscMat) 
 Trigger the tangent linear solver and initialize the forward sensitivities
 
 Logically Collective
@@ -801,7 +801,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdjointSolve()`, `TSSetCostHessianProducts()`, `TSAdjointResetForward()`
+See also: `TSAdjointSolve()`, `TSSetCostHessianProducts()`, `TSAdjointResetForward()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointSetForward"))
@@ -824,7 +824,7 @@ end
 end 
 
 """
-	TSAdjointSetFromOptions(petsclib::PetscLibType,ts::AbstractTS, PetscOptionsObject::PetscOptionItems) 
+	TSAdjointSetFromOptions(petsclib::PetscLibType, ts::AbstractTS, PetscOptionsObject::PetscOptionItems) 
 Sets various `TS` adjoint parameters from options database.
 
 Collective
@@ -840,7 +840,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetSaveTrajectory()`, `TSTrajectorySetUp()`
+See also: `TSSetSaveTrajectory()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointSetFromOptions"))
@@ -863,7 +863,7 @@ end
 end 
 
 """
-	TSAdjointSetSteps(petsclib::PetscLibType,ts::AbstractTS, steps::PetscInt) 
+	TSAdjointSetSteps(petsclib::PetscLibType, ts::AbstractTS, steps::PetscInt) 
 Sets the number of steps the adjoint solver should take backward in time
 
 Logically Collective
@@ -874,7 +874,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdjointSolve()`, `TS`, `TSSetExactFinalTime()`
+See also: `TSAdjointSolve()`, `TS`, `TSSetExactFinalTime()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointSetSteps"))
@@ -897,7 +897,7 @@ end
 end 
 
 """
-	TSAdjointSetUp(petsclib::PetscLibType,ts::AbstractTS) 
+	TSAdjointSetUp(petsclib::PetscLibType, ts::AbstractTS) 
 Sets up the internal data structures for the later use
 of an adjoint solver
 
@@ -908,7 +908,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSCreate()`, `TSAdjointStep()`, `TSSetCostGradients()`
+See also: `TSCreate()`, `TSAdjointStep()`, `TSSetCostGradients()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointSetUp"))
@@ -931,7 +931,7 @@ end
 end 
 
 """
-	TSAdjointSolve(petsclib::PetscLibType,ts::AbstractTS) 
+	TSAdjointSolve(petsclib::PetscLibType, ts::AbstractTS) 
 Solves the discrete ajoint problem for an ODE/DAE
 
 Collective
@@ -945,7 +945,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSCreate()`, `TSSetCostGradients()`, `TSSetSolution()`, `TSAdjointStep()`
+See also: `TSCreate()`, `TSSetCostGradients()`, `TSSetSolution()`, `TSAdjointStep()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointSolve"))
@@ -968,7 +968,7 @@ end
 end 
 
 """
-	TSAdjointStep(petsclib::PetscLibType,ts::AbstractTS) 
+	TSAdjointStep(petsclib::PetscLibType, ts::AbstractTS) 
 Steps one time step backward in the adjoint run
 
 Collective
@@ -978,7 +978,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdjointSetUp()`, `TSAdjointSolve()`
+See also: `TSAdjointSetUp()`, `TSAdjointSolve()`
 
 # External Links
 $(_doc_external("Sensitivity/TSAdjointStep"))
@@ -1001,7 +1001,7 @@ end
 end 
 
 """
-	alpha_m::PetscReal,alpha_f::PetscReal,gamma::PetscReal,beta::PetscReal = TSAlpha2GetParams(petsclib::PetscLibType,ts::AbstractTS) 
+	alpha_m::PetscReal,alpha_f::PetscReal,gamma::PetscReal,beta::PetscReal = TSAlpha2GetParams(petsclib::PetscLibType, ts::AbstractTS) 
 gets the algorithmic parameters for `TSALPHA2`
 
 Not Collective
@@ -1017,7 +1017,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSALPHA2`, `TSAlpha2SetRadius()`, `TSAlpha2SetParams()`
+See also: `TS`, `TSALPHA2`, `TSAlpha2SetRadius()`, `TSAlpha2SetParams()`
 
 # External Links
 $(_doc_external("TS/TSAlpha2GetParams"))
@@ -1048,7 +1048,7 @@ end
 end 
 
 """
-	TSAlpha2SetParams(petsclib::PetscLibType,ts::AbstractTS, alpha_m::PetscReal, alpha_f::PetscReal, gamma::PetscReal, beta::PetscReal) 
+	TSAlpha2SetParams(petsclib::PetscLibType, ts::AbstractTS, alpha_m::PetscReal, alpha_f::PetscReal, gamma::PetscReal, beta::PetscReal) 
 sets the algorithmic parameters for `TSALPHA2`
 
 Logically Collective
@@ -1068,7 +1068,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSALPHA2`, `TSAlpha2SetRadius()`, `TSAlpha2GetParams()`
+See also: `TS`, `TSALPHA2`, `TSAlpha2SetRadius()`, `TSAlpha2GetParams()`
 
 # External Links
 $(_doc_external("TS/TSAlpha2SetParams"))
@@ -1091,7 +1091,7 @@ end
 end 
 
 """
-	TSAlpha2SetPredictor(petsclib::PetscLibType,ts::AbstractTS, predictor::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSAlpha2SetPredictor(petsclib::PetscLibType, ts::AbstractTS, predictor::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 sets the callback for computing a predictor (i.e., initial guess
 for the nonlinear solver).
 
@@ -1102,7 +1102,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSALPHA2`, `TSAlpha2PredictorFn`
+See also: `TS`, `TSALPHA2`, `TSAlpha2PredictorFn`
 
 # External Links
 $(_doc_external("TS/TSAlpha2SetPredictor"))
@@ -1125,7 +1125,7 @@ end
 end 
 
 """
-	TSAlpha2SetRadius(petsclib::PetscLibType,ts::AbstractTS, radius::PetscReal) 
+	TSAlpha2SetRadius(petsclib::PetscLibType, ts::AbstractTS, radius::PetscReal) 
 sets the desired spectral radius of the method for `TSALPHA2`
 (i.e. high-frequency numerical damping)
 
@@ -1140,7 +1140,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSALPHA2`, `TSAlpha2SetParams()`, `TSAlpha2GetParams()`
+See also: `TS`, `TSALPHA2`, `TSAlpha2SetParams()`, `TSAlpha2GetParams()`
 
 # External Links
 $(_doc_external("TS/TSAlpha2SetRadius"))
@@ -1163,7 +1163,7 @@ end
 end 
 
 """
-	alpha_m::PetscReal,alpha_f::PetscReal,gamma::PetscReal = TSAlphaGetParams(petsclib::PetscLibType,ts::AbstractTS) 
+	alpha_m::PetscReal,alpha_f::PetscReal,gamma::PetscReal = TSAlphaGetParams(petsclib::PetscLibType, ts::AbstractTS) 
 gets the algorithmic parameters for `TSALPHA`
 
 Not Collective
@@ -1178,7 +1178,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSALPHA`, `TSAlphaSetRadius()`, `TSAlphaSetParams()`
+See also: `TS`, `TSALPHA`, `TSAlphaSetRadius()`, `TSAlphaSetParams()`
 
 # External Links
 $(_doc_external("TS/TSAlphaGetParams"))
@@ -1207,7 +1207,7 @@ end
 end 
 
 """
-	TSAlphaSetParams(petsclib::PetscLibType,ts::AbstractTS, alpha_m::PetscReal, alpha_f::PetscReal, gamma::PetscReal) 
+	TSAlphaSetParams(petsclib::PetscLibType, ts::AbstractTS, alpha_m::PetscReal, alpha_f::PetscReal, gamma::PetscReal) 
 sets the algorithmic parameters for `TSALPHA`
 
 Logically Collective
@@ -1225,7 +1225,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSALPHA`, `TSAlphaSetRadius()`, `TSAlphaGetParams()`
+See also: `TS`, `TSALPHA`, `TSAlphaSetRadius()`, `TSAlphaGetParams()`
 
 # External Links
 $(_doc_external("TS/TSAlphaSetParams"))
@@ -1248,7 +1248,7 @@ end
 end 
 
 """
-	TSAlphaSetRadius(petsclib::PetscLibType,ts::AbstractTS, radius::PetscReal) 
+	TSAlphaSetRadius(petsclib::PetscLibType, ts::AbstractTS, radius::PetscReal) 
 sets the desired spectral radius of the method for `TSALPHA`
 (i.e. high-frequency numerical damping)
 
@@ -1263,7 +1263,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSALPHA`, `TSAlphaSetParams()`, `TSAlphaGetParams()`
+See also: `TS`, `TSALPHA`, `TSAlphaSetParams()`, `TSAlphaGetParams()`
 
 # External Links
 $(_doc_external("TS/TSAlphaSetRadius"))
@@ -1286,7 +1286,7 @@ end
 end 
 
 """
-	TSAppendOptionsPrefix(petsclib::PetscLibType,ts::AbstractTS, prefix::String) 
+	TSAppendOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS, prefix::String) 
 Appends to the prefix used for searching for all
 TS options in the database.
 
@@ -1298,7 +1298,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetOptionsPrefix()`, `TSSetOptionsPrefix()`, `TSSetFromOptions()`
+See also: `TS`, `TSGetOptionsPrefix()`, `TSSetOptionsPrefix()`, `TSSetFromOptions()`
 
 # External Links
 $(_doc_external("TS/TSAppendOptionsPrefix"))
@@ -1321,7 +1321,7 @@ end
 end 
 
 """
-	order::PetscInt = TSBDFGetOrder(petsclib::PetscLibType,ts::AbstractTS) 
+	order::PetscInt = TSBDFGetOrder(petsclib::PetscLibType, ts::AbstractTS) 
 Get the order of the `TSBDF` method
 
 Not Collective
@@ -1334,7 +1334,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `TSBDFSetOrder()`, `TS`, `TSBDF`
+See also: `TSBDFSetOrder()`, `TS`, `TSBDF`
 
 # External Links
 $(_doc_external("TS/TSBDFGetOrder"))
@@ -1359,7 +1359,7 @@ end
 end 
 
 """
-	TSBDFSetOrder(petsclib::PetscLibType,ts::AbstractTS, order::PetscInt) 
+	TSBDFSetOrder(petsclib::PetscLibType, ts::AbstractTS, order::PetscInt) 
 Set the order of the `TSBDF` method
 
 Logically Collective
@@ -1373,7 +1373,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `TSBDFGetOrder()`, `TS`, `TSBDF`
+See also: `TSBDFGetOrder()`, `TS`, `TSBDF`
 
 # External Links
 $(_doc_external("TS/TSBDFSetOrder"))
@@ -1402,7 +1402,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`, `TSBASICSYMPLECTIC`
+See also: `PetscFinalize()`, `TSBASICSYMPLECTIC`
 
 # External Links
 $(_doc_external("TS/TSBasicSymplecticFinalizePackage"))
@@ -1424,7 +1424,7 @@ end
 end 
 
 """
-	TSBasicSymplecticGetType(petsclib::PetscLibType,ts::AbstractTS, bsymptype::TSBasicSymplecticType) 
+	TSBasicSymplecticGetType(petsclib::PetscLibType, ts::AbstractTS, bsymptype::TSBasicSymplecticType) 
 Get the type of the basic symplectic method
 
 Logically Collective
@@ -1435,7 +1435,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSBASICSYMPLECTIC`, `TSBasicSymplecticType`, `TSBasicSymplecticSetType()`
+See also: `TSBASICSYMPLECTIC`, `TSBasicSymplecticType`, `TSBasicSymplecticSetType()`
 
 # External Links
 $(_doc_external("TS/TSBasicSymplecticGetType"))
@@ -1464,7 +1464,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`, `TSBASICSYMPLECTIC`
+See also: `PetscInitialize()`, `TSBASICSYMPLECTIC`
 
 # External Links
 $(_doc_external("TS/TSBasicSymplecticInitializePackage"))
@@ -1486,7 +1486,7 @@ end
 end 
 
 """
-	TSBasicSymplecticRegister(petsclib::PetscLibType,name::TSRosWType, order::PetscInt, s::PetscInt, c::Vector{PetscReal}, d::Vector{PetscReal}) 
+	TSBasicSymplecticRegister(petsclib::PetscLibType, name::TSRosWType, order::PetscInt, s::PetscInt, c::Vector{PetscReal}, d::Vector{PetscReal}) 
 register a basic symplectic integration scheme by providing the coefficients.
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used
@@ -1500,7 +1500,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSBASICSYMPLECTIC`
+See also: `TSBASICSYMPLECTIC`
 
 # External Links
 $(_doc_external("TS/TSBasicSymplecticRegister"))
@@ -1530,7 +1530,7 @@ Not Collective, but should be called by all processes which will need the scheme
 
 Level: advanced
 
--seealso: [](ch_ts), `TSBASICSYMPLECTIC`, `TSBasicSymplecticRegisterDestroy()`
+See also: `TSBASICSYMPLECTIC`, `TSBasicSymplecticRegisterDestroy()`
 
 # External Links
 $(_doc_external("TS/TSBasicSymplecticRegisterAll"))
@@ -1559,7 +1559,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_ts), `TSBasicSymplecticRegister()`, `TSBasicSymplecticRegisterAll()`, `TSBASICSYMPLECTIC`
+See also: `TSBasicSymplecticRegister()`, `TSBasicSymplecticRegisterAll()`, `TSBASICSYMPLECTIC`
 
 # External Links
 $(_doc_external("TS/TSBasicSymplecticRegisterDestroy"))
@@ -1581,7 +1581,7 @@ end
 end 
 
 """
-	TSBasicSymplecticSetType(petsclib::PetscLibType,ts::AbstractTS, bsymptype::TSBasicSymplecticType) 
+	TSBasicSymplecticSetType(petsclib::PetscLibType, ts::AbstractTS, bsymptype::TSBasicSymplecticType) 
 Set the type of the basic symplectic method
 
 Logically Collective
@@ -1595,7 +1595,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSBASICSYMPLECTIC`, `TSBasicSymplecticType`
+See also: `TSBASICSYMPLECTIC`, `TSBasicSymplecticType`
 
 # External Links
 $(_doc_external("TS/TSBasicSymplecticSetType"))
@@ -1618,7 +1618,7 @@ end
 end 
 
 """
-	tsout::TS = TSClone(petsclib::PetscLibType,tsin::AbstractTS) 
+	tsout::TS = TSClone(petsclib::PetscLibType, tsin::AbstractTS) 
 This function clones a time step `TS` object.
 
 Collective
@@ -1631,7 +1631,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSCreate()`, `TSSetType()`, `TSSetUp()`, `TSDestroy()`, `TSSetProblemType()`
+See also: `TS`, `SNES`, `TSCreate()`, `TSSetType()`, `TSSetUp()`, `TSDestroy()`, `TSSetProblemType()`
 
 # External Links
 $(_doc_external("TS/TSClone"))
@@ -1656,7 +1656,7 @@ end
 end 
 
 """
-	TSComputeCostIntegrand(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Q::AbstractPetscVec) 
+	TSComputeCostIntegrand(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Q::AbstractPetscVec) 
 Evaluates the integral function in the cost functions.
 
 Input Parameters:
@@ -1669,7 +1669,7 @@ Output Parameter:
 
 Level: deprecated
 
--seealso: [](ch_ts), `TS`, `TSAdjointSolve()`, `TSSetCostIntegrand()`
+See also: `TS`, `TSAdjointSolve()`, `TSSetCostIntegrand()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeCostIntegrand"))
@@ -1692,7 +1692,7 @@ end
 end 
 
 """
-	TSComputeExactError(petsclib::PetscLibType,ts::AbstractTS, u::AbstractPetscVec, e::AbstractPetscVec) 
+	TSComputeExactError(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec, e::AbstractPetscVec) 
 Compute the solution error for the timestepping using the function previously set with `TSSetComputeExactError()`
 
 Collective
@@ -1704,7 +1704,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetComputeInitialCondition()`, `TSSetComputeInitialCondition()`, `TSSolve()`
+See also: `TS`, `TSGetComputeInitialCondition()`, `TSSetComputeInitialCondition()`, `TSSolve()`
 
 # External Links
 $(_doc_external("TS/TSComputeExactError"))
@@ -1727,7 +1727,7 @@ end
 end 
 
 """
-	TSComputeForcingFunction(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec) 
+	TSComputeForcingFunction(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec) 
 Evaluates the forcing function.
 
 Collective
@@ -1741,7 +1741,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetSolutionFunction()`, `TSSetRHSFunction()`, `TSComputeIFunction()`
+See also: `TS`, `TSSetSolutionFunction()`, `TSSetRHSFunction()`, `TSComputeIFunction()`
 
 # External Links
 $(_doc_external("TS/TSComputeForcingFunction"))
@@ -1764,7 +1764,7 @@ end
 end 
 
 """
-	TSComputeI2Function(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, V::AbstractPetscVec, A::AbstractPetscVec, F::AbstractPetscVec) 
+	TSComputeI2Function(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, V::AbstractPetscVec, A::AbstractPetscVec, F::AbstractPetscVec) 
 Evaluates the DAE residual written in implicit form F(t,U,U_t,U_tt) = 0
 
 Collective
@@ -1781,7 +1781,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetI2Function()`, `TSGetI2Function()`
+See also: `TS`, `TSSetI2Function()`, `TSGetI2Function()`
 
 # External Links
 $(_doc_external("TS/TSComputeI2Function"))
@@ -1804,7 +1804,7 @@ end
 end 
 
 """
-	TSComputeI2Jacobian(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, V::AbstractPetscVec, A::AbstractPetscVec, shiftV::PetscReal, shiftA::PetscReal, J::AbstractPetscMat, P::AbstractPetscMat) 
+	TSComputeI2Jacobian(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, V::AbstractPetscVec, A::AbstractPetscVec, shiftV::PetscReal, shiftA::PetscReal, J::AbstractPetscMat, P::AbstractPetscMat) 
 Evaluates the Jacobian of the DAE
 
 Collective
@@ -1824,7 +1824,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetI2Jacobian()`
+See also: `TS`, `TSSetI2Jacobian()`
 
 # External Links
 $(_doc_external("TS/TSComputeI2Jacobian"))
@@ -1847,7 +1847,7 @@ end
 end 
 
 """
-	TSComputeIFunction(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, Y::AbstractPetscVec, imex::PetscBool) 
+	TSComputeIFunction(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, Y::AbstractPetscVec, imex::PetscBool) 
 Evaluates the DAE residual written in the implicit form F(t,U,Udot)=0
 
 Collective
@@ -1864,7 +1864,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetIFunction()`, `TSComputeRHSFunction()`
+See also: `TS`, `TSSetIFunction()`, `TSComputeRHSFunction()`
 
 # External Links
 $(_doc_external("TS/TSComputeIFunction"))
@@ -1887,8 +1887,8 @@ end
 end 
 
 """
-	TSComputeIFunctionLinear(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
-Evaluate the left hand side via the user
+	TSComputeIFunctionLinear(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Evaluate the left hand side via the user-provided Jacobian, for linear problems only
 
 Collective
 
@@ -1904,7 +1904,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetIFunction()`, `TSSetIJacobian()`, `TSComputeIJacobianConstant()`, `TSComputeRHSFunctionLinear()`
+See also: `TS`, `TSSetIFunction()`, `TSSetIJacobian()`, `TSComputeIJacobianConstant()`, `TSComputeRHSFunctionLinear()`
 
 # External Links
 $(_doc_external("TS/TSComputeIFunctionLinear"))
@@ -1927,8 +1927,8 @@ end
 end 
 
 """
-	TSComputeIHessianProductFunctionPP(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeIHessianProductFunctionPP(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for Fpp.
 
 Collective
 
@@ -1944,7 +1944,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetIHessianProduct()`
+See also: `TSSetIHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeIHessianProductFunctionPP"))
@@ -1967,8 +1967,8 @@ end
 end 
 
 """
-	TSComputeIHessianProductFunctionPU(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeIHessianProductFunctionPU(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for Fpu.
 
 Collective
 
@@ -1984,7 +1984,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetIHessianProduct()`
+See also: `TSSetIHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeIHessianProductFunctionPU"))
@@ -2007,8 +2007,8 @@ end
 end 
 
 """
-	TSComputeIHessianProductFunctionUP(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeIHessianProductFunctionUP(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for Fup.
 
 Collective
 
@@ -2024,7 +2024,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetIHessianProduct()`
+See also: `TSSetIHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeIHessianProductFunctionUP"))
@@ -2047,8 +2047,8 @@ end
 end 
 
 """
-	TSComputeIHessianProductFunctionUU(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeIHessianProductFunctionUU(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for Fuu.
 
 Collective
 
@@ -2064,7 +2064,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetIHessianProduct()`
+See also: `TSSetIHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeIHessianProductFunctionUU"))
@@ -2087,7 +2087,7 @@ end
 end 
 
 """
-	TSComputeIJacobian(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, A::AbstractPetscMat, B::AbstractPetscMat, imex::PetscBool) 
+	TSComputeIJacobian(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, A::AbstractPetscMat, B::AbstractPetscMat, imex::PetscBool) 
 Evaluates the Jacobian of the DAE
 
 Collective
@@ -2106,7 +2106,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetIJacobian()`
+See also: `TS`, `TSSetIJacobian()`
 
 # External Links
 $(_doc_external("TS/TSComputeIJacobian"))
@@ -2129,8 +2129,8 @@ end
 end 
 
 """
-	TSComputeIJacobianConstant(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
-Reuses the matrix previously computed with the provided `TSIJacobianFn` for a semi
+	TSComputeIJacobianConstant(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Reuses the matrix previously computed with the provided `TSIJacobianFn` for a semi-implicit DAE or ODE
 
 Collective
 
@@ -2148,7 +2148,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSROSW`, `TSARKIMEX`, `TSSetIFunction()`, `TSSetIJacobian()`, `TSComputeIFunctionLinear()`
+See also: `TS`, `TSROSW`, `TSARKIMEX`, `TSSetIFunction()`, `TSSetIJacobian()`, `TSComputeIFunctionLinear()`
 
 # External Links
 $(_doc_external("TS/TSComputeIJacobianConstant"))
@@ -2171,7 +2171,7 @@ end
 end 
 
 """
-	TSComputeIJacobianDefaultColor(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	TSComputeIJacobianDefaultColor(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Computes the Jacobian using finite differences and coloring to exploit matrix sparsity.
 
 Collective
@@ -2190,7 +2190,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetIJacobian()`, `MatFDColoringCreate()`, `MatFDColoringSetFunction()`
+See also: `TS`, `TSSetIJacobian()`, `MatFDColoringCreate()`, `MatFDColoringSetFunction()`
 
 # External Links
 $(_doc_external("TS/TSComputeIJacobianDefaultColor"))
@@ -2213,8 +2213,8 @@ end
 end 
 
 """
-	TSComputeIJacobianP(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, Amat::AbstractPetscMat, imex::PetscBool) 
-Runs the user
+	TSComputeIJacobianP(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::PetscReal, Amat::AbstractPetscMat, imex::PetscBool) 
+Runs the user-defined IJacobianP function.
 
 Collective
 
@@ -2231,7 +2231,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetIJacobianP()`
+See also: `TS`, `TSSetIJacobianP()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeIJacobianP"))
@@ -2254,7 +2254,7 @@ end
 end 
 
 """
-	TSComputeInitialCondition(petsclib::PetscLibType,ts::AbstractTS, u::AbstractPetscVec) 
+	TSComputeInitialCondition(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec) 
 Compute an initial condition for the timestepping using the function previously set with `TSSetComputeInitialCondition()`
 
 Collective
@@ -2265,7 +2265,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetComputeInitialCondition()`, `TSSetComputeInitialCondition()`, `TSSolve()`
+See also: `TS`, `TSGetComputeInitialCondition()`, `TSSetComputeInitialCondition()`, `TSSolve()`
 
 # External Links
 $(_doc_external("TS/TSComputeInitialCondition"))
@@ -2288,7 +2288,7 @@ end
 end 
 
 """
-	yr::PetscReal,yi::PetscReal = TSComputeLinearStability(petsclib::PetscLibType,ts::AbstractTS, xr::PetscReal, xi::PetscReal) 
+	yr::PetscReal,yi::PetscReal = TSComputeLinearStability(petsclib::PetscLibType, ts::AbstractTS, xr::PetscReal, xi::PetscReal) 
 computes the linear stability function at a point
 
 Collective
@@ -2304,7 +2304,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetRHSFunction()`, `TSComputeIFunction()`
+See also: `TS`, `TSSetRHSFunction()`, `TSComputeIFunction()`
 
 # External Links
 $(_doc_external("TS/TSComputeLinearStability"))
@@ -2331,8 +2331,8 @@ end
 end 
 
 """
-	TSComputeRHSFunction(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, y::AbstractPetscVec) 
-Evaluates the right
+	TSComputeRHSFunction(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, y::AbstractPetscVec) 
+Evaluates the right-hand-side function for a `TS`
 
 Collective
 
@@ -2346,7 +2346,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetRHSFunction()`, `TSComputeIFunction()`
+See also: `TS`, `TSSetRHSFunction()`, `TSComputeIFunction()`
 
 # External Links
 $(_doc_external("TS/TSComputeRHSFunction"))
@@ -2369,8 +2369,8 @@ end
 end 
 
 """
-	TSComputeRHSFunctionLinear(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
-Evaluate the right
+	TSComputeRHSFunctionLinear(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Evaluate the right-hand side via the user-provided Jacobian, for linear problems Udot = A U only
 
 Collective
 
@@ -2385,7 +2385,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetRHSFunction()`, `TSSetRHSJacobian()`, `TSComputeRHSJacobianConstant()`
+See also: `TS`, `TSSetRHSFunction()`, `TSSetRHSJacobian()`, `TSComputeRHSJacobianConstant()`
 
 # External Links
 $(_doc_external("TS/TSComputeRHSFunctionLinear"))
@@ -2408,8 +2408,8 @@ end
 end 
 
 """
-	TSComputeRHSHessianProductFunctionPP(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeRHSHessianProductFunctionPP(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for G_{pp}.
 
 Collective
 
@@ -2425,7 +2425,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetRHSHessianProduct()`
+See also: `TSSetRHSHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeRHSHessianProductFunctionPP"))
@@ -2448,8 +2448,8 @@ end
 end 
 
 """
-	TSComputeRHSHessianProductFunctionPU(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeRHSHessianProductFunctionPU(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for G_{pu}.
 
 Collective
 
@@ -2465,7 +2465,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetRHSHessianProduct()`
+See also: `TSSetRHSHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeRHSHessianProductFunctionPU"))
@@ -2488,8 +2488,8 @@ end
 end 
 
 """
-	TSComputeRHSHessianProductFunctionUP(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeRHSHessianProductFunctionUP(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for G_{up}.
 
 Collective
 
@@ -2505,7 +2505,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetRHSHessianProduct()`
+See also: `TS`, `TSSetRHSHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeRHSHessianProductFunctionUP"))
@@ -2528,8 +2528,8 @@ end
 end 
 
 """
-	TSComputeRHSHessianProductFunctionUU(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSComputeRHSHessianProductFunctionUU(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec}) 
+Runs the user-defined vector-Hessian-vector product function for G_{uu}.
 
 Collective
 
@@ -2545,7 +2545,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetRHSHessianProduct()`
+See also: `TS`, `TSSetRHSHessianProduct()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeRHSHessianProductFunctionUU"))
@@ -2568,7 +2568,7 @@ end
 end 
 
 """
-	TSComputeRHSJacobian(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat) 
+	TSComputeRHSJacobian(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat) 
 Computes the Jacobian matrix that has been
 set with `TSSetRHSJacobian()`.
 
@@ -2585,7 +2585,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetRHSJacobian()`, `KSPSetOperators()`
+See also: `TS`, `TSSetRHSJacobian()`, `KSPSetOperators()`
 
 # External Links
 $(_doc_external("TS/TSComputeRHSJacobian"))
@@ -2608,8 +2608,8 @@ end
 end 
 
 """
-	TSComputeRHSJacobianConstant(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
-Reuses a Jacobian that is time
+	TSComputeRHSJacobianConstant(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Reuses a Jacobian that is time-independent.
 
 Collective
 
@@ -2625,7 +2625,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetRHSFunction()`, `TSSetRHSJacobian()`, `TSComputeRHSFunctionLinear()`
+See also: `TS`, `TSSetRHSFunction()`, `TSSetRHSJacobian()`, `TSComputeRHSFunctionLinear()`
 
 # External Links
 $(_doc_external("TS/TSComputeRHSJacobianConstant"))
@@ -2648,8 +2648,8 @@ end
 end 
 
 """
-	TSComputeRHSJacobianP(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Amat::AbstractPetscMat) 
-Runs the user
+	TSComputeRHSJacobianP(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec, Amat::AbstractPetscMat) 
+Runs the user-defined JacobianP function.
 
 Collective
 
@@ -2663,7 +2663,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSSetRHSJacobianP()`, `TS`
+See also: `TSSetRHSJacobianP()`, `TS`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeRHSJacobianP"))
@@ -2686,7 +2686,7 @@ end
 end 
 
 """
-	TSComputeSNESJacobian(petsclib::PetscLibType,ts::AbstractTS, x::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) 
+	TSComputeSNESJacobian(petsclib::PetscLibType, ts::AbstractTS, x::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) 
 Compute the Jacobian needed for the `SNESSolve()` in `TS`
 
 Collective
@@ -2701,7 +2701,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `SNES`, `TS`, `SNESSetJacobian()`, `TSSetRHSJacobian()`, `TSSetIJacobian()`
+See also: `SNES`, `TS`, `SNESSetJacobian()`, `TSSetRHSJacobian()`, `TSSetIJacobian()`
 
 # External Links
 $(_doc_external("Sensitivity/TSComputeSNESJacobian"))
@@ -2724,7 +2724,7 @@ end
 end 
 
 """
-	TSComputeSolutionFunction(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec) 
+	TSComputeSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec) 
 Evaluates the solution function.
 
 Collective
@@ -2738,7 +2738,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetSolutionFunction()`, `TSSetRHSFunction()`, `TSComputeIFunction()`
+See also: `TS`, `TSSetSolutionFunction()`, `TSSetRHSFunction()`, `TSComputeIFunction()`
 
 # External Links
 $(_doc_external("TS/TSComputeSolutionFunction"))
@@ -2761,7 +2761,7 @@ end
 end 
 
 """
-	TSComputeTransientVariable(petsclib::PetscLibType,ts::AbstractTS, U::AbstractPetscVec, C::AbstractPetscVec) 
+	TSComputeTransientVariable(petsclib::PetscLibType, ts::AbstractTS, U::AbstractPetscVec, C::AbstractPetscVec) 
 transforms state (primitive) variables to transient (conservative) variables
 
 Logically Collective
@@ -2775,7 +2775,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSBDF`, `DMTSSetTransientVariable()`, `TSComputeIFunction()`, `TSComputeIJacobian()`
+See also: `TS`, `TSBDF`, `DMTSSetTransientVariable()`, `TSComputeIFunction()`, `TSComputeIJacobian()`
 
 # External Links
 $(_doc_external("TS/TSComputeTransientVariable"))
@@ -2798,7 +2798,7 @@ end
 end 
 
 """
-	ts::TS = TSCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	ts::TS = TSCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 This function creates an empty timestepper. The problem type can then be set with `TSSetProblemType()` and the
 type of solver can then be set with `TSSetType()`.
 
@@ -2812,7 +2812,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSSetType()`, `TSSetUp()`, `TSDestroy()`, `TSSetProblemType()`, `TSSetTimeStep()`
+See also: `TS`, `SNES`, `TSSetType()`, `TSSetUp()`, `TSDestroy()`, `TSSetProblemType()`, `TSSetTimeStep()`
 
 # External Links
 $(_doc_external("TS/TSCreate"))
@@ -2837,8 +2837,8 @@ end
 end 
 
 """
-	quadts::TS = TSCreateQuadratureTS(petsclib::PetscLibType,ts::AbstractTS, fwd::PetscBool) 
-Create a sub
+	quadts::TS = TSCreateQuadratureTS(petsclib::PetscLibType, ts::AbstractTS, fwd::PetscBool) 
+Create a sub-`TS` that evaluates integrals over time
 
 Input Parameters:
 - `ts`  - the `TS` context obtained from `TSCreate()`
@@ -2849,7 +2849,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGetQuadratureTS()`
+See also: `TSGetQuadratureTS()`
 
 # External Links
 $(_doc_external("Sensitivity/TSCreateQuadratureTS"))
@@ -2874,7 +2874,7 @@ end
 end 
 
 """
-	dirktype::TSDIRKType = TSDIRKGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	dirktype::TSDIRKType = TSDIRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSDIRK` scheme
 
 Logically Collective
@@ -2887,7 +2887,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSDIRKSetType()`
+See also: `TSDIRKSetType()`
 
 # External Links
 $(_doc_external("TS/TSDIRKGetType"))
@@ -2912,7 +2912,7 @@ end
 end 
 
 """
-	TSDIRKRegister(petsclib::PetscLibType,name::TSDIRKType, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, bembedt::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
+	TSDIRKRegister(petsclib::PetscLibType, name::TSDIRKType, order::PetscInt, s::PetscInt, At::Vector{PetscReal}, bt::Vector{PetscReal}, ct::Vector{PetscReal}, bembedt::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
 register a `TSDIRK` scheme by providing the entries in its Butcher tableau and, optionally, embedded approximations and interpolation
 
 Logically Collective.
@@ -2930,7 +2930,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSDIRK`, `TSType`, `TS`
+See also: `TSDIRK`, `TSType`, `TS`
 
 # External Links
 $(_doc_external("TS/TSDIRKRegister"))
@@ -2953,7 +2953,7 @@ end
 end 
 
 """
-	TSDIRKSetType(petsclib::PetscLibType,ts::AbstractTS, dirktype::TSDIRKType) 
+	TSDIRKSetType(petsclib::PetscLibType, ts::AbstractTS, dirktype::TSDIRKType) 
 Set the type of `TSDIRK` scheme
 
 Logically Collective
@@ -2967,7 +2967,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSDIRKGetType()`, `TSDIRK`, `TSDIRKType`
+See also: `TSDIRKGetType()`, `TSDIRK`, `TSDIRKType`
 
 # External Links
 $(_doc_external("TS/TSDIRKSetType"))
@@ -2990,7 +2990,7 @@ end
 end 
 
 """
-	TSDMSwarmMonitorMoments(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, t::PetscReal, U::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	TSDMSwarmMonitorMoments(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, t::PetscReal, U::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Monitors the first three moments of a `DMSWARM` being evolved by the `TS`
 
 Not Collective
@@ -3008,7 +3008,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `DMSWARM`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `DMSWARM`
 
 # External Links
 $(_doc_external("TS/TSDMSwarmMonitorMoments"))
@@ -3031,7 +3031,7 @@ end
 end 
 
 """
-	TSDestroy(petsclib::PetscLibType,ts::AbstractTS) 
+	TSDestroy(petsclib::PetscLibType, ts::AbstractTS) 
 Destroys the timestepper context that was created
 with `TSCreate()`.
 
@@ -3042,7 +3042,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSCreate()`, `TSSetUp()`, `TSSolve()`
+See also: `TS`, `TSCreate()`, `TSSetUp()`, `TSSolve()`
 
 # External Links
 $(_doc_external("TS/TSDestroy"))
@@ -3067,7 +3067,7 @@ end
 end 
 
 """
-	TSDiscGradGetFormulation(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+	TSDiscGradGetFormulation(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid}) 
 Get the construction method for S, F, and grad F from the
 formulation u_t = S \\nabla F for `TSDISCGRAD`
 
@@ -3105,7 +3105,7 @@ Calling sequence of `Gfunc`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSDISCGRAD`, `TSDiscGradSetFormulation()`
+See also: `TS`, `TSDISCGRAD`, `TSDiscGradSetFormulation()`
 
 # External Links
 $(_doc_external("TS/TSDiscGradGetFormulation"))
@@ -3128,7 +3128,7 @@ end
 end 
 
 """
-	dgtype::TSDGType = TSDiscGradGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	dgtype::TSDGType = TSDiscGradGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Checks for which discrete gradient to use in formulation for `TSDISCGRAD`
 
 Not Collective
@@ -3141,7 +3141,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSDISCGRAD`, `TSDiscGradSetType()`
+See also: `TSDISCGRAD`, `TSDiscGradSetType()`
 
 # External Links
 $(_doc_external("TS/TSDiscGradGetType"))
@@ -3166,7 +3166,7 @@ end
 end 
 
 """
-	TSDiscGradSetFormulation(petsclib::PetscLibType,ts::AbstractTS, Sfunc::external, Ffunc::external, Gfunc::external, ctx::Ptr{Cvoid}) 
+	TSDiscGradSetFormulation(petsclib::PetscLibType, ts::AbstractTS, Sfunc::external, Ffunc::external, Gfunc::external, ctx::Ptr{Cvoid}) 
 Set the construction method for S, F, and grad F from the
 formulation u_t = S(u) \\nabla F(u) for `TSDISCGRAD`
 
@@ -3202,7 +3202,7 @@ Calling sequence of `Gfunc`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSDISCGRAD`, `TSDiscGradGetFormulation()`
+See also: `TSDISCGRAD`, `TSDiscGradGetFormulation()`
 
 # External Links
 $(_doc_external("TS/TSDiscGradSetFormulation"))
@@ -3225,7 +3225,7 @@ end
 end 
 
 """
-	TSDiscGradSetType(petsclib::PetscLibType,ts::AbstractTS, dgtype::TSDGType) 
+	TSDiscGradSetType(petsclib::PetscLibType, ts::AbstractTS, dgtype::TSDGType) 
 Sets discrete gradient formulation.
 
 Not Collective
@@ -3239,7 +3239,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSDISCGRAD`, `TSDGType`
+See also: `TSDISCGRAD`, `TSDGType`
 
 # External Links
 $(_doc_external("TS/TSDiscGradSetType"))
@@ -3262,7 +3262,7 @@ end
 end 
 
 """
-	TSEIMEXSetMaxRows(petsclib::PetscLibType,ts::AbstractTS, nrows::PetscInt) 
+	TSEIMEXSetMaxRows(petsclib::PetscLibType, ts::AbstractTS, nrows::PetscInt) 
 Set the maximum number of rows for `TSEIMEX` schemes
 
 Logically Collective
@@ -3273,7 +3273,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSEIMEXSetRowCol()`, `TSEIMEXSetOrdAdapt()`, `TSEIMEX`
+See also: `TSEIMEXSetRowCol()`, `TSEIMEXSetOrdAdapt()`, `TSEIMEX`
 
 # External Links
 $(_doc_external("TS/TSEIMEXSetMaxRows"))
@@ -3296,7 +3296,7 @@ end
 end 
 
 """
-	TSEIMEXSetOrdAdapt(petsclib::PetscLibType,ts::AbstractTS, flg::PetscBool) 
+	TSEIMEXSetOrdAdapt(petsclib::PetscLibType, ts::AbstractTS, flg::PetscBool) 
 Set the order adaptativity for the `TSEIMEX` schemes
 
 Logically Collective
@@ -3307,7 +3307,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSEIMEXSetRowCol()`, `TSEIMEX`
+See also: `TSEIMEXSetRowCol()`, `TSEIMEX`
 
 # External Links
 $(_doc_external("TS/TSEIMEXSetOrdAdapt"))
@@ -3330,7 +3330,7 @@ end
 end 
 
 """
-	TSEIMEXSetRowCol(petsclib::PetscLibType,ts::AbstractTS, row::PetscInt, col::PetscInt) 
+	TSEIMEXSetRowCol(petsclib::PetscLibType, ts::AbstractTS, row::PetscInt, col::PetscInt) 
 Set the number of rows and the number of columns for the tableau that represents the T solution in the `TSEIMEX` scheme
 
 Logically Collective
@@ -3342,7 +3342,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSEIMEXSetMaxRows()`, `TSEIMEXSetOrdAdapt()`, `TSEIMEX`
+See also: `TSEIMEXSetMaxRows()`, `TSEIMEXSetOrdAdapt()`, `TSEIMEX`
 
 # External Links
 $(_doc_external("TS/TSEIMEXSetRowCol"))
@@ -3365,7 +3365,7 @@ end
 end 
 
 """
-	norm::PetscReal,norma::PetscReal,normr::PetscReal = TSErrorWeightedENorm(petsclib::PetscLibType,ts::AbstractTS, E::AbstractPetscVec, U::AbstractPetscVec, Y::AbstractPetscVec, wnormtype::NormType) 
+	norm::PetscReal,norma::PetscReal,normr::PetscReal = TSErrorWeightedENorm(petsclib::PetscLibType, ts::AbstractTS, E::AbstractPetscVec, U::AbstractPetscVec, Y::AbstractPetscVec, wnormtype::NormType) 
 compute a weighted error norm based on supplied absolute and relative tolerances
 
 Collective
@@ -3387,7 +3387,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `VecErrorWeightedNorms()`, `TSErrorWeightedNorm()`
+See also: `TS`, `VecErrorWeightedNorms()`, `TSErrorWeightedNorm()`
 
 # External Links
 $(_doc_external("TS/TSErrorWeightedENorm"))
@@ -3416,7 +3416,7 @@ end
 end 
 
 """
-	norm::PetscReal,norma::PetscReal,normr::PetscReal = TSErrorWeightedNorm(petsclib::PetscLibType,ts::AbstractTS, U::AbstractPetscVec, Y::AbstractPetscVec, wnormtype::NormType) 
+	norm::PetscReal,norma::PetscReal,normr::PetscReal = TSErrorWeightedNorm(petsclib::PetscLibType, ts::AbstractTS, U::AbstractPetscVec, Y::AbstractPetscVec, wnormtype::NormType) 
 compute a weighted norm of the difference between two state vectors based on supplied absolute and relative tolerances
 
 Collective
@@ -3437,7 +3437,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `VecErrorWeightedNorms()`, `TSErrorWeightedENorm()`
+See also: `TS`, `VecErrorWeightedNorms()`, `TSErrorWeightedENorm()`
 
 # External Links
 $(_doc_external("TS/TSErrorWeightedNorm"))
@@ -3466,7 +3466,7 @@ end
 end 
 
 """
-	done::PetscBool = TSEvaluateStep(petsclib::PetscLibType,ts::AbstractTS, order::PetscInt, U::AbstractPetscVec) 
+	done::PetscBool = TSEvaluateStep(petsclib::PetscLibType, ts::AbstractTS, order::PetscInt, U::AbstractPetscVec) 
 Evaluate the solution at the end of a time step with a given order of accuracy.
 
 Collective
@@ -3481,7 +3481,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSStep()`, `TSAdapt`
+See also: `TS`, `TSStep()`, `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSEvaluateStep"))
@@ -3506,7 +3506,7 @@ end
 end 
 
 """
-	order::PetscInt,wlte::PetscReal = TSEvaluateWLTE(petsclib::PetscLibType,ts::AbstractTS, wnormtype::NormType) 
+	order::PetscInt,wlte::PetscReal = TSEvaluateWLTE(petsclib::PetscLibType, ts::AbstractTS, wnormtype::NormType) 
 Evaluate the weighted local truncation error norm
 at the end of a time step with a given order of accuracy.
 
@@ -3525,7 +3525,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSStep()`, `TSAdapt`, `TSErrorWeightedNorm()`
+See also: `TS`, `TSStep()`, `TSAdapt`, `TSErrorWeightedNorm()`
 
 # External Links
 $(_doc_external("TS/TSEvaluateWLTE"))
@@ -3558,7 +3558,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `PetscFinalize()`, `TSInitializePackage()`
+See also: `TS`, `PetscFinalize()`, `TSInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSFinalizePackage"))
@@ -3580,7 +3580,7 @@ end
 end 
 
 """
-	TSForwardCostIntegral(petsclib::PetscLibType,ts::AbstractTS) 
+	TSForwardCostIntegral(petsclib::PetscLibType, ts::AbstractTS) 
 Evaluate the cost integral in the forward run.
 
 Collective
@@ -3590,7 +3590,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSAdjointCostIntegral()`
+See also: `TS`, `TSSolve()`, `TSAdjointCostIntegral()`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardCostIntegral"))
@@ -3613,7 +3613,7 @@ end
 end 
 
 """
-	nump::PetscInt,Smat::PetscMat = TSForwardGetSensitivities(petsclib::PetscLibType,ts::AbstractTS) 
+	nump::PetscInt,Smat::PetscMat = TSForwardGetSensitivities(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the trajectory sensitivities
 
 Not Collective, but Smat returned is parallel if ts is parallel
@@ -3625,7 +3625,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSForwardSetSensitivities()`, `TSForwardSetIntegralGradients()`, `TSForwardGetIntegralGradients()`, `TSForwardStep()`
+See also: `TSForwardSetSensitivities()`, `TSForwardSetIntegralGradients()`, `TSForwardGetIntegralGradients()`, `TSForwardStep()`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardGetSensitivities"))
@@ -3652,7 +3652,7 @@ end
 end 
 
 """
-	ns::PetscInt,S::PetscMat = TSForwardGetStages(petsclib::PetscLibType,ts::AbstractTS) 
+	ns::PetscInt,S::PetscMat = TSForwardGetStages(petsclib::PetscLibType, ts::AbstractTS) 
 Get the number of stages and the tangent linear sensitivities at the intermediate stages
 
 Input Parameter:
@@ -3664,7 +3664,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `TS`
+See also: `TS`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardGetStages"))
@@ -3691,7 +3691,7 @@ end
 end 
 
 """
-	TSForwardReset(petsclib::PetscLibType,ts::AbstractTS) 
+	TSForwardReset(petsclib::PetscLibType, ts::AbstractTS) 
 Reset the internal data structures used by forward sensitivity analysis
 
 Collective
@@ -3701,7 +3701,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSCreate()`, `TSDestroy()`, `TSForwardSetUp()`
+See also: `TSCreate()`, `TSDestroy()`, `TSForwardSetUp()`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardReset"))
@@ -3724,7 +3724,7 @@ end
 end 
 
 """
-	TSForwardSetInitialSensitivities(petsclib::PetscLibType,ts::AbstractTS, didp::AbstractPetscMat) 
+	TSForwardSetInitialSensitivities(petsclib::PetscLibType, ts::AbstractTS, didp::AbstractPetscMat) 
 Set initial values for tangent linear sensitivities
 
 Collective
@@ -3735,7 +3735,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSForwardSetSensitivities()`
+See also: `TS`, `TSForwardSetSensitivities()`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardSetInitialSensitivities"))
@@ -3758,7 +3758,7 @@ end
 end 
 
 """
-	TSForwardSetSensitivities(petsclib::PetscLibType,ts::AbstractTS, nump::PetscInt, Smat::AbstractPetscMat) 
+	TSForwardSetSensitivities(petsclib::PetscLibType, ts::AbstractTS, nump::PetscInt, Smat::AbstractPetscMat) 
 Sets the initial value of the trajectory sensitivities of solution  w.r.t. the problem parameters and initial values.
 
 Logically Collective
@@ -3770,7 +3770,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSForwardGetSensitivities()`, `TSForwardSetIntegralGradients()`, `TSForwardGetIntegralGradients()`, `TSForwardStep()`
+See also: `TSForwardGetSensitivities()`, `TSForwardSetIntegralGradients()`, `TSForwardGetIntegralGradients()`, `TSForwardStep()`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardSetSensitivities"))
@@ -3793,7 +3793,7 @@ end
 end 
 
 """
-	TSForwardSetUp(petsclib::PetscLibType,ts::AbstractTS) 
+	TSForwardSetUp(petsclib::PetscLibType, ts::AbstractTS) 
 Sets up the internal data structures for the later use
 of forward sensitivity analysis
 
@@ -3804,7 +3804,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSCreate()`, `TSDestroy()`, `TSSetUp()`
+See also: `TS`, `TSCreate()`, `TSDestroy()`, `TSSetUp()`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardSetUp"))
@@ -3827,7 +3827,7 @@ end
 end 
 
 """
-	TSForwardStep(petsclib::PetscLibType,ts::AbstractTS) 
+	TSForwardStep(petsclib::PetscLibType, ts::AbstractTS) 
 Compute the forward sensitivity for one time step.
 
 Collective
@@ -3837,7 +3837,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSForwardSetSensitivities()`, `TSForwardGetSensitivities()`, `TSForwardSetIntegralGradients()`, `TSForwardGetIntegralGradients()`, `TSForwardSetUp()`
+See also: `TSForwardSetSensitivities()`, `TSForwardGetSensitivities()`, `TSForwardSetIntegralGradients()`, `TSForwardGetIntegralGradients()`, `TSForwardSetUp()`
 
 # External Links
 $(_doc_external("Sensitivity/TSForwardStep"))
@@ -3860,7 +3860,7 @@ end
 end 
 
 """
-	accept::PetscBool = TSFunctionDomainError(petsclib::PetscLibType,ts::AbstractTS, stagetime::PetscReal, Y::AbstractPetscVec) 
+	accept::PetscBool = TSFunctionDomainError(petsclib::PetscLibType, ts::AbstractTS, stagetime::PetscReal, Y::AbstractPetscVec) 
 Checks if the current state is valid
 
 Collective
@@ -3875,7 +3875,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetFunctionDomainError()`
+See also: `TS`, `TSSetFunctionDomainError()`
 
 # External Links
 $(_doc_external("TS/TSFunctionDomainError"))
@@ -3906,7 +3906,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`
+See also: `PetscFinalize()`
 
 # External Links
 $(_doc_external("TS/TSGLEEFinalizePackage"))
@@ -3928,7 +3928,7 @@ end
 end 
 
 """
-	gleetype::TSGLEEType = TSGLEEGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	gleetype::TSGLEEType = TSGLEEGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSGLEE` scheme
 
 Logically Collective
@@ -3941,7 +3941,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGLEE`, `TSGLEESetType()`
+See also: `TSGLEE`, `TSGLEESetType()`
 
 # External Links
 $(_doc_external("TS/TSGLEEGetType"))
@@ -3972,7 +3972,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("TS/TSGLEEInitializePackage"))
@@ -3994,7 +3994,7 @@ end
 end 
 
 """
-	TSGLEERegister(petsclib::PetscLibType,name::TSGLEEType, order::PetscInt, s::PetscInt, r::PetscInt, gamma::PetscReal, A::Vector{PetscReal}, B::Vector{PetscReal}, U::Vector{PetscReal}, V::Vector{PetscReal}, M_S::Vector{PetscReal}, F::Vector{PetscReal}, c::Vector{PetscReal}, Fembed::Vector{PetscReal}, Ferror::Vector{PetscReal}, Serror::Vector{PetscReal}, pinterp::PetscInt, binterp::Vector{PetscReal}) 
+	TSGLEERegister(petsclib::PetscLibType, name::TSGLEEType, order::PetscInt, s::PetscInt, r::PetscInt, gamma::PetscReal, A::Vector{PetscReal}, B::Vector{PetscReal}, U::Vector{PetscReal}, V::Vector{PetscReal}, M_S::Vector{PetscReal}, F::Vector{PetscReal}, c::Vector{PetscReal}, Fembed::Vector{PetscReal}, Ferror::Vector{PetscReal}, Serror::Vector{PetscReal}, pinterp::PetscInt, binterp::Vector{PetscReal}) 
 register a new `TSGLEE` scheme by providing the entries in the Butcher tableau
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
@@ -4020,7 +4020,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLEE`
+See also: `TSGLEE`
 
 # External Links
 $(_doc_external("TS/TSGLEERegister"))
@@ -4050,7 +4050,7 @@ Not Collective, but should be called by all processes which will need the scheme
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLEERegisterDestroy()`
+See also: `TSGLEERegisterDestroy()`
 
 # External Links
 $(_doc_external("TS/TSGLEERegisterAll"))
@@ -4079,7 +4079,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLEERegister()`, `TSGLEERegisterAll()`
+See also: `TSGLEERegister()`, `TSGLEERegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSGLEERegisterDestroy"))
@@ -4101,7 +4101,7 @@ end
 end 
 
 """
-	TSGLEESetType(petsclib::PetscLibType,ts::AbstractTS, gleetype::TSGLEEType) 
+	TSGLEESetType(petsclib::PetscLibType, ts::AbstractTS, gleetype::TSGLEEType) 
 Set the type of `TSGLEE` scheme
 
 Logically Collective
@@ -4112,7 +4112,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGLEEGetType()`, `TSGLEE`
+See also: `TSGLEEGetType()`, `TSGLEE`
 
 # External Links
 $(_doc_external("TS/TSGLEESetType"))
@@ -4135,7 +4135,7 @@ end
 end 
 
 """
-	TSGLLEAcceptRegister(petsclib::PetscLibType,sname::String, fnc::Ptr{Cvoid}) 
+	TSGLLEAcceptRegister(petsclib::PetscLibType, sname::String, fnc::Ptr{Cvoid}) 
 adds a `TSGLLE` acceptance scheme
 
 Not Collective
@@ -4146,7 +4146,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEType`, `TSGLLERegisterAll()`, `TSGLLEAcceptFn`
+See also: `TSGLLE`, `TSGLLEType`, `TSGLLERegisterAll()`, `TSGLLEAcceptFn`
 
 # External Links
 $(_doc_external("TS/TSGLLEAcceptRegister"))
@@ -4175,7 +4175,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`, `TSGLLEInitializePackage()`, `TSInitializePackage()`
+See also: `PetscFinalize()`, `TSGLLEInitializePackage()`, `TSInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSGLLEFinalizePackage"))
@@ -4197,7 +4197,7 @@ end
 end 
 
 """
-	adapt::TSGLLEAdapt = TSGLLEGetAdapt(petsclib::PetscLibType,ts::AbstractTS) 
+	adapt::TSGLLEAdapt = TSGLLEGetAdapt(petsclib::PetscLibType, ts::AbstractTS) 
 gets the `TSGLLEAdapt` object from the `TS`
 
 Not Collective
@@ -4210,7 +4210,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptRegister()`
+See also: `TS`, `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptRegister()`
 
 # External Links
 $(_doc_external("TS/TSGLLEGetAdapt"))
@@ -4241,7 +4241,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`, `TSInitializePackage()`, `TSGLLEFinalizePackage()`
+See also: `PetscInitialize()`, `TSInitializePackage()`, `TSGLLEFinalizePackage()`
 
 # External Links
 $(_doc_external("TS/TSGLLEInitializePackage"))
@@ -4263,7 +4263,7 @@ end
 end 
 
 """
-	TSGLLERegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	TSGLLERegister(petsclib::PetscLibType, sname::String, fnc::external) 
 adds a `TSGLLE` implementation
 
 Not Collective, No Fortran Support
@@ -4274,7 +4274,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEType`, `TSGLLERegisterAll()`, `TSGLLESetType()`
+See also: `TSGLLE`, `TSGLLEType`, `TSGLLERegisterAll()`, `TSGLLESetType()`
 
 # External Links
 $(_doc_external("TS/TSGLLERegister"))
@@ -4297,7 +4297,7 @@ end
 end 
 
 """
-	TSGLLESetAcceptType(petsclib::PetscLibType,ts::AbstractTS, type::TSGLLEAcceptType) 
+	TSGLLESetAcceptType(petsclib::PetscLibType, ts::AbstractTS, type::TSGLLEAcceptType) 
 sets the acceptance test for `TSGLLE`
 
 Logically Collective
@@ -4311,7 +4311,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGLLE`, `TSGLLEAcceptRegister()`, `TSGLLEAdapt`
+See also: `TS`, `TSGLLE`, `TSGLLEAcceptRegister()`, `TSGLLEAdapt`
 
 # External Links
 $(_doc_external("TS/TSGLLESetAcceptType"))
@@ -4334,8 +4334,8 @@ end
 end 
 
 """
-	TSGLLESetType(petsclib::PetscLibType,ts::AbstractTS, type::TSGLLEType) 
-sets the class of general linear method, `TSGLLE` to use for time
+	TSGLLESetType(petsclib::PetscLibType, ts::AbstractTS, type::TSGLLEType) 
+sets the class of general linear method, `TSGLLE` to use for time-stepping
 
 Collective
 
@@ -4348,7 +4348,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGLLEType`, `TSGLLE`, `TSGLLERegister()`, `TSGLLE_IRKS`, `TSGLLEGetAcceptType()`,
+See also: `TS`, `TSGLLEType`, `TSGLLE`, `TSGLLERegister()`, `TSGLLE_IRKS`, `TSGLLEGetAcceptType()`,
 `TSGLLESetAcceptType()`, `TSGLLEAcceptType()`
 
 # External Links
@@ -4372,7 +4372,7 @@ end
 end 
 
 """
-	adapt::TSAdapt = TSGetAdapt(petsclib::PetscLibType,ts::AbstractTS) 
+	adapt::TSAdapt = TSGetAdapt(petsclib::PetscLibType, ts::AbstractTS) 
 Get the adaptive controller context for the current method
 
 Collective if controller has not yet been created
@@ -4385,7 +4385,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSAdapt`, `TSAdaptSetType()`, `TSAdaptChoose()`
+See also: `TS`, `TSAdapt`, `TSAdaptSetType()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSGetAdapt"))
@@ -4410,8 +4410,8 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = TSGetApplicationContext(petsclib::PetscLibType,ts::AbstractTS) 
-Gets the user
+	ctx::Ptr{Cvoid} = TSGetApplicationContext(petsclib::PetscLibType, ts::AbstractTS) 
+Gets the user-defined context for the
 timestepper that was set with `TSSetApplicationContext()`
 
 Not Collective
@@ -4424,7 +4424,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetApplicationContext()`
+See also: `TS`, `TSSetApplicationContext()`
 
 # External Links
 $(_doc_external("TS/TSGetApplicationContext"))
@@ -4449,7 +4449,7 @@ end
 end 
 
 """
-	TSGetAuxSolution(petsclib::PetscLibType,ts::AbstractTS, v::AbstractPetscVec) 
+	TSGetAuxSolution(petsclib::PetscLibType, ts::AbstractTS, v::AbstractPetscVec) 
 Returns an auxiliary solution at the present
 timestep, if available for the time integration method being used.
 
@@ -4461,7 +4461,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetSolution()`
+See also: `TS`, `TSGetSolution()`
 
 # External Links
 $(_doc_external("TS/TSGetAuxSolution"))
@@ -4486,7 +4486,7 @@ end
 end 
 
 """
-	cfltime::PetscReal = TSGetCFLTime(petsclib::PetscLibType,ts::AbstractTS) 
+	cfltime::PetscReal = TSGetCFLTime(petsclib::PetscLibType, ts::AbstractTS) 
 Get the maximum stable time step according to CFL criteria applied to forward Euler
 
 Collective
@@ -4499,7 +4499,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSetCFLTimeLocal()`
+See also: `TSSetCFLTimeLocal()`
 
 # External Links
 $(_doc_external("TS/TSGetCFLTime"))
@@ -4524,7 +4524,7 @@ end
 end 
 
 """
-	TSGetComputeExactError(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+	TSGetComputeExactError(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid}) 
 Get the function used to automatically compute the exact error for the timestepping.
 
 Not collective
@@ -4542,7 +4542,7 @@ Calling sequence of `exactError`:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSComputeExactError()`
+See also: `TS`, `TSComputeExactError()`
 
 # External Links
 $(_doc_external("TS/TSGetComputeExactError"))
@@ -4565,7 +4565,7 @@ end
 end 
 
 """
-	TSGetComputeInitialCondition(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+	TSGetComputeInitialCondition(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid}) 
 Get the function used to automatically compute an initial condition for the timestepping.
 
 Not collective
@@ -4582,7 +4582,7 @@ Calling sequence of `initCondition`:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetComputeInitialCondition()`, `TSComputeInitialCondition()`
+See also: `TS`, `TSSetComputeInitialCondition()`, `TSComputeInitialCondition()`
 
 # External Links
 $(_doc_external("TS/TSGetComputeInitialCondition"))
@@ -4605,7 +4605,7 @@ end
 end 
 
 """
-	reason::TSConvergedReason = TSGetConvergedReason(petsclib::PetscLibType,ts::AbstractTS) 
+	reason::TSConvergedReason = TSGetConvergedReason(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the reason the `TS` iteration was stopped.
 
 Not Collective
@@ -4619,7 +4619,7 @@ manual pages for the individual convergence tests for complete lists
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSConvergedReason`
+See also: `TS`, `TSSolve()`, `TSConvergedReason`
 
 # External Links
 $(_doc_external("TS/TSGetConvergedReason"))
@@ -4644,7 +4644,7 @@ end
 end 
 
 """
-	numcost::PetscInt,lambda::Ptr{PetscVec},mu::Ptr{PetscVec} = TSGetCostGradients(petsclib::PetscLibType,ts::AbstractTS) 
+	numcost::PetscInt,lambda::Ptr{PetscVec},mu::Ptr{PetscVec} = TSGetCostGradients(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the gradients from the `TSAdjointSolve()`
 
 Not Collective, but the vectors returned are parallel if `TS` is parallel
@@ -4659,7 +4659,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSAdjointSolve()`, `TSSetCostGradients()`
+See also: `TS`, `TSAdjointSolve()`, `TSSetCostGradients()`
 
 # External Links
 $(_doc_external("Sensitivity/TSGetCostGradients"))
@@ -4688,7 +4688,7 @@ end
 end 
 
 """
-	numcost::PetscInt,lambda2::Ptr{PetscVec},mu2::Ptr{PetscVec},dir::PetscVec = TSGetCostHessianProducts(petsclib::PetscLibType,ts::AbstractTS) 
+	numcost::PetscInt,lambda2::Ptr{PetscVec},mu2::Ptr{PetscVec},dir::PetscVec = TSGetCostHessianProducts(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the gradients from the `TSAdjointSolve()`
 
 Not Collective, but vectors returned are parallel if `TS` is parallel
@@ -4704,7 +4704,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdjointSolve()`, `TSSetCostHessianProducts()`
+See also: `TSAdjointSolve()`, `TSSetCostHessianProducts()`
 
 # External Links
 $(_doc_external("Sensitivity/TSGetCostHessianProducts"))
@@ -4735,7 +4735,7 @@ end
 end 
 
 """
-	v::PetscVec = TSGetCostIntegral(petsclib::PetscLibType,ts::AbstractTS) 
+	v::PetscVec = TSGetCostIntegral(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the values of the integral term in the cost functions.
 It is valid to call the routine after a backward run.
 
@@ -4749,7 +4749,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSAdjointSolve()`, `TSSetCostIntegrand()`
+See also: `TS`, `TSAdjointSolve()`, `TSSetCostIntegrand()`
 
 # External Links
 $(_doc_external("Sensitivity/TSGetCostIntegral"))
@@ -4774,7 +4774,7 @@ end
 end 
 
 """
-	dm::PetscDM = TSGetDM(petsclib::PetscLibType,ts::AbstractTS) 
+	dm::PetscDM = TSGetDM(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the `DM` that may be used by some preconditioners
 
 Not Collective
@@ -4787,7 +4787,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `DM`, `TSSetDM()`, `SNESSetDM()`, `SNESGetDM()`
+See also: `TS`, `DM`, `TSSetDM()`, `SNESSetDM()`, `SNESGetDM()`
 
 # External Links
 $(_doc_external("TS/TSGetDM"))
@@ -4812,7 +4812,7 @@ end
 end 
 
 """
-	equation_type::TSEquationType = TSGetEquationType(petsclib::PetscLibType,ts::AbstractTS) 
+	equation_type::TSEquationType = TSGetEquationType(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the type of the equation that `TS` is solving.
 
 Not Collective
@@ -4825,7 +4825,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSSetEquationType()`, `TSEquationType`
+See also: `TS`, `TSSetEquationType()`, `TSEquationType`
 
 # External Links
 $(_doc_external("TS/TSGetEquationType"))
@@ -4850,7 +4850,7 @@ end
 end 
 
 """
-	nsol::PetscInt,sol_times::Ptr{PetscReal},Sols::Ptr{PetscVec} = TSGetEvaluationSolutions(petsclib::PetscLibType,ts::AbstractTS) 
+	nsol::PetscInt,sol_times::Ptr{PetscReal},Sols::Ptr{PetscVec} = TSGetEvaluationSolutions(petsclib::PetscLibType, ts::AbstractTS) 
 Get the number of solutions and the solutions at the evaluation time points specified
 
 Input Parameter:
@@ -4863,7 +4863,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetEvaluationTimes()`, `TSGetEvaluationTimes()`
+See also: `TS`, `TSSetEvaluationTimes()`, `TSGetEvaluationTimes()`
 
 # External Links
 $(_doc_external("TS/TSGetEvaluationSolutions"))
@@ -4892,7 +4892,7 @@ end
 end 
 
 """
-	n::PetscInt,time_points::Ptr{PetscReal} = TSGetEvaluationTimes(petsclib::PetscLibType,ts::AbstractTS) 
+	n::PetscInt,time_points::Ptr{PetscReal} = TSGetEvaluationTimes(petsclib::PetscLibType, ts::AbstractTS) 
 gets the evaluation times set with `TSSetEvaluationTimes()`
 
 Not Collective
@@ -4906,7 +4906,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSSetEvaluationTimes()`, `TSGetEvaluationSolutions()`
+See also: `TS`, `TSSetEvaluationTimes()`, `TSGetEvaluationSolutions()`
 
 # External Links
 $(_doc_external("TS/TSGetEvaluationTimes"))
@@ -4933,7 +4933,7 @@ end
 end 
 
 """
-	eftopt::TSExactFinalTimeOption = TSGetExactFinalTime(petsclib::PetscLibType,ts::AbstractTS) 
+	eftopt::TSExactFinalTimeOption = TSGetExactFinalTime(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the exact final time option set with `TSSetExactFinalTime()`
 
 Not Collective
@@ -4946,7 +4946,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSExactFinalTimeOption`, `TSSetExactFinalTime()`
+See also: `TS`, `TSExactFinalTimeOption`, `TSSetExactFinalTime()`
 
 # External Links
 $(_doc_external("TS/TSGetExactFinalTime"))
@@ -4971,7 +4971,7 @@ end
 end 
 
 """
-	r::PetscVec,fun::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetI2Function(petsclib::PetscLibType,ts::AbstractTS) 
+	r::PetscVec,fun::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetI2Function(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the vector where the implicit residual is stored and the function/context to compute it.
 
 Not Collective
@@ -4986,7 +4986,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetIFunction()`, `SNESGetFunction()`, `TSCreate()`
+See also: `TS`, `TSSetIFunction()`, `SNESGetFunction()`, `TSCreate()`
 
 # External Links
 $(_doc_external("TS/TSGetI2Function"))
@@ -5015,7 +5015,7 @@ end
 end 
 
 """
-	J::PetscMat,P::PetscMat,jac::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetI2Jacobian(petsclib::PetscLibType,ts::AbstractTS) 
+	J::PetscMat,P::PetscMat,jac::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetI2Jacobian(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the implicit Jacobian at the present timestep.
 
 Not Collective, but parallel objects are returned if `TS` is parallel
@@ -5031,7 +5031,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetTimeStep()`, `TSGetMatrices()`, `TSGetTime()`, `TSGetStepNumber()`, `TSSetI2Jacobian()`, `TSGetI2Function()`, `TSCreate()`
+See also: `TS`, `TSGetTimeStep()`, `TSGetMatrices()`, `TSGetTime()`, `TSGetStepNumber()`, `TSSetI2Jacobian()`, `TSGetI2Function()`, `TSCreate()`
 
 # External Links
 $(_doc_external("TS/TSGetI2Jacobian"))
@@ -5062,7 +5062,7 @@ end
 end 
 
 """
-	r::PetscVec,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetIFunction(petsclib::PetscLibType,ts::AbstractTS) 
+	r::PetscVec,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetIFunction(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the vector where the implicit residual is stored and the function/context to compute it.
 
 Not Collective
@@ -5077,7 +5077,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetIFunction()`, `SNESGetFunction()`
+See also: `TS`, `TSSetIFunction()`, `SNESGetFunction()`
 
 # External Links
 $(_doc_external("TS/TSGetIFunction"))
@@ -5106,7 +5106,7 @@ end
 end 
 
 """
-	Amat::PetscMat,Pmat::PetscMat,f::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetIJacobian(petsclib::PetscLibType,ts::AbstractTS) 
+	Amat::PetscMat,Pmat::PetscMat,f::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetIJacobian(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the implicit Jacobian at the present timestep.
 
 Not Collective, but parallel objects are returned if ts is parallel
@@ -5122,7 +5122,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetTimeStep()`, `TSGetRHSJacobian()`, `TSGetMatrices()`, `TSGetTime()`, `TSGetStepNumber()`
+See also: `TS`, `TSGetTimeStep()`, `TSGetRHSJacobian()`, `TSGetMatrices()`, `TSGetTime()`, `TSGetStepNumber()`
 
 # External Links
 $(_doc_external("TS/TSGetIJacobian"))
@@ -5153,7 +5153,7 @@ end
 end 
 
 """
-	Amat::PetscMat = TSGetIJacobianP(petsclib::PetscLibType,ts::AbstractTS, noname::Ptr{Cvoid}) 
+	Amat::PetscMat = TSGetIJacobianP(petsclib::PetscLibType, ts::AbstractTS, noname::Ptr{Cvoid}) 
 Gets the function that computes the Jacobian of  F w.r.t. the parameters p where F(Udot,U,p,t) = G(U,p,t) , as well as the location to store the matrix.
 
 Logically Collective
@@ -5177,7 +5177,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSSetRHSJacobianP()`, `TS`, `TSSetIJacobianP()`, `TSGetRHSJacobianP()`
+See also: `TSSetRHSJacobianP()`, `TS`, `TSSetIJacobianP()`, `TSGetRHSJacobianP()`
 
 # External Links
 $(_doc_external("Sensitivity/TSGetIJacobianP"))
@@ -5202,7 +5202,7 @@ end
 end 
 
 """
-	ksp::KSP = TSGetKSP(petsclib::PetscLibType,ts::AbstractTS) 
+	ksp::KSP = TSGetKSP(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the `KSP` (linear solver) associated with
 a `TS` (timestepper) context.
 
@@ -5216,7 +5216,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `SNES`, `KSP`, `TSCreate()`, `TSSetUp()`, `TSSolve()`, `TSGetSNES()`
+See also: `TS`, `SNES`, `KSP`, `TSCreate()`, `TSSetUp()`, `TSSolve()`, `TSGetSNES()`
 
 # External Links
 $(_doc_external("TS/TSGetKSP"))
@@ -5241,7 +5241,7 @@ end
 end 
 
 """
-	lits::PetscInt = TSGetKSPIterations(petsclib::PetscLibType,ts::AbstractTS) 
+	lits::PetscInt = TSGetKSPIterations(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the total number of linear iterations
 used by the time integrator.
 
@@ -5255,7 +5255,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSGetSNESIterations()`
+See also: `TS`, `TSSolve()`, `TSGetSNESIterations()`
 
 # External Links
 $(_doc_external("TS/TSGetKSPIterations"))
@@ -5280,7 +5280,7 @@ end
 end 
 
 """
-	maxsteps::PetscInt = TSGetMaxSteps(petsclib::PetscLibType,ts::AbstractTS) 
+	maxsteps::PetscInt = TSGetMaxSteps(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the maximum number of steps to use.
 
 Not Collective
@@ -5293,7 +5293,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetMaxSteps()`, `TSGetMaxTime()`, `TSSetMaxTime()`
+See also: `TS`, `TSSetMaxSteps()`, `TSGetMaxTime()`, `TSSetMaxTime()`
 
 # External Links
 $(_doc_external("TS/TSGetMaxSteps"))
@@ -5318,7 +5318,7 @@ end
 end 
 
 """
-	maxtime::PetscReal = TSGetMaxTime(petsclib::PetscLibType,ts::AbstractTS) 
+	maxtime::PetscReal = TSGetMaxTime(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the maximum (or final) time for timestepping.
 
 Not Collective
@@ -5331,7 +5331,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetMaxTime()`, `TSGetMaxSteps()`, `TSSetMaxSteps()`
+See also: `TS`, `TSSetMaxTime()`, `TSGetMaxSteps()`, `TSSetMaxSteps()`
 
 # External Links
 $(_doc_external("TS/TSGetMaxTime"))
@@ -5356,7 +5356,7 @@ end
 end 
 
 """
-	nevents::PetscInt = TSGetNumEvents(petsclib::PetscLibType,ts::AbstractTS) 
+	nevents::PetscInt = TSGetNumEvents(petsclib::PetscLibType, ts::AbstractTS) 
 Get the number of events defined on the given MPI process
 
 Logically Collective
@@ -5369,7 +5369,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_event), `TSEvent`, `TSSetEventHandler()`
+See also: [](sec_ts_event), `TSEvent`, `TSSetEventHandler()`
 
 # External Links
 $(_doc_external("TS/TSGetNumEvents"))
@@ -5394,7 +5394,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = TSGetOptionsPrefix(petsclib::PetscLibType,ts::AbstractTS) 
+	prefix::Ptr{Cchar} = TSGetOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS) 
 Sets the prefix used for searching for all
 `TS` options in the database.
 
@@ -5408,7 +5408,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSAppendOptionsPrefix()`, `TSSetFromOptions()`
+See also: `TS`, `TSAppendOptionsPrefix()`, `TSSetFromOptions()`
 
 # External Links
 $(_doc_external("TS/TSGetOptionsPrefix"))
@@ -5433,7 +5433,7 @@ end
 end 
 
 """
-	t::PetscReal = TSGetPrevTime(petsclib::PetscLibType,ts::AbstractTS) 
+	t::PetscReal = TSGetPrevTime(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the starting time of the previously completed step.
 
 Not Collective
@@ -5446,7 +5446,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSGetTime()`, `TSGetSolveTime()`, `TSGetTimeStep()`
+See also: `TS`, `TSGetTime()`, `TSGetSolveTime()`, `TSGetTimeStep()`
 
 # External Links
 $(_doc_external("TS/TSGetPrevTime"))
@@ -5471,7 +5471,7 @@ end
 end 
 
 """
-	type::TSProblemType = TSGetProblemType(petsclib::PetscLibType,ts::AbstractTS) 
+	type::TSProblemType = TSGetProblemType(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the type of problem to be solved.
 
 Not collective
@@ -5481,7 +5481,15 @@ Input Parameter:
 
 Output Parameter:
 - `type` - One of `TS_LINEAR`, `TS_NONLINEAR` where these types refer to problems of the forms
--seealso: [](ch_ts), `TSSetUp()`, `TSProblemType`, `TS`
+``
+M U_t = A U
+M(t) U_t = A(t) U
+F(t,U,U_t)
+``
+
+Level: beginner
+
+See also: `TSSetUp()`, `TSProblemType`, `TS`
 
 # External Links
 $(_doc_external("TS/TSGetProblemType"))
@@ -5506,8 +5514,8 @@ end
 end 
 
 """
-	fwd::PetscBool,quadts::TS = TSGetQuadratureTS(petsclib::PetscLibType,ts::AbstractTS) 
-Return the sub
+	fwd::PetscBool,quadts::TS = TSGetQuadratureTS(petsclib::PetscLibType, ts::AbstractTS) 
+Return the sub-`TS` that evaluates integrals over time
 
 Input Parameter:
 - `ts` - the `TS` context obtained from `TSCreate()`
@@ -5518,7 +5526,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSCreateQuadratureTS()`
+See also: `TSCreateQuadratureTS()`
 
 # External Links
 $(_doc_external("Sensitivity/TSGetQuadratureTS"))
@@ -5545,8 +5553,8 @@ end
 end 
 
 """
-	r::PetscVec,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetRHSFunction(petsclib::PetscLibType,ts::AbstractTS) 
-Returns the vector where the right
+	r::PetscVec,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetRHSFunction(petsclib::PetscLibType, ts::AbstractTS) 
+Returns the vector where the right-hand side is stored and the function/context to compute it.
 
 Not Collective
 
@@ -5560,7 +5568,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetRHSFunction()`, `SNESGetFunction()`
+See also: `TS`, `TSSetRHSFunction()`, `SNESGetFunction()`
 
 # External Links
 $(_doc_external("TS/TSGetRHSFunction"))
@@ -5589,7 +5597,7 @@ end
 end 
 
 """
-	Amat::PetscMat,Pmat::PetscMat,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetRHSJacobian(petsclib::PetscLibType,ts::AbstractTS) 
+	Amat::PetscMat,Pmat::PetscMat,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetRHSJacobian(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the Jacobian J at the present timestep.
 
 Not Collective, but parallel objects are returned if ts is parallel
@@ -5605,7 +5613,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetTimeStep()`, `TSGetMatrices()`, `TSGetTime()`, `TSGetStepNumber()`
+See also: `TS`, `TSGetTimeStep()`, `TSGetMatrices()`, `TSGetTime()`, `TSGetStepNumber()`
 
 # External Links
 $(_doc_external("TS/TSGetRHSJacobian"))
@@ -5636,7 +5644,7 @@ end
 end 
 
 """
-	Amat::PetscMat,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetRHSJacobianP(petsclib::PetscLibType,ts::AbstractTS) 
+	Amat::PetscMat,func::Ptr{Cvoid},ctx::Ptr{Cvoid} = TSGetRHSJacobianP(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the function that computes the Jacobian of G  w.r.t. the parameters p where  U_t = G(U,p,t), as well as the location to store the matrix.
 
 Logically Collective
@@ -5651,7 +5659,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSSetRHSJacobianP()`, `TS`, `TSRHSJacobianPFn`
+See also: `TSSetRHSJacobianP()`, `TS`, `TSRHSJacobianPFn`
 
 # External Links
 $(_doc_external("Sensitivity/TSGetRHSJacobianP"))
@@ -5680,7 +5688,7 @@ end
 end 
 
 """
-	runsteps::PetscInt = TSGetRunSteps(petsclib::PetscLibType,ts::AbstractTS) 
+	runsteps::PetscInt = TSGetRunSteps(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the maximum number of steps to take in each call to `TSSolve()`.
 
 Not Collective
@@ -5693,7 +5701,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetRunSteps()`, `TSGetMaxTime()`, `TSSetMaxTime()`, `TSGetMaxSteps()`
+See also: `TS`, `TSSetRunSteps()`, `TSGetMaxTime()`, `TSSetMaxTime()`, `TSGetMaxSteps()`
 
 # External Links
 $(_doc_external("TS/TSGetRunSteps"))
@@ -5718,7 +5726,7 @@ end
 end 
 
 """
-	snes::SNES = TSGetSNES(petsclib::PetscLibType,ts::AbstractTS) 
+	snes::SNES = TSGetSNES(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the `SNES` (nonlinear solver) associated with
 a `TS` (timestepper) context. Valid only for nonlinear problems.
 
@@ -5732,7 +5740,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSCreate()`, `TSSetUp()`, `TSSolve()`
+See also: `TS`, `SNES`, `TSCreate()`, `TSSetUp()`, `TSSolve()`
 
 # External Links
 $(_doc_external("TS/TSGetSNES"))
@@ -5757,7 +5765,7 @@ end
 end 
 
 """
-	fails::PetscInt = TSGetSNESFailures(petsclib::PetscLibType,ts::AbstractTS) 
+	fails::PetscInt = TSGetSNESFailures(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the total number of failed `SNES` solves in a `TS`
 
 Not Collective
@@ -5770,7 +5778,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSSetMaxSNESFailures()`
+See also: `TS`, `TSSolve()`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSSetMaxSNESFailures()`
 
 # External Links
 $(_doc_external("TS/TSGetSNESFailures"))
@@ -5795,7 +5803,7 @@ end
 end 
 
 """
-	nits::PetscInt = TSGetSNESIterations(petsclib::PetscLibType,ts::AbstractTS) 
+	nits::PetscInt = TSGetSNESIterations(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the total number of nonlinear iterations
 used by the time integrator.
 
@@ -5809,7 +5817,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSGetKSPIterations()`
+See also: `TS`, `TSSolve()`, `TSGetKSPIterations()`
 
 # External Links
 $(_doc_external("TS/TSGetSNESIterations"))
@@ -5834,7 +5842,7 @@ end
 end 
 
 """
-	v::PetscVec = TSGetSolution(petsclib::PetscLibType,ts::AbstractTS) 
+	v::PetscVec = TSGetSolution(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the solution at the present timestep. It
 is valid to call this routine inside the function that you are evaluating
 in order to move to the new timestep. This vector not changed until
@@ -5850,7 +5858,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetTimeStep()`, `TSGetTime()`, `TSGetSolveTime()`, `TSGetSolutionComponents()`, `TSSetSolutionFunction()`
+See also: `TS`, `TSGetTimeStep()`, `TSGetTime()`, `TSGetSolveTime()`, `TSGetSolutionComponents()`, `TSSetSolutionFunction()`
 
 # External Links
 $(_doc_external("TS/TSGetSolution"))
@@ -5875,7 +5883,7 @@ end
 end 
 
 """
-	n::PetscInt = TSGetSolutionComponents(petsclib::PetscLibType,ts::AbstractTS, v::AbstractPetscVec) 
+	n::PetscInt = TSGetSolutionComponents(petsclib::PetscLibType, ts::AbstractTS, v::AbstractPetscVec) 
 Returns any solution components at the present
 timestep, if available for the time integration method being used.
 Solution components are quantities that share the same size and
@@ -5894,7 +5902,7 @@ the number of solutions components).
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetSolution()`
+See also: `TS`, `TSGetSolution()`
 
 # External Links
 $(_doc_external("TS/TSGetSolutionComponents"))
@@ -5921,7 +5929,7 @@ end
 end 
 
 """
-	ftime::PetscReal = TSGetSolveTime(petsclib::PetscLibType,ts::AbstractTS) 
+	ftime::PetscReal = TSGetSolveTime(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the time after a call to `TSSolve()`
 
 Not Collective
@@ -5934,7 +5942,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSConvergedReason`
+See also: `TS`, `TSSolve()`, `TSConvergedReason`
 
 # External Links
 $(_doc_external("TS/TSGetSolveTime"))
@@ -5959,7 +5967,7 @@ end
 end 
 
 """
-	ns::PetscInt,Y::PetscVec = TSGetStages(petsclib::PetscLibType,ts::AbstractTS) 
+	ns::PetscInt,Y::PetscVec = TSGetStages(petsclib::PetscLibType, ts::AbstractTS) 
 Get the number of stages and stage values
 
 Input Parameter:
@@ -5971,7 +5979,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSCreate()`
+See also: `TS`, `TSCreate()`
 
 # External Links
 $(_doc_external("TS/TSGetStages"))
@@ -5998,7 +6006,7 @@ end
 end 
 
 """
-	steps::PetscInt = TSGetStepNumber(petsclib::PetscLibType,ts::AbstractTS) 
+	steps::PetscInt = TSGetStepNumber(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the number of time steps completed.
 
 Not Collective
@@ -6011,7 +6019,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetTime()`, `TSGetTimeStep()`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostStage()`, `TSSetPostStep()`
+See also: `TS`, `TSGetTime()`, `TSGetTimeStep()`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostStage()`, `TSSetPostStep()`
 
 # External Links
 $(_doc_external("TS/TSGetStepNumber"))
@@ -6036,7 +6044,7 @@ end
 end 
 
 """
-	rejects::PetscInt = TSGetStepRejections(petsclib::PetscLibType,ts::AbstractTS) 
+	rejects::PetscInt = TSGetStepRejections(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the total number of rejected steps.
 
 Not Collective
@@ -6049,7 +6057,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetSNESFailures()`, `TSSetMaxSNESFailures()`, `TSSetErrorIfStepFails()`
+See also: `TS`, `TSSolve()`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetSNESFailures()`, `TSSetMaxSNESFailures()`, `TSSetErrorIfStepFails()`
 
 # External Links
 $(_doc_external("TS/TSGetStepRejections"))
@@ -6074,7 +6082,7 @@ end
 end 
 
 """
-	flg::PetscBool = TSGetStepResize(petsclib::PetscLibType,ts::AbstractTS) 
+	flg::PetscBool = TSGetStepResize(petsclib::PetscLibType, ts::AbstractTS) 
 Get the internal flag indicating if the current step is after a resize.
 
 Not collective
@@ -6087,7 +6095,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSCreate()`, `TSSetResize()`
+See also: `TS`, `TSCreate()`, `TSSetResize()`
 
 # External Links
 $(_doc_external("TS/TSGetStepResize"))
@@ -6112,7 +6120,7 @@ end
 end 
 
 """
-	flg::PetscBool = TSGetStepRollBack(petsclib::PetscLibType,ts::AbstractTS) 
+	flg::PetscBool = TSGetStepRollBack(petsclib::PetscLibType, ts::AbstractTS) 
 Get the internal flag indicating if you are rolling back a step
 
 Not collective
@@ -6125,7 +6133,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSCreate()`, `TSRollBack()`
+See also: `TS`, `TSCreate()`, `TSRollBack()`
 
 # External Links
 $(_doc_external("TS/TSGetStepRollBack"))
@@ -6150,7 +6158,7 @@ end
 end 
 
 """
-	t::PetscReal = TSGetTime(petsclib::PetscLibType,ts::AbstractTS) 
+	t::PetscReal = TSGetTime(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the time of the most recently completed step.
 
 Not Collective
@@ -6163,7 +6171,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSGetSolveTime()`, `TSSetTime()`, `TSGetTimeStep()`, `TSGetStepNumber()`
+See also: `TS`, `TSGetSolveTime()`, `TSSetTime()`, `TSGetTimeStep()`, `TSGetStepNumber()`
 
 # External Links
 $(_doc_external("TS/TSGetTime"))
@@ -6188,7 +6196,7 @@ end
 end 
 
 """
-	TSGetTimeError(petsclib::PetscLibType,ts::AbstractTS, n::PetscInt, v::AbstractPetscVec) 
+	TSGetTimeError(petsclib::PetscLibType, ts::AbstractTS, n::PetscInt, v::AbstractPetscVec) 
 Returns the estimated error vector, if the chosen
 `TSType` has an error estimation functionality and `TSSetTimeError()` was called
 
@@ -6201,7 +6209,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGetSolution()`, `TSSetTimeError()`
+See also: `TSGetSolution()`, `TSSetTimeError()`
 
 # External Links
 $(_doc_external("TS/TSGetTimeError"))
@@ -6226,7 +6234,7 @@ end
 end 
 
 """
-	dt::PetscReal = TSGetTimeStep(petsclib::PetscLibType,ts::AbstractTS) 
+	dt::PetscReal = TSGetTimeStep(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the current timestep size.
 
 Not Collective
@@ -6239,7 +6247,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetTimeStep()`, `TSGetTime()`
+See also: `TS`, `TSSetTimeStep()`, `TSGetTime()`
 
 # External Links
 $(_doc_external("TS/TSGetTimeStep"))
@@ -6265,7 +6273,7 @@ end
 
 # override for TSGetTolerances; C signature: TSGetTolerances(TS ts, PetscReal* atol, Vec* vatol, PetscReal* rtol, Vec* vrtol)
 """
-	atol::PetscReal,vatol::PetscVec,rtol::PetscReal,vrtol::PetscVec = TSGetTolerances(petsclib::PetscLibType,ts::AbstractTS) 
+	atol::PetscReal,vatol::PetscVec,rtol::PetscReal,vrtol::PetscVec = TSGetTolerances(petsclib::PetscLibType, ts::AbstractTS) 
 Get tolerances for local truncation error when using adaptive controller
 
 Logically Collective
@@ -6281,7 +6289,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSAdapt`, `TSErrorWeightedNorm()`, `TSSetTolerances()`
+See also: `TS`, `TSAdapt`, `TSErrorWeightedNorm()`, `TSSetTolerances()`
 
 # External Links
 $(_doc_external("Ts/TSGetTolerances"))
@@ -6310,7 +6318,7 @@ function TSGetTolerances(petsclib::PetscLibType, ts::AbstractTS) end
 end
 
 """
-	tr::TSTrajectory = TSGetTrajectory(petsclib::PetscLibType,ts::AbstractTS) 
+	tr::TSTrajectory = TSGetTrajectory(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the trajectory from a `TS` if it exists
 
 Collective
@@ -6323,7 +6331,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSTrajectory`, `TSAdjointSolve()`, `TSTrajectoryCreate()`
+See also: `TS`, `TSTrajectory`, `TSAdjointSolve()`, `TSTrajectoryCreate()`
 
 # External Links
 $(_doc_external("TS/TSGetTrajectory"))
@@ -6348,7 +6356,7 @@ end
 end 
 
 """
-	type::TSType = TSGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	type::TSType = TSGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the `TS` method type (as a string) that is being used to solve the ODE with the given `TS`
 
 Not Collective
@@ -6361,7 +6369,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSType`, `TSSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `TS`, `TSType`, `TSSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("TS/TSGetType"))
@@ -6386,7 +6394,7 @@ end
 end 
 
 """
-	use_splitrhsfunction::PetscBool = TSGetUseSplitRHSFunction(petsclib::PetscLibType,ts::AbstractTS) 
+	use_splitrhsfunction::PetscBool = TSGetUseSplitRHSFunction(petsclib::PetscLibType, ts::AbstractTS) 
 Gets whether to use the split RHSFunction when a multirate method is used.
 
 Not Collective
@@ -6399,7 +6407,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetUseSplitRHSFunction()`
+See also: `TS`, `TSSetUseSplitRHSFunction()`
 
 # External Links
 $(_doc_external("TS/TSGetUseSplitRHSFunction"))
@@ -6424,7 +6432,7 @@ end
 end 
 
 """
-	has::PetscBool = TSHasTransientVariable(petsclib::PetscLibType,ts::AbstractTS) 
+	has::PetscBool = TSHasTransientVariable(petsclib::PetscLibType, ts::AbstractTS) 
 determine whether transient variables have been set
 
 Logically Collective
@@ -6437,7 +6445,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSBDF`, `DMTSSetTransientVariable()`, `TSComputeTransientVariable()`
+See also: `TS`, `TSBDF`, `DMTSSetTransientVariable()`, `TSComputeTransientVariable()`
 
 # External Links
 $(_doc_external("TS/TSHasTransientVariable"))
@@ -6468,7 +6476,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `TSIRK`, `PetscFinalize()`, `TSInitializePackage()`
+See also: `TSIRK`, `PetscFinalize()`, `TSInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSIRKFinalizePackage"))
@@ -6490,7 +6498,7 @@ end
 end 
 
 """
-	nstages::PetscInt = TSIRKGetNumStages(petsclib::PetscLibType,ts::AbstractTS) 
+	nstages::PetscInt = TSIRKGetNumStages(petsclib::PetscLibType, ts::AbstractTS) 
 Get the number of stages of `TSIRK` scheme
 
 Logically Collective
@@ -6501,7 +6509,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSIRKSetNumStages()`, `TSIRK`
+See also: `TSIRKSetNumStages()`, `TSIRK`
 
 # External Links
 $(_doc_external("TS/TSIRKGetNumStages"))
@@ -6526,7 +6534,7 @@ end
 end 
 
 """
-	irktype::TSIRKType = TSIRKGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	irktype::TSIRKType = TSIRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSIRK` IMEX scheme being used
 
 Logically Collective
@@ -6539,7 +6547,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSIRK`, `TSIRKType`, `TSIRKGAUSS`
+See also: `TSIRK`, `TSIRKType`, `TSIRKGAUSS`
 
 # External Links
 $(_doc_external("TS/TSIRKGetType"))
@@ -6570,7 +6578,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `TSIRK`, `PetscInitialize()`, `TSIRKFinalizePackage()`, `TSInitializePackage()`
+See also: `TSIRK`, `PetscInitialize()`, `TSIRKFinalizePackage()`, `TSInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSIRKInitializePackage"))
@@ -6592,7 +6600,7 @@ end
 end 
 
 """
-	TSIRKRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	TSIRKRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 adds a `TSIRK` implementation
 
 Not Collective, No Fortran Support
@@ -6603,7 +6611,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSIRK`, `TSIRKRegisterAll()`
+See also: `TSIRK`, `TSIRKRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSIRKRegister"))
@@ -6633,7 +6641,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_ts), `TSIRK`, `TSIRKRegister()`, `TSIRKRegisterAll()`
+See also: `TSIRK`, `TSIRKRegister()`, `TSIRKRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSIRKRegisterDestroy"))
@@ -6655,7 +6663,7 @@ end
 end 
 
 """
-	TSIRKSetNumStages(petsclib::PetscLibType,ts::AbstractTS, nstages::PetscInt) 
+	TSIRKSetNumStages(petsclib::PetscLibType, ts::AbstractTS, nstages::PetscInt) 
 Set the number of stages of `TSIRK` scheme to use
 
 Logically Collective
@@ -6669,7 +6677,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSIRKGetNumStages()`, `TSIRK`
+See also: `TSIRKGetNumStages()`, `TSIRK`
 
 # External Links
 $(_doc_external("TS/TSIRKSetNumStages"))
@@ -6692,7 +6700,7 @@ end
 end 
 
 """
-	TSIRKSetType(petsclib::PetscLibType,ts::AbstractTS, irktype::TSIRKType) 
+	TSIRKSetType(petsclib::PetscLibType, ts::AbstractTS, irktype::TSIRKType) 
 Set the type of `TSIRK` scheme to use
 
 Logically Collective
@@ -6706,7 +6714,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSIRKGetType()`, `TSIRK`, `TSIRKType`, `TSIRKGAUSS`
+See also: `TSIRKGetType()`, `TSIRK`, `TSIRKType`, `TSIRKGAUSS`
 
 # External Links
 $(_doc_external("TS/TSIRKSetType"))
@@ -6729,7 +6737,7 @@ end
 end 
 
 """
-	TSIRKTableauCreate(petsclib::PetscLibType,ts::AbstractTS, nstages::PetscInt, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, binterp::Vector{PetscReal}, A_inv::Vector{PetscScalar}, A_inv_rowsum::Vector{PetscScalar}, I_s::Vector{PetscScalar}) 
+	TSIRKTableauCreate(petsclib::PetscLibType, ts::AbstractTS, nstages::PetscInt, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, binterp::Vector{PetscReal}, A_inv::Vector{PetscScalar}, A_inv_rowsum::Vector{PetscScalar}, I_s::Vector{PetscScalar}) 
 create the tableau for `TSIRK` and provide the entries
 
 Not Collective
@@ -6747,7 +6755,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSIRK`, `TSIRKRegister()`
+See also: `TSIRK`, `TSIRKRegister()`
 
 # External Links
 $(_doc_external("TS/TSIRKTableauCreate"))
@@ -6777,7 +6785,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `PetscInitialize()`, `TSFinalizePackage()`
+See also: `TS`, `PetscInitialize()`, `TSFinalizePackage()`
 
 # External Links
 $(_doc_external("Sys/TSInitializePackage"))
@@ -6799,7 +6807,7 @@ end
 end 
 
 """
-	TSInterpolate(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal, U::AbstractPetscVec) 
+	TSInterpolate(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal, U::AbstractPetscVec) 
 Interpolate the solution computed during the previous step to an arbitrary location in the interval
 
 Collective
@@ -6813,7 +6821,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetExactFinalTime()`, `TSSolve()`
+See also: `TS`, `TSSetExactFinalTime()`, `TSSolve()`
 
 # External Links
 $(_doc_external("TS/TSInterpolate"))
@@ -6836,7 +6844,7 @@ end
 end 
 
 """
-	TSLoad(petsclib::PetscLibType,ts::AbstractTS, viewer::PetscViewer) 
+	TSLoad(petsclib::PetscLibType, ts::AbstractTS, viewer::PetscViewer) 
 Loads a `TS` that has been stored in binary  with `TSView()`.
 
 Collective
@@ -6848,7 +6856,7 @@ some related function before a call to `TSLoad()`.
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `PetscViewer`, `PetscViewerBinaryOpen()`, `TSView()`, `MatLoad()`, `VecLoad()`
+See also: `TS`, `PetscViewer`, `PetscViewerBinaryOpen()`, `TSView()`, `MatLoad()`, `VecLoad()`
 
 # External Links
 $(_doc_external("TS/TSLoad"))
@@ -6877,7 +6885,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `TSMPRK`, `PetscFinalize()`
+See also: `TSMPRK`, `PetscFinalize()`
 
 # External Links
 $(_doc_external("TS/TSMPRKFinalizePackage"))
@@ -6899,7 +6907,7 @@ end
 end 
 
 """
-	mprktype::TSMPRKType = TSMPRKGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	mprktype::TSMPRKType = TSMPRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSMPRK` scheme
 
 Not Collective
@@ -6912,7 +6920,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMPRK`
+See also: `TSMPRK`
 
 # External Links
 $(_doc_external("TS/TSMPRKGetType"))
@@ -6944,7 +6952,7 @@ when using static libraries.
 
 Level: developer
 
--seealso: [](ch_ts), `TSMPRK`, `PetscInitialize()`
+See also: `TSMPRK`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("TS/TSMPRKInitializePackage"))
@@ -6966,7 +6974,7 @@ end
 end 
 
 """
-	TSMPRKRegister(petsclib::PetscLibType,name::TSMPRKType, order::PetscInt, sbase::PetscInt, ratio1::PetscInt, ratio2::PetscInt, Asb::Vector{PetscReal}, bsb::Vector{PetscReal}, csb::Vector{PetscReal}, rsb::Vector{PetscInt}, Amb::Vector{PetscReal}, bmb::Vector{PetscReal}, cmb::Vector{PetscReal}, rmb::Vector{PetscInt}, Af::Vector{PetscReal}, bf::Vector{PetscReal}, cf::Vector{PetscReal}) 
+	TSMPRKRegister(petsclib::PetscLibType, name::TSMPRKType, order::PetscInt, sbase::PetscInt, ratio1::PetscInt, ratio2::PetscInt, Asb::Vector{PetscReal}, bsb::Vector{PetscReal}, csb::Vector{PetscReal}, rsb::Vector{PetscInt}, Amb::Vector{PetscReal}, bmb::Vector{PetscReal}, cmb::Vector{PetscReal}, rmb::Vector{PetscInt}, Af::Vector{PetscReal}, bf::Vector{PetscReal}, cf::Vector{PetscReal}) 
 register a `TSMPRK` scheme by providing the entries in the Butcher tableau
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
@@ -6991,7 +6999,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSMPRK`
+See also: `TSMPRK`
 
 # External Links
 $(_doc_external("TS/TSMPRKRegister"))
@@ -7021,7 +7029,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_ts), `TSMPRK`, `TSMPRKRegister()`, `TSMPRKRegisterAll()`
+See also: `TSMPRK`, `TSMPRKRegister()`, `TSMPRKRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSMPRKRegisterDestroy"))
@@ -7043,7 +7051,7 @@ end
 end 
 
 """
-	TSMPRKSetType(petsclib::PetscLibType,ts::AbstractTS, mprktype::TSMPRKType) 
+	TSMPRKSetType(petsclib::PetscLibType, ts::AbstractTS, mprktype::TSMPRKType) 
 Set the type of `TSMPRK` scheme
 
 Not Collective
@@ -7057,7 +7065,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMPRKGetType()`, `TSMPRK`, `TSMPRKType`
+See also: `TSMPRKGetType()`, `TSMPRK`, `TSMPRKType`
 
 # External Links
 $(_doc_external("TS/TSMPRKSetType"))
@@ -7080,8 +7088,8 @@ end
 end 
 
 """
-	TSMonitor(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec) 
-Runs all user
+	TSMonitor(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec) 
+Runs all user-provided monitor routines set using `TSMonitorSet()`
 
 Collective
 
@@ -7093,7 +7101,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `TS`, `TSMonitorSet()`, `TSMonitorSetFromOptions()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorSetFromOptions()`
 
 # External Links
 $(_doc_external("TS/TSMonitor"))
@@ -7116,8 +7124,8 @@ end
 end 
 
 """
-	TSMonitorCancel(petsclib::PetscLibType,ts::AbstractTS) 
-Clears all the monitors that have been set on a time
+	TSMonitorCancel(petsclib::PetscLibType, ts::AbstractTS) 
+Clears all the monitors that have been set on a time-step object.
 
 Logically Collective
 
@@ -7126,7 +7134,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorDefault()`, `TSMonitorSet()`
+See also: `TS`, `TSMonitorDefault()`, `TSMonitorSet()`
 
 # External Links
 $(_doc_external("TS/TSMonitorCancel"))
@@ -7149,8 +7157,8 @@ end
 end 
 
 """
-	TSMonitorDMDARay(petsclib::PetscLibType,ts::AbstractTS, steps::PetscInt, time::PetscReal, u::AbstractPetscVec, mctx::Ptr{Cvoid}) 
-Monitors the solution of a `DMDA`
+	TSMonitorDMDARay(petsclib::PetscLibType, ts::AbstractTS, steps::PetscInt, time::PetscReal, u::AbstractPetscVec, mctx::Ptr{Cvoid}) 
+Monitors the solution of a `DMDA`-based `TS` by scattering values along a ray to a viewer
 
 Collective
 
@@ -7163,7 +7171,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `DMDA`, `TSMonitorSet()`, `TSMonitorLGDMDARay()`, `TSMonitorDMDARayDestroy()`
+See also: `TS`, `DMDA`, `TSMonitorSet()`, `TSMonitorLGDMDARay()`, `TSMonitorDMDARayDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDMDARay"))
@@ -7186,8 +7194,8 @@ end
 end 
 
 """
-	TSMonitorDMDARayDestroy(petsclib::PetscLibType,mctx::Ptr{Cvoid}) 
-Destroys the context created for the `
+	TSMonitorDMDARayDestroy(petsclib::PetscLibType, mctx::Ptr{Cvoid}) 
+Destroys the context created for the `-ts_monitor_dmda_ray` and `-ts_monitor_lg_dmda_ray` monitors
 
 Collective
 
@@ -7196,7 +7204,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDMDARay()`, `TSMonitorLGDMDARay()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDMDARay()`, `TSMonitorLGDMDARay()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDMDARayDestroy"))
@@ -7219,7 +7227,7 @@ end
 end 
 
 """
-	TSMonitorDefault(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	TSMonitorDefault(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 The default monitor, prints the timestep and time for each step
 
 Input Parameters:
@@ -7234,7 +7242,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSDMSwarmMonitorMoments()`, `TSMonitorWallClockTime()`, `TSMonitorExtreme()`, `TSMonitorDrawSolution()`,
+See also: `TSMonitorSet()`, `TSDMSwarmMonitorMoments()`, `TSMonitorWallClockTime()`, `TSMonitorExtreme()`, `TSMonitorDrawSolution()`,
 `TSMonitorDrawSolutionPhase()`, `TSMonitorDrawSolutionFunction()`, `TSMonitorDrawError()`, `TSMonitorSolution()`, `TSMonitorSolutionVTK()`,
 `TSMonitorLGSolution()`, `TSMonitorLGError()`, `TSMonitorSPSwarmSolution()`, `TSMonitorError()`, `TSMonitorEnvelope()`
 
@@ -7259,7 +7267,7 @@ end
 end 
 
 """
-	TSMonitorDrawError(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
+	TSMonitorDrawError(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by calling
 `VecView()` for the error at each timestep
 
@@ -7277,7 +7285,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDrawError"))
@@ -7300,7 +7308,7 @@ end
 end 
 
 """
-	TSMonitorDrawSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	TSMonitorDrawSolution(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by calling
 `VecView()` for the solution at each timestep
 
@@ -7319,7 +7327,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorDrawCtxCreate()`, `TSMonitorDrawCtxDestroy()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorDrawCtxCreate()`, `TSMonitorDrawCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDrawSolution"))
@@ -7342,7 +7350,7 @@ end
 end 
 
 """
-	TSMonitorDrawSolutionFunction(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
+	TSMonitorDrawSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by calling
 `VecView()` for the solution provided by `TSSetSolutionFunction()` at each timestep
 
@@ -7360,7 +7368,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDrawSolutionFunction"))
@@ -7383,7 +7391,7 @@ end
 end 
 
 """
-	TSMonitorDrawSolutionPhase(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	TSMonitorDrawSolutionPhase(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by plotting the solution as a phase diagram
 
 Collective
@@ -7397,7 +7405,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDrawSolutionPhase"))
@@ -7420,7 +7428,7 @@ end
 end 
 
 """
-	TSMonitorEnvelope(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
+	TSMonitorEnvelope(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
 Monitors the maximum and minimum value of each component of the solution
 
 Collective
@@ -7437,7 +7445,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorEnvelopeGetBounds()`, `TSMonitorEnvelopeCtxCreate()`
+See also: `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorEnvelopeGetBounds()`, `TSMonitorEnvelopeCtxCreate()`
 
 # External Links
 $(_doc_external("TS/TSMonitorEnvelope"))
@@ -7460,7 +7468,7 @@ end
 end 
 
 """
-	max::PetscVec,min::PetscVec = TSMonitorEnvelopeGetBounds(petsclib::PetscLibType,ts::AbstractTS) 
+	max::PetscVec,min::PetscVec = TSMonitorEnvelopeGetBounds(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the bounds for the components of the solution
 
 Collective
@@ -7474,7 +7482,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorEnvelopeCtx`, `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`
+See also: `TSMonitorEnvelopeCtx`, `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`
 
 # External Links
 $(_doc_external("TS/TSMonitorEnvelopeGetBounds"))
@@ -7501,7 +7509,7 @@ end
 end 
 
 """
-	TSMonitorError(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	TSMonitorError(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Monitors progress of the `TS` solvers by printing the 2 norm of the error at each timestep
 
 Collective
@@ -7518,7 +7526,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
 
 # External Links
 $(_doc_external("TS/TSMonitorError"))
@@ -7541,7 +7549,7 @@ end
 end 
 
 """
-	TSMonitorExtreme(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	TSMonitorExtreme(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Prints the extreme values of the solution at each timestep
 
 Input Parameters:
@@ -7553,7 +7561,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`
+See also: `TS`, `TSMonitorSet()`
 
 # External Links
 $(_doc_external("TS/TSMonitorExtreme"))
@@ -7576,7 +7584,7 @@ end
 end 
 
 """
-	TSMonitorHGSwarmSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
+	TSMonitorHGSwarmSolution(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
 Graphically displays histograms of `DMSWARM` particles
 
 Input Parameters:
@@ -7594,7 +7602,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `TSMonitorSet()`
+See also: `TSMonitorSet()`
 
 # External Links
 $(_doc_external("TS/TSMonitorHGSwarmSolution"))
@@ -7617,8 +7625,8 @@ end
 end 
 
 """
-	TSMonitorLGDMDARay(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
-Monitors the solution of a `DMDA`
+	TSMonitorLGDMDARay(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Monitors the solution of a `DMDA`-based `TS` by plotting values along a ray in a line graph
 
 Collective
 
@@ -7631,7 +7639,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `DMDA`, `TSMonitorSet()`, `TSMonitorDMDARay()`, `TSMonitorDMDARayDestroy()`
+See also: `TS`, `DMDA`, `TSMonitorSet()`, `TSMonitorDMDARay()`, `TSMonitorDMDARayDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGDMDARay"))
@@ -7654,7 +7662,7 @@ end
 end 
 
 """
-	TSMonitorLGError(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
+	TSMonitorLGError(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by plotting each component of the error
 in a time based line graph
 
@@ -7672,7 +7680,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSSetSolutionFunction()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGError"))
@@ -7695,7 +7703,7 @@ end
 end 
 
 """
-	names::String = TSMonitorLGGetVariableNames(petsclib::PetscLibType,ts::AbstractTS) 
+	names::String = TSMonitorLGGetVariableNames(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the name of each component in the solution vector so that it may be displayed in the plot
 
 Collective
@@ -7708,7 +7716,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGGetVariableNames"))
@@ -7733,8 +7741,8 @@ end
 end 
 
 """
-	TSMonitorLGKSPIterations(petsclib::PetscLibType,ts::AbstractTS, n::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
-Monitors the number of linear (`KSP`) iterations used per time step in a line
+	TSMonitorLGKSPIterations(petsclib::PetscLibType, ts::AbstractTS, n::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
+Monitors the number of linear (`KSP`) iterations used per time step in a line-graph plot
 
 Collective
 
@@ -7747,7 +7755,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGSNESIterations()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGSNESIterations()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGKSPIterations"))
@@ -7770,8 +7778,8 @@ end
 end 
 
 """
-	TSMonitorLGSNESIterations(petsclib::PetscLibType,ts::AbstractTS, n::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
-Monitors the number of nonlinear (`SNES`) iterations used per time step in a line
+	TSMonitorLGSNESIterations(petsclib::PetscLibType, ts::AbstractTS, n::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
+Monitors the number of nonlinear (`SNES`) iterations used per time step in a line-graph plot
 
 Collective
 
@@ -7784,7 +7792,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGKSPIterations()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGKSPIterations()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGSNESIterations"))
@@ -7807,7 +7815,7 @@ end
 end 
 
 """
-	TSMonitorLGSetDisplayVariables(petsclib::PetscLibType,ts::AbstractTS, displaynames::Cchar) 
+	TSMonitorLGSetDisplayVariables(petsclib::PetscLibType, ts::AbstractTS, displaynames::Cchar) 
 Sets the variables that are to be display in the monitor
 
 Collective
@@ -7818,7 +7826,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGSetDisplayVariables"))
@@ -7841,7 +7849,7 @@ end
 end 
 
 """
-	TSMonitorLGSetTransform(petsclib::PetscLibType,ts::AbstractTS, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid}) 
+	TSMonitorLGSetTransform(petsclib::PetscLibType, ts::AbstractTS, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid}) 
 Solution vector will be transformed by provided function before being displayed
 
 Collective
@@ -7859,7 +7867,7 @@ Calling sequence of `transform`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorLGCtxSetTransform()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`, `PetscCtxDestroyFn`
+See also: `TSMonitorSet()`, `TSMonitorLGCtxSetTransform()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGSetTransform"))
@@ -7882,7 +7890,7 @@ end
 end 
 
 """
-	TSMonitorLGSetVariableNames(petsclib::PetscLibType,ts::AbstractTS, names::Cchar) 
+	TSMonitorLGSetVariableNames(petsclib::PetscLibType, ts::AbstractTS, names::Cchar) 
 Sets the name of each component in the solution vector so that it may be displayed in the plot
 
 Collective
@@ -7893,7 +7901,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`, `TSMonitorLGCtxSetVariableNames()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`, `TSMonitorLGCtxSetVariableNames()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGSetVariableNames"))
@@ -7916,7 +7924,7 @@ end
 end 
 
 """
-	TSMonitorLGSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
+	TSMonitorLGSolution(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers by plotting each component of the solution vector
 in a time based line graph
 
@@ -7934,7 +7942,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGCtxSetVariableNames()`, `TSMonitorLGCtxGetVariableNames()`,
+See also: `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGCtxCreate()`, `TSMonitorLGCtxSetVariableNames()`, `TSMonitorLGCtxGetVariableNames()`,
 `TSMonitorLGSetVariableNames()`, `TSMonitorLGGetVariableNames()`, `TSMonitorLGSetDisplayVariables()`, `TSMonitorLGCtxSetDisplayVariables()`,
 `TSMonitorLGCtxSetTransform()`, `TSMonitorLGSetTransform()`, `TSMonitorLGError()`, `TSMonitorLGSNESIterations()`, `TSMonitorLGKSPIterations()`,
 `TSMonitorEnvelopeCtxCreate()`, `TSMonitorEnvelopeGetBounds()`, `TSMonitorEnvelopeCtxDestroy()`, `TSMonitorEnvelop()`
@@ -7960,8 +7968,8 @@ end
 end 
 
 """
-	TSMonitorLGTimeStep(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
-Monitors a `TS` by printing the time
+	TSMonitorLGTimeStep(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
+Monitors a `TS` by printing the time-steps
 
 Collective
 
@@ -7974,7 +7982,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGCtxDestroy()`
+See also: `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGTimeStep"))
@@ -7997,8 +8005,8 @@ end
 end 
 
 """
-	TSMonitorSPEig(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
-Monitors the eigenvalues of the linearized right
+	TSMonitorSPEig(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid}) 
+Monitors the eigenvalues of the linearized right-hand-side operator on a scatter plot at each time step
 
 Collective
 
@@ -8014,7 +8022,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorSPEigCtxCreate()`, `TSMonitorSPEigCtxDestroy()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorSPEigCtxCreate()`, `TSMonitorSPEigCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPEig"))
@@ -8037,7 +8045,7 @@ end
 end 
 
 """
-	TSMonitorSPSwarmSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
+	TSMonitorSPSwarmSolution(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
 Graphically displays phase plots of `DMSWARM` particles on a scatter plot
 
 Input Parameters:
@@ -8055,7 +8063,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `DMSWARM`, `TSMonitorSPCtxCreate()`
+See also: `TS`, `TSMonitorSet()`, `DMSWARM`, `TSMonitorSPCtxCreate()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPSwarmSolution"))
@@ -8078,7 +8086,7 @@ end
 end 
 
 """
-	TSMonitorSet(petsclib::PetscLibType,ts::AbstractTS, monitor::external, mctx::Ptr{Cvoid}, mdestroy::Ptr{Cvoid}) 
+	TSMonitorSet(petsclib::PetscLibType, ts::AbstractTS, monitor::external, mctx::Ptr{Cvoid}, mdestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function that is to be used at every
 timestep to display the iteration's  progress.
 
@@ -8099,7 +8107,7 @@ Calling sequence of `monitor`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorDefault()`, `TSMonitorCancel()`, `TSDMSwarmMonitorMoments()`, `TSMonitorExtreme()`, `TSMonitorDrawSolution()`,
+See also: `TSMonitorDefault()`, `TSMonitorCancel()`, `TSDMSwarmMonitorMoments()`, `TSMonitorExtreme()`, `TSMonitorDrawSolution()`,
 `TSMonitorDrawSolutionPhase()`, `TSMonitorDrawSolutionFunction()`, `TSMonitorDrawError()`, `TSMonitorSolution()`, `TSMonitorSolutionVTK()`,
 `TSMonitorLGSolution()`, `TSMonitorLGError()`, `TSMonitorSPSwarmSolution()`, `TSMonitorError()`, `TSMonitorEnvelope()`, `PetscCtxDestroyFn`
 
@@ -8124,7 +8132,7 @@ end
 end 
 
 """
-	TSMonitorSetFromOptions(petsclib::PetscLibType,ts::AbstractTS, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
+	TSMonitorSetFromOptions(petsclib::PetscLibType, ts::AbstractTS, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
 Sets a monitor function and viewer appropriate for the type indicated by the user
 
 Collective
@@ -8150,7 +8158,7 @@ Calling sequence of `monitorsetup`:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+See also: `TS`, `TSMonitorSet()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
 `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
@@ -8179,7 +8187,7 @@ end
 end 
 
 """
-	TSMonitorSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	TSMonitorSolution(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Monitors progress of the `TS` solvers by `VecView()` for the solution at each timestep. Normally the viewer is a binary file or a `PetscDraw` object
 
 Collective
@@ -8193,7 +8201,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorSolutionSetup()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorSolutionSetup()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSolution"))
@@ -8216,7 +8224,7 @@ end
 end 
 
 """
-	TSMonitorSolutionSetup(petsclib::PetscLibType,ts::AbstractTS, vf::Vector{PetscViewerAndFormat}) 
+	TSMonitorSolutionSetup(petsclib::PetscLibType, ts::AbstractTS, vf::Vector{PetscViewerAndFormat}) 
 Setups the context for `TSMonitorSolution()`
 
 Collective
@@ -8227,7 +8235,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSolution()`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorSetFromOptions()`
+See also: `TS`, `TSMonitorSolution()`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorSetFromOptions()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSolutionSetup"))
@@ -8250,7 +8258,7 @@ end
 end 
 
 """
-	TSMonitorSolutionVTK(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::TSMonitorVTKCtx) 
+	TSMonitorSolutionVTK(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, ctx::TSMonitorVTKCtx) 
 Monitors progress of the `TS` solvers by `VecView()` for the solution at selected timesteps.
 
 Collective
@@ -8264,7 +8272,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSolutionVTK"))
@@ -8287,7 +8295,7 @@ end
 end 
 
 """
-	ctx::TSMonitorVTKCtx = TSMonitorSolutionVTKCtxCreate(petsclib::PetscLibType,filenametemplate::String) 
+	ctx::TSMonitorVTKCtx = TSMonitorSolutionVTKCtxCreate(petsclib::PetscLibType, filenametemplate::String) 
 Create the monitor context to be used in `TSMonitorSolutionVTK()`
 
 Not collective
@@ -8300,7 +8308,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorSolutionVTK()`, `TSMonitorSolutionVTKDestroy()`
+See also: `TSMonitorSet()`, `TSMonitorSolutionVTK()`, `TSMonitorSolutionVTKDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSolutionVTKCtxCreate"))
@@ -8325,7 +8333,7 @@ end
 end 
 
 """
-	TSMonitorSolutionVTKDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorVTKCtx, Ref{TSMonitorVTKCtx}}) 
+	TSMonitorSolutionVTKDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorVTKCtx, Ref{TSMonitorVTKCtx}}) 
 Destroy the monitor context created with `TSMonitorSolutionVTKCtxCreate()`
 
 Not Collective
@@ -8335,7 +8343,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorSolutionVTK()`
+See also: `TSMonitorSet()`, `TSMonitorSolutionVTK()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSolutionVTKDestroy"))
@@ -8359,8 +8367,8 @@ end
 end 
 
 """
-	TSMonitorWallClockTime(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
-Monitor wall
+	TSMonitorWallClockTime(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, v::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+Monitor wall-clock time, KSP iterations, and SNES iterations per step.
 
 Input Parameters:
 - `ts`    - the `TS` context
@@ -8374,7 +8382,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSet()`, `TSMonitorDefault()`, `TSMonitorExtreme()`, `TSMonitorDrawSolution()`,
+See also: `TSMonitorSet()`, `TSMonitorDefault()`, `TSMonitorExtreme()`, `TSMonitorDrawSolution()`,
 `TSMonitorDrawSolutionPhase()`, `TSMonitorDrawSolutionFunction()`, `TSMonitorDrawError()`, `TSMonitorSolution()`, `TSMonitorSolutionVTK()`,
 `TSMonitorLGSolution()`, `TSMonitorLGError()`, `TSMonitorSPSwarmSolution()`, `TSMonitorError()`, `TSMonitorEnvelope()`, `TSDMSwarmMonitorMoments()`
 
@@ -8399,8 +8407,8 @@ end
 end 
 
 """
-	TSMonitorWallClockTimeSetUp(petsclib::PetscLibType,ts::AbstractTS, vf::Vector{PetscViewerAndFormat}) 
-Setup routine passed to `TSMonitorSetFromOptions()` when using `
+	TSMonitorWallClockTimeSetUp(petsclib::PetscLibType, ts::AbstractTS, vf::Vector{PetscViewerAndFormat}) 
+Setup routine passed to `TSMonitorSetFromOptions()` when using `-ts_monitor_wall_clock_time`
 
 Input Parameters:
 - `ts` - the `TS` context
@@ -8408,7 +8416,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSet()`
+See also: `TSMonitorSet()`
 
 # External Links
 $(_doc_external("TS/TSMonitorWallClockTimeSetUp"))
@@ -8431,8 +8439,8 @@ end
 end 
 
 """
-	TSPostEvaluate(petsclib::PetscLibType,ts::AbstractTS) 
-Runs the user
+	TSPostEvaluate(petsclib::PetscLibType, ts::AbstractTS) 
+Runs the user-defined post-evaluate function set using `TSSetPostEvaluate()`
 
 Collective
 
@@ -8441,7 +8449,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetPostEvaluate()`, `TSSetPreStep()`, `TSPreStep()`, `TSPostStep()`
+See also: `TS`, `TSSetPostEvaluate()`, `TSSetPreStep()`, `TSPreStep()`, `TSPostStep()`
 
 # External Links
 $(_doc_external("TS/TSPostEvaluate"))
@@ -8464,8 +8472,8 @@ end
 end 
 
 """
-	TSPostStage(petsclib::PetscLibType,ts::AbstractTS, stagetime::PetscReal, stageindex::PetscInt, Y::Vector{<:AbstractPetscVec}) 
-Runs the user
+	TSPostStage(petsclib::PetscLibType, ts::AbstractTS, stagetime::PetscReal, stageindex::PetscInt, Y::Vector{<:AbstractPetscVec}) 
+Runs the user-defined post-stage function set using `TSSetPostStage()`
 
 Collective
 
@@ -8477,7 +8485,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSPreStage()`, `TSSetPreStep()`, `TSPreStep()`, `TSPostStep()`
+See also: `TS`, `TSPreStage()`, `TSSetPreStep()`, `TSPreStep()`, `TSPostStep()`
 
 # External Links
 $(_doc_external("TS/TSPostStage"))
@@ -8500,15 +8508,15 @@ end
 end 
 
 """
-	TSPostStep(petsclib::PetscLibType,ts::AbstractTS) 
-Runs the user
+	TSPostStep(petsclib::PetscLibType, ts::AbstractTS) 
+Runs the user-defined post-step function that was set with `TSSetPostStep()`
 
 Collective
 
 Input Parameter:
 - `ts` - The `TS` context obtained from `TSCreate()`
 
--seealso: [](ch_ts), `TS`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostEvaluate()`, `TSGetTimeStep()`, `TSGetStepNumber()`, `TSGetTime()`, `TSSetPostStep()`
+See also: `TS`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostEvaluate()`, `TSGetTimeStep()`, `TSGetStepNumber()`, `TSGetTime()`, `TSSetPostStep()`
 
 # External Links
 $(_doc_external("TS/TSPostStep"))
@@ -8531,8 +8539,8 @@ end
 end 
 
 """
-	TSPreStage(petsclib::PetscLibType,ts::AbstractTS, stagetime::PetscReal) 
-Runs the user
+	TSPreStage(petsclib::PetscLibType, ts::AbstractTS, stagetime::PetscReal) 
+Runs the user-defined pre-stage function set using `TSSetPreStage()`
 
 Collective
 
@@ -8542,7 +8550,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSPostStage()`, `TSSetPreStep()`, `TSPreStep()`, `TSPostStep()`
+See also: `TS`, `TSPostStage()`, `TSSetPreStep()`, `TSPreStep()`, `TSPostStep()`
 
 # External Links
 $(_doc_external("TS/TSPreStage"))
@@ -8565,8 +8573,8 @@ end
 end 
 
 """
-	TSPreStep(petsclib::PetscLibType,ts::AbstractTS) 
-Runs the user
+	TSPreStep(petsclib::PetscLibType, ts::AbstractTS) 
+Runs the user-defined pre-step function provided with `TSSetPreStep()`
 
 Collective
 
@@ -8575,7 +8583,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetPreStep()`, `TSPreStage()`, `TSPostStage()`, `TSPostStep()`
+See also: `TS`, `TSSetPreStep()`, `TSPreStage()`, `TSPostStage()`, `TSPostStep()`
 
 # External Links
 $(_doc_external("TS/TSPreStep"))
@@ -8598,7 +8606,7 @@ end
 end 
 
 """
-	TSPruneIJacobianColor(petsclib::PetscLibType,ts::AbstractTS, J::AbstractPetscMat, B::AbstractPetscMat) 
+	TSPruneIJacobianColor(petsclib::PetscLibType, ts::AbstractTS, J::AbstractPetscMat, B::AbstractPetscMat) 
 Remove nondiagonal zeros in the Jacobian matrix and update the `MatMFFD` coloring information.
 
 Collective
@@ -8610,7 +8618,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `MatFDColoring`, `TSComputeIJacobianDefaultColor()`, `MatEliminateZeros()`, `MatFDColoringCreate()`, `MatFDColoringSetFunction()`
+See also: `TS`, `MatFDColoring`, `TSComputeIJacobianDefaultColor()`, `MatEliminateZeros()`, `MatFDColoringCreate()`, `MatFDColoringSetFunction()`
 
 # External Links
 $(_doc_external("TS/TSPruneIJacobianColor"))
@@ -8633,8 +8641,8 @@ end
 end 
 
 """
-	residual::PetscVec,fnorm::PetscReal = TSPseudoComputeFunction(petsclib::PetscLibType,ts::AbstractTS, solution::AbstractPetscVec) 
-Compute nonlinear residual for pseudo
+	residual::PetscVec,fnorm::PetscReal = TSPseudoComputeFunction(petsclib::PetscLibType, ts::AbstractTS, solution::AbstractPetscVec) 
+Compute nonlinear residual for pseudo-timestepping
 
 This computes the residual for \\dot U = 0, i.e. F(U, 0) for the IFunction.
 
@@ -8650,7 +8658,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSPSEUDO`
+See also: `TSPSEUDO`
 
 # External Links
 $(_doc_external("TS/TSPseudoComputeFunction"))
@@ -8677,7 +8685,7 @@ end
 end 
 
 """
-	TSPseudoIncrementDtFromInitialDt(petsclib::PetscLibType,ts::AbstractTS) 
+	TSPseudoIncrementDtFromInitialDt(petsclib::PetscLibType, ts::AbstractTS) 
 Indicates that a new timestep
 is computed via the formula   dt = initial\\_dt*initial\\_fnorm/current\\_fnorm   rather than the default update,   dt = current\\_dt*previous\\_fnorm/current\\_fnorm.
 
@@ -8691,7 +8699,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoSetTimeStep()`, `TSPseudoTimeStepDefault()`
+See also: `TSPSEUDO`, `TSPseudoSetTimeStep()`, `TSPseudoTimeStepDefault()`
 
 # External Links
 $(_doc_external("TS/TSPseudoIncrementDtFromInitialDt"))
@@ -8714,7 +8722,7 @@ end
 end 
 
 """
-	TSPseudoSetMaxTimeStep(petsclib::PetscLibType,ts::AbstractTS, maxdt::PetscReal) 
+	TSPseudoSetMaxTimeStep(petsclib::PetscLibType, ts::AbstractTS, maxdt::PetscReal) 
 Sets the maximum time step
 when using the TSPseudoTimeStepDefault() routine.
 
@@ -8729,7 +8737,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoSetTimeStep()`, `TSPseudoTimeStepDefault()`
+See also: `TSPSEUDO`, `TSPseudoSetTimeStep()`, `TSPseudoTimeStepDefault()`
 
 # External Links
 $(_doc_external("TS/TSPseudoSetMaxTimeStep"))
@@ -8752,8 +8760,8 @@ end
 end 
 
 """
-	TSPseudoSetTimeStep(petsclib::PetscLibType,ts::AbstractTS, dt::external, ctx::Ptr{Cvoid}) 
-Sets the user
+	TSPseudoSetTimeStep(petsclib::PetscLibType, ts::AbstractTS, dt::external, ctx::Ptr{Cvoid}) 
+Sets the user-defined routine to be
 called at each pseudo-timestep to update the timestep.
 
 Logically Collective
@@ -8770,7 +8778,7 @@ Calling sequence of `dt`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoTimeStepDefault()`, `TSPseudoComputeTimeStep()`
+See also: `TSPSEUDO`, `TSPseudoTimeStepDefault()`, `TSPseudoComputeTimeStep()`
 
 # External Links
 $(_doc_external("TS/TSPseudoSetTimeStep"))
@@ -8793,7 +8801,7 @@ end
 end 
 
 """
-	TSPseudoSetTimeStepIncrement(petsclib::PetscLibType,ts::AbstractTS, inc::PetscReal) 
+	TSPseudoSetTimeStepIncrement(petsclib::PetscLibType, ts::AbstractTS, inc::PetscReal) 
 Sets the scaling increment applied to
 dt when using the TSPseudoTimeStepDefault() routine.
 
@@ -8808,7 +8816,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoSetTimeStep()`, `TSPseudoTimeStepDefault()`
+See also: `TSPSEUDO`, `TSPseudoSetTimeStep()`, `TSPseudoTimeStepDefault()`
 
 # External Links
 $(_doc_external("TS/TSPseudoSetTimeStepIncrement"))
@@ -8831,8 +8839,8 @@ end
 end 
 
 """
-	TSPseudoSetVerifyTimeStep(petsclib::PetscLibType,ts::AbstractTS, dt::external, ctx::Ptr{Cvoid}) 
-Sets a user
+	TSPseudoSetVerifyTimeStep(petsclib::PetscLibType, ts::AbstractTS, dt::external, ctx::Ptr{Cvoid}) 
+Sets a user-defined routine to verify the quality of the
 last timestep.
 
 Logically Collective
@@ -8851,7 +8859,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSPSEUDO`, `TSPseudoVerifyTimeStepDefault()`, `TSPseudoVerifyTimeStep()`
+See also: `TSPSEUDO`, `TSPseudoVerifyTimeStepDefault()`, `TSPseudoVerifyTimeStep()`
 
 # External Links
 $(_doc_external("TS/TSPseudoSetVerifyTimeStep"))
@@ -8874,8 +8882,8 @@ end
 end 
 
 """
-	newdt::PetscReal = TSPseudoTimeStepDefault(petsclib::PetscLibType,ts::AbstractTS, dtctx::Ptr{Cvoid}) 
-Default code to compute pseudo
+	newdt::PetscReal = TSPseudoTimeStepDefault(petsclib::PetscLibType, ts::AbstractTS, dtctx::Ptr{Cvoid}) 
+Default code to compute pseudo-timestepping.  Use with `TSPseudoSetTimeStep()`.
 
 Collective, No Fortran Support
 
@@ -8888,7 +8896,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSPseudoSetTimeStep()`, `TSPseudoComputeTimeStep()`, `TSPSEUDO`
+See also: `TSPseudoSetTimeStep()`, `TSPseudoComputeTimeStep()`, `TSPSEUDO`
 
 # External Links
 $(_doc_external("TS/TSPseudoTimeStepDefault"))
@@ -8913,7 +8921,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = TSPythonGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	pyname::Ptr{Cchar} = TSPythonGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of a `TS` object implemented in Python.
 
 Not Collective
@@ -8926,7 +8934,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSCreate()`, `TSSetType()`, `TSPYTHON`, `PetscPythonInitialize()`, `TSPythonSetType()`
+See also: `TSCreate()`, `TSSetType()`, `TSPYTHON`, `PetscPythonInitialize()`, `TSPythonSetType()`
 
 # External Links
 $(_doc_external("TS/TSPythonGetType"))
@@ -8951,7 +8959,7 @@ end
 end 
 
 """
-	TSPythonSetType(petsclib::PetscLibType,ts::AbstractTS, pyname::String) 
+	TSPythonSetType(petsclib::PetscLibType, ts::AbstractTS, pyname::String) 
 Initialize a `TS` object implemented in Python.
 
 Collective
@@ -8965,7 +8973,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSCreate()`, `TSSetType()`, `TSPYTHON`, `PetscPythonInitialize()`
+See also: `TSCreate()`, `TSSetType()`, `TSPYTHON`, `PetscPythonInitialize()`
 
 # External Links
 $(_doc_external("TS/TSPythonSetType"))
@@ -8988,8 +8996,8 @@ end
 end 
 
 """
-	TSRHSJacobianSetReuse(petsclib::PetscLibType,ts::AbstractTS, reuse::PetscBool) 
-restore the RHS Jacobian before calling the user
+	TSRHSJacobianSetReuse(petsclib::PetscLibType, ts::AbstractTS, reuse::PetscBool) 
+restore the RHS Jacobian before calling the user-provided `TSRHSJacobianFn` function again
 
 Logically Collective
 
@@ -8999,7 +9007,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetRHSJacobian()`, `TSComputeRHSJacobianConstant()`
+See also: `TS`, `TSSetRHSJacobian()`, `TSComputeRHSJacobianConstant()`
 
 # External Links
 $(_doc_external("TS/TSRHSJacobianSetReuse"))
@@ -9022,7 +9030,7 @@ end
 end 
 
 """
-	flg::PetscBool = TSRHSJacobianTest(petsclib::PetscLibType,ts::AbstractTS) 
+	flg::PetscBool = TSRHSJacobianTest(petsclib::PetscLibType, ts::AbstractTS) 
 Compares the multiply routine provided to the `MATSHELL` with differencing on the `TS` given RHS function.
 
 Logically Collective
@@ -9038,7 +9046,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellGetOperation()`, `MatShellTestMultTranspose()`, `TSRHSJacobianTestTranspose()`
+See also: `TS`, `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellGetOperation()`, `MatShellTestMultTranspose()`, `TSRHSJacobianTestTranspose()`
 
 # External Links
 $(_doc_external("TS/TSRHSJacobianTest"))
@@ -9063,7 +9071,7 @@ end
 end 
 
 """
-	flg::PetscBool = TSRHSJacobianTestTranspose(petsclib::PetscLibType,ts::AbstractTS) 
+	flg::PetscBool = TSRHSJacobianTestTranspose(petsclib::PetscLibType, ts::AbstractTS) 
 Compares the multiply transpose routine provided to the `MATSHELL` with differencing on the `TS` given RHS function.
 
 Logically Collective
@@ -9079,7 +9087,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `Mat`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellGetOperation()`, `MatShellTestMultTranspose()`, `TSRHSJacobianTest()`
+See also: `TS`, `Mat`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellGetOperation()`, `MatShellTestMultTranspose()`, `TSRHSJacobianTest()`
 
 # External Links
 $(_doc_external("TS/TSRHSJacobianTestTranspose"))
@@ -9104,7 +9112,7 @@ end
 end 
 
 """
-	is::IS = TSRHSSplitGetIS(petsclib::PetscLibType,ts::AbstractTS, splitname::String) 
+	is::IS = TSRHSSplitGetIS(petsclib::PetscLibType, ts::AbstractTS, splitname::String) 
 Retrieves the elements for a split as an `IS`
 
 Logically Collective
@@ -9118,7 +9126,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `IS`, `TSRHSSplitSetIS()`
+See also: `TS`, `IS`, `TSRHSSplitSetIS()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitGetIS"))
@@ -9143,7 +9151,7 @@ end
 end 
 
 """
-	snes::SNES = TSRHSSplitGetSNES(petsclib::PetscLibType,ts::AbstractTS) 
+	snes::SNES = TSRHSSplitGetSNES(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the `SNES` (nonlinear solver) associated with
 a `TS` (timestepper) context when RHS splits are used.
 
@@ -9157,7 +9165,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSCreate()`, `TSRHSSplitSetSNES()`
+See also: `TS`, `SNES`, `TSCreate()`, `TSRHSSplitSetSNES()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitGetSNES"))
@@ -9182,8 +9190,8 @@ end
 end 
 
 """
-	subts::TS = TSRHSSplitGetSubTS(petsclib::PetscLibType,ts::AbstractTS, splitname::String) 
-Get the sub
+	subts::TS = TSRHSSplitGetSubTS(petsclib::PetscLibType, ts::AbstractTS, splitname::String) 
+Get the sub-`TS` by split name.
 
 Logically Collective
 
@@ -9196,7 +9204,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `IS`, `TSGetRHSSplitFunction()`
+See also: `TS`, `IS`, `TSGetRHSSplitFunction()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitGetSubTS"))
@@ -9221,8 +9229,8 @@ end
 end 
 
 """
-	n::PetscInt,subts::Ptr{TS} = TSRHSSplitGetSubTSs(petsclib::PetscLibType,ts::AbstractTS) 
-Get an array of all sub
+	n::PetscInt,subts::Ptr{TS} = TSRHSSplitGetSubTSs(petsclib::PetscLibType, ts::AbstractTS) 
+Get an array of all sub-`TS` contexts.
 
 Logically Collective
 
@@ -9235,7 +9243,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `IS`, `TSGetRHSSplitFunction()`
+See also: `TS`, `IS`, `TSGetRHSSplitFunction()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitGetSubTSs"))
@@ -9262,7 +9270,7 @@ end
 end 
 
 """
-	TSRHSSplitSetIFunction(petsclib::PetscLibType,ts::AbstractTS, splitname::String, r::AbstractPetscVec, ifunc::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSRHSSplitSetIFunction(petsclib::PetscLibType, ts::AbstractTS, splitname::String, r::AbstractPetscVec, ifunc::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the split implicit function for `TSARKIMEX`
 
 Logically Collective
@@ -9276,7 +9284,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSIFunctionFn`, `IS`, `TSRHSSplitSetIS()`, `TSARKIMEX`, `TSARKIMEXSetFastSlowSplit()`
+See also: `TS`, `TSIFunctionFn`, `IS`, `TSRHSSplitSetIS()`, `TSARKIMEX`, `TSARKIMEXSetFastSlowSplit()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetIFunction"))
@@ -9299,7 +9307,7 @@ end
 end 
 
 """
-	TSRHSSplitSetIJacobian(petsclib::PetscLibType,ts::AbstractTS, splitname::String, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, ijac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSRHSSplitSetIJacobian(petsclib::PetscLibType, ts::AbstractTS, splitname::String, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, ijac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the Jacobian for the split implicit function with `TSARKIMEX`
 
 Logically Collective
@@ -9314,7 +9322,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSRHSSplitSetIFunction`, `TSIJacobianFn`, `IS`, `TSRHSSplitSetIS()`, `TSARKIMEXSetFastSlowSplit()`
+See also: `TS`, `TSRHSSplitSetIFunction`, `TSIJacobianFn`, `IS`, `TSRHSSplitSetIS()`, `TSARKIMEXSetFastSlowSplit()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetIJacobian"))
@@ -9337,7 +9345,7 @@ end
 end 
 
 """
-	TSRHSSplitSetIS(petsclib::PetscLibType,ts::AbstractTS, splitname::String, is::AbstractIS) 
+	TSRHSSplitSetIS(petsclib::PetscLibType, ts::AbstractTS, splitname::String, is::AbstractIS) 
 Set the index set for the specified split
 
 Logically Collective
@@ -9349,7 +9357,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `IS`, `TSRHSSplitGetIS()`, `TSARKIMEXSetFastSlowSplit()`
+See also: `TS`, `IS`, `TSRHSSplitGetIS()`, `TSARKIMEXSetFastSlowSplit()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetIS"))
@@ -9372,8 +9380,8 @@ end
 end 
 
 """
-	TSRHSSplitSetRHSFunction(petsclib::PetscLibType,ts::AbstractTS, splitname::String, r::AbstractPetscVec, rhsfunc::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
-Set the split right
+	TSRHSSplitSetRHSFunction(petsclib::PetscLibType, ts::AbstractTS, splitname::String, r::AbstractPetscVec, rhsfunc::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+Set the split right-hand-side functions.
 
 Logically Collective
 
@@ -9386,7 +9394,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSRHSFunctionFn`, `IS`, `TSRHSSplitSetIS()`
+See also: `TS`, `TSRHSFunctionFn`, `IS`, `TSRHSSplitSetIS()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetRHSFunction"))
@@ -9409,7 +9417,7 @@ end
 end 
 
 """
-	TSRHSSplitSetSNES(petsclib::PetscLibType,ts::AbstractTS, snes::AbstractSNES) 
+	TSRHSSplitSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::AbstractSNES) 
 Set the `SNES` (nonlinear solver) to be used by the
 timestepping context when RHS splits are used.
 
@@ -9421,7 +9429,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSCreate()`, `TSRHSSplitGetSNES()`
+See also: `TS`, `SNES`, `TSCreate()`, `TSRHSSplitGetSNES()`
 
 # External Links
 $(_doc_external("TS/TSRHSSplitSetSNES"))
@@ -9450,7 +9458,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`, `TSRKInitializePackage()`
+See also: `PetscFinalize()`, `TSRKInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSRKFinalizePackage"))
@@ -9472,8 +9480,8 @@ end
 end 
 
 """
-	use_multirate::PetscBool = TSRKGetMultirate(petsclib::PetscLibType,ts::AbstractTS) 
-Gets whether to use the interpolation
+	use_multirate::PetscBool = TSRKGetMultirate(petsclib::PetscLibType, ts::AbstractTS) 
+Gets whether to use the interpolation-based multirate `TSRK` method
 
 Not Collective
 
@@ -9485,7 +9493,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSRK`, `TSRKSetMultirate()`
+See also: `TSRK`, `TSRKSetMultirate()`
 
 # External Links
 $(_doc_external("TS/TSRKGetMultirate"))
@@ -9510,7 +9518,7 @@ end
 end 
 
 """
-	order::PetscInt = TSRKGetOrder(petsclib::PetscLibType,ts::AbstractTS) 
+	order::PetscInt = TSRKGetOrder(petsclib::PetscLibType, ts::AbstractTS) 
 Get the order of the `TSRK` scheme
 
 Not Collective
@@ -9523,7 +9531,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSRK`, `TSRKGetType()`
+See also: `TSRK`, `TSRKGetType()`
 
 # External Links
 $(_doc_external("TS/TSRKGetOrder"))
@@ -9548,7 +9556,7 @@ end
 end 
 
 """
-	s::PetscInt,A::Ptr{PetscReal},b::Ptr{PetscReal},c::Ptr{PetscReal},bembed::Ptr{PetscReal},p::PetscInt,binterp::Ptr{PetscReal},FSAL::PetscBool = TSRKGetTableau(petsclib::PetscLibType,ts::AbstractTS) 
+	s::PetscInt,A::Ptr{PetscReal},b::Ptr{PetscReal},c::Ptr{PetscReal},bembed::Ptr{PetscReal},p::PetscInt,binterp::Ptr{PetscReal},FSAL::PetscBool = TSRKGetTableau(petsclib::PetscLibType, ts::AbstractTS) 
 Get info on the `TSRK` tableau
 
 Not Collective
@@ -9568,7 +9576,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSRK`, `TSRKRegister()`, `TSRKSetType()`
+See also: `TSRK`, `TSRKRegister()`, `TSRKSetType()`
 
 # External Links
 $(_doc_external("TS/TSRKGetTableau"))
@@ -9607,7 +9615,7 @@ end
 end 
 
 """
-	rktype::TSRKType = TSRKGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	rktype::TSRKType = TSRKGetType(petsclib::PetscLibType, ts::AbstractTS) 
 Get the type of `TSRK` scheme
 
 Not Collective
@@ -9620,7 +9628,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSRKSetType()`
+See also: `TSRKSetType()`
 
 # External Links
 $(_doc_external("TS/TSRKGetType"))
@@ -9651,7 +9659,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `TSInitializePackage()`, `PetscInitialize()`, `TSRKFinalizePackage()`
+See also: `TSInitializePackage()`, `PetscInitialize()`, `TSRKFinalizePackage()`
 
 # External Links
 $(_doc_external("TS/TSRKInitializePackage"))
@@ -9673,7 +9681,7 @@ end
 end 
 
 """
-	TSRKRegister(petsclib::PetscLibType,name::TSRKType, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembed::Vector{PetscReal}, p::PetscInt, binterp::Vector{PetscReal}) 
+	TSRKRegister(petsclib::PetscLibType, name::TSRKType, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, b::Vector{PetscReal}, c::Vector{PetscReal}, bembed::Vector{PetscReal}, p::PetscInt, binterp::Vector{PetscReal}) 
 Register an `TSRK` scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used, No Fortran Support
@@ -9691,7 +9699,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSRK`
+See also: `TSRK`
 
 # External Links
 $(_doc_external("TS/TSRKRegister"))
@@ -9721,7 +9729,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_ts), `TSRK`, `TSRKRegister()`, `TSRKRegisterAll()`
+See also: `TSRK`, `TSRKRegister()`, `TSRKRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSRKRegisterDestroy"))
@@ -9743,8 +9751,8 @@ end
 end 
 
 """
-	TSRKSetMultirate(petsclib::PetscLibType,ts::AbstractTS, use_multirate::PetscBool) 
-Use the interpolation
+	TSRKSetMultirate(petsclib::PetscLibType, ts::AbstractTS, use_multirate::PetscBool) 
+Use the interpolation-based multirate `TSRK` method
 
 Logically Collective
 
@@ -9757,7 +9765,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSRK`, `TSRKGetMultirate()`
+See also: `TSRK`, `TSRKGetMultirate()`
 
 # External Links
 $(_doc_external("TS/TSRKSetMultirate"))
@@ -9780,7 +9788,7 @@ end
 end 
 
 """
-	TSRKSetType(petsclib::PetscLibType,ts::AbstractTS, rktype::TSRKType) 
+	TSRKSetType(petsclib::PetscLibType, ts::AbstractTS, rktype::TSRKType) 
 Set the type of the `TSRK` scheme
 
 Logically Collective
@@ -9794,7 +9802,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSRKGetType()`, `TSRK`, `TSRKType`, `TSRK1FE`, `TSRK2A`, `TSRK2B`, `TSRK3`, `TSRK3BS`, `TSRK4`, `TSRK5F`, `TSRK5DP`, `TSRK5BS`, `TSRK6VR`, `TSRK7VR`, `TSRK8VR`
+See also: `TSRKGetType()`, `TSRK`, `TSRKType`, `TSRK1FE`, `TSRK2A`, `TSRK2B`, `TSRK3`, `TSRK3BS`, `TSRK4`, `TSRK5F`, `TSRK5DP`, `TSRK5BS`, `TSRK6VR`, `TSRK7VR`, `TSRK8VR`
 
 # External Links
 $(_doc_external("TS/TSRKSetType"))
@@ -9817,7 +9825,7 @@ end
 end 
 
 """
-	TSRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	TSRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a creation method to the `TS` package.
 
 Not Collective, No Fortran Support
@@ -9831,7 +9839,7 @@ Calling sequence of `function`:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSetType()`, `TSType`, `TSRegisterAll()`, `TSRegisterDestroy()`
+See also: `TSSetType()`, `TSType`, `TSRegisterAll()`, `TSRegisterDestroy()`
 
 # External Links
 $(_doc_external("TS/TSRegister"))
@@ -9854,7 +9862,7 @@ end
 end 
 
 """
-	TSRemoveTrajectory(petsclib::PetscLibType,ts::AbstractTS) 
+	TSRemoveTrajectory(petsclib::PetscLibType, ts::AbstractTS) 
 Destroys and removes the internal `TSTrajectory` object from a `TS`
 
 Collective
@@ -9864,7 +9872,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSResetTrajectory()`, `TSAdjointSolve()`
+See also: `TSTrajectory`, `TSResetTrajectory()`, `TSAdjointSolve()`
 
 # External Links
 $(_doc_external("TS/TSRemoveTrajectory"))
@@ -9887,7 +9895,7 @@ end
 end 
 
 """
-	TSReset(petsclib::PetscLibType,ts::AbstractTS) 
+	TSReset(petsclib::PetscLibType, ts::AbstractTS) 
 Resets a `TS` context to the state it was in before `TSSetUp()` was called and removes any allocated `Vec` and `Mat` from its data structures
 
 Collective
@@ -9897,7 +9905,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSCreate()`, `TSSetUp()`, `TSDestroy()`, `TSSetResize()`
+See also: `TS`, `TSCreate()`, `TSSetUp()`, `TSDestroy()`, `TSSetResize()`
 
 # External Links
 $(_doc_external("TS/TSReset"))
@@ -9920,7 +9928,7 @@ end
 end 
 
 """
-	TSResetTrajectory(petsclib::PetscLibType,ts::AbstractTS) 
+	TSResetTrajectory(petsclib::PetscLibType, ts::AbstractTS) 
 Destroys and recreates the internal `TSTrajectory` object
 
 Collective
@@ -9930,7 +9938,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSGetTrajectory()`, `TSAdjointSolve()`, `TSRemoveTrajectory()`
+See also: `TSTrajectory`, `TSGetTrajectory()`, `TSAdjointSolve()`, `TSRemoveTrajectory()`
 
 # External Links
 $(_doc_external("TS/TSResetTrajectory"))
@@ -9953,8 +9961,8 @@ end
 end 
 
 """
-	TSResize(petsclib::PetscLibType,ts::AbstractTS) 
-Runs the user
+	TSResize(petsclib::PetscLibType, ts::AbstractTS) 
+Runs the user-defined transfer functions provided with `TSSetResize()`
 
 Collective
 
@@ -9963,7 +9971,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetResize()`
+See also: `TS`, `TSSetResize()`
 
 # External Links
 $(_doc_external("TS/TSResize"))
@@ -9986,7 +9994,7 @@ end
 end 
 
 """
-	TSResizeRegisterVec(petsclib::PetscLibType,ts::AbstractTS, name::String, vec::AbstractPetscVec) 
+	TSResizeRegisterVec(petsclib::PetscLibType, ts::AbstractTS, name::String, vec::AbstractPetscVec) 
 Register a vector to be transferred with `TSResize()`.
 
 Collective
@@ -9998,7 +10006,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetResize()`, `TSResize()`, `TSResizeRetrieveVec()`
+See also: `TS`, `TSSetResize()`, `TSResize()`, `TSResizeRetrieveVec()`
 
 # External Links
 $(_doc_external("TS/TSResizeRegisterVec"))
@@ -10021,7 +10029,7 @@ end
 end 
 
 """
-	TSResizeRetrieveVec(petsclib::PetscLibType,ts::AbstractTS, name::String, vec::AbstractPetscVec) 
+	TSResizeRetrieveVec(petsclib::PetscLibType, ts::AbstractTS, name::String, vec::AbstractPetscVec) 
 Retrieve a vector registered with `TSResizeRegisterVec()`.
 
 Collective
@@ -10033,7 +10041,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSetResize()`, `TSResize()`, `TSResizeRegisterVec()`
+See also: `TS`, `TSSetResize()`, `TSResize()`, `TSResizeRegisterVec()`
 
 # External Links
 $(_doc_external("TS/TSResizeRetrieveVec"))
@@ -10058,7 +10066,7 @@ end
 end 
 
 """
-	TSRestartStep(petsclib::PetscLibType,ts::AbstractTS) 
+	TSRestartStep(petsclib::PetscLibType, ts::AbstractTS) 
 Flags the solver to restart the next step
 
 Collective
@@ -10068,7 +10076,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSBDF`, `TSSolve()`, `TSSetPreStep()`, `TSSetPostStep()`
+See also: `TS`, `TSBDF`, `TSSolve()`, `TSSetPreStep()`, `TSSetPostStep()`
 
 # External Links
 $(_doc_external("TS/TSRestartStep"))
@@ -10091,7 +10099,7 @@ end
 end 
 
 """
-	TSRollBack(petsclib::PetscLibType,ts::AbstractTS) 
+	TSRollBack(petsclib::PetscLibType, ts::AbstractTS) 
 Rolls back one time step
 
 Collective
@@ -10101,7 +10109,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetStepRollBack()`, `TSCreate()`, `TSSetUp()`, `TSDestroy()`, `TSSolve()`, `TSSetPreStep()`, `TSSetPreStage()`, `TSInterpolate()`
+See also: `TS`, `TSGetStepRollBack()`, `TSCreate()`, `TSSetUp()`, `TSDestroy()`, `TSSolve()`, `TSSetPreStep()`, `TSSetPreStage()`, `TSInterpolate()`
 
 # External Links
 $(_doc_external("TS/TSRollBack"))
@@ -10130,7 +10138,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `TSROSW`, `PetscFinalize()`, `TSRosWInitializePackage()`
+See also: `TSROSW`, `PetscFinalize()`, `TSRosWInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSRosWFinalizePackage"))
@@ -10152,8 +10160,8 @@ end
 end 
 
 """
-	rostype::TSRosWType = TSRosWGetType(petsclib::PetscLibType,ts::AbstractTS) 
-Get the type of Rosenbrock
+	rostype::TSRosWType = TSRosWGetType(petsclib::PetscLibType, ts::AbstractTS) 
+Get the type of Rosenbrock-W scheme
 
 Logically Collective
 
@@ -10165,7 +10173,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSRosWType`, `TSRosWSetType()`
+See also: `TSRosWType`, `TSRosWSetType()`
 
 # External Links
 $(_doc_external("TS/TSRosWGetType"))
@@ -10196,7 +10204,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `TSROSW`, `PetscInitialize()`, `TSRosWFinalizePackage()`
+See also: `TSROSW`, `PetscInitialize()`, `TSRosWFinalizePackage()`
 
 # External Links
 $(_doc_external("TS/TSRosWInitializePackage"))
@@ -10218,7 +10226,7 @@ end
 end 
 
 """
-	TSRosWRegister(petsclib::PetscLibType,name::TSRosWType, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, Gamma::Vector{PetscReal}, b::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
+	TSRosWRegister(petsclib::PetscLibType, name::TSRosWType, order::PetscInt, s::PetscInt, A::Vector{PetscReal}, Gamma::Vector{PetscReal}, b::Vector{PetscReal}, bembed::Vector{PetscReal}, pinterp::PetscInt, binterpt::Vector{PetscReal}) 
 register a `TSROSW`, Rosenbrock W scheme by providing the entries in the Butcher tableau and optionally embedded approximations and interpolation
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used
@@ -10236,7 +10244,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSROSW`
+See also: `TSROSW`
 
 # External Links
 $(_doc_external("TS/TSRosWRegister"))
@@ -10266,7 +10274,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_ts), `TSRosWRegister()`, `TSRosWRegisterAll()`
+See also: `TSRosWRegister()`, `TSRosWRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSRosWRegisterDestroy"))
@@ -10288,7 +10296,7 @@ end
 end 
 
 """
-	TSRosWRegisterRos4(petsclib::PetscLibType,name::TSRosWType, gamma::PetscReal, a2::PetscReal, a3::PetscReal, b3::PetscReal, e4::PetscReal) 
+	TSRosWRegisterRos4(petsclib::PetscLibType, name::TSRosWType, gamma::PetscReal, a2::PetscReal, a3::PetscReal, b3::PetscReal, e4::PetscReal) 
 register a fourth order Rosenbrock scheme by providing parameter choices
 
 Not Collective, but the same schemes should be registered on all processes on which they will be used
@@ -10303,7 +10311,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSROSW`, `TSRosWRegister()`
+See also: `TSROSW`, `TSRosWRegister()`
 
 # External Links
 $(_doc_external("TS/TSRosWRegisterRos4"))
@@ -10326,7 +10334,7 @@ end
 end 
 
 """
-	TSRosWSetRecomputeJacobian(petsclib::PetscLibType,ts::AbstractTS, flg::PetscBool) 
+	TSRosWSetRecomputeJacobian(petsclib::PetscLibType, ts::AbstractTS, flg::PetscBool) 
 Set whether to recompute the Jacobian at each stage. The default is to update the Jacobian once per step.
 
 Logically Collective
@@ -10337,7 +10345,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSRosWType`, `TSRosWGetType()`
+See also: `TSRosWType`, `TSRosWGetType()`
 
 # External Links
 $(_doc_external("TS/TSRosWSetRecomputeJacobian"))
@@ -10360,8 +10368,8 @@ end
 end 
 
 """
-	TSRosWSetType(petsclib::PetscLibType,ts::AbstractTS, roswtype::TSRosWType) 
-Set the type of Rosenbrock
+	TSRosWSetType(petsclib::PetscLibType, ts::AbstractTS, roswtype::TSRosWType) 
+Set the type of Rosenbrock-W, `TSROSW`, scheme
 
 Logically Collective
 
@@ -10371,7 +10379,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSRosWGetType()`, `TSROSW`, `TSROSW2M`, `TSROSW2P`, `TSROSWRA3PW`, `TSROSWRA34PW2`, `TSROSWRODAS3`, `TSROSWSANDU3`, `TSROSWASSP3P3S1C`, `TSROSWLASSP3P4S2C`, `TSROSWLLSSP3P4S2C`, `TSROSWARK3`
+See also: `TSRosWGetType()`, `TSROSW`, `TSROSW2M`, `TSROSW2P`, `TSROSWRA3PW`, `TSROSWRA34PW2`, `TSROSWRODAS3`, `TSROSWSANDU3`, `TSROSWASSP3P3S1C`, `TSROSWLASSP3P4S2C`, `TSROSWLLSSP3P4S2C`, `TSROSWARK3`
 
 # External Links
 $(_doc_external("TS/TSRosWSetType"))
@@ -10400,7 +10408,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`, `TSSSPInitiallizePackage()`, `TSInitializePackage()`
+See also: `PetscFinalize()`, `TSSSPInitiallizePackage()`, `TSInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSSSPFinalizePackage"))
@@ -10422,7 +10430,7 @@ end
 end 
 
 """
-	nstages::PetscInt = TSSSPGetNumStages(petsclib::PetscLibType,ts::AbstractTS) 
+	nstages::PetscInt = TSSSPGetNumStages(petsclib::PetscLibType, ts::AbstractTS) 
 get the number of stages in the `TSSSP` time integration scheme
 
 Logically Collective
@@ -10435,7 +10443,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSSSP`, `TSSSPGetType()`, `TSSSPSetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
+See also: `TSSSP`, `TSSSPGetType()`, `TSSSPSetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
 
 # External Links
 $(_doc_external("TS/TSSSPGetNumStages"))
@@ -10460,7 +10468,7 @@ end
 end 
 
 """
-	type::TSSSPType = TSSSPGetType(petsclib::PetscLibType,ts::AbstractTS) 
+	type::TSSSPType = TSSSPGetType(petsclib::PetscLibType, ts::AbstractTS) 
 get the `TSSSP` time integration scheme
 
 Logically Collective
@@ -10473,7 +10481,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSSSP`, `TSSSPSetType()`, `TSSSPSetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
+See also: `TSSSP`, `TSSSPSetType()`, `TSSSPSetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
 
 # External Links
 $(_doc_external("TS/TSSSPGetType"))
@@ -10504,7 +10512,7 @@ from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`, `TSSSPFinalizePackage()`, `TSInitializePackage()`
+See also: `PetscInitialize()`, `TSSSPFinalizePackage()`, `TSInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSSSPInitializePackage"))
@@ -10526,7 +10534,7 @@ end
 end 
 
 """
-	TSSSPSetNumStages(petsclib::PetscLibType,ts::AbstractTS, nstages::PetscInt) 
+	TSSSPSetNumStages(petsclib::PetscLibType, ts::AbstractTS, nstages::PetscInt) 
 set the number of stages to use with the `TSSSP` method. Must be called after
 `TSSSPSetType()`.
 
@@ -10542,7 +10550,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSSSP`, `TSSSPGetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
+See also: `TSSSP`, `TSSSPGetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
 
 # External Links
 $(_doc_external("TS/TSSSPSetNumStages"))
@@ -10565,7 +10573,7 @@ end
 end 
 
 """
-	TSSSPSetType(petsclib::PetscLibType,ts::AbstractTS, ssptype::TSSSPType) 
+	TSSSPSetType(petsclib::PetscLibType, ts::AbstractTS, ssptype::TSSSPType) 
 set the `TSSSP` time integration scheme to use
 
 Logically Collective
@@ -10580,7 +10588,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSSSP`, `TSSSPGetType()`, `TSSSPSetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
+See also: `TSSSP`, `TSSSPGetType()`, `TSSSPSetNumStages()`, `TSSSPRKS2`, `TSSSPRKS3`, `TSSSPRK104`
 
 # External Links
 $(_doc_external("TS/TSSSPSetType"))
@@ -10603,8 +10611,8 @@ end
 end 
 
 """
-	TSSetApplicationContext(petsclib::PetscLibType,ts::AbstractTS, ctx::Ptr{Cvoid}) 
-Sets an optional user
+	TSSetApplicationContext(petsclib::PetscLibType, ts::AbstractTS, ctx::Ptr{Cvoid}) 
+Sets an optional user-defined context for the timesteppers that may be accessed, for example inside the user provided
 `TS` callbacks with `TSGetApplicationContext()`
 
 Logically Collective
@@ -10615,7 +10623,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetApplicationContext()`
+See also: `TS`, `TSGetApplicationContext()`
 
 # External Links
 $(_doc_external("TS/TSSetApplicationContext"))
@@ -10638,7 +10646,7 @@ end
 end 
 
 """
-	TSSetCFLTimeLocal(petsclib::PetscLibType,ts::AbstractTS, cfltime::PetscReal) 
+	TSSetCFLTimeLocal(petsclib::PetscLibType, ts::AbstractTS, cfltime::PetscReal) 
 Set the local CFL constraint relative to forward Euler
 
 Logically Collective
@@ -10647,7 +10655,7 @@ Input Parameters:
 - `ts`      - time stepping context
 - `cfltime` - maximum stable time step if using forward Euler (value can be different on each process)
 
--seealso: [](ch_ts), `TSGetCFLTime()`, `TSADAPTCFL`
+See also: `TSGetCFLTime()`, `TSADAPTCFL`
 
 # External Links
 $(_doc_external("TS/TSSetCFLTimeLocal"))
@@ -10670,7 +10678,7 @@ end
 end 
 
 """
-	TSSetComputeExactError(petsclib::PetscLibType,ts::AbstractTS, exactError::external) 
+	TSSetComputeExactError(petsclib::PetscLibType, ts::AbstractTS, exactError::external) 
 Set the function used to automatically compute the exact error for the timestepping.
 
 Logically collective
@@ -10686,7 +10694,7 @@ Calling sequence of `exactError`:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetComputeExactError()`, `TSComputeExactError()`
+See also: `TS`, `TSGetComputeExactError()`, `TSComputeExactError()`
 
 # External Links
 $(_doc_external("TS/TSSetComputeExactError"))
@@ -10709,7 +10717,7 @@ end
 end 
 
 """
-	TSSetComputeInitialCondition(petsclib::PetscLibType,ts::AbstractTS, initCondition::external) 
+	TSSetComputeInitialCondition(petsclib::PetscLibType, ts::AbstractTS, initCondition::external) 
 Set the function used to automatically compute an initial condition for the timestepping.
 
 Logically collective
@@ -10724,7 +10732,7 @@ Calling sequence of `initCondition`:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetComputeInitialCondition()`, `TSComputeInitialCondition()`
+See also: `TS`, `TSGetComputeInitialCondition()`, `TSComputeInitialCondition()`
 
 # External Links
 $(_doc_external("TS/TSSetComputeInitialCondition"))
@@ -10747,7 +10755,7 @@ end
 end 
 
 """
-	TSSetConvergedReason(petsclib::PetscLibType,ts::AbstractTS, reason::TSConvergedReason) 
+	TSSetConvergedReason(petsclib::PetscLibType, ts::AbstractTS, reason::TSConvergedReason) 
 Sets the reason for handling the convergence of `TSSolve()`.
 
 Logically Collective; reason must contain common value
@@ -10759,7 +10767,7 @@ manual pages for the individual convergence tests for complete lists
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSConvergedReason`
+See also: `TS`, `TSSolve()`, `TSConvergedReason`
 
 # External Links
 $(_doc_external("TS/TSSetConvergedReason"))
@@ -10782,7 +10790,7 @@ end
 end 
 
 """
-	TSSetCostGradients(petsclib::PetscLibType,ts::AbstractTS, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}) 
+	TSSetCostGradients(petsclib::PetscLibType, ts::AbstractTS, numcost::PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec}) 
 Sets the initial value of the gradients of the cost function w.r.t. initial values and w.r.t. the problem parameters
 for use by the `TS` adjoint routines.
 
@@ -10796,7 +10804,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `TS`, `TSAdjointSolve()`, `TSGetCostGradients()`
+See also: `TS`, `TSAdjointSolve()`, `TSGetCostGradients()`
 
 # External Links
 $(_doc_external("Sensitivity/TSSetCostGradients"))
@@ -10819,8 +10827,8 @@ end
 end 
 
 """
-	TSSetCostHessianProducts(petsclib::PetscLibType,ts::AbstractTS, numcost::PetscInt, lambda2::Vector{<:AbstractPetscVec}, mu2::Vector{<:AbstractPetscVec}, dir::AbstractPetscVec) 
-Sets the initial value of the Hessian
+	TSSetCostHessianProducts(petsclib::PetscLibType, ts::AbstractTS, numcost::PetscInt, lambda2::Vector{<:AbstractPetscVec}, mu2::Vector{<:AbstractPetscVec}, dir::AbstractPetscVec) 
+Sets the initial value of the Hessian-vector products of the cost function w.r.t. initial values and w.r.t. the problem parameters
 for use by the `TS` adjoint routines.
 
 Logically Collective
@@ -10834,7 +10842,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSAdjointSolve()`, `TSAdjointSetForward()`
+See also: `TS`, `TSAdjointSolve()`, `TSAdjointSetForward()`
 
 # External Links
 $(_doc_external("Sensitivity/TSSetCostHessianProducts"))
@@ -10857,7 +10865,7 @@ end
 end 
 
 """
-	TSSetDM(petsclib::PetscLibType,ts::AbstractTS, dm::AbstractPetscDM) 
+	TSSetDM(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM) 
 Sets the `DM` that may be used by some nonlinear solvers or preconditioners under the `TS`
 
 Logically Collective
@@ -10868,7 +10876,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `DM`, `TSGetDM()`, `SNESSetDM()`, `SNESGetDM()`
+See also: `TS`, `DM`, `TSGetDM()`, `SNESSetDM()`, `SNESGetDM()`
 
 # External Links
 $(_doc_external("TS/TSSetDM"))
@@ -10891,7 +10899,7 @@ end
 end 
 
 """
-	TSSetEquationType(petsclib::PetscLibType,ts::AbstractTS, equation_type::TSEquationType) 
+	TSSetEquationType(petsclib::PetscLibType, ts::AbstractTS, equation_type::TSEquationType) 
 Sets the type of the equation that `TS` is solving.
 
 Not Collective
@@ -10902,7 +10910,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetEquationType()`, `TSEquationType`
+See also: `TS`, `TSGetEquationType()`, `TSEquationType`
 
 # External Links
 $(_doc_external("TS/TSSetEquationType"))
@@ -10925,7 +10933,7 @@ end
 end 
 
 """
-	TSSetErrorIfStepFails(petsclib::PetscLibType,ts::AbstractTS, err::PetscBool) 
+	TSSetErrorIfStepFails(petsclib::PetscLibType, ts::AbstractTS, err::PetscBool) 
 Immediately error if no step succeeds during `TSSolve()`
 
 Not Collective
@@ -10939,7 +10947,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `TSGetConvergedReason()`
+See also: `TS`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `TSGetConvergedReason()`
 
 # External Links
 $(_doc_external("TS/TSSetErrorIfStepFails"))
@@ -10962,7 +10970,7 @@ end
 end 
 
 """
-	TSSetEvaluationTimes(petsclib::PetscLibType,ts::AbstractTS, n::PetscInt, time_points::Vector{PetscReal}) 
+	TSSetEvaluationTimes(petsclib::PetscLibType, ts::AbstractTS, n::PetscInt, time_points::Vector{PetscReal}) 
 sets the evaluation points. The solution will be computed and stored for each time requested
 
 Collective
@@ -10977,7 +10985,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetEvaluationTimes()`, `TSGetEvaluationSolutions()`, `TSSetTimeSpan()`
+See also: `TS`, `TSGetEvaluationTimes()`, `TSGetEvaluationSolutions()`, `TSSetTimeSpan()`
 
 # External Links
 $(_doc_external("TS/TSSetEvaluationTimes"))
@@ -11000,7 +11008,7 @@ end
 end 
 
 """
-	TSSetEventHandler(petsclib::PetscLibType,ts::AbstractTS, nevents::PetscInt, direction::Vector{PetscInt}, terminate::Vector{PetscBool}, indicator::external, postevent::external, ctx::Ptr{Cvoid}) 
+	TSSetEventHandler(petsclib::PetscLibType, ts::AbstractTS, nevents::PetscInt, direction::Vector{PetscInt}, terminate::Vector{PetscBool}, indicator::external, postevent::external, ctx::Ptr{Cvoid}) 
 Sets functions and parameters used for indicating events and handling them
 
 Logically Collective
@@ -11045,7 +11053,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_event), `TSEvent`, `TSCreate()`, `TSSetTimeStep()`, `TSSetConvergedReason()`
+See also: [](sec_ts_event), `TSEvent`, `TSCreate()`, `TSSetTimeStep()`, `TSSetConvergedReason()`
 
 # External Links
 $(_doc_external("TS/TSSetEventHandler"))
@@ -11068,7 +11076,7 @@ end
 end 
 
 """
-	TSSetEventTolerances(petsclib::PetscLibType,ts::AbstractTS, tol::PetscReal, vtol::Vector{PetscReal}) 
+	TSSetEventTolerances(petsclib::PetscLibType, ts::AbstractTS, tol::PetscReal, vtol::Vector{PetscReal}) 
 Set tolerances for event (indicator function) zero crossings
 
 Logically Collective
@@ -11083,7 +11091,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_ts), [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`
+See also: [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`
 
 # External Links
 $(_doc_external("TS/TSSetEventTolerances"))
@@ -11106,7 +11114,7 @@ end
 end 
 
 """
-	TSSetExactFinalTime(petsclib::PetscLibType,ts::AbstractTS, eftopt::TSExactFinalTimeOption) 
+	TSSetExactFinalTime(petsclib::PetscLibType, ts::AbstractTS, eftopt::TSExactFinalTimeOption) 
 Determines whether to adapt the final time step to
 match the exact final time, to interpolate the solution to the exact final time,
 or to just return at the final time `TS` computed (which may be slightly larger
@@ -11117,7 +11125,18 @@ Logically Collective
 Input Parameters:
 - `ts`     - the time-step context
 - `eftopt` - exact final time option
--seealso: [](ch_ts), `TS`, `TSExactFinalTimeOption`, `TSGetExactFinalTime()`
+``
+TS_EXACTFINALTIME_STEPOVER    - Don't do anything if final time is exceeded, just use it
+TS_EXACTFINALTIME_INTERPOLATE - Interpolate back to final time if the final time is exceeded
+TS_EXACTFINALTIME_MATCHSTEP   - Adapt final time step to ensure the computed final time exactly equals the requested final time
+``
+
+Options Database Key:
+- `-ts_exact_final_time stepover,interpolate,matchstep` - select the final step approach at runtime
+
+Level: beginner
+
+See also: `TS`, `TSExactFinalTimeOption`, `TSGetExactFinalTime()`
 
 # External Links
 $(_doc_external("TS/TSSetExactFinalTime"))
@@ -11140,7 +11159,7 @@ end
 end 
 
 """
-	TSSetForcingFunction(petsclib::PetscLibType,ts::AbstractTS, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetForcingFunction(petsclib::PetscLibType, ts::AbstractTS, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Provide a function that computes a forcing term for a ODE or PDE
 
 Logically Collective
@@ -11153,7 +11172,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSForcingFn`, `TSSetRHSJacobian()`, `TSSetIJacobian()`,
+See also: `TS`, `TSForcingFn`, `TSSetRHSJacobian()`, `TSSetIJacobian()`,
 `TSComputeSolutionFunction()`, `TSSetSolutionFunction()`
 
 # External Links
@@ -11177,7 +11196,7 @@ end
 end 
 
 """
-	TSSetFromOptions(petsclib::PetscLibType,ts::AbstractTS) 
+	TSSetFromOptions(petsclib::PetscLibType, ts::AbstractTS) 
 Sets various `TS` parameters from the options database
 
 Collective
@@ -11229,7 +11248,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSGetType()`
+See also: `TS`, `TSGetType()`
 
 # External Links
 $(_doc_external("TS/TSSetFromOptions"))
@@ -11252,7 +11271,7 @@ end
 end 
 
 """
-	TSSetFunctionDomainError(petsclib::PetscLibType,ts::AbstractTS, func::external) 
+	TSSetFunctionDomainError(petsclib::PetscLibType, ts::AbstractTS, func::external) 
 Set a function that tests if the current state vector is valid
 
 Logically collective
@@ -11269,7 +11288,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSAdaptCheckStage()`, `TSFunctionDomainError()`, `SNESSetFunctionDomainError()`, `TSGetSNES()`
+See also: `TSAdaptCheckStage()`, `TSFunctionDomainError()`, `SNESSetFunctionDomainError()`, `TSGetSNES()`
 
 # External Links
 $(_doc_external("TS/TSSetFunctionDomainError"))
@@ -11292,7 +11311,7 @@ end
 end 
 
 """
-	TSSetI2Function(petsclib::PetscLibType,ts::AbstractTS, F::AbstractPetscVec, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetI2Function(petsclib::PetscLibType, ts::AbstractTS, F::AbstractPetscVec, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the function to compute F(t,U,U_t,U_tt) where F = 0 is the DAE to be solved.
 
 Logically Collective
@@ -11305,7 +11324,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSI2FunctionFn`, `TSSetI2Jacobian()`, `TSSetIFunction()`,
+See also: `TS`, `TSI2FunctionFn`, `TSSetI2Jacobian()`, `TSSetIFunction()`,
 `TSCreate()`, `TSSetRHSFunction()`
 
 # External Links
@@ -11329,7 +11348,7 @@ end
 end 
 
 """
-	TSSetI2Jacobian(petsclib::PetscLibType,ts::AbstractTS, J::AbstractPetscMat, P::AbstractPetscMat, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetI2Jacobian(petsclib::PetscLibType, ts::AbstractTS, J::AbstractPetscMat, P::AbstractPetscMat, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the function to compute the matrix dF/dU + v*dF/dU_t  + a*dF/dU_tt
 where F(t,U,U_t,U_tt) is the function you provided with `TSSetI2Function()`.
 
@@ -11344,7 +11363,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSI2JacobianFn`, `TSSetI2Function()`, `TSGetI2Jacobian()`
+See also: `TS`, `TSI2JacobianFn`, `TSSetI2Function()`, `TSGetI2Jacobian()`
 
 # External Links
 $(_doc_external("TS/TSSetI2Jacobian"))
@@ -11367,7 +11386,7 @@ end
 end 
 
 """
-	TSSetIFunction(petsclib::PetscLibType,ts::AbstractTS, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetIFunction(petsclib::PetscLibType, ts::AbstractTS, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the function to compute F(t,U,U_t) where F() = 0 is the DAE to be solved.
 
 Logically Collective
@@ -11380,7 +11399,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSIFunctionFn`, `TSSetRHSJacobian()`, `TSSetRHSFunction()`,
+See also: `TS`, `TSIFunctionFn`, `TSSetRHSJacobian()`, `TSSetRHSFunction()`,
 `TSSetIJacobian()`
 
 # External Links
@@ -11404,8 +11423,8 @@ end
 end 
 
 """
-	TSSetIHessianProduct(petsclib::PetscLibType,ts::AbstractTS, ihp1::Vector{<:AbstractPetscVec}, ihessianproductfunc1::external, ihp2::Vector{<:AbstractPetscVec}, ihessianproductfunc2::external, ihp3::Vector{<:AbstractPetscVec}, ihessianproductfunc3::external, ihp4::Vector{<:AbstractPetscVec}, ihessianproductfunc4::external, ctx::Ptr{Cvoid}) 
-Sets the function that computes the vector
+	TSSetIHessianProduct(petsclib::PetscLibType, ts::AbstractTS, ihp1::Vector{<:AbstractPetscVec}, ihessianproductfunc1::external, ihp2::Vector{<:AbstractPetscVec}, ihessianproductfunc2::external, ihp3::Vector{<:AbstractPetscVec}, ihessianproductfunc3::external, ihp4::Vector{<:AbstractPetscVec}, ihessianproductfunc4::external, ctx::Ptr{Cvoid}) 
+Sets the function that computes the vector-Hessian-vector product. The Hessian is the second-order derivative of `F` (IFunction) w.r.t. the state variable.
 
 Logically Collective
 
@@ -11432,7 +11451,7 @@ Calling sequence of `ihessianproductfunc1`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`
+See also: `TS`
 
 # External Links
 $(_doc_external("Sensitivity/TSSetIHessianProduct"))
@@ -11455,7 +11474,7 @@ end
 end 
 
 """
-	TSSetIJacobian(petsclib::PetscLibType,ts::AbstractTS, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetIJacobian(petsclib::PetscLibType, ts::AbstractTS, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the function to compute the matrix dF/dU + a*dF/dU_t where F(t,U,U_t) is the function
 provided with `TSSetIFunction()`.
 
@@ -11470,7 +11489,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSIJacobianFn`, `TSSetIFunction()`, `TSSetRHSJacobian()`,
+See also: `TS`, `TSIJacobianFn`, `TSSetIFunction()`, `TSSetRHSJacobian()`,
 `SNESComputeJacobianDefaultColor()`, `SNESComputeJacobianDefault()`, `TSSetRHSFunction()`
 
 # External Links
@@ -11494,7 +11513,7 @@ end
 end 
 
 """
-	TSSetIJacobianP(petsclib::PetscLibType,ts::AbstractTS, Amat::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) 
+	TSSetIJacobianP(petsclib::PetscLibType, ts::AbstractTS, Amat::AbstractPetscMat, func::external, ctx::Ptr{Cvoid}) 
 Sets the function that computes the Jacobian of F w.r.t. the parameters p where F(Udot,U,p,t) = G(U,p,t), as well as the location to store the matrix.
 
 Logically Collective
@@ -11516,7 +11535,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSSetRHSJacobianP()`, `TS`
+See also: `TSSetRHSJacobianP()`, `TS`
 
 # External Links
 $(_doc_external("Sensitivity/TSSetIJacobianP"))
@@ -11539,7 +11558,7 @@ end
 end 
 
 """
-	TSSetMatStructure(petsclib::PetscLibType,ts::AbstractTS, str::MatStructure) 
+	TSSetMatStructure(petsclib::PetscLibType, ts::AbstractTS, str::MatStructure) 
 sets the relationship between the nonzero structure of the RHS Jacobian matrix to the IJacobian matrix.
 
 Logically  Collective
@@ -11550,7 +11569,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `MatAXPY()`, `MatStructure`
+See also: `TS`, `MatAXPY()`, `MatStructure`
 
 # External Links
 $(_doc_external("TS/TSSetMatStructure"))
@@ -11573,7 +11592,7 @@ end
 end 
 
 """
-	TSSetMaxSNESFailures(petsclib::PetscLibType,ts::AbstractTS, fails::PetscInt) 
+	TSSetMaxSNESFailures(petsclib::PetscLibType, ts::AbstractTS, fails::PetscInt) 
 Sets the maximum number of failed `SNES` solves allowed before `TSSolve()` is ended with a `TSConvergedReason` of `TS_DIVERGED_NONLINEAR_SOLVE`
 
 Not Collective
@@ -11587,7 +11606,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `SNESGetConvergedReason()`,
+See also: `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxStepRejections()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `SNESGetConvergedReason()`,
 `TSGetConvergedReason()`, `TS_DIVERGED_NONLINEAR_SOLVE`, `TSConvergedReason`
 
 # External Links
@@ -11611,8 +11630,8 @@ end
 end 
 
 """
-	TSSetMaxStepRejections(petsclib::PetscLibType,ts::AbstractTS, rejects::PetscInt) 
-Sets the maximum number of step rejections allowed in a single time
+	TSSetMaxStepRejections(petsclib::PetscLibType, ts::AbstractTS, rejects::PetscInt) 
+Sets the maximum number of step rejections allowed in a single time-step attempt before a time step fails in `TSSolve()` with `TS_DIVERGED_STEP_REJECTED`
 
 Not Collective
 
@@ -11625,7 +11644,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxSNESFailures()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `TSSetErrorIfStepFails()`,
+See also: `TS`, `SNES`, `TSGetSNESIterations()`, `TSGetKSPIterations()`, `TSSetMaxSNESFailures()`, `TSGetStepRejections()`, `TSGetSNESFailures()`, `TSSetErrorIfStepFails()`,
 `TSGetConvergedReason()`, `TSSolve()`, `TS_DIVERGED_STEP_REJECTED`
 
 # External Links
@@ -11649,7 +11668,7 @@ end
 end 
 
 """
-	TSSetMaxSteps(petsclib::PetscLibType,ts::AbstractTS, maxsteps::PetscInt) 
+	TSSetMaxSteps(petsclib::PetscLibType, ts::AbstractTS, maxsteps::PetscInt) 
 Sets the maximum number of steps to use.
 
 Logically Collective
@@ -11663,7 +11682,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetMaxSteps()`, `TSSetMaxTime()`, `TSSetExactFinalTime()`
+See also: `TS`, `TSGetMaxSteps()`, `TSSetMaxTime()`, `TSSetExactFinalTime()`
 
 # External Links
 $(_doc_external("TS/TSSetMaxSteps"))
@@ -11686,7 +11705,7 @@ end
 end 
 
 """
-	TSSetMaxTime(petsclib::PetscLibType,ts::AbstractTS, maxtime::PetscReal) 
+	TSSetMaxTime(petsclib::PetscLibType, ts::AbstractTS, maxtime::PetscReal) 
 Sets the maximum (or final) time for timestepping.
 
 Logically Collective
@@ -11700,7 +11719,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetMaxTime()`, `TSSetMaxSteps()`, `TSSetExactFinalTime()`
+See also: `TS`, `TSGetMaxTime()`, `TSSetMaxSteps()`, `TSSetExactFinalTime()`
 
 # External Links
 $(_doc_external("TS/TSSetMaxTime"))
@@ -11723,7 +11742,7 @@ end
 end 
 
 """
-	TSSetOptionsPrefix(petsclib::PetscLibType,ts::AbstractTS, prefix::String) 
+	TSSetOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS, prefix::String) 
 Sets the prefix used for searching for all
 TS options in the database.
 
@@ -11735,7 +11754,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSSetFromOptions()`, `TSAppendOptionsPrefix()`
+See also: `TS`, `TSSetFromOptions()`, `TSAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("TS/TSSetOptionsPrefix"))
@@ -11758,8 +11777,8 @@ end
 end 
 
 """
-	TSSetPostEvaluate(petsclib::PetscLibType,ts::AbstractTS, func::external) 
-Sets the general
+	TSSetPostEvaluate(petsclib::PetscLibType, ts::AbstractTS, func::external) 
+Sets the general-purpose function
 called at the end of each step evaluation.
 
 Logically Collective
@@ -11773,7 +11792,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetPreStage()`, `TSSetPreStep()`, `TSSetPostStep()`, `TSGetApplicationContext()`
+See also: `TS`, `TSSetPreStage()`, `TSSetPreStep()`, `TSSetPostStep()`, `TSGetApplicationContext()`
 
 # External Links
 $(_doc_external("TS/TSSetPostEvaluate"))
@@ -11796,7 +11815,7 @@ end
 end 
 
 """
-	TSSetPostEventSecondStep(petsclib::PetscLibType,ts::AbstractTS, dt2::PetscReal) 
+	TSSetPostEventSecondStep(petsclib::PetscLibType, ts::AbstractTS, dt2::PetscReal) 
 Set the second time step to use after the event
 
 Logically Collective
@@ -11810,7 +11829,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventStep()`
+See also: [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPostEventSecondStep"))
@@ -11833,7 +11852,7 @@ end
 end 
 
 """
-	TSSetPostEventStep(petsclib::PetscLibType,ts::AbstractTS, dt1::PetscReal) 
+	TSSetPostEventStep(petsclib::PetscLibType, ts::AbstractTS, dt1::PetscReal) 
 Set the first time step to use after the event
 
 Logically Collective
@@ -11847,7 +11866,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventSecondStep()`
+See also: [](sec_ts_event), `TS`, `TSEvent`, `TSSetEventHandler()`, `TSSetPostEventSecondStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPostEventStep"))
@@ -11870,8 +11889,8 @@ end
 end 
 
 """
-	TSSetPostStage(petsclib::PetscLibType,ts::AbstractTS, func::external) 
-Sets the general
+	TSSetPostStage(petsclib::PetscLibType, ts::AbstractTS, func::external) 
+Sets the general-purpose function
 called once at the end of each stage.
 
 Logically Collective
@@ -11888,7 +11907,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetPreStage()`, `TSSetPreStep()`, `TSSetPostStep()`, `TSGetApplicationContext()`
+See also: `TS`, `TSSetPreStage()`, `TSSetPreStep()`, `TSSetPostStep()`, `TSGetApplicationContext()`
 
 # External Links
 $(_doc_external("TS/TSSetPostStage"))
@@ -11911,8 +11930,8 @@ end
 end 
 
 """
-	TSSetPostStep(petsclib::PetscLibType,ts::AbstractTS, func::external) 
-Sets the general
+	TSSetPostStep(petsclib::PetscLibType, ts::AbstractTS, func::external) 
+Sets the general-purpose function
 called once at the end of each successful time step.
 
 Logically Collective
@@ -11926,7 +11945,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostEvaluate()`, `TSGetTimeStep()`, `TSGetStepNumber()`, `TSGetTime()`, `TSRestartStep()`
+See also: `TS`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostEvaluate()`, `TSGetTimeStep()`, `TSGetStepNumber()`, `TSGetTime()`, `TSRestartStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPostStep"))
@@ -11949,8 +11968,8 @@ end
 end 
 
 """
-	TSSetPreStage(petsclib::PetscLibType,ts::AbstractTS, func::external) 
-Sets the general
+	TSSetPreStage(petsclib::PetscLibType, ts::AbstractTS, func::external) 
+Sets the general-purpose function
 called once at the beginning of each stage.
 
 Logically Collective
@@ -11965,7 +11984,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetPostStage()`, `TSSetPreStep()`, `TSSetPostStep()`, `TSGetApplicationContext()`
+See also: `TS`, `TSSetPostStage()`, `TSSetPreStep()`, `TSSetPostStep()`, `TSGetApplicationContext()`
 
 # External Links
 $(_doc_external("TS/TSSetPreStage"))
@@ -11988,8 +12007,8 @@ end
 end 
 
 """
-	TSSetPreStep(petsclib::PetscLibType,ts::AbstractTS, func::external) 
-Sets the general
+	TSSetPreStep(petsclib::PetscLibType, ts::AbstractTS, func::external) 
+Sets the general-purpose function
 called once at the beginning of each time step.
 
 Logically Collective
@@ -12003,7 +12022,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetPreStage()`, `TSSetPostStage()`, `TSSetPostStep()`, `TSStep()`, `TSRestartStep()`
+See also: `TS`, `TSSetPreStage()`, `TSSetPostStage()`, `TSSetPostStep()`, `TSStep()`, `TSRestartStep()`
 
 # External Links
 $(_doc_external("TS/TSSetPreStep"))
@@ -12026,7 +12045,7 @@ end
 end 
 
 """
-	TSSetProblemType(petsclib::PetscLibType,ts::AbstractTS, type::TSProblemType) 
+	TSSetProblemType(petsclib::PetscLibType, ts::AbstractTS, type::TSProblemType) 
 Sets the type of problem to be solved.
 
 Not collective
@@ -12034,7 +12053,15 @@ Not collective
 Input Parameters:
 - `ts`   - The `TS`
 - `type` - One of `TS_LINEAR`, `TS_NONLINEAR` where these types refer to problems of the forms
--seealso: [](ch_ts), `TSSetUp()`, `TSProblemType`, `TS`
+``
+U_t - A U = 0      (linear)
+U_t - A(t) U = 0   (linear)
+F(t,U,U_t) = 0     (nonlinear)
+``
+
+Level: beginner
+
+See also: `TSSetUp()`, `TSProblemType`, `TS`
 
 # External Links
 $(_doc_external("TS/TSSetProblemType"))
@@ -12057,7 +12084,7 @@ end
 end 
 
 """
-	TSSetRHSFunction(petsclib::PetscLibType,ts::AbstractTS, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetRHSFunction(petsclib::PetscLibType, ts::AbstractTS, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets the routine for evaluating the function,
 where U_t = G(t,u).
 
@@ -12071,7 +12098,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSRHSFunctionFn`, `TSSetRHSJacobian()`, `TSSetIJacobian()`, `TSSetIFunction()`
+See also: `TS`, `TSRHSFunctionFn`, `TSSetRHSJacobian()`, `TSSetIJacobian()`, `TSSetIFunction()`
 
 # External Links
 $(_doc_external("TS/TSSetRHSFunction"))
@@ -12094,8 +12121,8 @@ end
 end 
 
 """
-	TSSetRHSHessianProduct(petsclib::PetscLibType,ts::AbstractTS, rhshp1::Vector{<:AbstractPetscVec}, rhshessianproductfunc1::external, rhshp2::Vector{<:AbstractPetscVec}, rhshessianproductfunc2::external, rhshp3::Vector{<:AbstractPetscVec}, rhshessianproductfunc3::external, rhshp4::Vector{<:AbstractPetscVec}, rhshessianproductfunc4::external, ctx::Ptr{Cvoid}) 
-Sets the function that computes the vector
+	TSSetRHSHessianProduct(petsclib::PetscLibType, ts::AbstractTS, rhshp1::Vector{<:AbstractPetscVec}, rhshessianproductfunc1::external, rhshp2::Vector{<:AbstractPetscVec}, rhshessianproductfunc2::external, rhshp3::Vector{<:AbstractPetscVec}, rhshessianproductfunc3::external, rhshp4::Vector{<:AbstractPetscVec}, rhshessianproductfunc4::external, ctx::Ptr{Cvoid}) 
+Sets the function that computes the vector-Hessian-vector
 product. The Hessian is the second-order derivative of `G` (RHSFunction) w.r.t. the state
 variable.
 
@@ -12124,7 +12151,7 @@ Calling sequence of `rhshessianproductfunc1`:
 
 Level: intermediate
 
--seealso: `TS`, `TSAdjoint`
+See also: `TS`, `TSAdjoint`
 
 # External Links
 $(_doc_external("Sensitivity/TSSetRHSHessianProduct"))
@@ -12147,7 +12174,7 @@ end
 end 
 
 """
-	TSSetRHSJacobian(petsclib::PetscLibType,ts::AbstractTS, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetRHSJacobian(petsclib::PetscLibType, ts::AbstractTS, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets the function to compute the Jacobian of G,
 where U_t = G(U,t), as well as the location to store the matrix.
 
@@ -12162,7 +12189,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSRHSJacobianFn`, `SNESComputeJacobianDefaultColor()`,
+See also: `TS`, `TSRHSJacobianFn`, `SNESComputeJacobianDefaultColor()`,
 `TSSetRHSFunction()`, `TSRHSJacobianSetReuse()`, `TSSetIJacobian()`, `TSRHSFunctionFn`, `TSIFunctionFn`
 
 # External Links
@@ -12186,7 +12213,7 @@ end
 end 
 
 """
-	TSSetRHSJacobianP(petsclib::PetscLibType,ts::AbstractTS, Amat::AbstractPetscMat, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetRHSJacobianP(petsclib::PetscLibType, ts::AbstractTS, Amat::AbstractPetscMat, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets the function that computes the Jacobian of G w.r.t. the parameters p where U_t = G(U,p,t), as well as the location to store the matrix.
 
 Logically Collective
@@ -12199,7 +12226,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSRHSJacobianPFn`, `TSGetRHSJacobianP()`
+See also: `TS`, `TSRHSJacobianPFn`, `TSGetRHSJacobianP()`
 
 # External Links
 $(_doc_external("Sensitivity/TSSetRHSJacobianP"))
@@ -12222,7 +12249,7 @@ end
 end 
 
 """
-	TSSetResize(petsclib::PetscLibType,ts::AbstractTS, rollback::PetscBool, setup::external, transfer::external, ctx::Ptr{Cvoid}) 
+	TSSetResize(petsclib::PetscLibType, ts::AbstractTS, rollback::PetscBool, setup::external, transfer::external, ctx::Ptr{Cvoid}) 
 Sets the resize callbacks.
 
 Logically Collective
@@ -12249,7 +12276,7 @@ Calling sequence of `transfer`:
 - `vecsout` - array of transferred vectors
 - `ctx`     - user defined context
 
--seealso: [](ch_ts), `TS`, `TSSetDM()`, `TSSetIJacobian()`, `TSSetRHSJacobian()`
+See also: `TS`, `TSSetDM()`, `TSSetIJacobian()`, `TSSetRHSJacobian()`
 
 # External Links
 $(_doc_external("TS/TSSetResize"))
@@ -12272,7 +12299,7 @@ end
 end 
 
 """
-	TSSetRunSteps(petsclib::PetscLibType,ts::AbstractTS, runsteps::PetscInt) 
+	TSSetRunSteps(petsclib::PetscLibType, ts::AbstractTS, runsteps::PetscInt) 
 Sets the maximum number of steps to take in each call to `TSSolve()`.
 
 If the step count when `TSSolve()` is `start_step`, this will stop the simulation once `current_step - start_step >= run_steps`.
@@ -12290,7 +12317,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetRunSteps()`, `TSSetMaxTime()`, `TSSetExactFinalTime()`, `TSSetMaxSteps()`
+See also: `TS`, `TSGetRunSteps()`, `TSSetMaxTime()`, `TSSetExactFinalTime()`, `TSSetMaxSteps()`
 
 # External Links
 $(_doc_external("TS/TSSetRunSteps"))
@@ -12313,7 +12340,7 @@ end
 end 
 
 """
-	TSSetSNES(petsclib::PetscLibType,ts::AbstractTS, snes::AbstractSNES) 
+	TSSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::AbstractSNES) 
 Set the `SNES` (nonlinear solver) to be used by the `TS` timestepping context
 
 Collective
@@ -12324,7 +12351,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `SNES`, `TSCreate()`, `TSSetUp()`, `TSSolve()`, `TSGetSNES()`
+See also: `TS`, `SNES`, `TSCreate()`, `TSSetUp()`, `TSSolve()`, `TSGetSNES()`
 
 # External Links
 $(_doc_external("TS/TSSetSNES"))
@@ -12347,7 +12374,7 @@ end
 end 
 
 """
-	TSSetSaveTrajectory(petsclib::PetscLibType,ts::AbstractTS) 
+	TSSetSaveTrajectory(petsclib::PetscLibType, ts::AbstractTS) 
 Causes the `TS` to save its solutions as it iterates forward in time in a `TSTrajectory` object
 
 Collective
@@ -12361,7 +12388,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSTrajectoryType`, `TSTrajectory`, `TSGetTrajectory()`, `TSAdjointSolve()`
+See also: `TS`, `TSTrajectoryType`, `TSTrajectory`, `TSGetTrajectory()`, `TSAdjointSolve()`
 
 # External Links
 $(_doc_external("TS/TSSetSaveTrajectory"))
@@ -12384,7 +12411,7 @@ end
 end 
 
 """
-	TSSetSolution(petsclib::PetscLibType,ts::AbstractTS, u::AbstractPetscVec) 
+	TSSetSolution(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec) 
 Sets the initial solution vector
 for use by the `TS` routines.
 
@@ -12396,7 +12423,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSSetSolutionFunction()`, `TSGetSolution()`, `TSCreate()`
+See also: `TS`, `TSSetSolutionFunction()`, `TSGetSolution()`, `TSCreate()`
 
 # External Links
 $(_doc_external("TS/TSSetSolution"))
@@ -12419,7 +12446,7 @@ end
 end 
 
 """
-	TSSetSolutionFunction(petsclib::PetscLibType,ts::AbstractTS, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Provide a function that computes the solution of the ODE or DAE
 
 Logically Collective
@@ -12436,7 +12463,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSolutionFn`, `TSSetRHSJacobian()`, `TSSetIJacobian()`, `TSComputeSolutionFunction()`, `TSSetForcingFunction()`, `TSSetSolution()`, `TSGetSolution()`, `TSMonitorLGError()`, `TSMonitorDrawError()`
+See also: `TS`, `TSSolutionFn`, `TSSetRHSJacobian()`, `TSSetIJacobian()`, `TSComputeSolutionFunction()`, `TSSetForcingFunction()`, `TSSetSolution()`, `TSGetSolution()`, `TSMonitorLGError()`, `TSMonitorDrawError()`
 
 # External Links
 $(_doc_external("TS/TSSetSolutionFunction"))
@@ -12459,7 +12486,7 @@ end
 end 
 
 """
-	TSSetStepNumber(petsclib::PetscLibType,ts::AbstractTS, steps::PetscInt) 
+	TSSetStepNumber(petsclib::PetscLibType, ts::AbstractTS, steps::PetscInt) 
 Sets the number of steps completed.
 
 Logically Collective
@@ -12470,7 +12497,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSGetStepNumber()`, `TSSetTime()`, `TSSetTimeStep()`, `TSSetSolution()`
+See also: `TS`, `TSGetStepNumber()`, `TSSetTime()`, `TSSetTimeStep()`, `TSSetSolution()`
 
 # External Links
 $(_doc_external("TS/TSSetStepNumber"))
@@ -12493,7 +12520,7 @@ end
 end 
 
 """
-	TSSetTime(petsclib::PetscLibType,ts::AbstractTS, t::PetscReal) 
+	TSSetTime(petsclib::PetscLibType, ts::AbstractTS, t::PetscReal) 
 Allows one to reset the time.
 
 Logically Collective
@@ -12504,7 +12531,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetTime()`, `TSSetMaxSteps()`
+See also: `TS`, `TSGetTime()`, `TSSetMaxSteps()`
 
 # External Links
 $(_doc_external("TS/TSSetTime"))
@@ -12527,7 +12554,7 @@ end
 end 
 
 """
-	TSSetTimeError(petsclib::PetscLibType,ts::AbstractTS, v::AbstractPetscVec) 
+	TSSetTimeError(petsclib::PetscLibType, ts::AbstractTS, v::AbstractPetscVec) 
 Sets the estimated error vector, if the chosen
 `TSType` has an error estimation functionality. This can be used
 to restart such a time integrator with a given error vector.
@@ -12540,7 +12567,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetSolution()`, `TSGetTimeError()`
+See also: `TS`, `TSSetSolution()`, `TSGetTimeError()`
 
 # External Links
 $(_doc_external("TS/TSSetTimeError"))
@@ -12563,7 +12590,7 @@ end
 end 
 
 """
-	TSSetTimeSpan(petsclib::PetscLibType,ts::AbstractTS, n::PetscInt, span_times::Vector{PetscReal}) 
+	TSSetTimeSpan(petsclib::PetscLibType, ts::AbstractTS, n::PetscInt, span_times::Vector{PetscReal}) 
 sets the time span. The solution will be computed and stored for each time requested in the span
 
 Collective
@@ -12578,7 +12605,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSetEvaluationTimes()`, `TSGetEvaluationTimes()`, `TSGetEvaluationSolutions()`
+See also: `TS`, `TSSetEvaluationTimes()`, `TSGetEvaluationTimes()`, `TSGetEvaluationSolutions()`
 
 # External Links
 $(_doc_external("TS/TSSetTimeSpan"))
@@ -12601,7 +12628,7 @@ end
 end 
 
 """
-	TSSetTimeStep(petsclib::PetscLibType,ts::AbstractTS, time_step::PetscReal) 
+	TSSetTimeStep(petsclib::PetscLibType, ts::AbstractTS, time_step::PetscReal) 
 Allows one to reset the timestep at any time.
 
 Logically Collective
@@ -12615,7 +12642,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSPSEUDO`, `TSGetTimeStep()`, `TSSetTime()`
+See also: `TS`, `TSPSEUDO`, `TSGetTimeStep()`, `TSSetTime()`
 
 # External Links
 $(_doc_external("TS/TSSetTimeStep"))
@@ -12638,7 +12665,7 @@ end
 end 
 
 """
-	TSSetTolerances(petsclib::PetscLibType,ts::AbstractTS, atol::PetscReal, vatol::AbstractPetscVec, rtol::PetscReal, vrtol::AbstractPetscVec) 
+	TSSetTolerances(petsclib::PetscLibType, ts::AbstractTS, atol::PetscReal, vatol::AbstractPetscVec, rtol::PetscReal, vrtol::AbstractPetscVec) 
 Set tolerances for local truncation error when using an adaptive controller
 
 Logically Collective
@@ -12656,7 +12683,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSAdapt`, `TSErrorWeightedNorm()`, `TSGetTolerances()`
+See also: `TS`, `TSAdapt`, `TSErrorWeightedNorm()`, `TSGetTolerances()`
 
 # External Links
 $(_doc_external("TS/TSSetTolerances"))
@@ -12679,7 +12706,7 @@ end
 end 
 
 """
-	TSSetTransientVariable(petsclib::PetscLibType,ts::AbstractTS, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	TSSetTransientVariable(petsclib::PetscLibType, ts::AbstractTS, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 sets function to transform from state to transient variables
 
 Logically Collective
@@ -12691,7 +12718,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSBDF`, `TSTransientVariableFn`, `DMTSSetTransientVariable()`, `DMTSGetTransientVariable()`, `TSSetIFunction()`, `TSSetIJacobian()`
+See also: `TS`, `TSBDF`, `TSTransientVariableFn`, `DMTSSetTransientVariable()`, `DMTSGetTransientVariable()`, `TSSetIFunction()`, `TSSetIJacobian()`
 
 # External Links
 $(_doc_external("TS/TSSetTransientVariable"))
@@ -12714,7 +12741,7 @@ end
 end 
 
 """
-	TSSetType(petsclib::PetscLibType,ts::AbstractTS, type::TSType) 
+	TSSetType(petsclib::PetscLibType, ts::AbstractTS, type::TSType) 
 Sets the algorithm/method to be used for integrating the ODE with the given `TS`.
 
 Collective
@@ -12728,7 +12755,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSCreate()`, `TSSetFromOptions()`, `TSDestroy()`, `TSType`
+See also: `TS`, `TSSolve()`, `TSCreate()`, `TSSetFromOptions()`, `TSDestroy()`, `TSType`
 
 # External Links
 $(_doc_external("TS/TSSetType"))
@@ -12751,7 +12778,7 @@ end
 end 
 
 """
-	TSSetUp(petsclib::PetscLibType,ts::AbstractTS) 
+	TSSetUp(petsclib::PetscLibType, ts::AbstractTS) 
 Sets up the internal data structures for the later use of a timestepper.
 
 Collective
@@ -12761,7 +12788,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSCreate()`, `TS`, `TSStep()`, `TSDestroy()`, `TSSolve()`
+See also: `TSCreate()`, `TS`, `TSStep()`, `TSDestroy()`, `TSSolve()`
 
 # External Links
 $(_doc_external("TS/TSSetUp"))
@@ -12784,7 +12811,7 @@ end
 end 
 
 """
-	TSSetUseSplitRHSFunction(petsclib::PetscLibType,ts::AbstractTS, use_splitrhsfunction::PetscBool) 
+	TSSetUseSplitRHSFunction(petsclib::PetscLibType, ts::AbstractTS, use_splitrhsfunction::PetscBool) 
 Use the split RHSFunction when a multirate method is used.
 
 Logically Collective
@@ -12798,7 +12825,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSGetUseSplitRHSFunction()`
+See also: `TS`, `TSGetUseSplitRHSFunction()`
 
 # External Links
 $(_doc_external("TS/TSSetUseSplitRHSFunction"))
@@ -12821,7 +12848,7 @@ end
 end 
 
 """
-	TSSolve(petsclib::PetscLibType,ts::AbstractTS, u::AbstractPetscVec) 
+	TSSolve(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec) 
 Steps the requested number of timesteps.
 
 Collective
@@ -12833,7 +12860,7 @@ otherwise it must contain the initial conditions and will contain the solution a
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `TSCreate()`, `TSSetSolution()`, `TSStep()`, `TSGetTime()`, `TSGetSolveTime()`
+See also: `TS`, `TSCreate()`, `TSSetSolution()`, `TSStep()`, `TSGetTime()`, `TSGetSolveTime()`
 
 # External Links
 $(_doc_external("TS/TSSolve"))
@@ -12856,7 +12883,7 @@ end
 end 
 
 """
-	TSStep(petsclib::PetscLibType,ts::AbstractTS) 
+	TSStep(petsclib::PetscLibType, ts::AbstractTS) 
 Steps one time step
 
 Collective
@@ -12866,7 +12893,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSCreate()`, `TSSetUp()`, `TSDestroy()`, `TSSolve()`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostStage()`, `TSInterpolate()`
+See also: `TS`, `TSCreate()`, `TSSetUp()`, `TSDestroy()`, `TSSolve()`, `TSSetPreStep()`, `TSSetPreStage()`, `TSSetPostStage()`, `TSInterpolate()`
 
 # External Links
 $(_doc_external("TS/TSStep"))
@@ -12889,7 +12916,7 @@ end
 end 
 
 """
-	nonlin::Cint,lin::Cint = TSSundialsGetIterations(petsclib::PetscLibType,ts::AbstractTS) 
+	nonlin::Cint,lin::Cint = TSSundialsGetIterations(petsclib::PetscLibType, ts::AbstractTS) 
 Gets the number of nonlinear and linear iterations used so far by `TSSUNDIALS`.
 
 Not Collective
@@ -12903,7 +12930,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
+See also: `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetGramSchmidtType()`, `TSSundialsSetTolerance()`,
 `TSSundialsGetPC()`, `TSSetExactFinalTime()`
 
@@ -12932,8 +12959,8 @@ end
 end 
 
 """
-	pc::PC = TSSundialsGetPC(petsclib::PetscLibType,ts::AbstractTS) 
-Extract the PC context from a time
+	pc::PC = TSSundialsGetPC(petsclib::PetscLibType, ts::AbstractTS) 
+Extract the PC context from a time-step context for `TSSUNDIALS`.
 
 Input Parameter:
 - `ts` - the time-step context
@@ -12943,7 +12970,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetGramSchmidtType()`, `TSSundialsSetTolerance()`
 
 # External Links
@@ -12969,7 +12996,7 @@ end
 end 
 
 """
-	TSSundialsMonitorInternalSteps(petsclib::PetscLibType,ts::AbstractTS, ft::PetscBool) 
+	TSSundialsMonitorInternalSteps(petsclib::PetscLibType, ts::AbstractTS, ft::PetscBool) 
 Monitor `TSSUNDIALS` internal steps (Defaults to false).
 
 Input Parameters:
@@ -12978,7 +13005,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetGramSchmidtType()`, `TSSundialsSetTolerance()`,
 `TSSundialsGetPC()`
 
@@ -13003,7 +13030,7 @@ end
 end 
 
 """
-	TSSundialsSetGramSchmidtType(petsclib::PetscLibType,ts::AbstractTS, type::TSSundialsGramSchmidtType) 
+	TSSundialsSetGramSchmidtType(petsclib::PetscLibType, ts::AbstractTS, type::TSSundialsGramSchmidtType) 
 Sets type of orthogonalization used
 in GMRES method by `TSSUNDIALS` linear solver.
 
@@ -13015,7 +13042,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetTolerance()`,
 `TSSundialsGetPC()`,
 `TSSetExactFinalTime()`
@@ -13041,7 +13068,7 @@ end
 end 
 
 """
-	TSSundialsSetLinearTolerance(petsclib::PetscLibType,ts::AbstractTS, tol::PetscReal) 
+	TSSundialsSetLinearTolerance(petsclib::PetscLibType, ts::AbstractTS, tol::PetscReal) 
 Sets the tolerance used to solve the linear
 system by `TSSUNDIALS`.
 
@@ -13054,7 +13081,7 @@ multiplied to get the tolerance on the linear solver, .05 by default.
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetMaxl()`,
 `TSSundialsSetGramSchmidtType()`, `TSSundialsSetTolerance()`,
 `TSSundialsGetPC()`,
 `TSSetExactFinalTime()`
@@ -13080,7 +13107,7 @@ end
 end 
 
 """
-	TSSundialsSetMaxTimeStep(petsclib::PetscLibType,ts::AbstractTS, maxdt::PetscReal) 
+	TSSundialsSetMaxTimeStep(petsclib::PetscLibType, ts::AbstractTS, maxdt::PetscReal) 
 Largest time step to be chosen by the adaptive controller.
 
 Input Parameters:
@@ -13089,7 +13116,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `TSSundialsSetType()`, `TSSundialsSetTolerance()`
+See also: `TSSundialsSetType()`, `TSSundialsSetTolerance()`
 
 # External Links
 $(_doc_external("TS/TSSundialsSetMaxTimeStep"))
@@ -13112,7 +13139,7 @@ end
 end 
 
 """
-	TSSundialsSetMaxl(petsclib::PetscLibType,ts::AbstractTS, maxl::PetscInt) 
+	TSSundialsSetMaxl(petsclib::PetscLibType, ts::AbstractTS, maxl::PetscInt) 
 Sets the dimension of the Krylov space used by
 GMRES in the linear solver in `TSSUNDIALS`. `TSSUNDIALS` DOES NOT use restarted GMRES so
 this is the maximum number of GMRES steps that will be used.
@@ -13125,7 +13152,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetType()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetType()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetGramSchmidtType()`, `TSSundialsSetTolerance()`,
 `TSSundialsGetPC()`, `TSSetExactFinalTime()`
 
@@ -13150,7 +13177,7 @@ end
 end 
 
 """
-	TSSundialsSetMaxord(petsclib::PetscLibType,ts::AbstractTS, maxord::PetscInt) 
+	TSSundialsSetMaxord(petsclib::PetscLibType, ts::AbstractTS, maxord::PetscInt) 
 Sets the maximum order for BDF/Adams method used by `TSSUNDIALS`.
 
 Logically Collective
@@ -13161,7 +13188,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetType()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetType()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetGramSchmidtType()`,
 `TSSundialsSetTolerance()`, `TSSundialsGetPC()`, `TSSetExactFinalTime()`
 
@@ -13186,14 +13213,14 @@ end
 end 
 
 """
-	TSSundialsSetMinTimeStep(petsclib::PetscLibType,ts::AbstractTS, mindt::PetscReal) 
+	TSSundialsSetMinTimeStep(petsclib::PetscLibType, ts::AbstractTS, mindt::PetscReal) 
 Smallest time step to be chosen by the adaptive controller.
 
 Input Parameters:
 - `ts`    - the time-step context
 - `mindt` - lowest time step if positive, negative to deactivate
 
--seealso: [](ch_ts), `TSSundialsSetType()`, `TSSundialsSetTolerance()`
+See also: `TSSundialsSetType()`, `TSSundialsSetTolerance()`
 
 # External Links
 $(_doc_external("TS/TSSundialsSetMinTimeStep"))
@@ -13216,7 +13243,7 @@ end
 end 
 
 """
-	TSSundialsSetTolerance(petsclib::PetscLibType,ts::AbstractTS, aabs::PetscReal, rel::PetscReal) 
+	TSSundialsSetTolerance(petsclib::PetscLibType, ts::AbstractTS, aabs::PetscReal, rel::PetscReal) 
 Sets the absolute and relative tolerance used by
 `TSSUNDIALS` for error control.
 
@@ -13232,7 +13259,7 @@ these regulate the size of the error for a SINGLE timestep.
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetGMRESMaxl()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetType()`, `TSSundialsSetGMRESMaxl()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetGramSchmidtType()`,
 `TSSundialsGetPC()`,
 `TSSetExactFinalTime()`
@@ -13258,7 +13285,7 @@ end
 end 
 
 """
-	TSSundialsSetType(petsclib::PetscLibType,ts::AbstractTS, type::TSSundialsLmmType) 
+	TSSundialsSetType(petsclib::PetscLibType, ts::AbstractTS, type::TSSundialsLmmType) 
 Sets the method that `TSSUNDIALS` will use for integration.
 
 Logically Collective
@@ -13269,7 +13296,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSSundialsGetIterations()`, `TSSundialsSetMaxl()`,
+See also: `TSSundialsGetIterations()`, `TSSundialsSetMaxl()`,
 `TSSundialsSetLinearTolerance()`, `TSSundialsSetGramSchmidtType()`,
 `TSSundialsSetTolerance()`, `TSSundialsGetPC()`, `TSSetExactFinalTime()`
 
@@ -13294,7 +13321,7 @@ end
 end 
 
 """
-	TSSundialsSetUseDense(petsclib::PetscLibType,ts::AbstractTS, use_dense::PetscBool) 
+	TSSundialsSetUseDense(petsclib::PetscLibType, ts::AbstractTS, use_dense::PetscBool) 
 Set a flag to use a dense linear solver in `TSSUNDIALS` (serial only)
 
 Logically Collective
@@ -13305,7 +13332,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSSUNDIALS`
+See also: `TSSUNDIALS`
 
 # External Links
 $(_doc_external("TS/TSSundialsSetUseDense"))
@@ -13328,8 +13355,8 @@ end
 end 
 
 """
-	endpoint::PetscBool = TSThetaGetEndpoint(petsclib::PetscLibType,ts::AbstractTS) 
-Gets whether to use the endpoint variant of the method (e.g. trapezoid/Crank
+	endpoint::PetscBool = TSThetaGetEndpoint(petsclib::PetscLibType, ts::AbstractTS) 
+Gets whether to use the endpoint variant of the method (e.g. trapezoid/Crank-Nicolson instead of midpoint rule) for `TSTHETA`
 
 Not Collective
 
@@ -13341,7 +13368,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSThetaSetEndpoint()`, `TSTHETA`, `TSCN`
+See also: `TSThetaSetEndpoint()`, `TSTHETA`, `TSCN`
 
 # External Links
 $(_doc_external("TS/TSThetaGetEndpoint"))
@@ -13366,7 +13393,7 @@ end
 end 
 
 """
-	theta::PetscReal = TSThetaGetTheta(petsclib::PetscLibType,ts::AbstractTS) 
+	theta::PetscReal = TSThetaGetTheta(petsclib::PetscLibType, ts::AbstractTS) 
 Get the abscissa of the stage in (0,1] for `TSTHETA`
 
 Not Collective
@@ -13379,7 +13406,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSThetaSetTheta()`, `TSTHETA`
+See also: `TSThetaSetTheta()`, `TSTHETA`
 
 # External Links
 $(_doc_external("TS/TSThetaGetTheta"))
@@ -13404,8 +13431,8 @@ end
 end 
 
 """
-	TSThetaSetEndpoint(petsclib::PetscLibType,ts::AbstractTS, flg::PetscBool) 
-Sets whether to use the endpoint variant of the method (e.g. trapezoid/Crank
+	TSThetaSetEndpoint(petsclib::PetscLibType, ts::AbstractTS, flg::PetscBool) 
+Sets whether to use the endpoint variant of the method (e.g. trapezoid/Crank-Nicolson instead of midpoint rule) for `TSTHETA`
 
 Not Collective
 
@@ -13418,7 +13445,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTHETA`, `TSCN`
+See also: `TSTHETA`, `TSCN`
 
 # External Links
 $(_doc_external("TS/TSThetaSetEndpoint"))
@@ -13441,7 +13468,7 @@ end
 end 
 
 """
-	TSThetaSetTheta(petsclib::PetscLibType,ts::AbstractTS, theta::PetscReal) 
+	TSThetaSetTheta(petsclib::PetscLibType, ts::AbstractTS, theta::PetscReal) 
 Set the abscissa of the stage in (0,1]  for `TSTHETA`
 
 Not Collective
@@ -13455,7 +13482,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSThetaGetTheta()`, `TSTHETA`, `TSCN`
+See also: `TSThetaGetTheta()`, `TSTHETA`, `TSCN`
 
 # External Links
 $(_doc_external("TS/TSThetaSetTheta"))
@@ -13478,7 +13505,7 @@ end
 end 
 
 """
-	TSVISetVariableBounds(petsclib::PetscLibType,ts::AbstractTS, xl::AbstractPetscVec, xu::AbstractPetscVec) 
+	TSVISetVariableBounds(petsclib::PetscLibType, ts::AbstractTS, xl::AbstractPetscVec, xu::AbstractPetscVec) 
 Sets the lower and upper bounds for the solution vector. xl <= x <= xu
 
 Input Parameters:
@@ -13488,7 +13515,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`
+See also: `TS`
 
 # External Links
 $(_doc_external("TS/TSVISetVariableBounds"))
@@ -13511,7 +13538,7 @@ end
 end 
 
 """
-	TSView(petsclib::PetscLibType,ts::AbstractTS, viewer::PetscViewer) 
+	TSView(petsclib::PetscLibType, ts::AbstractTS, viewer::PetscViewer) 
 Prints the `TS` data structure.
 
 Collective
@@ -13525,7 +13552,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_ts), `TS`, `PetscViewer`, `PetscViewerASCIIOpen()`
+See also: `TS`, `PetscViewer`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("TS/TSView"))
@@ -13548,7 +13575,7 @@ end
 end 
 
 """
-	TSViewFromOptions(petsclib::PetscLibType,ts::AbstractTS, obj, name::String) 
+	TSViewFromOptions(petsclib::PetscLibType, ts::AbstractTS, obj, name::String) 
 View a `TS` based on values in the options database
 
 Collective
@@ -13563,7 +13590,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSView`, `PetscObjectViewFromOptions()`, `TSCreate()`
+See also: `TS`, `TSView`, `PetscObjectViewFromOptions()`, `TSCreate()`
 
 # External Links
 $(_doc_external("TS/TSViewFromOptions"))

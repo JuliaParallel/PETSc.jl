@@ -12,7 +12,7 @@ function doc_header(r::Rules, args::Vector{FArg}, fname::String)
     end
     str_in = join(ins, ", ")
     str_out = join(outs, ",")
-    call = isempty(ins) ? "$fname(petsclib::PetscLibType)" : "$fname(petsclib::PetscLibType,$str_in)"
+    call = isempty(ins) ? "$fname(petsclib::PetscLibType)" : "$fname(petsclib::PetscLibType, $str_in)"
     hdr = isempty(outs) ? call : "$(join(outs_doc, ",")) = $call"
     return hdr, str_in, str_out, length(ins), length(outs)
 end

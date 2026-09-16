@@ -1,5 +1,5 @@
 """
-	adm::PetscDM,ax::PetscVec = DMAdaptorAdapt(petsclib::PetscLibType,adaptor::DMAdaptor, x::AbstractPetscVec, strategy::DMAdaptationStrategy) 
+	adm::PetscDM,ax::PetscVec = DMAdaptorAdapt(petsclib::PetscLibType, adaptor::DMAdaptor, x::AbstractPetscVec, strategy::DMAdaptationStrategy) 
 Creates a new `DM` that is adapted to the problem
 
 Not Collective
@@ -21,9 +21,7 @@ Options Database Keys:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMAdaptor`, `DMAdaptationStrategy`, `DMAdaptorSetSolver()`, `DMAdaptorCreate()`
+See also: `DMAdaptor`, `DMAdaptationStrategy`, `DMAdaptorSetSolver()`, `DMAdaptorCreate()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorAdapt"))
@@ -50,7 +48,7 @@ end
 end 
 
 """
-	adaptor::DMAdaptor = DMAdaptorCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	adaptor::DMAdaptor = DMAdaptorCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a `DMAdaptor` object. Its purpose is to construct a adaptation `DMLabel` or metric `Vec` that can be used to modify the `DM`.
 
 Collective
@@ -63,9 +61,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMAdaptor`, `DMAdaptorDestroy()`, `DMAdaptorAdapt()`, `PetscConvEst`, `PetscConvEstCreate()`
+See also: `DM`, `DMAdaptor`, `DMAdaptorDestroy()`, `DMAdaptorAdapt()`, `PetscConvEst`, `PetscConvEstCreate()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorCreate"))
@@ -90,7 +86,7 @@ end
 end 
 
 """
-	DMAdaptorDestroy(petsclib::PetscLibType,adaptor::Union{DMAdaptor, Ref{DMAdaptor}}) 
+	DMAdaptorDestroy(petsclib::PetscLibType, adaptor::Union{DMAdaptor, Ref{DMAdaptor}}) 
 Destroys a `DMAdaptor` object
 
 Collective
@@ -100,9 +96,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorDestroy"))
@@ -126,7 +120,7 @@ end
 end 
 
 """
-	criterion::DMAdaptationCriterion = DMAdaptorGetCriterion(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	criterion::DMAdaptationCriterion = DMAdaptorGetCriterion(petsclib::PetscLibType, adaptor::DMAdaptor) 
 Get the adaptation criterion
 
 Not Collective
@@ -139,7 +133,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMAdaptor`, `DMAdaptorSetCriterion()`, `DMAdaptationCriterion`
+See also: `DMAdaptor`, `DMAdaptorSetCriterion()`, `DMAdaptationCriterion`
 
 # External Links
 $(_doc_external("DM/DMAdaptorGetCriterion"))
@@ -164,7 +158,7 @@ end
 end 
 
 """
-	DMAdaptorGetMixedSetupFunction(petsclib::PetscLibType,adaptor::DMAdaptor, noname::Ptr{Cvoid}) 
+	DMAdaptorGetMixedSetupFunction(petsclib::PetscLibType, adaptor::DMAdaptor, noname::Ptr{Cvoid}) 
 Get the function setting up the mixed problem, if it exists
 
 Not Collective
@@ -177,7 +171,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMAdaptor`, `DMAdaptorSetMixedSetupFunction()`, `DMAdaptorAdapt()`
+See also: `DMAdaptor`, `DMAdaptorSetMixedSetupFunction()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorGetMixedSetupFunction"))
@@ -200,7 +194,7 @@ end
 end 
 
 """
-	num::PetscInt = DMAdaptorGetSequenceLength(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	num::PetscInt = DMAdaptorGetSequenceLength(petsclib::PetscLibType, adaptor::DMAdaptor) 
 Gets the number of sequential adaptations used by an adapter
 
 Not Collective
@@ -213,9 +207,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMAdaptor`, `DMAdaptorSetSequenceLength()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DMAdaptor`, `DMAdaptorSetSequenceLength()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorGetSequenceLength"))
@@ -240,7 +232,7 @@ end
 end 
 
 """
-	snes::SNES = DMAdaptorGetSolver(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	snes::SNES = DMAdaptorGetSolver(petsclib::PetscLibType, adaptor::DMAdaptor) 
 Gets the solver used to produce discrete solutions
 
 Not Collective
@@ -253,9 +245,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAdaptor`, `DMAdaptorSetSolver()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DM`, `DMAdaptor`, `DMAdaptorSetSolver()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorGetSolver"))
@@ -280,7 +270,7 @@ end
 end 
 
 """
-	DMAdaptorGetTransferFunction(petsclib::PetscLibType,adaptor::DMAdaptor, noname::Ptr{Cvoid}) 
+	DMAdaptorGetTransferFunction(petsclib::PetscLibType, adaptor::DMAdaptor, noname::Ptr{Cvoid}) 
 Get the callback used by a `DMAdaptor` to transfer a solution vector from an old `DM` to the adapted `DM`
 
 Not Collective
@@ -301,7 +291,7 @@ Calling sequence of `tfunc`:
 
 Level: developer
 
--seealso: `DMAdaptor`, `DMAdaptorSetTransferFunction()`, `DMAdaptorAdapt()`
+See also: `DMAdaptor`, `DMAdaptorSetTransferFunction()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorGetTransferFunction"))
@@ -324,7 +314,7 @@ end
 end 
 
 """
-	type::DMAdaptorType = DMAdaptorGetType(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	type::DMAdaptorType = DMAdaptorGetType(petsclib::PetscLibType, adaptor::DMAdaptor) 
 Gets the type name (as a string) from the adaptor.
 
 Not Collective
@@ -337,7 +327,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorType`, `DMAdaptorSetType()`, `DMAdaptorCreate()`
+See also: `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorType`, `DMAdaptorSetType()`, `DMAdaptorCreate()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorGetType"))
@@ -362,7 +352,7 @@ end
 end 
 
 """
-	DMAdaptorMonitor(petsclib::PetscLibType,adaptor::DMAdaptor, it::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec) 
+	DMAdaptorMonitor(petsclib::PetscLibType, adaptor::DMAdaptor, it::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec) 
 runs the user provided monitor routines, if they exist
 
 Collective
@@ -378,7 +368,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMAdaptorMonitorSet()`
+See also: `DMAdaptorMonitorSet()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitor"))
@@ -401,7 +391,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorCancel(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	DMAdaptorMonitorCancel(petsclib::PetscLibType, adaptor::DMAdaptor) 
 Clears all monitors for a `DMAdaptor` object.
 
 Logically Collective
@@ -414,7 +404,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `DMAdaptorMonitorError()`, `DMAdaptorMonitorSet()`, `DMAdaptor`
+See also: `DMAdaptorMonitorError()`, `DMAdaptorMonitorSet()`, `DMAdaptor`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorCancel"))
@@ -437,7 +427,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorError(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	DMAdaptorMonitorError(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Prints the error norm at each iteration of an adaptation loop.
 
 Collective
@@ -457,7 +447,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDraw()`, `DMAdaptorMonitorErrorDrawLG()`
+See also: `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDraw()`, `DMAdaptorMonitorErrorDrawLG()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorError"))
@@ -480,7 +470,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorErrorDraw(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	DMAdaptorMonitorErrorDraw(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Plots the error at each iteration of an iterative solver.
 
 Collective
@@ -500,7 +490,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `PETSCVIEWERDRAW`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDrawLG()`
+See also: `PETSCVIEWERDRAW`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDrawLG()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorErrorDraw"))
@@ -523,7 +513,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorErrorDrawLG(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	DMAdaptorMonitorErrorDrawLG(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Plots the error norm at each iteration of an adaptive loop.
 
 Collective
@@ -543,7 +533,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `PETSCVIEWERDRAW`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDraw()`, `DMAdaptorMonitorError()`,
+See also: `PETSCVIEWERDRAW`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDraw()`, `DMAdaptorMonitorError()`,
 `DMAdaptorMonitorTrueResidualDrawLGCreate()`
 
 # External Links
@@ -567,7 +557,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = DMAdaptorMonitorErrorDrawLGCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
+	vf::Ptr{PetscViewerAndFormat} = DMAdaptorMonitorErrorDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid}) 
 Creates the context for the error plotter `DMAdaptorMonitorErrorDrawLG()`
 
 Collective
@@ -582,7 +572,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `PETSCVIEWERDRAW`, `PetscViewerMonitorGLSetUp()`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDrawLG()`
+See also: `PETSCVIEWERDRAW`, `PetscViewerMonitorGLSetUp()`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDrawLG()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorErrorDrawLGCreate"))
@@ -607,7 +597,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorRegister(petsclib::PetscLibType,name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::external, create::external, destroy::external) 
+	DMAdaptorMonitorRegister(petsclib::PetscLibType, name::String, vtype::PetscViewerType, format::PetscViewerFormat, monitor::external, create::external, destroy::external) 
 Registers a mesh adaptation monitor routine that may be accessed with `DMAdaptorMonitorSetFromOptions()`
 
 Not Collective
@@ -622,7 +612,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorRegisterAll()`, `DMAdaptorMonitorSetFromOptions()`
+See also: `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorRegisterAll()`, `DMAdaptorMonitorSetFromOptions()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorRegister"))
@@ -652,7 +642,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `DM`, `DMAdaptorMonitorRegister()`, `DMAdaptorRegister()`
+See also: `SNES`, `DM`, `DMAdaptorMonitorRegister()`, `DMAdaptorRegister()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorRegisterAll"))
@@ -681,7 +671,7 @@ Not collective
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMAdaptorMonitorRegisterAll()`, `DMAdaptor`, `PetscFinalize()`
+See also: `DM`, `DMPLEX`, `DMAdaptorMonitorRegisterAll()`, `DMAdaptor`, `PetscFinalize()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorRegisterDestroy"))
@@ -703,7 +693,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorSet(petsclib::PetscLibType,adaptor::DMAdaptor, monitor::external, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
+	DMAdaptorMonitorSet(petsclib::PetscLibType, adaptor::DMAdaptor, monitor::external, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function to be called at every iteration to monitor
 the error etc.
 
@@ -734,7 +724,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMAdaptorMonitorError()`, `DMAdaptor`, `PetscCtxDestroyFn`
+See also: `DMAdaptorMonitorError()`, `DMAdaptor`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorSet"))
@@ -757,7 +747,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorSetFromOptions(petsclib::PetscLibType,adaptor::DMAdaptor, opt::String, name::String, ctx::Ptr{Cvoid}) 
+	DMAdaptorMonitorSetFromOptions(petsclib::PetscLibType, adaptor::DMAdaptor, opt::String, name::String, ctx::Ptr{Cvoid}) 
 Sets a monitor function and viewer appropriate for the type indicated by the user in the options database
 
 Collective
@@ -770,7 +760,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMAdaptorMonitorRegister()`, `DMAdaptorMonitorSet()`, `PetscOptionsGetViewer()`
+See also: `DMAdaptorMonitorRegister()`, `DMAdaptorMonitorSet()`, `PetscOptionsGetViewer()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorSetFromOptions"))
@@ -793,7 +783,7 @@ end
 end 
 
 """
-	DMAdaptorMonitorSize(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
+	DMAdaptorMonitorSize(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat}) 
 Prints the mesh sizes at each iteration of an adaptation loop.
 
 Collective
@@ -813,7 +803,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorError()`, `DMAdaptorMonitorErrorDraw()`, `DMAdaptorMonitorErrorDrawLG()`
+See also: `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorError()`, `DMAdaptorMonitorErrorDraw()`, `DMAdaptorMonitorErrorDrawLG()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorSize"))
@@ -836,7 +826,7 @@ end
 end 
 
 """
-	DMAdaptorRegister(petsclib::PetscLibType,name::String, noname::Ptr{Cvoid}) 
+	DMAdaptorRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid}) 
 Adds a new adaptor component implementation
 
 Not Collective
@@ -845,7 +835,7 @@ Input Parameters:
 - `name`        - The name of a new user-defined creation routine
 - `create_func` - The creation routine
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorRegisterAll()`, `DMAdaptorRegisterDestroy()`
+See also: `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorRegisterAll()`, `DMAdaptorRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorRegister"))
@@ -875,7 +865,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMAdaptorType`, `DMRegisterAll()`, `DMAdaptorRegisterDestroy()`
+See also: `DM`, `DMPLEX`, `DMAdaptorType`, `DMRegisterAll()`, `DMAdaptorRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorRegisterAll"))
@@ -904,7 +894,7 @@ Not collective
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMAdaptorRegisterAll()`, `DMAdaptorType`, `PetscFinalize()`
+See also: `DM`, `DMPLEX`, `DMAdaptorRegisterAll()`, `DMAdaptorType`, `PetscFinalize()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorRegisterDestroy"))
@@ -926,7 +916,7 @@ end
 end 
 
 """
-	DMAdaptorSetCriterion(petsclib::PetscLibType,adaptor::DMAdaptor, criterion::DMAdaptationCriterion) 
+	DMAdaptorSetCriterion(petsclib::PetscLibType, adaptor::DMAdaptor, criterion::DMAdaptationCriterion) 
 Set the adaptation criterion
 
 Not Collective
@@ -937,7 +927,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMAdaptor`, `DMAdaptorGetCriterion()`, `DMAdaptationCriterion`
+See also: `DMAdaptor`, `DMAdaptorGetCriterion()`, `DMAdaptationCriterion`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetCriterion"))
@@ -960,7 +950,7 @@ end
 end 
 
 """
-	DMAdaptorSetFromOptions(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	DMAdaptorSetFromOptions(petsclib::PetscLibType, adaptor::DMAdaptor) 
 Sets properties of a `DMAdaptor` object from values in the options database
 
 Collective
@@ -978,9 +968,7 @@ Options Database Keys:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetFromOptions"))
@@ -1003,7 +991,7 @@ end
 end 
 
 """
-	DMAdaptorSetMixedSetupFunction(petsclib::PetscLibType,adaptor::DMAdaptor, setupFunc::external) 
+	DMAdaptorSetMixedSetupFunction(petsclib::PetscLibType, adaptor::DMAdaptor, setupFunc::external) 
 Set the function setting up the mixed problem
 
 Not Collective
@@ -1018,7 +1006,7 @@ Calling sequence of setupFunc:
 
 Level: advanced
 
--seealso: `DMAdaptor`, `DMAdaptorGetMixedSetupFunction()`, `DMAdaptorAdapt()`
+See also: `DMAdaptor`, `DMAdaptorGetMixedSetupFunction()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetMixedSetupFunction"))
@@ -1041,7 +1029,7 @@ end
 end 
 
 """
-	DMAdaptorSetOptionsPrefix(petsclib::PetscLibType,adaptor::DMAdaptor, prefix::String) 
+	DMAdaptorSetOptionsPrefix(petsclib::PetscLibType, adaptor::DMAdaptor, prefix::String) 
 Sets the prefix used for searching for all `DMAdaptor` options in the database.
 
 Logically Collective
@@ -1052,7 +1040,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `DMAdaptor`, `SNESSetOptionsPrefix()`, `DMAdaptorSetFromOptions()`
+See also: `DMAdaptor`, `SNESSetOptionsPrefix()`, `DMAdaptorSetFromOptions()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetOptionsPrefix"))
@@ -1075,7 +1063,7 @@ end
 end 
 
 """
-	DMAdaptorSetSequenceLength(petsclib::PetscLibType,adaptor::DMAdaptor, num::PetscInt) 
+	DMAdaptorSetSequenceLength(petsclib::PetscLibType, adaptor::DMAdaptor, num::PetscInt) 
 Sets the number of sequential adaptations
 
 Not Collective
@@ -1086,9 +1074,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMAdaptorGetSequenceLength()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DMAdaptorGetSequenceLength()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetSequenceLength"))
@@ -1111,7 +1097,7 @@ end
 end 
 
 """
-	DMAdaptorSetSolver(petsclib::PetscLibType,adaptor::DMAdaptor, snes::AbstractSNES) 
+	DMAdaptorSetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::AbstractSNES) 
 Sets the solver used to produce discrete solutions
 
 Not Collective
@@ -1122,9 +1108,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMAdaptor`, `DMAdaptorGetSolver()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DMAdaptor`, `DMAdaptorGetSolver()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetSolver"))
@@ -1147,7 +1131,7 @@ end
 end 
 
 """
-	DMAdaptorSetTransferFunction(petsclib::PetscLibType,adaptor::DMAdaptor, tfunc::external) 
+	DMAdaptorSetTransferFunction(petsclib::PetscLibType, adaptor::DMAdaptor, tfunc::external) 
 Set the callback used by a `DMAdaptor` to transfer a solution vector from an old `DM` to the adapted `DM`
 
 Logically Collective
@@ -1166,7 +1150,7 @@ Calling sequence of `tfunc`:
 
 Level: developer
 
--seealso: `DMAdaptor`, `DMAdaptorGetTransferFunction()`, `DMAdaptorAdapt()`
+See also: `DMAdaptor`, `DMAdaptorGetTransferFunction()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetTransferFunction"))
@@ -1189,7 +1173,7 @@ end
 end 
 
 """
-	DMAdaptorSetType(petsclib::PetscLibType,adaptor::DMAdaptor, method::DMAdaptorType) 
+	DMAdaptorSetType(petsclib::PetscLibType, adaptor::DMAdaptor, method::DMAdaptorType) 
 Sets the particular implementation for a adaptor.
 
 Collective
@@ -1203,7 +1187,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorType`, `DMAdaptorGetType()`, `DMAdaptorCreate()`
+See also: `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorType`, `DMAdaptorGetType()`, `DMAdaptorCreate()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetType"))
@@ -1226,7 +1210,7 @@ end
 end 
 
 """
-	DMAdaptorSetUp(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	DMAdaptorSetUp(petsclib::PetscLibType, adaptor::DMAdaptor) 
 After the solver is specified, creates data structures for controlling adaptivity
 
 Collective
@@ -1236,9 +1220,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorSetUp"))
@@ -1261,7 +1243,7 @@ end
 end 
 
 """
-	DMAdaptorView(petsclib::PetscLibType,adaptor::DMAdaptor, viewer::PetscViewer) 
+	DMAdaptorView(petsclib::PetscLibType, adaptor::DMAdaptor, viewer::PetscViewer) 
 Views a `DMAdaptor` object
 
 Collective
@@ -1272,9 +1254,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
+See also: `DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 
 # External Links
 $(_doc_external("DM/DMAdaptorView"))
@@ -1297,7 +1277,7 @@ end
 end 
 
 """
-	field::DMField = DMFieldCreateDA(petsclib::PetscLibType,dm::AbstractPetscDM, nc::PetscInt, cornerValues::Vector{PetscScalar}) 
+	field::DMField = DMFieldCreateDA(petsclib::PetscLibType, dm::AbstractPetscDM, nc::PetscInt, cornerValues::Vector{PetscScalar}) 
 Create a `DMField` of type `DMFIELDDA` that represents a multilinear field on a `DMDA` given by its values at the corners of the reference element.
 
 Collective
@@ -1312,7 +1292,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDDA`, `DMDA`, `DMFieldCreate()`, `DMFieldCreateDS()`, `DMFieldCreateShell()`
+See also: `DMField`, `DMFIELDDA`, `DMDA`, `DMFieldCreate()`, `DMFieldCreateDS()`, `DMFieldCreateShell()`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDA"))
@@ -1337,7 +1317,7 @@ end
 end 
 
 """
-	field::DMField = DMFieldCreateDS(petsclib::PetscLibType,dm::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec) 
+	field::DMField = DMFieldCreateDS(petsclib::PetscLibType, dm::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec) 
 Create a `DMField` of type `DMFIELDDS` for a `PetscDS` field on a `DM`.
 
 Collective
@@ -1352,7 +1332,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDDS`, `DMFieldCreateDSWithDG()`, `DMFieldCreate()`, `PetscDS`
+See also: `DMField`, `DMFIELDDS`, `DMFieldCreateDSWithDG()`, `DMFieldCreate()`, `PetscDS`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDS"))
@@ -1377,8 +1357,8 @@ end
 end 
 
 """
-	field::DMField = DMFieldCreateDSWithDG(petsclib::PetscLibType,dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec) 
-Create a `DMField` of type `DMFIELDDS` for a `PetscDS` field, optionally paired with a matching discontinuous
+	field::DMField = DMFieldCreateDSWithDG(petsclib::PetscLibType, dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec) 
+Create a `DMField` of type `DMFIELDDS` for a `PetscDS` field, optionally paired with a matching discontinuous-Galerkin representation on a companion `DM`.
 
 Collective
 
@@ -1394,7 +1374,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDDS`, `DMFieldCreateDS()`, `DMFieldCreate()`, `PetscDS`, `PetscFE`
+See also: `DMField`, `DMFIELDDS`, `DMFieldCreateDS()`, `DMFieldCreate()`, `PetscDS`, `PetscFE`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDSWithDG"))
@@ -1419,7 +1399,7 @@ end
 end 
 
 """
-	quad::PetscQuadrature = DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS) 
+	quad::PetscQuadrature = DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS) 
 Creates a quadrature sufficient to integrate the field on all faces of the selected cells via pullback onto the reference element
 
 Not Collective
@@ -1433,7 +1413,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMFieldCreateDefaultQuadrature()`, `DMField`, `PetscQuadrature`, `IS`, `DMFieldEvaluteFE()`, `DMFieldGetDegree()`
+See also: `DMFieldCreateDefaultQuadrature()`, `DMField`, `PetscQuadrature`, `IS`, `DMFieldEvaluteFE()`, `DMFieldGetDegree()`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDefaultFaceQuadrature"))
@@ -1458,7 +1438,7 @@ end
 end 
 
 """
-	quad::PetscQuadrature = DMFieldCreateDefaultQuadrature(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS) 
+	quad::PetscQuadrature = DMFieldCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS) 
 Creates a quadrature sufficient to integrate the field on the selected
 points via pullback onto the reference element
 
@@ -1473,7 +1453,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMFieldCreateDefaultFaceQuadrature()`, `DMField`, `PetscQuadrature`, `IS`, `DMFieldEvaluteFE()`, `DMFieldGetDegree()`
+See also: `DMFieldCreateDefaultFaceQuadrature()`, `DMField`, `PetscQuadrature`, `IS`, `DMFieldEvaluteFE()`, `DMFieldGetDegree()`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDefaultQuadrature"))
@@ -1498,7 +1478,7 @@ end
 end 
 
 """
-	geom::Ptr{PetscFEGeom} = DMFieldCreateFEGeom(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode) 
+	geom::Ptr{PetscFEGeom} = DMFieldCreateFEGeom(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode) 
 Compute and create the geometric factors of a coordinate field
 
 Not Collective
@@ -1514,7 +1494,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMField`, `PetscQuadrature`, `IS`, `PetscFEGeom`, `DMFieldEvaluateFE()`, `DMFieldCreateDefaulteQuadrature()`, `DMFieldGetDegree()`
+See also: `DMField`, `PetscQuadrature`, `IS`, `PetscFEGeom`, `DMFieldEvaluateFE()`, `DMFieldCreateDefaulteQuadrature()`, `DMFieldGetDegree()`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateFEGeom"))
@@ -1539,8 +1519,8 @@ end
 end 
 
 """
-	field::DMField = DMFieldCreateShell(petsclib::PetscLibType,dm::AbstractPetscDM, numComponents::PetscInt, continuity::DMFieldContinuity, ctx::Ptr{Cvoid}) 
-Create a `DMFIELDSHELL`, a `DMField` whose evaluation is implemented entirely by user
+	field::DMField = DMFieldCreateShell(petsclib::PetscLibType, dm::AbstractPetscDM, numComponents::PetscInt, continuity::DMFieldContinuity, ctx::Ptr{Cvoid}) 
+Create a `DMFIELDSHELL`, a `DMField` whose evaluation is implemented entirely by user-supplied callbacks.
 
 Collective
 
@@ -1555,7 +1535,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldShellGetContext()`, `DMFieldShellSetEvaluate()`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellSetEvaluateFV()`, `DMFieldShellSetDestroy()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldShellGetContext()`, `DMFieldShellSetEvaluate()`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellSetEvaluateFV()`, `DMFieldShellSetDestroy()`
 
 # External Links
 $(_doc_external("DM/DMFieldCreateShell"))
@@ -1580,7 +1560,7 @@ end
 end 
 
 """
-	DMFieldDestroy(petsclib::PetscLibType,field::Union{DMField, Ref{DMField}}) 
+	DMFieldDestroy(petsclib::PetscLibType, field::Union{DMField, Ref{DMField}}) 
 destroy a `DMField`
 
 Collective
@@ -1590,7 +1570,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DMField`, `DMFieldCreate()`
+See also: `DMField`, `DMFieldCreate()`
 
 # External Links
 $(_doc_external("DM/DMFieldDestroy"))
@@ -1614,7 +1594,7 @@ end
 end 
 
 """
-	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldEvaluate(petsclib::PetscLibType,field::DMField, points::AbstractPetscVec, datatype::PetscDataType) 
+	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldEvaluate(petsclib::PetscLibType, field::DMField, points::AbstractPetscVec, datatype::PetscDataType) 
 Evaluate the field and its derivatives on a set of points
 
 Collective
@@ -1641,7 +1621,7 @@ varying first by the second partial derivative component, then by field componen
 
 Level: intermediate
 
--seealso: `DMField`, `DMFieldGetDM()`, `DMFieldGetNumComponents()`, `DMFieldEvaluateFE()`, `DMFieldEvaluateFV()`, `PetscDataType`
+See also: `DMField`, `DMFieldGetDM()`, `DMFieldGetNumComponents()`, `DMFieldEvaluateFE()`, `DMFieldEvaluateFV()`, `PetscDataType`
 
 # External Links
 $(_doc_external("DM/DMFieldEvaluate"))
@@ -1670,7 +1650,7 @@ end
 end 
 
 """
-	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldEvaluateFE(petsclib::PetscLibType,field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType) 
+	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldEvaluateFE(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType) 
 Evaluate the field and its derivatives on a set of points mapped from
 quadrature points on a reference point.  The derivatives are taken with respect to the
 reference coordinates.
@@ -1698,7 +1678,7 @@ varying first by the second partial derivative component, then by field componen
 
 Level: intermediate
 
--seealso: `DMField`, `DM`, `DMFieldGetNumComponents()`, `DMFieldEvaluate()`, `DMFieldEvaluateFV()`
+See also: `DMField`, `DM`, `DMFieldGetNumComponents()`, `DMFieldEvaluate()`, `DMFieldEvaluateFV()`
 
 # External Links
 $(_doc_external("DM/DMFieldEvaluateFE"))
@@ -1727,7 +1707,7 @@ end
 end 
 
 """
-	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldEvaluateFV(petsclib::PetscLibType,field::DMField, cellIS::AbstractIS, datatype::PetscDataType) 
+	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldEvaluateFV(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS, datatype::PetscDataType) 
 Evaluate the mean of a field and its finite volume derivatives on a set of points.
 
 Not Collective
@@ -1752,7 +1732,7 @@ varying first by the second partial derivative component, then by field componen
 
 Level: intermediate
 
--seealso: `DMField`, `IS`, `DMFieldGetNumComponents()`, `DMFieldEvaluate()`, `DMFieldEvaluateFE()`, `PetscDataType`
+See also: `DMField`, `IS`, `DMFieldGetNumComponents()`, `DMFieldEvaluate()`, `DMFieldEvaluateFE()`, `PetscDataType`
 
 # External Links
 $(_doc_external("DM/DMFieldEvaluateFV"))
@@ -1788,7 +1768,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `DMFieldInitializePackage()`
+See also: `DMFieldInitializePackage()`
 
 # External Links
 $(_doc_external("DM/DMFieldFinalizePackage"))
@@ -1810,7 +1790,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMFieldGetDM(petsclib::PetscLibType,field::DMField) 
+	dm::PetscDM = DMFieldGetDM(petsclib::PetscLibType, field::DMField) 
 Returns the `DM` for the manifold over which the field is defined.
 
 Not Collective
@@ -1823,7 +1803,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMField`, `DM`, `DMFieldEvaluate()`
+See also: `DMField`, `DM`, `DMFieldEvaluate()`
 
 # External Links
 $(_doc_external("DM/DMFieldGetDM"))
@@ -1848,7 +1828,7 @@ end
 end 
 
 """
-	minDegree::PetscInt,maxDegree::PetscInt = DMFieldGetDegree(petsclib::PetscLibType,field::DMField, cellIS::AbstractIS) 
+	minDegree::PetscInt,maxDegree::PetscInt = DMFieldGetDegree(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS) 
 Get the polynomial degree of a field when pulled back onto the
 reference element
 
@@ -1864,7 +1844,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMField`, `IS`, `DMFieldEvaluateFE()`
+See also: `DMField`, `IS`, `DMFieldEvaluateFE()`
 
 # External Links
 $(_doc_external("DM/DMFieldGetDegree"))
@@ -1891,7 +1871,7 @@ end
 end 
 
 """
-	nc::PetscInt = DMFieldGetNumComponents(petsclib::PetscLibType,field::DMField) 
+	nc::PetscInt = DMFieldGetNumComponents(petsclib::PetscLibType, field::DMField) 
 Returns the number of components in the field
 
 Not Collective
@@ -1904,7 +1884,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFieldEvaluate()`
+See also: `DMField`, `DMFieldEvaluate()`
 
 # External Links
 $(_doc_external("DM/DMFieldGetNumComponents"))
@@ -1929,7 +1909,7 @@ end
 end 
 
 """
-	type::DMFieldType = DMFieldGetType(petsclib::PetscLibType,field::DMField) 
+	type::DMFieldType = DMFieldGetType(petsclib::PetscLibType, field::DMField) 
 Gets the `DMFieldType` name (as a string) from the `DMField`.
 
 Not Collective
@@ -1942,7 +1922,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMField`, `DMFieldSetType()`, `DMFieldType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `DMField`, `DMFieldSetType()`, `DMFieldType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("DM/DMFieldGetType"))
@@ -1974,7 +1954,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `DMFieldFinalizePackage()`
+See also: `DMFieldFinalizePackage()`
 
 # External Links
 $(_doc_external("DM/DMFieldInitializePackage"))
@@ -1996,7 +1976,7 @@ end
 end 
 
 """
-	DMFieldRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	DMFieldRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds an implementation of the `DMField` object.
 
 Not collective, No Fortran Support
@@ -2005,7 +1985,7 @@ Input Parameters:
 - `sname`    - name of a new user-defined implementation
 - `function` - routine to create method context
 
--seealso: `DMField`, `DMFieldRegisterAll()`, `DMFieldRegisterDestroy()`
+See also: `DMField`, `DMFieldRegisterAll()`, `DMFieldRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMFieldRegister"))
@@ -2028,7 +2008,7 @@ end
 end 
 
 """
-	DMFieldSetType(petsclib::PetscLibType,field::DMField, type::DMFieldType) 
+	DMFieldSetType(petsclib::PetscLibType, field::DMField, type::DMFieldType) 
 set the `DMField` implementation
 
 Collective
@@ -2039,7 +2019,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMField`, `DMFieldGetType()`, `DMFieldType`
+See also: `DMField`, `DMFieldGetType()`, `DMFieldType`
 
 # External Links
 $(_doc_external("DM/DMFieldSetType"))
@@ -2062,8 +2042,8 @@ end
 end 
 
 """
-	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldShellEvaluateFEDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType) 
-Default finite
+	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType) 
+Default finite-element evaluation for a `DMFIELDSHELL` that maps the quadrature points to real space using the coordinate `DMField` and then calls `DMFieldEvaluate()`.
 
 Not Collective
 
@@ -2080,7 +2060,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellEvaluateFVDefault()`, `DMFieldEvaluate()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellEvaluateFVDefault()`, `DMFieldEvaluate()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellEvaluateFEDefault"))
@@ -2109,8 +2089,8 @@ end
 end 
 
 """
-	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldShellEvaluateFVDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, type::PetscDataType) 
-Default finite
+	B::Ptr{Cvoid},D::Ptr{Cvoid},H::Ptr{Cvoid} = DMFieldShellEvaluateFVDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, type::PetscDataType) 
+Default finite-volume evaluation for a `DMFIELDSHELL` that samples at cell centroids using the coordinate `DMField`'s default quadrature and calls `DMFieldEvaluate()`.
 
 Not Collective
 
@@ -2126,7 +2106,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFV()`, `DMFieldShellEvaluateFEDefault()`, `DMFieldEvaluate()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFV()`, `DMFieldShellEvaluateFEDefault()`, `DMFieldEvaluate()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellEvaluateFVDefault"))
@@ -2155,8 +2135,8 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = DMFieldShellGetContext(petsclib::PetscLibType,field::DMField) 
-Retrieve the user
+	ctx::Ptr{Cvoid} = DMFieldShellGetContext(petsclib::PetscLibType, field::DMField) 
+Retrieve the user-supplied context associated with a `DMFIELDSHELL`.
 
 Not Collective
 
@@ -2168,7 +2148,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellGetContext"))
@@ -2193,7 +2173,7 @@ end
 end 
 
 """
-	DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType,field::DMField, create::external) 
+	DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, create::external) 
 Register the routine that supplies a default `PetscQuadrature` sufficient to integrate a `DMFIELDSHELL` exactly over a set of mesh points.
 
 Logically Collective
@@ -2209,7 +2189,7 @@ Calling sequence of `create`:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldCreateDefaultQuadrature()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldCreateDefaultQuadrature()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetCreateDefaultQuadrature"))
@@ -2232,7 +2212,7 @@ end
 end 
 
 """
-	DMFieldShellSetDestroy(petsclib::PetscLibType,field::DMField, destroy::external) 
+	DMFieldShellSetDestroy(petsclib::PetscLibType, field::DMField, destroy::external) 
 Register a destroy callback that will be invoked when a `DMFIELDSHELL` is destroyed.
 
 Logically Collective
@@ -2246,7 +2226,7 @@ Calling sequence of `destroy`:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldDestroy()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldDestroy()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetDestroy"))
@@ -2269,8 +2249,8 @@ end
 end 
 
 """
-	DMFieldShellSetEvaluate(petsclib::PetscLibType,field::DMField, evaluate::external) 
-Register the routine that evaluates a `DMFIELDSHELL` at an arbitrary set of real
+	DMFieldShellSetEvaluate(petsclib::PetscLibType, field::DMField, evaluate::external) 
+Register the routine that evaluates a `DMFIELDSHELL` at an arbitrary set of real-space points supplied as a `Vec` of coordinates.
 
 Logically Collective
 
@@ -2288,7 +2268,7 @@ Calling sequence of `evaluate`:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluate()`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellSetEvaluateFV()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluate()`, `DMFieldShellSetEvaluateFE()`, `DMFieldShellSetEvaluateFV()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetEvaluate"))
@@ -2311,8 +2291,8 @@ end
 end 
 
 """
-	DMFieldShellSetEvaluateFE(petsclib::PetscLibType,field::DMField, evaluateFE::external) 
-Register the routine that evaluates a `DMFIELDSHELL` at finite
+	DMFieldShellSetEvaluateFE(petsclib::PetscLibType, field::DMField, evaluateFE::external) 
+Register the routine that evaluates a `DMFIELDSHELL` at finite-element quadrature points over a set of mesh points.
 
 Logically Collective
 
@@ -2331,7 +2311,7 @@ Calling sequence of `evaluateFE`:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFE()`, `DMFieldShellEvaluateFEDefault()`, `DMFieldShellSetEvaluateFV()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFE()`, `DMFieldShellEvaluateFEDefault()`, `DMFieldShellSetEvaluateFV()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetEvaluateFE"))
@@ -2354,7 +2334,7 @@ end
 end 
 
 """
-	DMFieldShellSetEvaluateFV(petsclib::PetscLibType,field::DMField, evaluateFV::external) 
+	DMFieldShellSetEvaluateFV(petsclib::PetscLibType, field::DMField, evaluateFV::external) 
 Register the routine that evaluates a `DMFIELDSHELL` as cell averages over a set of mesh cells.
 
 Logically Collective
@@ -2373,7 +2353,7 @@ Calling sequence of `evaluateFV`:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFV()`, `DMFieldShellEvaluateFVDefault()`, `DMFieldShellSetEvaluateFE()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFV()`, `DMFieldShellEvaluateFVDefault()`, `DMFieldShellSetEvaluateFE()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetEvaluateFV"))
@@ -2396,7 +2376,7 @@ end
 end 
 
 """
-	DMFieldShellSetGetDegree(petsclib::PetscLibType,field::DMField, getDegree::external) 
+	DMFieldShellSetGetDegree(petsclib::PetscLibType, field::DMField, getDegree::external) 
 Register the routine that reports the polynomial degree bounds of a `DMFIELDSHELL` over a set of mesh points.
 
 Logically Collective
@@ -2413,7 +2393,7 @@ Calling sequence of `getDegree`:
 
 Level: intermediate
 
--seealso: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldGetDegree()`
+See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldGetDegree()`
 
 # External Links
 $(_doc_external("DM/DMFieldShellSetGetDegree"))
@@ -2436,7 +2416,7 @@ end
 end 
 
 """
-	DMFieldView(petsclib::PetscLibType,field::DMField, viewer::PetscViewer) 
+	DMFieldView(petsclib::PetscLibType, field::DMField, viewer::PetscViewer) 
 view a `DMField`
 
 Collective
@@ -2447,7 +2427,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMField`, `DMFieldCreate()`
+See also: `DMField`, `DMFieldCreate()`
 
 # External Links
 $(_doc_external("DM/DMFieldView"))
@@ -2470,7 +2450,7 @@ end
 end 
 
 """
-	DMLabelAddStrata(petsclib::PetscLibType,label::DMLabel, numStrata::PetscInt, stratumValues::Vector{PetscInt}) 
+	DMLabelAddStrata(petsclib::PetscLibType, label::DMLabel, numStrata::PetscInt, stratumValues::Vector{PetscInt}) 
 Adds new stratum values in a `DMLabel`
 
 Not Collective
@@ -2482,7 +2462,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelAddStrata"))
@@ -2505,7 +2485,7 @@ end
 end 
 
 """
-	DMLabelAddStrataIS(petsclib::PetscLibType,label::DMLabel, valueIS::AbstractIS) 
+	DMLabelAddStrataIS(petsclib::PetscLibType, label::DMLabel, valueIS::AbstractIS) 
 Adds new stratum values in a `DMLabel`
 
 Not Collective
@@ -2516,7 +2496,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelAddStrataIS"))
@@ -2539,7 +2519,7 @@ end
 end 
 
 """
-	DMLabelAddStratum(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
+	DMLabelAddStratum(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
 Adds a new stratum value in a `DMLabel`
 
 Input Parameters:
@@ -2548,7 +2528,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelAddStratum"))
@@ -2571,7 +2551,7 @@ end
 end 
 
 """
-	DMLabelClearStratum(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
+	DMLabelClearStratum(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
 Remove a stratum
 
 Not Collective
@@ -2582,7 +2562,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelClearStratum"))
@@ -2605,7 +2585,7 @@ end
 end 
 
 """
-	DMLabelClearValue(petsclib::PetscLibType,label::DMLabel, point::PetscInt, value::PetscInt) 
+	DMLabelClearValue(petsclib::PetscLibType, label::DMLabel, point::PetscInt, value::PetscInt) 
 Clear the value a label assigns to a point
 
 Not Collective
@@ -2617,7 +2597,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelClearValue"))
@@ -2640,7 +2620,7 @@ end
 end 
 
 """
-	equal::PetscBool,message::String = DMLabelCompare(petsclib::PetscLibType,comm::MPI_Comm, l0::DMLabel, l1::DMLabel) 
+	equal::PetscBool,message::String = DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::DMLabel, l1::DMLabel) 
 Compare two `DMLabel` objects
 
 Collective; No Fortran Support
@@ -2656,7 +2636,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMCompareLabels()`, `DMLabelGetNumValues()`, `DMLabelGetDefaultValue()`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelGetStratumIS()`
+See also: `DMLabel`, `DM`, `DMCompareLabels()`, `DMLabelGetNumValues()`, `DMLabelGetDefaultValue()`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelGetStratumIS()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelCompare"))
@@ -2683,7 +2663,7 @@ end
 end 
 
 """
-	DMLabelComputeIndex(petsclib::PetscLibType,label::DMLabel) 
+	DMLabelComputeIndex(petsclib::PetscLibType, label::DMLabel) 
 Create an index structure for membership determination, automatically determining the bounds
 
 Not Collective
@@ -2693,7 +2673,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabelDestroyIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabelDestroyIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelComputeIndex"))
@@ -2716,7 +2696,7 @@ end
 end 
 
 """
-	section::PetscSection,is::IS = DMLabelConvertToSection(petsclib::PetscLibType,label::DMLabel) 
+	section::PetscSection,is::IS = DMLabelConvertToSection(petsclib::PetscLibType, label::DMLabel) 
 Make a `PetscSection`/`IS` pair that encodes the label
 
 Not Collective
@@ -2730,7 +2710,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `DMLabelDistribute()`
+See also: `DMLabel`, `DM`, `DMLabelDistribute()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelConvertToSection"))
@@ -2757,7 +2737,7 @@ end
 end 
 
 """
-	label::DMLabel = DMLabelCreate(petsclib::PetscLibType,comm::MPI_Comm, name::String) 
+	label::DMLabel = DMLabelCreate(petsclib::PetscLibType, comm::MPI_Comm, name::String) 
 Create a `DMLabel` object, which is a multimap
 
 Collective
@@ -2771,7 +2751,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelDestroy()`
+See also: `DMLabel`, `DM`, `DMLabelDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelCreate"))
@@ -2796,7 +2776,7 @@ end
 end 
 
 """
-	DMLabelCreateIndex(petsclib::PetscLibType,label::DMLabel, pStart::PetscInt, pEnd::PetscInt) 
+	DMLabelCreateIndex(petsclib::PetscLibType, label::DMLabel, pStart::PetscInt, pEnd::PetscInt) 
 Create an index structure for membership determination
 
 Not Collective
@@ -2808,7 +2788,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelComputeIndex()`, `DMLabelDestroyIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelComputeIndex()`, `DMLabelDestroyIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelCreateIndex"))
@@ -2831,7 +2811,7 @@ end
 end 
 
 """
-	DMLabelDestroy(petsclib::PetscLibType,label::Union{DMLabel, Ref{DMLabel}}) 
+	DMLabelDestroy(petsclib::PetscLibType, label::Union{DMLabel, Ref{DMLabel}}) 
 Destroys a `DMLabel`
 
 Collective
@@ -2841,7 +2821,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelReset()`, `DMLabelCreate()`
+See also: `DMLabel`, `DM`, `DMLabelReset()`, `DMLabelCreate()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelDestroy"))
@@ -2865,7 +2845,7 @@ end
 end 
 
 """
-	DMLabelDestroyIndex(petsclib::PetscLibType,label::DMLabel) 
+	DMLabelDestroyIndex(petsclib::PetscLibType, label::DMLabel) 
 Destroy the index structure
 
 Not Collective
@@ -2875,7 +2855,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelDestroyIndex"))
@@ -2898,7 +2878,7 @@ end
 end 
 
 """
-	labelNew::DMLabel = DMLabelDistribute(petsclib::PetscLibType,label::DMLabel, sf::PetscSF) 
+	labelNew::DMLabel = DMLabelDistribute(petsclib::PetscLibType, label::DMLabel, sf::PetscSF) 
 Create a new label pushed forward over the `PetscSF`
 
 Collective
@@ -2912,7 +2892,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelDistribute"))
@@ -2937,7 +2917,7 @@ end
 end 
 
 """
-	labelnew::DMLabel = DMLabelDuplicate(petsclib::PetscLibType,label::DMLabel) 
+	labelnew::DMLabel = DMLabelDuplicate(petsclib::PetscLibType, label::DMLabel) 
 Duplicates a `DMLabel`
 
 Collective
@@ -2950,7 +2930,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelDuplicate"))
@@ -2975,7 +2955,7 @@ end
 end 
 
 """
-	olabel::DMLabel = DMLabelEphemeralGetLabel(petsclib::PetscLibType,label::DMLabel) 
+	olabel::DMLabel = DMLabelEphemeralGetLabel(petsclib::PetscLibType, label::DMLabel) 
 Get the base label for this ephemeral label
 
 Not Collective
@@ -2988,7 +2968,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabelEphemeralSetLabel()`, `DMLabelEphemeralGetTransform()`, `DMLabelSetType()`
+See also: `DMLabelEphemeralSetLabel()`, `DMLabelEphemeralGetTransform()`, `DMLabelSetType()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralGetLabel"))
@@ -3013,7 +2993,7 @@ end
 end 
 
 """
-	tr::DMPlexTransform = DMLabelEphemeralGetTransform(petsclib::PetscLibType,label::DMLabel) 
+	tr::DMPlexTransform = DMLabelEphemeralGetTransform(petsclib::PetscLibType, label::DMLabel) 
 Get the transform for this ephemeral label
 
 Not Collective
@@ -3026,7 +3006,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabelEphemeralSetTransform()`, `DMLabelEphemeralGetLabel()`, `DMLabelSetType()`
+See also: `DMLabelEphemeralSetTransform()`, `DMLabelEphemeralGetLabel()`, `DMLabelSetType()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralGetTransform"))
@@ -3051,7 +3031,7 @@ end
 end 
 
 """
-	DMLabelEphemeralSetLabel(petsclib::PetscLibType,label::DMLabel, olabel::DMLabel) 
+	DMLabelEphemeralSetLabel(petsclib::PetscLibType, label::DMLabel, olabel::DMLabel) 
 Set the base label for this ephemeral label
 
 Not Collective
@@ -3062,7 +3042,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabelEphemeralGetLabel()`, `DMLabelEphemeralSetTransform()`, `DMLabelSetType()`
+See also: `DMLabelEphemeralGetLabel()`, `DMLabelEphemeralSetTransform()`, `DMLabelSetType()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralSetLabel"))
@@ -3085,7 +3065,7 @@ end
 end 
 
 """
-	DMLabelEphemeralSetTransform(petsclib::PetscLibType,label::DMLabel, tr::DMPlexTransform) 
+	DMLabelEphemeralSetTransform(petsclib::PetscLibType, label::DMLabel, tr::DMPlexTransform) 
 Set the transform for this ephemeral label
 
 Not Collective
@@ -3096,7 +3076,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabelEphemeralGetTransform()`, `DMLabelEphemeralSetLabel()`, `DMLabelSetType()`
+See also: `DMLabelEphemeralGetTransform()`, `DMLabelEphemeralSetLabel()`, `DMLabelSetType()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralSetTransform"))
@@ -3119,7 +3099,7 @@ end
 end 
 
 """
-	DMLabelFilter(petsclib::PetscLibType,label::DMLabel, start::PetscInt, end_::PetscInt) 
+	DMLabelFilter(petsclib::PetscLibType, label::DMLabel, start::PetscInt, end_::PetscInt) 
 Remove all points outside of [`start`, `end`)
 
 Not Collective
@@ -3131,7 +3111,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelFilter"))
@@ -3154,7 +3134,7 @@ end
 end 
 
 """
-	labelNew::DMLabel = DMLabelGather(petsclib::PetscLibType,label::DMLabel, sf::PetscSF) 
+	labelNew::DMLabel = DMLabelGather(petsclib::PetscLibType, label::DMLabel, sf::PetscSF) 
 Gather all label values from leafs into roots
 
 Collective
@@ -3168,7 +3148,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `DMLabelDistribute()`
+See also: `DMLabel`, `DM`, `DMLabelDistribute()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGather"))
@@ -3193,7 +3173,7 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = DMLabelGetBounds(petsclib::PetscLibType,label::DMLabel) 
+	pStart::PetscInt,pEnd::PetscInt = DMLabelGetBounds(petsclib::PetscLibType, label::DMLabel) 
 Return the smallest and largest point in the label
 
 Not Collective
@@ -3207,7 +3187,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetBounds"))
@@ -3234,7 +3214,7 @@ end
 end 
 
 """
-	defaultValue::PetscInt = DMLabelGetDefaultValue(petsclib::PetscLibType,label::DMLabel) 
+	defaultValue::PetscInt = DMLabelGetDefaultValue(petsclib::PetscLibType, label::DMLabel) 
 Get the default value returned by `DMLabelGetValue()` if a point has not been explicitly given a value.
 When a label is created, it is initialized to -1.
 
@@ -3248,7 +3228,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelSetDefaultValue()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelSetDefaultValue()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetDefaultValue"))
@@ -3273,7 +3253,7 @@ end
 end 
 
 """
-	values::IS = DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType,label::DMLabel) 
+	values::IS = DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::DMLabel) 
 Get an `IS` of all values that the `DMlabel` takes
 
 Not Collective
@@ -3286,7 +3266,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetValueISGlobal()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetValueISGlobal()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetNonEmptyStratumValuesIS"))
@@ -3311,7 +3291,7 @@ end
 end 
 
 """
-	numValues::PetscInt = DMLabelGetNumValues(petsclib::PetscLibType,label::DMLabel) 
+	numValues::PetscInt = DMLabelGetNumValues(petsclib::PetscLibType, label::DMLabel) 
 Get the number of values that the `DMLabel` takes
 
 Not Collective
@@ -3324,7 +3304,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetNumValues"))
@@ -3349,7 +3329,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMLabelGetStratumBounds(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMLabelGetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
 Get the largest and smallest point of a stratum
 
 Not Collective
@@ -3364,7 +3344,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumBounds"))
@@ -3391,7 +3371,7 @@ end
 end 
 
 """
-	points::IS = DMLabelGetStratumIS(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
+	points::IS = DMLabelGetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
 Get an `IS` with the stratum points
 
 Not Collective
@@ -3405,7 +3385,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumIS"))
@@ -3430,7 +3410,7 @@ end
 end 
 
 """
-	index::PetscInt = DMLabelGetStratumPointIndex(petsclib::PetscLibType,label::DMLabel, value::PetscInt, p::PetscInt) 
+	index::PetscInt = DMLabelGetStratumPointIndex(petsclib::PetscLibType, label::DMLabel, value::PetscInt, p::PetscInt) 
 Get the index of a point in a given stratum
 
 Not Collective
@@ -3445,7 +3425,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetValueIndex()`, `DMLabelGetStratumIS()`, `DMLabelCreate()`
+See also: `DMLabel`, `DM`, `DMLabelGetValueIndex()`, `DMLabelGetStratumIS()`, `DMLabelCreate()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumPointIndex"))
@@ -3470,7 +3450,7 @@ end
 end 
 
 """
-	size::PetscInt = DMLabelGetStratumSize(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
+	size::PetscInt = DMLabelGetStratumSize(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
 Get the size of a stratum
 
 Not Collective
@@ -3484,7 +3464,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumSize"))
@@ -3509,7 +3489,7 @@ end
 end 
 
 """
-	type::DMLabelType = DMLabelGetType(petsclib::PetscLibType,label::DMLabel) 
+	type::DMLabelType = DMLabelGetType(petsclib::PetscLibType, label::DMLabel) 
 Gets the type name (as a string) from the label.
 
 Not Collective
@@ -3522,7 +3502,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelSetType()`, `DMLabelCreate()`
+See also: `DMLabel`, `DM`, `DMLabelSetType()`, `DMLabelCreate()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetType"))
@@ -3547,8 +3527,8 @@ end
 end 
 
 """
-	value::PetscInt = DMLabelGetValue(petsclib::PetscLibType,label::DMLabel, point::PetscInt) 
-Return the value a label assigns to a point, or the label's default value (which is initially
+	value::PetscInt = DMLabelGetValue(petsclib::PetscLibType, label::DMLabel, point::PetscInt) 
+Return the value a label assigns to a point, or the label's default value (which is initially -1, and can be changed with
 `DMLabelSetDefaultValue()`)
 
 Not Collective
@@ -3562,7 +3542,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClearValue()`, `DMLabelGetDefaultValue()`, `DMLabelSetDefaultValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClearValue()`, `DMLabelGetDefaultValue()`, `DMLabelSetDefaultValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValue"))
@@ -3587,7 +3567,7 @@ end
 end 
 
 """
-	minValue::PetscInt,maxValue::PetscInt = DMLabelGetValueBounds(petsclib::PetscLibType,label::DMLabel) 
+	minValue::PetscInt,maxValue::PetscInt = DMLabelGetValueBounds(petsclib::PetscLibType, label::DMLabel) 
 Return the smallest and largest value in the label
 
 Not Collective
@@ -3601,7 +3581,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetBounds()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelGetBounds()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueBounds"))
@@ -3628,7 +3608,7 @@ end
 end 
 
 """
-	values::IS = DMLabelGetValueIS(petsclib::PetscLibType,label::DMLabel) 
+	values::IS = DMLabelGetValueIS(petsclib::PetscLibType, label::DMLabel) 
 Get an `IS` of all values that the `DMlabel` takes
 
 Not Collective
@@ -3641,7 +3621,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelGetValueISGlobal()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelGetValueISGlobal()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueIS"))
@@ -3666,7 +3646,7 @@ end
 end 
 
 """
-	values::IS = DMLabelGetValueISGlobal(petsclib::PetscLibType,comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool) 
+	values::IS = DMLabelGetValueISGlobal(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool) 
 Get an `IS` of all values that the `DMlabel` takes across all ranks
 
 Collective
@@ -3681,7 +3661,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueISGlobal"))
@@ -3706,8 +3686,8 @@ end
 end 
 
 """
-	index::PetscInt = DMLabelGetValueIndex(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
-Get the index of a given value in the list of values for the `DMlabel`, or
+	index::PetscInt = DMLabelGetValueIndex(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+Get the index of a given value in the list of values for the `DMlabel`, or -1 if it is not present
 
 Not Collective
 
@@ -3720,7 +3700,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueIndex"))
@@ -3745,7 +3725,7 @@ end
 end 
 
 """
-	contains::PetscBool = DMLabelHasPoint(petsclib::PetscLibType,label::DMLabel, point::PetscInt) 
+	contains::PetscBool = DMLabelHasPoint(petsclib::PetscLibType, label::DMLabel, point::PetscInt) 
 Determine whether a label assigns a value to a point
 
 Not Collective
@@ -3759,7 +3739,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelHasPoint"))
@@ -3784,7 +3764,7 @@ end
 end 
 
 """
-	exists::PetscBool = DMLabelHasStratum(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
+	exists::PetscBool = DMLabelHasStratum(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
 Determine whether points exist with the given value
 
 Not Collective
@@ -3798,7 +3778,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelHasStratum"))
@@ -3823,7 +3803,7 @@ end
 end 
 
 """
-	contains::PetscBool = DMLabelHasValue(petsclib::PetscLibType,label::DMLabel, value::PetscInt) 
+	contains::PetscBool = DMLabelHasValue(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
 Determine whether a label assigns the value to any point
 
 Not Collective
@@ -3837,7 +3817,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelHasValue"))
@@ -3862,7 +3842,7 @@ end
 end 
 
 """
-	DMLabelInsertIS(petsclib::PetscLibType,label::DMLabel, is::AbstractIS, value::PetscInt) 
+	DMLabelInsertIS(petsclib::PetscLibType, label::DMLabel, is::AbstractIS, value::PetscInt) 
 Set all points in the `IS` to a value
 
 Not Collective
@@ -3874,7 +3854,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelInsertIS"))
@@ -3897,7 +3877,7 @@ end
 end 
 
 """
-	labelNew::DMLabel = DMLabelPermute(petsclib::PetscLibType,label::DMLabel, permutation::AbstractIS) 
+	labelNew::DMLabel = DMLabelPermute(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) 
 Create a new label with permuted points
 
 Not Collective
@@ -3911,7 +3891,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelPermute"))
@@ -3936,7 +3916,7 @@ end
 end 
 
 """
-	DMLabelPermuteValues(petsclib::PetscLibType,label::DMLabel, permutation::AbstractIS) 
+	DMLabelPermuteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) 
 Permute the values in a label
 
 Not collective
@@ -3948,7 +3928,7 @@ Input Parameters:
 Output Parameter:
 - `label` - the `DMLabel` now with permuted values
 
--seealso: `DMLabelRewriteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabelRewriteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelPermuteValues"))
@@ -3971,7 +3951,7 @@ end
 end 
 
 """
-	DMLabelPropagateBegin(petsclib::PetscLibType,label::DMLabel, sf::PetscSF) 
+	DMLabelPropagateBegin(petsclib::PetscLibType, label::DMLabel, sf::PetscSF) 
 Setup a cycle of label propagation
 
 Collective
@@ -3982,7 +3962,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelPropagateEnd()`, `DMLabelPropagatePush()`
+See also: `DMLabel`, `DM`, `DMLabelPropagateEnd()`, `DMLabelPropagatePush()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelPropagateBegin"))
@@ -4005,7 +3985,7 @@ end
 end 
 
 """
-	DMLabelPropagateEnd(petsclib::PetscLibType,label::DMLabel, pointSF::PetscSF) 
+	DMLabelPropagateEnd(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF) 
 Tear down a cycle of label propagation
 
 Collective
@@ -4016,7 +3996,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagatePush()`
+See also: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagatePush()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelPropagateEnd"))
@@ -4039,7 +4019,7 @@ end
 end 
 
 """
-	DMLabelPropagatePush(petsclib::PetscLibType,label::DMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid}) 
+	DMLabelPropagatePush(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid}) 
 Tear down a cycle of label propagation
 
 Collective
@@ -4058,7 +4038,7 @@ Calling sequence of `markPoint`:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagateEnd()`
+See also: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagateEnd()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelPropagatePush"))
@@ -4081,7 +4061,7 @@ end
 end 
 
 """
-	DMLabelRegister(petsclib::PetscLibType,name::String, noname::Ptr{Cvoid}) 
+	DMLabelRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid}) 
 Adds a new label component implementation
 
 Not Collective
@@ -4090,7 +4070,7 @@ Input Parameters:
 - `name`        - The name of a new user-defined creation routine
 - `create_func` - The creation routine itself
 
--seealso: `DMLabel`, `DM`, `DMLabelType`, `DMLabelRegisterAll()`, `DMLabelRegisterDestroy()`
+See also: `DMLabel`, `DM`, `DMLabelType`, `DMLabelRegisterAll()`, `DMLabelRegisterDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelRegister"))
@@ -4120,7 +4100,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `DMLabel`, `DM`, `DMRegisterAll()`, `DMLabelRegisterDestroy()`
+See also: `DMLabel`, `DM`, `DMRegisterAll()`, `DMLabelRegisterDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelRegisterAll"))
@@ -4147,7 +4127,7 @@ This function destroys the `DMLabel` registry. It is called from `PetscFinalize(
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `PetscInitialize()`
+See also: `DMLabel`, `DM`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelRegisterDestroy"))
@@ -4169,7 +4149,7 @@ end
 end 
 
 """
-	DMLabelReset(petsclib::PetscLibType,label::DMLabel) 
+	DMLabelReset(petsclib::PetscLibType, label::DMLabel) 
 Destroys internal data structures in a `DMLabel`
 
 Not Collective
@@ -4179,7 +4159,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelDestroy()`, `DMLabelCreate()`
+See also: `DMLabel`, `DM`, `DMLabelDestroy()`, `DMLabelCreate()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelReset"))
@@ -4202,7 +4182,7 @@ end
 end 
 
 """
-	DMLabelRewriteValues(petsclib::PetscLibType,label::DMLabel, permutation::AbstractIS) 
+	DMLabelRewriteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) 
 Permute the values in a label, but some may be omitted
 
 Not collective
@@ -4214,7 +4194,7 @@ Input Parameters:
 Output Parameter:
 - `label` - the `DMLabel` now with permuted values
 
--seealso: `DMLabelPermuteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabelPermuteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelRewriteValues"))
@@ -4237,7 +4217,7 @@ end
 end 
 
 """
-	DMLabelSetDefaultValue(petsclib::PetscLibType,label::DMLabel, defaultValue::PetscInt) 
+	DMLabelSetDefaultValue(petsclib::PetscLibType, label::DMLabel, defaultValue::PetscInt) 
 Set the default value returned by `DMLabelGetValue()` if a point has not been explicitly given a value.
 When a label is created, it is initialized to -1.
 
@@ -4251,7 +4231,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMLabel`, `DM`, `DMLabelGetDefaultValue()`, `DMLabelGetValue()`, `DMLabelSetValue()`
+See also: `DMLabel`, `DM`, `DMLabelGetDefaultValue()`, `DMLabelGetValue()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelSetDefaultValue"))
@@ -4274,7 +4254,7 @@ end
 end 
 
 """
-	DMLabelSetStratumBounds(petsclib::PetscLibType,label::DMLabel, value::PetscInt, pStart::PetscInt, pEnd::PetscInt) 
+	DMLabelSetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::PetscInt, pStart::PetscInt, pEnd::PetscInt) 
 Efficiently give a contiguous set of points a given label value
 
 Not Collective
@@ -4287,7 +4267,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetStratumIS()`, `DMLabelGetStratumIS()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetStratumIS()`, `DMLabelGetStratumIS()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelSetStratumBounds"))
@@ -4310,7 +4290,7 @@ end
 end 
 
 """
-	DMLabelSetStratumIS(petsclib::PetscLibType,label::DMLabel, value::PetscInt, is::AbstractIS) 
+	DMLabelSetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt, is::AbstractIS) 
 Set the stratum points using an `IS`
 
 Not Collective
@@ -4322,7 +4302,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelSetStratumIS"))
@@ -4345,7 +4325,7 @@ end
 end 
 
 """
-	DMLabelSetType(petsclib::PetscLibType,label::DMLabel, method::DMLabelType) 
+	DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::DMLabelType) 
 Sets the particular implementation for a label.
 
 Collective
@@ -4359,7 +4339,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelGetType()`, `DMLabelCreate()`, `DMLabelType`
+See also: `DMLabel`, `DM`, `DMLabelGetType()`, `DMLabelCreate()`, `DMLabelType`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelSetType"))
@@ -4382,7 +4362,7 @@ end
 end 
 
 """
-	DMLabelSetUp(petsclib::PetscLibType,label::DMLabel) 
+	DMLabelSetUp(petsclib::PetscLibType, label::DMLabel) 
 SetUp a `DMLabel` object
 
 Collective
@@ -4392,7 +4372,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelSetUp"))
@@ -4415,8 +4395,8 @@ end
 end 
 
 """
-	DMLabelSetValue(petsclib::PetscLibType,label::DMLabel, point::PetscInt, value::PetscInt) 
-Set the value a label assigns to a point.  If the value is the same as the label's default value (which is initially
+	DMLabelSetValue(petsclib::PetscLibType, label::DMLabel, point::PetscInt, value::PetscInt) 
+Set the value a label assigns to a point.  If the value is the same as the label's default value (which is initially -1, and can
 be changed with `DMLabelSetDefaultValue()` to something different), then this function will do nothing.
 
 Not Collective
@@ -4428,7 +4408,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelClearValue()`, `DMLabelGetDefaultValue()`, `DMLabelSetDefaultValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelClearValue()`, `DMLabelGetDefaultValue()`, `DMLabelSetDefaultValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelSetValue"))
@@ -4451,7 +4431,7 @@ end
 end 
 
 """
-	contains::PetscBool = DMLabelStratumHasPoint(petsclib::PetscLibType,label::DMLabel, value::PetscInt, point::PetscInt) 
+	contains::PetscBool = DMLabelStratumHasPoint(petsclib::PetscLibType, label::DMLabel, value::PetscInt, point::PetscInt) 
 Return true if the stratum contains a point
 
 Not Collective
@@ -4466,7 +4446,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClearValue()`
+See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClearValue()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelStratumHasPoint"))
@@ -4491,7 +4471,7 @@ end
 end 
 
 """
-	DMLabelView(petsclib::PetscLibType,label::DMLabel, viewer::PetscViewer) 
+	DMLabelView(petsclib::PetscLibType, label::DMLabel, viewer::PetscViewer) 
 View the label
 
 Collective
@@ -4502,7 +4482,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMLabel`, `PetscViewer`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
+See also: `DMLabel`, `PetscViewer`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelView"))
@@ -4525,7 +4505,7 @@ end
 end 
 
 """
-	DMLabelViewFromOptions(petsclib::PetscLibType,label::DMLabel, obj, name::String) 
+	DMLabelViewFromOptions(petsclib::PetscLibType, label::DMLabel, obj, name::String) 
 View a `DMLabel` in a particular way based on a request in the options database
 
 Collective
@@ -4540,9 +4520,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMLabel`, `DMLabelView()`, `PetscObjectViewFromOptions()`, `DMLabelCreate()`
+See also: `DMLabel`, `DMLabelView()`, `PetscObjectViewFromOptions()`, `DMLabelCreate()`
 
 # External Links
 $(_doc_external("DMLabel/DMLabelViewFromOptions"))
@@ -4565,7 +4543,7 @@ end
 end 
 
 """
-	DMNetworkMonitorAdd(petsclib::PetscLibType,monitor::DMNetworkMonitor, name::String, element::PetscInt, nodes::PetscInt, start::PetscInt, blocksize::PetscInt, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, hold::PetscBool) 
+	DMNetworkMonitorAdd(petsclib::PetscLibType, monitor::DMNetworkMonitor, name::String, element::PetscInt, nodes::PetscInt, start::PetscInt, blocksize::PetscInt, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, hold::PetscBool) 
 Adds a new viewer to a `DMNetworkMonitor`
 
 Collective
@@ -4585,7 +4563,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorDestroy()`
+See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorDestroy()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkMonitorAdd"))
@@ -4608,7 +4586,7 @@ end
 end 
 
 """
-	monitorptr::DMNetworkMonitor = DMNetworkMonitorCreate(petsclib::PetscLibType,network::AbstractPetscDM) 
+	monitorptr::DMNetworkMonitor = DMNetworkMonitorCreate(petsclib::PetscLibType, network::AbstractPetscDM) 
 Creates a network monitor context
 
 Collective
@@ -4621,7 +4599,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorDestroy()`, `DMNetworkMonitorAdd()`
+See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorDestroy()`, `DMNetworkMonitorAdd()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkMonitorCreate"))
@@ -4646,7 +4624,7 @@ end
 end 
 
 """
-	DMNetworkMonitorDestroy(petsclib::PetscLibType,monitor::Union{DMNetworkMonitor, Ref{DMNetworkMonitor}}) 
+	DMNetworkMonitorDestroy(petsclib::PetscLibType, monitor::Union{DMNetworkMonitor, Ref{DMNetworkMonitor}}) 
 Destroys a network monitor and all associated viewers
 
 Collective
@@ -4656,7 +4634,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorAdd()`
+See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorAdd()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkMonitorDestroy"))
@@ -4680,7 +4658,7 @@ end
 end 
 
 """
-	DMNetworkMonitorPop(petsclib::PetscLibType,monitor::DMNetworkMonitor) 
+	DMNetworkMonitorPop(petsclib::PetscLibType, monitor::DMNetworkMonitor) 
 Removes the most recently added viewer to a `DMNetworkMonitor`
 
 Collective
@@ -4690,7 +4668,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorDestroy()`
+See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorDestroy()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkMonitorPop"))
@@ -4713,7 +4691,7 @@ end
 end 
 
 """
-	DMNetworkMonitorView(petsclib::PetscLibType,monitor::DMNetworkMonitor, x::AbstractPetscVec) 
+	DMNetworkMonitorView(petsclib::PetscLibType, monitor::DMNetworkMonitor, x::AbstractPetscVec) 
 A `DMNETWORK` specific monitor function for `TSMonitorSet()`
 
 Collective, No Fortran support
@@ -4724,7 +4702,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorDestroy()`, `DMNetworkMonitorAdd()`
+See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DMNetworkMonitorDestroy()`, `DMNetworkMonitorAdd()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkMonitorView"))
@@ -4747,7 +4725,7 @@ end
 end 
 
 """
-	p::PetscInt = DMPlexPointQueueBack(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+	p::PetscInt = DMPlexPointQueueBack(petsclib::PetscLibType, queue::DMPlexPoCintQueue) 
 Return, without removing, the mesh point at the back of a `DMPlexPointQueue`.
 
 Not Collective
@@ -4760,7 +4738,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueFront()`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueEmpty()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueFront()`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueBack"))
@@ -4785,7 +4763,7 @@ end
 end 
 
 """
-	queue::DMPlexPoCintQueue = DMPlexPointQueueCreate(petsclib::PetscLibType,size::PetscInt) 
+	queue::DMPlexPoCintQueue = DMPlexPointQueueCreate(petsclib::PetscLibType, size::PetscInt) 
 Create a `DMPlexPointQueue`, a simple FIFO queue of `PetscInt` mesh points used by `DMPLEX` traversal routines.
 
 Not Collective
@@ -4798,7 +4776,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDestroy()`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueDequeue()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDestroy()`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueDequeue()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueCreate"))
@@ -4823,7 +4801,7 @@ end
 end 
 
 """
-	p::PetscInt = DMPlexPointQueueDequeue(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+	p::PetscInt = DMPlexPointQueueDequeue(petsclib::PetscLibType, queue::DMPlexPoCintQueue) 
 Remove and return the mesh point at the front of a `DMPlexPointQueue`.
 
 Not Collective
@@ -4836,7 +4814,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueFront()`, `DMPlexPointQueueEmpty()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEnqueue()`, `DMPlexPointQueueFront()`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueDequeue"))
@@ -4861,7 +4839,7 @@ end
 end 
 
 """
-	DMPlexPointQueueDestroy(petsclib::PetscLibType,queue::Union{DMPlexPoCintQueue, Ref{DMPlexPoCintQueue}}) 
+	DMPlexPointQueueDestroy(petsclib::PetscLibType, queue::Union{DMPlexPoCintQueue, Ref{DMPlexPoCintQueue}}) 
 Destroy a `DMPlexPointQueue` previously created with `DMPlexPointQueueCreate()`.
 
 Not Collective
@@ -4871,7 +4849,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueDestroy"))
@@ -4895,7 +4873,7 @@ end
 end 
 
 """
-	empty::PetscBool = DMPlexPointQueueEmptyCollective(petsclib::PetscLibType,obj, queue::DMPlexPoCintQueue) 
+	empty::PetscBool = DMPlexPointQueueEmptyCollective(petsclib::PetscLibType, obj, queue::DMPlexPoCintQueue) 
 Collectively determine whether a `DMPlexPointQueue` is empty on every rank of a communicator.
 
 Collective
@@ -4909,7 +4887,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEmpty()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueEmptyCollective"))
@@ -4934,7 +4912,7 @@ end
 end 
 
 """
-	DMPlexPointQueueEnqueue(petsclib::PetscLibType,queue::DMPlexPoCintQueue, p::PetscInt) 
+	DMPlexPointQueueEnqueue(petsclib::PetscLibType, queue::DMPlexPoCintQueue, p::PetscInt) 
 Add a mesh point to the back of a `DMPlexPointQueue`.
 
 Not Collective
@@ -4945,7 +4923,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDequeue()`, `DMPlexPointQueueBack()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDequeue()`, `DMPlexPointQueueBack()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueEnqueue"))
@@ -4968,7 +4946,7 @@ end
 end 
 
 """
-	DMPlexPointQueueEnsureSize(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+	DMPlexPointQueueEnsureSize(petsclib::PetscLibType, queue::DMPlexPoCintQueue) 
 Ensure that a `DMPlexPointQueue` has room for at least one more entry, doubling its capacity if it is full.
 
 Not Collective
@@ -4978,7 +4956,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`, `DMPlexPointQueueEnqueue()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`, `DMPlexPointQueueEnqueue()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueEnsureSize"))
@@ -5001,7 +4979,7 @@ end
 end 
 
 """
-	p::PetscInt = DMPlexPointQueueFront(petsclib::PetscLibType,queue::DMPlexPoCintQueue) 
+	p::PetscInt = DMPlexPointQueueFront(petsclib::PetscLibType, queue::DMPlexPoCintQueue) 
 Return, without removing, the mesh point at the front of a `DMPlexPointQueue`.
 
 Not Collective
@@ -5014,7 +4992,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueBack()`, `DMPlexPointQueueDequeue()`, `DMPlexPointQueueEmpty()`
+See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueBack()`, `DMPlexPointQueueDequeue()`, `DMPlexPointQueueEmpty()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueFront"))
@@ -5039,7 +5017,7 @@ end
 end 
 
 """
-	rdm::PetscDM = DMPlexTransformAdaptLabel(petsclib::PetscLibType,dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel) 
+	rdm::PetscDM = DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel) 
 Adapt a `DMPLEX` using a `DMPlexTransform` driven by a `DMLabel` marking cells to be refined or coarsened.
 
 Collective
@@ -5055,7 +5033,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexTransform`, `DMAdaptLabel()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`, `DMLabel`
+See also: `DMPLEX`, `DMPlexTransform`, `DMAdaptLabel()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`, `DMLabel`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformAdaptLabel"))
@@ -5080,7 +5058,7 @@ end
 end 
 
 """
-	trdm::PetscDM = DMPlexTransformApply(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM) 
+	trdm::PetscDM = DMPlexTransformApply(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM) 
 Execute the transformation, producing another `DM`
 
 Collective
@@ -5099,7 +5077,7 @@ Options Database Keys:
 - `-dm_plex_transform_label_replica_inc num` - Increment for the label value to be multiplied by the replica number
 - `-dm_plex_transform_active name`           - Name for active mesh label
 
--seealso: [](plex_transform_table), [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformCreate()`, `DMPlexTransformSetDM()`
+See also: [](plex_transform_table), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformCreate()`, `DMPlexTransformSetDM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformApply"))
@@ -5124,7 +5102,7 @@ end
 end 
 
 """
-	rt::PetscInt,Nt::PetscInt,target::Ptr{DMPolytopeType},size::Ptr{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransform(petsclib::PetscLibType,tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
+	rt::PetscInt,Nt::PetscInt,target::Ptr{DMPolytopeType},size::Ptr{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransform(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
 Describes the transform of a given source cell into a set of other target cells. These produced cells become the new mesh.
 
 Input Parameters:
@@ -5142,7 +5120,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCellTransform"))
@@ -5177,7 +5155,7 @@ end
 end 
 
 """
-	rt::PetscInt,Nt::PetscInt,target::Ptr{DMPolytopeType},size::Ptr{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransformIdentity(petsclib::PetscLibType,tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
+	rt::PetscInt,Nt::PetscInt,target::Ptr{DMPolytopeType},size::Ptr{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransformIdentity(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
 Default `celltransform` implementation for transforms that reproduce the input mesh
 
 Not Collective
@@ -5197,7 +5175,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformCellTransform()`, `DMPlexTransformGetSubcellOrientationIdentity()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformCellTransform()`, `DMPlexTransformGetSubcellOrientationIdentity()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCellTransformIdentity"))
@@ -5232,7 +5210,7 @@ end
 end 
 
 """
-	useTensor::PetscBool = DMPlexTransformCohesiveExtrudeGetTensor(petsclib::PetscLibType,tr::DMPlexTransform) 
+	useTensor::PetscBool = DMPlexTransformCohesiveExtrudeGetTensor(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the flag to use tensor cells
 
 Not Collective
@@ -5243,7 +5221,7 @@ Input Parameter:
 Output Parameter:
 - `useTensor` - The flag to use tensor cells
 
--seealso: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeSetTensor()`, `DMPlexTransformExtrudeGetTensor()`
+See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeSetTensor()`, `DMPlexTransformExtrudeGetTensor()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeGetTensor"))
@@ -5268,7 +5246,7 @@ end
 end 
 
 """
-	unsplit::DMLabel = DMPlexTransformCohesiveExtrudeGetUnsplit(petsclib::PetscLibType,tr::DMPlexTransform) 
+	unsplit::DMLabel = DMPlexTransformCohesiveExtrudeGetUnsplit(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get a new label marking the unsplit points in the transformed mesh
 
 Not Collective
@@ -5281,7 +5259,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformGetTransformTypes()`
+See also: `DMPlexTransform`, `DMPlexTransformGetTransformTypes()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeGetUnsplit"))
@@ -5306,7 +5284,7 @@ end
 end 
 
 """
-	width::PetscReal = DMPlexTransformCohesiveExtrudeGetWidth(petsclib::PetscLibType,tr::DMPlexTransform) 
+	width::PetscReal = DMPlexTransformCohesiveExtrudeGetWidth(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the width of extruded cells
 
 Not Collective
@@ -5319,7 +5297,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeSetWidth()`
+See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeSetWidth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeGetWidth"))
@@ -5344,7 +5322,7 @@ end
 end 
 
 """
-	DMPlexTransformCohesiveExtrudeSetTensor(petsclib::PetscLibType,tr::DMPlexTransform, useTensor::PetscBool) 
+	DMPlexTransformCohesiveExtrudeSetTensor(petsclib::PetscLibType, tr::DMPlexTransform, useTensor::PetscBool) 
 Set the flag to use tensor cells
 
 Not Collective
@@ -5353,7 +5331,7 @@ Input Parameters:
 - `tr`        - The `DMPlexTransform`
 - `useTensor` - The flag for tensor cells
 
--seealso: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeGetTensor()`, `DMPlexTransformExtrudeSetTensor()`
+See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeGetTensor()`, `DMPlexTransformExtrudeSetTensor()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeSetTensor"))
@@ -5376,7 +5354,7 @@ end
 end 
 
 """
-	DMPlexTransformCohesiveExtrudeSetWidth(petsclib::PetscLibType,tr::DMPlexTransform, width::PetscReal) 
+	DMPlexTransformCohesiveExtrudeSetWidth(petsclib::PetscLibType, tr::DMPlexTransform, width::PetscReal) 
 Set the width of extruded cells
 
 Not Collective
@@ -5387,7 +5365,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeGetWidth()`
+See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeGetWidth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeSetWidth"))
@@ -5410,7 +5388,7 @@ end
 end 
 
 """
-	tr::DMPlexTransform = DMPlexTransformCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	tr::DMPlexTransform = DMPlexTransformCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty transform object. The type can then be set with `DMPlexTransformSetType()`.
 
 Collective
@@ -5423,7 +5401,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTransformSetType()`, `DMPLEXREFINEREGULAR`, `DMPLEXTRANSFORMFILTER`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTransformSetType()`, `DMPLEXREFINEREGULAR`, `DMPLEXTRANSFORMFILTER`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCreate"))
@@ -5448,7 +5426,7 @@ end
 end 
 
 """
-	DMPlexTransformCreateDiscLabels(petsclib::PetscLibType,tr::DMPlexTransform, rdm::AbstractPetscDM) 
+	DMPlexTransformCreateDiscLabels(petsclib::PetscLibType, tr::DMPlexTransform, rdm::AbstractPetscDM) 
 Refine the labels which define field and discrete system regions on the transformed `DM`
 
 Not Collective
@@ -5459,7 +5437,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMSetField()`, `DMSetRegionNumDS()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMSetField()`, `DMSetRegionNumDS()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformCreateDiscLabels"))
@@ -5482,7 +5460,7 @@ end
 end 
 
 """
-	DMPlexTransformDestroy(petsclib::PetscLibType,tr::Union{DMPlexTransform, Ref{DMPlexTransform}}) 
+	DMPlexTransformDestroy(petsclib::PetscLibType, tr::Union{DMPlexTransform, Ref{DMPlexTransform}}) 
 Destroys a `DMPlexTransform`
 
 Collective
@@ -5492,7 +5470,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformView()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformView()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformDestroy"))
@@ -5516,7 +5494,7 @@ end
 end 
 
 """
-	layers::PetscInt = DMPlexTransformExtrudeGetLayers(petsclib::PetscLibType,tr::DMPlexTransform) 
+	layers::PetscInt = DMPlexTransformExtrudeGetLayers(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the number of extruded layers.
 
 Not Collective
@@ -5529,7 +5507,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeSetLayers()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetLayers()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetLayers"))
@@ -5554,7 +5532,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeGetNormal(petsclib::PetscLibType,tr::DMPlexTransform, normal::Vector{PetscReal}) 
+	DMPlexTransformExtrudeGetNormal(petsclib::PetscLibType, tr::DMPlexTransform, normal::Vector{PetscReal}) 
 Get the extrusion normal vector
 
 Not Collective
@@ -5565,7 +5543,7 @@ Input Parameter:
 Output Parameter:
 - `normal` - The extrusion direction
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeSetNormal()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetNormal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetNormal"))
@@ -5588,7 +5566,7 @@ end
 end 
 
 """
-	periodic::PetscBool = DMPlexTransformExtrudeGetPeriodic(petsclib::PetscLibType,tr::DMPlexTransform) 
+	periodic::PetscBool = DMPlexTransformExtrudeGetPeriodic(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the flag to extrude periodically from the initial surface
 
 Not Collective
@@ -5601,7 +5579,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeSetPeriodic()`, `DMPlexTransformExtrudeGetSymmetric()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetPeriodic()`, `DMPlexTransformExtrudeGetSymmetric()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetPeriodic"))
@@ -5626,7 +5604,7 @@ end
 end 
 
 """
-	symmetric::PetscBool = DMPlexTransformExtrudeGetSymmetric(petsclib::PetscLibType,tr::DMPlexTransform) 
+	symmetric::PetscBool = DMPlexTransformExtrudeGetSymmetric(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the flag to extrude symmetrically from the initial surface
 
 Not Collective
@@ -5639,7 +5617,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeSetSymmetric()`, `DMPlexTransformExtrudeGetPeriodic()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetSymmetric()`, `DMPlexTransformExtrudeGetPeriodic()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetSymmetric"))
@@ -5664,7 +5642,7 @@ end
 end 
 
 """
-	useTensor::PetscBool = DMPlexTransformExtrudeGetTensor(petsclib::PetscLibType,tr::DMPlexTransform) 
+	useTensor::PetscBool = DMPlexTransformExtrudeGetTensor(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the flag to use tensor cells
 
 Not Collective
@@ -5675,7 +5653,7 @@ Input Parameter:
 Output Parameter:
 - `useTensor` - The flag to use tensor cells
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeSetTensor()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetTensor()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetTensor"))
@@ -5700,7 +5678,7 @@ end
 end 
 
 """
-	thickness::PetscReal = DMPlexTransformExtrudeGetThickness(petsclib::PetscLibType,tr::DMPlexTransform) 
+	thickness::PetscReal = DMPlexTransformExtrudeGetThickness(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the total thickness of the layers
 
 Not Collective
@@ -5713,7 +5691,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetThickness"))
@@ -5738,7 +5716,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetLayers(petsclib::PetscLibType,tr::DMPlexTransform, layers::PetscInt) 
+	DMPlexTransformExtrudeSetLayers(petsclib::PetscLibType, tr::DMPlexTransform, layers::PetscInt) 
 Set the number of extruded layers.
 
 Not Collective
@@ -5749,7 +5727,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeGetLayers()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetLayers()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetLayers"))
@@ -5772,7 +5750,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetNormal(petsclib::PetscLibType,tr::DMPlexTransform, normal::Vector{PetscReal}) 
+	DMPlexTransformExtrudeSetNormal(petsclib::PetscLibType, tr::DMPlexTransform, normal::Vector{PetscReal}) 
 Set the extrusion normal
 
 Not Collective
@@ -5783,7 +5761,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeGetNormal()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetNormal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetNormal"))
@@ -5806,7 +5784,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetNormalFunction(petsclib::PetscLibType,tr::DMPlexTransform, normalFunc::Ptr{Cvoid}) 
+	DMPlexTransformExtrudeSetNormalFunction(petsclib::PetscLibType, tr::DMPlexTransform, normalFunc::Ptr{Cvoid}) 
 Set a function to determine the extrusion normal
 
 Not Collective
@@ -5817,7 +5795,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeGetNormal()`, `PetscSimplePointFn`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetNormal()`, `PetscSimplePointFn`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetNormalFunction"))
@@ -5840,7 +5818,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetPeriodic(petsclib::PetscLibType,tr::DMPlexTransform, periodic::PetscBool) 
+	DMPlexTransformExtrudeSetPeriodic(petsclib::PetscLibType, tr::DMPlexTransform, periodic::PetscBool) 
 Set the flag to extrude periodically from the initial surface
 
 Not Collective
@@ -5851,7 +5829,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeGetPeriodic()`, `DMPlexTransformExtrudeSetSymmetric()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetPeriodic()`, `DMPlexTransformExtrudeSetSymmetric()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetPeriodic"))
@@ -5874,7 +5852,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetSymmetric(petsclib::PetscLibType,tr::DMPlexTransform, symmetric::PetscBool) 
+	DMPlexTransformExtrudeSetSymmetric(petsclib::PetscLibType, tr::DMPlexTransform, symmetric::PetscBool) 
 Set the flag to extrude symmetrically from the initial surface
 
 Not Collective
@@ -5885,7 +5863,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeGetSymmetric()`, `DMPlexTransformExtrudeSetPeriodic()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetSymmetric()`, `DMPlexTransformExtrudeSetPeriodic()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetSymmetric"))
@@ -5908,7 +5886,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetTensor(petsclib::PetscLibType,tr::DMPlexTransform, useTensor::PetscBool) 
+	DMPlexTransformExtrudeSetTensor(petsclib::PetscLibType, tr::DMPlexTransform, useTensor::PetscBool) 
 Set the flag to use tensor cells
 
 Not Collective
@@ -5917,7 +5895,7 @@ Input Parameters:
 - `tr`        - The `DMPlexTransform`
 - `useTensor` - The flag for tensor cells
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeGetTensor()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetTensor()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetTensor"))
@@ -5940,7 +5918,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetThickness(petsclib::PetscLibType,tr::DMPlexTransform, thickness::PetscReal) 
+	DMPlexTransformExtrudeSetThickness(petsclib::PetscLibType, tr::DMPlexTransform, thickness::PetscReal) 
 Set the total thickness of the layers
 
 Not Collective
@@ -5951,7 +5929,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeGetThickness()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetThickness()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetThickness"))
@@ -5974,7 +5952,7 @@ end
 end 
 
 """
-	DMPlexTransformExtrudeSetThicknesses(petsclib::PetscLibType,tr::DMPlexTransform, Nth::PetscInt, thicknesses::Vector{PetscReal}) 
+	DMPlexTransformExtrudeSetThicknesses(petsclib::PetscLibType, tr::DMPlexTransform, Nth::PetscInt, thicknesses::Vector{PetscReal}) 
 Set the thickness of each layer
 
 Not Collective
@@ -5986,7 +5964,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`, `DMPlexTransformExtrudeGetThickness()`
+See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`, `DMPlexTransformExtrudeGetThickness()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetThicknesses"))
@@ -6009,7 +5987,7 @@ end
 end 
 
 """
-	active::DMLabel = DMPlexTransformGetActive(petsclib::PetscLibType,tr::DMPlexTransform) 
+	active::DMLabel = DMPlexTransformGetActive(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the `DMLabel` marking the active points for the transform
 
 Input Parameter:
@@ -6020,7 +5998,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetActive()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetActive()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetActive"))
@@ -6045,7 +6023,7 @@ end
 end 
 
 """
-	celltype::DMPolytopeType = DMPlexTransformGetCellType(petsclib::PetscLibType,tr::DMPlexTransform, cell::PetscInt) 
+	celltype::DMPolytopeType = DMPlexTransformGetCellType(petsclib::PetscLibType, tr::DMPlexTransform, cell::PetscInt) 
 Return the cell type for a point in the transformed mesh
 
 Not Collective
@@ -6059,7 +6037,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetChart()`, `DMPlexTransformGetCellTypeStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetChart()`, `DMPlexTransformGetCellTypeStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetCellType"))
@@ -6084,7 +6062,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexTransformGetCellTypeStratum(petsclib::PetscLibType,tr::DMPlexTransform, celltype::DMPolytopeType) 
+	start::PetscInt,end_::PetscInt = DMPlexTransformGetCellTypeStratum(petsclib::PetscLibType, tr::DMPlexTransform, celltype::DMPolytopeType) 
 Return the point range for a given cell type in the transformed mesh
 
 Not Collective
@@ -6099,7 +6077,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetCellType()`, `DMPlexTransformGetChart()`, `DMPlexGetDepthStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetCellType()`, `DMPlexTransformGetChart()`, `DMPlexGetDepthStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetCellTypeStratum"))
@@ -6126,7 +6104,7 @@ end
 end 
 
 """
-	Nv::PetscInt,trVerts::Ptr{PetscScalar} = DMPlexTransformGetCellVertices(petsclib::PetscLibType,tr::DMPlexTransform, ct::DMPolytopeType) 
+	Nv::PetscInt,trVerts::Ptr{PetscScalar} = DMPlexTransformGetCellVertices(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType) 
 Get the set of transformed vertices lying in the closure of a reference cell of given type
 
 Input Parameters:
@@ -6139,7 +6117,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetSubcellVertices()`
+See also: `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetSubcellVertices()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetCellVertices"))
@@ -6166,7 +6144,7 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = DMPlexTransformGetChart(petsclib::PetscLibType,tr::DMPlexTransform) 
+	pStart::PetscInt,pEnd::PetscInt = DMPlexTransformGetChart(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the chart `[pStart, pEnd)` for the points produced by the transform
 
 Not Collective
@@ -6180,7 +6158,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTransformGetCellType()`, `DMPlexTransformGetCellTypeStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTransformGetCellType()`, `DMPlexTransformGetCellTypeStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetChart"))
@@ -6207,7 +6185,7 @@ end
 end 
 
 """
-	cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformGetCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt) 
+	cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformGetCone(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt) 
 Return the cone of a point in the transformed mesh
 
 Not Collective
@@ -6222,7 +6200,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRestoreCone()`, `DMPlexTransformGetConeOriented()`, `DMPlexTransformGetConeSize()`, `DMPlexGetCone()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRestoreCone()`, `DMPlexTransformGetConeOriented()`, `DMPlexTransformGetConeSize()`, `DMPlexGetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetCone"))
@@ -6249,7 +6227,7 @@ end
 end 
 
 """
-	cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformGetConeOriented(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, po::PetscInt) 
+	cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformGetConeOriented(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt, po::PetscInt) 
 Return the cone of a point in the transformed mesh, computed using a specified parent orientation
 
 Not Collective
@@ -6265,7 +6243,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformRestoreCone()`, `DMPlexTransformGetConeSize()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformRestoreCone()`, `DMPlexTransformGetConeSize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetConeOriented"))
@@ -6292,7 +6270,7 @@ end
 end 
 
 """
-	coneSize::PetscInt = DMPlexTransformGetConeSize(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt) 
+	coneSize::PetscInt = DMPlexTransformGetConeSize(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt) 
 Return the cone size of a point in the transformed mesh
 
 Not Collective
@@ -6306,7 +6284,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformGetCellType()`, `DMPlexGetConeSize()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformGetCellType()`, `DMPlexGetConeSize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetConeSize"))
@@ -6331,7 +6309,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexTransformGetDM(petsclib::PetscLibType,tr::DMPlexTransform) 
+	dm::PetscDM = DMPlexTransformGetDM(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the base `DM` for the transform
 
 Input Parameter:
@@ -6342,7 +6320,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetDM()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetDM()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetDM"))
@@ -6367,7 +6345,7 @@ end
 end 
 
 """
-	depth::PetscInt = DMPlexTransformGetDepth(petsclib::PetscLibType,tr::DMPlexTransform) 
+	depth::PetscInt = DMPlexTransformGetDepth(petsclib::PetscLibType, tr::DMPlexTransform) 
 Return the topological depth of the transformed mesh
 
 Not Collective
@@ -6380,7 +6358,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepthStratum()`, `DMPlexGetDepth()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepthStratum()`, `DMPlexGetDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetDepth"))
@@ -6405,7 +6383,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexTransformGetDepthStratum(petsclib::PetscLibType,tr::DMPlexTransform, depth::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMPlexTransformGetDepthStratum(petsclib::PetscLibType, tr::DMPlexTransform, depth::PetscInt) 
 Return the point range for a given depth in the transformed mesh
 
 Not Collective
@@ -6420,7 +6398,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepth()`, `DMPlexGetDepthStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepth()`, `DMPlexGetDepthStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetDepthStratum"))
@@ -6447,7 +6425,7 @@ end
 end 
 
 """
-	match::PetscBool = DMPlexTransformGetMatchStrata(petsclib::PetscLibType,tr::DMPlexTransform) 
+	match::PetscBool = DMPlexTransformGetMatchStrata(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the flag which determines what points get added to the transformed labels
 
 Not Collective
@@ -6460,7 +6438,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetMatchStrata()`, `DMPlexGetPointDepth()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetMatchStrata()`, `DMPlexGetPointDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetMatchStrata"))
@@ -6485,7 +6463,7 @@ end
 end 
 
 """
-	ct::DMPolytopeType,ctNew::DMPolytopeType,p::PetscInt,r::PetscInt = DMPlexTransformGetSourcePoint(petsclib::PetscLibType,tr::DMPlexTransform, pNew::PetscInt) 
+	ct::DMPolytopeType,ctNew::DMPolytopeType,p::PetscInt,r::PetscInt = DMPlexTransformGetSourcePoint(petsclib::PetscLibType, tr::DMPlexTransform, pNew::PetscInt) 
 Get the number of a point in the original mesh based on information from the transformed mesh.
 
 Not Collective
@@ -6502,7 +6480,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetTargetPoint()`, `DMPlexTransformCellTransform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetTargetPoint()`, `DMPlexTransformCellTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetSourcePoint"))
@@ -6533,7 +6511,7 @@ end
 end 
 
 """
-	rnew::PetscInt,onew::PetscInt = DMPlexTransformGetSubcellOrientation(petsclib::PetscLibType,tr::DMPlexTransform, sct::DMPolytopeType, sp::PetscInt, so::PetscInt, tct::DMPolytopeType, r::PetscInt, o::PetscInt) 
+	rnew::PetscInt,onew::PetscInt = DMPlexTransformGetSubcellOrientation(petsclib::PetscLibType, tr::DMPlexTransform, sct::DMPolytopeType, sp::PetscInt, so::PetscInt, tct::DMPolytopeType, r::PetscInt, o::PetscInt) 
 Transform the replica number and orientation for a target point according to the group action for the source point
 
 Not Collective
@@ -6553,7 +6531,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformCellTransform()`, `DMPlexTransformApply()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformCellTransform()`, `DMPlexTransformApply()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetSubcellOrientation"))
@@ -6580,7 +6558,7 @@ end
 end 
 
 """
-	rnew::PetscInt,onew::PetscInt = DMPlexTransformGetSubcellOrientationIdentity(petsclib::PetscLibType,tr::DMPlexTransform, sct::DMPolytopeType, sp::PetscInt, so::PetscInt, tct::DMPolytopeType, r::PetscInt, o::PetscInt) 
+	rnew::PetscInt,onew::PetscInt = DMPlexTransformGetSubcellOrientationIdentity(petsclib::PetscLibType, tr::DMPlexTransform, sct::DMPolytopeType, sp::PetscInt, so::PetscInt, tct::DMPolytopeType, r::PetscInt, o::PetscInt) 
 Default `getsubcellorientation` implementation for transforms that reproduce the input mesh
 
 Not Collective
@@ -6600,7 +6578,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetSubcellOrientation()`, `DMPlexTransformCellTransformIdentity()`, `DMPolytopeTypeComposeOrientation()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetSubcellOrientation()`, `DMPlexTransformCellTransformIdentity()`, `DMPolytopeTypeComposeOrientation()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetSubcellOrientationIdentity"))
@@ -6627,7 +6605,7 @@ end
 end 
 
 """
-	subVerts::Ptr{PetscInt} = DMPlexTransformGetSubcellVertices(petsclib::PetscLibType,tr::DMPlexTransform, ct::DMPolytopeType, rct::DMPolytopeType, r::PetscInt) 
+	subVerts::Ptr{PetscInt} = DMPlexTransformGetSubcellVertices(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType, rct::DMPolytopeType, r::PetscInt) 
 Get the set of transformed vertices defining a subcell in the reference cell of given type
 
 Input Parameters:
@@ -6641,7 +6619,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetCellVertices()`
+See also: `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetCellVertices()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetSubcellVertices"))
@@ -6666,7 +6644,7 @@ end
 end 
 
 """
-	pNew::PetscInt = DMPlexTransformGetTargetPoint(petsclib::PetscLibType,tr::DMPlexTransform, ct::DMPolytopeType, ctNew::DMPolytopeType, p::PetscInt, r::PetscInt) 
+	pNew::PetscInt = DMPlexTransformGetTargetPoint(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType, ctNew::DMPolytopeType, p::PetscInt, r::PetscInt) 
 Get the number of a point in the transformed mesh based on information from the original mesh.
 
 Not Collective
@@ -6683,7 +6661,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetSourcePoint()`, `DMPlexTransformCellTransform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetSourcePoint()`, `DMPlexTransformCellTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetTargetPoint"))
@@ -6708,7 +6686,7 @@ end
 end 
 
 """
-	trType::DMLabel = DMPlexTransformGetTransformTypes(petsclib::PetscLibType,tr::DMPlexTransform) 
+	trType::DMLabel = DMPlexTransformGetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the `DMLabel` marking the transform type of each point for the transform
 
 Input Parameter:
@@ -6719,7 +6697,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetTransformType()`, `DMPlexTransformGetActive()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetTransformType()`, `DMPlexTransformGetActive()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetTransformTypes"))
@@ -6744,7 +6722,7 @@ end
 end 
 
 """
-	type::DMPlexTransformType = DMPlexTransformGetType(petsclib::PetscLibType,tr::DMPlexTransform) 
+	type::DMPlexTransformType = DMPlexTransformGetType(petsclib::PetscLibType, tr::DMPlexTransform) 
 Gets the type name (as a string) from the transform.
 
 Not Collective
@@ -6757,7 +6735,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTransformSetType()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTransformSetType()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformGetType"))
@@ -6782,7 +6760,7 @@ end
 end 
 
 """
-	DMPlexTransformMapCoordinates(petsclib::PetscLibType,tr::DMPlexTransform, pct::DMPolytopeType, ct::DMPolytopeType, p::PetscInt, r::PetscInt, Nv::PetscInt, dE::PetscInt, in::Vector{PetscScalar}, out::Vector{PetscScalar}) 
+	DMPlexTransformMapCoordinates(petsclib::PetscLibType, tr::DMPlexTransform, pct::DMPolytopeType, ct::DMPolytopeType, p::PetscInt, r::PetscInt, Nv::PetscInt, dE::PetscInt, in::Vector{PetscScalar}, out::Vector{PetscScalar}) 
 Calculate new coordinates for produced points
 
 Not collective
@@ -6802,7 +6780,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformApply()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformApply()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformMapCoordinates"))
@@ -6825,7 +6803,7 @@ end
 end 
 
 """
-	DMPlexTransformRegister(petsclib::PetscLibType,name::String, noname::Ptr{Cvoid}) 
+	DMPlexTransformRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid}) 
 Adds a new transform component implementation
 
 Not Collective
@@ -6834,7 +6812,7 @@ Input Parameters:
 - `name`        - The name of a new user-defined creation routine
 - `create_func` - The creation routine
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRegisterAll()`, `DMPlexTransformRegisterDestroy()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRegisterAll()`, `DMPlexTransformRegisterDestroy()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformRegister"))
@@ -6864,7 +6842,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRegisterAll()`, `DMPlexTransformRegisterDestroy()`
+See also: `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRegisterAll()`, `DMPlexTransformRegisterDestroy()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformRegisterAll"))
@@ -6893,7 +6871,7 @@ Not collective
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRegisterAll()`, `DMPlexTransformType`, `PetscInitialize()`
+See also: `DM`, `DMPLEX`, `DMRegisterAll()`, `DMPlexTransformType`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformRegisterDestroy"))
@@ -6915,7 +6893,7 @@ end
 end 
 
 """
-	DMPlexTransformRestoreCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) 
+	DMPlexTransformRestoreCone(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) 
 Return the work arrays produced by `DMPlexTransformGetCone()` or `DMPlexTransformGetConeOriented()`
 
 Not Collective
@@ -6928,7 +6906,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformGetConeOriented()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlexTransformGetConeOriented()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformRestoreCone"))
@@ -6953,7 +6931,7 @@ end
 end 
 
 """
-	DMPlexTransformSetActive(petsclib::PetscLibType,tr::DMPlexTransform, active::DMLabel) 
+	DMPlexTransformSetActive(petsclib::PetscLibType, tr::DMPlexTransform, active::DMLabel) 
 Set the `DMLabel` marking the active points for the transform
 
 Input Parameters:
@@ -6962,7 +6940,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetActive()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetActive()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetActive"))
@@ -6985,7 +6963,7 @@ end
 end 
 
 """
-	DMPlexTransformSetDM(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM) 
+	DMPlexTransformSetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM) 
 Set the base `DM` for the transform
 
 Input Parameters:
@@ -6994,7 +6972,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDM()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDM()`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetDM"))
@@ -7017,7 +6995,7 @@ end
 end 
 
 """
-	DMPlexTransformSetDimensions(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM, trdm::AbstractPetscDM) 
+	DMPlexTransformSetDimensions(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM, trdm::AbstractPetscDM) 
 Set the dimensions for the transformed `DM`
 
 Input Parameters:
@@ -7029,7 +7007,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetDimensions"))
@@ -7052,7 +7030,7 @@ end
 end 
 
 """
-	DMPlexTransformSetFromOptions(petsclib::PetscLibType,tr::DMPlexTransform) 
+	DMPlexTransformSetFromOptions(petsclib::PetscLibType, tr::DMPlexTransform) 
 Sets parameters in a transform from values in the options database
 
 Collective
@@ -7069,7 +7047,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformView()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformView()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetFromOptions"))
@@ -7092,7 +7070,7 @@ end
 end 
 
 """
-	DMPlexTransformSetMatchStrata(petsclib::PetscLibType,tr::DMPlexTransform, match::PetscBool) 
+	DMPlexTransformSetMatchStrata(petsclib::PetscLibType, tr::DMPlexTransform, match::PetscBool) 
 Set the flag which determines what points get added to the transformed labels
 
 Not Collective
@@ -7103,7 +7081,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetMatchStrata()`, `DMPlexGetPointDepth()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetMatchStrata()`, `DMPlexGetPointDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetMatchStrata"))
@@ -7126,7 +7104,7 @@ end
 end 
 
 """
-	DMPlexTransformSetTransformTypes(petsclib::PetscLibType,tr::DMPlexTransform, trType::DMLabel) 
+	DMPlexTransformSetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform, trType::DMLabel) 
 Set the `DMLabel` marking the transform type of each point for the transform
 
 Input Parameters:
@@ -7135,7 +7113,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetTransformTypes()`, `DMPlexTransformGetActive())`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetTransformTypes()`, `DMPlexTransformGetActive())`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetTransformTypes"))
@@ -7158,7 +7136,7 @@ end
 end 
 
 """
-	DMPlexTransformSetType(petsclib::PetscLibType,tr::DMPlexTransform, method::DMPlexTransformType) 
+	DMPlexTransformSetType(petsclib::PetscLibType, tr::DMPlexTransform, method::DMPlexTransformType) 
 Sets the particular implementation for a transform.
 
 Collective
@@ -7172,7 +7150,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTransformGetType()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTransformGetType()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetType"))
@@ -7195,7 +7173,7 @@ end
 end 
 
 """
-	DMPlexTransformSetUp(petsclib::PetscLibType,tr::DMPlexTransform) 
+	DMPlexTransformSetUp(petsclib::PetscLibType, tr::DMPlexTransform) 
 Create the tables that drive the transform
 
 Input Parameter:
@@ -7203,7 +7181,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](plex_transform_table), [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
+See also: [](plex_transform_table), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetUp"))
@@ -7226,7 +7204,7 @@ end
 end 
 
 """
-	DMPlexTransformView(petsclib::PetscLibType,tr::DMPlexTransform, v::PetscViewer) 
+	DMPlexTransformView(petsclib::PetscLibType, tr::DMPlexTransform, v::PetscViewer) 
 Views a `DMPlexTransform`
 
 Collective
@@ -7237,7 +7215,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `PetscViewer`, `DMPlexTransformDestroy()`, `DMPlexTransformCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `PetscViewer`, `DMPlexTransformDestroy()`, `DMPlexTransformCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformView"))
@@ -7260,7 +7238,7 @@ end
 end 
 
 """
-	celldm::DMSwarmCellDM = DMSwarmCellDMCreate(petsclib::PetscLibType,dm::AbstractPetscDM, Nf::PetscInt, dmFields::String, Nfc::PetscInt, coordFields::String) 
+	celldm::DMSwarmCellDM = DMSwarmCellDMCreate(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, dmFields::String, Nfc::PetscInt, coordFields::String) 
 create a `DMSwarmCellDM`
 
 Collective
@@ -7277,7 +7255,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMSwarmCellDM`, `DMSWARM`, `DMSetType()`
+See also: `DMSwarmCellDM`, `DMSWARM`, `DMSetType()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMCreate"))
@@ -7304,7 +7282,7 @@ end
 end 
 
 """
-	DMSwarmCellDMDestroy(petsclib::PetscLibType,celldm::Union{DMSwarmCellDM, Ref{DMSwarmCellDM}}) 
+	DMSwarmCellDMDestroy(petsclib::PetscLibType, celldm::Union{DMSwarmCellDM, Ref{DMSwarmCellDM}}) 
 destroy a `DMSwarmCellDM`
 
 Collective
@@ -7314,7 +7292,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DMSwarmCellDM`, `DMSwarmCellDMCreate()`
+See also: `DMSwarmCellDM`, `DMSwarmCellDMCreate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMDestroy"))
@@ -7338,7 +7316,7 @@ end
 end 
 
 """
-	bs::PetscInt = DMSwarmCellDMGetBlockSize(petsclib::PetscLibType,celldm::DMSwarmCellDM, sw::AbstractPetscDM) 
+	bs::PetscInt = DMSwarmCellDMGetBlockSize(petsclib::PetscLibType, celldm::DMSwarmCellDM, sw::AbstractPetscDM) 
 Returns the total blocksize for the `DM` fields
 
 Not Collective
@@ -7352,7 +7330,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
+See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMGetBlockSize"))
@@ -7377,7 +7355,7 @@ end
 end 
 
 """
-	cellid::Ptr{Cchar} = DMSwarmCellDMGetCellID(petsclib::PetscLibType,celldm::DMSwarmCellDM) 
+	cellid::Ptr{Cchar} = DMSwarmCellDMGetCellID(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the cell id field name for the `DMSwarm`
 
 Not Collective
@@ -7390,7 +7368,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
+See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMGetCellID"))
@@ -7415,7 +7393,7 @@ end
 end 
 
 """
-	Nfc::PetscInt,names::Ptr{Ptr{Cchar}} = DMSwarmCellDMGetCoordinateFields(petsclib::PetscLibType,celldm::DMSwarmCellDM) 
+	Nfc::PetscInt,names::Ptr{Ptr{Cchar}} = DMSwarmCellDMGetCoordinateFields(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the `DM` coordinate fields for the `DMSwarm`
 
 Not Collective
@@ -7429,7 +7407,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
+See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMGetCoordinateFields"))
@@ -7456,7 +7434,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMSwarmCellDMGetDM(petsclib::PetscLibType,celldm::DMSwarmCellDM) 
+	dm::PetscDM = DMSwarmCellDMGetDM(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the background `DM` for the `DMSwarm`
 
 Not Collective
@@ -7469,7 +7447,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
+See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMGetDM"))
@@ -7494,7 +7472,7 @@ end
 end 
 
 """
-	Nf::PetscInt,names::Ptr{Ptr{Cchar}} = DMSwarmCellDMGetFields(petsclib::PetscLibType,celldm::DMSwarmCellDM) 
+	Nf::PetscInt,names::Ptr{Ptr{Cchar}} = DMSwarmCellDMGetFields(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the `DM` fields for the `DMSwarm`
 
 Not Collective
@@ -7508,7 +7486,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
+See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMGetFields"))
@@ -7535,7 +7513,7 @@ end
 end 
 
 """
-	sort::DMSwarmSort = DMSwarmCellDMGetSort(petsclib::PetscLibType,celldm::DMSwarmCellDM) 
+	sort::DMSwarmSort = DMSwarmCellDMGetSort(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the sort context over the active `DMSwarmCellDM` for the `DMSwarm`
 
 Not Collective
@@ -7548,7 +7526,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
+See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMGetSort"))
@@ -7573,7 +7551,7 @@ end
 end 
 
 """
-	DMSwarmCellDMSetSort(petsclib::PetscLibType,celldm::DMSwarmCellDM, sort::DMSwarmSort) 
+	DMSwarmCellDMSetSort(petsclib::PetscLibType, celldm::DMSwarmCellDM, sort::DMSwarmSort) 
 Sets the sort context over the active `DMSwarmCellDM` for the `DMSwarm`
 
 Not Collective
@@ -7584,7 +7562,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
+See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMSetSort"))
@@ -7607,7 +7585,7 @@ end
 end 
 
 """
-	DMSwarmCellDMView(petsclib::PetscLibType,celldm::DMSwarmCellDM, viewer::PetscViewer) 
+	DMSwarmCellDMView(petsclib::PetscLibType, celldm::DMSwarmCellDM, viewer::PetscViewer) 
 view a `DMSwarmCellDM`
 
 Collective
@@ -7618,7 +7596,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMSwarmCellDM`, `DMSwarmCellDMCreate()`
+See also: `DMSwarmCellDM`, `DMSwarmCellDMCreate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCellDMView"))
@@ -7641,7 +7619,7 @@ end
 end 
 
 """
-	gfield::DMSwarmDataField = DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::PetscLibType,db::DMSwarmDataBucket, name::String) 
+	gfield::DMSwarmDataField = DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String) 
 Return the `DMSwarmDataField` handle registered in a `DMSwarmDataBucket` under a given name.
 
 Not Collective
@@ -7655,7 +7633,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldIdByName()`, `DMSwarmDataBucketQueryDMSwarmDataFieldByName()`
+See also: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldIdByName()`, `DMSwarmDataBucketQueryDMSwarmDataFieldByName()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataBucketGetDMSwarmDataFieldByName"))
@@ -7680,7 +7658,7 @@ end
 end 
 
 """
-	idx::PetscInt = DMSwarmDataBucketGetDMSwarmDataFieldIdByName(petsclib::PetscLibType,db::DMSwarmDataBucket, name::String) 
+	idx::PetscInt = DMSwarmDataBucketGetDMSwarmDataFieldIdByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String) 
 Return the index of a `DMSwarmDataField` within a `DMSwarmDataBucket` given its name.
 
 Not Collective
@@ -7694,7 +7672,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldByName()`, `DMSwarmDataBucketQueryDMSwarmDataFieldByName()`
+See also: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldByName()`, `DMSwarmDataBucketQueryDMSwarmDataFieldByName()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataBucketGetDMSwarmDataFieldIdByName"))
@@ -7719,7 +7697,7 @@ end
 end 
 
 """
-	found::PetscBool = DMSwarmDataBucketQueryDMSwarmDataFieldByName(petsclib::PetscLibType,db::DMSwarmDataBucket, name::String) 
+	found::PetscBool = DMSwarmDataBucketQueryDMSwarmDataFieldByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String) 
 Test whether a `DMSwarmDataBucket` contains a `DMSwarmDataField` with the given name.
 
 Not Collective
@@ -7733,7 +7711,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldByName()`, `DMSwarmDataBucketGetDMSwarmDataFieldIdByName()`
+See also: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmDataFieldByName()`, `DMSwarmDataBucketGetDMSwarmDataFieldIdByName()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataBucketQueryDMSwarmDataFieldByName"))
@@ -7758,7 +7736,7 @@ end
 end 
 
 """
-	data::Ptr{Cvoid} = DMSwarmDataFieldGetEntries(petsclib::PetscLibType,gfield::DMSwarmDataField) 
+	data::Ptr{Cvoid} = DMSwarmDataFieldGetEntries(petsclib::PetscLibType, gfield::DMSwarmDataField) 
 Return a pointer to the raw contiguous storage backing a `DMSwarmDataField`.
 
 Not Collective
@@ -7771,7 +7749,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMSwarmDataField`, `DMSwarmDataFieldRestoreEntries()`, `DMSwarmDataFieldGetNumEntries()`, `DMSwarmDataFieldGetAtomicSize()`
+See also: `DMSwarmDataField`, `DMSwarmDataFieldRestoreEntries()`, `DMSwarmDataFieldGetNumEntries()`, `DMSwarmDataFieldGetAtomicSize()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataFieldGetEntries"))
@@ -7796,7 +7774,7 @@ end
 end 
 
 """
-	data::Ptr{Cvoid} = DMSwarmDataFieldRestoreEntries(petsclib::PetscLibType,gfield::DMSwarmDataField) 
+	data::Ptr{Cvoid} = DMSwarmDataFieldRestoreEntries(petsclib::PetscLibType, gfield::DMSwarmDataField) 
 Release a pointer obtained from `DMSwarmDataFieldGetEntries()`, clearing the caller's handle to `NULL`.
 
 Not Collective
@@ -7809,7 +7787,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMSwarmDataField`, `DMSwarmDataFieldGetEntries()`
+See also: `DMSwarmDataField`, `DMSwarmDataFieldGetEntries()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDataFieldRestoreEntries"))
@@ -7834,7 +7812,7 @@ end
 end 
 
 """
-	DMSwarmSortDestroy(petsclib::PetscLibType,ctx::Union{DMSwarmSort, Ref{DMSwarmSort}}) 
+	DMSwarmSortDestroy(petsclib::PetscLibType, ctx::Union{DMSwarmSort, Ref{DMSwarmSort}}) 
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortDestroy"))
@@ -7858,7 +7836,7 @@ end
 end 
 
 """
-	DMSwarmSortGetAccess(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	DMSwarmSortGetAccess(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Setups up a `DMSWARM` point sort context for efficient traversal of points within a cell
 
 Not Collective
@@ -7868,7 +7846,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortRestoreAccess()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortRestoreAccess()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortGetAccess"))
@@ -7891,7 +7869,7 @@ end
 end 
 
 """
-	isvalid::PetscBool = DMSwarmSortGetIsValid(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	isvalid::PetscBool = DMSwarmSortGetIsValid(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Gets the isvalid flag associated with a `DMSWARM` point sorting context
 
 Not Collective
@@ -7904,7 +7882,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortGetIsValid"))
@@ -7929,7 +7907,7 @@ end
 end 
 
 """
-	npoints::PetscInt = DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType,sw::AbstractPetscDM, cell::PetscInt) 
+	npoints::PetscInt = DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType, sw::AbstractPetscDM, cell::PetscInt) 
 Returns the number of points in a cell
 
 Not Collective
@@ -7943,7 +7921,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`, `DMSwarmSortGetPointsPerCell()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`, `DMSwarmSortGetPointsPerCell()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortGetNumberOfPointsPerCell"))
@@ -7968,7 +7946,7 @@ end
 end 
 
 """
-	npoints::PetscInt = DMSwarmSortGetPointsPerCell(petsclib::PetscLibType,sw::AbstractPetscDM, cell::PetscInt, pidlist::PetscInt) 
+	npoints::PetscInt = DMSwarmSortGetPointsPerCell(petsclib::PetscLibType, sw::AbstractPetscDM, cell::PetscInt, pidlist::PetscInt) 
 Creates an array of point indices for all points in a cell
 
 Not Collective
@@ -7981,7 +7959,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmRestorePointsPerCell()`, `DMSwarmSortGetAccess()`, `DMSwarmSortGetNumberOfPointsPerCell()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmRestorePointsPerCell()`, `DMSwarmSortGetAccess()`, `DMSwarmSortGetNumberOfPointsPerCell()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortGetPointsPerCell"))
@@ -8006,7 +7984,7 @@ end
 end 
 
 """
-	ncells::PetscInt,npoints::PetscInt = DMSwarmSortGetSizes(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	ncells::PetscInt,npoints::PetscInt = DMSwarmSortGetSizes(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Gets the sizes associated with a `DMSWARM` point sorting context
 
 Not Collective
@@ -8020,7 +7998,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortGetSizes"))
@@ -8047,7 +8025,7 @@ end
 end 
 
 """
-	DMSwarmSortRestoreAccess(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	DMSwarmSortRestoreAccess(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Invalidates the `DMSWARM` point sorting context previously computed with `DMSwarmSortGetAccess()`
 
 Not Collective
@@ -8057,7 +8035,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortRestoreAccess"))
@@ -8080,7 +8058,7 @@ end
 end 
 
 """
-	DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType,dm::AbstractPetscDM, e::PetscInt, npoints::PetscInt, pidlist::PetscInt) 
+	DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType, dm::AbstractPetscDM, e::PetscInt, npoints::PetscInt, pidlist::PetscInt) 
 Restores an array of point indices for all points in a cell
 
 Not Collective
@@ -8093,7 +8071,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetPointsPerCell()`, `DMSwarmSortGetAccess()`, `DMSwarmSortGetNumberOfPointsPerCell()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetPointsPerCell()`, `DMSwarmSortGetAccess()`, `DMSwarmSortGetNumberOfPointsPerCell()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSortRestorePointsPerCell"))

@@ -1,5 +1,5 @@
 """
-	isout::IS = ISAllGather(petsclib::PetscLibType,is::AbstractIS) 
+	isout::IS = ISAllGather(petsclib::PetscLibType, is::AbstractIS) 
 Given an index set `IS` on each processor, generates a large
 index set (same on each processor) by concatenating together each
 processors index set.
@@ -14,7 +14,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
+See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
 
 # External Links
 $(_doc_external("IS/ISAllGather"))
@@ -39,7 +39,7 @@ end
 end 
 
 """
-	outN::PetscInt,outindices::Ptr{ISColoringValue} = ISAllGatherColors(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, lindices::Vector{ISColoringValue}) 
+	outN::PetscInt,outindices::Ptr{ISColoringValue} = ISAllGatherColors(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, lindices::Vector{ISColoringValue}) 
 Given a set of colors on each processor, generates a large
 set (same on each processor) by concatenating together each processors colors
 
@@ -56,7 +56,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `ISColoringValue`, `ISColoring()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
+See also: `ISColoringValue`, `ISColoring()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
 
 # External Links
 $(_doc_external("IS/ISAllGatherColors"))
@@ -83,7 +83,7 @@ end
 end 
 
 """
-	idx::Vector{PetscInt} = ISBlockGetIndices(petsclib::PetscLibType,is::AbstractIS) 
+	idx::Vector{PetscInt} = ISBlockGetIndices(petsclib::PetscLibType, is::AbstractIS) 
 Gets the indices associated with each block in an `ISBLOCK`
 
 Not Collective
@@ -96,7 +96,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISBLOCK`, `ISGetIndices()`, `ISBlockRestoreIndices()`, `ISBlockSetIndices()`, `ISCreateBlock()`
+See also: [](sec_scatter), `IS`, `ISBLOCK`, `ISGetIndices()`, `ISBlockRestoreIndices()`, `ISBlockSetIndices()`, `ISCreateBlock()`
 
 # External Links
 $(_doc_external("IS/ISBlockGetIndices"))
@@ -122,7 +122,7 @@ end
 end 
 
 """
-	size::PetscInt = ISBlockGetLocalSize(petsclib::PetscLibType,is::AbstractIS) 
+	size::PetscInt = ISBlockGetLocalSize(petsclib::PetscLibType, is::AbstractIS) 
 Returns the local number of blocks in the index set of `ISType` `ISBLOCK`
 
 Not Collective
@@ -135,7 +135,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISGetBlockSize()`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
+See also: [](sec_scatter), `IS`, `ISGetBlockSize()`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
 
 # External Links
 $(_doc_external("IS/ISBlockGetLocalSize"))
@@ -160,7 +160,7 @@ end
 end 
 
 """
-	size::PetscInt = ISBlockGetSize(petsclib::PetscLibType,is::AbstractIS) 
+	size::PetscInt = ISBlockGetSize(petsclib::PetscLibType, is::AbstractIS) 
 Returns the global number of blocks in parallel in the index set of `ISType` `ISBLOCK`
 
 Not Collective
@@ -173,7 +173,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISGetBlockSize()`, `ISBlockGetLocalSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
+See also: [](sec_scatter), `IS`, `ISGetBlockSize()`, `ISBlockGetLocalSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISBLOCK`
 
 # External Links
 $(_doc_external("IS/ISBlockGetSize"))
@@ -198,7 +198,7 @@ end
 end 
 
 """
-	ISBlockRestoreIndices(petsclib::PetscLibType,is::AbstractIS, idx::Union{Ptr, AbstractArray{PetscInt}}) 
+	ISBlockRestoreIndices(petsclib::PetscLibType, is::AbstractIS, idx::Union{Ptr, AbstractArray{PetscInt}}) 
 Restores the indices associated with each block  in an `ISBLOCK` obtained with `ISBlockGetIndices()`
 
 Not Collective
@@ -211,7 +211,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISBLOCK`, `ISRestoreIndices()`, `ISBlockGetIndices()`
+See also: [](sec_scatter), `IS`, `ISBLOCK`, `ISRestoreIndices()`, `ISBlockGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISBlockRestoreIndices"))
@@ -235,7 +235,7 @@ end
 end 
 
 """
-	ISBlockSetIndices(petsclib::PetscLibType,is::AbstractIS, bs::PetscInt, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
+	ISBlockSetIndices(petsclib::PetscLibType, is::AbstractIS, bs::PetscInt, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
 Set integers representing blocks of indices in an index set of `ISType` `ISBLOCK`
 
 Collective
@@ -249,7 +249,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISCreateBlock()`, `ISBLOCK`, `ISGeneralSetIndices()`
+See also: [](sec_scatter), `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISCreateBlock()`, `ISBLOCK`, `ISGeneralSetIndices()`
 
 # External Links
 $(_doc_external("IS/ISBlockSetIndices"))
@@ -272,7 +272,7 @@ end
 end 
 
 """
-	rows::IS = ISBuildTwoSided(petsclib::PetscLibType,ito::AbstractIS, toindx::AbstractIS) 
+	rows::IS = ISBuildTwoSided(petsclib::PetscLibType, ito::AbstractIS, toindx::AbstractIS) 
 Takes an `IS` that describes where each element will be mapped globally over all ranks.
 Generates an `IS` that contains new numbers from remote or local on the `IS`.
 
@@ -287,7 +287,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `ISPartitioningToNumbering()`, `ISPartitioningCount()`
+See also: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `ISPartitioningToNumbering()`, `ISPartitioningCount()`
 
 # External Links
 $(_doc_external("IS/ISBuildTwoSided"))
@@ -312,7 +312,7 @@ end
 end 
 
 """
-	ISClearInfoCache(petsclib::PetscLibType,is::AbstractIS, clear_permanent_local::PetscBool) 
+	ISClearInfoCache(petsclib::PetscLibType, is::AbstractIS, clear_permanent_local::PetscBool) 
 clear the cache of computed index set properties
 
 Not Collective
@@ -323,7 +323,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `IS`, `ISInfo`, `ISInfoType`, `ISSetInfo()`
+See also: `IS`, `ISInfo`, `ISInfoType`, `ISSetInfo()`
 
 # External Links
 $(_doc_external("IS/ISClearInfoCache"))
@@ -346,7 +346,7 @@ end
 end 
 
 """
-	isout::IS = ISComplement(petsclib::PetscLibType,is::AbstractIS, nmin::PetscInt, nmax::PetscInt) 
+	isout::IS = ISComplement(petsclib::PetscLibType, is::AbstractIS, nmin::PetscInt, nmax::PetscInt) 
 Given an index set `IS` generates the complement index set. That is
 all indices that are NOT in the given set.
 
@@ -362,7 +362,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
+See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
 
 # External Links
 $(_doc_external("IS/ISComplement"))
@@ -387,7 +387,7 @@ end
 end 
 
 """
-	T::IS = ISComplementVec(petsclib::PetscLibType,S::AbstractIS, V::AbstractPetscVec) 
+	T::IS = ISComplementVec(petsclib::PetscLibType, S::AbstractIS, V::AbstractPetscVec) 
 Creates the complement of the index set relative to a layout defined by a `Vec`
 
 Collective
@@ -401,7 +401,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `IS`, `Vec`, `ISCreateGeneral()`
+See also: `IS`, `Vec`, `ISCreateGeneral()`
 
 # External Links
 $(_doc_external("Vec/ISComplementVec"))
@@ -426,7 +426,7 @@ end
 end 
 
 """
-	ISCompressIndicesGeneral(petsclib::PetscLibType,n::PetscInt, nkeys::PetscInt, bs::PetscInt, imax::PetscInt, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS}) 
+	ISCompressIndicesGeneral(petsclib::PetscLibType, n::PetscInt, nkeys::PetscInt, bs::PetscInt, imax::PetscInt, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS}) 
 convert the indices of an array of `IS` into an array of `ISGENERAL` of block indices
 
 Input Parameters:
@@ -441,7 +441,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISGENERAL`, `ISExpandIndicesGeneral()`
+See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISExpandIndicesGeneral()`
 
 # External Links
 $(_doc_external("IS/ISCompressIndicesGeneral"))
@@ -464,7 +464,7 @@ end
 end 
 
 """
-	isout::IS = ISConcatenate(petsclib::PetscLibType,comm::MPI_Comm, len::PetscInt, islist::Vector{<:AbstractIS}) 
+	isout::IS = ISConcatenate(petsclib::PetscLibType, comm::MPI_Comm, len::PetscInt, islist::Vector{<:AbstractIS}) 
 Forms a new `IS` by locally concatenating the indices from an `IS` list without reordering.
 
 Collective
@@ -479,7 +479,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISIntersect()`
+See also: [](sec_scatter), `IS`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISIntersect()`
 
 # External Links
 $(_doc_external("IS/ISConcatenate"))
@@ -504,7 +504,7 @@ end
 end 
 
 """
-	start::PetscInt,contig::PetscBool = ISContiguousLocal(petsclib::PetscLibType,is::AbstractIS, gstart::PetscInt, gend::PetscInt) 
+	start::PetscInt,contig::PetscBool = ISContiguousLocal(petsclib::PetscLibType, is::AbstractIS, gstart::PetscInt, gend::PetscInt) 
 Locates an index set with contiguous range within a global range, if possible
 
 Not Collective
@@ -520,7 +520,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `IS`, `ISGetLocalSize()`, `VecGetOwnershipRange()`
+See also: `IS`, `ISGetLocalSize()`, `VecGetOwnershipRange()`
 
 # External Links
 $(_doc_external("IS/ISContiguousLocal"))
@@ -547,7 +547,7 @@ end
 end 
 
 """
-	ISCopy(petsclib::PetscLibType,is::AbstractIS, isy::AbstractIS) 
+	ISCopy(petsclib::PetscLibType, is::AbstractIS, isy::AbstractIS) 
 Copies an index set.
 
 Collective
@@ -560,7 +560,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `IS`, `ISDuplicate()`, `ISShift()`
+See also: `IS`, `ISDuplicate()`, `ISShift()`
 
 # External Links
 $(_doc_external("IS/ISCopy"))
@@ -583,7 +583,7 @@ end
 end 
 
 """
-	is::IS = ISCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	is::IS = ISCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create an index set object. `IS`, index sets, are PETSc objects used to do efficient indexing into other data structures such as `Vec` and `Mat`
 
 Collective
@@ -596,7 +596,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISType()`, `ISSetType()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
+See also: [](sec_scatter), `IS`, `ISType()`, `ISSetType()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`
 
 # External Links
 $(_doc_external("IS/ISCreate"))
@@ -621,7 +621,7 @@ end
 end 
 
 """
-	is::IS = ISCreateBlock(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
+	is::IS = ISCreateBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
 Creates a data structure for an index set containing
 a list of integers. Each integer represents a fixed block size set of indices.
 
@@ -639,7 +639,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISBlockSetIndices()`, `ISBLOCK`, `ISGENERAL`
+See also: [](sec_scatter), `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISBlockSetIndices()`, `ISBLOCK`, `ISGENERAL`
 
 # External Links
 $(_doc_external("IS/ISCreateBlock"))
@@ -664,7 +664,7 @@ end
 end 
 
 """
-	is::IS = ISCreateGeneral(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
+	is::IS = ISCreateGeneral(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
 Creates a data structure for an index set containing a list of integers.
 
 Collective
@@ -680,7 +680,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISGENERAL`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`, `PETSC_COPY_VALUES`, `PETSC_OWN_POINTER`,
+See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather()`, `PETSC_COPY_VALUES`, `PETSC_OWN_POINTER`,
 `PETSC_USE_POINTER`, `PetscCopyMode`, `ISGeneralSetIndicesFromMask()`
 
 # External Links
@@ -706,7 +706,7 @@ end
 end 
 
 """
-	is::IS = ISCreateStride(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, first::PetscInt, step::PetscInt) 
+	is::IS = ISCreateStride(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, first::PetscInt, step::PetscInt) 
 Creates a data structure for an index set containing a list of evenly spaced integers.
 
 Collective
@@ -722,7 +722,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISStrideSetStride()`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`
+See also: [](sec_scatter), `IS`, `ISStrideSetStride()`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`
 
 # External Links
 $(_doc_external("IS/ISCreateStride"))
@@ -747,7 +747,7 @@ end
 end 
 
 """
-	subis::IS = ISCreateSubIS(petsclib::PetscLibType,is::AbstractIS, comps::AbstractIS) 
+	subis::IS = ISCreateSubIS(petsclib::PetscLibType, is::AbstractIS, comps::AbstractIS) 
 Create a sub index set from a global index set selecting some components.
 
 Collective
@@ -769,7 +769,7 @@ The output index set `subis` should look like:
 
 Level: intermediate
 
--seealso: `IS`, `VecGetSubVector()`, `MatCreateSubMatrix()`
+See also: `IS`, `VecGetSubVector()`, `MatCreateSubMatrix()`
 
 # External Links
 $(_doc_external("IS/ISCreateSubIS"))
@@ -794,7 +794,7 @@ end
 end 
 
 """
-	ISDestroy(petsclib::PetscLibType,is::AbstractIS) 
+	ISDestroy(petsclib::PetscLibType, is::AbstractIS) 
 Destroys an index set.
 
 Collective
@@ -804,7 +804,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
+See also: `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
 
 # External Links
 $(_doc_external("IS/ISDestroy"))
@@ -829,7 +829,7 @@ end
 end 
 
 """
-	isout::IS = ISDifference(petsclib::PetscLibType,is1::AbstractIS, is2::AbstractIS) 
+	isout::IS = ISDifference(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS) 
 Computes the difference between two index sets.
 
 Collective
@@ -843,7 +843,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISSum()`, `ISExpand()`
+See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISSum()`, `ISExpand()`
 
 # External Links
 $(_doc_external("IS/ISDifference"))
@@ -868,7 +868,7 @@ end
 end 
 
 """
-	newIS::IS = ISDuplicate(petsclib::PetscLibType,is::AbstractIS) 
+	newIS::IS = ISDuplicate(petsclib::PetscLibType, is::AbstractIS) 
 Creates a duplicate copy of an index set.
 
 Collective
@@ -881,7 +881,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `IS`, `ISCreateGeneral()`, `ISCopy()`
+See also: `IS`, `ISCreateGeneral()`, `ISCopy()`
 
 # External Links
 $(_doc_external("IS/ISDuplicate"))
@@ -906,7 +906,7 @@ end
 end 
 
 """
-	c::IS = ISEmbed(petsclib::PetscLibType,a::AbstractIS, b::AbstractIS, drop::PetscBool) 
+	c::IS = ISEmbed(petsclib::PetscLibType, a::AbstractIS, b::AbstractIS, drop::PetscBool) 
 Embed `IS` `a` into `IS` `b` by finding the locations in `b` that have the same indices as in `a`.
 If `c` is the `IS` of these locations, we have `a = b*c`, regarded as a composition of the
 corresponding `ISLocalToGlobalMapping`.
@@ -923,7 +923,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `IS`, `ISLocalToGlobalMapping`
+See also: `IS`, `ISLocalToGlobalMapping`
 
 # External Links
 $(_doc_external("IS/ISEmbed"))
@@ -948,7 +948,7 @@ end
 end 
 
 """
-	flg::PetscBool = ISEqual(petsclib::PetscLibType,is1::AbstractIS, is2::AbstractIS) 
+	flg::PetscBool = ISEqual(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS) 
 Compares if two index sets have the same set of indices.
 
 Collective
@@ -964,7 +964,7 @@ or by the set of indices)
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISEqualUnsorted()`
+See also: [](sec_scatter), `IS`, `ISEqualUnsorted()`
 
 # External Links
 $(_doc_external("IS/ISEqual"))
@@ -989,7 +989,7 @@ end
 end 
 
 """
-	flg::PetscBool = ISEqualUnsorted(petsclib::PetscLibType,is1::AbstractIS, is2::AbstractIS) 
+	flg::PetscBool = ISEqualUnsorted(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS) 
 Compares if two index sets have the same indices.
 
 Collective
@@ -1005,7 +1005,7 @@ or by the set of indices)
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISEqual()`
+See also: [](sec_scatter), `IS`, `ISEqual()`
 
 # External Links
 $(_doc_external("IS/ISEqualUnsorted"))
@@ -1030,7 +1030,7 @@ end
 end 
 
 """
-	isout::IS = ISExpand(petsclib::PetscLibType,is1::AbstractIS, is2::AbstractIS) 
+	isout::IS = ISExpand(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS) 
 Computes the union of two index sets, by concatenating 2 lists and
 removing duplicates.
 
@@ -1045,7 +1045,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISIntersect()`
+See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISIntersect()`
 
 # External Links
 $(_doc_external("IS/ISExpand"))
@@ -1070,8 +1070,8 @@ end
 end 
 
 """
-	ISExpandIndicesGeneral(petsclib::PetscLibType,n::PetscInt, nkeys::PetscInt, bs::PetscInt, imax::PetscInt, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS}) 
-convert the indices of an array `IS` into non
+	ISExpandIndicesGeneral(petsclib::PetscLibType, n::PetscInt, nkeys::PetscInt, bs::PetscInt, imax::PetscInt, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS}) 
+convert the indices of an array `IS` into non-block indices in an array of `ISGENERAL`
 
 Input Parameters:
 - `n`     - the length of the index set (not being used)
@@ -1085,7 +1085,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISGENERAL`, `ISCompressIndicesGeneral()`
+See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISCompressIndicesGeneral()`
 
 # External Links
 $(_doc_external("IS/ISExpandIndicesGeneral"))
@@ -1114,7 +1114,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PetscFinalize()`
+See also: `PetscFinalize()`
 
 # External Links
 $(_doc_external("Vec/ISFinalizePackage"))
@@ -1136,7 +1136,7 @@ end
 end 
 
 """
-	ISGeneralFilter(petsclib::PetscLibType,is::AbstractIS, start::PetscInt, end_::PetscInt) 
+	ISGeneralFilter(petsclib::PetscLibType, is::AbstractIS, start::PetscInt, end_::PetscInt) 
 Remove all indices outside of [start, end) from an `ISGENERAL`
 
 Collective
@@ -1148,7 +1148,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISGENERAL`, `ISCreateGeneral()`, `ISGeneralSetIndices()`
+See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISCreateGeneral()`, `ISGeneralSetIndices()`
 
 # External Links
 $(_doc_external("IS/ISGeneralFilter"))
@@ -1171,7 +1171,7 @@ end
 end 
 
 """
-	ISGeneralSetIndices(petsclib::PetscLibType,is::AbstractIS, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
+	ISGeneralSetIndices(petsclib::PetscLibType, is::AbstractIS, n::PetscInt, idx::Vector{PetscInt}, mode::PetscCopyMode) 
 Sets the indices for an `ISGENERAL` index set
 
 Logically Collective
@@ -1184,7 +1184,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISBLOCK`, `ISCreateGeneral()`, `ISGeneralSetIndicesFromMask()`, `ISBlockSetIndices()`, `ISGENERAL`, `PetscCopyMode`
+See also: [](sec_scatter), `IS`, `ISBLOCK`, `ISCreateGeneral()`, `ISGeneralSetIndicesFromMask()`, `ISBlockSetIndices()`, `ISGENERAL`, `PetscCopyMode`
 
 # External Links
 $(_doc_external("IS/ISGeneralSetIndices"))
@@ -1207,7 +1207,7 @@ end
 end 
 
 """
-	ISGeneralSetIndicesFromMask(petsclib::PetscLibType,is::AbstractIS, rstart::PetscInt, rend::PetscInt, mask::Vector{PetscBool}) 
+	ISGeneralSetIndicesFromMask(petsclib::PetscLibType, is::AbstractIS, rstart::PetscInt, rend::PetscInt, mask::Vector{PetscBool}) 
 Sets the indices for an `ISGENERAL` index set using a boolean mask
 
 Collective
@@ -1220,7 +1220,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISGeneralSetIndices()`, `ISGENERAL`
+See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISGeneralSetIndices()`, `ISGENERAL`
 
 # External Links
 $(_doc_external("IS/ISGeneralSetIndicesFromMask"))
@@ -1243,7 +1243,7 @@ end
 end 
 
 """
-	size::PetscInt = ISGetBlockSize(petsclib::PetscLibType,is::AbstractIS) 
+	size::PetscInt = ISGetBlockSize(petsclib::PetscLibType, is::AbstractIS) 
 Returns the number of elements in a block.
 
 Not Collective
@@ -1256,7 +1256,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISSetBlockSize()`
+See also: `IS`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISSetBlockSize()`
 
 # External Links
 $(_doc_external("IS/ISGetBlockSize"))
@@ -1281,7 +1281,7 @@ end
 end 
 
 """
-	compress::PetscBool = ISGetCompressOutput(petsclib::PetscLibType,is::AbstractIS) 
+	compress::PetscBool = ISGetCompressOutput(petsclib::PetscLibType, is::AbstractIS) 
 Returns the flag for output compression
 
 Not Collective
@@ -1294,7 +1294,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISSetCompressOutput()`, `ISView()`
+See also: `IS`, `ISSetCompressOutput()`, `ISView()`
 
 # External Links
 $(_doc_external("IS/ISGetCompressOutput"))
@@ -1319,7 +1319,7 @@ end
 end 
 
 """
-	ptr::Vector{PetscInt} = ISGetIndices(petsclib::PetscLibType,is::AbstractIS) 
+	ptr::Vector{PetscInt} = ISGetIndices(petsclib::PetscLibType, is::AbstractIS) 
 Returns a pointer to the indices.  The user should call
 `ISRestoreIndices()` after having looked at the indices.  The user should
 NOT change the indices.
@@ -1334,7 +1334,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISRestoreIndices()`
+See also: `IS`, `ISRestoreIndices()`
 
 # External Links
 $(_doc_external("IS/ISGetIndices"))
@@ -1359,7 +1359,7 @@ end
 end 
 
 """
-	flg::PetscBool = ISGetInfo(petsclib::PetscLibType,is::AbstractIS, info::ISInfo, type::ISInfoType, compute::PetscBool) 
+	flg::PetscBool = ISGetInfo(petsclib::PetscLibType, is::AbstractIS, info::ISInfo, type::ISInfoType, compute::PetscBool) 
 Determine whether an index set satisfies a given property
 
 Collective or Logically Collective if the type is `IS_GLOBAL` (logically collective if the value of the property has been permanently set with `ISSetInfo()`)
@@ -1375,7 +1375,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `IS`, `ISInfo`, `ISInfoType`, `ISSetInfo()`, `ISClearInfoCache()`
+See also: `IS`, `ISInfo`, `ISInfoType`, `ISSetInfo()`, `ISClearInfoCache()`
 
 # External Links
 $(_doc_external("IS/ISGetInfo"))
@@ -1400,7 +1400,7 @@ end
 end 
 
 """
-	map::PetscLayout = ISGetLayout(petsclib::PetscLibType,is::AbstractIS) 
+	map::PetscLayout = ISGetLayout(petsclib::PetscLibType, is::AbstractIS) 
 get `PetscLayout` describing index set layout
 
 Not Collective
@@ -1413,7 +1413,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `IS`, `PetscLayout`, `ISSetLayout()`, `ISGetSize()`, `ISGetLocalSize()`
+See also: `IS`, `PetscLayout`, `ISSetLayout()`, `ISGetSize()`, `ISGetLocalSize()`
 
 # External Links
 $(_doc_external("IS/ISGetLayout"))
@@ -1438,7 +1438,7 @@ end
 end 
 
 """
-	size::PetscInt = ISGetLocalSize(petsclib::PetscLibType,is::AbstractIS) 
+	size::PetscInt = ISGetLocalSize(petsclib::PetscLibType, is::AbstractIS) 
 Returns the local (processor) length of an index set.
 
 Not Collective
@@ -1451,7 +1451,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `IS`, `ISGetSize()`
+See also: `IS`, `ISGetSize()`
 
 # External Links
 $(_doc_external("IS/ISGetLocalSize"))
@@ -1476,7 +1476,7 @@ end
 end 
 
 """
-	min::PetscInt,max::PetscInt = ISGetMinMax(petsclib::PetscLibType,is::AbstractIS) 
+	min::PetscInt,max::PetscInt = ISGetMinMax(petsclib::PetscLibType, is::AbstractIS) 
 Gets the minimum and maximum values in an `IS`
 
 Not Collective
@@ -1490,7 +1490,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetIndices()`, `ISRestoreIndices()`
+See also: `IS`, `ISGetIndices()`, `ISRestoreIndices()`
 
 # External Links
 $(_doc_external("IS/ISGetMinMax"))
@@ -1517,7 +1517,7 @@ end
 end 
 
 """
-	complement::IS = ISGetNonlocalIS(petsclib::PetscLibType,is::AbstractIS) 
+	complement::IS = ISGetNonlocalIS(petsclib::PetscLibType, is::AbstractIS) 
 Gather all nonlocal indices for this `IS` and present
 them as another sequential index set.
 
@@ -1532,7 +1532,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetNonlocalIndices()`, `ISRestoreNonlocalIndices()`, `ISAllGather()`, `ISGetSize()`
+See also: `IS`, `ISGetNonlocalIndices()`, `ISRestoreNonlocalIndices()`, `ISAllGather()`, `ISGetSize()`
 
 # External Links
 $(_doc_external("IS/ISGetNonlocalIS"))
@@ -1557,7 +1557,7 @@ end
 end 
 
 """
-	indices::Vector{PetscInt} = ISGetNonlocalIndices(petsclib::PetscLibType,is::AbstractIS) 
+	indices::Vector{PetscInt} = ISGetNonlocalIndices(petsclib::PetscLibType, is::AbstractIS) 
 Retrieve an array of indices from remote processors
 in this communicator.
 
@@ -1574,7 +1574,7 @@ respectively.
 
 Level: intermediate
 
--seealso: `IS`, `ISGetTotalIndices()`, `ISRestoreNonlocalIndices()`, `ISGetSize()`, `ISGetLocalSize().`
+See also: `IS`, `ISGetTotalIndices()`, `ISRestoreNonlocalIndices()`, `ISGetSize()`, `ISGetLocalSize().`
 
 # External Links
 $(_doc_external("IS/ISGetNonlocalIndices"))
@@ -1600,7 +1600,7 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt,points::Ptr{PetscInt} = ISGetPointRange(petsclib::PetscLibType,pointIS::AbstractIS) 
+	pStart::PetscInt,pEnd::PetscInt,points::Ptr{PetscInt} = ISGetPointRange(petsclib::PetscLibType, pointIS::AbstractIS) 
 Returns a description of the points in an `IS` suitable for traversal
 
 Not Collective
@@ -1615,7 +1615,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISRestorePointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
+See also: [](sec_scatter), `IS`, `ISRestorePointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
 
 # External Links
 $(_doc_external("IS/ISGetPointRange"))
@@ -1644,7 +1644,7 @@ end
 end 
 
 """
-	ISGetPointSubrange(petsclib::PetscLibType,subpointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::Vector{PetscInt}) 
+	ISGetPointSubrange(petsclib::PetscLibType, subpointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::Vector{PetscInt}) 
 Configures the input `IS` to be a subrange for the traversal information given
 
 Not Collective
@@ -1660,7 +1660,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISGetPointRange()`, `ISRestorePointRange()`, `ISGetIndices()`, `ISCreateStride()`
+See also: [](sec_scatter), `IS`, `ISGetPointRange()`, `ISRestorePointRange()`, `ISGetIndices()`, `ISCreateStride()`
 
 # External Links
 $(_doc_external("IS/ISGetPointSubrange"))
@@ -1683,7 +1683,7 @@ end
 end 
 
 """
-	size::PetscInt = ISGetSize(petsclib::PetscLibType,is::AbstractIS) 
+	size::PetscInt = ISGetSize(petsclib::PetscLibType, is::AbstractIS) 
 Returns the global length of an index set.
 
 Not Collective
@@ -1696,7 +1696,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `IS`
+See also: `IS`
 
 # External Links
 $(_doc_external("IS/ISGetSize"))
@@ -1721,7 +1721,7 @@ end
 end 
 
 """
-	indices::Vector{PetscInt} = ISGetTotalIndices(petsclib::PetscLibType,is::AbstractIS) 
+	indices::Vector{PetscInt} = ISGetTotalIndices(petsclib::PetscLibType, is::AbstractIS) 
 Retrieve an array containing all indices across the communicator.
 
 Collective
@@ -1735,7 +1735,7 @@ the same as returned with `ISGetSize()`.
 
 Level: intermediate
 
--seealso: `IS`, `ISRestoreTotalIndices()`, `ISGetNonlocalIndices()`, `ISGetSize()`
+See also: `IS`, `ISRestoreTotalIndices()`, `ISGetNonlocalIndices()`, `ISGetSize()`
 
 # External Links
 $(_doc_external("IS/ISGetTotalIndices"))
@@ -1761,7 +1761,7 @@ end
 end 
 
 """
-	type::ISType = ISGetType(petsclib::PetscLibType,is::AbstractIS) 
+	type::ISType = ISGetType(petsclib::PetscLibType, is::AbstractIS) 
 Gets the index set type name, `ISType`, (as a string) from the `IS`.
 
 Not Collective
@@ -1774,7 +1774,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("IS/ISGetType"))
@@ -1799,7 +1799,7 @@ end
 end 
 
 """
-	nout::PetscInt = ISGlobalToLocalMappingApply(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::PetscInt, idx::Vector{PetscInt}, idxout::Vector{PetscInt}) 
+	nout::PetscInt = ISGlobalToLocalMappingApply(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::PetscInt, idx::Vector{PetscInt}, idxout::Vector{PetscInt}) 
 Provides the local numbering for a list of integers
 specified with a global numbering.
 
@@ -1822,7 +1822,7 @@ a second time to set the values.
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`
 
 # External Links
@@ -1848,7 +1848,7 @@ end
 end 
 
 """
-	nout::PetscInt = ISGlobalToLocalMappingApplyBlock(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::PetscInt, idx::Vector{PetscInt}, idxout::Vector{PetscInt}) 
+	nout::PetscInt = ISGlobalToLocalMappingApplyBlock(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::PetscInt, idx::Vector{PetscInt}, idxout::Vector{PetscInt}) 
 Provides the local block numbering for a list of integers
 specified with a block global numbering.
 
@@ -1871,7 +1871,7 @@ a second time to set the values.
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`
 
 # External Links
@@ -1897,7 +1897,7 @@ end
 end 
 
 """
-	newis::IS = ISGlobalToLocalMappingApplyIS(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, is::AbstractIS) 
+	newis::IS = ISGlobalToLocalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, is::AbstractIS) 
 Creates from an `IS` in the global numbering
 a new index set using the local numbering defined in an `ISLocalToGlobalMapping`
 context.
@@ -1915,7 +1915,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISGlobalToLocalMapping`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISGlobalToLocalMapping`, `ISGlobalToLocalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`
 
 # External Links
@@ -1941,7 +1941,7 @@ end
 end 
 
 """
-	ident::PetscBool = ISIdentity(petsclib::PetscLibType,is::AbstractIS) 
+	ident::PetscBool = ISIdentity(petsclib::PetscLibType, is::AbstractIS) 
 Determines whether index set is the identity mapping.
 
 Collective
@@ -1954,7 +1954,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISSetIdentity()`, `ISGetInfo()`
+See also: `IS`, `ISSetIdentity()`, `ISGetInfo()`
 
 # External Links
 $(_doc_external("IS/ISIdentity"))
@@ -1986,7 +1986,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/ISInitializePackage"))
@@ -2008,7 +2008,7 @@ end
 end 
 
 """
-	isout::IS = ISIntersect(petsclib::PetscLibType,is1::AbstractIS, is2::AbstractIS) 
+	isout::IS = ISIntersect(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS) 
 Computes the intersection of two index sets, by sorting and comparing.
 
 Collective
@@ -2022,7 +2022,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISConcatenate()`
+See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISConcatenate()`
 
 # External Links
 $(_doc_external("IS/ISIntersect"))
@@ -2047,7 +2047,7 @@ end
 end 
 
 """
-	isout::IS = ISInvertPermutation(petsclib::PetscLibType,is::AbstractIS, nlocal::PetscInt) 
+	isout::IS = ISInvertPermutation(petsclib::PetscLibType, is::AbstractIS, nlocal::PetscInt) 
 Creates a new permutation that is the inverse of
 a given permutation.
 
@@ -2063,7 +2063,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetInfo()`, `ISSetPermutation()`, `ISGetPermutation()`
+See also: `IS`, `ISGetInfo()`, `ISSetPermutation()`, `ISGetPermutation()`
 
 # External Links
 $(_doc_external("IS/ISInvertPermutation"))
@@ -2088,7 +2088,7 @@ end
 end 
 
 """
-	xis::IS,yis::IS = ISListToPair(petsclib::PetscLibType,comm::MPI_Comm, listlen::PetscInt, islist::Vector{<:AbstractIS}) 
+	xis::IS,yis::IS = ISListToPair(petsclib::PetscLibType, comm::MPI_Comm, listlen::PetscInt, islist::Vector{<:AbstractIS}) 
 Convert an `IS` list to a pair of `IS` of equal length defining an equivalent integer multimap.
 Each `IS` in `islist` is assigned an integer j so that all of the indices of that `IS` are
 mapped to j.
@@ -2106,7 +2106,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `IS`, `ISPairToList()`
+See also: `IS`, `ISPairToList()`
 
 # External Links
 $(_doc_external("IS/ISListToPair"))
@@ -2133,7 +2133,7 @@ end
 end 
 
 """
-	ISLoad(petsclib::PetscLibType,is::AbstractIS, viewer::PetscViewer) 
+	ISLoad(petsclib::PetscLibType, is::AbstractIS, viewer::PetscViewer) 
 Loads an index set that has been stored in binary or HDF5 format with `ISView()`.
 
 Collective
@@ -2144,7 +2144,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `PetscViewerBinaryOpen()`, `ISView()`, `MatLoad()`, `VecLoad()`
+See also: `IS`, `PetscViewerBinaryOpen()`, `ISView()`, `MatLoad()`, `VecLoad()`
 
 # External Links
 $(_doc_external("IS/ISLoad"))
@@ -2167,7 +2167,7 @@ end
 end 
 
 """
-	location::PetscInt = ISLocate(petsclib::PetscLibType,is::AbstractIS, key::PetscInt) 
+	location::PetscInt = ISLocate(petsclib::PetscLibType, is::AbstractIS, key::PetscInt) 
 determine the location of an index within the local component of an index set
 
 Not Collective
@@ -2181,7 +2181,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`
+See also: `IS`
 
 # External Links
 $(_doc_external("IS/ISLocate"))
@@ -2206,7 +2206,7 @@ end
 end 
 
 """
-	newis::IS = ISOnComm(petsclib::PetscLibType,is::AbstractIS, comm::MPI_Comm, mode::PetscCopyMode) 
+	newis::IS = ISOnComm(petsclib::PetscLibType, is::AbstractIS, comm::MPI_Comm, mode::PetscCopyMode) 
 Split a parallel `IS` on subcomms (usually self) or concatenate index sets on subcomms into a parallel index set
 
 Collective
@@ -2221,7 +2221,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `IS`
+See also: `IS`
 
 # External Links
 $(_doc_external("IS/ISOnComm"))
@@ -2246,7 +2246,7 @@ end
 end 
 
 """
-	listlen::PetscInt,islist::IS = ISPairToList(petsclib::PetscLibType,xis::AbstractIS, yis::AbstractIS) 
+	listlen::PetscInt,islist::IS = ISPairToList(petsclib::PetscLibType, xis::AbstractIS, yis::AbstractIS) 
 Convert an `IS` pair encoding an integer map to a list of `IS`.
 
 Collective
@@ -2261,7 +2261,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `IS`, `ISListToPair()`
+See also: `IS`, `ISListToPair()`
 
 # External Links
 $(_doc_external("IS/ISPairToList"))
@@ -2288,7 +2288,7 @@ end
 end 
 
 """
-	ISPartitioningCount(petsclib::PetscLibType,part::AbstractIS, len::PetscInt, count::Vector{PetscInt}) 
+	ISPartitioningCount(petsclib::PetscLibType, part::AbstractIS, len::PetscInt, count::Vector{PetscInt}) 
 Takes a `IS` that represents a partitioning (the MPI rank that each local entry belongs to) and determines the number of
 resulting elements on each (partition) rank
 
@@ -2305,7 +2305,7 @@ to each partition, where size is the number of partitions generated
 
 Level: advanced
 
--seealso: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningToNumbering()`,
+See also: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningToNumbering()`,
 `MatPartitioningSetNParts()`, `MatPartitioningApply()`, `MatPartitioningApplyND()`
 
 # External Links
@@ -2329,7 +2329,7 @@ end
 end 
 
 """
-	is::IS = ISPartitioningToNumbering(petsclib::PetscLibType,part::AbstractIS) 
+	is::IS = ISPartitioningToNumbering(petsclib::PetscLibType, part::AbstractIS) 
 Takes an `IS' that represents a partitioning (the MPI rank that each local entry belongs to) and on each MPI process
 generates an `IS` that contains a new global node number in the new ordering for each entry
 
@@ -2345,7 +2345,7 @@ on that processor
 
 Level: advanced
 
--seealso: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningCount()`
+See also: [](sec_scatter), `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningCount()`
 
 # External Links
 $(_doc_external("IS/ISPartitioningToNumbering"))
@@ -2370,7 +2370,7 @@ end
 end 
 
 """
-	perm::PetscBool = ISPermutation(petsclib::PetscLibType,is::AbstractIS) 
+	perm::PetscBool = ISPermutation(petsclib::PetscLibType, is::AbstractIS) 
 `PETSC_TRUE` or `PETSC_FALSE` depending on whether the
 index set has been declared to be a permutation.
 
@@ -2384,7 +2384,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISSetPermutation()`, `ISGetInfo()`
+See also: `IS`, `ISSetPermutation()`, `ISGetInfo()`
 
 # External Links
 $(_doc_external("IS/ISPermutation"))
@@ -2409,7 +2409,7 @@ end
 end 
 
 """
-	ISRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	ISRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new index set implementation
 
 Not Collective, No Fortran Support
@@ -2418,7 +2418,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine itself
 
--seealso: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISRegisterAll()`, `ISRegisterDestroy()`
+See also: [](sec_scatter), `IS`, `ISType`, `ISSetType()`, `ISRegisterAll()`, `ISRegisterDestroy()`
 
 # External Links
 $(_doc_external("IS/ISRegister"))
@@ -2448,7 +2448,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](sec_scatter), `IS`, `ISType`, `ISRegister()`
+See also: [](sec_scatter), `IS`, `ISType`, `ISRegister()`
 
 # External Links
 $(_doc_external("IS/ISRegisterAll"))
@@ -2470,8 +2470,8 @@ end
 end 
 
 """
-	N::PetscInt,subset_n::IS = ISRenumber(petsclib::PetscLibType,subset::AbstractIS, subset_mult::AbstractIS) 
-Renumbers the non
+	N::PetscInt,subset_n::IS = ISRenumber(petsclib::PetscLibType, subset::AbstractIS, subset_mult::AbstractIS) 
+Renumbers the non-negative entries of an index set in a contiguous way, starting from 0.
 
 Collective
 
@@ -2485,7 +2485,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `IS`
+See also: `IS`
 
 # External Links
 $(_doc_external("IS/ISRenumber"))
@@ -2512,7 +2512,7 @@ end
 end 
 
 """
-	ISRestoreIndices(petsclib::PetscLibType,is::AbstractIS, ptr::Union{Ptr, AbstractArray{PetscInt}}) 
+	ISRestoreIndices(petsclib::PetscLibType, is::AbstractIS, ptr::Union{Ptr, AbstractArray{PetscInt}}) 
 Restores an index set to a usable state after a call to `ISGetIndices()`.
 
 Not Collective
@@ -2523,7 +2523,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetIndices()`
+See also: `IS`, `ISGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISRestoreIndices"))
@@ -2547,7 +2547,7 @@ end
 end 
 
 """
-	ISRestoreNonlocalIS(petsclib::PetscLibType,is::AbstractIS, complement::AbstractIS) 
+	ISRestoreNonlocalIS(petsclib::PetscLibType, is::AbstractIS, complement::AbstractIS) 
 Restore the `IS` obtained with `ISGetNonlocalIS()`.
 
 Not collective.
@@ -2558,7 +2558,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetNonlocalIS()`, `ISGetNonlocalIndices()`, `ISRestoreNonlocalIndices()`
+See also: `IS`, `ISGetNonlocalIS()`, `ISGetNonlocalIndices()`, `ISRestoreNonlocalIndices()`
 
 # External Links
 $(_doc_external("IS/ISRestoreNonlocalIS"))
@@ -2583,7 +2583,7 @@ end
 end 
 
 """
-	ISRestoreNonlocalIndices(petsclib::PetscLibType,is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) 
+	ISRestoreNonlocalIndices(petsclib::PetscLibType, is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore the index array obtained with `ISGetNonlocalIndices()`.
 
 Not Collective.
@@ -2594,7 +2594,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetTotalIndices()`, `ISGetNonlocalIndices()`, `ISRestoreTotalIndices()`
+See also: `IS`, `ISGetTotalIndices()`, `ISGetNonlocalIndices()`, `ISRestoreTotalIndices()`
 
 # External Links
 $(_doc_external("IS/ISRestoreNonlocalIndices"))
@@ -2618,7 +2618,7 @@ end
 end 
 
 """
-	ISRestorePointRange(petsclib::PetscLibType,pointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) 
+	ISRestorePointRange(petsclib::PetscLibType, pointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) 
 Destroys the traversal description created with `ISGetPointRange()`
 
 Not Collective
@@ -2631,7 +2631,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISGetPointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
+See also: [](sec_scatter), `IS`, `ISGetPointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `ISCreateStride()`
 
 # External Links
 $(_doc_external("IS/ISRestorePointRange"))
@@ -2657,7 +2657,7 @@ end
 end 
 
 """
-	ISRestoreTotalIndices(petsclib::PetscLibType,is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) 
+	ISRestoreTotalIndices(petsclib::PetscLibType, is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore the index array obtained with `ISGetTotalIndices()`.
 
 Not Collective.
@@ -2668,7 +2668,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetNonlocalIndices()`
+See also: `IS`, `ISGetNonlocalIndices()`
 
 # External Links
 $(_doc_external("IS/ISRestoreTotalIndices"))
@@ -2692,7 +2692,7 @@ end
 end 
 
 """
-	ISSetBlockSize(petsclib::PetscLibType,is::AbstractIS, bs::PetscInt) 
+	ISSetBlockSize(petsclib::PetscLibType, is::AbstractIS, bs::PetscInt) 
 informs an index set that it has a given block size
 
 Logicall Collective
@@ -2703,7 +2703,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetBlockSize()`, `ISCreateBlock()`, `ISBlockGetIndices()`
+See also: `IS`, `ISGetBlockSize()`, `ISCreateBlock()`, `ISBlockGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISSetBlockSize"))
@@ -2726,7 +2726,7 @@ end
 end 
 
 """
-	ISSetCompressOutput(petsclib::PetscLibType,is::AbstractIS, compress::PetscBool) 
+	ISSetCompressOutput(petsclib::PetscLibType, is::AbstractIS, compress::PetscBool) 
 set the flag for output compression
 
 Logicall Collective
@@ -2737,7 +2737,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `ISGetCompressOutput()`, `ISView()`
+See also: `IS`, `ISGetCompressOutput()`, `ISView()`
 
 # External Links
 $(_doc_external("IS/ISSetCompressOutput"))
@@ -2760,7 +2760,7 @@ end
 end 
 
 """
-	ISSetIdentity(petsclib::PetscLibType,is::AbstractIS) 
+	ISSetIdentity(petsclib::PetscLibType, is::AbstractIS) 
 Informs the index set that it is an identity.
 
 Logically Collective
@@ -2770,7 +2770,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISIdentity()`, `ISSetInfo()`, `ISClearInfoCache()`
+See also: `IS`, `ISIdentity()`, `ISSetInfo()`, `ISClearInfoCache()`
 
 # External Links
 $(_doc_external("IS/ISSetIdentity"))
@@ -2793,7 +2793,7 @@ end
 end 
 
 """
-	ISSetInfo(petsclib::PetscLibType,is::AbstractIS, info::ISInfo, type::ISInfoType, permanent::PetscBool, flg::PetscBool) 
+	ISSetInfo(petsclib::PetscLibType, is::AbstractIS, info::ISInfo, type::ISInfoType, permanent::PetscBool, flg::PetscBool) 
 Set known information about an index set.
 
 Logically Collective if `ISInfoType` is `IS_GLOBAL`
@@ -2816,7 +2816,7 @@ Values of `info` Describing `IS` Structure:
 
 Level: advanced
 
--seealso: `ISInfo`, `ISInfoType`, `IS`
+See also: `ISInfo`, `ISInfoType`, `IS`
 
 # External Links
 $(_doc_external("IS/ISSetInfo"))
@@ -2839,7 +2839,7 @@ end
 end 
 
 """
-	ISSetLayout(petsclib::PetscLibType,is::AbstractIS, map::PetscLayout) 
+	ISSetLayout(petsclib::PetscLibType, is::AbstractIS, map::PetscLayout) 
 set `PetscLayout` describing index set layout
 
 Collective
@@ -2850,7 +2850,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `IS`, `PetscLayout`, `ISCreate()`, `ISGetLayout()`, `ISGetSize()`, `ISGetLocalSize()`
+See also: `IS`, `PetscLayout`, `ISCreate()`, `ISGetLayout()`, `ISGetSize()`, `ISGetLocalSize()`
 
 # External Links
 $(_doc_external("IS/ISSetLayout"))
@@ -2873,7 +2873,7 @@ end
 end 
 
 """
-	ISSetPermutation(petsclib::PetscLibType,is::AbstractIS) 
+	ISSetPermutation(petsclib::PetscLibType, is::AbstractIS) 
 Informs the index set that it is a permutation.
 
 Logically Collective
@@ -2883,7 +2883,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISPermutation()`, `ISSetInfo()`, `ISClearInfoCache().`
+See also: `IS`, `ISPermutation()`, `ISSetInfo()`, `ISClearInfoCache().`
 
 # External Links
 $(_doc_external("IS/ISSetPermutation"))
@@ -2906,7 +2906,7 @@ end
 end 
 
 """
-	ISSetType(petsclib::PetscLibType,is::AbstractIS, method::ISType) 
+	ISSetType(petsclib::PetscLibType, is::AbstractIS, method::ISType) 
 Builds a index set, for a particular `ISType`
 
 Collective
@@ -2920,7 +2920,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISGENERAL`, `ISBLOCK`, `ISGetType()`, `ISCreate()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
+See also: [](sec_scatter), `IS`, `ISGENERAL`, `ISBLOCK`, `ISGetType()`, `ISCreate()`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
 
 # External Links
 $(_doc_external("IS/ISSetType"))
@@ -2943,7 +2943,7 @@ end
 end 
 
 """
-	ISShift(petsclib::PetscLibType,is::AbstractIS, offset::PetscInt, isy::AbstractIS) 
+	ISShift(petsclib::PetscLibType, is::AbstractIS, offset::PetscInt, isy::AbstractIS) 
 Shift all indices by given offset
 
 Collective
@@ -2957,7 +2957,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `ISDuplicate()`, `ISCopy()`
+See also: `ISDuplicate()`, `ISCopy()`
 
 # External Links
 $(_doc_external("IS/ISShift"))
@@ -2980,7 +2980,7 @@ end
 end 
 
 """
-	ISSort(petsclib::PetscLibType,is::AbstractIS) 
+	ISSort(petsclib::PetscLibType, is::AbstractIS) 
 Sorts the indices of an index set.
 
 Collective
@@ -2990,7 +2990,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISSortRemoveDups()`, `ISSorted()`
+See also: `IS`, `ISSortRemoveDups()`, `ISSorted()`
 
 # External Links
 $(_doc_external("IS/ISSort"))
@@ -3013,7 +3013,7 @@ end
 end 
 
 """
-	h::IS = ISSortPermutation(petsclib::PetscLibType,f::AbstractIS, always::PetscBool) 
+	h::IS = ISSortPermutation(petsclib::PetscLibType, f::AbstractIS, always::PetscBool) 
 calculate the permutation of the indices into a nondecreasing order.
 
 Not Collective
@@ -3027,7 +3027,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `IS`, `ISLocalToGlobalMapping`, `ISSort()`
+See also: `IS`, `ISLocalToGlobalMapping`, `ISSort()`
 
 # External Links
 $(_doc_external("IS/ISSortPermutation"))
@@ -3052,7 +3052,7 @@ end
 end 
 
 """
-	ISSortRemoveDups(petsclib::PetscLibType,is::AbstractIS) 
+	ISSortRemoveDups(petsclib::PetscLibType, is::AbstractIS) 
 Sorts the indices of an index set, removing duplicates.
 
 Collective
@@ -3062,7 +3062,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISSort()`, `ISSorted()`
+See also: `IS`, `ISSort()`, `ISSorted()`
 
 # External Links
 $(_doc_external("IS/ISSortRemoveDups"))
@@ -3085,7 +3085,7 @@ end
 end 
 
 """
-	flg::PetscBool = ISSorted(petsclib::PetscLibType,is::AbstractIS) 
+	flg::PetscBool = ISSorted(petsclib::PetscLibType, is::AbstractIS) 
 Checks the indices to determine whether they have been sorted.
 
 Not Collective
@@ -3099,7 +3099,7 @@ or `PETSC_FALSE` otherwise.
 
 Level: intermediate
 
--seealso: `ISSort()`, `ISSortRemoveDups()`
+See also: `ISSort()`, `ISSortRemoveDups()`
 
 # External Links
 $(_doc_external("IS/ISSorted"))
@@ -3124,7 +3124,7 @@ end
 end 
 
 """
-	first::PetscInt,step::PetscInt = ISStrideGetInfo(petsclib::PetscLibType,is::AbstractIS) 
+	first::PetscInt,step::PetscInt = ISStrideGetInfo(petsclib::PetscLibType, is::AbstractIS) 
 Returns the first index in a stride index set and the stride width from an `IS` of `ISType` `ISSTRIDE`
 
 Not Collective
@@ -3138,7 +3138,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISCreateStride()`, `ISGetSize()`, `ISSTRIDE`
+See also: [](sec_scatter), `IS`, `ISCreateStride()`, `ISGetSize()`, `ISSTRIDE`
 
 # External Links
 $(_doc_external("IS/ISStrideGetInfo"))
@@ -3165,7 +3165,7 @@ end
 end 
 
 """
-	ISStrideSetStride(petsclib::PetscLibType,is::AbstractIS, n::PetscInt, first::PetscInt, step::PetscInt) 
+	ISStrideSetStride(petsclib::PetscLibType, is::AbstractIS, n::PetscInt, first::PetscInt, step::PetscInt) 
 Sets the stride information for a stride index set.
 
 Logically Collective
@@ -3178,7 +3178,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`, `ISCreateStride()`, `ISStrideGetInfo()`
+See also: [](sec_scatter), `IS`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRIDE`, `ISCreateStride()`, `ISStrideGetInfo()`
 
 # External Links
 $(_doc_external("IS/ISStrideSetStride"))
@@ -3201,7 +3201,7 @@ end
 end 
 
 """
-	is3::IS = ISSum(petsclib::PetscLibType,is1::AbstractIS, is2::AbstractIS) 
+	is3::IS = ISSum(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS) 
 Computes the sum (union) of two index sets.
 
 Only sequential version (at the moment)
@@ -3215,7 +3215,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISExpand()`
+See also: [](sec_scatter), `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISExpand()`
 
 # External Links
 $(_doc_external("IS/ISSum"))
@@ -3240,7 +3240,7 @@ end
 end 
 
 """
-	ISToGeneral(petsclib::PetscLibType,is::AbstractIS) 
+	ISToGeneral(petsclib::PetscLibType, is::AbstractIS) 
 Converts an IS object of any type to `ISGENERAL` type
 
 Collective
@@ -3250,7 +3250,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `IS`, `ISSorted()`
+See also: `IS`, `ISSorted()`
 
 # External Links
 $(_doc_external("IS/ISToGeneral"))
@@ -3273,7 +3273,7 @@ end
 end 
 
 """
-	ISView(petsclib::PetscLibType,is::AbstractIS, viewer::PetscViewer) 
+	ISView(petsclib::PetscLibType, is::AbstractIS, viewer::PetscViewer) 
 Displays an index set.
 
 Collective
@@ -3284,7 +3284,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `IS`, `PetscViewer`, `PetscViewerASCIIOpen()`, `ISViewFromOptions()`
+See also: `IS`, `PetscViewer`, `PetscViewerASCIIOpen()`, `ISViewFromOptions()`
 
 # External Links
 $(_doc_external("IS/ISView"))
@@ -3307,7 +3307,7 @@ end
 end 
 
 """
-	ISViewFromOptions(petsclib::PetscLibType,A::AbstractIS, obj, name::String) 
+	ISViewFromOptions(petsclib::PetscLibType, A::AbstractIS, obj, name::String) 
 View an `IS` based on options in the options database
 
 Collective
@@ -3322,7 +3322,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `IS`, `ISView()`, `PetscObjectViewFromOptions()`, `ISCreate()`
+See also: `IS`, `ISView()`, `PetscObjectViewFromOptions()`, `ISCreate()`
 
 # External Links
 $(_doc_external("IS/ISViewFromOptions"))

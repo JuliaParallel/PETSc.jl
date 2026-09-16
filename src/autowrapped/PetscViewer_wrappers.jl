@@ -1,5 +1,5 @@
 """
-	adiosv::PetscViewer = PetscViewerADIOSOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String, type::PetscFileMode) 
+	adiosv::PetscViewer = PetscViewerADIOSOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode) 
 Opens a file for ADIOS input/output.
 
 Collective
@@ -8,7 +8,18 @@ Input Parameters:
 - `comm` - MPI communicator
 - `name` - name of file
 - `type` - type of file
--seealso: `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerHDF5Open()`,
+``
+FILE_MODE_WRITE - create new file for binary output
+FILE_MODE_READ - open existing file for binary input
+FILE_MODE_APPEND - open existing file for binary output
+``
+
+Output Parameter:
+- `adiosv` - `PetscViewer` for ADIOS input/output to use with the specified file
+
+Level: beginner
+
+See also: `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerHDF5Open()`,
 `VecView()`, `MatView()`, `VecLoad()`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`,
 `MatLoad()`, `PetscFileMode`, `PetscViewer`
 
@@ -35,7 +46,7 @@ end
 end 
 
 """
-	PetscViewerASCIIAddTab(petsclib::PetscLibType,viewer::PetscViewer, tabs::PetscInt) 
+	PetscViewerASCIIAddTab(petsclib::PetscLibType, viewer::PetscViewer, tabs::PetscInt) 
 Add to the number of times a `PETSCVIEWERASCII` viewer tabs before printing
 
 Not Collective, but only first processor in set has any effect; No Fortran Support
@@ -46,7 +57,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`, `PetscViewerASCIIPushTab()`
 
@@ -71,7 +82,7 @@ end
 end 
 
 """
-	fd::Ptr{Libc.FILE} = PetscViewerASCIIGetPointer(petsclib::PetscLibType,viewer::PetscViewer) 
+	fd::Ptr{Libc.FILE} = PetscViewerASCIIGetPointer(petsclib::PetscLibType, viewer::PetscViewer) 
 Extracts the file pointer from an ASCII `PetscViewer`.
 
 Not Collective, depending on the viewer the value may be meaningless except for process 0 of the viewer; No Fortran Support
@@ -84,7 +95,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERASCII`, `PetscViewerASCIIOpen()`, `PetscViewerDestroy()`, `PetscViewerSetType()`,
+See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscViewerASCIIOpen()`, `PetscViewerDestroy()`, `PetscViewerSetType()`,
 `PetscViewerCreate()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`
 
 # External Links
@@ -110,7 +121,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerASCIIGetStderr(petsclib::PetscLibType,comm::MPI_Comm) 
+	viewer::PetscViewer = PetscViewerASCIIGetStderr(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `PETSCVIEWERASCII` `PetscViewer` shared by all MPI processes
 in a communicator that prints to `stderr`. Error returning version of `PETSC_VIEWER_STDERR_()`
 
@@ -124,7 +135,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PetscViewerASCIIGetStdout()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDERR_WORLD`,
+See also: [](sec_viewers), `PetscViewerASCIIGetStdout()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDERR_WORLD`,
 `PETSC_VIEWER_STDERR_SELF`
 
 # External Links
@@ -150,7 +161,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerASCIIGetStdout(petsclib::PetscLibType,comm::MPI_Comm) 
+	viewer::PetscViewer = PetscViewerASCIIGetStdout(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `PETSCVIEWERASCII` `PetscViewer` shared by all processes
 in a communicator that prints to `stdout`. Error returning version of `PETSC_VIEWER_STDOUT_()`
 
@@ -164,7 +175,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PetscViewerASCIIGetStderr()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDOUT_WORLD`,
+See also: [](sec_viewers), `PetscViewerASCIIGetStderr()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASCIIOpen()`, `PETSC_VIEWER_STDERR_`, `PETSC_VIEWER_STDOUT_WORLD`,
 `PETSC_VIEWER_STDOUT_SELF`
 
 # External Links
@@ -190,7 +201,7 @@ end
 end 
 
 """
-	tabs::PetscInt = PetscViewerASCIIGetTab(petsclib::PetscLibType,viewer::PetscViewer) 
+	tabs::PetscInt = PetscViewerASCIIGetTab(petsclib::PetscLibType, viewer::PetscViewer) 
 Return the number of tabs used by `PetscViewer`.
 
 Not Collective, meaningful on first processor only; No Fortran Support
@@ -203,7 +214,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIISetTab()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`, `PetscViewerASCIIPushTab()`
@@ -231,7 +242,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerASCIIOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String) 
+	viewer::PetscViewer = PetscViewerASCIIOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String) 
 Opens an ASCII file for writing as a `PETSCVIEWERASCII` `PetscViewer`.
 
 Collective
@@ -245,7 +256,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIRead()`, `PETSCVIEWERASCII`,
+See also: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIRead()`, `PETSCVIEWERASCII`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerPushFormat()`, `PETSC_VIEWER_STDOUT_`, `PETSC_VIEWER_STDERR_`,
 `PETSC_VIEWER_STDOUT_WORLD`, `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIGetStdout()`, `PetscViewerASCIIGetStderr()`
 
@@ -272,7 +283,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerASCIIOpenWithFILE(petsclib::PetscLibType,comm::MPI_Comm, fd::Libc.FILE) 
+	viewer::PetscViewer = PetscViewerASCIIOpenWithFILE(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE) 
 Given an open file creates an `PETSCVIEWERASCII` viewer that prints to it.
 
 Collective
@@ -286,7 +297,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIOpenWithFileUnit()`,
+See also: [](sec_viewers), `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIIOpenWithFileUnit()`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerPushFormat()`, `PETSC_VIEWER_STDOUT_`, `PETSC_VIEWER_STDERR_`,
 `PETSC_VIEWER_STDOUT_WORLD`, `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIOpen()`, `PetscViewerASCIISetFILE()`, `PETSCVIEWERASCII`
 
@@ -313,7 +324,7 @@ end
 end 
 
 """
-	PetscViewerASCIIPopSynchronized(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerASCIIPopSynchronized(petsclib::PetscLibType, viewer::PetscViewer) 
 Undoes most recent `PetscViewerASCIIPushSynchronized()` for this viewer
 
 Collective
@@ -323,7 +334,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewerASCIIPushSynchronized()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`,
+See also: [](sec_viewers), `PetscViewerASCIIPushSynchronized()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`,
 `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`
 
@@ -348,7 +359,7 @@ end
 end 
 
 """
-	PetscViewerASCIIPopTab(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerASCIIPopTab(petsclib::PetscLibType, viewer::PetscViewer) 
 Removes one tab from the amount that `PetscViewerASCIIPrintf()` lines are tabbed that was provided by
 `PetscViewerASCIIPushTab()`
 
@@ -359,7 +370,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPushTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`
 
@@ -384,7 +395,7 @@ end
 end 
 
 """
-	PetscViewerASCIIPushSynchronized(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerASCIIPushSynchronized(petsclib::PetscLibType, viewer::PetscViewer) 
 Allows calls to `PetscViewerASCIISynchronizedPrintf()` for this viewer
 
 Collective
@@ -394,7 +405,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`, `PetscViewerASCIIPopSynchronized()`,
+See also: [](sec_viewers), `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`, `PetscViewerASCIIPopSynchronized()`,
 `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`
 
@@ -419,7 +430,7 @@ end
 end 
 
 """
-	PetscViewerASCIIPushTab(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerASCIIPushTab(petsclib::PetscLibType, viewer::PetscViewer) 
 Adds one more tab to the amount that `PetscViewerASCIIPrintf()`
 lines are tabbed.
 
@@ -430,7 +441,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`
 
@@ -455,7 +466,7 @@ end
 end 
 
 """
-	count::PetscInt = PetscViewerASCIIRead(petsclib::PetscLibType,viewer::PetscViewer, data::Ptr{Cvoid}, num::PetscInt, dtype::PetscDataType) 
+	count::PetscInt = PetscViewerASCIIRead(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, num::PetscInt, dtype::PetscDataType) 
 Reads from a `PETSCVIEWERASCII` file
 
 Only MPI rank 0 in the `PetscViewer` may call this
@@ -471,7 +482,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`,
+See also: [](sec_viewers), `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -498,7 +509,7 @@ end
 end 
 
 """
-	PetscViewerASCIISetFILE(petsclib::PetscLibType,viewer::PetscViewer, fd::Libc.FILE) 
+	PetscViewerASCIISetFILE(petsclib::PetscLibType, viewer::PetscViewer, fd::Libc.FILE) 
 Given an open file sets the `PETSCVIEWERASCII` viewer to use the file for output
 
 Not Collective
@@ -509,7 +520,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIISetFileUnit()`,
+See also: `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOpen()`, `PetscViewerASCIISetFileUnit()`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerPushFormat()`, `PETSC_VIEWER_STDOUT_`, `PETSC_VIEWER_STDERR_`,
 `PETSC_VIEWER_STDOUT_WORLD`, `PETSC_VIEWER_STDOUT_SELF`, `PetscViewerASCIIOpen()`, `PetscViewerASCIIOpenWithFILE()`, `PETSCVIEWERASCII`
 
@@ -534,7 +545,7 @@ end
 end 
 
 """
-	PetscViewerASCIISetTab(petsclib::PetscLibType,viewer::PetscViewer, tabs::PetscInt) 
+	PetscViewerASCIISetTab(petsclib::PetscLibType, viewer::PetscViewer, tabs::PetscInt) 
 Causes `PetscViewer` to tab in a number of times before printing
 
 Not Collective, but only first processor in set has any effect; No Fortran Support
@@ -545,7 +556,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIGetTab()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`,
@@ -572,7 +583,7 @@ end
 end 
 
 """
-	PetscViewerASCIISubtractTab(petsclib::PetscLibType,viewer::PetscViewer, tabs::PetscInt) 
+	PetscViewerASCIISubtractTab(petsclib::PetscLibType, viewer::PetscViewer, tabs::PetscInt) 
 Subtracts from the number of times a `PETSCVIEWERASCII` viewer tabs before printing
 
 Not Collective, but only first processor in set has any effect; No Fortran Support
@@ -583,7 +594,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: [](sec_viewers), `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`,
 `PetscViewerASCIIPushTab()`
@@ -609,7 +620,7 @@ end
 end 
 
 """
-	PetscViewerASCIIUseTabs(petsclib::PetscLibType,viewer::PetscViewer, flg::PetscBool) 
+	PetscViewerASCIIUseTabs(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool) 
 Turns on or off the use of tabs with the `PETSCVIEWERASCII` `PetscViewer`
 
 Not Collective, but only first MPI rank in the viewer has any effect; No Fortran Support
@@ -620,7 +631,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: [](sec_viewers), `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIIPopTab()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIPushTab()`, `PetscViewerASCIIOpen()`,
 `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerASCIIGetPointer()`
 
@@ -645,7 +656,7 @@ end
 end 
 
 """
-	vf::Ptr{PetscViewerAndFormat} = PetscViewerAndFormatCreate(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat) 
+	vf::Ptr{PetscViewerAndFormat} = PetscViewerAndFormatCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat) 
 Creates a `PetscViewerAndFormat` struct.
 
 Collective
@@ -659,7 +670,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`,
 `PetscViewerDrawOpen()`, `PetscViewerAndFormatDestroy()`
 
 # External Links
@@ -685,7 +696,7 @@ end
 end 
 
 """
-	PetscViewerAndFormatDestroy(petsclib::PetscLibType,vf::PetscViewerAndFormat) 
+	PetscViewerAndFormatDestroy(petsclib::PetscLibType, vf::PetscViewerAndFormat) 
 Destroys a `PetscViewerAndFormat` struct created with `PetscViewerAndFormatCreate()`
 
 Collective
@@ -695,7 +706,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerAndFormatCreate()`, `PetscViewerSocketOpen()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscViewerAndFormatCreate()`, `PetscViewerSocketOpen()`,
 `PetscViewerASCIIOpen()`, `PetscViewerCreate()`, `PetscViewerDrawOpen()`
 
 # External Links
@@ -719,7 +730,7 @@ end
 end 
 
 """
-	PetscViewerAppendOptionsPrefix(petsclib::PetscLibType,viewer::PetscViewer, prefix::String) 
+	PetscViewerAppendOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer, prefix::String) 
 Appends to the prefix used for searching for
 `PetscViewer` options in the database during `PetscViewerSetFromOptions()`.
 
@@ -731,7 +742,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerGetOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerGetOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerAppendOptionsPrefix"))
@@ -754,7 +765,7 @@ end
 end 
 
 """
-	PetscViewerBinaryAddMPIIOOffset(petsclib::PetscLibType,viewer::PetscViewer, off::MPI_Offset) 
+	PetscViewerBinaryAddMPIIOOffset(petsclib::PetscLibType, viewer::PetscViewer, off::MPI_Offset) 
 Adds to the current global offset
 
 Logically Collective; No Fortran Support
@@ -765,7 +776,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryAddMPIIOOffset"))
@@ -788,7 +799,7 @@ end
 end 
 
 """
-	fdes::Cint = PetscViewerBinaryGetDescriptor(petsclib::PetscLibType,viewer::PetscViewer) 
+	fdes::Cint = PetscViewerBinaryGetDescriptor(petsclib::PetscLibType, viewer::PetscViewer) 
 Extracts the file descriptor from a `PetscViewer` of `PetscViewerType` `PETSCVIEWERBINARY`.
 
 Collective because it may trigger a `PetscViewerSetUp()` call; No Fortran Support
@@ -801,7 +812,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetDescriptor"))
@@ -826,7 +837,7 @@ end
 end 
 
 """
-	fc::PetscInt = PetscViewerBinaryGetFlowControl(petsclib::PetscLibType,viewer::PetscViewer) 
+	fc::PetscInt = PetscViewerBinaryGetFlowControl(petsclib::PetscLibType, viewer::PetscViewer) 
 Returns how many messages are allowed to be outstanding at the same time during parallel IO reads/writes
 
 Not Collective
@@ -839,7 +850,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetFlowControl()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetFlowControl()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetFlowControl"))
@@ -864,7 +875,7 @@ end
 end 
 
 """
-	file::Ptr{Libc.FILE} = PetscViewerBinaryGetInfoPointer(petsclib::PetscLibType,viewer::PetscViewer) 
+	file::Ptr{Libc.FILE} = PetscViewerBinaryGetInfoPointer(petsclib::PetscLibType, viewer::PetscViewer) 
 Extracts the file pointer for the ASCII
 `.info` file associated with a binary file.
 
@@ -878,7 +889,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinaryGetSkipInfo()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinaryGetSkipInfo()`,
 `PetscViewerBinarySetSkipInfo()`
 
 # External Links
@@ -904,7 +915,7 @@ end
 end 
 
 """
-	fdes::MPI_File = PetscViewerBinaryGetMPIIODescriptor(petsclib::PetscLibType,viewer::PetscViewer) 
+	fdes::MPI_File = PetscViewerBinaryGetMPIIODescriptor(petsclib::PetscLibType, viewer::PetscViewer) 
 Extracts the MPI IO file descriptor from a `PetscViewer`.
 
 Not Collective; No Fortran Support
@@ -917,7 +928,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetMPIIODescriptor"))
@@ -942,7 +953,7 @@ end
 end 
 
 """
-	off::MPI_Offset = PetscViewerBinaryGetMPIIOOffset(petsclib::PetscLibType,viewer::PetscViewer) 
+	off::MPI_Offset = PetscViewerBinaryGetMPIIOOffset(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the current global offset that should be passed to `MPI_File_set_view()` or `MPI_File_{write|read}_at[_all]()`
 
 Not Collective; No Fortran Support
@@ -955,7 +966,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryAddMPIIOOffset()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryAddMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetMPIIOOffset"))
@@ -980,7 +991,7 @@ end
 end 
 
 """
-	skip::PetscBool = PetscViewerBinaryGetSkipHeader(petsclib::PetscLibType,viewer::PetscViewer) 
+	skip::PetscBool = PetscViewerBinaryGetSkipHeader(petsclib::PetscLibType, viewer::PetscViewer) 
 checks whether to write a header with size information on output, or just raw data
 
 Not Collective
@@ -993,7 +1004,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinarySetSkipHeader()`
 
 # External Links
@@ -1019,7 +1030,7 @@ end
 end 
 
 """
-	skip::PetscBool = PetscViewerBinaryGetSkipInfo(petsclib::PetscLibType,viewer::PetscViewer) 
+	skip::PetscBool = PetscViewerBinaryGetSkipInfo(petsclib::PetscLibType, viewer::PetscViewer) 
 check if viewer wrote a `.info` file
 
 Not Collective
@@ -1032,7 +1043,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinarySetSkipOptions()`, `PetscViewerBinarySetSkipInfo()`, `PetscViewerBinaryGetInfoPointer()`
 
 # External Links
@@ -1058,7 +1069,7 @@ end
 end 
 
 """
-	skip::PetscBool = PetscViewerBinaryGetSkipOptions(petsclib::PetscLibType,viewer::PetscViewer) 
+	skip::PetscBool = PetscViewerBinaryGetSkipOptions(petsclib::PetscLibType, viewer::PetscViewer) 
 checks if viewer uses the PETSc options database when loading objects
 
 Not Collective
@@ -1071,7 +1082,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinarySetSkipOptions()`
 
 # External Links
@@ -1097,8 +1108,8 @@ end
 end 
 
 """
-	use::PetscBool = PetscViewerBinaryGetUseMPIIO(petsclib::PetscLibType,viewer::PetscViewer) 
-Returns `PETSC_TRUE` if the binary viewer uses MPI
+	use::PetscBool = PetscViewerBinaryGetUseMPIIO(petsclib::PetscLibType, viewer::PetscViewer) 
+Returns `PETSC_TRUE` if the binary viewer uses MPI-IO.
 
 Not Collective
 
@@ -1110,7 +1121,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryGetUseMPIIO"))
@@ -1135,7 +1146,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerBinaryOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String, mode::PetscFileMode) 
+	viewer::PetscViewer = PetscViewerBinaryOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, mode::PetscFileMode) 
 Opens a file for binary input/output.
 
 Collective
@@ -1144,7 +1155,25 @@ Input Parameters:
 - `comm` - MPI communicator
 - `name` - name of file
 - `mode` - open mode of file
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+``
+FILE_MODE_WRITE - create new file for binary output
+FILE_MODE_READ - open existing file for binary input
+FILE_MODE_APPEND - open existing file for binary output
+``
+
+Output Parameter:
+- `viewer` - PetscViewer for binary input/output to use with the specified file
+
+Options Database Keys:
+- `-viewer_binary_filename name` - name of file to use
+- `-viewer_binary_skip_info`     - true to skip opening an info file
+- `-viewer_binary_skip_options`  - true to not use options database while creating viewer
+- `-viewer_binary_skip_header`   - true to skip output object headers to the file
+- `-viewer_binary_mpiio`         - true to use MPI-IO for input and output to the file (more scalable for large problems)
+
+Level: beginner
+
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`, `PetscViewerBinarySetUseMPIIO()`,
 `PetscViewerBinaryGetUseMPIIO()`, `PetscViewerBinaryGetMPIIOOffset()`
@@ -1172,7 +1201,7 @@ end
 end 
 
 """
-	data::Ptr{Cvoid},count::PetscInt = PetscViewerBinaryRead(petsclib::PetscLibType,viewer::PetscViewer, num::PetscInt, dtype::PetscDataType) 
+	data::Ptr{Cvoid},count::PetscInt = PetscViewerBinaryRead(petsclib::PetscLibType, viewer::PetscViewer, num::PetscInt, dtype::PetscDataType) 
 Reads from a binary file, all processors get the same result
 
 Collective; No Fortran Support
@@ -1188,7 +1217,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`
 
@@ -1217,7 +1246,7 @@ end
 end 
 
 """
-	data::Ptr{Cvoid} = PetscViewerBinaryReadAll(petsclib::PetscLibType,viewer::PetscViewer, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType) 
+	data::Ptr{Cvoid} = PetscViewerBinaryReadAll(petsclib::PetscLibType, viewer::PetscViewer, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType) 
 reads from a binary file from all MPI processes, each rank receives its own portion of the data
 
 Collective; No Fortran Support
@@ -1234,7 +1263,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWriteAll()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWriteAll()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryReadAll"))
@@ -1259,7 +1288,7 @@ end
 end 
 
 """
-	data::String = PetscViewerBinaryReadStringArray(petsclib::PetscLibType,viewer::PetscViewer) 
+	data::String = PetscViewerBinaryReadStringArray(petsclib::PetscLibType, viewer::PetscViewer) 
 reads a binary file an array of strings to all MPI processes
 
 Collective; No Fortran Support
@@ -1272,7 +1301,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -1299,7 +1328,7 @@ end
 end 
 
 """
-	PetscViewerBinarySetFlowControl(petsclib::PetscLibType,viewer::PetscViewer, fc::PetscInt) 
+	PetscViewerBinarySetFlowControl(petsclib::PetscLibType, viewer::PetscViewer, fc::PetscInt) 
 Sets how many messages are allowed to be outstanding at the same time during parallel IO reads/writes
 
 Not Collective
@@ -1310,7 +1339,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetFlowControl()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetInfoPointer()`, `PetscViewerBinaryGetFlowControl()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinarySetFlowControl"))
@@ -1333,7 +1362,7 @@ end
 end 
 
 """
-	PetscViewerBinarySetSkipHeader(petsclib::PetscLibType,viewer::PetscViewer, skip::PetscBool) 
+	PetscViewerBinarySetSkipHeader(petsclib::PetscLibType, viewer::PetscViewer, skip::PetscBool) 
 do not write a header with size information on output, just raw data
 
 Not Collective
@@ -1347,7 +1376,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinaryGetSkipHeader()`
 
 # External Links
@@ -1371,7 +1400,7 @@ end
 end 
 
 """
-	PetscViewerBinarySetSkipInfo(petsclib::PetscLibType,viewer::PetscViewer, skip::PetscBool) 
+	PetscViewerBinarySetSkipInfo(petsclib::PetscLibType, viewer::PetscViewer, skip::PetscBool) 
 Binary file will not have `.info` file created with it
 
 Not Collective
@@ -1385,7 +1414,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
 `PetscViewerBinaryGetSkipOptions()`, `PetscViewerBinaryGetSkipInfo()`, `PetscViewerBinaryGetInfoPointer()`
 
 # External Links
@@ -1409,7 +1438,7 @@ end
 end 
 
 """
-	PetscViewerBinarySetSkipOptions(petsclib::PetscLibType,viewer::PetscViewer, skip::PetscBool) 
+	PetscViewerBinarySetSkipOptions(petsclib::PetscLibType, viewer::PetscViewer, skip::PetscBool) 
 do not use values in the PETSc options database when loading objects
 
 Not Collective
@@ -1423,7 +1452,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySkipInfo()`,
 `PetscViewerBinaryGetSkipOptions()`
 
 # External Links
@@ -1447,8 +1476,8 @@ end
 end 
 
 """
-	PetscViewerBinarySetUseMPIIO(petsclib::PetscLibType,viewer::PetscViewer, use::PetscBool) 
-Sets a binary viewer to use MPI
+	PetscViewerBinarySetUseMPIIO(petsclib::PetscLibType, viewer::PetscViewer, use::PetscBool) 
+Sets a binary viewer to use MPI-IO for reading/writing. Must be called
 before `PetscViewerFileSetName()`
 
 Logically Collective
@@ -1462,7 +1491,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
 `PetscViewerBinaryGetUseMPIIO()`
 
 # External Links
@@ -1486,7 +1515,7 @@ end
 end 
 
 """
-	PetscViewerBinarySkipInfo(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerBinarySkipInfo(petsclib::PetscLibType, viewer::PetscViewer) 
 Binary file will not have `.info` file created with it
 
 Not Collective
@@ -1499,7 +1528,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetDescriptor()`, `PetscViewerBinarySetSkipOptions()`,
 `PetscViewerBinaryGetSkipOptions()`, `PetscViewerBinaryGetSkipInfo()`
 
 # External Links
@@ -1523,7 +1552,7 @@ end
 end 
 
 """
-	PetscViewerBinaryWrite(petsclib::PetscLibType,viewer::PetscViewer, data::Ptr{Cvoid}, count::PetscInt, dtype::PetscDataType) 
+	PetscViewerBinaryWrite(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, count::PetscInt, dtype::PetscDataType) 
 writes to a binary file, only from the first MPI rank
 
 Collective; No Fortran Support
@@ -1536,7 +1565,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`, `PetscDataType`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -1561,7 +1590,7 @@ end
 end 
 
 """
-	PetscViewerBinaryWriteAll(petsclib::PetscLibType,viewer::PetscViewer, data::Ptr{Cvoid}, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType) 
+	PetscViewerBinaryWriteAll(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType) 
 writes to a binary file from all MPI processes, each rank writes its own portion of the data
 
 Collective; No Fortran Support
@@ -1576,7 +1605,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryReadAll()`
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetUseMPIIO()`, `PetscViewerBinaryReadAll()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerBinaryWriteAll"))
@@ -1599,7 +1628,7 @@ end
 end 
 
 """
-	PetscViewerBinaryWriteStringArray(petsclib::PetscLibType,viewer::PetscViewer, data::String) 
+	PetscViewerBinaryWriteStringArray(petsclib::PetscLibType, viewer::PetscViewer, data::String) 
 writes to a binary file, only from the first MPI rank, an array of strings
 
 Collective; No Fortran Support
@@ -1610,7 +1639,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`, `PetscViewer`, `PetscViewerBinaryRead()`
 
@@ -1636,7 +1665,7 @@ end
 end 
 
 """
-	solution_id::PetscInt = PetscViewerCGNSGetSolutionIndex(petsclib::PetscLibType,viewer::PetscViewer) 
+	solution_id::PetscInt = PetscViewerCGNSGetSolutionIndex(petsclib::PetscLibType, viewer::PetscViewer) 
 Get index of solution
 
 Not Collective
@@ -1649,7 +1678,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERCGNS`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionInfo()`
+See also: `PETSCVIEWERCGNS`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionIndex"))
@@ -1674,7 +1703,7 @@ end
 end 
 
 """
-	iteration::PetscInt,set::PetscBool = PetscViewerCGNSGetSolutionIteration(petsclib::PetscLibType,viewer::PetscViewer) 
+	iteration::PetscInt,set::PetscBool = PetscViewerCGNSGetSolutionIteration(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the solution iteration for the FlowSolution of the viewer
 
 Collective
@@ -1688,7 +1717,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSGetSolutionTime()`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionName()`
+See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSGetSolutionTime()`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionIteration"))
@@ -1715,7 +1744,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerCGNSGetSolutionName(petsclib::PetscLibType,viewer::PetscViewer) 
+	name::Ptr{Cchar} = PetscViewerCGNSGetSolutionName(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets name of FlowSolution of the viewer
 
 Collective
@@ -1728,7 +1757,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionTime()`
+See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionTime()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionName"))
@@ -1753,7 +1782,7 @@ end
 end 
 
 """
-	time::PetscReal,set::PetscBool = PetscViewerCGNSGetSolutionTime(petsclib::PetscLibType,viewer::PetscViewer) 
+	time::PetscReal,set::PetscBool = PetscViewerCGNSGetSolutionTime(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the solution time for the FlowSolution of the viewer
 
 Collective
@@ -1767,7 +1796,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSGetSolutionIteration()`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionName()`
+See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSGetSolutionIteration()`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionTime"))
@@ -1794,7 +1823,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerCGNSOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String, type::PetscFileMode) 
+	viewer::PetscViewer = PetscViewerCGNSOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode) 
 Opens a file for CGNS input/output.
 
 Collective
@@ -1803,7 +1832,18 @@ Input Parameters:
 - `comm` - MPI communicator
 - `name` - name of file
 - `type` - type of file
--seealso: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+``
+FILE_MODE_WRITE - create new file for binary output
+FILE_MODE_READ - open existing file for binary input
+FILE_MODE_APPEND - open existing file for binary output
+``
+
+Output Parameter:
+- `viewer` - `PETSCVIEWERCGNS` `PetscViewer` for CGNS input/output to use with the specified file
+
+Level: beginner
+
+See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `DMLoad()`, `PetscFileMode`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`
 
 # External Links
@@ -1829,7 +1869,7 @@ end
 end 
 
 """
-	PetscViewerCGNSSetSolutionIndex(petsclib::PetscLibType,viewer::PetscViewer, solution_id::PetscInt) 
+	PetscViewerCGNSSetSolutionIndex(petsclib::PetscLibType, viewer::PetscViewer, solution_id::PetscInt) 
 Set index of solution
 
 Not Collective
@@ -1840,7 +1880,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERCGNS`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionInfo()`
+See also: `PETSCVIEWERCGNS`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCGNSGetSolutionInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCGNSSetSolutionIndex"))
@@ -1863,7 +1903,7 @@ end
 end 
 
 """
-	PetscViewerCheckReadable(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerCheckReadable(petsclib::PetscLibType, viewer::PetscViewer) 
 Check whether the viewer can be read from, generates an error if not
 
 Collective
@@ -1873,7 +1913,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCheckReadable"))
@@ -1896,7 +1936,7 @@ end
 end 
 
 """
-	PetscViewerCheckWritable(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerCheckWritable(petsclib::PetscLibType, viewer::PetscViewer) 
 Check whether the viewer can be written to, generates an error if not
 
 Collective
@@ -1906,7 +1946,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCheckWritable"))
@@ -1929,7 +1969,7 @@ end
 end 
 
 """
-	inviewer::PetscViewer = PetscViewerCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	inviewer::PetscViewer = PetscViewerCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a viewing context. A `PetscViewer` represents a file, a graphical window, a Unix socket or a variety of other ways
 of viewing a PETSc object
 
@@ -1943,7 +1983,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerType`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscViewerType`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerCreate"))
@@ -1968,7 +2008,7 @@ end
 end 
 
 """
-	PetscViewerDestroy(petsclib::PetscLibType,viewer::Union{PetscViewer, Ref{PetscViewer}}) 
+	PetscViewerDestroy(petsclib::PetscLibType, viewer::Union{PetscViewer, Ref{PetscViewer}}) 
 Destroys a `PetscViewer`.
 
 Collective
@@ -1978,7 +2018,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDestroy"))
@@ -2002,7 +2042,7 @@ end
 end 
 
 """
-	PetscViewerDrawBaseAdd(petsclib::PetscLibType,viewer::PetscViewer, windownumber::PetscInt) 
+	PetscViewerDrawBaseAdd(petsclib::PetscLibType, viewer::PetscViewer, windownumber::PetscInt) 
 add to the base integer that is added to the `windownumber` passed to `PetscViewerDrawGetDraw()`
 
 Logically Collective
@@ -2013,7 +2053,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseSet()`
+See also: [](sec_viewers), `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseSet()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawBaseAdd"))
@@ -2036,7 +2076,7 @@ end
 end 
 
 """
-	PetscViewerDrawBaseSet(petsclib::PetscLibType,viewer::PetscViewer, windownumber::PetscInt) 
+	PetscViewerDrawBaseSet(petsclib::PetscLibType, viewer::PetscViewer, windownumber::PetscInt) 
 sets the base integer that is added to the `windownumber` passed to `PetscViewerDrawGetDraw()`
 
 Logically Collective
@@ -2047,7 +2087,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseAdd()`
+See also: [](sec_viewers), `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawBaseAdd()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawBaseSet"))
@@ -2070,7 +2110,7 @@ end
 end 
 
 """
-	PetscViewerDrawClear(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerDrawClear(petsclib::PetscLibType, viewer::PetscViewer) 
 Clears a `PetscDraw` graphic associated with a `PetscViewer`.
 
 Not Collective
@@ -2080,7 +2120,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawClear"))
@@ -2103,7 +2143,7 @@ end
 end 
 
 """
-	nbounds::PetscInt,bounds::Ptr{PetscReal} = PetscViewerDrawGetBounds(petsclib::PetscLibType,viewer::PetscViewer) 
+	nbounds::PetscInt,bounds::Ptr{PetscReal} = PetscViewerDrawGetBounds(petsclib::PetscLibType, viewer::PetscViewer) 
 gets the upper and lower bounds to be used in plotting set with `PetscViewerDrawSetBounds()`
 
 Collective
@@ -2117,7 +2157,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetBounds()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetBounds()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetBounds"))
@@ -2144,7 +2184,7 @@ end
 end 
 
 """
-	draw::PetscDraw = PetscViewerDrawGetDraw(petsclib::PetscLibType,viewer::PetscViewer, windownumber::PetscInt) 
+	draw::PetscDraw = PetscViewerDrawGetDraw(petsclib::PetscLibType, viewer::PetscViewer, windownumber::PetscInt) 
 Returns `PetscDraw` object from `PETSCVIEWERDRAW` `PetscViewer` object.
 This `PetscDraw` object may then be used to perform graphics using `PetscDraw` commands.
 
@@ -2159,7 +2199,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDraw"))
@@ -2184,7 +2224,7 @@ end
 end 
 
 """
-	drawaxis::PetscDrawAxis = PetscViewerDrawGetDrawAxis(petsclib::PetscLibType,viewer::PetscViewer, windownumber::PetscInt) 
+	drawaxis::PetscDrawAxis = PetscViewerDrawGetDrawAxis(petsclib::PetscLibType, viewer::PetscViewer, windownumber::PetscInt) 
 Returns a `PetscDrawAxis` object from a `PetscViewer` object of type `PETSCVIEWERDRAW`.
 This `PetscDrawAxis` object may then be used to perform graphics using `PetscDrawAxis` commands.
 
@@ -2199,7 +2239,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetLG()`, `PetscViewerDrawOpen()`
+See also: [](sec_viewers), `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetLG()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDrawAxis"))
@@ -2224,7 +2264,7 @@ end
 end 
 
 """
-	drawlg::PetscDrawLG = PetscViewerDrawGetDrawLG(petsclib::PetscLibType,viewer::PetscViewer, windownumber::PetscInt) 
+	drawlg::PetscDrawLG = PetscViewerDrawGetDrawLG(petsclib::PetscLibType, viewer::PetscViewer, windownumber::PetscInt) 
 Returns a `PetscDrawLG` object from `PetscViewer` object of type `PETSCVIEWERDRAW`.
 This `PetscDrawLG` object may then be used to perform graphics using `PetscDrawLG` commands.
 
@@ -2239,7 +2279,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscDrawLG`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
+See also: [](sec_viewers), `PetscDrawLG`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDrawLG"))
@@ -2264,7 +2304,7 @@ end
 end 
 
 """
-	drawtype::PetscDrawType = PetscViewerDrawGetDrawType(petsclib::PetscLibType,v::PetscViewer) 
+	drawtype::PetscDrawType = PetscViewerDrawGetDrawType(petsclib::PetscLibType, v::PetscViewer) 
 Get the underlying `PetscDrawType` used by a `PETSCVIEWERDRAW` viewer.
 
 Not Collective
@@ -2277,7 +2317,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawSetDrawType()`, `PetscViewerDrawGetDraw()`
+See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawSetDrawType()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawGetDrawType"))
@@ -2302,7 +2342,7 @@ end
 end 
 
 """
-	hold::PetscBool = PetscViewerDrawGetHold(petsclib::PetscLibType,viewer::PetscViewer) 
+	hold::PetscBool = PetscViewerDrawGetHold(petsclib::PetscLibType, viewer::PetscViewer) 
 Checks if the `PETSCVIEWERDRAW` `PetscViewer` holds previous image when drawing new image
 
 Not Collective
@@ -2315,7 +2355,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetHold"))
@@ -2340,7 +2380,7 @@ end
 end 
 
 """
-	pause::PetscReal = PetscViewerDrawGetPause(petsclib::PetscLibType,viewer::PetscViewer) 
+	pause::PetscReal = PetscViewerDrawGetPause(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the pause value (how long to pause before an image is changed)  in the `PETSCVIEWERDRAW` `PetscViewer`
 
 Not Collective
@@ -2353,7 +2393,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetPause"))
@@ -2378,7 +2418,7 @@ end
 end 
 
 """
-	title::Ptr{Cchar} = PetscViewerDrawGetTitle(petsclib::PetscLibType,v::PetscViewer) 
+	title::Ptr{Cchar} = PetscViewerDrawGetTitle(petsclib::PetscLibType, v::PetscViewer) 
 Get the default title used for `PetscDraw` windows created by a `PETSCVIEWERDRAW` viewer.
 
 Not Collective; No Fortran Support
@@ -2391,7 +2431,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawSetTitle()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
+See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawSetTitle()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawGetTitle"))
@@ -2416,7 +2456,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerDrawOpen(petsclib::PetscLibType,comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
+	viewer::PetscViewer = PetscViewerDrawOpen(petsclib::PetscLibType, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
 Opens a `PetscDraw` window for use as a `PetscViewer` with type
 `PETSCVIEWERDRAW`.
 
@@ -2445,7 +2485,7 @@ program pauses after `PetscDrawPause()` has been called
 
 Level: beginner
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscDrawCreate()`, `PetscViewerDestroy()`, `PetscViewerDrawGetDraw()`, `PetscViewerCreate()`, `PETSC_VIEWER_DRAW_`,
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscDrawCreate()`, `PetscViewerDestroy()`, `PetscViewerDrawGetDraw()`, `PetscViewerCreate()`, `PETSC_VIEWER_DRAW_`,
 `PETSC_VIEWER_DRAW_WORLD`, `PETSC_VIEWER_DRAW_SELF`
 
 # External Links
@@ -2471,7 +2511,7 @@ end
 end 
 
 """
-	PetscViewerDrawResize(petsclib::PetscLibType,v::PetscViewer, w::Cint, h::Cint) 
+	PetscViewerDrawResize(petsclib::PetscLibType, v::PetscViewer, w::Cint, h::Cint) 
 Set the default width and height (in pixels) for `PetscDraw` windows created by a `PETSCVIEWERDRAW` viewer.
 
 Logically Collective
@@ -2483,7 +2523,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
+See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawResize"))
@@ -2506,7 +2546,7 @@ end
 end 
 
 """
-	PetscViewerDrawSetBounds(petsclib::PetscLibType,viewer::PetscViewer, nbounds::PetscInt, bounds::Vector{PetscReal}) 
+	PetscViewerDrawSetBounds(petsclib::PetscLibType, viewer::PetscViewer, nbounds::PetscInt, bounds::Vector{PetscReal}) 
 sets the upper and lower bounds to be used in plotting in a `PETSCVIEWERDRAW` `PetscViewer`
 
 Collective
@@ -2521,7 +2561,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDrawOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetBounds"))
@@ -2544,7 +2584,7 @@ end
 end 
 
 """
-	PetscViewerDrawSetDrawType(petsclib::PetscLibType,v::PetscViewer, drawtype::PetscDrawType) 
+	PetscViewerDrawSetDrawType(petsclib::PetscLibType, v::PetscViewer, drawtype::PetscDrawType) 
 Set the underlying `PetscDrawType` used by a `PETSCVIEWERDRAW` viewer.
 
 Logically Collective
@@ -2555,7 +2595,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawGetDrawType()`, `PetscViewerDrawGetDraw()`
+See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawGetDrawType()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscViewerDrawSetDrawType"))
@@ -2578,7 +2618,7 @@ end
 end 
 
 """
-	PetscViewerDrawSetHold(petsclib::PetscLibType,viewer::PetscViewer, hold::PetscBool) 
+	PetscViewerDrawSetHold(petsclib::PetscLibType, viewer::PetscViewer, hold::PetscBool) 
 Holds previous image when drawing new image in a `PETSCVIEWERDRAW`
 
 Not Collective
@@ -2589,7 +2629,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetHold"))
@@ -2612,7 +2652,7 @@ end
 end 
 
 """
-	PetscViewerDrawSetInfo(petsclib::PetscLibType,v::PetscViewer, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
+	PetscViewerDrawSetInfo(petsclib::PetscLibType, v::PetscViewer, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
 Record the default display, title, position, and size to use for `PetscDraw` windows
 created by a `PETSCVIEWERDRAW` viewer.
 
@@ -2629,7 +2669,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetTitle()`, `PetscViewerDrawResize()`
+See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetTitle()`, `PetscViewerDrawResize()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetInfo"))
@@ -2652,7 +2692,7 @@ end
 end 
 
 """
-	PetscViewerDrawSetPause(petsclib::PetscLibType,viewer::PetscViewer, pause::PetscReal) 
+	PetscViewerDrawSetPause(petsclib::PetscLibType, viewer::PetscViewer, pause::PetscReal) 
 Sets a pause for each `PetscDraw` in the `PETSCVIEWERDRAW` `PetscViewer`
 
 Not Collective
@@ -2663,7 +2703,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
+See also: [](sec_viewers), `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetPause"))
@@ -2686,7 +2726,7 @@ end
 end 
 
 """
-	PetscViewerDrawSetTitle(petsclib::PetscLibType,v::PetscViewer, title::String) 
+	PetscViewerDrawSetTitle(petsclib::PetscLibType, v::PetscViewer, title::String) 
 Set the default title used for `PetscDraw` windows created by a `PETSCVIEWERDRAW` viewer.
 
 Logically Collective
@@ -2697,7 +2737,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawGetTitle()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
+See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawGetTitle()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerDrawSetTitle"))
@@ -2720,7 +2760,7 @@ end
 end 
 
 """
-	exoid::Cint = PetscViewerExodusIIGetId(petsclib::PetscLibType,viewer::PetscViewer) 
+	exoid::Cint = PetscViewerExodusIIGetId(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the file id of the `PETSCVIEWEREXODUSII` file
 
 Logically Collective
@@ -2733,7 +2773,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetId"))
@@ -2758,7 +2798,7 @@ end
 end 
 
 """
-	num::PetscExodusIIInt = PetscViewerExodusIIGetNodalVariable(petsclib::PetscLibType,viewer::PetscViewer) 
+	num::PetscExodusIIInt = PetscViewerExodusIIGetNodalVariable(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the number of nodal variables in an ExodusII file
 
 Collective
@@ -2771,7 +2811,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariable()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariable()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariable"))
@@ -2796,7 +2836,7 @@ end
 end 
 
 """
-	varIndex::PetscExodusIIInt = PetscViewerExodusIIGetNodalVariableIndex(petsclib::PetscLibType,viewer::PetscViewer, name::String) 
+	varIndex::PetscExodusIIInt = PetscViewerExodusIIGetNodalVariableIndex(petsclib::PetscLibType, viewer::PetscViewer, name::String) 
 return the location of a nodal variable in an ExodusII file given its name
 
 Collective
@@ -2810,7 +2850,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalVariable()`, `PetscViewerExodusIISetNodalVariableName()`, `PetscViewerExodusIISetNodalVariableNames()`, `PetscViewerExodusIIGetNodalVariableName()`, `PetscViewerExodusIIGetNodalVariableNames()`
+See also: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalVariable()`, `PetscViewerExodusIISetNodalVariableName()`, `PetscViewerExodusIISetNodalVariableNames()`, `PetscViewerExodusIIGetNodalVariableName()`, `PetscViewerExodusIIGetNodalVariableNames()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariableIndex"))
@@ -2835,7 +2875,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerExodusIIGetNodalVariableName(petsclib::PetscLibType,viewer::PetscViewer, idx::PetscExodusIIInt) 
+	name::Ptr{Cchar} = PetscViewerExodusIIGetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt) 
 Gets the name of a nodal variable.
 
 Collective;
@@ -2849,7 +2889,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariableName()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariableName()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariableName"))
@@ -2874,7 +2914,7 @@ end
 end 
 
 """
-	varNames::Ptr{Ptr{Cchar}} = PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType,viewer::PetscViewer, numVars::PetscExodusIIInt) 
+	varNames::Ptr{Ptr{Cchar}} = PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt) 
 Gets the names of all nodal variables.
 
 Collective; No Fortran Support
@@ -2888,7 +2928,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariableNames()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariableNames()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariableNames"))
@@ -2913,7 +2953,7 @@ end
 end 
 
 """
-	order::PetscInt = PetscViewerExodusIIGetOrder(petsclib::PetscLibType,viewer::PetscViewer) 
+	order::PetscInt = PetscViewerExodusIIGetOrder(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the elements order in the ExodusII file.
 
 Collective
@@ -2926,7 +2966,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `PetscViewerExodusIISetOrder()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `PetscViewerExodusIISetOrder()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetOrder"))
@@ -2951,7 +2991,7 @@ end
 end 
 
 """
-	num::PetscExodusIIInt = PetscViewerExodusIIGetZonalVariable(petsclib::PetscLibType,viewer::PetscViewer) 
+	num::PetscExodusIIInt = PetscViewerExodusIIGetZonalVariable(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the number of zonal variables in an ExodusII file
 
 Collective
@@ -2964,7 +3004,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIsetZonalVariable()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIsetZonalVariable()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariable"))
@@ -2989,7 +3029,7 @@ end
 end 
 
 """
-	varIndex::Cint = PetscViewerExodusIIGetZonalVariableIndex(petsclib::PetscLibType,viewer::PetscViewer, name::String) 
+	varIndex::Cint = PetscViewerExodusIIGetZonalVariableIndex(petsclib::PetscLibType, viewer::PetscViewer, name::String) 
 return the location of a zonal variable in an ExodusII file given its name
 
 Collective
@@ -3003,7 +3043,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalVariable()`, `PetscViewerExodusIISetNodalVariableName()`, `PetscViewerExodusIISetNodalVariableNames()`, `PetscViewerExodusIIGetNodalVariableName()`, `PetscViewerExodusIIGetNodalVariableNames()`
+See also: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalVariable()`, `PetscViewerExodusIISetNodalVariableName()`, `PetscViewerExodusIISetNodalVariableNames()`, `PetscViewerExodusIIGetNodalVariableName()`, `PetscViewerExodusIIGetNodalVariableNames()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariableIndex"))
@@ -3028,7 +3068,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerExodusIIGetZonalVariableName(petsclib::PetscLibType,viewer::PetscViewer, idx::PetscExodusIIInt) 
+	name::Ptr{Cchar} = PetscViewerExodusIIGetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt) 
 Gets the name of a zonal variable.
 
 Collective;
@@ -3042,7 +3082,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetZonalVariableName()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetZonalVariableName()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariableName"))
@@ -3067,7 +3107,7 @@ end
 end 
 
 """
-	varNames::Ptr{Ptr{Cchar}} = PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType,viewer::PetscViewer, numVars::PetscExodusIIInt) 
+	varNames::Ptr{Ptr{Cchar}} = PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt) 
 Gets the names of all zonal variables.
 
 Collective; No Fortran Support
@@ -3081,7 +3121,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetZonalVariableNames()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetZonalVariableNames()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariableNames"))
@@ -3106,7 +3146,7 @@ end
 end 
 
 """
-	exo::PetscViewer = PetscViewerExodusIIOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String, type::PetscFileMode) 
+	exo::PetscViewer = PetscViewerExodusIIOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode) 
 Opens a file for ExodusII input/output.
 
 Collective
@@ -3115,7 +3155,18 @@ Input Parameters:
 - `comm` - MPI communicator
 - `name` - name of file
 - `type` - type of file
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+``
+FILE_MODE_WRITE - create new file for binary output
+FILE_MODE_READ - open existing file for binary input
+FILE_MODE_APPEND - open existing file for binary output
+``
+
+Output Parameter:
+- `exo` - `PETSCVIEWEREXODUSII` `PetscViewer` for Exodus II input/output to use with the specified file
+
+Level: beginner
+
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `DMLoad()`, `PetscFileMode`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`
 
 # External Links
@@ -3141,7 +3192,7 @@ end
 end 
 
 """
-	PetscViewerExodusIISetNodalVariable(petsclib::PetscLibType,viewer::PetscViewer, num::PetscExodusIIInt) 
+	PetscViewerExodusIISetNodalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt) 
 Sets the number of nodal variables in an ExodusII file
 
 Collective;
@@ -3152,7 +3203,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariable()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariable()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIISetNodalVariable"))
@@ -3175,7 +3226,7 @@ end
 end 
 
 """
-	PetscViewerExodusIISetNodalVariableName(petsclib::PetscLibType,viewer::PetscViewer, idx::PetscExodusIIInt, name::String) 
+	PetscViewerExodusIISetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String) 
 Sets the name of a nodal variable.
 
 Collective;
@@ -3187,7 +3238,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariableName()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariableName()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIISetNodalVariableName"))
@@ -3210,7 +3261,7 @@ end
 end 
 
 """
-	PetscViewerExodusIISetNodalVariableNames(petsclib::PetscLibType,viewer::PetscViewer, names::String) 
+	PetscViewerExodusIISetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String) 
 Sets the names of all nodal variables.
 
 Collective; No Fortran Support
@@ -3221,7 +3272,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariableNames()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariableNames()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIISetNodalVariableNames"))
@@ -3245,7 +3296,7 @@ end
 end 
 
 """
-	PetscViewerExodusIISetOrder(petsclib::PetscLibType,viewer::PetscViewer, order::PetscInt) 
+	PetscViewerExodusIISetOrder(petsclib::PetscLibType, viewer::PetscViewer, order::PetscInt) 
 Set the elements order in the ExodusII file.
 
 Collective
@@ -3258,7 +3309,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `PetscViewerExodusIIGetOrder()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `PetscViewerExodusIIGetOrder()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIISetOrder"))
@@ -3281,7 +3332,7 @@ end
 end 
 
 """
-	PetscViewerExodusIISetZonalVariable(petsclib::PetscLibType,viewer::PetscViewer, num::PetscExodusIIInt) 
+	PetscViewerExodusIISetZonalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt) 
 Sets the number of zonal variables in an ExodusII file
 
 Collective;
@@ -3292,7 +3343,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariable()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariable()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIISetZonalVariable"))
@@ -3315,7 +3366,7 @@ end
 end 
 
 """
-	PetscViewerExodusIISetZonalVariableName(petsclib::PetscLibType,viewer::PetscViewer, idx::PetscExodusIIInt, name::String) 
+	PetscViewerExodusIISetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String) 
 Sets the name of a zonal variable.
 
 Collective;
@@ -3327,7 +3378,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariableName()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariableName()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIISetZonalVariableName"))
@@ -3350,7 +3401,7 @@ end
 end 
 
 """
-	PetscViewerExodusIISetZonalVariableNames(petsclib::PetscLibType,viewer::PetscViewer, names::String) 
+	PetscViewerExodusIISetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String) 
 Sets the names of all nodal variables
 
 Collective; No Fortran Support
@@ -3361,7 +3412,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariableNames()`
+See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariableNames()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIISetZonalVariableNames"))
@@ -3385,7 +3436,7 @@ end
 end 
 
 """
-	mode::PetscFileMode = PetscViewerFileGetMode(petsclib::PetscLibType,viewer::PetscViewer) 
+	mode::PetscFileMode = PetscViewerFileGetMode(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the open mode of a file associated with a `PetscViewer`
 
 Not Collective
@@ -3395,7 +3446,15 @@ Input Parameter:
 
 Output Parameter:
 - `mode` - open mode of file
--seealso: [](sec_viewers), `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+``
+FILE_MODE_WRITE - create new file for binary output
+FILE_MODE_READ - open existing file for binary input
+FILE_MODE_APPEND - open existing file for binary output
+``
+
+Level: advanced
+
+See also: [](sec_viewers), `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFileGetMode"))
@@ -3420,7 +3479,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscViewerFileGetName(petsclib::PetscLibType,viewer::PetscViewer) 
+	name::Ptr{Cchar} = PetscViewerFileGetName(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the name of the file the `PetscViewer` is using
 
 Not Collective
@@ -3433,7 +3492,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerFileSetName()`
+See also: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerFileSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFileGetName"))
@@ -3458,7 +3517,7 @@ end
 end 
 
 """
-	PetscViewerFileSetMode(petsclib::PetscLibType,viewer::PetscViewer, mode::PetscFileMode) 
+	PetscViewerFileSetMode(petsclib::PetscLibType, viewer::PetscViewer, mode::PetscFileMode) 
 Sets the open mode of file
 
 Logically Collective
@@ -3466,7 +3525,15 @@ Logically Collective
 Input Parameters:
 - `viewer` - the `PetscViewer`; must be a `PETSCVIEWERBINARY`, `PETSCVIEWERMATLAB`, `PETSCVIEWERHDF5`, or `PETSCVIEWERASCII`  `PetscViewer`
 - `mode`   - open mode of file
--seealso: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+``
+FILE_MODE_WRITE - create new file for output
+FILE_MODE_READ - open existing file for input
+FILE_MODE_APPEND - open existing file for output
+``
+
+Level: advanced
+
+See also: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFileSetMode"))
@@ -3489,7 +3556,7 @@ end
 end 
 
 """
-	PetscViewerFileSetName(petsclib::PetscLibType,viewer::PetscViewer, name::String) 
+	PetscViewerFileSetName(petsclib::PetscLibType, viewer::PetscViewer, name::String) 
 Sets the name of the file the `PetscViewer` should use.
 
 Collective
@@ -3500,7 +3567,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerDestroy()`,
+See also: [](sec_viewers), `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerDestroy()`,
 `PetscViewerASCIIGetPointer()`, `PetscViewerASCIIPrintf()`, `PetscViewerASCIISynchronizedPrintf()`
 
 # External Links
@@ -3530,7 +3597,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscFinalize()`, `PetscViewerInitializePackage()`
+See also: [](sec_viewers), `PetscViewer`, `PetscFinalize()`, `PetscViewerInitializePackage()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerFinalizePackage"))
@@ -3552,8 +3619,8 @@ end
 end 
 
 """
-	mcnt::PetscInt = PetscViewerFlowControlEndMain(petsclib::PetscLibType,viewer::PetscViewer) 
-Finish a flow
+	mcnt::PetscInt = PetscViewerFlowControlEndMain(petsclib::PetscLibType, viewer::PetscViewer) 
+Finish a flow-controlled viewer operation on the main MPI process by signalling completion to the workers
 
 Collective
 
@@ -3565,7 +3632,7 @@ Input/Output Parameter:
 
 Level: developer
 
--seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlStepWorker()`,
+See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlStepWorker()`,
 `PetscViewerFlowControlEndWorker()`
 
 # External Links
@@ -3591,8 +3658,8 @@ end
 end 
 
 """
-	mcnt::PetscInt = PetscViewerFlowControlEndWorker(petsclib::PetscLibType,viewer::PetscViewer) 
-Wait on a worker MPI process for the main MPI process to signal completion of a flow
+	mcnt::PetscInt = PetscViewerFlowControlEndWorker(petsclib::PetscLibType, viewer::PetscViewer) 
+Wait on a worker MPI process for the main MPI process to signal completion of a flow-controlled viewer operation
 
 Collective
 
@@ -3604,7 +3671,7 @@ Input/Output Parameter:
 
 Level: developer
 
--seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`,
+See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`,
 `PetscViewerFlowControlStepWorker()`
 
 # External Links
@@ -3630,8 +3697,8 @@ end
 end 
 
 """
-	mcnt::PetscInt,cnt::PetscInt = PetscViewerFlowControlStart(petsclib::PetscLibType,viewer::PetscViewer) 
-Begin a flow
+	mcnt::PetscInt,cnt::PetscInt = PetscViewerFlowControlStart(petsclib::PetscLibType, viewer::PetscViewer) 
+Begin a flow-controlled viewer operation on the main MPI process
 
 Collective
 
@@ -3644,7 +3711,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscViewer`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`, `PetscViewerFlowControlStepWorker()`,
+See also: `PetscViewer`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`, `PetscViewerFlowControlStepWorker()`,
 `PetscViewerFlowControlEndWorker()`, `PetscViewerBinaryGetFlowControl()`
 
 # External Links
@@ -3672,8 +3739,8 @@ end
 end 
 
 """
-	mcnt::PetscInt = PetscViewerFlowControlStepMain(petsclib::PetscLibType,viewer::PetscViewer, i::PetscInt, cnt::PetscInt) 
-Advance the flow
+	mcnt::PetscInt = PetscViewerFlowControlStepMain(petsclib::PetscLibType, viewer::PetscViewer, i::PetscInt, cnt::PetscInt) 
+Advance the flow-control window on the main MPI process during a viewer operation
 
 Collective
 
@@ -3687,7 +3754,7 @@ Input/Output Parameter:
 
 Level: developer
 
--seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlEndMain()`, `PetscViewerFlowControlStepWorker()`,
+See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlEndMain()`, `PetscViewerFlowControlStepWorker()`,
 `PetscViewerFlowControlEndWorker()`
 
 # External Links
@@ -3713,8 +3780,8 @@ end
 end 
 
 """
-	mcnt::PetscInt = PetscViewerFlowControlStepWorker(petsclib::PetscLibType,viewer::PetscViewer, rank::PetscMPIInt) 
-Wait on a worker MPI process until the flow
+	mcnt::PetscInt = PetscViewerFlowControlStepWorker(petsclib::PetscLibType, viewer::PetscViewer, rank::PetscMPIInt) 
+Wait on a worker MPI process until the flow-control window includes this rank
 
 Collective
 
@@ -3727,7 +3794,7 @@ Input/Output Parameter:
 
 Level: developer
 
--seealso: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`,
+See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowControlEndMain()`,
 `PetscViewerFlowControlEndWorker()`
 
 # External Links
@@ -3753,7 +3820,7 @@ end
 end 
 
 """
-	PetscViewerFlush(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerFlush(petsclib::PetscLibType, viewer::PetscViewer) 
 Flushes a `PetscViewer` (i.e. tries to dump all the
 data that has been printed through a `PetscViewer`).
 
@@ -3764,7 +3831,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerWriteable()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerCreate()`, `PetscViewerDestroy()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerWriteable()`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerCreate()`, `PetscViewerDestroy()`,
 `PetscViewerSetType()`
 
 # External Links
@@ -3788,7 +3855,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerGLVisOpen(petsclib::PetscLibType,comm::MPI_Comm, type::PetscViewerGLVisType, name::String, port::PetscInt) 
+	viewer::PetscViewer = PetscViewerGLVisOpen(petsclib::PetscLibType, comm::MPI_Comm, type::PetscViewerGLVisType, name::String, port::PetscInt) 
 Opens a `PETSCVIEWERGLVIS` `PetscViewer`
 
 Collective; No Fortran Support
@@ -3812,7 +3879,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerGLVisType`
+See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerGLVisType`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisOpen"))
@@ -3837,7 +3904,7 @@ end
 end 
 
 """
-	PetscViewerGLVisSetFields(petsclib::PetscLibType,viewer::PetscViewer, nf::PetscInt, fec_type::String, dim::Vector{PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::Ptr{Cvoid}) 
+	PetscViewerGLVisSetFields(petsclib::PetscLibType, viewer::PetscViewer, nf::PetscInt, fec_type::String, dim::Vector{PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::Ptr{Cvoid}) 
 Sets the required information to visualize different fields from a vector.
 
 Logically Collective
@@ -3854,7 +3921,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectSetName()`
+See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisSetFields"))
@@ -3878,7 +3945,7 @@ end
 end 
 
 """
-	PetscViewerGLVisSetPrecision(petsclib::PetscLibType,viewer::PetscViewer, prec::PetscInt) 
+	PetscViewerGLVisSetPrecision(petsclib::PetscLibType, viewer::PetscViewer, prec::PetscInt) 
 Set the number of digits for floating point values to be displayed
 
 Not Collective
@@ -3889,7 +3956,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
+See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisSetPrecision"))
@@ -3912,7 +3979,7 @@ end
 end 
 
 """
-	PetscViewerGLVisSetSnapId(petsclib::PetscLibType,viewer::PetscViewer, id::PetscInt) 
+	PetscViewerGLVisSetSnapId(petsclib::PetscLibType, viewer::PetscViewer, id::PetscInt) 
 Set the snapshot id. Only relevant when the `PetscViewerGLVisType` is `PETSC_VIEWER_GLVIS_DUMP`
 
 Logically Collective
@@ -3923,7 +3990,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
+See also: [](sec_viewers), `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFields()`, `PetscViewerCreate()`, `PetscViewerSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGLVisSetSnapId"))
@@ -3946,7 +4013,7 @@ end
 end 
 
 """
-	format::PetscViewerFormat = PetscViewerGetFormat(petsclib::PetscLibType,viewer::PetscViewer) 
+	format::PetscViewerFormat = PetscViewerGetFormat(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the current format for `PetscViewer`.
 
 Not Collective
@@ -3959,7 +4026,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`, `PetscViewerType`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`, `PetscViewerType`,
 `PetscViewerPushFormat()`, `PetscViewerPopFormat()`, `PetscViewerDrawOpen()`, `PetscViewerSocketOpen()`
 
 # External Links
@@ -3985,7 +4052,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = PetscViewerGetOptionsPrefix(petsclib::PetscLibType,viewer::PetscViewer) 
+	prefix::Ptr{Cchar} = PetscViewerGetOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the prefix used for searching for
 `PetscViewer` options in the database during `PetscViewerSetFromOptions()`.
 
@@ -3999,7 +4066,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerAppendOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerAppendOptionsPrefix()`, `PetscViewerSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGetOptionsPrefix"))
@@ -4024,7 +4091,7 @@ end
 end 
 
 """
-	outviewer::PetscViewer = PetscViewerGetSubViewer(petsclib::PetscLibType,viewer::PetscViewer, comm::MPI_Comm) 
+	outviewer::PetscViewer = PetscViewerGetSubViewer(petsclib::PetscLibType, viewer::PetscViewer, comm::MPI_Comm) 
 Creates a new `PetscViewer` (same type as the old)
 that lives on a subcommunicator of the original viewer's communicator
 
@@ -4039,7 +4106,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
 `PetscViewerFlush()`, `PetscViewerRestoreSubViewer()`
 
 # External Links
@@ -4065,7 +4132,7 @@ end
 end 
 
 """
-	type::PetscViewerType = PetscViewerGetType(petsclib::PetscLibType,viewer::PetscViewer) 
+	type::PetscViewerType = PetscViewerGetType(petsclib::PetscLibType, viewer::PetscViewer) 
 Returns the type of a `PetscViewer`.
 
 Not Collective
@@ -4078,7 +4145,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewerType`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: [](sec_viewers), `PetscViewerType`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerGetType"))
@@ -4103,7 +4170,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerHDF5GetBaseDimension2(petsclib::PetscLibType,viewer::PetscViewer) 
+	flg::PetscBool = PetscViewerHDF5GetBaseDimension2(petsclib::PetscLibType, viewer::PetscViewer) 
 Vectors of 1 dimension (i.e. bs/dof is 1) will be saved in the HDF5 file with a
 dimension of 2.
 
@@ -4117,7 +4184,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetBaseDimension2"))
@@ -4142,8 +4209,8 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerHDF5GetCollective(petsclib::PetscLibType,viewer::PetscViewer) 
-Return flag whether collective MPI
+	flg::PetscBool = PetscViewerHDF5GetCollective(petsclib::PetscLibType, viewer::PetscViewer) 
+Return flag whether collective MPI-IO transfer mode is used for HDF5 reads and writes.
 
 Not Collective
 
@@ -4155,7 +4222,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetCollective"))
@@ -4180,7 +4247,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerHDF5GetCompress(petsclib::PetscLibType,viewer::PetscViewer) 
+	flg::PetscBool = PetscViewerHDF5GetCompress(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the flag for compression
 
 Not Collective
@@ -4193,7 +4260,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCompress()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCompress()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetCompress"))
@@ -4218,7 +4285,7 @@ end
 end 
 
 """
-	version::DMPlexStorageVersion = PetscViewerHDF5GetDMPlexStorageVersionReading(petsclib::PetscLibType,viewer::PetscViewer) 
+	version::DMPlexStorageVersion = PetscViewerHDF5GetDMPlexStorageVersionReading(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the storage version for reading
 
 Logically collective
@@ -4234,12 +4301,7 @@ Options Database Keys:
 
 Level: advanced
 
-Note:
-The version has major, minor, and subminor integers. Parallel operations are only available for version 3.0.0.
-
-See also: 
-=== 
-`DM`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`
+See also: `DM`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerHDF5GetDMPlexStorageVersionReading"))
@@ -4264,7 +4326,7 @@ end
 end 
 
 """
-	version::DMPlexStorageVersion = PetscViewerHDF5GetDMPlexStorageVersionWriting(petsclib::PetscLibType,viewer::PetscViewer) 
+	version::DMPlexStorageVersion = PetscViewerHDF5GetDMPlexStorageVersionWriting(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the storage version for writing
 
 Logically collective
@@ -4280,12 +4342,7 @@ Options Database Keys:
 
 Level: advanced
 
-Note:
-The version has major, minor, and subminor integers. Parallel operations are only available for version 3.0.0.
-
-See also: 
-=== 
-`DM`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`
+See also: `DM`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerHDF5GetDMPlexStorageVersionWriting"))
@@ -4310,7 +4367,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerHDF5GetDefaultTimestepping(petsclib::PetscLibType,viewer::PetscViewer) 
+	flg::PetscBool = PetscViewerHDF5GetDefaultTimestepping(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the flag for default timestepping
 
 Not Collective
@@ -4323,7 +4380,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5SetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetDefaultTimestepping"))
@@ -4348,7 +4405,7 @@ end
 end 
 
 """
-	file_id::hid_t = PetscViewerHDF5GetFileId(petsclib::PetscLibType,viewer::PetscViewer) 
+	file_id::hid_t = PetscViewerHDF5GetFileId(petsclib::PetscLibType, viewer::PetscViewer) 
 Retrieve the file id, this file ID then can be used in direct HDF5 calls
 
 Not Collective
@@ -4361,7 +4418,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetFileId"))
@@ -4386,7 +4443,7 @@ end
 end 
 
 """
-	abspath::Ptr{Cchar} = PetscViewerHDF5GetGroup(petsclib::PetscLibType,viewer::PetscViewer, path::String) 
+	abspath::Ptr{Cchar} = PetscViewerHDF5GetGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String) 
 Get the current HDF5 group name (full path), set with `PetscViewerHDF5PushGroup()`/`PetscViewerHDF5PopGroup()`.
 
 Not Collective
@@ -4400,7 +4457,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetGroup"))
@@ -4425,7 +4482,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerHDF5GetSPOutput(petsclib::PetscLibType,viewer::PetscViewer) 
+	flg::PetscBool = PetscViewerHDF5GetSPOutput(petsclib::PetscLibType, viewer::PetscViewer) 
 Data is written to disk in single precision even if PETSc is
 compiled with double precision `PetscReal`.
 
@@ -4439,7 +4496,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
+See also: [](sec_viewers), `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
 `PetscReal`, `PetscViewerHDF5SetSPOutput()`
 
 # External Links
@@ -4465,7 +4522,7 @@ end
 end 
 
 """
-	timestep::PetscInt = PetscViewerHDF5GetTimestep(petsclib::PetscLibType,viewer::PetscViewer) 
+	timestep::PetscInt = PetscViewerHDF5GetTimestep(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the current timestep for the HDF5 output. Fields are stacked in time.
 
 Not Collective
@@ -4478,7 +4535,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5SetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5SetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5GetTimestep"))
@@ -4503,7 +4560,7 @@ end
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5HasAttribute(petsclib::PetscLibType,viewer::PetscViewer, parent::String, name::String) 
+	has::PetscBool = PetscViewerHDF5HasAttribute(petsclib::PetscLibType, viewer::PetscViewer, parent::String, name::String) 
 Check whether an attribute exists
 
 Collective
@@ -4518,7 +4575,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasAttribute"))
@@ -4543,7 +4600,7 @@ end
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5HasDataset(petsclib::PetscLibType,viewer::PetscViewer, path::String) 
+	has::PetscBool = PetscViewerHDF5HasDataset(petsclib::PetscLibType, viewer::PetscViewer, path::String) 
 Check whether a given dataset exists in the HDF5 file
 
 Collective
@@ -4557,7 +4614,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasGroup()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasGroup()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasDataset"))
@@ -4582,7 +4639,7 @@ end
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5HasGroup(petsclib::PetscLibType,viewer::PetscViewer, path::String) 
+	has::PetscBool = PetscViewerHDF5HasGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String) 
 Check whether the current (pushed) group exists in the HDF5 file
 
 Collective
@@ -4596,7 +4653,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasGroup"))
@@ -4621,7 +4678,7 @@ end
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5HasObject(petsclib::PetscLibType,viewer::PetscViewer, obj) 
+	has::PetscBool = PetscViewerHDF5HasObject(petsclib::PetscLibType, viewer::PetscViewer, obj) 
 Check whether a dataset with the same name as given object exists in the HDF5 file under current group
 
 Collective
@@ -4635,7 +4692,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasDataset()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasObject"))
@@ -4660,7 +4717,7 @@ end
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj, name::String) 
+	has::PetscBool = PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String) 
 Check whether an attribute is attached to the dataset matching the given `PetscObject` by name
 
 Collective
@@ -4675,7 +4732,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasObjectAttribute"))
@@ -4700,7 +4757,7 @@ end
 end 
 
 """
-	PetscViewerHDF5IncrementTimestep(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerHDF5IncrementTimestep(petsclib::PetscLibType, viewer::PetscViewer) 
 Increments current timestep for the HDF5 output. Fields are stacked in time.
 
 Not Collective
@@ -4710,7 +4767,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5IncrementTimestep"))
@@ -4733,7 +4790,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerHDF5IsTimestepping(petsclib::PetscLibType,viewer::PetscViewer) 
+	flg::PetscBool = PetscViewerHDF5IsTimestepping(petsclib::PetscLibType, viewer::PetscViewer) 
 Ask the viewer whether it is in timestepping mode currently.
 
 Not Collective
@@ -4746,7 +4803,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5IsTimestepping"))
@@ -4771,7 +4828,7 @@ end
 end 
 
 """
-	newarr::Ptr{Cvoid} = PetscViewerHDF5Load(petsclib::PetscLibType,viewer::PetscViewer, name::String, map::PetscLayout, datatype::hid_t) 
+	newarr::Ptr{Cvoid} = PetscViewerHDF5Load(petsclib::PetscLibType, viewer::PetscViewer, name::String, map::PetscLayout, datatype::hid_t) 
 Read a raw array from the `PETSCVIEWERHDF5` dataset in parallel
 
 Collective; No Fortran Support
@@ -4790,7 +4847,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscViewer`, `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5ReadSizes()`,
+See also: `PetscViewer`, `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5ReadSizes()`,
 `VecLoad()`, `ISLoad()`, `PetscLayout`
 
 # External Links
@@ -4816,7 +4873,7 @@ end
 end 
 
 """
-	hdf5v::PetscViewer = PetscViewerHDF5Open(petsclib::PetscLibType,comm::MPI_Comm, name::String, type::PetscFileMode) 
+	hdf5v::PetscViewer = PetscViewerHDF5Open(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode) 
 Opens a file for HDF5 input/output as a `PETSCVIEWERHDF5` `PetscViewer`
 
 Collective
@@ -4835,7 +4892,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerHDF5SetBaseDimension2()`,
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PetscViewerHDF5SetBaseDimension2()`,
 `PetscViewerHDF5SetSPOutput()`, `PetscViewerHDF5GetBaseDimension2()`, `VecView()`, `MatView()`, `VecLoad()`,
 `MatLoad()`, `PetscFileMode`, `PetscViewer`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`
 
@@ -4862,7 +4919,7 @@ end
 end 
 
 """
-	fileId::hid_t,groupId::hid_t = PetscViewerHDF5OpenGroup(petsclib::PetscLibType,viewer::PetscViewer, path::String) 
+	fileId::hid_t,groupId::hid_t = PetscViewerHDF5OpenGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String) 
 Open the HDF5 group with the name (full path) returned by `PetscViewerHDF5GetGroup()`,
 and return this group's ID and file ID.
 If `PetscViewerHDF5GetGroup()` yields NULL, then group ID is file ID.
@@ -4879,7 +4936,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5OpenGroup"))
@@ -4906,7 +4963,7 @@ end
 end 
 
 """
-	rel::PetscBool = PetscViewerHDF5PathIsRelative(petsclib::PetscLibType,path::String, emptyIsRelative::PetscBool) 
+	rel::PetscBool = PetscViewerHDF5PathIsRelative(petsclib::PetscLibType, path::String, emptyIsRelative::PetscBool) 
 
 # External Links
 $(_doc_external("Sys/PetscViewerHDF5PathIsRelative"))
@@ -4931,7 +4988,7 @@ end
 end 
 
 """
-	PetscViewerHDF5PopGroup(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerHDF5PopGroup(petsclib::PetscLibType, viewer::PetscViewer) 
 Return the current HDF5 group for output to the previous value
 
 Not Collective
@@ -4941,7 +4998,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PopGroup"))
@@ -4964,7 +5021,7 @@ end
 end 
 
 """
-	PetscViewerHDF5PopTimestepping(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerHDF5PopTimestepping(petsclib::PetscLibType, viewer::PetscViewer) 
 Deactivate timestepping mode for subsequent HDF5 reading and writing.
 
 Not Collective
@@ -4974,7 +5031,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PopTimestepping"))
@@ -4997,7 +5054,7 @@ end
 end 
 
 """
-	PetscViewerHDF5PushGroup(petsclib::PetscLibType,viewer::PetscViewer, name::String) 
+	PetscViewerHDF5PushGroup(petsclib::PetscLibType, viewer::PetscViewer, name::String) 
 Set the current HDF5 group for output
 
 Not Collective
@@ -5008,7 +5065,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`, `PetscViewerHDF5WriteGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PushGroup"))
@@ -5031,7 +5088,7 @@ end
 end 
 
 """
-	PetscViewerHDF5PushTimestepping(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerHDF5PushTimestepping(petsclib::PetscLibType, viewer::PetscViewer) 
 Activate timestepping mode for subsequent HDF5 reading and writing.
 
 Not Collective
@@ -5041,7 +5098,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopTimestepping()`, `PetscViewerHDF5IsTimestepping()`, `PetscViewerHDF5SetTimestep()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5PushTimestepping"))
@@ -5064,7 +5121,7 @@ end
 end 
 
 """
-	value::Ptr{Cvoid} = PetscViewerHDF5ReadAttribute(petsclib::PetscLibType,viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}) 
+	value::Ptr{Cvoid} = PetscViewerHDF5ReadAttribute(petsclib::PetscLibType, viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}) 
 Read an attribute
 
 Collective
@@ -5081,7 +5138,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5ReadAttribute"))
@@ -5106,7 +5163,7 @@ end
 end 
 
 """
-	value::Ptr{Cvoid} = PetscViewerHDF5ReadObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}) 
+	value::Ptr{Cvoid} = PetscViewerHDF5ReadObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}) 
 Read an attribute from the dataset matching the given `PetscObject` by name
 
 Collective
@@ -5123,7 +5180,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
 `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
@@ -5149,7 +5206,7 @@ end
 end 
 
 """
-	bs::PetscInt,N::PetscInt = PetscViewerHDF5ReadSizes(petsclib::PetscLibType,viewer::PetscViewer, name::String) 
+	bs::PetscInt,N::PetscInt = PetscViewerHDF5ReadSizes(petsclib::PetscLibType, viewer::PetscViewer, name::String) 
 Read block size and global size of a `Vec` or `IS` stored in an HDF5 file.
 
 Input Parameters:
@@ -5162,7 +5219,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscViewer`, `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `VecLoad()`, `ISLoad()`, `VecGetSize()`, `ISGetSize()`, `PetscViewerHDF5SetBaseDimension2()`
+See also: `PetscViewer`, `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `VecLoad()`, `ISLoad()`, `VecGetSize()`, `ISGetSize()`, `PetscViewerHDF5SetBaseDimension2()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5ReadSizes"))
@@ -5189,7 +5246,7 @@ end
 end 
 
 """
-	PetscViewerHDF5SetBaseDimension2(petsclib::PetscLibType,viewer::PetscViewer, flg::PetscBool) 
+	PetscViewerHDF5SetBaseDimension2(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool) 
 Vectors of 1 dimension (i.e. bs/dof is 1) will be saved in the HDF5 file with a
 dimension of 2.
 
@@ -5204,7 +5261,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetBaseDimension2"))
@@ -5227,8 +5284,8 @@ end
 end 
 
 """
-	PetscViewerHDF5SetCollective(petsclib::PetscLibType,viewer::PetscViewer, flg::PetscBool) 
-Use collective MPI
+	PetscViewerHDF5SetCollective(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool) 
+Use collective MPI-IO transfer mode for HDF5 reads and writes.
 
 Logically Collective; flg must contain common value
 
@@ -5241,7 +5298,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCollective()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerHDF5Open()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetCollective"))
@@ -5264,7 +5321,7 @@ end
 end 
 
 """
-	PetscViewerHDF5SetCompress(petsclib::PetscLibType,viewer::PetscViewer, flg::PetscBool) 
+	PetscViewerHDF5SetCompress(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool) 
 Set the flag for compression
 
 Logically Collective
@@ -5278,7 +5335,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCompress()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCompress()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetCompress"))
@@ -5301,7 +5358,7 @@ end
 end 
 
 """
-	PetscViewerHDF5SetDMPlexStorageVersionReading(petsclib::PetscLibType,viewer::PetscViewer, version::DMPlexStorageVersion) 
+	PetscViewerHDF5SetDMPlexStorageVersionReading(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion) 
 Set the storage version for reading
 
 Logically collective
@@ -5312,12 +5369,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-The version has major, minor, and subminor integers. Parallel operations are only available for version 3.0.0.
-
-See also: 
-=== 
-`DM`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`
+See also: `DM`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerHDF5SetDMPlexStorageVersionReading"))
@@ -5340,7 +5392,7 @@ end
 end 
 
 """
-	PetscViewerHDF5SetDMPlexStorageVersionWriting(petsclib::PetscLibType,viewer::PetscViewer, version::DMPlexStorageVersion) 
+	PetscViewerHDF5SetDMPlexStorageVersionWriting(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion) 
 Set the storage version for writing
 
 Logically collective
@@ -5351,12 +5403,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-The version has major, minor, and subminor integers. Parallel operations are only available for version 3.0.0.
-
-See also: 
-=== 
-`DM`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`
+See also: `DM`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`
 
 # External Links
 $(_doc_external("DMPlex/PetscViewerHDF5SetDMPlexStorageVersionWriting"))
@@ -5379,7 +5426,7 @@ end
 end 
 
 """
-	PetscViewerHDF5SetDefaultTimestepping(petsclib::PetscLibType,viewer::PetscViewer, flg::PetscBool) 
+	PetscViewerHDF5SetDefaultTimestepping(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool) 
 Set the flag for default timestepping
 
 Logically Collective
@@ -5393,7 +5440,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5GetDefaultTimestepping()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetDefaultTimestepping"))
@@ -5416,7 +5463,7 @@ end
 end 
 
 """
-	PetscViewerHDF5SetSPOutput(petsclib::PetscLibType,viewer::PetscViewer, flg::PetscBool) 
+	PetscViewerHDF5SetSPOutput(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool) 
 Data is written to disk in single precision even if PETSc is
 compiled with double precision `PetscReal`.
 
@@ -5431,7 +5478,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`,
 `PetscReal`, `PetscViewerHDF5GetSPOutput()`
 
 # External Links
@@ -5455,7 +5502,7 @@ end
 end 
 
 """
-	PetscViewerHDF5SetTimestep(petsclib::PetscLibType,viewer::PetscViewer, timestep::PetscInt) 
+	PetscViewerHDF5SetTimestep(petsclib::PetscLibType, viewer::PetscViewer, timestep::PetscInt) 
 Set the current timestep for the HDF5 output. Fields are stacked in time.
 
 Logically Collective
@@ -5466,7 +5513,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimestepping()`, `PetscViewerHDF5IncrementTimestep()`, `PetscViewerHDF5GetTimestep()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5SetTimestep"))
@@ -5489,7 +5536,7 @@ end
 end 
 
 """
-	PetscViewerHDF5WriteAttribute(petsclib::PetscLibType,viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) 
+	PetscViewerHDF5WriteAttribute(petsclib::PetscLibType, viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) 
 Write an attribute
 
 Collective
@@ -5503,7 +5550,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5HasAttribute()`,
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteObjectAttribute()`, `PetscViewerHDF5ReadAttribute()`, `PetscViewerHDF5HasAttribute()`,
 `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
@@ -5527,7 +5574,7 @@ end
 end 
 
 """
-	PetscViewerHDF5WriteGroup(petsclib::PetscLibType,viewer::PetscViewer, path::String) 
+	PetscViewerHDF5WriteGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String) 
 Ensure the HDF5 group exists in the HDF5 file
 
 Not Collective
@@ -5538,7 +5585,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`, `PetscViewerHDF5OpenGroup()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5WriteGroup"))
@@ -5561,7 +5608,7 @@ end
 end 
 
 """
-	PetscViewerHDF5WriteObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) 
+	PetscViewerHDF5WriteObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) 
 Write an attribute to the dataset matching the given `PetscObject` by name
 
 Collective
@@ -5575,7 +5622,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
+See also: [](sec_viewers), `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteAttribute()`, `PetscViewerHDF5ReadObjectAttribute()`, `PetscViewerHDF5HasObjectAttribute()`,
 `PetscViewerHDF5HasObject()`, `PetscViewerHDF5PushGroup()`, `PetscViewerHDF5PopGroup()`, `PetscViewerHDF5GetGroup()`
 
 # External Links
@@ -5604,7 +5651,7 @@ This function initializes everything in the `PetscViewer` package.
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscInitialize()`, `PetscViewerFinalizePackage()`
+See also: [](sec_viewers), `PetscViewer`, `PetscInitialize()`, `PetscViewerFinalizePackage()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerInitializePackage"))
@@ -5626,7 +5673,7 @@ end
 end 
 
 """
-	PetscViewerMathematicaClearName(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerMathematicaClearName(petsclib::PetscLibType, viewer::PetscViewer) 
 Use the default name for objects communicated to Mathematica
 
 Input Parameter:
@@ -5634,7 +5681,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaGetName()`, `PetscViewerMathematicaSetName()`
+See also: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaGetName()`, `PetscViewerMathematicaSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaClearName"))
@@ -5663,7 +5710,7 @@ called from PetscFinalize().
 
 Level: developer
 
--seealso: `PetscFinalize()`
+See also: `PetscFinalize()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaFinalizePackage"))
@@ -5685,7 +5732,7 @@ end
 end 
 
 """
-	name::String = PetscViewerMathematicaGetName(petsclib::PetscLibType,viewer::PetscViewer) 
+	name::String = PetscViewerMathematicaGetName(petsclib::PetscLibType, viewer::PetscViewer) 
 Retrieve the default name for objects communicated to Mathematica via `PETSCVIEWERMATHEMATICA`
 
 Input Parameter:
@@ -5696,7 +5743,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaSetName()`, `PetscViewerMathematicaClearName()`
+See also: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaSetName()`, `PetscViewerMathematicaClearName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaGetName"))
@@ -5727,7 +5774,7 @@ called from `PetscViewerInitializePackage()`.
 
 Level: developer
 
--seealso: `PetscSysInitializePackage()`, `PetscInitialize()`
+See also: `PetscSysInitializePackage()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaInitializePackage"))
@@ -5749,7 +5796,7 @@ end
 end 
 
 """
-	v::PetscViewer = PetscViewerMathematicaOpen(petsclib::PetscLibType,comm::MPI_Comm, port::Cint, machine::String, mode::String) 
+	v::PetscViewer = PetscViewerMathematicaOpen(petsclib::PetscLibType, comm::MPI_Comm, port::Cint, machine::String, mode::String) 
 Communicates with Mathemtica using MathLink.
 
 Collective
@@ -5773,7 +5820,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERMATHEMATICA`, `MatView()`, `VecView()`
+See also: `PETSCVIEWERMATHEMATICA`, `MatView()`, `VecView()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaOpen"))
@@ -5798,7 +5845,7 @@ end
 end 
 
 """
-	i::Cint,j::Cint,a::PetscReal = PetscViewerMathematicaPutCSRMatrix(petsclib::PetscLibType,viewer::PetscViewer, m::Cint, n::Cint) 
+	i::Cint,j::Cint,a::PetscReal = PetscViewerMathematicaPutCSRMatrix(petsclib::PetscLibType, viewer::PetscViewer, m::Cint, n::Cint) 
 Send a sparse matrix in CSR format to a Mathematica kernel as a
 LinearAlgebraCSRMatrix bound to a symbol in the kernel's namespace.
 
@@ -5814,7 +5861,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutMatrix()`, `PetscViewerMathematicaSetName()`
+See also: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutMatrix()`, `PetscViewerMathematicaSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaPutCSRMatrix"))
@@ -5843,8 +5890,8 @@ end
 end 
 
 """
-	a::PetscReal = PetscViewerMathematicaPutMatrix(petsclib::PetscLibType,viewer::PetscViewer, m::Cint, n::Cint) 
-Send a dense matrix to a Mathematica kernel as a two
+	a::PetscReal = PetscViewerMathematicaPutMatrix(petsclib::PetscLibType, viewer::PetscViewer, m::Cint, n::Cint) 
+Send a dense matrix to a Mathematica kernel as a two-dimensional array
 bound to a symbol in the kernel's namespace.
 
 Not Collective
@@ -5857,7 +5904,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutCSRMatrix()`, `PetscViewerMathematicaSetName()`
+See also: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutCSRMatrix()`, `PetscViewerMathematicaSetName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaPutMatrix"))
@@ -5882,7 +5929,7 @@ end
 end 
 
 """
-	PetscViewerMathematicaSetName(petsclib::PetscLibType,viewer::PetscViewer, name::String) 
+	PetscViewerMathematicaSetName(petsclib::PetscLibType, viewer::PetscViewer, name::String) 
 Override the default name for objects communicated to Mathematica via `PETSCVIEWERMATHEMATICA`
 
 Input Parameters:
@@ -5891,7 +5938,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaClearName()`
+See also: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaClearName()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaSetName"))
@@ -5914,7 +5961,7 @@ end
 end 
 
 """
-	PetscViewerMathematicaSkipPackets(petsclib::PetscLibType,viewer::PetscViewer, type::Cint) 
+	PetscViewerMathematicaSkipPackets(petsclib::PetscLibType, viewer::PetscViewer, type::Cint) 
 Discard packets sent by Mathematica until a certain packet type is received
 
 Input Parameters:
@@ -5923,7 +5970,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscViewerMathematicaSetName()`, `PetscViewerMathematicaGetVector()`
+See also: `PetscViewerMathematicaSetName()`, `PetscViewerMathematicaGetVector()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMathematicaSkipPackets"))
@@ -5946,7 +5993,7 @@ end
 end 
 
 """
-	PetscViewerMatlabGetArray(petsclib::PetscLibType,mfile::PetscViewer, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) 
+	PetscViewerMatlabGetArray(petsclib::PetscLibType, mfile::PetscViewer, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) 
 Gets a variable from a `PETSCVIEWERMATLAB` viewer into an array
 
 Not Collective; only processor zero reads in the array
@@ -5960,7 +6007,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PETSCVIEWERMATLAB`, `PetscViewerMatlabPutArray()`
+See also: `PETSCVIEWERMATLAB`, `PetscViewerMatlabPutArray()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMatlabGetArray"))
@@ -5983,7 +6030,7 @@ end
 end 
 
 """
-	binv::PetscViewer = PetscViewerMatlabOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String, type::PetscFileMode) 
+	binv::PetscViewer = PetscViewerMatlabOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode) 
 Opens a MATLAB .mat file for output
 
 Collective
@@ -5992,7 +6039,18 @@ Input Parameters:
 - `comm` - MPI communicator
 - `name` - name of file
 - `type` - type of file
--seealso: `PETSCVIEWERMATLAB`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`,
+``
+FILE_MODE_WRITE - create new file for MATLAB output
+FILE_MODE_READ - open existing file for MATLAB input
+FILE_MODE_WRITE - open existing file for MATLAB output
+``
+
+Output Parameter:
+- `binv` - PetscViewer for MATLAB output to use with the specified file
+
+Level: beginner
+
+See also: `PETSCVIEWERMATLAB`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`, `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`
 
 # External Links
@@ -6018,7 +6076,7 @@ end
 end 
 
 """
-	PetscViewerMatlabPutArray(petsclib::PetscLibType,mfile::PetscViewer, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) 
+	PetscViewerMatlabPutArray(petsclib::PetscLibType, mfile::PetscViewer, m::Cint, n::Cint, array::Vector{PetscScalar}, name::String) 
 Puts an array into the `PETSCVIEWERMATLAB` viewer.
 
 Not Collective, only processor zero saves `array`
@@ -6032,7 +6090,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PETSCVIEWERMATLAB`, `PetscViewerMatlabGetArray()`
+See also: `PETSCVIEWERMATLAB`, `PetscViewerMatlabGetArray()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMatlabPutArray"))
@@ -6055,7 +6113,7 @@ end
 end 
 
 """
-	PetscViewerMatlabPutVariable(petsclib::PetscLibType,viewer::PetscViewer, name::String, mat::Ptr{Cvoid}) 
+	PetscViewerMatlabPutVariable(petsclib::PetscLibType, viewer::PetscViewer, name::String, mat::Ptr{Cvoid}) 
 Write a raw MATLAB `mxArray` variable into a `PETSCVIEWERMATLAB` file under a chosen name.
 
 Not Collective; only processor zero writes the variable
@@ -6067,7 +6125,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscViewer`, `PETSCVIEWERMATLAB`, `PetscViewerMatlabPutArray()`, `PetscViewerMatlabGetArray()`, `PetscViewerMatlabOpen()`
+See also: `PetscViewer`, `PETSCVIEWERMATLAB`, `PetscViewerMatlabPutArray()`, `PetscViewerMatlabGetArray()`, `PetscViewerMatlabOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMatlabPutVariable"))
@@ -6090,7 +6148,7 @@ end
 end 
 
 """
-	PetscViewerMonitorLGSetUp(petsclib::PetscLibType,viewer::PetscViewer, host::String, title::String, metric::String, l::PetscInt, names::String, x::Cint, y::Cint, m::Cint, n::Cint) 
+	PetscViewerMonitorLGSetUp(petsclib::PetscLibType, viewer::PetscViewer, host::String, title::String, metric::String, l::PetscInt, names::String, x::Cint, y::Cint, m::Cint, n::Cint) 
 sets up a viewer to be used by line graph monitoring routines such as `KSPMonitorResidualDrawLG()`
 
 Collective
@@ -6109,7 +6167,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscViewer()`, `PETSCVIEWERDRAW`, `PetscViewerDrawGetDrawLG()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
+See also: `PetscViewer()`, `PETSCVIEWERDRAW`, `PetscViewerDrawGetDrawLG()`, `PetscViewerDrawOpen()`, `PetscViewerDrawSetInfo()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerMonitorLGSetUp"))
@@ -6133,7 +6191,7 @@ end
 end 
 
 """
-	PetscViewerPopFormat(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerPopFormat(petsclib::PetscLibType, viewer::PetscViewer) 
 Resets the format for a `PetscViewer` to the value it had before the previous call to `PetscViewerPushFormat()`
 
 Logically Collective
@@ -6143,7 +6201,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
 `PetscViewerSetFormat()`, `PetscViewerPushFormat()`
 
 # External Links
@@ -6167,7 +6225,7 @@ end
 end 
 
 """
-	PetscViewerPushFormat(petsclib::PetscLibType,viewer::PetscViewer, format::PetscViewerFormat) 
+	PetscViewerPushFormat(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat) 
 Sets the format for a `PetscViewer`.
 
 Logically Collective
@@ -6178,7 +6236,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `MatView()`, `VecView()`,
 `PetscViewerSetFormat()`, `PetscViewerPopFormat()`
 
 # External Links
@@ -6202,7 +6260,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewerPythonCreate(petsclib::PetscLibType,comm::MPI_Comm, pyname::String) 
+	viewer::PetscViewer = PetscViewerPythonCreate(petsclib::PetscLibType, comm::MPI_Comm, pyname::String) 
 Create a `PetscViewer` object implemented in Python.
 
 Collective
@@ -6216,7 +6274,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PETSCVIEWERPYTHON`, `PetscViewerPythonSetType()`, `PetscPythonInitialize()`, `PetscViewerPythonViewObject()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PETSCVIEWERPYTHON`, `PetscViewerPythonSetType()`, `PetscPythonInitialize()`, `PetscViewerPythonViewObject()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonCreate"))
@@ -6241,7 +6299,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = PetscViewerPythonGetType(petsclib::PetscLibType,viewer::PetscViewer) 
+	pyname::Ptr{Cchar} = PetscViewerPythonGetType(petsclib::PetscLibType, viewer::PetscViewer) 
 Get the Python name of a `PetscViewer` object implemented in Python.
 
 Not Collective
@@ -6254,7 +6312,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`, `PetscViewerPythonSetType()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`, `PetscViewerPythonSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonGetType"))
@@ -6279,7 +6337,7 @@ end
 end 
 
 """
-	PetscViewerPythonSetType(petsclib::PetscLibType,viewer::PetscViewer, pyname::String) 
+	PetscViewerPythonSetType(petsclib::PetscLibType, viewer::PetscViewer, pyname::String) 
 Initialize a `PetscViewer` object implemented in Python.
 
 Collective
@@ -6293,7 +6351,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PETSCVIEWERPYTHON`, `PetscPythonInitialize()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonSetType"))
@@ -6316,7 +6374,7 @@ end
 end 
 
 """
-	PetscViewerPythonViewObject(petsclib::PetscLibType,viewer::PetscViewer, obj) 
+	PetscViewerPythonViewObject(petsclib::PetscLibType, viewer::PetscViewer, obj) 
 View a `PetscObject`.
 
 Collective
@@ -6327,7 +6385,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerPythonCreate()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerPythonCreate()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonViewObject"))
@@ -6350,7 +6408,7 @@ end
 end 
 
 """
-	count::PetscInt = PetscViewerRead(petsclib::PetscLibType,viewer::PetscViewer, data::Ptr{Cvoid}, num::PetscInt, dtype::PetscDataType) 
+	count::PetscInt = PetscViewerRead(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, num::PetscInt, dtype::PetscDataType) 
 Reads data from a `PetscViewer`
 
 Collective
@@ -6366,7 +6424,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `PetscViewerReadable()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscViewerBinaryGetInfoPointer()`, `PetscFileMode`
 
@@ -6393,7 +6451,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerReadable(petsclib::PetscLibType,viewer::PetscViewer) 
+	flg::PetscBool = PetscViewerReadable(petsclib::PetscLibType, viewer::PetscViewer) 
 Return a flag whether the viewer can be read from with `PetscViewerRead()`
 
 Not Collective
@@ -6406,7 +6464,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewerRead()`, `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: [](sec_viewers), `PetscViewerRead()`, `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerReadable"))
@@ -6431,7 +6489,7 @@ end
 end 
 
 """
-	PetscViewerRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscViewerRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a viewer to those available for use with `PetscViewerSetType()`
 
 Not Collective, No Fortran Support
@@ -6442,7 +6500,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PetscViewerRegisterAll()`
+See also: [](sec_viewers), `PetscViewerRegisterAll()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerRegister"))
@@ -6465,7 +6523,7 @@ end
 end 
 
 """
-	PetscViewerRestoreSubViewer(petsclib::PetscLibType,viewer::PetscViewer, comm::MPI_Comm, outviewer::PetscViewer) 
+	PetscViewerRestoreSubViewer(petsclib::PetscLibType, viewer::PetscViewer, comm::MPI_Comm, outviewer::PetscViewer) 
 Restores a  `PetscViewer` obtained with `PetscViewerGetSubViewer()`.
 
 Collective
@@ -6477,7 +6535,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerGetSubViewer()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscViewerGetSubViewer()`,
 `PetscViewerFlush()`
 
 # External Links
@@ -6501,7 +6559,7 @@ end
 end 
 
 """
-	lab::PetscViewer = PetscViewerSAWsOpen(petsclib::PetscLibType,comm::MPI_Comm) 
+	lab::PetscViewer = PetscViewerSAWsOpen(petsclib::PetscLibType, comm::MPI_Comm) 
 Opens an SAWs `PetscViewer`.
 
 Collective; No Fortran Support
@@ -6520,7 +6578,7 @@ the user unblocks the problem with an external tool that access the object with 
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PETSC_VIEWER_SAWS_()`, `PetscObjectSAWsBlock()`,
+See also: [](sec_viewers), `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PETSC_VIEWER_SAWS_()`, `PetscObjectSAWsBlock()`,
 `PetscObjectSAWsViewOff()`, `PetscObjectSAWsTakeAccess()`, `PetscObjectSAWsGrantAccess()`
 
 # External Links
@@ -6546,7 +6604,7 @@ end
 end 
 
 """
-	PetscViewerSetFromOptions(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerSetFromOptions(petsclib::PetscLibType, viewer::PetscViewer) 
 Sets various options for a viewer based on values in the options database.
 
 Collective
@@ -6556,7 +6614,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerType`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerType`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetFromOptions"))
@@ -6579,7 +6637,7 @@ end
 end 
 
 """
-	PetscViewerSetOptionsPrefix(petsclib::PetscLibType,viewer::PetscViewer, prefix::String) 
+	PetscViewerSetOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer, prefix::String) 
 Sets the prefix used for searching for
 `PetscViewer` options in the database during `PetscViewerSetFromOptions()`.
 
@@ -6589,7 +6647,7 @@ Input Parameters:
 - `viewer` - the `PetscViewer` context
 - `prefix` - the prefix to prepend to all option names
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerSetFromOptions()`, `PetscViewerAppendOptionsPrefix()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerSetFromOptions()`, `PetscViewerAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetOptionsPrefix"))
@@ -6612,7 +6670,7 @@ end
 end 
 
 """
-	PetscViewerSetType(petsclib::PetscLibType,viewer::PetscViewer, type::PetscViewerType) 
+	PetscViewerSetType(petsclib::PetscLibType, viewer::PetscViewer, type::PetscViewerType) 
 Builds `PetscViewer` for a particular implementation.
 
 Collective
@@ -6626,7 +6684,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerGetType()`, `PetscViewerType`, `PetscViewerPushFormat()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerGetType()`, `PetscViewerType`, `PetscViewerPushFormat()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetType"))
@@ -6649,7 +6707,7 @@ end
 end 
 
 """
-	PetscViewerSetUp(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerSetUp(petsclib::PetscLibType, viewer::PetscViewer) 
 Sets up the internal viewer data structures for the later use.
 
 Collective
@@ -6659,7 +6717,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSetUp"))
@@ -6682,7 +6740,7 @@ end
 end 
 
 """
-	lab::PetscViewer = PetscViewerSocketOpen(petsclib::PetscLibType,comm::MPI_Comm, machine::String, port::Cint) 
+	lab::PetscViewer = PetscViewerSocketOpen(petsclib::PetscLibType, comm::MPI_Comm, machine::String, port::Cint) 
 Opens a connection to a MATLAB or other socket based server.
 
 Collective
@@ -6709,7 +6767,7 @@ Environmental variables:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERBINARY`, `PETSCVIEWERSOCKET`, `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerSetType()`,
+See also: [](sec_viewers), `PETSCVIEWERBINARY`, `PETSCVIEWERSOCKET`, `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerCreate()`, `PetscViewerSetType()`,
 `PetscViewerSocketSetConnection()`, `PETSC_VIEWER_SOCKET_`, `PETSC_VIEWER_SOCKET_WORLD`,
 `PETSC_VIEWER_SOCKET_SELF`, `PetscViewerBinaryWrite()`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWriteStringArray()`,
 `PetscBinaryViewerGetDescriptor()`, `PetscMatlabEngineCreate()`
@@ -6737,7 +6795,7 @@ end
 end 
 
 """
-	PetscViewerSocketSetConnection(petsclib::PetscLibType,v::PetscViewer, machine::String, port::Cint) 
+	PetscViewerSocketSetConnection(petsclib::PetscLibType, v::PetscViewer, machine::String, port::Cint) 
 Sets the machine and port that a PETSc socket
 viewer is to use
 
@@ -6751,7 +6809,7 @@ a connection from elsewhere
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERMATLAB`, `PETSCVIEWERSOCKET`, `PetscViewerSocketOpen()`
+See also: [](sec_viewers), `PETSCVIEWERMATLAB`, `PETSCVIEWERSOCKET`, `PetscViewerSocketOpen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerSocketSetConnection"))
@@ -6774,7 +6832,7 @@ end
 end 
 
 """
-	string::Ptr{Cchar},len::Csize_t = PetscViewerStringGetStringRead(petsclib::PetscLibType,viewer::PetscViewer) 
+	string::Ptr{Cchar},len::Csize_t = PetscViewerStringGetStringRead(petsclib::PetscLibType, viewer::PetscViewer) 
 Returns the string that a `PETSCVIEWERSTRING` uses
 
 Logically Collective
@@ -6788,7 +6846,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringSetString()`, `PetscViewerStringSPrintf()`,
+See also: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringSetString()`, `PetscViewerStringSPrintf()`,
 `PetscViewerStringSetOwnString()`
 
 # External Links
@@ -6816,7 +6874,7 @@ end
 end 
 
 """
-	lab::PetscViewer = PetscViewerStringOpen(petsclib::PetscLibType,comm::MPI_Comm, string::String, len::Csize_t) 
+	lab::PetscViewer = PetscViewerStringOpen(petsclib::PetscLibType, comm::MPI_Comm, string::String, len::Csize_t) 
 Opens a string as a `PETSCVIEWERSTRING` `PetscViewer`. This is a very
 simple `PetscViewer`; information on the object is simply stored into
 the string in a fairly nice way.
@@ -6833,7 +6891,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERSTRING`, `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSetString()`
+See also: [](sec_viewers), `PETSCVIEWERSTRING`, `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSetString()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerStringOpen"))
@@ -6858,7 +6916,7 @@ end
 end 
 
 """
-	PetscViewerStringSetOwnString(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerStringSetOwnString(petsclib::PetscLibType, viewer::PetscViewer) 
 tells the viewer that it now owns the string and is responsible for freeing it with `PetscFree()`
 
 Logically Collective
@@ -6868,7 +6926,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
+See also: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
 `PetscViewerStringSetString()`
 
 # External Links
@@ -6892,7 +6950,7 @@ end
 end 
 
 """
-	PetscViewerStringSetString(petsclib::PetscLibType,viewer::PetscViewer, string::String, len::Csize_t) 
+	PetscViewerStringSetString(petsclib::PetscLibType, viewer::PetscViewer, string::String, len::Csize_t) 
 sets the string that a string viewer will print to
 
 Logically Collective
@@ -6904,7 +6962,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
+See also: [](sec_viewers), `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetStringRead()`, `PetscViewerStringSPrintf()`,
 `PetscViewerStringSetOwnString()`
 
 # External Links
@@ -6928,7 +6986,7 @@ end
 end 
 
 """
-	PetscViewerVTKAddField(petsclib::PetscLibType,viewer::PetscViewer, dm, PetscViewerVTKWriteFunction::external, fieldnum::PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec) 
+	PetscViewerVTKAddField(petsclib::PetscLibType, viewer::PetscViewer, dm, PetscViewerVTKWriteFunction::external, fieldnum::PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec) 
 Add a field to the viewer
 
 Collective
@@ -6944,7 +7002,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKGetDM()`
+See also: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKGetDM()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVTKAddField"))
@@ -6967,7 +7025,7 @@ end
 end 
 
 """
-	PetscViewerVTKGetDM(petsclib::PetscLibType,viewer::PetscViewer, dm::PetscObject) 
+	PetscViewerVTKGetDM(petsclib::PetscLibType, viewer::PetscViewer, dm::PetscObject) 
 get the `DM` associated with the `PETSCVIEWERVTK` viewer
 
 Collective
@@ -6978,7 +7036,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKAddField()`
+See also: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscViewerVTKWriteFunction`, `PetscViewerVTKAddField()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVTKGetDM"))
@@ -7001,7 +7059,7 @@ end
 end 
 
 """
-	vtk::PetscViewer = PetscViewerVTKOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String, type::PetscFileMode) 
+	vtk::PetscViewer = PetscViewerVTKOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode) 
 Opens a `PETSCVIEWERVTK` viewer file.
 
 Collective
@@ -7010,7 +7068,18 @@ Input Parameters:
 - `comm` - MPI communicator
 - `name` - name of file
 - `type` - type of file
--seealso: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
+``
+FILE_MODE_WRITE - create new file for binary output
+FILE_MODE_READ - open existing file for binary input (not currently supported)
+FILE_MODE_APPEND - open existing file for binary output (not currently supported)
+``
+
+Output Parameter:
+- `vtk` - `PetscViewer` for VTK input/output to use with the specified file
+
+Level: beginner
+
+See also: [](sec_viewers), `PETSCVIEWERVTK`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestroy()`,
 `VecView()`, `MatView()`, `VecLoad()`, `MatLoad()`,
 `PetscFileMode`, `PetscViewer`
 
@@ -7037,7 +7106,7 @@ end
 end 
 
 """
-	PetscViewerVUFlushDeferred(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscViewerVUFlushDeferred(petsclib::PetscLibType, viewer::PetscViewer) 
 Flushes the deferred write cache to the file.
 
 Not Collective
@@ -7047,7 +7116,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerVUPrintDeferred()`
+See also: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerVUPrintDeferred()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUFlushDeferred"))
@@ -7070,7 +7139,7 @@ end
 end 
 
 """
-	fd::Ptr{Libc.FILE} = PetscViewerVUGetPointer(petsclib::PetscLibType,viewer::PetscViewer) 
+	fd::Ptr{Libc.FILE} = PetscViewerVUGetPointer(petsclib::PetscLibType, viewer::PetscViewer) 
 Extracts the file pointer from a `PETSCVIEWERVU` `PetscViewer`.
 
 Not Collective
@@ -7083,7 +7152,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerASCIIGetPointer()`
+See also: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerASCIIGetPointer()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUGetPointer"))
@@ -7108,7 +7177,7 @@ end
 end 
 
 """
-	vecSeen::PetscBool = PetscViewerVUGetVecSeen(petsclib::PetscLibType,viewer::PetscViewer) 
+	vecSeen::PetscBool = PetscViewerVUGetVecSeen(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the flag which indicates whether we have viewed
 a vector. This is usually called internally rather than by a user.
 
@@ -7122,7 +7191,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PETSCVIEWERVU`
+See also: [](sec_viewers), `PETSCVIEWERVU`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUGetVecSeen"))
@@ -7147,7 +7216,7 @@ end
 end 
 
 """
-	PetscViewerVUSetVecSeen(petsclib::PetscLibType,viewer::PetscViewer, vecSeen::PetscBool) 
+	PetscViewerVUSetVecSeen(petsclib::PetscLibType, viewer::PetscViewer, vecSeen::PetscBool) 
 Sets the flag which indicates whether we have viewed
 a vector. This is usually called internally rather than by a user.
 
@@ -7159,7 +7228,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerVUGetVecSeen()`
+See also: [](sec_viewers), `PETSCVIEWERVU`, `PetscViewerVUGetVecSeen()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerVUSetVecSeen"))
@@ -7182,7 +7251,7 @@ end
 end 
 
 """
-	PetscViewerView(petsclib::PetscLibType,v::PetscViewer, viewer::PetscViewer) 
+	PetscViewerView(petsclib::PetscLibType, v::PetscViewer, viewer::PetscViewer) 
 Visualizes a viewer object.
 
 Collective
@@ -7193,7 +7262,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`,
 `PetscViewerSocketOpen()`, `PetscViewerBinaryOpen()`, `PetscViewerLoad()`
 
 # External Links
@@ -7217,7 +7286,7 @@ end
 end 
 
 """
-	PetscViewerViewFromOptions(petsclib::PetscLibType,A::PetscViewer, obj, name::String) 
+	PetscViewerViewFromOptions(petsclib::PetscLibType, A::PetscViewer, obj, name::String) 
 View from the viewer based on options in the options database
 
 Collective
@@ -7229,7 +7298,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerView`, `PetscObjectViewFromOptions()`, `PetscViewerCreate()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerView`, `PetscObjectViewFromOptions()`, `PetscViewerCreate()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerViewFromOptions"))
@@ -7252,7 +7321,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscViewerWritable(petsclib::PetscLibType,viewer::PetscViewer) 
+	flg::PetscBool = PetscViewerWritable(petsclib::PetscLibType, viewer::PetscViewer) 
 Return a flag whether the viewer can be written to with `PetscViewerWrite()`
 
 Not Collective
@@ -7265,7 +7334,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, `PetscViewerCreate()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetType()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewerWritable"))
@@ -7290,7 +7359,7 @@ end
 end 
 
 """
-	v::PetscViewers = PetscViewersCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	v::PetscViewers = PetscViewersCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a container to hold a set of `PetscViewer`'s. The container is essentially a sparse, growable in length array of `PetscViewer`s
 
 Collective
@@ -7303,7 +7372,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewers`, `PetscViewerCreate()`, `PetscViewersDestroy()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewers`, `PetscViewerCreate()`, `PetscViewersDestroy()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewersCreate"))
@@ -7328,7 +7397,7 @@ end
 end 
 
 """
-	PetscViewersDestroy(petsclib::PetscLibType,v::Union{PetscViewers, Ref{PetscViewers}}) 
+	PetscViewersDestroy(petsclib::PetscLibType, v::Union{PetscViewers, Ref{PetscViewers}}) 
 Destroys a set of `PetscViewer`s created with `PetscViewersCreate()`.
 
 Collective
@@ -7338,7 +7407,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewerDestroy()`, `PetscViewers`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`, `PetscViewerDrawOpen()`, `PetscViewersCreate()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewerDestroy()`, `PetscViewers`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `PetscViewerCreate()`, `PetscViewerDrawOpen()`, `PetscViewersCreate()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewersDestroy"))
@@ -7362,7 +7431,7 @@ end
 end 
 
 """
-	viewer::PetscViewer = PetscViewersGetViewer(petsclib::PetscLibType,viewers::PetscViewers, n::PetscInt) 
+	viewer::PetscViewer = PetscViewersGetViewer(petsclib::PetscLibType, viewers::PetscViewers, n::PetscInt) 
 Gets a `PetscViewer` from a `PetscViewers` collection
 
 Collective if the viewer has not previously be obtained.
@@ -7376,7 +7445,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_viewers), `PetscViewer`, `PetscViewers`, `PetscViewersCreate()`, `PetscViewersDestroy()`
+See also: [](sec_viewers), `PetscViewer`, `PetscViewers`, `PetscViewersCreate()`, `PetscViewersDestroy()`
 
 # External Links
 $(_doc_external("Viewer/PetscViewersGetViewer"))

@@ -1,5 +1,5 @@
 """
-	value::PetscScalar = PetscDualSpaceApply(petsclib::PetscLibType,sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::Vector{PetscFEGeom}, numComp::PetscInt, func::external, ctx::Ptr{Cvoid}) 
+	value::PetscScalar = PetscDualSpaceApply(petsclib::PetscLibType, sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::Vector{PetscFEGeom}, numComp::PetscInt, func::external, ctx::Ptr{Cvoid}) 
 Apply a functional from the dual space basis to an input function
 
 Input Parameters:
@@ -15,7 +15,13 @@ Output Parameter:
 - `value` - numComp output values
 
 Calling sequence:
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+``
+PetscErrorCode func(PetscInt dim, PetscReal time, const PetscReal x[], PetscInt numComponents, PetscScalar values[], PetscCtx ctx)
+``
+
+Level: beginner
+
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceApply"))
@@ -40,7 +46,7 @@ end
 end 
 
 """
-	spValue::PetscScalar = PetscDualSpaceApplyAll(petsclib::PetscLibType,sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
+	spValue::PetscScalar = PetscDualSpaceApplyAll(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
 Apply all functionals from the dual space basis to the result of an evaluation at the points returned by `PetscDualSpaceGetAllData()`
 
 Input Parameters:
@@ -52,7 +58,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyAll"))
@@ -77,7 +83,7 @@ end
 end 
 
 """
-	spValue::PetscScalar = PetscDualSpaceApplyAllDefault(petsclib::PetscLibType,sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
+	spValue::PetscScalar = PetscDualSpaceApplyAllDefault(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
 Apply all functionals from the dual space basis to the result of an evaluation at the points returned by `PetscDualSpaceGetAllData()`
 
 Input Parameters:
@@ -89,7 +95,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyAllDefault"))
@@ -114,7 +120,7 @@ end
 end 
 
 """
-	value::PetscScalar = PetscDualSpaceApplyDefault(petsclib::PetscLibType,sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::Vector{PetscFEGeom}, Nc::PetscInt, func::external, ctx::Ptr{Cvoid}) 
+	value::PetscScalar = PetscDualSpaceApplyDefault(petsclib::PetscLibType, sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::Vector{PetscFEGeom}, Nc::PetscInt, func::external, ctx::Ptr{Cvoid}) 
 Apply a functional from the dual space basis to an input function by assuming a point evaluation functional.
 
 Input Parameters:
@@ -130,7 +136,13 @@ Output Parameter:
 - `value` - The output value
 
 Calling sequence:
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+``
+PetscErrorCode func(PetscInt dim, PetscReal time, const PetscReal x[],PetscInt numComponents, PetscScalar values[], PetscCtx ctx)
+``
+
+Level: advanced
+
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyDefault"))
@@ -155,7 +167,7 @@ end
 end 
 
 """
-	value::PetscScalar = PetscDualSpaceApplyFVM(petsclib::PetscLibType,sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::Vector{PetscFVCellGeom}, Nc::PetscInt, func::external, ctx::Ptr{Cvoid}) 
+	value::PetscScalar = PetscDualSpaceApplyFVM(petsclib::PetscLibType, sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::Vector{PetscFVCellGeom}, Nc::PetscInt, func::external, ctx::Ptr{Cvoid}) 
 Apply a functional from the dual space basis to an input function by assuming a point evaluation functional at the cell centroid.
 
 Input Parameters:
@@ -171,7 +183,13 @@ Output Parameter:
 - `value` - The output value (scalar)
 
 Calling sequence:
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+``
+PetscErrorCode func(PetscInt dim, PetscReal time, const PetscReal x[], PetscInt numComponents, PetscScalar values[], PetscCtx ctx)
+``
+
+Level: advanced
+
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyFVM"))
@@ -196,7 +214,7 @@ end
 end 
 
 """
-	spValue::PetscScalar = PetscDualSpaceApplyInterior(petsclib::PetscLibType,sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
+	spValue::PetscScalar = PetscDualSpaceApplyInterior(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
 Apply interior functionals from the dual space basis to the result of an evaluation at the points returned by `PetscDualSpaceGetInteriorData()`
 
 Input Parameters:
@@ -208,7 +226,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyInterior"))
@@ -233,7 +251,7 @@ end
 end 
 
 """
-	spValue::PetscScalar = PetscDualSpaceApplyInteriorDefault(petsclib::PetscLibType,sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
+	spValue::PetscScalar = PetscDualSpaceApplyInteriorDefault(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::Vector{PetscScalar}) 
 Apply interior functionals from the dual space basis to the result of an evaluation at the points returned by `PetscDualSpaceGetInteriorData()`
 
 Input Parameters:
@@ -245,7 +263,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyInteriorDefault"))
@@ -270,7 +288,7 @@ end
 end 
 
 """
-	sp::PetscDualSpace = PetscDualSpaceCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	sp::PetscDualSpace = PetscDualSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `PetscDualSpace` object. The type can then be set with `PetscDualSpaceSetType()`.
 
 Collective
@@ -283,7 +301,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDualSpace`, `PetscDualSpaceSetType()`, `PETSCDUALSPACELAGRANGE`
+See also: `PetscDualSpace`, `PetscDualSpaceSetType()`, `PETSCDUALSPACELAGRANGE`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceCreate"))
@@ -308,8 +326,8 @@ end
 end 
 
 """
-	allNodes::PetscQuadrature,allMat::PetscMat = PetscDualSpaceCreateAllDataDefault(petsclib::PetscLibType,sp::PetscDualSpace) 
-Create all evaluation nodes and the node
+	allNodes::PetscQuadrature,allMat::PetscMat = PetscDualSpaceCreateAllDataDefault(petsclib::PetscLibType, sp::PetscDualSpace) 
+Create all evaluation nodes and the node-to-dof matrix by examining functionals
 
 Input Parameter:
 - `sp` - The dualspace
@@ -320,7 +338,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`, `PetscQuadrature`
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`, `PetscQuadrature`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceCreateAllDataDefault"))
@@ -347,7 +365,7 @@ end
 end 
 
 """
-	intNodes::PetscQuadrature,intMat::PetscMat = PetscDualSpaceCreateInteriorDataDefault(petsclib::PetscLibType,sp::PetscDualSpace) 
+	intNodes::PetscQuadrature,intMat::PetscMat = PetscDualSpaceCreateInteriorDataDefault(petsclib::PetscLibType, sp::PetscDualSpace) 
 Create quadrature points by examining interior functionals and create the matrix mapping quadrature point values to interior dual space values
 
 Input Parameter:
@@ -361,7 +379,7 @@ npoints is the number of points in allNodes and nc is `PetscDualSpaceGetNumCompo
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, `PetscDualSpaceGetInteriorData()`
+See also: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, `PetscDualSpaceGetInteriorData()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceCreateInteriorDataDefault"))
@@ -388,7 +406,7 @@ end
 end 
 
 """
-	sumSpace::PetscDualSpace = PetscDualSpaceCreateSum(petsclib::PetscLibType,numSubspaces::PetscInt, subspaces::Vector{PetscDualSpace}, concatenate::PetscBool) 
+	sumSpace::PetscDualSpace = PetscDualSpaceCreateSum(petsclib::PetscLibType, numSubspaces::PetscInt, subspaces::Vector{PetscDualSpace}, concatenate::PetscBool) 
 Create a finite element dual basis that is the sum of other dual bases
 
 Collective
@@ -403,7 +421,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCSPACESUM`
+See also: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCSPACESUM`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceCreateSum"))
@@ -428,7 +446,7 @@ end
 end 
 
 """
-	PetscDualSpaceDestroy(petsclib::PetscLibType,sp::Union{PetscDualSpace, Ref{PetscDualSpace}}) 
+	PetscDualSpaceDestroy(petsclib::PetscLibType, sp::Union{PetscDualSpace, Ref{PetscDualSpace}}) 
 Destroys a `PetscDualSpace` object
 
 Collective
@@ -438,7 +456,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscDualSpace()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscDualSpace()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceDestroy"))
@@ -462,7 +480,7 @@ end
 end 
 
 """
-	spNew::PetscDualSpace = PetscDualSpaceDuplicate(petsclib::PetscLibType,sp::PetscDualSpace) 
+	spNew::PetscDualSpace = PetscDualSpaceDuplicate(petsclib::PetscLibType, sp::PetscDualSpace) 
 Creates a duplicate `PetscDualSpace` object that is not setup.
 
 Collective
@@ -475,7 +493,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`, `PetscDualSpaceSetType()`
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`, `PetscDualSpaceSetType()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceDuplicate"))
@@ -500,7 +518,7 @@ end
 end 
 
 """
-	equal::PetscBool = PetscDualSpaceEqual(petsclib::PetscLibType,A::PetscDualSpace, B::PetscDualSpace) 
+	equal::PetscBool = PetscDualSpaceEqual(petsclib::PetscLibType, A::PetscDualSpace, B::PetscDualSpace) 
 Determine if two dual spaces are equivalent
 
 Input Parameters:
@@ -512,7 +530,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceEqual"))
@@ -537,8 +555,8 @@ end
 end 
 
 """
-	allNodes::PetscQuadrature,allMat::PetscMat = PetscDualSpaceGetAllData(petsclib::PetscLibType,sp::PetscDualSpace) 
-Get all quadrature nodes from this space, and the matrix that sends quadrature node values to degree
+	allNodes::PetscQuadrature,allMat::PetscMat = PetscDualSpaceGetAllData(petsclib::PetscLibType, sp::PetscDualSpace) 
+Get all quadrature nodes from this space, and the matrix that sends quadrature node values to degree-of-freedom values
 
 Input Parameter:
 - `sp` - The dualspace
@@ -549,7 +567,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscQuadrature`, `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`
+See also: `PetscQuadrature`, `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetAllData"))
@@ -576,7 +594,7 @@ end
 end 
 
 """
-	dm::PetscDM = PetscDualSpaceGetDM(petsclib::PetscLibType,sp::PetscDualSpace) 
+	dm::PetscDM = PetscDualSpaceGetDM(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the `DM` representing the reference cell of a `PetscDualSpace`
 
 Not Collective
@@ -589,7 +607,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceSetDM()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceSetDM()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetDM"))
@@ -614,8 +632,8 @@ end
 end 
 
 """
-	k::PetscInt = PetscDualSpaceGetDeRahm(petsclib::PetscLibType,dsp::PetscDualSpace) 
-Get the k
+	k::PetscInt = PetscDualSpaceGetDeRahm(petsclib::PetscLibType, dsp::PetscDualSpace) 
+Get the k-simplex associated with the functionals in this dual space
 
 Input Parameter:
 - `dsp` - The `PetscDualSpace`
@@ -625,7 +643,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
+See also: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetDeRahm"))
@@ -650,7 +668,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscDualSpaceGetDimension(petsclib::PetscLibType,sp::PetscDualSpace) 
+	dim::PetscInt = PetscDualSpaceGetDimension(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the dimension of the dual space, i.e. the number of basis functionals
 
 Not Collective
@@ -663,7 +681,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetDimension"))
@@ -688,8 +706,8 @@ end
 end 
 
 """
-	k::PetscInt = PetscDualSpaceGetFormDegree(petsclib::PetscLibType,dsp::PetscDualSpace) 
-Get the form degree k for the k
+	k::PetscInt = PetscDualSpaceGetFormDegree(petsclib::PetscLibType, dsp::PetscDualSpace) 
+Get the form degree k for the k-form the describes the pushforwards/pullbacks of this
 dual space's functionals.
 
 Input Parameter:
@@ -705,7 +723,7 @@ but are stored as 1-forms.
 
 Level: developer
 
--seealso: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
+See also: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetFormDegree"))
@@ -730,8 +748,8 @@ end
 end 
 
 """
-	functional::PetscQuadrature = PetscDualSpaceGetFunctional(petsclib::PetscLibType,sp::PetscDualSpace, i::PetscInt) 
-Get the i
+	functional::PetscQuadrature = PetscDualSpaceGetFunctional(petsclib::PetscLibType, sp::PetscDualSpace, i::PetscInt) 
+Get the i-th basis functional in the dual space
 
 Not Collective
 
@@ -744,7 +762,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscQuadrature`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscQuadrature`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetFunctional"))
@@ -769,7 +787,7 @@ end
 end 
 
 """
-	subsp::PetscDualSpace = PetscDualSpaceGetHeightSubspace(petsclib::PetscLibType,sp::PetscDualSpace, height::PetscInt) 
+	subsp::PetscDualSpace = PetscDualSpaceGetHeightSubspace(petsclib::PetscLibType, sp::PetscDualSpace, height::PetscInt) 
 Get the subset of the dual space basis that is supported on a mesh point of a
 given height.  This assumes that the reference cell is symmetric over points of this height.
 
@@ -785,7 +803,7 @@ point, which will be of lesser dimension if height > 0.
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscSpaceGetHeightSubspace()`, `PetscDualSpaceGetPointSubspace()`
+See also: `PetscDualSpace`, `PetscSpaceGetHeightSubspace()`, `PetscDualSpaceGetPointSubspace()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetHeightSubspace"))
@@ -810,7 +828,7 @@ end
 end 
 
 """
-	intNodes::PetscQuadrature,intMat::PetscMat = PetscDualSpaceGetInteriorData(petsclib::PetscLibType,sp::PetscDualSpace) 
+	intNodes::PetscQuadrature,intMat::PetscMat = PetscDualSpaceGetInteriorData(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get all quadrature points necessary to compute the interior degrees of freedom from
 this space, as well as the matrix that computes the degrees of freedom from the quadrature
 values.
@@ -828,7 +846,7 @@ Pass `NULL` if not needed
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceGetNumComponents()`, `PetscQuadratureGetData()`
+See also: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceGetNumComponents()`, `PetscQuadratureGetData()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetInteriorData"))
@@ -855,7 +873,7 @@ end
 end 
 
 """
-	intdim::PetscInt = PetscDualSpaceGetInteriorDimension(petsclib::PetscLibType,sp::PetscDualSpace) 
+	intdim::PetscInt = PetscDualSpaceGetInteriorDimension(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the interior dimension of the dual space, i.e. the number of basis functionals assigned to the interior of the reference domain
 
 Not Collective
@@ -868,7 +886,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetInteriorDimension"))
@@ -893,7 +911,7 @@ end
 end 
 
 """
-	section::PetscSection = PetscDualSpaceGetInteriorSection(petsclib::PetscLibType,sp::PetscDualSpace) 
+	section::PetscSection = PetscDualSpaceGetInteriorSection(petsclib::PetscLibType, sp::PetscDualSpace) 
 Create a `PetscSection` over the reference cell with the layout from this space
 for interior degrees of freedom
 
@@ -907,7 +925,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
+See also: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetInteriorSection"))
@@ -932,7 +950,7 @@ end
 end 
 
 """
-	Nc::PetscInt = PetscDualSpaceGetNumComponents(petsclib::PetscLibType,sp::PetscDualSpace) 
+	Nc::PetscInt = PetscDualSpaceGetNumComponents(petsclib::PetscLibType, sp::PetscDualSpace) 
 Return the number of components for this space
 
 Input Parameter:
@@ -943,7 +961,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpaceSetNumComponents()`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceCreate()`, `PetscDualSpace`
+See also: `PetscDualSpaceSetNumComponents()`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceCreate()`, `PetscDualSpace`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetNumComponents"))
@@ -968,7 +986,7 @@ end
 end 
 
 """
-	numDof::Ptr{PetscInt} = PetscDualSpaceGetNumDof(petsclib::PetscLibType,sp::PetscDualSpace) 
+	numDof::Ptr{PetscInt} = PetscDualSpaceGetNumDof(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the number of degrees of freedom for each spatial (topological) dimension
 
 Not Collective
@@ -981,7 +999,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetNumDof"))
@@ -1006,7 +1024,7 @@ end
 end 
 
 """
-	order::PetscInt = PetscDualSpaceGetOrder(petsclib::PetscLibType,sp::PetscDualSpace) 
+	order::PetscInt = PetscDualSpaceGetOrder(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the order of the dual space
 
 Not Collective
@@ -1019,7 +1037,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceSetOrder()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceSetOrder()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetOrder"))
@@ -1044,7 +1062,7 @@ end
 end 
 
 """
-	bdsp::PetscDualSpace = PetscDualSpaceGetPointSubspace(petsclib::PetscLibType,sp::PetscDualSpace, point::PetscInt) 
+	bdsp::PetscDualSpace = PetscDualSpaceGetPointSubspace(petsclib::PetscLibType, sp::PetscDualSpace, point::PetscInt) 
 Get the subset of the dual space basis that is supported on a particular mesh point.
 
 Not Collective
@@ -1058,7 +1076,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceGetHeightSubspace()`
+See also: `PetscDualSpace`, `PetscDualSpaceGetHeightSubspace()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetPointSubspace"))
@@ -1083,7 +1101,7 @@ end
 end 
 
 """
-	section::PetscSection = PetscDualSpaceGetSection(petsclib::PetscLibType,sp::PetscDualSpace) 
+	section::PetscSection = PetscDualSpaceGetSection(petsclib::PetscLibType, sp::PetscDualSpace) 
 Create a `PetscSection` over the reference cell with the layout from this space
 
 Collective
@@ -1096,7 +1114,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
+See also: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetSection"))
@@ -1121,7 +1139,7 @@ end
 end 
 
 """
-	perms::Ptr{PetscInt},flips::Ptr{PetscScalar} = PetscDualSpaceGetSymmetries(petsclib::PetscLibType,sp::PetscDualSpace) 
+	perms::Ptr{PetscInt},flips::Ptr{PetscScalar} = PetscDualSpaceGetSymmetries(petsclib::PetscLibType, sp::PetscDualSpace) 
 Returns a description of the symmetries of this basis
 
 Not Collective
@@ -1135,7 +1153,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDualSpace`
+See also: `PetscDualSpace`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetSymmetries"))
@@ -1162,7 +1180,7 @@ end
 end 
 
 """
-	name::PetscDualSpaceType = PetscDualSpaceGetType(petsclib::PetscLibType,sp::PetscDualSpace) 
+	name::PetscDualSpaceType = PetscDualSpaceGetType(petsclib::PetscLibType, sp::PetscDualSpace) 
 Gets the `PetscDualSpaceType` name (as a string) from the object.
 
 Not Collective
@@ -1175,7 +1193,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceSetType()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceSetType()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetType"))
@@ -1200,7 +1218,7 @@ end
 end 
 
 """
-	uniform::PetscBool = PetscDualSpaceGetUniform(petsclib::PetscLibType,sp::PetscDualSpace) 
+	uniform::PetscBool = PetscDualSpaceGetUniform(petsclib::PetscLibType, sp::PetscDualSpace) 
 Whether this dual space is uniform
 
 Not Collective
@@ -1214,7 +1232,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpaceGetPointSubspace()`, `PetscDualSpaceGetSymmetries()`
+See also: `PetscDualSpace`, `PetscDualSpaceGetPointSubspace()`, `PetscDualSpaceGetSymmetries()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceGetUniform"))
@@ -1239,7 +1257,7 @@ end
 end 
 
 """
-	continuous::PetscBool = PetscDualSpaceLagrangeGetContinuity(petsclib::PetscLibType,sp::PetscDualSpace) 
+	continuous::PetscBool = PetscDualSpaceLagrangeGetContinuity(petsclib::PetscLibType, sp::PetscDualSpace) 
 Retrieves the flag for element continuity
 
 Not Collective
@@ -1252,7 +1270,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetContinuity()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetContinuity()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetContinuity"))
@@ -1277,7 +1295,7 @@ end
 end 
 
 """
-	order::PetscInt = PetscDualSpaceLagrangeGetMomentOrder(petsclib::PetscLibType,sp::PetscDualSpace) 
+	order::PetscInt = PetscDualSpaceLagrangeGetMomentOrder(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the order for moment integration
 
 Not Collective
@@ -1290,7 +1308,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetMomentOrder()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetMomentOrder()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetMomentOrder"))
@@ -1315,7 +1333,7 @@ end
 end 
 
 """
-	nodeType::PetscDTNodeType,boundary::PetscBool,exponent::PetscReal = PetscDualSpaceLagrangeGetNodeType(petsclib::PetscLibType,sp::PetscDualSpace) 
+	nodeType::PetscDTNodeType,boundary::PetscBool,exponent::PetscReal = PetscDualSpaceLagrangeGetNodeType(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get a description of how nodes are laid out for Lagrange polynomials in this
 dual space
 
@@ -1333,7 +1351,7 @@ include the boundary are Gauss-Lobatto-Jacobi nodes)
 
 Level: advanced
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscDualSpaceLagrangeSetNodeType()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscDualSpaceLagrangeSetNodeType()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetNodeType"))
@@ -1362,7 +1380,7 @@ end
 end 
 
 """
-	tensor::PetscBool = PetscDualSpaceLagrangeGetTensor(petsclib::PetscLibType,sp::PetscDualSpace) 
+	tensor::PetscBool = PetscDualSpaceLagrangeGetTensor(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the tensor nature of the dual space
 
 Not Collective
@@ -1375,7 +1393,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetTensor()`, `PetscDualSpaceCreate()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetTensor()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetTensor"))
@@ -1400,7 +1418,7 @@ end
 end 
 
 """
-	trimmed::PetscBool = PetscDualSpaceLagrangeGetTrimmed(petsclib::PetscLibType,sp::PetscDualSpace) 
+	trimmed::PetscBool = PetscDualSpaceLagrangeGetTrimmed(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the trimmed nature of the dual space
 
 Not Collective
@@ -1413,7 +1431,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetTrimmed()`, `PetscDualSpaceCreate()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetTrimmed()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetTrimmed"))
@@ -1438,7 +1456,7 @@ end
 end 
 
 """
-	useMoments::PetscBool = PetscDualSpaceLagrangeGetUseMoments(petsclib::PetscLibType,sp::PetscDualSpace) 
+	useMoments::PetscBool = PetscDualSpaceLagrangeGetUseMoments(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the flag for using moment functionals
 
 Not Collective
@@ -1451,7 +1469,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetUseMoments()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetUseMoments()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetUseMoments"))
@@ -1476,7 +1494,7 @@ end
 end 
 
 """
-	PetscDualSpaceLagrangeSetContinuity(petsclib::PetscLibType,sp::PetscDualSpace, continuous::PetscBool) 
+	PetscDualSpaceLagrangeSetContinuity(petsclib::PetscLibType, sp::PetscDualSpace, continuous::PetscBool) 
 Indicate whether the element is continuous
 
 Logically Collective
@@ -1490,7 +1508,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetContinuity()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetContinuity()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetContinuity"))
@@ -1513,7 +1531,7 @@ end
 end 
 
 """
-	PetscDualSpaceLagrangeSetMomentOrder(petsclib::PetscLibType,sp::PetscDualSpace, order::PetscInt) 
+	PetscDualSpaceLagrangeSetMomentOrder(petsclib::PetscLibType, sp::PetscDualSpace, order::PetscInt) 
 Set the order for moment integration
 
 Logically Collective
@@ -1524,7 +1542,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetMomentOrder()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetMomentOrder()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetMomentOrder"))
@@ -1547,7 +1565,7 @@ end
 end 
 
 """
-	PetscDualSpaceLagrangeSetNodeType(petsclib::PetscLibType,sp::PetscDualSpace, nodeType::PetscDTNodeType, boundary::PetscBool, exponent::PetscReal) 
+	PetscDualSpaceLagrangeSetNodeType(petsclib::PetscLibType, sp::PetscDualSpace, nodeType::PetscDTNodeType, boundary::PetscBool, exponent::PetscReal) 
 Set a description of how nodes are laid out for Lagrange polynomials in this
 dual space
 
@@ -1563,7 +1581,7 @@ include the boundary are Gauss-Lobatto-Jacobi nodes)
 
 Level: advanced
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscDualSpaceLagrangeGetNodeType()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscDualSpaceLagrangeGetNodeType()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetNodeType"))
@@ -1586,7 +1604,7 @@ end
 end 
 
 """
-	PetscDualSpaceLagrangeSetTensor(petsclib::PetscLibType,sp::PetscDualSpace, tensor::PetscBool) 
+	PetscDualSpaceLagrangeSetTensor(petsclib::PetscLibType, sp::PetscDualSpace, tensor::PetscBool) 
 Set the tensor nature of the dual space
 
 Not Collective
@@ -1597,7 +1615,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetTensor()`, `PetscDualSpaceCreate()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetTensor()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetTensor"))
@@ -1620,7 +1638,7 @@ end
 end 
 
 """
-	PetscDualSpaceLagrangeSetTrimmed(petsclib::PetscLibType,sp::PetscDualSpace, trimmed::PetscBool) 
+	PetscDualSpaceLagrangeSetTrimmed(petsclib::PetscLibType, sp::PetscDualSpace, trimmed::PetscBool) 
 Set the trimmed nature of the dual space
 
 Not Collective
@@ -1631,7 +1649,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetTrimmed()`, `PetscDualSpaceCreate()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetTrimmed()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetTrimmed"))
@@ -1654,7 +1672,7 @@ end
 end 
 
 """
-	PetscDualSpaceLagrangeSetUseMoments(petsclib::PetscLibType,sp::PetscDualSpace, useMoments::PetscBool) 
+	PetscDualSpaceLagrangeSetUseMoments(petsclib::PetscLibType, sp::PetscDualSpace, useMoments::PetscBool) 
 Set the flag for moment functionals
 
 Logically Collective
@@ -1665,7 +1683,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetUseMoments()`
+See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetUseMoments()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetUseMoments"))
@@ -1688,7 +1706,7 @@ end
 end 
 
 """
-	PetscDualSpacePullback(petsclib::PetscLibType,dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
+	PetscDualSpacePullback(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
 Transform the given functional so that it operates on real space, rather than the reference element. Operationally, this means that we map the function evaluations depending on continuity requirements of our finite element method.
 
 Input Parameters:
@@ -1703,7 +1721,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
+See also: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpacePullback"))
@@ -1726,7 +1744,7 @@ end
 end 
 
 """
-	PetscDualSpacePushforward(petsclib::PetscLibType,dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
+	PetscDualSpacePushforward(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
 Transform the given function so that it operates on real space, rather than the reference element. Operationally, this means that we map the function evaluations depending on continuity requirements of our finite element method.
 
 Input Parameters:
@@ -1741,7 +1759,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
+See also: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpacePushforward"))
@@ -1764,7 +1782,7 @@ end
 end 
 
 """
-	PetscDualSpacePushforwardGradient(petsclib::PetscLibType,dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
+	PetscDualSpacePushforwardGradient(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
 Transform the given function gradient so that it operates on real space, rather than the reference element. Operationally, this means that we map the function evaluations depending on continuity requirements of our finite element method.
 
 Input Parameters:
@@ -1779,7 +1797,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
+See also: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpacePushforwardGradient"))
@@ -1802,7 +1820,7 @@ end
 end 
 
 """
-	PetscDualSpacePushforwardHessian(petsclib::PetscLibType,dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
+	PetscDualSpacePushforwardHessian(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) 
 Transform the given function Hessian so that it operates on real space, rather than the reference element. Operationally, this means that we map the function evaluations depending on continuity requirements of our finite element method.
 
 Input Parameters:
@@ -1817,7 +1835,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
+See also: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpacePushforwardHessian"))
@@ -1840,7 +1858,7 @@ end
 end 
 
 """
-	PetscDualSpaceRefinedSetCellSpaces(petsclib::PetscLibType,sp::PetscDualSpace, cellSpaces::Vector{PetscDualSpace}) 
+	PetscDualSpaceRefinedSetCellSpaces(petsclib::PetscLibType, sp::PetscDualSpace, cellSpaces::Vector{PetscDualSpace}) 
 Set the dual spaces for the closures of each of the cells
 in the multicell `DM` of a `PetscDualSpace`
 
@@ -1853,7 +1871,7 @@ so the user is still responsible for these spaces afterwards
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACEREFINED`, `PetscDualSpace`, `PetscFERefine()`
+See also: `PETSCDUALSPACEREFINED`, `PetscDualSpace`, `PetscFERefine()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceRefinedSetCellSpaces"))
@@ -1876,7 +1894,7 @@ end
 end 
 
 """
-	PetscDualSpaceRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscDualSpaceRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new `PetscDualSpaceType`
 
 Not Collective, No Fortran Support
@@ -1885,7 +1903,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine
 
--seealso: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceRegisterAll()`, `PetscDualSpaceRegisterDestroy()`
+See also: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceRegisterAll()`, `PetscDualSpaceRegisterDestroy()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceRegister"))
@@ -1908,7 +1926,7 @@ end
 end 
 
 """
-	PetscDualSpaceSetDM(petsclib::PetscLibType,sp::PetscDualSpace, dm::AbstractPetscDM) 
+	PetscDualSpaceSetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::AbstractPetscDM) 
 Get the `DM` representing the reference cell
 
 Not Collective
@@ -1919,7 +1937,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `DM`, `PetscDualSpaceGetDM()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `DM`, `PetscDualSpaceGetDM()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetDM"))
@@ -1942,8 +1960,8 @@ end
 end 
 
 """
-	PetscDualSpaceSetFormDegree(petsclib::PetscLibType,dsp::PetscDualSpace, k::PetscInt) 
-Set the form degree k for the k
+	PetscDualSpaceSetFormDegree(petsclib::PetscLibType, dsp::PetscDualSpace, k::PetscInt) 
+Set the form degree k for the k-form the describes the pushforwards/pullbacks of this
 dual space's functionals.
 
 Input Parameters:
@@ -1957,7 +1975,7 @@ but are stored as 1-forms.
 
 Level: developer
 
--seealso: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
+See also: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetFormDegree"))
@@ -1980,7 +1998,7 @@ end
 end 
 
 """
-	PetscDualSpaceSetFromOptions(petsclib::PetscLibType,sp::PetscDualSpace) 
+	PetscDualSpaceSetFromOptions(petsclib::PetscLibType, sp::PetscDualSpace) 
 sets parameters in a `PetscDualSpace` from the options database
 
 Collective
@@ -2004,7 +2022,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscDualSpaceView()`, `PetscDualSpace`, `PetscObjectSetFromOptions()`
+See also: `PetscDualSpaceView()`, `PetscDualSpace`, `PetscObjectSetFromOptions()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetFromOptions"))
@@ -2027,7 +2045,7 @@ end
 end 
 
 """
-	PetscDualSpaceSetNumComponents(petsclib::PetscLibType,sp::PetscDualSpace, Nc::PetscInt) 
+	PetscDualSpaceSetNumComponents(petsclib::PetscLibType, sp::PetscDualSpace, Nc::PetscInt) 
 Set the number of components for this space
 
 Input Parameters:
@@ -2036,7 +2054,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDualSpaceGetNumComponents()`, `PetscDualSpaceCreate()`, `PetscDualSpace`
+See also: `PetscDualSpaceGetNumComponents()`, `PetscDualSpaceCreate()`, `PetscDualSpace`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetNumComponents"))
@@ -2059,7 +2077,7 @@ end
 end 
 
 """
-	PetscDualSpaceSetOrder(petsclib::PetscLibType,sp::PetscDualSpace, order::PetscInt) 
+	PetscDualSpaceSetOrder(petsclib::PetscLibType, sp::PetscDualSpace, order::PetscInt) 
 Set the order of the dual space
 
 Not Collective
@@ -2070,7 +2088,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceGetOrder()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceGetOrder()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetOrder"))
@@ -2093,7 +2111,7 @@ end
 end 
 
 """
-	PetscDualSpaceSetType(petsclib::PetscLibType,sp::PetscDualSpace, name::PetscDualSpaceType) 
+	PetscDualSpaceSetType(petsclib::PetscLibType, sp::PetscDualSpace, name::PetscDualSpaceType) 
 Builds a particular `PetscDualSpace` based on its `PetscDualSpaceType`
 
 Collective
@@ -2107,7 +2125,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceGetType()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceGetType()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetType"))
@@ -2130,7 +2148,7 @@ end
 end 
 
 """
-	PetscDualSpaceSetUp(petsclib::PetscLibType,sp::PetscDualSpace) 
+	PetscDualSpaceSetUp(petsclib::PetscLibType, sp::PetscDualSpace) 
 Construct a basis for a `PetscDualSpace`
 
 Collective
@@ -2140,7 +2158,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpaceView()`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
+See also: `PetscDualSpaceView()`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSetUp"))
@@ -2163,7 +2181,7 @@ end
 end 
 
 """
-	PetscDualSpaceSimpleSetDimension(petsclib::PetscLibType,sp::PetscDualSpace, dim::PetscInt) 
+	PetscDualSpaceSimpleSetDimension(petsclib::PetscLibType, sp::PetscDualSpace, dim::PetscInt) 
 Set the number of functionals in the dual space basis
 
 Logically Collective
@@ -2174,7 +2192,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetFunctional()`
+See also: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetFunctional()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSimpleSetDimension"))
@@ -2197,7 +2215,7 @@ end
 end 
 
 """
-	PetscDualSpaceSimpleSetFunctional(petsclib::PetscLibType,sp::PetscDualSpace, func::PetscInt, q::PetscQuadrature) 
+	PetscDualSpaceSimpleSetFunctional(petsclib::PetscLibType, sp::PetscDualSpace, func::PetscInt, q::PetscQuadrature) 
 Set the given basis functional for this dual space
 
 Not Collective
@@ -2209,7 +2227,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetDimension()`
+See also: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetDimension()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSimpleSetFunctional"))
@@ -2232,7 +2250,7 @@ end
 end 
 
 """
-	concatenate::PetscBool = PetscDualSpaceSumGetConcatenate(petsclib::PetscLibType,sp::PetscDualSpace) 
+	concatenate::PetscBool = PetscDualSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the concatenate flag for this space.
 
 Input Parameter:
@@ -2243,7 +2261,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetConcatenate()`
+See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetConcatenate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetConcatenate"))
@@ -2268,7 +2286,7 @@ end
 end 
 
 """
-	interleave_basis::PetscBool,interleave_components::PetscBool = PetscDualSpaceSumGetInterleave(petsclib::PetscLibType,sp::PetscDualSpace) 
+	interleave_basis::PetscBool,interleave_components::PetscBool = PetscDualSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get whether the basis functions and components of a uniform sum are interleaved
 
 Logically collective
@@ -2283,7 +2301,7 @@ interleave the concatenated components
 
 Level: developer
 
--seealso: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpaceSumSetInterleave()`
+See also: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpaceSumSetInterleave()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetInterleave"))
@@ -2310,7 +2328,7 @@ end
 end 
 
 """
-	numSumSpaces::PetscInt = PetscDualSpaceSumGetNumSubspaces(petsclib::PetscLibType,sp::PetscDualSpace) 
+	numSumSpaces::PetscInt = PetscDualSpaceSumGetNumSubspaces(petsclib::PetscLibType, sp::PetscDualSpace) 
 Get the number of spaces in the sum space
 
 Input Parameter:
@@ -2321,7 +2339,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetNumSubspaces()`
+See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetNumSubspaces()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetNumSubspaces"))
@@ -2346,7 +2364,7 @@ end
 end 
 
 """
-	subsp::PetscDualSpace = PetscDualSpaceSumGetSubspace(petsclib::PetscLibType,sp::PetscDualSpace, s::PetscInt) 
+	subsp::PetscDualSpace = PetscDualSpaceSumGetSubspace(petsclib::PetscLibType, sp::PetscDualSpace, s::PetscInt) 
 Get a space in the sum space
 
 Input Parameters:
@@ -2358,7 +2376,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetSubspace()`
+See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetSubspace()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetSubspace"))
@@ -2383,7 +2401,7 @@ end
 end 
 
 """
-	PetscDualSpaceSumSetConcatenate(petsclib::PetscLibType,sp::PetscDualSpace, concatenate::PetscBool) 
+	PetscDualSpaceSumSetConcatenate(petsclib::PetscLibType, sp::PetscDualSpace, concatenate::PetscBool) 
 Sets the concatenate flag for this space.
 
 Input Parameters:
@@ -2392,7 +2410,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetConcatenate()`
+See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetConcatenate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetConcatenate"))
@@ -2415,7 +2433,7 @@ end
 end 
 
 """
-	PetscDualSpaceSumSetInterleave(petsclib::PetscLibType,sp::PetscDualSpace, interleave_basis::PetscBool, interleave_components::PetscBool) 
+	PetscDualSpaceSumSetInterleave(petsclib::PetscLibType, sp::PetscDualSpace, interleave_basis::PetscBool, interleave_components::PetscBool) 
 Set whether the basis functions and components of a uniform sum are interleaved
 
 Logically collective
@@ -2428,7 +2446,7 @@ interleave the concatenated components
 
 Level: developer
 
--seealso: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpaceSumGetInterleave()`
+See also: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpaceSumGetInterleave()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetInterleave"))
@@ -2451,7 +2469,7 @@ end
 end 
 
 """
-	PetscDualSpaceSumSetNumSubspaces(petsclib::PetscLibType,sp::PetscDualSpace, numSumSpaces::PetscInt) 
+	PetscDualSpaceSumSetNumSubspaces(petsclib::PetscLibType, sp::PetscDualSpace, numSumSpaces::PetscInt) 
 Set the number of spaces in the sum space
 
 Input Parameters:
@@ -2460,7 +2478,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetNumSubspaces()`
+See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetNumSubspaces()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetNumSubspaces"))
@@ -2483,7 +2501,7 @@ end
 end 
 
 """
-	PetscDualSpaceSumSetSubspace(petsclib::PetscLibType,sp::PetscDualSpace, s::PetscInt, subsp::PetscDualSpace) 
+	PetscDualSpaceSumSetSubspace(petsclib::PetscLibType, sp::PetscDualSpace, s::PetscInt, subsp::PetscDualSpace) 
 Set a space in the sum space
 
 Input Parameters:
@@ -2493,7 +2511,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetSubspace()`
+See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetSubspace()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetSubspace"))
@@ -2516,7 +2534,7 @@ end
 end 
 
 """
-	PetscDualSpaceTransform(petsclib::PetscLibType,dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) 
+	PetscDualSpaceTransform(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) 
 Transform the function values
 
 Input Parameters:
@@ -2533,7 +2551,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceTransformGradient()`, `PetscDualSpaceTransformHessian()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
+See also: `PetscDualSpace`, `PetscDualSpaceTransformGradient()`, `PetscDualSpaceTransformHessian()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceTransform"))
@@ -2556,7 +2574,7 @@ end
 end 
 
 """
-	PetscDualSpaceTransformGradient(petsclib::PetscLibType,dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) 
+	PetscDualSpaceTransformGradient(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) 
 Transform the function gradient values
 
 Input Parameters:
@@ -2573,7 +2591,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
+See also: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceTransformGradient"))
@@ -2596,7 +2614,7 @@ end
 end 
 
 """
-	PetscDualSpaceTransformHessian(petsclib::PetscLibType,dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) 
+	PetscDualSpaceTransformHessian(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) 
 Transform the function Hessian values
 
 Input Parameters:
@@ -2613,7 +2631,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
+See also: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceTransformHessian"))
@@ -2636,7 +2654,7 @@ end
 end 
 
 """
-	PetscDualSpaceView(petsclib::PetscLibType,sp::PetscDualSpace, v::PetscViewer) 
+	PetscDualSpaceView(petsclib::PetscLibType, sp::PetscDualSpace, v::PetscViewer) 
 Views a `PetscDualSpace`
 
 Collective
@@ -2647,7 +2665,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscViewer`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
+See also: `PetscViewer`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceView"))
@@ -2670,7 +2688,7 @@ end
 end 
 
 """
-	PetscDualSpaceViewFromOptions(petsclib::PetscLibType,A::PetscDualSpace, obj, name::String) 
+	PetscDualSpaceViewFromOptions(petsclib::PetscLibType, A::PetscDualSpace, obj, name::String) 
 View a `PetscDualSpace` based on values in the options database
 
 Collective
@@ -2685,7 +2703,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscObjectViewFromOptions()`, `PetscDualSpaceCreate()`
+See also: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscObjectViewFromOptions()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceViewFromOptions"))

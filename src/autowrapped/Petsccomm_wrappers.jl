@@ -1,6 +1,6 @@
 """
-	pshmcomm::PetscShmComm = PetscShmCommGet(petsclib::PetscLibType,globcomm::MPI_Comm) 
-Returns a sub
+	pshmcomm::PetscShmComm = PetscShmCommGet(petsclib::PetscLibType, globcomm::MPI_Comm) 
+Returns a sub-communicator of all ranks that share a common memory
 
 Collective.
 
@@ -12,7 +12,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscShmCommGlobalToLocal()`, `PetscShmCommLocalToGlobal()`, `PetscShmCommGetMpiShmComm()`
+See also: `PetscShmCommGlobalToLocal()`, `PetscShmCommLocalToGlobal()`, `PetscShmCommGetMpiShmComm()`
 
 # External Links
 $(_doc_external("Sys/PetscShmCommGet"))
@@ -37,7 +37,7 @@ end
 end 
 
 """
-	comm::MPI_Comm = PetscShmCommGetMpiShmComm(petsclib::PetscLibType,pshmcomm::PetscShmComm) 
+	comm::MPI_Comm = PetscShmCommGetMpiShmComm(petsclib::PetscLibType, pshmcomm::PetscShmComm) 
 Returns the MPI communicator that represents all processes with common shared memory
 
 Input Parameter:
@@ -48,7 +48,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscShmCommGlobalToLocal()`, `PetscShmCommGet()`, `PetscShmCommLocalToGlobal()`
+See also: `PetscShmCommGlobalToLocal()`, `PetscShmCommGet()`, `PetscShmCommLocalToGlobal()`
 
 # External Links
 $(_doc_external("Sys/PetscShmCommGetMpiShmComm"))
@@ -73,7 +73,7 @@ end
 end 
 
 """
-	lrank::PetscMPIInt = PetscShmCommGlobalToLocal(petsclib::PetscLibType,pshmcomm::PetscShmComm, grank::PetscMPIInt) 
+	lrank::PetscMPIInt = PetscShmCommGlobalToLocal(petsclib::PetscLibType, pshmcomm::PetscShmComm, grank::PetscMPIInt) 
 Given a global rank returns the local rank in the shared memory communicator
 
 Input Parameters:
@@ -85,7 +85,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscShmCommGet()`, `PetscShmCommLocalToGlobal()`, `PetscShmCommGetMpiShmComm()`
+See also: `PetscShmCommGet()`, `PetscShmCommLocalToGlobal()`, `PetscShmCommGetMpiShmComm()`
 
 # External Links
 $(_doc_external("Sys/PetscShmCommGlobalToLocal"))
@@ -110,7 +110,7 @@ end
 end 
 
 """
-	grank::PetscMPIInt = PetscShmCommLocalToGlobal(petsclib::PetscLibType,pshmcomm::PetscShmComm, lrank::PetscMPIInt) 
+	grank::PetscMPIInt = PetscShmCommLocalToGlobal(petsclib::PetscLibType, pshmcomm::PetscShmComm, lrank::PetscMPIInt) 
 Given a local rank in the shared memory communicator returns the global rank
 
 Input Parameters:
@@ -122,7 +122,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscShmCommGlobalToLocal()`, `PetscShmCommGet()`, `PetscShmCommGetMpiShmComm()`
+See also: `PetscShmCommGlobalToLocal()`, `PetscShmCommGet()`, `PetscShmCommGetMpiShmComm()`
 
 # External Links
 $(_doc_external("Sys/PetscShmCommLocalToGlobal"))
@@ -147,7 +147,7 @@ end
 end 
 
 """
-	psubcomm::PetscSubcomm = PetscSubcommCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	psubcomm::PetscSubcomm = PetscSubcommCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a `PetscSubcomm` context. This object is used to manage the division of a `MPI_Comm` into subcommunicators
 
 Collective
@@ -160,7 +160,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSubcomm`, `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
+See also: `PetscSubcomm`, `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
 `PetscSubcommSetNumber()`
 
 # External Links
@@ -186,7 +186,7 @@ end
 end 
 
 """
-	PetscSubcommDestroy(petsclib::PetscLibType,psubcomm::Union{PetscSubcomm, Ref{PetscSubcomm}}) 
+	PetscSubcommDestroy(petsclib::PetscLibType, psubcomm::Union{PetscSubcomm, Ref{PetscSubcomm}}) 
 Destroys a `PetscSubcomm` object
 
 Collective
@@ -196,7 +196,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscSubcommCreate()`, `PetscSubcommSetType()`
+See also: `PetscSubcommCreate()`, `PetscSubcommSetType()`
 
 # External Links
 $(_doc_external("Sys/PetscSubcommDestroy"))
@@ -220,7 +220,7 @@ end
 end 
 
 """
-	ccomm::MPI_Comm = PetscSubcommGetChild(petsclib::PetscLibType,scomm::PetscSubcomm) 
+	ccomm::MPI_Comm = PetscSubcommGetChild(petsclib::PetscLibType, scomm::PetscSubcomm) 
 Gets the communicator created by the `PetscSubcomm`. This is part of one of the subcommunicators created by the `PetscSubcomm`
 
 Collective
@@ -233,7 +233,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
+See also: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
 `PetscSubcommSetNumber()`, `PetscSubcommGetParent()`, `PetscSubcommContiguousParent()`
 
 # External Links
@@ -259,7 +259,7 @@ end
 end 
 
 """
-	pcomm::MPI_Comm = PetscSubcommGetContiguousParent(petsclib::PetscLibType,scomm::PetscSubcomm) 
+	pcomm::MPI_Comm = PetscSubcommGetContiguousParent(petsclib::PetscLibType, scomm::PetscSubcomm) 
 Gets a communicator that is a duplicate of the parent but has the ranks
 reordered by the order they are in the children
 
@@ -273,7 +273,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
+See also: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
 `PetscSubcommSetNumber()`, `PetscSubcommGetChild()`, `PetscSubcommContiguousParent()`
 
 # External Links
@@ -299,7 +299,7 @@ end
 end 
 
 """
-	pcomm::MPI_Comm = PetscSubcommGetParent(petsclib::PetscLibType,scomm::PetscSubcomm) 
+	pcomm::MPI_Comm = PetscSubcommGetParent(petsclib::PetscLibType, scomm::PetscSubcomm) 
 Gets the communicator that was used to create the `PetscSubcomm`
 
 Collective
@@ -312,7 +312,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
+See also: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcommSetFromOptions()`, `PetscSubcommSetType()`,
 `PetscSubcommSetNumber()`, `PetscSubcommGetChild()`, `PetscSubcommContiguousParent()`
 
 # External Links
@@ -338,7 +338,7 @@ end
 end 
 
 """
-	PetscSubcommSetFromOptions(petsclib::PetscLibType,psubcomm::PetscSubcomm) 
+	PetscSubcommSetFromOptions(petsclib::PetscLibType, psubcomm::PetscSubcomm) 
 Allows setting options for a `PetscSubcomm`
 
 Collective
@@ -348,7 +348,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscSubcomm`, `PetscSubcommCreate()`
+See also: `PetscSubcomm`, `PetscSubcommCreate()`
 
 # External Links
 $(_doc_external("Sys/PetscSubcommSetFromOptions"))
@@ -371,7 +371,7 @@ end
 end 
 
 """
-	PetscSubcommSetNumber(petsclib::PetscLibType,psubcomm::PetscSubcomm, nsubcomm::PetscInt) 
+	PetscSubcommSetNumber(petsclib::PetscLibType, psubcomm::PetscSubcomm, nsubcomm::PetscInt) 
 Set total number of subcommunicators desired in the given `PetscSubcomm`
 
 Collective
@@ -382,7 +382,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscSubcomm`, `PetscSubcommCreate()`, `PetscSubcommDestroy()`, `PetscSubcommSetType()`, `PetscSubcommSetTypeGeneral()`
+See also: `PetscSubcomm`, `PetscSubcommCreate()`, `PetscSubcommDestroy()`, `PetscSubcommSetType()`, `PetscSubcommSetTypeGeneral()`
 
 # External Links
 $(_doc_external("Sys/PetscSubcommSetNumber"))
@@ -405,7 +405,7 @@ end
 end 
 
 """
-	PetscSubcommSetOptionsPrefix(petsclib::PetscLibType,psubcomm::PetscSubcomm, pre::String) 
+	PetscSubcommSetOptionsPrefix(petsclib::PetscLibType, psubcomm::PetscSubcomm, pre::String) 
 Sets the prefix used for searching for options in the options database for this object
 
 Logically Collective
@@ -416,7 +416,7 @@ Input Parameters:
 - `psubcomm` - `PetscSubcomm` context
 - `pre`      - the prefix to prepend all `PetscSubcomm` item names with.
 
--seealso: `PetscSubcomm`, `PetscSubcommCreate()`
+See also: `PetscSubcomm`, `PetscSubcommCreate()`
 
 # External Links
 $(_doc_external("Sys/PetscSubcommSetOptionsPrefix"))
@@ -439,7 +439,7 @@ end
 end 
 
 """
-	PetscSubcommSetType(petsclib::PetscLibType,psubcomm::PetscSubcomm, subcommtype::PetscSubcommType) 
+	PetscSubcommSetType(petsclib::PetscLibType, psubcomm::PetscSubcomm, subcommtype::PetscSubcommType) 
 Set the way the original MPI communicator is divided up in the `PetscSubcomm`
 
 Collective
@@ -450,7 +450,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscSubcommType`, `PETSC_SUBCOMM_CONTIGUOUS`, `PETSC_SUBCOMM_INTERLACED`,
+See also: `PetscSubcommType`, `PETSC_SUBCOMM_CONTIGUOUS`, `PETSC_SUBCOMM_INTERLACED`,
 `PetscSubcommCreate()`, `PetscSubcommDestroy()`, `PetscSubcommSetNumber()`, `PetscSubcommSetTypeGeneral()`
 
 # External Links
@@ -474,7 +474,7 @@ end
 end 
 
 """
-	PetscSubcommSetTypeGeneral(petsclib::PetscLibType,psubcomm::PetscSubcomm, color::PetscMPIInt, subrank::PetscMPIInt) 
+	PetscSubcommSetTypeGeneral(petsclib::PetscLibType, psubcomm::PetscSubcomm, color::PetscMPIInt, subrank::PetscMPIInt) 
 Divides up a communicator based on a specific user's specification
 
 Collective
@@ -486,7 +486,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscSubcommType`, `PETSC_SUBCOMM_CONTIGUOUS`, `PETSC_SUBCOMM_INTERLACED`, `PetscSubcommCreate()`, `PetscSubcommDestroy()`, `PetscSubcommSetNumber()`, `PetscSubcommSetType()`
+See also: `PetscSubcommType`, `PETSC_SUBCOMM_CONTIGUOUS`, `PETSC_SUBCOMM_INTERLACED`, `PetscSubcommCreate()`, `PetscSubcommDestroy()`, `PetscSubcommSetNumber()`, `PetscSubcommSetType()`
 
 # External Links
 $(_doc_external("Sys/PetscSubcommSetTypeGeneral"))
@@ -509,7 +509,7 @@ end
 end 
 
 """
-	PetscSubcommView(petsclib::PetscLibType,psubcomm::PetscSubcomm, viewer::PetscViewer) 
+	PetscSubcommView(petsclib::PetscLibType, psubcomm::PetscSubcomm, viewer::PetscViewer) 
 Views a `PetscSubcomm`
 
 Collective
@@ -520,7 +520,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscSubcomm`, `PetscSubcommCreate()`, `PetscViewer`
+See also: `PetscSubcomm`, `PetscSubcommCreate()`, `PetscViewer`
 
 # External Links
 $(_doc_external("Sys/PetscSubcommView"))

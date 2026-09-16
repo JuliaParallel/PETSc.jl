@@ -1,5 +1,5 @@
 """
-	TSAdaptCandidateAdd(petsclib::PetscLibType,adapt::TSAdapt, name::String, order::PetscInt, stageorder::PetscInt, ccfl::PetscReal, cost::PetscReal, inuse::PetscBool) 
+	TSAdaptCandidateAdd(petsclib::PetscLibType, adapt::TSAdapt, name::String, order::PetscInt, stageorder::PetscInt, ccfl::PetscReal, cost::PetscReal, inuse::PetscBool) 
 add a candidate scheme for the adaptive controller to select from
 
 Logically Collective; No Fortran Support
@@ -15,7 +15,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidateAdd"))
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	TSAdaptCandidatesClear(petsclib::PetscLibType,adapt::TSAdapt) 
+	TSAdaptCandidatesClear(petsclib::PetscLibType, adapt::TSAdapt) 
 clear any previously set candidate schemes
 
 Logically Collective
@@ -48,7 +48,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidatesClear"))
@@ -71,7 +71,7 @@ end
 end 
 
 """
-	n::PetscInt,order::Ptr{PetscInt},stageorder::Ptr{PetscInt},ccfl::Ptr{PetscReal},cost::Ptr{PetscReal} = TSAdaptCandidatesGet(petsclib::PetscLibType,adapt::TSAdapt) 
+	n::PetscInt,order::Ptr{PetscInt},stageorder::Ptr{PetscInt},ccfl::Ptr{PetscReal},cost::Ptr{PetscReal} = TSAdaptCandidatesGet(petsclib::PetscLibType, adapt::TSAdapt) 
 Get the list of candidate orders of accuracy and cost
 
 Not Collective
@@ -88,7 +88,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCandidatesGet"))
@@ -121,7 +121,7 @@ end
 end 
 
 """
-	accept::PetscBool = TSAdaptCheckStage(petsclib::PetscLibType,adapt::TSAdapt, ts::AbstractTS, t::PetscReal, Y::AbstractPetscVec) 
+	accept::PetscBool = TSAdaptCheckStage(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractTS, t::PetscReal, Y::AbstractPetscVec) 
 checks whether to accept a stage, (e.g. reject and change time step size if nonlinear solve fails or solution vector is infeasible)
 
 Collective
@@ -137,7 +137,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`
+See also: [](sec_ts_error_control), `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptCheckStage"))
@@ -162,7 +162,7 @@ end
 end 
 
 """
-	next_sc::PetscInt,next_h::PetscReal,accept::PetscBool = TSAdaptChoose(petsclib::PetscLibType,adapt::TSAdapt, ts::AbstractTS, h::PetscReal) 
+	next_sc::PetscInt,next_h::PetscReal,accept::PetscBool = TSAdaptChoose(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractTS, h::PetscReal) 
 choose which method and step size to use for the next step
 
 Collective
@@ -179,7 +179,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`
 
 # External Links
 $(_doc_external("TS/TSAdaptChoose"))
@@ -208,7 +208,7 @@ end
 end 
 
 """
-	inadapt::TSAdapt = TSAdaptCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	inadapt::TSAdapt = TSAdaptCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 create an adaptive controller context for time stepping
 
 Collective
@@ -221,7 +221,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptDestroy()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSAdaptCreate"))
@@ -246,7 +246,7 @@ end
 end 
 
 """
-	TSAdaptDSPSetFilter(petsclib::PetscLibType,adapt::TSAdapt, name::String) 
+	TSAdaptDSPSetFilter(petsclib::PetscLibType, adapt::TSAdapt, name::String) 
 Sets internal parameters corresponding to the named filter {cite}`soderlind2006adaptive` {cite}`soderlind2003digital`
 
 Collective
@@ -268,7 +268,7 @@ Filter names:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSADAPTDSP`, `TS`, `TSAdapt`, `TSGetAdapt()`, `TSAdaptDSPSetPID()`
+See also: `TSADAPTDSP`, `TS`, `TSAdapt`, `TSGetAdapt()`, `TSAdaptDSPSetPID()`
 
 # External Links
 $(_doc_external("TS/TSAdaptDSPSetFilter"))
@@ -291,7 +291,7 @@ end
 end 
 
 """
-	TSAdaptDSPSetPID(petsclib::PetscLibType,adapt::TSAdapt, kkI::PetscReal, kkP::PetscReal, kkD::PetscReal) 
+	TSAdaptDSPSetPID(petsclib::PetscLibType, adapt::TSAdapt, kkI::PetscReal, kkP::PetscReal, kkD::PetscReal) 
 Set the PID controller parameters {cite}`soderlind2006adaptive`  {cite}`soderlind2003digital`
 
 Input Parameters:
@@ -305,7 +305,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSAdapt`, `TSGetAdapt()`, `TSAdaptDSPSetFilter()`
+See also: `TS`, `TSAdapt`, `TSGetAdapt()`, `TSAdaptDSPSetFilter()`
 
 # External Links
 $(_doc_external("TS/TSAdaptDSPSetPID"))
@@ -328,7 +328,7 @@ end
 end 
 
 """
-	TSAdaptDestroy(petsclib::PetscLibType,adapt::Union{TSAdapt, Ref{TSAdapt}}) 
+	TSAdaptDestroy(petsclib::PetscLibType, adapt::Union{TSAdapt, Ref{TSAdapt}}) 
 Destroys a `TSAdapt` context
 
 Collective
@@ -338,7 +338,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSGetAdapt()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptCreate()`, `TSGetAdapt()`
 
 # External Links
 $(_doc_external("TS/TSAdaptDestroy"))
@@ -368,7 +368,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`
+See also: `PetscFinalize()`
 
 # External Links
 $(_doc_external("TS/TSAdaptFinalizePackage"))
@@ -390,7 +390,7 @@ end
 end 
 
 """
-	low::PetscReal,high::PetscReal = TSAdaptGetClip(petsclib::PetscLibType,adapt::TSAdapt) 
+	low::PetscReal,high::PetscReal = TSAdaptGetClip(petsclib::PetscLibType, adapt::TSAdapt) 
 Gets the admissible decrease/increase factor in step size in the time step adapter
 
 Not Collective
@@ -404,7 +404,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetClip"))
@@ -431,7 +431,7 @@ end
 end 
 
 """
-	max_ignore::PetscReal = TSAdaptGetMaxIgnore(petsclib::PetscLibType,adapt::TSAdapt) 
+	max_ignore::PetscReal = TSAdaptGetMaxIgnore(petsclib::PetscLibType, adapt::TSAdapt) 
 Get error estimation threshold. Solution components below this threshold value will not be considered when computing error norms
 for time step adaptivity (in absolute value).
 
@@ -445,7 +445,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetMaxIgnore()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetMaxIgnore()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetMaxIgnore"))
@@ -470,7 +470,7 @@ end
 end 
 
 """
-	safety::PetscReal,reject_safety::PetscReal = TSAdaptGetSafety(petsclib::PetscLibType,adapt::TSAdapt) 
+	safety::PetscReal,reject_safety::PetscReal = TSAdaptGetSafety(petsclib::PetscLibType, adapt::TSAdapt) 
 Get safety factors for time step adapter
 
 Not Collective
@@ -484,7 +484,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetSafety()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetSafety()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetSafety"))
@@ -511,7 +511,7 @@ end
 end 
 
 """
-	scale::PetscReal = TSAdaptGetScaleSolveFailed(petsclib::PetscLibType,adapt::TSAdapt) 
+	scale::PetscReal = TSAdaptGetScaleSolveFailed(petsclib::PetscLibType, adapt::TSAdapt) 
 Gets the admissible decrease/increase factor in step size
 
 Not Collective
@@ -524,7 +524,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetClip()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetClip()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetScaleSolveFailed"))
@@ -549,7 +549,7 @@ end
 end 
 
 """
-	hmin::PetscReal,hmax::PetscReal = TSAdaptGetStepLimits(petsclib::PetscLibType,adapt::TSAdapt) 
+	hmin::PetscReal,hmax::PetscReal = TSAdaptGetStepLimits(petsclib::PetscLibType, adapt::TSAdapt) 
 Get the minimum and maximum step sizes to be considered by the time step controller
 
 Not Collective
@@ -563,7 +563,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetStepLimits()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptSetStepLimits()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetStepLimits"))
@@ -590,7 +590,7 @@ end
 end 
 
 """
-	type::TSAdaptType = TSAdaptGetType(petsclib::PetscLibType,adapt::TSAdapt) 
+	type::TSAdaptType = TSAdaptGetType(petsclib::PetscLibType, adapt::TSAdapt) 
 gets the `TS` adapter method type (as a string).
 
 Not Collective
@@ -603,7 +603,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptType`, `TSAdaptSetType()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptType`, `TSAdaptSetType()`
 
 # External Links
 $(_doc_external("TS/TSAdaptGetType"))
@@ -628,7 +628,7 @@ end
 end 
 
 """
-	t::PetscReal,dt::PetscReal = TSAdaptHistoryGetStep(petsclib::PetscLibType,adapt::TSAdapt, step::PetscInt) 
+	t::PetscReal,dt::PetscReal = TSAdaptHistoryGetStep(petsclib::PetscLibType, adapt::TSAdapt, step::PetscInt) 
 Gets time and time step for a given step number in the history
 
 Logically Collective
@@ -643,7 +643,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TS`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetTrajectory()`, `TSADAPTHISTORY`
+See also: `TS`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetTrajectory()`, `TSADAPTHISTORY`
 
 # External Links
 $(_doc_external("TS/TSAdaptHistoryGetStep"))
@@ -670,7 +670,7 @@ end
 end 
 
 """
-	TSAdaptHistorySetHistory(petsclib::PetscLibType,adapt::TSAdapt, n::PetscInt, hist::Vector{PetscReal}, backward::PetscBool) 
+	TSAdaptHistorySetHistory(petsclib::PetscLibType, adapt::TSAdapt, n::PetscInt, hist::Vector{PetscReal}, backward::PetscBool) 
 Sets the time history in the adaptor
 
 Logically Collective
@@ -683,7 +683,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetTrajectory()`, `TSADAPTHISTORY`
+See also: `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetTrajectory()`, `TSADAPTHISTORY`
 
 # External Links
 $(_doc_external("TS/TSAdaptHistorySetHistory"))
@@ -706,7 +706,7 @@ end
 end 
 
 """
-	TSAdaptHistorySetTrajectory(petsclib::PetscLibType,adapt::TSAdapt, tj::TSTrajectory, backward::PetscBool) 
+	TSAdaptHistorySetTrajectory(petsclib::PetscLibType, adapt::TSAdapt, tj::TSTrajectory, backward::PetscBool) 
 Sets a time history in the adaptor from a given `TSTrajectory`
 
 Logically Collective
@@ -718,7 +718,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetHistory()`, `TSADAPTHISTORY`, `TSAdapt`
+See also: `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetHistory()`, `TSADAPTHISTORY`, `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptHistorySetTrajectory"))
@@ -747,7 +747,7 @@ called from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("TS/TSAdaptInitializePackage"))
@@ -769,7 +769,7 @@ end
 end 
 
 """
-	TSAdaptLoad(petsclib::PetscLibType,adapt::TSAdapt, viewer::PetscViewer) 
+	TSAdaptLoad(petsclib::PetscLibType, adapt::TSAdapt, viewer::PetscViewer) 
 Loads a TSAdapt that has been stored in binary with `TSAdaptView()`.
 
 Collective
@@ -782,7 +782,7 @@ HDF5 file viewer, obtained from `PetscViewerHDF5Open()`
 
 Level: intermediate
 
--seealso: [](ch_ts), `PetscViewerBinaryOpen()`, `TSAdaptView()`, `MatLoad()`, `VecLoad()`, `TSAdapt`
+See also: `PetscViewerBinaryOpen()`, `TSAdaptView()`, `MatLoad()`, `VecLoad()`, `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptLoad"))
@@ -805,7 +805,7 @@ end
 end 
 
 """
-	TSAdaptRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	TSAdaptRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 adds a TSAdapt implementation
 
 Not Collective, No Fortran Support
@@ -816,7 +816,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdaptRegisterAll()`
+See also: [](sec_ts_error_control), `TSAdaptRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSAdaptRegister"))
@@ -839,7 +839,7 @@ end
 end 
 
 """
-	TSAdaptReset(petsclib::PetscLibType,adapt::TSAdapt) 
+	TSAdaptReset(petsclib::PetscLibType, adapt::TSAdapt) 
 Resets a `TSAdapt` context to its defaults
 
 Collective
@@ -849,7 +849,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSGetAdapt()`, `TSAdapt`, `TSAdaptCreate()`, `TSAdaptDestroy()`
+See also: [](sec_ts_error_control), `TSGetAdapt()`, `TSAdapt`, `TSAdaptCreate()`, `TSAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSAdaptReset"))
@@ -872,7 +872,7 @@ end
 end 
 
 """
-	TSAdaptSetAlwaysAccept(petsclib::PetscLibType,adapt::TSAdapt, flag::PetscBool) 
+	TSAdaptSetAlwaysAccept(petsclib::PetscLibType, adapt::TSAdapt, flag::PetscBool) 
 Set whether to always accept steps regardless of
 any error or stability condition not meeting the prescribed goal.
 
@@ -887,7 +887,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetAlwaysAccept"))
@@ -910,7 +910,7 @@ end
 end 
 
 """
-	TSAdaptSetCheckStage(petsclib::PetscLibType,adapt::TSAdapt, func::external) 
+	TSAdaptSetCheckStage(petsclib::PetscLibType, adapt::TSAdapt, func::external) 
 Set a callback to check convergence for a stage
 
 Logically Collective
@@ -928,7 +928,7 @@ Calling sequence:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetCheckStage"))
@@ -951,7 +951,7 @@ end
 end 
 
 """
-	TSAdaptSetClip(petsclib::PetscLibType,adapt::TSAdapt, low::PetscReal, high::PetscReal) 
+	TSAdaptSetClip(petsclib::PetscLibType, adapt::TSAdapt, low::PetscReal, high::PetscReal) 
 Sets the admissible decrease/increase factor in step size in the time step adapter
 
 Logically collective
@@ -966,7 +966,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetClip()`, `TSAdaptSetScaleSolveFailed()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetClip()`, `TSAdaptSetScaleSolveFailed()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetClip"))
@@ -989,7 +989,7 @@ end
 end 
 
 """
-	TSAdaptSetFromOptions(petsclib::PetscLibType,adapt::TSAdapt, PetscOptionsObject::PetscOptionItems) 
+	TSAdaptSetFromOptions(petsclib::PetscLibType, adapt::TSAdapt, PetscOptionsObject::PetscOptionItems) 
 Sets various `TSAdapt` parameters from user options.
 
 Collective
@@ -1012,7 +1012,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptSetAlwaysAccept()`, `TSAdaptSetSafety()`,
+See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptSetAlwaysAccept()`, `TSAdaptSetSafety()`,
 `TSAdaptSetClip()`, `TSAdaptSetScaleSolveFailed()`, `TSAdaptSetStepLimits()`, `TSAdaptSetMonitor()`
 
 # External Links
@@ -1036,7 +1036,7 @@ end
 end 
 
 """
-	TSAdaptSetMaxIgnore(petsclib::PetscLibType,adapt::TSAdapt, max_ignore::PetscReal) 
+	TSAdaptSetMaxIgnore(petsclib::PetscLibType, adapt::TSAdapt, max_ignore::PetscReal) 
 Set error estimation threshold. Solution components below this threshold value will not be considered when computing error norms
 for time step adaptivity (in absolute value). A negative value (default) of the threshold leads to considering all solution components.
 
@@ -1051,7 +1051,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetMaxIgnore()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetMaxIgnore()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetMaxIgnore"))
@@ -1074,7 +1074,7 @@ end
 end 
 
 """
-	TSAdaptSetMonitor(petsclib::PetscLibType,adapt::TSAdapt, flg::PetscBool) 
+	TSAdaptSetMonitor(petsclib::PetscLibType, adapt::TSAdapt, flg::PetscBool) 
 Monitor the choices made by the adaptive controller
 
 Collective
@@ -1088,7 +1088,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetMonitor"))
@@ -1111,7 +1111,7 @@ end
 end 
 
 """
-	TSAdaptSetOptionsPrefix(petsclib::PetscLibType,adapt::TSAdapt, prefix::String) 
+	TSAdaptSetOptionsPrefix(petsclib::PetscLibType, adapt::TSAdapt, prefix::String) 
 Sets the prefix used for searching for `TSAdapt` options in the options database
 
 Logically Collective
@@ -1122,7 +1122,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSSetOptionsPrefix()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSGetAdapt()`, `TSSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetOptionsPrefix"))
@@ -1145,7 +1145,7 @@ end
 end 
 
 """
-	TSAdaptSetSafety(petsclib::PetscLibType,adapt::TSAdapt, safety::PetscReal, reject_safety::PetscReal) 
+	TSAdaptSetSafety(petsclib::PetscLibType, adapt::TSAdapt, safety::PetscReal, reject_safety::PetscReal) 
 Set safety factors for time step adaptor
 
 Logically Collective
@@ -1161,7 +1161,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetSafety()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetSafety()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetSafety"))
@@ -1184,7 +1184,7 @@ end
 end 
 
 """
-	TSAdaptSetScaleSolveFailed(petsclib::PetscLibType,adapt::TSAdapt, scale::PetscReal) 
+	TSAdaptSetScaleSolveFailed(petsclib::PetscLibType, adapt::TSAdapt, scale::PetscReal) 
 Scale step size by this factor if solve fails
 
 Logically Collective
@@ -1198,7 +1198,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetScaleSolveFailed()`, `TSAdaptGetClip()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetScaleSolveFailed()`, `TSAdaptGetClip()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetScaleSolveFailed"))
@@ -1221,7 +1221,7 @@ end
 end 
 
 """
-	TSAdaptSetStepLimits(petsclib::PetscLibType,adapt::TSAdapt, hmin::PetscReal, hmax::PetscReal) 
+	TSAdaptSetStepLimits(petsclib::PetscLibType, adapt::TSAdapt, hmin::PetscReal, hmax::PetscReal) 
 Set the minimum and maximum step sizes to be considered by the time step controller
 
 Logically Collective
@@ -1237,7 +1237,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetStepLimits()`, `TSAdaptChoose()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSAdaptGetStepLimits()`, `TSAdaptChoose()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetStepLimits"))
@@ -1260,7 +1260,7 @@ end
 end 
 
 """
-	TSAdaptSetTimeStepIncreaseDelay(petsclib::PetscLibType,adapt::TSAdapt, cnt::PetscInt) 
+	TSAdaptSetTimeStepIncreaseDelay(petsclib::PetscLibType, adapt::TSAdapt, cnt::PetscInt) 
 The number of timesteps to wait after a decrease in the timestep due to failed solver
 before increasing the time step.
 
@@ -1275,7 +1275,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`
+See also: [](sec_ts_error_control), `TSAdapt`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetTimeStepIncreaseDelay"))
@@ -1298,7 +1298,7 @@ end
 end 
 
 """
-	TSAdaptSetType(petsclib::PetscLibType,adapt::TSAdapt, type::TSAdaptType) 
+	TSAdaptSetType(petsclib::PetscLibType, adapt::TSAdapt, type::TSAdaptType) 
 sets the approach used for the error adapter
 
 Logicially Collective
@@ -1312,7 +1312,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSGetAdapt()`, `TSAdaptDestroy()`, `TSAdaptType`, `TSAdaptGetType()`
+See also: [](sec_ts_error_control), `TSGetAdapt()`, `TSAdaptDestroy()`, `TSAdaptType`, `TSAdaptGetType()`
 
 # External Links
 $(_doc_external("TS/TSAdaptSetType"))
@@ -1335,7 +1335,7 @@ end
 end 
 
 """
-	TSAdaptView(petsclib::PetscLibType,adapt::TSAdapt, viewer::PetscViewer) 
+	TSAdaptView(petsclib::PetscLibType, adapt::TSAdapt, viewer::PetscViewer) 
 Prints the `TSAdapt` data structure.
 
 Collective
@@ -1349,7 +1349,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), [](sec_ts_error_control), `TSAdapt`, `TSView()`, `PetscViewer`, `PetscViewerASCIIOpen()`
+See also: [](sec_ts_error_control), `TSAdapt`, `TSView()`, `PetscViewer`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("TS/TSAdaptView"))
@@ -1372,8 +1372,8 @@ end
 end 
 
 """
-	next_sc::PetscInt,next_h::PetscReal,finish::PetscBool = TSGLLEAdaptChoose(petsclib::PetscLibType,adapt::TSGLLEAdapt, n::PetscInt, orders::Vector{PetscInt}, errors::Vector{PetscReal}, cost::Vector{PetscReal}, cur::PetscInt, h::PetscReal, tleft::PetscReal) 
-Choose the next scheme and step size using a `TSGLLEAdapt` step
+	next_sc::PetscInt,next_h::PetscReal,finish::PetscBool = TSGLLEAdaptChoose(petsclib::PetscLibType, adapt::TSGLLEAdapt, n::PetscInt, orders::Vector{PetscInt}, errors::Vector{PetscReal}, cost::Vector{PetscReal}, cur::PetscInt, h::PetscReal, tleft::PetscReal) 
+Choose the next scheme and step size using a `TSGLLEAdapt` step-size and order controller
 
 Logically Collective
 
@@ -1394,7 +1394,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptSetType()`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptSetType()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptChoose"))
@@ -1423,8 +1423,8 @@ end
 end 
 
 """
-	inadapt::TSGLLEAdapt = TSGLLEAdaptCreate(petsclib::PetscLibType,comm::MPI_Comm) 
-Create a `TSGLLEAdapt` step
+	inadapt::TSGLLEAdapt = TSGLLEAdaptCreate(petsclib::PetscLibType, comm::MPI_Comm) 
+Create a `TSGLLEAdapt` step-size and order adaptivity object
 
 Collective
 
@@ -1436,7 +1436,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`, `TSGLLEAdaptDestroy()`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`, `TSGLLEAdaptDestroy()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptCreate"))
@@ -1461,7 +1461,7 @@ end
 end 
 
 """
-	TSGLLEAdaptDestroy(petsclib::PetscLibType,adapt::Union{TSGLLEAdapt, Ref{TSGLLEAdapt}}) 
+	TSGLLEAdaptDestroy(petsclib::PetscLibType, adapt::Union{TSGLLEAdapt, Ref{TSGLLEAdapt}}) 
 Destroys a `TSGLLEAdapt` context
 
 Collective
@@ -1471,7 +1471,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptDestroy"))
@@ -1501,7 +1501,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`, `TSGLLEAdapt`, `TSGLLEAdaptInitializePackage()`
+See also: `PetscFinalize()`, `TSGLLEAdapt`, `TSGLLEAdaptInitializePackage()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptFinalizePackage"))
@@ -1529,7 +1529,7 @@ called from `TSInitializePackage()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`, `TSGLLEAdapt`, `TSGLLEAdaptFinalizePackage()`
+See also: `PetscInitialize()`, `TSGLLEAdapt`, `TSGLLEAdaptFinalizePackage()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptInitializePackage"))
@@ -1551,7 +1551,7 @@ end
 end 
 
 """
-	TSGLLEAdaptRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	TSGLLEAdaptRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 adds a `TSGLLEAdapt` implementation
 
 Not Collective, No Fortran Support
@@ -1562,7 +1562,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptRegisterAll()`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptRegister"))
@@ -1585,7 +1585,7 @@ end
 end 
 
 """
-	TSGLLEAdaptSetFromOptions(petsclib::PetscLibType,adapt::TSGLLEAdapt, PetscOptionsObject::PetscOptionItems) 
+	TSGLLEAdaptSetFromOptions(petsclib::PetscLibType, adapt::TSGLLEAdapt, PetscOptionsObject::PetscOptionItems) 
 Sets options from the options database for a `TSGLLEAdapt` context
 
 Collective
@@ -1599,7 +1599,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptSetFromOptions"))
@@ -1622,7 +1622,7 @@ end
 end 
 
 """
-	TSGLLEAdaptSetOptionsPrefix(petsclib::PetscLibType,adapt::TSGLLEAdapt, prefix::String) 
+	TSGLLEAdaptSetOptionsPrefix(petsclib::PetscLibType, adapt::TSGLLEAdapt, prefix::String) 
 Sets the prefix used for searching for `TSGLLEAdapt` options in the options database
 
 Logically Collective
@@ -1633,7 +1633,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetFromOptions()`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetFromOptions()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptSetOptionsPrefix"))
@@ -1656,8 +1656,8 @@ end
 end 
 
 """
-	TSGLLEAdaptSetType(petsclib::PetscLibType,adapt::TSGLLEAdapt, type::TSGLLEAdaptType) 
-Sets the type of a `TSGLLEAdapt` step
+	TSGLLEAdaptSetType(petsclib::PetscLibType, adapt::TSGLLEAdapt, type::TSGLLEAdaptType) 
+Sets the type of a `TSGLLEAdapt` step-size and order adaptivity object
 
 Logically Collective
 
@@ -1667,7 +1667,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptType`, `TSGLLEAdaptRegister()`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptType`, `TSGLLEAdaptRegister()`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptSetType"))
@@ -1690,8 +1690,8 @@ end
 end 
 
 """
-	TSGLLEAdaptView(petsclib::PetscLibType,adapt::TSGLLEAdapt, viewer::PetscViewer) 
-Views a `TSGLLEAdapt` step
+	TSGLLEAdaptView(petsclib::PetscLibType, adapt::TSGLLEAdapt, viewer::PetscViewer) 
+Views a `TSGLLEAdapt` step-size and order adaptivity object
 
 Collective
 
@@ -1701,7 +1701,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `PetscViewer`
+See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `PetscViewer`
 
 # External Links
 $(_doc_external("TS/TSGLLEAdaptView"))
@@ -1724,7 +1724,7 @@ end
 end 
 
 """
-	ctx::TSMonitorDrawCtx = TSMonitorDrawCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
+	ctx::TSMonitorDrawCtx = TSMonitorDrawCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
 Creates the monitor context for `TSMonitorDrawCtx`
 
 Collective
@@ -1748,7 +1748,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorDrawCtxDestroy()`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorDrawCtx`, `PetscMonitorDrawSolution()`
+See also: `TS`, `TSMonitorDrawCtxDestroy()`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorDrawCtx`, `PetscMonitorDrawSolution()`
 
 # External Links
 $(_doc_external("TS/TSMonitorDrawCtxCreate"))
@@ -1773,7 +1773,7 @@ end
 end 
 
 """
-	TSMonitorDrawCtxDestroy(petsclib::PetscLibType,ictx::Union{TSMonitorDrawCtx, Ref{TSMonitorDrawCtx}}) 
+	TSMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TSMonitorDrawCtx, Ref{TSMonitorDrawCtx}}) 
 Destroys the monitor context for `TSMonitorDrawSolution()`
 
 Collective
@@ -1783,7 +1783,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorDrawSolution()`, `TSMonitorDrawError()`, `TSMonitorDrawCtx`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorDrawSolution()`, `TSMonitorDrawError()`, `TSMonitorDrawCtx`
 
 # External Links
 $(_doc_external("TS/TSMonitorDrawCtxDestroy"))
@@ -1807,7 +1807,7 @@ end
 end 
 
 """
-	ctx::TSMonitorEnvelopeCtx = TSMonitorEnvelopeCtxCreate(petsclib::PetscLibType,ts::AbstractTS) 
+	ctx::TSMonitorEnvelopeCtx = TSMonitorEnvelopeCtxCreate(petsclib::PetscLibType, ts::AbstractTS) 
 Creates a context for use with `TSMonitorEnvelope()`
 
 Collective
@@ -1820,7 +1820,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorLGTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`, `TSMonitorLGError()`
+See also: `TS`, `TSMonitorLGTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`, `TSMonitorLGError()`
 
 # External Links
 $(_doc_external("TS/TSMonitorEnvelopeCtxCreate"))
@@ -1845,7 +1845,7 @@ end
 end 
 
 """
-	TSMonitorEnvelopeCtxDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorEnvelopeCtx, Ref{TSMonitorEnvelopeCtx}}) 
+	TSMonitorEnvelopeCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorEnvelopeCtx, Ref{TSMonitorEnvelopeCtx}}) 
 Destroys a context that was created  with `TSMonitorEnvelopeCtxCreate()`.
 
 Collective
@@ -1855,7 +1855,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGTimeStep()`
+See also: `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGTimeStep()`
 
 # External Links
 $(_doc_external("TS/TSMonitorEnvelopeCtxDestroy"))
@@ -1879,7 +1879,7 @@ end
 end 
 
 """
-	ctx::TSMonitorHGCtx = TSMonitorHGCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt, Ns::PetscInt, Nb::PetscInt, velocity::PetscBool) 
+	ctx::TSMonitorHGCtx = TSMonitorHGCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt, Ns::PetscInt, Nb::PetscInt, velocity::PetscBool) 
 Creates a `TSMonitorHGCtx` histogram monitor context for use with `DMSWARM` particle visualizations
 
 Collective
@@ -1902,7 +1902,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorHGSwarmSolution()`, `TSMonitorHGCtxDestroy()`
+See also: `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorHGSwarmSolution()`, `TSMonitorHGCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorHGCtxCreate"))
@@ -1927,7 +1927,7 @@ end
 end 
 
 """
-	TSMonitorHGCtxDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorHGCtx, Ref{TSMonitorHGCtx}}) 
+	TSMonitorHGCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorHGCtx, Ref{TSMonitorHGCtx}}) 
 Destroys a `TSMonitorHGCtx` that was created with `TSMonitorHGCtxCreate()`
 
 Not Collective
@@ -1937,7 +1937,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorHGCtxCreate()`, `TSMonitorHGSwarmSolution()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorHGCtxCreate()`, `TSMonitorHGSwarmSolution()`
 
 # External Links
 $(_doc_external("TS/TSMonitorHGCtxDestroy"))
@@ -1961,7 +1961,7 @@ end
 end 
 
 """
-	ctx::TSMonitorLGCtx = TSMonitorLGCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
+	ctx::TSMonitorLGCtx = TSMonitorLGCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
 Creates a `TSMonitorLGCtx` context for use with
 `TS` to monitor the solution process graphically in various ways
 
@@ -1991,7 +1991,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorLGTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`, `TSMonitorLGError()`, `TSMonitorDefault()`, `VecView()`,
+See also: `TSMonitorLGTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`, `TSMonitorLGError()`, `TSMonitorDefault()`, `VecView()`,
 `TSMonitorLGCtxSetVariableNames()`, `TSMonitorLGCtxGetVariableNames()`,
 `TSMonitorLGSetVariableNames()`, `TSMonitorLGGetVariableNames()`, `TSMonitorLGSetDisplayVariables()`, `TSMonitorLGCtxSetDisplayVariables()`,
 `TSMonitorLGCtxSetTransform()`, `TSMonitorLGSetTransform()`, `TSMonitorLGSNESIterations()`, `TSMonitorLGKSPIterations()`,
@@ -2020,7 +2020,7 @@ end
 end 
 
 """
-	TSMonitorLGCtxDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorLGCtx, Ref{TSMonitorLGCtx}}) 
+	TSMonitorLGCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorLGCtx, Ref{TSMonitorLGCtx}}) 
 Destroys a line graph context that was created with `TSMonitorLGCtxCreate()`.
 
 Collective
@@ -2030,7 +2030,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGTimeStep()`
+See also: `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGTimeStep()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxDestroy"))
@@ -2054,8 +2054,8 @@ end
 end 
 
 """
-	ctx::TSMonitorLGCtxNetwork = TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType,ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
-Creates a `TSMonitorLGCtxNetwork` context with one line
+	ctx::TSMonitorLGCtxNetwork = TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType, ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
+Creates a `TSMonitorLGCtxNetwork` context with one line-graph window for each edge and each vertex of a `DMNETWORK`
 
 Collective
 
@@ -2074,7 +2074,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `DMNETWORK`, `TSMonitorSet()`, `TSMonitorLGCtxNetworkSolution()`, `TSMonitorLGCtxNetworkDestroy()`
+See also: `TS`, `DMNETWORK`, `TSMonitorSet()`, `TSMonitorLGCtxNetworkSolution()`, `TSMonitorLGCtxNetworkDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxNetworkCreate"))
@@ -2099,7 +2099,7 @@ end
 end 
 
 """
-	TSMonitorLGCtxNetworkDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorLGCtxNetwork, Ref{TSMonitorLGCtxNetwork}}) 
+	TSMonitorLGCtxNetworkDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorLGCtxNetwork, Ref{TSMonitorLGCtxNetwork}}) 
 Destroys  line graph contexts that where created with `TSMonitorLGCtxNetworkCreate()`.
 
 Collective
@@ -2109,7 +2109,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorLGCtxNetworkSolution()`
+See also: `TS`, `TSMonitorLGCtxNetworkSolution()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxNetworkDestroy"))
@@ -2133,7 +2133,7 @@ end
 end 
 
 """
-	TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
+	TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid}) 
 Monitors progress of the `TS` solvers for a `DMNETWORK` solution with one window for each vertex and each edge
 
 Collective
@@ -2150,7 +2150,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorLGCtxNetworkDestroy()`
+See also: `TS`, `TSMonitorLGCtxNetworkDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxNetworkSolution"))
@@ -2173,7 +2173,7 @@ end
 end 
 
 """
-	TSMonitorLGCtxSetDisplayVariables(petsclib::PetscLibType,ctx::TSMonitorLGCtx, displaynames::Cchar) 
+	TSMonitorLGCtxSetDisplayVariables(petsclib::PetscLibType, ctx::TSMonitorLGCtx, displaynames::Cchar) 
 Sets the variables that are to be display in the monitor
 
 Collective
@@ -2184,7 +2184,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxSetDisplayVariables"))
@@ -2207,7 +2207,7 @@ end
 end 
 
 """
-	TSMonitorLGCtxSetTransform(petsclib::PetscLibType,ctx::TSMonitorLGCtx, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid}) 
+	TSMonitorLGCtxSetTransform(petsclib::PetscLibType, ctx::TSMonitorLGCtx, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid}) 
 Solution vector will be transformed by provided function before being displayed
 
 Collective
@@ -2225,7 +2225,7 @@ Calling sequence of `transform`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`, `TSMonitorLGSetTransform()`, `PetscCtxDestroyFn`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetVariableNames()`, `TSMonitorLGSetTransform()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxSetTransform"))
@@ -2248,7 +2248,7 @@ end
 end 
 
 """
-	TSMonitorLGCtxSetVariableNames(petsclib::PetscLibType,ctx::TSMonitorLGCtx, names::Cchar) 
+	TSMonitorLGCtxSetVariableNames(petsclib::PetscLibType, ctx::TSMonitorLGCtx, names::Cchar) 
 Sets the name of each component in the solution vector so that it may be displayed in the plot
 
 Collective
@@ -2259,7 +2259,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`, `TSMonitorLGSetVariableNames()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorLGSetDisplayVariables()`, `TSMonitorLGSetVariableNames()`
 
 # External Links
 $(_doc_external("TS/TSMonitorLGCtxSetVariableNames"))
@@ -2282,8 +2282,8 @@ end
 end 
 
 """
-	ctx::TSMonitorSPCtx = TSMonitorSPCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt, retain::PetscInt, phase::PetscBool, multispecies::PetscBool) 
-Creates a `TSMonitorSPCtx` scatter
+	ctx::TSMonitorSPCtx = TSMonitorSPCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt, retain::PetscInt, phase::PetscBool, multispecies::PetscBool) 
+Creates a `TSMonitorSPCtx` scatter-plot monitor context for use with `DMSWARM` particle visualizations
 
 Collective
 
@@ -2305,7 +2305,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorSPSwarmSolution()`, `TSMonitorSPCtxDestroy()`
+See also: `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorSPSwarmSolution()`, `TSMonitorSPCtxDestroy()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPCtxCreate"))
@@ -2330,7 +2330,7 @@ end
 end 
 
 """
-	TSMonitorSPCtxDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorSPCtx, Ref{TSMonitorSPCtx}}) 
+	TSMonitorSPCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorSPCtx, Ref{TSMonitorSPCtx}}) 
 Destroys a `TSMonitorSPCtx` that was created with `TSMonitorSPCtxCreate()`
 
 Not Collective
@@ -2340,7 +2340,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TS`, `TSMonitorSet()`, `TSMonitorSPCtxCreate()`, `TSMonitorSPSwarmSolution()`
+See also: `TS`, `TSMonitorSet()`, `TSMonitorSPCtxCreate()`, `TSMonitorSPSwarmSolution()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPCtxDestroy"))
@@ -2364,7 +2364,7 @@ end
 end 
 
 """
-	ctx::TSMonitorSPEigCtx = TSMonitorSPEigCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
+	ctx::TSMonitorSPEigCtx = TSMonitorSPEigCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
 Creates a context for use with `TS` to monitor the eigenvalues of the linearized operator
 
 Collective
@@ -2387,7 +2387,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSPEigTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`, `TSMonitorLGError()`
+See also: `TSMonitorSPEigTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`, `TSMonitorLGError()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPEigCtxCreate"))
@@ -2412,7 +2412,7 @@ end
 end 
 
 """
-	TSMonitorSPEigCtxDestroy(petsclib::PetscLibType,ctx::Union{TSMonitorSPEigCtx, Ref{TSMonitorSPEigCtx}}) 
+	TSMonitorSPEigCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorSPEigCtx, Ref{TSMonitorSPEigCtx}}) 
 Destroys a scatter plot context that was created with `TSMonitorSPEigCtxCreate()`.
 
 Collective
@@ -2422,7 +2422,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSMonitorSPEigCtxCreate()`, `TSMonitorSet()`, `TSMonitorSPEig()`
+See also: `TSMonitorSPEigCtxCreate()`, `TSMonitorSet()`, `TSMonitorSPEig()`
 
 # External Links
 $(_doc_external("TS/TSMonitorSPEigCtxDestroy"))
@@ -2446,7 +2446,7 @@ end
 end 
 
 """
-	tj::TSTrajectory = TSTrajectoryCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	tj::TSTrajectory = TSTrajectoryCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 This function creates an empty trajectory object used to store the time dependent solution of an ODE/DAE
 
 Collective
@@ -2459,7 +2459,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSTrajectory`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectorySetKeepFiles()`
+See also: `TS`, `TSTrajectory`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectorySetKeepFiles()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryCreate"))
@@ -2484,7 +2484,7 @@ end
 end 
 
 """
-	TSTrajectoryDestroy(petsclib::PetscLibType,tj::Union{TSTrajectory, Ref{TSTrajectory}}) 
+	TSTrajectoryDestroy(petsclib::PetscLibType, tj::Union{TSTrajectory, Ref{TSTrajectory}}) 
 Destroys a trajectory context
 
 Collective
@@ -2494,7 +2494,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetUp()`
+See also: `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryDestroy"))
@@ -2518,7 +2518,7 @@ end
 end 
 
 """
-	time::PetscReal = TSTrajectoryGet(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt) 
+	time::PetscReal = TSTrajectoryGet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt) 
 Updates the solution vector of a time stepper object by querying the `TSTrajectory`
 
 Collective
@@ -2533,7 +2533,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSSolve()`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectorySet()`, `TSTrajectoryGetVecs()`, `TSGetSolution()`
+See also: `TS`, `TSSolve()`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectorySet()`, `TSTrajectoryGetVecs()`, `TSGetSolution()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryGet"))
@@ -2558,7 +2558,7 @@ end
 end 
 
 """
-	steps::PetscInt = TSTrajectoryGetNumSteps(petsclib::PetscLibType,tj::TSTrajectory) 
+	steps::PetscInt = TSTrajectoryGetNumSteps(petsclib::PetscLibType, tj::TSTrajectory) 
 Return the number of steps registered in the `TSTrajectory` via `TSTrajectorySet()`.
 
 Not Collective.
@@ -2571,7 +2571,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSTrajectorySet()`
+See also: `TS`, `TSTrajectorySet()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryGetNumSteps"))
@@ -2596,7 +2596,7 @@ end
 end 
 
 """
-	solution_only::PetscBool = TSTrajectoryGetSolutionOnly(petsclib::PetscLibType,tj::TSTrajectory) 
+	solution_only::PetscBool = TSTrajectoryGetSolutionOnly(petsclib::PetscLibType, tj::TSTrajectory) 
 Gets the value set with `TSTrajectorySetSolutionOnly()`.
 
 Logically Collective
@@ -2609,7 +2609,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetSolutionOnly()`
+See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetSolutionOnly()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryGetSolutionOnly"))
@@ -2634,7 +2634,7 @@ end
 end 
 
 """
-	type::TSTrajectoryType = TSTrajectoryGetType(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS) 
+	type::TSTrajectoryType = TSTrajectoryGetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) 
 Gets the trajectory type
 
 Collective
@@ -2648,7 +2648,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetFromOptions()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`
+See also: `TS`, `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetFromOptions()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryGetType"))
@@ -2673,8 +2673,8 @@ end
 end 
 
 """
-	U::PetscVec,Udot::PetscVec = TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, time::PetscReal) 
-Get updated state and time
+	U::PetscVec,Udot::PetscVec = TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, time::PetscReal) 
+Get updated state and time-derivative history vectors.
 
 Collective
 
@@ -2689,7 +2689,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectoryRestoreUpdatedHistoryVecs()`, `TSTrajectoryGetVecs()`
+See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectoryRestoreUpdatedHistoryVecs()`, `TSTrajectoryGetVecs()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryGetUpdatedHistoryVecs"))
@@ -2716,7 +2716,7 @@ end
 end 
 
 """
-	time::PetscReal = TSTrajectoryGetVecs(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, U::AbstractPetscVec, Udot::AbstractPetscVec) 
+	time::PetscReal = TSTrajectoryGetVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, U::AbstractPetscVec, Udot::AbstractPetscVec) 
 Reconstructs the vector of state and its time derivative using information from the `TSTrajectory` and, possibly, from the `TS`
 
 Collective
@@ -2733,7 +2733,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSTrajectory`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectorySet()`, `TSTrajectoryGet()`
+See also: `TS`, `TSTrajectory`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectorySet()`, `TSTrajectoryGet()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryGetVecs"))
@@ -2758,7 +2758,7 @@ end
 end 
 
 """
-	TSTrajectoryMemorySetType(petsclib::PetscLibType,tj::TSTrajectory, tj_memory_type::TSTrajectoryMemoryType) 
+	TSTrajectoryMemorySetType(petsclib::PetscLibType, tj::TSTrajectory, tj_memory_type::TSTrajectoryMemoryType) 
 sets the software that is used to generate the checkpointing schedule.
 
 Logically Collective
@@ -2772,7 +2772,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectorySetMaxUnitsRAM()`, `TSTrajectoryMemoryType`
+See also: `TSTrajectory`, `TSTrajectorySetMaxUnitsRAM()`, `TSTrajectoryMemoryType`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryMemorySetType"))
@@ -2795,7 +2795,7 @@ end
 end 
 
 """
-	TSTrajectoryRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	TSTrajectoryRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a way of storing trajectories to the `TS` package
 
 Not Collective, No Fortran Support
@@ -2806,7 +2806,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectoryRegisterAll()`
+See also: `TSTrajectoryRegisterAll()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryRegister"))
@@ -2836,7 +2836,7 @@ Not Collective
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryRegister()`
+See also: `TSTrajectory`, `TSTrajectoryRegister()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryRegisterAll"))
@@ -2858,7 +2858,7 @@ end
 end 
 
 """
-	TSTrajectoryReset(petsclib::PetscLibType,tj::TSTrajectory) 
+	TSTrajectoryReset(petsclib::PetscLibType, tj::TSTrajectory) 
 Resets a trajectory context
 
 Collective
@@ -2868,7 +2868,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetUp()`
+See also: `TS`, `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryReset"))
@@ -2891,8 +2891,8 @@ end
 end 
 
 """
-	TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::PetscLibType,tj::TSTrajectory, U::AbstractPetscVec, Udot::AbstractPetscVec) 
-Restores updated state and time
+	TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, U::AbstractPetscVec, Udot::AbstractPetscVec) 
+Restores updated state and time-derivative history vectors obtained with `TSTrajectoryGetUpdatedHistoryVecs()`.
 
 Collective
 
@@ -2903,7 +2903,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryGetUpdatedHistoryVecs()`
+See also: `TSTrajectory`, `TSTrajectoryGetUpdatedHistoryVecs()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryRestoreUpdatedHistoryVecs"))
@@ -2930,7 +2930,7 @@ end
 end 
 
 """
-	TSTrajectorySet(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, time::PetscReal, X::AbstractPetscVec) 
+	TSTrajectorySet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, time::PetscReal, X::AbstractPetscVec) 
 Sets a vector of state in the trajectory object
 
 Collective
@@ -2944,7 +2944,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectoryGet()`, `TSTrajectoryGetVecs()`
+See also: `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()`, `TSTrajectorySetVariableNames()`, `TSGetTrajectory()`, `TSTrajectoryGet()`, `TSTrajectoryGetVecs()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySet"))
@@ -2967,7 +2967,7 @@ end
 end 
 
 """
-	TSTrajectorySetDirname(petsclib::PetscLibType,tj::TSTrajectory, dirname::String) 
+	TSTrajectorySetDirname(petsclib::PetscLibType, tj::TSTrajectory, dirname::String) 
 Specify the name of the directory where `TSTrajectory` disk checkpoints are stored.
 
 Collective
@@ -2981,7 +2981,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectorySetFiletemplate()`, `TSTrajectorySetUp()`
+See also: `TSTrajectory`, `TSTrajectorySetFiletemplate()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetDirname"))
@@ -3004,7 +3004,7 @@ end
 end 
 
 """
-	TSTrajectorySetFiletemplate(petsclib::PetscLibType,tj::TSTrajectory, filetemplate::String) 
+	TSTrajectorySetFiletemplate(petsclib::PetscLibType, tj::TSTrajectory, filetemplate::String) 
 Specify the name template for the files storing `TSTrajectory` checkpoints.
 
 Collective
@@ -3018,7 +3018,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectorySetDirname()`, `TSTrajectorySetUp()`
+See also: `TSTrajectory`, `TSTrajectorySetDirname()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetFiletemplate"))
@@ -3041,7 +3041,7 @@ end
 end 
 
 """
-	TSTrajectorySetFromOptions(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS) 
+	TSTrajectorySetFromOptions(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) 
 Sets various `TSTrajectory` parameters from user options.
 
 Collective
@@ -3057,7 +3057,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectorySetUp()`
+See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetFromOptions"))
@@ -3080,7 +3080,7 @@ end
 end 
 
 """
-	TSTrajectorySetKeepFiles(petsclib::PetscLibType,tj::TSTrajectory, flg::PetscBool) 
+	TSTrajectorySetKeepFiles(petsclib::PetscLibType, tj::TSTrajectory, flg::PetscBool) 
 Keep the files generated by the `TSTrajectory` once the program is done
 
 Collective
@@ -3094,7 +3094,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetUp()`, `TSTrajectorySetMonitor()`
+See also: `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetUp()`, `TSTrajectorySetMonitor()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetKeepFiles"))
@@ -3117,7 +3117,7 @@ end
 end 
 
 """
-	TSTrajectorySetMaxCpsDisk(petsclib::PetscLibType,tj::TSTrajectory, max_cps_disk::PetscInt) 
+	TSTrajectorySetMaxCpsDisk(petsclib::PetscLibType, tj::TSTrajectory, max_cps_disk::PetscInt) 
 Set maximum number of checkpoints on disk
 
 Logically Collective
@@ -3130,7 +3130,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectorySetMaxUnitsDisk()`, `TSTrajectorySetMaxUnitsRAM()`
+See also: `TSTrajectory`, `TSTrajectorySetMaxUnitsDisk()`, `TSTrajectorySetMaxUnitsRAM()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetMaxCpsDisk"))
@@ -3153,7 +3153,7 @@ end
 end 
 
 """
-	TSTrajectorySetMaxCpsRAM(petsclib::PetscLibType,tj::TSTrajectory, max_cps_ram::PetscInt) 
+	TSTrajectorySetMaxCpsRAM(petsclib::PetscLibType, tj::TSTrajectory, max_cps_ram::PetscInt) 
 Set maximum number of checkpoints in RAM
 
 Logically Collective
@@ -3166,7 +3166,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectorySetMaxUnitsRAM()`
+See also: `TSTrajectory`, `TSTrajectorySetMaxUnitsRAM()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetMaxCpsRAM"))
@@ -3189,7 +3189,7 @@ end
 end 
 
 """
-	TSTrajectorySetMaxUnitsDisk(petsclib::PetscLibType,tj::TSTrajectory, max_units_disk::PetscInt) 
+	TSTrajectorySetMaxUnitsDisk(petsclib::PetscLibType, tj::TSTrajectory, max_units_disk::PetscInt) 
 Set maximum number of checkpointing units on disk
 
 Logically Collective
@@ -3202,7 +3202,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectorySetMaxCpsDisk()`
+See also: `TSTrajectory`, `TSTrajectorySetMaxCpsDisk()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetMaxUnitsDisk"))
@@ -3225,7 +3225,7 @@ end
 end 
 
 """
-	TSTrajectorySetMaxUnitsRAM(petsclib::PetscLibType,tj::TSTrajectory, max_units_ram::PetscInt) 
+	TSTrajectorySetMaxUnitsRAM(petsclib::PetscLibType, tj::TSTrajectory, max_units_ram::PetscInt) 
 Set maximum number of checkpointing units in RAM
 
 Logically Collective
@@ -3238,7 +3238,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectorySetMaxCpsRAM()`
+See also: `TSTrajectory`, `TSTrajectorySetMaxCpsRAM()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetMaxUnitsRAM"))
@@ -3261,7 +3261,7 @@ end
 end 
 
 """
-	TSTrajectorySetMonitor(petsclib::PetscLibType,tj::TSTrajectory, flg::PetscBool) 
+	TSTrajectorySetMonitor(petsclib::PetscLibType, tj::TSTrajectory, flg::PetscBool) 
 Monitor the schedules generated by the `TSTrajectory` checkpointing controller
 
 Collective
@@ -3275,7 +3275,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetUp()`
+See also: `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetMonitor"))
@@ -3298,7 +3298,7 @@ end
 end 
 
 """
-	TSTrajectorySetSolutionOnly(petsclib::PetscLibType,tj::TSTrajectory, solution_only::PetscBool) 
+	TSTrajectorySetSolutionOnly(petsclib::PetscLibType, tj::TSTrajectory, solution_only::PetscBool) 
 Tells the trajectory to store just the solution, and not any intermediate stage information
 
 Collective
@@ -3309,7 +3309,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectoryGetSolutionOnly()`
+See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectoryGetSolutionOnly()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetSolutionOnly"))
@@ -3332,7 +3332,7 @@ end
 end 
 
 """
-	TSTrajectorySetTransform(petsclib::PetscLibType,tj::TSTrajectory, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid}) 
+	TSTrajectorySetTransform(petsclib::PetscLibType, tj::TSTrajectory, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid}) 
 Solution vector will be transformed by provided function before being saved to disk
 
 Collective
@@ -3345,7 +3345,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectorySetVariableNames()`, `TSTrajectory`, `TSMonitorLGSetTransform()`
+See also: `TSTrajectorySetVariableNames()`, `TSTrajectory`, `TSMonitorLGSetTransform()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetTransform"))
@@ -3368,7 +3368,7 @@ end
 end 
 
 """
-	TSTrajectorySetType(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType) 
+	TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType) 
 Sets the storage method to be used as in a trajectory
 
 Collective
@@ -3383,7 +3383,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryType`, `TS`, `TSTrajectoryCreate()`, `TSTrajectorySetFromOptions()`, `TSTrajectoryDestroy()`, `TSTrajectoryGetType()`
+See also: `TSTrajectory`, `TSTrajectoryType`, `TS`, `TSTrajectoryCreate()`, `TSTrajectorySetFromOptions()`, `TSTrajectoryDestroy()`, `TSTrajectoryGetType()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetType"))
@@ -3406,7 +3406,7 @@ end
 end 
 
 """
-	TSTrajectorySetUp(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS) 
+	TSTrajectorySetUp(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) 
 Sets up the internal data structures, e.g. stacks, for the later use
 of a `TS` `TSTrajectory`.
 
@@ -3418,7 +3418,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`
+See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetUp"))
@@ -3441,7 +3441,7 @@ end
 end 
 
 """
-	TSTrajectorySetUseHistory(petsclib::PetscLibType,tj::TSTrajectory, flg::PetscBool) 
+	TSTrajectorySetUseHistory(petsclib::PetscLibType, tj::TSTrajectory, flg::PetscBool) 
 Use `TSHistory` in `TSTrajectory`
 
 Collective
@@ -3455,7 +3455,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetUp()`
+See also: `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetUp()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetUseHistory"))
@@ -3478,7 +3478,7 @@ end
 end 
 
 """
-	TSTrajectorySetVariableNames(petsclib::PetscLibType,ctx::TSTrajectory, names::Cchar) 
+	TSTrajectorySetVariableNames(petsclib::PetscLibType, ctx::TSTrajectory, names::Cchar) 
 Sets the name of each component in the solution vector so that it may be saved with the trajectory
 
 Collective
@@ -3489,7 +3489,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSGetTrajectory()`
+See also: `TSTrajectory`, `TSGetTrajectory()`
 
 # External Links
 $(_doc_external("TS/TSTrajectorySetVariableNames"))
@@ -3512,7 +3512,7 @@ end
 end 
 
 """
-	TSTrajectoryView(petsclib::PetscLibType,tj::TSTrajectory, viewer::PetscViewer) 
+	TSTrajectoryView(petsclib::PetscLibType, tj::TSTrajectory, viewer::PetscViewer) 
 Prints information about the trajectory object
 
 Collective
@@ -3526,7 +3526,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `TSTrajectory`, `PetscViewer`, `PetscViewerASCIIOpen()`
+See also: `TS`, `TSTrajectory`, `PetscViewer`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryView"))
@@ -3549,7 +3549,7 @@ end
 end 
 
 """
-	TSTrajectoryViewFromOptions(petsclib::PetscLibType,A::TSTrajectory, obj, name::String) 
+	TSTrajectoryViewFromOptions(petsclib::PetscLibType, A::TSTrajectory, obj, name::String) 
 View a `TSTrajectory` based on values in the options database
 
 Collective
@@ -3564,7 +3564,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_ts), `TSTrajectory`, `TSTrajectoryView`, `PetscObjectViewFromOptions()`, `TSTrajectoryCreate()`
+See also: `TSTrajectory`, `TSTrajectoryView`, `PetscObjectViewFromOptions()`, `TSTrajectoryCreate()`
 
 # External Links
 $(_doc_external("TS/TSTrajectoryViewFromOptions"))

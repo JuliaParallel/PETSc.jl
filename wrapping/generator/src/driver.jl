@@ -55,12 +55,30 @@ function referenced_types(args::Vector{FArg})
     return ts
 end
 
+"""Apply the docstring clean-up of `docs.jl` to the docstring of a verbatim override."""
+function clean_override_docstring(text::AbstractString)
+    m = match(r"(?s)^(.*?\n\"\"\"\n)(.*?)(\n\"\"\"\n.*)$", text)
+    m === nothing && return String(text)
+    lines = String[]
+    for c in split(m.captures[2], '\n')
+        c = replace(c, r"\[\]\(ch_\w+\),?\s*" => "")
+        if startswith(c, "-vb") || startswith(c, ".vb") || startswith(c, "-ve") || startswith(c, ".ve")
+            c = "```"
+        end
+        sm = match(r"^-?seealso:\s*(.*)$", c)
+        sm === nothing || (c = "See also: " * strip(sm.captures[1]))
+        c = replace(c, r"^(\t\S.*PetscLibType),(\S)" => s"\1, \2")   # header line spacing
+        push!(lines, c)
+    end
+    return m.captures[1] * join(lines, '\n') * m.captures[3]
+end
+
 function load_overrides(dir::AbstractString)
     ov = Dict{String,String}()
     isdir(dir) || return ov
     for f in readdir(dir)
         endswith(f, ".jl") || continue
-        ov[f[1:end-3]] = read(joinpath(dir, f), String)
+        ov[f[1:end-3]] = clean_override_docstring(read(joinpath(dir, f), String))
     end
     return ov
 end

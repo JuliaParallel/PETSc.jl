@@ -1,5 +1,5 @@
 """
-	container::PetscContainer = PetscContainerCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	container::PetscContainer = PetscContainerCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a PETSc object that has room to hold a single pointer.
 
 Collective, No Fortran Support
@@ -12,7 +12,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
+See also: `PetscContainerDestroy()`, `PetscContainerSetPointer()`, `PetscContainerGetPointer()`, `PetscObjectCompose()`, `PetscObjectQuery()`,
 `PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
 
 # External Links
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	PetscContainerDestroy(petsclib::PetscLibType,obj::Union{PetscContainer, Ref{PetscContainer}}) 
+	PetscContainerDestroy(petsclib::PetscLibType, obj::Union{PetscContainer, Ref{PetscContainer}}) 
 Destroys a PETSc container object.
 
 Collective, No Fortran Support
@@ -48,7 +48,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscContainerCreate()`, `PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
+See also: `PetscContainerCreate()`, `PetscContainerSetCtxDestroy()`, `PetscObject`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
 
 # External Links
 $(_doc_external("Sys/PetscContainerDestroy"))
@@ -72,7 +72,7 @@ end
 end 
 
 """
-	ptr::Ptr{Cvoid} = PetscContainerGetPointer(petsclib::PetscLibType,obj::PetscContainer) 
+	ptr::Ptr{Cvoid} = PetscContainerGetPointer(petsclib::PetscLibType, obj::PetscContainer) 
 Gets the pointer value contained in the container that was provided with `PetscContainerSetPointer()`
 
 Not Collective, No Fortran Support
@@ -85,7 +85,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscObject`,
+See also: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscObject`,
 `PetscContainerSetPointer()`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
 
 # External Links
@@ -111,7 +111,7 @@ end
 end 
 
 """
-	PetscContainerSetCtxDestroy(petsclib::PetscLibType,obj::PetscContainer, des::Ptr{Cvoid}) 
+	PetscContainerSetCtxDestroy(petsclib::PetscLibType, obj::PetscContainer, des::Ptr{Cvoid}) 
 Sets the destroy function for the data provided to the `PetscContainer` with `PetscContainerSetPointer()`
 
 Logically Collective, No Fortran Support
@@ -122,7 +122,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscContainerDestroy()`, `PetscContainerUserDestroyDefault()`, `PetscMalloc()`, `PetscMalloc1()`, `PetscCalloc()`, `PetscCalloc1()`, `PetscObject`,
+See also: `PetscContainerDestroy()`, `PetscContainerUserDestroyDefault()`, `PetscMalloc()`, `PetscMalloc1()`, `PetscCalloc()`, `PetscCalloc1()`, `PetscObject`,
 `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
 
 # External Links
@@ -146,7 +146,7 @@ end
 end 
 
 """
-	PetscContainerSetPointer(petsclib::PetscLibType,obj::PetscContainer, ptr::Ptr{Cvoid}) 
+	PetscContainerSetPointer(petsclib::PetscLibType, obj::PetscContainer, ptr::Ptr{Cvoid}) 
 Sets the pointer value contained in the container.
 
 Logically Collective, No Fortran Support
@@ -157,7 +157,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObject`,
+See also: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObject`,
 `PetscContainerGetPointer()`, `PetscObjectContainerCompose()`, `PetscObjectContainerQuery()`
 
 # External Links

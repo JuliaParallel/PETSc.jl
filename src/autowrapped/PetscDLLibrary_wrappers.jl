@@ -1,5 +1,5 @@
 """
-	outlist::PetscDLLibrary = PetscDLLibraryAppend(petsclib::PetscLibType,comm::MPI_Comm, path::String) 
+	outlist::PetscDLLibrary = PetscDLLibraryAppend(petsclib::PetscLibType, comm::MPI_Comm, path::String) 
 Appends another dynamic link library to the end  of the search list
 
 Collective, No Fortran Support
@@ -13,7 +13,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryPrepend()`
+See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryPrepend()`
 
 # External Links
 $(_doc_external("Sys/PetscDLLibraryAppend"))
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	PetscDLLibraryClose(petsclib::PetscLibType,list::PetscDLLibrary) 
+	PetscDLLibraryClose(petsclib::PetscLibType, list::PetscDLLibrary) 
 Destroys the search path of dynamic libraries and closes the libraries.
 
 Collective, No Fortran Support
@@ -48,7 +48,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryAppend()`,
+See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryAppend()`,
 `PetscDLLibraryPrepend()`
 
 # External Links
@@ -72,7 +72,7 @@ end
 end 
 
 """
-	entry::PetscDLLibrary = PetscDLLibraryOpen(petsclib::PetscLibType,comm::MPI_Comm, path::String) 
+	entry::PetscDLLibrary = PetscDLLibraryOpen(petsclib::PetscLibType, comm::MPI_Comm, path::String) 
 Opens a PETSc dynamic link library
 
 Collective, No Fortran Support
@@ -86,7 +86,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`, `PetscDLLibraryRetrieve()`, `PetscDLLibrarySym()`, `PetscDLLibraryClose()`
+See also: `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`, `PetscDLLibraryRetrieve()`, `PetscDLLibrarySym()`, `PetscDLLibraryClose()`
 
 # External Links
 $(_doc_external("Sys/PetscDLLibraryOpen"))
@@ -111,7 +111,7 @@ end
 end 
 
 """
-	outlist::PetscDLLibrary = PetscDLLibraryPrepend(petsclib::PetscLibType,comm::MPI_Comm, path::String) 
+	outlist::PetscDLLibrary = PetscDLLibraryPrepend(petsclib::PetscLibType, comm::MPI_Comm, path::String) 
 Add another dynamic library to search for symbols to the beginning of the search list
 
 Collective, No Fortran Support
@@ -125,7 +125,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryAppend()`
+See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryAppend()`
 
 # External Links
 $(_doc_external("Sys/PetscDLLibraryPrepend"))
@@ -150,7 +150,7 @@ end
 end 
 
 """
-	PetscDLLibraryPrintPath(petsclib::PetscLibType,libs::PetscDLLibrary) 
+	PetscDLLibraryPrintPath(petsclib::PetscLibType, libs::PetscDLLibrary) 
 Prints the names of all dynamic libraries in a `PetscDLLibrary` list to the PETSc error output stream
 
 Not Collective
@@ -160,7 +160,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscDLLibrarySym()`, `PetscDLLibraryAppend()`, `PetscDLLibraryClose()`
+See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscDLLibrarySym()`, `PetscDLLibraryAppend()`, `PetscDLLibraryClose()`
 
 # External Links
 $(_doc_external("Sys/PetscDLLibraryPrintPath"))
@@ -183,7 +183,7 @@ end
 end 
 
 """
-	found::PetscBool = PetscDLLibraryRetrieve(petsclib::PetscLibType,comm::MPI_Comm, libname::String, lname::String, llen::Csize_t) 
+	found::PetscBool = PetscDLLibraryRetrieve(petsclib::PetscLibType, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t) 
 Copies a PETSc dynamic library from a remote location
 (if it is remote), then indicates if it exits and its local name.
 
@@ -200,7 +200,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscFileRetrieve()`
+See also: `PetscFileRetrieve()`
 
 # External Links
 $(_doc_external("Sys/PetscDLLibraryRetrieve"))
@@ -225,7 +225,7 @@ end
 end 
 
 """
-	value::Ptr{Cvoid} = PetscDLLibrarySym(petsclib::PetscLibType,comm::MPI_Comm, outlist::PetscDLLibrary, path::String, insymbol::String) 
+	value::Ptr{Cvoid} = PetscDLLibrarySym(petsclib::PetscLibType, comm::MPI_Comm, outlist::PetscDLLibrary, path::String, insymbol::String) 
 Load a symbol from a list of dynamic link libraries.
 
 Collective, No Fortran Support
@@ -241,7 +241,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`
+See also: `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`, `PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`
 
 # External Links
 $(_doc_external("Sys/PetscDLLibrarySym"))

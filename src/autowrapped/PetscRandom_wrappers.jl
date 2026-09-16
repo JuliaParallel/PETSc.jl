@@ -1,5 +1,5 @@
 """
-	r::PetscRandom = PetscRandomCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	r::PetscRandom = PetscRandomCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an object for generating random numbers,
 and initializes the random-number generator.
 
@@ -13,7 +13,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandomSetType()`, `PetscRandomGetValue()`, `PetscRandomGetValueReal()`, `PetscRandomSetInterval()`,
+See also: `PetscRandomSetType()`, `PetscRandomGetValue()`, `PetscRandomGetValueReal()`, `PetscRandomSetInterval()`,
 `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomType`, `PetscRandom`
 
 # External Links
@@ -39,7 +39,7 @@ end
 end 
 
 """
-	PetscRandomDestroy(petsclib::PetscLibType,r::Union{PetscRandom, Ref{PetscRandom}}) 
+	PetscRandomDestroy(petsclib::PetscLibType, r::Union{PetscRandom, Ref{PetscRandom}}) 
 Destroys a `PetscRandom` object that was created by `PetscRandomCreate()`.
 
 Collective
@@ -49,7 +49,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomGetValue()`, `PetscRandomCreate()`, `VecSetRandom()`
+See also: `PetscRandom`, `PetscRandomGetValue()`, `PetscRandomCreate()`, `VecSetRandom()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomDestroy"))
@@ -79,7 +79,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PetscFinalize()`
+See also: `PetscFinalize()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomFinalizePackage"))
@@ -101,7 +101,7 @@ end
 end 
 
 """
-	low::PetscScalar,high::PetscScalar = PetscRandomGetInterval(petsclib::PetscLibType,r::PetscRandom) 
+	low::PetscScalar,high::PetscScalar = PetscRandomGetInterval(petsclib::PetscLibType, r::PetscRandom) 
 Gets the interval over which the random numbers
 will be distributed.  By default, this interval is [0,1).
 
@@ -116,7 +116,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetInterval()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetInterval()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomGetInterval"))
@@ -143,7 +143,7 @@ end
 end 
 
 """
-	seed::PetscInt64 = PetscRandomGetSeed(petsclib::PetscLibType,r::PetscRandom) 
+	seed::PetscInt64 = PetscRandomGetSeed(petsclib::PetscLibType, r::PetscRandom) 
 Gets the random seed.
 
 Not collective
@@ -156,7 +156,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetSeed()`, `PetscRandomSeed()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetSeed()`, `PetscRandomSeed()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomGetSeed"))
@@ -181,7 +181,7 @@ end
 end 
 
 """
-	type::PetscRandomType = PetscRandomGetType(petsclib::PetscLibType,rnd::PetscRandom) 
+	type::PetscRandomType = PetscRandomGetType(petsclib::PetscLibType, rnd::PetscRandom) 
 Gets the type name (as a string) from the `PetscRandom`.
 
 Not Collective
@@ -194,7 +194,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomType`, `PetscRandomSetType()`, `PetscRandomCreate()`
+See also: `PetscRandom`, `PetscRandomType`, `PetscRandomSetType()`, `PetscRandomCreate()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomGetType"))
@@ -219,7 +219,7 @@ end
 end 
 
 """
-	val::PetscScalar = PetscRandomGetValue(petsclib::PetscLibType,r::PetscRandom) 
+	val::PetscScalar = PetscRandomGetValue(petsclib::PetscLibType, r::PetscRandom) 
 Generates a random number.  Call this after first calling
 `PetscRandomCreate()`.
 
@@ -233,7 +233,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValueReal()`, `PetscRandomSetInterval()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValueReal()`, `PetscRandomSetInterval()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomGetValue"))
@@ -258,7 +258,7 @@ end
 end 
 
 """
-	val::PetscReal = PetscRandomGetValueReal(petsclib::PetscLibType,r::PetscRandom) 
+	val::PetscReal = PetscRandomGetValueReal(petsclib::PetscLibType, r::PetscRandom) 
 Generates a real random number.  Call this after first calling
 `PetscRandomCreate()`.
 
@@ -272,7 +272,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValue()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValue()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomGetValueReal"))
@@ -297,7 +297,7 @@ end
 end 
 
 """
-	val::PetscScalar = PetscRandomGetValues(petsclib::PetscLibType,r::PetscRandom, n::PetscInt) 
+	val::PetscScalar = PetscRandomGetValues(petsclib::PetscLibType, r::PetscRandom, n::PetscInt) 
 Generates a sequence of random numbers.  Call this after first calling
 `PetscRandomCreate()`.
 
@@ -312,7 +312,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValue()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValue()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomGetValues"))
@@ -337,7 +337,7 @@ end
 end 
 
 """
-	val::PetscReal = PetscRandomGetValuesReal(petsclib::PetscLibType,r::PetscRandom, n::PetscInt) 
+	val::PetscReal = PetscRandomGetValuesReal(petsclib::PetscLibType, r::PetscRandom, n::PetscInt) 
 Generates a sequence of real random numbers.  Call this after first calling
 `PetscRandomCreate()`.
 
@@ -352,7 +352,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValues()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetRandom()`, `PetscRandomGetValues()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomGetValuesReal"))
@@ -384,7 +384,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomInitializePackage"))
@@ -406,7 +406,7 @@ end
 end 
 
 """
-	PetscRandomRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscRandomRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new `PetscRandom` implementation
 
 Not Collective, No Fortran Support
@@ -417,7 +417,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscRandom`, `PetscRandomRegisterAll()`, `PetscRandomRegisterDestroy()`
+See also: `PetscRandom`, `PetscRandomRegisterAll()`, `PetscRandomRegisterDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomRegister"))
@@ -440,7 +440,7 @@ end
 end 
 
 """
-	PetscRandomSeed(petsclib::PetscLibType,r::PetscRandom) 
+	PetscRandomSeed(petsclib::PetscLibType, r::PetscRandom) 
 Seed the random number generator.
 
 Not collective
@@ -450,7 +450,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSetSeed()`
+See also: `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSetSeed()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomSeed"))
@@ -473,7 +473,7 @@ end
 end 
 
 """
-	PetscRandomSetFromOptions(petsclib::PetscLibType,rnd::PetscRandom) 
+	PetscRandomSetFromOptions(petsclib::PetscLibType, rnd::PetscRandom) 
 Configures the random number generator from the options database.
 
 Collective
@@ -488,7 +488,7 @@ same code to produce the same result when run with real numbers or complex numbe
 
 Level: beginner
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetType()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetType()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomSetFromOptions"))
@@ -511,7 +511,7 @@ end
 end 
 
 """
-	PetscRandomSetInterval(petsclib::PetscLibType,r::PetscRandom, low::PetscScalar, high::PetscScalar) 
+	PetscRandomSetInterval(petsclib::PetscLibType, r::PetscRandom, low::PetscScalar, high::PetscScalar) 
 Sets the interval over which the random numbers
 will be distributed.  By default, this interval is [0,1).
 
@@ -524,7 +524,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscRandomCreate()`, `PetscRandomGetInterval()`
+See also: `PetscRandomCreate()`, `PetscRandomGetInterval()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomSetInterval"))
@@ -547,7 +547,7 @@ end
 end 
 
 """
-	PetscRandomSetOptionsPrefix(petsclib::PetscLibType,r::PetscRandom, prefix::String) 
+	PetscRandomSetOptionsPrefix(petsclib::PetscLibType, r::PetscRandom, prefix::String) 
 Sets the prefix used for searching for all
 `PetscRandom` options in the database.
 
@@ -559,7 +559,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscRandom`, `PetscRandomSetFromOptions()`
+See also: `PetscRandom`, `PetscRandomSetFromOptions()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomSetOptionsPrefix"))
@@ -582,7 +582,7 @@ end
 end 
 
 """
-	PetscRandomSetSeed(petsclib::PetscLibType,r::PetscRandom, seed::PetscInt64) 
+	PetscRandomSetSeed(petsclib::PetscLibType, r::PetscRandom, seed::PetscInt64) 
 Sets the random seed. You MUST call `PetscRandomSeed()` after this call to have the new seed used.
 
 Not collective
@@ -593,7 +593,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSeed()`
+See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSeed()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomSetSeed"))
@@ -616,7 +616,7 @@ end
 end 
 
 """
-	PetscRandomSetType(petsclib::PetscLibType,rnd::PetscRandom, type::PetscRandomType) 
+	PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::PetscRandomType) 
 Builds a context for generating a particular type of random numbers.
 
 Collective
@@ -630,7 +630,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomType`, `PetscRandomGetType()`, `PetscRandomCreate()`
+See also: `PetscRandom`, `PetscRandomType`, `PetscRandomGetType()`, `PetscRandomCreate()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomSetType"))
@@ -653,7 +653,7 @@ end
 end 
 
 """
-	PetscRandomView(petsclib::PetscLibType,rnd::PetscRandom, viewer::PetscViewer) 
+	PetscRandomView(petsclib::PetscLibType, rnd::PetscRandom, viewer::PetscViewer) 
 Views a random number generator object.
 
 Collective
@@ -664,7 +664,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscRandom`, `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`
+See also: `PetscRandom`, `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomView"))
@@ -687,7 +687,7 @@ end
 end 
 
 """
-	PetscRandomViewFromOptions(petsclib::PetscLibType,A::PetscRandom, obj, name::String) 
+	PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj, name::String) 
 View a `PetscRandom` object based on the options database
 
 Collective
@@ -702,7 +702,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscRandom`, `PetscRandomView`, `PetscObjectViewFromOptions()`, `PetscRandomCreate()`
+See also: `PetscRandom`, `PetscRandomView`, `PetscObjectViewFromOptions()`, `PetscRandomCreate()`
 
 # External Links
 $(_doc_external("Sys/PetscRandomViewFromOptions"))

@@ -1,5 +1,5 @@
 """
-	TaoLineSearchAppendOptionsPrefix(petsclib::PetscLibType,ls::TaoLineSearch, p::String) 
+	TaoLineSearchAppendOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String) 
 Appends to the prefix used for searching
 for all `TaoLineSearch` options in the database.
 
@@ -11,7 +11,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchSetOptionsPrefix()`, `TaoLineSearchGetOptionsPrefix()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchSetOptionsPrefix()`, `TaoLineSearchGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchAppendOptionsPrefix"))
@@ -34,8 +34,8 @@ end
 end 
 
 """
-	f::PetscReal,steplength::PetscReal,reason::TaoLineSearchConvergedReason = TaoLineSearchApply(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec) 
-Performs a line
+	f::PetscReal,steplength::PetscReal,reason::TaoLineSearchConvergedReason = TaoLineSearchApply(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec) 
+Performs a line-search in a given step direction.
 Criteria for acceptable step length depends on the line-search algorithm chosen
 
 Collective
@@ -53,7 +53,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearchConvergedReason`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetType()`,
+See also: `Tao`, `TaoLineSearchConvergedReason`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetType()`,
 `TaoLineSearchSetInitialStepLength()`, `TaoAddLineSearchCounts()`
 
 # External Links
@@ -83,7 +83,7 @@ end
 end 
 
 """
-	TaoLineSearchComputeGradient(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
+	TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
 Computes the gradient of the objective function
 
 Collective
@@ -97,7 +97,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchComputeObjective()`, `TaoLineSearchComputeObjectiveAndGradient()`, `TaoLineSearchSetGradient()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeObjective()`, `TaoLineSearchComputeObjectiveAndGradient()`, `TaoLineSearchSetGradient()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeGradient"))
@@ -120,7 +120,7 @@ end
 end 
 
 """
-	f::PetscReal = TaoLineSearchComputeObjective(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec) 
+	f::PetscReal = TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec) 
 Computes the objective function value at a given point
 
 Collective
@@ -134,7 +134,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSearchComputeObjectiveAndGradient()`, `TaoLineSearchSetObjectiveRoutine()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSearchComputeObjectiveAndGradient()`, `TaoLineSearchSetObjectiveRoutine()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjective"))
@@ -159,7 +159,7 @@ end
 end 
 
 """
-	f::PetscReal,gts::PetscReal = TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec) 
+	f::PetscReal,gts::PetscReal = TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec) 
 Computes the objective function value and inner product of gradient and
 step direction at a given point
 
@@ -175,7 +175,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSearchComputeObjectiveAndGradient()`, `TaoLineSearchSetObjectiveRoutine()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSearchComputeObjectiveAndGradient()`, `TaoLineSearchSetObjectiveRoutine()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjectiveAndGTS"))
@@ -202,7 +202,7 @@ end
 end 
 
 """
-	f::PetscReal = TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
+	f::PetscReal = TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
 Computes the objective function value at a given point
 
 Collective
@@ -217,7 +217,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSearchSetObjectiveRoutine()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSearchSetObjectiveRoutine()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjectiveAndGradient"))
@@ -242,7 +242,7 @@ end
 end 
 
 """
-	newls::TaoLineSearch = TaoLineSearchCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	newls::TaoLineSearch = TaoLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `TaoLineSearch` object.  Algorithms in `Tao` that use
 line-searches will automatically create one so this all is rarely needed
 
@@ -259,7 +259,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchType`, `TaoLineSearchSetType()`, `TaoLineSearchApply()`, `TaoLineSearchDestroy()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchType`, `TaoLineSearchSetType()`, `TaoLineSearchApply()`, `TaoLineSearchDestroy()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchCreate"))
@@ -284,7 +284,7 @@ end
 end 
 
 """
-	TaoLineSearchDestroy(petsclib::PetscLibType,ls::Union{TaoLineSearch, Ref{TaoLineSearch}}) 
+	TaoLineSearchDestroy(petsclib::PetscLibType, ls::Union{TaoLineSearch, Ref{TaoLineSearch}}) 
 Destroys the `TaoLineSearch` context that was created with
 `TaoLineSearchCreate()`
 
@@ -295,7 +295,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApple()`
+See also: `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApple()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchDestroy"))
@@ -324,7 +324,7 @@ This function destroys everything in the `TaoLineSearch` package. It is called f
 
 Level: developer
 
--seealso: `Tao`, `TaoLineSearch`
+See also: `Tao`, `TaoLineSearch`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchFinalizePackage"))
@@ -346,7 +346,7 @@ end
 end 
 
 """
-	f_fullstep::PetscReal = TaoLineSearchGetFullStepObjective(petsclib::PetscLibType,ls::TaoLineSearch) 
+	f_fullstep::PetscReal = TaoLineSearchGetFullStepObjective(petsclib::PetscLibType, ls::TaoLineSearch) 
 Returns the objective function value at the full step.  Useful for some minimization algorithms.
 
 Not Collective
@@ -359,7 +359,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStartingVector()`, `TaoLineSearchGetStepDirection()`
+See also: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStartingVector()`, `TaoLineSearchGetStepDirection()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetFullStepObjective"))
@@ -384,7 +384,7 @@ end
 end 
 
 """
-	nfeval::PetscInt,ngeval::PetscInt,nfgeval::PetscInt = TaoLineSearchGetNumberFunctionEvaluations(petsclib::PetscLibType,ls::TaoLineSearch) 
+	nfeval::PetscInt,ngeval::PetscInt,nfgeval::PetscInt = TaoLineSearchGetNumberFunctionEvaluations(petsclib::PetscLibType, ls::TaoLineSearch) 
 Gets the number of function and gradient evaluation
 routines used by the line search in last application (not cumulative).
 
@@ -400,7 +400,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `TaoLineSearch`
+See also: `TaoLineSearch`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetNumberFunctionEvaluations"))
@@ -429,7 +429,7 @@ end
 end 
 
 """
-	p::Ptr{Cchar} = TaoLineSearchGetOptionsPrefix(petsclib::PetscLibType,ls::TaoLineSearch) 
+	p::Ptr{Cchar} = TaoLineSearchGetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch) 
 Gets the prefix used for searching for all
 `TaoLineSearch` options in the database
 
@@ -443,7 +443,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchSetOptionsPrefix()`, `TaoLineSearchAppendOptionsPrefix()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchSetOptionsPrefix()`, `TaoLineSearchAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetOptionsPrefix"))
@@ -468,7 +468,7 @@ end
 end 
 
 """
-	f::PetscReal,steplength::PetscReal,reason::TaoLineSearchConvergedReason = TaoLineSearchGetSolution(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
+	f::PetscReal,steplength::PetscReal,reason::TaoLineSearchConvergedReason = TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
 Returns the solution to the line search
 
 Collective
@@ -485,7 +485,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `TaoLineSearchGetStartingVector()`, `TaoLineSearchGetStepDirection()`
+See also: `TaoLineSearchGetStartingVector()`, `TaoLineSearchGetStepDirection()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetSolution"))
@@ -514,7 +514,7 @@ end
 end 
 
 """
-	x::PetscVec = TaoLineSearchGetStartingVector(petsclib::PetscLibType,ls::TaoLineSearch) 
+	x::PetscVec = TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearch) 
 Gets a the initial point of the line
 search.
 
@@ -528,7 +528,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStepDirection()`
+See also: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStepDirection()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStartingVector"))
@@ -553,7 +553,7 @@ end
 end 
 
 """
-	s::PetscVec = TaoLineSearchGetStepDirection(petsclib::PetscLibType,ls::TaoLineSearch) 
+	s::PetscVec = TaoLineSearchGetStepDirection(petsclib::PetscLibType, ls::TaoLineSearch) 
 Gets the step direction of the line
 search.
 
@@ -567,7 +567,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStartingVector()`
+See also: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStartingVector()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStepDirection"))
@@ -592,7 +592,7 @@ end
 end 
 
 """
-	s::PetscReal = TaoLineSearchGetStepLength(petsclib::PetscLibType,ls::TaoLineSearch) 
+	s::PetscReal = TaoLineSearchGetStepLength(petsclib::PetscLibType, ls::TaoLineSearch) 
 Get the current step length
 
 Not Collective
@@ -605,7 +605,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchSetInitialStepLength()`, `TaoLineSearchApply()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchSetInitialStepLength()`, `TaoLineSearchApply()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStepLength"))
@@ -630,7 +630,7 @@ end
 end 
 
 """
-	type::TaoLineSearchType = TaoLineSearchGetType(petsclib::PetscLibType,ls::TaoLineSearch) 
+	type::TaoLineSearchType = TaoLineSearchGetType(petsclib::PetscLibType, ls::TaoLineSearch) 
 Gets the current line search algorithm
 
 Not Collective
@@ -643,7 +643,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `TaoLineSearch`, `TaoLineSearchSetType()`, `TaoLineSearchType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `TaoLineSearch`, `TaoLineSearchSetType()`, `TaoLineSearchType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchGetType"))
@@ -669,14 +669,14 @@ end
 
 """
 	TaoLineSearchInitializePackage(petsclib::PetscLibType) 
-This function registers the line
+This function registers the line-search
 algorithms in `Tao`.  When using shared or static libraries, this function is called from the
 first entry to `TaoCreate()`; when using dynamic, it is called
 from PetscDLLibraryRegister_tao()
 
 Level: developer
 
--seealso: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchInitializePackage"))
@@ -698,7 +698,7 @@ end
 end 
 
 """
-	flg::PetscBool = TaoLineSearchIsUsingTaoRoutines(petsclib::PetscLibType,ls::TaoLineSearch) 
+	flg::PetscBool = TaoLineSearchIsUsingTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch) 
 Checks whether the line search is using
 the standard `Tao` evaluation routines.
 
@@ -713,7 +713,7 @@ otherwise `PETSC_FALSE`
 
 Level: developer
 
--seealso: `TaoLineSearch`
+See also: `TaoLineSearch`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchIsUsingTaoRoutines"))
@@ -738,7 +738,7 @@ end
 end 
 
 """
-	TaoLineSearchMonitor(petsclib::PetscLibType,ls::TaoLineSearch, its::PetscInt, f::PetscReal, step::PetscReal) 
+	TaoLineSearchMonitor(petsclib::PetscLibType, ls::TaoLineSearch, its::PetscInt, f::PetscReal, step::PetscReal) 
 Monitor the line search steps. This routine will output the
 iteration number, step length, and function value before calling the implementation
 specific monitor.
@@ -754,7 +754,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `TaoLineSearch`
+See also: `TaoLineSearch`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchMonitor"))
@@ -777,8 +777,8 @@ end
 end 
 
 """
-	TaoLineSearchRegister(petsclib::PetscLibType,sname::String, func::external) 
-Adds a line
+	TaoLineSearchRegister(petsclib::PetscLibType, sname::String, func::external) 
+Adds a line-search algorithm to the registry
 
 Not Collective, No Fortran Support
 
@@ -789,7 +789,7 @@ Input Parameters:
 Calling sequence of `func`:
 - `ls` - the `TaoLineSearch` object to set with the `TaoLineSearchType` specific structure
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`
+See also: `Tao`, `TaoLineSearch`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchRegister"))
@@ -812,7 +812,7 @@ end
 end 
 
 """
-	TaoLineSearchReset(petsclib::PetscLibType,ls::TaoLineSearch) 
+	TaoLineSearchReset(petsclib::PetscLibType, ls::TaoLineSearch) 
 Some line searches may carry state information
 from one `TaoLineSearchApply()` to the next.  This function resets this
 state information.
@@ -824,7 +824,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApply()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApply()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchReset"))
@@ -847,7 +847,7 @@ end
 end 
 
 """
-	TaoLineSearchSetFromOptions(petsclib::PetscLibType,ls::TaoLineSearch) 
+	TaoLineSearchSetFromOptions(petsclib::PetscLibType, ls::TaoLineSearch) 
 Sets various `TaoLineSearch` parameters from user
 options.
 
@@ -869,7 +869,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: `Tao`, `TaoLineSearch`, `TaoGetLineSearch()`
+See also: `Tao`, `TaoLineSearch`, `TaoGetLineSearch()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetFromOptions"))
@@ -892,7 +892,7 @@ end
 end 
 
 """
-	TaoLineSearchSetGradientRoutine(petsclib::PetscLibType,ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
+	TaoLineSearchSetGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
 Sets the gradient evaluation routine for the line search
 
 Logically Collective
@@ -910,7 +910,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObjectiveRoutine()`, `TaoLineSearchSetObjectiveAndGradientRoutine()`, `TaoLineSearchUseTaoRoutines()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObjectiveRoutine()`, `TaoLineSearchSetObjectiveAndGradientRoutine()`, `TaoLineSearchUseTaoRoutines()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetGradientRoutine"))
@@ -933,7 +933,7 @@ end
 end 
 
 """
-	TaoLineSearchSetInitialStepLength(petsclib::PetscLibType,ls::TaoLineSearch, s::PetscReal) 
+	TaoLineSearchSetInitialStepLength(petsclib::PetscLibType, ls::TaoLineSearch, s::PetscReal) 
 Sets the initial step length of a line
 search.  If this value is not set then 1.0 is assumed.
 
@@ -945,7 +945,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchGetStepLength()`, `TaoLineSearchApply()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchGetStepLength()`, `TaoLineSearchApply()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetInitialStepLength"))
@@ -968,7 +968,7 @@ end
 end 
 
 """
-	TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::PetscLibType,ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
+	TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
 Sets the objective and
 (gradient'*stepdirection) evaluation routine for the line search.
 
@@ -989,7 +989,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObjective()`, `TaoLineSearchSetGradient()`, `TaoLineSearchUseTaoRoutines()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObjective()`, `TaoLineSearchSetGradient()`, `TaoLineSearchUseTaoRoutines()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveAndGTSRoutine"))
@@ -1012,7 +1012,7 @@ end
 end 
 
 """
-	TaoLineSearchSetObjectiveAndGradientRoutine(petsclib::PetscLibType,ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
+	TaoLineSearchSetObjectiveAndGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
 Sets the objective/gradient evaluation routine for the line search
 
 Logically Collective
@@ -1031,7 +1031,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObjectiveRoutine()`, `TaoLineSearchSetGradientRoutine()`, `TaoLineSearchUseTaoRoutines()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObjectiveRoutine()`, `TaoLineSearchSetGradientRoutine()`, `TaoLineSearchUseTaoRoutines()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveAndGradientRoutine"))
@@ -1054,7 +1054,7 @@ end
 end 
 
 """
-	TaoLineSearchSetObjectiveRoutine(petsclib::PetscLibType,ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
+	TaoLineSearchSetObjectiveRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid}) 
 Sets the function evaluation routine for the line search
 
 Logically Collective
@@ -1072,7 +1072,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetGradientRoutine()`, `TaoLineSearchSetObjectiveAndGradientRoutine()`, `TaoLineSearchUseTaoRoutines()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetGradientRoutine()`, `TaoLineSearchSetObjectiveAndGradientRoutine()`, `TaoLineSearchUseTaoRoutines()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveRoutine"))
@@ -1095,7 +1095,7 @@ end
 end 
 
 """
-	TaoLineSearchSetOptionsPrefix(petsclib::PetscLibType,ls::TaoLineSearch, p::String) 
+	TaoLineSearchSetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String) 
 Sets the prefix used for searching for all
 `TaoLineSearch` options in the database.
 
@@ -1107,7 +1107,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchAppendOptionsPrefix()`, `TaoLineSearchGetOptionsPrefix()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchAppendOptionsPrefix()`, `TaoLineSearchGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetOptionsPrefix"))
@@ -1130,7 +1130,7 @@ end
 end 
 
 """
-	TaoLineSearchSetType(petsclib::PetscLibType,ls::TaoLineSearch, type::TaoLineSearchType) 
+	TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::TaoLineSearchType) 
 Sets the algorithm used in a line search
 
 Collective
@@ -1144,7 +1144,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchType`, `TaoLineSearchCreate()`, `TaoLineSearchGetType()`,
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchType`, `TaoLineSearchCreate()`, `TaoLineSearchGetType()`,
 `TaoLineSearchApply()`
 
 # External Links
@@ -1168,7 +1168,7 @@ end
 end 
 
 """
-	TaoLineSearchSetUp(petsclib::PetscLibType,ls::TaoLineSearch) 
+	TaoLineSearchSetUp(petsclib::PetscLibType, ls::TaoLineSearch) 
 Sets up the internal data structures for the later use
 of a `TaoLineSearch`
 
@@ -1179,7 +1179,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApply()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApply()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetUp"))
@@ -1202,7 +1202,7 @@ end
 end 
 
 """
-	TaoLineSearchSetVariableBounds(petsclib::PetscLibType,ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec) 
+	TaoLineSearchSetVariableBounds(petsclib::PetscLibType, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec) 
 Sets the upper and lower bounds for a bounded line search
 
 Logically Collective
@@ -1214,7 +1214,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoSetVariableBounds()`, `TaoLineSearchCreate()`
+See also: `Tao`, `TaoLineSearch`, `TaoSetVariableBounds()`, `TaoLineSearchCreate()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchSetVariableBounds"))
@@ -1237,7 +1237,7 @@ end
 end 
 
 """
-	TaoLineSearchUseTaoRoutines(petsclib::PetscLibType,ls::TaoLineSearch, ts::AbstractTao) 
+	TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, ts::AbstractTao) 
 Informs the `TaoLineSearch` to use the
 objective and gradient evaluation routines from the given `Tao` object. The default.
 
@@ -1249,7 +1249,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchUseTaoRoutines"))
@@ -1272,7 +1272,7 @@ end
 end 
 
 """
-	TaoLineSearchView(petsclib::PetscLibType,ls::TaoLineSearch, viewer::PetscViewer) 
+	TaoLineSearchView(petsclib::PetscLibType, ls::TaoLineSearch, viewer::PetscViewer) 
 Prints information about the `TaoLineSearch`
 
 Collective
@@ -1286,7 +1286,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `PetscViewerASCIIOpen()`, `TaoLineSearchViewFromOptions()`
+See also: `Tao`, `TaoLineSearch`, `PetscViewerASCIIOpen()`, `TaoLineSearchViewFromOptions()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchView"))
@@ -1309,7 +1309,7 @@ end
 end 
 
 """
-	TaoLineSearchViewFromOptions(petsclib::PetscLibType,A::TaoLineSearch, obj, name::String) 
+	TaoLineSearchViewFromOptions(petsclib::PetscLibType, A::TaoLineSearch, obj, name::String) 
 View a `TaoLineSearch` object based on values in the options database
 
 Collective
@@ -1324,7 +1324,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoLineSearch`, `TaoLineSearchView()`, `PetscObjectViewFromOptions()`, `TaoLineSearchCreate()`
+See also: `Tao`, `TaoLineSearch`, `TaoLineSearchView()`, `PetscObjectViewFromOptions()`, `TaoLineSearchCreate()`
 
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchViewFromOptions"))
@@ -1347,7 +1347,7 @@ end
 end 
 
 """
-	ctx::TaoMonitorDrawCtx = TaoMonitorDrawCtxCreate(petsclib::PetscLibType,comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
+	ctx::TaoMonitorDrawCtx = TaoMonitorDrawCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
 Creates the monitor context for `TaoMonitorSolutionDraw()`
 
 Collective
@@ -1371,7 +1371,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoMonitorSet()`, `TaoMonitorDefault()`, `VecView()`, `TaoMonitorDrawCtx()`
+See also: `Tao`, `TaoMonitorSet()`, `TaoMonitorDefault()`, `VecView()`, `TaoMonitorDrawCtx()`
 
 # External Links
 $(_doc_external("Tao/TaoMonitorDrawCtxCreate"))
@@ -1396,7 +1396,7 @@ end
 end 
 
 """
-	TaoMonitorDrawCtxDestroy(petsclib::PetscLibType,ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}}) 
+	TaoMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}}) 
 Destroys the monitor context for `TaoMonitorSolutionDraw()`
 
 Collective
@@ -1406,7 +1406,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_tao), `Tao`, `TaoMonitorSet()`, `TaoMonitorDefault()`, `VecView()`, `TaoMonitorSolutionDraw()`
+See also: `Tao`, `TaoMonitorSet()`, `TaoMonitorDefault()`, `VecView()`, `TaoMonitorSolutionDraw()`
 
 # External Links
 $(_doc_external("Tao/TaoMonitorDrawCtxDestroy"))
@@ -1430,7 +1430,7 @@ end
 end 
 
 """
-	TaoTermComputeGradient(petsclib::PetscLibType,term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec) 
+	TaoTermComputeGradient(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec) 
 Evaluate the gradient of a `TaoTerm` for a given solution vector and parameter vector
 
 Collective
@@ -1445,7 +1445,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermComputeObjectiveAndGradient()`,
@@ -1473,7 +1473,7 @@ end
 end 
 
 """
-	TaoTermComputeGradientFD(petsclib::PetscLibType,term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec) 
+	TaoTermComputeGradientFD(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec) 
 Approximate the gradient of a `TaoTerm` using finite differences
 
 Collective
@@ -1492,7 +1492,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1521,7 +1521,7 @@ end
 end 
 
 """
-	use_fd::PetscBool = TaoTermComputeGradientGetUseFD(petsclib::PetscLibType,term::TaoTerm) 
+	use_fd::PetscBool = TaoTermComputeGradientGetUseFD(petsclib::PetscLibType, term::TaoTerm) 
 Get whether finite differences are used in `TaoTermComputeGradient()`.
 
 Not collective
@@ -1534,7 +1534,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1567,8 +1567,8 @@ end
 end 
 
 """
-	TaoTermComputeGradientSetUseFD(petsclib::PetscLibType,term::TaoTerm, use_fd::PetscBool) 
-Set whether to use finite differences instead of the user
+	TaoTermComputeGradientSetUseFD(petsclib::PetscLibType, term::TaoTerm, use_fd::PetscBool) 
+Set whether to use finite differences instead of the user-provided or built-in gradient method in `TaoTermComputeGradient()`.
 
 Logically collective
 
@@ -1581,7 +1581,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1612,7 +1612,7 @@ end
 end 
 
 """
-	TaoTermComputeHessian(petsclib::PetscLibType,term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat) 
+	TaoTermComputeHessian(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat) 
 Evaluate the Hessian of a `TaoTerm`
 (with respect to the solution variables) for a given solution vector and parameter vector
 
@@ -1629,7 +1629,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermComputeGradient()`,
@@ -1657,7 +1657,7 @@ end
 end 
 
 """
-	TaoTermComputeHessianFD(petsclib::PetscLibType,term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat) 
+	TaoTermComputeHessianFD(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat) 
 Use finite difference to compute Hessian matrix.
 
 Collective
@@ -1677,7 +1677,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermGetFDDelta()`,
@@ -1706,7 +1706,7 @@ end
 end 
 
 """
-	use_fd::PetscBool = TaoTermComputeHessianGetUseFD(petsclib::PetscLibType,term::TaoTerm) 
+	use_fd::PetscBool = TaoTermComputeHessianGetUseFD(petsclib::PetscLibType, term::TaoTerm) 
 Get whether finite differences are used in `TaoTermComputeHessian()`.
 
 Not collective
@@ -1719,7 +1719,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1752,8 +1752,8 @@ end
 end 
 
 """
-	TaoTermComputeHessianMFFD(petsclib::PetscLibType,term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat) 
-Update a matrix
+	TaoTermComputeHessianMFFD(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat) 
+Update a matrix-free finite-difference `MATMFFD` Hessian created by
 `TaoTermCreateHessianMFFD()` to represent the Hessian of a `TaoTerm` at a given point and parameters.
 
 Collective
@@ -1769,7 +1769,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `TaoTerm`, `TaoTermCreateHessianMFFD()`, `TaoTermComputeHessian()`, `MATMFFD`
+See also: `TaoTerm`, `TaoTermCreateHessianMFFD()`, `TaoTermComputeHessian()`, `MATMFFD`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermComputeHessianMFFD"))
@@ -1792,8 +1792,8 @@ end
 end 
 
 """
-	TaoTermComputeHessianSetUseFD(petsclib::PetscLibType,term::TaoTerm, use_fd::PetscBool) 
-Set whether to use finite differences instead of the user
+	TaoTermComputeHessianSetUseFD(petsclib::PetscLibType, term::TaoTerm, use_fd::PetscBool) 
+Set whether to use finite differences instead of the user-provided or built-in methods in `TaoTermComputeHessian()`.
 
 Logically collective
 
@@ -1806,7 +1806,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermSetFDDelta()`,
@@ -1837,7 +1837,7 @@ end
 end 
 
 """
-	value::PetscReal = TaoTermComputeObjective(petsclib::PetscLibType,term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec) 
+	value::PetscReal = TaoTermComputeObjective(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec) 
 Evaluate a `TaoTerm` for a given solution vector and parameter vector
 
 Collective
@@ -1852,7 +1852,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeGradient()`,
 `TaoTermComputeObjectiveAndGradient()`,
@@ -1882,7 +1882,7 @@ end
 end 
 
 """
-	value::PetscReal = TaoTermComputeObjectiveAndGradient(petsclib::PetscLibType,term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec) 
+	value::PetscReal = TaoTermComputeObjectiveAndGradient(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec) 
 Evaluate both the value and gradient of
 a `TaoTerm` for a given set of solution vector and parameter vector
 
@@ -1899,7 +1899,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermComputeGradient()`,
@@ -1929,7 +1929,7 @@ end
 end 
 
 """
-	term::TaoTerm = TaoTermCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	term::TaoTerm = TaoTermCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a TaoTerm to use in defining the function `Tao` is to optimize
 
 Collective
@@ -1942,7 +1942,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetType()`,
 `TaoAddTerm()`,
@@ -1974,8 +1974,8 @@ end
 end 
 
 """
-	term::TaoTerm = TaoTermCreateHalfL2Squared(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
-Create a `TaoTerm` for the objective term \\tfrac{1}{2}\\|x
+	term::TaoTerm = TaoTermCreateHalfL2Squared(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
+Create a `TaoTerm` for the objective term \\tfrac{1}{2}\\|x - p\\|_2^2, for solution x and parameters p.
 
 Collective
 
@@ -1989,7 +1989,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMHALFL2SQUARED`,
 `TaoTermCreateL1()`,
@@ -2018,8 +2018,8 @@ end
 end 
 
 """
-	mffd::PetscMat = TaoTermCreateHessianMFFD(petsclib::PetscLibType,term::TaoTerm) 
-Create a `MATMFFD` for a matrix
+	mffd::PetscMat = TaoTermCreateHessianMFFD(petsclib::PetscLibType, term::TaoTerm) 
+Create a `MATMFFD` for a matrix-free finite-difference approximation of the Hessian of a `TaoTerm`
 
 Collective
 
@@ -2031,7 +2031,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term), `TaoTerm`, `TaoTermComputeHessianFD()`
+See also: [](sec_tao_term), `TaoTerm`, `TaoTermComputeHessianFD()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermCreateHessianMFFD"))
@@ -2056,7 +2056,7 @@ end
 end 
 
 """
-	H::PetscMat,Hpre::PetscMat = TaoTermCreateHessianMatrices(petsclib::PetscLibType,term::TaoTerm) 
+	H::PetscMat,Hpre::PetscMat = TaoTermCreateHessianMatrices(petsclib::PetscLibType, term::TaoTerm) 
 Create the matrices that can be inputs to `TaoTermComputeHessian()`
 
 Collective
@@ -2070,7 +2070,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermShellSetCreateHessianMatrices()`,
@@ -2105,7 +2105,7 @@ end
 end 
 
 """
-	H::PetscMat,Hpre::PetscMat = TaoTermCreateHessianMatricesDefault(petsclib::PetscLibType,term::TaoTerm) 
+	H::PetscMat,Hpre::PetscMat = TaoTermCreateHessianMatricesDefault(petsclib::PetscLibType, term::TaoTerm) 
 Default routine for creating Hessian matrices that can be used by many `TaoTerm` implementations
 
 Collective
@@ -2119,7 +2119,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermCreateHessianMatrices()`,
@@ -2151,8 +2151,8 @@ end
 end 
 
 """
-	term::TaoTerm = TaoTermCreateL1(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt, epsilon::PetscReal) 
-Create a `TaoTerm` for the objective function term \\|x
+	term::TaoTerm = TaoTermCreateL1(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, M_N::PetscInt, epsilon::PetscReal) 
+Create a `TaoTerm` for the objective function term \\|x - p\\|_1.
 
 Collective
 
@@ -2167,7 +2167,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERML1`,
 `TaoTermL1GetEpsilon()`,
@@ -2198,7 +2198,7 @@ end
 end 
 
 """
-	parameters::PetscVec = TaoTermCreateParametersVec(petsclib::PetscLibType,term::TaoTerm) 
+	parameters::PetscVec = TaoTermCreateParametersVec(petsclib::PetscLibType, term::TaoTerm) 
 Create a parameter vector for a `TaoTerm`
 
 Collective
@@ -2211,7 +2211,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermShellSetCreateParametersVec()`,
 `TaoTermGetParametersSizes()`,
@@ -2246,7 +2246,7 @@ end
 end 
 
 """
-	term::TaoTerm = TaoTermCreateQuadratic(petsclib::PetscLibType,A::AbstractPetscMat) 
+	term::TaoTerm = TaoTermCreateQuadratic(petsclib::PetscLibType, A::AbstractPetscMat) 
 Create a `TAOTERMQUADRATIC` for a given matrix
 
 Collective
@@ -2259,7 +2259,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TAOTERMQUADRATIC`,
@@ -2289,8 +2289,8 @@ end
 end 
 
 """
-	term::TaoTerm = TaoTermCreateShell(petsclib::PetscLibType,comm::MPI_Comm, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
-Create a `TaoTerm` of type `TAOTERMSHELL` that is ready to accept user
+	term::TaoTerm = TaoTermCreateShell(petsclib::PetscLibType, comm::MPI_Comm, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+Create a `TaoTerm` of type `TAOTERMSHELL` that is ready to accept user-provided callback operations.
 
 Collective
 
@@ -2304,7 +2304,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermCreateShell"))
@@ -2329,7 +2329,7 @@ end
 end 
 
 """
-	solution::PetscVec = TaoTermCreateSolutionVec(petsclib::PetscLibType,term::TaoTerm) 
+	solution::PetscVec = TaoTermCreateSolutionVec(petsclib::PetscLibType, term::TaoTerm) 
 Create a solution vector for a `TaoTerm`
 
 Collective
@@ -2342,7 +2342,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermShellSetCreateSolutionVec()`,
 `TaoTermGetSolutionSizes()`,
@@ -2377,7 +2377,7 @@ end
 end 
 
 """
-	TaoTermDestroy(petsclib::PetscLibType,term::Union{TaoTerm, Ref{TaoTerm}}) 
+	TaoTermDestroy(petsclib::PetscLibType, term::Union{TaoTerm, Ref{TaoTerm}}) 
 Destroy a `TaoTerm`.
 
 Collective
@@ -2387,7 +2387,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,
@@ -2417,7 +2417,7 @@ end
 end 
 
 """
-	newterm::TaoTerm = TaoTermDuplicate(petsclib::PetscLibType,term::TaoTerm, opt::TaoTermDuplicateOption) 
+	newterm::TaoTerm = TaoTermDuplicate(petsclib::PetscLibType, term::TaoTerm, opt::TaoTermDuplicateOption) 
 Duplicate a `TaoTerm`
 
 Collective
@@ -2429,7 +2429,7 @@ Input Parameters:
 Output Parameter:
 - `newterm` - the duplicate `TaoTerm`
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermDuplicateOption`
 
@@ -2456,7 +2456,7 @@ end
 end 
 
 """
-	Hpre_is_H::PetscBool,H_mattype::MatType,Hpre_mattype::MatType = TaoTermGetCreateHessianMode(petsclib::PetscLibType,term::TaoTerm) 
+	Hpre_is_H::PetscBool,H_mattype::MatType,Hpre_mattype::MatType = TaoTermGetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm) 
 Get the behavior of `TaoTermCreateHessianMatricesDefault()`.
 
 Not collective
@@ -2471,7 +2471,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermCreateHessianMatrices()`,
@@ -2505,7 +2505,7 @@ end
 end 
 
 """
-	delta::PetscReal = TaoTermGetFDDelta(petsclib::PetscLibType,term::TaoTerm) 
+	delta::PetscReal = TaoTermGetFDDelta(petsclib::PetscLibType, term::TaoTerm) 
 Get the increment used for finite difference derivative approximations in methods like `TaoTermComputeGradientFD()`
 
 Not collective
@@ -2521,7 +2521,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetFDDelta()`,
 `TaoTermComputeGradientFD()`,
@@ -2551,7 +2551,7 @@ end
 end 
 
 """
-	parameters_layout::PetscLayout = TaoTermGetParametersLayout(petsclib::PetscLibType,term::TaoTerm) 
+	parameters_layout::PetscLayout = TaoTermGetParametersLayout(petsclib::PetscLibType, term::TaoTerm) 
 Get the layouts describing the parameter vectors of a `TaoTerm`.
 
 Not collective
@@ -2564,7 +2564,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersVecType()`,
@@ -2596,7 +2596,7 @@ end
 end 
 
 """
-	parameters_mode::TaoTermParametersMode = TaoTermGetParametersMode(petsclib::PetscLibType,term::TaoTerm) 
+	parameters_mode::TaoTermParametersMode = TaoTermGetParametersMode(petsclib::PetscLibType, term::TaoTerm) 
 Gets the way a `TaoTerm` can accept parameters
 
 Not collective
@@ -2609,7 +2609,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermParametersMode`,
 `TaoTermSetParametersMode()`
@@ -2637,7 +2637,7 @@ end
 end 
 
 """
-	k::PetscInt,M_K::PetscInt,bs::PetscInt = TaoTermGetParametersSizes(petsclib::PetscLibType,term::TaoTerm) 
+	k::PetscInt,M_K::PetscInt,bs::PetscInt = TaoTermGetParametersSizes(petsclib::PetscLibType, term::TaoTerm) 
 Get the sizes describing the layout of the parameter vector space of a `TaoTerm`.
 
 Not collective
@@ -2652,7 +2652,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetParametersSizes()`,
 `TaoTermSetParametersTemplate()`,
@@ -2689,7 +2689,7 @@ end
 end 
 
 """
-	parameters_type::VecType = TaoTermGetParametersVecType(petsclib::PetscLibType,term::TaoTerm) 
+	parameters_type::VecType = TaoTermGetParametersVecType(petsclib::PetscLibType, term::TaoTerm) 
 Get the vector types of the parameter vector of a `TaoTerm`
 
 Not collective
@@ -2702,7 +2702,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetParametersVecType()`,
 `TaoTermGetParametersLayout()`,
@@ -2734,7 +2734,7 @@ end
 end 
 
 """
-	solution_layout::PetscLayout = TaoTermGetSolutionLayout(petsclib::PetscLibType,term::TaoTerm) 
+	solution_layout::PetscLayout = TaoTermGetSolutionLayout(petsclib::PetscLibType, term::TaoTerm) 
 Get the layouts describing the solution vectors of a `TaoTerm`.
 
 Not collective
@@ -2747,7 +2747,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionVecType()`,
@@ -2779,7 +2779,7 @@ end
 end 
 
 """
-	n::PetscInt,M_N::PetscInt,bs::PetscInt = TaoTermGetSolutionSizes(petsclib::PetscLibType,term::TaoTerm) 
+	n::PetscInt,M_N::PetscInt,bs::PetscInt = TaoTermGetSolutionSizes(petsclib::PetscLibType, term::TaoTerm) 
 Get the sizes describing the layout of the solution vector space of a `TaoTerm`.
 
 Not collective
@@ -2794,7 +2794,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetSolutionSizes()`,
 `TaoTermSetSolutionTemplate()`,
@@ -2831,7 +2831,7 @@ end
 end 
 
 """
-	solution_type::VecType = TaoTermGetSolutionVecType(petsclib::PetscLibType,term::TaoTerm) 
+	solution_type::VecType = TaoTermGetSolutionVecType(petsclib::PetscLibType, term::TaoTerm) 
 Get the vector types of the solution vector of a `TaoTerm`
 
 Not collective
@@ -2844,7 +2844,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermSetSolutionVecType()`,
 `TaoTermGetSolutionLayout()`,
@@ -2876,7 +2876,7 @@ end
 end 
 
 """
-	type::TaoTermType = TaoTermGetType(petsclib::PetscLibType,term::TaoTerm) 
+	type::TaoTermType = TaoTermGetType(petsclib::PetscLibType, term::TaoTerm) 
 Get the type of a `TaoTerm`
 
 Not collective
@@ -2889,7 +2889,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermType`,
 `TaoTermCreate()`,
@@ -2922,7 +2922,7 @@ end
 end 
 
 """
-	is_fdpossible::PetscBool3 = TaoTermIsComputeHessianFDPossible(petsclib::PetscLibType,term::TaoTerm) 
+	is_fdpossible::PetscBool3 = TaoTermIsComputeHessianFDPossible(petsclib::PetscLibType, term::TaoTerm) 
 Whether this term can compute Hessian with finite differences
 with either `-tao_term_hessian_use_fd`, `TaoTermComputeHessianSetUseFD()`, or `MATMFFD`.
 
@@ -2936,7 +2936,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermShellSetObjective()`,
@@ -2967,7 +2967,7 @@ end
 end 
 
 """
-	is_defined::PetscBool = TaoTermIsCreateHessianMatricesDefined(petsclib::PetscLibType,term::TaoTerm) 
+	is_defined::PetscBool = TaoTermIsCreateHessianMatricesDefined(petsclib::PetscLibType, term::TaoTerm) 
 Whether this term can call `TaoTermCreateHessianMatrices()`.
 
 Not collective
@@ -2980,7 +2980,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreateHessianMatrices()`,
 `TaoTermShellSetCreateHessianMatrices()`,
@@ -3012,7 +3012,7 @@ end
 end 
 
 """
-	is_defined::PetscBool = TaoTermIsGradientDefined(petsclib::PetscLibType,term::TaoTerm) 
+	is_defined::PetscBool = TaoTermIsGradientDefined(petsclib::PetscLibType, term::TaoTerm) 
 Whether a standalone gradient operation is defined for this `TaoTerm`
 
 Not collective
@@ -3023,7 +3023,7 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the gradient is defined
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeGradient()`,
 `TaoTermShellSetGradient()`,
@@ -3054,7 +3054,7 @@ end
 end 
 
 """
-	is_defined::PetscBool = TaoTermIsHessianDefined(petsclib::PetscLibType,term::TaoTerm) 
+	is_defined::PetscBool = TaoTermIsHessianDefined(petsclib::PetscLibType, term::TaoTerm) 
 Whether a Hessian operation is defined for this `TaoTerm`
 
 Not collective
@@ -3065,7 +3065,7 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the Hessian is defined
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermShellSetHessian()`,
@@ -3096,8 +3096,8 @@ end
 end 
 
 """
-	is_defined::PetscBool = TaoTermIsObjectiveAndGradientDefined(petsclib::PetscLibType,term::TaoTerm) 
-Whether a combined objective
+	is_defined::PetscBool = TaoTermIsObjectiveAndGradientDefined(petsclib::PetscLibType, term::TaoTerm) 
+Whether a combined objective-and-gradient operation is defined for this `TaoTerm`
 
 Not collective
 
@@ -3107,7 +3107,7 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the objective/gradient is defined
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjectiveAndGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -3138,7 +3138,7 @@ end
 end 
 
 """
-	is_defined::PetscBool = TaoTermIsObjectiveDefined(petsclib::PetscLibType,term::TaoTerm) 
+	is_defined::PetscBool = TaoTermIsObjectiveDefined(petsclib::PetscLibType, term::TaoTerm) 
 Whether a standalone objective operation is defined for this `TaoTerm`
 
 Not collective
@@ -3149,7 +3149,7 @@ Input Parameter:
 Output Parameter:
 - `is_defined` - whether the objective is defined
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeObjective()`,
 `TaoTermShellSetObjective()`,
@@ -3180,7 +3180,7 @@ end
 end 
 
 """
-	epsilon::PetscReal = TaoTermL1GetEpsilon(petsclib::PetscLibType,term::TaoTerm) 
+	epsilon::PetscReal = TaoTermL1GetEpsilon(petsclib::PetscLibType, term::TaoTerm) 
 Get the \\epsilon smoothing parameter set by `TaoTermL1SetEpsilon()`.
 
 Not collective
@@ -3193,7 +3193,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERML1`,
 `TaoTermL1SetEpsilon()`
@@ -3221,7 +3221,7 @@ end
 end 
 
 """
-	TaoTermL1SetEpsilon(petsclib::PetscLibType,term::TaoTerm, epsilon::PetscReal) 
+	TaoTermL1SetEpsilon(petsclib::PetscLibType, term::TaoTerm, epsilon::PetscReal) 
 Set an \\epsilon smoothing parameter.
 
 Logically collective
@@ -3238,7 +3238,7 @@ Level: advanced
 If \\epsilon = 0 (the default), then `term` computes \\|x - p\\|_1, but if \\epsilon > 0, then it computes
 \\sum_{i=0}^{n-1} \\left(\\sqrt{(x_i-p_i)^2 + \\epsilon^2} - \\epsilon\\right).
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERML1`,
 `TaoTermL1GetEpsilon()`
@@ -3264,7 +3264,7 @@ end
 end 
 
 """
-	A::PetscMat = TaoTermQuadraticGetMat(petsclib::PetscLibType,term::TaoTerm) 
+	A::PetscMat = TaoTermQuadraticGetMat(petsclib::PetscLibType, term::TaoTerm) 
 Get the matrix defining a `TaoTerm` of type `TAOTERMQUADRATIC`
 
 Not collective
@@ -3277,7 +3277,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMQUADRATIC`,
 `TaoTermQuadraticSetMat()`
@@ -3305,7 +3305,7 @@ end
 end 
 
 """
-	TaoTermQuadraticSetMat(petsclib::PetscLibType,term::TaoTerm, A::AbstractPetscMat) 
+	TaoTermQuadraticSetMat(petsclib::PetscLibType, term::TaoTerm, A::AbstractPetscMat) 
 Set the matrix defining a `TaoTerm` of type `TAOTERMQUADRATIC`
 
 Collective
@@ -3316,7 +3316,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMQUADRATIC`,
 `TaoTermQuadraticGetMat()`
@@ -3342,7 +3342,7 @@ end
 end 
 
 """
-	TaoTermRegister(petsclib::PetscLibType,sname::String, func::external) 
+	TaoTermRegister(petsclib::PetscLibType, sname::String, func::external) 
 Register an implementation of `TaoTerm`
 
 Not Collective, No Fortran Support
@@ -3351,7 +3351,7 @@ Input Parameters:
 - `sname` - name of a new user-defined term
 - `func`  - routine to create the context for the `TaoTermType`
 
--seealso: [](sec_tao_term), `TaoTerm`, `TaoTermSetType()`
+See also: [](sec_tao_term), `TaoTerm`, `TaoTermSetType()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermRegister"))
@@ -3374,7 +3374,7 @@ end
 end 
 
 """
-	TaoTermSetCreateHessianMode(petsclib::PetscLibType,term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::MatType, Hpre_mattype::MatType) 
+	TaoTermSetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::MatType, Hpre_mattype::MatType) 
 Determine the behavior of `TaoTermCreateHessianMatricesDefault()`.
 
 Logically collective
@@ -3392,7 +3392,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermComputeHessian()`,
 `TaoTermCreateHessianMatrices()`,
@@ -3420,7 +3420,7 @@ end
 end 
 
 """
-	TaoTermSetFDDelta(petsclib::PetscLibType,term::TaoTerm, delta::PetscReal) 
+	TaoTermSetFDDelta(petsclib::PetscLibType, term::TaoTerm, delta::PetscReal) 
 Set the increment used for finite difference derivative approximations in methods like `TaoTermComputeGradientFD()`
 
 Logically collective
@@ -3434,7 +3434,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetFDDelta()`,
 `TaoTermComputeGradientFD()`,
@@ -3465,7 +3465,7 @@ end
 end 
 
 """
-	TaoTermSetFromOptions(petsclib::PetscLibType,term::TaoTerm) 
+	TaoTermSetFromOptions(petsclib::PetscLibType, term::TaoTerm) 
 Configure a `TaoTerm` from the PETSc options database
 
 Collective
@@ -3487,7 +3487,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,
@@ -3516,7 +3516,7 @@ end
 end 
 
 """
-	TaoTermSetParametersLayout(petsclib::PetscLibType,term::TaoTerm, parameters_layout::PetscLayout) 
+	TaoTermSetParametersLayout(petsclib::PetscLibType, term::TaoTerm, parameters_layout::PetscLayout) 
 Set the layout describing the parameter vector of `TaoTerm`.
 
 Collective
@@ -3527,7 +3527,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersVecType()`,
@@ -3557,7 +3557,7 @@ end
 end 
 
 """
-	TaoTermSetParametersMode(petsclib::PetscLibType,term::TaoTerm, parameters_mode::TaoTermParametersMode) 
+	TaoTermSetParametersMode(petsclib::PetscLibType, term::TaoTerm, parameters_mode::TaoTermParametersMode) 
 Sets the way a `TaoTerm` can accept parameters
 
 Logically collective
@@ -3571,7 +3571,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermParametersMode`,
 `TaoTermGetParametersMode()`
@@ -3597,7 +3597,7 @@ end
 end 
 
 """
-	TaoTermSetParametersSizes(petsclib::PetscLibType,term::TaoTerm, k::PetscInt, M_K::PetscInt, bs::PetscInt) 
+	TaoTermSetParametersSizes(petsclib::PetscLibType, term::TaoTerm, k::PetscInt, M_K::PetscInt, bs::PetscInt) 
 Set the sizes describing the layout of the parameter vector space of a `TaoTerm`.
 
 Logically collective
@@ -3610,7 +3610,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetParametersSizes()`,
 `TaoTermSetParametersTemplate()`,
@@ -3641,7 +3641,7 @@ end
 end 
 
 """
-	TaoTermSetParametersTemplate(petsclib::PetscLibType,term::TaoTerm, params_template::AbstractPetscVec) 
+	TaoTermSetParametersTemplate(petsclib::PetscLibType, term::TaoTerm, params_template::AbstractPetscVec) 
 Set the parameter vector space to match a template vector
 
 Collective
@@ -3652,7 +3652,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersVecType()`,
@@ -3682,7 +3682,7 @@ end
 end 
 
 """
-	TaoTermSetParametersVecType(petsclib::PetscLibType,term::TaoTerm, parameters_type::VecType) 
+	TaoTermSetParametersVecType(petsclib::PetscLibType, term::TaoTerm, parameters_type::VecType) 
 Set the vector types of the parameters vector of a `TaoTerm`
 
 Logically collective
@@ -3696,7 +3696,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetParametersVecType()`,
 `TaoTermSetParametersLayout()`,
@@ -3725,7 +3725,7 @@ end
 end 
 
 """
-	TaoTermSetSolutionLayout(petsclib::PetscLibType,term::TaoTerm, solution_layout::PetscLayout) 
+	TaoTermSetSolutionLayout(petsclib::PetscLibType, term::TaoTerm, solution_layout::PetscLayout) 
 Set the layout describing the solution vector of `TaoTerm`.
 
 Collective
@@ -3736,7 +3736,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionVecType()`,
@@ -3766,7 +3766,7 @@ end
 end 
 
 """
-	TaoTermSetSolutionSizes(petsclib::PetscLibType,term::TaoTerm, n::PetscInt, M_N::PetscInt, bs::PetscInt) 
+	TaoTermSetSolutionSizes(petsclib::PetscLibType, term::TaoTerm, n::PetscInt, M_N::PetscInt, bs::PetscInt) 
 Set the sizes describing the layout of the solution vector space of a `TaoTerm`.
 
 Logically collective
@@ -3779,7 +3779,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetSolutionSizes()`,
 `TaoTermSetSolutionTemplate()`,
@@ -3810,7 +3810,7 @@ end
 end 
 
 """
-	TaoTermSetSolutionTemplate(petsclib::PetscLibType,term::TaoTerm, sol_template::AbstractPetscVec) 
+	TaoTermSetSolutionTemplate(petsclib::PetscLibType, term::TaoTerm, sol_template::AbstractPetscVec) 
 Set the solution vector space to match a template vector
 
 Collective
@@ -3821,7 +3821,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionVecType()`,
@@ -3851,7 +3851,7 @@ end
 end 
 
 """
-	TaoTermSetSolutionVecType(petsclib::PetscLibType,term::TaoTerm, solution_type::VecType) 
+	TaoTermSetSolutionVecType(petsclib::PetscLibType, term::TaoTerm, solution_type::VecType) 
 Set the vector types of the solution vector of a `TaoTerm`
 
 Logically collective
@@ -3865,7 +3865,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermGetSolutionVecType()`,
 `TaoTermSetSolutionLayout()`,
@@ -3895,7 +3895,7 @@ end
 end 
 
 """
-	TaoTermSetType(petsclib::PetscLibType,term::TaoTerm, type::TaoTermType) 
+	TaoTermSetType(petsclib::PetscLibType, term::TaoTerm, type::TaoTermType) 
 Set the type of a `TaoTerm`
 
 Collective
@@ -3909,7 +3909,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermType`,
 `TaoTermCreate()`,
@@ -3940,7 +3940,7 @@ end
 end 
 
 """
-	TaoTermSetUp(petsclib::PetscLibType,term::TaoTerm) 
+	TaoTermSetUp(petsclib::PetscLibType, term::TaoTerm) 
 Set up a `TaoTerm`.
 
 Collective
@@ -3950,7 +3950,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,
@@ -3979,7 +3979,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = TaoTermShellGetContext(petsclib::PetscLibType,term::TaoTerm) 
+	ctx::Ptr{Cvoid} = TaoTermShellGetContext(petsclib::PetscLibType, term::TaoTerm) 
 Get the context for a `TAOTERMSHELL`
 
 Not collective
@@ -3992,7 +3992,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellSetContextDestroy()`
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellSetContextDestroy()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermShellGetContext"))
@@ -4017,7 +4017,7 @@ end
 end 
 
 """
-	TaoTermShellSetContext(petsclib::PetscLibType,term::TaoTerm, ctx::Ptr{Cvoid}) 
+	TaoTermShellSetContext(petsclib::PetscLibType, term::TaoTerm, ctx::Ptr{Cvoid}) 
 Set a context for a `TAOTERMSHELL`
 
 Logically collective
@@ -4028,7 +4028,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermShellSetContext"))
@@ -4051,7 +4051,7 @@ end
 end 
 
 """
-	TaoTermShellSetContextDestroy(petsclib::PetscLibType,term::TaoTerm, destroy::Ptr{Cvoid}) 
+	TaoTermShellSetContextDestroy(petsclib::PetscLibType, term::TaoTerm, destroy::Ptr{Cvoid}) 
 Set a method to destroy the context resources when a `TAOTERMSHELL` is destroyed
 
 Logically collective
@@ -4062,7 +4062,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellGetContext()`
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellGetContext()`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermShellSetContextDestroy"))
@@ -4085,7 +4085,7 @@ end
 end 
 
 """
-	TaoTermShellSetCreateHessianMatrices(petsclib::PetscLibType,term::TaoTerm, createmats::external) 
+	TaoTermShellSetCreateHessianMatrices(petsclib::PetscLibType, term::TaoTerm, createmats::external) 
 Set the routine that creates Hessian matrices for a `TaoTerm` of type `TAOTERMSHELL`
 
 Logically collective
@@ -4101,7 +4101,7 @@ Calling sequence of `createmats`:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetCreateSolutionVec()`, `TaoTermShellSetCreateParametersVec()`
 
 # External Links
@@ -4125,7 +4125,7 @@ end
 end 
 
 """
-	TaoTermShellSetCreateParametersVec(petsclib::PetscLibType,term::TaoTerm, createparametersvec::external) 
+	TaoTermShellSetCreateParametersVec(petsclib::PetscLibType, term::TaoTerm, createparametersvec::external) 
 Set the routine that creates parameters vector for a `TaoTerm` of type `TAOTERMSHELL`
 
 Logically collective
@@ -4140,7 +4140,7 @@ Calling sequence of `createparametersvec`:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetCreateHessianMatrices()`
 
 # External Links
@@ -4164,7 +4164,7 @@ end
 end 
 
 """
-	TaoTermShellSetCreateSolutionVec(petsclib::PetscLibType,term::TaoTerm, createsolutionvec::external) 
+	TaoTermShellSetCreateSolutionVec(petsclib::PetscLibType, term::TaoTerm, createsolutionvec::external) 
 Set the routine that creates solution vector for a `TaoTerm` of type `TAOTERMSHELL`
 
 Logically collective
@@ -4179,7 +4179,7 @@ Calling sequence of `createsolutionvec`:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetCreateHessianMatrices()`
 
 # External Links
@@ -4203,7 +4203,7 @@ end
 end 
 
 """
-	TaoTermShellSetGradient(petsclib::PetscLibType,term::TaoTerm, gradient::Ptr{Cvoid}) 
+	TaoTermShellSetGradient(petsclib::PetscLibType, term::TaoTerm, gradient::Ptr{Cvoid}) 
 Set the gradient function of a `TAOTERMSHELL`
 
 Logically collective
@@ -4214,7 +4214,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetObjectiveAndGradient()`,
 `TaoTermShellSetHessian()`,
@@ -4242,7 +4242,7 @@ end
 end 
 
 """
-	TaoTermShellSetHessian(petsclib::PetscLibType,term::TaoTerm, hessian::Ptr{Cvoid}) 
+	TaoTermShellSetHessian(petsclib::PetscLibType, term::TaoTerm, hessian::Ptr{Cvoid}) 
 Set the Hessian function of a `TAOTERMSHELL`
 
 Logically collective
@@ -4253,7 +4253,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -4281,7 +4281,7 @@ end
 end 
 
 """
-	TaoTermShellSetIsComputeHessianFDPossible(petsclib::PetscLibType,term::TaoTerm, ispossible::PetscBool3) 
+	TaoTermShellSetIsComputeHessianFDPossible(petsclib::PetscLibType, term::TaoTerm, ispossible::PetscBool3) 
 Set whether this term can compute Hessian with finite differences for a `TAOTERMSHELL`
 
 Logically collective
@@ -4292,7 +4292,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -4320,7 +4320,7 @@ end
 end 
 
 """
-	TaoTermShellSetObjective(petsclib::PetscLibType,term::TaoTerm, objective::Ptr{Cvoid}) 
+	TaoTermShellSetObjective(petsclib::PetscLibType, term::TaoTerm, objective::Ptr{Cvoid}) 
 Set the objective function of a `TAOTERMSHELL`
 
 Logically collective
@@ -4331,7 +4331,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
 `TaoTermShellSetHessian()`,
@@ -4359,7 +4359,7 @@ end
 end 
 
 """
-	TaoTermShellSetObjectiveAndGradient(petsclib::PetscLibType,term::TaoTerm, objandgrad::Ptr{Cvoid}) 
+	TaoTermShellSetObjectiveAndGradient(petsclib::PetscLibType, term::TaoTerm, objandgrad::Ptr{Cvoid}) 
 Set the objective and gradient function of a `TAOTERMSHELL`
 
 Logically collective
@@ -4370,7 +4370,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetHessian()`,
@@ -4398,7 +4398,7 @@ end
 end 
 
 """
-	TaoTermShellSetView(petsclib::PetscLibType,term::TaoTerm, view::external) 
+	TaoTermShellSetView(petsclib::PetscLibType, term::TaoTerm, view::external) 
 Set the view function of a `TAOTERMSHELL`
 
 Logically collective
@@ -4413,7 +4413,7 @@ Calling sequence of `view`:
 
 Level: intermediate
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSetContextDestroy()`,
 `TaoTermShellSetObjective()`,
 `TaoTermShellSetGradient()`,
 `TaoTermShellSetObjectiveAndGradient()`,
@@ -4440,7 +4440,7 @@ end
 end 
 
 """
-	index::PetscInt = TaoTermSumAddTerm(petsclib::PetscLibType,sumterm::TaoTerm, prefix::String, scale::PetscReal, term::TaoTerm, map::AbstractPetscMat) 
+	index::PetscInt = TaoTermSumAddTerm(petsclib::PetscLibType, sumterm::TaoTerm, prefix::String, scale::PetscReal, term::TaoTerm, map::AbstractPetscMat) 
 Append a term to the terms being summed
 
 Collective
@@ -4457,7 +4457,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term), `TaoTerm`, `TAOTERMSUM`
+See also: [](sec_tao_term), `TaoTerm`, `TAOTERMSUM`
 
 # External Links
 $(_doc_external("TaoTerm/TaoTermSumAddTerm"))
@@ -4482,7 +4482,7 @@ end
 end 
 
 """
-	values::Ptr{PetscReal} = TaoTermSumGetLastTermObjectives(petsclib::PetscLibType,term::TaoTerm) 
+	values::Ptr{PetscReal} = TaoTermSumGetLastTermObjectives(petsclib::PetscLibType, term::TaoTerm) 
 Get the contributions from each term to the
 last evaluation of `TaoTermComputeObjective()` or `TaoTermComputeObjectiveAndGradient()`
 
@@ -4496,7 +4496,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`
 
@@ -4523,7 +4523,7 @@ end
 end 
 
 """
-	n_terms::PetscInt = TaoTermSumGetNumberTerms(petsclib::PetscLibType,term::TaoTerm) 
+	n_terms::PetscInt = TaoTermSumGetNumberTerms(petsclib::PetscLibType, term::TaoTerm) 
 Get the number of terms in the sum
 
 Not collective
@@ -4536,7 +4536,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumSetNumberTerms()`
@@ -4564,7 +4564,7 @@ end
 end 
 
 """
-	prefix::String,scale::PetscReal,term::TaoTerm,map::PetscMat = TaoTermSumGetTerm(petsclib::PetscLibType,sumterm::TaoTerm, index::PetscInt) 
+	prefix::String,scale::PetscReal,term::TaoTerm,map::PetscMat = TaoTermSumGetTerm(petsclib::PetscLibType, sumterm::TaoTerm, index::PetscInt) 
 Get the data for a term in a `TAOTERMSUM`
 
 Not collective
@@ -4581,7 +4581,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumSetTerm()`,
@@ -4616,7 +4616,7 @@ end
 end 
 
 """
-	unmapped_H::PetscMat,unmapped_Hpre::PetscMat,mapped_H::PetscMat,mapped_Hpre::PetscMat = TaoTermSumGetTermHessianMatrices(petsclib::PetscLibType,term::TaoTerm, index::PetscInt) 
+	unmapped_H::PetscMat,unmapped_Hpre::PetscMat,mapped_H::PetscMat,mapped_Hpre::PetscMat = TaoTermSumGetTermHessianMatrices(petsclib::PetscLibType, term::TaoTerm, index::PetscInt) 
 Get Hessian matrices set with `TaoTermSumSetTermHessianMatrices()`.
 
 Not collective
@@ -4633,7 +4633,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermComputeHessian()`,
@@ -4668,7 +4668,7 @@ end
 end 
 
 """
-	mask::TaoTermMask = TaoTermSumGetTermMask(petsclib::PetscLibType,term::TaoTerm, index::PetscInt) 
+	mask::TaoTermMask = TaoTermSumGetTermMask(petsclib::PetscLibType, term::TaoTerm, index::PetscInt) 
 Get the `TaoTermMask` of a term in the sum
 
 Not collective
@@ -4682,7 +4682,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumSetTermMask()`
@@ -4710,7 +4710,7 @@ end
 end 
 
 """
-	params::PetscVec = TaoTermSumParametersPack(petsclib::PetscLibType,term::TaoTerm, p_arr::Vector{<:AbstractPetscVec}) 
+	params::PetscVec = TaoTermSumParametersPack(petsclib::PetscLibType, term::TaoTerm, p_arr::Vector{<:AbstractPetscVec}) 
 Concatenate the parameters for terms into a `VECNEST` parameter vector for a `TAOTERMSUM`
 
 Collective
@@ -4724,7 +4724,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumParametersUnpack()`,
@@ -4755,7 +4755,7 @@ end
 end 
 
 """
-	TaoTermSumParametersUnpack(petsclib::PetscLibType,term::TaoTerm, params::AbstractPetscVec, p_arr::Vector{<:AbstractPetscVec}) 
+	TaoTermSumParametersUnpack(petsclib::PetscLibType, term::TaoTerm, params::AbstractPetscVec, p_arr::Vector{<:AbstractPetscVec}) 
 Unpack the concatenated parameters created by `TaoTermSumParametersPack()` and destroy the `VECNEST`
 
 Collective
@@ -4769,7 +4769,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumParametersPack()`,
@@ -4798,7 +4798,7 @@ end
 end 
 
 """
-	TaoTermSumSetNumberTerms(petsclib::PetscLibType,term::TaoTerm, n_terms::PetscInt) 
+	TaoTermSumSetNumberTerms(petsclib::PetscLibType, term::TaoTerm, n_terms::PetscInt) 
 Set the number of terms in the sum
 
 Collective
@@ -4809,7 +4809,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumGetNumberTerms()`
@@ -4835,7 +4835,7 @@ end
 end 
 
 """
-	TaoTermSumSetTerm(petsclib::PetscLibType,sumterm::TaoTerm, index::PetscInt, prefix::String, scale::PetscReal, term::TaoTerm, map::AbstractPetscMat) 
+	TaoTermSumSetTerm(petsclib::PetscLibType, sumterm::TaoTerm, index::PetscInt, prefix::String, scale::PetscReal, term::TaoTerm, map::AbstractPetscMat) 
 Set a term in a sum of terms
 
 Collective
@@ -4850,7 +4850,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumGetTerm()`,
@@ -4877,7 +4877,7 @@ end
 end 
 
 """
-	TaoTermSumSetTermHessianMatrices(petsclib::PetscLibType,term::TaoTerm, index::PetscInt, unmapped_H::AbstractPetscMat, unmapped_Hpre::AbstractPetscMat, mapped_H::AbstractPetscMat, mapped_Hpre::AbstractPetscMat) 
+	TaoTermSumSetTermHessianMatrices(petsclib::PetscLibType, term::TaoTerm, index::PetscInt, unmapped_H::AbstractPetscMat, unmapped_Hpre::AbstractPetscMat, mapped_H::AbstractPetscMat, mapped_Hpre::AbstractPetscMat) 
 Set Hessian matrices that can be used internally by a `TAOTERMSUM`
 
 Logically collective
@@ -4892,7 +4892,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermComputeHessian()`,
@@ -4919,7 +4919,7 @@ end
 end 
 
 """
-	TaoTermSumSetTermMask(petsclib::PetscLibType,term::TaoTerm, index::PetscInt, mask::TaoTermMask) 
+	TaoTermSumSetTermMask(petsclib::PetscLibType, term::TaoTerm, index::PetscInt, mask::TaoTermMask) 
 Set a `TaoTermMask` on a term in the sum
 
 Logically collective
@@ -4934,7 +4934,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumGetTermMask()`
@@ -4960,7 +4960,7 @@ end
 end 
 
 """
-	TaoTermView(petsclib::PetscLibType,term::TaoTerm, viewer::PetscViewer) 
+	TaoTermView(petsclib::PetscLibType, term::TaoTerm, viewer::PetscViewer) 
 View a description of a `TaoTerm`.
 
 Collective
@@ -4971,7 +4971,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TaoTermCreate()`,
 `TaoTermSetType()`,

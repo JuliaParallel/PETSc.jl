@@ -1,6 +1,6 @@
 """
-	InAdapt::PetscMat = DMAdaptInterpolator(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid}) 
-Adapts a grid interpolator so that it accurately reproduces a set of sample fine
+	InAdapt::PetscMat = DMAdaptInterpolator(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid}) 
+Adapts a grid interpolator so that it accurately reproduces a set of sample fine-grid vectors
 
 Collective
 
@@ -21,7 +21,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ksp), `DM`, `Mat`, `KSP`, `DMCheckInterpolator()`, `DMCreateInterpolation()`, `PCMG`
+See also: `DM`, `Mat`, `KSP`, `DMCheckInterpolator()`, `DMCreateInterpolation()`, `PCMG`
 
 # External Links
 $(_doc_external("DM/DMAdaptInterpolator"))
@@ -46,7 +46,7 @@ end
 end 
 
 """
-	dmAdapt::PetscDM = DMAdaptLabel(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	dmAdapt::PetscDM = DMAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Adapt a `DM` based on a `DMLabel` with values interpreted as coarsening and refining flags.  Specific implementations of `DM` maybe have
 specialized flags, but all implementations should accept flag values `DM_ADAPT_DETERMINE`, `DM_ADAPT_KEEP`, `DM_ADAPT_REFINE`, and,
 `DM_ADAPT_COARSEN`.
@@ -62,7 +62,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMAdaptMetric()`, `DMCoarsen()`, `DMRefine()`
+See also: `DM`, `DMAdaptMetric()`, `DMCoarsen()`, `DMRefine()`
 
 # External Links
 $(_doc_external("DM/DMAdaptLabel"))
@@ -87,7 +87,7 @@ end
 end 
 
 """
-	dmAdapt::PetscDM = DMAdaptMetric(petsclib::PetscLibType,dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel) 
+	dmAdapt::PetscDM = DMAdaptMetric(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel) 
 Generates a mesh adapted to the specified metric field.
 
 Input Parameters:
@@ -99,7 +99,7 @@ Input Parameters:
 Output Parameter:
 - `dmAdapt` - Pointer to the `DM` object containing the adapted mesh
 
--seealso: `DMAdaptLabel()`, `DMCoarsen()`, `DMRefine()`
+See also: `DMAdaptLabel()`, `DMCoarsen()`, `DMRefine()`
 
 # External Links
 $(_doc_external("DM/DMAdaptMetric"))
@@ -124,7 +124,7 @@ end
 end 
 
 """
-	bd::PetscInt = DMAddBoundary(petsclib::PetscLibType,dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	bd::PetscInt = DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Add a boundary condition, for a single field, to a model represented by a `DM`
 
 Collective
@@ -152,43 +152,7 @@ Options Database Keys:
 
 Level: intermediate
 
-Notes:
-If the `DM` is of type `DMPLEX` and the field is of type `PetscFE`, then this function completes the label using `DMPlexLabelComplete()`.
-
-Both bcFunc and bcFunc_t will depend on the boundary condition type. If the type if `DM_BC_ESSENTIAL`, then the calling sequence is:
--vb
-void bcFunc(PetscInt dim, PetscReal time, const PetscReal x[], PetscInt Nc, PetscScalar bcval[])
--ve
-
-If the type is `DM_BC_ESSENTIAL_FIELD` or other _FIELD value, then the calling sequence is:
-
--vb
-void bcFunc(PetscInt dim, PetscInt Nf, PetscInt NfAux,
-const PetscInt uOff[], const PetscInt uOff_x[], const PetscScalar u[], const PetscScalar u_t[], const PetscScalar u_x[],
-const PetscInt aOff[], const PetscInt aOff_x[], const PetscScalar a[], const PetscScalar a_t[], const PetscScalar a_x[],
-PetscReal time, const PetscReal x[], PetscScalar bcval[])
--ve
-- `dim` - the spatial dimension
-- `Nf` - the number of fields
-- `uOff` - the offset into u[] and u_t[] for each field
-- `uOff_x` - the offset into u_x[] for each field
-- `u` - each field evaluated at the current point
-- `u_t` - the time derivative of each field evaluated at the current point
-- `u_x` - the gradient of each field evaluated at the current point
-- `aOff` - the offset into a[] and a_t[] for each auxiliary field
-- `aOff_x` - the offset into a_x[] for each auxiliary field
-- `a` - each auxiliary field evaluated at the current point
-- `a_t` - the time derivative of each auxiliary field evaluated at the current point
-- `a_x` - the gradient of auxiliary each field evaluated at the current point
-- `t` - current time
-- `x` - coordinates of the current point
-- `numConstants` - number of constant parameters
-- `constants` - constant parameters
-- `bcval` - output values at the current point
-
-See also: 
-=== 
-`DM`, `DSGetBoundary()`, `PetscDSAddBoundary()`
+See also: `DM`, `DSGetBoundary()`, `PetscDSAddBoundary()`
 
 # External Links
 $(_doc_external("DM/DMAddBoundary"))
@@ -213,7 +177,7 @@ end
 end 
 
 """
-	DMAddField(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, disc) 
+	DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, disc) 
 Add a field to a `DM` object. A field is a function space defined by of a set of discretization points (geometric entities)
 and a discretization object that defines the function space associated with those points.
 
@@ -226,19 +190,7 @@ Input Parameters:
 
 Level: intermediate
 
-Notes:
-The label already exists or will be added to the `DM` with `DMSetLabel()`.
-
-For example, a piecewise continuous pressure field can be defined by coefficients at the cell centers of a mesh and piecewise constant functions
-within each cell. Thus a specific function in the space is defined by the combination of a `Vec` containing the coefficients, a `DM` defining the
-geometry entities, a `DMLabel` indicating a subset of those geometric entities, and a discretization object, such as a `PetscFE`.
-
-Fortran Note:
-Use the argument `PetscObjectCast(disc)` as the second argument
-
-See also: 
-=== 
-`DM`, `DMSetLabel()`, `DMSetField()`, `DMGetField()`, `PetscFE`
+See also: `DM`, `DMSetLabel()`, `DMSetField()`, `DMGetField()`, `PetscFE`
 
 # External Links
 $(_doc_external("DM/DMAddField"))
@@ -261,7 +213,7 @@ end
 end 
 
 """
-	DMAddLabel(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMAddLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Add the label to this `DM`
 
 Not Collective
@@ -272,9 +224,7 @@ Input Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMAddLabel"))
@@ -297,7 +247,7 @@ end
 end 
 
 """
-	DMAppendOptionsPrefix(petsclib::PetscLibType,dm::AbstractPetscDM, prefix::String) 
+	DMAppendOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String) 
 Appends an additional string to an already existing prefix used for searching for
 `DM` options in the options database.
 
@@ -309,14 +259,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-If the `DM` does not currently have an options prefix then this value is used alone as the prefix as if `DMSetOptionsPrefix()` had been called.
-A hyphen (-) must NOT be given at the beginning of the prefix name.
-The first character of all runtime options is AUTOMATICALLY the hyphen.
-
-See also: 
-=== 
-`DM`, `DMSetOptionsPrefix()`, `DMGetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `DMSetFromOptions()`
+See also: `DM`, `DMSetOptionsPrefix()`, `DMGetOptionsPrefix()`, `PetscObjectAppendOptionsPrefix()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DM/DMAppendOptionsPrefix"))
@@ -339,8 +282,8 @@ end
 end 
 
 """
-	DMCheckInterpolator(petsclib::PetscLibType,dmf::AbstractPetscDM, In::AbstractPetscMat, MC::AbstractPetscMat, MF::AbstractPetscMat, tol::PetscReal) 
-Check that an interpolation matrix accurately reproduces a set of sample fine
+	DMCheckInterpolator(petsclib::PetscLibType, dmf::AbstractPetscDM, In::AbstractPetscMat, MC::AbstractPetscMat, MF::AbstractPetscMat, tol::PetscReal) 
+Check that an interpolation matrix accurately reproduces a set of sample fine-grid vectors
 
 Collective
 
@@ -356,7 +299,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_ksp), `DM`, `Mat`, `DMAdaptInterpolator()`, `DMCreateInterpolation()`, `PCMG`
+See also: `DM`, `Mat`, `DMAdaptInterpolator()`, `DMCreateInterpolation()`, `PCMG`
 
 # External Links
 $(_doc_external("DM/DMCheckInterpolator"))
@@ -379,7 +322,7 @@ end
 end 
 
 """
-	DMClearAuxiliaryVec(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMClearAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroys the auxiliary vector information and creates a new empty one
 
 Not Collective
@@ -389,9 +332,7 @@ Input Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMCopyAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMSetAuxiliaryVec()`
+See also: `DM`, `DMCopyAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMSetAuxiliaryVec()`
 
 # External Links
 $(_doc_external("DM/DMClearAuxiliaryVec"))
@@ -414,7 +355,7 @@ end
 end 
 
 """
-	DMClearDS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMClearDS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Remove all discrete systems from the `DM`
 
 Logically Collective
@@ -424,9 +365,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMGetNumDS()`, `DMGetDS()`, `DMSetField()`
+See also: `DM`, `DMGetNumDS()`, `DMGetDS()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMClearDS"))
@@ -449,7 +388,7 @@ end
 end 
 
 """
-	DMClearFields(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMClearFields(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Remove all fields from the `DM`
 
 Logically Collective
@@ -459,9 +398,7 @@ Input Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMGetNumFields()`, `DMSetNumFields()`, `DMSetField()`
+See also: `DM`, `DMGetNumFields()`, `DMSetNumFields()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMClearFields"))
@@ -484,7 +421,7 @@ end
 end 
 
 """
-	DMClearGlobalVectors(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMClearGlobalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroys all the global vectors that have been created for `DMGetGlobalVector()` calls in this `DM`
 
 Collective
@@ -494,7 +431,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMRestoreLocalVector()`,
 `VecStrideMax()`, `VecStrideMin()`, `VecStrideNorm()`, `DMClearLocalVectors()`
@@ -520,7 +457,7 @@ end
 end 
 
 """
-	DMClearLabelStratum(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, value::PetscInt) 
+	DMClearLabelStratum(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt) 
 Remove all points from a stratum from a `DMLabel`
 
 Not Collective
@@ -534,9 +471,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMLabelClearStratum()`, `DMSetLabelValue()`, `DMGetStratumIS()`, `DMClearLabelValue()`
+See also: `DM`, `DMLabel`, `DMLabelClearStratum()`, `DMSetLabelValue()`, `DMGetStratumIS()`, `DMClearLabelValue()`
 
 # External Links
 $(_doc_external("DM/DMClearLabelStratum"))
@@ -559,7 +494,7 @@ end
 end 
 
 """
-	DMClearLabelValue(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, point::PetscInt, value::PetscInt) 
+	DMClearLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::PetscInt, value::PetscInt) 
 Remove a point from a `DMLabel` with given value
 
 Not Collective
@@ -572,9 +507,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabelClearValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabelClearValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMClearLabelValue"))
@@ -597,7 +530,7 @@ end
 end 
 
 """
-	DMClearLocalVectors(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMClearLocalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroys all the local vectors that have been created for `DMGetLocalVector()` calls in this `DM`
 
 Collective
@@ -607,7 +540,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMCreateLocalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `DM`, `DMCreateLocalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMLocalToLocalBegin()`,
 `DMLocalToLocalEnd()`, `DMRestoreLocalVector()`,
 `VecStrideMax()`, `VecStrideMin()`, `VecStrideNorm()`, `DMClearGlobalVectors()`
@@ -633,7 +566,7 @@ end
 end 
 
 """
-	DMClearNamedGlobalVectors(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMClearNamedGlobalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroys all the named global vectors that have been created with `DMGetNamedGlobalVector()` in this `DM`
 
 Collective
@@ -643,7 +576,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMGetNamedGlobalVector()`, `DMGetNamedLocalVector()`, `DMClearNamedLocalVectors()`
+See also: `DM`, `DMGetNamedGlobalVector()`, `DMGetNamedLocalVector()`, `DMClearNamedLocalVectors()`
 
 # External Links
 $(_doc_external("DM/DMClearNamedGlobalVectors"))
@@ -666,7 +599,7 @@ end
 end 
 
 """
-	DMClearNamedLocalVectors(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMClearNamedLocalVectors(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroys all the named local vectors that have been created with `DMGetNamedLocalVector()` in this `DM`
 
 Collective
@@ -676,7 +609,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMGetNamedGlobalVector()`, `DMGetNamedLocalVector()`, `DMClearNamedGlobalVectors()`
+See also: `DM`, `DMGetNamedGlobalVector()`, `DMGetNamedLocalVector()`, `DMClearNamedGlobalVectors()`
 
 # External Links
 $(_doc_external("DM/DMClearNamedLocalVectors"))
@@ -699,7 +632,7 @@ end
 end 
 
 """
-	newdm::PetscDM = DMClone(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	newdm::PetscDM = DMClone(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Creates a `DM` object with the same topology as the original.
 
 Collective
@@ -712,18 +645,7 @@ Output Parameter:
 
 Level: beginner
 
-Notes:
-For some `DM` implementations this is a shallow clone, the result of which may share (reference counted) information with its parent. For example,
-`DMClone()` applied to a `DMPLEX` object will result in a new `DMPLEX` that shares the topology with the original `DMPLEX`. It does not
-share the `PetscSection` of the original `DM`.
-
-The clone is considered set up if the original has been set up.
-
-Use `DMConvert()` for a general way to create new `DM` from a given `DM`
-
-See also: 
-=== 
-`DM`, `DMDestroy()`, `DMCreate()`, `DMSetType()`, `DMSetLocalSection()`, `DMSetGlobalSection()`, `DMPLEX`, `DMConvert()`
+See also: `DM`, `DMDestroy()`, `DMCreate()`, `DMSetType()`, `DMSetLocalSection()`, `DMSetGlobalSection()`, `DMPLEX`, `DMConvert()`
 
 # External Links
 $(_doc_external("DM/DMClone"))
@@ -748,8 +670,8 @@ end
 end 
 
 """
-	dmc::PetscDM = DMCoarsen(petsclib::PetscLibType,dm::AbstractPetscDM, comm::MPI_Comm) 
-Coarsens a `DM` object using a standard, non
+	dmc::PetscDM = DMCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm) 
+Coarsens a `DM` object using a standard, non-adaptive coarsening of the underlying mesh
 
 Collective
 
@@ -762,9 +684,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMRefine()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateDomainDecomposition()`,
+See also: `DM`, `DMRefine()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateDomainDecomposition()`,
 `DMCoarsenHookAdd()`, `DMCoarsenHookRemove()`
 
 # External Links
@@ -790,7 +710,7 @@ end
 end 
 
 """
-	DMCoarsenHierarchy(petsclib::PetscLibType,dm::AbstractPetscDM, nlevels::PetscInt, dmc::Vector{<:AbstractPetscDM}) 
+	DMCoarsenHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::PetscInt, dmc::Vector{<:AbstractPetscDM}) 
 Coarsens a `DM` object, all levels at once
 
 Collective
@@ -804,9 +724,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCoarsen()`, `DMRefineHierarchy()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
+See also: `DM`, `DMCoarsen()`, `DMRefineHierarchy()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMCoarsenHierarchy"))
@@ -829,7 +747,7 @@ end
 end 
 
 """
-	DMCoarsenHookAdd(petsclib::PetscLibType,fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
+	DMCoarsenHookAdd(petsclib::PetscLibType, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
 adds a callback to be run when restricting a nonlinear problem to the coarse grid
 
 Logically Collective; No Fortran Support
@@ -855,19 +773,7 @@ Calling sequence of `restricthook`:
 
 Level: advanced
 
-Notes:
-This function is only needed if auxiliary data, attached to the `DM` with `PetscObjectCompose()`, needs to be set up or passed from the fine `DM` to the coarse `DM`.
-
-If this function is called multiple times, the hooks will be run in the order they are added.
-
-In order to compose with nonlinear preconditioning without duplicating storage, the hook should be implemented to
-extract the finest level information from its context (instead of from the `SNES`).
-
-The hooks are automatically called by `DMRestrict()`
-
-See also: 
-=== 
-`DM`, `DMCoarsenHookRemove()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
+See also: `DM`, `DMCoarsenHookRemove()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
 
 # External Links
 $(_doc_external("DM/DMCoarsenHookAdd"))
@@ -890,7 +796,7 @@ end
 end 
 
 """
-	DMCoarsenHookRemove(petsclib::PetscLibType,fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
+	DMCoarsenHookRemove(petsclib::PetscLibType, fine::AbstractPetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
 remove a callback set with `DMCoarsenHookAdd()`
 
 Logically Collective; No Fortran Support
@@ -916,14 +822,7 @@ Calling sequence of `restricthook`:
 
 Level: advanced
 
-Notes:
-This function does nothing if the `coarsenhook` is not in the list.
-
-See `DMCoarsenHookAdd()` for the calling sequence of `coarsenhook` and `restricthook`
-
-See also: 
-=== 
-`DM`, `DMCoarsenHookAdd()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
+See also: `DM`, `DMCoarsenHookAdd()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
 
 # External Links
 $(_doc_external("DM/DMCoarsenHookRemove"))
@@ -946,7 +845,7 @@ end
 end 
 
 """
-	equal::PetscBool,message::Ptr{Cchar} = DMCompareLabels(petsclib::PetscLibType,dm0::AbstractPetscDM, dm1::AbstractPetscDM) 
+	equal::PetscBool,message::Ptr{Cchar} = DMCompareLabels(petsclib::PetscLibType, dm0::AbstractPetscDM, dm1::AbstractPetscDM) 
 Compare labels between two `DM` objects
 
 Collective; No Fortran Support
@@ -961,30 +860,7 @@ Output Parameters:
 
 Level: intermediate
 
-Notes:
-The output flag equal will be the same on all processes.
-
-If equal is passed as `NULL` and difference is found, an error is thrown on all processes.
-
-Make sure to pass equal is `NULL` on all processes or none of them.
-
-The output message is set independently on each rank.
-
-message must be freed with `PetscFree()`
-
-If message is passed as `NULL` and a difference is found, the difference description is printed to `stderr` in synchronized manner.
-
-Make sure to pass message as `NULL` on all processes or no processes.
-
-Labels are matched by name. If the number of labels and their names are equal,
-`DMLabelCompare()` is used to compare each pair of labels with the same name.
-
-Developer Note:
-Cannot automatically generate the Fortran stub because `message` must be freed with `PetscFree()`
-
-See also: 
-=== 
-`DM`, `DMLabel`, `DMAddLabel()`, `DMCopyLabelsMode`, `DMLabelCompare()`
+See also: `DM`, `DMLabel`, `DMAddLabel()`, `DMCopyLabelsMode`, `DMLabelCompare()`
 
 # External Links
 $(_doc_external("DM/DMCompareLabels"))
@@ -1011,7 +887,7 @@ end
 end 
 
 """
-	DMCompositeAddDM(petsclib::PetscLibType,dmc::AbstractPetscDM, dm::AbstractPetscDM) 
+	DMCompositeAddDM(petsclib::PetscLibType, dmc::AbstractPetscDM, dm::AbstractPetscDM) 
 adds a `DM` vector to a `DMCOMPOSITE`
 
 Collective
@@ -1022,7 +898,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeGather()`, `DMCreateGlobalVector()`,
+See also: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeGather()`, `DMCreateGlobalVector()`,
 `DMCompositeScatter()`, `DMCompositeCreate()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
@@ -1047,7 +923,7 @@ end
 end 
 
 """
-	packer::PetscDM = DMCompositeCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	packer::PetscDM = DMCompositeCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `DMCOMPOSITE`, used to generate "composite"
 vectors made up of several subvectors.
 
@@ -1061,7 +937,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCompositeScatter()`, `DMCreate()`,
+See also: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCompositeScatter()`, `DMCreate()`,
 `DMCompositeGather()`, `DMCreateGlobalVector()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
@@ -1088,7 +964,7 @@ end
 end 
 
 """
-	DMCompositeGatherArray(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, gvec::AbstractPetscVec, lvecs::AbstractPetscVec) 
+	DMCompositeGatherArray(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, gvec::AbstractPetscVec, lvecs::AbstractPetscVec) 
 Gathers into a global packed vector from its individual local vectors
 
 Collective
@@ -1101,7 +977,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
+See also: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
 `DMCompositeScatter()`, `DMCompositeCreate()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
@@ -1128,7 +1004,7 @@ end
 end 
 
 """
-	DMCompositeGetAccessArray(petsclib::PetscLibType,dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) 
+	DMCompositeGetAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) 
 Allows one to access the individual packed vectors in their global
 representation.
 
@@ -1145,7 +1021,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMCompositeGetAccess()`, `DMCompositeGetEntries()`, `DMCompositeScatter()`, `DMCompositeGather()`
+See also: `DMCOMPOSITE`, `DM`, `DMCompositeGetAccess()`, `DMCompositeGetEntries()`, `DMCompositeScatter()`, `DMCompositeGather()`
 
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetAccessArray"))
@@ -1168,7 +1044,7 @@ end
 end 
 
 """
-	DMCompositeGetEntriesArray(petsclib::PetscLibType,dm::AbstractPetscDM, dms::Vector{<:AbstractPetscDM}) 
+	DMCompositeGetEntriesArray(petsclib::PetscLibType, dm::AbstractPetscDM, dms::Vector{<:AbstractPetscDM}) 
 Gets the DM for each entry in a `DMCOMPOSITE`
 
 Not Collective
@@ -1181,7 +1057,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`, `DMCompositeGetEntries()`,
+See also: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`, `DMCompositeGetEntries()`,
 `DMCompositeGather()`, `DMCompositeCreate()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeRestoreLocalVectors()`, `DMCompositeGetLocalVectors()`, `DMCompositeScatter()`
 
@@ -1206,7 +1082,7 @@ end
 end 
 
 """
-	is::Ptr{IS} = DMCompositeGetGlobalISs(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	is::Ptr{IS} = DMCompositeGetGlobalISs(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the index sets for each composed object in a `DMCOMPOSITE`
 
 Collective
@@ -1219,7 +1095,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
+See also: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
 `DMCompositeGather()`, `DMCompositeCreate()`, `DMCompositeGetAccess()`, `DMCompositeScatter()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
@@ -1246,7 +1122,7 @@ end
 end 
 
 """
-	ltogs::Ptr{ISLocalToGlobalMapping} = DMCompositeGetISLocalToGlobalMappings(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	ltogs::Ptr{ISLocalToGlobalMapping} = DMCompositeGetISLocalToGlobalMappings(petsclib::PetscLibType, dm::AbstractPetscDM) 
 gets an `ISLocalToGlobalMapping` for each `DM` in the `DMCOMPOSITE`, maps to the composite global space
 
 Collective; No Fortran Support
@@ -1260,7 +1136,7 @@ all the ghost points that individual ghosted `DMDA` may have.
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
+See also: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
 `DMCompositeGather()`, `DMCompositeCreate()`, `DMCompositeGetAccess()`, `DMCompositeScatter()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
@@ -1287,7 +1163,7 @@ end
 end 
 
 """
-	DMCompositeGetLocalAccessArray(petsclib::PetscLibType,dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) 
+	DMCompositeGetLocalAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) 
 Allows one to access the individual
 packed vectors in their local representation.
 
@@ -1304,7 +1180,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMCompositeRestoreLocalAccessArray()`, `DMCompositeGetAccess()`,
+See also: `DMCOMPOSITE`, `DM`, `DMCompositeRestoreLocalAccessArray()`, `DMCompositeGetAccess()`,
 `DMCompositeGetEntries()`, `DMCompositeScatter()`, `DMCompositeGather()`
 
 # External Links
@@ -1328,7 +1204,7 @@ end
 end 
 
 """
-	is::Ptr{IS} = DMCompositeGetLocalISs(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	is::Ptr{IS} = DMCompositeGetLocalISs(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets index sets for each component of a composite local vector
 
 Not Collective; No Fortran Support
@@ -1341,7 +1217,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMCOMPOSITE`, `DM`, `DMCompositeGetGlobalISs()`, `DMCompositeGetISLocalToGlobalMappings()`, `MatGetLocalSubMatrix()`,
+See also: `DMCOMPOSITE`, `DM`, `DMCompositeGetGlobalISs()`, `DMCompositeGetISLocalToGlobalMappings()`, `MatGetLocalSubMatrix()`,
 `MatCreateLocalRef()`, `DMCompositeGetNumberDM()`
 
 # External Links
@@ -1367,7 +1243,7 @@ end
 end 
 
 """
-	nDM::PetscInt = DMCompositeGetNumberDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nDM::PetscInt = DMCompositeGetNumberDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the number of `DM` objects in the `DMCOMPOSITE`
 representation.
 
@@ -1381,7 +1257,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMCOMPOSITE`, `DM`
+See also: `DMCOMPOSITE`, `DM`
 
 # External Links
 $(_doc_external("DMComposite/DMCompositeGetNumberDM"))
@@ -1406,7 +1282,7 @@ end
 end 
 
 """
-	DMCompositeRestoreAccessArray(petsclib::PetscLibType,dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) 
+	DMCompositeRestoreAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::Vector{<:AbstractPetscVec}) 
 Returns the vectors obtained with `DMCompositeGetAccessArray()`
 
 Collective
@@ -1420,7 +1296,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMCompositeRestoreAccess()`, `DMCompositeRestoreEntries()`, `DMCompositeScatter()`, `DMCompositeGather()`
+See also: `DMCOMPOSITE`, `DM`, `DMCompositeRestoreAccess()`, `DMCompositeRestoreEntries()`, `DMCompositeScatter()`, `DMCompositeGather()`
 
 # External Links
 $(_doc_external("DMComposite/DMCompositeRestoreAccessArray"))
@@ -1443,7 +1319,7 @@ end
 end 
 
 """
-	DMCompositeRestoreLocalAccessArray(petsclib::PetscLibType,dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::AbstractPetscVec) 
+	DMCompositeRestoreLocalAccessArray(petsclib::PetscLibType, dm::AbstractPetscDM, pvec::AbstractPetscVec, nwanted::PetscInt, wanted::Vector{PetscInt}, vecs::AbstractPetscVec) 
 Returns the vectors obtained with `DMCompositeGetLocalAccessArray()`.
 
 Collective
@@ -1457,7 +1333,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMCompositeGetLocalAccessArray()`, `DMCompositeRestoreAccessArray()`,
+See also: `DMCOMPOSITE`, `DM`, `DMCompositeGetLocalAccessArray()`, `DMCompositeRestoreAccessArray()`,
 `DMCompositeRestoreAccess()`, `DMCompositeRestoreEntries()`,
 `DMCompositeScatter()`, `DMCompositeGather()`
 
@@ -1484,7 +1360,7 @@ end
 end 
 
 """
-	DMCompositeScatterArray(petsclib::PetscLibType,dm::AbstractPetscDM, gvec::AbstractPetscVec, lvecs::AbstractPetscVec) 
+	DMCompositeScatterArray(petsclib::PetscLibType, dm::AbstractPetscDM, gvec::AbstractPetscVec, lvecs::AbstractPetscVec) 
 Scatters from a global packed vector into its individual local vectors
 
 Collective
@@ -1496,7 +1372,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
+See also: `DMCOMPOSITE`, `DM`, `DMDestroy()`, `DMCompositeAddDM()`, `DMCreateGlobalVector()`,
 `DMCompositeGather()`, `DMCompositeCreate()`, `DMCompositeGetISLocalToGlobalMappings()`, `DMCompositeGetAccess()`,
 `DMCompositeGetLocalVectors()`, `DMCompositeRestoreLocalVectors()`, `DMCompositeGetEntries()`
 
@@ -1523,7 +1399,7 @@ end
 end 
 
 """
-	DMCompositeSetCoupling(petsclib::PetscLibType,dm::AbstractPetscDM, FormCoupleLocations::external) 
+	DMCompositeSetCoupling(petsclib::PetscLibType, dm::AbstractPetscDM, FormCoupleLocations::external) 
 Sets user provided routines that compute the coupling between the
 separate components `DM` in a `DMCOMPOSITE` to build the correct matrix nonzero structure.
 
@@ -1535,7 +1411,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMCOMPOSITE`, `DM`
+See also: `DMCOMPOSITE`, `DM`
 
 # External Links
 $(_doc_external("DMComposite/DMCompositeSetCoupling"))
@@ -1558,7 +1434,7 @@ end
 end 
 
 """
-	errorVec::PetscVec = DMComputeError(petsclib::PetscLibType,dm::AbstractPetscDM, sol::AbstractPetscVec, errors::Vector{PetscReal}) 
+	errorVec::PetscVec = DMComputeError(petsclib::PetscLibType, dm::AbstractPetscDM, sol::AbstractPetscVec, errors::Vector{PetscReal}) 
 Computes the error assuming the user has provided the exact solution functions
 
 Collective
@@ -1576,12 +1452,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-The exact solutions come from the `PetscDS` object, and the time comes from `DMGetOutputSequenceNumber()`.
-
-See also: 
-=== 
-`DM`, `DMMonitorSet()`, `DMGetRegionNumDS()`, `PetscDSGetExactSolution()`, `DMGetOutputSequenceNumber()`
+See also: `DM`, `DMMonitorSet()`, `DMGetRegionNumDS()`, `PetscDSGetExactSolution()`, `DMGetOutputSequenceNumber()`
 
 # External Links
 $(_doc_external("DM/DMComputeError"))
@@ -1606,7 +1477,7 @@ end
 end 
 
 """
-	DMComputeExactSolution(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec) 
+	DMComputeExactSolution(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec) 
 Compute the exact solution for a given `DM`, using the `PetscDS` information.
 
 Collective
@@ -1621,12 +1492,7 @@ Output Parameters:
 
 Level: developer
 
-Note:
-The user must call `PetscDSSetExactSolution()` before using this routine
-
-See also: 
-=== 
-`DM`, `PetscDSSetExactSolution()`
+See also: `DM`, `PetscDSSetExactSolution()`
 
 # External Links
 $(_doc_external("DM/DMComputeExactSolution"))
@@ -1674,7 +1540,7 @@ function DMComputeL2Diff(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real
 end
 
 """
-	DMComputeL2FieldDiff(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+	DMComputeL2FieldDiff(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
 This function computes the L_2 difference between a function u and an FEM interpolant solution u_h, separated into field components.
 
 Collective
@@ -1691,14 +1557,7 @@ Output Parameter:
 
 Level: developer
 
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectFunction()`, `DMComputeL2GradientDiff()`
+See also: `DM`, `DMProjectFunction()`, `DMComputeL2GradientDiff()`
 
 # External Links
 $(_doc_external("DM/DMComputeL2FieldDiff"))
@@ -1721,7 +1580,7 @@ end
 end 
 
 """
-	DMComputeL2GradientDiff(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+	DMComputeL2GradientDiff(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
 This function computes the L_2 difference between the gradient of a function u and an FEM interpolant solution grad u_h.
 
 Collective
@@ -1739,14 +1598,7 @@ Output Parameter:
 
 Level: developer
 
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMComputeL2FieldDiff()`
+See also: `DM`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMComputeL2FieldDiff()`
 
 # External Links
 $(_doc_external("DM/DMComputeL2GradientDiff"))
@@ -1769,7 +1621,7 @@ end
 end 
 
 """
-	DMComputeVariableBounds(petsclib::PetscLibType,dm::AbstractPetscDM, xl::AbstractPetscVec, xu::AbstractPetscVec) 
+	DMComputeVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, xl::AbstractPetscVec, xu::AbstractPetscVec) 
 compute variable bounds used by `SNESVI`.
 
 Logically Collective
@@ -1783,12 +1635,7 @@ Output Parameters:
 
 Level: advanced
 
-Note:
-This is generally not called by users. It calls the function provided by the user with DMSetVariableBounds()
-
-See also: 
-=== 
-`DM`, `DMHasVariableBounds()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMGetApplicationContext()`
+See also: `DM`, `DMHasVariableBounds()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMGetApplicationContext()`
 
 # External Links
 $(_doc_external("DM/DMComputeVariableBounds"))
@@ -1811,7 +1658,7 @@ end
 end 
 
 """
-	M::PetscDM = DMConvert(petsclib::PetscLibType,dm::AbstractPetscDM, newtype::DMType) 
+	M::PetscDM = DMConvert(petsclib::PetscLibType, dm::AbstractPetscDM, newtype::DMType) 
 Converts a `DM` to another `DM`, either of the same or different type.
 
 Collective
@@ -1825,14 +1672,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-Cannot be used to convert a sequential `DM` to a parallel or a parallel to sequential,
-the MPI communicator of the generated `DM` is always the same as the communicator
-of the input `DM`.
-
-See also: 
-=== 
-`DM`, `DMSetType()`, `DMCreate()`, `DMClone()`
+See also: `DM`, `DMSetType()`, `DMCreate()`, `DMClone()`
 
 # External Links
 $(_doc_external("DM/DMConvert"))
@@ -1857,7 +1697,7 @@ end
 end 
 
 """
-	DMCopyAuxiliaryVec(petsclib::PetscLibType,dm::AbstractPetscDM, dmNew::AbstractPetscDM) 
+	DMCopyAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, dmNew::AbstractPetscDM) 
 Copy the auxiliary vector data on a `DM` to a new `DM`
 
 Not Collective
@@ -1870,12 +1710,7 @@ Output Parameter:
 
 Level: advanced
 
-Note:
-This is a shallow copy of the auxiliary vectors
-
-See also: 
-=== 
-`DM`, `DMClearAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMSetAuxiliaryVec()`
+See also: `DM`, `DMClearAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMSetAuxiliaryVec()`
 
 # External Links
 $(_doc_external("DM/DMCopyAuxiliaryVec"))
@@ -1898,7 +1733,7 @@ end
 end 
 
 """
-	DMCopyDMKSP(petsclib::PetscLibType,dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM) 
+	DMCopyDMKSP(petsclib::PetscLibType, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM) 
 copies a `DM` `DMKSP` context to a new `DM`
 
 Logically Collective
@@ -1909,7 +1744,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `DMKSP`, `DM`, `KSP`, `DMGetDMKSP()`, `KSPSetDM()`
+See also: `DMKSP`, `DM`, `KSP`, `DMGetDMKSP()`, `KSPSetDM()`
 
 # External Links
 $(_doc_external("KSP/DMCopyDMKSP"))
@@ -1932,7 +1767,7 @@ end
 end 
 
 """
-	DMCopyDMSNES(petsclib::PetscLibType,dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM) 
+	DMCopyDMSNES(petsclib::PetscLibType, dmsrc::AbstractPetscDM, dmdest::AbstractPetscDM) 
 copies a `DMSNES` context to a new `DM`
 
 Logically Collective
@@ -1943,7 +1778,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMGetDMSNES()`, `SNESSetDM()`
+See also: `DMSNES`, `DMGetDMSNES()`, `SNESSetDM()`
 
 # External Links
 $(_doc_external("SNES/DMCopyDMSNES"))
@@ -1966,7 +1801,7 @@ end
 end 
 
 """
-	DMCopyDS(petsclib::PetscLibType,dm::AbstractPetscDM, minDegree::PetscInt, maxDegree::PetscInt, newdm::AbstractPetscDM) 
+	DMCopyDS(petsclib::PetscLibType, dm::AbstractPetscDM, minDegree::PetscInt, maxDegree::PetscInt, newdm::AbstractPetscDM) 
 Copy the discrete systems for the `DM` into another `DM`
 
 Collective
@@ -1981,9 +1816,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMCopyFields()`, `DMAddField()`, `DMGetDS()`, `DMGetCellDS()`, `DMGetRegionDS()`, `DMSetRegionDS()`
+See also: `DM`, `DMCopyFields()`, `DMAddField()`, `DMGetDS()`, `DMGetCellDS()`, `DMGetRegionDS()`, `DMSetRegionDS()`
 
 # External Links
 $(_doc_external("DM/DMCopyDS"))
@@ -2006,7 +1839,7 @@ end
 end 
 
 """
-	DMCopyDisc(petsclib::PetscLibType,dm::AbstractPetscDM, newdm::AbstractPetscDM) 
+	DMCopyDisc(petsclib::PetscLibType, dm::AbstractPetscDM, newdm::AbstractPetscDM) 
 Copy the fields and discrete systems for the `DM` into another `DM`
 
 Collective
@@ -2019,12 +1852,7 @@ Output Parameter:
 
 Level: advanced
 
-Developer Note:
-Really ugly name, nothing in PETSc is called a `Disc` plus it is an ugly abbreviation
-
-See also: 
-=== 
-`DM`, `DMCopyFields()`, `DMCopyDS()`
+See also: `DM`, `DMCopyFields()`, `DMCopyDS()`
 
 # External Links
 $(_doc_external("DM/DMCopyDisc"))
@@ -2047,7 +1875,7 @@ end
 end 
 
 """
-	DMCopyFields(petsclib::PetscLibType,dm::AbstractPetscDM, minDegree::PetscInt, maxDegree::PetscInt, newdm::AbstractPetscDM) 
+	DMCopyFields(petsclib::PetscLibType, dm::AbstractPetscDM, minDegree::PetscInt, maxDegree::PetscInt, newdm::AbstractPetscDM) 
 Copy the discretizations for the `DM` into another `DM`
 
 Collective
@@ -2062,9 +1890,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMGetField()`, `DMSetField()`, `DMAddField()`, `DMCopyDS()`, `DMGetDS()`, `DMGetCellDS()`
+See also: `DM`, `DMGetField()`, `DMSetField()`, `DMAddField()`, `DMCopyDS()`, `DMGetDS()`, `DMGetCellDS()`
 
 # External Links
 $(_doc_external("DM/DMCopyFields"))
@@ -2087,7 +1913,7 @@ end
 end 
 
 """
-	DMCopyLabels(petsclib::PetscLibType,dmA::AbstractPetscDM, dmB::AbstractPetscDM, mode::PetscCopyMode, all::PetscBool, emode::DMCopyLabelsMode) 
+	DMCopyLabels(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM, mode::PetscCopyMode, all::PetscBool, emode::DMCopyLabelsMode) 
 Copy labels from one `DM` mesh to another `DM` with a superset of the points
 
 Collective
@@ -2101,12 +1927,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-This is typically used when interpolating or otherwise adding to a mesh, or testing.
-
-See also: 
-=== 
-`DM`, `DMLabel`, `DMAddLabel()`, `DMCopyLabelsMode`
+See also: `DM`, `DMLabel`, `DMAddLabel()`, `DMCopyLabelsMode`
 
 # External Links
 $(_doc_external("DM/DMCopyLabels"))
@@ -2129,7 +1950,7 @@ end
 end 
 
 """
-	DMCopyTransform(petsclib::PetscLibType,dm::AbstractPetscDM, newdm::AbstractPetscDM) 
+	DMCopyTransform(petsclib::PetscLibType, dm::AbstractPetscDM, newdm::AbstractPetscDM) 
 Copy the basis transform context and callbacks from `dm` to `newdm`
 
 Not Collective
@@ -2142,12 +1963,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-If the transform requires setup, `DMConstructBasisTransform_Internal()` is invoked on `newdm`.
-
-See also: 
-=== 
-`DM`, `DMCopyDS()`, `DMCopyDisc()`
+See also: `DM`, `DMCopyDS()`, `DMCopyDisc()`
 
 # External Links
 $(_doc_external("DM/DMCopyTransform"))
@@ -2170,7 +1986,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	dm::PetscDM = DMCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `DM` object. `DM`s are the abstract objects in PETSc that mediate between meshes and discretizations and the
 algebraic solvers, time integrators, and optimization algorithms in PETSc.
 
@@ -2184,17 +2000,7 @@ Output Parameter:
 
 Level: beginner
 
-Notes:
-See `DMType` for a brief summary of available `DM`.
-
-The type must then be set with `DMSetType()`. If you never call `DMSetType()` it will generate an
-error when you try to use the `dm`.
-
-`DM` is an orphan initialism or orphan acronym, the letters have no meaning and never did.
-
-See also: 
-=== 
-`DM`, `DMSetType()`, `DMType`, `DMDACreate()`, `DMDA`, `DMSLICED`, `DMCOMPOSITE`, `DMPLEX`, `DMMOAB`, `DMNETWORK`
+See also: `DM`, `DMSetType()`, `DMType`, `DMDACreate()`, `DMDA`, `DMSLICED`, `DMCOMPOSITE`, `DMPLEX`, `DMMOAB`, `DMNETWORK`
 
 # External Links
 $(_doc_external("DM/DMCreate"))
@@ -2219,7 +2025,7 @@ end
 end 
 
 """
-	coloring::ISColoring = DMCreateColoring(petsclib::PetscLibType,dm::AbstractPetscDM, ctype::ISColoringType) 
+	coloring::ISColoring = DMCreateColoring(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::ISColoringType) 
 Gets coloring of a graph associated with the `DM`. Often the graph represents the operator matrix associated with the discretization
 of a PDE on the `DM`.
 
@@ -2234,17 +2040,7 @@ Output Parameter:
 
 Level: developer
 
-Notes:
-Coloring of matrices can also be computed directly from the sparse matrix nonzero structure via the `MatColoring` object or from the mesh from which the
-matrix comes from (what this function provides). In general using the mesh produces a more optimal coloring (fewer colors).
-
-This produces a coloring with the distance of 2, see `MatSetColoringDistance()` which can be used for efficiently computing Jacobians with `MatFDColoringCreate()`
-For `DMDA` in three dimensions with periodic boundary conditions the number of grid points in each dimension must be divisible by 2*stencil_width + 1,
-otherwise an error will be generated.
-
-See also: 
-=== 
-`DM`, `ISColoring`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatType()`, `MatColoring`, `MatFDColoringCreate()`
+See also: `DM`, `ISColoring`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatType()`, `MatColoring`, `MatFDColoringCreate()`
 
 # External Links
 $(_doc_external("DM/DMCreateColoring"))
@@ -2269,7 +2065,7 @@ end
 end 
 
 """
-	DMCreateDS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMCreateDS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Create the discrete systems for the `DM` based upon the fields added to the `DM`
 
 Collective
@@ -2282,12 +2078,7 @@ Options Database Key:
 
 Level: intermediate
 
-Developer Note:
-The name of this function is wrong. Create functions always return the created object as one of the arguments.
-
-See also: 
-=== 
-`DM`, `DMSetField`, `DMAddField()`, `DMGetDS()`, `DMGetCellDS()`, `DMGetRegionDS()`, `DMSetRegionDS()`
+See also: `DM`, `DMSetField`, `DMAddField()`, `DMGetDS()`, `DMGetCellDS()`, `DMGetRegionDS()`, `DMSetRegionDS()`
 
 # External Links
 $(_doc_external("DM/DMCreateDS"))
@@ -2310,7 +2101,7 @@ end
 end 
 
 """
-	n::PetscInt,namelist::Ptr{Ptr{Cchar}},innerislist::Ptr{IS},outerislist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateDomainDecomposition(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	n::PetscInt,namelist::Ptr{Ptr{Cchar}},innerislist::Ptr{IS},outerislist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns lists of `IS` objects defining a decomposition of a
 problem into subproblems corresponding to restrictions to pairs of nested subdomains.
 
@@ -2328,25 +2119,7 @@ Output Parameters:
 
 Level: intermediate
 
-Notes:
-Each `IS` contains the global indices of the dofs of the corresponding subdomains with in the
-dofs of the original `DM`. The inner subdomains conceptually define a nonoverlapping
-covering, while outer subdomains can overlap.
-
-The optional list of `DM`s define a `DM` for each subproblem.
-
-The user is responsible for freeing all requested arrays. In particular, every entry of `namelist` should be freed with
-`PetscFree()`, every entry of `innerislist` and `outerislist` should be destroyed with `ISDestroy()`, every entry of `dmlist` should be destroyed with `DMDestroy()`,
-and all of the arrays should be freed with `PetscFree()`.
-
-Developer Notes:
-The `dmlist` is for the inner subdomains or the outer subdomains or all subdomains?
-
-The names are inconsistent, the hooks use `DMSubDomainHook` which is nothing like `DMCreateDomainDecomposition()` while `DMRefineHook` is used for `DMRefine()`.
-
-See also: 
-=== 
-`DM`, `DMCreateFieldDecomposition()`, `DMDestroy()`, `DMCreateDomainDecompositionScatters()`, `DMView()`, `DMCreateInterpolation()`,
+See also: `DM`, `DMCreateFieldDecomposition()`, `DMDestroy()`, `DMCreateDomainDecompositionScatters()`, `DMView()`, `DMCreateInterpolation()`,
 `DMSubDomainHookAdd()`, `DMSubDomainHookRemove()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`
 
 # External Links
@@ -2380,7 +2153,7 @@ end
 end 
 
 """
-	iscat::Ptr{VecScatter},oscat::Ptr{VecScatter},gscat::Ptr{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt, subdms::Vector{<:AbstractPetscDM}) 
+	iscat::Ptr{VecScatter},oscat::Ptr{VecScatter},gscat::Ptr{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, subdms::Vector{<:AbstractPetscDM}) 
 Returns scatters to the subdomain vectors from the global vector for subdomains created with
 `DMCreateDomainDecomposition()`
 
@@ -2398,19 +2171,7 @@ Output Parameters:
 
 Level: developer
 
-Note:
-This is an alternative to the `iis` and `ois` arguments in `DMCreateDomainDecomposition()` that allow for the solution
-of general nonlinear problems with overlapping subdomain methods.  While merely having index sets that enable subsets
-of the residual equations to be created is fine for linear problems, nonlinear problems require local assembly of
-solution and residual data.
-
-Developer Note:
-Can the `subdms` input be anything or are they exactly the `DM` obtained from
-`DMCreateDomainDecomposition()`?
-
-See also: 
-=== 
-`DM`, `DMCreateDomainDecomposition()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMCreateFieldIS()`
+See also: `DM`, `DMCreateDomainDecomposition()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMCreateFieldIS()`
 
 # External Links
 $(_doc_external("DM/DMCreateDomainDecompositionScatters"))
@@ -2439,7 +2200,7 @@ end
 end 
 
 """
-	fem::PetscFE = DMCreateFEDefault(petsclib::PetscLibType,dm::AbstractPetscDM, Nc::PetscInt, prefix::String, qorder::PetscInt) 
+	fem::PetscFE = DMCreateFEDefault(petsclib::PetscLibType, dm::AbstractPetscDM, Nc::PetscInt, prefix::String, qorder::PetscInt) 
 Create a `PetscFE` based on the celltype for the mesh
 
 Not Collective
@@ -2455,12 +2216,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This is a convenience method that just calls `PetscFECreateByCell()` underneath.
-
-See also: 
-=== 
-`DM`, `PetscFECreateByCell()`, `DMAddField()`, `DMCreateDS()`, `DMGetCellDS()`, `DMGetRegionDS()`
+See also: `DM`, `PetscFECreateByCell()`, `DMAddField()`, `DMCreateDS()`, `DMGetCellDS()`, `DMGetRegionDS()`
 
 # External Links
 $(_doc_external("DM/DMCreateFEDefault"))
@@ -2485,7 +2241,7 @@ end
 end 
 
 """
-	len::PetscInt,namelist::String,islist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateFieldDecomposition(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	len::PetscInt,namelist::String,islist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns a list of `IS` objects defining a decomposition of a problem into subproblems
 corresponding to different fields.
 
@@ -2502,37 +2258,7 @@ Output Parameters:
 
 Level: intermediate
 
-Notes:
-Each `IS` contains the global indices of the dofs of the corresponding field, defined by
-`DMAddField()`. The optional list of `DM`s define the `DM` for each subproblem.
-
-The same as `DMCreateFieldIS()` but also returns a `DM` for each field.
-
-The user is responsible for freeing all requested arrays. In particular, every entry of `namelist` should be freed with
-`PetscFree()`, every entry of `islist` should be destroyed with `ISDestroy()`, every entry of `dmlist` should be destroyed with `DMDestroy()`,
-and all of the arrays should be freed with `PetscFree()`.
-
-Fortran Notes:
-Use the declarations
--vb
-character(80), pointer :: namelist(:)
-IS, pointer :: islist(:)
-DM, pointer :: dmlist(:)
--ve
-
-`namelist` must be provided, `islist` may be `PETSC_NULL_IS_POINTER` and `dmlist` may be `PETSC_NULL_DM_POINTER`
-
-Use `DMDestroyFieldDecomposition()` to free the returned objects
-
-Developer Notes:
-It is not clear why this function and `DMCreateFieldIS()` exist. Having two seems redundant and confusing.
-
-Unlike  `DMRefine()`, `DMCoarsen()`, and `DMCreateDomainDecomposition()` this provides no mechanism to provide hooks that are called after the
-decomposition is computed.
-
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMCreateFieldIS()`, `DMCreateSubDM()`, `DMCreateDomainDecomposition()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`
+See also: `DM`, `DMAddField()`, `DMCreateFieldIS()`, `DMCreateSubDM()`, `DMCreateDomainDecomposition()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`
 
 # External Links
 $(_doc_external("DM/DMCreateFieldDecomposition"))
@@ -2564,7 +2290,7 @@ end
 
 # override for DMCreateFieldIS; C signature: DMCreateFieldIS(DM dm, PetscInt* numFields, char** fieldNames, IS* fields[])
 """
-	numFields::PetscInt,fieldNames::Cchar,fields::Vector{IS} = DMCreateFieldIS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numFields::PetscInt,fieldNames::Cchar,fields::Vector{IS} = DMCreateFieldIS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Creates a set of `IS` objects with the global indices of dofs for each field defined with `DMAddField()`
 
 Not Collective; No Fortran Support
@@ -2625,7 +2351,7 @@ function DMCreateFieldIS(petsclib::PetscLibType, dm::AbstractPetscDM) end
 end
 
 """
-	vec::PetscVec = DMCreateGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	vec::PetscVec = DMCreateGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Creates a global vector from a `DM` object. A global vector is a parallel vector that has no duplicate values shared between MPI ranks,
 that is it has no ghost locations.
 
@@ -2639,13 +2365,7 @@ Output Parameter:
 
 Level: beginner
 
-Note:
-PETSc `Vec` always have all zero entries when created with `DMCreateGlobalVector()` until routines such as `VecSet()` or `VecSetValues()`
-are used to change the values. There is no reason to call `VecZeroEntries()` after creation.
-
-See also: 
-=== 
-`DM`, `Vec`, `DMCreateLocalVector()`, `DMGetGlobalVector()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`,
+See also: `DM`, `Vec`, `DMCreateLocalVector()`, `DMGetGlobalVector()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`
 
 # External Links
@@ -2671,7 +2391,7 @@ end
 end 
 
 """
-	mat::PetscMat = DMCreateGradientMatrix(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
+	mat::PetscMat = DMCreateGradientMatrix(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
 Gets the gradient matrix between two `DM` objects, M_(ic)j = \\int \\partial_c \\phi_i \\psi_j where the \\phi are Galerkin basis functions for a Galerkin finite element model on the `DM`
 
 Collective
@@ -2685,12 +2405,7 @@ Output Parameter:
 
 Level: developer
 
-Notes:
-For `DMPLEX` the finite element model for the `DM` must have been already provided.
-
-See also: 
-=== 
-`DM`, `DMCreateMassMatrix()`, `DMCreateMassMatrixLumped()`, `DMCreateMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolation()`, `DMCreateInjection()`
+See also: `DM`, `DMCreateMassMatrix()`, `DMCreateMassMatrixLumped()`, `DMCreateMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolation()`, `DMCreateInjection()`
 
 # External Links
 $(_doc_external("DM/DMCreateGradientMatrix"))
@@ -2715,7 +2430,7 @@ end
 end 
 
 """
-	mat::PetscMat = DMCreateInjection(petsclib::PetscLibType,dac::AbstractPetscDM, daf::AbstractPetscDM) 
+	mat::PetscMat = DMCreateInjection(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM) 
 Gets injection matrix between two `DM` objects.
 
 Collective
@@ -2729,20 +2444,7 @@ Output Parameter:
 
 Level: developer
 
-Notes:
-This is an operator that applied to a vector obtained with `DMCreateGlobalVector()` on the
-fine grid maps the values to a vector on the vector on the coarse `DM` by simply selecting
-the values on the coarse grid points. This compares to the operator obtained by
-`DMCreateRestriction()` or the transpose of the operator obtained by
-`DMCreateInterpolation()` that uses a "local weighted average" of the values around the
-coarse grid point as the coarse grid value.
-
-For `DMDA` objects this only works for "uniform refinement", that is the refined mesh was obtained `DMRefine()` or the coarse mesh was obtained by
-`DMCoarsen()`. The coordinates set into the `DMDA` are completely ignored in computing the injection.
-
-See also: 
-=== 
-`DM`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMCreateInterpolation()`,
+See also: `DM`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMCreateInterpolation()`,
 `DMCreateRestriction()`, `MatRestrict()`, `MatInterpolate()`
 
 # External Links
@@ -2768,7 +2470,7 @@ end
 end 
 
 """
-	mat::PetscMat,vec::PetscVec = DMCreateInterpolation(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
+	mat::PetscMat,vec::PetscVec = DMCreateInterpolation(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
 Gets the interpolation matrix between two `DM` objects. The resulting matrix map degrees of freedom in the vector obtained by
 `DMCreateGlobalVector()` on the coarse `DM` to similar vectors on the fine grid `DM`.
 
@@ -2784,16 +2486,7 @@ Output Parameters:
 
 Level: developer
 
-Notes:
-For `DMDA` objects this only works for "uniform refinement", that is the refined mesh was obtained `DMRefine()` or the coarse mesh was obtained by
-DMCoarsen(). The coordinates set into the `DMDA` are completely ignored in computing the interpolation.
-
-For `DMDA` objects you can use this interpolation (more precisely the interpolation from the `DMGetCoordinateDM()`) to interpolate the mesh coordinate
-vectors EXCEPT in the periodic case where it does not make sense since the coordinate vectors are not periodic.
-
-See also: 
-=== 
-`DM`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolationScale()`
+See also: `DM`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolationScale()`
 
 # External Links
 $(_doc_external("DM/DMCreateInterpolation"))
@@ -2820,7 +2513,7 @@ end
 end 
 
 """
-	scale::PetscVec = DMCreateInterpolationScale(petsclib::PetscLibType,dac::AbstractPetscDM, daf::AbstractPetscDM, mat::AbstractPetscMat) 
+	scale::PetscVec = DMCreateInterpolationScale(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM, mat::AbstractPetscMat) 
 Forms L = 1/(R*1) where 1 is the vector of all ones, and R is
 the transpose of the interpolation between the `DM`.
 
@@ -2834,17 +2527,7 @@ Output Parameter:
 
 Level: advanced
 
-Note:
-xcoarse = diag(L)*R*xfine preserves scale and is thus suitable for state (versus residual)
-restriction. In other words xcoarse is the coarse representation of xfine.
-
-Developer Note:
-If the fine-scale `DMDA` has the -dm_bind_below option set to true, then `DMCreateInterpolationScale()` calls `MatSetBindingPropagates()`
-on the restriction/interpolation operator to set the bindingpropagates flag to true.
-
-See also: 
-=== 
-`DM`, `MatRestrict()`, `MatInterpolate()`, `DMCreateInterpolation()`, `DMCreateRestriction()`, `DMCreateGlobalVector()`
+See also: `DM`, `MatRestrict()`, `MatInterpolate()`, `DMCreateInterpolation()`, `DMCreateRestriction()`, `DMCreateGlobalVector()`
 
 # External Links
 $(_doc_external("DM/DMCreateInterpolationScale"))
@@ -2869,7 +2552,7 @@ end
 end 
 
 """
-	DMCreateLabel(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	DMCreateLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Create a label of the given name if it does not already exist in the `DM`
 
 Not Collective
@@ -2880,9 +2563,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMLabelCreate()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabelCreate()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMCreateLabel"))
@@ -2905,7 +2586,7 @@ end
 end 
 
 """
-	DMCreateLabelAtIndex(petsclib::PetscLibType,dm::AbstractPetscDM, l::PetscInt, name::String) 
+	DMCreateLabelAtIndex(petsclib::PetscLibType, dm::AbstractPetscDM, l::PetscInt, name::String) 
 Create a label of the given name at the given index. If it already exists in the `DM`, move it to this index.
 
 Not Collective
@@ -2917,9 +2598,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMCreateLabel()`, `DMLabelCreate()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMCreateLabel()`, `DMLabelCreate()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMCreateLabelAtIndex"))
@@ -2942,7 +2621,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMCreateLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	vec::PetscVec = DMCreateLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Creates a local vector from a `DM` object.
 
 Not Collective
@@ -2955,15 +2634,7 @@ Output Parameter:
 
 Level: beginner
 
-Notes:
-A local vector usually has ghost locations that contain values that are owned by different MPI ranks. A global vector has no ghost locations.
-
-PETSc `Vec` always have all zero entries when created with `DMCreateLocalVector()` until routines such as `VecSet()` or `VecSetValues()`
-are used to change the values. There is no reason to call `VecZeroEntries()` after creation.
-
-See also: 
-=== 
-`DM`, `Vec`, `DMCreateGlobalVector()`, `DMGetLocalVector()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`,
+See also: `DM`, `Vec`, `DMCreateGlobalVector()`, `DMGetLocalVector()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`
 
 # External Links
@@ -2989,7 +2660,7 @@ end
 end 
 
 """
-	mat::PetscMat = DMCreateMassMatrix(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
+	mat::PetscMat = DMCreateMassMatrix(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
 Gets the mass matrix between two `DM` objects, M_ij = \\int \\phi_i \\psi_j where the \\phi are Galerkin basis functions for a
 a Galerkin finite element model on the `DM`
 
@@ -3004,14 +2675,7 @@ Output Parameter:
 
 Level: developer
 
-Notes:
-For `DMPLEX` the finite element model for the `DM` must have been already provided.
-
-if `dmc` is `dmf` or `NULL`, then x^t M x is an approximation to the L2 norm of the vector x which is obtained by `DMCreateGlobalVector()`
-
-See also: 
-=== 
-`DM`, `DMCreateMassMatrixLumped()`, `DMCreateMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolation()`, `DMCreateInjection()`
+See also: `DM`, `DMCreateMassMatrixLumped()`, `DMCreateMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolation()`, `DMCreateInjection()`
 
 # External Links
 $(_doc_external("DM/DMCreateMassMatrix"))
@@ -3036,7 +2700,7 @@ end
 end 
 
 """
-	llm::PetscVec,lm::PetscVec = DMCreateMassMatrixLumped(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	llm::PetscVec,lm::PetscVec = DMCreateMassMatrixLumped(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the lumped mass matrix for a given `DM`
 
 Collective
@@ -3050,12 +2714,7 @@ Output Parameters:
 
 Level: developer
 
-Note:
-See `DMCreateMassMatrix()` for how to create the non-lumped version of the mass matrix.
-
-See also: 
-=== 
-`DM`, `DMCreateMassMatrix()`, `DMCreateMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolation()`, `DMCreateInjection()`
+See also: `DM`, `DMCreateMassMatrix()`, `DMCreateMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateRestriction()`, `DMCreateInterpolation()`, `DMCreateInjection()`
 
 # External Links
 $(_doc_external("DM/DMCreateMassMatrixLumped"))
@@ -3082,7 +2741,7 @@ end
 end 
 
 """
-	mat::PetscMat = DMCreateMatrix(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	mat::PetscMat = DMCreateMatrix(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Creates a matrix of appropriate size and nonzero structure for a `DM`. The matrix is most commonly used to store the Jacobian
 of a discrete PDE operator.
 
@@ -3099,22 +2758,7 @@ Options Database Key:
 
 Level: beginner
 
-Notes:
-This properly preallocates the number of nonzeros in the sparse matrix so you
-do not need to do it yourself.
-
-By default it also sets the nonzero structure and puts in the zero entries. To prevent setting
-the nonzero pattern call `DMSetMatrixPreallocateOnly()`
-
-For `DMDA`, when you call `MatView()` on this matrix it is displayed using the global natural ordering, NOT in the ordering used
-internally by PETSc.
-
-For `DMDA`, in general it is easiest to use `MatSetValuesStencil()` or `MatSetValuesLocal()` to put values into the matrix because
-`MatSetValues()` requires the indices for the global numbering for the `DMDA` which is complic`ated to compute
-
-See also: 
-=== 
-`DM`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMSetMatType()`, `DMCreateMassMatrix()`
+See also: `DM`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMSetMatType()`, `DMCreateMassMatrix()`
 
 # External Links
 $(_doc_external("DM/DMCreateMatrix"))
@@ -3139,7 +2783,7 @@ end
 end 
 
 """
-	mat::PetscMat = DMCreateRestriction(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
+	mat::PetscMat = DMCreateRestriction(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM) 
 Gets restriction matrix between two `DM` objects. The resulting matrix map degrees of freedom in the vector obtained by
 `DMCreateGlobalVector()` on the fine `DM` to similar vectors on the coarse grid `DM`.
 
@@ -3154,13 +2798,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-This only works for `DMSTAG`. For many situations either the transpose of the operator obtained with `DMCreateInterpolation()` or that
-matrix multiplied by the vector obtained with `DMCreateInterpolationScale()` provides the desired object.
-
-See also: 
-=== 
-`DM`, `DMRestrict()`, `DMInterpolate()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateInterpolation()`
+See also: `DM`, `DMRestrict()`, `DMInterpolate()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMCreateRestriction"))
@@ -3185,7 +2823,7 @@ end
 end 
 
 """
-	perm::IS,blockStarts::PetscBT = DMCreateSectionPermutation(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	perm::IS,blockStarts::PetscBT = DMCreateSectionPermutation(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Create a permutation of the `PetscSection` chart and optionally a block structure.
 
 Input Parameter:
@@ -3197,9 +2835,7 @@ Output Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `PetscSection`, `DMGetLocalSection()`, `DMGetGlobalSection()`
+See also: `DM`, `PetscSection`, `DMGetLocalSection()`, `DMGetGlobalSection()`
 
 # External Links
 $(_doc_external("DM/DMCreateSectionPermutation"))
@@ -3226,7 +2862,7 @@ end
 end 
 
 """
-	DMCreateSectionSF(petsclib::PetscLibType,dm::AbstractPetscDM, localSection::PetscSection, globalSection::PetscSection) 
+	DMCreateSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM, localSection::PetscSection, globalSection::PetscSection) 
 Create the `PetscSF` encoding the parallel dof overlap for the `DM` based upon the `PetscSection`s
 describing the data layout.
 
@@ -3237,18 +2873,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-One usually uses `DMGetSectionSF()` to obtain the `PetscSF`
-
-Developer Note:
-Since this routine has for arguments the two sections from the `DM` and puts the resulting `PetscSF`
-directly into the `DM`, perhaps this function should not take the local and global sections as
-input and should just obtain them from the `DM`? Plus PETSc creation functions return the thing
-they create, this returns nothing
-
-See also: 
-=== 
-`DM`, `DMGetSectionSF()`, `DMSetSectionSF()`, `DMGetLocalSection()`, `DMGetGlobalSection()`
+See also: `DM`, `DMGetSectionSF()`, `DMSetSectionSF()`, `DMGetLocalSection()`, `DMGetGlobalSection()`
 
 # External Links
 $(_doc_external("DM/DMCreateSectionSF"))
@@ -3271,7 +2896,7 @@ end
 end 
 
 """
-	is::IS,subdm::PetscDM = DMCreateSectionSubDM(petsclib::PetscLibType,dm::AbstractPetscDM, numFields::PetscInt, fields::Vector{PetscInt}, numComps::Vector{PetscInt}, comps::Vector{PetscInt}) 
+	is::IS,subdm::PetscDM = DMCreateSectionSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt, fields::Vector{PetscInt}, numComps::Vector{PetscInt}, comps::Vector{PetscInt}) 
 Returns an `IS` and `subDM` containing a `PetscSection` that encapsulates a subproblem defined by a subset of the fields in a `PetscSection` in the `DM`.
 
 Not Collective
@@ -3289,7 +2914,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMCreateSubDM()`, `DMGetLocalSection()`, `DMPlexSetMigrationSF()`, `DMView()`
+See also: `DMCreateSubDM()`, `DMGetLocalSection()`, `DMPlexSetMigrationSF()`, `DMView()`
 
 # External Links
 $(_doc_external("DM/DMCreateSectionSubDM"))
@@ -3316,7 +2941,7 @@ end
 end 
 
 """
-	is::Ptr{IS},superdm::PetscDM = DMCreateSectionSuperDM(petsclib::PetscLibType,dms::Vector{<:AbstractPetscDM}, len::PetscInt) 
+	is::Ptr{IS},superdm::PetscDM = DMCreateSectionSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, len::PetscInt) 
 Returns an arrays of `IS` and a `DM` containing a `PetscSection` that encapsulates a superproblem defined by the array of `DM` and their `PetscSection`
 
 Not Collective
@@ -3331,7 +2956,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMCreateSuperDM()`, `DMGetLocalSection()`, `DMPlexSetMigrationSF()`, `DMView()`
+See also: `DMCreateSuperDM()`, `DMGetLocalSection()`, `DMPlexSetMigrationSF()`, `DMView()`
 
 # External Links
 $(_doc_external("DM/DMCreateSectionSuperDM"))
@@ -3358,7 +2983,7 @@ end
 end 
 
 """
-	is::IS,subdm::PetscDM = DMCreateSubDM(petsclib::PetscLibType,dm::AbstractPetscDM, numFields::PetscInt, fields::Vector{PetscInt}) 
+	is::IS,subdm::PetscDM = DMCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt, fields::Vector{PetscInt}) 
 Returns an `IS` and `DM` encapsulating a subproblem defined by the fields passed in.
 The fields are defined by `DMCreateFieldIS()`.
 
@@ -3375,12 +3000,7 @@ Output Parameters:
 
 Level: intermediate
 
-Note:
-You need to call `DMPlexSetMigrationSF()` on the original `DM` if you want the Global-To-Natural map to be automatically constructed
-
-See also: 
-=== 
-`DM`, `DMCreateFieldIS()`, `DMCreateFieldDecomposition()`, `DMAddField()`, `DMCreateSuperDM()`, `IS`, `VecISCopy()`, `DMPlexSetMigrationSF()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`
+See also: `DM`, `DMCreateFieldIS()`, `DMCreateFieldDecomposition()`, `DMAddField()`, `DMCreateSuperDM()`, `IS`, `VecISCopy()`, `DMPlexSetMigrationSF()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`
 
 # External Links
 $(_doc_external("DM/DMCreateSubDM"))
@@ -3407,7 +3027,7 @@ end
 end 
 
 """
-	is::Ptr{IS},superdm::PetscDM = DMCreateSuperDM(petsclib::PetscLibType,dms::Vector{<:AbstractPetscDM}, n::PetscInt) 
+	is::Ptr{IS},superdm::PetscDM = DMCreateSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, n::PetscInt) 
 Returns an arrays of `IS` and a single `DM` encapsulating a superproblem defined by multiple `DM`s passed in.
 
 Not collective
@@ -3422,12 +3042,7 @@ Output Parameters:
 
 Level: intermediate
 
-Note:
-You need to call `DMPlexSetMigrationSF()` on the original `DM` if you want the Global-To-Natural map to be automatically constructed
-
-See also: 
-=== 
-`DM`, `DMCreateSubDM()`, `DMPlexSetMigrationSF()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMCreateFieldIS()`, `DMCreateDomainDecomposition()`
+See also: `DM`, `DMCreateSubDM()`, `DMPlexSetMigrationSF()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMCreateFieldIS()`, `DMCreateDomainDecomposition()`
 
 # External Links
 $(_doc_external("DM/DMCreateSuperDM"))
@@ -3454,7 +3069,7 @@ end
 end 
 
 """
-	cell::PetscInt = DMDAConvertToCell(petsclib::PetscLibType,dm::AbstractPetscDM, s::MatStencil) 
+	cell::PetscInt = DMDAConvertToCell(petsclib::PetscLibType, dm::AbstractPetscDM, s::MatStencil) 
 Convert a (i,j,k) location in a `DMDA` to its local cell or vertex number
 
 Not Collective
@@ -3468,7 +3083,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`
 
 # External Links
 $(_doc_external("DMDA/DMDAConvertToCell"))
@@ -3493,7 +3108,7 @@ end
 end 
 
 """
-	da::PetscDM = DMDACreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	da::PetscDM = DMDACreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `DMDA` object for managing structured grids.
 
 Collective
@@ -3506,7 +3121,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMSetUp()`, `DMDASetSizes()`, `DMClone()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMSetUp()`, `DMDASetSizes()`, `DMClone()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("DMDA/DMDACreate"))
@@ -3531,8 +3146,8 @@ end
 end 
 
 """
-	da::PetscDM = DMDACreate1d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, M::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}) 
-Creates an object that will manage the communication of  one
+	da::PetscDM = DMDACreate1d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, M::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}) 
+Creates an object that will manage the communication of  one-dimensional
 regular array data that is distributed across one or mpre MPI processes.
 
 Collective
@@ -3559,7 +3174,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](sec_struct), `DMDA`, `DM`, `DMDestroy()`, `DMView()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDASetRefinementFactor()`,
+See also: [](sec_struct), `DMDA`, `DM`, `DMDestroy()`, `DMView()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDASetRefinementFactor()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetRefinementFactor()`,
 `DMDAGetInfo()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMDACreateNaturalVector()`, `DMLoad()`, `DMDAGetOwnershipRanges()`,
 `DMStagCreate1d()`, `DMBoundaryType`
@@ -3587,8 +3202,8 @@ end
 end 
 
 """
-	da::PetscDM = DMDACreate2d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, M_m::PetscInt, M_n::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
-Creates an object that will manage the communication of two
+	da::PetscDM = DMDACreate2d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, M_m::PetscInt, M_n::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
+Creates an object that will manage the communication of two-dimensional
 regular array data that is distributed across one or more MPI processes.
 
 Collective
@@ -3625,7 +3240,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDASetRefinementFactor()`,
 `DMDAGetInfo()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMDACreateNaturalVector()`, `DMLoad()`, `DMDAGetOwnershipRanges()`,
 `DMStagCreate2d()`, `DMBoundaryType`
@@ -3653,8 +3268,8 @@ end
 end 
 
 """
-	da::PetscDM = DMDACreate3d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, P::PetscInt, M_m::PetscInt, M_n::PetscInt, M_p::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
-Creates an object that will manage the communication of three
+	da::PetscDM = DMDACreate3d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, P::PetscInt, M_m::PetscInt, M_n::PetscInt, M_p::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
+Creates an object that will manage the communication of three-dimensional
 regular array data that is distributed across one or more MPI processes.
 
 Collective
@@ -3702,7 +3317,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDestroy()`, `DMView()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMGlobalToLocalBegin()`, `DMDAGetRefinementFactor()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDASetRefinementFactor()`,
 `DMDAGetInfo()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMDACreateNaturalVector()`, `DMLoad()`, `DMDAGetOwnershipRanges()`,
 `DMStagCreate3d()`, `DMBoundaryType`
@@ -3730,7 +3345,7 @@ end
 end 
 
 """
-	rest::PetscMat = DMDACreateAggregates(petsclib::PetscLibType,dac::AbstractPetscDM, daf::AbstractPetscDM) 
+	rest::PetscMat = DMDACreateAggregates(petsclib::PetscLibType, dac::AbstractPetscDM, daf::AbstractPetscDM) 
 Gets the aggregates that map between
 grids associated with two `DMDA`
 
@@ -3745,7 +3360,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DMRefine()`, `DMCreateInjection()`, `DMCreateInterpolation()`
+See also: [](sec_struct), `DMRefine()`, `DMCreateInjection()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DMDA/DMDACreateAggregates"))
@@ -3770,7 +3385,7 @@ end
 end 
 
 """
-	nda::PetscDM = DMDACreateCompatibleDMDA(petsclib::PetscLibType,da::AbstractPetscDM, nfields::PetscInt) 
+	nda::PetscDM = DMDACreateCompatibleDMDA(petsclib::PetscLibType, da::AbstractPetscDM, nfields::PetscInt) 
 Creates a `DMDA` with the same layout as given `DMDA` but with fewer or more fields
 
 Collective
@@ -3784,7 +3399,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMSetCoordinates()`, `DMDASetUniformCoordinates()`, `DMGetCoordinates()`, `DMDAGetGhostedCoordinates()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMSetCoordinates()`, `DMDASetUniformCoordinates()`, `DMGetCoordinates()`, `DMDAGetGhostedCoordinates()`,
 `DMStagCreateCompatibleDMStag()`
 
 # External Links
@@ -3810,7 +3425,7 @@ end
 end 
 
 """
-	g::PetscVec = DMDACreateNaturalVector(petsclib::PetscLibType,da::AbstractPetscDM) 
+	g::PetscVec = DMDACreateNaturalVector(petsclib::PetscLibType, da::AbstractPetscDM) 
 Creates a parallel PETSc vector that
 will hold vector values in the natural numbering, rather than in
 the PETSc parallel numbering associated with the `DMDA`.
@@ -3825,7 +3440,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMDANaturalToGlobalBegin()`, `DMDANaturalToGlobalEnd()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMDANaturalToGlobalBegin()`, `DMDANaturalToGlobalEnd()`,
 `DMCreateLocalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
 
@@ -3852,7 +3467,7 @@ end
 end 
 
 """
-	pf::PF = DMDACreatePF(petsclib::PetscLibType,da::AbstractPetscDM) 
+	pf::PF = DMDACreatePF(petsclib::PetscLibType, da::AbstractPetscDM) 
 Creates an appropriately dimensioned `PF` mathematical function object
 from a `DMDA`.
 
@@ -3866,7 +3481,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `PF`, `DMDA`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDestroy()`, `DMCreateGlobalVector()`
+See also: `DM`, `PF`, `DMDA`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDestroy()`, `DMCreateGlobalVector()`
 
 # External Links
 $(_doc_external("DMDA/DMDACreatePF"))
@@ -3891,7 +3506,7 @@ end
 end 
 
 """
-	is::IS = DMDACreatePatchIS(petsclib::PetscLibType,da::AbstractPetscDM, lower::Vector{MatStencil}, upper::Vector{MatStencil}, offproc::PetscBool) 
+	is::IS = DMDACreatePatchIS(petsclib::PetscLibType, da::AbstractPetscDM, lower::Vector{MatStencil}, upper::Vector{MatStencil}, offproc::PetscBool) 
 Creates an index set corresponding to a logically rectangular patch of the `DMDA`.
 
 Collective
@@ -3907,7 +3522,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMCreateDomainDecompositionScatters()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMCreateDomainDecompositionScatters()`
 
 # External Links
 $(_doc_external("DMDA/DMDACreatePatchIS"))
@@ -3932,7 +3547,7 @@ end
 end 
 
 """
-	ao::AO = DMDAGetAO(petsclib::PetscLibType,da::AbstractPetscDM) 
+	ao::AO = DMDAGetAO(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the application ordering context for a distributed array.
 
 Collective
@@ -3945,7 +3560,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDASetAOType()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDASetAOType()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetOwnershipRanges()`,
 `AO`, `AOPetscToApplication()`, `AOApplicationToPetsc()`
 
@@ -3972,7 +3587,7 @@ end
 end 
 
 """
-	vptr::Ptr{Cvoid} = DMDAGetArray(petsclib::PetscLibType,da::AbstractPetscDM, ghosted::PetscBool) 
+	vptr::Ptr{Cvoid} = DMDAGetArray(petsclib::PetscLibType, da::AbstractPetscDM, ghosted::PetscBool) 
 Gets a work array for a `DMDA`
 
 Input Parameters:
@@ -3984,7 +3599,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDARestoreArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDARestoreArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetArray"))
@@ -4009,7 +3624,7 @@ end
 end 
 
 """
-	bx::DMBoundaryType,by::DMBoundaryType,bz::DMBoundaryType = DMDAGetBoundaryType(petsclib::PetscLibType,da::AbstractPetscDM) 
+	bx::DMBoundaryType,by::DMBoundaryType,bz::DMBoundaryType = DMDAGetBoundaryType(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the type of ghost nodes on domain boundaries.
 
 Not Collective
@@ -4024,7 +3639,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DMDASetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
+See also: [](sec_struct), `DMDASetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetBoundaryType"))
@@ -4053,7 +3668,7 @@ end
 end 
 
 """
-	point::PetscInt = DMDAGetCellPoint(petsclib::PetscLibType,dm::AbstractPetscDM, i::PetscInt, j::PetscInt, k::PetscInt) 
+	point::PetscInt = DMDAGetCellPoint(petsclib::PetscLibType, dm::AbstractPetscDM, i::PetscInt, j::PetscInt, k::PetscInt) 
 Get the `DM` point corresponding to the tuple (i, j, k) in the `DMDA`
 
 Input Parameters:
@@ -4067,7 +3682,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetNumCells()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetNumCells()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCellPoint"))
@@ -4092,7 +3707,7 @@ end
 end 
 
 """
-	xc::Ptr{Cvoid} = DMDAGetCoordinateArray(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	xc::Ptr{Cvoid} = DMDAGetCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets an array containing the coordinates of the `DMDA`
 
 Not Collective; No Fortran Support
@@ -4105,7 +3720,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDARestoreCoordinateArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDARestoreCoordinateArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCoordinateArray"))
@@ -4130,7 +3745,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMDAGetCoordinateName(petsclib::PetscLibType,dm::AbstractPetscDM, nf::PetscInt) 
+	name::Ptr{Cchar} = DMDAGetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::PetscInt) 
 Gets the name of a coordinate direction associated with a `DMDA`.
 
 Not Collective; name will contain a common value; No Fortran Support
@@ -4144,7 +3759,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCoordinateName"))
@@ -4169,7 +3784,7 @@ end
 end 
 
 """
-	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt = DMDAGetCorners(petsclib::PetscLibType,da::AbstractPetscDM) 
+	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt = DMDAGetCorners(petsclib::PetscLibType, da::AbstractPetscDM) 
 Returns the global (`x`,`y`,`z`) indices of the lower left
 corner and size of the local region, excluding ghost points.
 
@@ -4188,7 +3803,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetOwnershipRanges()`, `DMStagGetCorners()`, `DMSTAG`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetOwnershipRanges()`, `DMStagGetCorners()`, `DMSTAG`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetCorners"))
@@ -4223,7 +3838,7 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = DMDAGetDepthStratum(petsclib::PetscLibType,dm::AbstractPetscDM, depth::PetscInt) 
+	pStart::PetscInt,pEnd::PetscInt = DMDAGetDepthStratum(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt) 
 Get the bounds [`start`, `end`) for all points at a certain depth.
 
 Not Collective
@@ -4238,7 +3853,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMDA`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
+See also: `DM`, `DMDA`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
 `DMPlexGetDepthLabel()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`, `DMPlexInterpolate()`, `DMDAGetHeightStratum()`
 
 # External Links
@@ -4266,7 +3881,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMDAGetDof(petsclib::PetscLibType,da::AbstractPetscDM) 
+	dof::PetscInt = DMDAGetDof(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the number of degrees of freedom per vertex
 
 Not Collective
@@ -4279,7 +3894,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetDof()`, `DMDACreate()`, `DMDestroy()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetDof()`, `DMDACreate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetDof"))
@@ -4304,7 +3919,7 @@ end
 end 
 
 """
-	etype::DMDAElementType = DMDAGetElementType(petsclib::PetscLibType,da::AbstractPetscDM) 
+	etype::DMDAElementType = DMDAGetElementType(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the element type to be returned by `DMDAGetElements()`
 
 Not Collective
@@ -4317,7 +3932,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
 `DMDA_ELEMENT_P1`, `DMDA_ELEMENT_Q1`
 
 # External Links
@@ -4343,7 +3958,7 @@ end
 end 
 
 """
-	nel::PetscInt,nen::PetscInt,e::Ptr{PetscInt} = DMDAGetElements(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nel::PetscInt,nen::PetscInt,e::Ptr{PetscInt} = DMDAGetElements(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets an array containing the indices (in local indexing)
 of all the local elements
 
@@ -4360,7 +3975,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `VecSetValuesLocal()`, `MatSetValuesLocal()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `VecSetValuesLocal()`, `MatSetValuesLocal()`,
 `DMGlobalToLocalBegin()`, `DMLocalToGlobalBegin()`, `DMDARestoreElements()`, `DMDA_ELEMENT_P1`, `DMDA_ELEMENT_Q1`, `DMDAGetElementsSizes()`,
 `DMDAGetElementsCorners()`
 
@@ -4391,7 +4006,7 @@ end
 end 
 
 """
-	gx::PetscInt,gy::PetscInt,gz::PetscInt = DMDAGetElementsCorners(petsclib::PetscLibType,da::AbstractPetscDM) 
+	gx::PetscInt,gy::PetscInt,gz::PetscInt = DMDAGetElementsCorners(petsclib::PetscLibType, da::AbstractPetscDM) 
 Returns the global (i,j,k) indices of the lower left
 corner of the non-overlapping decomposition of elements identified by `DMDAGetElements()`
 
@@ -4407,7 +4022,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDAGetElementsSizes()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDAGetElementsSizes()`,
 `DMDAGetElementsCornersIS()`, `DMDARestoreElementsCornersIS()`
 
 # External Links
@@ -4437,8 +4052,8 @@ end
 end 
 
 """
-	mx::PetscInt,my::PetscInt,mz::PetscInt = DMDAGetElementsSizes(petsclib::PetscLibType,da::AbstractPetscDM) 
-Gets the local number of elements per coordinate direction for the non
+	mx::PetscInt,my::PetscInt,mz::PetscInt = DMDAGetElementsSizes(petsclib::PetscLibType, da::AbstractPetscDM) 
+Gets the local number of elements per coordinate direction for the non-overlapping decomposition identified by `DMDAGetElements()`
 
 Not Collective
 
@@ -4452,7 +4067,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetElementsCorners()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDAGetElementsCorners()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetElementsSizes"))
@@ -4481,7 +4096,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMDAGetFieldName(petsclib::PetscLibType,da::AbstractPetscDM, nf::PetscInt) 
+	name::Ptr{Cchar} = DMDAGetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::PetscInt) 
 Gets the names of individual field components in multicomponent
 vectors associated with a `DMDA`.
 
@@ -4497,7 +4112,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMSetUp()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetFieldName"))
@@ -4522,7 +4137,7 @@ end
 end 
 
 """
-	names::String = DMDAGetFieldNames(petsclib::PetscLibType,da::AbstractPetscDM) 
+	names::String = DMDAGetFieldNames(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the name of all the components in the vector associated with the `DMDA`
 
 Not Collective; names will contain a common value; No Fortran Support
@@ -4535,7 +4150,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDASetFieldNames()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDASetFieldNames()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetFieldNames"))
@@ -4560,7 +4175,7 @@ end
 end 
 
 """
-	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt = DMDAGetGhostCorners(petsclib::PetscLibType,da::AbstractPetscDM) 
+	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt = DMDAGetGhostCorners(petsclib::PetscLibType, da::AbstractPetscDM) 
 Returns the global (`i`,`j`,`k`) indices of the lower left
 corner and size of the local region, including ghost points.
 
@@ -4579,7 +4194,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetCorners()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDAGetOwnershipRanges()`, `DMStagGetGhostCorners()`, `DMSTAG`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCorners()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDAGetOwnershipRanges()`, `DMStagGetGhostCorners()`, `DMSTAG`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetGhostCorners"))
@@ -4614,7 +4229,7 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = DMDAGetHeightStratum(petsclib::PetscLibType,dm::AbstractPetscDM, height::PetscInt) 
+	pStart::PetscInt,pEnd::PetscInt = DMDAGetHeightStratum(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) 
 Get the bounds [`start`, `end`) for all points at a certain height.
 
 Not Collective
@@ -4629,7 +4244,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMDA`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
+See also: `DM`, `DMDA`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`,
 `DMPlexGetDepthLabel()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`, `DMPlexInterpolate()`, `DMDAGetDepthStratum()`
 
 # External Links
@@ -4657,7 +4272,7 @@ end
 end 
 
 """
-	dim::PetscInt,M::PetscInt,N::PetscInt,P::PetscInt,M_m::PetscInt,M_n::PetscInt,M_p::PetscInt,dof::PetscInt,s::PetscInt,bx::DMBoundaryType,by::DMBoundaryType,bz::DMBoundaryType,st::DMDAStencilType = DMDAGetInfo(petsclib::PetscLibType,da::AbstractPetscDM) 
+	dim::PetscInt,M::PetscInt,N::PetscInt,P::PetscInt,M_m::PetscInt,M_n::PetscInt,M_p::PetscInt,dof::PetscInt,s::PetscInt,bx::DMBoundaryType,by::DMBoundaryType,bz::DMBoundaryType,st::DMDAStencilType = DMDAGetInfo(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets information about a given distributed array.
 
 Not Collective
@@ -4682,7 +4297,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMView()`, `DMDAGetCorners()`, `DMDAGetLocalInfo()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMView()`, `DMDAGetCorners()`, `DMDAGetLocalInfo()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetInfo"))
@@ -4731,7 +4346,7 @@ end
 end 
 
 """
-	ctype::DMDAInterpolationType = DMDAGetInterpolationType(petsclib::PetscLibType,da::AbstractPetscDM) 
+	ctype::DMDAInterpolationType = DMDAGetInterpolationType(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the type of interpolation that will be
 used by `DMCreateInterpolation()`
 
@@ -4745,7 +4360,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAInterpolationType`, `DMDASetInterpolationType()`, `DMCreateInterpolation()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAInterpolationType`, `DMDASetInterpolationType()`, `DMCreateInterpolation()`,
 `DMDA_Q1`, `DMDA_Q0`
 
 # External Links
@@ -4784,7 +4399,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetInfo()`, `DMDAGetCorners()`, `DMDALocalInfo`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetInfo()`, `DMDAGetCorners()`, `DMDALocalInfo`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetLocalInfo"))
@@ -4811,7 +4426,7 @@ end
 end 
 
 """
-	II::PetscInt,JJ::PetscInt,KK::PetscInt,M_X::PetscScalar,M_Y::PetscScalar,M_Z::PetscScalar = DMDAGetLogicalCoordinate(petsclib::PetscLibType,da::AbstractPetscDM, x::PetscScalar, y::PetscScalar, z::PetscScalar) 
+	II::PetscInt,JJ::PetscInt,KK::PetscInt,M_X::PetscScalar,M_Y::PetscScalar,M_Z::PetscScalar = DMDAGetLogicalCoordinate(petsclib::PetscLibType, da::AbstractPetscDM, x::PetscScalar, y::PetscScalar, z::PetscScalar) 
 Returns a the i,j,k logical coordinate for the closest mesh point to a `x`, `y`, `z` point in the coordinates of the `DMDA`
 
 Collective
@@ -4832,7 +4447,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`
+See also: [](sec_struct), `DM`, `DMDA`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetLogicalCoordinate"))
@@ -4867,7 +4482,7 @@ end
 end 
 
 """
-	ranks::Ptr{PetscMPIInt} = DMDAGetNeighbors(petsclib::PetscLibType,da::AbstractPetscDM) 
+	ranks::Ptr{PetscMPIInt} = DMDAGetNeighbors(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets an array containing the MPI rank of all the current
 processes neighbors.
 
@@ -4881,7 +4496,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DMDA`, `DM`
+See also: [](sec_struct), `DMDA`, `DM`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNeighbors"))
@@ -4906,7 +4521,7 @@ end
 end 
 
 """
-	xs::PetscInt,ys::PetscInt,zs::PetscInt,xm::PetscInt,ym::PetscInt,zm::PetscInt = DMDAGetNonOverlappingRegion(petsclib::PetscLibType,da::AbstractPetscDM) 
+	xs::PetscInt,ys::PetscInt,zs::PetscInt,xm::PetscInt,ym::PetscInt,zm::PetscInt = DMDAGetNonOverlappingRegion(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the indices of the nonoverlapping region of a subdomain `DMDA`.
 
 Not Collective
@@ -4924,7 +4539,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNonOverlappingRegion"))
@@ -4959,7 +4574,7 @@ end
 end 
 
 """
-	numCellsX::PetscInt,numCellsY::PetscInt,numCellsZ::PetscInt,numCells::PetscInt = DMDAGetNumCells(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numCellsX::PetscInt,numCellsY::PetscInt,numCellsZ::PetscInt,numCells::PetscInt = DMDAGetNumCells(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the number of cells (or vertices) in the local piece of the `DMDA`. This includes ghost cells.
 
 Input Parameter:
@@ -4973,7 +4588,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetCellPoint()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCellPoint()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumCells"))
@@ -5004,7 +4619,7 @@ end
 end 
 
 """
-	numXFacesX::PetscInt,numXFaces::PetscInt,numYFacesY::PetscInt,numYFaces::PetscInt,numZFacesZ::PetscInt,numZFaces::PetscInt = DMDAGetNumFaces(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numXFacesX::PetscInt,numXFaces::PetscInt,numYFacesY::PetscInt,numYFaces::PetscInt,numZFacesZ::PetscInt,numZFaces::PetscInt = DMDAGetNumFaces(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return the number of local mesh faces of each orientation (including ghost faces) for a `DMDA`.
 
 Not Collective
@@ -5022,7 +4637,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DM`, `DMDA`, `DMDAGetNumVertices()`, `DMDAGetNumCells()`
+See also: `DM`, `DMDA`, `DMDAGetNumVertices()`, `DMDAGetNumCells()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumFaces"))
@@ -5057,7 +4672,7 @@ end
 end 
 
 """
-	Nsub::PetscInt = DMDAGetNumLocalSubDomains(petsclib::PetscLibType,da::AbstractPetscDM) 
+	Nsub::PetscInt = DMDAGetNumLocalSubDomains(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the number of local subdomains that would be created upon decomposition.
 
 Not Collective
@@ -5070,7 +4685,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetNumLocalSubDomains()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetNumLocalSubDomains()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumLocalSubDomains"))
@@ -5095,7 +4710,7 @@ end
 end 
 
 """
-	numVerticesX::PetscInt,numVerticesY::PetscInt,numVerticesZ::PetscInt,numVertices::PetscInt = DMDAGetNumVertices(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numVerticesX::PetscInt,numVerticesY::PetscInt,numVerticesZ::PetscInt,numVertices::PetscInt = DMDAGetNumVertices(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return the number of local vertices (including ghost vertices) of a `DMDA` in each dimension and in total.
 
 Not Collective
@@ -5111,7 +4726,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DM`, `DMDA`, `DMDAGetNumCells()`, `DMDAGetNumFaces()`
+See also: `DM`, `DMDA`, `DMDAGetNumCells()`, `DMDAGetNumFaces()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetNumVertices"))
@@ -5142,7 +4757,7 @@ end
 end 
 
 """
-	xo::PetscInt,yo::PetscInt,zo::PetscInt,Mo::PetscInt,No::PetscInt,Po::PetscInt = DMDAGetOffset(petsclib::PetscLibType,da::AbstractPetscDM) 
+	xo::PetscInt,yo::PetscInt,zo::PetscInt,Mo::PetscInt,No::PetscInt,Po::PetscInt = DMDAGetOffset(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the index offset of the `DMDA`.
 
 Not Collective
@@ -5160,7 +4775,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetOffset()`, `DMDAVecGetArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetOffset"))
@@ -5195,8 +4810,8 @@ end
 end 
 
 """
-	x::PetscInt,y::PetscInt,z::PetscInt = DMDAGetOverlap(petsclib::PetscLibType,da::AbstractPetscDM) 
-Gets the size of the per
+	x::PetscInt,y::PetscInt,z::PetscInt = DMDAGetOverlap(petsclib::PetscLibType, da::AbstractPetscDM) 
+Gets the size of the per-processor overlap.
 
 Not Collective
 
@@ -5210,7 +4825,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetOverlap()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDASetOverlap()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetOverlap"))
@@ -5239,7 +4854,7 @@ end
 end 
 
 """
-	lx::Ptr{PetscInt},ly::Ptr{PetscInt},lz::Ptr{PetscInt} = DMDAGetOwnershipRanges(petsclib::PetscLibType,da::AbstractPetscDM) 
+	lx::Ptr{PetscInt},ly::Ptr{PetscInt},lz::Ptr{PetscInt} = DMDAGetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the number of indices in the x, y and z direction that are owned by each process in that direction
 
 Not Collective
@@ -5254,7 +4869,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDACreate()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `VecGetOwnershipRanges()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCorners()`, `DMDAGetGhostCorners()`, `DMDACreate()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `VecGetOwnershipRanges()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetOwnershipRanges"))
@@ -5283,7 +4898,7 @@ end
 end 
 
 """
-	preallocCenterDim::PetscInt = DMDAGetPreallocationCenterDimension(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	preallocCenterDim::PetscInt = DMDAGetPreallocationCenterDimension(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return the topology used to determine adjacency
 
 Input Parameter:
@@ -5294,7 +4909,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`, `DMDASetPreallocationCenterDimension()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`, `DMDASetPreallocationCenterDimension()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetPreallocationCenterDimension"))
@@ -5319,7 +4934,7 @@ end
 end 
 
 """
-	comm::MPI_Comm = DMDAGetProcessorSubset(petsclib::PetscLibType,da::AbstractPetscDM, dir::DMDirection, gp::PetscInt) 
+	comm::MPI_Comm = DMDAGetProcessorSubset(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection, gp::PetscInt) 
 Returns a communicator consisting only of the
 processors in a `DMDA` that own a particular global x, y, or z grid point
 (corresponding to a logical plane in a 3D grid or a line in a 2D grid).
@@ -5336,7 +4951,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `DM_X`, `DM_Y`, `DM_Z`, `DMDAGetProcessorSubsets()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `DM_X`, `DM_Y`, `DM_Z`, `DMDAGetProcessorSubsets()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetProcessorSubset"))
@@ -5361,7 +4976,7 @@ end
 end 
 
 """
-	subcomm::MPI_Comm = DMDAGetProcessorSubsets(petsclib::PetscLibType,da::AbstractPetscDM, dir::DMDirection) 
+	subcomm::MPI_Comm = DMDAGetProcessorSubsets(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection) 
 Returns communicators consisting only of the
 processors in a `DMDA` adjacent in a particular dimension,
 corresponding to a logical plane in a 3D grid or a line in a 2D grid.
@@ -5377,7 +4992,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `DMDAGetProcessorSubset()`, `DM_X`, `DM_Y`, `DM_Z`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `DMDAGetProcessorSubset()`, `DM_X`, `DM_Y`, `DM_Z`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetProcessorSubsets"))
@@ -5402,7 +5017,7 @@ end
 end 
 
 """
-	newvec::PetscVec,scatter::VecScatter = DMDAGetRay(petsclib::PetscLibType,da::AbstractPetscDM, dir::DMDirection, gp::PetscInt) 
+	newvec::PetscVec,scatter::VecScatter = DMDAGetRay(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection, gp::PetscInt) 
 Returns a vector on process zero that contains a row or column of the values in a `DMDA` vector
 
 Collective
@@ -5418,7 +5033,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `Vec`, `VecScatter`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDirection`, `Vec`, `VecScatter`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetRay"))
@@ -5445,7 +5060,7 @@ end
 end 
 
 """
-	refine_x::PetscInt,refine_y::PetscInt,refine_z::PetscInt = DMDAGetRefinementFactor(petsclib::PetscLibType,da::AbstractPetscDM) 
+	refine_x::PetscInt,refine_y::PetscInt,refine_z::PetscInt = DMDAGetRefinementFactor(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the ratios that the `DMDA` grid is refined
 
 Not Collective
@@ -5460,7 +5075,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMRefine()`, `DMDASetRefinementFactor()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMRefine()`, `DMDASetRefinementFactor()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetRefinementFactor"))
@@ -5489,8 +5104,8 @@ end
 end 
 
 """
-	gtol::VecScatter,ltol::VecScatter = DMDAGetScatter(petsclib::PetscLibType,da::AbstractPetscDM) 
-Gets the global
+	gtol::VecScatter,ltol::VecScatter = DMDAGetScatter(petsclib::PetscLibType, da::AbstractPetscDM) 
+Gets the global-to-local, and
 local-to-local vector scatter contexts for a `DMDA` distributed array.
 
 Collective
@@ -5504,7 +5119,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetScatter"))
@@ -5531,7 +5146,7 @@ end
 end 
 
 """
-	stype::DMDAStencilType = DMDAGetStencilType(petsclib::PetscLibType,da::AbstractPetscDM) 
+	stype::DMDAStencilType = DMDAGetStencilType(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the type of the communication stencil
 
 Not Collective
@@ -5544,7 +5159,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetStencilType"))
@@ -5569,7 +5184,7 @@ end
 end 
 
 """
-	width::PetscInt = DMDAGetStencilWidth(petsclib::PetscLibType,da::AbstractPetscDM) 
+	width::PetscInt = DMDAGetStencilWidth(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the width of the communication stencil
 
 Not Collective
@@ -5582,7 +5197,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDAGetStencilWidth"))
@@ -5607,7 +5222,7 @@ end
 end 
 
 """
-	is::IS = DMDAGetSubdomainCornersIS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	is::IS = DMDAGetSubdomainCornersIS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets an index set containing the corner indices (in local indexing)
 of the non-overlapping decomposition identified by `DMDAGetElements()`
 
@@ -5621,7 +5236,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElementsCornersIS()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`, `DMDARestoreElementsCornersIS()`,
 `DMDAGetElementsSizes()`, `DMDAGetElementsCorners()`
 
 # External Links
@@ -5647,7 +5262,7 @@ end
 end 
 
 """
-	scatter::VecScatter = DMDAGlobalToNaturalAllCreate(petsclib::PetscLibType,da::AbstractPetscDM) 
+	scatter::VecScatter = DMDAGlobalToNaturalAllCreate(petsclib::PetscLibType, da::AbstractPetscDM) 
 Creates a scatter context that maps from a
 global vector, obtained with `DMCreateGlobalVector()`, to the entire vector to each processor in natural numbering
 
@@ -5661,7 +5276,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDANaturalAllToGlobalCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDANaturalAllToGlobalCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5687,7 +5302,7 @@ end
 end 
 
 """
-	DMDAGlobalToNaturalBegin(petsclib::PetscLibType,da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec) 
+	DMDAGlobalToNaturalBegin(petsclib::PetscLibType, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec) 
 Maps values from the global vector obtained with `DMCreateGlobalVector()` to a global vector
 in the "natural" grid ordering. Must be followed by
 `DMDAGlobalToNaturalEnd()` to complete the exchange.
@@ -5704,7 +5319,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5728,7 +5343,7 @@ end
 end 
 
 """
-	DMDAGlobalToNaturalEnd(petsclib::PetscLibType,da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec) 
+	DMDAGlobalToNaturalEnd(petsclib::PetscLibType, da::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, n::AbstractPetscVec) 
 Maps values from the global vector obtained with `DMCreateGlobalVector()` to a global vector
 in the natural ordering. Must be preceded by `DMDAGlobalToNaturalBegin()`.
 
@@ -5744,7 +5359,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5768,7 +5383,7 @@ end
 end 
 
 """
-	x::PetscScalar,y::PetscScalar = DMDAMapCoordsToPeriodicDomain(petsclib::PetscLibType,da::AbstractPetscDM) 
+	x::PetscScalar,y::PetscScalar = DMDAMapCoordsToPeriodicDomain(petsclib::PetscLibType, da::AbstractPetscDM) 
 Maps a `(x, y)` coordinate pair that lies outside a 2D `DMDA` domain back into the domain along any periodic boundaries
 
 Not Collective
@@ -5782,7 +5397,7 @@ Input/Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `Characteristic`, `DMDA`, `CharacteristicSolve()`
+See also: `Characteristic`, `DMDA`, `CharacteristicSolve()`
 
 # External Links
 $(_doc_external("Characteristic/DMDAMapCoordsToPeriodicDomain"))
@@ -5809,7 +5424,7 @@ end
 end 
 
 """
-	DMDAMapMatStencilToGlobal(petsclib::PetscLibType,da::AbstractPetscDM, m::PetscInt, idxm::Vector{MatStencil}, gidxm::Vector{PetscInt}) 
+	DMDAMapMatStencilToGlobal(petsclib::PetscLibType, da::AbstractPetscDM, m::PetscInt, idxm::Vector{MatStencil}, gidxm::Vector{PetscInt}) 
 Map a list of `MatStencil` on a grid to global indices.
 
 Not Collective
@@ -5824,7 +5439,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `MatStencil`
+See also: [](sec_struct), `DM`, `DMDA`, `MatStencil`
 
 # External Links
 $(_doc_external("DMDA/DMDAMapMatStencilToGlobal"))
@@ -5847,7 +5462,7 @@ end
 end 
 
 """
-	scatter::VecScatter = DMDANaturalAllToGlobalCreate(petsclib::PetscLibType,da::AbstractPetscDM) 
+	scatter::VecScatter = DMDANaturalAllToGlobalCreate(petsclib::PetscLibType, da::AbstractPetscDM) 
 Creates a scatter context that maps from a copy
 of the entire vector on each processor (in the natural ordering) to its local part in the global vector, obtained with `DMCreateGlobalVector()`.
 
@@ -5861,7 +5476,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalAllCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalAllCreate()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5887,7 +5502,7 @@ end
 end 
 
 """
-	DMDANaturalToGlobalBegin(petsclib::PetscLibType,da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
+	DMDANaturalToGlobalBegin(petsclib::PetscLibType, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
 Maps values from a global vector in the "natural" ordering
 to a global vector in the PETSc `DMDA` grid ordering. Must be followed by
 `DMDANaturalToGlobalEnd()` to complete the exchange.
@@ -5904,7 +5519,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalEnd()`, `DMDAGlobalToNaturalBegin()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5928,7 +5543,7 @@ end
 end 
 
 """
-	DMDANaturalToGlobalEnd(petsclib::PetscLibType,da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
+	DMDANaturalToGlobalEnd(petsclib::PetscLibType, da::AbstractPetscDM, n::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
 Maps values from the natural ordering global vector
 to a global vector in the PETSc `DMDA` ordering. Must be preceded by `DMDANaturalToGlobalBegin()`.
 
@@ -5944,7 +5559,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGlobalToNaturalBegin()`, `DMDAGlobalToNaturalEnd()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMDACreateNaturalVector()`
 
 # External Links
@@ -5968,7 +5583,7 @@ end
 end 
 
 """
-	DMDARestoreArray(petsclib::PetscLibType,da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid}) 
+	DMDARestoreArray(petsclib::PetscLibType, da::AbstractPetscDM, ghosted::PetscBool, vptr::Ptr{Cvoid}) 
 Restores an array for a `DMDA` obtained with  `DMDAGetArray()`
 
 Input Parameters:
@@ -5978,7 +5593,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreArray"))
@@ -6001,7 +5616,7 @@ end
 end 
 
 """
-	DMDARestoreCoordinateArray(petsclib::PetscLibType,dm::AbstractPetscDM, xc::Ptr{Cvoid}) 
+	DMDARestoreCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM, xc::Ptr{Cvoid}) 
 Returns an array containing the coordinates of the `DMDA` obtained with `DMDAGetCoordinateArray()`
 
 Not Collective; No Fortran Support
@@ -6012,7 +5627,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDAGetCoordinateArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMDAGetCoordinateArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreCoordinateArray"))
@@ -6035,7 +5650,7 @@ end
 end 
 
 """
-	DMDARestoreElements(petsclib::PetscLibType,dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::Union{Ptr, AbstractArray{PetscInt}}) 
+	DMDARestoreElements(petsclib::PetscLibType, dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::Union{Ptr, AbstractArray{PetscInt}}) 
 Restores the array obtained with `DMDAGetElements()`
 
 Not Collective
@@ -6048,7 +5663,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetElements()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreElements"))
@@ -6074,7 +5689,7 @@ end
 end 
 
 """
-	DMDARestoreSubdomainCornersIS(petsclib::PetscLibType,dm::AbstractPetscDM, is::AbstractIS) 
+	DMDARestoreSubdomainCornersIS(petsclib::PetscLibType, dm::AbstractPetscDM, is::AbstractIS) 
 Restores the `IS` obtained with `DMDAGetSubdomainCornersIS()`
 
 Not Collective
@@ -6085,7 +5700,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetSubdomainCornersIS()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDASetElementType()`, `DMDAGetSubdomainCornersIS()`
 
 # External Links
 $(_doc_external("DMDA/DMDARestoreSubdomainCornersIS"))
@@ -6110,7 +5725,7 @@ end
 end 
 
 """
-	DMDASNESSetFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDASNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function for use with `DMDA`
 
 Logically Collective
@@ -6123,7 +5738,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESFunctionFn`, `DMDASNESSetJacobianLocal()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+See also: `DMDA`, `DMDASNESFunctionFn`, `DMDASNESSetJacobianLocal()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetFunctionLocal"))
@@ -6146,7 +5761,7 @@ end
 end 
 
 """
-	DMDASNESSetFunctionLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDASNESSetFunctionLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function that operates on a local vector for `DMDA`
 
 Logically Collective
@@ -6159,7 +5774,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESFunctionVecFn`, `DMDASNESSetFunctionLocal()`, `DMDASNESSetJacobianLocalVec()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+See also: `DMDA`, `DMDASNESFunctionVecFn`, `DMDASNESSetFunctionLocal()`, `DMDASNESSetJacobianLocalVec()`, `DMSNESSetFunction()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetFunctionLocalVec"))
@@ -6182,7 +5797,7 @@ end
 end 
 
 """
-	DMDASNESSetJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDASNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local Jacobian evaluation function for use with `DMDA`
 
 Logically Collective
@@ -6194,7 +5809,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESJacobianFn`, `DMDASNESSetFunctionLocal()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+See also: `DMDA`, `DMDASNESJacobianFn`, `DMDASNESSetFunctionLocal()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetJacobianLocal"))
@@ -6217,7 +5832,7 @@ end
 end 
 
 """
-	DMDASNESSetJacobianLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDASNESSetJacobianLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local Jacobian evaluation function that operates on a local vector with `DMDA`
 
 Logically Collective
@@ -6229,7 +5844,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESJacobianVecFn`, `DMDASNESSetJacobianLocal()`, `DMDASNESSetFunctionLocalVec()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+See also: `DMDA`, `DMDASNESJacobianVecFn`, `DMDASNESSetJacobianLocal()`, `DMDASNESSetFunctionLocalVec()`, `DMSNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetJacobianLocalVec"))
@@ -6252,7 +5867,7 @@ end
 end 
 
 """
-	DMDASNESSetObjectiveLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDASNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function to used with a `DMDA`
 
 Logically Collective
@@ -6264,7 +5879,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESObjectiveFn`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocal()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESFunctionFn`
+See also: `DMDA`, `DMDASNESObjectiveFn`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocal()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESFunctionFn`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetObjectiveLocal"))
@@ -6287,7 +5902,7 @@ end
 end 
 
 """
-	DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDASNESSetObjectiveLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function that operates on a local vector with `DMDA`
 
 Logically Collective
@@ -6299,7 +5914,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMDA`, `DMDASNESObjectiveVecFn`, `DMDASNESSetObjectiveLocal()`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocalVec()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESObjectiveFn`
+See also: `DMDA`, `DMDASNESObjectiveVecFn`, `DMDASNESSetObjectiveLocal()`, `DMSNESSetFunction()`, `DMDASNESSetJacobianLocalVec()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDASNESObjectiveFn`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetObjectiveLocalVec"))
@@ -6322,8 +5937,8 @@ end
 end 
 
 """
-	DMDASNESSetPicardLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
-set a local right
+	DMDASNESSetPicardLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+set a local right-hand side and matrix evaluation function for Picard iteration with `DMDA`
 
 Logically Collective
 
@@ -6336,7 +5951,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_snes), `SNES`, `DMDA`, `DMDASNESFunctionFn`, `DMDASNESJacobianFn`, `DMSNESSetFunction()`, `DMDASNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
+See also: `SNES`, `DMDA`, `DMDASNESFunctionFn`, `DMDASNESJacobianFn`, `DMSNESSetFunction()`, `DMDASNESSetJacobian()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("SNES/DMDASNESSetPicardLocal"))
@@ -6359,7 +5974,7 @@ end
 end 
 
 """
-	DMDASetAOType(petsclib::PetscLibType,da::AbstractPetscDM, aotype::AOType) 
+	DMDASetAOType(petsclib::PetscLibType, da::AbstractPetscDM, aotype::AOType) 
 Sets the type of application ordering to create with `DMDAGetAO()`, for a distributed array.
 
 Collective
@@ -6370,7 +5985,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDAGetAO()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate2d()`, `DMDAGetAO()`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `DMLocalToGlobal()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`, `DMDAGetGlobalIndices()`, `DMDAGetOwnershipRanges()`,
 `AO`, `AOPetscToApplication()`, `AOApplicationToPetsc()`, `AOType`, `AOBASIC`, `AOADVANCED`, `AOMAPPING`, `AOMEMORYSCALABLE`
 
@@ -6395,8 +6010,8 @@ end
 end 
 
 """
-	DMDASetBlockFills(petsclib::PetscLibType,da::AbstractPetscDM, dfill::Vector{PetscInt}, ofill::Vector{PetscInt}) 
-Sets the fill pattern in each block for a multi
+	DMDASetBlockFills(petsclib::PetscLibType, da::AbstractPetscDM, dfill::Vector{PetscInt}, ofill::Vector{PetscInt}) 
+Sets the fill pattern in each block for a multi-component problem
 of the matrix returned by `DMCreateMatrix()`.
 
 Logically Collective
@@ -6408,7 +6023,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMDASetBlockFillsSparse()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMDASetBlockFillsSparse()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetBlockFills"))
@@ -6431,8 +6046,8 @@ end
 end 
 
 """
-	DMDASetBlockFillsSparse(petsclib::PetscLibType,da::AbstractPetscDM, dfillsparse::Vector{PetscInt}, ofillsparse::Vector{PetscInt}) 
-Sets the fill pattern in each block for a multi
+	DMDASetBlockFillsSparse(petsclib::PetscLibType, da::AbstractPetscDM, dfillsparse::Vector{PetscInt}, ofillsparse::Vector{PetscInt}) 
+Sets the fill pattern in each block for a multi-component problem
 of the matrix returned by `DMCreateMatrix()`, using sparse representations
 of fill patterns.
 
@@ -6445,7 +6060,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetBlockFills()`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetBlockFills()`, `DMCreateMatrix()`, `DMDASetGetMatrix()`, `DMSetMatrixPreallocateOnly()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetBlockFillsSparse"))
@@ -6468,7 +6083,7 @@ end
 end 
 
 """
-	DMDASetBoundaryType(petsclib::PetscLibType,da::AbstractPetscDM, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType) 
+	DMDASetBoundaryType(petsclib::PetscLibType, da::AbstractPetscDM, bx::DMBoundaryType, by::DMBoundaryType, bz::DMBoundaryType) 
 Sets the type of ghost nodes on domain boundaries for a `DMDA` object.
 
 Not Collective
@@ -6481,7 +6096,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DMDAGetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
+See also: [](sec_struct), `DMDAGetBoundaryType()`, `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMBoundaryType`, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_GHOSTED`, `DM_BOUNDARY_PERIODIC`
 
 # External Links
 $(_doc_external("DMDA/DMDASetBoundaryType"))
@@ -6504,7 +6119,7 @@ end
 end 
 
 """
-	DMDASetCoordinateName(petsclib::PetscLibType,dm::AbstractPetscDM, nf::PetscInt, name::String) 
+	DMDASetCoordinateName(petsclib::PetscLibType, dm::AbstractPetscDM, nf::PetscInt, name::String) 
 Sets the name of the coordinate directions associated with a `DMDA`, for example "x" or "y"
 
 Logically Collective; name must contain a common value; No Fortran Support
@@ -6516,7 +6131,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMDAGetFieldName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetCoordinateName"))
@@ -6539,7 +6154,7 @@ end
 end 
 
 """
-	DMDASetDof(petsclib::PetscLibType,da::AbstractPetscDM, dof::PetscInt) 
+	DMDASetDof(petsclib::PetscLibType, da::AbstractPetscDM, dof::PetscInt) 
 Sets the number of degrees of freedom per vertex
 
 Not Collective
@@ -6550,7 +6165,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetDof()`, `DMDACreate()`, `DMDestroy()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetDof()`, `DMDACreate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetDof"))
@@ -6573,7 +6188,7 @@ end
 end 
 
 """
-	DMDASetElementType(petsclib::PetscLibType,da::AbstractPetscDM, etype::DMDAElementType) 
+	DMDASetElementType(petsclib::PetscLibType, da::AbstractPetscDM, etype::DMDAElementType) 
 Sets the element type to be returned by `DMDAGetElements()`
 
 Not Collective
@@ -6586,7 +6201,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDAGetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAElementType`, `DMDAGetElementType()`, `DMDAGetElements()`, `DMDARestoreElements()`,
 `DMDA_ELEMENT_P1`, `DMDA_ELEMENT_Q1`
 
 # External Links
@@ -6610,7 +6225,7 @@ end
 end 
 
 """
-	DMDASetFieldName(petsclib::PetscLibType,da::AbstractPetscDM, nf::PetscInt, name::String) 
+	DMDASetFieldName(petsclib::PetscLibType, da::AbstractPetscDM, nf::PetscInt, name::String) 
 Sets the names of individual field components in multicomponent
 vectors associated with a `DMDA`.
 
@@ -6624,7 +6239,7 @@ number of degrees of freedom per node within the `DMDA`
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldNames()`, `DMSetUp()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldNames()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetFieldName"))
@@ -6647,7 +6262,7 @@ end
 end 
 
 """
-	DMDASetFieldNames(petsclib::PetscLibType,da::AbstractPetscDM, names::String) 
+	DMDASetFieldNames(petsclib::PetscLibType, da::AbstractPetscDM, names::String) 
 Sets the name of each component in the vector associated with the `DMDA`
 
 Logically Collective; names must contain a common value; No Fortran Support
@@ -6658,7 +6273,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMSetUp()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetFieldName()`, `DMDASetCoordinateName()`, `DMDAGetCoordinateName()`, `DMDASetFieldName()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetFieldNames"))
@@ -6682,8 +6297,8 @@ end
 end 
 
 """
-	nodes::PetscReal = DMDASetGLLCoordinates(petsclib::PetscLibType,da::AbstractPetscDM, n::PetscInt) 
-Sets the global coordinates from
+	nodes::PetscReal = DMDASetGLLCoordinates(petsclib::PetscLibType, da::AbstractPetscDM, n::PetscInt) 
+Sets the global coordinates from -1 to 1 to the GLL points of as many GLL elements that fit the number of grid points
 
 Collective
 
@@ -6694,7 +6309,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `PetscDTGaussLobattoLegendreQuadrature()`, `DMGetCoordinates()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `PetscDTGaussLobattoLegendreQuadrature()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetGLLCoordinates"))
@@ -6719,7 +6334,7 @@ end
 end 
 
 """
-	DMDASetGetMatrix(petsclib::PetscLibType,da::AbstractPetscDM, f::external) 
+	DMDASetGetMatrix(petsclib::PetscLibType, da::AbstractPetscDM, f::external) 
 Sets the routine used by the `DMDA` to allocate a matrix.
 
 Logically Collective; No Fortran Support
@@ -6734,7 +6349,7 @@ Calling sequence of `f`:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetBlockFills()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDASetBlockFills()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetGetMatrix"))
@@ -6757,7 +6372,7 @@ end
 end 
 
 """
-	DMDASetInterpolationType(petsclib::PetscLibType,da::AbstractPetscDM, ctype::DMDAInterpolationType) 
+	DMDASetInterpolationType(petsclib::PetscLibType, da::AbstractPetscDM, ctype::DMDAInterpolationType) 
 Sets the type of interpolation that will be
 returned by `DMCreateInterpolation()`
 
@@ -6769,7 +6384,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDestroy()`, `DMDAInterpolationType`,
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMDestroy()`, `DMDAInterpolationType`,
 `DMDA_Q1`, `DMDA_Q0`
 
 # External Links
@@ -6793,7 +6408,7 @@ end
 end 
 
 """
-	DMDASetNonOverlappingRegion(petsclib::PetscLibType,da::AbstractPetscDM, xs::PetscInt, ys::PetscInt, zs::PetscInt, xm::PetscInt, ym::PetscInt, zm::PetscInt) 
+	DMDASetNonOverlappingRegion(petsclib::PetscLibType, da::AbstractPetscDM, xs::PetscInt, ys::PetscInt, zs::PetscInt, xm::PetscInt, ym::PetscInt, zm::PetscInt) 
 Sets the indices of the nonoverlapping region of a subdomain `DMDA`.
 
 Collective
@@ -6809,7 +6424,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetNonOverlappingRegion"))
@@ -6832,7 +6447,7 @@ end
 end 
 
 """
-	DMDASetNumLocalSubDomains(petsclib::PetscLibType,da::AbstractPetscDM, Nsub::PetscInt) 
+	DMDASetNumLocalSubDomains(petsclib::PetscLibType, da::AbstractPetscDM, Nsub::PetscInt) 
 Sets the number of local subdomains to create when decomposing with `DMCreateDomainDecomposition()`
 
 Not Collective
@@ -6843,7 +6458,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetNumLocalSubDomains()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetNumLocalSubDomains()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetNumLocalSubDomains"))
@@ -6866,7 +6481,7 @@ end
 end 
 
 """
-	DMDASetNumProcs(petsclib::PetscLibType,da::AbstractPetscDM, m::PetscInt, n::PetscInt, p::PetscInt) 
+	DMDASetNumProcs(petsclib::PetscLibType, da::AbstractPetscDM, m::PetscInt, n::PetscInt, p::PetscInt) 
 Sets the number of processes in each dimension
 
 Logically Collective
@@ -6879,7 +6494,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDASetSizes()`, `PetscSplitOwnership()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDASetSizes()`, `PetscSplitOwnership()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetNumProcs"))
@@ -6902,7 +6517,7 @@ end
 end 
 
 """
-	DMDASetOffset(petsclib::PetscLibType,da::AbstractPetscDM, xo::PetscInt, yo::PetscInt, zo::PetscInt, Mo::PetscInt, No::PetscInt, Po::PetscInt) 
+	DMDASetOffset(petsclib::PetscLibType, da::AbstractPetscDM, xo::PetscInt, yo::PetscInt, zo::PetscInt, Mo::PetscInt, No::PetscInt, Po::PetscInt) 
 Sets the index offset of the `DMDA`.
 
 Collective
@@ -6918,7 +6533,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDAGetOffset()`, `DMDAVecGetArray()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetOffset"))
@@ -6941,8 +6556,8 @@ end
 end 
 
 """
-	DMDASetOverlap(petsclib::PetscLibType,da::AbstractPetscDM, x::PetscInt, y::PetscInt, z::PetscInt) 
-Sets the size of the per
+	DMDASetOverlap(petsclib::PetscLibType, da::AbstractPetscDM, x::PetscInt, y::PetscInt, z::PetscInt) 
+Sets the size of the per-processor overlap.
 
 Not Collective
 
@@ -6954,7 +6569,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetOverlap()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateDomainDecomposition()`, `DMDAGetOverlap()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetOverlap"))
@@ -6977,7 +6592,7 @@ end
 end 
 
 """
-	DMDASetOwnershipRanges(petsclib::PetscLibType,da::AbstractPetscDM, lx::Vector{PetscInt}, ly::Vector{PetscInt}, lz::Vector{PetscInt}) 
+	DMDASetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM, lx::Vector{PetscInt}, ly::Vector{PetscInt}, lz::Vector{PetscInt}) 
 Sets the number of nodes in each direction on each process
 
 Logically Collective
@@ -6990,7 +6605,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetOwnershipRanges"))
@@ -7013,7 +6628,7 @@ end
 end 
 
 """
-	DMDASetPreallocationCenterDimension(petsclib::PetscLibType,dm::AbstractPetscDM, preallocCenterDim::PetscInt) 
+	DMDASetPreallocationCenterDimension(petsclib::PetscLibType, dm::AbstractPetscDM, preallocCenterDim::PetscInt) 
 Determine the topology used to determine adjacency
 
 Input Parameters:
@@ -7022,7 +6637,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMCreateMatrix()`, `DMDAPreallocateOperator()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetPreallocationCenterDimension"))
@@ -7045,7 +6660,7 @@ end
 end 
 
 """
-	DMDASetRefinementFactor(petsclib::PetscLibType,da::AbstractPetscDM, refine_x::PetscInt, refine_y::PetscInt, refine_z::PetscInt) 
+	DMDASetRefinementFactor(petsclib::PetscLibType, da::AbstractPetscDM, refine_x::PetscInt, refine_y::PetscInt, refine_z::PetscInt) 
 Set the ratios that the `DMDA` grid is refined
 
 Logically Collective
@@ -7064,7 +6679,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMRefine()`, `DMDAGetRefinementFactor()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMRefine()`, `DMDAGetRefinementFactor()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetRefinementFactor"))
@@ -7087,7 +6702,7 @@ end
 end 
 
 """
-	DMDASetSizes(petsclib::PetscLibType,da::AbstractPetscDM, M::PetscInt, N::PetscInt, P::PetscInt) 
+	DMDASetSizes(petsclib::PetscLibType, da::AbstractPetscDM, M::PetscInt, N::PetscInt, P::PetscInt) 
 Sets the number of grid points in the three dimensional directions
 
 Logically Collective
@@ -7100,7 +6715,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `PetscSplitOwnership()`
+See also: [](sec_struct), `DM`, `DMDA`, `PetscSplitOwnership()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetSizes"))
@@ -7123,7 +6738,7 @@ end
 end 
 
 """
-	DMDASetStencilType(petsclib::PetscLibType,da::AbstractPetscDM, stype::DMDAStencilType) 
+	DMDASetStencilType(petsclib::PetscLibType, da::AbstractPetscDM, stype::DMDAStencilType) 
 Sets the type of the communication stencil
 
 Logically Collective
@@ -7134,7 +6749,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDASetStencilType"))
@@ -7157,7 +6772,7 @@ end
 end 
 
 """
-	DMDASetStencilWidth(petsclib::PetscLibType,da::AbstractPetscDM, width::PetscInt) 
+	DMDASetStencilWidth(petsclib::PetscLibType, da::AbstractPetscDM, width::PetscInt) 
 Sets the width of the communication stencil
 
 Logically Collective
@@ -7168,7 +6783,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
+See also: [](sec_struct), `DM`, `DMDA`, `DMDACreate()`, `DMDestroy()`, `DMDAStencilType`, `DMDA_STENCIL_BOX`, `DMDA_STENCIL_STAR.`
 
 # External Links
 $(_doc_external("DMDA/DMDASetStencilWidth"))
@@ -7191,7 +6806,7 @@ end
 end 
 
 """
-	DMDASetUniformCoordinates(petsclib::PetscLibType,da::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
+	DMDASetUniformCoordinates(petsclib::PetscLibType, da::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
 Sets a `DMDA` coordinates to be a uniform grid
 
 Collective
@@ -7207,7 +6822,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](sec_struct), `DM`, `DMDA`, `DMSetCoordinates()`, `DMGetCoordinates()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMStagSetUniformCoordinates()`
+See also: [](sec_struct), `DM`, `DMDA`, `DMSetCoordinates()`, `DMGetCoordinates()`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMStagSetUniformCoordinates()`
 
 # External Links
 $(_doc_external("DMDA/DMDASetUniformCoordinates"))
@@ -7230,7 +6845,7 @@ end
 end 
 
 """
-	DMDASetVertexCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, xl::PetscReal, xu::PetscReal, yl::PetscReal, yu::PetscReal, zl::PetscReal, zu::PetscReal) 
+	DMDASetVertexCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, xl::PetscReal, xu::PetscReal, yl::PetscReal, yu::PetscReal, zl::PetscReal, zu::PetscReal) 
 Sets the lower and upper coordinates for a `DMDA`
 
 Logically Collective
@@ -7246,7 +6861,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMDA`
+See also: `DM`, `DMDA`
 
 # External Links
 $(_doc_external("DMDA/DMDASetVertexCoordinates"))
@@ -7269,7 +6884,7 @@ end
 end 
 
 """
-	DMDATSSetIFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDATSSetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function for use with `DMDA`
 
 Logically Collective
@@ -7282,7 +6897,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `DMDA`, `DMDATSIFunctionLocalFn`, `DMTSSetIFunction()`,
+See also: `DMDA`, `DMDATSIFunctionLocalFn`, `DMTSSetIFunction()`,
 `DMDATSSetIJacobianLocal()`, `DMDASNESSetFunctionLocal()`
 
 # External Links
@@ -7306,7 +6921,7 @@ end
 end 
 
 """
-	DMDATSSetIJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDATSSetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function for use with `DMDA`
 
 Logically Collective
@@ -7318,7 +6933,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `DMDA`, `DMDATSIJacobianLocalFn`, `DMTSSetIJacobian()`,
+See also: `DMDA`, `DMDATSIJacobianLocalFn`, `DMTSSetIJacobian()`,
 `DMDATSSetIFunctionLocal()`, `DMDASNESSetJacobianLocal()`
 
 # External Links
@@ -7342,7 +6957,7 @@ end
 end 
 
 """
-	DMDATSSetRHSFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDATSSetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, imode::InsertMode, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function for use with `DMDA`
 
 Logically Collective
@@ -7355,7 +6970,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `DMDA`, `DMDATSRHSFunctionLocalFn`, `TS`, `TSSetRHSFunction()`, `DMTSSetRHSFunction()`, `DMDATSSetRHSJacobianLocal()`, `DMDASNESSetFunctionLocal()`
+See also: `DMDA`, `DMDATSRHSFunctionLocalFn`, `TS`, `TSSetRHSFunction()`, `DMTSSetRHSFunction()`, `DMDATSSetRHSJacobianLocal()`, `DMDASNESSetFunctionLocal()`
 
 # External Links
 $(_doc_external("TS/DMDATSSetRHSFunctionLocal"))
@@ -7378,7 +6993,7 @@ end
 end 
 
 """
-	DMDATSSetRHSJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMDATSSetRHSJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function for use with `DMDA`
 
 Logically Collective
@@ -7390,7 +7005,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_ts), `DMDA`, `DMDATSRHSJacobianLocalFn`, `DMTSSetRHSJacobian()`,
+See also: `DMDA`, `DMDATSRHSJacobianLocalFn`, `DMTSSetRHSJacobian()`,
 `DMDATSSetRHSFunctionLocal()`, `DMDASNESSetJacobianLocal()`
 
 # External Links
@@ -7414,7 +7029,7 @@ end
 end 
 
 """
-	DMDAVTKWriteAll(petsclib::PetscLibType,odm, viewer::PetscViewer) 
+	DMDAVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer) 
 Write a file containing all the fields that have been provided to the viewer
 
 Collective
@@ -7425,7 +7040,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_struct), `DMDA`, `DM`, `PETSCVIEWERVTK`, `DMDASetFieldName()`
+See also: [](sec_struct), `DMDA`, `DM`, `PETSCVIEWERVTK`, `DMDASetFieldName()`
 
 # External Links
 $(_doc_external("DMDA/DMDAVTKWriteAll"))
@@ -7448,7 +7063,7 @@ end
 end 
 
 """
-	array::Ptr{Cvoid} = DMDAVecGetArray(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::Ptr{Cvoid} = DMDAVecGetArray(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`.
 
@@ -7463,7 +7078,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecRestoreArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayDOF()`, `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`,
 `DMStagVecGetArray()`
 
@@ -7490,7 +7105,7 @@ end
 end 
 
 """
-	array::Ptr{Cvoid} = DMDAVecGetArrayDOF(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayDOF(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`
 
@@ -7505,7 +7120,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecRestoreArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`, `DMDAVecGetArrayDOFRead()`
 
 # External Links
@@ -7531,7 +7146,7 @@ end
 end 
 
 """
-	array::Ptr{Cvoid} = DMDAVecGetArrayDOFRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayDOFRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`
 
@@ -7546,7 +7161,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7572,7 +7187,7 @@ end
 end 
 
 """
-	array::Ptr{Cvoid} = DMDAVecGetArrayDOFWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayDOFWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`
 
@@ -7587,7 +7202,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`
 
 # External Links
@@ -7613,7 +7228,7 @@ end
 end 
 
 """
-	array::Ptr{Cvoid} = DMDAVecGetArrayRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`.
 
@@ -7628,7 +7243,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`,
 `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayRead()`,
 `DMDAVecRestoreArrayDOF()`, `DMDAVecGetArrayDOF()`, `DMDAVecGetArray()`,
 `DMDAVecRestoreArray()`, `DMStagVecGetArrayRead()`
@@ -7656,7 +7271,7 @@ end
 end 
 
 """
-	array::Ptr{Cvoid} = DMDAVecGetArrayWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::Ptr{Cvoid} = DMDAVecGetArrayWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec) 
 Returns a multiple dimension array that shares data with
 the underlying vector and is indexed using the global or local dimensions of a `DMDA`.
 
@@ -7671,7 +7286,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecRestoreArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayDOF()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7697,7 +7312,7 @@ end
 end 
 
 """
-	DMDAVecRestoreArray(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMDAVecRestoreArray(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 Restores a multiple dimension array obtained with `DMDAVecGetArray()`
 
 Logically Collective
@@ -7709,7 +7324,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`,
 `DMStagVecRestoreArray()`
 
@@ -7734,7 +7349,7 @@ end
 end 
 
 """
-	DMDAVecRestoreArrayDOF(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMDAVecRestoreArrayDOF(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 Restores a multiple dimension array obtained with `DMDAVecGetArrayDOF()`
 
 Logically Collective
@@ -7746,7 +7361,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7770,7 +7385,7 @@ end
 end 
 
 """
-	DMDAVecRestoreArrayDOFRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMDAVecRestoreArrayDOFRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 Restores a multiple dimension array obtained with `DMDAVecGetArrayDOFRead()`
 
 Not Collective
@@ -7782,7 +7397,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7806,7 +7421,7 @@ end
 end 
 
 """
-	DMDAVecRestoreArrayDOFWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMDAVecRestoreArrayDOFWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 Restores a multiple dimension array obtained with `DMDAVecGetArrayDOFWrite()`
 
 Not Collective
@@ -7818,7 +7433,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArray()`, `DMDAVecGetArrayDOF()`, `DMDAVecRestoreArrayDOF()`,
 `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`
 
 # External Links
@@ -7842,7 +7457,7 @@ end
 end 
 
 """
-	DMDAVecRestoreArrayRead(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMDAVecRestoreArrayRead(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 Restores a multiple dimension array obtained with `DMDAVecGetArrayRead()`
 
 Not Collective
@@ -7854,7 +7469,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayRead()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayRead()`,
 `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArrayWrite()`, `DMDAVecRestoreArrayWrite()`,
 `DMStagVecRestoreArrayRead()`
 
@@ -7879,7 +7494,7 @@ end
 end 
 
 """
-	DMDAVecRestoreArrayWrite(petsclib::PetscLibType,da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMDAVecRestoreArrayWrite(petsclib::PetscLibType, da::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 Restores a multiple dimension array obtained with `DMDAVecGetArrayWrite()`
 
 Logically Collective
@@ -7891,7 +7506,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayWrite()`,
+See also: [](sec_struct), [](sec_struct_set), `DM`, `DMDA`, `DMDAGetGhostCorners()`, `DMDAGetCorners()`, `VecGetArray()`, `VecRestoreArray()`, `DMDAVecGetArrayWrite()`,
 `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `DMDAVecGetArrayRead()`, `DMDAVecRestoreArrayRead()`
 
 # External Links
@@ -7915,7 +7530,7 @@ end
 end 
 
 """
-	DMDestroy(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMDestroy(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroys a `DM`.
 
 Collective
@@ -7925,9 +7540,7 @@ Input Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCreate()`, `DMType`, `DMSetType()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`
+See also: `DM`, `DMCreate()`, `DMType`, `DMSetType()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`
 
 # External Links
 $(_doc_external("DM/DMDestroy"))
@@ -7952,8 +7565,8 @@ end
 end 
 
 """
-	DMDestroyVI(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Frees the `DM_SNESVI` object contained in the `DM` and resets any function pointers the reduced
+	DMDestroyVI(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Frees the `DM_SNESVI` object contained in the `DM` and resets any function pointers the reduced-space `SNESVI` code composed onto it
 
 Not Collective
 
@@ -7962,7 +7575,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DM`, `SNESVINEWTONRSLS`, `SNESVISetVariableBounds()`, `PetscObjectCompose()`
+See also: `DM`, `SNESVINEWTONRSLS`, `SNESVISetVariableBounds()`, `PetscObjectCompose()`
 
 # External Links
 $(_doc_external("SNES/DMDestroyVI"))
@@ -7985,7 +7598,7 @@ end
 end 
 
 """
-	dme::PetscDM = DMExtrude(petsclib::PetscLibType,dm::AbstractPetscDM, layers::PetscInt) 
+	dme::PetscDM = DMExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::PetscInt) 
 Extrude a `DM` object from a surface
 
 Collective
@@ -7999,12 +7612,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-If no extrusion was done, the return value is `NULL`
-
-See also: 
-=== 
-`DM`, `DMRefine()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`
+See also: `DM`, `DMRefine()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`
 
 # External Links
 $(_doc_external("DM/DMExtrude"))
@@ -8035,7 +7643,7 @@ from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("DM/DMFinalizePackage"))
@@ -8057,8 +7665,8 @@ end
 end 
 
 """
-	num::PetscInt = DMFindRegionNum(petsclib::PetscLibType,dm::AbstractPetscDM, ds::PetscDS) 
-Find the region number for a given `PetscDS`, or
+	num::PetscInt = DMFindRegionNum(petsclib::PetscLibType, dm::AbstractPetscDM, ds::PetscDS) 
+Find the region number for a given `PetscDS`, or -1 if it is not found.
 
 Not Collective
 
@@ -8071,9 +7679,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMGetRegionNumDS()`, `DMGetRegionDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
+See also: `DM`, `DMGetRegionNumDS()`, `DMGetRegionDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
 
 # External Links
 $(_doc_external("DM/DMFindRegionNum"))
@@ -8098,7 +7704,7 @@ end
 end 
 
 """
-	adapt::PetscDM = DMForestGetAdaptivityForest(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	adapt::PetscDM = DMForestGetAdaptivityForest(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the forest from which the current forest is adapted.
 
 Not Collective
@@ -8111,7 +7717,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetAdaptivityForest()`, `DMForestSetAdaptivityPurpose()`
+See also: `DM`, `DMFOREST`, `DMForestSetAdaptivityForest()`, `DMForestSetAdaptivityPurpose()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityForest"))
@@ -8136,8 +7742,8 @@ end
 end 
 
 """
-	adaptLabel::DMLabel = DMForestGetAdaptivityLabel(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Get the label of the pre
+	adaptLabel::DMLabel = DMForestGetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Get the label of the pre-adaptation forest (see `DMForestGetAdaptivityForest()`) that
 holds the adaptation flags (refinement, coarsening, or some combination).
 
 Not Collective
@@ -8150,7 +7756,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetAdaptivityLabel()`
+See also: `DM`, `DMFOREST`, `DMForestSetAdaptivityLabel()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityLabel"))
@@ -8175,7 +7781,7 @@ end
 end 
 
 """
-	purpose::DMAdaptFlag = DMForestGetAdaptivityPurpose(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	purpose::DMAdaptFlag = DMForestGetAdaptivityPurpose(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get whether the current `DM` is being adapted from its source (set with
 `DMForestSetAdaptivityForest()`) for the purpose of refinement (`DM_ADAPT_REFINE`), coarsening (`DM_ADAPT_COARSEN`),
 coarsening only the last level (`DM_ADAPT_COARSEN_LAST`) or undefined (`DM_ADAPT_DETERMINE`).
@@ -8190,7 +7796,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestTemplate()`, `DMForestSetAdaptivityForest()`, `DMForestGetAdaptivityForest()`, `DMAdaptFlag`
+See also: `DM`, `DMFOREST`, `DMForestTemplate()`, `DMForestSetAdaptivityForest()`, `DMForestGetAdaptivityForest()`, `DMAdaptFlag`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityPurpose"))
@@ -8215,8 +7821,8 @@ end
 end 
 
 """
-	preCoarseToFine::PetscSF,coarseToPreFine::PetscSF = DMForestGetAdaptivitySF(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Get `PetscSF`s that relate the pre
+	preCoarseToFine::PetscSF,coarseToPreFine::PetscSF = DMForestGetAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Get `PetscSF`s that relate the pre-adaptation forest to the
 post-adaptation forest.
 
 Not Collective
@@ -8230,7 +7836,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestGetComputeAdaptivitySF()`, `DMForestSetComputeAdaptivitySF()`
+See also: `DM`, `DMFOREST`, `DMForestGetComputeAdaptivitySF()`, `DMForestSetComputeAdaptivitySF()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivitySF"))
@@ -8257,7 +7863,7 @@ end
 end 
 
 """
-	adaptStrategy::DMForestAdaptivityStrategy = DMForestGetAdaptivityStrategy(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	adaptStrategy::DMForestAdaptivityStrategy = DMForestGetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the strategy for combining adaptivity labels from multiple processes.
 
 Not Collective
@@ -8270,7 +7876,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMFORESTADAPTALL`, `DMFORESTADAPTANY`, `DMForestSetAdaptivityStrategy()`
+See also: `DM`, `DMFOREST`, `DMFORESTADAPTALL`, `DMFORESTADAPTANY`, `DMForestSetAdaptivityStrategy()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivityStrategy"))
@@ -8295,7 +7901,7 @@ end
 end 
 
 """
-	success::PetscBool = DMForestGetAdaptivitySuccess(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	success::PetscBool = DMForestGetAdaptivitySuccess(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return whether the requested adaptation (refinement, coarsening, repartitioning,
 etc.) was successful.
 
@@ -8309,7 +7915,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`
+See also: `DM`, `DMFOREST`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdaptivitySuccess"))
@@ -8334,8 +7940,8 @@ end
 end 
 
 """
-	adjCodim::PetscInt = DMForestGetAdjacencyCodimension(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Like `DMForestGetAdjacencyDimension()`, but specified as a co
+	adjCodim::PetscInt = DMForestGetAdjacencyCodimension(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Like `DMForestGetAdjacencyDimension()`, but specified as a co-dimension (so that,
 e.g., adjacency based on facets can be specified by codimension 1 in all cases)
 
 Not Collective
@@ -8348,7 +7954,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetAdjacencyCodimension()`, `DMForestGetAdjacencyDimension()`
+See also: `DM`, `DMFOREST`, `DMForestSetAdjacencyCodimension()`, `DMForestGetAdjacencyDimension()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdjacencyCodimension"))
@@ -8373,7 +7979,7 @@ end
 end 
 
 """
-	adjDim::PetscInt = DMForestGetAdjacencyDimension(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	adjDim::PetscInt = DMForestGetAdjacencyDimension(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the dimension of interface points that determine cell adjacency (for the
 purposes of partitioning and overlap).
 
@@ -8387,7 +7993,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetAdjacencyDimension()`, `DMForestGetAdjacencyCodimension()`, `DMForestSetPartitionOverlap()`
+See also: `DM`, `DMFOREST`, `DMForestSetAdjacencyDimension()`, `DMForestGetAdjacencyCodimension()`, `DMForestSetPartitionOverlap()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetAdjacencyDimension"))
@@ -8412,8 +8018,8 @@ end
 end 
 
 """
-	DMForestGetBaseCoordinateMapping(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
-Get the user
+	DMForestGetBaseCoordinateMapping(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+Get the user-supplied coordinate mapping previously set with `DMForestSetBaseCoordinateMapping()`.
 
 Not Collective
 
@@ -8434,7 +8040,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetBaseCoordinateMapping()`
+See also: `DM`, `DMFOREST`, `DMForestSetBaseCoordinateMapping()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetBaseCoordinateMapping"))
@@ -8457,7 +8063,7 @@ end
 end 
 
 """
-	base::PetscDM = DMForestGetBaseDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	base::PetscDM = DMForestGetBaseDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the base `DM` of a `DMFOREST`
 
 Not Collective
@@ -8470,7 +8076,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetBaseDM()`
+See also: `DM`, `DMFOREST`, `DMForestSetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetBaseDM"))
@@ -8495,8 +8101,8 @@ end
 end 
 
 """
-	cStart::PetscInt,cEnd::PetscInt = DMForestGetCellChart(petsclib::PetscLibType,dm::AbstractPetscDM) 
-After the setup phase, get the local half
+	cStart::PetscInt,cEnd::PetscInt = DMForestGetCellChart(petsclib::PetscLibType, dm::AbstractPetscDM) 
+After the setup phase, get the local half-open interval of the chart of cells on this process
 
 Not Collective
 
@@ -8509,7 +8115,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetCellSF()`
+See also: `DM`, `DMFOREST`, `DMForestGetCellSF()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetCellChart"))
@@ -8536,7 +8142,7 @@ end
 end 
 
 """
-	cellSF::PetscSF = DMForestGetCellSF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cellSF::PetscSF = DMForestGetCellSF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 After the setup phase, get the `PetscSF` for overlapping cells between processes
 
 Not Collective
@@ -8549,7 +8155,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetCellChart()`
+See also: `DM`, `DMFOREST`, `DMForestGetCellChart()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetCellSF"))
@@ -8574,7 +8180,7 @@ end
 end 
 
 """
-	weightsFactor::PetscReal = DMForestGetCellWeightFactor(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	weightsFactor::PetscReal = DMForestGetCellWeightFactor(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the factor by which the level of refinement changes the cell weight (see
 `DMForestSetCellWeights()`) when calculating partitions.
 
@@ -8588,7 +8194,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestSetCellWeightFactor()`, `DMForestSetCellWeights()`
+See also: `DM`, `DMFOREST`, `DMForestSetCellWeightFactor()`, `DMForestSetCellWeights()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetCellWeightFactor"))
@@ -8613,7 +8219,7 @@ end
 end 
 
 """
-	weights::Ptr{PetscReal} = DMForestGetCellWeights(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	weights::Ptr{PetscReal} = DMForestGetCellWeights(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the weights assigned to each of the cells (see `DMForestGetCellChart()`) of the current
 process: weights are used to determine parallel partitioning.
 
@@ -8627,7 +8233,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestSetCellWeights()`, `DMForestSetWeightCapacity()`
+See also: `DM`, `DMFOREST`, `DMForestSetCellWeights()`, `DMForestSetWeightCapacity()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetCellWeights"))
@@ -8652,7 +8258,7 @@ end
 end 
 
 """
-	computeSF::PetscBool = DMForestGetComputeAdaptivitySF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	computeSF::PetscBool = DMForestGetComputeAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get whether transfer `PetscSF`s should be computed relating the cells of the
 pre-adaptation forest to the post-adaptiation forest.  After `DMSetUp()` is called, these transfer PetscSFs can be
 accessed with `DMForestGetAdaptivitySF()`.
@@ -8667,7 +8273,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestSetComputeAdaptivitySF()`, `DMForestGetAdaptivitySF()`
+See also: `DM`, `DMFOREST`, `DMForestSetComputeAdaptivitySF()`, `DMForestGetAdaptivitySF()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetComputeAdaptivitySF"))
@@ -8692,7 +8298,7 @@ end
 end 
 
 """
-	grade::PetscInt = DMForestGetGradeFactor(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	grade::PetscInt = DMForestGetGradeFactor(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the desired amount of grading in the mesh, e.g. give 2 to indicate that the diameter of
 neighboring cells should differ by at most a factor of 2.  Subtypes of `DMFOREST` may only support one particular
 choice of grading factor.
@@ -8707,7 +8313,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestSetGradeFactor()`
+See also: `DM`, `DMFOREST`, `DMForestSetGradeFactor()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetGradeFactor"))
@@ -8732,7 +8338,7 @@ end
 end 
 
 """
-	initRefinement::PetscInt = DMForestGetInitialRefinement(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	initRefinement::PetscInt = DMForestGetInitialRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the initial level of refinement (relative to the base `DM`, see
 `DMForestGetBaseDM()`) allowed in the forest.
 
@@ -8746,7 +8352,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetMinimumRefinement()`, `DMForestSetMaximumRefinement()`, `DMForestGetBaseDM()`
+See also: `DM`, `DMFOREST`, `DMForestSetMinimumRefinement()`, `DMForestSetMaximumRefinement()`, `DMForestGetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetInitialRefinement"))
@@ -8771,7 +8377,7 @@ end
 end 
 
 """
-	maxRefinement::PetscInt = DMForestGetMaximumRefinement(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	maxRefinement::PetscInt = DMForestGetMaximumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the maximum level of refinement (relative to the base `DM`, see
 `DMForestGetBaseDM()`) allowed in the forest.  If the forest is being created by refining a previous forest (see
 `DMForestGetAdaptivityForest()`), this limits the amount of refinement.
@@ -8786,7 +8392,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetMaximumRefinement()`, `DMForestGetMinimumRefinement()`, `DMForestGetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityForest()`
+See also: `DM`, `DMFOREST`, `DMForestSetMaximumRefinement()`, `DMForestGetMinimumRefinement()`, `DMForestGetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityForest()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetMaximumRefinement"))
@@ -8811,7 +8417,7 @@ end
 end 
 
 """
-	minRefinement::PetscInt = DMForestGetMinimumRefinement(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	minRefinement::PetscInt = DMForestGetMinimumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the minimum level of refinement (relative to the base `DM`, see
 `DMForestGetBaseDM()`) allowed in the forest.  If the forest is being created by coarsening a previous forest (see
 `DMForestGetAdaptivityForest()`), this limits the amount of coarsening.
@@ -8826,7 +8432,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetMinimumRefinement()`, `DMForestGetMaximumRefinement()`, `DMForestGetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityForest()`
+See also: `DM`, `DMFOREST`, `DMForestSetMinimumRefinement()`, `DMForestGetMaximumRefinement()`, `DMForestGetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityForest()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetMinimumRefinement"))
@@ -8851,8 +8457,8 @@ end
 end 
 
 """
-	overlap::PetscInt = DMForestGetPartitionOverlap(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Get the amount of cell
+	overlap::PetscInt = DMForestGetPartitionOverlap(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Get the amount of cell-overlap present in parallel partitions of a forest, with values
 > 0 indicating subdomains that are expanded by that many iterations of adding adjacent cells
 
 Not Collective
@@ -8865,7 +8471,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetAdjacencyDimension()`, `DMForestSetAdjacencyCodimension()`
+See also: `DM`, `DMFOREST`, `DMForestSetAdjacencyDimension()`, `DMForestSetAdjacencyCodimension()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetPartitionOverlap"))
@@ -8890,7 +8496,7 @@ end
 end 
 
 """
-	topology::DMForestTopology = DMForestGetTopology(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	topology::DMForestTopology = DMForestGetTopology(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get a string describing the topology of a `DMFOREST`.
 
 Not Collective
@@ -8903,7 +8509,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetTopology()`
+See also: `DM`, `DMFOREST`, `DMForestSetTopology()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetTopology"))
@@ -8928,8 +8534,8 @@ end
 end 
 
 """
-	capacity::PetscReal = DMForestGetWeightCapacity(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Set the capacity of the current process when repartitioning a pre
+	capacity::PetscReal = DMForestGetWeightCapacity(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Set the capacity of the current process when repartitioning a pre-adaptation forest (see
 `DMForestGetAdaptivityForest()`).
 
 Not Collective
@@ -8942,7 +8548,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestSetWeightCapacity()`, `DMForestSetCellWeights()`, `DMForestSetCellWeightFactor()`
+See also: `DM`, `DMFOREST`, `DMForestSetWeightCapacity()`, `DMForestSetCellWeights()`, `DMForestSetCellWeightFactor()`
 
 # External Links
 $(_doc_external("DMForest/DMForestGetWeightCapacity"))
@@ -8967,7 +8573,7 @@ end
 end 
 
 """
-	DMForestRegisterType(petsclib::PetscLibType,name::DMType) 
+	DMForestRegisterType(petsclib::PetscLibType, name::DMType) 
 Registers a `DMType` as a subtype of `DMFOREST` (so that `DMIsForest()` will be correct)
 
 Not Collective
@@ -8977,7 +8583,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DMFOREST`, `DMIsForest()`
+See also: `DMFOREST`, `DMIsForest()`
 
 # External Links
 $(_doc_external("DMForest/DMForestRegisterType"))
@@ -9000,8 +8606,8 @@ end
 end 
 
 """
-	DMForestSetAdaptivityForest(petsclib::PetscLibType,dm::AbstractPetscDM, adapt::AbstractPetscDM) 
-During the pre
+	DMForestSetAdaptivityForest(petsclib::PetscLibType, dm::AbstractPetscDM, adapt::AbstractPetscDM) 
+During the pre-setup phase, set the forest from which the
 current forest will be adapted (e.g., the current forest will be
 refined/coarsened/repartitioned from it) in `DMSetUp()`.
 
@@ -9013,7 +8619,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetAdaptivityForest()`, `DMForestSetAdaptivityPurpose()`
+See also: `DM`, `DMFOREST`, `DMForestGetAdaptivityForest()`, `DMForestSetAdaptivityPurpose()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityForest"))
@@ -9036,8 +8642,8 @@ end
 end 
 
 """
-	DMForestSetAdaptivityLabel(petsclib::PetscLibType,dm::AbstractPetscDM, adaptLabel::DMLabel) 
-During the pre
+	DMForestSetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM, adaptLabel::DMLabel) 
+During the pre-setup phase, set the label of the pre-adaptation forest (see
 `DMForestGetAdaptivityForest()`) that holds the adaptation flags (refinement, coarsening, or some combination).
 
 Logically Collective
@@ -9048,7 +8654,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetAdaptivityLabel()`
+See also: `DM`, `DMFOREST`, `DMForestGetAdaptivityLabel()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityLabel"))
@@ -9071,8 +8677,8 @@ end
 end 
 
 """
-	DMForestSetAdaptivityPurpose(petsclib::PetscLibType,dm::AbstractPetscDM, purpose::DMAdaptFlag) 
-During the pre
+	DMForestSetAdaptivityPurpose(petsclib::PetscLibType, dm::AbstractPetscDM, purpose::DMAdaptFlag) 
+During the pre-setup phase, set whether the current `DM` is being adapted from its
 source (set with `DMForestSetAdaptivityForest()`) for the purpose of refinement (`DM_ADAPT_REFINE`), coarsening
 (`DM_ADAPT_COARSEN`), or undefined (`DM_ADAPT_DETERMINE`).
 
@@ -9084,7 +8690,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestTemplate()`, `DMForestSetAdaptivityForest()`, `DMForestGetAdaptivityForest()`, `DMAdaptFlag`
+See also: `DM`, `DMFOREST`, `DMForestTemplate()`, `DMForestSetAdaptivityForest()`, `DMForestGetAdaptivityForest()`, `DMAdaptFlag`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityPurpose"))
@@ -9107,8 +8713,8 @@ end
 end 
 
 """
-	DMForestSetAdaptivityStrategy(petsclib::PetscLibType,dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy) 
-During the pre
+	DMForestSetAdaptivityStrategy(petsclib::PetscLibType, dm::AbstractPetscDM, adaptStrategy::DMForestAdaptivityStrategy) 
+During the pre-setup phase, set the strategy for combining adaptivity labels from multiple processes.
 
 Logically Collective
 
@@ -9118,7 +8724,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestGetAdaptivityStrategy()`, `DMFORESTADAPTALL`, `DMFORESTADAPTANY`
+See also: `DM`, `DMFOREST`, `DMForestGetAdaptivityStrategy()`, `DMFORESTADAPTALL`, `DMFORESTADAPTANY`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityStrategy"))
@@ -9141,8 +8747,8 @@ end
 end 
 
 """
-	DMForestSetAdjacencyCodimension(petsclib::PetscLibType,dm::AbstractPetscDM, adjCodim::PetscInt) 
-Like `DMForestSetAdjacencyDimension()`, but specified as a co
+	DMForestSetAdjacencyCodimension(petsclib::PetscLibType, dm::AbstractPetscDM, adjCodim::PetscInt) 
+Like `DMForestSetAdjacencyDimension()`, but specified as a co-dimension (so that,
 e.g., adjacency based on facets can be specified by codimension 1 in all cases)
 
 Logically Collective
@@ -9153,7 +8759,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetAdjacencyCodimension()`, `DMForestSetAdjacencyDimension()`
+See also: `DM`, `DMFOREST`, `DMForestGetAdjacencyCodimension()`, `DMForestSetAdjacencyDimension()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetAdjacencyCodimension"))
@@ -9176,8 +8782,8 @@ end
 end 
 
 """
-	DMForestSetAdjacencyDimension(petsclib::PetscLibType,dm::AbstractPetscDM, adjDim::PetscInt) 
-During the pre
+	DMForestSetAdjacencyDimension(petsclib::PetscLibType, dm::AbstractPetscDM, adjDim::PetscInt) 
+During the pre-setup phase, set the dimension of interface points that determine
 cell adjacency (for the purposes of partitioning and overlap).
 
 Logically Collective
@@ -9188,7 +8794,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetAdjacencyDimension()`, `DMForestSetAdjacencyCodimension()`, `DMForestSetPartitionOverlap()`
+See also: `DM`, `DMFOREST`, `DMForestGetAdjacencyDimension()`, `DMForestSetAdjacencyCodimension()`, `DMForestSetPartitionOverlap()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetAdjacencyDimension"))
@@ -9211,8 +8817,8 @@ end
 end 
 
 """
-	DMForestSetBaseCoordinateMapping(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
-Set a user
+	DMForestSetBaseCoordinateMapping(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+Set a user-supplied mapping that is applied to the base `DM`'s coordinates when the forest computes coordinates for refined cells.
 
 Logically Collective
 
@@ -9231,7 +8837,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetBaseCoordinateMapping()`, `DMForestSetBaseDM()`
+See also: `DM`, `DMFOREST`, `DMForestGetBaseCoordinateMapping()`, `DMForestSetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetBaseCoordinateMapping"))
@@ -9254,8 +8860,8 @@ end
 end 
 
 """
-	DMForestSetBaseDM(petsclib::PetscLibType,dm::AbstractPetscDM, base::AbstractPetscDM) 
-During the pre
+	DMForestSetBaseDM(petsclib::PetscLibType, dm::AbstractPetscDM, base::AbstractPetscDM) 
+During the pre-setup phase, set the `DM` that defines the base mesh of a
 `DMFOREST` forest.
 
 Logically Collective
@@ -9266,7 +8872,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetBaseDM()`
+See also: `DM`, `DMFOREST`, `DMForestGetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetBaseDM"))
@@ -9289,8 +8895,8 @@ end
 end 
 
 """
-	DMForestSetCellWeightFactor(petsclib::PetscLibType,dm::AbstractPetscDM, weightsFactor::PetscReal) 
-During the pre
+	DMForestSetCellWeightFactor(petsclib::PetscLibType, dm::AbstractPetscDM, weightsFactor::PetscReal) 
+During the pre-setup phase, set the factor by which the level of refinement changes
 the cell weight (see `DMForestSetCellWeights()`) when calculating partitions.
 
 Logically Collective
@@ -9301,7 +8907,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestGetCellWeightFactor()`, `DMForestSetCellWeights()`
+See also: `DM`, `DMFOREST`, `DMForestGetCellWeightFactor()`, `DMForestSetCellWeights()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetCellWeightFactor"))
@@ -9324,7 +8930,7 @@ end
 end 
 
 """
-	DMForestSetCellWeights(petsclib::PetscLibType,dm::AbstractPetscDM, weights::Vector{PetscReal}, copyMode::PetscCopyMode) 
+	DMForestSetCellWeights(petsclib::PetscLibType, dm::AbstractPetscDM, weights::Vector{PetscReal}, copyMode::PetscCopyMode) 
 Set the weights assigned to each of the cells (see `DMForestGetCellChart()`) of the current
 process: weights are used to determine parallel partitioning.
 
@@ -9337,7 +8943,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestGetCellWeights()`, `DMForestSetWeightCapacity()`
+See also: `DM`, `DMFOREST`, `DMForestGetCellWeights()`, `DMForestSetWeightCapacity()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetCellWeights"))
@@ -9360,8 +8966,8 @@ end
 end 
 
 """
-	DMForestSetComputeAdaptivitySF(petsclib::PetscLibType,dm::AbstractPetscDM, computeSF::PetscBool) 
-During the pre
+	DMForestSetComputeAdaptivitySF(petsclib::PetscLibType, dm::AbstractPetscDM, computeSF::PetscBool) 
+During the pre-setup phase, set whether transfer `PetscSF`s should be computed
 relating the cells of the pre-adaptation forest to the post-adaptiation forest.
 
 Logically Collective
@@ -9372,7 +8978,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestGetComputeAdaptivitySF()`, `DMForestGetAdaptivitySF()`
+See also: `DM`, `DMFOREST`, `DMForestGetComputeAdaptivitySF()`, `DMForestGetAdaptivitySF()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetComputeAdaptivitySF"))
@@ -9395,8 +9001,8 @@ end
 end 
 
 """
-	DMForestSetGradeFactor(petsclib::PetscLibType,dm::AbstractPetscDM, grade::PetscInt) 
-During the pre
+	DMForestSetGradeFactor(petsclib::PetscLibType, dm::AbstractPetscDM, grade::PetscInt) 
+During the pre-setup phase, set the desired amount of grading in the
 mesh, e.g. give 2 to indicate that the diameter of neighboring cells should differ by at most
 a factor of 2.
 
@@ -9408,7 +9014,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestGetGradeFactor()`
+See also: `DM`, `DMFOREST`, `DMForestGetGradeFactor()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetGradeFactor"))
@@ -9431,8 +9037,8 @@ end
 end 
 
 """
-	DMForestSetInitialRefinement(petsclib::PetscLibType,dm::AbstractPetscDM, initRefinement::PetscInt) 
-During the pre
+	DMForestSetInitialRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, initRefinement::PetscInt) 
+During the pre-setup phase, set the initial level of refinement (relative to the base
 `DM`, see `DMForestGetBaseDM()`) allowed in the forest.
 
 Logically Collective
@@ -9443,7 +9049,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetMinimumRefinement()`, `DMForestSetMaximumRefinement()`, `DMForestGetBaseDM()`
+See also: `DM`, `DMFOREST`, `DMForestSetMinimumRefinement()`, `DMForestSetMaximumRefinement()`, `DMForestGetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetInitialRefinement"))
@@ -9466,8 +9072,8 @@ end
 end 
 
 """
-	DMForestSetMaximumRefinement(petsclib::PetscLibType,dm::AbstractPetscDM, maxRefinement::PetscInt) 
-During the pre
+	DMForestSetMaximumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, maxRefinement::PetscInt) 
+During the pre-setup phase, set the maximum level of refinement (relative to the base
 `DM`, see `DMForestGetBaseDM()`) allowed in the forest.  If the forest is being created by refining a previous forest
 (see `DMForestGetAdaptivityForest()`), this limits the amount of refinement.
 
@@ -9479,7 +9085,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetMinimumRefinement()`, `DMForestSetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityDM()`
+See also: `DM`, `DMFOREST`, `DMForestGetMinimumRefinement()`, `DMForestSetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetMaximumRefinement"))
@@ -9502,8 +9108,8 @@ end
 end 
 
 """
-	DMForestSetMinimumRefinement(petsclib::PetscLibType,dm::AbstractPetscDM, minRefinement::PetscInt) 
-During the pre
+	DMForestSetMinimumRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, minRefinement::PetscInt) 
+During the pre-setup phase, set the minimum level of refinement (relative to the base
 `DM`, see `DMForestGetBaseDM()`) allowed in the forest.  If the forest is being created by coarsening a previous forest
 (see `DMForestGetAdaptivityForest()`) this limits the amount of coarsening.
 
@@ -9515,7 +9121,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetMinimumRefinement()`, `DMForestSetMaximumRefinement()`, `DMForestSetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityForest()`
+See also: `DM`, `DMFOREST`, `DMForestGetMinimumRefinement()`, `DMForestSetMaximumRefinement()`, `DMForestSetInitialRefinement()`, `DMForestGetBaseDM()`, `DMForestGetAdaptivityForest()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetMinimumRefinement"))
@@ -9538,8 +9144,8 @@ end
 end 
 
 """
-	DMForestSetPartitionOverlap(petsclib::PetscLibType,dm::AbstractPetscDM, overlap::PetscInt) 
-During the pre
+	DMForestSetPartitionOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) 
+During the pre-setup phase, set the amount of cell-overlap present in parallel
 partitions of a forest, with values > 0 indicating subdomains that are expanded by that many iterations of adding
 adjacent cells
 
@@ -9551,7 +9157,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetPartitionOverlap()`, `DMForestSetAdjacencyDimension()`, `DMForestSetAdjacencyCodimension()`
+See also: `DM`, `DMFOREST`, `DMForestGetPartitionOverlap()`, `DMForestSetAdjacencyDimension()`, `DMForestSetAdjacencyCodimension()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetPartitionOverlap"))
@@ -9574,8 +9180,8 @@ end
 end 
 
 """
-	DMForestSetTopology(petsclib::PetscLibType,dm::AbstractPetscDM, topology::DMForestTopology) 
-Set the topology of a `DMFOREST` during the pre
+	DMForestSetTopology(petsclib::PetscLibType, dm::AbstractPetscDM, topology::DMForestTopology) 
+Set the topology of a `DMFOREST` during the pre-setup phase.  The topology is a string (e.g.
 "cube", "shell") and can be interpreted by subtypes of `DMFOREST`) to construct the base DM of a forest during
 `DMSetUp()`.
 
@@ -9587,7 +9193,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestGetTopology()`, `DMForestSetBaseDM()`
+See also: `DM`, `DMFOREST`, `DMForestGetTopology()`, `DMForestSetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetTopology"))
@@ -9610,8 +9216,8 @@ end
 end 
 
 """
-	DMForestSetWeightCapacity(petsclib::PetscLibType,dm::AbstractPetscDM, capacity::PetscReal) 
-During the pre
+	DMForestSetWeightCapacity(petsclib::PetscLibType, dm::AbstractPetscDM, capacity::PetscReal) 
+During the pre-setup phase, set the capacity of the current process when repartitioning
 a pre-adaptation forest (see `DMForestGetAdaptivityForest()`).
 
 Logically Collective
@@ -9622,7 +9228,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMFOREST`, `DMForestGetWeightCapacity()`, `DMForestSetCellWeights()`, `DMForestSetCellWeightFactor()`
+See also: `DM`, `DMFOREST`, `DMForestGetWeightCapacity()`, `DMForestSetCellWeights()`, `DMForestSetCellWeightFactor()`
 
 # External Links
 $(_doc_external("DMForest/DMForestSetWeightCapacity"))
@@ -9645,7 +9251,7 @@ end
 end 
 
 """
-	tedm::PetscDM = DMForestTemplate(petsclib::PetscLibType,dm::AbstractPetscDM, comm::MPI_Comm) 
+	tedm::PetscDM = DMForestTemplate(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm) 
 Create a new `DM` that will be adapted from a source `DM`.
 
 Collective
@@ -9659,7 +9265,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestSetAdaptivityForest()`
+See also: `DM`, `DMFOREST`, `DMForestSetAdaptivityForest()`
 
 # External Links
 $(_doc_external("DMForest/DMForestTemplate"))
@@ -9684,7 +9290,7 @@ end
 end 
 
 """
-	DMForestTransferVec(petsclib::PetscLibType,dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, useBCs::PetscBool, time::PetscReal) 
+	DMForestTransferVec(petsclib::PetscLibType, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, useBCs::PetscBool, time::PetscReal) 
 Transfer a `Vec` between two related `DMFOREST` grids, e.g. before and after adaptation.
 
 Collective
@@ -9701,7 +9307,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestTransferVecFromBase()`, `DMForestSetAdaptivityForest()`
+See also: `DM`, `DMFOREST`, `DMForestTransferVecFromBase()`, `DMForestSetAdaptivityForest()`
 
 # External Links
 $(_doc_external("DMForest/DMForestTransferVec"))
@@ -9724,7 +9330,7 @@ end
 end 
 
 """
-	DMForestTransferVecFromBase(petsclib::PetscLibType,dm::AbstractPetscDM, vecIn::AbstractPetscVec, vecOut::AbstractPetscVec) 
+	DMForestTransferVecFromBase(petsclib::PetscLibType, dm::AbstractPetscDM, vecIn::AbstractPetscVec, vecOut::AbstractPetscVec) 
 Transfer a `Vec` defined on the base `DM` of a `DMFOREST` onto the refined forest.
 
 Collective
@@ -9738,7 +9344,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMFOREST`, `DMForestTransferVec()`, `DMForestGetBaseDM()`
+See also: `DM`, `DMFOREST`, `DMForestTransferVec()`, `DMForestGetBaseDM()`
 
 # External Links
 $(_doc_external("DMForest/DMForestTransferVecFromBase"))
@@ -9761,7 +9367,7 @@ end
 end 
 
 """
-	DMGenerateRegister(petsclib::PetscLibType,sname::String, fnc::external, rfnc::external, alfnc::external, dim::PetscInt) 
+	DMGenerateRegister(petsclib::PetscLibType, sname::String, fnc::external, rfnc::external, alfnc::external, dim::PetscInt) 
 Adds a grid generator to `DM`
 
 Not Collective, No Fortran Support
@@ -9773,7 +9379,7 @@ Input Parameters:
 - `alfnc` - adapt by label function
 - `dim`   - dimension of boundary of domain
 
--seealso: `DM`, `DMGenerateRegisterAll()`, `DMPlexGenerate()`, `DMGenerateRegisterDestroy()`
+See also: `DM`, `DMGenerateRegisterAll()`, `DMPlexGenerate()`, `DMGenerateRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMGenerateRegister"))
@@ -9803,7 +9409,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `DM`, `DMGenerateRegisterDestroy()`
+See also: `DM`, `DMGenerateRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMGenerateRegisterAll"))
@@ -9832,7 +9438,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `DM`, `DMGenerateRegister()`, `DMGenerateRegisterAll()`
+See also: `DM`, `DMGenerateRegister()`, `DMGenerateRegisterAll()`
 
 # External Links
 $(_doc_external("DM/DMGenerateRegisterDestroy"))
@@ -9854,7 +9460,7 @@ end
 end 
 
 """
-	DMGeomModelRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	DMGeomModelRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a geometry model to `DM`
 
 Not Collective, No Fortran Support
@@ -9863,7 +9469,7 @@ Input Parameters:
 - `sname` - name of a new user-defined geometry model
 - `fnc`   - geometry model function
 
--seealso: `DM`, `DMGeomModelRegisterAll()`, `DMPlexGeomModel()`, `DMGeomModelRegisterDestroy()`
+See also: `DM`, `DMGeomModelRegisterAll()`, `DMPlexGeomModel()`, `DMGeomModelRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMGeomModelRegister"))
@@ -9893,7 +9499,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `DM`, `DMGeomModelRegisterDestroy()`
+See also: `DM`, `DMGeomModelRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMGeomModelRegisterAll"))
@@ -9922,7 +9528,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `DM`, `DMGeomModelRegister()`, `DMGeomModelRegisterAll()`
+See also: `DM`, `DMGeomModelRegister()`, `DMGeomModelRegisterAll()`
 
 # External Links
 $(_doc_external("DM/DMGeomModelRegisterDestroy"))
@@ -9944,7 +9550,7 @@ end
 end 
 
 """
-	useCone::PetscBool,useClosure::PetscBool = DMGetAdjacency(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt) 
+	useCone::PetscBool,useClosure::PetscBool = DMGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) 
 Returns the flags for determining variable influence
 
 Not Collective
@@ -9959,17 +9565,7 @@ Output Parameters:
 
 Level: developer
 
-Notes:
--vb
-FEM:   Two points p and q are adjacent if q \\in closure(star(p)),   useCone = PETSC_FALSE, useClosure = PETSC_TRUE
-FVM:   Two points p and q are adjacent if q \\in support(p+cone(p)), useCone = PETSC_TRUE,  useClosure = PETSC_FALSE
-FVM++: Two points p and q are adjacent if q \\in star(closure(p)),   useCone = PETSC_TRUE,  useClosure = PETSC_TRUE
--ve
-Further explanation can be found in the User's Manual Section on the Influence of Variables on One Another.
-
-See also: 
-=== 
-`DM`, `DMSetAdjacency()`, `DMGetField()`, `DMSetField()`
+See also: `DM`, `DMSetAdjacency()`, `DMGetField()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMGetAdjacency"))
@@ -9996,7 +9592,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = DMGetApplicationContext(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	ctx::Ptr{Cvoid} = DMGetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets an application context from a `DM` object provided with `DMSetApplicationContext()`
 
 Not Collective
@@ -10009,32 +9605,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-An application context is a way to pass problem specific information that is accessible whenever the `DM` is available
-
-Fortran Notes:
-This only works when the context is a Fortran derived type (it cannot be a `PetscObject`) and you **must** write a Fortran interface definition for this
-function that tells the Fortran compiler the derived data type that is returned as the `ctx` argument. For example,
--vb
-Interface DMGetApplicationContext
-Subroutine DMGetApplicationContext(dm,ctx,ierr)
-#include <petsc/finclude/petscdm.h>
-use petscdm
-DM dm
-type(tUsertype), pointer :: ctx
-PetscErrorCode ierr
-End Subroutine
-End Interface DMGetApplicationContext
--ve
-
-The prototype for `ctx` must be
--vb
-type(tUsertype), pointer :: ctx
--ve
-
-See also: 
-=== 
-`DM`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`
+See also: `DM`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`
 
 # External Links
 $(_doc_external("DM/DMGetApplicationContext"))
@@ -10059,7 +9630,7 @@ end
 end 
 
 """
-	DMGetAuxiliaryLabels(petsclib::PetscLibType,dm::AbstractPetscDM, labels::Vector{DMLabel}, values::Vector{PetscInt}, parts::Vector{PetscInt}) 
+	DMGetAuxiliaryLabels(petsclib::PetscLibType, dm::AbstractPetscDM, labels::Vector{DMLabel}, values::Vector{PetscInt}, parts::Vector{PetscInt}) 
 Get the labels, values, and parts for all auxiliary vectors in this `DM`
 
 Not Collective
@@ -10074,12 +9645,7 @@ Output Parameters:
 
 Level: advanced
 
-Note:
-The arrays passed in must be at least as large as `DMGetNumAuxiliaryVec()`.
-
-See also: 
-=== 
-`DM`, `DMClearAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMSetAuxiliaryVec()`, `DMCopyAuxiliaryVec()`
+See also: `DM`, `DMClearAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMSetAuxiliaryVec()`, `DMCopyAuxiliaryVec()`
 
 # External Links
 $(_doc_external("DM/DMGetAuxiliaryLabels"))
@@ -10102,7 +9668,7 @@ end
 end 
 
 """
-	aux::PetscVec = DMGetAuxiliaryVec(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt) 
+	aux::PetscVec = DMGetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt) 
 Get the auxiliary vector for region specified by the given label and value, and equation part
 
 Not Collective
@@ -10118,12 +9684,7 @@ Output Parameter:
 
 Level: advanced
 
-Note:
-If no auxiliary vector is found for this (label, value), (`NULL`, 0, 0) is checked as well.
-
-See also: 
-=== 
-`DM`, `DMClearAuxiliaryVec()`, `DMSetAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryLabels()`
+See also: `DM`, `DMClearAuxiliaryVec()`, `DMSetAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxiliaryLabels()`
 
 # External Links
 $(_doc_external("DM/DMGetAuxiliaryVec"))
@@ -10148,7 +9709,7 @@ end
 end 
 
 """
-	useCone::PetscBool,useClosure::PetscBool = DMGetBasicAdjacency(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	useCone::PetscBool,useClosure::PetscBool = DMGetBasicAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the flags for determining variable influence, using either the default or field 0 if it is defined
 
 Not collective
@@ -10162,16 +9723,7 @@ Output Parameters:
 
 Level: developer
 
-Notes:
--vb
-FEM:   Two points p and q are adjacent if q \\in closure(star(p)),   useCone = PETSC_FALSE, useClosure = PETSC_TRUE
-FVM:   Two points p and q are adjacent if q \\in support(p+cone(p)), useCone = PETSC_TRUE,  useClosure = PETSC_FALSE
-FVM++: Two points p and q are adjacent if q \\in star(closure(p)),   useCone = PETSC_TRUE,  useClosure = PETSC_TRUE
--ve
-
-See also: 
-=== 
-`DM`, `DMSetBasicAdjacency()`, `DMGetField()`, `DMSetField()`
+See also: `DM`, `DMSetBasicAdjacency()`, `DMGetField()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMGetBasicAdjacency"))
@@ -10198,7 +9750,7 @@ end
 end 
 
 """
-	bs::PetscInt = DMGetBlockSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	bs::PetscInt = DMGetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the inherent block size associated with a `DM`
 
 Not Collective
@@ -10211,15 +9763,7 @@ Output Parameter:
 
 Level: intermediate
 
-Notes:
-This might be the number of degrees of freedom at each grid point for a structured grid.
-
-Complex `DM` that represent multiphysics or staggered grids or mixed-methods do not generally have a single inherent block size, but
-rather different locations in the vectors may have a different block size.
-
-See also: 
-=== 
-`DM`, `ISCreateBlock()`, `VecSetBlockSize()`, `MatSetBlockSize()`, `DMGetLocalToGlobalMapping()`
+See also: `DM`, `ISCreateBlock()`, `VecSetBlockSize()`, `MatSetBlockSize()`, `DMGetLocalToGlobalMapping()`
 
 # External Links
 $(_doc_external("DM/DMGetBlockSize"))
@@ -10244,7 +9788,7 @@ end
 end 
 
 """
-	btype::DMBlockingType = DMGetBlockingType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	btype::DMBlockingType = DMGetBlockingType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get the blocking granularity to be used for variable block size `DMCreateMatrix()` is called
 
 Not Collective
@@ -10257,9 +9801,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
+See also: `DM`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
 
 # External Links
 $(_doc_external("DM/DMGetBlockingType"))
@@ -10284,7 +9826,7 @@ end
 end 
 
 """
-	DMGetBoundingBox(petsclib::PetscLibType,dm::AbstractPetscDM, gmin::Vector{PetscReal}, gmax::Vector{PetscReal}) 
+	DMGetBoundingBox(petsclib::PetscLibType, dm::AbstractPetscDM, gmin::Vector{PetscReal}, gmax::Vector{PetscReal}) 
 Returns the global bounding box for the `DM`.
 
 Collective
@@ -10298,7 +9840,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMGetLocalBoundingBox()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`
+See also: `DM`, `DMGetLocalBoundingBox()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`
 
 # External Links
 $(_doc_external("DM/DMGetBoundingBox"))
@@ -10321,7 +9863,7 @@ end
 end 
 
 """
-	cdm::PetscDM = DMGetCellCoordinateDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cdm::PetscDM = DMGetCellCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the `DM` that prescribes cellwise coordinate layout and scatters between global and local cellwise coordinates
 
 Collective
@@ -10334,7 +9876,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSetCellCoordinateDM()`, `DMSetCellCoordinates()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMGetCellCoordinatesLocal()`,
+See also: `DM`, `DMSetCellCoordinateDM()`, `DMSetCellCoordinates()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMGetCellCoordinatesLocal()`,
 `DMLocalizeCoordinates()`, `DMSetCoordinateDM()`, `DMGetCoordinateDM()`
 
 # External Links
@@ -10360,7 +9902,7 @@ end
 end 
 
 """
-	section::PetscSection = DMGetCellCoordinateSection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	section::PetscSection = DMGetCellCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the `PetscSection` of cellwise coordinate values over the mesh.
 
 Collective
@@ -10373,7 +9915,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinateSection()`, `DMSetCellCoordinateSection()`, `DMGetCellCoordinateDM()`, `DMGetCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
+See also: `DM`, `DMGetCoordinateSection()`, `DMSetCellCoordinateSection()`, `DMGetCellCoordinateDM()`, `DMGetCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMGetCellCoordinateSection"))
@@ -10398,7 +9940,7 @@ end
 end 
 
 """
-	c::PetscVec = DMGetCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	c::PetscVec = DMGetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets a global vector with the cellwise coordinates associated with the `DM`.
 
 Collective
@@ -10411,7 +9953,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinates()`, `DMSetCellCoordinates()`, `DMGetCellCoordinatesLocal()`, `DMGetCellCoordinateDM()`
+See also: `DM`, `DMGetCoordinates()`, `DMSetCellCoordinates()`, `DMGetCellCoordinatesLocal()`, `DMGetCellCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMGetCellCoordinates"))
@@ -10436,7 +9978,7 @@ end
 end 
 
 """
-	c::PetscVec = DMGetCellCoordinatesLocal(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	c::PetscVec = DMGetCellCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets a local vector with the cellwise coordinates associated with the `DM`.
 
 Collective
@@ -10449,7 +9991,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMSetCellCoordinates()`, `DMGetCellCoordinateDM()`, `DMGetCellCoordinatesLocalNoncollective()`
+See also: `DM`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMSetCellCoordinates()`, `DMGetCellCoordinateDM()`, `DMGetCellCoordinatesLocalNoncollective()`
 
 # External Links
 $(_doc_external("DM/DMGetCellCoordinatesLocal"))
@@ -10474,8 +10016,8 @@ end
 end 
 
 """
-	c::PetscVec = DMGetCellCoordinatesLocalNoncollective(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Non
+	c::PetscVec = DMGetCellCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Non-collective version of `DMGetCellCoordinatesLocal()`. Fails if global cellwise coordinates have been set and `DMGetCellCoordinatesLocalSetUp()` not called.
 
 Not Collective
 
@@ -10487,7 +10029,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMGetCellCoordinatesLocalSetUp()`, `DMGetCellCoordinatesLocal()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMSetCellCoordinates()`, `DMGetCellCoordinateDM()`
+See also: `DM`, `DMGetCellCoordinatesLocalSetUp()`, `DMGetCellCoordinatesLocal()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMSetCellCoordinates()`, `DMGetCellCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMGetCellCoordinatesLocalNoncollective"))
@@ -10512,8 +10054,8 @@ end
 end 
 
 """
-	DMGetCellCoordinatesLocalSetUp(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Prepares a local vector of cellwise coordinates, so that `DMGetCellCoordinatesLocalNoncollective()` can be used as non
+	DMGetCellCoordinatesLocalSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Prepares a local vector of cellwise coordinates, so that `DMGetCellCoordinatesLocalNoncollective()` can be used as non-collective afterwards.
 
 Collective
 
@@ -10522,7 +10064,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMGetCellCoordinatesLocalNoncollective()`
+See also: `DM`, `DMGetCellCoordinatesLocalNoncollective()`
 
 # External Links
 $(_doc_external("DM/DMGetCellCoordinatesLocalSetUp"))
@@ -10545,7 +10087,7 @@ end
 end 
 
 """
-	ds::PetscDS,dsIn::PetscDS = DMGetCellDS(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	ds::PetscDS,dsIn::PetscDS = DMGetCellDS(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 Get the `PetscDS` defined on a given cell
 
 Not Collective
@@ -10560,9 +10102,7 @@ Output Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMGetDS()`, `DMSetRegionDS()`
+See also: `DM`, `DMGetDS()`, `DMSetRegionDS()`
 
 # External Links
 $(_doc_external("DM/DMGetCellDS"))
@@ -10589,7 +10129,7 @@ end
 end 
 
 """
-	cdm::PetscDM = DMGetCoarseDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cdm::PetscDM = DMGetCoarseDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the coarse `DM`from which this `DM` was obtained by refinement
 
 Not Collective
@@ -10602,9 +10142,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMSetCoarseDM()`, `DMCoarsen()`
+See also: `DM`, `DMSetCoarseDM()`, `DMCoarsen()`
 
 # External Links
 $(_doc_external("DM/DMGetCoarseDM"))
@@ -10629,7 +10167,7 @@ end
 end 
 
 """
-	level::PetscInt = DMGetCoarsenLevel(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	level::PetscInt = DMGetCoarsenLevel(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the number of coarsenings that have generated this `DM`.
 
 Not Collective
@@ -10642,9 +10180,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCoarsen()`, `DMSetCoarsenLevel()`, `DMGetRefineLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
+See also: `DM`, `DMCoarsen()`, `DMSetCoarsenLevel()`, `DMGetRefineLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMGetCoarsenLevel"))
@@ -10669,7 +10205,7 @@ end
 end 
 
 """
-	compatible::PetscBool,set::PetscBool = DMGetCompatibility(petsclib::PetscLibType,dm1::AbstractPetscDM, dm2::AbstractPetscDM) 
+	compatible::PetscBool,set::PetscBool = DMGetCompatibility(petsclib::PetscLibType, dm1::AbstractPetscDM, dm2::AbstractPetscDM) 
 determine if two `DM`s are compatible
 
 Collective
@@ -10684,70 +10220,7 @@ Output Parameters:
 
 Level: advanced
 
-Notes:
-Two `DM`s are deemed compatible if they represent the same parallel decomposition
-of the same topology. This implies that the section (field data) on one
-"makes sense" with respect to the topology and parallel decomposition of the other.
-Loosely speaking, compatible `DM`s represent the same domain and parallel
-decomposition, but hold different data.
-
-Typically, one would confirm compatibility if intending to simultaneously iterate
-over a pair of vectors obtained from different `DM`s.
-
-For example, two `DMDA` objects are compatible if they have the same local
-and global sizes and the same stencil width. They can have different numbers
-of degrees of freedom per node. Thus, one could use the node numbering from
-either `DM` in bounds for a loop over vectors derived from either `DM`.
-
-Consider the operation of summing data living on a 2-dof `DMDA` to data living
-on a 1-dof `DMDA`, which should be compatible, as in the following snippet.
--vb
--..
-PetscCall(DMGetCompatibility(da1,da2,&compatible,&set));
-if (set && compatible)  {
-PetscCall(DMDAVecGetArrayDOF(da1,vec1,&arr1));
-PetscCall(DMDAVecGetArrayDOF(da2,vec2,&arr2));
-PetscCall(DMDAGetCorners(da1,&x,&y,NULL,&m,&n,NULL));
-for (j=y; j<y+n; ++j) {
-for (i=x; i<x+m, ++i) {
-arr1[j][i][0] = arr2[j][i][0] + arr2[j][i][1];
-}
-}
-PetscCall(DMDAVecRestoreArrayDOF(da1,vec1,&arr1));
-PetscCall(DMDAVecRestoreArrayDOF(da2,vec2,&arr2));
-} else {
-SETERRQ(PetscObjectComm((PetscObject)da1,PETSC_ERR_ARG_INCOMP,"DMDA objects incompatible");
-}
--..
--ve
-
-Checking compatibility might be expensive for a given implementation of `DM`,
-or might be impossible to unambiguously confirm or deny. For this reason,
-this function may decline to determine compatibility, and hence users should
-always check the "set" output parameter.
-
-A `DM` is always compatible with itself.
-
-In the current implementation, `DM`s which live on "unequal" communicators
-(MPI_UNEQUAL in the terminology of MPI_Comm_compare()) are always deemed
-incompatible.
-
-This function is labeled "Collective," as information about all subdomains
-is required on each rank. However, in `DM` implementations which store all this
-information locally, this function may be merely "Logically Collective".
-
-Developer Note:
-Compatibility is assumed to be a symmetric concept; `DM` A is compatible with `DM` B
-iff B is compatible with A. Thus, this function checks the implementations
-of both dm and dmc (if they are of different types), attempting to determine
-compatibility. It is left to `DM` implementers to ensure that symmetry is
-preserved. The simplest way to do this is, when implementing type-specific
-logic for this function, is to check for existing logic in the implementation
-of other `DM` types and let *set = PETSC_FALSE if found.
-
-See also: 
-=== 
-`DM`, `DMDACreateCompatibleDMDA()`, `DMStagCreateCompatibleDMStag()`
+See also: `DM`, `DMDACreateCompatibleDMDA()`, `DMStagCreateCompatibleDMStag()`
 
 # External Links
 $(_doc_external("DM/DMGetCompatibility"))
@@ -10774,7 +10247,7 @@ end
 end 
 
 """
-	cdm::PetscDM = DMGetCoordinateDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cdm::PetscDM = DMGetCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the `DM` that prescribes coordinate layout and scatters between global and local coordinates
 
 Collective
@@ -10787,7 +10260,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSetCoordinateDM()`, `DMSetCoordinates()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGSetCellCoordinateDM()`
+See also: `DM`, `DMSetCoordinateDM()`, `DMSetCoordinates()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGSetCellCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinateDM"))
@@ -10812,7 +10285,7 @@ end
 end 
 
 """
-	dim::PetscInt = DMGetCoordinateDim(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	dim::PetscInt = DMGetCoordinateDim(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the dimension of the embedding space for coordinate values. For example a mesh on the surface of a sphere would have a 3 dimensional embedding space
 
 Not Collective
@@ -10825,7 +10298,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSetCoordinateDim()`, `DMGetCoordinateSection()`, `DMGetCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
+See also: `DM`, `DMSetCoordinateDim()`, `DMGetCoordinateSection()`, `DMGetCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinateDim"))
@@ -10850,7 +10323,7 @@ end
 end 
 
 """
-	field::DMField = DMGetCoordinateField(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	field::DMField = DMGetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `DMField` representation of the mesh coordinates
 
 Not Collective
@@ -10863,7 +10336,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMField`, `DMSetCoordinateField()`, `DMGetCoordinateDM()`, `DMGetCoordinates()`
+See also: `DM`, `DMField`, `DMSetCoordinateField()`, `DMGetCoordinateDM()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinateField"))
@@ -10888,7 +10361,7 @@ end
 end 
 
 """
-	section::PetscSection = DMGetCoordinateSection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	section::PetscSection = DMGetCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the `PetscSection` of coordinate values over the mesh.
 
 Collective
@@ -10901,7 +10374,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
+See also: `DM`, `DMGetCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinateSection"))
@@ -10926,7 +10399,7 @@ end
 end 
 
 """
-	c::PetscVec = DMGetCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	c::PetscVec = DMGetCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets a global vector with the coordinates associated with the `DM`.
 
 Collective if the global vector with coordinates has not been set yet but the local vector with coordinates has been set
@@ -10939,7 +10412,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMDA`, `DMSetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMDASetUniformCoordinates()`
+See also: `DM`, `DMDA`, `DMSetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMDASetUniformCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinates"))
@@ -10964,7 +10437,7 @@ end
 end 
 
 """
-	c::PetscVec = DMGetCoordinatesLocal(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	c::PetscVec = DMGetCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets a local vector with the coordinates associated with the `DM`.
 
 Collective the first time it is called
@@ -10977,7 +10450,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMSetCoordinates()`, `DMGetCoordinateDM()`, `DMGetCoordinatesLocalNoncollective()`
+See also: `DM`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMSetCoordinates()`, `DMGetCoordinateDM()`, `DMGetCoordinatesLocalNoncollective()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocal"))
@@ -11002,8 +10475,8 @@ end
 end 
 
 """
-	c::PetscVec = DMGetCoordinatesLocalNoncollective(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Non
+	c::PetscVec = DMGetCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Non-collective version of `DMGetCoordinatesLocal()`. Fails if global coordinates have been set and `DMGetCoordinatesLocalSetUp()` not called.
 
 Not Collective
 
@@ -11015,7 +10488,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMGetCoordinatesLocalSetUp()`, `DMGetCoordinatesLocal()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMSetCoordinates()`, `DMGetCoordinateDM()`
+See also: `DM`, `DMGetCoordinatesLocalSetUp()`, `DMGetCoordinatesLocal()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMSetCoordinates()`, `DMGetCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalNoncollective"))
@@ -11040,8 +10513,8 @@ end
 end 
 
 """
-	DMGetCoordinatesLocalSetUp(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Prepares a local vector of coordinates, so that `DMGetCoordinatesLocalNoncollective()` can be used as non
+	DMGetCoordinatesLocalSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Prepares a local vector of coordinates, so that `DMGetCoordinatesLocalNoncollective()` can be used as non-collective afterwards.
 
 Collective
 
@@ -11050,7 +10523,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSetCoordinates()`, `DMGetCoordinatesLocalNoncollective()`
+See also: `DM`, `DMSetCoordinates()`, `DMGetCoordinatesLocalNoncollective()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalSetUp"))
@@ -11073,7 +10546,7 @@ end
 end 
 
 """
-	pCoordSection::PetscSection,pCoord::PetscVec = DMGetCoordinatesLocalTuple(petsclib::PetscLibType,dm::AbstractPetscDM, p::AbstractIS) 
+	pCoordSection::PetscSection,pCoord::PetscVec = DMGetCoordinatesLocalTuple(petsclib::PetscLibType, dm::AbstractPetscDM, p::AbstractIS) 
 Gets a local vector with the coordinates of specified points and the section describing its layout.
 
 Not Collective
@@ -11088,7 +10561,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMDA`, `DMSetCoordinatesLocal()`, `DMGetCoordinatesLocal()`, `DMGetCoordinatesLocalNoncollective()`, `DMGetCoordinatesLocalSetUp()`, `DMGetCoordinates()`, `DMSetCoordinates()`, `DMGetCoordinateDM()`
+See also: `DM`, `DMDA`, `DMSetCoordinatesLocal()`, `DMGetCoordinatesLocal()`, `DMGetCoordinatesLocalNoncollective()`, `DMGetCoordinatesLocalSetUp()`, `DMGetCoordinates()`, `DMSetCoordinates()`, `DMGetCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalTuple"))
@@ -11115,7 +10588,7 @@ end
 end 
 
 """
-	areLocalized::PetscBool = DMGetCoordinatesLocalized(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	areLocalized::PetscBool = DMGetCoordinatesLocalized(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Check if the `DM` coordinates have been localized for cells
 
 Collective
@@ -11128,7 +10601,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMLocalizeCoordinates()`, `DMSetPeriodicity()`, `DMGetCoordinatesLocalizedLocal()`
+See also: `DM`, `DMLocalizeCoordinates()`, `DMSetPeriodicity()`, `DMGetCoordinatesLocalizedLocal()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalized"))
@@ -11153,7 +10626,7 @@ end
 end 
 
 """
-	areLocalized::PetscBool = DMGetCoordinatesLocalizedLocal(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	areLocalized::PetscBool = DMGetCoordinatesLocalizedLocal(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Check if the `DM` coordinates have been localized for cells on this process
 
 Not Collective
@@ -11166,7 +10639,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMLocalizeCoordinates()`, `DMGetCoordinatesLocalized()`, `DMSetPeriodicity()`
+See also: `DM`, `DMLocalizeCoordinates()`, `DMGetCoordinatesLocalized()`, `DMSetPeriodicity()`
 
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocalizedLocal"))
@@ -11191,7 +10664,7 @@ end
 end 
 
 """
-	ds::PetscDS = DMGetDS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	ds::PetscDS = DMGetDS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the default `PetscDS`
 
 Not Collective
@@ -11204,12 +10677,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-The `ds` is owned by the `dm` and should not be destroyed directly.
-
-See also: 
-=== 
-`DM`, `DMGetCellDS()`, `DMGetRegionDS()`
+See also: `DM`, `DMGetCellDS()`, `DMGetRegionDS()`
 
 # External Links
 $(_doc_external("DM/DMGetDS"))
@@ -11234,7 +10702,7 @@ end
 end 
 
 """
-	section::PetscSection,mat::PetscMat,bias::PetscVec = DMGetDefaultConstraints(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	section::PetscSection,mat::PetscMat,bias::PetscVec = DMGetDefaultConstraints(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `PetscSection` and `Mat` that specify the local constraint interpolation. See `DMSetDefaultConstraints()` for a description of the purpose of constraint interpolation.
 
 not Collective
@@ -11249,12 +10717,7 @@ Output Parameters:
 
 Level: advanced
 
-Note:
-This gets borrowed references, so the user should not destroy the `PetscSection`, `Mat`, or `Vec`.
-
-See also: 
-=== 
-`DM`, `DMSetDefaultConstraints()`
+See also: `DM`, `DMSetDefaultConstraints()`
 
 # External Links
 $(_doc_external("DM/DMGetDefaultConstraints"))
@@ -11283,8 +10746,8 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = DMGetDimPoints(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt) 
-Get the half
+	pStart::PetscInt,pEnd::PetscInt = DMGetDimPoints(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt) 
+Get the half-open interval for all points of a given dimension
 
 Collective
 
@@ -11298,14 +10761,7 @@ Output Parameters:
 
 Level: intermediate
 
-Note:
-The points are vertices in the Hasse diagram encoding the topology. This is explained in
-https://arxiv.org/abs/0908.4427. If no points exist of this dimension in the storage scheme,
-then the interval is empty.
-
-See also: 
-=== 
-`DM`, `DMPLEX`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`
 
 # External Links
 $(_doc_external("DM/DMGetDimPoints"))
@@ -11332,7 +10788,7 @@ end
 end 
 
 """
-	dim::PetscInt = DMGetDimension(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	dim::PetscInt = DMGetDimension(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return the topological dimension of the `DM`
 
 Not Collective
@@ -11345,9 +10801,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMSetDimension()`, `DMCreate()`
+See also: `DM`, `DMSetDimension()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DM/DMGetDimension"))
@@ -11372,7 +10826,7 @@ end
 end 
 
 """
-	pA::PetscInt = DMGetEnclosurePoint(petsclib::PetscLibType,dmA::AbstractPetscDM, dmB::AbstractPetscDM, etype::DMEnclosureType, pB::PetscInt) 
+	pA::PetscInt = DMGetEnclosurePoint(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM, etype::DMEnclosureType, pB::PetscInt) 
 Get the point `pA` in `dmA` which corresponds to the point `pB` in `dmB`
 
 Input Parameters:
@@ -11386,7 +10840,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetEnclosureRelation()`
+See also: `DM`, `DMPLEX`, `DMGetEnclosureRelation()`
 
 # External Links
 $(_doc_external("DMPlex/DMGetEnclosurePoint"))
@@ -11411,7 +10865,7 @@ end
 end 
 
 """
-	rel::DMEnclosureType = DMGetEnclosureRelation(petsclib::PetscLibType,dmA::AbstractPetscDM, dmB::AbstractPetscDM) 
+	rel::DMEnclosureType = DMGetEnclosureRelation(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM) 
 Get the relationship between `dmA` and `dmB`
 
 Input Parameters:
@@ -11423,7 +10877,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetEnclosurePoint()`
+See also: `DM`, `DMPLEX`, `DMGetEnclosurePoint()`
 
 # External Links
 $(_doc_external("DMPlex/DMGetEnclosureRelation"))
@@ -11448,7 +10902,7 @@ end
 end 
 
 """
-	label::DMLabel,disc::PetscObject = DMGetField(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt) 
+	label::DMLabel,disc::PetscObject = DMGetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) 
 Return the `DMLabel` and discretization object for a given `DM` field
 
 Not Collective
@@ -11463,9 +10917,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMSetField()`
+See also: `DM`, `DMAddField()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMGetField"))
@@ -11492,7 +10944,7 @@ end
 end 
 
 """
-	avoidTensor::PetscBool = DMGetFieldAvoidTensor(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt) 
+	avoidTensor::PetscBool = DMGetFieldAvoidTensor(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) 
 Get flag to avoid defining the field on tensor cells
 
 Not Collective
@@ -11506,9 +10958,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMSetField()`, `DMGetField()`, `DMSetFieldAvoidTensor()`
+See also: `DM`, `DMAddField()`, `DMSetField()`, `DMGetField()`, `DMSetFieldAvoidTensor()`
 
 # External Links
 $(_doc_external("DM/DMGetFieldAvoidTensor"))
@@ -11533,7 +10983,7 @@ end
 end 
 
 """
-	fdm::PetscDM = DMGetFineDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	fdm::PetscDM = DMGetFineDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the fine mesh from which this `DM` was obtained by coarsening
 
 Input Parameter:
@@ -11544,9 +10994,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMSetFineDM()`, `DMCoarsen()`, `DMRefine()`
+See also: `DM`, `DMSetFineDM()`, `DMCoarsen()`, `DMRefine()`
 
 # External Links
 $(_doc_external("DM/DMGetFineDM"))
@@ -11571,7 +11019,7 @@ end
 end 
 
 """
-	point::PetscInt,ds::PetscDS = DMGetFirstLabeledPoint(petsclib::PetscLibType,dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, height::PetscInt) 
+	point::PetscInt,ds::PetscDS = DMGetFirstLabeledPoint(petsclib::PetscLibType, dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, height::PetscInt) 
 Find first labeled `point` in `odm` such that the corresponding point in `dm` has the specified `height`. Return `point` and the corresponding `ds`.
 
 Input Parameters:
@@ -11588,7 +11036,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetActivePoint()`, `DMLabel`, `PetscDS`
+See also: `DM`, `DMPLEX`, `DMPlexSetActivePoint()`, `DMLabel`, `PetscDS`
 
 # External Links
 $(_doc_external("DMPlex/DMGetFirstLabeledPoint"))
@@ -11615,7 +11063,7 @@ end
 end 
 
 """
-	section::PetscSection = DMGetGlobalSection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	section::PetscSection = DMGetGlobalSection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `PetscSection` encoding the global data layout for the `DM`.
 
 Collective
@@ -11628,12 +11076,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This gets a borrowed reference, so the user should not destroy this `PetscSection`.
-
-See also: 
-=== 
-`DM`, `DMSetLocalSection()`, `DMGetLocalSection()`
+See also: `DM`, `DMSetLocalSection()`, `DMGetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMGetGlobalSection"))
@@ -11658,7 +11101,7 @@ end
 end 
 
 """
-	g::PetscVec = DMGetGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	g::PetscVec = DMGetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets a PETSc vector that may be used with the `DM` global routines.
 
 Collective
@@ -11671,7 +11114,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMRestoreLocalVector()`,
 `VecStrideMax()`, `VecStrideMin()`, `VecStrideNorm()`, `DMClearGlobalVectors()`, `DMGetNamedGlobalVector()`, `DMGetNamedLocalVector()`
@@ -11699,7 +11142,7 @@ end
 end 
 
 """
-	ctype::ISColoringType = DMGetISColoringType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	ctype::ISColoringType = DMGetISColoringType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the type of coloring, `IS_COLORING_GLOBAL` or `IS_COLORING_LOCAL` that is created by the `DM`
 
 Logically Collective
@@ -11712,9 +11155,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `MatType`, `DMGetMatType()`,
+See also: `DM`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `MatType`, `DMGetMatType()`,
 `ISColoringType`, `IS_COLORING_GLOBAL`, `IS_COLORING_LOCAL`
 
 # External Links
@@ -11740,7 +11181,7 @@ end
 end 
 
 """
-	label::DMLabel = DMGetLabel(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	label::DMLabel = DMGetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Return the label of a given name, or `NULL`, from a `DM`
 
 Not Collective
@@ -11762,9 +11203,7 @@ Default labels in a `DMPLEX`:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMHasLabel()`, `DMGetLabelByNum()`, `DMAddLabel()`, `DMCreateLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetCellType()`
+See also: `DM`, `DMLabel`, `DMHasLabel()`, `DMGetLabelByNum()`, `DMAddLabel()`, `DMCreateLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetCellType()`
 
 # External Links
 $(_doc_external("DM/DMGetLabel"))
@@ -11789,7 +11228,7 @@ end
 end 
 
 """
-	label::DMLabel = DMGetLabelByNum(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt) 
+	label::DMLabel = DMGetLabelByNum(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) 
 Return the nth label on a `DM`
 
 Not Collective
@@ -11803,9 +11242,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMAddLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabel`, `DMAddLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMGetLabelByNum"))
@@ -11830,7 +11267,7 @@ end
 end 
 
 """
-	ids::IS = DMGetLabelIdIS(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	ids::IS = DMGetLabelIdIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Get the `DMLabelGetValueIS()` from a `DMLabel` in the `DM`
 
 Not Collective
@@ -11844,9 +11281,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabelGetValueIS()`, `DMGetLabelSize()`
+See also: `DM`, `DMLabelGetValueIS()`, `DMGetLabelSize()`
 
 # External Links
 $(_doc_external("DM/DMGetLabelIdIS"))
@@ -11871,7 +11306,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMGetLabelName(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt) 
+	name::Ptr{Cchar} = DMGetLabelName(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) 
 Return the name of nth label
 
 Not Collective
@@ -11885,12 +11320,7 @@ Output Parameter:
 
 Level: intermediate
 
-Developer Note:
-Some of the functions that appropriate on labels using their number have the suffix ByNum, others do not.
-
-See also: 
-=== 
-`DM`, `DMLabel`, `DMGetLabelByNum()`, `DMGetLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabel`, `DMGetLabelByNum()`, `DMGetLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMGetLabelName"))
@@ -11915,7 +11345,7 @@ end
 end 
 
 """
-	output::PetscBool = DMGetLabelOutput(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	output::PetscBool = DMGetLabelOutput(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Get the output flag for a given label
 
 Not Collective
@@ -11929,9 +11359,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMSetLabelOutput()`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabel`, `DMSetLabelOutput()`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMGetLabelOutput"))
@@ -11956,7 +11384,7 @@ end
 end 
 
 """
-	size::PetscInt = DMGetLabelSize(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	size::PetscInt = DMGetLabelSize(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Get the value of `DMLabelGetNumValues()` of a `DMLabel` in the `DM`
 
 Not Collective
@@ -11970,12 +11398,7 @@ Output Parameter:
 
 Level: beginner
 
-Developer Note:
-This should be renamed to something like `DMGetLabelNumValues()` or removed.
-
-See also: 
-=== 
-`DM`, `DMLabelGetNumValues()`, `DMSetLabelValue()`, `DMGetLabel()`
+See also: `DM`, `DMLabelGetNumValues()`, `DMSetLabelValue()`, `DMGetLabel()`
 
 # External Links
 $(_doc_external("DM/DMGetLabelSize"))
@@ -12000,8 +11423,8 @@ end
 end 
 
 """
-	value::PetscInt = DMGetLabelValue(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, point::PetscInt) 
-Get the value in a `DMLabel` for the given point, with
+	value::PetscInt = DMGetLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::PetscInt) 
+Get the value in a `DMLabel` for the given point, with -1 as the default
 
 Not Collective
 
@@ -12015,9 +11438,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabelGetValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabelGetValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMGetLabelValue"))
@@ -12042,7 +11463,7 @@ end
 end 
 
 """
-	DMGetLocalBoundingBox(petsclib::PetscLibType,dm::AbstractPetscDM, lmin::Vector{PetscReal}, lmax::Vector{PetscReal}) 
+	DMGetLocalBoundingBox(petsclib::PetscLibType, dm::AbstractPetscDM, lmin::Vector{PetscReal}, lmax::Vector{PetscReal}) 
 Returns the bounding box for the piece of the `DM` on this process.
 
 Not Collective
@@ -12056,7 +11477,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetBoundingBox()`
+See also: `DM`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetBoundingBox()`
 
 # External Links
 $(_doc_external("DM/DMGetLocalBoundingBox"))
@@ -12079,7 +11500,7 @@ end
 end 
 
 """
-	section::PetscSection = DMGetLocalSection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	section::PetscSection = DMGetLocalSection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `PetscSection` encoding the local data layout for the `DM`.
 
 Input Parameter:
@@ -12093,12 +11514,7 @@ Options Database Key:
 
 Level: intermediate
 
-Note:
-This gets a borrowed reference, so the user should not destroy this `PetscSection`.
-
-See also: 
-=== 
-`DM`, `DMSetLocalSection()`, `DMGetGlobalSection()`
+See also: `DM`, `DMSetLocalSection()`, `DMGetGlobalSection()`
 
 # External Links
 $(_doc_external("DM/DMGetLocalSection"))
@@ -12123,8 +11539,8 @@ end
 end 
 
 """
-	ltog::ISLocalToGlobalMapping = DMGetLocalToGlobalMapping(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Accesses the local
+	ltog::ISLocalToGlobalMapping = DMGetLocalToGlobalMapping(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Accesses the local-to-global mapping in a `DM`.
 
 Collective
 
@@ -12136,17 +11552,7 @@ Output Parameter:
 
 Level: advanced
 
-Notes:
-The global to local mapping allows one to set values into the global vector or matrix using `VecSetValuesLocal()` and `MatSetValuesLocal()`
-
-Vectors obtained with  `DMCreateGlobalVector()` and matrices obtained with `DMCreateMatrix()` already contain the global mapping so you do
-need to use this function with those objects.
-
-This mapping can then be used by `VecSetLocalToGlobalMapping()` or `MatSetLocalToGlobalMapping()`.
-
-See also: 
-=== 
-`DM`, `DMCreateLocalVector()`, `DMCreateGlobalVector()`, `VecSetLocalToGlobalMapping()`, `MatSetLocalToGlobalMapping()`,
+See also: `DM`, `DMCreateLocalVector()`, `DMCreateGlobalVector()`, `VecSetLocalToGlobalMapping()`, `MatSetLocalToGlobalMapping()`,
 `DMCreateMatrix()`
 
 # External Links
@@ -12172,7 +11578,7 @@ end
 end 
 
 """
-	g::PetscVec = DMGetLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	g::PetscVec = DMGetLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets a PETSc vector that may be used with the `DM` local routines. This vector has spaces for the ghost values.
 
 Not Collective
@@ -12185,7 +11591,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMRestoreLocalVector()`,
 `VecStrideMax()`, `VecStrideMin()`, `VecStrideNorm()`, `DMClearLocalVectors()`, `DMGetNamedGlobalVector()`, `DMGetNamedLocalVector()`
@@ -12213,7 +11619,7 @@ end
 end 
 
 """
-	ctype::MatType = DMGetMatType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	ctype::MatType = DMGetMatType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the type of matrix that would be created with `DMCreateMatrix()`
 
 Logically Collective
@@ -12226,9 +11632,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `MatType`, `DMSetMatType()`
+See also: `DM`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `MatType`, `DMSetMatType()`
 
 # External Links
 $(_doc_external("DM/DMGetMatType"))
@@ -12253,7 +11657,7 @@ end
 end 
 
 """
-	X::PetscVec = DMGetNamedGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	X::PetscVec = DMGetNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 get access to a named, persistent global vector
 
 Collective
@@ -12267,7 +11671,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMRestoreNamedGlobalVector()`, `DMHasNamedGlobalVector()`, `DMClearNamedGlobalVectors()`, `DMGetGlobalVector()`, `DMGetLocalVector()`
+See also: `DM`, `DMRestoreNamedGlobalVector()`, `DMHasNamedGlobalVector()`, `DMClearNamedGlobalVectors()`, `DMGetGlobalVector()`, `DMGetLocalVector()`
 
 # External Links
 $(_doc_external("DM/DMGetNamedGlobalVector"))
@@ -12292,7 +11696,7 @@ end
 end 
 
 """
-	X::PetscVec = DMGetNamedLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	X::PetscVec = DMGetNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 get access to a named, persistent local vector
 
 Not Collective
@@ -12306,7 +11710,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMGetNamedGlobalVector()`, `DMRestoreNamedLocalVector()`, `DMHasNamedLocalVector()`, `DMClearNamedLocalVectors()`, `DMGetGlobalVector()`, `DMGetLocalVector()`
+See also: `DM`, `DMGetNamedGlobalVector()`, `DMRestoreNamedLocalVector()`, `DMHasNamedLocalVector()`, `DMClearNamedLocalVectors()`, `DMGetGlobalVector()`, `DMGetLocalVector()`
 
 # External Links
 $(_doc_external("DM/DMGetNamedLocalVector"))
@@ -12331,7 +11735,7 @@ end
 end 
 
 """
-	sf::PetscSF = DMGetNaturalSF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	sf::PetscSF = DMGetNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `PetscSF` encoding the map back to the original mesh ordering
 
 Input Parameter:
@@ -12342,12 +11746,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This gets a borrowed reference, so the user should not destroy this `PetscSF`.
-
-See also: 
-=== 
-`DM`, `DMSetNaturalSF()`, `DMSetUseNatural()`, `DMGetUseNatural()`, `DMPlexCreateGlobalToNaturalSF()`, `DMPlexDistribute()`
+See also: `DM`, `DMSetNaturalSF()`, `DMSetUseNatural()`, `DMGetUseNatural()`, `DMPlexCreateGlobalToNaturalSF()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DM/DMGetNaturalSF"))
@@ -12372,8 +11771,8 @@ end
 end 
 
 """
-	DMGetNearNullSpaceConstructor(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, noname::Ptr{Cvoid}) 
-Return the callback function which constructs the near
+	DMGetNearNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, noname::Ptr{Cvoid}) 
+Return the callback function which constructs the near-nullspace for a given field, defined with `DMAddField()`
 
 Not Collective; No Fortran Support
 
@@ -12392,9 +11791,7 @@ Calling sequence of `nullsp`:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMGetField()`, `DMSetNearNullSpaceConstructor()`, `DMSetNullSpaceConstructor()`, `DMGetNullSpaceConstructor()`, `DMCreateSubDM()`,
+See also: `DM`, `DMAddField()`, `DMGetField()`, `DMSetNearNullSpaceConstructor()`, `DMSetNullSpaceConstructor()`, `DMGetNullSpaceConstructor()`, `DMCreateSubDM()`,
 `MatNullSpace`, `DMCreateSuperDM()`
 
 # External Links
@@ -12418,7 +11815,7 @@ end
 end 
 
 """
-	nranks::PetscInt,ranks::Ptr{PetscMPIInt} = DMGetNeighbors(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nranks::PetscInt,ranks::Ptr{PetscMPIInt} = DMGetNeighbors(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets an array containing the MPI ranks of all the processes neighbors
 
 Not Collective
@@ -12432,12 +11829,7 @@ Output Parameters:
 
 Level: beginner
 
-Note:
-Do not free the array, it is freed when the `DM` is destroyed.
-
-See also: 
-=== 
-`DM`, `DMDAGetNeighbors()`, `PetscSFGetRootRanks()`
+See also: `DM`, `DMDAGetNeighbors()`, `PetscSFGetRootRanks()`
 
 # External Links
 $(_doc_external("DM/DMGetNeighbors"))
@@ -12464,7 +11856,7 @@ end
 end 
 
 """
-	DMGetNullSpaceConstructor(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, noname::Ptr{Cvoid}) 
+	DMGetNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, noname::Ptr{Cvoid}) 
 Return the callback function which constructs the nullspace for a given field, defined with `DMAddField()`
 
 Not Collective; No Fortran Support
@@ -12484,9 +11876,7 @@ Calling sequence of `nullsp`:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMGetField()`, `DMSetNullSpaceConstructor()`, `DMSetNearNullSpaceConstructor()`, `DMGetNearNullSpaceConstructor()`, `DMCreateSubDM()`, `DMCreateSuperDM()`
+See also: `DM`, `DMAddField()`, `DMGetField()`, `DMSetNullSpaceConstructor()`, `DMSetNearNullSpaceConstructor()`, `DMGetNearNullSpaceConstructor()`, `DMCreateSubDM()`, `DMCreateSuperDM()`
 
 # External Links
 $(_doc_external("DM/DMGetNullSpaceConstructor"))
@@ -12509,7 +11899,7 @@ end
 end 
 
 """
-	numAux::PetscInt = DMGetNumAuxiliaryVec(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numAux::PetscInt = DMGetNumAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the number of auxiliary vectors associated with this `DM`
 
 Not Collective
@@ -12522,9 +11912,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMClearAuxiliaryVec()`, `DMSetAuxiliaryVec()`, `DMGetAuxiliaryLabels()`, `DMGetAuxiliaryVec()`
+See also: `DM`, `DMClearAuxiliaryVec()`, `DMSetAuxiliaryVec()`, `DMGetAuxiliaryLabels()`, `DMGetAuxiliaryVec()`
 
 # External Links
 $(_doc_external("DM/DMGetNumAuxiliaryVec"))
@@ -12549,7 +11937,7 @@ end
 end 
 
 """
-	Nds::PetscInt = DMGetNumDS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	Nds::PetscInt = DMGetNumDS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the number of discrete systems in the `DM`
 
 Not Collective
@@ -12562,9 +11950,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMGetDS()`, `DMGetCellDS()`
+See also: `DM`, `DMGetDS()`, `DMGetCellDS()`
 
 # External Links
 $(_doc_external("DM/DMGetNumDS"))
@@ -12589,7 +11975,7 @@ end
 end 
 
 """
-	numFields::PetscInt = DMGetNumFields(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numFields::PetscInt = DMGetNumFields(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the number of fields in the `DM`
 
 Not Collective
@@ -12602,9 +11988,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMSetNumFields()`, `DMSetField()`
+See also: `DM`, `DMSetNumFields()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMGetNumFields"))
@@ -12629,7 +12013,7 @@ end
 end 
 
 """
-	numLabels::PetscInt = DMGetNumLabels(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numLabels::PetscInt = DMGetNumLabels(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return the number of labels defined by on the `DM`
 
 Not Collective
@@ -12642,9 +12026,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMGetLabelByNum()`, `DMGetLabelName()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabel`, `DMGetLabelByNum()`, `DMGetLabelName()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMGetNumLabels"))
@@ -12669,7 +12051,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = DMGetOptionsPrefix(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	prefix::Ptr{Cchar} = DMGetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the prefix used for searching for all
 DM options in the options database.
 
@@ -12683,9 +12065,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMSetOptionsPrefix()`, `DMAppendOptionsPrefix()`, `DMSetFromOptions()`
+See also: `DM`, `DMSetOptionsPrefix()`, `DMAppendOptionsPrefix()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DM/DMGetOptionsPrefix"))
@@ -12710,7 +12090,7 @@ end
 end 
 
 """
-	odm::PetscDM = DMGetOutputDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	odm::PetscDM = DMGetOutputDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the `DM` associated with the layout for output
 
 Collective
@@ -12723,14 +12103,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-In some situations the vector obtained with `DMCreateGlobalVector()` excludes points for degrees of freedom that are associated with fixed (Dirichelet) boundary
-conditions since the algebraic solver does not solve for those variables. The output `DM` includes these excluded points and its global vector contains the
-locations for those dof so that they can be output to a file or other viewer along with the unconstrained dof.
-
-See also: 
-=== 
-`DM`, `VecView()`, `DMGetGlobalSection()`, `DMCreateGlobalVector()`, `PetscSectionHasConstraints()`, `DMSetGlobalSection()`
+See also: `DM`, `VecView()`, `DMGetGlobalSection()`, `DMCreateGlobalVector()`, `PetscSectionHasConstraints()`, `DMSetGlobalSection()`
 
 # External Links
 $(_doc_external("DM/DMGetOutputDM"))
@@ -12755,7 +12128,7 @@ end
 end 
 
 """
-	len::PetscInt = DMGetOutputSequenceLength(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, name::String) 
+	len::PetscInt = DMGetOutputSequenceLength(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, name::String) 
 Retrieve the number of sequence values from a `PetscViewer`
 
 Input Parameters:
@@ -12768,16 +12141,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This is intended for output that should appear in sequence, for instance
-a set of timesteps in an `PETSCVIEWERHDF5` file, or a set of realizations of a stochastic system.
-
-Developer Note:
-It is unclear at the user API level why a `DM` is needed as input
-
-See also: 
-=== 
-`DM`, `DMGetOutputSequenceNumber()`, `DMSetOutputSequenceNumber()`, `VecView()`
+See also: `DM`, `DMGetOutputSequenceNumber()`, `DMSetOutputSequenceNumber()`, `VecView()`
 
 # External Links
 $(_doc_external("DM/DMGetOutputSequenceLength"))
@@ -12802,7 +12166,7 @@ end
 end 
 
 """
-	num::PetscInt,val::PetscReal = DMGetOutputSequenceNumber(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	num::PetscInt,val::PetscReal = DMGetOutputSequenceNumber(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the sequence number/value for output
 
 Input Parameter:
@@ -12814,17 +12178,7 @@ Output Parameters:
 
 Level: intermediate
 
-Note:
-This is intended for output that should appear in sequence, for instance
-a set of timesteps in an `PETSCVIEWERHDF5` file, or a set of realizations of a stochastic system.
-
-Developer Note:
-The `DM` serves as a convenient place to store the current iteration value. The iteration is not
-not directly related to the `DM`.
-
-See also: 
-=== 
-`DM`, `VecView()`
+See also: `DM`, `VecView()`
 
 # External Links
 $(_doc_external("DM/DMGetOutputSequenceNumber"))
@@ -12851,7 +12205,7 @@ end
 end 
 
 """
-	maxCell::Ptr{PetscReal},Lstart::Ptr{PetscReal},L::Ptr{PetscReal} = DMGetPeriodicity(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	maxCell::Ptr{PetscReal},Lstart::Ptr{PetscReal},L::Ptr{PetscReal} = DMGetPeriodicity(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the description of mesh periodicity
 
 Not collective
@@ -12866,7 +12220,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DM`
+See also: `DM`
 
 # External Links
 $(_doc_external("DM/DMGetPeriodicity"))
@@ -12895,7 +12249,7 @@ end
 end 
 
 """
-	sf::PetscSF = DMGetPointSF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	sf::PetscSF = DMGetPointSF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `PetscSF` encoding the parallel section point overlap for the `DM`.
 
 Not collective but the resulting `PetscSF` is collective
@@ -12908,12 +12262,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This gets a borrowed reference, so the user should not destroy this `PetscSF`.
-
-See also: 
-=== 
-`DM`, `DMSetPointSF()`, `DMGetSectionSF()`, `DMSetSectionSF()`, `DMCreateSectionSF()`
+See also: `DM`, `DMSetPointSF()`, `DMGetSectionSF()`, `DMSetSectionSF()`, `DMCreateSectionSF()`
 
 # External Links
 $(_doc_external("DM/DMGetPointSF"))
@@ -12938,7 +12287,7 @@ end
 end 
 
 """
-	level::PetscInt = DMGetRefineLevel(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	level::PetscInt = DMGetRefineLevel(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the number of refinements that have generated this `DM` from some initial `DM`.
 
 Not Collective
@@ -12951,12 +12300,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-This can be used, by example, to set the number of coarser levels associated with this `DM` for a multigrid solver.
-
-See also: 
-=== 
-`DM`, `DMRefine()`, `DMCoarsen()`, `DMGetCoarsenLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
+See also: `DM`, `DMRefine()`, `DMCoarsen()`, `DMGetCoarsenLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMGetRefineLevel"))
@@ -12981,7 +12325,7 @@ end
 end 
 
 """
-	fields::IS,ds::PetscDS,dsIn::PetscDS = DMGetRegionDS(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	fields::IS,ds::PetscDS,dsIn::PetscDS = DMGetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Get the `PetscDS` for a given mesh region, defined by a `DMLabel`
 
 Not Collective
@@ -12997,14 +12341,7 @@ Output Parameters:
 
 Level: advanced
 
-Note:
-If a non-`NULL` label is given, but there is no `PetscDS` on that specific label,
-the `PetscDS` for the full domain (if present) is returned. Returns with
-fields = `NULL` and ds = `NULL` if there is no `PetscDS` for the full domain.
-
-See also: 
-=== 
-`DM`, `DMGetRegionNumDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
+See also: `DM`, `DMGetRegionNumDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
 
 # External Links
 $(_doc_external("DM/DMGetRegionDS"))
@@ -13033,7 +12370,7 @@ end
 end 
 
 """
-	label::DMLabel,fields::IS,ds::PetscDS,dsIn::PetscDS = DMGetRegionNumDS(petsclib::PetscLibType,dm::AbstractPetscDM, num::PetscInt) 
+	label::DMLabel,fields::IS,ds::PetscDS,dsIn::PetscDS = DMGetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt) 
 Get the `PetscDS` for a given mesh region, defined by the region number
 
 Not Collective
@@ -13050,9 +12387,7 @@ Output Parameters:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMGetRegionDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
+See also: `DM`, `DMGetRegionDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
 
 # External Links
 $(_doc_external("DM/DMGetRegionNumDS"))
@@ -13083,7 +12418,7 @@ end
 end 
 
 """
-	sf::PetscSF = DMGetSectionSF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	sf::PetscSF = DMGetSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `PetscSF` encoding the parallel dof overlap for the `DM`. If it has not been set,
 it is created from the default `PetscSection` layouts in the `DM`.
 
@@ -13095,12 +12430,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This gets a borrowed reference, so the user should not destroy this `PetscSF`.
-
-See also: 
-=== 
-`DM`, `DMSetSectionSF()`, `DMCreateSectionSF()`
+See also: `DM`, `DMSetSectionSF()`, `DMCreateSectionSF()`
 
 # External Links
 $(_doc_external("DM/DMGetSectionSF"))
@@ -13125,7 +12455,7 @@ end
 end 
 
 """
-	sparse::PetscBool = DMGetSparseLocalize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	sparse::PetscBool = DMGetSparseLocalize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Check if the `DM` coordinates should be localized only for cells near the periodic boundary.
 
 Not collective
@@ -13138,7 +12468,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMSetSparseLocalize()`, `DMLocalizeCoordinates()`, `DMSetPeriodicity()`
+See also: `DMSetSparseLocalize()`, `DMLocalizeCoordinates()`, `DMSetPeriodicity()`
 
 # External Links
 $(_doc_external("DM/DMGetSparseLocalize"))
@@ -13163,7 +12493,7 @@ end
 end 
 
 """
-	points::IS = DMGetStratumIS(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, value::PetscInt) 
+	points::IS = DMGetStratumIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt) 
 Get the points in a label stratum
 
 Not Collective
@@ -13178,9 +12508,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabelGetStratumIS()`, `DMGetStratumSize()`
+See also: `DM`, `DMLabelGetStratumIS()`, `DMGetStratumSize()`
 
 # External Links
 $(_doc_external("DM/DMGetStratumIS"))
@@ -13205,7 +12533,7 @@ end
 end 
 
 """
-	size::PetscInt = DMGetStratumSize(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, value::PetscInt) 
+	size::PetscInt = DMGetStratumSize(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt) 
 Get the number of points in a label stratum
 
 Not Collective
@@ -13220,9 +12548,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabelGetStratumSize()`, `DMGetLabelSize()`, `DMGetLabelIds()`
+See also: `DM`, `DMLabelGetStratumSize()`, `DMGetLabelSize()`, `DMGetLabelIds()`
 
 # External Links
 $(_doc_external("DM/DMGetStratumSize"))
@@ -13247,7 +12573,7 @@ end
 end 
 
 """
-	type::DMType = DMGetType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	type::DMType = DMGetType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the `DM` type name (as a string) from the `DM`.
 
 Not Collective
@@ -13260,12 +12586,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-`type` should not be retained for later use as it will be an invalid pointer if the `DMType` of `dm` is changed.
-
-See also: 
-=== 
-`DM`, `DMType`, `DMDA`, `DMPLEX`, `DMSetType()`, `DMCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `DM`, `DMType`, `DMDA`, `DMPLEX`, `DMSetType()`, `DMCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("DM/DMGetType"))
@@ -13290,7 +12611,7 @@ end
 end 
 
 """
-	useNatural::PetscBool = DMGetUseNatural(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	useNatural::PetscBool = DMGetUseNatural(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the flag for creating a mapping to the natural order when a `DM` is (re)distributed in parallel
 
 Not Collective
@@ -13303,9 +12624,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMSetUseNatural()`, `DMCreate()`
+See also: `DM`, `DMSetUseNatural()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DM/DMGetUseNatural"))
@@ -13330,7 +12649,7 @@ end
 end 
 
 """
-	ctype::VecType = DMGetVecType(petsclib::PetscLibType,da::AbstractPetscDM) 
+	ctype::VecType = DMGetVecType(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the type of vector created with `DMCreateLocalVector()` and `DMCreateGlobalVector()`
 
 Logically Collective
@@ -13343,9 +12662,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMCreate()`, `DMDestroy()`, `DMDAInterpolationType`, `VecType`, `DMSetMatType()`, `DMGetMatType()`, `DMSetVecType()`
+See also: `DM`, `DMCreate()`, `DMDestroy()`, `DMDAInterpolationType`, `VecType`, `DMSetMatType()`, `DMGetMatType()`, `DMSetVecType()`
 
 # External Links
 $(_doc_external("DM/DMGetVecType"))
@@ -13370,7 +12687,7 @@ end
 end 
 
 """
-	DMGlobalToLocal(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMGlobalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 update local vectors from global vector
 
 Neighbor-wise Collective
@@ -13383,15 +12700,7 @@ Input Parameters:
 
 Level: beginner
 
-Notes:
-The communication involved in this update can be overlapped with computation by instead using
-`DMGlobalToLocalBegin()` and `DMGlobalToLocalEnd()`.
-
-`DMGlobalToLocalHookAdd()` may be used to provide additional operations that are performed during the update process.
-
-See also: 
-=== 
-`DM`, `DMGlobalToLocalHookAdd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`,
+See also: `DM`, `DMGlobalToLocalHookAdd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`,
 `DMLocalToGlobalBegin()`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`,
 `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`
 
@@ -13416,7 +12725,7 @@ end
 end 
 
 """
-	DMGlobalToLocalBegin(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMGlobalToLocalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Begins updating local vectors from global vector
 
 Neighbor-wise Collective
@@ -13429,18 +12738,7 @@ Input Parameters:
 
 Level: intermediate
 
-Notes:
-The operation is completed with `DMGlobalToLocalEnd()`
-
-One can perform local computations between the `DMGlobalToLocalBegin()` and  `DMGlobalToLocalEnd()` to overlap communication and computation
-
-`DMGlobalToLocal()` is a short form of  `DMGlobalToLocalBegin()` and  `DMGlobalToLocalEnd()`
-
-`DMGlobalToLocalHookAdd()` may be used to provide additional operations that are performed during the update process.
-
-See also: 
-=== 
-`DM`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`
+See also: `DM`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`
 
 # External Links
 $(_doc_external("DM/DMGlobalToLocalBegin"))
@@ -13463,7 +12761,7 @@ end
 end 
 
 """
-	DMGlobalToLocalBeginDefaultShell(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMGlobalToLocalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Uses the GlobalToLocal `VecScatter` context set by the user to begin a global to local scatter
 
 Collective
@@ -13476,7 +12774,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMGlobalToLocalEndDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMGlobalToLocalEndDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMGlobalToLocalBeginDefaultShell"))
@@ -13499,7 +12797,7 @@ end
 end 
 
 """
-	DMGlobalToLocalEnd(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMGlobalToLocalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Ends updating local vectors from global vector
 
 Neighbor-wise Collective
@@ -13512,12 +12810,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-See `DMGlobalToLocalBegin()` for details.
-
-See also: 
-=== 
-`DM`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMLocalToGlobalBegin()`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`
+See also: `DM`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMLocalToGlobalBegin()`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`
 
 # External Links
 $(_doc_external("DM/DMGlobalToLocalEnd"))
@@ -13540,7 +12833,7 @@ end
 end 
 
 """
-	DMGlobalToLocalEndDefaultShell(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMGlobalToLocalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Uses the GlobalToLocal `VecScatter` context set by the user to end a global to local scatter
 Collective
 
@@ -13552,7 +12845,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMGlobalToLocalBeginDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMGlobalToLocalBeginDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMGlobalToLocalEndDefaultShell"))
@@ -13575,7 +12868,7 @@ end
 end 
 
 """
-	DMGlobalToLocalHookAdd(petsclib::PetscLibType,dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid}) 
+	DMGlobalToLocalHookAdd(petsclib::PetscLibType, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid}) 
 adds a callback to be run when `DMGlobalToLocal()` is called
 
 Logically Collective
@@ -13602,12 +12895,7 @@ Calling sequence of `endhook`:
 
 Level: advanced
 
-Note:
-The hook may be used to provide, for example, values that represent boundary conditions in the local vectors that do not exist on the global vector.
-
-See also: 
-=== 
-`DM`, `DMGlobalToLocal()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
+See also: `DM`, `DMGlobalToLocal()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
 
 # External Links
 $(_doc_external("DM/DMGlobalToLocalHookAdd"))
@@ -13630,7 +12918,7 @@ end
 end 
 
 """
-	DMGlobalToLocalSolve(petsclib::PetscLibType,dm::AbstractPetscDM, x::AbstractPetscVec, y::AbstractPetscVec) 
+	DMGlobalToLocalSolve(petsclib::PetscLibType, dm::AbstractPetscDM, x::AbstractPetscVec, y::AbstractPetscVec) 
 Solve for the global vector that is mapped to a given local vector by `DMGlobalToLocalBegin()`/`DMGlobalToLocalEnd()` with mode
 `INSERT_VALUES`.
 
@@ -13646,22 +12934,7 @@ Output Parameter:
 
 Level: advanced
 
-Note:
-It is assumed that the sum of all the local vector sizes is greater than or equal to the global vector size, so the solution is
-a least-squares solution.  It is also assumed that `DMLocalToGlobalBegin()`/`DMLocalToGlobalEnd()` with mode `ADD_VALUES` is the adjoint of the
-global-to-local map, so that the least-squares solution may be found by the normal equations.
-
-If the `DM` is of type `DMPLEX`, then `y` is the solution of  L^T * D * L * y = L^T * D * x , where D is a diagonal mask that is 1 for every point in
-the union of the closures of the local cells and 0 otherwise.  This difference is only relevant if there are anchor points that are not in the
-closure of any local cell (see `DMPlexGetAnchors()`/`DMPlexSetAnchors()`).
-
-What is L?
-
-If this solves for a global vector from a local vector why is not called `DMLocalToGlobalSolve()`?
-
-See also: 
-=== 
-`DM`, `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToGlobalEnd()`, `DMPlexGetAnchors()`, `DMPlexSetAnchors()`
+See also: `DM`, `DMGlobalToLocalBegin()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMLocalToGlobalEnd()`, `DMPlexGetAnchors()`, `DMPlexSetAnchors()`
 
 # External Links
 $(_doc_external("DM/DMGlobalToLocalSolve"))
@@ -13684,7 +12957,7 @@ end
 end 
 
 """
-	flg::PetscBool = DMHasBasisTransform(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	flg::PetscBool = DMHasBasisTransform(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Whether the `DM` employs a basis transformation from functions in global vectors to functions in local vectors
 
 Input Parameter:
@@ -13695,9 +12968,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMPlexGlobalToLocalBasis()`, `DMPlexLocalToGlobalBasis()`, `DMPlexCreateBasisRotation()`
+See also: `DM`, `DMPlexGlobalToLocalBasis()`, `DMPlexLocalToGlobalBasis()`, `DMPlexCreateBasisRotation()`
 
 # External Links
 $(_doc_external("DM/DMHasBasisTransform"))
@@ -13722,7 +12993,7 @@ end
 end 
 
 """
-	hasBound::PetscBool = DMHasBound(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	hasBound::PetscBool = DMHasBound(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Determine whether a bound condition was specified
 
 Logically collective
@@ -13735,9 +13006,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DSAddBoundary()`, `PetscDSAddBoundary()`
+See also: `DM`, `DSAddBoundary()`, `PetscDSAddBoundary()`
 
 # External Links
 $(_doc_external("DM/DMHasBound"))
@@ -13762,7 +13031,7 @@ end
 end 
 
 """
-	flg::PetscBool = DMHasColoring(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	flg::PetscBool = DMHasColoring(petsclib::PetscLibType, dm::AbstractPetscDM) 
 does the `DM` object have a method of providing a coloring?
 
 Not Collective
@@ -13775,9 +13044,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCreateColoring()`
+See also: `DM`, `DMCreateColoring()`
 
 # External Links
 $(_doc_external("DM/DMHasColoring"))
@@ -13802,7 +13069,7 @@ end
 end 
 
 """
-	flg::PetscBool = DMHasCreateInjection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	flg::PetscBool = DMHasCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 does the `DM` object have a method of providing an injection?
 
 Not Collective
@@ -13815,9 +13082,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCreateInjection()`, `DMHasCreateRestriction()`, `DMHasCreateInterpolation()`
+See also: `DM`, `DMCreateInjection()`, `DMHasCreateRestriction()`, `DMHasCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMHasCreateInjection"))
@@ -13842,7 +13107,7 @@ end
 end 
 
 """
-	flg::PetscBool = DMHasCreateRestriction(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	flg::PetscBool = DMHasCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM) 
 does the `DM` object have a method of providing a restriction?
 
 Not Collective
@@ -13855,9 +13120,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCreateRestriction()`, `DMHasCreateInterpolation()`, `DMHasCreateInjection()`
+See also: `DM`, `DMCreateRestriction()`, `DMHasCreateInterpolation()`, `DMHasCreateInjection()`
 
 # External Links
 $(_doc_external("DM/DMHasCreateRestriction"))
@@ -13882,7 +13145,7 @@ end
 end 
 
 """
-	hasLabel::PetscBool = DMHasLabel(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	hasLabel::PetscBool = DMHasLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Determine whether the `DM` has a label of a given name
 
 Not Collective
@@ -13896,9 +13159,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMGetLabel()`, `DMGetLabelByNum()`, `DMCreateLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabel`, `DMGetLabel()`, `DMGetLabelByNum()`, `DMCreateLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMHasLabel"))
@@ -13923,7 +13184,7 @@ end
 end 
 
 """
-	exists::PetscBool = DMHasNamedGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	exists::PetscBool = DMHasNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 check for a named, persistent global vector created with `DMGetNamedGlobalVector()`
 
 Not Collective
@@ -13937,7 +13198,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMGetNamedGlobalVector()`, `DMRestoreNamedLocalVector()`, `DMClearNamedGlobalVectors()`
+See also: `DM`, `DMGetNamedGlobalVector()`, `DMRestoreNamedLocalVector()`, `DMClearNamedGlobalVectors()`
 
 # External Links
 $(_doc_external("DM/DMHasNamedGlobalVector"))
@@ -13962,7 +13223,7 @@ end
 end 
 
 """
-	exists::PetscBool = DMHasNamedLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	exists::PetscBool = DMHasNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 check for a named, persistent local vector created with `DMGetNamedLocalVector()`
 
 Not Collective
@@ -13976,7 +13237,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMGetNamedGlobalVector()`, `DMRestoreNamedLocalVector()`, `DMClearNamedLocalVectors()`
+See also: `DM`, `DMGetNamedGlobalVector()`, `DMRestoreNamedLocalVector()`, `DMClearNamedLocalVectors()`
 
 # External Links
 $(_doc_external("DM/DMHasNamedLocalVector"))
@@ -14001,7 +13262,7 @@ end
 end 
 
 """
-	flg::PetscBool = DMHasVariableBounds(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	flg::PetscBool = DMHasVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM) 
 does the `DM` object have a variable bounds function?
 
 Not Collective
@@ -14014,9 +13275,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMComputeVariableBounds()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMGetApplicationContext()`
+See also: `DM`, `DMComputeVariableBounds()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMGetApplicationContext()`
 
 # External Links
 $(_doc_external("DM/DMHasVariableBounds"))
@@ -14048,7 +13307,7 @@ or similar routines when using shared or static libraries.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("DM/DMInitializePackage"))
@@ -14070,8 +13329,8 @@ end
 end 
 
 """
-	DMInterpolate(petsclib::PetscLibType,coarse::AbstractPetscDM, interp::AbstractPetscMat, fine::AbstractPetscDM) 
-interpolates user
+	DMInterpolate(petsclib::PetscLibType, coarse::AbstractPetscDM, interp::AbstractPetscMat, fine::AbstractPetscDM) 
+interpolates user-defined problem data attached to a `DM` to a finer `DM` by running hooks registered by `DMRefineHookAdd()`
 
 Collective if any hooks are
 
@@ -14082,13 +13341,7 @@ Input Parameters:
 
 Level: developer
 
-Developer Note:
-This routine is called `DMInterpolate()` while the hook is called `DMRefineHookAdd()`. It would be better to have an
-an API with consistent terminology.
-
-See also: 
-=== 
-`DM`, `DMRefineHookAdd()`, `MatInterpolate()`
+See also: `DM`, `DMRefineHookAdd()`, `MatInterpolate()`
 
 # External Links
 $(_doc_external("DM/DMInterpolate"))
@@ -14111,7 +13364,7 @@ end
 end 
 
 """
-	DMInterpolateSolution(petsclib::PetscLibType,coarse::AbstractPetscDM, fine::AbstractPetscDM, interp::AbstractPetscMat, coarseSol::AbstractPetscVec, fineSol::AbstractPetscVec) 
+	DMInterpolateSolution(petsclib::PetscLibType, coarse::AbstractPetscDM, fine::AbstractPetscDM, interp::AbstractPetscMat, coarseSol::AbstractPetscVec, fineSol::AbstractPetscVec) 
 Interpolates a solution from a coarse mesh to a fine mesh.
 
 Collective
@@ -14129,18 +13382,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-This function exists because the interpolation of a solution vector between meshes is not always a linear
-map.  For example, if a boundary value problem has an inhomogeneous Dirichlet boundary condition that is compressed
-out of the solution vector.  Or if interpolation is inherently a nonlinear operation, such as a method using
-slope-limiting reconstruction.
-
-Developer Note:
-This doesn't just interpolate "solutions" so its API name is questionable.
-
-See also: 
-=== 
-`DM`, `DMInterpolate()`, `DMCreateInterpolation()`
+See also: `DM`, `DMInterpolate()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMInterpolateSolution"))
@@ -14163,7 +13405,7 @@ end
 end 
 
 """
-	DMInterpolationAddPoints(petsclib::PetscLibType,ctx::DMInterpolationInfo, n::PetscInt, points::Vector{PetscReal}) 
+	DMInterpolationAddPoints(petsclib::PetscLibType, ctx::DMInterpolationInfo, n::PetscInt, points::Vector{PetscReal}) 
 Add points at which we will interpolate the fields
 
 Not Collective
@@ -14175,12 +13417,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-The input coordinate information is copied into the object.
-
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationSetDim()`, `DMInterpolationEvaluate()`, `DMInterpolationCreate()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationSetDim()`, `DMInterpolationEvaluate()`, `DMInterpolationCreate()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationAddPoints"))
@@ -14203,7 +13440,7 @@ end
 end 
 
 """
-	ctx::DMInterpolationInfo = DMInterpolationCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	ctx::DMInterpolationInfo = DMInterpolationCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `DMInterpolationInfo` context
 
 Collective
@@ -14216,12 +13453,7 @@ Output Parameter:
 
 Level: beginner
 
-Developer Note:
-The naming is incorrect, either the object should be named `DMInterpolation` or all the routines should begin with `DMInterpolationInfo`
-
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationDestroy()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationDestroy()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationCreate"))
@@ -14246,7 +13478,7 @@ end
 end 
 
 """
-	DMInterpolationDestroy(petsclib::PetscLibType,ctx::Union{DMInterpolationInfo, Ref{DMInterpolationInfo}}) 
+	DMInterpolationDestroy(petsclib::PetscLibType, ctx::Union{DMInterpolationInfo, Ref{DMInterpolationInfo}}) 
 Destroys a `DMInterpolationInfo` context
 
 Collective
@@ -14256,9 +13488,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationDestroy"))
@@ -14282,7 +13512,7 @@ end
 end 
 
 """
-	DMInterpolationEvaluate(petsclib::PetscLibType,ctx::DMInterpolationInfo, dm::AbstractPetscDM, x::AbstractPetscVec, v::AbstractPetscVec) 
+	DMInterpolationEvaluate(petsclib::PetscLibType, ctx::DMInterpolationInfo, dm::AbstractPetscDM, x::AbstractPetscVec, v::AbstractPetscVec) 
 Using the input from `dm` and `x`, calculates interpolated field values at the interpolation points.
 
 Input Parameters:
@@ -14295,9 +13525,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationGetVector()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`, `DMInterpolationGetCoordinates()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationGetVector()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`, `DMInterpolationGetCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationEvaluate"))
@@ -14320,7 +13548,7 @@ end
 end 
 
 """
-	coordinates::PetscVec = DMInterpolationGetCoordinates(petsclib::PetscLibType,ctx::DMInterpolationInfo) 
+	coordinates::PetscVec = DMInterpolationGetCoordinates(petsclib::PetscLibType, ctx::DMInterpolationInfo) 
 Gets a `Vec` with the coordinates of each interpolation point
 
 Collective
@@ -14333,13 +13561,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-The local vector entries correspond to interpolation points lying on this process, according to the associated `DM`.
-This is a borrowed vector that the user should not destroy.
-
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationGetCoordinates"))
@@ -14364,7 +13586,7 @@ end
 end 
 
 """
-	dim::PetscInt = DMInterpolationGetDim(petsclib::PetscLibType,ctx::DMInterpolationInfo) 
+	dim::PetscInt = DMInterpolationGetDim(petsclib::PetscLibType, ctx::DMInterpolationInfo) 
 Gets the spatial dimension for the interpolation context
 
 Not Collective
@@ -14377,9 +13599,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationSetDim()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationSetDim()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationGetDim"))
@@ -14404,7 +13624,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMInterpolationGetDof(petsclib::PetscLibType,ctx::DMInterpolationInfo) 
+	dof::PetscInt = DMInterpolationGetDof(petsclib::PetscLibType, ctx::DMInterpolationInfo) 
 Gets the number of fields interpolated at a point for the interpolation context
 
 Not Collective
@@ -14417,9 +13637,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationSetDof()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationSetDof()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationGetDof"))
@@ -14444,7 +13662,7 @@ end
 end 
 
 """
-	v::PetscVec = DMInterpolationGetVector(petsclib::PetscLibType,ctx::DMInterpolationInfo) 
+	v::PetscVec = DMInterpolationGetVector(petsclib::PetscLibType, ctx::DMInterpolationInfo) 
 Gets a `Vec` which can hold all the interpolated field values
 
 Collective
@@ -14457,12 +13675,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This vector should be returned using `DMInterpolationRestoreVector()`.
-
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationRestoreVector()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationRestoreVector()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationGetVector"))
@@ -14487,7 +13700,7 @@ end
 end 
 
 """
-	DMInterpolationRestoreVector(petsclib::PetscLibType,ctx::DMInterpolationInfo, v::AbstractPetscVec) 
+	DMInterpolationRestoreVector(petsclib::PetscLibType, ctx::DMInterpolationInfo, v::AbstractPetscVec) 
 Returns a `Vec` which can hold all the interpolated field values
 
 Collective
@@ -14498,9 +13711,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationGetVector()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationGetVector()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationRestoreVector"))
@@ -14525,7 +13736,7 @@ end
 end 
 
 """
-	DMInterpolationSetDim(petsclib::PetscLibType,ctx::DMInterpolationInfo, dim::PetscInt) 
+	DMInterpolationSetDim(petsclib::PetscLibType, ctx::DMInterpolationInfo, dim::PetscInt) 
 Sets the spatial dimension for the interpolation context
 
 Not Collective
@@ -14536,9 +13747,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationGetDim()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationGetDim()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationSetDim"))
@@ -14561,7 +13770,7 @@ end
 end 
 
 """
-	DMInterpolationSetDof(petsclib::PetscLibType,ctx::DMInterpolationInfo, dof::PetscInt) 
+	DMInterpolationSetDof(petsclib::PetscLibType, ctx::DMInterpolationInfo, dof::PetscInt) 
 Sets the number of fields interpolated at a point for the interpolation context
 
 Not Collective
@@ -14572,9 +13781,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationGetDof()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationGetDof()`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationSetDof"))
@@ -14597,7 +13804,7 @@ end
 end 
 
 """
-	DMInterpolationSetUp(petsclib::PetscLibType,ctx::DMInterpolationInfo, dm::AbstractPetscDM, redundantPoints::PetscBool, ignoreOutsideDomain::PetscBool) 
+	DMInterpolationSetUp(petsclib::PetscLibType, ctx::DMInterpolationInfo, dm::AbstractPetscDM, redundantPoints::PetscBool, ignoreOutsideDomain::PetscBool) 
 Compute spatial indices for point location during interpolation
 
 Collective
@@ -14610,9 +13817,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
+See also: `DM`, `DMInterpolationInfo`, `DMInterpolationEvaluate()`, `DMInterpolationAddPoints()`, `DMInterpolationCreate()`
 
 # External Links
 $(_doc_external("DM/DMInterpolationSetUp"))
@@ -14635,7 +13840,7 @@ end
 end 
 
 """
-	isBd::PetscBool = DMIsBoundaryPoint(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	isBd::PetscBool = DMIsBoundaryPoint(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 Determine whether a mesh point lies on a `DM` boundary
 
 Not Collective
@@ -14649,9 +13854,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMAddBoundary()`, `PetscDSGetBoundary()`
+See also: `DM`, `DMLabel`, `DMAddBoundary()`, `PetscDSGetBoundary()`
 
 # External Links
 $(_doc_external("DM/DMIsBoundaryPoint"))
@@ -14676,8 +13879,8 @@ end
 end 
 
 """
-	isForest::PetscBool = DMIsForest(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Check whether a DM uses the DMFOREST interface for hierarchically
+	isForest::PetscBool = DMIsForest(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Check whether a DM uses the DMFOREST interface for hierarchically-refined meshes
 
 Not Collective
 
@@ -14689,7 +13892,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMFOREST`, `DMForestRegisterType()`
+See also: `DMFOREST`, `DMForestRegisterType()`
 
 # External Links
 $(_doc_external("DMForest/DMIsForest"))
@@ -14714,7 +13917,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeInitialGuess(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeInitialGuess(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `KSP` initial guess evaluation function
 
 Not Collective
@@ -14728,7 +13931,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `KSPSetComputeRHS()`, `DMKSPSetComputeRHS()`, `KSPComputeInitialGuessFn`
+See also: `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `KSPSetComputeRHS()`, `DMKSPSetComputeRHS()`, `KSPComputeInitialGuessFn`
 
 # External Links
 $(_doc_external("KSP/DMKSPGetComputeInitialGuess"))
@@ -14755,7 +13958,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeOperators(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeOperators(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `KSP` matrix evaluation function
 
 Not Collective
@@ -14769,7 +13972,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `KSPSetComputeOperators()`, `DMKSPSetComputeOperators()`, `KSPComputeOperatorsFn`
+See also: `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `KSPSetComputeOperators()`, `DMKSPSetComputeOperators()`, `KSPComputeOperatorsFn`
 
 # External Links
 $(_doc_external("KSP/DMKSPGetComputeOperators"))
@@ -14796,8 +13999,8 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeRHS(petsclib::PetscLibType,dm::AbstractPetscDM) 
-get `KSP` right
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMKSPGetComputeRHS(petsclib::PetscLibType, dm::AbstractPetscDM) 
+get `KSP` right-hand side evaluation function
 
 Not Collective
 
@@ -14810,7 +14013,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `KSPSetComputeRHS()`, `DMKSPSetComputeRHS()`, `KSPComputeRHSFn`
+See also: `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `KSPSetComputeRHS()`, `DMKSPSetComputeRHS()`, `KSPComputeRHSFn`
 
 # External Links
 $(_doc_external("KSP/DMKSPGetComputeRHS"))
@@ -14837,7 +14040,7 @@ end
 end 
 
 """
-	DMKSPSetComputeInitialGuess(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMKSPSetComputeInitialGuess(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `KSP` initial guess evaluation function
 
 Not Collective
@@ -14849,7 +14052,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `DMKSPGetComputeRHS()`, `KSPComputeInitialGuessFn`
+See also: `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `DMKSPGetComputeRHS()`, `KSPComputeInitialGuessFn`
 
 # External Links
 $(_doc_external("KSP/DMKSPSetComputeInitialGuess"))
@@ -14872,7 +14075,7 @@ end
 end 
 
 """
-	DMKSPSetComputeOperators(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMKSPSetComputeOperators(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `KSP` matrix evaluation function
 
 Not Collective
@@ -14884,7 +14087,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `DMKSPGetComputeOperators()`, `KSPSetOperators()`, `KSPComputeOperatorsFn`
+See also: `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `DMKSPGetComputeOperators()`, `KSPSetOperators()`, `KSPComputeOperatorsFn`
 
 # External Links
 $(_doc_external("KSP/DMKSPSetComputeOperators"))
@@ -14907,8 +14110,8 @@ end
 end 
 
 """
-	DMKSPSetComputeRHS(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
-set `KSP` right
+	DMKSPSetComputeRHS(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+set `KSP` right-hand side evaluation function
 
 Not Collective
 
@@ -14919,7 +14122,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ksp), `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `DMKSPGetComputeRHS()`
+See also: `DMKSP`, `DM`, `KSP`, `DMKSPSetContext()`, `DMKSPGetComputeRHS()`
 
 # External Links
 $(_doc_external("KSP/DMKSPSetComputeRHS"))
@@ -14942,7 +14145,7 @@ end
 end 
 
 """
-	DMLoad(petsclib::PetscLibType,newdm::AbstractPetscDM, viewer::PetscViewer) 
+	DMLoad(petsclib::PetscLibType, newdm::AbstractPetscDM, viewer::PetscViewer) 
 Loads a DM that has been stored in binary  with `DMView()`.
 
 Collective
@@ -14955,16 +14158,7 @@ some related function before a call to `DMLoad()`.
 
 Level: intermediate
 
-Notes:
-The type is determined by the data in the file, any type set into the DM before this call is ignored.
-
-Using `PETSCVIEWERHDF5` type with `PETSC_VIEWER_HDF5_PETSC` format, one can save multiple `DMPLEX`
-meshes in a single HDF5 file. This in turn requires one to name the `DMPLEX` object with `PetscObjectSetName()`
-before saving it with `DMView()` and before loading it with `DMLoad()` for identification of the mesh object.
-
-See also: 
-=== 
-`DM`, `PetscViewerBinaryOpen()`, `DMView()`, `MatLoad()`, `VecLoad()`
+See also: `DM`, `PetscViewerBinaryOpen()`, `DMView()`, `MatLoad()`, `VecLoad()`
 
 # External Links
 $(_doc_external("DM/DMLoad"))
@@ -14987,7 +14181,7 @@ end
 end 
 
 """
-	DMLocalToGlobal(petsclib::PetscLibType,dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
+	DMLocalToGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
 updates global vectors from local vectors
 
 Neighbor-wise Collective
@@ -15000,19 +14194,7 @@ Input Parameters:
 
 Level: beginner
 
-Notes:
-The communication involved in this update can be overlapped with computation by using
-`DMLocalToGlobalBegin()` and `DMLocalToGlobalEnd()`.
-
-In the `ADD_VALUES` case you normally would zero the receiving vector before beginning this operation.
-
-`INSERT_VALUES` is not supported for `DMDA`; in that case simply compute the values directly into a global vector instead of a local one.
-
-Use `DMLocalToGlobalHookAdd()` to add additional operations that are performed on the data during the update process
-
-See also: 
-=== 
-`DM`, `DMLocalToGlobalBegin()`, `DMLocalToGlobalEnd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMGlobalToLocalEnd()`, `DMGlobalToLocalBegin()`, `DMLocalToGlobalHookAdd()`, `DMGlobaToLocallHookAdd()`
+See also: `DM`, `DMLocalToGlobalBegin()`, `DMLocalToGlobalEnd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMGlobalToLocalEnd()`, `DMGlobalToLocalBegin()`, `DMLocalToGlobalHookAdd()`, `DMGlobaToLocallHookAdd()`
 
 # External Links
 $(_doc_external("DM/DMLocalToGlobal"))
@@ -15035,7 +14217,7 @@ end
 end 
 
 """
-	DMLocalToGlobalBegin(petsclib::PetscLibType,dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
+	DMLocalToGlobalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
 begins updating global vectors from local vectors
 
 Neighbor-wise Collective
@@ -15048,20 +14230,7 @@ Input Parameters:
 
 Level: intermediate
 
-Notes:
-In the `ADD_VALUES` case you normally would zero the receiving vector before beginning this operation.
-
-`INSERT_VALUES is` not supported for `DMDA`, in that case simply compute the values directly into a global vector instead of a local one.
-
-Use `DMLocalToGlobalEnd()` to complete the communication process.
-
-`DMLocalToGlobal()` is a short form of  `DMLocalToGlobalBegin()` and  `DMLocalToGlobalEnd()`
-
-`DMLocalToGlobalHookAdd()` may be used to provide additional operations that are performed during the update process.
-
-See also: 
-=== 
-`DM`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMGlobalToLocalEnd()`, `DMGlobalToLocalBegin()`
+See also: `DM`, `DMLocalToGlobal()`, `DMLocalToGlobalEnd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocal()`, `DMGlobalToLocalEnd()`, `DMGlobalToLocalBegin()`
 
 # External Links
 $(_doc_external("DM/DMLocalToGlobalBegin"))
@@ -15084,7 +14253,7 @@ end
 end 
 
 """
-	DMLocalToGlobalBeginDefaultShell(petsclib::PetscLibType,dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
+	DMLocalToGlobalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
 Uses the LocalToGlobal `VecScatter` context set by the user to begin a local to global scatter
 Collective
 
@@ -15096,7 +14265,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMLocalToGlobalEndDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMLocalToGlobalEndDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMLocalToGlobalBeginDefaultShell"))
@@ -15119,7 +14288,7 @@ end
 end 
 
 """
-	DMLocalToGlobalEnd(petsclib::PetscLibType,dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
+	DMLocalToGlobalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
 updates global vectors from local vectors
 
 Neighbor-wise Collective
@@ -15132,12 +14301,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-See `DMLocalToGlobalBegin()` for full details
-
-See also: 
-=== 
-`DM`, `DMLocalToGlobalBegin()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocalEnd()`
+See also: `DM`, `DMLocalToGlobalBegin()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocalEnd()`
 
 # External Links
 $(_doc_external("DM/DMLocalToGlobalEnd"))
@@ -15160,7 +14324,7 @@ end
 end 
 
 """
-	DMLocalToGlobalEndDefaultShell(petsclib::PetscLibType,dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
+	DMLocalToGlobalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, l::AbstractPetscVec, mode::InsertMode, g::AbstractPetscVec) 
 Uses the LocalToGlobal `VecScatter` context set by the user to end a local to global scatter
 Collective
 
@@ -15172,7 +14336,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMLocalToGlobalBeginDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMLocalToGlobalBeginDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMLocalToGlobalEndDefaultShell"))
@@ -15195,7 +14359,7 @@ end
 end 
 
 """
-	DMLocalToGlobalHookAdd(petsclib::PetscLibType,dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid}) 
+	DMLocalToGlobalHookAdd(petsclib::PetscLibType, dm::AbstractPetscDM, beginhook::external, endhook::external, ctx::Ptr{Cvoid}) 
 adds a callback to be run when a local to global is called
 
 Logically Collective
@@ -15222,9 +14386,7 @@ Calling sequence of `endhook`:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMLocalToGlobal()`, `DMRefineHookAdd()`, `DMGlobalToLocalHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
+See also: `DM`, `DMLocalToGlobal()`, `DMRefineHookAdd()`, `DMGlobalToLocalHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
 
 # External Links
 $(_doc_external("DM/DMLocalToGlobalHookAdd"))
@@ -15247,7 +14409,7 @@ end
 end 
 
 """
-	DMLocalToLocalBegin(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMLocalToLocalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Begins the process of mapping values from a local vector (that include
 ghost points that contain irrelevant values) to another local vector where the ghost points
 in the second are set correctly from values on other MPI ranks.
@@ -15264,12 +14426,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-Must be followed by `DMLocalToLocalEnd()`.
-
-See also: 
-=== 
-`DM`, `DMLocalToLocalEnd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateLocalVector()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
+See also: `DM`, `DMLocalToLocalEnd()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateLocalVector()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
 
 # External Links
 $(_doc_external("DM/DMLocalToLocalBegin"))
@@ -15292,7 +14449,7 @@ end
 end 
 
 """
-	DMLocalToLocalBeginDefaultShell(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMLocalToLocalBeginDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Uses the LocalToLocal `VecScatter` context set by the user to begin a local to local scatter
 Collective
 
@@ -15306,7 +14463,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMLocalToLocalEndDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMLocalToLocalEndDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMLocalToLocalBeginDefaultShell"))
@@ -15329,7 +14486,7 @@ end
 end 
 
 """
-	DMLocalToLocalEnd(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMLocalToLocalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Maps from a local vector to another local vector where the ghost
 points in the second are set correctly. Must be preceded by `DMLocalToLocalBegin()`.
 
@@ -15345,9 +14502,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMLocalToLocalBegin()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateLocalVector()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
+See also: `DM`, `DMLocalToLocalBegin()`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateLocalVector()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`
 
 # External Links
 $(_doc_external("DM/DMLocalToLocalEnd"))
@@ -15370,7 +14525,7 @@ end
 end 
 
 """
-	DMLocalToLocalEndDefaultShell(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
+	DMLocalToLocalEndDefaultShell(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec, mode::InsertMode, l::AbstractPetscVec) 
 Uses the LocalToLocal `VecScatter` context set by the user to end a local to local scatter
 Collective
 
@@ -15384,7 +14539,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMLocalToLocalBeginDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMLocalToLocalBeginDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMLocalToLocalEndDefaultShell"))
@@ -15407,7 +14562,7 @@ end
 end 
 
 """
-	DMLocalizeCoordinate(petsclib::PetscLibType,dm::AbstractPetscDM, in::Vector{PetscScalar}, endpoint::PetscBool, out::Vector{PetscScalar}) 
+	DMLocalizeCoordinate(petsclib::PetscLibType, dm::AbstractPetscDM, in::Vector{PetscScalar}, endpoint::PetscBool, out::Vector{PetscScalar}) 
 If a mesh is periodic (a torus with lengths L_i, some of which can be infinite), project the coordinate onto [0, L_i) in each dimension.
 
 Input Parameters:
@@ -15420,7 +14575,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMLocalizeCoordinates()`, `DMLocalizeAddCoordinate()`
+See also: `DM`, `DMLocalizeCoordinates()`, `DMLocalizeAddCoordinate()`
 
 # External Links
 $(_doc_external("DM/DMLocalizeCoordinate"))
@@ -15443,7 +14598,7 @@ end
 end 
 
 """
-	DMLocalizeCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMLocalizeCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM) 
 If a mesh is periodic, create local coordinates for cells having periodic faces
 
 Collective
@@ -15453,7 +14608,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMSetPeriodicity()`, `DMLocalizeCoordinate()`, `DMLocalizeAddCoordinate()`
+See also: `DM`, `DMSetPeriodicity()`, `DMLocalizeCoordinate()`, `DMLocalizeAddCoordinate()`
 
 # External Links
 $(_doc_external("DM/DMLocalizeCoordinates"))
@@ -15476,7 +14631,7 @@ end
 end 
 
 """
-	DMLocatePoints(petsclib::PetscLibType,dm::AbstractPetscDM, v::AbstractPetscVec, ltype::DMPoCintLocationType, cellSF::PetscSF) 
+	DMLocatePoints(petsclib::PetscLibType, dm::AbstractPetscDM, v::AbstractPetscVec, ltype::DMPoCintLocationType, cellSF::PetscSF) 
 Locate the points in `v` in the mesh and return a `PetscSF` of the containing cells
 
 Collective
@@ -15492,7 +14647,7 @@ on output, the `PetscSF` containing the MPI ranks and local indices of the conta
 
 Level: developer
 
--seealso: `DM`, `DMSetCoordinates()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMPointLocationType`
+See also: `DM`, `DMSetCoordinates()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMPointLocationType`
 
 # External Links
 $(_doc_external("DM/DMLocatePoints"))
@@ -15515,7 +14670,7 @@ end
 end 
 
 """
-	isbdvtx::PetscBool = DMMoabCheckBoundaryVertices(petsclib::PetscLibType,dm::AbstractPetscDM, nconn::PetscInt, cnt::moab_EntityHandle) 
+	isbdvtx::PetscBool = DMMoabCheckBoundaryVertices(petsclib::PetscLibType, dm::AbstractPetscDM, nconn::PetscInt, cnt::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabCheckBoundaryVertices"))
@@ -15540,7 +14695,7 @@ end
 end 
 
 """
-	dmb::PetscDM = DMMoabCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	dmb::PetscDM = DMMoabCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 
 # External Links
 $(_doc_external("DM/DMMoabCreate"))
@@ -15565,7 +14720,7 @@ end
 end 
 
 """
-	bounds::PetscReal,dm::PetscDM = DMMoabCreateBoxMesh(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, useSimplex::PetscBool, nele::PetscInt, nghost::PetscInt) 
+	bounds::PetscReal,dm::PetscDM = DMMoabCreateBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, useSimplex::PetscBool, nele::PetscInt, nghost::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabCreateBoxMesh"))
@@ -15592,7 +14747,7 @@ end
 end 
 
 """
-	conn::moab_EntityHandle,oelem::moab_EntityHandle = DMMoabCreateElement(petsclib::PetscLibType,dm::AbstractPetscDM, type::moab_EntityType, nverts::PetscInt) 
+	conn::moab_EntityHandle,oelem::moab_EntityHandle = DMMoabCreateElement(petsclib::PetscLibType, dm::AbstractPetscDM, type::moab_EntityType, nverts::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabCreateElement"))
@@ -15619,7 +14774,7 @@ end
 end 
 
 """
-	mbiface::moab_Interface,ltog_tag::moab_Tag,range::moab_Range,dmb::PetscDM = DMMoabCreateMoab(petsclib::PetscLibType,comm::MPI_Comm) 
+	mbiface::moab_Interface,ltog_tag::moab_Tag,range::moab_Range,dmb::PetscDM = DMMoabCreateMoab(petsclib::PetscLibType, comm::MPI_Comm) 
 
 # External Links
 $(_doc_external("DM/DMMoabCreateMoab"))
@@ -15650,7 +14805,7 @@ end
 end 
 
 """
-	newdm::PetscDM = DMMoabCreateSubmesh(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	newdm::PetscDM = DMMoabCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabCreateSubmesh"))
@@ -15675,7 +14830,7 @@ end
 end 
 
 """
-	range::moab_Range,vec::PetscVec = DMMoabCreateVector(petsclib::PetscLibType,dm::AbstractPetscDM, tag::moab_Tag, is_global_vec::PetscBool, destroy_tag::PetscBool) 
+	range::moab_Range,vec::PetscVec = DMMoabCreateVector(petsclib::PetscLibType, dm::AbstractPetscDM, tag::moab_Tag, is_global_vec::PetscBool, destroy_tag::PetscBool) 
 
 # External Links
 $(_doc_external("DM/DMMoabCreateVector"))
@@ -15702,7 +14857,7 @@ end
 end 
 
 """
-	coords::PetscReal,overts::moab_Range = DMMoabCreateVertices(petsclib::PetscLibType,dm::AbstractPetscDM, nverts::PetscInt) 
+	coords::PetscReal,overts::moab_Range = DMMoabCreateVertices(petsclib::PetscLibType, dm::AbstractPetscDM, nverts::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabCreateVertices"))
@@ -15729,7 +14884,7 @@ end
 end 
 
 """
-	coordinates::PetscReal,phypts::PetscReal,jacobian_quadrature_weight_product::PetscReal,fe_basis::PetscReal = DMMoabFEMComputeBasis(petsclib::PetscLibType,dim::PetscInt, nverts::PetscInt, quadrature::PetscQuadrature, fe_basis_derivatives::PetscReal) 
+	coordinates::PetscReal,phypts::PetscReal,jacobian_quadrature_weight_product::PetscReal,fe_basis::PetscReal = DMMoabFEMComputeBasis(petsclib::PetscLibType, dim::PetscInt, nverts::PetscInt, quadrature::PetscQuadrature, fe_basis_derivatives::PetscReal) 
 
 # External Links
 $(_doc_external("DM/DMMoabFEMComputeBasis"))
@@ -15760,7 +14915,7 @@ end
 end 
 
 """
-	quadrature::PetscQuadrature = DMMoabFEMCreateQuadratureDefault(petsclib::PetscLibType,dim::PetscInt, nverts::PetscInt) 
+	quadrature::PetscQuadrature = DMMoabFEMCreateQuadratureDefault(petsclib::PetscLibType, dim::PetscInt, nverts::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabFEMCreateQuadratureDefault"))
@@ -15785,7 +14940,7 @@ end
 end 
 
 """
-	ldegrees::PetscInt = DMMoabGenerateHierarchy(petsclib::PetscLibType,dm::AbstractPetscDM, nlevels::PetscInt) 
+	ldegrees::PetscInt = DMMoabGenerateHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabGenerateHierarchy"))
@@ -15810,7 +14965,7 @@ end
 end 
 
 """
-	DMMoabGetAllVertices(petsclib::PetscLibType,dm::AbstractPetscDM, loc::moab_Range) 
+	DMMoabGetAllVertices(petsclib::PetscLibType, dm::AbstractPetscDM, loc::moab_Range) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetAllVertices"))
@@ -15833,7 +14988,7 @@ end
 end 
 
 """
-	bs::PetscInt = DMMoabGetBlockSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	bs::PetscInt = DMMoabGetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetBlockSize"))
@@ -15858,7 +15013,7 @@ end
 end 
 
 """
-	DMMoabGetBoundaryMarkers(petsclib::PetscLibType,dm::AbstractPetscDM, bdvtx::moab_Range, bdelems::moab_Range, bdfaces::moab_Range) 
+	DMMoabGetBoundaryMarkers(petsclib::PetscLibType, dm::AbstractPetscDM, bdvtx::moab_Range, bdelems::moab_Range, bdfaces::moab_Range) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetBoundaryMarkers"))
@@ -15881,7 +15036,7 @@ end
 end 
 
 """
-	dim::PetscInt = DMMoabGetDimension(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	dim::PetscInt = DMMoabGetDimension(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetDimension"))
@@ -15906,7 +15061,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMMoabGetDofs(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
+	dof::PetscInt = DMMoabGetDofs(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetDofs"))
@@ -15931,7 +15086,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMMoabGetDofsBlocked(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
+	dof::PetscInt = DMMoabGetDofsBlocked(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetDofsBlocked"))
@@ -15956,7 +15111,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMMoabGetDofsBlockedLocal(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
+	dof::PetscInt = DMMoabGetDofsBlockedLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetDofsBlockedLocal"))
@@ -15981,7 +15136,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMMoabGetDofsLocal(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
+	dof::PetscInt = DMMoabGetDofsLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetDofsLocal"))
@@ -16006,7 +15161,7 @@ end
 end 
 
 """
-	nconn::PetscInt = DMMoabGetElementConnectivity(petsclib::PetscLibType,dm::AbstractPetscDM, ehandle::moab_EntityHandle, conn::moab_EntityHandle) 
+	nconn::PetscInt = DMMoabGetElementConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle, conn::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetElementConnectivity"))
@@ -16031,7 +15186,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMMoabGetFieldDof(petsclib::PetscLibType,dm::AbstractPetscDM, point::moab_EntityHandle, field::PetscInt) 
+	dof::PetscInt = DMMoabGetFieldDof(petsclib::PetscLibType, dm::AbstractPetscDM, point::moab_EntityHandle, field::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetFieldDof"))
@@ -16056,7 +15211,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMMoabGetFieldDofs(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle, field::PetscInt) 
+	dof::PetscInt = DMMoabGetFieldDofs(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle, field::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetFieldDofs"))
@@ -16081,7 +15236,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMMoabGetFieldDofsLocal(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle, field::PetscInt) 
+	dof::PetscInt = DMMoabGetFieldDofsLocal(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, points::moab_EntityHandle, field::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetFieldDofsLocal"))
@@ -16106,7 +15261,7 @@ end
 end 
 
 """
-	DMMoabGetFieldName(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, fieldName::String) 
+	DMMoabGetFieldName(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, fieldName::String) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetFieldName"))
@@ -16130,7 +15285,7 @@ end
 end 
 
 """
-	nlevel::PetscInt = DMMoabGetHierarchyLevel(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nlevel::PetscInt = DMMoabGetHierarchyLevel(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetHierarchyLevel"))
@@ -16155,7 +15310,7 @@ end
 end 
 
 """
-	DMMoabGetInterface(petsclib::PetscLibType,dm::AbstractPetscDM, mbiface::moab_Interface) 
+	DMMoabGetInterface(petsclib::PetscLibType, dm::AbstractPetscDM, mbiface::moab_Interface) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetInterface"))
@@ -16178,7 +15333,7 @@ end
 end 
 
 """
-	DMMoabGetLocalElements(petsclib::PetscLibType,dm::AbstractPetscDM, range::moab_Range) 
+	DMMoabGetLocalElements(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetLocalElements"))
@@ -16201,7 +15356,7 @@ end
 end 
 
 """
-	nel::PetscInt,neg::PetscInt,nvl::PetscInt,nvg::PetscInt = DMMoabGetLocalSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nel::PetscInt,neg::PetscInt,nvl::PetscInt,nvg::PetscInt = DMMoabGetLocalSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetLocalSize"))
@@ -16232,7 +15387,7 @@ end
 end 
 
 """
-	DMMoabGetLocalToGlobalTag(petsclib::PetscLibType,dm::AbstractPetscDM, ltog_tag::moab_Tag) 
+	DMMoabGetLocalToGlobalTag(petsclib::PetscLibType, dm::AbstractPetscDM, ltog_tag::moab_Tag) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetLocalToGlobalTag"))
@@ -16255,7 +15410,7 @@ end
 end 
 
 """
-	DMMoabGetLocalVertices(petsclib::PetscLibType,dm::AbstractPetscDM, owned::moab_Range, ghost::moab_Range) 
+	DMMoabGetLocalVertices(petsclib::PetscLibType, dm::AbstractPetscDM, owned::moab_Range, ghost::moab_Range) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetLocalVertices"))
@@ -16278,7 +15433,7 @@ end
 end 
 
 """
-	mat::PetscInt = DMMoabGetMaterialBlock(petsclib::PetscLibType,dm::AbstractPetscDM, ehandle::moab_EntityHandle) 
+	mat::PetscInt = DMMoabGetMaterialBlock(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetMaterialBlock"))
@@ -16303,7 +15458,7 @@ end
 end 
 
 """
-	offset::PetscInt = DMMoabGetOffset(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	offset::PetscInt = DMMoabGetOffset(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetOffset"))
@@ -16328,7 +15483,7 @@ end
 end 
 
 """
-	DMMoabGetParallelComm(petsclib::PetscLibType,dm::AbstractPetscDM, pcomm::moab_ParallelComm) 
+	DMMoabGetParallelComm(petsclib::PetscLibType, dm::AbstractPetscDM, pcomm::moab_ParallelComm) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetParallelComm"))
@@ -16351,7 +15506,7 @@ end
 end 
 
 """
-	neg::PetscInt,nvg::PetscInt = DMMoabGetSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	neg::PetscInt,nvg::PetscInt = DMMoabGetSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetSize"))
@@ -16378,7 +15533,7 @@ end
 end 
 
 """
-	DMMoabGetVecRange(petsclib::PetscLibType,vec::AbstractPetscVec, range::moab_Range) 
+	DMMoabGetVecRange(petsclib::PetscLibType, vec::AbstractPetscVec, range::moab_Range) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetVecRange"))
@@ -16401,7 +15556,7 @@ end
 end 
 
 """
-	DMMoabGetVecTag(petsclib::PetscLibType,vec::AbstractPetscVec, tag::moab_Tag) 
+	DMMoabGetVecTag(petsclib::PetscLibType, vec::AbstractPetscVec, tag::moab_Tag) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetVecTag"))
@@ -16424,7 +15579,7 @@ end
 end 
 
 """
-	nconn::PetscInt = DMMoabGetVertexConnectivity(petsclib::PetscLibType,dm::AbstractPetscDM, vhandle::moab_EntityHandle, conn::moab_EntityHandle) 
+	nconn::PetscInt = DMMoabGetVertexConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, vhandle::moab_EntityHandle, conn::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetVertexConnectivity"))
@@ -16449,7 +15604,7 @@ end
 end 
 
 """
-	vpos::PetscReal = DMMoabGetVertexCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, nconn::PetscInt, conn::moab_EntityHandle) 
+	vpos::PetscReal = DMMoabGetVertexCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, nconn::PetscInt, conn::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetVertexCoordinates"))
@@ -16474,7 +15629,7 @@ end
 end 
 
 """
-	DMMoabGetVertexDofsBlocked(petsclib::PetscLibType,dm::AbstractPetscDM, dof::PetscInt) 
+	DMMoabGetVertexDofsBlocked(petsclib::PetscLibType, dm::AbstractPetscDM, dof::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetVertexDofsBlocked"))
@@ -16497,7 +15652,7 @@ end
 end 
 
 """
-	DMMoabGetVertexDofsBlockedLocal(petsclib::PetscLibType,dm::AbstractPetscDM, dof::PetscInt) 
+	DMMoabGetVertexDofsBlockedLocal(petsclib::PetscLibType, dm::AbstractPetscDM, dof::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabGetVertexDofsBlockedLocal"))
@@ -16520,7 +15675,7 @@ end
 end 
 
 """
-	ent_on_boundary::PetscBool = DMMoabIsEntityOnBoundary(petsclib::PetscLibType,dm::AbstractPetscDM, ent::moab_EntityHandle) 
+	ent_on_boundary::PetscBool = DMMoabIsEntityOnBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, ent::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabIsEntityOnBoundary"))
@@ -16545,7 +15700,7 @@ end
 end 
 
 """
-	DMMoabLoadFromFile(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, nghost::PetscInt, filename::String, usrreadopts::String, dm::AbstractPetscDM) 
+	DMMoabLoadFromFile(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, nghost::PetscInt, filename::String, usrreadopts::String, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabLoadFromFile"))
@@ -16570,7 +15725,7 @@ end
 end 
 
 """
-	DMMoabOutput(petsclib::PetscLibType,dm::AbstractPetscDM, filename::String, usrwriteopts::String) 
+	DMMoabOutput(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String, usrwriteopts::String) 
 
 # External Links
 $(_doc_external("DM/DMMoabOutput"))
@@ -16593,7 +15748,7 @@ end
 end 
 
 """
-	coordinates::PetscReal,xphy::PetscReal,natparam::PetscReal,phi::PetscReal = DMMoabPToRMapping(petsclib::PetscLibType,dim::PetscInt, nverts::PetscInt) 
+	coordinates::PetscReal,xphy::PetscReal,natparam::PetscReal,phi::PetscReal = DMMoabPToRMapping(petsclib::PetscLibType, dim::PetscInt, nverts::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabPToRMapping"))
@@ -16624,7 +15779,7 @@ end
 end 
 
 """
-	DMMoabRenumberMeshEntities(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMMoabRenumberMeshEntities(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabRenumberMeshEntities"))
@@ -16647,7 +15802,7 @@ end
 end 
 
 """
-	DMMoabRestoreVertexConnectivity(petsclib::PetscLibType,dm::AbstractPetscDM, ehandle::moab_EntityHandle, nconn::PetscInt, conn::moab_EntityHandle) 
+	DMMoabRestoreVertexConnectivity(petsclib::PetscLibType, dm::AbstractPetscDM, ehandle::moab_EntityHandle, nconn::PetscInt, conn::moab_EntityHandle) 
 
 # External Links
 $(_doc_external("DM/DMMoabRestoreVertexConnectivity"))
@@ -16671,7 +15826,7 @@ end
 end 
 
 """
-	dfill::PetscInt,ofill::PetscInt = DMMoabSetBlockFills(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	dfill::PetscInt,ofill::PetscInt = DMMoabSetBlockFills(petsclib::PetscLibType, dm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetBlockFills"))
@@ -16698,7 +15853,7 @@ end
 end 
 
 """
-	DMMoabSetBlockSize(petsclib::PetscLibType,dm::AbstractPetscDM, bs::PetscInt) 
+	DMMoabSetBlockSize(petsclib::PetscLibType, dm::AbstractPetscDM, bs::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetBlockSize"))
@@ -16721,7 +15876,7 @@ end
 end 
 
 """
-	DMMoabSetFieldName(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, fieldName::String) 
+	DMMoabSetFieldName(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, fieldName::String) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetFieldName"))
@@ -16744,7 +15899,7 @@ end
 end 
 
 """
-	DMMoabSetFieldNames(petsclib::PetscLibType,dm::AbstractPetscDM, numFields::PetscInt, fields::String) 
+	DMMoabSetFieldNames(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt, fields::String) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetFieldNames"))
@@ -16768,7 +15923,7 @@ end
 end 
 
 """
-	DMMoabSetFieldVector(petsclib::PetscLibType,dm::AbstractPetscDM, ifield::PetscInt, fvec::AbstractPetscVec) 
+	DMMoabSetFieldVector(petsclib::PetscLibType, dm::AbstractPetscDM, ifield::PetscInt, fvec::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetFieldVector"))
@@ -16791,7 +15946,7 @@ end
 end 
 
 """
-	DMMoabSetGlobalFieldVector(petsclib::PetscLibType,dm::AbstractPetscDM, fvec::AbstractPetscVec) 
+	DMMoabSetGlobalFieldVector(petsclib::PetscLibType, dm::AbstractPetscDM, fvec::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetGlobalFieldVector"))
@@ -16814,7 +15969,7 @@ end
 end 
 
 """
-	DMMoabSetInterface(petsclib::PetscLibType,dm::AbstractPetscDM, mbiface::moab_Interface) 
+	DMMoabSetInterface(petsclib::PetscLibType, dm::AbstractPetscDM, mbiface::moab_Interface) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetInterface"))
@@ -16837,7 +15992,7 @@ end
 end 
 
 """
-	DMMoabSetLocalElements(petsclib::PetscLibType,dm::AbstractPetscDM, range::moab_Range) 
+	DMMoabSetLocalElements(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetLocalElements"))
@@ -16860,7 +16015,7 @@ end
 end 
 
 """
-	DMMoabSetLocalToGlobalTag(petsclib::PetscLibType,dm::AbstractPetscDM, ltogtag::moab_Tag) 
+	DMMoabSetLocalToGlobalTag(petsclib::PetscLibType, dm::AbstractPetscDM, ltogtag::moab_Tag) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetLocalToGlobalTag"))
@@ -16883,7 +16038,7 @@ end
 end 
 
 """
-	DMMoabSetLocalVertices(petsclib::PetscLibType,dm::AbstractPetscDM, range::moab_Range) 
+	DMMoabSetLocalVertices(petsclib::PetscLibType, dm::AbstractPetscDM, range::moab_Range) 
 
 # External Links
 $(_doc_external("DM/DMMoabSetLocalVertices"))
@@ -16906,7 +16061,7 @@ end
 end 
 
 """
-	DMMoabVecGetArray(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMMoabVecGetArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 
 # External Links
 $(_doc_external("DM/DMMoabVecGetArray"))
@@ -16929,7 +16084,7 @@ end
 end 
 
 """
-	DMMoabVecGetArrayRead(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMMoabVecGetArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 
 # External Links
 $(_doc_external("DM/DMMoabVecGetArrayRead"))
@@ -16952,7 +16107,7 @@ end
 end 
 
 """
-	DMMoabVecRestoreArray(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMMoabVecRestoreArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 
 # External Links
 $(_doc_external("DM/DMMoabVecRestoreArray"))
@@ -16975,7 +16130,7 @@ end
 end 
 
 """
-	DMMoabVecRestoreArrayRead(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
+	DMMoabVecRestoreArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::Ptr{Cvoid}) 
 
 # External Links
 $(_doc_external("DM/DMMoabVecRestoreArrayRead"))
@@ -16998,7 +16153,7 @@ end
 end 
 
 """
-	DMMonitor(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMMonitor(petsclib::PetscLibType, dm::AbstractPetscDM) 
 runs the user provided monitor routines, if they exist
 
 Collective
@@ -17008,14 +16163,7 @@ Input Parameter:
 
 Level: developer
 
-Developer Note:
-Note should indicate when during the life of the `DM` the monitor is run. It appears to be
-related to the discretization process seems rather specialized since some `DM` have no
-concept of discretization.
-
-See also: 
-=== 
-`DM`, `DMMonitorSet()`, `DMMonitorSetFromOptions()`
+See also: `DM`, `DMMonitorSet()`, `DMMonitorSetFromOptions()`
 
 # External Links
 $(_doc_external("DM/DMMonitor"))
@@ -17038,7 +16186,7 @@ end
 end 
 
 """
-	DMMonitorCancel(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMMonitorCancel(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Clears all the monitor functions for a `DM` object.
 
 Logically Collective
@@ -17053,12 +16201,7 @@ set via the options database
 
 Level: intermediate
 
-Note:
-There is no way to clear one specific monitor from a `DM` object.
-
-See also: 
-=== 
-`DM`, `DMMonitorSet()`, `DMMonitorSetFromOptions()`, `DMMonitor()`
+See also: `DM`, `DMMonitorSet()`, `DMMonitorSetFromOptions()`, `DMMonitor()`
 
 # External Links
 $(_doc_external("DM/DMMonitorCancel"))
@@ -17081,7 +16224,7 @@ end
 end 
 
 """
-	DMMonitorSet(petsclib::PetscLibType,dm::AbstractPetscDM, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
+	DMMonitorSet(petsclib::PetscLibType, dm::AbstractPetscDM, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
 Sets an additional monitor function that is to be used after a solve to monitor discretization performance.
 
 Logically Collective
@@ -17098,20 +16241,7 @@ does not cancel those set via the options database.
 
 Level: intermediate
 
-Note:
-Several different monitoring routines may be set by calling
-`DMMonitorSet()` multiple times or with `DMMonitorSetFromOptions()`; all will be called in the
-order in which they were set.
-
-Fortran Note:
-Only a single monitor function can be set for each `DM` object
-
-Developer Note:
-This API has a generic name but seems specific to a very particular aspect of the use of `DM`
-
-See also: 
-=== 
-`DM`, `DMMonitorCancel()`, `DMMonitorSetFromOptions()`, `DMMonitor()`, `PetscCtxDestroyFn`
+See also: `DM`, `DMMonitorCancel()`, `DMMonitorSetFromOptions()`, `DMMonitor()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("DM/DMMonitorSet"))
@@ -17134,7 +16264,7 @@ end
 end 
 
 """
-	flg::PetscBool = DMMonitorSetFromOptions(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
+	flg::PetscBool = DMMonitorSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
 Sets a monitor function and viewer appropriate for the type indicated by the user
 
 Collective
@@ -17160,9 +16290,7 @@ Calling sequence of `monitorsetup`:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+See also: `DM`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
 `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
@@ -17193,7 +16321,7 @@ end
 end 
 
 """
-	DMNetworkAddComponent(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, componentkey::PetscInt, compvalue::Ptr{Cvoid}, nvar::PetscInt) 
+	DMNetworkAddComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, componentkey::PetscInt, compvalue::Ptr{Cvoid}, nvar::PetscInt) 
 Adds a network component and number of variables at the given point (vertex/edge)
 
 Collective
@@ -17208,7 +16336,7 @@ free this space until after `DMSetUp()` is called.
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetComponent()`, `DMNetworkGetSubnetwork()`, `DMNetworkIsGhostVertex()`, `DMNetworkLayoutSetUp()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetComponent()`, `DMNetworkGetSubnetwork()`, `DMNetworkIsGhostVertex()`, `DMNetworkLayoutSetUp()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAddComponent"))
@@ -17231,7 +16359,7 @@ end
 end 
 
 """
-	DMNetworkAddSharedVertices(petsclib::PetscLibType,dm::AbstractPetscDM, anetnum::PetscInt, bnetnum::PetscInt, nsvtx::PetscInt, asvtx::Vector{PetscInt}, bsvtx::Vector{PetscInt}) 
+	DMNetworkAddSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, anetnum::PetscInt, bnetnum::PetscInt, nsvtx::PetscInt, asvtx::Vector{PetscInt}, bsvtx::Vector{PetscInt}) 
 Add shared vertices that connect two given subnetworks
 
 Collective
@@ -17246,7 +16374,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkAddSubnetwork()`, `DMNetworkGetSharedVertices()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkAddSubnetwork()`, `DMNetworkGetSharedVertices()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAddSharedVertices"))
@@ -17269,7 +16397,7 @@ end
 end 
 
 """
-	netnum::PetscInt = DMNetworkAddSubnetwork(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, ne::PetscInt, edgelist::Vector{PetscInt}) 
+	netnum::PetscInt = DMNetworkAddSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, ne::PetscInt, edgelist::Vector{PetscInt}) 
 Add a subnetwork
 
 Collective
@@ -17286,7 +16414,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkSetNumSubnetworks()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkSetNumSubnetworks()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAddSubnetwork"))
@@ -17311,7 +16439,7 @@ end
 end 
 
 """
-	DMNetworkAssembleGraphStructures(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMNetworkAssembleGraphStructures(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Assembles vertex and edge data structures. Must be called after `DMNetworkDistribute()`
 
 Collective
@@ -17321,7 +16449,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `DMNetworkDistribute()`
+See also: `DMNetworkDistribute()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkAssembleGraphStructures"))
@@ -17344,7 +16472,7 @@ end
 end 
 
 """
-	network::PetscDM = DMNetworkCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	network::PetscDM = DMNetworkCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a DMNetwork object, which encapsulates an unstructured network.
 
 Collective
@@ -17357,7 +16485,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMCreate()`
+See also: `DMCreate()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreate"))
@@ -17382,7 +16510,7 @@ end
 end 
 
 """
-	is::IS = DMNetworkCreateIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) 
+	is::IS = DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) 
 Create an index set object from the global vector of the network
 
 Collective
@@ -17400,7 +16528,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `ISCreateGeneral()`, `DMNetworkCreateLocalIS()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `ISCreateGeneral()`, `DMNetworkCreateLocalIS()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateIS"))
@@ -17426,7 +16554,7 @@ end
 end 
 
 """
-	is::IS = DMNetworkCreateLocalIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) 
+	is::IS = DMNetworkCreateLocalIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) 
 Create an index set object from the local vector of the network
 
 Not Collective
@@ -17444,7 +16572,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkCreateIS()`, `ISCreateGeneral()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkCreateIS()`, `ISCreateGeneral()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateLocalIS"))
@@ -17470,7 +16598,7 @@ end
 end 
 
 """
-	DMNetworkDistribute(petsclib::PetscLibType,dm::AbstractPetscDM, overlap::PetscInt) 
+	DMNetworkDistribute(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) 
 Distributes the network and moves associated component data
 
 Collective
@@ -17490,7 +16618,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkDistribute"))
@@ -17515,8 +16643,8 @@ end
 end 
 
 """
-	DMNetworkEdgeSetMatrix(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, J::Vector{<:AbstractPetscMat}) 
-Sets user
+	DMNetworkEdgeSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, J::Vector{<:AbstractPetscMat}) 
+Sets user-provided Jacobian matrices for this edge to the network
 
 Not Collective
 
@@ -17529,7 +16657,7 @@ J[1] and J[2]: connected vertices, obtained by calling `DMNetworkGetConnectedVer
 
 Level: advanced
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkVertexSetMatrix()`
+See also: `DM`, `DMNETWORK`, `DMNetworkVertexSetMatrix()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkEdgeSetMatrix"))
@@ -17552,7 +16680,7 @@ end
 end 
 
 """
-	DMNetworkFinalizeComponents(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMNetworkFinalizeComponents(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Sets up internal data structures for the sections and components. It is called after registering new components and adding all components
 to the cloned network. After calling this subroutine, no new components can be added to the network.
 
@@ -17563,7 +16691,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkAddComponent()`, `DMNetworkRegisterComponent()`, `DMSetUp()`
+See also: `DM`, `DMNETWORK`, `DMNetworkAddComponent()`, `DMNetworkRegisterComponent()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkFinalizeComponents"))
@@ -17586,7 +16714,7 @@ end
 end 
 
 """
-	compkey::PetscInt,component::Ptr{Cvoid},nvar::PetscInt = DMNetworkGetComponent(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) 
+	compkey::PetscInt,component::Ptr{Cvoid},nvar::PetscInt = DMNetworkGetComponent(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) 
 Gets the component key, the component data, and the number of variables at a given network point
 
 Not Collective
@@ -17603,7 +16731,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkAddComponent()`, `DMNetworkGetNumComponents()`
+See also: `DM`, `DMNETWORK`, `DMNetworkAddComponent()`, `DMNetworkGetNumComponents()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetComponent"))
@@ -17632,7 +16760,7 @@ end
 end 
 
 """
-	vertices::Ptr{PetscInt} = DMNetworkGetConnectedVertices(petsclib::PetscLibType,dm::AbstractPetscDM, edge::PetscInt) 
+	vertices::Ptr{PetscInt} = DMNetworkGetConnectedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, edge::PetscInt) 
 Return the connected vertices for this edge point
 
 Not Collective
@@ -17646,7 +16774,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkGetSupportingEdges()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkGetSupportingEdges()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetConnectedVertices"))
@@ -17671,7 +16799,7 @@ end
 end 
 
 """
-	offset::PetscInt = DMNetworkGetEdgeOffset(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	offset::PetscInt = DMNetworkGetEdgeOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Get the offset for accessing the variables associated with the given edge from the local subvector
 
 Not Collective
@@ -17685,7 +16813,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetLocalVecOffset()`, `DMGetLocalVector()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetLocalVecOffset()`, `DMGetLocalVector()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetEdgeOffset"))
@@ -17710,7 +16838,7 @@ end
 end 
 
 """
-	eStart::PetscInt,eEnd::PetscInt = DMNetworkGetEdgeRange(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	eStart::PetscInt,eEnd::PetscInt = DMNetworkGetEdgeRange(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the bounds [start, end) (also sometimes called the chart) for the local edges
 
 Not Collective
@@ -17724,7 +16852,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetVertexRange()`, `DMNetworkGetSubnetwork()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetVertexRange()`, `DMNetworkGetSubnetwork()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetEdgeRange"))
@@ -17751,7 +16879,7 @@ end
 end 
 
 """
-	index::PetscInt = DMNetworkGetGlobalEdgeIndex(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	index::PetscInt = DMNetworkGetGlobalEdgeIndex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Get the global numbering for the edge on the network
 
 Not Collective
@@ -17765,7 +16893,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetGlobalVertexIndex()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetGlobalVertexIndex()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetGlobalEdgeIndex"))
@@ -17790,7 +16918,7 @@ end
 end 
 
 """
-	offsetg::PetscInt = DMNetworkGetGlobalVecOffset(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) 
+	offsetg::PetscInt = DMNetworkGetGlobalVecOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) 
 Get the global offset for accessing the variables associated with a component for the given vertex/edge from the global vector
 
 Not Collective
@@ -17805,7 +16933,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetLocalVecOffset()`, `DMGetGlobalVector()`, `DMNetworkGetComponent()`, `DMCreateGlobalVector()`, `VecGetArray()`, `VecSetValues()`, `MatSetValues()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetLocalVecOffset()`, `DMGetGlobalVector()`, `DMNetworkGetComponent()`, `DMCreateGlobalVector()`, `VecGetArray()`, `VecSetValues()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetGlobalVecOffset"))
@@ -17830,7 +16958,7 @@ end
 end 
 
 """
-	index::PetscInt = DMNetworkGetGlobalVertexIndex(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	index::PetscInt = DMNetworkGetGlobalVertexIndex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Get the global numbering for the vertex on the network
 
 Not Collective
@@ -17844,7 +16972,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetGlobalEdgeIndex()`, `DMNetworkGetLocalVertexIndex()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetGlobalEdgeIndex()`, `DMNetworkGetLocalVertexIndex()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetGlobalVertexIndex"))
@@ -17869,7 +16997,7 @@ end
 end 
 
 """
-	offset::PetscInt = DMNetworkGetLocalVecOffset(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) 
+	offset::PetscInt = DMNetworkGetLocalVecOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, compnum::PetscInt) 
 Get the offset for accessing the variables associated with a component at the given vertex/edge from the local vector
 
 Not Collective
@@ -17884,7 +17012,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMGetLocalVector()`, `DMNetworkGetComponent()`, `DMNetworkGetGlobalVecOffset()`, `DMCreateGlobalVector()`, `VecGetArray()`, `VecSetValuesLocal()`, `MatSetValuesLocal()`
+See also: `DM`, `DMNETWORK`, `DMGetLocalVector()`, `DMNetworkGetComponent()`, `DMNetworkGetGlobalVecOffset()`, `DMCreateGlobalVector()`, `VecGetArray()`, `VecSetValuesLocal()`, `MatSetValuesLocal()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetLocalVecOffset"))
@@ -17909,7 +17037,7 @@ end
 end 
 
 """
-	numcomponents::PetscInt = DMNetworkGetNumComponents(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	numcomponents::PetscInt = DMNetworkGetNumComponents(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Get the number of components at a vertex/edge
 
 Not Collective
@@ -17923,7 +17051,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkRegisterComponent()`, `DMNetworkAddComponent()`
+See also: `DM`, `DMNETWORK`, `DMNetworkRegisterComponent()`, `DMNetworkAddComponent()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumComponents"))
@@ -17948,7 +17076,7 @@ end
 end 
 
 """
-	nEdges::PetscInt,M_NEdges::PetscInt = DMNetworkGetNumEdges(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nEdges::PetscInt,M_NEdges::PetscInt = DMNetworkGetNumEdges(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the local and global number of edges for the entire network.
 
 Not Collective
@@ -17962,7 +17090,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetNumVertices()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetNumVertices()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumEdges"))
@@ -17989,7 +17117,7 @@ end
 end 
 
 """
-	nsubnet::PetscInt,M_Nsubnet::PetscInt = DMNetworkGetNumSubNetworks(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nsubnet::PetscInt,M_Nsubnet::PetscInt = DMNetworkGetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the number of subnetworks
 
 Not Collective
@@ -18003,7 +17131,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkSetNumSubNetworks()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkSetNumSubNetworks()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumSubNetworks"))
@@ -18030,7 +17158,7 @@ end
 end 
 
 """
-	nVertices::PetscInt,M_NVertices::PetscInt = DMNetworkGetNumVertices(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nVertices::PetscInt,M_NVertices::PetscInt = DMNetworkGetNumVertices(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the local and global number of vertices for the entire network.
 
 Not Collective
@@ -18044,7 +17172,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetNumEdges()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetNumEdges()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetNumVertices"))
@@ -18071,7 +17199,7 @@ end
 end 
 
 """
-	plexdm::PetscDM = DMNetworkGetPlex(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	plexdm::PetscDM = DMNetworkGetPlex(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the `DMPLEX` associated with this `DMNETWORK`
 
 Not Collective
@@ -18084,7 +17212,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMNETWORK`, `DMPLEX`, `DMNetworkCreate()`
+See also: `DM`, `DMNETWORK`, `DMPLEX`, `DMNetworkCreate()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetPlex"))
@@ -18109,7 +17237,7 @@ end
 end 
 
 """
-	nsv::PetscInt,svtx::Ptr{PetscInt} = DMNetworkGetSharedVertices(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nsv::PetscInt,svtx::Ptr{PetscInt} = DMNetworkGetSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the info for the shared vertices
 
 Not Collective
@@ -18123,7 +17251,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetSubnetwork()`, `DMNetworkLayoutSetUp()`, `DMNetworkAddSharedVertices()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetSubnetwork()`, `DMNetworkLayoutSetUp()`, `DMNetworkAddSharedVertices()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetSharedVertices"))
@@ -18150,7 +17278,7 @@ end
 end 
 
 """
-	nv::PetscInt,ne::PetscInt,vtx::Ptr{PetscInt},edge::Ptr{PetscInt} = DMNetworkGetSubnetwork(petsclib::PetscLibType,dm::AbstractPetscDM, netnum::PetscInt) 
+	nv::PetscInt,ne::PetscInt,vtx::Ptr{PetscInt},edge::Ptr{PetscInt} = DMNetworkGetSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, netnum::PetscInt) 
 Returns the information about a requested subnetwork
 
 Not Collective
@@ -18167,7 +17295,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkAddSubnetwork()`, `DMNetworkLayoutSetUp()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkAddSubnetwork()`, `DMNetworkLayoutSetUp()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetSubnetwork"))
@@ -18198,7 +17326,7 @@ end
 end 
 
 """
-	nedges::PetscInt,edges::Ptr{PetscInt} = DMNetworkGetSupportingEdges(petsclib::PetscLibType,dm::AbstractPetscDM, vertex::PetscInt) 
+	nedges::PetscInt,edges::Ptr{PetscInt} = DMNetworkGetSupportingEdges(petsclib::PetscLibType, dm::AbstractPetscDM, vertex::PetscInt) 
 Return the supporting edges for this vertex point
 
 Not Collective
@@ -18213,7 +17341,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkGetConnectedVertices()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkGetConnectedVertices()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetSupportingEdges"))
@@ -18240,7 +17368,7 @@ end
 end 
 
 """
-	vg::PetscInt = DMNetworkGetVertexLocalToGlobalOrdering(petsclib::PetscLibType,dm::AbstractPetscDM, vloc::PetscInt) 
+	vg::PetscInt = DMNetworkGetVertexLocalToGlobalOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, vloc::PetscInt) 
 Get vertex global index
 
 Not Collective
@@ -18254,7 +17382,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkSetVertexLocalToGlobalOrdering()`
+See also: `DM`, `DMNETWORK`, `DMNetworkSetVertexLocalToGlobalOrdering()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetVertexLocalToGlobalOrdering"))
@@ -18279,7 +17407,7 @@ end
 end 
 
 """
-	offset::PetscInt = DMNetworkGetVertexOffset(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	offset::PetscInt = DMNetworkGetVertexOffset(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Get the offset for accessing the variables associated with the given vertex from the local subvector
 
 Not Collective
@@ -18293,7 +17421,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetEdgeOffset()`, `DMGetLocalVector()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetEdgeOffset()`, `DMGetLocalVector()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetVertexOffset"))
@@ -18318,7 +17446,7 @@ end
 end 
 
 """
-	vStart::PetscInt,vEnd::PetscInt = DMNetworkGetVertexRange(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	vStart::PetscInt,vEnd::PetscInt = DMNetworkGetVertexRange(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the bounds [start, end) (also sometimes called the chart) for the local vertices
 
 Not Collective
@@ -18332,7 +17460,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetEdgeRange()`, `DMNetworkGetSubnetwork()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetEdgeRange()`, `DMNetworkGetSubnetwork()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkGetVertexRange"))
@@ -18359,7 +17487,7 @@ end
 end 
 
 """
-	DMNetworkHasJacobian(petsclib::PetscLibType,dm::AbstractPetscDM, eflg::PetscBool, vflg::PetscBool) 
+	DMNetworkHasJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, eflg::PetscBool, vflg::PetscBool) 
 Sets global flag for using user's sub Jacobian matrices
 -- `replaced by DMNetworkSetOption(network,userjacobian,PETSC_TRUE)?`
 
@@ -18372,7 +17500,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMNetworkSetOption()`
+See also: `DMNetworkSetOption()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkHasJacobian"))
@@ -18395,7 +17523,7 @@ end
 end 
 
 """
-	isghost::PetscBool = DMNetworkIsGhostVertex(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	isghost::PetscBool = DMNetworkIsGhostVertex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Returns `PETSC_TRUE` if the vertex is a ghost vertex
 
 Not Collective
@@ -18409,7 +17537,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetConnectedVertices()`, `DMNetworkGetVertexRange()`, `DMNetworkIsSharedVertex()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetConnectedVertices()`, `DMNetworkGetVertexRange()`, `DMNetworkIsSharedVertex()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkIsGhostVertex"))
@@ -18434,7 +17562,7 @@ end
 end 
 
 """
-	flag::PetscBool = DMNetworkIsSharedVertex(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	flag::PetscBool = DMNetworkIsSharedVertex(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Returns `PETSC_TRUE` if the vertex is shared by subnetworks
 
 Not Collective
@@ -18448,7 +17576,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkAddSharedVertices()`, `DMNetworkIsGhostVertex()`
+See also: `DM`, `DMNETWORK`, `DMNetworkAddSharedVertices()`, `DMNetworkIsGhostVertex()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkIsSharedVertex"))
@@ -18473,7 +17601,7 @@ end
 end 
 
 """
-	DMNetworkLayoutSetUp(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMNetworkLayoutSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Sets up the bare layout (graph) for the network
 
 Not Collective
@@ -18483,7 +17611,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkSetNumSubNetworks()`, `DMNetworkAddSubnetwork()`
+See also: `DM`, `DMNETWORK`, `DMNetworkSetNumSubNetworks()`, `DMNetworkAddSubnetwork()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkLayoutSetUp"))
@@ -18506,7 +17634,7 @@ end
 end 
 
 """
-	key::PetscInt = DMNetworkRegisterComponent(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, size::Csize_t) 
+	key::PetscInt = DMNetworkRegisterComponent(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, size::Csize_t) 
 Registers the network component
 
 Logically Collective
@@ -18521,7 +17649,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkLayoutSetUp()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkLayoutSetUp()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkRegisterComponent"))
@@ -18546,7 +17674,7 @@ end
 end 
 
 """
-	DMNetworkSetNumSubNetworks(petsclib::PetscLibType,dm::AbstractPetscDM, nsubnet::PetscInt, M_Nsubnet::PetscInt) 
+	DMNetworkSetNumSubNetworks(petsclib::PetscLibType, dm::AbstractPetscDM, nsubnet::PetscInt, M_Nsubnet::PetscInt) 
 Sets the number of subnetworks
 
 Collective
@@ -18558,7 +17686,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkGetNumSubNetworks()`
+See also: `DM`, `DMNETWORK`, `DMNetworkCreate()`, `DMNetworkGetNumSubNetworks()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkSetNumSubNetworks"))
@@ -18581,7 +17709,7 @@ end
 end 
 
 """
-	DMNetworkSetVertexLocalToGlobalOrdering(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMNetworkSetVertexLocalToGlobalOrdering(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Create and setup vertex local to global map
 
 Collective
@@ -18591,7 +17719,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetGlobalVertexIndex()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetGlobalVertexIndex()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkSetVertexLocalToGlobalOrdering"))
@@ -18614,7 +17742,7 @@ end
 end 
 
 """
-	gidx::PetscInt,n::PetscInt,sv::Ptr{PetscInt} = DMNetworkSharedVertexGetInfo(petsclib::PetscLibType,dm::AbstractPetscDM, v::PetscInt) 
+	gidx::PetscInt,n::PetscInt,sv::Ptr{PetscInt} = DMNetworkSharedVertexGetInfo(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscInt) 
 Get info of a shared vertex struct, see petsc/private/dmnetworkimpl.h
 
 Not Collective
@@ -18630,7 +17758,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkGetSharedVertices()`
+See also: `DM`, `DMNETWORK`, `DMNetworkGetSharedVertices()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkSharedVertexGetInfo"))
@@ -18659,8 +17787,8 @@ end
 end 
 
 """
-	DMNetworkVertexSetMatrix(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, J::Vector{<:AbstractPetscMat}) 
-Sets user
+	DMNetworkVertexSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, J::Vector{<:AbstractPetscMat}) 
+Sets user-provided Jacobian matrix for this vertex to the network
 
 Not Collective
 
@@ -18674,7 +17802,7 @@ J[1+2*i+1]: i-th connected vertex
 
 Level: advanced
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkEdgeSetMatrix()`
+See also: `DM`, `DMNETWORK`, `DMNetworkEdgeSetMatrix()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkVertexSetMatrix"))
@@ -18697,7 +17825,7 @@ end
 end 
 
 """
-	DMNetworkViewSetShowGlobal(petsclib::PetscLibType,dm::AbstractPetscDM, showglobal::PetscBool) 
+	DMNetworkViewSetShowGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, showglobal::PetscBool) 
 Set viewing the global network.
 
 Logically Collective
@@ -18710,7 +17838,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetShowNumbering()`, `DMNetworkViewSetViewRanks()`
+See also: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetShowNumbering()`, `DMNetworkViewSetViewRanks()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowGlobal"))
@@ -18733,7 +17861,7 @@ end
 end 
 
 """
-	DMNetworkViewSetShowNumbering(petsclib::PetscLibType,dm::AbstractPetscDM, shownumbering::PetscBool) 
+	DMNetworkViewSetShowNumbering(petsclib::PetscLibType, dm::AbstractPetscDM, shownumbering::PetscBool) 
 Set displaying the numbering of edges and vertices in viewing routines.
 
 Logically Collective
@@ -18746,7 +17874,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetViewRanks()`
+See also: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetViewRanks()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowNumbering"))
@@ -18769,7 +17897,7 @@ end
 end 
 
 """
-	DMNetworkViewSetShowRanks(petsclib::PetscLibType,dm::AbstractPetscDM, showranks::PetscBool) 
+	DMNetworkViewSetShowRanks(petsclib::PetscLibType, dm::AbstractPetscDM, showranks::PetscBool) 
 Sets viewing the `DMETNWORK` on each rank individually.
 
 Logically Collective
@@ -18782,7 +17910,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetShowNumbering()`, `DMNetworkViewSetViewRanks()`
+See also: `DM`, `DMNETWORK`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetShowNumbering()`, `DMNetworkViewSetViewRanks()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowRanks"))
@@ -18805,7 +17933,7 @@ end
 end 
 
 """
-	DMNetworkViewSetShowVertices(petsclib::PetscLibType,dm::AbstractPetscDM, showvertices::PetscBool) 
+	DMNetworkViewSetShowVertices(petsclib::PetscLibType, dm::AbstractPetscDM, showvertices::PetscBool) 
 Sets whether to display the vertices in viewing routines.
 
 Logically Collective
@@ -18818,7 +17946,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowNumbering()`, `DMNetworkViewSetViewRanks()`
+See also: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowNumbering()`, `DMNetworkViewSetViewRanks()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetShowVertices"))
@@ -18841,7 +17969,7 @@ end
 end 
 
 """
-	DMNetworkViewSetViewRanks(petsclib::PetscLibType,dm::AbstractPetscDM, viewranks::AbstractIS) 
+	DMNetworkViewSetViewRanks(petsclib::PetscLibType, dm::AbstractPetscDM, viewranks::AbstractIS) 
 View the `DMNETWORK` on each of the specified ranks individually.
 
 Collective
@@ -18854,7 +17982,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetShowNumbering()`
+See also: `DM`, `DMNETWORK`, `DMNetworkViewSetShowRanks()`, `DMNetworkViewSetShowGlobal()`, `DMNetworkViewSetShowVertices()`, `DMNetworkViewSetShowNumbering()`
 
 # External Links
 $(_doc_external("DMNetwork/DMNetworkViewSetViewRanks"))
@@ -18877,7 +18005,7 @@ end
 end 
 
 """
-	val::PetscReal = DMOutputSequenceLoad(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, name::String, num::PetscInt) 
+	val::PetscReal = DMOutputSequenceLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, name::String, num::PetscInt) 
 Retrieve the sequence value from a `PetscViewer`
 
 Input Parameters:
@@ -18891,16 +18019,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-This is intended for output that should appear in sequence, for instance
-a set of timesteps in an `PETSCVIEWERHDF5` file, or a set of realizations of a stochastic system.
-
-Developer Note:
-It is unclear at the user API level why a `DM` is needed as input
-
-See also: 
-=== 
-`DM`, `DMGetOutputSequenceNumber()`, `DMSetOutputSequenceNumber()`, `VecView()`
+See also: `DM`, `DMGetOutputSequenceNumber()`, `DMSetOutputSequenceNumber()`, `VecView()`
 
 # External Links
 $(_doc_external("DM/DMOutputSequenceLoad"))
@@ -18925,7 +18044,7 @@ end
 end 
 
 """
-	mesh::PetscDM = DMPatchCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	mesh::PetscDM = DMPatchCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a DMPatch object, which is a collections of DMs called patches.
 
 Collective
@@ -18936,7 +18055,7 @@ Input Parameter:
 Output Parameter:
 - `mesh` - The DMPatch object
 
--seealso: `DMPatchZoom()`
+See also: `DMPatchZoom()`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchCreate"))
@@ -18961,8 +18080,8 @@ end
 end 
 
 """
-	dm::PetscDM = DMPatchCreateGrid(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, patchSize::MatStencil, commSize::MatStencil, gridSize::MatStencil) 
-Create a `DMPATCH` whose coarse `DM` is a structured `DMDA` of the requested global size, with the given patch and process
+	dm::PetscDM = DMPatchCreateGrid(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, patchSize::MatStencil, commSize::MatStencil, gridSize::MatStencil) 
+Create a `DMPATCH` whose coarse `DM` is a structured `DMDA` of the requested global size, with the given patch and process-grid sizes
 
 Collective
 
@@ -18978,7 +18097,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPATCH`, `DMPatchCreate()`, `DMPatchSetPatchSize()`, `DMPatchSetCommSize()`, `DMDA`, `MatStencil`
+See also: `DMPATCH`, `DMPatchCreate()`, `DMPatchSetPatchSize()`, `DMPatchSetCommSize()`, `DMDA`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchCreateGrid"))
@@ -19003,7 +18122,7 @@ end
 end 
 
 """
-	dmCoarse::PetscDM = DMPatchGetCoarse(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	dmCoarse::PetscDM = DMPatchGetCoarse(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the coarse `DM` associated with a `DMPATCH`
 
 Not Collective
@@ -19016,7 +18135,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPATCH`, `DMPatchCreate()`, `DMPatchZoom()`
+See also: `DMPATCH`, `DMPatchCreate()`, `DMPatchZoom()`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchGetCoarse"))
@@ -19041,7 +18160,7 @@ end
 end 
 
 """
-	commSize::MatStencil = DMPatchGetCommSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	commSize::MatStencil = DMPatchGetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the process grid used for each patch of a `DMPATCH`
 
 Not Collective
@@ -19054,7 +18173,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPATCH`, `DMPatchSetCommSize()`, `DMPatchGetPatchSize()`, `MatStencil`
+See also: `DMPATCH`, `DMPatchSetCommSize()`, `DMPatchGetPatchSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchGetCommSize"))
@@ -19079,7 +18198,7 @@ end
 end 
 
 """
-	patchSize::MatStencil = DMPatchGetPatchSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	patchSize::MatStencil = DMPatchGetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the size of a single patch of a `DMPATCH`, in grid cells
 
 Not Collective
@@ -19092,7 +18211,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPATCH`, `DMPatchSetPatchSize()`, `DMPatchGetCommSize()`, `MatStencil`
+See also: `DMPATCH`, `DMPatchSetPatchSize()`, `DMPatchGetCommSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchGetPatchSize"))
@@ -19117,7 +18236,7 @@ end
 end 
 
 """
-	DMPatchSetCommSize(petsclib::PetscLibType,dm::AbstractPetscDM, commSize::MatStencil) 
+	DMPatchSetCommSize(petsclib::PetscLibType, dm::AbstractPetscDM, commSize::MatStencil) 
 Set the process grid used for each patch of a `DMPATCH`
 
 Logically Collective
@@ -19128,7 +18247,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPATCH`, `DMPatchGetCommSize()`, `DMPatchSetPatchSize()`, `MatStencil`
+See also: `DMPATCH`, `DMPatchGetCommSize()`, `DMPatchSetPatchSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchSetCommSize"))
@@ -19151,7 +18270,7 @@ end
 end 
 
 """
-	DMPatchSetPatchSize(petsclib::PetscLibType,dm::AbstractPetscDM, patchSize::MatStencil) 
+	DMPatchSetPatchSize(petsclib::PetscLibType, dm::AbstractPetscDM, patchSize::MatStencil) 
 Set the size of a single patch of a `DMPATCH`, in grid cells
 
 Logically Collective
@@ -19162,7 +18281,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPATCH`, `DMPatchGetPatchSize()`, `DMPatchSetCommSize()`, `MatStencil`
+See also: `DMPATCH`, `DMPatchGetPatchSize()`, `DMPatchSetCommSize()`, `MatStencil`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchSetPatchSize"))
@@ -19185,7 +18304,7 @@ end
 end 
 
 """
-	DMPatchSolve(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPatchSolve(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Iterate over all patches of a `DMPATCH`, zooming the coarse `DM` onto each patch and scattering data between the coarse and zoomed representations
 
 Collective
@@ -19195,7 +18314,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DMPATCH`, `DMPatchZoom()`, `DMPatchGetCoarse()`, `DMPatchGetPatchSize()`, `DMPatchGetCommSize()`
+See also: `DMPATCH`, `DMPatchZoom()`, `DMPatchGetCoarse()`, `DMPatchGetPatchSize()`, `DMPatchGetCommSize()`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchSolve"))
@@ -19218,7 +18337,7 @@ end
 end 
 
 """
-	dmz::PetscDM,sfz::PetscSF,sfzr::PetscSF = DMPatchZoom(petsclib::PetscLibType,dm::AbstractPetscDM, lower::MatStencil, upper::MatStencil, commz::MPI_Comm) 
+	dmz::PetscDM,sfz::PetscSF,sfzr::PetscSF = DMPatchZoom(petsclib::PetscLibType, dm::AbstractPetscDM, lower::MatStencil, upper::MatStencil, commz::MPI_Comm) 
 Create patches of a `DMDA` on subsets of processes, indicated by `commz`
 
 Collective
@@ -19236,7 +18355,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPatchSolve()`, `DMDACreatePatchIS()`
+See also: `DMPatchSolve()`, `DMDACreatePatchIS()`
 
 # External Links
 $(_doc_external("DMPatch/DMPatchZoom"))
@@ -19265,7 +18384,7 @@ end
 end 
 
 """
-	DMPlexBuildCoordinatesFromCellList(petsclib::PetscLibType,dm::AbstractPetscDM, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
+	DMPlexBuildCoordinatesFromCellList(petsclib::PetscLibType, dm::AbstractPetscDM, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
 Build `DM` coordinates from a list of coordinates for each owned vertex (common mesh generator output)
 
 Collective
@@ -19277,7 +18396,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexBuildCoordinatesFromCellListParallel()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexBuildFromCellList()`
+See also: `DM`, `DMPLEX`, `DMPlexBuildCoordinatesFromCellListParallel()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexBuildFromCellList()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildCoordinatesFromCellList"))
@@ -19300,7 +18419,7 @@ end
 end 
 
 """
-	DMPlexBuildCoordinatesFromCellListParallel(petsclib::PetscLibType,dm::AbstractPetscDM, spaceDim::PetscInt, sfVert::PetscSF, vertexCoords::Vector{PetscReal}) 
+	DMPlexBuildCoordinatesFromCellListParallel(petsclib::PetscLibType, dm::AbstractPetscDM, spaceDim::PetscInt, sfVert::PetscSF, vertexCoords::Vector{PetscReal}) 
 Build `DM` coordinates from a list of coordinates for each owned vertex (common mesh generator output)
 
 Collective; No Fortran Support
@@ -19313,7 +18432,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexBuildCoordinatesFromCellList()`, `DMPlexCreateFromCellListParallelPetsc()`, `DMPlexBuildFromCellListParallel()`
+See also: `DM`, `DMPLEX`, `DMPlexBuildCoordinatesFromCellList()`, `DMPlexCreateFromCellListParallelPetsc()`, `DMPlexBuildFromCellListParallel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildCoordinatesFromCellListParallel"))
@@ -19336,7 +18455,7 @@ end
 end 
 
 """
-	DMPlexBuildFromCellList(petsclib::PetscLibType,dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, numCorners::PetscInt, cells::Vector{PetscInt}) 
+	DMPlexBuildFromCellList(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, numCorners::PetscInt, cells::Vector{PetscInt}) 
 Build `DMPLEX` topology from a list of vertices for each cell (common mesh generator output)
 
 Collective; No Fortran Support
@@ -19350,7 +18469,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexBuildFromCellListParallel()`, `DMPlexBuildCoordinatesFromCellList()`, `DMPlexCreateFromCellListPetsc()`
+See also: `DM`, `DMPLEX`, `DMPlexBuildFromCellListParallel()`, `DMPlexBuildCoordinatesFromCellList()`, `DMPlexCreateFromCellListPetsc()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexBuildFromCellList"))
@@ -19373,7 +18492,7 @@ end
 end 
 
 """
-	vertexSF::PetscSF,verticesAdjSaved::Ptr{PetscInt} = DMPlexBuildFromCellListParallel(petsclib::PetscLibType,dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, numCorners::PetscInt, cells::Vector{PetscInt}) 
+	vertexSF::PetscSF,verticesAdjSaved::Ptr{PetscInt} = DMPlexBuildFromCellListParallel(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, numCorners::PetscInt, cells::Vector{PetscInt}) 
 Build a distributed `DMPLEX` topology from a list of vertices for each cell (common mesh generator output) where all cells have the same celltype
 
 Collective; No Fortran Support
@@ -19392,7 +18511,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexBuildFromCellList()`, `DMPlexCreateFromCellListParallelPetsc()`, `DMPlexBuildCoordinatesFromCellListParallel()`,
+See also: `DM`, `DMPLEX`, `DMPlexBuildFromCellList()`, `DMPlexCreateFromCellListParallelPetsc()`, `DMPlexBuildCoordinatesFromCellListParallel()`,
 `PetscSF`
 
 # External Links
@@ -19420,7 +18539,7 @@ end
 end 
 
 """
-	vertexSF::PetscSF,verticesAdjSaved::Ptr{PetscInt} = DMPlexBuildFromCellSectionParallel(petsclib::PetscLibType,dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, cellSection::PetscSection, cells::Vector{PetscInt}) 
+	vertexSF::PetscSF,verticesAdjSaved::Ptr{PetscInt} = DMPlexBuildFromCellSectionParallel(petsclib::PetscLibType, dm::AbstractPetscDM, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, cellSection::PetscSection, cells::Vector{PetscInt}) 
 Build distributed `DMPLEX` topology from a list of vertices for each cell (common mesh generator output) allowing multiple celltypes
 
 Collective; No Fortran Support
@@ -19439,7 +18558,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexBuildFromCellListParallel()`, `DMPlexCreateFromCellSectionParallel()`, `DMPlexBuildCoordinatesFromCellListParallel()`,
+See also: `DM`, `DMPLEX`, `DMPlexBuildFromCellListParallel()`, `DMPlexCreateFromCellSectionParallel()`, `DMPlexBuildCoordinatesFromCellListParallel()`,
 `PetscSF`
 
 # External Links
@@ -19467,7 +18586,7 @@ end
 end 
 
 """
-	DMPlexCheck(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexCheck(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Perform various checks of `DMPLEX` sanity
 
 Input Parameter:
@@ -19475,7 +18594,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheck"))
@@ -19498,7 +18617,7 @@ end
 end 
 
 """
-	DMPlexCheckCellShape(petsclib::PetscLibType,dm::AbstractPetscDM, output::PetscBool, condLimit::PetscReal) 
+	DMPlexCheckCellShape(petsclib::PetscLibType, dm::AbstractPetscDM, output::PetscBool, condLimit::PetscReal) 
 Checks the Jacobian of the mapping from reference to real cells and computes some minimal statistics.
 
 Collective
@@ -19510,7 +18629,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexComputeOrthogonalQuality()`
+See also: `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexComputeOrthogonalQuality()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckCellShape"))
@@ -19533,7 +18652,7 @@ end
 end 
 
 """
-	DMPlexCheckFaces(petsclib::PetscLibType,dm::AbstractPetscDM, cellHeight::PetscInt) 
+	DMPlexCheckFaces(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) 
 Check that the faces of each cell give a vertex order this is consistent with what we expect from the cell type
 
 Collective
@@ -19544,7 +18663,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexGetVTKCellHeight()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexGetVTKCellHeight()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckFaces"))
@@ -19567,7 +18686,7 @@ end
 end 
 
 """
-	DMPlexCheckGeometry(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexCheckGeometry(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Check the geometry of mesh cells
 
 Input Parameter:
@@ -19575,7 +18694,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckGeometry"))
@@ -19598,15 +18717,15 @@ end
 end 
 
 """
-	DMPlexCheckInterfaceCones(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Check that points on inter
+	DMPlexCheckInterfaceCones(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Check that points on inter-partition interfaces have conforming order of cone points.
 
 Input Parameter:
 - `dm` - The `DMPLEX` object
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCone()`, `DMPlexGetConeSize()`, `DMGetPointSF()`, `DMGetCoordinates()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCone()`, `DMPlexGetConeSize()`, `DMGetPointSF()`, `DMGetCoordinates()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckInterfaceCones"))
@@ -19629,7 +18748,7 @@ end
 end 
 
 """
-	DMPlexCheckOrphanVertices(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexCheckOrphanVertices(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Check that no vertices are disconnected from the mesh, unless the mesh only consists of disconnected vertices.
 
 Collective
@@ -19639,7 +18758,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCheck()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMPlexCheck()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckOrphanVertices"))
@@ -19662,7 +18781,7 @@ end
 end 
 
 """
-	DMPlexCheckPointSF(petsclib::PetscLibType,dm::AbstractPetscDM, pointSF::PetscSF, allowExtraRoots::PetscBool) 
+	DMPlexCheckPointSF(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, allowExtraRoots::PetscBool) 
 Check that several necessary conditions are met for the point `PetscSF` of this plex.
 
 Collective
@@ -19674,7 +18793,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetPointSF()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMGetPointSF()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckPointSF"))
@@ -19697,7 +18816,7 @@ end
 end 
 
 """
-	DMPlexCheckSkeleton(petsclib::PetscLibType,dm::AbstractPetscDM, cellHeight::PetscInt) 
+	DMPlexCheckSkeleton(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) 
 Check that each cell has the correct number of vertices
 
 Input Parameters:
@@ -19706,7 +18825,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckSkeleton"))
@@ -19729,7 +18848,7 @@ end
 end 
 
 """
-	DMPlexCheckSymmetry(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexCheckSymmetry(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Check that the adjacency information in the mesh is symmetric.
 
 Input Parameter:
@@ -19737,7 +18856,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCheckSymmetry"))
@@ -19760,7 +18879,7 @@ end
 end 
 
 """
-	DMPlexComputeBdIntegral(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::PetscInt, vals::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+	DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::PetscInt, vals::Vector{PetscInt}, noname::Ptr{Cvoid}) 
 Form the integral over the specified boundary from the global input X using pointwise functions specified by the user
 
 Input Parameters:
@@ -19777,7 +18896,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeIntegralFEM()`, `DMPlexComputeBdResidualFEM()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeIntegralFEM()`, `DMPlexComputeBdResidualFEM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdIntegral"))
@@ -19800,7 +18919,7 @@ end
 end 
 
 """
-	DMPlexComputeBdJacobianSingle(petsclib::PetscLibType,dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
+	DMPlexComputeBdJacobianSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
 Compute the local boundary Jacobian
 
 Not collective
@@ -19823,7 +18942,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPlexComputeBdJacobianSingleByLabel()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeBdJacobianSingleByLabel()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdJacobianSingle"))
@@ -19846,7 +18965,7 @@ end
 end 
 
 """
-	DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType,dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
+	DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
 Compute the local boundary Jacobian for terms matching the input label
 
 Not collective
@@ -19871,7 +18990,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPlexComputeBdJacobianSingle()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeBdJacobianSingle()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdJacobianSingleByLabel"))
@@ -19894,7 +19013,7 @@ end
 end 
 
 """
-	DMPlexComputeBdResidualSingle(petsclib::PetscLibType,dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec) 
+	DMPlexComputeBdResidualSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec) 
 Compute the local boundary residual
 
 Not collective
@@ -19912,7 +19031,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPlexComputeBdResidualSingleByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeBdResidualSingleByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdResidualSingle"))
@@ -19935,7 +19054,7 @@ end
 end 
 
 """
-	DMPlexComputeBdResidualSingleByKey(petsclib::PetscLibType,dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, locF::AbstractPetscVec) 
+	DMPlexComputeBdResidualSingleByKey(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, key::PetscFormKey, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, locF::AbstractPetscVec) 
 Compute the local boundary residual for terms matching the input key
 
 Not collective
@@ -19955,7 +19074,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPlexComputeBdResidualSingle()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeBdResidualSingle()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdResidualSingleByKey"))
@@ -19978,7 +19097,7 @@ end
 end 
 
 """
-	detJ::PetscReal = DMPlexComputeCellGeometryAffineFEM(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, v0::Vector{PetscReal}, J::Vector{PetscReal}, invJ::Vector{PetscReal}) 
+	detJ::PetscReal = DMPlexComputeCellGeometryAffineFEM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, v0::Vector{PetscReal}, J::Vector{PetscReal}, invJ::Vector{PetscReal}) 
 Assuming an affine map, compute the Jacobian, inverse Jacobian, and Jacobian determinant for a given cell
 
 Collective
@@ -19995,7 +19114,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `DMPLEX`, `DMPlexComputeCellGeometryFEM()`, `DMGetCoordinateSection()`, `DMGetCoordinates()`
+See also: `DMPLEX`, `DMPlexComputeCellGeometryFEM()`, `DMGetCoordinateSection()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellGeometryAffineFEM"))
@@ -20020,7 +19139,7 @@ end
 end 
 
 """
-	DMPlexComputeCellGeometryFEM(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, quad::PetscQuadrature, v::Vector{PetscReal}, J::Vector{PetscReal}, invJ::Vector{PetscReal}, detJ::Vector{PetscReal}) 
+	DMPlexComputeCellGeometryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, quad::PetscQuadrature, v::Vector{PetscReal}, J::Vector{PetscReal}, invJ::Vector{PetscReal}, detJ::Vector{PetscReal}) 
 Compute the Jacobian, inverse Jacobian, and Jacobian determinant at each quadrature point in the given cell
 
 Collective
@@ -20042,7 +19161,7 @@ each inverse Jacobian in column-major order.
 
 Level: advanced
 
--seealso: `DMPLEX`, `DMGetCoordinateSection()`, `DMGetCoordinates()`
+See also: `DMPLEX`, `DMGetCoordinateSection()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellGeometryFEM"))
@@ -20065,7 +19184,7 @@ end
 end 
 
 """
-	vol::PetscReal = DMPlexComputeCellGeometryFVM(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, centroid::Vector{PetscReal}, normal::Vector{PetscReal}) 
+	vol::PetscReal = DMPlexComputeCellGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, centroid::Vector{PetscReal}, normal::Vector{PetscReal}) 
 Compute the volume for a given cell
 
 Collective
@@ -20081,7 +19200,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `DMPLEX`, `DMGetCoordinateSection()`, `DMGetCoordinates()`
+See also: `DMPLEX`, `DMGetCoordinateSection()`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellGeometryFVM"))
@@ -20106,7 +19225,7 @@ end
 end 
 
 """
-	DMPlexComputeCellTypes(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexComputeCellTypes(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Infer the polytope type of every cell using its dimension and cone size.
 
 Collective
@@ -20116,7 +19235,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSymmetrize()`, `DMPlexStratify()`, `DMGetLabel()`, `DMCreateLabel()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSymmetrize()`, `DMPlexStratify()`, `DMGetLabel()`, `DMCreateLabel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellTypes"))
@@ -20139,7 +19258,7 @@ end
 end 
 
 """
-	DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexComputeCellwiseIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the vector of cellwise integrals F from the global input X using pointwise functions specified by the user
 
 Input Parameters:
@@ -20152,7 +19271,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSNESComputeResidualFEM()`
+See also: `DM`, `DMPLEX`, `DMPlexSNESComputeResidualFEM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeCellwiseIntegralFEM"))
@@ -20175,7 +19294,7 @@ end
 end 
 
 """
-	DMPlexComputeClementInterpolant(petsclib::PetscLibType,dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec) 
+	DMPlexComputeClementInterpolant(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec) 
 This function computes the L2 projection of the cellwise values of a function u onto P1
 
 Collective
@@ -20189,7 +19308,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+See also: `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeClementInterpolant"))
@@ -20212,7 +19331,7 @@ end
 end 
 
 """
-	cellgeom::PetscVec,facegeom::PetscVec = DMPlexComputeGeometryFVM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cellgeom::PetscVec,facegeom::PetscVec = DMPlexComputeGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Computes the cell and face geometry for a finite volume method
 
 Input Parameter:
@@ -20224,7 +19343,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscFVFaceGeom`, `PetscFVCellGeom`
+See also: `DMPLEX`, `PetscFVFaceGeom`, `PetscFVCellGeom`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeGeometryFVM"))
@@ -20251,7 +19370,7 @@ end
 end 
 
 """
-	DMPlexComputeGradientClementInterpolant(petsclib::PetscLibType,dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec) 
+	DMPlexComputeGradientClementInterpolant(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locC::AbstractPetscVec) 
 This function computes the L2 projection of the cellwise gradient of a function u onto P1
 
 Collective
@@ -20265,7 +19384,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+See also: `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeGradientClementInterpolant"))
@@ -20288,7 +19407,7 @@ end
 end 
 
 """
-	dmGrad::PetscDM = DMPlexComputeGradientFVM(petsclib::PetscLibType,dm::AbstractPetscDM, fvm::PetscFV, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) 
+	dmGrad::PetscDM = DMPlexComputeGradientFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fvm::PetscFV, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) 
 Compute geometric factors for gradient reconstruction, which are stored in the geometry data, and compute layout for gradient data
 
 Collective
@@ -20307,7 +19426,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexGetFaceGeometryFVM()`, `DMPlexGetCellGeometryFVM()`
+See also: `DMPLEX`, `DMPlexGetFaceGeometryFVM()`, `DMPlexGetCellGeometryFVM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeGradientFVM"))
@@ -20332,7 +19451,7 @@ end
 end 
 
 """
-	sc::VecScatter = DMPlexComputeInjectorFEM(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	sc::VecScatter = DMPlexComputeInjectorFEM(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, ctx::Ptr{Cvoid}) 
 Compute a mapping from coarse unknowns to fine unknowns
 
 Input Parameters:
@@ -20345,7 +19464,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeInterpolatorNested()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeInterpolatorNested()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInjectorFEM"))
@@ -20370,7 +19489,7 @@ end
 end 
 
 """
-	inj::PetscMat = DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType,refTree::AbstractPetscDM) 
+	inj::PetscMat = DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType, refTree::AbstractPetscDM) 
 Compute the injection matrix from fine to coarse degrees of freedom on the reference tree
 
 Collective
@@ -20383,7 +19502,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`, `DMPlexComputeInjectorTree()`, `DMPlexComputeInterpolatorTree()`
+See also: `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`, `DMPlexComputeInjectorTree()`, `DMPlexComputeInterpolatorTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInjectorReferenceTree"))
@@ -20408,7 +19527,7 @@ end
 end 
 
 """
-	integral::PetscScalar = DMPlexComputeIntegralFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	integral::PetscScalar = DMPlexComputeIntegralFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the integral over the domain from the global input X using pointwise functions specified by the user
 
 Input Parameters:
@@ -20421,7 +19540,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSNESComputeResidualFEM()`
+See also: `DM`, `DMPLEX`, `DMPlexSNESComputeResidualFEM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeIntegralFEM"))
@@ -20446,8 +19565,8 @@ end
 end 
 
 """
-	DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, ctx::Ptr{Cvoid}) 
-Form the local portion of the interpolation matrix from the coarse `DM` to a non
+	DMPlexComputeInterpolatorGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Form the local portion of the interpolation matrix from the coarse `DM` to a non-nested fine `DM`.
 
 Input Parameters:
 - `dmf` - The fine mesh
@@ -20459,7 +19578,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeInterpolatorNested()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeInterpolatorNested()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInterpolatorGeneral"))
@@ -20482,7 +19601,7 @@ end
 end 
 
 """
-	DMPlexComputeInterpolatorNested(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	DMPlexComputeInterpolatorNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, isRefined::PetscBool, In::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the local portion of the interpolation matrix from the coarse `DM` to a uniformly refined `DM`.
 
 Input Parameters:
@@ -20496,7 +19615,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeInterpolatorGeneral()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeInterpolatorGeneral()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeInterpolatorNested"))
@@ -20519,7 +19638,7 @@ end
 end 
 
 """
-	DMPlexComputeJacobianActionByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexComputeJacobianActionByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locY::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the local Jacobian for terms matching the input key
 
 Collective
@@ -20540,7 +19659,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPlexComputeResidualByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeResidualByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianActionByKey"))
@@ -20563,7 +19682,7 @@ end
 end 
 
 """
-	DMPlexComputeJacobianByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	DMPlexComputeJacobianByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Compute the local Jacobian for terms matching the input key
 
 Collective
@@ -20584,7 +19703,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPlexComputeResidualByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeResidualByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianByKey"))
@@ -20607,7 +19726,7 @@ end
 end 
 
 """
-	DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType,dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	DMPlexComputeJacobianByKeyGeneral(petsclib::PetscLibType, dmr::AbstractPetscDM, dmc::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Assemble the Jacobian and its preconditioning matrix over a cell range
 described by a `PetscFormKey` for a general (possibly non-square, non-nested) pair of row/column `DM`s.
 
@@ -20630,7 +19749,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscFormKey`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeInterpolatorGeneral()`
+See also: `DM`, `DMPLEX`, `PetscFormKey`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeInterpolatorGeneral()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianByKeyGeneral"))
@@ -20653,7 +19772,7 @@ end
 end 
 
 """
-	DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	DMPlexComputeJacobianHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, t::PetscReal, X_tShift::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Compute the local Jacobian over hybrid cells for terms matching the input key
 
 Collective
@@ -20674,7 +19793,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPlexComputeResidualByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeResidualByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeJacobianHybridByKey"))
@@ -20697,7 +19816,7 @@ end
 end 
 
 """
-	DMPlexComputeL2DiffLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+	DMPlexComputeL2DiffLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
 This function computes the L_2 difference between a function u and an FEM interpolant solution u_h.
 
 Collective
@@ -20714,7 +19833,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+See also: `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeL2DiffLocal"))
@@ -20737,7 +19856,7 @@ end
 end 
 
 """
-	DMPlexComputeL2DiffVec(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+	DMPlexComputeL2DiffVec(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
 This function computes the cellwise L_2 difference between a function u and an FEM interpolant solution u_h, and stores it in a Vec.
 
 Collective
@@ -20754,7 +19873,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+See also: `DM`, `DMPLEX`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeL2DiffVec"))
@@ -20777,7 +19896,7 @@ end
 end 
 
 """
-	DMPlexComputeL2FluxDiffVec(petsclib::PetscLibType,u::AbstractPetscVec, f::PetscInt, mu::AbstractPetscVec, mf::PetscInt, eFlux::AbstractPetscVec) 
+	DMPlexComputeL2FluxDiffVec(petsclib::PetscLibType, u::AbstractPetscVec, f::PetscInt, mu::AbstractPetscVec, mf::PetscInt, eFlux::AbstractPetscVec) 
 This function computes the integral of the difference between the gradient of field `f`in `u` and field `mf` in `mu`
 
 Collective
@@ -20793,7 +19912,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeL2FluxDiffVecLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeL2FluxDiffVecLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeL2FluxDiffVec"))
@@ -20816,7 +19935,7 @@ end
 end 
 
 """
-	DMPlexComputeL2FluxDiffVecLocal(petsclib::PetscLibType,lu::AbstractPetscVec, f::PetscInt, lmu::AbstractPetscVec, mf::PetscInt, eFlux::AbstractPetscVec) 
+	DMPlexComputeL2FluxDiffVecLocal(petsclib::PetscLibType, lu::AbstractPetscVec, f::PetscInt, lmu::AbstractPetscVec, mf::PetscInt, eFlux::AbstractPetscVec) 
 This function computes the integral of the difference between the gradient of field `f`in `u` and field `mf` in `mu`
 
 Collective
@@ -20832,7 +19951,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeL2FluxDiffVec()`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeL2FluxDiffVec()`, `DMProjectFunction()`, `DMComputeL2Diff()`, `DMPlexComputeL2FieldDiff()`, `DMComputeL2GradientDiff()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeL2FluxDiffVecLocal"))
@@ -20855,8 +19974,8 @@ end
 end 
 
 """
-	DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid}) 
-Form the local portion of the mass matrix from the coarse `DM` to a non
+	DMPlexComputeMassMatrixGeneral(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+Form the local portion of the mass matrix from the coarse `DM` to a non-nested fine `DM`.
 
 Input Parameters:
 - `dmf` - The fine mesh
@@ -20868,7 +19987,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeMassMatrixNested()`, `DMPlexComputeInterpolatorNested()`, `DMPlexComputeInterpolatorGeneral()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeMassMatrixNested()`, `DMPlexComputeInterpolatorNested()`, `DMPlexComputeInterpolatorGeneral()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMassMatrixGeneral"))
@@ -20891,7 +20010,7 @@ end
 end 
 
 """
-	DMPlexComputeMassMatrixNested(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	DMPlexComputeMassMatrixNested(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, mass::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the local portion of the mass matrix from a coarse `DM` to a nested fine `DM`.
 
 Collective
@@ -20906,7 +20025,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexComputeMassMatrixGeneral()`, `DMPlexComputeInterpolatorNested()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeMassMatrixGeneral()`, `DMPlexComputeInterpolatorNested()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMassMatrixNested"))
@@ -20929,7 +20048,7 @@ end
 end 
 
 """
-	DMPlexComputeMoments(petsclib::PetscLibType,dm::AbstractPetscDM, u::AbstractPetscVec, moments::Vector{PetscReal}) 
+	DMPlexComputeMoments(petsclib::PetscLibType, dm::AbstractPetscDM, u::AbstractPetscVec, moments::Vector{PetscReal}) 
 Compute the first three moments for a field
 
 Noncollective
@@ -20943,7 +20062,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMPLEX`, `DMSwarmComputeMoments()`
+See also: `DM`, `DMPLEX`, `DMSwarmComputeMoments()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeMoments"))
@@ -20966,8 +20085,8 @@ end
 end 
 
 """
-	OrthQual::PetscVec,OrthQualLabel::DMLabel = DMPlexComputeOrthogonalQuality(petsclib::PetscLibType,dm::AbstractPetscDM, fv::PetscFV, atol::PetscReal) 
-Compute cell
+	OrthQual::PetscVec,OrthQualLabel::DMLabel = DMPlexComputeOrthogonalQuality(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, atol::PetscReal) 
+Compute cell-wise orthogonal quality mesh statistic. Optionally tags all cells with
 orthogonal quality below given tolerance.
 
 Collective
@@ -20987,7 +20106,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCheckCellShape()`, `DMCreateLabel()`, `PetscFV`, `DMLabel`, `Vec`
+See also: `DM`, `DMPLEX`, `DMPlexCheckCellShape()`, `DMCreateLabel()`, `PetscFV`, `DMLabel`, `Vec`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeOrthogonalQuality"))
@@ -21014,7 +20133,7 @@ end
 end 
 
 """
-	DMPlexComputeProjection2Dto1D(petsclib::PetscLibType,coords::Vector{PetscScalar}, R::Vector{PetscReal}) 
+	DMPlexComputeProjection2Dto1D(petsclib::PetscLibType, coords::Vector{PetscScalar}, R::Vector{PetscReal}) 
 Rewrite coordinates to be the 1D projection of the 2D coordinates
 
 Not Collective
@@ -21027,7 +20146,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexComputeProjection3Dto1D()`, `DMPlexComputeProjection3Dto2D()`
+See also: `DMPLEX`, `DMPlexComputeProjection3Dto1D()`, `DMPlexComputeProjection3Dto2D()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeProjection2Dto1D"))
@@ -21050,7 +20169,7 @@ end
 end 
 
 """
-	DMPlexComputeProjection3Dto1D(petsclib::PetscLibType,coords::Vector{PetscScalar}, R::Vector{PetscReal}) 
+	DMPlexComputeProjection3Dto1D(petsclib::PetscLibType, coords::Vector{PetscScalar}, R::Vector{PetscReal}) 
 Rewrite coordinates to be the 1D projection of the 3D coordinates
 
 Not Collective
@@ -21063,7 +20182,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexComputeProjection2Dto1D()`, `DMPlexComputeProjection3Dto2D()`
+See also: `DMPLEX`, `DMPlexComputeProjection2Dto1D()`, `DMPlexComputeProjection3Dto2D()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeProjection3Dto1D"))
@@ -21086,7 +20205,7 @@ end
 end 
 
 """
-	DMPlexComputeProjection3Dto2D(petsclib::PetscLibType,coordSize::PetscInt, coords::Vector{PetscScalar}, R::Vector{PetscReal}) 
+	DMPlexComputeProjection3Dto2D(petsclib::PetscLibType, coordSize::PetscInt, coords::Vector{PetscScalar}, R::Vector{PetscReal}) 
 Rewrite coordinates of 3 or more coplanar 3D points to a common 2D basis for the
 plane.  The normal is defined by positive orientation of the first 3 points.
 
@@ -21104,7 +20223,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexComputeProjection2Dto1D()`, `DMPlexComputeProjection3Dto1D()`
+See also: `DMPLEX`, `DMPlexComputeProjection2Dto1D()`, `DMPlexComputeProjection3Dto1D()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeProjection3Dto2D"))
@@ -21127,7 +20246,7 @@ end
 end 
 
 """
-	DMPlexComputeResidualByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexComputeResidualByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::PetscFormKey, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the local residual for terms matching the input key
 
 Collective
@@ -21147,7 +20266,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeJacobianByKey()`, `DMPlexComputeResidualHybridByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeResidualByKey"))
@@ -21170,7 +20289,7 @@ end
 end 
 
 """
-	DMPlexComputeResidualHybridByKey(petsclib::PetscLibType,dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexComputeResidualHybridByKey(petsclib::PetscLibType, dm::AbstractPetscDM, key::Vector{PetscFormKey}, cellIS::AbstractIS, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the local residual over hybrid cells for terms matching the input key
 
 Collective
@@ -21190,7 +20309,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPlexComputeResidualByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
+See also: `DMPlexComputeResidualByKey()`, `DMPlexComputeJacobianByKey()`, `DMPlexComputeJacobianHybridByKey()`, `PetscFormKey`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeResidualHybridByKey"))
@@ -21213,7 +20332,7 @@ end
 end 
 
 """
-	dmSplit::PetscDM = DMPlexConstructCohesiveCells(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel) 
+	dmSplit::PetscDM = DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel) 
 Construct cohesive cells which split the face along an internal interface
 
 Collective
@@ -21228,7 +20347,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexLabelCohesiveComplete()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexLabelCohesiveComplete()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexConstructCohesiveCells"))
@@ -21253,7 +20372,7 @@ end
 end 
 
 """
-	numGhostCells::PetscInt,dmGhosted::PetscDM = DMPlexConstructGhostCells(petsclib::PetscLibType,dm::AbstractPetscDM, labelName::String) 
+	numGhostCells::PetscInt,dmGhosted::PetscDM = DMPlexConstructGhostCells(petsclib::PetscLibType, dm::AbstractPetscDM, labelName::String) 
 Construct ghost cells which connect to every boundary face
 
 Collective
@@ -21268,7 +20387,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexConstructGhostCells"))
@@ -21295,7 +20414,7 @@ end
 end 
 
 """
-	DMPlexCoordinatesLoad(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF) 
+	DMPlexCoordinatesLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF) 
 Loads coordinates into a `DMPLEX`
 
 Collective
@@ -21307,7 +20426,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLoad()`, `DMPlexTopologyLoad()`, `DMPlexLabelsLoad()`, `DMView()`, `PetscViewerHDF5Open()`, `PetscViewerPushFormat()`,
+See also: `DM`, `DMPLEX`, `DMLoad()`, `DMPlexTopologyLoad()`, `DMPlexLabelsLoad()`, `DMView()`, `PetscViewerHDF5Open()`, `PetscViewerPushFormat()`,
 `PetscSF`, `PetscViewer`
 
 # External Links
@@ -21331,7 +20450,7 @@ end
 end 
 
 """
-	DMPlexCoordinatesToReference(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, numPoints::PetscInt, realCoords::Vector{PetscReal}, refCoords::Vector{PetscReal}) 
+	DMPlexCoordinatesToReference(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, numPoints::PetscInt, realCoords::Vector{PetscReal}, refCoords::Vector{PetscReal}) 
 Pull coordinates back from the mesh to the reference element
 using a single element map.
 
@@ -21350,7 +20469,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexReferenceToCoordinates()`
+See also: `DMPLEX`, `DMPlexReferenceToCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCoordinatesToReference"))
@@ -21373,7 +20492,7 @@ end
 end 
 
 """
-	DMPlexCoordinatesView(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer) 
+	DMPlexCoordinatesView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) 
 Saves `DMPLEX` coordinates into a file
 
 Collective
@@ -21384,7 +20503,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMView()`, `DMPlexTopologyView()`, `DMPlexLabelsView()`, `DMPlexCoordinatesLoad()`, `PetscViewer`
+See also: `DM`, `DMPLEX`, `DMView()`, `DMPlexTopologyView()`, `DMPlexLabelsView()`, `DMPlexCoordinatesLoad()`, `PetscViewer`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCoordinatesView"))
@@ -21407,7 +20526,7 @@ end
 end 
 
 """
-	DMPlexCopyCoordinates(petsclib::PetscLibType,dmA::AbstractPetscDM, dmB::AbstractPetscDM) 
+	DMPlexCopyCoordinates(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM) 
 Copy coordinates from one mesh to another with the same vertices
 
 Collective
@@ -21420,7 +20539,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMCopyLabels()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMGetCoordinateSection()`
+See also: `DMPLEX`, `DMCopyLabels()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMGetCoordinateSection()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCopyCoordinates"))
@@ -21443,7 +20562,7 @@ end
 end 
 
 """
-	mesh::PetscDM = DMPlexCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	mesh::PetscDM = DMPlexCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `DMPLEX` object, which encapsulates an unstructured mesh, or CW complex, which can be expressed using a Hasse Diagram.
 
 Collective
@@ -21456,7 +20575,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMType`, `DMCreate()`, `DMSetType()`
+See also: `DM`, `DMPLEX`, `DMType`, `DMCreate()`, `DMSetType()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreate"))
@@ -21481,8 +20600,8 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateBallMesh(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, R::PetscReal) 
-Creates a simplex mesh on the d
+	dm::PetscDM = DMPlexCreateBallMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, R::PetscReal) 
+Creates a simplex mesh on the d-dimensional ball, B^d.
 
 Collective
 
@@ -21499,7 +20618,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateSphereMesh()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateSphereMesh()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBallMesh"))
@@ -21524,7 +20643,7 @@ end
 end 
 
 """
-	DMPlexCreateBasisRotation(petsclib::PetscLibType,dm::AbstractPetscDM, alpha::PetscReal, beta::PetscReal, gamma::PetscReal) 
+	DMPlexCreateBasisRotation(petsclib::PetscLibType, dm::AbstractPetscDM, alpha::PetscReal, beta::PetscReal, gamma::PetscReal) 
 Create an internal transformation from the global basis, used to specify boundary conditions
 and global solutions, to a local basis, appropriate for discretization integrals and assembly.
 
@@ -21536,7 +20655,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGlobalToLocalBasis()`, `DMPlexLocalToGlobalBasis()`
+See also: `DM`, `DMPLEX`, `DMPlexGlobalToLocalBasis()`, `DMPlexLocalToGlobalBasis()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBasisRotation"))
@@ -21559,7 +20678,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateBoxMesh(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, periodicity::Vector{DMBoundaryType}, interpolate::PetscBool, localizationHeight::PetscInt, sparseLocalize::PetscBool) 
+	dm::PetscDM = DMPlexCreateBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, periodicity::Vector{DMBoundaryType}, interpolate::PetscBool, localizationHeight::PetscInt, sparseLocalize::PetscBool) 
 Creates a mesh on the tensor product of unit intervals (box) using simplices or tensor cells (hexahedra).
 
 Collective
@@ -21581,7 +20700,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexCreateFromFile()`, `DMPlexCreateHexCylinderMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexCreateFromFile()`, `DMPlexCreateHexCylinderMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBoxMesh"))
@@ -21606,7 +20725,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateBoxSurfaceMesh(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateBoxSurfaceMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, interpolate::PetscBool) 
 Creates a mesh on the surface of the tensor product of unit intervals (box) using tensor cells (hexahedra).
 
 Collective
@@ -21624,7 +20743,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexCreateBoxMesh()`, `DMPlexCreateFromFile()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexCreateBoxMesh()`, `DMPlexCreateFromFile()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateBoxSurfaceMesh"))
@@ -21649,7 +20768,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateCGNS(petsclib::PetscLibType,comm::MPI_Comm, cgid::PetscInt, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateCGNS(petsclib::PetscLibType, comm::MPI_Comm, cgid::PetscInt, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from a CGNS file ID.
 
 Collective
@@ -21664,7 +20783,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexCreateExodus()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexCreateExodus()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCGNS"))
@@ -21689,7 +20808,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateCGNSFromFile(petsclib::PetscLibType,comm::MPI_Comm, filename::String, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateCGNSFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from a CGNS file.
 
 Collective
@@ -21704,7 +20823,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexCreateCGNS()`, `DMPlexCreateExodus()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexCreateCGNS()`, `DMPlexCreateExodus()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCGNSFromFile"))
@@ -21729,7 +20848,7 @@ end
 end 
 
 """
-	globalCellNumbers::IS = DMPlexCreateCellNumbering(petsclib::PetscLibType,dm::AbstractPetscDM, includeAll::PetscBool) 
+	globalCellNumbers::IS = DMPlexCreateCellNumbering(petsclib::PetscLibType, dm::AbstractPetscDM, includeAll::PetscBool) 
 Get a global cell numbering for all cells on this process
 
 Input Parameters:
@@ -21741,7 +20860,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`, `DMPlexGetVertexNumbering()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`, `DMPlexGetVertexNumbering()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCellNumbering"))
@@ -21766,7 +20885,7 @@ end
 end 
 
 """
-	DMPlexCreateClosureIndex(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection) 
+	DMPlexCreateClosureIndex(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection) 
 Calculate an index for the given `PetscSection` for the closure operation on the `DM`
 
 Not Collective
@@ -21777,7 +20896,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSection`, `DMPlexVecGetClosure()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
+See also: `DM`, `DMPLEX`, `PetscSection`, `DMPlexVecGetClosure()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateClosureIndex"))
@@ -21800,7 +20919,7 @@ end
 end 
 
 """
-	fpointIS::IS = DMPlexCreateCoarsePointIS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	fpointIS::IS = DMPlexCreateCoarsePointIS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Creates an `IS` covering the coarse `DM` chart with the fine points as data
 
 Collective
@@ -21813,7 +20932,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `IS`, `DMRefine()`, `DMPlexSetRefinementUniform()`, `DMPlexGetSubpointIS()`
+See also: `DM`, `DMPLEX`, `IS`, `DMRefine()`, `DMPlexSetRefinementUniform()`, `DMPlexGetSubpointIS()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCoarsePointIS"))
@@ -21838,7 +20957,7 @@ end
 end 
 
 """
-	subdm::PetscDM = DMPlexCreateCohesiveSubmesh(petsclib::PetscLibType,dm::AbstractPetscDM, hasLagrange::PetscBool, label::String, value::PetscInt) 
+	subdm::PetscDM = DMPlexCreateCohesiveSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, hasLagrange::PetscBool, label::String, value::PetscInt) 
 Extract from a mesh with cohesive cells the hypersurface defined by one face of the cells. Optionally, a label can be given to restrict the cells.
 
 Input Parameters:
@@ -21852,7 +20971,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMPlexCreateSubmesh()`
+See also: `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMPlexCreateSubmesh()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCohesiveSubmesh"))
@@ -21877,7 +20996,7 @@ end
 end 
 
 """
-	coloring::ISColoring = DMPlexCreateColoring(petsclib::PetscLibType,dm::AbstractPetscDM, depth::PetscInt, distance::PetscInt) 
+	coloring::ISColoring = DMPlexCreateColoring(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt, distance::PetscInt) 
 Gets coloring of the connectivity graph of the `DMPlex` points at a given depth.
 
 Collective
@@ -21892,7 +21011,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DMPlex`, `ISColoring`, `MatColoring`, `DMCreateColoring()`
+See also: `DMPlex`, `ISColoring`, `MatColoring`, `DMCreateColoring()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateColoring"))
@@ -21917,7 +21036,7 @@ end
 end 
 
 """
-	DMPlexCreateCoordinateSpace(petsclib::PetscLibType,dm::AbstractPetscDM, degree::PetscInt, localized::PetscBool, project::PetscBool) 
+	DMPlexCreateCoordinateSpace(petsclib::PetscLibType, dm::AbstractPetscDM, degree::PetscInt, localized::PetscBool, project::PetscBool) 
 Creates a finite element space for the coordinates
 
 Collective
@@ -21930,7 +21049,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscPointFn`, `PetscFECreateLagrange()`, `DMGetCoordinateDM()`, `DMPlexSetCoordinateMap()`
+See also: `DM`, `DMPLEX`, `PetscPointFn`, `PetscFECreateLagrange()`, `DMGetCoordinateDM()`, `DMPlexSetCoordinateMap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateCoordinateSpace"))
@@ -21953,7 +21072,7 @@ end
 end 
 
 """
-	ref::PetscDM = DMPlexCreateDefaultReferenceTree(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, simplex::PetscBool) 
+	ref::PetscDM = DMPlexCreateDefaultReferenceTree(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool) 
 create a reference tree for isotropic hierarchical mesh refinement.
 
 Collective
@@ -21968,7 +21087,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexSetReferenceTree()`, `DMPlexGetReferenceTree()`
+See also: `DMPlexSetReferenceTree()`, `DMPlexGetReferenceTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateDefaultReferenceTree"))
@@ -21993,7 +21112,7 @@ end
 end 
 
 """
-	newdm::PetscDM = DMPlexCreateDoublet(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, interpolate::PetscBool, refinementLimit::PetscReal) 
+	newdm::PetscDM = DMPlexCreateDoublet(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, interpolate::PetscBool, refinementLimit::PetscReal) 
 Creates a mesh of two cells of the specified type, optionally with later refinement.
 
 Collective
@@ -22010,7 +21129,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateDoublet"))
@@ -22035,7 +21154,7 @@ end
 end 
 
 """
-	globalEdgeNumbers::IS = DMPlexCreateEdgeNumbering(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	globalEdgeNumbers::IS = DMPlexCreateEdgeNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Create a global numbering for edges.
 
 Collective
@@ -22048,7 +21167,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`, `DMPlexGetVertexNumbering()`, `DMPlexCreatePointNumbering()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`, `DMPlexGetVertexNumbering()`, `DMPlexCreatePointNumbering()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateEdgeNumbering"))
@@ -22073,7 +21192,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateEphemeral(petsclib::PetscLibType,tr::DMPlexTransform, prefix::String) 
+	dm::PetscDM = DMPlexCreateEphemeral(petsclib::PetscLibType, tr::DMPlexTransform, prefix::String) 
 This takes a `DMPlexTransform` and a base `DMPlex` and produces an ephemeral `DM`, meaning one that is created on the fly in response to queries.
 
 Input Parameters:
@@ -22085,7 +21204,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPlexCreateFromFile`, `DMPlexCreateFromDAG()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCreate()`
+See also: `DMPlexCreateFromFile`, `DMPlexCreateFromDAG()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateEphemeral"))
@@ -22110,7 +21229,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateExodus(petsclib::PetscLibType,comm::MPI_Comm, exoid::PetscExodusIIInt, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateExodus(petsclib::PetscLibType, comm::MPI_Comm, exoid::PetscExodusIIInt, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from an ExodusII file ID.
 
 Collective
@@ -22125,7 +21244,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `PETSCVIEWEREXODUSII`, `DMPLEX`, `DMCreate()`
+See also: `DM`, `PETSCVIEWEREXODUSII`, `DMPLEX`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateExodus"))
@@ -22150,7 +21269,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateExodusFromFile(petsclib::PetscLibType,comm::MPI_Comm, filename::String, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateExodusFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from an ExodusII file.
 
 Collective
@@ -22165,7 +21284,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `PETSCVIEWEREXODUSII`, `DMPLEX`, `DMCreate()`, `DMPlexCreateExodus()`
+See also: `DM`, `PETSCVIEWEREXODUSII`, `DMPLEX`, `DMCreate()`, `DMPlexCreateExodus()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateExodusFromFile"))
@@ -22190,7 +21309,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateFluent(petsclib::PetscLibType,comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateFluent(petsclib::PetscLibType, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from a Fluent mesh file <http://aerojet.engr.ucdavis.edu/fluenthelp/html/ug/node1490.htm>.
 
 Collective
@@ -22205,7 +21324,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFluent"))
@@ -22230,7 +21349,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateFluentFromFile(petsclib::PetscLibType,comm::MPI_Comm, filename::String, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateFluentFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from a Fluent mesh file
 
 Collective
@@ -22245,7 +21364,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateFromFile()`, `DMPlexCreateFluent()`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateFromFile()`, `DMPlexCreateFluent()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFluentFromFile"))
@@ -22270,7 +21389,7 @@ end
 end 
 
 """
-	vertexSF::PetscSF,verticesAdj::Ptr{PetscInt},dm::PetscDM = DMPlexCreateFromCellListParallelPetsc(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, numCorners::PetscInt, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
+	vertexSF::PetscSF,verticesAdj::Ptr{PetscInt},dm::PetscDM = DMPlexCreateFromCellListParallelPetsc(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, numCorners::PetscInt, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
 Create distributed `DMPLEX` from a list of vertices for each cell (common mesh generator output) where all cells have the same celltype
 
 Collective
@@ -22294,7 +21413,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateFromCellListPetsc()`, `DMPlexBuildFromCellListParallel()`, `DMPlexBuildCoordinatesFromCellListParallel()`, `DMPlexCreateFromDAG()`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateFromCellListPetsc()`, `DMPlexBuildFromCellListParallel()`, `DMPlexBuildCoordinatesFromCellListParallel()`, `DMPlexCreateFromDAG()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromCellListParallelPetsc"))
@@ -22323,7 +21442,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateFromCellListPetsc(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, numCorners::PetscInt, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
+	dm::PetscDM = DMPlexCreateFromCellListPetsc(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, numCorners::PetscInt, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
 Create `DMPLEX` from a list of vertices for each cell (common mesh generator output), but only process 0 takes in the input
 
 Collective
@@ -22344,7 +21463,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateFromCellListParallelPetsc()`, `DMPlexBuildFromCellList()`, `DMPlexBuildCoordinatesFromCellList()`, `DMPlexCreateFromDAG()`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateFromCellListParallelPetsc()`, `DMPlexBuildFromCellList()`, `DMPlexBuildCoordinatesFromCellList()`, `DMPlexCreateFromDAG()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromCellListPetsc"))
@@ -22369,7 +21488,7 @@ end
 end 
 
 """
-	vertexSF::PetscSF,verticesAdj::Ptr{PetscInt},dm::PetscDM = DMPlexCreateFromCellSectionParallel(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, cellSection::PetscSection, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
+	vertexSF::PetscSF,verticesAdj::Ptr{PetscInt},dm::PetscDM = DMPlexCreateFromCellSectionParallel(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, numCells::PetscInt, numVertices::PetscInt, NVertices::PetscInt, cellSection::PetscSection, interpolate::PetscBool, cells::Vector{PetscInt}, spaceDim::PetscInt, vertexCoords::Vector{PetscReal}) 
 Create distributed `DMPLEX` from a list of vertices for each cell (common mesh generator output) and supports multiple celltypes
 
 Collective
@@ -22393,7 +21512,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateFromCellListPetsc()`, `DMPlexBuildFromCellListParallel()`, `DMPlexBuildCoordinatesFromCellListParallel()`, `DMPlexCreateFromDAG()`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateFromCellListPetsc()`, `DMPlexBuildFromCellListParallel()`, `DMPlexBuildCoordinatesFromCellListParallel()`, `DMPlexCreateFromDAG()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromCellSectionParallel"))
@@ -22422,8 +21541,8 @@ end
 end 
 
 """
-	DMPlexCreateFromDAG(petsclib::PetscLibType,dm::AbstractPetscDM, depth::PetscInt, numPoints::Vector{PetscInt}, coneSize::Vector{PetscInt}, cones::Vector{PetscInt}, coneOrientations::Vector{PetscInt}, vertexCoords::Vector{PetscScalar}) 
-This takes as input the adjacency
+	DMPlexCreateFromDAG(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt, numPoints::Vector{PetscInt}, coneSize::Vector{PetscInt}, cones::Vector{PetscInt}, coneOrientations::Vector{PetscInt}, vertexCoords::Vector{PetscScalar}) 
+This takes as input the adjacency-list representation of the Directed Acyclic Graph (Hasse Diagram) encoding a mesh, and produces a `DM`
 
 Input Parameters:
 - `dm`               - The empty `DM` object, usually from `DMCreate()` and `DMSetDimension()`
@@ -22439,7 +21558,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromDAG"))
@@ -22462,7 +21581,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateFromFile(petsclib::PetscLibType,comm::MPI_Comm, filename::String, plexname::String, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, plexname::String, interpolate::PetscBool) 
 This takes a filename and produces a `DM`
 
 Collective
@@ -22483,7 +21602,7 @@ Use `-dm_plex_create_ prefix` to pass options to the internal `PetscViewer`, e.g
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateFromDAG()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCreate()`, `PetscObjectSetName()`, `DMView()`, `DMLoad()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateFromDAG()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCreate()`, `PetscObjectSetName()`, `DMView()`, `DMLoad()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateFromFile"))
@@ -22508,7 +21627,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateGeomFromFile(petsclib::PetscLibType,comm::MPI_Comm, filename::String, islite::PetscBool) 
+	dm::PetscDM = DMPlexCreateGeomFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, islite::PetscBool) 
 Create a `DMPLEX` mesh from an EGADS, IGES, or STEP file.
 
 Collective
@@ -22523,7 +21642,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexCreateEGADS()`, `DMPlexCreateEGADSliteFromFile()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexCreateEGADS()`, `DMPlexCreateEGADSliteFromFile()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGeomFromFile"))
@@ -22548,7 +21667,7 @@ end
 end 
 
 """
-	sfNatural::PetscSF = DMPlexCreateGlobalToNaturalSF(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, sfMigration::PetscSF) 
+	sfNatural::PetscSF = DMPlexCreateGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, sfMigration::PetscSF) 
 Creates the `PetscSF` for mapping Global `Vec` to the Natural `Vec`
 
 Input Parameters:
@@ -22561,7 +21680,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSF`, `PetscSection`, `DMPlexDistribute()`, `DMPlexDistributeField()`
+See also: `DM`, `DMPLEX`, `PetscSF`, `PetscSection`, `DMPlexDistribute()`, `DMPlexDistributeField()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGlobalToNaturalSF"))
@@ -22586,7 +21705,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateGmsh(petsclib::PetscLibType,comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateGmsh(petsclib::PetscLibType, comm::MPI_Comm, viewer::PetscViewer, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from a Gmsh file viewer
 
 Collective
@@ -22613,7 +21732,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGmsh"))
@@ -22638,7 +21757,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateGmshFromFile(petsclib::PetscLibType,comm::MPI_Comm, filename::String, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateGmshFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from a Gmsh file
 
 Input Parameters:
@@ -22651,7 +21770,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateFromFile()`, `DMPlexCreateGmsh()`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateFromFile()`, `DMPlexCreateGmsh()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateGmshFromFile"))
@@ -22676,7 +21795,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateHexCylinderMesh(petsclib::PetscLibType,comm::MPI_Comm, periodicZ::DMBoundaryType, Nr::PetscInt) 
+	dm::PetscDM = DMPlexCreateHexCylinderMesh(petsclib::PetscLibType, comm::MPI_Comm, periodicZ::DMBoundaryType, Nr::PetscInt) 
 Creates a mesh on the tensor product of the unit interval with the circle (cylinder) using hexahedra.
 
 Collective
@@ -22691,7 +21810,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateHexCylinderMesh"))
@@ -22716,7 +21835,7 @@ end
 end 
 
 """
-	hybridLabel::DMLabel,splitLabel::DMLabel,dmInterface::PetscDM,dmHybrid::PetscDM = DMPlexCreateHybridMesh(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::PetscInt) 
+	hybridLabel::DMLabel,splitLabel::DMLabel,dmInterface::PetscDM,dmHybrid::PetscDM = DMPlexCreateHybridMesh(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::PetscInt) 
 Create a mesh with hybrid cells along an internal interface
 
 Collective
@@ -22735,7 +21854,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexConstructCohesiveCells()`, `DMPlexLabelCohesiveComplete()`, `DMPlexGetSubpointMap()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexConstructCohesiveCells()`, `DMPlexLabelCohesiveComplete()`, `DMPlexGetSubpointMap()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateHybridMesh"))
@@ -22766,7 +21885,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateHypercubicMesh(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, edges::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, overlap::PetscInt) 
+	dm::PetscDM = DMPlexCreateHypercubicMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, edges::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, overlap::PetscInt) 
 Creates a periodic mesh on the tensor product of unit intervals using only vertices and edges.
 
 Collective
@@ -22784,7 +21903,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMSetFromOptions()`, `DMPlexCreateFromFile()`, `DMPlexCreateHexCylinderMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DMSetFromOptions()`, `DMPlexCreateFromFile()`, `DMPlexCreateHexCylinderMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateHypercubicMesh"))
@@ -22809,7 +21928,7 @@ end
 end 
 
 """
-	val::PetscVec = DMPlexCreateLabelField(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	val::PetscVec = DMPlexCreateLabelField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Create a field whose value is the label value for that point
 
 Input Parameters:
@@ -22824,7 +21943,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMView()`
+See also: `DM`, `DMPLEX`, `DMView()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateLabelField"))
@@ -22849,7 +21968,7 @@ end
 end 
 
 """
-	nv::PetscVec = DMPlexCreateNaturalVector(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nv::PetscVec = DMPlexCreateNaturalVector(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Provide a `Vec` capable of holding the natural ordering and distribution.
 
 Collective
@@ -22862,7 +21981,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalBegin()`
+See also: `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalBegin()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateNaturalVector"))
@@ -22887,8 +22006,8 @@ end
 end 
 
 """
-	numVertices::PetscInt,offsets::Ptr{PetscInt},adjacency::Ptr{PetscInt} = DMPlexCreateNeighborCSR(petsclib::PetscLibType,dm::AbstractPetscDM, cellHeight::PetscInt) 
-Create a mesh graph (cell
+	numVertices::PetscInt,offsets::Ptr{PetscInt},adjacency::Ptr{PetscInt} = DMPlexCreateNeighborCSR(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) 
+Create a mesh graph (cell-cell adjacency) in parallel CSR format.
 
 Collective
 
@@ -22903,7 +22022,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateNeighborCSR"))
@@ -22932,7 +22051,7 @@ end
 end 
 
 """
-	ovLabel::DMLabel = DMPlexCreateOverlapLabel(petsclib::PetscLibType,dm::AbstractPetscDM, levels::PetscInt, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) 
+	ovLabel::DMLabel = DMPlexCreateOverlapLabel(petsclib::PetscLibType, dm::AbstractPetscDM, levels::PetscInt, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) 
 Compute a label indicating what overlap points should be sent to new processes
 
 Collective
@@ -22950,7 +22069,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexCreateOverlapLabelFromLabels()`, `DMPlexGetAdjacency()`, `DMPlexDistributeOwnership()`, `DMPlexDistribute()`
+See also: `DMPLEX`, `DMPlexCreateOverlapLabelFromLabels()`, `DMPlexGetAdjacency()`, `DMPlexDistributeOwnership()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateOverlapLabel"))
@@ -22975,7 +22094,7 @@ end
 end 
 
 """
-	ovLabel::DMLabel = DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType,dm::AbstractPetscDM, numLabels::PetscInt, label::Vector{DMLabel}, value::Vector{PetscInt}, numExLabels::PetscInt, exLabel::Vector{DMLabel}, exValue::Vector{PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) 
+	ovLabel::DMLabel = DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType, dm::AbstractPetscDM, numLabels::PetscInt, label::Vector{DMLabel}, value::Vector{PetscInt}, numExLabels::PetscInt, exLabel::Vector{DMLabel}, exValue::Vector{PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) 
 Compute a label indicating what overlap points should be sent to new processes
 
 Collective
@@ -22998,7 +22117,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexCreateOverlapLabel()`, `DMPlexGetAdjacency()`, `DMPlexDistributeOwnership()`, `DMPlexDistribute()`
+See also: `DMPLEX`, `DMPlexCreateOverlapLabel()`, `DMPlexGetAdjacency()`, `DMPlexDistributeOwnership()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateOverlapLabelFromLabels"))
@@ -23023,7 +22142,7 @@ end
 end 
 
 """
-	migrationSF::PetscSF = DMPlexCreateOverlapMigrationSF(petsclib::PetscLibType,dm::AbstractPetscDM, overlapSF::PetscSF) 
+	migrationSF::PetscSF = DMPlexCreateOverlapMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, overlapSF::PetscSF) 
 Create a `PetscSF` describing the new mesh distribution to make the overlap described by the input `PetscSF`
 
 Collective
@@ -23037,7 +22156,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexCreateOverlapLabel()`, `DMPlexDistributeOverlap()`, `DMPlexDistribute()`
+See also: `DMPLEX`, `DMPlexCreateOverlapLabel()`, `DMPlexDistributeOverlap()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateOverlapMigrationSF"))
@@ -23062,7 +22181,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreatePLYFromFile(petsclib::PetscLibType,comm::MPI_Comm, filename::String, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreatePLYFromFile(petsclib::PetscLibType, comm::MPI_Comm, filename::String, interpolate::PetscBool) 
 Create a `DMPLEX` mesh from a PLY <https://en.wikipedia.org/wiki/PLY_(file_format)> file.
 
 Input Parameters:
@@ -23075,7 +22194,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPlexCreateFromFile()`, `DMPlexCreateGmsh()`, `DMPlexCreate()`
+See also: `DMPlexCreateFromFile()`, `DMPlexCreateGmsh()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePLYFromFile"))
@@ -23100,7 +22219,7 @@ end
 end 
 
 """
-	numVertices::PetscInt,offsets::Ptr{PetscInt},adjacency::Ptr{PetscInt},globalNumbering::IS = DMPlexCreatePartitionerGraph(petsclib::PetscLibType,dm::AbstractPetscDM, height::PetscInt) 
+	numVertices::PetscInt,offsets::Ptr{PetscInt},adjacency::Ptr{PetscInt},globalNumbering::IS = DMPlexCreatePartitionerGraph(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) 
 Create a CSR graph of point connections for the partitioner
 
 Collective
@@ -23120,7 +22239,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCSRAlgorithm`, `PetscPartitionerGetType()`, `PetscPartitionerCreate()`, `DMSetAdjacency()`
+See also: `DM`, `DMPLEX`, `DMPlexCSRAlgorithm`, `PetscPartitionerGetType()`, `PetscPartitionerCreate()`, `DMSetAdjacency()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePartitionerGraph"))
@@ -23151,7 +22270,7 @@ end
 end 
 
 """
-	globalPointNumbers::IS = DMPlexCreatePointNumbering(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	globalPointNumbers::IS = DMPlexCreatePointNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Create a global numbering for all points.
 
 Collective
@@ -23164,7 +22283,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePointNumbering"))
@@ -23189,7 +22308,7 @@ end
 end 
 
 """
-	pointSF::PetscSF = DMPlexCreatePointSF(petsclib::PetscLibType,dm::AbstractPetscDM, migrationSF::PetscSF, ownership::PetscBool) 
+	pointSF::PetscSF = DMPlexCreatePointSF(petsclib::PetscLibType, dm::AbstractPetscDM, migrationSF::PetscSF, ownership::PetscBool) 
 Build a point `PetscSF` from an `PetscSF` describing a point migration
 
 Input Parameters:
@@ -23202,7 +22321,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscSF`, `DM`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
+See also: `DMPLEX`, `PetscSF`, `DM`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreatePointSF"))
@@ -23227,7 +22346,7 @@ end
 end 
 
 """
-	processRanks::IS,sfProcess::PetscSF = DMPlexCreateProcessSF(petsclib::PetscLibType,dm::AbstractPetscDM, sfPoint::PetscSF) 
+	processRanks::IS,sfProcess::PetscSF = DMPlexCreateProcessSF(petsclib::PetscLibType, dm::AbstractPetscDM, sfPoint::PetscSF) 
 Create an `PetscSF` which just has process connectivity
 
 Collective
@@ -23242,7 +22361,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSF`, `PetscSFCreate()`, `DMPlexCreateTwoSidedProcessSF()`
+See also: `DM`, `DMPLEX`, `PetscSF`, `PetscSFCreate()`, `DMPlexCreateTwoSidedProcessSF()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateProcessSF"))
@@ -23269,7 +22388,7 @@ end
 end 
 
 """
-	ranks::PetscVec = DMPlexCreateRankField(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	ranks::PetscVec = DMPlexCreateRankField(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Create a cell field whose value is the rank of the owner
 
 Input Parameter:
@@ -23283,7 +22402,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMView()`
+See also: `DM`, `DMPLEX`, `DMView()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateRankField"))
@@ -23308,7 +22427,7 @@ end
 end 
 
 """
-	refdm::PetscDM = DMPlexCreateReferenceCell(petsclib::PetscLibType,comm::MPI_Comm, ct::DMPolytopeType) 
+	refdm::PetscDM = DMPlexCreateReferenceCell(petsclib::PetscLibType, comm::MPI_Comm, ct::DMPolytopeType) 
 Create a `DMPLEX` with the appropriate FEM reference cell
 
 Collective
@@ -23322,7 +22441,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateBoxMesh()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateBoxMesh()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateReferenceCell"))
@@ -23347,7 +22466,7 @@ end
 end 
 
 """
-	sp::MatNullSpace = DMPlexCreateRigidBodies(petsclib::PetscLibType,dm::AbstractPetscDM, nb::PetscInt, label::DMLabel, nids::Vector{PetscInt}, ids::Vector{PetscInt}) 
+	sp::MatNullSpace = DMPlexCreateRigidBodies(petsclib::PetscLibType, dm::AbstractPetscDM, nb::PetscInt, label::DMLabel, nids::Vector{PetscInt}, ids::Vector{PetscInt}) 
 For the default global section, create rigid body modes by function space interpolation
 
 Collective
@@ -23364,7 +22483,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `MatNullSpaceCreate()`
+See also: `DM`, `DMPLEX`, `MatNullSpaceCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateRigidBodies"))
@@ -23389,7 +22508,7 @@ end
 end 
 
 """
-	sp::MatNullSpace = DMPlexCreateRigidBody(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt) 
+	sp::MatNullSpace = DMPlexCreateRigidBody(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt) 
 For the default global section, create rigid body modes by function space interpolation
 
 Collective
@@ -23403,7 +22522,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `MatNullSpaceCreate()`, `PCGAMG`
+See also: `DM`, `DMPLEX`, `MatNullSpaceCreate()`, `PCGAMG`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateRigidBody"))
@@ -23428,7 +22547,7 @@ end
 end 
 
 """
-	section::PetscSection = DMPlexCreateSection(petsclib::PetscLibType,dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::Vector{PetscInt}, numDof::Vector{PetscInt}, numBC::PetscInt, bcField::Vector{PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS) 
+	section::PetscSection = DMPlexCreateSection(petsclib::PetscLibType, dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::Vector{PetscInt}, numDof::Vector{PetscInt}, numBC::PetscInt, bcField::Vector{PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS) 
 Create a `PetscSection` based upon the dof layout specification provided.
 
 Not Collective
@@ -23449,7 +22568,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `PetscSectionCreate()`, `PetscSectionSetPermutation()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `PetscSectionCreate()`, `PetscSectionSetPermutation()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSection"))
@@ -23474,8 +22593,8 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateSphereMesh(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, R::PetscReal) 
-Creates a mesh on the d
+	dm::PetscDM = DMPlexCreateSphereMesh(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, simplex::PetscBool, R::PetscReal) 
+Creates a mesh on the d-dimensional sphere, S^d.
 
 Collective
 
@@ -23490,7 +22609,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateBallMesh()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateBallMesh()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSphereMesh"))
@@ -23515,7 +22634,7 @@ end
 end 
 
 """
-	subdm::PetscDM = DMPlexCreateSubmesh(petsclib::PetscLibType,dm::AbstractPetscDM, vertexLabel::DMLabel, value::PetscInt, markedFaces::PetscBool) 
+	subdm::PetscDM = DMPlexCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, vertexLabel::DMLabel, value::PetscInt, markedFaces::PetscBool) 
 Extract a hypersurface from the mesh using vertices defined by a label
 
 Input Parameters:
@@ -23529,7 +22648,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMGetLabel()`, `DMLabelSetValue()`
+See also: `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMGetLabel()`, `DMLabelSetValue()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSubmesh"))
@@ -23554,8 +22673,8 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateTPSMesh(petsclib::PetscLibType,comm::MPI_Comm, tpstype::DMPlexTPSType, extent::Vector{PetscInt}, periodic::Vector{DMBoundaryType}, tps_distribute::PetscBool, refinements::PetscInt, layers::PetscInt, thickness::PetscReal) 
-Create a distributed, interpolated mesh of a triply
+	dm::PetscDM = DMPlexCreateTPSMesh(petsclib::PetscLibType, comm::MPI_Comm, tpstype::DMPlexTPSType, extent::Vector{PetscInt}, periodic::Vector{DMBoundaryType}, tps_distribute::PetscBool, refinements::PetscInt, layers::PetscInt, thickness::PetscReal) 
+Create a distributed, interpolated mesh of a triply-periodic surface
 
 Collective
 
@@ -23574,7 +22693,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateSphereMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateSphereMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateTPSMesh"))
@@ -23599,7 +22718,7 @@ end
 end 
 
 """
-	processRanks::IS,sfProcess::PetscSF = DMPlexCreateTwoSidedProcessSF(petsclib::PetscLibType,dm::AbstractPetscDM, sfPoint::PetscSF, rootRankSection::PetscSection, rootRanks::AbstractIS, leafRankSection::PetscSection, leafRanks::AbstractIS) 
+	processRanks::IS,sfProcess::PetscSF = DMPlexCreateTwoSidedProcessSF(petsclib::PetscLibType, dm::AbstractPetscDM, sfPoint::PetscSF, rootRankSection::PetscSection, rootRanks::AbstractIS, leafRankSection::PetscSection, leafRanks::AbstractIS) 
 Create an `PetscSF` which just has process connectivity
 
 Collective
@@ -23618,7 +22737,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `PetscSFCreate()`, `DMPlexCreateProcessSF()`
+See also: `DMPLEX`, `PetscSFCreate()`, `DMPlexCreateProcessSF()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateTwoSidedProcessSF"))
@@ -23645,8 +22764,8 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateWedgeBoxMesh(petsclib::PetscLibType,comm::MPI_Comm, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, periodicity::Vector{DMBoundaryType}, orderHeight::PetscBool, interpolate::PetscBool) 
-Creates a 3
+	dm::PetscDM = DMPlexCreateWedgeBoxMesh(petsclib::PetscLibType, comm::MPI_Comm, faces::Vector{PetscInt}, lower::Vector{PetscReal}, upper::Vector{PetscReal}, periodicity::Vector{DMBoundaryType}, orderHeight::PetscBool, interpolate::PetscBool) 
+Creates a 3-D mesh tessellating the (x,y) plane and extruding in the third direction using wedge cells.
 
 Collective
 
@@ -23664,7 +22783,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateHexCylinderMesh()`, `DMPlexCreateWedgeCylinderMesh()`, `DMExtrude()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateHexCylinderMesh()`, `DMPlexCreateWedgeCylinderMesh()`, `DMExtrude()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateWedgeBoxMesh"))
@@ -23689,7 +22808,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMPlexCreateWedgeCylinderMesh(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, interpolate::PetscBool) 
+	dm::PetscDM = DMPlexCreateWedgeCylinderMesh(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, interpolate::PetscBool) 
 Creates a mesh on the tensor product of the unit interval with the circle (cylinder) using wedges.
 
 Collective
@@ -23704,7 +22823,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateHexCylinderMesh()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateHexCylinderMesh()`, `DMPlexCreateBoxMesh()`, `DMSetType()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateWedgeCylinderMesh"))
@@ -23729,7 +22848,7 @@ end
 end 
 
 """
-	sf::PetscSF,dmParallel::PetscDM = DMPlexDistribute(petsclib::PetscLibType,dm::AbstractPetscDM, overlap::PetscInt) 
+	sf::PetscSF,dmParallel::PetscDM = DMPlexDistribute(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) 
 Distributes the mesh and any associated sections.
 
 Collective
@@ -23744,7 +22863,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DM`, `DMPlexCreate()`, `DMSetAdjacency()`, `DMPlexGetOverlap()`
+See also: `DMPLEX`, `DM`, `DMPlexCreate()`, `DMSetAdjacency()`, `DMPlexGetOverlap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistribute"))
@@ -23771,7 +22890,7 @@ end
 end 
 
 """
-	DMPlexDistributeField(petsclib::PetscLibType,dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalVec::AbstractPetscVec, newSection::PetscSection, newVec::AbstractPetscVec) 
+	DMPlexDistributeField(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalVec::AbstractPetscVec, newSection::PetscSection, newVec::AbstractPetscVec) 
 Distribute field data to match a given `PetscSF`, usually the `PetscSF` from mesh distribution
 
 Collective
@@ -23788,7 +22907,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeFieldIS()`, `DMPlexDistributeData()`, `PetscSectionMigrateData()`
+See also: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeFieldIS()`, `DMPlexDistributeData()`, `PetscSectionMigrateData()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeField"))
@@ -23811,7 +22930,7 @@ end
 end 
 
 """
-	newIS::IS = DMPlexDistributeFieldIS(petsclib::PetscLibType,dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalIS::AbstractIS, newSection::PetscSection) 
+	newIS::IS = DMPlexDistributeFieldIS(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF, originalSection::PetscSection, originalIS::AbstractIS, newSection::PetscSection) 
 Distribute field data to match a given `PetscSF`, usually the `PetscSF` from mesh distribution
 
 Collective
@@ -23828,7 +22947,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexDistributeData()`, `PetscSectionMigrateData()`
+See also: `DMPLEX`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexDistributeData()`, `PetscSectionMigrateData()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeFieldIS"))
@@ -23853,7 +22972,7 @@ end
 end 
 
 """
-	dist::PetscBool = DMPlexDistributeGetDefault(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	dist::PetscBool = DMPlexDistributeGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get flag indicating whether the `DM` should be distributed by default
 
 Not Collective
@@ -23866,7 +22985,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DM`, `DMPlexDistributeSetDefault()`, `DMPlexDistribute()`
+See also: `DMPLEX`, `DM`, `DMPlexDistributeSetDefault()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeGetDefault"))
@@ -23891,8 +23010,8 @@ end
 end 
 
 """
-	sf::PetscSF,dmOverlap::PetscDM = DMPlexDistributeOverlap(petsclib::PetscLibType,dm::AbstractPetscDM, overlap::PetscInt) 
-Add partition overlap to a distributed non
+	sf::PetscSF,dmOverlap::PetscDM = DMPlexDistributeOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, overlap::PetscInt) 
+Add partition overlap to a distributed non-overlapping `DM`.
 
 Collective
 
@@ -23912,7 +23031,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: `DMPLEX`, `PetscSF`, `DM`, `DMPlexCreate()`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexCreateOverlapLabel()`, `DMPlexGetOverlap()`
+See also: `DMPLEX`, `PetscSF`, `DM`, `DMPlexCreate()`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexCreateOverlapLabel()`, `DMPlexGetOverlap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeOverlap"))
@@ -23939,8 +23058,8 @@ end
 end 
 
 """
-	rootrank::IS,leafrank::IS = DMPlexDistributeOwnership(petsclib::PetscLibType,dm::AbstractPetscDM, rootSection::PetscSection, leafSection::PetscSection) 
-Compute owner information for shared points. This basically gets two
+	rootrank::IS,leafrank::IS = DMPlexDistributeOwnership(petsclib::PetscLibType, dm::AbstractPetscDM, rootSection::PetscSection, leafSection::PetscSection) 
+Compute owner information for shared points. This basically gets two-sided for an SF.
 
 Collective
 
@@ -23955,7 +23074,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexCreateOverlapLabel()`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
+See also: `DMPLEX`, `DMPlexCreateOverlapLabel()`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeOwnership"))
@@ -23982,7 +23101,7 @@ end
 end 
 
 """
-	DMPlexDistributeSetDefault(petsclib::PetscLibType,dm::AbstractPetscDM, dist::PetscBool) 
+	DMPlexDistributeSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, dist::PetscBool) 
 Set flag indicating whether the `DM` should be distributed by default
 
 Logically Collective
@@ -23993,7 +23112,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexDistributeGetDefault()`, `DMPlexDistribute()`
+See also: `DMPLEX`, `DMPlexDistributeGetDefault()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributeSetDefault"))
@@ -24016,7 +23135,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = DMPlexDistributionGetName(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	name::Ptr{Cchar} = DMPlexDistributionGetName(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the name of the specific parallel distribution
 
 Input Parameter:
@@ -24027,7 +23146,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexDistributionSetName()`, `DMPlexTopologyView()`, `DMPlexTopologyLoad()`
+See also: `DMPLEX`, `DMPlexDistributionSetName()`, `DMPlexTopologyView()`, `DMPlexTopologyLoad()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributionGetName"))
@@ -24052,7 +23171,7 @@ end
 end 
 
 """
-	DMPlexDistributionSetName(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	DMPlexDistributionSetName(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Set the name of the specific parallel distribution
 
 Input Parameters:
@@ -24061,7 +23180,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexDistributionGetName()`, `DMPlexTopologyView()`, `DMPlexTopologyLoad()`
+See also: `DMPLEX`, `DMPlexDistributionGetName()`, `DMPlexTopologyView()`, `DMPlexTopologyLoad()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexDistributionSetName"))
@@ -24084,7 +23203,7 @@ end
 end 
 
 """
-	equal::PetscBool = DMPlexEqual(petsclib::PetscLibType,dmA::AbstractPetscDM, dmB::AbstractPetscDM) 
+	equal::PetscBool = DMPlexEqual(petsclib::PetscLibType, dmA::AbstractPetscDM, dmB::AbstractPetscDM) 
 Determine if two `DM` have the same topology
 
 Not Collective
@@ -24098,7 +23217,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCone()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexEqual"))
@@ -24123,7 +23242,7 @@ end
 end 
 
 """
-	edm::PetscDM = DMPlexExtrude(petsclib::PetscLibType,dm::AbstractPetscDM, layers::PetscInt, thickness::PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{PetscReal}, thicknesses::Vector{PetscReal}, activeLabel::DMLabel) 
+	edm::PetscDM = DMPlexExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::PetscInt, thickness::PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{PetscReal}, thicknesses::Vector{PetscReal}, activeLabel::DMLabel) 
 Extrude a volumetric mesh from the input surface mesh
 
 Input Parameters:
@@ -24150,7 +23269,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMExtrude()`, `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`, `DMPlexTransformExtrudeSetTensor()`
+See also: `DM`, `DMPLEX`, `DMExtrude()`, `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`, `DMPlexTransformExtrudeSetTensor()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexExtrude"))
@@ -24175,7 +23294,7 @@ end
 end 
 
 """
-	ownershipTransferSF::PetscSF,subdm::PetscDM = DMPlexFilter(petsclib::PetscLibType,dm::AbstractPetscDM, cellLabel::DMLabel, value::PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm) 
+	ownershipTransferSF::PetscSF,subdm::PetscDM = DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::DMLabel, value::PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm) 
 Extract a subset of mesh cells defined by a label as a separate mesh
 
 Input Parameters:
@@ -24192,7 +23311,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMGetLabel()`, `DMLabelSetValue()`, `DMPlexCreateSubmesh()`
+See also: `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMGetLabel()`, `DMLabelSetValue()`, `DMPlexCreateSubmesh()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexFilter"))
@@ -24219,7 +23338,7 @@ end
 end 
 
 """
-	points::IS = DMPlexFindVertices(petsclib::PetscLibType,dm::AbstractPetscDM, coordinates::AbstractPetscVec, eps::PetscReal) 
+	points::IS = DMPlexFindVertices(petsclib::PetscLibType, dm::AbstractPetscDM, coordinates::AbstractPetscVec, eps::PetscReal) 
 Try to find DAG points based on their coordinates.
 
 Not Collective (provided `DMGetCoordinatesLocalSetUp()` has been already called)
@@ -24234,7 +23353,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexCreate()`, `DMGetCoordinatesLocal()`
+See also: `DMPLEX`, `DMPlexCreate()`, `DMGetCoordinatesLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexFindVertices"))
@@ -24259,7 +23378,7 @@ end
 end 
 
 """
-	DMPlexFreeGeomObject(petsclib::PetscLibType,dm::AbstractPetscDM, geomObj::PetscGeom) 
+	DMPlexFreeGeomObject(petsclib::PetscLibType, dm::AbstractPetscDM, geomObj::PetscGeom) 
 Frees PetscGeom Objects
 
 Not collective
@@ -24270,7 +23389,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexFreeGeomObject"))
@@ -24293,7 +23412,7 @@ end
 end 
 
 """
-	mesh::PetscDM = DMPlexGenerate(petsclib::PetscLibType,boundary::AbstractPetscDM, name::String, interpolate::PetscBool) 
+	mesh::PetscDM = DMPlexGenerate(petsclib::PetscLibType, boundary::AbstractPetscDM, name::String, interpolate::PetscBool) 
 Generates a mesh.
 
 Not Collective
@@ -24312,7 +23431,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMRefine()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMRefine()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGenerate"))
@@ -24337,7 +23456,7 @@ end
 end 
 
 """
-	DMPlexGeomDataAndGrads(petsclib::PetscLibType,dm::AbstractPetscDM, fullGeomGrad::PetscBool) 
+	DMPlexGeomDataAndGrads(petsclib::PetscLibType, dm::AbstractPetscDM, fullGeomGrad::PetscBool) 
 Exposes Control Points and Control Point Weights defining the underlying geometry allowing user manipulation of the geometry.
 
 Collective
@@ -24356,7 +23475,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexModifyEGADSGeomModel()`
+See also: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexModifyEGADSGeomModel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGeomDataAndGrads"))
@@ -24379,7 +23498,7 @@ end
 end 
 
 """
-	point::PetscInt = DMPlexGetActivePoint(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	point::PetscInt = DMPlexGetActivePoint(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the point on which projection is currently working
 
 Not Collective
@@ -24392,7 +23511,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetActivePoint()`
+See also: `DM`, `DMPLEX`, `DMPlexSetActivePoint()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetActivePoint"))
@@ -24417,7 +23536,7 @@ end
 end 
 
 """
-	adjSize::PetscInt,adj::Ptr{PetscInt} = DMPlexGetAdjacency(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
+	adjSize::PetscInt,adj::Ptr{PetscInt} = DMPlexGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Return all points adjacent to the given point
 
 Input Parameters:
@@ -24432,7 +23551,7 @@ on output contains the adjacent points
 
 Level: advanced
 
--seealso: `DMPLEX`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMCreateMatrix()`, `DMPlexPreallocateOperator()`
+See also: `DMPLEX`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMCreateMatrix()`, `DMPlexPreallocateOperator()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetAdjacency"))
@@ -24459,8 +23578,8 @@ end
 end 
 
 """
-	useAnchors::PetscBool = DMPlexGetAdjacencyUseAnchors(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Query whether adjacency in the mesh uses the point
+	useAnchors::PetscBool = DMPlexGetAdjacencyUseAnchors(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Query whether adjacency in the mesh uses the point-to-point constraints.
 
 Input Parameter:
 - `dm` - The `DM` object
@@ -24470,7 +23589,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexSetAdjacencyUseAnchors()`, `DMSetAdjacency()`, `DMGetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexSetAnchors()`
+See also: `DMPLEX`, `DMPlexSetAdjacencyUseAnchors()`, `DMSetAdjacency()`, `DMGetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexSetAnchors()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetAdjacencyUseAnchors"))
@@ -24495,8 +23614,8 @@ end
 end 
 
 """
-	DMPlexGetAdjacencyUser(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
-get the user
+	DMPlexGetAdjacencyUser(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get the user-defined adjacency callback
 
 Input Parameter:
 - `dm` - The `DM` object
@@ -24507,7 +23626,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `DMPLEX`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexGetAdjacency()`, `DMPlexSetAdjacencyUser()`
+See also: `DMPLEX`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexGetAdjacency()`, `DMPlexSetAdjacencyUser()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetAdjacencyUser"))
@@ -24530,8 +23649,8 @@ end
 end 
 
 """
-	anchorSection::PetscSection,anchorIS::IS = DMPlexGetAnchors(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Get the layout of the anchor (point
+	anchorSection::PetscSection,anchorIS::IS = DMPlexGetAnchors(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Get the layout of the anchor (point-to-point) constraints.  Typically, the user will not have to
 call DMPlexGetAnchors() directly: if there are anchors, then `DMPlexGetAnchors()` is called during `DMGetDefaultConstraints()`.
 
 Not Collective
@@ -24545,7 +23664,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetAnchors()`, `DMGetDefaultConstraints()`, `DMSetDefaultConstraints()`, `IS`, `PetscSection`
+See also: `DM`, `DMPLEX`, `DMPlexSetAnchors()`, `DMGetDefaultConstraints()`, `DMSetDefaultConstraints()`, `IS`, `PetscSection`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetAnchors"))
@@ -24572,7 +23691,7 @@ end
 end 
 
 """
-	isDG::PetscBool,Nc::PetscInt,array::Vector{PetscScalar},coords::Vector{PetscScalar} = DMPlexGetCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt) 
+	isDG::PetscBool,Nc::PetscInt,array::Vector{PetscScalar},coords::Vector{PetscScalar} = DMPlexGetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt) 
 Get coordinates for a cell, taking into account periodicity
 
 Not Collective
@@ -24589,7 +23708,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexRestoreCellCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCellCoordinatesLocal()`
+See also: `DMPLEX`, `DMPlexRestoreCellCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCellCoordinatesLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellCoordinates"))
@@ -24623,7 +23742,7 @@ end
 end 
 
 """
-	u::Ptr{PetscScalar},u_t::Ptr{PetscScalar},a::Ptr{PetscScalar} = DMPlexGetCellFields(petsclib::PetscLibType,dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec) 
+	u::Ptr{PetscScalar},u_t::Ptr{PetscScalar},a::Ptr{PetscScalar} = DMPlexGetCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec) 
 Retrieve the field values values for a chunk of cells
 
 Input Parameters:
@@ -24640,7 +23759,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
+See also: `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellFields"))
@@ -24669,7 +23788,7 @@ end
 end 
 
 """
-	globalCellNumbers::IS = DMPlexGetCellNumbering(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	globalCellNumbers::IS = DMPlexGetCellNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get a global cell numbering for all cells on this process
 
 Input Parameter:
@@ -24680,7 +23799,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateCellNumbering()`, `DMPlexGetVertexNumbering()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateCellNumbering()`, `DMPlexGetVertexNumbering()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellNumbering"))
@@ -24705,7 +23824,7 @@ end
 end 
 
 """
-	celltype::DMPolytopeType = DMPlexGetCellType(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt) 
+	celltype::DMPolytopeType = DMPlexGetCellType(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt) 
 Get the polytope type of a given cell
 
 Not Collective
@@ -24719,7 +23838,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPolytopeType`, `DMPlexGetCellTypeLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`
+See also: `DM`, `DMPLEX`, `DMPolytopeType`, `DMPlexGetCellTypeLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellType"))
@@ -24744,7 +23863,7 @@ end
 end 
 
 """
-	celltypeLabel::DMLabel = DMPlexGetCellTypeLabel(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	celltypeLabel::DMLabel = DMPlexGetCellTypeLabel(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `DMLabel` recording the polytope type of each cell
 
 Not Collective
@@ -24757,7 +23876,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellType()`, `DMPlexGetDepthLabel()`, `DMCreateLabel()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellType()`, `DMPlexGetDepthLabel()`, `DMCreateLabel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellTypeLabel"))
@@ -24782,7 +23901,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexGetCellTypeStratum(petsclib::PetscLibType,dm::AbstractPetscDM, ct::DMPolytopeType) 
+	start::PetscInt,end_::PetscInt = DMPlexGetCellTypeStratum(petsclib::PetscLibType, dm::AbstractPetscDM, ct::DMPolytopeType) 
 Get the range of cells of a given celltype
 
 Input Parameters:
@@ -24795,7 +23914,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexConstructGhostCells()`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexConstructGhostCells()`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCellTypeStratum"))
@@ -24822,7 +23941,7 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = DMPlexGetChart(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	pStart::PetscInt,pEnd::PetscInt = DMPlexGetChart(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return the interval for all mesh points [`pStart`, `pEnd`)
 
 Not Collective
@@ -24836,7 +23955,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetChart"))
@@ -24863,7 +23982,7 @@ end
 end 
 
 """
-	numIndices::PetscInt,indices::Vector{PetscInt},outOffsets::Vector{PetscInt} = DMPlexGetClosureIndices(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, values::Union{Ptr, AbstractArray{PetscScalar}}) 
+	numIndices::PetscInt,indices::Vector{PetscInt},outOffsets::Vector{PetscInt} = DMPlexGetClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, values::Union{Ptr, AbstractArray{PetscScalar}}) 
 Gets the global dof indices associated with the closure of the given point within the provided sections.
 
 Not collective
@@ -24883,7 +24002,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexRestoreClosureIndices()`, `DMPlexVecGetClosure()`, `DMPlexMatSetClosure()`, `DMGetLocalSection()`,
+See also: `DM`, `DMPLEX`, `DMPlexRestoreClosureIndices()`, `DMPlexVecGetClosure()`, `DMPlexMatSetClosure()`, `DMGetLocalSection()`,
 `PetscSection`, `DMGetGlobalSection()`
 
 # External Links
@@ -24914,7 +24033,7 @@ end
 end 
 
 """
-	numPoints::PetscInt,points::Ptr{PetscInt},clSec::PetscSection,clPoints::IS,clp::Ptr{PetscInt} = DMPlexGetCompressedClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, point::PetscInt, ornt::PetscInt) 
+	numPoints::PetscInt,points::Ptr{PetscInt},clSec::PetscSection,clPoints::IS,clp::Ptr{PetscInt} = DMPlexGetCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::PetscInt, ornt::PetscInt) 
 Return the transitive closure of a point, restricted to points with dof in the given section
 
 Not Collective
@@ -24934,7 +24053,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSection`, `DMPlexRestoreCompressedClosure()`, `DMPlexGetTransitiveClosure()`, `PetscSectionGetClosureIndex()`
+See also: `DM`, `DMPLEX`, `PetscSection`, `DMPlexRestoreCompressedClosure()`, `DMPlexGetTransitiveClosure()`, `PetscSectionGetClosureIndex()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCompressedClosure"))
@@ -24967,8 +24086,8 @@ end
 end 
 
 """
-	cone::Vector{PetscInt} = DMPlexGetCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
-Return the points on the in
+	cone::Vector{PetscInt} = DMPlexGetCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
+Return the points on the in-edges for this point in the DAG
 
 Not Collective
 
@@ -24981,7 +24100,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetConeSize()`, `DMPlexSetCone()`, `DMPlexGetConeTuple()`, `DMPlexSetChart()`, `DMPlexRestoreCone()`
+See also: `DM`, `DMPLEX`, `DMPlexGetConeSize()`, `DMPlexSetCone()`, `DMPlexGetConeTuple()`, `DMPlexSetChart()`, `DMPlexRestoreCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCone"))
@@ -25007,8 +24126,8 @@ end
 end 
 
 """
-	coneOrientation::Vector{PetscInt} = DMPlexGetConeOrientation(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
-Return the orientations on the in
+	coneOrientation::Vector{PetscInt} = DMPlexGetConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
+Return the orientations on the in-edges for this point in the DAG
 
 Not Collective
 
@@ -25022,7 +24141,7 @@ integer giving the prescription for cone traversal. Its length is given by the r
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetConeSize()`, `DMPolytopeTypeComposeOrientation()`, `DMPolytopeTypeComposeOrientationInv()`,
+See also: `DM`, `DMPLEX`, `DMPlexSetConeSize()`, `DMPolytopeTypeComposeOrientation()`, `DMPolytopeTypeComposeOrientationInv()`,
 `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetCone()`, `DMPlexSetChart()`
 
 # External Links
@@ -25049,7 +24168,7 @@ end
 end 
 
 """
-	coneOrientations::Ptr{PetscInt} = DMPlexGetConeOrientations(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	coneOrientations::Ptr{PetscInt} = DMPlexGetConeOrientations(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return cone orientation data
 
 Not Collective
@@ -25062,7 +24181,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetConeSection()`, `DMPlexGetConeOrientation()`, `PetscSection`
+See also: `DM`, `DMPLEX`, `DMPlexGetConeSection()`, `DMPlexGetConeOrientation()`, `PetscSection`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeOrientations"))
@@ -25087,7 +24206,7 @@ end
 end 
 
 """
-	depth::PetscInt,expandedPoints::Ptr{IS},sections::Ptr{PetscSection} = DMPlexGetConeRecursive(petsclib::PetscLibType,dm::AbstractPetscDM, points::AbstractIS) 
+	depth::PetscInt,expandedPoints::Ptr{IS},sections::Ptr{PetscSection} = DMPlexGetConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS) 
 Expand each given point into its cone points and do that recursively until we end up just with vertices
 (DAG points of depth 0, i.e., without cones).
 
@@ -25104,7 +24223,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeTuple()`, `DMPlexRestoreConeRecursive()`, `DMPlexGetConeRecursiveVertices()`,
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeTuple()`, `DMPlexRestoreConeRecursive()`, `DMPlexGetConeRecursiveVertices()`,
 `DMPlexGetDepth()`, `PetscSection`, `IS`
 
 # External Links
@@ -25134,7 +24253,7 @@ end
 end 
 
 """
-	expandedPoints::IS = DMPlexGetConeRecursiveVertices(petsclib::PetscLibType,dm::AbstractPetscDM, points::AbstractIS) 
+	expandedPoints::IS = DMPlexGetConeRecursiveVertices(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS) 
 Expand each given point into its cone points and do that recursively until we end up just with vertices.
 
 Not Collective
@@ -25148,7 +24267,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeTuple()`, `DMPlexGetConeRecursive()`, `DMPlexRestoreConeRecursive()`,
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeTuple()`, `DMPlexGetConeRecursive()`, `DMPlexRestoreConeRecursive()`,
 `DMPlexGetDepth()`, `IS`
 
 # External Links
@@ -25174,7 +24293,7 @@ end
 end 
 
 """
-	section::PetscSection = DMPlexGetConeSection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	section::PetscSection = DMPlexGetConeSection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return a section which describes the layout of cone data
 
 Not Collective
@@ -25187,7 +24306,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetSupportSection()`, `DMPlexGetCones()`, `DMPlexGetConeOrientations()`, `PetscSection`
+See also: `DM`, `DMPLEX`, `DMPlexGetSupportSection()`, `DMPlexGetCones()`, `DMPlexGetConeOrientations()`, `PetscSection`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeSection"))
@@ -25212,8 +24331,8 @@ end
 end 
 
 """
-	size::PetscInt = DMPlexGetConeSize(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
-Return the number of in
+	size::PetscInt = DMPlexGetConeSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
+Return the number of in-edges for this point in the DAG
 
 Not Collective
 
@@ -25226,7 +24345,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetConeSize()`, `DMPlexSetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetConeSize()`, `DMPlexSetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeSize"))
@@ -25251,8 +24370,8 @@ end
 end 
 
 """
-	pConesSection::PetscSection,pCones::IS = DMPlexGetConeTuple(petsclib::PetscLibType,dm::AbstractPetscDM, p::AbstractIS) 
-Return the points on the in
+	pConesSection::PetscSection,pCones::IS = DMPlexGetConeTuple(petsclib::PetscLibType, dm::AbstractPetscDM, p::AbstractIS) 
+Return the points on the in-edges of several points in the DAG
 
 Not Collective
 
@@ -25266,7 +24385,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeRecursive()`, `DMPlexSetChart()`, `PetscSection`, `IS`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeRecursive()`, `DMPlexSetChart()`, `PetscSection`, `IS`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetConeTuple"))
@@ -25293,7 +24412,7 @@ end
 end 
 
 """
-	cones::Ptr{PetscInt} = DMPlexGetCones(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cones::Ptr{PetscInt} = DMPlexGetCones(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return cone data
 
 Not Collective
@@ -25306,7 +24425,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetConeSection()`
+See also: `DM`, `DMPLEX`, `DMPlexGetConeSection()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCones"))
@@ -25331,7 +24450,7 @@ end
 end 
 
 """
-	coordFunc::Ptr{Cvoid} = DMPlexGetCoordinateMap(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	coordFunc::Ptr{Cvoid} = DMPlexGetCoordinateMap(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the function used to map coordinates of newly generated mesh points
 
 Not Collective
@@ -25344,7 +24463,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMGetCoordinates()`, `DMPlexSetCoordinateMap()`, `PetscPointFn`
+See also: `DMPLEX`, `DMGetCoordinates()`, `DMPlexSetCoordinateMap()`, `PetscPointFn`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetCoordinateMap"))
@@ -25369,7 +24488,7 @@ end
 end 
 
 """
-	cellgeom::PetscVec,facegeom::PetscVec,gradDM::PetscDM = DMPlexGetDataFVM(petsclib::PetscLibType,dm::AbstractPetscDM, fv::PetscFV) 
+	cellgeom::PetscVec,facegeom::PetscVec,gradDM::PetscDM = DMPlexGetDataFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV) 
 Retrieve precomputed cell geometry
 
 Collective
@@ -25385,7 +24504,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexComputeGeometryFVM()`
+See also: `DMPLEX`, `DMPlexComputeGeometryFVM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDataFVM"))
@@ -25414,7 +24533,7 @@ end
 end 
 
 """
-	depth::PetscInt = DMPlexGetDepth(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	depth::PetscInt = DMPlexGetDepth(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the depth of the DAG representing this mesh
 
 Not Collective
@@ -25427,7 +24546,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetDepthLabel()`, `DMPlexGetDepthStratum()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`
+See also: `DM`, `DMPLEX`, `DMPlexGetDepthLabel()`, `DMPlexGetDepthStratum()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepth"))
@@ -25452,7 +24571,7 @@ end
 end 
 
 """
-	depthLabel::DMLabel = DMPlexGetDepthLabel(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	depthLabel::DMLabel = DMPlexGetDepthLabel(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `DMLabel` recording the depth of each point
 
 Not Collective
@@ -25465,7 +24584,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetDepth()`, `DMPlexGetHeightStratum()`, `DMPlexGetDepthStratum()`, `DMPlexGetPointDepth()`
+See also: `DM`, `DMPLEX`, `DMPlexGetDepth()`, `DMPlexGetHeightStratum()`, `DMPlexGetDepthStratum()`, `DMPlexGetPointDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepthLabel"))
@@ -25490,7 +24609,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexGetDepthStratum(petsclib::PetscLibType,dm::AbstractPetscDM, depth::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMPlexGetDepthStratum(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt) 
 Get the bounds [`start`, `end`) for all points at a certain depth.
 
 Not Collective
@@ -25505,7 +24624,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`, `DMPlexGetDepthLabel()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`, `DMPlexInterpolate()`
+See also: `DM`, `DMPLEX`, `DMPlexGetHeightStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`, `DMPlexGetDepthLabel()`, `DMPlexGetPointDepth()`, `DMPlexSymmetrize()`, `DMPlexInterpolate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepthStratum"))
@@ -25532,7 +24651,7 @@ end
 end 
 
 """
-	gsize::PetscInt = DMPlexGetDepthStratumGlobalSize(petsclib::PetscLibType,dm::AbstractPetscDM, depth::PetscInt) 
+	gsize::PetscInt = DMPlexGetDepthStratumGlobalSize(petsclib::PetscLibType, dm::AbstractPetscDM, depth::PetscInt) 
 Get the global size for a given depth stratum
 
 Input Parameters:
@@ -25544,7 +24663,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`, `DMPlexGetVertexNumbering()`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`, `DMPlexGetVertexNumbering()`, `DMPlexGetDepthStratum()`, `DMPlexGetHeightStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetDepthStratumGlobalSize"))
@@ -25569,7 +24688,7 @@ end
 end 
 
 """
-	Nface::PetscInt,uL::Ptr{PetscScalar},uR::Ptr{PetscScalar} = DMPlexGetFaceFields(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec) 
+	Nface::PetscInt,uL::Ptr{PetscScalar},uR::Ptr{PetscScalar} = DMPlexGetFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec) 
 Retrieve the field values values for a chunk of faces
 
 Input Parameters:
@@ -25589,7 +24708,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellFields()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellFields()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetFaceFields"))
@@ -25618,7 +24737,7 @@ end
 end 
 
 """
-	Nface::PetscInt,fgeom::Ptr{PetscFVFaceGeom},vol::Ptr{PetscReal} = DMPlexGetFaceGeometry(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) 
+	Nface::PetscInt,fgeom::Ptr{PetscFVFaceGeom},vol::Ptr{PetscReal} = DMPlexGetFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) 
 Retrieve the geometric values for a chunk of faces
 
 Input Parameters:
@@ -25635,7 +24754,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellFields()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellFields()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetFaceGeometry"))
@@ -25664,7 +24783,7 @@ end
 end 
 
 """
-	numCoveredPoints::PetscInt,coveredPoints::Vector{PetscInt} = DMPlexGetFullJoin(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
+	numCoveredPoints::PetscInt,coveredPoints::Vector{PetscInt} = DMPlexGetFullJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
 Get an array for the join of the set of points
 
 Not Collective
@@ -25680,7 +24799,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetJoin()`, `DMPlexRestoreJoin()`, `DMPlexGetMeet()`
+See also: `DM`, `DMPLEX`, `DMPlexGetJoin()`, `DMPlexRestoreJoin()`, `DMPlexGetMeet()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetFullJoin"))
@@ -25709,7 +24828,7 @@ end
 
 # override for DMPlexGetFullMeet; C signature: DMPlexGetFullMeet(DM dm, PetscInt numPoints, PetscInt points[], PetscInt* numCoveredPoints, PetscInt* coveredPoints[])
 """
-	numCoveredPoints::PetscInt,coveredPoints::Vector{PetscInt} = DMPlexGetFullMeet(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
+	numCoveredPoints::PetscInt,coveredPoints::Vector{PetscInt} = DMPlexGetFullMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
 Get an array for the meet of the set of points
 
 Not Collective
@@ -25725,7 +24844,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetMeet()`, `DMPlexRestoreMeet()`, `DMPlexGetJoin()`
+See also: `DM`, `DMPLEX`, `DMPlexGetMeet()`, `DMPlexRestoreMeet()`, `DMPlexGetJoin()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetFullMeet"))
@@ -25747,7 +24866,7 @@ function DMPlexGetFullMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoint
 end
 
 """
-	sf::PetscSF,gatherMesh::PetscDM = DMPlexGetGatherDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	sf::PetscSF,gatherMesh::PetscDM = DMPlexGetGatherDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get a copy of the `DMPLEX` that gathers all points on the
 root process of the original's communicator.
 
@@ -25762,7 +24881,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DM`, `PetscSF`, `DMPlexDistribute()`, `DMPlexGetRedundantDM()`
+See also: `DMPLEX`, `DM`, `PetscSF`, `DMPlexDistribute()`, `DMPlexGetRedundantDM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGatherDM"))
@@ -25789,7 +24908,7 @@ end
 end 
 
 """
-	volume::PetscScalar,surfArea::PetscScalar,centerOfGravity::Ptr{PetscScalar},COGsize::PetscInt,inertiaMatrixCOG::Ptr{PetscScalar},IMCOGsize::PetscInt = DMPlexGetGeomBodyMassProperties(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom) 
+	volume::PetscScalar,surfArea::PetscScalar,centerOfGravity::Ptr{PetscScalar},COGsize::PetscInt,inertiaMatrixCOG::Ptr{PetscScalar},IMCOGsize::PetscInt = DMPlexGetGeomBodyMassProperties(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) 
 Returns the Volume, Surface Area, Center of Gravity, and Inertia about the Body's Center of Gravity
 
 Not collective
@@ -25808,7 +24927,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomBodyMassProperties"))
@@ -25843,7 +24962,7 @@ end
 end 
 
 """
-	cpHashTable::PetscHMapI,cpCoordDataLength::PetscInt,cpCoordData::Ptr{PetscScalar},maxNumEquiv::PetscInt,cpEquiv::PetscMat,wHashTable::PetscHMapI,wDataLength::PetscInt,wData::Ptr{PetscScalar} = DMPlexGetGeomCntrlPntAndWeightData(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cpHashTable::PetscHMapI,cpCoordDataLength::PetscInt,cpCoordData::Ptr{PetscScalar},maxNumEquiv::PetscInt,cpEquiv::PetscMat,wHashTable::PetscHMapI,wDataLength::PetscInt,wData::Ptr{PetscScalar} = DMPlexGetGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets Control Point and Associated Weight Data for the Geometry attached to the DMPlex
 
 Not collective
@@ -25861,7 +24980,7 @@ Output Parameters:
 - `wDataLength`       - Length of wData Array.
 - `wData`             - Array holding the Weight for an associated Geometry Control Point.
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomCntrlPntAndWeightData"))
@@ -25900,7 +25019,7 @@ end
 end 
 
 """
-	numCntrlPnts::PetscInt,cntrlPntFaceMap::Ptr{PetscInt},cntrlPntWeightFaceMap::Ptr{PetscInt},cntrlPntEdgeMap::Ptr{PetscInt},cntrlPntWeightEdgeMap::Ptr{PetscInt},cntrlPntVertexMap::Ptr{PetscInt},cntrlPntWeightVertexMap::Ptr{PetscInt} = DMPlexGetGeomCntrlPntMaps(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numCntrlPnts::PetscInt,cntrlPntFaceMap::Ptr{PetscInt},cntrlPntWeightFaceMap::Ptr{PetscInt},cntrlPntEdgeMap::Ptr{PetscInt},cntrlPntWeightEdgeMap::Ptr{PetscInt},cntrlPntVertexMap::Ptr{PetscInt},cntrlPntWeightVertexMap::Ptr{PetscInt} = DMPlexGetGeomCntrlPntMaps(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets arrays which maps Control Point IDs to their associated Geometry FACE, EDGE, and VERTEX.
 
 Not collective
@@ -25919,7 +25038,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGeomDataAndGrads()`
+See also: `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomCntrlPntMaps"))
@@ -25956,7 +25075,7 @@ end
 end 
 
 """
-	numCntrlPnts::PetscInt = DMPlexGetGeomFaceNumOfControlPoints(petsclib::PetscLibType,dm::AbstractPetscDM, face::PetscGeom) 
+	numCntrlPnts::PetscInt = DMPlexGetGeomFaceNumOfControlPoints(petsclib::PetscLibType, dm::AbstractPetscDM, face::PetscGeom) 
 Returns the total number of Control Points (and associated Weights) defining a FACE of a Geometry
 
 Not collective
@@ -25970,7 +25089,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomFaceNumOfControlPoints"))
@@ -25995,7 +25114,7 @@ end
 end 
 
 """
-	cpSurfGradHashTable::PetscHMapI,cpSurfGrad::PetscMat,cpArraySize::PetscInt,gradSACP::Ptr{PetscScalar},gradVolCP::Ptr{PetscScalar},wArraySize::PetscInt,gradSAW::Ptr{PetscScalar},gradVolW::Ptr{PetscScalar} = DMPlexGetGeomGradData(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cpSurfGradHashTable::PetscHMapI,cpSurfGrad::PetscMat,cpArraySize::PetscInt,gradSACP::Ptr{PetscScalar},gradVolCP::Ptr{PetscScalar},wArraySize::PetscInt,gradSAW::Ptr{PetscScalar},gradVolW::Ptr{PetscScalar} = DMPlexGetGeomGradData(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets Point, Surface and Volume Gradients with respect to changes in Control Points and their associated Weights for the Geometry attached to the DMPlex .
 
 Not collective
@@ -26013,7 +25132,7 @@ Output Parameters:
 - `gradSAW`             - Array containing the Surface Area Gradient with respect to Control Point Weight. Data is arranged by Control Point ID.
 - `gradVolW`            - Array containing the Volume Gradient with respect to Control Point Weight. Data is arranged by Control Point ID.
 
--seealso: `DMPlexGeomDataAndGrads()`
+See also: `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomGradData"))
@@ -26052,7 +25171,7 @@ end
 end 
 
 """
-	id::PetscInt = DMPlexGetGeomID(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, topoObj::PetscGeom) 
+	id::PetscInt = DMPlexGetGeomID(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, topoObj::PetscGeom) 
 Returns ID number of the entity in the geometric (CAD) model
 
 Collective
@@ -26067,7 +25186,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomID"))
@@ -26092,7 +25211,7 @@ end
 end 
 
 """
-	bodies::Ptr{PetscGeom},numBodies::PetscInt = DMPlexGetGeomModelBodies(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	bodies::Ptr{PetscGeom},numBodies::PetscInt = DMPlexGetGeomModelBodies(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns an array of `PetscGeom` BODY objects attached to the referenced geometric model entity as well as the number of BODYs.
 
 Collective
@@ -26106,7 +25225,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodyShells()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodyShells()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodies"))
@@ -26133,7 +25252,7 @@ end
 end 
 
 """
-	edges::Ptr{PetscGeom},numEdges::PetscInt = DMPlexGetGeomModelBodyEdges(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom) 
+	edges::Ptr{PetscGeom},numEdges::PetscInt = DMPlexGetGeomModelBodyEdges(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) 
 Returns an array of `PetscGeom` EDGE objects attached to the referenced BODY geometric entity as well as the number of EDGEs.
 
 Collective
@@ -26148,7 +25267,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyEdges"))
@@ -26175,7 +25294,7 @@ end
 end 
 
 """
-	faces::Ptr{PetscGeom},numFaces::PetscInt = DMPlexGetGeomModelBodyFaces(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom) 
+	faces::Ptr{PetscGeom},numFaces::PetscInt = DMPlexGetGeomModelBodyFaces(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) 
 Returns an array of `PetscGeom` FACE objects attached to the referenced BODY geometric entity as well as the number of FACEs.
 
 Collective
@@ -26190,7 +25309,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyFaces"))
@@ -26217,7 +25336,7 @@ end
 end 
 
 """
-	loops::Ptr{PetscGeom},numLoops::PetscInt = DMPlexGetGeomModelBodyLoops(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom) 
+	loops::Ptr{PetscGeom},numLoops::PetscInt = DMPlexGetGeomModelBodyLoops(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) 
 Returns an array of `PetscGeom` Loop objects attached to the referenced BODY geometric entity as well as the number of LOOPs.
 
 Collective
@@ -26232,7 +25351,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyLoops"))
@@ -26259,7 +25378,7 @@ end
 end 
 
 """
-	nodes::Ptr{PetscGeom},numNodes::PetscInt = DMPlexGetGeomModelBodyNodes(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom) 
+	nodes::Ptr{PetscGeom},numNodes::PetscInt = DMPlexGetGeomModelBodyNodes(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) 
 Returns an array of `PetscGeom` NODE objects attached to the referenced BODY geometric entity as well as the number of NODES.
 
 Collective
@@ -26274,7 +25393,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyNodes"))
@@ -26301,7 +25420,7 @@ end
 end 
 
 """
-	shells::Ptr{PetscGeom},numShells::PetscInt = DMPlexGetGeomModelBodyShells(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom) 
+	shells::Ptr{PetscGeom},numShells::PetscInt = DMPlexGetGeomModelBodyShells(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom) 
 Returns an array of `PetscGeom` SHELL objects attached to the referenced BODY geometric entity as well as the number of SHELLs.
 
 Collective
@@ -26316,7 +25435,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelBodyShells"))
@@ -26343,7 +25462,7 @@ end
 end 
 
 """
-	nodes::Ptr{PetscGeom},numNodes::PetscInt = DMPlexGetGeomModelEdgeNodes(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, edge::PetscGeom) 
+	nodes::Ptr{PetscGeom},numNodes::PetscInt = DMPlexGetGeomModelEdgeNodes(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, edge::PetscGeom) 
 Returns an array of `PetscGeom` NODE objects attached to the referenced EDGE geometric entity as well as the number of NODES.
 
 Collective
@@ -26359,7 +25478,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelEdgeNodes"))
@@ -26386,7 +25505,7 @@ end
 end 
 
 """
-	edges::Ptr{PetscGeom},numEdges::PetscInt = DMPlexGetGeomModelFaceEdges(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom) 
+	edges::Ptr{PetscGeom},numEdges::PetscInt = DMPlexGetGeomModelFaceEdges(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom) 
 Returns an array of `PetscGeom` EDGE objects attached to the referenced FACE geometric entity as well as the number of EDGEs.
 
 Collective
@@ -26402,7 +25521,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelFaceEdges"))
@@ -26429,7 +25548,7 @@ end
 end 
 
 """
-	loops::Ptr{PetscGeom},numLoops::PetscInt = DMPlexGetGeomModelFaceLoops(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom) 
+	loops::Ptr{PetscGeom},numLoops::PetscInt = DMPlexGetGeomModelFaceLoops(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, face::PetscGeom) 
 Returns an array of `PetscGeom` LOOP objects attached to the referenced FACE geometric entity as well as the number of LOOPs.
 
 Collective
@@ -26445,7 +25564,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelFaceLoops"))
@@ -26472,7 +25591,7 @@ end
 end 
 
 """
-	faces::Ptr{PetscGeom},numFaces::PetscInt = DMPlexGetGeomModelShellFaces(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, shell::PetscGeom) 
+	faces::Ptr{PetscGeom},numFaces::PetscInt = DMPlexGetGeomModelShellFaces(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, shell::PetscGeom) 
 Returns an array of `PetscGeom` FACE objects attached to the referenced SHELL geometric entity as well as the number of FACEs.
 
 Collective
@@ -26488,7 +25607,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelShellFaces"))
@@ -26515,7 +25634,7 @@ end
 end 
 
 """
-	DMPlexGetGeomModelTUV(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexGetGeomModelTUV(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the [t] (EDGES) and [u, v] (FACES) geometry parameters of DM points that are associated geometry relationships. Requires a DM with an EGADS model attached.
 
 Collective
@@ -26525,7 +25644,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexGeomDataAndGrads()`
+See also: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomModelTUV"))
@@ -26548,7 +25667,7 @@ end
 end 
 
 """
-	geomObj::PetscGeom = DMPlexGetGeomObject(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, geomType::PetscInt, geomID::PetscInt) 
+	geomObj::PetscGeom = DMPlexGetGeomObject(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, geomType::PetscInt, geomID::PetscInt) 
 Returns Geometry Object using the objects ID in the geometric (CAD) model
 
 Collective
@@ -26564,7 +25683,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelBodies()`, `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeomObject"))
@@ -26589,7 +25708,7 @@ end
 end 
 
 """
-	facegeom::PetscVec,cellgeom::PetscVec,minRadius::PetscReal = DMPlexGetGeometryFVM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	facegeom::PetscVec,cellgeom::PetscVec,minRadius::PetscReal = DMPlexGetGeometryFVM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return precomputed geometric data
 
 Collective
@@ -26604,7 +25723,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMTSSetRHSFunctionLocal()`
+See also: `DM`, `DMPLEX`, `DMTSSetRHSFunctionLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGeometryFVM"))
@@ -26633,7 +25752,7 @@ end
 end 
 
 """
-	dmGrad::PetscDM = DMPlexGetGradientDM(petsclib::PetscLibType,dm::AbstractPetscDM, fv::PetscFV) 
+	dmGrad::PetscDM = DMPlexGetGradientDM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV) 
 Return gradient data layout
 
 Collective
@@ -26647,7 +25766,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetGeometryFVM()`
+See also: `DM`, `DMPLEX`, `DMPlexGetGeometryFVM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetGradientDM"))
@@ -26672,7 +25791,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexGetHeightStratum(petsclib::PetscLibType,dm::AbstractPetscDM, height::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMPlexGetHeightStratum(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) 
 Get the bounds [`start`, `end`) for all points at a certain height.
 
 Not Collective
@@ -26687,7 +25806,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetDepthStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`, `DMPlexGetPointHeight()`
+See also: `DM`, `DMPLEX`, `DMPlexGetDepthStratum()`, `DMPlexGetCellTypeStratum()`, `DMPlexGetDepth()`, `DMPlexGetPointHeight()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetHeightStratum"))
@@ -26714,7 +25833,7 @@ end
 end 
 
 """
-	preferTensor::PetscBool = DMPlexGetInterpolatePreferTensor(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	preferTensor::PetscBool = DMPlexGetInterpolatePreferTensor(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the flag to prefer tensor order when interpolating a cell
 
 Not Collective
@@ -26727,7 +25846,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexSetInterpolatePreferTensor()`, `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolatedCollective()`
+See also: `DMPlexSetInterpolatePreferTensor()`, `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolatedCollective()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetInterpolatePreferTensor"))
@@ -26752,7 +25871,7 @@ end
 end 
 
 """
-	num_face_sfs::PetscInt,face_sfs::Ptr{PetscSF} = DMPlexGetIsoperiodicFaceSF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	num_face_sfs::PetscInt,face_sfs::Ptr{PetscSF} = DMPlexGetIsoperiodicFaceSF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Obtain periodicity for a mesh
 
 Logically Collective
@@ -26766,7 +25885,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DMPLEX`, `DMGetGlobalSection()`, `DMPlexSetIsoperiodicFaceSF()`
+See also: `DMPLEX`, `DMGetGlobalSection()`, `DMPlexSetIsoperiodicFaceSF()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetIsoperiodicFaceSF"))
@@ -26793,7 +25912,7 @@ end
 end 
 
 """
-	numCoveredPoints::PetscInt,coveredPoints::Vector{PetscInt} = DMPlexGetJoin(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
+	numCoveredPoints::PetscInt,coveredPoints::Vector{PetscInt} = DMPlexGetJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
 Get an array for the join of the set of points
 
 Not Collective
@@ -26809,7 +25928,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexRestoreJoin()`, `DMPlexGetMeet()`
+See also: `DM`, `DMPLEX`, `DMPlexRestoreJoin()`, `DMPlexGetMeet()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetJoin"))
@@ -26837,7 +25956,7 @@ end
 end 
 
 """
-	num_cells::PetscInt,cell_size::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsets::Ptr{PetscInt} = DMPlexGetLocalOffsets(petsclib::PetscLibType,dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt, height::PetscInt, dm_field::PetscInt) 
+	num_cells::PetscInt,cell_size::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsets::Ptr{PetscInt} = DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt, height::PetscInt, dm_field::PetscInt) 
 Allocate and populate array of local offsets for each cell closure.
 
 Not collective
@@ -26858,7 +25977,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DMPlexGetLocalOffsetsSupport()`, `DM`, `DMPLEX`, `DMLabel`, `DMPlexGetClosureIndices()`, `DMPlexSetClosurePermutationTensor()`, `DMPlexGetCeedRestriction()`
+See also: `DMPlexGetLocalOffsetsSupport()`, `DM`, `DMPLEX`, `DMLabel`, `DMPlexGetClosureIndices()`, `DMPlexSetClosurePermutationTensor()`, `DMPlexGetCeedRestriction()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetLocalOffsets"))
@@ -26891,7 +26010,7 @@ end
 end 
 
 """
-	num_faces::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsetsNeg::Ptr{PetscInt},offsetsPos::Ptr{PetscInt} = DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType,dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt) 
+	num_faces::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsetsNeg::Ptr{PetscInt},offsetsPos::Ptr{PetscInt} = DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt) 
 Allocate and populate arrays of local offsets for each face support.
 
 Not collective
@@ -26910,7 +26029,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DMPlexGetLocalOffsets()`, `DM`, `DMPLEX`, `DMLabel`, `DMPlexGetClosureIndices()`, `DMPlexSetClosurePermutationTensor()`, `DMPlexGetCeedRestriction()`
+See also: `DMPlexGetLocalOffsets()`, `DM`, `DMPLEX`, `DMLabel`, `DMPlexGetClosureIndices()`, `DMPlexSetClosurePermutationTensor()`, `DMPlexGetCeedRestriction()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetLocalOffsetsSupport"))
@@ -26943,7 +26062,7 @@ end
 end 
 
 """
-	height::PetscInt = DMPlexGetMaxProjectionHeight(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	height::PetscInt = DMPlexGetMaxProjectionHeight(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the maximum height (w.r.t. DAG) of mesh points used to evaluate dual bases in
 DMPlexProjectXXXLocal() functions.
 
@@ -26955,7 +26074,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetMaxProjectionHeight()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabelLocal()`
+See also: `DM`, `DMPLEX`, `DMPlexSetMaxProjectionHeight()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabelLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMaxProjectionHeight"))
@@ -26980,8 +26099,8 @@ end
 end 
 
 """
-	maxConeSize::PetscInt,maxSupportSize::PetscInt = DMPlexGetMaxSizes(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Return the maximum number of in
+	maxConeSize::PetscInt,maxSupportSize::PetscInt = DMPlexGetMaxSizes(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Return the maximum number of in-edges (cone) and out-edges (support) for any point in the DAG
 
 Not Collective
 
@@ -26994,7 +26113,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetConeSize()`, `DMPlexSetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetConeSize()`, `DMPlexSetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMaxSizes"))
@@ -27021,7 +26140,7 @@ end
 end 
 
 """
-	numCoveringPoints::PetscInt,coveringPoints::Vector{PetscInt} = DMPlexGetMeet(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
+	numCoveringPoints::PetscInt,coveringPoints::Vector{PetscInt} = DMPlexGetMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}) 
 Get an array for the meet of the set of points
 
 Not Collective
@@ -27037,7 +26156,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexRestoreMeet()`, `DMPlexGetJoin()`
+See also: `DM`, `DMPLEX`, `DMPlexRestoreMeet()`, `DMPlexGetJoin()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMeet"))
@@ -27065,7 +26184,7 @@ end
 end 
 
 """
-	migrationSF::PetscSF = DMPlexGetMigrationSF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	migrationSF::PetscSF = DMPlexGetMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the `PetscSF` for migrating from a parent `DM` into this `DM`
 
 Not Collective
@@ -27078,7 +26197,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSF`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexCreateMigrationSF()`, `DMPlexSetMigrationSF`
+See also: `DM`, `DMPLEX`, `PetscSF`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexCreateMigrationSF()`, `DMPlexSetMigrationSF`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMigrationSF"))
@@ -27103,7 +26222,7 @@ end
 end 
 
 """
-	minradius::PetscReal = DMPlexGetMinRadius(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	minradius::PetscReal = DMPlexGetMinRadius(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the minimum distance from any cell centroid to a face
 
 Not Collective
@@ -27116,7 +26235,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMGetCoordinates()`
+See also: `DMPLEX`, `DMGetCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetMinRadius"))
@@ -27141,7 +26260,7 @@ end
 end 
 
 """
-	numFaceVertices::PetscInt = DMPlexGetNumFaceVertices(petsclib::PetscLibType,dm::AbstractPetscDM, cellDim::PetscInt, numCorners::PetscInt) 
+	numFaceVertices::PetscInt = DMPlexGetNumFaceVertices(petsclib::PetscLibType, dm::AbstractPetscDM, cellDim::PetscInt, numCorners::PetscInt) 
 Returns the number of vertices on a face
 
 Not Collective
@@ -27156,7 +26275,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCone()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetNumFaceVertices"))
@@ -27181,7 +26300,7 @@ end
 end 
 
 """
-	perm::IS = DMPlexGetOrdering(petsclib::PetscLibType,dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel) 
+	perm::IS = DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::MatOrderingType, label::DMLabel) 
 Calculate a reordering of the mesh
 
 Collective
@@ -27196,7 +26315,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexPermute()`, `MatOrderingType`, `MatGetOrdering()`
+See also: `DMPLEX`, `DMPlexPermute()`, `MatOrderingType`, `MatGetOrdering()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrdering"))
@@ -27221,7 +26340,7 @@ end
 end 
 
 """
-	perm::IS = DMPlexGetOrdering1D(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	perm::IS = DMPlexGetOrdering1D(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Reorder the vertices so that the mesh is in a line
 
 Collective
@@ -27234,7 +26353,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexGetOrdering()`, `DMPlexPermute()`, `MatGetOrdering()`
+See also: `DMPLEX`, `DMPlexGetOrdering()`, `DMPlexPermute()`, `MatGetOrdering()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrdering1D"))
@@ -27259,8 +26378,8 @@ end
 end 
 
 """
-	cone::Vector{PetscInt},ornt::Vector{PetscInt} = DMPlexGetOrientedCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
-Return the points and orientations on the in
+	cone::Vector{PetscInt},ornt::Vector{PetscInt} = DMPlexGetOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
+Return the points and orientations on the in-edges for this point in the DAG
 
 Not collective
 
@@ -27275,7 +26394,7 @@ integer giving the prescription for cone traversal.
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexRestoreOrientedCone()`, `DMPlexGetConeSize()`, `DMPlexGetCone()`, `DMPlexGetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexRestoreOrientedCone()`, `DMPlexGetConeSize()`, `DMPlexGetCone()`, `DMPlexGetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrientedCone"))
@@ -27304,7 +26423,7 @@ end
 end 
 
 """
-	posOriented::PetscBool = DMPlexGetOrientedFace(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, faceSize::PetscInt, face::Vector{PetscInt}, numCorners::PetscInt, indices::Vector{PetscInt}, origVertices::Vector{PetscInt}, faceVertices::Vector{PetscInt}) 
+	posOriented::PetscBool = DMPlexGetOrientedFace(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, faceSize::PetscInt, face::Vector{PetscInt}, numCorners::PetscInt, indices::Vector{PetscInt}, origVertices::Vector{PetscInt}, faceVertices::Vector{PetscInt}) 
 Given a cell and a face, as a set of vertices, return the oriented face, as a set of vertices,
 in faceVertices. The orientation is such that the face normal points out of the cell
 
@@ -27325,7 +26444,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCone()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrientedFace"))
@@ -27350,7 +26469,7 @@ end
 end 
 
 """
-	overlap::PetscInt = DMPlexGetOverlap(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	overlap::PetscInt = DMPlexGetOverlap(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the width of the cell overlap
 
 Not Collective
@@ -27363,7 +26482,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexSetOverlap()`, `DMPlexDistribute()`
+See also: `DMPLEX`, `DMPlexSetOverlap()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOverlap"))
@@ -27388,7 +26507,7 @@ end
 end 
 
 """
-	flg::PetscBool = DMPlexGetPartitionBalance(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	flg::PetscBool = DMPlexGetPartitionBalance(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Does distribution of the `DM` attempt to balance the shared point partition?
 
 Input Parameter:
@@ -27399,7 +26518,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexSetPartitionBalance()`
+See also: `DMPLEX`, `DMPlexDistribute()`, `DMPlexSetPartitionBalance()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPartitionBalance"))
@@ -27424,7 +26543,7 @@ end
 end 
 
 """
-	part::PetscPartitioner = DMPlexGetPartitioner(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	part::PetscPartitioner = DMPlexGetPartitioner(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the mesh partitioner
 
 Not Collective
@@ -27437,7 +26556,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscPartitioner`, `PetscSection`, `DMPlexDistribute()`, `DMPlexSetPartitioner()`, `PetscPartitionerDMPlexPartition()`, `PetscPartitionerCreate()`
+See also: `DM`, `DMPLEX`, `PetscPartitioner`, `PetscSection`, `DMPlexDistribute()`, `DMPlexSetPartitioner()`, `PetscPartitionerDMPlexPartition()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPartitioner"))
@@ -27462,7 +26581,7 @@ end
 end 
 
 """
-	depth::PetscInt = DMPlexGetPointDepth(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	depth::PetscInt = DMPlexGetPointDepth(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 Get the `depth` of a given point
 
 Not Collective
@@ -27476,7 +26595,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellType()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`, `DMPlexGetPointHeight()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellType()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`, `DMPlexGetPointHeight()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointDepth"))
@@ -27501,7 +26620,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexGetPointGlobal(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMPlexGetPointGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 get location of point data in global Vec
 
 Not Collective
@@ -27516,7 +26635,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetPointGlobalField()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointGlobalRead()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
+See also: `DM`, `DMPLEX`, `DMPlexGetPointGlobalField()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointGlobalRead()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointGlobal"))
@@ -27543,7 +26662,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexGetPointGlobalField(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMPlexGetPointGlobalField(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
 get location of point field data in global `Vec`
 
 Not Collective
@@ -27559,7 +26678,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetPointGlobal()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointGlobalRead()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
+See also: `DM`, `DMPLEX`, `DMPlexGetPointGlobal()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointGlobalRead()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointGlobalField"))
@@ -27586,7 +26705,7 @@ end
 end 
 
 """
-	height::PetscInt = DMPlexGetPointHeight(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	height::PetscInt = DMPlexGetPointHeight(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 Get the `height` of a given point
 
 Not Collective
@@ -27600,7 +26719,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellType()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`, `DMPlexGetPointDepth()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellType()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`, `DMPlexGetPointDepth()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointHeight"))
@@ -27625,7 +26744,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexGetPointLocal(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMPlexGetPointLocal(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 get location of point data in local `Vec`
 
 Not Collective
@@ -27640,7 +26759,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetPointLocalField()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointLocalRead()`, `DMPlexPointLocalRef()`
+See also: `DM`, `DMPLEX`, `DMPlexGetPointLocalField()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointLocalRead()`, `DMPlexPointLocalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointLocal"))
@@ -27667,7 +26786,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMPlexGetPointLocalField(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMPlexGetPointLocalField(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
 get location of point field data in local Vec
 
 Not Collective
@@ -27683,7 +26802,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetPointLocal()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointLocalRead()`, `DMPlexPointLocalRef()`
+See also: `DM`, `DMPLEX`, `DMPlexGetPointLocal()`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexPointLocalRead()`, `DMPlexPointLocalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetPointLocalField"))
@@ -27710,7 +26829,7 @@ end
 end 
 
 """
-	sf::PetscSF,redundantMesh::PetscDM = DMPlexGetRedundantDM(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	sf::PetscSF,redundantMesh::PetscDM = DMPlexGetRedundantDM(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get a copy of the `DMPLEX` that is completely copied on each process.
 
 Collective
@@ -27724,7 +26843,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexGetGatherDM()`
+See also: `DMPLEX`, `DMPlexDistribute()`, `DMPlexGetGatherDM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRedundantDM"))
@@ -27751,8 +26870,8 @@ end
 end 
 
 """
-	ref::PetscDM = DMPlexGetReferenceTree(petsclib::PetscLibType,dm::AbstractPetscDM) 
-get the reference tree for hierarchically non
+	ref::PetscDM = DMPlexGetReferenceTree(petsclib::PetscLibType, dm::AbstractPetscDM) 
+get the reference tree for hierarchically non-conforming meshes.
 
 Not Collective
 
@@ -27764,7 +26883,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`
+See also: `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetReferenceTree"))
@@ -27789,7 +26908,7 @@ end
 end 
 
 """
-	DMPlexGetRefinementFunction(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMPlexGetRefinementFunction(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 Get the function giving the maximum cell volume for refinement
 
 Input Parameter:
@@ -27804,7 +26923,7 @@ Calling Sequence of `refinementFunc`:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexSetRefinementFunction()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexSetRefinementFunction()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRefinementFunction"))
@@ -27827,7 +26946,7 @@ end
 end 
 
 """
-	refinementLimit::PetscReal = DMPlexGetRefinementLimit(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	refinementLimit::PetscReal = DMPlexGetRefinementLimit(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the maximum cell volume for refinement
 
 Input Parameter:
@@ -27838,7 +26957,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexSetRefinementLimit()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexSetRefinementLimit()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRefinementLimit"))
@@ -27863,7 +26982,7 @@ end
 end 
 
 """
-	refinementUniform::PetscBool = DMPlexGetRefinementUniform(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	refinementUniform::PetscBool = DMPlexGetRefinementUniform(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the flag for uniform refinement
 
 Input Parameter:
@@ -27874,7 +26993,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexSetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexSetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRefinementUniform"))
@@ -27899,7 +27018,7 @@ end
 end 
 
 """
-	regular::PetscBool = DMPlexGetRegularRefinement(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	regular::PetscBool = DMPlexGetRegularRefinement(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the flag indicating that this mesh was obtained by regular refinement from its coarse mesh
 
 Input Parameter:
@@ -27910,7 +27029,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetRegularRefinement()`
+See also: `DM`, `DMPLEX`, `DMPlexSetRegularRefinement()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetRegularRefinement"))
@@ -27935,7 +27054,7 @@ end
 end 
 
 """
-	save::PetscBool = DMPlexGetSaveTransform(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	save::PetscBool = DMPlexGetSaveTransform(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the flag which determines whether the `DMPlexTransform` used to produce a refined `DM` is retained
 
 Not Collective
@@ -27948,7 +27067,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetSaveTransform()`, `DMPlexGetTransform()`, `DMPlexSetTransform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetSaveTransform()`, `DMPlexGetTransform()`, `DMPlexSetTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSaveTransform"))
@@ -27973,7 +27092,7 @@ end
 end 
 
 """
-	scale::PetscReal = DMPlexGetScale(petsclib::PetscLibType,dm::AbstractPetscDM, unit::PetscUnit) 
+	scale::PetscReal = DMPlexGetScale(petsclib::PetscLibType, dm::AbstractPetscDM, unit::PetscUnit) 
 Get the scale for the specified fundamental unit
 
 Not Collective
@@ -27987,7 +27106,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetScale()`, `PetscUnit`
+See also: `DM`, `DMPLEX`, `DMPlexSetScale()`, `PetscUnit`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetScale"))
@@ -28012,7 +27131,7 @@ end
 end 
 
 """
-	cStart::PetscInt,cEnd::PetscInt = DMPlexGetSimplexOrBoxCells(petsclib::PetscLibType,dm::AbstractPetscDM, height::PetscInt) 
+	cStart::PetscInt,cEnd::PetscInt = DMPlexGetSimplexOrBoxCells(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) 
 Get the range of cells which are neither prisms nor ghost FV cells
 
 Input Parameters:
@@ -28025,7 +27144,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexConstructGhostCells()`, `DMPlexGetCellTypeStratum()`
+See also: `DM`, `DMPLEX`, `DMPlexConstructGhostCells()`, `DMPlexGetCellTypeStratum()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSimplexOrBoxCells"))
@@ -28052,7 +27171,7 @@ end
 end 
 
 """
-	subsection::PetscSection = DMPlexGetSubdomainSection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	subsection::PetscSection = DMPlexGetSubdomainSection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the section associated with the subdomain
 
 Not Collective
@@ -28065,7 +27184,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSection`
+See also: `DM`, `DMPLEX`, `PetscSection`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSubdomainSection"))
@@ -28090,7 +27209,7 @@ end
 end 
 
 """
-	subpointIS::IS = DMPlexGetSubpointIS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	subpointIS::IS = DMPlexGetSubpointIS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns an `IS` covering the entire subdm chart with the original points as data
 
 Input Parameter:
@@ -28101,7 +27220,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateSubmesh()`, `DMPlexGetSubpointMap()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateSubmesh()`, `DMPlexGetSubpointMap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSubpointIS"))
@@ -28126,7 +27245,7 @@ end
 end 
 
 """
-	subpointMap::DMLabel = DMPlexGetSubpointMap(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	subpointMap::DMLabel = DMPlexGetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns a `DMLabel` with point dimension as values
 
 Input Parameter:
@@ -28137,7 +27256,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateSubmesh()`, `DMPlexGetSubpointIS()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateSubmesh()`, `DMPlexGetSubpointIS()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSubpointMap"))
@@ -28162,8 +27281,8 @@ end
 end 
 
 """
-	support::Vector{PetscInt} = DMPlexGetSupport(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
-Return the points on the out
+	support::Vector{PetscInt} = DMPlexGetSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
+Return the points on the out-edges for this point in the DAG
 
 Not Collective
 
@@ -28176,7 +27295,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetSupportSize()`, `DMPlexSetSupport()`, `DMPlexGetCone()`, `DMPlexSetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexGetSupportSize()`, `DMPlexSetSupport()`, `DMPlexGetCone()`, `DMPlexSetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSupport"))
@@ -28202,7 +27321,7 @@ end
 end 
 
 """
-	section::PetscSection = DMPlexGetSupportSection(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	section::PetscSection = DMPlexGetSupportSection(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Return a section which describes the layout of support data
 
 Not Collective
@@ -28215,7 +27334,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetConeSection()`, `PetscSection`
+See also: `DM`, `DMPLEX`, `DMPlexGetConeSection()`, `PetscSection`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSupportSection"))
@@ -28240,8 +27359,8 @@ end
 end 
 
 """
-	size::PetscInt = DMPlexGetSupportSize(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt) 
-Return the number of out
+	size::PetscInt = DMPlexGetSupportSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
+Return the number of out-edges for this point in the DAG
 
 Not Collective
 
@@ -28254,7 +27373,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetConeSize()`, `DMPlexSetChart()`, `DMPlexGetConeSize()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetConeSize()`, `DMPlexSetChart()`, `DMPlexGetConeSize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetSupportSize"))
@@ -28279,7 +27398,7 @@ end
 end 
 
 """
-	tr::DMPlexTransform = DMPlexGetTransform(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	tr::DMPlexTransform = DMPlexGetTransform(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the `DMPlexTransform` cached on the `DM`
 
 Not Collective
@@ -28292,7 +27411,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetTransform()`, `DMPlexSetSaveTransform()`, `DMPlexGetSaveTransform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetTransform()`, `DMPlexSetSaveTransform()`, `DMPlexGetSaveTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTransform"))
@@ -28317,7 +27436,7 @@ end
 end 
 
 """
-	type::DMPlexTransformType = DMPlexGetTransformType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	type::DMPlexTransformType = DMPlexGetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieve the transform type for uniform refinement
 
 Input Parameter:
@@ -28328,7 +27447,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRefine()`, `DMPlexSetTransformType()`, `DMPlexGetRefinementUniform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRefine()`, `DMPlexSetTransformType()`, `DMPlexGetRefinementUniform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTransformType"))
@@ -28353,8 +27472,8 @@ end
 end 
 
 """
-	numPoints::PetscInt,points::Vector{PetscInt} = DMPlexGetTransitiveClosure(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool) 
-Return the points on the transitive closure of the in
+	numPoints::PetscInt,points::Vector{PetscInt} = DMPlexGetTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool) 
+Return the points on the transitive closure of the in-edges or out-edges for this point in the DAG
 
 Not Collective
 
@@ -28373,7 +27492,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexRestoreTransitiveClosure()`, `DMPlexCreate()`, `DMPlexSetCone()`, `DMPlexSetChart()`, `DMPlexGetCone()`
+See also: `DM`, `DMPLEX`, `DMPlexRestoreTransitiveClosure()`, `DMPlexCreate()`, `DMPlexSetCone()`, `DMPlexSetChart()`, `DMPlexGetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTransitiveClosure"))
@@ -28401,8 +27520,8 @@ end
 end 
 
 """
-	parentSection::PetscSection,parents::Ptr{PetscInt},childIDs::Ptr{PetscInt},childSection::PetscSection,children::Ptr{PetscInt} = DMPlexGetTree(petsclib::PetscLibType,dm::AbstractPetscDM) 
-get the tree that describes the hierarchy of non
+	parentSection::PetscSection,parents::Ptr{PetscInt},childIDs::Ptr{PetscInt},childSection::PetscSection,children::Ptr{PetscInt} = DMPlexGetTree(petsclib::PetscLibType, dm::AbstractPetscDM) 
+get the tree that describes the hierarchy of non-conforming mesh points.
 Collective
 
 Input Parameter:
@@ -28419,7 +27538,7 @@ the child corresponds to the point in the reference tree with index childID
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetAnchors()`, `DMPlexGetTreeParent()`, `DMPlexGetTreeChildren()`
+See also: `DM`, `DMPLEX`, `DMPlexSetTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetAnchors()`, `DMPlexGetTreeParent()`, `DMPlexGetTreeChildren()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTree"))
@@ -28452,7 +27571,7 @@ end
 end 
 
 """
-	numChildren::PetscInt,children::Ptr{PetscInt} = DMPlexGetTreeChildren(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	numChildren::PetscInt,children::Ptr{PetscInt} = DMPlexGetTreeChildren(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 get the children of a point in the tree describing the point hierarchy (not the DAG)
 
 Input Parameters:
@@ -28465,7 +27584,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetTree()`, `DMPlexGetTree()`, `DMPlexGetTreeParent()`
+See also: `DM`, `DMPLEX`, `DMPlexSetTree()`, `DMPlexGetTree()`, `DMPlexGetTreeParent()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTreeChildren"))
@@ -28492,7 +27611,7 @@ end
 end 
 
 """
-	parent::PetscInt,childID::PetscInt = DMPlexGetTreeParent(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	parent::PetscInt,childID::PetscInt = DMPlexGetTreeParent(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 get the parent of a point in the tree describing the point hierarchy (not the DAG)
 
 Input Parameters:
@@ -28506,7 +27625,7 @@ does not have a parent
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetTree()`, `DMPlexGetTree()`, `DMPlexGetTreeChildren()`
+See also: `DM`, `DMPLEX`, `DMPlexSetTree()`, `DMPlexGetTree()`, `DMPlexGetTreeChildren()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetTreeParent"))
@@ -28533,7 +27652,7 @@ end
 end 
 
 """
-	useClPerm::PetscBool = DMPlexGetUseMatClosurePermutation(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	useClPerm::PetscBool = DMPlexGetUseMatClosurePermutation(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get flag for using a closure permutation for matrix insertion
 
 Not collective
@@ -28546,7 +27665,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexSetUseMatClosurePermutation()`
+See also: `DMPlexSetUseMatClosurePermutation()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetUseMatClosurePermutation"))
@@ -28571,7 +27690,7 @@ end
 end 
 
 """
-	cellHeight::PetscInt = DMPlexGetVTKCellHeight(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	cellHeight::PetscInt = DMPlexGetVTKCellHeight(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the height in the DAG used to determine which points are cells (normally 0)
 
 Input Parameter:
@@ -28582,7 +27701,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetVTKCellHeight()`
+See also: `DM`, `DMPLEX`, `DMPlexSetVTKCellHeight()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetVTKCellHeight"))
@@ -28607,7 +27726,7 @@ end
 end 
 
 """
-	globalVertexNumbers::IS = DMPlexGetVertexNumbering(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	globalVertexNumbers::IS = DMPlexGetVertexNumbering(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get a global vertex numbering for all vertices on this process
 
 Input Parameter:
@@ -28618,7 +27737,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellNumbering()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGetVertexNumbering"))
@@ -28643,7 +27762,7 @@ end
 end 
 
 """
-	DMPlexGlobalToLocalBasis(petsclib::PetscLibType,dm::AbstractPetscDM, lv::AbstractPetscVec) 
+	DMPlexGlobalToLocalBasis(petsclib::PetscLibType, dm::AbstractPetscDM, lv::AbstractPetscVec) 
 Transform the values in the given local vector from the global basis to the local basis
 
 Input Parameters:
@@ -28655,7 +27774,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexLocalToGlobalBasis()`, `DMGetLocalSection()`, `DMPlexCreateBasisRotation()`
+See also: `DM`, `DMPLEX`, `DMPlexLocalToGlobalBasis()`, `DMGetLocalSection()`, `DMPlexCreateBasisRotation()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalToLocalBasis"))
@@ -28678,7 +27797,7 @@ end
 end 
 
 """
-	DMPlexGlobalToNaturalBegin(petsclib::PetscLibType,dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec) 
+	DMPlexGlobalToNaturalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec) 
 Rearranges a global `Vec` in the natural order.
 
 Collective
@@ -28692,7 +27811,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalEnd()`
+See also: `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalEnd()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalToNaturalBegin"))
@@ -28715,7 +27834,7 @@ end
 end 
 
 """
-	DMPlexGlobalToNaturalEnd(petsclib::PetscLibType,dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec) 
+	DMPlexGlobalToNaturalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, gv::AbstractPetscVec, nv::AbstractPetscVec) 
 Rearranges a global `Vec` in the natural order.
 
 Collective
@@ -28729,7 +27848,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalBegin()`
+See also: `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalBegin()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalToNaturalEnd"))
@@ -28752,8 +27871,8 @@ end
 end 
 
 """
-	DMPlexGlobalVectorLoad(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec) 
-Loads on
+	DMPlexGlobalVectorLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec) 
+Loads on-disk vector data into a global vector
 
 Collective
 
@@ -28766,7 +27885,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTopologyLoad()`, `DMPlexSectionLoad()`, `DMPlexLocalVectorLoad()`, `DMPlexGlobalVectorView()`, `DMPlexLocalVectorView()`,
+See also: `DM`, `DMPLEX`, `DMPlexTopologyLoad()`, `DMPlexSectionLoad()`, `DMPlexLocalVectorLoad()`, `DMPlexGlobalVectorView()`, `DMPlexLocalVectorView()`,
 `PetscSF`, `PetscViewer`
 
 # External Links
@@ -28790,7 +27909,7 @@ end
 end 
 
 """
-	DMPlexGlobalVectorView(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec) 
+	DMPlexGlobalVectorView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec) 
 Saves a global vector
 
 Collective
@@ -28803,7 +27922,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTopologyView()`, `DMPlexSectionView()`, `DMPlexLocalVectorView()`, `DMPlexGlobalVectorLoad()`, `DMPlexLocalVectorLoad()`
+See also: `DM`, `DMPLEX`, `DMPlexTopologyView()`, `DMPlexSectionView()`, `DMPlexLocalVectorView()`, `DMPlexGlobalVectorLoad()`, `DMPlexLocalVectorLoad()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexGlobalVectorView"))
@@ -28826,7 +27945,7 @@ end
 end 
 
 """
-	DMPlexInflateToGeomModel(petsclib::PetscLibType,dm::AbstractPetscDM, useTUV::PetscBool) 
+	DMPlexInflateToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, useTUV::PetscBool) 
 Wrapper function allowing two methods for inflating refined meshes to the underlying geometric domain.
 
 Collective
@@ -28839,7 +27958,7 @@ and shortest distance routine.
 If useTUV = PETSC_TRUE, use the (t) or (u, v) parameters to inflate the DMPlex to the CAD geometry.
 If useTUV = PETSC_FALSE, use the nodes (x, y, z) coordinates and the shortest disctance routine.
 
--seealso: `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
+See also: `DMPlexGetGeomModelTUV()`, `DMPlexInflateToGeomModelUseTUV()`, `DMPlexInflateToGeomModelUseXYZ()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInflateToGeomModel"))
@@ -28862,7 +27981,7 @@ end
 end 
 
 """
-	DMPlexInflateToGeomModelUseTUV(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexInflateToGeomModelUseTUV(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Inflates the DM to the associated underlying geometry using the [t] {EDGES) and [u, v] (FACES} associated parameters. Requires a DM with an EGADS model attached and a previous call to DMPlexGetGeomModelTUV().
 
 Collective
@@ -28872,7 +27991,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexGeomDataAndGrads()`, `DMPlexGetGeomModelTUV()`
+See also: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexGeomDataAndGrads()`, `DMPlexGetGeomModelTUV()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInflateToGeomModelUseTUV"))
@@ -28895,8 +28014,8 @@ end
 end 
 
 """
-	DMPlexInflateToGeomModelUseXYZ(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Snaps the vertex coordinates of a `DMPLEX` object representing the mesh to its geometry if some vertices depart from the model. This usually happens with non
+	DMPlexInflateToGeomModelUseXYZ(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Snaps the vertex coordinates of a `DMPLEX` object representing the mesh to its geometry if some vertices depart from the model. This usually happens with non-conforming refinement.
 
 Collective
 
@@ -28905,7 +28024,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexCreateEGADS()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexCreateEGADS()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInflateToGeomModelUseXYZ"))
@@ -28928,7 +28047,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValues(petsclib::PetscLibType,dm::AbstractPetscDM, insertEssential::PetscBool, locX::AbstractPetscVec, time::PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec) 
+	DMPlexInsertBoundaryValues(petsclib::PetscLibType, dm::AbstractPetscDM, insertEssential::PetscBool, locX::AbstractPetscVec, time::PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec) 
 Puts coefficients which represent boundary values into the local solution vector
 
 Not Collective
@@ -28946,7 +28065,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunctionLabelLocal()`, `DMAddBoundary()`
+See also: `DM`, `DMPLEX`, `DMProjectFunctionLabelLocal()`, `DMAddBoundary()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValues"))
@@ -28969,7 +28088,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector using a function of the coordinates
 
 Input Parameters:
@@ -28989,7 +28108,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLabel`, `DMPlexInsertBoundaryValuesEssentialField()`, `DMPlexInsertBoundaryValuesEssentialBdField()`, `DMAddBoundary()`
+See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexInsertBoundaryValuesEssentialField()`, `DMPlexInsertBoundaryValuesEssentialBdField()`, `DMAddBoundary()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssential"))
@@ -29012,7 +28131,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector using a function of the coordinates and boundary field data
 
 Collective
@@ -29035,7 +28154,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectBdFieldLabelLocal()`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsertBoundaryValuesEssentialField()`, `DMAddBoundary()`
+See also: `DM`, `DMPLEX`, `DMProjectBdFieldLabelLocal()`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsertBoundaryValuesEssentialField()`, `DMAddBoundary()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssentialBdField"))
@@ -29058,7 +28177,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector using a function of the coordinates and field data
 
 Input Parameters:
@@ -29079,7 +28198,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsertBoundaryValuesEssentialBdField()`, `DMAddBoundary()`
+See also: `DM`, `DMPLEX`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsertBoundaryValuesEssentialBdField()`, `DMAddBoundary()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssentialField"))
@@ -29102,8 +28221,8 @@ end
 end 
 
 """
-	locGradient::PetscVec = DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType,dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::PetscReal) 
-Reconstruct cell gradients and insert non
+	locGradient::PetscVec = DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType, dm::AbstractPetscDM, fv::PetscFV, locX::AbstractPetscVec, time::PetscReal) 
+Reconstruct cell gradients and insert non-essential (e.g. outflow) boundary values
 into a local finite-volume solution vector.
 
 Collective
@@ -29119,7 +28238,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscFV`, `DMPlexInsertBoundaryValues()`, `DMPlexReconstructGradientsFVM()`
+See also: `DM`, `DMPLEX`, `PetscFV`, `DMPlexInsertBoundaryValues()`, `DMPlexReconstructGradientsFVM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesFVM"))
@@ -29144,7 +28263,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector
 
 Input Parameters:
@@ -29167,7 +28286,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsertBoundaryValuesEssentialField()`, `DMAddBoundary()`
+See also: `DM`, `DMPLEX`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsertBoundaryValuesEssentialField()`, `DMAddBoundary()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesRiemann"))
@@ -29190,7 +28309,7 @@ end
 end 
 
 """
-	DMPlexInsertBounds(petsclib::PetscLibType,dm::AbstractPetscDM, lower::PetscBool, time::PetscReal, locB::AbstractPetscVec) 
+	DMPlexInsertBounds(petsclib::PetscLibType, dm::AbstractPetscDM, lower::PetscBool, time::PetscReal, locB::AbstractPetscVec) 
 Puts coefficients which represent solution bounds into the local bounds vector
 
 Not Collective
@@ -29205,7 +28324,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunctionLabelLocal()`, `PetscDSAddBoundary()`
+See also: `DM`, `DMPLEX`, `DMProjectFunctionLabelLocal()`, `PetscDSAddBoundary()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBounds"))
@@ -29228,8 +28347,8 @@ end
 end 
 
 """
-	DMPlexInsertCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, conePos::PetscInt, conePoint::PetscInt) 
-Insert a point into the in
+	DMPlexInsertCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, conePos::PetscInt, conePoint::PetscInt) 
+Insert a point into the in-edges for the point p in the DAG
 
 Not Collective
 
@@ -29241,7 +28360,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertCone"))
@@ -29264,8 +28383,8 @@ end
 end 
 
 """
-	DMPlexInsertConeOrientation(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, conePos::PetscInt, coneOrientation::PetscInt) 
-Insert a point orientation for the in
+	DMPlexInsertConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, conePos::PetscInt, coneOrientation::PetscInt) 
+Insert a point orientation for the in-edge for the point p in the DAG
 
 Not Collective
 
@@ -29277,7 +28396,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertConeOrientation"))
@@ -29300,8 +28419,8 @@ end
 end 
 
 """
-	DMPlexInsertSupport(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, supportPos::PetscInt, supportPoint::PetscInt) 
-Insert a point into the out
+	DMPlexInsertSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, supportPos::PetscInt, supportPoint::PetscInt) 
+Insert a point into the out-edges for the point p in the DAG
 
 Not Collective
 
@@ -29313,7 +28432,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertSupport"))
@@ -29336,7 +28455,7 @@ end
 end 
 
 """
-	DMPlexInsertTimeDerivativeBoundaryValues(petsclib::PetscLibType,dm::AbstractPetscDM, insertEssential::PetscBool, locX_t::AbstractPetscVec, time::PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec) 
+	DMPlexInsertTimeDerivativeBoundaryValues(petsclib::PetscLibType, dm::AbstractPetscDM, insertEssential::PetscBool, locX_t::AbstractPetscVec, time::PetscReal, faceGeomFVM::AbstractPetscVec, cellGeomFVM::AbstractPetscVec, gradFVM::AbstractPetscVec) 
 Puts coefficients which represent boundary values of the time derivative into the local solution vector
 
 Input Parameters:
@@ -29352,7 +28471,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMProjectFunctionLabelLocal()`
+See also: `DM`, `DMPLEX`, `DMProjectFunctionLabelLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertTimeDerivativeBoundaryValues"))
@@ -29375,8 +28494,8 @@ end
 end 
 
 """
-	dmInt::PetscDM = DMPlexInterpolate(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Take in a cell
+	dmInt::PetscDM = DMPlexInterpolate(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Take in a cell-vertex mesh and return one with all intermediate faces, edges, etc.
 
 Collective
 
@@ -29388,7 +28507,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexUninterpolate()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCopyCoordinates()`
+See also: `DMPLEX`, `DMPlexUninterpolate()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCopyCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInterpolate"))
@@ -29413,7 +28532,7 @@ end
 end 
 
 """
-	DMPlexInterpolatePointSF(petsclib::PetscLibType,dm::AbstractPetscDM, pointSF::PetscSF) 
+	DMPlexInterpolatePointSF(petsclib::PetscLibType, dm::AbstractPetscDM, pointSF::PetscSF) 
 Insert interpolated points in the overlap into the `PointSF` in parallel, following local interpolation
 
 Collective
@@ -29424,7 +28543,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexUninterpolate()`
+See also: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexUninterpolate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInterpolatePointSF"))
@@ -29447,7 +28566,7 @@ end
 end 
 
 """
-	DMPlexInvertCell(petsclib::PetscLibType,cellType::DMPolytopeType, cone::Vector{PetscInt}) 
+	DMPlexInvertCell(petsclib::PetscLibType, cellType::DMPolytopeType, cone::Vector{PetscInt}) 
 Flips cell orientations since `DMPLEX` stores some of them internally with outward normals.
 
 Input Parameters:
@@ -29459,7 +28578,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPolytopeType`, `DMPlexGenerate()`
+See also: `DM`, `DMPLEX`, `DMPolytopeType`, `DMPlexGenerate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexInvertCell"))
@@ -29482,7 +28601,7 @@ end
 end 
 
 """
-	distributed::PetscBool = DMPlexIsDistributed(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	distributed::PetscBool = DMPlexIsDistributed(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Find out whether this `DM` is distributed, i.e. more than one rank owns some points.
 
 Collective
@@ -29495,7 +28614,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexGetOverlap()`, `DMPlexIsInterpolated()`
+See also: `DMPLEX`, `DMPlexDistribute()`, `DMPlexGetOverlap()`, `DMPlexIsInterpolated()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexIsDistributed"))
@@ -29520,7 +28639,7 @@ end
 end 
 
 """
-	interpolated::DMPlexInterpolatedFlag = DMPlexIsInterpolated(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	interpolated::DMPlexInterpolatedFlag = DMPlexIsInterpolated(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Find out to what extent the `DMPLEX` is topologically interpolated.
 
 Not Collective
@@ -29533,7 +28652,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolatedCollective()`
+See also: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolatedCollective()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexIsInterpolated"))
@@ -29558,7 +28677,7 @@ end
 end 
 
 """
-	interpolated::DMPlexInterpolatedFlag = DMPlexIsInterpolatedCollective(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	interpolated::DMPlexInterpolatedFlag = DMPlexIsInterpolatedCollective(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Find out to what extent the `DMPLEX` is topologically interpolated (in collective manner).
 
 Collective
@@ -29571,7 +28690,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolated()`
+See also: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolated()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexIsInterpolatedCollective"))
@@ -29596,7 +28715,7 @@ end
 end 
 
 """
-	simplex::PetscBool = DMPlexIsSimplex(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	simplex::PetscBool = DMPlexIsSimplex(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Is the first cell in this mesh a simplex?
 
 Input Parameter:
@@ -29607,7 +28726,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetSimplexOrBoxCells()`, `DMPlexGetCellType()`, `DMPlexGetHeightStratum()`, `DMPolytopeTypeGetNumVertices()`
+See also: `DM`, `DMPLEX`, `DMPlexGetSimplexOrBoxCells()`, `DMPlexGetCellType()`, `DMPlexGetHeightStratum()`, `DMPolytopeTypeGetNumVertices()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexIsSimplex"))
@@ -29632,7 +28751,7 @@ end
 end 
 
 """
-	DMPlexLabelAddCells(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelAddCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Starting with a label marking points on a surface, we add a cell for each point
 
 Input Parameters:
@@ -29644,7 +28763,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexLabelAddFaceCells()`, `DMPlexLabelComplete()`, `DMPlexLabelCohesiveComplete()`
+See also: `DM`, `DMPLEX`, `DMPlexLabelAddFaceCells()`, `DMPlexLabelComplete()`, `DMPlexLabelCohesiveComplete()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelAddCells"))
@@ -29667,7 +28786,7 @@ end
 end 
 
 """
-	DMPlexLabelAddFaceCells(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelAddFaceCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Starting with a label marking faces on a surface, we add a cell for each face
 
 Input Parameters:
@@ -29679,7 +28798,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexLabelAddCells()`, `DMPlexLabelComplete()`, `DMPlexLabelCohesiveComplete()`
+See also: `DM`, `DMPLEX`, `DMPlexLabelAddCells()`, `DMPlexLabelComplete()`, `DMPlexLabelCohesiveComplete()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelAddFaceCells"))
@@ -29702,7 +28821,7 @@ end
 end 
 
 """
-	DMPlexLabelClearCells(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelClearCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Remove cells from a label
 
 Input Parameters:
@@ -29714,7 +28833,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexLabelComplete()`, `DMPlexLabelCohesiveComplete()`, `DMPlexLabelAddCells()`
+See also: `DM`, `DMPLEX`, `DMPlexLabelComplete()`, `DMPlexLabelCohesiveComplete()`, `DMPlexLabelAddCells()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelClearCells"))
@@ -29737,7 +28856,7 @@ end
 end 
 
 """
-	DMPlexLabelCohesiveComplete(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM) 
+	DMPlexLabelCohesiveComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM) 
 Starting with a label marking points on an internal surface, we add all other mesh pieces
 to complete the surface
 
@@ -29755,7 +28874,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexConstructCohesiveCells()`, `DMPlexLabelComplete()`
+See also: `DM`, `DMPLEX`, `DMPlexConstructCohesiveCells()`, `DMPlexLabelComplete()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelCohesiveComplete"))
@@ -29778,7 +28897,7 @@ end
 end 
 
 """
-	DMPlexLabelComplete(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Starting with a label marking points, we add their transitive closure
 
 Input Parameters:
@@ -29790,7 +28909,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexLabelCohesiveComplete()`
+See also: `DM`, `DMPLEX`, `DMPlexLabelCohesiveComplete()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelComplete"))
@@ -29813,7 +28932,7 @@ end
 end 
 
 """
-	DMPlexLabelsLoad(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF) 
+	DMPlexLabelsLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, globalToLocalPointSF::PetscSF) 
 Loads labels into a `DMPLEX`
 
 Collective
@@ -29825,7 +28944,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLoad()`, `DMPlexTopologyLoad()`, `DMPlexCoordinatesLoad()`, `DMView()`, `PetscViewerHDF5Open()`, `PetscViewerPushFormat()`,
+See also: `DM`, `DMPLEX`, `DMLoad()`, `DMPlexTopologyLoad()`, `DMPlexCoordinatesLoad()`, `DMView()`, `PetscViewerHDF5Open()`, `PetscViewerPushFormat()`,
 `PetscSF`, `PetscViewer`
 
 # External Links
@@ -29849,7 +28968,7 @@ end
 end 
 
 """
-	DMPlexLabelsView(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer) 
+	DMPlexLabelsView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) 
 Saves `DMPLEX` labels into a file
 
 Collective
@@ -29860,7 +28979,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMView()`, `DMPlexTopologyView()`, `DMPlexCoordinatesView()`, `DMPlexLabelsLoad()`, `PetscViewer`
+See also: `DM`, `DMPLEX`, `DMView()`, `DMPlexTopologyView()`, `DMPlexCoordinatesView()`, `DMPlexLabelsLoad()`, `PetscViewer`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelsView"))
@@ -29883,7 +29002,7 @@ end
 end 
 
 """
-	DMPlexLandauAccess(petsclib::PetscLibType,pack::AbstractPetscDM, X::AbstractPetscVec, func::external, user_ctx::Ptr{Cvoid}) 
+	DMPlexLandauAccess(petsclib::PetscLibType, pack::AbstractPetscDM, X::AbstractPetscVec, func::external, user_ctx::Ptr{Cvoid}) 
 Access to the distribution function with user callback
 
 Collective
@@ -29898,7 +29017,7 @@ Input/Output Parameter:
 
 Level: advanced
 
--seealso: `DMPlexLandauCreateVelocitySpace()`
+See also: `DMPlexLandauCreateVelocitySpace()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauAccess"))
@@ -29921,7 +29040,7 @@ end
 end 
 
 """
-	DMPlexLandauAddMaxwellians(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, time::PetscReal, temps::Vector{PetscReal}, ns::Vector{PetscReal}, grid::PetscInt, b_id::PetscInt, n_batch::PetscInt, actx::Ptr{Cvoid}) 
+	DMPlexLandauAddMaxwellians(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, time::PetscReal, temps::Vector{PetscReal}, ns::Vector{PetscReal}, grid::PetscInt, b_id::PetscInt, n_batch::PetscInt, actx::Ptr{Cvoid}) 
 Add a Maxwellian distribution to a state
 
 Collective
@@ -29941,7 +29060,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPlexLandauCreateVelocitySpace()`
+See also: `DMPlexLandauCreateVelocitySpace()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauAddMaxwellians"))
@@ -29964,7 +29083,7 @@ end
 end 
 
 """
-	Amat::PetscMat = DMPlexLandauCreateMassMatrix(petsclib::PetscLibType,pack::AbstractPetscDM) 
+	Amat::PetscMat = DMPlexLandauCreateMassMatrix(petsclib::PetscLibType, pack::AbstractPetscDM) 
 Create mass matrix for Landau in Plex space (not field major order of Jacobian)
 - `puts mass matrix into ctx->M`
 
@@ -29978,7 +29097,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPlexLandauCreateVelocitySpace()`
+See also: `DMPlexLandauCreateVelocitySpace()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauCreateMassMatrix"))
@@ -30003,7 +29122,7 @@ end
 end 
 
 """
-	X::PetscVec,J::PetscMat,pack::PetscDM = DMPlexLandauCreateVelocitySpace(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, prefix::String) 
+	X::PetscVec,J::PetscMat,pack::PetscDM = DMPlexLandauCreateVelocitySpace(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, prefix::String) 
 Create a `DMPLEX` velocity space mesh
 
 Collective
@@ -30020,7 +29139,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPlexCreate()`, `DMPlexLandauDestroyVelocitySpace()`
+See also: `DMPlexCreate()`, `DMPlexLandauDestroyVelocitySpace()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauCreateVelocitySpace"))
@@ -30049,7 +29168,7 @@ end
 end 
 
 """
-	DMPlexLandauDestroyVelocitySpace(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexLandauDestroyVelocitySpace(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroy a `DMPLEX` velocity space mesh
 
 Collective
@@ -30059,7 +29178,7 @@ Input/Output Parameters:
 
 Level: beginner
 
--seealso: `DMPlexLandauCreateVelocitySpace()`
+See also: `DMPlexLandauCreateVelocitySpace()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauDestroyVelocitySpace"))
@@ -30084,7 +29203,7 @@ end
 end 
 
 """
-	DMPlexLandauIFunction(petsclib::PetscLibType,ts::AbstractTS, time_dummy::PetscReal, X::AbstractPetscVec, X_t::AbstractPetscVec, F::AbstractPetscVec, actx::Ptr{Cvoid}) 
+	DMPlexLandauIFunction(petsclib::PetscLibType, ts::AbstractTS, time_dummy::PetscReal, X::AbstractPetscVec, X_t::AbstractPetscVec, F::AbstractPetscVec, actx::Ptr{Cvoid}) 
 `TS` residual calculation, confusingly this computes the Jacobian w/o mass
 
 Collective
@@ -30101,7 +29220,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPlexLandauCreateVelocitySpace()`, `DMPlexLandauIJacobian()`
+See also: `DMPlexLandauCreateVelocitySpace()`, `DMPlexLandauIJacobian()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauIFunction"))
@@ -30124,7 +29243,7 @@ end
 end 
 
 """
-	DMPlexLandauIJacobian(petsclib::PetscLibType,ts::AbstractTS, time_dummy::PetscReal, X::AbstractPetscVec, U_tdummy::AbstractPetscVec, shift::PetscReal, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, actx::Ptr{Cvoid}) 
+	DMPlexLandauIJacobian(petsclib::PetscLibType, ts::AbstractTS, time_dummy::PetscReal, X::AbstractPetscVec, U_tdummy::AbstractPetscVec, shift::PetscReal, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, actx::Ptr{Cvoid}) 
 `TS` Jacobian construction, confusingly this adds mass
 
 Collective
@@ -30143,7 +29262,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPlexLandauCreateVelocitySpace()`, `DMPlexLandauIFunction()`
+See also: `DMPlexLandauCreateVelocitySpace()`, `DMPlexLandauIFunction()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauIJacobian"))
@@ -30166,7 +29285,7 @@ end
 end 
 
 """
-	DMPlexLandauPrintNorms(petsclib::PetscLibType,X::AbstractPetscVec, stepi::PetscInt) 
+	DMPlexLandauPrintNorms(petsclib::PetscLibType, X::AbstractPetscVec, stepi::PetscInt) 
 collects moments and prints them
 
 Collective
@@ -30177,7 +29296,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPlexLandauCreateVelocitySpace()`
+See also: `DMPlexLandauCreateVelocitySpace()`
 
 # External Links
 $(_doc_external("LANDAU/DMPlexLandauPrintNorms"))
@@ -30200,7 +29319,7 @@ end
 end 
 
 """
-	DMPlexLocalToGlobalBasis(petsclib::PetscLibType,dm::AbstractPetscDM, lv::AbstractPetscVec) 
+	DMPlexLocalToGlobalBasis(petsclib::PetscLibType, dm::AbstractPetscDM, lv::AbstractPetscVec) 
 Transform the values in the given local vector from the local basis to the global basis
 
 Input Parameters:
@@ -30212,7 +29331,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGlobalToLocalBasis()`, `DMGetLocalSection()`, `DMPlexCreateBasisRotation()`
+See also: `DM`, `DMPLEX`, `DMPlexGlobalToLocalBasis()`, `DMGetLocalSection()`, `DMPlexCreateBasisRotation()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLocalToGlobalBasis"))
@@ -30235,8 +29354,8 @@ end
 end 
 
 """
-	DMPlexLocalVectorLoad(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec) 
-Loads on
+	DMPlexLocalVectorLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, sf::PetscSF, vec::AbstractPetscVec) 
+Loads on-disk vector data into a local vector
 
 Collective
 
@@ -30249,7 +29368,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTopologyLoad()`, `DMPlexSectionLoad()`, `DMPlexGlobalVectorLoad()`, `DMPlexGlobalVectorView()`, `DMPlexLocalVectorView()`,
+See also: `DM`, `DMPLEX`, `DMPlexTopologyLoad()`, `DMPlexSectionLoad()`, `DMPlexGlobalVectorLoad()`, `DMPlexGlobalVectorView()`, `DMPlexLocalVectorView()`,
 `PetscSF`, `PetscViewer`
 
 # External Links
@@ -30273,7 +29392,7 @@ end
 end 
 
 """
-	DMPlexLocalVectorView(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec) 
+	DMPlexLocalVectorView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, vec::AbstractPetscVec) 
 Saves a local vector
 
 Collective
@@ -30286,7 +29405,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTopologyView()`, `DMPlexSectionView()`, `DMPlexGlobalVectorView()`, `DMPlexGlobalVectorLoad()`, `DMPlexLocalVectorLoad()`
+See also: `DM`, `DMPLEX`, `DMPlexTopologyView()`, `DMPlexSectionView()`, `DMPlexGlobalVectorView()`, `DMPlexGlobalVectorLoad()`, `DMPlexLocalVectorLoad()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexLocalVectorView"))
@@ -30309,7 +29428,7 @@ end
 end 
 
 """
-	DMPlexMarkBoundaryFaces(petsclib::PetscLibType,dm::AbstractPetscDM, val::PetscInt, label::DMLabel) 
+	DMPlexMarkBoundaryFaces(petsclib::PetscLibType, dm::AbstractPetscDM, val::PetscInt, label::DMLabel) 
 Mark all faces on the boundary
 
 Collective
@@ -30323,7 +29442,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLabelCreate()`, `DMCreateLabel()`
+See also: `DM`, `DMPLEX`, `DMLabelCreate()`, `DMCreateLabel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMarkBoundaryFaces"))
@@ -30346,8 +29465,8 @@ end
 end 
 
 """
-	DMPlexMatGetClosureIndicesRefined(petsclib::PetscLibType,dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, point::PetscInt, cindices::Vector{PetscInt}, findices::Vector{PetscInt}) 
-Compute the fine
+	DMPlexMatGetClosureIndicesRefined(petsclib::PetscLibType, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, point::PetscInt, cindices::Vector{PetscInt}, findices::Vector{PetscInt}) 
+Compute the fine-row and coarse-column global indices associated with the refined closure of a coarse point
 
 Not Collective
 
@@ -30366,7 +29485,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMatSetClosureRefined()`, `DMPlexGetClosureIndices()`, `DMPlexTransformCellTransform()`
+See also: `DM`, `DMPLEX`, `DMPlexMatSetClosureRefined()`, `DMPlexGetClosureIndices()`, `DMPlexTransformCellTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMatGetClosureIndicesRefined"))
@@ -30389,7 +29508,7 @@ end
 end 
 
 """
-	DMPlexMatSetClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, globalSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
+	DMPlexMatSetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, globalSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
 Set an array of the values on the closure of `point`
 
 Not collective
@@ -30405,7 +29524,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMatSetClosureGeneral()`, `DMPlexVecGetClosure()`, `DMPlexVecSetClosure()`
+See also: `DM`, `DMPLEX`, `DMPlexMatSetClosureGeneral()`, `DMPlexVecGetClosure()`, `DMPlexVecSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMatSetClosure"))
@@ -30428,7 +29547,7 @@ end
 end 
 
 """
-	DMPlexMatSetClosureGeneral(petsclib::PetscLibType,dmRow::AbstractPetscDM, sectionRow::PetscSection, globalSectionRow::PetscSection, useRowPerm::PetscBool, dmCol::AbstractPetscDM, sectionCol::PetscSection, globalSectionCol::PetscSection, useColPerm::PetscBool, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
+	DMPlexMatSetClosureGeneral(petsclib::PetscLibType, dmRow::AbstractPetscDM, sectionRow::PetscSection, globalSectionRow::PetscSection, useRowPerm::PetscBool, dmCol::AbstractPetscDM, sectionCol::PetscSection, globalSectionCol::PetscSection, useColPerm::PetscBool, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
 Set an array of the values on the closure of `point` using a different row and column section
 
 Not collective
@@ -30449,7 +29568,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMatSetClosure()`, `DMPlexVecGetClosure()`, `DMPlexVecSetClosure()`
+See also: `DM`, `DMPLEX`, `DMPlexMatSetClosure()`, `DMPlexVecGetClosure()`, `DMPlexVecSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMatSetClosureGeneral"))
@@ -30472,8 +29591,8 @@ end
 end 
 
 """
-	DMPlexMatSetClosureRefined(petsclib::PetscLibType,dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
-Insert values into `A` for the closure of a coarse
+	DMPlexMatSetClosureRefined(petsclib::PetscLibType, dmf::AbstractPetscDM, fsection::PetscSection, globalFSection::PetscSection, dmc::AbstractPetscDM, csection::PetscSection, globalCSection::PetscSection, A::AbstractPetscMat, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
+Insert values into `A` for the closure of a coarse-cell point, using indices from the associated refined subcells
 
 Not Collective
 
@@ -30491,7 +29610,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMatSetClosure()`, `DMPlexMatGetClosureIndicesRefined()`, `DMPlexTransformCellTransform()`, `MatSetValues()`
+See also: `DM`, `DMPLEX`, `DMPlexMatSetClosure()`, `DMPlexMatGetClosureIndicesRefined()`, `DMPlexTransformCellTransform()`, `MatSetValues()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMatSetClosureRefined"))
@@ -30514,7 +29633,7 @@ end
 end 
 
 """
-	DMPlexMetricAverage(petsclib::PetscLibType,dm::AbstractPetscDM, numMetrics::PetscInt, weights::Vector{PetscReal}, metrics::Vector{<:AbstractPetscVec}, metricAvg::AbstractPetscVec) 
+	DMPlexMetricAverage(petsclib::PetscLibType, dm::AbstractPetscDM, numMetrics::PetscInt, weights::Vector{PetscReal}, metrics::Vector{<:AbstractPetscVec}, metricAvg::AbstractPetscVec) 
 Compute the average of a list of metrics
 
 Input Parameters:
@@ -30528,7 +29647,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricAverage2()`, `DMPlexMetricAverage3()`, `DMPlexMetricIntersection()`
+See also: `DMPLEX`, `DMPlexMetricAverage2()`, `DMPlexMetricAverage3()`, `DMPlexMetricIntersection()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricAverage"))
@@ -30551,7 +29670,7 @@ end
 end 
 
 """
-	DMPlexMetricAverage2(petsclib::PetscLibType,dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricAvg::AbstractPetscVec) 
+	DMPlexMetricAverage2(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricAvg::AbstractPetscVec) 
 Compute the unweighted average of two metrics
 
 Input Parameters:
@@ -30564,7 +29683,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricAverage()`, `DMPlexMetricAverage3()`
+See also: `DMPLEX`, `DMPlexMetricAverage()`, `DMPlexMetricAverage3()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricAverage2"))
@@ -30587,7 +29706,7 @@ end
 end 
 
 """
-	DMPlexMetricAverage3(petsclib::PetscLibType,dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricAvg::AbstractPetscVec) 
+	DMPlexMetricAverage3(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricAvg::AbstractPetscVec) 
 Compute the unweighted average of three metrics
 
 Input Parameters:
@@ -30601,7 +29720,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricAverage()`, `DMPlexMetricAverage2()`
+See also: `DMPLEX`, `DMPlexMetricAverage()`, `DMPlexMetricAverage2()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricAverage3"))
@@ -30624,7 +29743,7 @@ end
 end 
 
 """
-	metric::PetscVec = DMPlexMetricCreate(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt) 
+	metric::PetscVec = DMPlexMetricCreate(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) 
 Create a Riemannian metric field
 
 Input Parameters:
@@ -30657,7 +29776,7 @@ Options Database Keys for Riemannian metrics:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricCreateUniform()`, `DMPlexMetricCreateIsotropic()`
+See also: `DMPLEX`, `DMPlexMetricCreateUniform()`, `DMPlexMetricCreateIsotropic()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricCreate"))
@@ -30682,7 +29801,7 @@ end
 end 
 
 """
-	metric::PetscVec = DMPlexMetricCreateIsotropic(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt, indicator::AbstractPetscVec) 
+	metric::PetscVec = DMPlexMetricCreateIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, indicator::AbstractPetscVec) 
 Construct an isotropic metric from an error indicator
 
 Input Parameters:
@@ -30695,7 +29814,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricCreate()`, `DMPlexMetricCreateUniform()`
+See also: `DMPLEX`, `DMPlexMetricCreate()`, `DMPlexMetricCreateUniform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricCreateIsotropic"))
@@ -30720,7 +29839,7 @@ end
 end 
 
 """
-	metric::PetscVec = DMPlexMetricCreateUniform(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt, alpha::PetscReal) 
+	metric::PetscVec = DMPlexMetricCreateUniform(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, alpha::PetscReal) 
 Construct a uniform isotropic metric
 
 Input Parameters:
@@ -30733,7 +29852,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricCreate()`, `DMPlexMetricCreateIsotropic()`
+See also: `DMPLEX`, `DMPlexMetricCreate()`, `DMPlexMetricCreateIsotropic()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricCreateUniform"))
@@ -30758,7 +29877,7 @@ end
 end 
 
 """
-	determinant::PetscVec,dmDet::PetscDM = DMPlexMetricDeterminantCreate(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt) 
+	determinant::PetscVec,dmDet::PetscDM = DMPlexMetricDeterminantCreate(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt) 
 Create the determinant field for a Riemannian metric
 
 Input Parameters:
@@ -30771,7 +29890,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricCreateUniform()`, `DMPlexMetricCreateIsotropic()`, `DMPlexMetricCreate()`
+See also: `DMPLEX`, `DMPlexMetricCreateUniform()`, `DMPlexMetricCreateIsotropic()`, `DMPlexMetricCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricDeterminantCreate"))
@@ -30798,8 +29917,8 @@ end
 end 
 
 """
-	DMPlexMetricEnforceSPD(petsclib::PetscLibType,dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec) 
-Enforce symmetric positive
+	DMPlexMetricEnforceSPD(petsclib::PetscLibType, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec) 
+Enforce symmetric positive-definiteness of a metric
 
 Input Parameters:
 - `dm`                 - The `DM`
@@ -30820,7 +29939,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricNormalize()`, `DMPlexMetricIntersection()`
+See also: `DMPLEX`, `DMPlexMetricNormalize()`, `DMPlexMetricIntersection()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricEnforceSPD"))
@@ -30843,7 +29962,7 @@ end
 end 
 
 """
-	beta::PetscReal = DMPlexMetricGetGradationFactor(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	beta::PetscReal = DMPlexMetricGetGradationFactor(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the metric gradation factor
 
 Input Parameters:
@@ -30854,7 +29973,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetGradationFactor()`, `DMPlexMetricGetHausdorffNumber()`
+See also: `DMPLEX`, `DMPlexMetricSetGradationFactor()`, `DMPlexMetricGetHausdorffNumber()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetGradationFactor"))
@@ -30879,7 +29998,7 @@ end
 end 
 
 """
-	hausd::PetscReal = DMPlexMetricGetHausdorffNumber(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	hausd::PetscReal = DMPlexMetricGetHausdorffNumber(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the metric Hausdorff number
 
 Input Parameters:
@@ -30890,7 +30009,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetGradationFactor()`, `DMPlexMetricSetHausdorffNumber()`
+See also: `DMPLEX`, `DMPlexMetricGetGradationFactor()`, `DMPlexMetricSetHausdorffNumber()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetHausdorffNumber"))
@@ -30915,7 +30034,7 @@ end
 end 
 
 """
-	a_max::PetscReal = DMPlexMetricGetMaximumAnisotropy(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	a_max::PetscReal = DMPlexMetricGetMaximumAnisotropy(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the maximum tolerated metric anisotropy
 
 Input Parameters:
@@ -30926,7 +30045,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetMaximumAnisotropy()`, `DMPlexMetricGetMaximumMagnitude()`
+See also: `DMPLEX`, `DMPlexMetricSetMaximumAnisotropy()`, `DMPlexMetricGetMaximumMagnitude()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetMaximumAnisotropy"))
@@ -30951,7 +30070,7 @@ end
 end 
 
 """
-	h_max::PetscReal = DMPlexMetricGetMaximumMagnitude(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	h_max::PetscReal = DMPlexMetricGetMaximumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the maximum tolerated metric magnitude
 
 Input Parameters:
@@ -30962,7 +30081,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetMaximumMagnitude()`, `DMPlexMetricGetMinimumMagnitude()`
+See also: `DMPLEX`, `DMPlexMetricSetMaximumMagnitude()`, `DMPlexMetricGetMinimumMagnitude()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetMaximumMagnitude"))
@@ -30987,7 +30106,7 @@ end
 end 
 
 """
-	h_min::PetscReal = DMPlexMetricGetMinimumMagnitude(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	h_min::PetscReal = DMPlexMetricGetMinimumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the minimum tolerated metric magnitude
 
 Input Parameters:
@@ -30998,7 +30117,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetMinimumMagnitude()`, `DMPlexMetricGetMaximumMagnitude()`
+See also: `DMPLEX`, `DMPlexMetricSetMinimumMagnitude()`, `DMPlexMetricGetMaximumMagnitude()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetMinimumMagnitude"))
@@ -31023,8 +30142,8 @@ end
 end 
 
 """
-	p::PetscReal = DMPlexMetricGetNormalizationOrder(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Get the order p for L
+	p::PetscReal = DMPlexMetricGetNormalizationOrder(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Get the order p for L-p normalization
 
 Input Parameters:
 - `dm` - The `DM`
@@ -31034,7 +30153,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetNormalizationOrder()`, `DMPlexMetricGetTargetComplexity()`
+See also: `DMPLEX`, `DMPlexMetricSetNormalizationOrder()`, `DMPlexMetricGetTargetComplexity()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetNormalizationOrder"))
@@ -31059,7 +30178,7 @@ end
 end 
 
 """
-	numIter::PetscInt = DMPlexMetricGetNumIterations(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numIter::PetscInt = DMPlexMetricGetNumIterations(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the number of parallel adaptation iterations
 
 Input Parameters:
@@ -31070,7 +30189,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetNumIterations()`, `DMPlexMetricGetVerbosity()`
+See also: `DMPLEX`, `DMPlexMetricSetNumIterations()`, `DMPlexMetricGetVerbosity()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetNumIterations"))
@@ -31095,7 +30214,7 @@ end
 end 
 
 """
-	targetComplexity::PetscReal = DMPlexMetricGetTargetComplexity(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	targetComplexity::PetscReal = DMPlexMetricGetTargetComplexity(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the target metric complexity
 
 Input Parameters:
@@ -31106,7 +30225,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetTargetComplexity()`, `DMPlexMetricGetNormalizationOrder()`
+See also: `DMPLEX`, `DMPlexMetricSetTargetComplexity()`, `DMPlexMetricGetNormalizationOrder()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetTargetComplexity"))
@@ -31131,7 +30250,7 @@ end
 end 
 
 """
-	verbosity::PetscInt = DMPlexMetricGetVerbosity(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	verbosity::PetscInt = DMPlexMetricGetVerbosity(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the verbosity of the mesh adaptation package
 
 Input Parameters:
@@ -31142,7 +30261,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetVerbosity()`, `DMPlexMetricGetNumIterations()`
+See also: `DMPLEX`, `DMPlexMetricSetVerbosity()`, `DMPlexMetricGetNumIterations()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricGetVerbosity"))
@@ -31167,7 +30286,7 @@ end
 end 
 
 """
-	DMPlexMetricIntersection(petsclib::PetscLibType,dm::AbstractPetscDM, numMetrics::PetscInt, metrics::Vector{<:AbstractPetscVec}, metricInt::AbstractPetscVec) 
+	DMPlexMetricIntersection(petsclib::PetscLibType, dm::AbstractPetscDM, numMetrics::PetscInt, metrics::Vector{<:AbstractPetscVec}, metricInt::AbstractPetscVec) 
 Compute the intersection of a list of metrics
 
 Input Parameters:
@@ -31180,7 +30299,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricIntersection2()`, `DMPlexMetricIntersection3()`, `DMPlexMetricAverage()`
+See also: `DMPLEX`, `DMPlexMetricIntersection2()`, `DMPlexMetricIntersection3()`, `DMPlexMetricAverage()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIntersection"))
@@ -31203,7 +30322,7 @@ end
 end 
 
 """
-	DMPlexMetricIntersection2(petsclib::PetscLibType,dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricInt::AbstractPetscVec) 
+	DMPlexMetricIntersection2(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metricInt::AbstractPetscVec) 
 Compute the intersection of two metrics
 
 Input Parameters:
@@ -31216,7 +30335,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricIntersection()`, `DMPlexMetricIntersection3()`
+See also: `DMPLEX`, `DMPlexMetricIntersection()`, `DMPlexMetricIntersection3()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIntersection2"))
@@ -31239,7 +30358,7 @@ end
 end 
 
 """
-	DMPlexMetricIntersection3(petsclib::PetscLibType,dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricInt::AbstractPetscVec) 
+	DMPlexMetricIntersection3(petsclib::PetscLibType, dm::AbstractPetscDM, metric1::AbstractPetscVec, metric2::AbstractPetscVec, metric3::AbstractPetscVec, metricInt::AbstractPetscVec) 
 Compute the intersection of three metrics
 
 Input Parameters:
@@ -31253,7 +30372,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricIntersection()`, `DMPlexMetricIntersection2()`
+See also: `DMPLEX`, `DMPlexMetricIntersection()`, `DMPlexMetricIntersection2()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIntersection3"))
@@ -31276,7 +30395,7 @@ end
 end 
 
 """
-	isotropic::PetscBool = DMPlexMetricIsIsotropic(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	isotropic::PetscBool = DMPlexMetricIsIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Is a metric isotropic?
 
 Input Parameters:
@@ -31287,7 +30406,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricIsUniform()`, `DMPlexMetricRestrictAnisotropyFirst()`
+See also: `DMPLEX`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricIsUniform()`, `DMPlexMetricRestrictAnisotropyFirst()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIsIsotropic"))
@@ -31312,7 +30431,7 @@ end
 end 
 
 """
-	uniform::PetscBool = DMPlexMetricIsUniform(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	uniform::PetscBool = DMPlexMetricIsUniform(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Is a metric uniform?
 
 Input Parameters:
@@ -31323,7 +30442,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetUniform()`, `DMPlexMetricIsIsotropic()`, `DMPlexMetricRestrictAnisotropyFirst()`
+See also: `DMPLEX`, `DMPlexMetricSetUniform()`, `DMPlexMetricIsIsotropic()`, `DMPlexMetricRestrictAnisotropyFirst()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricIsUniform"))
@@ -31348,7 +30467,7 @@ end
 end 
 
 """
-	noInsert::PetscBool = DMPlexMetricNoInsertion(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	noInsert::PetscBool = DMPlexMetricNoInsertion(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Are node insertion and deletion turned off?
 
 Input Parameters:
@@ -31359,7 +30478,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricNoSwapping()`, `DMPlexMetricNoMovement()`, `DMPlexMetricNoSurf()`
+See also: `DMPLEX`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricNoSwapping()`, `DMPlexMetricNoMovement()`, `DMPlexMetricNoSurf()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoInsertion"))
@@ -31384,7 +30503,7 @@ end
 end 
 
 """
-	noMove::PetscBool = DMPlexMetricNoMovement(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	noMove::PetscBool = DMPlexMetricNoMovement(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Is node movement turned off?
 
 Input Parameters:
@@ -31395,7 +30514,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricNoInsertion()`, `DMPlexMetricNoSwapping()`, `DMPlexMetricNoSurf()`
+See also: `DMPLEX`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricNoInsertion()`, `DMPlexMetricNoSwapping()`, `DMPlexMetricNoSurf()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoMovement"))
@@ -31420,7 +30539,7 @@ end
 end 
 
 """
-	noSurf::PetscBool = DMPlexMetricNoSurf(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	noSurf::PetscBool = DMPlexMetricNoSurf(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Is surface modification turned off?
 
 Input Parameters:
@@ -31431,7 +30550,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetNoSurf()`, `DMPlexMetricNoMovement()`, `DMPlexMetricNoInsertion()`, `DMPlexMetricNoSwapping()`
+See also: `DMPLEX`, `DMPlexMetricSetNoSurf()`, `DMPlexMetricNoMovement()`, `DMPlexMetricNoInsertion()`, `DMPlexMetricNoSwapping()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoSurf"))
@@ -31456,7 +30575,7 @@ end
 end 
 
 """
-	noSwap::PetscBool = DMPlexMetricNoSwapping(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	noSwap::PetscBool = DMPlexMetricNoSwapping(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Is facet swapping turned off?
 
 Input Parameters:
@@ -31467,7 +30586,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetNoSwapping()`, `DMPlexMetricNoInsertion()`, `DMPlexMetricNoMovement()`, `DMPlexMetricNoSurf()`
+See also: `DMPLEX`, `DMPlexMetricSetNoSwapping()`, `DMPlexMetricNoInsertion()`, `DMPlexMetricNoMovement()`, `DMPlexMetricNoSurf()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNoSwapping"))
@@ -31492,8 +30611,8 @@ end
 end 
 
 """
-	DMPlexMetricNormalize(petsclib::PetscLibType,dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec) 
-Apply L
+	DMPlexMetricNormalize(petsclib::PetscLibType, dm::AbstractPetscDM, metricIn::AbstractPetscVec, restrictSizes::PetscBool, restrictAnisotropy::PetscBool, metricOut::AbstractPetscVec, determinant::AbstractPetscVec) 
+Apply L-p normalization to a metric
 
 Input Parameters:
 - `dm`                 - The `DM`
@@ -31517,7 +30636,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricEnforceSPD()`, `DMPlexMetricIntersection()`
+See also: `DMPLEX`, `DMPlexMetricEnforceSPD()`, `DMPlexMetricIntersection()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricNormalize"))
@@ -31540,7 +30659,7 @@ end
 end 
 
 """
-	restrictAnisotropyFirst::PetscBool = DMPlexMetricRestrictAnisotropyFirst(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	restrictAnisotropyFirst::PetscBool = DMPlexMetricRestrictAnisotropyFirst(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Is anisotropy restricted before normalization or after?
 
 Input Parameters:
@@ -31551,7 +30670,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricIsIsotropic()`, `DMPlexMetricSetRestrictAnisotropyFirst()`
+See also: `DMPLEX`, `DMPlexMetricIsIsotropic()`, `DMPlexMetricSetRestrictAnisotropyFirst()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricRestrictAnisotropyFirst"))
@@ -31576,7 +30695,7 @@ end
 end 
 
 """
-	DMPlexMetricSetFromOptions(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexMetricSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Configure the Riemannian metric context on a `DMPLEX` from the options database
 
 Collective
@@ -31604,7 +30723,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricSetUniform()`, `DMPlexMetricSetMinimumMagnitude()`, `DMPlexMetricSetMaximumMagnitude()`, `DMPlexMetricSetTargetComplexity()`
+See also: `DM`, `DMPLEX`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricSetUniform()`, `DMPlexMetricSetMinimumMagnitude()`, `DMPlexMetricSetMaximumMagnitude()`, `DMPlexMetricSetTargetComplexity()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetFromOptions"))
@@ -31627,7 +30746,7 @@ end
 end 
 
 """
-	DMPlexMetricSetGradationFactor(petsclib::PetscLibType,dm::AbstractPetscDM, beta::PetscReal) 
+	DMPlexMetricSetGradationFactor(petsclib::PetscLibType, dm::AbstractPetscDM, beta::PetscReal) 
 Set the metric gradation factor
 
 Input Parameters:
@@ -31636,7 +30755,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetGradationFactor()`, `DMPlexMetricSetHausdorffNumber()`
+See also: `DMPLEX`, `DMPlexMetricGetGradationFactor()`, `DMPlexMetricSetHausdorffNumber()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetGradationFactor"))
@@ -31659,7 +30778,7 @@ end
 end 
 
 """
-	DMPlexMetricSetHausdorffNumber(petsclib::PetscLibType,dm::AbstractPetscDM, hausd::PetscReal) 
+	DMPlexMetricSetHausdorffNumber(petsclib::PetscLibType, dm::AbstractPetscDM, hausd::PetscReal) 
 Set the metric Hausdorff number
 
 Input Parameters:
@@ -31668,7 +30787,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetGradationFactor()`, `DMPlexMetricGetHausdorffNumber()`
+See also: `DMPLEX`, `DMPlexMetricSetGradationFactor()`, `DMPlexMetricGetHausdorffNumber()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetHausdorffNumber"))
@@ -31691,7 +30810,7 @@ end
 end 
 
 """
-	DMPlexMetricSetIsotropic(petsclib::PetscLibType,dm::AbstractPetscDM, isotropic::PetscBool) 
+	DMPlexMetricSetIsotropic(petsclib::PetscLibType, dm::AbstractPetscDM, isotropic::PetscBool) 
 Record whether a metric is isotropic
 
 Input Parameters:
@@ -31700,7 +30819,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricIsIsotropic()`, `DMPlexMetricSetUniform()`, `DMPlexMetricSetRestrictAnisotropyFirst()`
+See also: `DMPLEX`, `DMPlexMetricIsIsotropic()`, `DMPlexMetricSetUniform()`, `DMPlexMetricSetRestrictAnisotropyFirst()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetIsotropic"))
@@ -31723,7 +30842,7 @@ end
 end 
 
 """
-	DMPlexMetricSetMaximumAnisotropy(petsclib::PetscLibType,dm::AbstractPetscDM, a_max::PetscReal) 
+	DMPlexMetricSetMaximumAnisotropy(petsclib::PetscLibType, dm::AbstractPetscDM, a_max::PetscReal) 
 Set the maximum tolerated metric anisotropy
 
 Input Parameters:
@@ -31732,7 +30851,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetMaximumAnisotropy()`, `DMPlexMetricSetMaximumMagnitude()`
+See also: `DMPLEX`, `DMPlexMetricGetMaximumAnisotropy()`, `DMPlexMetricSetMaximumMagnitude()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetMaximumAnisotropy"))
@@ -31755,7 +30874,7 @@ end
 end 
 
 """
-	DMPlexMetricSetMaximumMagnitude(petsclib::PetscLibType,dm::AbstractPetscDM, h_max::PetscReal) 
+	DMPlexMetricSetMaximumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM, h_max::PetscReal) 
 Set the maximum tolerated metric magnitude
 
 Input Parameters:
@@ -31764,7 +30883,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetMaximumMagnitude()`, `DMPlexMetricSetMinimumMagnitude()`
+See also: `DMPLEX`, `DMPlexMetricGetMaximumMagnitude()`, `DMPlexMetricSetMinimumMagnitude()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetMaximumMagnitude"))
@@ -31787,7 +30906,7 @@ end
 end 
 
 """
-	DMPlexMetricSetMinimumMagnitude(petsclib::PetscLibType,dm::AbstractPetscDM, h_min::PetscReal) 
+	DMPlexMetricSetMinimumMagnitude(petsclib::PetscLibType, dm::AbstractPetscDM, h_min::PetscReal) 
 Set the minimum tolerated metric magnitude
 
 Input Parameters:
@@ -31796,7 +30915,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetMinimumMagnitude()`, `DMPlexMetricSetMaximumMagnitude()`
+See also: `DMPLEX`, `DMPlexMetricGetMinimumMagnitude()`, `DMPlexMetricSetMaximumMagnitude()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetMinimumMagnitude"))
@@ -31819,7 +30938,7 @@ end
 end 
 
 """
-	DMPlexMetricSetNoInsertion(petsclib::PetscLibType,dm::AbstractPetscDM, noInsert::PetscBool) 
+	DMPlexMetricSetNoInsertion(petsclib::PetscLibType, dm::AbstractPetscDM, noInsert::PetscBool) 
 Should node insertion and deletion be turned off?
 
 Input Parameters:
@@ -31828,7 +30947,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricNoInsertion()`, `DMPlexMetricSetNoSwapping()`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricSetNoSurf()`
+See also: `DMPLEX`, `DMPlexMetricNoInsertion()`, `DMPlexMetricSetNoSwapping()`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricSetNoSurf()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoInsertion"))
@@ -31851,7 +30970,7 @@ end
 end 
 
 """
-	DMPlexMetricSetNoMovement(petsclib::PetscLibType,dm::AbstractPetscDM, noMove::PetscBool) 
+	DMPlexMetricSetNoMovement(petsclib::PetscLibType, dm::AbstractPetscDM, noMove::PetscBool) 
 Should node movement be turned off?
 
 Input Parameters:
@@ -31860,7 +30979,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricNoMovement()`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricSetNoSwapping()`, `DMPlexMetricSetNoSurf()`
+See also: `DMPLEX`, `DMPlexMetricNoMovement()`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricSetNoSwapping()`, `DMPlexMetricSetNoSurf()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoMovement"))
@@ -31883,7 +31002,7 @@ end
 end 
 
 """
-	DMPlexMetricSetNoSurf(petsclib::PetscLibType,dm::AbstractPetscDM, noSurf::PetscBool) 
+	DMPlexMetricSetNoSurf(petsclib::PetscLibType, dm::AbstractPetscDM, noSurf::PetscBool) 
 Should surface modification be turned off?
 
 Input Parameters:
@@ -31892,7 +31011,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricNoSurf()`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricSetNoSwapping()`
+See also: `DMPLEX`, `DMPlexMetricNoSurf()`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricSetNoSwapping()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoSurf"))
@@ -31915,7 +31034,7 @@ end
 end 
 
 """
-	DMPlexMetricSetNoSwapping(petsclib::PetscLibType,dm::AbstractPetscDM, noSwap::PetscBool) 
+	DMPlexMetricSetNoSwapping(petsclib::PetscLibType, dm::AbstractPetscDM, noSwap::PetscBool) 
 Should facet swapping be turned off?
 
 Input Parameters:
@@ -31924,7 +31043,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricNoSwapping()`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricSetNoSurf()`
+See also: `DMPLEX`, `DMPlexMetricNoSwapping()`, `DMPlexMetricSetNoInsertion()`, `DMPlexMetricSetNoMovement()`, `DMPlexMetricSetNoSurf()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNoSwapping"))
@@ -31947,8 +31066,8 @@ end
 end 
 
 """
-	DMPlexMetricSetNormalizationOrder(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscReal) 
-Set the order p for L
+	DMPlexMetricSetNormalizationOrder(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscReal) 
+Set the order p for L-p normalization
 
 Input Parameters:
 - `dm` - The `DM`
@@ -31956,7 +31075,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetNormalizationOrder()`, `DMPlexMetricSetTargetComplexity()`
+See also: `DMPLEX`, `DMPlexMetricGetNormalizationOrder()`, `DMPlexMetricSetTargetComplexity()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNormalizationOrder"))
@@ -31979,7 +31098,7 @@ end
 end 
 
 """
-	DMPlexMetricSetNumIterations(petsclib::PetscLibType,dm::AbstractPetscDM, numIter::PetscInt) 
+	DMPlexMetricSetNumIterations(petsclib::PetscLibType, dm::AbstractPetscDM, numIter::PetscInt) 
 Set the number of parallel adaptation iterations
 
 Input Parameters:
@@ -31988,7 +31107,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetVerbosity()`, `DMPlexMetricGetNumIterations()`
+See also: `DMPLEX`, `DMPlexMetricSetVerbosity()`, `DMPlexMetricGetNumIterations()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetNumIterations"))
@@ -32011,7 +31130,7 @@ end
 end 
 
 """
-	DMPlexMetricSetRestrictAnisotropyFirst(petsclib::PetscLibType,dm::AbstractPetscDM, restrictAnisotropyFirst::PetscBool) 
+	DMPlexMetricSetRestrictAnisotropyFirst(petsclib::PetscLibType, dm::AbstractPetscDM, restrictAnisotropyFirst::PetscBool) 
 Record whether anisotropy should be restricted before normalization
 
 Input Parameters:
@@ -32020,7 +31139,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricRestrictAnisotropyFirst()`
+See also: `DMPLEX`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricRestrictAnisotropyFirst()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetRestrictAnisotropyFirst"))
@@ -32043,7 +31162,7 @@ end
 end 
 
 """
-	DMPlexMetricSetTargetComplexity(petsclib::PetscLibType,dm::AbstractPetscDM, targetComplexity::PetscReal) 
+	DMPlexMetricSetTargetComplexity(petsclib::PetscLibType, dm::AbstractPetscDM, targetComplexity::PetscReal) 
 Set the target metric complexity
 
 Input Parameters:
@@ -32052,7 +31171,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetTargetComplexity()`, `DMPlexMetricSetNormalizationOrder()`
+See also: `DMPLEX`, `DMPlexMetricGetTargetComplexity()`, `DMPlexMetricSetNormalizationOrder()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetTargetComplexity"))
@@ -32075,7 +31194,7 @@ end
 end 
 
 """
-	DMPlexMetricSetUniform(petsclib::PetscLibType,dm::AbstractPetscDM, uniform::PetscBool) 
+	DMPlexMetricSetUniform(petsclib::PetscLibType, dm::AbstractPetscDM, uniform::PetscBool) 
 Record whether a metric is uniform
 
 Input Parameters:
@@ -32084,7 +31203,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricIsUniform()`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricSetRestrictAnisotropyFirst()`
+See also: `DMPLEX`, `DMPlexMetricIsUniform()`, `DMPlexMetricSetIsotropic()`, `DMPlexMetricSetRestrictAnisotropyFirst()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetUniform"))
@@ -32107,7 +31226,7 @@ end
 end 
 
 """
-	DMPlexMetricSetVerbosity(petsclib::PetscLibType,dm::AbstractPetscDM, verbosity::PetscInt) 
+	DMPlexMetricSetVerbosity(petsclib::PetscLibType, dm::AbstractPetscDM, verbosity::PetscInt) 
 Set the verbosity of the mesh adaptation package
 
 Input Parameters:
@@ -32116,7 +31235,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMPLEX`, `DMPlexMetricGetVerbosity()`, `DMPlexMetricSetNumIterations()`
+See also: `DMPLEX`, `DMPlexMetricGetVerbosity()`, `DMPlexMetricSetNumIterations()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMetricSetVerbosity"))
@@ -32139,7 +31258,7 @@ end
 end 
 
 """
-	DMPlexMigrate(petsclib::PetscLibType,dm::AbstractPetscDM, sf::PetscSF, targetDM::AbstractPetscDM) 
+	DMPlexMigrate(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF, targetDM::AbstractPetscDM) 
 Migrates internal `DM` data over the supplied star forest
 
 Collective
@@ -32153,7 +31272,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `PetscSF`, `DM`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
+See also: `DMPLEX`, `PetscSF`, `DM`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMigrate"))
@@ -32176,7 +31295,7 @@ end
 end 
 
 """
-	sfNaturalNew::PetscSF = DMPlexMigrateGlobalToNaturalSF(petsclib::PetscLibType,dmOld::AbstractPetscDM, dmNew::AbstractPetscDM, sfNaturalOld::PetscSF, sfMigration::PetscSF) 
+	sfNaturalNew::PetscSF = DMPlexMigrateGlobalToNaturalSF(petsclib::PetscLibType, dmOld::AbstractPetscDM, dmNew::AbstractPetscDM, sfNaturalOld::PetscSF, sfMigration::PetscSF) 
 Migrates the input `sfNatural` based on sfMigration
 
 Input Parameters:
@@ -32190,7 +31309,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSF`, `PetscSection`, `DMPlexDistribute()`, `DMPlexDistributeField()`
+See also: `DM`, `DMPLEX`, `PetscSF`, `PetscSection`, `DMPlexDistribute()`, `DMPlexDistributeField()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMigrateGlobalToNaturalSF"))
@@ -32215,7 +31334,7 @@ end
 end 
 
 """
-	DMPlexModifyGeomModel(petsclib::PetscLibType,dm::AbstractPetscDM, comm::MPI_Comm, newCP::Vector{PetscScalar}, newW::Vector{PetscScalar}, autoInflate::PetscBool, saveGeom::PetscBool, stpName::String) 
+	DMPlexModifyGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm, newCP::Vector{PetscScalar}, newW::Vector{PetscScalar}, autoInflate::PetscBool, saveGeom::PetscBool, stpName::String) 
 Generates a new EGADS geometry model based in user provided Control Points and Control Points Weights. Optionally, the function will inflate the DM to the new geometry and save the new geometry to a file.
 
 Collective
@@ -32238,7 +31357,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexGeomDataAndGrads()`
+See also: `DMPLEX`, `DMCreate()`, `DMPlexCreateGeom()`, `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexModifyGeomModel"))
@@ -32261,7 +31380,7 @@ end
 end 
 
 """
-	DMPlexMonitorThroughput(petsclib::PetscLibType,dm::AbstractPetscDM, unused::Ptr{Cvoid}) 
+	DMPlexMonitorThroughput(petsclib::PetscLibType, dm::AbstractPetscDM, unused::Ptr{Cvoid}) 
 Report the cell throughput of FE integration
 
 Input Parameters:
@@ -32273,7 +31392,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexCreate()`
+See also: `DM`, `DMPLEX`, `DMSetFromOptions()`, `DMPlexCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexMonitorThroughput"))
@@ -32296,7 +31415,7 @@ end
 end 
 
 """
-	DMPlexNaturalToGlobalBegin(petsclib::PetscLibType,dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec) 
+	DMPlexNaturalToGlobalBegin(petsclib::PetscLibType, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec) 
 Rearranges a `Vec` in the natural order to the Global order.
 
 Collective
@@ -32310,7 +31429,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexGlobalToNaturalEnd()`
+See also: `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexGlobalToNaturalEnd()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexNaturalToGlobalBegin"))
@@ -32333,7 +31452,7 @@ end
 end 
 
 """
-	DMPlexNaturalToGlobalEnd(petsclib::PetscLibType,dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec) 
+	DMPlexNaturalToGlobalEnd(petsclib::PetscLibType, dm::AbstractPetscDM, nv::AbstractPetscVec, gv::AbstractPetscVec) 
 Rearranges a `Vec` in the natural order to the Global order.
 
 Collective
@@ -32347,7 +31466,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalBegin()`
+See also: `DM`, `DMPLEX`, `Vec`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexNaturalToGlobalBegin()`, `DMPlexGlobalToNaturalBegin()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexNaturalToGlobalEnd"))
@@ -32370,13 +31489,13 @@ end
 end 
 
 """
-	DMPlexOrient(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexOrient(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Give a consistent orientation to the input mesh
 
 Input Parameter:
 - `dm` - The `DM`
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexOrientLabel()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexOrientLabel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexOrient"))
@@ -32399,7 +31518,7 @@ end
 end 
 
 """
-	DMPlexOrientLabel(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexOrientLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Give a consistent orientation to the hypersurface marked by the `DMLabel` in the input mesh
 
 Collective on dm
@@ -32408,7 +31527,7 @@ Input Parameters:
 - `dm`    - The `DM`
 - `label` - The `DMLabel`
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreate()`, `DMPlexOrient()`
+See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexOrient()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexOrientLabel"))
@@ -32431,7 +31550,7 @@ end
 end 
 
 """
-	DMPlexOrientPoint(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, o::PetscInt) 
+	DMPlexOrientPoint(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, o::PetscInt) 
 Act with the given orientation on the cone points of this mesh point, and update its use in the mesh.
 
 Not Collective
@@ -32443,7 +31562,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexOrient()`, `DMPlexGetCone()`, `DMPlexGetConeOrientation()`, `DMPlexInterpolate()`, `DMPlexGetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexOrient()`, `DMPlexGetCone()`, `DMPlexGetConeOrientation()`, `DMPlexInterpolate()`, `DMPlexGetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexOrientPoint"))
@@ -32466,7 +31585,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelAdjacency(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexPartitionLabelAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Add one level of adjacent points to the partition label
 
 Input Parameters:
@@ -32475,7 +31594,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
+See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelAdjacency"))
@@ -32498,7 +31617,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelClosure(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexPartitionLabelClosure(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Add the closure of all points to the partition label
 
 Input Parameters:
@@ -32507,7 +31626,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
+See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelClosure"))
@@ -32530,7 +31649,7 @@ end
 end 
 
 """
-	sf::PetscSF = DMPlexPartitionLabelCreateSF(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool) 
+	sf::PetscSF = DMPlexPartitionLabelCreateSF(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool) 
 Create a star forest from a label that assigns ranks to points
 
 Input Parameters:
@@ -32543,7 +31662,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLabel`, `PetscSF`, `DMPlexDistribute()`
+See also: `DM`, `DMPLEX`, `DMLabel`, `PetscSF`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelCreateSF"))
@@ -32568,7 +31687,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelInvert(petsclib::PetscLibType,dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel) 
+	DMPlexPartitionLabelInvert(petsclib::PetscLibType, dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel) 
 Create a partition label of remote roots from a local root label
 
 Input Parameters:
@@ -32581,7 +31700,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
+See also: `DM`, `DMPLEX`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelInvert"))
@@ -32604,7 +31723,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelPropagate(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexPartitionLabelPropagate(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Propagate points in a partition label over the point `PetscSF`
 
 Input Parameters:
@@ -32613,7 +31732,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
+See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelPropagate"))
@@ -32636,7 +31755,7 @@ end
 end 
 
 """
-	pdm::PetscDM = DMPlexPermute(petsclib::PetscLibType,dm::AbstractPetscDM, perm::AbstractIS) 
+	pdm::PetscDM = DMPlexPermute(petsclib::PetscLibType, dm::AbstractPetscDM, perm::AbstractIS) 
 Reorder the mesh according to the input permutation
 
 Collective
@@ -32650,7 +31769,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `MatPermute()`
+See also: `DMPLEX`, `MatPermute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPermute"))
@@ -32675,7 +31794,7 @@ end
 end 
 
 """
-	ptr::Ptr{Cvoid} = DMPlexPointGlobalFieldRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}) 
+	ptr::Ptr{Cvoid} = DMPlexPointGlobalFieldRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}) 
 return read access to a field on a point in global array
 
 Not Collective
@@ -32691,7 +31810,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRead()`, `DMPlexPointGlobalRef()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRead()`, `DMPlexPointGlobalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalFieldRead"))
@@ -32716,7 +31835,7 @@ end
 end 
 
 """
-	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointGlobalFieldRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointGlobalFieldRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
 return read/write access to a field on a point in global array
 
 Not Collective
@@ -32732,7 +31851,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRef()`, `DMPlexPointGlobalRead()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRef()`, `DMPlexPointGlobalRead()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalFieldRef"))
@@ -32759,7 +31878,7 @@ end
 end 
 
 """
-	ptr::Ptr{Cvoid} = DMPlexPointGlobalRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}) 
+	ptr::Ptr{Cvoid} = DMPlexPointGlobalRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}) 
 return read access to a point in global array
 
 Not Collective
@@ -32774,7 +31893,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRead()`, `DMPlexPointGlobalRef()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRead()`, `DMPlexPointGlobalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalRead"))
@@ -32799,7 +31918,7 @@ end
 end 
 
 """
-	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointGlobalRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointGlobalRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 return read/write access to a point in global array
 
 Not Collective
@@ -32814,7 +31933,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRef()`, `DMPlexPointGlobalRead()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointGlobal()`, `DMPlexPointLocalRef()`, `DMPlexPointGlobalRead()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointGlobalRef"))
@@ -32841,7 +31960,7 @@ end
 end 
 
 """
-	ptr::Ptr{Cvoid} = DMPlexPointLocalFieldRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}) 
+	ptr::Ptr{Cvoid} = DMPlexPointLocalFieldRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt, array::Vector{PetscScalar}) 
 return read access to a field on a point in local array
 
 Not Collective
@@ -32857,7 +31976,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalFieldRead"))
@@ -32882,7 +32001,7 @@ end
 end 
 
 """
-	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointLocalFieldRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointLocalFieldRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, field::PetscInt) 
 return read/write access to a field on a point in local array
 
 Not Collective
@@ -32898,7 +32017,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalFieldRef"))
@@ -32925,7 +32044,7 @@ end
 end 
 
 """
-	ptr::Ptr{Cvoid} = DMPlexPointLocalRead(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}) 
+	ptr::Ptr{Cvoid} = DMPlexPointLocalRead(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, array::Vector{PetscScalar}) 
 return read access to a point in local array
 
 Not Collective
@@ -32940,7 +32059,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRead()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRead()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalRead"))
@@ -32965,7 +32084,7 @@ end
 end 
 
 """
-	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointLocalRef(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	array::PetscScalar,ptr::Ptr{Cvoid} = DMPlexPointLocalRef(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 return read/write access to a point in local array
 
 Not Collective
@@ -32980,7 +32099,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionGetOffset()`, `PetscSectionGetDof()`, `DMPlexGetPointLocal()`, `DMPlexPointGlobalRef()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointLocalRef"))
@@ -33007,7 +32126,7 @@ end
 end 
 
 """
-	DMPlexPreallocateOperator(petsclib::PetscLibType,dm::AbstractPetscDM, bs::PetscInt, dnz::Vector{PetscInt}, onz::Vector{PetscInt}, dnzu::Vector{PetscInt}, onzu::Vector{PetscInt}, A::AbstractPetscMat, fillMatrix::PetscBool) 
+	DMPlexPreallocateOperator(petsclib::PetscLibType, dm::AbstractPetscDM, bs::PetscInt, dnz::Vector{PetscInt}, onz::Vector{PetscInt}, dnzu::Vector{PetscInt}, onzu::Vector{PetscInt}, A::AbstractPetscMat, fillMatrix::PetscBool) 
 Calculate the matrix nonzero pattern based upon the information in the `DM`,
 the `PetscDS` it contains, and the default `PetscSection`.
 
@@ -33027,7 +32146,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMCreateMatrix()`
+See also: `DM`, `DMPLEX`, `DMCreateMatrix()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPreallocateOperator"))
@@ -33050,7 +32169,7 @@ end
 end 
 
 """
-	success::PetscBool = DMPlexRebalanceSharedPoints(petsclib::PetscLibType,dm::AbstractPetscDM, entityDepth::PetscInt, useInitialGuess::PetscBool, parallel::PetscBool) 
+	success::PetscBool = DMPlexRebalanceSharedPoints(petsclib::PetscLibType, dm::AbstractPetscDM, entityDepth::PetscInt, useInitialGuess::PetscBool, parallel::PetscBool) 
 Redistribute points in the plex that are shared in order to achieve better balancing. This routine updates the `PointSF` of the `DM` inplace.
 
 Input Parameters:
@@ -33070,7 +32189,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexDistribute()`
+See also: `DM`, `DMPLEX`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRebalanceSharedPoints"))
@@ -33095,7 +32214,7 @@ end
 end 
 
 """
-	DMPlexReconstructGradientsFVM(petsclib::PetscLibType,dm::AbstractPetscDM, locX::AbstractPetscVec, grad::AbstractPetscVec) 
+	DMPlexReconstructGradientsFVM(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, grad::AbstractPetscVec) 
 reconstruct the gradient of a vector using a finite volume method.
 
 Input Parameters:
@@ -33107,7 +32226,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `Vec`, `DMPlexGetGradientDM()`
+See also: `DM`, `Vec`, `DMPlexGetGradientDM()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexReconstructGradientsFVM"))
@@ -33130,7 +32249,7 @@ end
 end 
 
 """
-	DMPlexReferenceToCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, numPoints::PetscInt, refCoords::Vector{PetscReal}, realCoords::Vector{PetscReal}) 
+	DMPlexReferenceToCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, numPoints::PetscInt, refCoords::Vector{PetscReal}, realCoords::Vector{PetscReal}) 
 Map references coordinates to coordinates in the mesh for a single element map.
 
 Not Collective
@@ -33148,7 +32267,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexCoordinatesToReference()`
+See also: `DMPLEX`, `DMPlexCoordinatesToReference()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexReferenceToCoordinates"))
@@ -33171,7 +32290,7 @@ end
 end 
 
 """
-	childOrientB::PetscInt,childB::PetscInt = DMPlexReferenceTreeGetChildSymmetry(petsclib::PetscLibType,dm::AbstractPetscDM, parent::PetscInt, parentOrientA::PetscInt, childOrientA::PetscInt, childA::PetscInt, parentOrientB::PetscInt) 
+	childOrientB::PetscInt,childB::PetscInt = DMPlexReferenceTreeGetChildSymmetry(petsclib::PetscLibType, dm::AbstractPetscDM, parent::PetscInt, parentOrientA::PetscInt, childOrientA::PetscInt, childA::PetscInt, parentOrientB::PetscInt) 
 Given a reference tree, transform a childid and orientation from one parent frame to another
 
 Input Parameters:
@@ -33188,7 +32307,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetReferenceTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetTree()`
+See also: `DM`, `DMPLEX`, `DMPlexGetReferenceTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexReferenceTreeGetChildSymmetry"))
@@ -33215,7 +32334,7 @@ end
 end 
 
 """
-	Nf::PetscInt,v0::Ptr{PetscReal},J::Ptr{PetscReal},invJ::Ptr{PetscReal},detJ::Ptr{PetscReal} = DMPlexRefineRegularGetAffineFaceTransforms(petsclib::PetscLibType,tr::DMPlexTransform, ct::DMPolytopeType) 
+	Nf::PetscInt,v0::Ptr{PetscReal},J::Ptr{PetscReal},invJ::Ptr{PetscReal},detJ::Ptr{PetscReal} = DMPlexRefineRegularGetAffineFaceTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType) 
 Gets the affine map from the reference face cell to each face in the given cell
 
 Input Parameters:
@@ -33231,7 +32350,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DM`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexCellRefinerGetAffineTransforms()`
+See also: `DMPLEX`, `DM`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexCellRefinerGetAffineTransforms()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRefineRegularGetAffineFaceTransforms"))
@@ -33264,7 +32383,7 @@ end
 end 
 
 """
-	Nc::PetscInt,v0::Ptr{PetscReal},J::Ptr{PetscReal},invJ::Ptr{PetscReal} = DMPlexRefineRegularGetAffineTransforms(petsclib::PetscLibType,tr::DMPlexTransform, ct::DMPolytopeType) 
+	Nc::PetscInt,v0::Ptr{PetscReal},J::Ptr{PetscReal},invJ::Ptr{PetscReal} = DMPlexRefineRegularGetAffineTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType) 
 Gets the affine map from the reference cell to each subcell
 
 Input Parameters:
@@ -33279,7 +32398,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DM`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexRefineRegularGetAffineFaceTransforms()`, `DMPLEXREFINEREGULAR`
+See also: `DMPLEX`, `DM`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexRefineRegularGetAffineFaceTransforms()`, `DMPLEXREFINEREGULAR`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRefineRegularGetAffineTransforms"))
@@ -33310,7 +32429,7 @@ end
 end 
 
 """
-	reflect::PetscBool = DMPlexRefineToSimplexGetReflect(petsclib::PetscLibType,tr::DMPlexTransform) 
+	reflect::PetscBool = DMPlexRefineToSimplexGetReflect(petsclib::PetscLibType, tr::DMPlexTransform) 
 Get the flag to reflect the transform
 
 Not Collective
@@ -33323,7 +32442,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexRefineToSimplexSetReflect()`
+See also: `DMPlexTransform`, `DMPlexRefineToSimplexSetReflect()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRefineToSimplexGetReflect"))
@@ -33348,7 +32467,7 @@ end
 end 
 
 """
-	DMPlexRefineToSimplexSetReflect(petsclib::PetscLibType,tr::DMPlexTransform, reflect::PetscBool) 
+	DMPlexRefineToSimplexSetReflect(petsclib::PetscLibType, tr::DMPlexTransform, reflect::PetscBool) 
 Set the flag to reflect the transform
 
 Not Collective
@@ -33359,7 +32478,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexTransform`, `DMPlexRefineToSimplexGetReflect()`
+See also: `DMPlexTransform`, `DMPlexRefineToSimplexGetReflect()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRefineToSimplexSetReflect"))
@@ -33382,7 +32501,7 @@ end
 end 
 
 """
-	DMPlexRemapGeometry(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, func::external) 
+	DMPlexRemapGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, func::external) 
 This function maps the original `DM` coordinates to new coordinates.
 
 Not Collective
@@ -33414,7 +32533,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMProjectFieldLocal()`, `DMProjectFieldLabelLocal()`
+See also: `DMPLEX`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMProjectFieldLocal()`, `DMProjectFieldLabelLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRemapGeometry"))
@@ -33437,7 +32556,7 @@ end
 end 
 
 """
-	sfMigrationNew::PetscSF = DMPlexRemapMigrationSF(petsclib::PetscLibType,sfOverlap::PetscSF, sfMigration::PetscSF) 
+	sfMigrationNew::PetscSF = DMPlexRemapMigrationSF(petsclib::PetscLibType, sfOverlap::PetscSF, sfMigration::PetscSF) 
 Rewrite the distribution SF to account for overlap
 
 Collective
@@ -33451,7 +32570,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DM`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`, `DMPlexGetOverlap()`
+See also: `DMPLEX`, `DM`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`, `DMPlexGetOverlap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRemapMigrationSF"))
@@ -33476,7 +32595,7 @@ end
 end 
 
 """
-	DMPlexReorderCell(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, cone::Vector{PetscInt}) 
+	DMPlexReorderCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, cone::Vector{PetscInt}) 
 Flips cell orientations since `DMPLEX` stores some of them internally with outward normals.
 
 Input Parameters:
@@ -33489,7 +32608,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPolytopeType`, `DMPlexGenerate()`
+See also: `DM`, `DMPLEX`, `DMPolytopeType`, `DMPlexGenerate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderCell"))
@@ -33512,7 +32631,7 @@ end
 end 
 
 """
-	DMPlexReorderCohesiveSupports(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexReorderCohesiveSupports(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Ensure that face supports for cohesive end caps are ordered
 
 Not Collective
@@ -33522,7 +32641,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `DMPlexConstructCohesiveCells()`, `DMPlexCreateCohesiveSubmesh()`
+See also: `DMPlexConstructCohesiveCells()`, `DMPlexCreateCohesiveSubmesh()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderCohesiveSupports"))
@@ -33545,7 +32664,7 @@ end
 end 
 
 """
-	reorder::DMReorderDefaultFlag = DMPlexReorderGetDefault(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	reorder::DMReorderDefaultFlag = DMPlexReorderGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get flag indicating whether the DM should be reordered by default
 
 Not Collective
@@ -33558,7 +32677,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPlexReorderSetDefault()`
+See also: `DMPlexReorderSetDefault()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderGetDefault"))
@@ -33583,7 +32702,7 @@ end
 end 
 
 """
-	DMPlexReorderSetDefault(petsclib::PetscLibType,dm::AbstractPetscDM, reorder::DMReorderDefaultFlag) 
+	DMPlexReorderSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag) 
 Set flag indicating whether the DM should be reordered by default
 
 Logically Collective
@@ -33594,7 +32713,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexReorderGetDefault()`
+See also: `DMPlexReorderGetDefault()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexReorderSetDefault"))
@@ -33617,7 +32736,7 @@ end
 end 
 
 """
-	DMPlexRestoreCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, isDG::Union{PetscBool, Bool}, Nc::PetscInt, array::Union{Ptr, AbstractArray{PetscScalar}}, coords::Union{Ptr, AbstractArray{PetscScalar}}) 
+	DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, isDG::Union{PetscBool, Bool}, Nc::PetscInt, array::Union{Ptr, AbstractArray{PetscScalar}}, coords::Union{Ptr, AbstractArray{PetscScalar}}) 
 Get coordinates for a cell, taking into account periodicity
 
 Not Collective
@@ -33634,7 +32753,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexGetCellCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCellCoordinatesLocal()`
+See also: `DMPLEX`, `DMPlexGetCellCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCellCoordinatesLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCellCoordinates"))
@@ -33661,7 +32780,7 @@ end
 end 
 
 """
-	DMPlexRestoreCellFields(petsclib::PetscLibType,dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{PetscScalar}}, u_t::Union{Ptr, AbstractArray{PetscScalar}}, a::Union{Ptr, AbstractArray{PetscScalar}}) 
+	DMPlexRestoreCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{PetscScalar}}, u_t::Union{Ptr, AbstractArray{PetscScalar}}, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore the field values values for a chunk of cells
 
 Input Parameters:
@@ -33678,7 +32797,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
+See also: `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCellFields"))
@@ -33704,7 +32823,7 @@ end
 end 
 
 """
-	DMPlexRestoreClosureIndices(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::Union{Ptr, AbstractArray{PetscInt}}, outOffsets::Union{Ptr, Vector{PetscInt}}, values::Union{Ptr, AbstractArray{PetscScalar}}) 
+	DMPlexRestoreClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::Union{Ptr, AbstractArray{PetscInt}}, outOffsets::Union{Ptr, Vector{PetscInt}}, values::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restores the global dof indices associated with the closure of the given point within the provided sections.
 
 Not collective
@@ -33724,7 +32843,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetClosureIndices()`, `DMPlexVecGetClosure()`, `DMPlexMatSetClosure()`, `DMGetLocalSection()`, `DMGetGlobalSection()`
+See also: `DM`, `DMPLEX`, `DMPlexGetClosureIndices()`, `DMPlexVecGetClosure()`, `DMPlexMatSetClosure()`, `DMGetLocalSection()`, `DMGetGlobalSection()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreClosureIndices"))
@@ -33750,7 +32869,7 @@ end
 end 
 
 """
-	DMPlexRestoreCompressedClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, point::PetscInt, numPoints::PetscInt, points::PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::PetscInt) 
+	DMPlexRestoreCompressedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, point::PetscInt, numPoints::PetscInt, points::PetscInt, clSec::PetscSection, clPoints::AbstractIS, clp::PetscInt) 
 Release the arrays returned by `DMPlexGetCompressedClosure()`
 
 Not Collective
@@ -33767,7 +32886,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSection`, `DMPlexGetCompressedClosure()`, `DMPlexRestoreTransitiveClosure()`
+See also: `DM`, `DMPLEX`, `PetscSection`, `DMPlexGetCompressedClosure()`, `DMPlexRestoreTransitiveClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCompressedClosure"))
@@ -33793,7 +32912,7 @@ end
 end 
 
 """
-	DMPlexRestoreConeRecursive(petsclib::PetscLibType,dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}}) 
+	DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}}) 
 Deallocates arrays created by `DMPlexGetConeRecursive()`
 
 Not Collective
@@ -33809,7 +32928,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeTuple()`, `DMPlexGetConeRecursive()`, `DMPlexGetConeRecursiveVertices()`,
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeTuple()`, `DMPlexGetConeRecursive()`, `DMPlexGetConeRecursiveVertices()`,
 `DMPlexGetDepth()`, `IS`, `PetscSection`
 
 # External Links
@@ -33836,7 +32955,7 @@ end
 end 
 
 """
-	DMPlexRestoreFaceFields(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::PetscInt, uL::Union{Ptr, AbstractArray{PetscScalar}}, uR::Union{Ptr, AbstractArray{PetscScalar}}) 
+	DMPlexRestoreFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::PetscInt, uL::Union{Ptr, AbstractArray{PetscScalar}}, uR::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore the field values values for a chunk of faces
 
 Input Parameters:
@@ -33856,7 +32975,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
+See also: `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreFaceFields"))
@@ -33882,7 +33001,7 @@ end
 end 
 
 """
-	DMPlexRestoreFaceGeometry(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::PetscInt, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{PetscReal}}) 
+	DMPlexRestoreFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::PetscInt, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{PetscReal}}) 
 Restore the field values values for a chunk of faces
 
 Input Parameters:
@@ -33899,7 +33018,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
+See also: `DM`, `DMPLEX`, `DMPlexGetFaceFields()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreFaceGeometry"))
@@ -33925,7 +33044,7 @@ end
 end 
 
 """
-	DMPlexRestoreGeomBodyMassProperties(petsclib::PetscLibType,dm::AbstractPetscDM, body::PetscGeom, volume::PetscScalar, surfArea::PetscScalar, centerOfGravity::PetscScalar, COGsize::PetscInt, inertiaMatrixCOG::PetscScalar, IMCOGsize::PetscInt) 
+	DMPlexRestoreGeomBodyMassProperties(petsclib::PetscLibType, dm::AbstractPetscDM, body::PetscGeom, volume::PetscScalar, surfArea::PetscScalar, centerOfGravity::PetscScalar, COGsize::PetscInt, inertiaMatrixCOG::PetscScalar, IMCOGsize::PetscInt) 
 Release the arrays returned by `DMPlexGetGeomBodyMassProperties()`
 
 Not Collective
@@ -33942,7 +33061,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomBodyMassProperties()`, `DMPlexGetGeomModelBodies()`
+See also: `DMPlexGetGeomBodyMassProperties()`, `DMPlexGetGeomModelBodies()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomBodyMassProperties"))
@@ -33969,7 +33088,7 @@ end
 end 
 
 """
-	DMPlexRestoreGeomCntrlPntAndWeightData(petsclib::PetscLibType,dm::AbstractPetscDM, cpHashTable::PetscHMapI, cpCoordDataLength::PetscInt, cpCoordData::PetscScalar, maxNumEquiv::PetscInt, cpEquiv::AbstractPetscMat, wHashTable::PetscHMapI, wDataLength::PetscInt, wData::PetscScalar) 
+	DMPlexRestoreGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::AbstractPetscDM, cpHashTable::PetscHMapI, cpCoordDataLength::PetscInt, cpCoordData::PetscScalar, maxNumEquiv::PetscInt, cpEquiv::AbstractPetscMat, wHashTable::PetscHMapI, wDataLength::PetscInt, wData::PetscScalar) 
 Release the arrays returned by `DMPlexGetGeomCntrlPntAndWeightData()`
 
 Not Collective
@@ -33987,7 +33106,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomCntrlPntAndWeightData()`, `DMPlexGeomDataAndGrads()`
+See also: `DMPlexGetGeomCntrlPntAndWeightData()`, `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomCntrlPntAndWeightData"))
@@ -34015,7 +33134,7 @@ end
 end 
 
 """
-	DMPlexRestoreGeomGradData(petsclib::PetscLibType,dm::AbstractPetscDM, cpSurfGradHashTable::PetscHMapI, cpSurfGrad::AbstractPetscMat, cpArraySize::PetscInt, gradSACP::PetscScalar, gradVolCP::PetscScalar, wArraySize::PetscInt, gradSAW::PetscScalar, gradVolW::PetscScalar) 
+	DMPlexRestoreGeomGradData(petsclib::PetscLibType, dm::AbstractPetscDM, cpSurfGradHashTable::PetscHMapI, cpSurfGrad::AbstractPetscMat, cpArraySize::PetscInt, gradSACP::PetscScalar, gradVolCP::PetscScalar, wArraySize::PetscInt, gradSAW::PetscScalar, gradVolW::PetscScalar) 
 Release the arrays returned by `DMPlexGetGeomGradData()`
 
 Not Collective
@@ -34033,7 +33152,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetGeomGradData()`, `DMPlexGeomDataAndGrads()`
+See also: `DMPlexGetGeomGradData()`, `DMPlexGeomDataAndGrads()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreGeomGradData"))
@@ -34060,7 +33179,7 @@ end
 end 
 
 """
-	DMPlexRestoreJoin(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) 
+	DMPlexRestoreJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore an array for the join of the set of points obtained with `DMPlexGetJoin()`
 
 Not Collective
@@ -34076,7 +33195,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetJoin()`, `DMPlexGetFullJoin()`, `DMPlexGetMeet()`
+See also: `DM`, `DMPLEX`, `DMPlexGetJoin()`, `DMPlexGetFullJoin()`, `DMPlexGetMeet()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreJoin"))
@@ -34101,7 +33220,7 @@ end
 end 
 
 """
-	DMPlexRestoreMeet(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) 
+	DMPlexRestoreMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore an array for the meet of the set of points obtained with `DMPlexGetMeet()`
 
 Not Collective
@@ -34117,7 +33236,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetMeet()`, `DMPlexGetFullMeet()`, `DMPlexGetJoin()`
+See also: `DM`, `DMPLEX`, `DMPlexGetMeet()`, `DMPlexGetFullMeet()`, `DMPlexGetJoin()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreMeet"))
@@ -34142,8 +33261,8 @@ end
 end 
 
 """
-	DMPlexRestoreOrientedCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) 
-Restore the points and orientations on the in
+	DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) 
+Restore the points and orientations on the in-edges for this point in the DAG obtained with `DMPlexGetOrientedCone()`
 
 Not Collective
 
@@ -34156,7 +33275,7 @@ integer giving the prescription for cone traversal.
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetOrientedCone()`, `DMPlexGetConeSize()`, `DMPlexGetCone()`, `DMPlexGetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexGetOrientedCone()`, `DMPlexGetConeSize()`, `DMPlexGetCone()`, `DMPlexGetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreOrientedCone"))
@@ -34181,8 +33300,8 @@ end
 end 
 
 """
-	DMPlexRestoreTransitiveClosure(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) 
-Restore the array of points on the transitive closure of the in
+	DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) 
+Restore the array of points on the transitive closure of the in-edges or out-edges for this point in the DAG
 
 Not Collective
 
@@ -34195,7 +33314,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetTransitiveClosure()`, `DMPlexCreate()`, `DMPlexSetCone()`, `DMPlexSetChart()`, `DMPlexGetCone()`
+See also: `DM`, `DMPLEX`, `DMPlexGetTransitiveClosure()`, `DMPlexCreate()`, `DMPlexSetCone()`, `DMPlexSetChart()`, `DMPlexGetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreTransitiveClosure"))
@@ -34220,7 +33339,7 @@ end
 end 
 
 """
-	DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexSNESComputeBoundaryFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the boundary values for the local input `X`
 
 Input Parameters:
@@ -34232,7 +33351,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `DM`, `DMPLEX`, `DMPlexComputeJacobianAction()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeJacobianAction()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeBoundaryFEM"))
@@ -34255,7 +33374,7 @@ end
 end 
 
 """
-	DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	DMPlexSNESComputeJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the local portion of the Jacobian matrix `Jac` at the local solution `X` using pointwise functions specified by the user.
 
 Input Parameters:
@@ -34269,7 +33388,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMPLEX`, `Mat`
+See also: `DMPLEX`, `Mat`
 
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeJacobianFEM"))
@@ -34292,7 +33411,7 @@ end
 end 
 
 """
-	obj::PetscReal = DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	obj::PetscReal = DMPlexSNESComputeObjectiveFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Sums the local objectives from the local input X using pointwise functions specified by the user
 
 Input Parameters:
@@ -34305,7 +33424,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DM`, `DMPlexSNESComputeResidualFEM()`
+See also: `DM`, `DMPlexSNESComputeResidualFEM()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeObjectiveFEM"))
@@ -34330,7 +33449,7 @@ end
 end 
 
 """
-	DMPlexSNESComputeResidualCEED(petsclib::PetscLibType,dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexSNESComputeResidualCEED(petsclib::PetscLibType, dm::AbstractPetscDM, locX::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Assemble the local residual for a `SNES` on a `DMPLEX` using the libCEED operator attached to the `DM`
 
 Collective
@@ -34345,7 +33464,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `DMPLEX`, `DMCeedCreate()`, `DMSNESSetFunctionLocal()`, `DMPlexTSComputeRHSFunctionFVMCEED()`
+See also: `SNES`, `DMPLEX`, `DMCeedCreate()`, `DMSNESSetFunctionLocal()`, `DMPlexTSComputeRHSFunctionFVMCEED()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualCEED"))
@@ -34368,7 +33487,7 @@ end
 end 
 
 """
-	DMPlexSNESComputeResidualDS(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexSNESComputeResidualDS(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Sums the local residual into vector `F` from the local input `X` using all pointwise functions with unique keys in the `PetscDS`
 
 Input Parameters:
@@ -34381,7 +33500,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `DM`, `DMPLEX`, `DMPlexComputeJacobianAction()`
+See also: `DM`, `DMPLEX`, `DMPlexComputeJacobianAction()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualDS"))
@@ -34404,7 +33523,7 @@ end
 end 
 
 """
-	DMPlexSNESComputeResidualFEM(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexSNESComputeResidualFEM(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Sums the local residual into vector `F` from the local input `X` using pointwise functions specified by the user
 
 Input Parameters:
@@ -34417,7 +33536,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `DM`, `DMPLEX`, `DMSNESComputeJacobianAction()`
+See also: `DM`, `DMPLEX`, `DMSNESComputeJacobianAction()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSNESComputeResidualFEM"))
@@ -34440,7 +33559,7 @@ end
 end 
 
 """
-	globalDofSF::PetscSF,localDofSF::PetscSF = DMPlexSectionLoad(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, globalToLocalPointSF::PetscSF) 
+	globalDofSF::PetscSF,localDofSF::PetscSF = DMPlexSectionLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM, globalToLocalPointSF::PetscSF) 
 Loads section into a `DMPLEX`
 
 Collective
@@ -34457,7 +33576,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLoad()`, `DMPlexTopologyLoad()`, `DMPlexCoordinatesLoad()`, `DMPlexLabelsLoad()`, `DMPlexGlobalVectorLoad()`, `DMPlexLocalVectorLoad()`, `PetscSectionLoad()`, `DMPlexSectionView()`, `PetscSF`, `PetscViewer`
+See also: `DM`, `DMPLEX`, `DMLoad()`, `DMPlexTopologyLoad()`, `DMPlexCoordinatesLoad()`, `DMPlexLabelsLoad()`, `DMPlexGlobalVectorLoad()`, `DMPlexLocalVectorLoad()`, `PetscSectionLoad()`, `DMPlexSectionView()`, `PetscSF`, `PetscViewer`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSectionLoad"))
@@ -34484,7 +33603,7 @@ end
 end 
 
 """
-	DMPlexSectionView(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM) 
+	DMPlexSectionView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer, sectiondm::AbstractPetscDM) 
 Saves a section associated with a `DMPLEX`
 
 Collective
@@ -34496,7 +33615,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMView()`, `DMPlexTopologyView()`, `DMPlexCoordinatesView()`, `DMPlexLabelsView()`, `DMPlexGlobalVectorView()`, `DMPlexLocalVectorView()`, `PetscSectionView()`, `DMPlexSectionLoad()`, `PetscViewer`
+See also: `DM`, `DMPLEX`, `DMView()`, `DMPlexTopologyView()`, `DMPlexCoordinatesView()`, `DMPlexLabelsView()`, `DMPlexGlobalVectorView()`, `DMPlexLocalVectorView()`, `PetscSectionView()`, `DMPlexSectionLoad()`, `PetscViewer`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSectionView"))
@@ -34519,7 +33638,7 @@ end
 end 
 
 """
-	DMPlexSetActivePoint(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt) 
+	DMPlexSetActivePoint(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 Set the point on which projection is currently working
 
 Not Collective
@@ -34530,7 +33649,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetActivePoint()`
+See also: `DM`, `DMPLEX`, `DMPlexGetActivePoint()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetActivePoint"))
@@ -34553,8 +33672,8 @@ end
 end 
 
 """
-	DMPlexSetAdjacencyUseAnchors(petsclib::PetscLibType,dm::AbstractPetscDM, useAnchors::PetscBool) 
-Define adjacency in the mesh using the point
+	DMPlexSetAdjacencyUseAnchors(petsclib::PetscLibType, dm::AbstractPetscDM, useAnchors::PetscBool) 
+Define adjacency in the mesh using the point-to-point constraints.
 
 Input Parameters:
 - `dm`         - The `DM` object
@@ -34562,7 +33681,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMGetAdjacency()`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexSetAnchors()`
+See also: `DMPLEX`, `DMGetAdjacency()`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexSetAnchors()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetAdjacencyUseAnchors"))
@@ -34585,8 +33704,8 @@ end
 end 
 
 """
-	DMPlexSetAdjacencyUser(petsclib::PetscLibType,dm::AbstractPetscDM, user::external, ctx::Ptr{Cvoid}) 
-Define adjacency in the mesh using a user
+	DMPlexSetAdjacencyUser(petsclib::PetscLibType, dm::AbstractPetscDM, user::external, ctx::Ptr{Cvoid}) 
+Define adjacency in the mesh using a user-provided callback
 
 Input Parameters:
 - `dm`   - The DM object
@@ -34595,7 +33714,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMPLEX`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexGetAdjacency()`, `DMPlexGetAdjacencyUser()`
+See also: `DMPLEX`, `DMSetAdjacency()`, `DMPlexDistribute()`, `DMPlexPreallocateOperator()`, `DMPlexGetAdjacency()`, `DMPlexGetAdjacencyUser()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetAdjacencyUser"))
@@ -34618,8 +33737,8 @@ end
 end 
 
 """
-	DMPlexSetAnchors(petsclib::PetscLibType,dm::AbstractPetscDM, anchorSection::PetscSection, anchorIS::AbstractIS) 
-Set the layout of the local anchor (point
+	DMPlexSetAnchors(petsclib::PetscLibType, dm::AbstractPetscDM, anchorSection::PetscSection, anchorIS::AbstractIS) 
+Set the layout of the local anchor (point-to-point) constraints.
 
 Collective
 
@@ -34631,7 +33750,7 @@ Must have a local communicator (`PETSC_COMM_SELF` or derivative).
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetAnchors()`, `DMGetDefaultConstraints()`, `DMSetDefaultConstraints()`
+See also: `DM`, `DMPLEX`, `DMPlexGetAnchors()`, `DMGetDefaultConstraints()`, `DMSetDefaultConstraints()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetAnchors"))
@@ -34654,7 +33773,7 @@ end
 end 
 
 """
-	DMPlexSetCellType(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, celltype::DMPolytopeType) 
+	DMPlexSetCellType(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, celltype::DMPolytopeType) 
 Set the polytope type of a given cell
 
 Not Collective
@@ -34666,7 +33785,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetCellTypeLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`, `DMPlexComputeCellTypes()`, `DMCreateLabel()`
+See also: `DM`, `DMPLEX`, `DMPlexGetCellTypeLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetDepth()`, `DMPlexComputeCellTypes()`, `DMCreateLabel()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetCellType"))
@@ -34689,7 +33808,7 @@ end
 end 
 
 """
-	DMPlexSetChart(petsclib::PetscLibType,dm::AbstractPetscDM, pStart::PetscInt, pEnd::PetscInt) 
+	DMPlexSetChart(petsclib::PetscLibType, dm::AbstractPetscDM, pStart::PetscInt, pEnd::PetscInt) 
 Set the interval for all mesh points [`pStart`, `pEnd`)
 
 Not Collective
@@ -34701,7 +33820,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetChart"))
@@ -34724,7 +33843,7 @@ end
 end 
 
 """
-	DMPlexSetClosurePermutationTensor(petsclib::PetscLibType,dm::AbstractPetscDM, point::PetscInt, section::PetscSection) 
+	DMPlexSetClosurePermutationTensor(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt, section::PetscSection) 
 Create a permutation from the default (BFS) point ordering in the closure, to a
 lexicographic ordering over the tensor product cell (i.e., line, quad, hex, etc.), and set this permutation in the
 section provided (or the section of the `DM`).
@@ -34736,7 +33855,46 @@ Input Parameters:
 
 Example:
 A typical interpolated single-quad mesh might order points as
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionSetClosurePermutation()`, `DMSetGlobalSection()`
+``
+[c0, v1, v2, v3, v4, e5, e6, e7, e8]
+
+v4 -- e6 -- v3
+|           |
+e7    c0    e8
+|           |
+v1 -- e5 -- v2
+``
+
+(There is no significance to the ordering described here.)  The default section for a Q3 quad might typically assign
+dofs in the order of points, e.g.,
+``
+c0 -> [0,1,2,3]
+v1 -> [4]
+-..
+e5 -> [8, 9]
+``
+
+which corresponds to the dofs
+``
+6   10  11  7
+13  2   3   15
+12  0   1   14
+4   8   9   5
+``
+
+The closure in BFS ordering works through height strata (cells, edges, vertices) to produce the ordering
+``
+0 1 2 3 8 9 14 15 11 10 13 12 4 5 7 6
+``
+
+After calling DMPlexSetClosurePermutationTensor(), the closure will be ordered lexicographically,
+``
+4 8 9 5 12 0 1 14 13 2 3 15 6 10 11 7
+``
+
+Level: developer
+
+See also: `DM`, `DMPLEX`, `DMGetLocalSection()`, `PetscSectionSetClosurePermutation()`, `DMSetGlobalSection()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetClosurePermutationTensor"))
@@ -34759,8 +33917,8 @@ end
 end 
 
 """
-	DMPlexSetCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, cone::Vector{PetscInt}) 
-Set the points on the in
+	DMPlexSetCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::Vector{PetscInt}) 
+Set the points on the in-edges for this point in the DAG; that is these are the points that cover the specific point
 
 Not Collective
 
@@ -34771,7 +33929,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`, `DMPlexSetSupport()`, `DMPlexSetSupportSize()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`, `DMPlexSetSupport()`, `DMPlexSetSupportSize()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetCone"))
@@ -34794,8 +33952,8 @@ end
 end 
 
 """
-	DMPlexSetConeOrientation(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, coneOrientation::Vector{PetscInt}) 
-Set the orientations on the in
+	DMPlexSetConeOrientation(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, coneOrientation::Vector{PetscInt}) 
+Set the orientations on the in-edges for this point in the DAG
 
 Not Collective
 
@@ -34806,7 +33964,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetConeOrientation()`, `DMPlexSetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetConeOrientation()`, `DMPlexSetCone()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetConeOrientation"))
@@ -34829,8 +33987,8 @@ end
 end 
 
 """
-	DMPlexSetConeSize(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, size::PetscInt) 
-Set the number of in
+	DMPlexSetConeSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, size::PetscInt) 
+Set the number of in-edges for this point in the DAG
 
 Not Collective
 
@@ -34841,7 +33999,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetCone()`, `DMPlexCreate()`, `DMPlexGetConeSize()`, `DMPlexSetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexSetCone()`, `DMPlexCreate()`, `DMPlexGetConeSize()`, `DMPlexSetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetConeSize"))
@@ -34864,7 +34022,7 @@ end
 end 
 
 """
-	DMPlexSetCoordinateMap(petsclib::PetscLibType,dm::AbstractPetscDM, coordFunc::Ptr{Cvoid}) 
+	DMPlexSetCoordinateMap(petsclib::PetscLibType, dm::AbstractPetscDM, coordFunc::Ptr{Cvoid}) 
 Sets the function used to map coordinates of newly generated mesh points
 
 Logically Collective
@@ -34875,7 +34033,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMSetCoordinates()`, `DMPlexGetCoordinateMap()`, `PetscPointFn`
+See also: `DMPLEX`, `DMSetCoordinates()`, `DMPlexGetCoordinateMap()`, `PetscPointFn`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetCoordinateMap"))
@@ -34898,7 +34056,7 @@ end
 end 
 
 """
-	DMPlexSetGlobalToNaturalSF(petsclib::PetscLibType,dm::AbstractPetscDM, sf::PetscSF) 
+	DMPlexSetGlobalToNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) 
 
 # External Links
 $(_doc_external("DM/DMPlexSetGlobalToNaturalSF"))
@@ -34921,7 +34079,7 @@ end
 end 
 
 """
-	DMPlexSetInterpolatePreferTensor(petsclib::PetscLibType,dm::AbstractPetscDM, preferTensor::PetscBool) 
+	DMPlexSetInterpolatePreferTensor(petsclib::PetscLibType, dm::AbstractPetscDM, preferTensor::PetscBool) 
 Set the flag to prefer tensor order when interpolating a cell
 
 Logically Collective
@@ -34932,7 +34090,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetInterpolatePreferTensor()`, `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolatedCollective()`
+See also: `DMPlexGetInterpolatePreferTensor()`, `DMPLEX`, `DMPlexInterpolate()`, `DMPlexIsInterpolatedCollective()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetInterpolatePreferTensor"))
@@ -34955,7 +34113,7 @@ end
 end 
 
 """
-	DMPlexSetIsoperiodicFaceSF(petsclib::PetscLibType,dm::AbstractPetscDM, num_face_sfs::PetscInt, face_sfs::PetscSF) 
+	DMPlexSetIsoperiodicFaceSF(petsclib::PetscLibType, dm::AbstractPetscDM, num_face_sfs::PetscInt, face_sfs::PetscSF) 
 Express periodicity from an existing mesh
 
 Logically Collective
@@ -34967,7 +34125,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DMPLEX`, `DMGetGlobalSection()`, `DMPlexGetIsoperiodicFaceSF()`
+See also: `DMPLEX`, `DMGetGlobalSection()`, `DMPlexGetIsoperiodicFaceSF()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetIsoperiodicFaceSF"))
@@ -34990,7 +34148,7 @@ end
 end 
 
 """
-	DMPlexSetIsoperiodicFaceTransform(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt, t::Vector{PetscScalar}) 
+	DMPlexSetIsoperiodicFaceTransform(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, t::Vector{PetscScalar}) 
 set geometric transform from donor to periodic points
 
 Logically Collective
@@ -35002,7 +34160,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DMPLEX`, `DMGetGlobalSection()`, `DMPlexSetIsoperiodicFaceSF()`
+See also: `DMPLEX`, `DMGetGlobalSection()`, `DMPlexSetIsoperiodicFaceSF()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetIsoperiodicFaceTransform"))
@@ -35025,7 +34183,7 @@ end
 end 
 
 """
-	DMPlexSetMaxProjectionHeight(petsclib::PetscLibType,dm::AbstractPetscDM, height::PetscInt) 
+	DMPlexSetMaxProjectionHeight(petsclib::PetscLibType, dm::AbstractPetscDM, height::PetscInt) 
 In DMPlexProjectXXXLocal() functions, the projected values of a basis function's dofs
 are computed by associating the basis function with one of the mesh points in its transitively-closed support, and
 evaluating the dual space basis of that point.
@@ -35036,7 +34194,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetMaxProjectionHeight()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabelLocal()`
+See also: `DM`, `DMPLEX`, `DMPlexGetMaxProjectionHeight()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabelLocal()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetMaxProjectionHeight"))
@@ -35059,7 +34217,7 @@ end
 end 
 
 """
-	DMPlexSetMigrationSF(petsclib::PetscLibType,dm::AbstractPetscDM, migrationSF::PetscSF) 
+	DMPlexSetMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, migrationSF::PetscSF) 
 Sets the `PetscSF` for migrating from a parent `DM` into this `DM`
 
 Logically Collective
@@ -35070,7 +34228,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSF`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexCreateMigrationSF()`, `DMPlexGetMigrationSF()`
+See also: `DM`, `DMPLEX`, `PetscSF`, `DMPlexDistribute()`, `DMPlexDistributeField()`, `DMPlexCreateMigrationSF()`, `DMPlexGetMigrationSF()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetMigrationSF"))
@@ -35093,7 +34251,7 @@ end
 end 
 
 """
-	DMPlexSetMinRadius(petsclib::PetscLibType,dm::AbstractPetscDM, minradius::PetscReal) 
+	DMPlexSetMinRadius(petsclib::PetscLibType, dm::AbstractPetscDM, minradius::PetscReal) 
 Sets the minimum distance from the cell centroid to a face
 
 Logically Collective
@@ -35104,7 +34262,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMSetCoordinates()`
+See also: `DMPLEX`, `DMSetCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetMinRadius"))
@@ -35127,7 +34285,7 @@ end
 end 
 
 """
-	DMPlexSetOptionsPrefix(petsclib::PetscLibType,dm::AbstractPetscDM, prefix::String) 
+	DMPlexSetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String) 
 Sets the prefix used for searching for all `DM` options in the database.
 
 Logically Collective
@@ -35138,7 +34296,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `SNESSetFromOptions()`
+See also: `DM`, `DMPLEX`, `SNESSetFromOptions()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetOptionsPrefix"))
@@ -35161,7 +34319,7 @@ end
 end 
 
 """
-	DMPlexSetOverlap(petsclib::PetscLibType,dm::AbstractPetscDM, dmSrc::AbstractPetscDM, overlap::PetscInt) 
+	DMPlexSetOverlap(petsclib::PetscLibType, dm::AbstractPetscDM, dmSrc::AbstractPetscDM, overlap::PetscInt) 
 Set the width of the cell overlap
 
 Logically Collective
@@ -35173,7 +34331,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexGetOverlap()`, `DMPlexDistribute()`
+See also: `DMPLEX`, `DMPlexGetOverlap()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetOverlap"))
@@ -35196,7 +34354,7 @@ end
 end 
 
 """
-	DMPlexSetPartitionBalance(petsclib::PetscLibType,dm::AbstractPetscDM, flg::PetscBool) 
+	DMPlexSetPartitionBalance(petsclib::PetscLibType, dm::AbstractPetscDM, flg::PetscBool) 
 Should distribution of the `DM` attempt to balance the shared point partition?
 
 Input Parameters:
@@ -35205,7 +34363,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexDistribute()`, `DMPlexGetPartitionBalance()`
+See also: `DMPLEX`, `DMPlexDistribute()`, `DMPlexGetPartitionBalance()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetPartitionBalance"))
@@ -35228,7 +34386,7 @@ end
 end 
 
 """
-	DMPlexSetPartitioner(petsclib::PetscLibType,dm::AbstractPetscDM, part::PetscPartitioner) 
+	DMPlexSetPartitioner(petsclib::PetscLibType, dm::AbstractPetscDM, part::PetscPartitioner) 
 Set the mesh partitioner
 
 logically Collective
@@ -35239,7 +34397,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscPartitioner`, `DMPlexDistribute()`, `DMPlexGetPartitioner()`, `PetscPartitionerCreate()`
+See also: `DM`, `DMPLEX`, `PetscPartitioner`, `DMPlexDistribute()`, `DMPlexGetPartitioner()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetPartitioner"))
@@ -35262,8 +34420,8 @@ end
 end 
 
 """
-	DMPlexSetReferenceTree(petsclib::PetscLibType,dm::AbstractPetscDM, ref::AbstractPetscDM) 
-set the reference tree for hierarchically non
+	DMPlexSetReferenceTree(petsclib::PetscLibType, dm::AbstractPetscDM, ref::AbstractPetscDM) 
+set the reference tree for hierarchically non-conforming meshes.
 
 Not Collective
 
@@ -35273,7 +34431,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`
+See also: `DM`, `DMPLEX`, `DMPlexGetReferenceTree()`, `DMPlexCreateDefaultReferenceTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetReferenceTree"))
@@ -35296,7 +34454,7 @@ end
 end 
 
 """
-	DMPlexSetRefinementFunction(petsclib::PetscLibType,dm::AbstractPetscDM, refinementFunc::external) 
+	DMPlexSetRefinementFunction(petsclib::PetscLibType, dm::AbstractPetscDM, refinementFunc::external) 
 Set the function giving the maximum cell volume for refinement
 
 Input Parameters:
@@ -35309,7 +34467,7 @@ Calling Sequence of `refinementFunc`:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexGetRefinementFunction()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexGetRefinementFunction()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRefinementFunction"))
@@ -35332,7 +34490,7 @@ end
 end 
 
 """
-	DMPlexSetRefinementLimit(petsclib::PetscLibType,dm::AbstractPetscDM, refinementLimit::PetscReal) 
+	DMPlexSetRefinementLimit(petsclib::PetscLibType, dm::AbstractPetscDM, refinementLimit::PetscReal) 
 Set the maximum cell volume for refinement
 
 Input Parameters:
@@ -35341,7 +34499,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexGetRefinementLimit()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexGetRefinementLimit()`, `DMPlexGetRefinementUniform()`, `DMPlexSetRefinementUniform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRefinementLimit"))
@@ -35364,7 +34522,7 @@ end
 end 
 
 """
-	DMPlexSetRefinementUniform(petsclib::PetscLibType,dm::AbstractPetscDM, refinementUniform::PetscBool) 
+	DMPlexSetRefinementUniform(petsclib::PetscLibType, dm::AbstractPetscDM, refinementUniform::PetscBool) 
 Set the flag for uniform refinement
 
 Input Parameters:
@@ -35373,7 +34531,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexGetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexGetRefinementUniform()`, `DMPlexGetRefinementLimit()`, `DMPlexSetRefinementLimit()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRefinementUniform"))
@@ -35396,7 +34554,7 @@ end
 end 
 
 """
-	DMPlexSetRegularRefinement(petsclib::PetscLibType,dm::AbstractPetscDM, regular::PetscBool) 
+	DMPlexSetRegularRefinement(petsclib::PetscLibType, dm::AbstractPetscDM, regular::PetscBool) 
 Set the flag indicating that this mesh was obtained by regular refinement from its coarse mesh
 
 Input Parameters:
@@ -35405,7 +34563,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetRegularRefinement()`
+See also: `DM`, `DMPLEX`, `DMPlexGetRegularRefinement()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetRegularRefinement"))
@@ -35428,7 +34586,7 @@ end
 end 
 
 """
-	DMPlexSetSNESLocalFEM(petsclib::PetscLibType,dm::AbstractPetscDM, use_obj::PetscBool, ctx::Ptr{Cvoid}) 
+	DMPlexSetSNESLocalFEM(petsclib::PetscLibType, dm::AbstractPetscDM, use_obj::PetscBool, ctx::Ptr{Cvoid}) 
 Use `DMPLEX`'s internal FEM routines to compute `SNES` boundary values, objective, residual, and Jacobian.
 
 Input Parameters:
@@ -35438,7 +34596,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMPLEX`, `SNES`, `PetscDSAddBoundary()`, `PetscDSSetObjective()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`
+See also: `DMPLEX`, `SNES`, `PetscDSAddBoundary()`, `PetscDSSetObjective()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`
 
 # External Links
 $(_doc_external("SNES/DMPlexSetSNESLocalFEM"))
@@ -35461,7 +34619,7 @@ end
 end 
 
 """
-	DMPlexSetSNESVariableBounds(petsclib::PetscLibType,dm::AbstractPetscDM, snes::AbstractSNES) 
+	DMPlexSetSNESVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, snes::AbstractSNES) 
 Compute upper and lower bounds for the solution using pointsie functions from the `PetscDS`
 
 Collective
@@ -35472,7 +34630,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `SNESVISetVariableBounds()`, `SNESVI`, [](ch_snes), `DM`
+See also: `SNESVISetVariableBounds()`, `SNESVI`, `DM`
 
 # External Links
 $(_doc_external("SNES/DMPlexSetSNESVariableBounds"))
@@ -35495,7 +34653,7 @@ end
 end 
 
 """
-	DMPlexSetSaveTransform(petsclib::PetscLibType,dm::AbstractPetscDM, save::PetscBool) 
+	DMPlexSetSaveTransform(petsclib::PetscLibType, dm::AbstractPetscDM, save::PetscBool) 
 Set the flag which determines whether the `DMPlexTransform` used to produce a refined `DM` is retained
 
 Logically Collective
@@ -35506,7 +34664,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexGetSaveTransform()`, `DMPlexGetTransform()`, `DMPlexSetTransform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexGetSaveTransform()`, `DMPlexGetTransform()`, `DMPlexSetTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSaveTransform"))
@@ -35529,7 +34687,7 @@ end
 end 
 
 """
-	DMPlexSetScale(petsclib::PetscLibType,dm::AbstractPetscDM, unit::PetscUnit, scale::PetscReal) 
+	DMPlexSetScale(petsclib::PetscLibType, dm::AbstractPetscDM, unit::PetscUnit, scale::PetscReal) 
 Set the scale for the specified fundamental unit
 
 Not Collective
@@ -35541,7 +34699,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetScale()`, `PetscUnit`
+See also: `DM`, `DMPLEX`, `DMPlexGetScale()`, `PetscUnit`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetScale"))
@@ -35564,7 +34722,7 @@ end
 end 
 
 """
-	DMPlexSetSubpointMap(petsclib::PetscLibType,dm::AbstractPetscDM, subpointMap::DMLabel) 
+	DMPlexSetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM, subpointMap::DMLabel) 
 Sets the `DMLabel` with point dimension as values
 
 Input Parameters:
@@ -35573,7 +34731,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreateSubmesh()`, `DMPlexGetSubpointIS()`
+See also: `DM`, `DMPLEX`, `DMPlexCreateSubmesh()`, `DMPlexGetSubpointIS()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSubpointMap"))
@@ -35596,8 +34754,8 @@ end
 end 
 
 """
-	DMPlexSetSupport(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, support::Vector{PetscInt}) 
-Set the points on the out
+	DMPlexSetSupport(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, support::Vector{PetscInt}) 
+Set the points on the out-edges for this point in the DAG, that is the list of points that this point covers
 
 Not Collective
 
@@ -35608,7 +34766,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetCone()`, `DMPlexSetConeSize()`, `DMPlexCreate()`, `DMPlexGetSupport()`, `DMPlexSetChart()`, `DMPlexSetSupportSize()`, `DMSetUp()`
+See also: `DM`, `DMPLEX`, `DMPlexSetCone()`, `DMPlexSetConeSize()`, `DMPlexCreate()`, `DMPlexGetSupport()`, `DMPlexSetChart()`, `DMPlexSetSupportSize()`, `DMSetUp()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSupport"))
@@ -35631,8 +34789,8 @@ end
 end 
 
 """
-	DMPlexSetSupportSize(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, size::PetscInt) 
-Set the number of out
+	DMPlexSetSupportSize(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, size::PetscInt) 
+Set the number of out-edges for this point in the DAG
 
 Not Collective
 
@@ -35643,7 +34801,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetSupportSize()`, `DMPlexSetChart()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetSupportSize()`, `DMPlexSetChart()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSupportSize"))
@@ -35666,7 +34824,7 @@ end
 end 
 
 """
-	DMPlexSetTransform(petsclib::PetscLibType,dm::AbstractPetscDM, tr::DMPlexTransform) 
+	DMPlexSetTransform(petsclib::PetscLibType, dm::AbstractPetscDM, tr::DMPlexTransform) 
 Set the `DMPlexTransform` cached on the `DM`
 
 Not Collective
@@ -35677,7 +34835,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexGetTransform()`, `DMPlexSetSaveTransform()`, `DMPlexGetSaveTransform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexGetTransform()`, `DMPlexSetSaveTransform()`, `DMPlexGetSaveTransform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTransform"))
@@ -35700,7 +34858,7 @@ end
 end 
 
 """
-	DMPlexSetTransformType(petsclib::PetscLibType,dm::AbstractPetscDM, type::DMPlexTransformType) 
+	DMPlexSetTransformType(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMPlexTransformType) 
 Set the transform type for uniform refinement
 
 Input Parameters:
@@ -35709,7 +34867,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRefine()`, `DMPlexGetTransformType()`, `DMPlexSetRefinementUniform()`
+See also: `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRefine()`, `DMPlexGetTransformType()`, `DMPlexSetRefinementUniform()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTransformType"))
@@ -35732,8 +34890,8 @@ end
 end 
 
 """
-	DMPlexSetTree(petsclib::PetscLibType,dm::AbstractPetscDM, parentSection::PetscSection, parents::Vector{PetscInt}, childIDs::Vector{PetscInt}) 
-set the tree that describes the hierarchy of non
+	DMPlexSetTree(petsclib::PetscLibType, dm::AbstractPetscDM, parentSection::PetscSection, parents::Vector{PetscInt}, childIDs::Vector{PetscInt}) 
+set the tree that describes the hierarchy of non-conforming mesh points.  This routine also creates
 the point-to-point constraints determined by the tree: a point is constrained to the points in the closure of its
 tree root.
 
@@ -35749,7 +34907,7 @@ the child corresponds to the point in the reference tree with index childIDs; co
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetAnchors()`, `DMPlexGetTreeParent()`, `DMPlexGetTreeChildren()`
+See also: `DM`, `DMPLEX`, `DMPlexGetTree()`, `DMPlexSetReferenceTree()`, `DMPlexSetAnchors()`, `DMPlexGetTreeParent()`, `DMPlexGetTreeChildren()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetTree"))
@@ -35772,7 +34930,7 @@ end
 end 
 
 """
-	DMPlexSetUseMatClosurePermutation(petsclib::PetscLibType,dm::AbstractPetscDM, useClPerm::PetscBool) 
+	DMPlexSetUseMatClosurePermutation(petsclib::PetscLibType, dm::AbstractPetscDM, useClPerm::PetscBool) 
 Set flag for using a closure permutation for matrix insertion
 
 Not collective
@@ -35783,7 +34941,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPlexGetUseMatClosurePermutation()`
+See also: `DMPlexGetUseMatClosurePermutation()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetUseMatClosurePermutation"))
@@ -35806,7 +34964,7 @@ end
 end 
 
 """
-	DMPlexSetVTKCellHeight(petsclib::PetscLibType,dm::AbstractPetscDM, cellHeight::PetscInt) 
+	DMPlexSetVTKCellHeight(petsclib::PetscLibType, dm::AbstractPetscDM, cellHeight::PetscInt) 
 Sets the height in the DAG used to determine which points are cells (normally 0)
 
 Input Parameters:
@@ -35815,7 +34973,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexGetVTKCellHeight()`
+See also: `DM`, `DMPLEX`, `DMPlexGetVTKCellHeight()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSetVTKCellHeight"))
@@ -35838,7 +34996,7 @@ end
 end 
 
 """
-	DMPlexShearGeometry(petsclib::PetscLibType,dm::AbstractPetscDM, direction::DMDirection, multipliers::Vector{PetscReal}) 
+	DMPlexShearGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, direction::DMDirection, multipliers::Vector{PetscReal}) 
 This shears the domain, meaning adds a multiple of the shear coordinate to all other coordinates.
 
 Not Collective
@@ -35850,7 +35008,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexRemapGeometry()`, `DMDirection`, `DM_X`, `DM_Y`, `DM_Z`
+See also: `DMPLEX`, `DMPlexRemapGeometry()`, `DMDirection`, `DM_X`, `DM_Y`, `DM_Z`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexShearGeometry"))
@@ -35873,7 +35031,7 @@ end
 end 
 
 """
-	DMPlexStratify(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMPlexStratify(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Computes the strata for all points in the `DMPLEX`
 
 Collective
@@ -35883,7 +35041,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSymmetrize()`, `DMPlexComputeCellTypes()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSymmetrize()`, `DMPlexComputeCellTypes()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexStratify"))
@@ -35906,7 +35064,7 @@ end
 end 
 
 """
-	migrationSF::PetscSF = DMPlexStratifyMigrationSF(petsclib::PetscLibType,dm::AbstractPetscDM, sf::PetscSF) 
+	migrationSF::PetscSF = DMPlexStratifyMigrationSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) 
 Rearrange the leaves of a migration sf for stratification.
 
 Input Parameters:
@@ -35918,7 +35076,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPLEX`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
+See also: `DMPLEX`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`, `DMPlexDistributeOverlap()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexStratifyMigrationSF"))
@@ -35943,8 +35101,8 @@ end
 end 
 
 """
-	DMPlexSymmetrize(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Create support (out
+	DMPlexSymmetrize(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Create support (out-edge) information from cone (in-edge) information
 
 Not Collective
 
@@ -35953,7 +35111,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMPlexSetCone()`
+See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexSetChart()`, `DMPlexSetConeSize()`, `DMPlexSetCone()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexSymmetrize"))
@@ -35976,7 +35134,7 @@ end
 end 
 
 """
-	DMPlexTSComputeBoundary(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexTSComputeBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Insert the essential boundary values into the local input `locX` and/or its time derivative `locX_t` using pointwise functions specified by the user
 
 Input Parameters:
@@ -35988,7 +35146,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMPLEX`, `TS`, `DMPlexComputeJacobianActionFEM()`
+See also: `DMPLEX`, `TS`, `DMPlexComputeJacobianActionFEM()`
 
 # External Links
 $(_doc_external("TS/DMPlexTSComputeBoundary"))
@@ -36011,7 +35169,7 @@ end
 end 
 
 """
-	DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexTSComputeIFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locF::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the local residual `locF` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
@@ -36026,7 +35184,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `DMPLEX`, `TS`, `DMPlexTSComputeRHSFunctionFEM()`
+See also: `DMPLEX`, `TS`, `DMPlexTSComputeRHSFunctionFEM()`
 
 # External Links
 $(_doc_external("TS/DMPlexTSComputeIFunctionFEM"))
@@ -36049,7 +35207,7 @@ end
 end 
 
 """
-	DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
+	DMPlexTSComputeIJacobianFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locX_t::AbstractPetscVec, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat, ctx::Ptr{Cvoid}) 
 Form the Jacobian `Jac` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
@@ -36066,7 +35224,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `DM`, `DMPlexTSComputeIFunctionFEM()`, `DMPlexTSComputeRHSFunctionFEM()`
+See also: `TS`, `DM`, `DMPlexTSComputeIFunctionFEM()`, `DMPlexTSComputeRHSFunctionFEM()`
 
 # External Links
 $(_doc_external("TS/DMPlexTSComputeIJacobianFEM"))
@@ -36089,7 +35247,7 @@ end
 end 
 
 """
-	DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexTSComputeRHSFunctionFEM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, locG::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the local residual `locG` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
@@ -36103,7 +35261,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `DM`, `DMPlexTSComputeIFunctionFEM()`, `DMPlexTSComputeIJacobianFEM()`
+See also: `TS`, `DM`, `DMPlexTSComputeIFunctionFEM()`, `DMPlexTSComputeIJacobianFEM()`
 
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFEM"))
@@ -36126,7 +35284,7 @@ end
 end 
 
 """
-	DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMPlexTSComputeRHSFunctionFVM(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Form the forcing `F` from the local input `locX` using pointwise functions specified by the user
 
 Input Parameters:
@@ -36140,7 +35298,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `DMPLEX`, `TS`, `DMPlexComputeJacobianActionFEM()`
+See also: `DMPLEX`, `TS`, `DMPlexComputeJacobianActionFEM()`
 
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFVM"))
@@ -36163,8 +35321,8 @@ end
 end 
 
 """
-	DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
-Assemble the right
+	DMPlexTSComputeRHSFunctionFVMCEED(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locX::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Assemble the right-hand-side vector of a finite-volume `TS` step using the libCEED operator attached to a `DMPLEX`
 
 Collective
 
@@ -36177,7 +35335,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `TS`, `DMPLEX`, `DMCeedCreate()`, `DMPlexSNESComputeResidualCEED()`, `DMTSSetRHSFunctionLocal()`
+See also: `TS`, `DMPLEX`, `DMCeedCreate()`, `DMPlexSNESComputeResidualCEED()`, `DMTSSetRHSFunctionLocal()`
 
 # External Links
 $(_doc_external("TS/DMPlexTSComputeRHSFunctionFVMCEED"))
@@ -36200,7 +35358,7 @@ end
 end 
 
 """
-	DMPlexTetgenSetOptions(petsclib::PetscLibType,dm::AbstractPetscDM, opts::String) 
+	DMPlexTetgenSetOptions(petsclib::PetscLibType, dm::AbstractPetscDM, opts::String) 
 Set the options used for the Tetgen mesh generator
 
 Not Collective
@@ -36211,7 +35369,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTriangleSetOptions()`, `DMPlexGenerate()`
+See also: `DM`, `DMPLEX`, `DMPlexTriangleSetOptions()`, `DMPlexGenerate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTetgenSetOptions"))
@@ -36234,7 +35392,7 @@ end
 end 
 
 """
-	globalToLocalPointSF::PetscSF = DMPlexTopologyLoad(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer) 
+	globalToLocalPointSF::PetscSF = DMPlexTopologyLoad(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) 
 Loads a topology into a `DMPLEX`
 
 Collective
@@ -36249,7 +35407,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMLoad()`, `DMPlexCoordinatesLoad()`, `DMPlexLabelsLoad()`, `DMView()`, `PetscViewerHDF5Open()`, `PetscViewerPushFormat()`,
+See also: `DM`, `DMPLEX`, `DMLoad()`, `DMPlexCoordinatesLoad()`, `DMPlexLabelsLoad()`, `DMView()`, `PetscViewerHDF5Open()`, `PetscViewerPushFormat()`,
 `PetscViewer`, `PetscSF`
 
 # External Links
@@ -36275,7 +35433,7 @@ end
 end 
 
 """
-	DMPlexTopologyView(petsclib::PetscLibType,dm::AbstractPetscDM, viewer::PetscViewer) 
+	DMPlexTopologyView(petsclib::PetscLibType, dm::AbstractPetscDM, viewer::PetscViewer) 
 Saves a `DMPLEX` topology into a file
 
 Collective
@@ -36286,7 +35444,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMView()`, `DMPlexCoordinatesView()`, `DMPlexLabelsView()`, `DMPlexTopologyLoad()`, `PetscViewer`
+See also: `DM`, `DMPLEX`, `DMView()`, `DMPlexCoordinatesView()`, `DMPlexLabelsView()`, `DMPlexTopologyLoad()`, `PetscViewer`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTopologyView"))
@@ -36309,7 +35467,7 @@ end
 end 
 
 """
-	cidsRefine::PetscInt,cidsCoarsen::PetscInt = DMPlexTransferVecTree(petsclib::PetscLibType,dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, sfRefine::PetscSF, sfCoarsen::PetscSF, useBCs::PetscBool, time::PetscReal) 
+	cidsRefine::PetscInt,cidsCoarsen::PetscInt = DMPlexTransferVecTree(petsclib::PetscLibType, dmIn::AbstractPetscDM, vecIn::AbstractPetscVec, dmOut::AbstractPetscDM, vecOut::AbstractPetscVec, sfRefine::PetscSF, sfCoarsen::PetscSF, useBCs::PetscBool, time::PetscReal) 
 transfer a vector between two meshes that differ from each other by refinement/coarsening
 that can be represented by a common reference tree used by both.  This routine can be used for a combination of
 coarsening and refinement at the same time.
@@ -36343,7 +35501,7 @@ coarse points to fine points.
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscSF`, `Vec`, `PetscFV`, `DMPlexSetReferenceTree()`, `DMPlexGetReferenceTree()`, `PetscFVGetComputeGradients()`
+See also: `DM`, `DMPLEX`, `PetscSF`, `Vec`, `PetscFV`, `DMPlexSetReferenceTree()`, `DMPlexGetReferenceTree()`, `PetscFVGetComputeGradients()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransferVecTree"))
@@ -36370,8 +35528,8 @@ end
 end 
 
 """
-	ncdm::PetscDM = DMPlexTreeRefineCell(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt) 
-Refine a single cell on rank 0 using the `DM`'s reference tree, producing a non
+	ncdm::PetscDM = DMPlexTreeRefineCell(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt) 
+Refine a single cell on rank 0 using the `DM`'s reference tree, producing a non-conforming mesh
 
 Collective
 
@@ -36384,7 +35542,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexGetReferenceTree()`, `DMPlexSetTree()`
+See also: `DM`, `DMPLEX`, `DMPlexSetReferenceTree()`, `DMPlexGetReferenceTree()`, `DMPlexSetTree()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTreeRefineCell"))
@@ -36409,7 +35567,7 @@ end
 end 
 
 """
-	DMPlexTriangleSetOptions(petsclib::PetscLibType,dm::AbstractPetscDM, opts::String) 
+	DMPlexTriangleSetOptions(petsclib::PetscLibType, dm::AbstractPetscDM, opts::String) 
 Set the options used for the Triangle mesh generator
 
 Not Collective
@@ -36420,7 +35578,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexTetgenSetOptions()`, `DMPlexGenerate()`
+See also: `DM`, `DMPLEX`, `DMPlexTetgenSetOptions()`, `DMPlexGenerate()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTriangleSetOptions"))
@@ -36443,8 +35601,8 @@ end
 end 
 
 """
-	dmUnint::PetscDM = DMPlexUninterpolate(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Take in a mesh with all intermediate faces, edges, etc. and return a cell
+	dmUnint::PetscDM = DMPlexUninterpolate(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Take in a mesh with all intermediate faces, edges, etc. and return a cell-vertex mesh
 
 Collective
 
@@ -36456,7 +35614,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCopyCoordinates()`
+See also: `DMPLEX`, `DMPlexInterpolate()`, `DMPlexCreateFromCellListPetsc()`, `DMPlexCopyCoordinates()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexUninterpolate"))
@@ -36481,7 +35639,7 @@ end
 end 
 
 """
-	DMPlexVTKWriteAll(petsclib::PetscLibType,odm, viewer::PetscViewer) 
+	DMPlexVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer) 
 Write a file containing all the fields that have been provided to the viewer
 
 Collective
@@ -36492,7 +35650,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `PETSCVIEWEREXODUSII`, `DMPLEX`, `PETSCVIEWERVTK`
+See also: `DM`, `PETSCVIEWEREXODUSII`, `DMPLEX`, `PETSCVIEWERVTK`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVTKWriteAll"))
@@ -36515,7 +35673,7 @@ end
 end 
 
 """
-	csize::PetscInt,values::Vector{PetscScalar} = DMPlexVecGetClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt) 
+	csize::PetscInt,values::Vector{PetscScalar} = DMPlexVecGetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt) 
 Get an array of the values on the closure of `point`
 
 Not collective
@@ -36533,7 +35691,7 @@ if the user provided `NULL`, it is a borrowed array and should not be freed, use
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecGetClosureAtDepth()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
+See also: `DM`, `DMPLEX`, `DMPlexVecGetClosureAtDepth()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVecGetClosure"))
@@ -36561,7 +35719,7 @@ end
 end 
 
 """
-	csize::PetscInt,values::Ptr{PetscScalar} = DMPlexVecGetClosureAtDepth(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, depth::PetscInt) 
+	csize::PetscInt,values::Ptr{PetscScalar} = DMPlexVecGetClosureAtDepth(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, depth::PetscInt) 
 Get an array of the values on the closure of `point` that are at a specific depth
 
 Not collective
@@ -36580,7 +35738,7 @@ if the user provided `NULL`, it is a borrowed array and should not be freed, use
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
+See also: `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVecGetClosureAtDepth"))
@@ -36607,7 +35765,7 @@ end
 end 
 
 """
-	csize::PetscInt,values::Ptr{PetscScalar} = DMPlexVecGetOrientedClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, useClPerm::PetscBool, v::AbstractPetscVec, point::PetscInt, ornt::PetscInt) 
+	csize::PetscInt,values::Ptr{PetscScalar} = DMPlexVecGetOrientedClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, useClPerm::PetscBool, v::AbstractPetscVec, point::PetscInt, ornt::PetscInt) 
 Get an array of the values on the closure of `point` with a given orientation, optionally applying the closure permutation.
 
 Not collective
@@ -36627,7 +35785,7 @@ if the user provided `NULL`, it is a borrowed array and should not be freed, use
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexGetCellCoordinates()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`
+See also: `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexGetCellCoordinates()`, `DMPlexVecRestoreClosure()`, `DMPlexVecSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVecGetOrientedClosure"))
@@ -36654,7 +35812,7 @@ end
 end 
 
 """
-	DMPlexVecRestoreClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Union{Ptr, AbstractArray{PetscScalar}}) 
+	DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore the array of the values on the closure of `point` obtained with `DMPlexVecGetClosure()`
 
 Not collective
@@ -36669,7 +35827,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
+See also: `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexVecSetClosure()`, `DMPlexMatSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVecRestoreClosure"))
@@ -36694,7 +35852,7 @@ end
 end 
 
 """
-	DMPlexVecSetClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
+	DMPlexVecSetClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
 Set an array of the values on the closure of `point`
 
 Not collective
@@ -36710,7 +35868,7 @@ where `INSERT_ALL_VALUES` and `ADD_ALL_VALUES` also overwrite boundary condition
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexMatSetClosure()`
+See also: `DM`, `DMPLEX`, `DMPlexVecGetClosure()`, `DMPlexMatSetClosure()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVecSetClosure"))
@@ -36733,7 +35891,7 @@ end
 end 
 
 """
-	DMPlexVecView1D(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt, u::Vector{<:AbstractPetscVec}, viewer::PetscViewer) 
+	DMPlexVecView1D(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, u::Vector{<:AbstractPetscVec}, viewer::PetscViewer) 
 Plot many 1D solutions on the same line graph
 
 Collective
@@ -36746,7 +35904,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `VecViewFromOptions()`, `VecView()`
+See also: `DM`, `DMPLEX`, `VecViewFromOptions()`, `VecView()`
 
 # External Links
 $(_doc_external("DMPlex/DMPlexVecView1D"))
@@ -36769,7 +35927,7 @@ end
 end 
 
 """
-	ornt::PetscInt = DMPolytopeGetOrientation(petsclib::PetscLibType,ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) 
+	ornt::PetscInt = DMPolytopeGetOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) 
 Determine an orientation (transformation) that takes the source face arrangement to the target face arrangement
 
 Not Collective
@@ -36784,15 +35942,7 @@ Output Parameter:
 
 Level: advanced
 
-Note:
-This function is the same as `DMPolytopeMatchOrientation()` except it will generate an error if no suitable orientation can be found.
-
-Developer Note:
-It is unclear why this function needs to exist since one can simply call `DMPolytopeMatchOrientation()` and error if none is found
-
-See also: 
-=== 
-`DM`, `DMPolytopeType`, `DMPolytopeMatchOrientation()`, `DMPolytopeGetVertexOrientation()`, `DMPolytopeMatchVertexOrientation()`
+See also: `DM`, `DMPolytopeType`, `DMPolytopeMatchOrientation()`, `DMPolytopeGetVertexOrientation()`, `DMPolytopeMatchVertexOrientation()`
 
 # External Links
 $(_doc_external("DM/DMPolytopeGetOrientation"))
@@ -36817,7 +35967,7 @@ end
 end 
 
 """
-	ornt::PetscInt = DMPolytopeGetVertexOrientation(petsclib::PetscLibType,ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) 
+	ornt::PetscInt = DMPolytopeGetVertexOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) 
 Determine an orientation (transformation) that takes the source vertex arrangement to the target vertex arrangement
 
 Not Collective
@@ -36832,15 +35982,7 @@ Output Parameter:
 
 Level: advanced
 
-Note:
-This function is the same as `DMPolytopeMatchVertexOrientation()` except it errors if not orientation is possible.
-
-Developer Note:
-It is unclear why this function needs to exist since one can simply call `DMPolytopeMatchVertexOrientation()` and error if none is found
-
-See also: 
-=== 
-`DM`, `DMPolytopeType`, `DMPolytopeMatchVertexOrientation()`, `DMPolytopeGetOrientation()`
+See also: `DM`, `DMPolytopeType`, `DMPolytopeMatchVertexOrientation()`, `DMPolytopeGetOrientation()`
 
 # External Links
 $(_doc_external("DM/DMPolytopeGetVertexOrientation"))
@@ -36865,7 +36007,7 @@ end
 end 
 
 """
-	inside::PetscBool = DMPolytopeInCellTest(petsclib::PetscLibType,ct::DMPolytopeType, point::Vector{PetscReal}) 
+	inside::PetscBool = DMPolytopeInCellTest(petsclib::PetscLibType, ct::DMPolytopeType, point::Vector{PetscReal}) 
 Check whether a point lies inside the reference cell of given type
 
 Not Collective
@@ -36879,9 +36021,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMPolytopeType`, `DMLocatePoints()`
+See also: `DM`, `DMPolytopeType`, `DMLocatePoints()`
 
 # External Links
 $(_doc_external("DM/DMPolytopeInCellTest"))
@@ -36906,7 +36046,7 @@ end
 end 
 
 """
-	ornt::PetscInt,found::PetscBool = DMPolytopeMatchOrientation(petsclib::PetscLibType,ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) 
+	ornt::PetscInt,found::PetscBool = DMPolytopeMatchOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceCone::Vector{PetscInt}, targetCone::Vector{PetscInt}) 
 Determine an orientation (transformation) that takes the source face arrangement to the target face arrangement
 
 Not Collective
@@ -36922,17 +36062,7 @@ Output Parameters:
 
 Level: advanced
 
-Note:
-An arrangement is a face order combined with an orientation for each face
-
-Each orientation (transformation) is labeled with an integer from negative `DMPolytopeTypeGetNumArrangements(ct)`/2 to `DMPolytopeTypeGetNumArrangements(ct)`/2
-that labels each arrangement (face ordering plus orientation for each face).
-
-See `DMPolytopeMatchVertexOrientation()` to find a new vertex orientation that takes the source vertex arrangement to the target vertex arrangement
-
-See also: 
-=== 
-`DM`, `DMPolytopeGetOrientation()`, `DMPolytopeMatchVertexOrientation()`, `DMPolytopeGetVertexOrientation()`
+See also: `DM`, `DMPolytopeGetOrientation()`, `DMPolytopeMatchVertexOrientation()`, `DMPolytopeGetVertexOrientation()`
 
 # External Links
 $(_doc_external("DM/DMPolytopeMatchOrientation"))
@@ -36959,7 +36089,7 @@ end
 end 
 
 """
-	ornt::PetscInt,found::PetscBool = DMPolytopeMatchVertexOrientation(petsclib::PetscLibType,ct::DMPolytopeType, sourceVert::Vector{PetscInt}, targetVert::Vector{PetscInt}) 
+	ornt::PetscInt,found::PetscBool = DMPolytopeMatchVertexOrientation(petsclib::PetscLibType, ct::DMPolytopeType, sourceVert::Vector{PetscInt}, targetVert::Vector{PetscInt}) 
 Determine an orientation (transformation) that takes the source vertex arrangement to the target vertex arrangement
 
 Not Collective
@@ -36975,17 +36105,7 @@ Output Parameters:
 
 Level: advanced
 
-Notes:
-An arrangement is a vertex order
-
-Each orientation (transformation) is labeled with an integer from negative `DMPolytopeTypeGetNumArrangements(ct)`/2 to `DMPolytopeTypeGetNumArrangements(ct)`/2
-that labels each arrangement (vertex ordering).
-
-See `DMPolytopeMatchOrientation()` to find a new face orientation that takes the source face arrangement to the target face arrangement
-
-See also: 
-=== 
-`DM`, `DMPolytopeType`, `DMPolytopeGetOrientation()`, `DMPolytopeMatchOrientation()`, `DMPolytopeTypeGetNumVertices()`, `DMPolytopeTypeGetVertexArrangement()`
+See also: `DM`, `DMPolytopeType`, `DMPolytopeGetOrientation()`, `DMPolytopeMatchOrientation()`, `DMPolytopeTypeGetNumVertices()`, `DMPolytopeTypeGetVertexArrangement()`
 
 # External Links
 $(_doc_external("DM/DMPolytopeMatchVertexOrientation"))
@@ -37012,8 +36132,8 @@ end
 end 
 
 """
-	DMPrintCellIndices(petsclib::PetscLibType,c::PetscInt, name::String, len::PetscInt, x::Vector{PetscInt}) 
-Print an integer array of per
+	DMPrintCellIndices(petsclib::PetscLibType, c::PetscInt, name::String, len::PetscInt, x::Vector{PetscInt}) 
+Print an integer array of per-cell indices to `PETSC_COMM_SELF`
 
 Not Collective
 
@@ -37025,9 +36145,7 @@ Input Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
+See also: `DM`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellIndices"))
@@ -37050,8 +36168,8 @@ end
 end 
 
 """
-	DMPrintCellMatrix(petsclib::PetscLibType,c::PetscInt, name::String, rows::PetscInt, cols::PetscInt, A::Vector{PetscScalar}) 
-Print a scalar array representing a per
+	DMPrintCellMatrix(petsclib::PetscLibType, c::PetscInt, name::String, rows::PetscInt, cols::PetscInt, A::Vector{PetscScalar}) 
+Print a scalar array representing a per-cell matrix to `PETSC_COMM_SELF`
 
 Not Collective
 
@@ -37064,12 +36182,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-Only the real part of each entry is printed.
-
-See also: 
-=== 
-`DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintLocalVec()`
+See also: `DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellMatrix"))
@@ -37092,8 +36205,8 @@ end
 end 
 
 """
-	DMPrintCellVector(petsclib::PetscLibType,c::PetscInt, name::String, len::PetscInt, x::Vector{PetscScalar}) 
-Print a scalar array representing a per
+	DMPrintCellVector(petsclib::PetscLibType, c::PetscInt, name::String, len::PetscInt, x::Vector{PetscScalar}) 
+Print a scalar array representing a per-cell vector to `PETSC_COMM_SELF`
 
 Not Collective
 
@@ -37105,12 +36218,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-Only the real part of each entry is printed.
-
-See also: 
-=== 
-`DM`, `DMPrintCellIndices()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
+See also: `DM`, `DMPrintCellIndices()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellVector"))
@@ -37133,8 +36241,8 @@ end
 end 
 
 """
-	DMPrintCellVectorReal(petsclib::PetscLibType,c::PetscInt, name::String, len::PetscInt, x::Vector{PetscReal}) 
-Print a real array representing a per
+	DMPrintCellVectorReal(petsclib::PetscLibType, c::PetscInt, name::String, len::PetscInt, x::Vector{PetscReal}) 
+Print a real array representing a per-cell vector to `PETSC_COMM_SELF`
 
 Not Collective
 
@@ -37146,9 +36254,7 @@ Input Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
+See also: `DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellMatrix()`, `DMPrintLocalVec()`
 
 # External Links
 $(_doc_external("DM/DMPrintCellVectorReal"))
@@ -37171,7 +36277,7 @@ end
 end 
 
 """
-	DMPrintLocalVec(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, tol::PetscReal, X::AbstractPetscVec) 
+	DMPrintLocalVec(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, tol::PetscReal, X::AbstractPetscVec) 
 Print a `Vec` associated with a `DM`, filtering out very small entries
 
 Collective
@@ -37184,12 +36290,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-Runs in parallel by wrapping the local portion of the vector in an MPI vector for viewing.
-
-See also: 
-=== 
-`DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `VecFilter()`
+See also: `DM`, `DMPrintCellIndices()`, `DMPrintCellVector()`, `DMPrintCellVectorReal()`, `DMPrintCellMatrix()`, `VecFilter()`
 
 # External Links
 $(_doc_external("DM/DMPrintLocalVec"))
@@ -37212,8 +36313,8 @@ end
 end 
 
 """
-	subdm::PetscDM = DMProductGetDM(petsclib::PetscLibType,dm::AbstractPetscDM, slot::PetscInt) 
-Get sub
+	subdm::PetscDM = DMProductGetDM(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt) 
+Get sub-`DM` whose coordinates will be associated with a particular dimension of the `DMPRODUCT`
 
 Not Collective
 
@@ -37226,7 +36327,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMPRODUCT`, `DMProductSetDM()`, `DMProductGetDimensionIndex()`, `DMProductSetDimensionIndex()`
+See also: `DMPRODUCT`, `DMProductSetDM()`, `DMProductGetDimensionIndex()`, `DMProductSetDimensionIndex()`
 
 # External Links
 $(_doc_external("DMPRODUCT/DMProductGetDM"))
@@ -37251,8 +36352,8 @@ end
 end 
 
 """
-	idx::PetscInt = DMProductGetDimensionIndex(petsclib::PetscLibType,dm::AbstractPetscDM, slot::PetscInt) 
-Get which dimension `idx` of the sub
+	idx::PetscInt = DMProductGetDimensionIndex(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt) 
+Get which dimension `idx` of the sub-`DM` coordinates will be used associated with the `DMPRODUCT` dimension `slot`
 
 Not Collective
 
@@ -37265,7 +36366,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMPRODUCT`, `DMProductGetDM()`, `DMProductSetDimensionIndex()`
+See also: `DMPRODUCT`, `DMProductGetDM()`, `DMProductSetDimensionIndex()`
 
 # External Links
 $(_doc_external("DMPRODUCT/DMProductGetDimensionIndex"))
@@ -37290,8 +36391,8 @@ end
 end 
 
 """
-	DMProductSetDM(petsclib::PetscLibType,dm::AbstractPetscDM, slot::PetscInt, subdm::AbstractPetscDM) 
-Set sub
+	DMProductSetDM(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt, subdm::AbstractPetscDM) 
+Set sub-`DM` whose coordinates will be associated with a particular dimension of the `DMPRODUCT`
 
 Not Collective
 
@@ -37302,7 +36403,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMPRODUCT`, `DMProductGetDM()`, `DMProductSetDimensionIndex()`, `DMProductGetDimensionIndex()`
+See also: `DMPRODUCT`, `DMProductGetDM()`, `DMProductSetDimensionIndex()`, `DMProductGetDimensionIndex()`
 
 # External Links
 $(_doc_external("DMPRODUCT/DMProductSetDM"))
@@ -37325,8 +36426,8 @@ end
 end 
 
 """
-	DMProductSetDimensionIndex(petsclib::PetscLibType,dm::AbstractPetscDM, slot::PetscInt, idx::PetscInt) 
-Set which dimension `idx` of the sub
+	DMProductSetDimensionIndex(petsclib::PetscLibType, dm::AbstractPetscDM, slot::PetscInt, idx::PetscInt) 
+Set which dimension `idx` of the sub-`DM` coordinates will be used associated with the `DMPRODUCT` dimension `slot`
 
 Not Collective
 
@@ -37337,7 +36438,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMPRODUCT`, `DMProductGetDM()`, `DMProductGetDimensionIndex()`
+See also: `DMPRODUCT`, `DMProductGetDM()`, `DMProductGetDimensionIndex()`
 
 # External Links
 $(_doc_external("DMPRODUCT/DMProductSetDimensionIndex"))
@@ -37360,7 +36461,7 @@ end
 end 
 
 """
-	DMProjectBdFieldLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
+	DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a local vector, calculating only over the portion of the domain boundary specified by the label.
 
 Not Collective
@@ -37403,20 +36504,7 @@ Calling sequence of `funcs`:
 
 Level: intermediate
 
-Note:
-There are three different `DM`s that potentially interact in this function. The output `DM`, dm, specifies the layout of the values calculates by funcs.
-The input `DM`, attached to U, may be different. For example, you can input the solution over the full domain, but output over a piece of the boundary, or
-a subdomain. You can also output a different number of fields than the input, with different discretizations. Last the auxiliary `DM`, attached to the
-auxiliary field vector, which is attached to dm, can also be different. It can have a different topology, number of fields, and discretizations.
-
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`
+See also: `DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`
 
 # External Links
 $(_doc_external("DM/DMProjectBdFieldLabelLocal"))
@@ -37439,7 +36527,7 @@ end
 end 
 
 """
-	DMProjectField(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, U::AbstractPetscVec, funcs::Ptr{Ptr{Cvoid}}, mode::InsertMode, X::AbstractPetscVec) 
+	DMProjectField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, U::AbstractPetscVec, funcs::Ptr{Ptr{Cvoid}}, mode::InsertMode, X::AbstractPetscVec) 
 This projects a given function of the input fields into the function space provided by a `DM`, putting the coefficients in a global vector.
 
 Collective
@@ -37456,15 +36544,7 @@ Output Parameter:
 
 Level: advanced
 
-Note:
-There are three different `DM`s that potentially interact in this function. The output `dm`, specifies the layout of the values calculates by the function.
-The input `DM`, attached to `U`, may be different. For example, you can input the solution over the full domain, but output over a piece of the boundary, or
-a subdomain. You can also output a different number of fields than the input, with different discretizations. Last the auxiliary `DM`, attached to the
-auxiliary field vector, which is attached to `dm`, can also be different. It can have a different topology, number of fields, and discretizations.
-
-See also: 
-=== 
-`DM`, `PetscPointFn`, `DMProjectFieldLocal()`, `DMProjectFieldLabelLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`
+See also: `DM`, `PetscPointFn`, `DMProjectFieldLocal()`, `DMProjectFieldLabelLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`
 
 # External Links
 $(_doc_external("DM/DMProjectField"))
@@ -37487,7 +36567,7 @@ end
 end 
 
 """
-	DMProjectFieldLabel(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid}) 
+	DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a global vector, calculating only over the portion of the domain specified by the label.
 
 Not Collective
@@ -37529,20 +36609,7 @@ Calling sequence of `funcs`:
 
 Level: intermediate
 
-Note:
-There are three different `DM`s that potentially interact in this function. The output `DM`, dm, specifies the layout of the values calculates by funcs.
-The input `DM`, attached to U, may be different. For example, you can input the solution over the full domain, but output over a piece of the boundary, or
-a subdomain. You can also output a different number of fields than the input, with different discretizations. Last the auxiliary `DM`, attached to the
-auxiliary field vector, which is attached to dm, can also be different. It can have a different topology, number of fields, and discretizations.
-
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`
+See also: `DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`, `DMProjectFunction()`, `DMComputeL2Diff()`
 
 # External Links
 $(_doc_external("DM/DMProjectFieldLabel"))
@@ -37565,7 +36632,7 @@ end
 end 
 
 """
-	DMProjectFieldLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
+	DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a local vector, calculating only over the portion of the domain specified by the label.
 
 Not Collective
@@ -37607,20 +36674,7 @@ Calling sequence of `funcs`:
 
 Level: intermediate
 
-Note:
-There are three different `DM`s that potentially interact in this function. The output `DM`, dm, specifies the layout of the values calculates by funcs.
-The input `DM`, attached to localU, may be different. For example, you can input the solution over the full domain, but output over a piece of the boundary, or
-a subdomain. You can also output a different number of fields than the input, with different discretizations. Last the auxiliary `DM`, attached to the
-auxiliary field vector, which is attached to dm, can also be different. It can have a different topology, number of fields, and discretizations.
-
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectField()`, `DMProjectFieldLabel()`, `DMProjectFunction()`, `DMComputeL2Diff()`
+See also: `DM`, `DMProjectField()`, `DMProjectFieldLabel()`, `DMProjectFunction()`, `DMComputeL2Diff()`
 
 # External Links
 $(_doc_external("DM/DMProjectFieldLabelLocal"))
@@ -37643,7 +36697,7 @@ end
 end 
 
 """
-	DMProjectFieldLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
+	DMProjectFieldLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided by the `DM`, putting the coefficients in a local vector.
 
 Not Collective
@@ -37680,20 +36734,7 @@ Calling sequence of `funcs`:
 
 Level: intermediate
 
-Note:
-There are three different `DM`s that potentially interact in this function. The output `DM`, dm, specifies the layout of the values calculates by funcs.
-The input `DM`, attached to U, may be different. For example, you can input the solution over the full domain, but output over a piece of the boundary, or
-a subdomain. You can also output a different number of fields than the input, with different discretizations. Last the auxiliary `DM`, attached to the
-auxiliary field vector, which is attached to dm, can also be different. It can have a different topology, number of fields, and discretizations.
-
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`,
+See also: `DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`,
 `DMProjectFunction()`, `DMComputeL2Diff()`
 
 # External Links
@@ -37742,7 +36783,7 @@ function DMProjectFunction(petsclib::PetscLibType, dm::AbstractPetscDM, time::Re
 end
 
 """
-	DMProjectFunctionLabel(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+	DMProjectFunctionLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
 This projects the given function into the function space provided by the `DM`, putting the coefficients in a global vector, setting values only for points in the given label.
 
 Collective
@@ -37772,14 +36813,7 @@ Calling sequence of `funcs`:
 
 Level: developer
 
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabelLocal()`, `DMComputeL2Diff()`
+See also: `DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabelLocal()`, `DMComputeL2Diff()`
 
 # External Links
 $(_doc_external("DM/DMProjectFunctionLabel"))
@@ -37802,7 +36836,7 @@ end
 end 
 
 """
-	DMProjectFunctionLabelLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+	DMProjectFunctionLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
 This projects the given function into the function space provided by the `DM`, putting the coefficients in a local vector, setting values only for points in the given label.
 
 Not Collective
@@ -37832,14 +36866,7 @@ Calling sequence of `funcs`:
 
 Level: developer
 
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabel()`, `DMComputeL2Diff()`
+See also: `DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFunctionLabel()`, `DMComputeL2Diff()`
 
 # External Links
 $(_doc_external("DM/DMProjectFunctionLabelLocal"))
@@ -37862,7 +36889,7 @@ end
 end 
 
 """
-	DMProjectFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
+	DMProjectFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, noname::Ptr{Cvoid}) 
 This projects the given function into the function space provided by a `DM`, putting the coefficients in a local vector.
 
 Not Collective
@@ -37887,14 +36914,7 @@ Calling sequence of `funcs`:
 
 Level: developer
 
-Developer Notes:
-This API is specific to only particular usage of `DM`
-
-The notes need to provide some information about what has to be provided to the `DM` to be able to perform the computation.
-
-See also: 
-=== 
-`DM`, `DMProjectFunction()`, `DMProjectFunctionLabel()`, `DMComputeL2Diff()`
+See also: `DM`, `DMProjectFunction()`, `DMProjectFunctionLabel()`, `DMComputeL2Diff()`
 
 # External Links
 $(_doc_external("DM/DMProjectFunctionLocal"))
@@ -37917,7 +36937,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMRedundantCreate(petsclib::PetscLibType,comm::MPI_Comm, rank::PetscMPIInt, N::PetscInt) 
+	dm::PetscDM = DMRedundantCreate(petsclib::PetscLibType, comm::MPI_Comm, rank::PetscMPIInt, N::PetscInt) 
 Creates a `DM` object, used to manage data for dense globally coupled variables
 
 Collective
@@ -37932,7 +36952,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMREDUNDANT`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMCreateMatrix()`, `DMCompositeAddDM()`, `DMSetType()`, `DMRedundantSetSize()`, `DMRedundantGetSize()`
+See also: `DM`, `DMREDUNDANT`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMCreateMatrix()`, `DMCompositeAddDM()`, `DMSetType()`, `DMRedundantSetSize()`, `DMRedundantGetSize()`
 
 # External Links
 $(_doc_external("DM/DMRedundantCreate"))
@@ -37957,7 +36977,7 @@ end
 end 
 
 """
-	rank::PetscMPIInt,N::PetscInt = DMRedundantGetSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	rank::PetscMPIInt,N::PetscInt = DMRedundantGetSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the size of a densely coupled redundant object
 
 Not Collective
@@ -37971,7 +36991,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMREDUNDANT`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMRedundantCreate()`, `DMRedundantSetSize()`
+See also: `DM`, `DMREDUNDANT`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMRedundantCreate()`, `DMRedundantSetSize()`
 
 # External Links
 $(_doc_external("DM/DMRedundantGetSize"))
@@ -37998,7 +37018,7 @@ end
 end 
 
 """
-	DMRedundantSetSize(petsclib::PetscLibType,dm::AbstractPetscDM, rank::PetscMPIInt, N::PetscInt) 
+	DMRedundantSetSize(petsclib::PetscLibType, dm::AbstractPetscDM, rank::PetscMPIInt, N::PetscInt) 
 Sets the size of a densely coupled redundant object
 
 Collective
@@ -38010,7 +37030,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMREDUNDANT`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMRedundantCreate()`, `DMRedundantGetSize()`
+See also: `DM`, `DMREDUNDANT`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMRedundantCreate()`, `DMRedundantGetSize()`
 
 # External Links
 $(_doc_external("DM/DMRedundantSetSize"))
@@ -38033,7 +37053,7 @@ end
 end 
 
 """
-	dmf::PetscDM = DMRefine(petsclib::PetscLibType,dm::AbstractPetscDM, comm::MPI_Comm) 
+	dmf::PetscDM = DMRefine(petsclib::PetscLibType, dm::AbstractPetscDM, comm::MPI_Comm) 
 Refines a `DM` object using a standard nonadaptive refinement of the underlying mesh
 
 Collective
@@ -38050,12 +37070,7 @@ Options Database Key:
 
 Level: developer
 
-Note:
-If no refinement was done, the return value is `NULL`
-
-See also: 
-=== 
-`DM`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateDomainDecomposition()`,
+See also: `DM`, `DMCoarsen()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateDomainDecomposition()`,
 `DMRefineHookAdd()`, `DMRefineHookRemove()`
 
 # External Links
@@ -38081,7 +37096,7 @@ end
 end 
 
 """
-	DMRefineHierarchy(petsclib::PetscLibType,dm::AbstractPetscDM, nlevels::PetscInt, dmf::Vector{<:AbstractPetscDM}) 
+	DMRefineHierarchy(petsclib::PetscLibType, dm::AbstractPetscDM, nlevels::PetscInt, dmf::Vector{<:AbstractPetscDM}) 
 Refines a `DM` object, all levels at once
 
 Collective
@@ -38095,9 +37110,7 @@ Output Parameter:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCoarsen()`, `DMCoarsenHierarchy()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
+See also: `DM`, `DMCoarsen()`, `DMCoarsenHierarchy()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMRefineHierarchy"))
@@ -38120,7 +37133,7 @@ end
 end 
 
 """
-	DMRefineHookAdd(petsclib::PetscLibType,coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid}) 
+	DMRefineHookAdd(petsclib::PetscLibType, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid}) 
 adds a callback to be run when interpolating a nonlinear problem to a finer grid
 
 Logically Collective; No Fortran Support
@@ -38144,17 +37157,7 @@ Calling sequence of `interphook`:
 
 Level: advanced
 
-Notes:
-This function is only needed if auxiliary data that is attached to the `DM`s via, for example, `PetscObjectCompose()`, needs to be
-passed to fine grids while grid sequencing.
-
-The actual interpolation is done when `DMInterpolate()` is called.
-
-If this function is called multiple times, the hooks will be run in the order they are added.
-
-See also: 
-=== 
-`DM`, `DMCoarsenHookAdd()`, `DMInterpolate()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
+See also: `DM`, `DMCoarsenHookAdd()`, `DMInterpolate()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
 
 # External Links
 $(_doc_external("DM/DMRefineHookAdd"))
@@ -38177,7 +37180,7 @@ end
 end 
 
 """
-	DMRefineHookRemove(petsclib::PetscLibType,coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid}) 
+	DMRefineHookRemove(petsclib::PetscLibType, coarse::AbstractPetscDM, refinehook::external, interphook::external, ctx::Ptr{Cvoid}) 
 remove a callback from the list of hooks, that have been set with `DMRefineHookAdd()`, to be run when interpolating
 a nonlinear problem to a finer grid
 
@@ -38202,12 +37205,7 @@ Calling sequence of interphook:
 
 Level: advanced
 
-Note:
-This function does nothing if the hook is not in the list.
-
-See also: 
-=== 
-`DM`, `DMRefineHookAdd()`, `DMCoarsenHookRemove()`, `DMInterpolate()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
+See also: `DM`, `DMRefineHookAdd()`, `DMCoarsenHookRemove()`, `DMInterpolate()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`
 
 # External Links
 $(_doc_external("DM/DMRefineHookRemove"))
@@ -38230,7 +37228,7 @@ end
 end 
 
 """
-	DMRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	DMRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new `DM` type implementation
 
 Not Collective, No Fortran Support
@@ -38244,27 +37242,7 @@ Calling sequence of function:
 
 Level: advanced
 
-Note:
-`DMRegister()` may be called multiple times to add several user-defined `DM`s
-
-Example Usage:
--vb
-DMRegister("my_da", MyDMCreate);
--ve
-
-Then, your `DM` type can be chosen with the procedural interface via
--vb
-DMCreate(MPI_Comm, DM *);
-DMSetType(DM,"my_da");
--ve
-or at runtime via the option
--vb
--da_type my_da
--ve
-
-See also: 
-=== 
-`DM`, `DMType`, `DMSetType()`, `DMRegisterAll()`, `DMRegisterDestroy()`
+See also: `DM`, `DMType`, `DMSetType()`, `DMRegisterAll()`, `DMRegisterDestroy()`
 
 # External Links
 $(_doc_external("DM/DMRegister"))
@@ -38287,7 +37265,7 @@ end
 end 
 
 """
-	label::DMLabel = DMRemoveLabel(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	label::DMLabel = DMRemoveLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Remove the label given by name from this `DM`
 
 Not Collective
@@ -38302,9 +37280,7 @@ caller is responsible for calling `DMLabelDestroy()`.
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMLabelDestroy()`, `DMRemoveLabelBySelf()`
+See also: `DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMLabelDestroy()`, `DMRemoveLabelBySelf()`
 
 # External Links
 $(_doc_external("DM/DMRemoveLabel"))
@@ -38329,7 +37305,7 @@ end
 end 
 
 """
-	DMRemoveLabelBySelf(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool) 
+	DMRemoveLabelBySelf(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool) 
 Remove the label from this `DM`
 
 Not Collective
@@ -38341,14 +37317,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-Only exactly the same instance is removed if found, name match is ignored.
-If the `DM` has an exclusive reference to the label, the label gets destroyed and
-*label nullified.
-
-See also: 
-=== 
-`DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMLabelDestroy()`, `DMRemoveLabel()`
+See also: `DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMLabelDestroy()`, `DMRemoveLabel()`
 
 # External Links
 $(_doc_external("DM/DMRemoveLabelBySelf"))
@@ -38371,7 +37340,7 @@ end
 end 
 
 """
-	reorder::DMReorderDefaultFlag = DMReorderSectionGetDefault(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	reorder::DMReorderDefaultFlag = DMReorderSectionGetDefault(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get flag indicating whether the local section should be reordered by default
 
 Not collective
@@ -38384,7 +37353,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMReorderSetDefault()`
+See also: `DMReorderSetDefault()`
 
 # External Links
 $(_doc_external("DM/DMReorderSectionGetDefault"))
@@ -38409,7 +37378,7 @@ end
 end 
 
 """
-	reorder::MatOrderingType = DMReorderSectionGetType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	reorder::MatOrderingType = DMReorderSectionGetType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the reordering type for the local section
 
 Not collective
@@ -38422,7 +37391,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMReorderSetDefault()`, `DMReorderSectionGetDefault()`
+See also: `DMReorderSetDefault()`, `DMReorderSectionGetDefault()`
 
 # External Links
 $(_doc_external("DM/DMReorderSectionGetType"))
@@ -38447,7 +37416,7 @@ end
 end 
 
 """
-	DMReorderSectionSetDefault(petsclib::PetscLibType,dm::AbstractPetscDM, reorder::DMReorderDefaultFlag) 
+	DMReorderSectionSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::DMReorderDefaultFlag) 
 Set flag indicating whether the local section should be reordered by default
 
 Logically collective
@@ -38458,7 +37427,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMReorderSectionGetDefault()`
+See also: `DMReorderSectionGetDefault()`
 
 # External Links
 $(_doc_external("DM/DMReorderSectionSetDefault"))
@@ -38481,7 +37450,7 @@ end
 end 
 
 """
-	DMReorderSectionSetType(petsclib::PetscLibType,dm::AbstractPetscDM, reorder::MatOrderingType) 
+	DMReorderSectionSetType(petsclib::PetscLibType, dm::AbstractPetscDM, reorder::MatOrderingType) 
 Set the type of local section reordering
 
 Logically collective
@@ -38492,7 +37461,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMReorderSectionGetType()`, `DMReorderSectionSetDefault()`
+See also: `DMReorderSectionGetType()`, `DMReorderSectionSetDefault()`
 
 # External Links
 $(_doc_external("DM/DMReorderSectionSetType"))
@@ -38515,7 +37484,7 @@ end
 end 
 
 """
-	DMRestoreGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec) 
+	DMRestoreGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec) 
 Returns a PETSc vector that
 obtained from `DMGetGlobalVector()`. Do not use with vector obtained via
 `DMCreateGlobalVector()`.
@@ -38528,7 +37497,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToGlobalBegin()`,
 `DMGlobalToGlobalEnd()`, `DMGlobalToGlobal()`, `DMCreateLocalVector()`, `DMGetGlobalVector()`, `DMClearGlobalVectors()`
 
@@ -38555,7 +37524,7 @@ end
 end 
 
 """
-	DMRestoreLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM, g::AbstractPetscVec) 
+	DMRestoreLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, g::AbstractPetscVec) 
 Returns a PETSc vector that was
 obtained from `DMGetLocalVector()`. Do not use with vector obtained via
 `DMCreateLocalVector()`.
@@ -38568,7 +37537,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMGlobalToLocalBegin()`,
 `DMGlobalToLocalEnd()`, `DMLocalToGlobalBegin()`, `DMCreateLocalVector()`, `DMGetLocalVector()`, `DMClearLocalVectors()`
 
@@ -38595,7 +37564,7 @@ end
 end 
 
 """
-	DMRestoreNamedGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, X::AbstractPetscVec) 
+	DMRestoreNamedGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, X::AbstractPetscVec) 
 restore access to a named, persistent global vector
 
 Collective
@@ -38607,7 +37576,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DM`, `DMGetNamedGlobalVector()`, `DMClearNamedGlobalVectors()`
+See also: `DM`, `DMGetNamedGlobalVector()`, `DMClearNamedGlobalVectors()`
 
 # External Links
 $(_doc_external("DM/DMRestoreNamedGlobalVector"))
@@ -38632,7 +37601,7 @@ end
 end 
 
 """
-	DMRestoreNamedLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, X::AbstractPetscVec) 
+	DMRestoreNamedLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, X::AbstractPetscVec) 
 restore access to a named, persistent local vector obtained with `DMGetNamedLocalVector()`
 
 Not Collective
@@ -38644,7 +37613,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DM`, `DMRestoreNamedGlobalVector()`, `DMGetNamedLocalVector()`, `DMClearNamedLocalVectors()`
+See also: `DM`, `DMRestoreNamedGlobalVector()`, `DMGetNamedLocalVector()`, `DMClearNamedLocalVectors()`
 
 # External Links
 $(_doc_external("DM/DMRestoreNamedLocalVector"))
@@ -38669,8 +37638,8 @@ end
 end 
 
 """
-	DMRestrict(petsclib::PetscLibType,fine::AbstractPetscDM, restrct::AbstractPetscMat, rscale::AbstractPetscVec, inject::AbstractPetscMat, coarse::AbstractPetscDM) 
-restricts user
+	DMRestrict(petsclib::PetscLibType, fine::AbstractPetscDM, restrct::AbstractPetscMat, rscale::AbstractPetscVec, inject::AbstractPetscMat, coarse::AbstractPetscDM) 
+restricts user-defined problem data to a coarser `DM` by running hooks registered by `DMCoarsenHookAdd()`
 
 Collective if any hooks are
 
@@ -38683,12 +37652,7 @@ Input Parameters:
 
 Level: developer
 
-Developer Note:
-Though this routine is called `DMRestrict()` the hooks are added with `DMCoarsenHookAdd()`, a consistent terminology would be better
-
-See also: 
-=== 
-`DM`, `DMCoarsenHookAdd()`, `MatRestrict()`, `DMInterpolate()`, `DMRefineHookAdd()`
+See also: `DM`, `DMCoarsenHookAdd()`, `MatRestrict()`, `DMInterpolate()`, `DMRefineHookAdd()`
 
 # External Links
 $(_doc_external("DM/DMRestrict"))
@@ -38711,7 +37675,7 @@ end
 end 
 
 """
-	DMSNESCheckDiscretization(petsclib::PetscLibType,snes::AbstractSNES, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, tol::PetscReal, error::Vector{PetscReal}) 
+	DMSNESCheckDiscretization(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, tol::PetscReal, error::Vector{PetscReal}) 
 Check the discretization error of the exact solution
 
 Input Parameters:
@@ -38726,7 +37690,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `PetscDSSetExactSolution()`, `DNSNESCheckFromOptions()`, `DMSNESCheckResidual()`, `DMSNESCheckJacobian()`
+See also: `PetscDSSetExactSolution()`, `DNSNESCheckFromOptions()`, `DMSNESCheckResidual()`, `DMSNESCheckJacobian()`
 
 # External Links
 $(_doc_external("SNES/DMSNESCheckDiscretization"))
@@ -38749,7 +37713,7 @@ end
 end 
 
 """
-	DMSNESCheckFromOptions(petsclib::PetscLibType,snes::AbstractSNES, u::AbstractPetscVec) 
+	DMSNESCheckFromOptions(petsclib::PetscLibType, snes::AbstractSNES, u::AbstractPetscVec) 
 Check the residual and Jacobian functions using the exact solution by outputting some diagnostic information
 
 Input Parameters:
@@ -38758,7 +37722,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `DM`
+See also: `SNES`, `DM`
 
 # External Links
 $(_doc_external("SNES/DMSNESCheckFromOptions"))
@@ -38781,7 +37745,7 @@ end
 end 
 
 """
-	isLinear::PetscBool,convRate::PetscReal = DMSNESCheckJacobian(petsclib::PetscLibType,snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
+	isLinear::PetscBool,convRate::PetscReal = DMSNESCheckJacobian(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
 Check the Jacobian of the exact solution against the residual using the Taylor Test
 
 Input Parameters:
@@ -38796,7 +37760,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckResidual()`
+See also: `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckResidual()`
 
 # External Links
 $(_doc_external("SNES/DMSNESCheckJacobian"))
@@ -38823,7 +37787,7 @@ end
 end 
 
 """
-	residual::PetscReal = DMSNESCheckResidual(petsclib::PetscLibType,snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
+	residual::PetscReal = DMSNESCheckResidual(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
 Check the residual of the exact solution
 
 Input Parameters:
@@ -38837,7 +37801,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckJacobian()`
+See also: `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckJacobian()`
 
 # External Links
 $(_doc_external("SNES/DMSNESCheckResidual"))
@@ -38862,7 +37826,7 @@ end
 end 
 
 """
-	DMSNESComputeJacobianAction(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	DMSNESComputeJacobianAction(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, Y::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Compute the action of the Jacobian J(`X`) on `Y`
 
 Input Parameters:
@@ -38876,7 +37840,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `DM`, `DMSNESCreateJacobianMF()`, `DMPlexSNESComputeResidualFEM()`
+See also: `DM`, `DMSNESCreateJacobianMF()`, `DMPlexSNESComputeResidualFEM()`
 
 # External Links
 $(_doc_external("SNES/DMSNESComputeJacobianAction"))
@@ -38899,8 +37863,8 @@ end
 end 
 
 """
-	J::PetscMat = DMSNESCreateJacobianMF(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
-Create a `Mat` which computes the action of the Jacobian matrix
+	J::PetscMat = DMSNESCreateJacobianMF(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+Create a `Mat` which computes the action of the Jacobian matrix-free
 
 Collective
 
@@ -38914,7 +37878,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `DM`, `SNES`, `DMSNESComputeJacobianAction()`
+See also: `DM`, `SNES`, `DMSNESComputeJacobianAction()`
 
 # External Links
 $(_doc_external("SNES/DMSNESCreateJacobianMF"))
@@ -38939,7 +37903,7 @@ end
 end 
 
 """
-	DMSNESGetBoundaryLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMSNESGetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 get the local boundary value function set with `DMSNESSetBoundaryLocal()`.
 
 Not Collective
@@ -38958,7 +37922,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_snes), `DMSNESSetFunctionLocal()`, `DMSNESSetBoundaryLocal()`, `DMSNESSetJacobianLocal()`
+See also: `DMSNESSetFunctionLocal()`, `DMSNESSetBoundaryLocal()`, `DMSNESSetJacobianLocal()`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetBoundaryLocal"))
@@ -38981,7 +37945,7 @@ end
 end 
 
 """
-	f::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetFunction(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	f::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetFunction(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `SNES` residual evaluation function from a `DMSNES` object
 
 Not Collective
@@ -38995,7 +37959,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `DMSNESSetFunction()`, `SNESSetFunction()`, `SNESFunctionFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `DMSNESSetFunction()`, `SNESSetFunction()`, `SNESFunctionFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetFunction"))
@@ -39022,7 +37986,7 @@ end
 end 
 
 """
-	DMSNESGetFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMSNESGetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 get the local residual evaluation function information set with `DMSNESSetFunctionLocal()`.
 
 Not Collective
@@ -39042,7 +38006,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMSNESSetFunction()`, `DMSNESSetFunctionLocal()`, `DMSNESSetJacobianLocal()`
+See also: `DMSNESSetFunction()`, `DMSNESSetFunctionLocal()`, `DMSNESSetJacobianLocal()`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetFunctionLocal"))
@@ -39065,7 +38029,7 @@ end
 end 
 
 """
-	J::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetJacobian(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	J::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetJacobian(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `SNES` Jacobian evaluation function from a `DMSNES` object
 
 Not Collective
@@ -39079,7 +38043,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `SNESJacobianFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `SNESJacobianFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetJacobian"))
@@ -39106,7 +38070,7 @@ end
 end 
 
 """
-	DMSNESGetJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMSNESGetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 the local Jacobian evaluation function set with `DMSNESSetJacobianLocal()`.
 
 Logically Collective
@@ -39127,7 +38091,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_snes), `DMSNESSetJacobianLocal()`, `DMSNESSetJacobian()`
+See also: `DMSNESSetJacobianLocal()`, `DMSNESSetJacobian()`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetJacobianLocal"))
@@ -39150,8 +38114,8 @@ end
 end 
 
 """
-	DMSNESGetNGS(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
-get `SNES` Gauss
+	DMSNESGetNGS(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+get `SNES` Gauss-Seidel relaxation function from a `DMSNES` object
 
 Not Collective
 
@@ -39164,7 +38128,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESGetNGS()`, `DMSNESGetJacobian()`, `DMSNESGetFunction()`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESGetNGS()`, `DMSNESGetJacobian()`, `DMSNESGetFunction()`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetNGS"))
@@ -39187,7 +38151,7 @@ end
 end 
 
 """
-	obj::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetObjective(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	obj::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetObjective(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the objective function set with `DMSNESSetObjective()`
 
 Not Collective
@@ -39201,7 +38165,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `DMSNESSetObjective()`, `SNESSetFunction()`, `SNESObjectiveFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `DMSNESSetObjective()`, `SNESSetFunction()`, `SNESObjectiveFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetObjective"))
@@ -39228,7 +38192,7 @@ end
 end 
 
 """
-	DMSNESGetObjectiveLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMSNESGetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 get the local objective evaluation function information set with `DMSNESSetObjectiveLocal()`.
 
 Not Collective
@@ -39248,7 +38212,7 @@ Calling sequence of func:
 
 Level: beginner
 
--seealso: `DMSNESSetObjective()`, `DMSNESSetObjectiveLocal()`, `DMSNESSetFunctionLocal()`
+See also: `DMSNESSetObjective()`, `DMSNESSetObjectiveLocal()`, `DMSNESSetFunctionLocal()`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetObjectiveLocal"))
@@ -39271,7 +38235,7 @@ end
 end 
 
 """
-	b::Ptr{Cvoid},J::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetPicard(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	b::Ptr{Cvoid},J::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMSNESGetPicard(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `SNES` Picard iteration evaluation functions from a `DMSNES` object
 
 Not Collective
@@ -39286,7 +38250,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `SNESFunctionFn`, `SNESJacobianFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `SNESFunctionFn`, `SNESJacobianFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESGetPicard"))
@@ -39315,7 +38279,7 @@ end
 end 
 
 """
-	DMSNESSetBoundaryLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMSNESSetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set a function to insert, for example, essential boundary conditions into a ghosted solution vector
 
 Logically Collective
@@ -39332,7 +38296,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: [](ch_snes), `DMSNESSetObjectiveLocal()`, `DMSNESSetFunctionLocal()`, `DMSNESSetJacobianLocal()`
+See also: `DMSNESSetObjectiveLocal()`, `DMSNESSetFunctionLocal()`, `DMSNESSetJacobianLocal()`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetBoundaryLocal"))
@@ -39355,7 +38319,7 @@ end
 end 
 
 """
-	DMSNESSetFunction(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMSNESSetFunction(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `SNES` residual evaluation function
 
 Not Collective
@@ -39367,7 +38331,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `SNESFunctionFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `SNESFunctionFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetFunction"))
@@ -39390,7 +38354,7 @@ end
 end 
 
 """
-	DMSNESSetFunctionContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMSNESSetFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `SNES` residual evaluation context destroy function
 
 Not Collective
@@ -39401,7 +38365,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetFunction()`, `SNESSetFunction()`, `PetscCtxDestroyFn`
+See also: `DMSNES`, `DMSNESSetFunction()`, `SNESSetFunction()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetFunctionContextDestroy"))
@@ -39424,7 +38388,7 @@ end
 end 
 
 """
-	DMSNESSetFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMSNESSetFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set a local residual evaluation function. This function is called with local vector
 containing the local vector information PLUS ghost point information. It should compute a result for all local
 elements and `DMSNES` will automatically accumulate the overlapping values.
@@ -39444,7 +38408,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: [](ch_snes), `DMSNESSetFunction()`, `DMSNESSetJacobianLocal()`
+See also: `DMSNESSetFunction()`, `DMSNESSetJacobianLocal()`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetFunctionLocal"))
@@ -39467,7 +38431,7 @@ end
 end 
 
 """
-	DMSNESSetJacobian(petsclib::PetscLibType,dm::AbstractPetscDM, J::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMSNESSetJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, J::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `SNES` Jacobian evaluation function into a `DMSNES` object
 
 Not Collective
@@ -39479,7 +38443,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESGetJacobian()`, `SNESSetJacobian()`, `SNESJacobianFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESGetJacobian()`, `SNESSetJacobian()`, `SNESJacobianFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetJacobian"))
@@ -39502,7 +38466,7 @@ end
 end 
 
 """
-	DMSNESSetJacobianContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMSNESSetJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `SNES` Jacobian evaluation context destroy function into a `DMSNES` object
 
 Not Collective
@@ -39513,7 +38477,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetJacobian()`
+See also: `DMSNES`, `DMSNESSetJacobian()`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetJacobianContextDestroy"))
@@ -39536,7 +38500,7 @@ end
 end 
 
 """
-	DMSNESSetJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMSNESSetJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set a local Jacobian evaluation function
 
 Logically Collective
@@ -39555,7 +38519,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: [](ch_snes), `DMSNESSetObjectiveLocal()`, `DMSNESSetFunctionLocal()`, `DMSNESSetBoundaryLocal()`
+See also: `DMSNESSetObjectiveLocal()`, `DMSNESSetFunctionLocal()`, `DMSNESSetBoundaryLocal()`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetJacobianLocal"))
@@ -39578,8 +38542,8 @@ end
 end 
 
 """
-	DMSNESSetMFFunction(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
-set `SNES` residual evaluation function used in applying the matrix
+	DMSNESSetMFFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+set `SNES` residual evaluation function used in applying the matrix-free Jacobian with `-snes_mf_operator`
 
 Logically Collective
 
@@ -39590,7 +38554,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `DMSNESSetFunction()`, `SNESFunctionFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `DMSNESSetFunction()`, `SNESFunctionFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetMFFunction"))
@@ -39613,8 +38577,8 @@ end
 end 
 
 """
-	DMSNESSetNGS(petsclib::PetscLibType,dm::AbstractPetscDM, f::external, ctx::Ptr{Cvoid}) 
-set `SNES` Gauss
+	DMSNESSetNGS(petsclib::PetscLibType, dm::AbstractPetscDM, f::external, ctx::Ptr{Cvoid}) 
+set `SNES` Gauss-Seidel relaxation function into a `DMSNES` object
 
 Not Collective
 
@@ -39625,7 +38589,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `DMSNESSetFunction()`, `SNESGSFunction`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESSetFunction()`, `DMSNESSetJacobian()`, `DMSNESSetFunction()`, `SNESGSFunction`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetNGS"))
@@ -39648,8 +38612,8 @@ end
 end 
 
 """
-	DMSNESSetObjective(petsclib::PetscLibType,dm::AbstractPetscDM, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
-Sets the objective function minimized by some of the `SNES` linesearch methods into a `DMSNES` object, used instead of the 2
+	DMSNESSetObjective(petsclib::PetscLibType, dm::AbstractPetscDM, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+Sets the objective function minimized by some of the `SNES` linesearch methods into a `DMSNES` object, used instead of the 2-norm of the residual
 
 Not Collective
 
@@ -39660,7 +38624,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `DMSNESSetContext()`, `SNESGetObjective()`, `DMSNESSetFunction()`, `SNESObjectiveFn`
+See also: `DMSNES`, `DMSNESSetContext()`, `SNESGetObjective()`, `DMSNESSetFunction()`, `SNESObjectiveFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetObjective"))
@@ -39683,7 +38647,7 @@ end
 end 
 
 """
-	DMSNESSetObjectiveLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMSNESSetObjectiveLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set a local objective evaluation function. This function is called with local vector
 containing the local vector information PLUS ghost point information. It should compute a result for all local
 elements and `DMSNES` will automatically accumulate the overlapping values.
@@ -39703,7 +38667,7 @@ Calling sequence of func:
 
 Level: advanced
 
--seealso: `DMSNESSetFunctionLocal()`, `DMSNESSetJacobianLocal()`
+See also: `DMSNESSetFunctionLocal()`, `DMSNESSetJacobianLocal()`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetObjectiveLocal"))
@@ -39726,7 +38690,7 @@ end
 end 
 
 """
-	DMSNESSetPicard(petsclib::PetscLibType,dm::AbstractPetscDM, b::Ptr{Cvoid}, J::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMSNESSetPicard(petsclib::PetscLibType, dm::AbstractPetscDM, b::Ptr{Cvoid}, J::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set SNES Picard iteration matrix and RHS evaluation functions into a `DMSNES` object
 
 Not Collective
@@ -39739,7 +38703,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `DMSNES`, `SNESSetPicard()`, `DMSNESSetFunction()`, `DMSNESSetJacobian()`, `SNESFunctionFn`, `SNESJacobianFn`
+See also: `DMSNES`, `SNESSetPicard()`, `DMSNESSetFunction()`, `DMSNESSetJacobian()`, `SNESFunctionFn`, `SNESJacobianFn`
 
 # External Links
 $(_doc_external("SNES/DMSNESSetPicard"))
@@ -39762,7 +38726,7 @@ end
 end 
 
 """
-	DMSetAdjacency(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt, useCone::PetscBool, useClosure::PetscBool) 
+	DMSetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, useCone::PetscBool, useClosure::PetscBool) 
 Set the flags for determining variable influence
 
 Not Collective
@@ -39775,17 +38739,7 @@ Input Parameters:
 
 Level: developer
 
-Notes:
--vb
-FEM:   Two points p and q are adjacent if q \\in closure(star(p)),   useCone = PETSC_FALSE, useClosure = PETSC_TRUE
-FVM:   Two points p and q are adjacent if q \\in support(p+cone(p)), useCone = PETSC_TRUE,  useClosure = PETSC_FALSE
-FVM++: Two points p and q are adjacent if q \\in star(closure(p)),   useCone = PETSC_TRUE,  useClosure = PETSC_TRUE
--ve
-Further explanation can be found in the User's Manual Section on the Influence of Variables on One Another.
-
-See also: 
-=== 
-`DM`, `DMGetAdjacency()`, `DMGetField()`, `DMSetField()`
+See also: `DM`, `DMGetAdjacency()`, `DMGetField()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMSetAdjacency"))
@@ -39808,7 +38762,7 @@ end
 end 
 
 """
-	DMSetApplicationContext(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	DMSetApplicationContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
 Set an application context into a `DM` object
 
 Not Collective
@@ -39819,20 +38773,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-An application context is a way to pass problem specific information that is accessible whenever the `DM` is available
-In a multilevel solver, the application context is shared by all the `DM` in the hierarchy; it is thus not advisable
-to store objects that represent discretized quantities inside the context.
-
-Fortran Notes:
-This only works when the context is a Fortran derived type or a `PetscObject`. Declare `ctx` with
--vb
-type(tUsertype), pointer :: ctx
--ve
-
-See also: 
-=== 
-`DM`, `DMGetApplicationContext()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`
+See also: `DM`, `DMGetApplicationContext()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`
 
 # External Links
 $(_doc_external("DM/DMSetApplicationContext"))
@@ -39855,7 +38796,7 @@ end
 end 
 
 """
-	DMSetApplicationContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, destroy::Ptr{Cvoid}) 
+	DMSetApplicationContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, destroy::Ptr{Cvoid}) 
 Sets a user function that will be called to destroy the application context when the `DM` is destroyed
 
 Logically Collective if the function is collective
@@ -39866,9 +38807,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMSetApplicationContext()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`,
+See also: `DM`, `DMSetApplicationContext()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`,
 `DMGetApplicationContext()`, `PetscCtxDestroyFn`
 
 # External Links
@@ -39892,7 +38831,7 @@ end
 end 
 
 """
-	DMSetAuxiliaryVec(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt, aux::AbstractPetscVec) 
+	DMSetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt, aux::AbstractPetscVec) 
 Set an auxiliary vector for region specified by the given label and value, and equation part
 
 Not Collective because auxiliary vectors are not parallel
@@ -39906,9 +38845,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMClearAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMGetAuxiliaryLabels()`, `DMCopyAuxiliaryVec()`
+See also: `DM`, `DMClearAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMGetAuxiliaryLabels()`, `DMCopyAuxiliaryVec()`
 
 # External Links
 $(_doc_external("DM/DMSetAuxiliaryVec"))
@@ -39931,7 +38868,7 @@ end
 end 
 
 """
-	DMSetBasicAdjacency(petsclib::PetscLibType,dm::AbstractPetscDM, useCone::PetscBool, useClosure::PetscBool) 
+	DMSetBasicAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, useCone::PetscBool, useClosure::PetscBool) 
 Set the flags for determining variable influence, using either the default or field 0 if it is defined
 
 Not Collective
@@ -39943,16 +38880,7 @@ Input Parameters:
 
 Level: developer
 
-Notes:
--vb
-FEM:   Two points p and q are adjacent if q \\in closure(star(p)),   useCone = PETSC_FALSE, useClosure = PETSC_TRUE
-FVM:   Two points p and q are adjacent if q \\in support(p+cone(p)), useCone = PETSC_TRUE,  useClosure = PETSC_FALSE
-FVM++: Two points p and q are adjacent if q \\in star(closure(p)),   useCone = PETSC_TRUE,  useClosure = PETSC_TRUE
--ve
-
-See also: 
-=== 
-`DM`, `DMGetBasicAdjacency()`, `DMGetField()`, `DMSetField()`
+See also: `DM`, `DMGetBasicAdjacency()`, `DMGetField()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMSetBasicAdjacency"))
@@ -39975,7 +38903,7 @@ end
 end 
 
 """
-	DMSetBlockingType(petsclib::PetscLibType,dm::AbstractPetscDM, btype::DMBlockingType) 
+	DMSetBlockingType(petsclib::PetscLibType, dm::AbstractPetscDM, btype::DMBlockingType) 
 set the blocking granularity to be used for variable block size `DMCreateMatrix()` is called
 
 Logically Collective
@@ -39989,9 +38917,7 @@ Options Database Key:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
+See also: `DM`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
 
 # External Links
 $(_doc_external("DM/DMSetBlockingType"))
@@ -40014,7 +38940,7 @@ end
 end 
 
 """
-	DMSetCellCoordinateDM(petsclib::PetscLibType,dm::AbstractPetscDM, cdm::AbstractPetscDM) 
+	DMSetCellCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM) 
 Sets the `DM` that prescribes cellwise coordinate layout and scatters between global and local cellwise coordinates
 
 Logically Collective
@@ -40025,7 +38951,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMGetCellCoordinateDM()`, `DMSetCellCoordinates()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMGetCellCoordinatesLocal()`,
+See also: `DMGetCellCoordinateDM()`, `DMSetCellCoordinates()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMGetCellCoordinatesLocal()`,
 `DMSetCoordinateDM()`, `DMGetCoordinateDM()`
 
 # External Links
@@ -40049,8 +38975,8 @@ end
 end 
 
 """
-	DMSetCellCoordinateField(petsclib::PetscLibType,dm::AbstractPetscDM, field::DMField) 
-Set the `DMField` representation of the discontinuous per
+	DMSetCellCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField) 
+Set the `DMField` representation of the discontinuous per-cell mesh coordinates
 
 Logically Collective
 
@@ -40060,7 +38986,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMField`, `DMSetCoordinateField()`, `DMGetCellCoordinateDM()`, `DMSetCellCoordinates()`
+See also: `DM`, `DMField`, `DMSetCoordinateField()`, `DMGetCellCoordinateDM()`, `DMSetCellCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMSetCellCoordinateField"))
@@ -40083,7 +39009,7 @@ end
 end 
 
 """
-	DMSetCellCoordinateSection(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt, section::PetscSection) 
+	DMSetCellCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt, section::PetscSection) 
 Set the `PetscSection` of cellwise coordinate values over the mesh.
 
 Not Collective
@@ -40095,7 +39021,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinateDim()`, `DMSetCoordinateSection()`, `DMGetCellCoordinateSection()`, `DMGetCoordinateSection()`, `DMGetCellCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
+See also: `DM`, `DMGetCoordinateDim()`, `DMSetCoordinateSection()`, `DMGetCellCoordinateSection()`, `DMGetCoordinateSection()`, `DMGetCellCoordinateDM()`, `DMGetLocalSection()`, `DMSetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMSetCellCoordinateSection"))
@@ -40118,7 +39044,7 @@ end
 end 
 
 """
-	DMSetCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, c::AbstractPetscVec) 
+	DMSetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) 
 Sets into the `DM` a global vector that holds the cellwise coordinates
 
 Collective
@@ -40129,7 +39055,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinates()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMGetCellCoordinatesLocal()`, `DMGetCellCoordinateDM()`
+See also: `DM`, `DMGetCoordinates()`, `DMSetCellCoordinatesLocal()`, `DMGetCellCoordinates()`, `DMGetCellCoordinatesLocal()`, `DMGetCellCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMSetCellCoordinates"))
@@ -40152,7 +39078,7 @@ end
 end 
 
 """
-	DMSetCellCoordinatesLocal(petsclib::PetscLibType,dm::AbstractPetscDM, c::AbstractPetscVec) 
+	DMSetCellCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) 
 Sets into the `DM` a local vector including ghost points that holds the cellwise coordinates
 
 Not Collective
@@ -40163,7 +39089,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCellCoordinatesLocal()`, `DMSetCellCoordinates()`, `DMGetCellCoordinates()`, `DMGetCellCoordinateDM()`
+See also: `DM`, `DMGetCellCoordinatesLocal()`, `DMSetCellCoordinates()`, `DMGetCellCoordinates()`, `DMGetCellCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMSetCellCoordinatesLocal"))
@@ -40186,7 +39112,7 @@ end
 end 
 
 """
-	DMSetCoarseDM(petsclib::PetscLibType,dm::AbstractPetscDM, cdm::AbstractPetscDM) 
+	DMSetCoarseDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM) 
 Set the coarse `DM` from which this `DM` was obtained by refinement
 
 Input Parameters:
@@ -40195,12 +39121,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-Normally this is set automatically by `DMRefine()`
-
-See also: 
-=== 
-`DM`, `DMGetCoarseDM()`, `DMCoarsen()`, `DMSetRefine()`, `DMSetFineDM()`
+See also: `DM`, `DMGetCoarseDM()`, `DMCoarsen()`, `DMSetRefine()`, `DMSetFineDM()`
 
 # External Links
 $(_doc_external("DM/DMSetCoarseDM"))
@@ -40223,7 +39144,7 @@ end
 end 
 
 """
-	DMSetCoarsenLevel(petsclib::PetscLibType,dm::AbstractPetscDM, level::PetscInt) 
+	DMSetCoarsenLevel(petsclib::PetscLibType, dm::AbstractPetscDM, level::PetscInt) 
 Sets the number of coarsenings that have generated this `DM`.
 
 Collective
@@ -40234,12 +39155,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-This is rarely used directly, the information is automatically set when a `DM` is created with `DMCoarsen()`
-
-See also: 
-=== 
-`DM`, `DMCoarsen()`, `DMGetCoarsenLevel()`, `DMGetRefineLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
+See also: `DM`, `DMCoarsen()`, `DMGetCoarsenLevel()`, `DMGetRefineLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMSetCoarsenLevel"))
@@ -40262,7 +39178,7 @@ end
 end 
 
 """
-	DMSetCoordinateDM(petsclib::PetscLibType,dm::AbstractPetscDM, cdm::AbstractPetscDM) 
+	DMSetCoordinateDM(petsclib::PetscLibType, dm::AbstractPetscDM, cdm::AbstractPetscDM) 
 Sets the `DM` that prescribes coordinate layout and scatters between global and local coordinates
 
 Logically Collective
@@ -40273,7 +39189,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinateDM()`, `DMSetCoordinates()`, `DMGetCellCoordinateDM()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`,
+See also: `DM`, `DMGetCoordinateDM()`, `DMSetCoordinates()`, `DMGetCellCoordinateDM()`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`,
 `DMGSetCellCoordinateDM()`
 
 # External Links
@@ -40297,7 +39213,7 @@ end
 end 
 
 """
-	DMSetCoordinateDim(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt) 
+	DMSetCoordinateDim(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt) 
 Set the dimension of the embedding space for coordinate values.
 
 Not Collective
@@ -40308,7 +39224,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinateDim()`, `DMSetCoordinateSection()`, `DMGetCoordinateSection()`, `DMGetLocalSection()`, `DMSetLocalSection()`
+See also: `DM`, `DMGetCoordinateDim()`, `DMSetCoordinateSection()`, `DMGetCoordinateSection()`, `DMGetLocalSection()`, `DMSetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMSetCoordinateDim"))
@@ -40331,7 +39247,7 @@ end
 end 
 
 """
-	DMSetCoordinateDisc(petsclib::PetscLibType,dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool) 
+	DMSetCoordinateDisc(petsclib::PetscLibType, dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool) 
 Set a coordinate space
 
 Input Parameters:
@@ -40342,7 +39258,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `PetscFE`, `DMGetCoordinateField()`
+See also: `DM`, `PetscFE`, `DMGetCoordinateField()`
 
 # External Links
 $(_doc_external("DM/DMSetCoordinateDisc"))
@@ -40365,7 +39281,7 @@ end
 end 
 
 """
-	DMSetCoordinateField(petsclib::PetscLibType,dm::AbstractPetscDM, field::DMField) 
+	DMSetCoordinateField(petsclib::PetscLibType, dm::AbstractPetscDM, field::DMField) 
 Set the `DMField` representation of the mesh coordinates
 
 Logically Collective
@@ -40376,7 +39292,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMField`, `DMGetCoordinateField()`, `DMSetCoordinateDM()`, `DMSetCoordinates()`
+See also: `DM`, `DMField`, `DMGetCoordinateField()`, `DMSetCoordinateDM()`, `DMSetCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMSetCoordinateField"))
@@ -40399,7 +39315,7 @@ end
 end 
 
 """
-	DMSetCoordinateSection(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt, section::PetscSection) 
+	DMSetCoordinateSection(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt, section::PetscSection) 
 Set the `PetscSection` of coordinate values over the mesh.
 
 Not Collective
@@ -40411,7 +39327,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinateDim()`, `DMGetCoordinateSection()`, `DMGetLocalSection()`, `DMSetLocalSection()`
+See also: `DM`, `DMGetCoordinateDim()`, `DMGetCoordinateSection()`, `DMGetLocalSection()`, `DMSetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMSetCoordinateSection"))
@@ -40434,7 +39350,7 @@ end
 end 
 
 """
-	DMSetCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, c::AbstractPetscVec) 
+	DMSetCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) 
 Sets into the `DM` a global vector that holds the coordinates
 
 Logically Collective
@@ -40445,7 +39361,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMDASetUniformCoordinates()`
+See also: `DM`, `DMSetCoordinatesLocal()`, `DMGetCoordinates()`, `DMGetCoordinatesLocal()`, `DMGetCoordinateDM()`, `DMDASetUniformCoordinates()`
 
 # External Links
 $(_doc_external("DM/DMSetCoordinates"))
@@ -40468,7 +39384,7 @@ end
 end 
 
 """
-	DMSetCoordinatesLocal(petsclib::PetscLibType,dm::AbstractPetscDM, c::AbstractPetscVec) 
+	DMSetCoordinatesLocal(petsclib::PetscLibType, dm::AbstractPetscDM, c::AbstractPetscVec) 
 Sets into the `DM` a local vector, including ghost points, that holds the coordinates
 
 Not Collective
@@ -40479,7 +39395,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMGetCoordinatesLocal()`, `DMSetCoordinates()`, `DMGetCoordinates()`, `DMGetCoordinateDM()`
+See also: `DM`, `DMGetCoordinatesLocal()`, `DMSetCoordinates()`, `DMGetCoordinates()`, `DMGetCoordinateDM()`
 
 # External Links
 $(_doc_external("DM/DMSetCoordinatesLocal"))
@@ -40502,7 +39418,7 @@ end
 end 
 
 """
-	DMSetDefaultConstraints(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, mat::AbstractPetscMat, bias::AbstractPetscVec) 
+	DMSetDefaultConstraints(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, mat::AbstractPetscMat, bias::AbstractPetscVec) 
 Set the `PetscSection` and `Mat` that specify the local constraint interpolation.
 
 Collective
@@ -40515,16 +39431,7 @@ Input Parameters:
 
 Level: advanced
 
-Notes:
-If a constraint matrix is specified, then it is applied during `DMGlobalToLocalEnd()` when mode is `INSERT_VALUES`, `INSERT_BC_VALUES`, or `INSERT_ALL_VALUES`.  Without a constraint matrix, the local vector l returned by `DMGlobalToLocalEnd()` contains values that have been scattered from a global vector without modification; with a constraint matrix A, l is modified by computing c = A * l + bias, l[s[i]] = c[i], where the scatter s is defined by the `PetscSection` returned by `DMGetDefaultConstraints()`.
-
-If a constraint matrix is specified, then its adjoint is applied during `DMLocalToGlobalBegin()` when mode is `ADD_VALUES`, `ADD_BC_VALUES`, or `ADD_ALL_VALUES`.  Without a constraint matrix, the local vector l is accumulated into a global vector without modification; with a constraint matrix A, l is first modified by computing c[i] = l[s[i]], l[s[i]] = 0, l = l + A'*c, which is the adjoint of the operation described above.  Any bias, if specified, is ignored when accumulating.
-
-This increments the references of the `PetscSection`, `Mat`, and `Vec`, so they user can destroy them.
-
-See also: 
-=== 
-`DM`, `DMGetDefaultConstraints()`
+See also: `DM`, `DMGetDefaultConstraints()`
 
 # External Links
 $(_doc_external("DM/DMSetDefaultConstraints"))
@@ -40547,7 +39454,7 @@ end
 end 
 
 """
-	DMSetDimension(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt) 
+	DMSetDimension(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt) 
 Set the topological dimension of the `DM`
 
 Collective
@@ -40558,9 +39465,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMGetDimension()`, `DMCreate()`
+See also: `DM`, `DMGetDimension()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DM/DMSetDimension"))
@@ -40583,7 +39488,7 @@ end
 end 
 
 """
-	DMSetField(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc) 
+	DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc) 
 Set the discretization object for a given `DM` field. Usually one would call `DMAddField()` which automatically handles
 the field numbering.
 
@@ -40597,9 +39502,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMGetField()`
+See also: `DM`, `DMAddField()`, `DMGetField()`
 
 # External Links
 $(_doc_external("DM/DMSetField"))
@@ -40622,7 +39525,7 @@ end
 end 
 
 """
-	DMSetFieldAvoidTensor(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt, avoidTensor::PetscBool) 
+	DMSetFieldAvoidTensor(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, avoidTensor::PetscBool) 
 Set flag to avoid defining the field on tensor cells
 
 Logically Collective
@@ -40634,9 +39537,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMGetFieldAvoidTensor()`, `DMSetField()`, `DMGetField()`
+See also: `DM`, `DMGetFieldAvoidTensor()`, `DMSetField()`, `DMGetField()`
 
 # External Links
 $(_doc_external("DM/DMSetFieldAvoidTensor"))
@@ -40659,7 +39560,7 @@ end
 end 
 
 """
-	DMSetFineDM(petsclib::PetscLibType,dm::AbstractPetscDM, fdm::AbstractPetscDM) 
+	DMSetFineDM(petsclib::PetscLibType, dm::AbstractPetscDM, fdm::AbstractPetscDM) 
 Set the fine mesh from which this was obtained by coarsening
 
 Input Parameters:
@@ -40668,12 +39569,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-Normally this is set automatically by `DMCoarsen()`
-
-See also: 
-=== 
-`DM`, `DMGetFineDM()`, `DMCoarsen()`, `DMRefine()`
+See also: `DM`, `DMGetFineDM()`, `DMCoarsen()`, `DMRefine()`
 
 # External Links
 $(_doc_external("DM/DMSetFineDM"))
@@ -40696,7 +39592,7 @@ end
 end 
 
 """
-	DMSetFromOptions(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSetFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM) 
 sets parameters in a `DM` from the options database
 
 Collective
@@ -40763,12 +39659,7 @@ Options Database Keys:
 
 Level: intermediate
 
-Note:
-For some `DMType` such as `DMDA` this cannot be called after `DMSetUp()` has been called.
-
-See also: 
-=== 
-`DM`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`,
+See also: `DM`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`,
 `DMPlexCheckSymmetry()`, `DMPlexCheckSkeleton()`, `DMPlexCheckFaces()`, `DMPlexCheckGeometry()`, `DMPlexCheckPointSF()`, `DMPlexCheckInterfaceCones()`,
 `DMSetOptionsPrefix()`, `DMType`, `DMPLEX`, `DMDA`, `DMSetUp()`
 
@@ -40793,7 +39684,7 @@ end
 end 
 
 """
-	DMSetGlobalSection(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection) 
+	DMSetGlobalSection(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection) 
 Set the `PetscSection` encoding the global data layout for the `DM`.
 
 Input Parameters:
@@ -40802,12 +39693,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-Any existing `PetscSection` will be destroyed
-
-See also: 
-=== 
-`DM`, `DMGetGlobalSection()`, `DMSetLocalSection()`
+See also: `DM`, `DMGetGlobalSection()`, `DMSetLocalSection()`
 
 # External Links
 $(_doc_external("DM/DMSetGlobalSection"))
@@ -40830,7 +39716,7 @@ end
 end 
 
 """
-	DMSetISColoringType(petsclib::PetscLibType,dm::AbstractPetscDM, ctype::ISColoringType) 
+	DMSetISColoringType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::ISColoringType) 
 Sets the type of coloring, `IS_COLORING_GLOBAL` or `IS_COLORING_LOCAL` that is created by the `DM`
 
 Logically Collective
@@ -40844,9 +39730,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `MatType`, `DMGetMatType()`,
+See also: `DM`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `MatType`, `DMGetMatType()`,
 `DMGetISColoringType()`, `ISColoringType`, `IS_COLORING_GLOBAL`, `IS_COLORING_LOCAL`
 
 # External Links
@@ -40870,7 +39754,7 @@ end
 end 
 
 """
-	DMSetLabel(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel) 
+	DMSetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
 Replaces the label of a given name, or ignores it if the name is not present
 
 Not Collective
@@ -40889,9 +39773,7 @@ Default labels in a `DMPLEX`:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetCellType()`
+See also: `DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMPlexGetDepthLabel()`, `DMPlexGetCellType()`
 
 # External Links
 $(_doc_external("DM/DMSetLabel"))
@@ -40914,7 +39796,7 @@ end
 end 
 
 """
-	DMSetLabelOutput(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, output::PetscBool) 
+	DMSetLabelOutput(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, output::PetscBool) 
 Set if a given label should be saved to a `PetscViewer` in calls to `DMView()`
 
 Not Collective
@@ -40926,9 +39808,7 @@ Input Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMGetOutputFlag()`, `DMGetLabelOutput()`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
+See also: `DM`, `DMLabel`, `DMGetOutputFlag()`, `DMGetLabelOutput()`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabelValue()`, `DMSetLabelValue()`, `DMGetStratumIS()`
 
 # External Links
 $(_doc_external("DM/DMSetLabelOutput"))
@@ -40951,7 +39831,7 @@ end
 end 
 
 """
-	DMSetLabelValue(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, point::PetscInt, value::PetscInt) 
+	DMSetLabelValue(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, point::PetscInt, value::PetscInt) 
 Add a point to a `DMLabel` with given value
 
 Not Collective
@@ -40966,9 +39846,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabelSetValue()`, `DMGetStratumIS()`, `DMClearLabelValue()`
+See also: `DM`, `DMLabelSetValue()`, `DMGetStratumIS()`, `DMClearLabelValue()`
 
 # External Links
 $(_doc_external("DM/DMSetLabelValue"))
@@ -40991,7 +39869,7 @@ end
 end 
 
 """
-	DMSetLocalSection(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection) 
+	DMSetLocalSection(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection) 
 Set the `PetscSection` encoding the local data layout for the `DM`.
 
 Input Parameters:
@@ -41000,12 +39878,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-Any existing Section will be destroyed
-
-See also: 
-=== 
-`DM`, `PetscSection`, `DMGetLocalSection()`, `DMSetGlobalSection()`
+See also: `DM`, `PetscSection`, `DMGetLocalSection()`, `DMSetGlobalSection()`
 
 # External Links
 $(_doc_external("DM/DMSetLocalSection"))
@@ -41028,7 +39901,7 @@ end
 end 
 
 """
-	DMSetMatType(petsclib::PetscLibType,dm::AbstractPetscDM, ctype::MatType) 
+	DMSetMatType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::MatType) 
 Sets the type of matrix created with `DMCreateMatrix()`
 
 Logically Collective
@@ -41042,9 +39915,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `MatType`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMGetMatType()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
+See also: `DM`, `MatType`, `DMDACreate1d()`, `DMDACreate2d()`, `DMDACreate3d()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMGetMatType()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
 
 # External Links
 $(_doc_external("DM/DMSetMatType"))
@@ -41067,7 +39938,7 @@ end
 end 
 
 """
-	DMSetMatrixPreallocateOnly(petsclib::PetscLibType,dm::AbstractPetscDM, only::PetscBool) 
+	DMSetMatrixPreallocateOnly(petsclib::PetscLibType, dm::AbstractPetscDM, only::PetscBool) 
 When `DMCreateMatrix()` is called the matrix will be properly
 preallocated but the nonzero structure and zero values will not be set.
 
@@ -41082,9 +39953,7 @@ Options Database Key:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixStructureOnly()`, `DMSetMatrixPreallocateSkip()`
+See also: `DM`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMSetMatrixStructureOnly()`, `DMSetMatrixPreallocateSkip()`
 
 # External Links
 $(_doc_external("DM/DMSetMatrixPreallocateOnly"))
@@ -41107,7 +39976,7 @@ end
 end 
 
 """
-	DMSetMatrixPreallocateSkip(petsclib::PetscLibType,dm::AbstractPetscDM, skip::PetscBool) 
+	DMSetMatrixPreallocateSkip(petsclib::PetscLibType, dm::AbstractPetscDM, skip::PetscBool) 
 When `DMCreateMatrix()` is called the matrix sizes and
 `ISLocalToGlobalMapping` will be properly set, but the data structures to store values in the
 matrices will not be preallocated.
@@ -41120,13 +39989,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-This is most useful to reduce initialization costs when `MatSetPreallocationCOO()` and
-`MatSetValuesCOO()` will be used.
-
-See also: 
-=== 
-`DM`, `DMCreateMatrix()`, `DMSetMatrixStructureOnly()`, `DMSetMatrixPreallocateOnly()`
+See also: `DM`, `DMCreateMatrix()`, `DMSetMatrixStructureOnly()`, `DMSetMatrixPreallocateOnly()`
 
 # External Links
 $(_doc_external("DM/DMSetMatrixPreallocateSkip"))
@@ -41149,7 +40012,7 @@ end
 end 
 
 """
-	DMSetMatrixStructureOnly(petsclib::PetscLibType,dm::AbstractPetscDM, only::PetscBool) 
+	DMSetMatrixStructureOnly(petsclib::PetscLibType, dm::AbstractPetscDM, only::PetscBool) 
 When `DMCreateMatrix()` is called, the matrix nonzero structure will be created
 but the array for numerical values will not be allocated.
 
@@ -41161,9 +40024,7 @@ Input Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCreateMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMSetMatrixPreallocateSkip()`
+See also: `DM`, `DMCreateMatrix()`, `DMSetMatrixPreallocateOnly()`, `DMSetMatrixPreallocateSkip()`
 
 # External Links
 $(_doc_external("DM/DMSetMatrixStructureOnly"))
@@ -41186,7 +40047,7 @@ end
 end 
 
 """
-	DMSetNaturalSF(petsclib::PetscLibType,dm::AbstractPetscDM, sf::PetscSF) 
+	DMSetNaturalSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) 
 Set the PetscSF encoding the map back to the original mesh ordering
 
 Input Parameters:
@@ -41195,9 +40056,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMGetNaturalSF()`, `DMSetUseNatural()`, `DMGetUseNatural()`, `DMPlexCreateGlobalToNaturalSF()`, `DMPlexDistribute()`
+See also: `DM`, `DMGetNaturalSF()`, `DMSetUseNatural()`, `DMGetUseNatural()`, `DMPlexCreateGlobalToNaturalSF()`, `DMPlexDistribute()`
 
 # External Links
 $(_doc_external("DM/DMSetNaturalSF"))
@@ -41220,8 +40079,8 @@ end
 end 
 
 """
-	DMSetNearNullSpaceConstructor(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, nullsp::external) 
-Provide a callback function which constructs the near
+	DMSetNearNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, nullsp::external) 
+Provide a callback function which constructs the near-nullspace for a given field, defined with `DMAddField()`
 
 Logically Collective; No Fortran Support
 
@@ -41238,9 +40097,7 @@ Calling sequence of `nullsp`:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMGetNearNullSpaceConstructor()`, `DMSetNullSpaceConstructor()`, `DMGetNullSpaceConstructor()`, `DMCreateSubDM()`, `DMCreateSuperDM()`,
+See also: `DM`, `DMAddField()`, `DMGetNearNullSpaceConstructor()`, `DMSetNullSpaceConstructor()`, `DMGetNullSpaceConstructor()`, `DMCreateSubDM()`, `DMCreateSuperDM()`,
 `MatNullSpace`
 
 # External Links
@@ -41264,7 +40121,7 @@ end
 end 
 
 """
-	DMSetNullSpaceConstructor(petsclib::PetscLibType,dm::AbstractPetscDM, field::PetscInt, nullsp::external) 
+	DMSetNullSpaceConstructor(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, nullsp::external) 
 Provide a callback function which constructs the nullspace for a given field, defined with `DMAddField()`, when function spaces
 are joined or split, such as in `DMCreateSubDM()`
 
@@ -41283,9 +40140,7 @@ Calling sequence of `nullsp`:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMAddField()`, `DMGetNullSpaceConstructor()`, `DMSetNearNullSpaceConstructor()`, `DMGetNearNullSpaceConstructor()`, `DMCreateSubDM()`, `DMCreateSuperDM()`
+See also: `DM`, `DMAddField()`, `DMGetNullSpaceConstructor()`, `DMSetNearNullSpaceConstructor()`, `DMGetNearNullSpaceConstructor()`, `DMCreateSubDM()`, `DMCreateSuperDM()`
 
 # External Links
 $(_doc_external("DM/DMSetNullSpaceConstructor"))
@@ -41308,7 +40163,7 @@ end
 end 
 
 """
-	DMSetNumFields(petsclib::PetscLibType,dm::AbstractPetscDM, numFields::PetscInt) 
+	DMSetNumFields(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt) 
 Set the number of fields in the `DM`
 
 Logically Collective
@@ -41319,9 +40174,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMGetNumFields()`, `DMSetField()`
+See also: `DM`, `DMGetNumFields()`, `DMSetField()`
 
 # External Links
 $(_doc_external("DM/DMSetNumFields"))
@@ -41344,7 +40197,7 @@ end
 end 
 
 """
-	DMSetOptionsPrefix(petsclib::PetscLibType,dm::AbstractPetscDM, prefix::String) 
+	DMSetOptionsPrefix(petsclib::PetscLibType, dm::AbstractPetscDM, prefix::String) 
 Sets the prefix prepended to all option names when searching through the options database
 
 Logically Collective
@@ -41355,13 +40208,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-A hyphen (-) must NOT be given at the beginning of the prefix name.
-The first character of all runtime options is AUTOMATICALLY the hyphen.
-
-See also: 
-=== 
-`DM`, `PetscObjectSetOptionsPrefix()`, `DMSetFromOptions()`
+See also: `DM`, `PetscObjectSetOptionsPrefix()`, `DMSetFromOptions()`
 
 # External Links
 $(_doc_external("DM/DMSetOptionsPrefix"))
@@ -41384,7 +40231,7 @@ end
 end 
 
 """
-	DMSetOutputSequenceNumber(petsclib::PetscLibType,dm::AbstractPetscDM, num::PetscInt, val::PetscReal) 
+	DMSetOutputSequenceNumber(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt, val::PetscReal) 
 Set the sequence number/value for output
 
 Input Parameters:
@@ -41394,13 +40241,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-This is intended for output that should appear in sequence, for instance
-a set of timesteps in an `PETSCVIEWERHDF5` file, or a set of realizations of a stochastic system.
-
-See also: 
-=== 
-`DM`, `VecView()`
+See also: `DM`, `VecView()`
 
 # External Links
 $(_doc_external("DM/DMSetOutputSequenceNumber"))
@@ -41423,7 +40264,7 @@ end
 end 
 
 """
-	DMSetPeriodicity(petsclib::PetscLibType,dm::AbstractPetscDM, maxCell::Vector{PetscReal}, Lstart::Vector{PetscReal}, L::Vector{PetscReal}) 
+	DMSetPeriodicity(petsclib::PetscLibType, dm::AbstractPetscDM, maxCell::Vector{PetscReal}, Lstart::Vector{PetscReal}, L::Vector{PetscReal}) 
 Set the description of mesh periodicity
 
 Logically Collective
@@ -41436,7 +40277,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DM`, `DMGetPeriodicity()`
+See also: `DM`, `DMGetPeriodicity()`
 
 # External Links
 $(_doc_external("DM/DMSetPeriodicity"))
@@ -41459,7 +40300,7 @@ end
 end 
 
 """
-	DMSetPointSF(petsclib::PetscLibType,dm::AbstractPetscDM, sf::PetscSF) 
+	DMSetPointSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) 
 Set the `PetscSF` encoding the parallel section point overlap for the `DM`.
 
 Collective
@@ -41470,9 +40311,7 @@ Input Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMGetPointSF()`, `DMGetSectionSF()`, `DMSetSectionSF()`, `DMCreateSectionSF()`
+See also: `DM`, `DMGetPointSF()`, `DMGetSectionSF()`, `DMSetSectionSF()`, `DMCreateSectionSF()`
 
 # External Links
 $(_doc_external("DM/DMSetPointSF"))
@@ -41495,7 +40334,7 @@ end
 end 
 
 """
-	DMSetRefineLevel(petsclib::PetscLibType,dm::AbstractPetscDM, level::PetscInt) 
+	DMSetRefineLevel(petsclib::PetscLibType, dm::AbstractPetscDM, level::PetscInt) 
 Sets the number of refinements that have generated this `DM`.
 
 Not Collective
@@ -41506,14 +40345,7 @@ Input Parameters:
 
 Level: advanced
 
-Notes:
-This value is used by `PCMG` to determine how many multigrid levels to use
-
-The values are usually set automatically by the process that is causing the refinements of an initial `DM` by calling this routine.
-
-See also: 
-=== 
-`DM`, `DMGetRefineLevel()`, `DMCoarsen()`, `DMGetCoarsenLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
+See also: `DM`, `DMGetRefineLevel()`, `DMCoarsen()`, `DMGetCoarsenLevel()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`
 
 # External Links
 $(_doc_external("DM/DMSetRefineLevel"))
@@ -41536,7 +40368,7 @@ end
 end 
 
 """
-	DMSetRegionDS(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
+	DMSetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
 Set the `PetscDS` for a given mesh region, defined by a `DMLabel`
 
 Collective
@@ -41550,13 +40382,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-If the label has a `PetscDS` defined, it will be replaced. Otherwise, it will be added to the `DM`. If the `PetscDS` is replaced,
-the fields argument is ignored.
-
-See also: 
-=== 
-`DM`, `DMGetRegionDS()`, `DMSetRegionNumDS()`, `DMGetDS()`, `DMGetCellDS()`
+See also: `DM`, `DMGetRegionDS()`, `DMSetRegionNumDS()`, `DMGetDS()`, `DMGetCellDS()`
 
 # External Links
 $(_doc_external("DM/DMSetRegionDS"))
@@ -41579,7 +40405,7 @@ end
 end 
 
 """
-	DMSetRegionNumDS(petsclib::PetscLibType,dm::AbstractPetscDM, num::PetscInt, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
+	DMSetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
 Set the `PetscDS` for a given mesh region, defined by the region number
 
 Not Collective
@@ -41594,9 +40420,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMGetRegionDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
+See also: `DM`, `DMGetRegionDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS()`
 
 # External Links
 $(_doc_external("DM/DMSetRegionNumDS"))
@@ -41619,7 +40443,7 @@ end
 end 
 
 """
-	DMSetSectionSF(petsclib::PetscLibType,dm::AbstractPetscDM, sf::PetscSF) 
+	DMSetSectionSF(petsclib::PetscLibType, dm::AbstractPetscDM, sf::PetscSF) 
 Set the `PetscSF` encoding the parallel dof overlap for the `DM`
 
 Input Parameters:
@@ -41628,12 +40452,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-Any previous `PetscSF` is destroyed
-
-See also: 
-=== 
-`DM`, `DMGetSectionSF()`, `DMCreateSectionSF()`
+See also: `DM`, `DMGetSectionSF()`, `DMCreateSectionSF()`
 
 # External Links
 $(_doc_external("DM/DMSetSectionSF"))
@@ -41656,7 +40475,7 @@ end
 end 
 
 """
-	DMSetSnapToGeomModel(petsclib::PetscLibType,dm::AbstractPetscDM, name::String) 
+	DMSetSnapToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String) 
 Choose a geometry model for this `DM`.
 
 Not Collective
@@ -41667,7 +40486,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexCreate()`, `DMSnapToGeomModel()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexCreate()`, `DMSnapToGeomModel()`
 
 # External Links
 $(_doc_external("DM/DMSetSnapToGeomModel"))
@@ -41690,7 +40509,7 @@ end
 end 
 
 """
-	DMSetSparseLocalize(petsclib::PetscLibType,dm::AbstractPetscDM, sparse::PetscBool) 
+	DMSetSparseLocalize(petsclib::PetscLibType, dm::AbstractPetscDM, sparse::PetscBool) 
 Set the flag indicating that `DM` coordinates should be localized only for cells near the periodic boundary.
 
 Collective
@@ -41701,7 +40520,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMGetSparseLocalize()`, `DMLocalizeCoordinates()`, `DMSetPeriodicity()`
+See also: `DMGetSparseLocalize()`, `DMLocalizeCoordinates()`, `DMSetPeriodicity()`
 
 # External Links
 $(_doc_external("DM/DMSetSparseLocalize"))
@@ -41724,7 +40543,7 @@ end
 end 
 
 """
-	DMSetStratumIS(petsclib::PetscLibType,dm::AbstractPetscDM, name::String, value::PetscInt, points::AbstractIS) 
+	DMSetStratumIS(petsclib::PetscLibType, dm::AbstractPetscDM, name::String, value::PetscInt, points::AbstractIS) 
 Set the points in a label stratum
 
 Not Collective
@@ -41737,9 +40556,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: 
-=== 
-`DM`, `DMLabel`, `DMClearLabelStratum()`, `DMLabelClearStratum()`, `DMLabelSetStratumIS()`, `DMGetStratumSize()`
+See also: `DM`, `DMLabel`, `DMClearLabelStratum()`, `DMLabelClearStratum()`, `DMLabelSetStratumIS()`, `DMGetStratumSize()`
 
 # External Links
 $(_doc_external("DM/DMSetStratumIS"))
@@ -41762,7 +40579,7 @@ end
 end 
 
 """
-	DMSetType(petsclib::PetscLibType,dm::AbstractPetscDM, method::DMType) 
+	DMSetType(petsclib::PetscLibType, dm::AbstractPetscDM, method::DMType) 
 Builds a `DM`, for a particular `DM` implementation.
 
 Collective
@@ -41776,12 +40593,7 @@ Options Database Key:
 
 Level: intermediate
 
-Note:
-Of the `DM` is constructed by directly calling a function to construct a particular `DM`, for example, `DMDACreate2d()` or `DMPlexCreateBoxMesh()`
-
-See also: 
-=== 
-`DM`, `DMType`, `DMDA`, `DMPLEX`, `DMGetType()`, `DMCreate()`, `DMDACreate2d()`
+See also: `DM`, `DMType`, `DMDA`, `DMPLEX`, `DMGetType()`, `DMCreate()`, `DMDACreate2d()`
 
 # External Links
 $(_doc_external("DM/DMSetType"))
@@ -41804,7 +40616,7 @@ end
 end 
 
 """
-	DMSetUp(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSetUp(petsclib::PetscLibType, dm::AbstractPetscDM) 
 sets up the data structures inside a `DM` object
 
 Collective
@@ -41814,12 +40626,7 @@ Input Parameter:
 
 Level: intermediate
 
-Note:
-This is usually called after various parameter setting operations and `DMSetFromOptions()` are called on the `DM`
-
-See also: 
-=== 
-`DM`, `DMCreate()`, `DMSetType()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`
+See also: `DM`, `DMCreate()`, `DMSetType()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`
 
 # External Links
 $(_doc_external("DM/DMSetUp"))
@@ -41842,7 +40649,7 @@ end
 end 
 
 """
-	DMSetUseNatural(petsclib::PetscLibType,dm::AbstractPetscDM, useNatural::PetscBool) 
+	DMSetUseNatural(petsclib::PetscLibType, dm::AbstractPetscDM, useNatural::PetscBool) 
 Set the flag for creating a mapping to the natural order when a `DM` is (re)distributed in parallel
 
 Collective
@@ -41853,12 +40660,7 @@ Input Parameters:
 
 Level: beginner
 
-Note:
-This also causes the map to be build after `DMCreateSubDM()` and `DMCreateSuperDM()`
-
-See also: 
-=== 
-`DM`, `DMGetUseNatural()`, `DMCreate()`, `DMPlexDistribute()`, `DMCreateSubDM()`, `DMCreateSuperDM()`
+See also: `DM`, `DMGetUseNatural()`, `DMCreate()`, `DMPlexDistribute()`, `DMCreateSubDM()`, `DMCreateSuperDM()`
 
 # External Links
 $(_doc_external("DM/DMSetUseNatural"))
@@ -41881,7 +40683,7 @@ end
 end 
 
 """
-	DMSetVI(petsclib::PetscLibType,dm::AbstractPetscDM, inactive::AbstractIS) 
+	DMSetVI(petsclib::PetscLibType, dm::AbstractPetscDM, inactive::AbstractIS) 
 Marks a `DM` as associated with a VI problem. This causes the interpolation/restriction operators to
 be restricted to only those variables NOT associated with active constraints.
 
@@ -41893,7 +40695,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESVINEWTONRSLS`, `SNESVIGetInactiveSet()`
+See also: `SNES`, `SNESVINEWTONRSLS`, `SNESVIGetInactiveSet()`
 
 # External Links
 $(_doc_external("SNES/DMSetVI"))
@@ -41916,7 +40718,7 @@ end
 end 
 
 """
-	DMSetVariableBounds(petsclib::PetscLibType,dm::AbstractPetscDM, f::external) 
+	DMSetVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, f::external) 
 sets a function to compute the lower and upper bound vectors for `SNESVI`.
 
 Logically Collective
@@ -41932,12 +40734,7 @@ Calling sequence of f:
 
 Level: intermediate
 
-Developer Note:
-Should be called `DMSetComputeVIBounds()` or something similar
-
-See also: 
-=== 
-`DM`, `DMComputeVariableBounds()`, `DMHasVariableBounds()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMGetApplicationContext()`,
+See also: `DM`, `DMComputeVariableBounds()`, `DMHasVariableBounds()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMGetApplicationContext()`,
 `DMSetJacobian()`
 
 # External Links
@@ -41961,7 +40758,7 @@ end
 end 
 
 """
-	DMSetVecType(petsclib::PetscLibType,dm::AbstractPetscDM, ctype::VecType) 
+	DMSetVecType(petsclib::PetscLibType, dm::AbstractPetscDM, ctype::VecType) 
 Sets the type of vector to be created with `DMCreateLocalVector()` and `DMCreateGlobalVector()`
 
 Logically Collective
@@ -41975,9 +40772,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMCreate()`, `DMDestroy()`, `DMDAInterpolationType`, `VecType`, `DMGetVecType()`, `DMSetMatType()`, `DMGetMatType()`,
+See also: `DM`, `DMCreate()`, `DMDestroy()`, `DMDAInterpolationType`, `VecType`, `DMGetVecType()`, `DMSetMatType()`, `DMGetMatType()`,
 `VECSTANDARD`, `VECCUDA`, `VECVIENNACL`, `DMCreateLocalVector()`, `DMCreateGlobalVector()`
 
 # External Links
@@ -42001,8 +40796,8 @@ end
 end 
 
 """
-	dm::PetscDM = DMShellCreate(petsclib::PetscLibType,comm::MPI_Comm) 
-Creates a `DMSHELL` object, used to manage user
+	dm::PetscDM = DMShellCreate(petsclib::PetscLibType, comm::MPI_Comm) 
+Creates a `DMSHELL` object, used to manage user-defined problem data
 
 Collective
 
@@ -42014,7 +40809,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DMDestroy()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DMDestroy()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellCreate"))
@@ -42039,7 +40834,7 @@ end
 end 
 
 """
-	DMShellGetCoarsen(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMShellGetCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 Get the routine used to coarsen the `DMSHELL`
 
 Logically Collective
@@ -42057,7 +40852,7 @@ Calling sequence of `coarsen`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMCoarsen()`, `DMShellSetRefine()`, `DMRefine()`
+See also: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMCoarsen()`, `DMShellSetRefine()`, `DMRefine()`
 
 # External Links
 $(_doc_external("DM/DMShellGetCoarsen"))
@@ -42080,8 +40875,8 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = DMShellGetContext(petsclib::PetscLibType,dm::AbstractPetscDM) 
-Returns the user
+	ctx::Ptr{Cvoid} = DMShellGetContext(petsclib::PetscLibType, dm::AbstractPetscDM) 
+Returns the user-provided context associated to the `DMSHELL`
 
 Collective
 
@@ -42093,7 +40888,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellSetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellSetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellGetContext"))
@@ -42118,7 +40913,7 @@ end
 end 
 
 """
-	DMShellGetCreateInjection(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMShellGetCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 Get the routine used to create the injection operator
 
 Logically Collective
@@ -42136,7 +40931,7 @@ Calling sequence of `inject`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellGetCreateInterpolation()`, `DMCreateInjection()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellGetCreateInterpolation()`, `DMCreateInjection()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellGetCreateInjection"))
@@ -42159,7 +40954,7 @@ end
 end 
 
 """
-	DMShellGetCreateInterpolation(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMShellGetCreateInterpolation(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 Get the routine used to create the interpolation operator
 
 Logically Collective
@@ -42178,7 +40973,7 @@ Calling sequence of `interp`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellGetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellGetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellGetCreateInterpolation"))
@@ -42201,7 +40996,7 @@ end
 end 
 
 """
-	DMShellGetCreateRestriction(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMShellGetCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 Get the routine used to create the restriction operator
 
 Logically Collective
@@ -42219,7 +41014,7 @@ Calling sequence of `restriction`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellGetCreateRestriction"))
@@ -42242,7 +41037,7 @@ end
 end 
 
 """
-	DMShellGetCreateSubDM(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMShellGetCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 Get the routine used to create a sub `DM` from the `DMSHELL`
 
 Logically Collective
@@ -42262,7 +41057,7 @@ Calling sequence of `subdm`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateSubDM()`, `DMShellSetCreateSubDM()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateSubDM()`, `DMShellSetCreateSubDM()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellGetCreateSubDM"))
@@ -42285,7 +41080,7 @@ end
 end 
 
 """
-	DMShellGetGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec) 
+	DMShellGetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec) 
 Returns the template global vector associated with the `DMSHELL`, or `NULL` if it was not set
 
 Not Collective
@@ -42296,7 +41091,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetGlobalVector()`, `DMShellSetCreateGlobalVector()`, `DMCreateGlobalVector()`
+See also: `DM`, `DMSHELL`, `DMShellSetGlobalVector()`, `DMShellSetCreateGlobalVector()`, `DMCreateGlobalVector()`
 
 # External Links
 $(_doc_external("DM/DMShellGetGlobalVector"))
@@ -42321,7 +41116,7 @@ end
 end 
 
 """
-	DMShellGetRefine(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMShellGetRefine(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 Get the routine used to refine the `DMSHELL`
 
 Logically Collective
@@ -42339,7 +41134,7 @@ Calling sequence of `refine`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMCoarsen()`, `DMShellSetRefine()`, `DMRefine()`
+See also: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMCoarsen()`, `DMShellSetRefine()`, `DMRefine()`
 
 # External Links
 $(_doc_external("DM/DMShellGetRefine"))
@@ -42362,7 +41157,7 @@ end
 end 
 
 """
-	DMShellSetCoarsen(petsclib::PetscLibType,dm::AbstractPetscDM, coarsen::external) 
+	DMShellSetCoarsen(petsclib::PetscLibType, dm::AbstractPetscDM, coarsen::external) 
 Set the routine used to coarsen the `DMSHELL`
 
 Logically Collective
@@ -42378,7 +41173,7 @@ Calling sequence of `coarsen`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetRefine()`, `DMCoarsen()`, `DMShellGetCoarsen()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetRefine()`, `DMCoarsen()`, `DMShellGetCoarsen()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCoarsen"))
@@ -42401,7 +41196,7 @@ end
 end 
 
 """
-	DMShellSetContext(petsclib::PetscLibType,dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
+	DMShellSetContext(petsclib::PetscLibType, dm::AbstractPetscDM, ctx::Ptr{Cvoid}) 
 set some data to be usable by this `DMSHELL`
 
 Collective
@@ -42412,7 +41207,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetContext"))
@@ -42435,7 +41230,7 @@ end
 end 
 
 """
-	DMShellSetCreateDomainDecomposition(petsclib::PetscLibType,dm::AbstractPetscDM, decomp::external) 
+	DMShellSetCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM, decomp::external) 
 Set the routine used to create a domain decomposition for the `DMSHELL`
 
 Logically Collective
@@ -42454,7 +41249,7 @@ Calling sequence of `decomp`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateDomainDecomposition()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateDomainDecomposition()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateDomainDecomposition"))
@@ -42477,7 +41272,7 @@ end
 end 
 
 """
-	DMShellSetCreateDomainDecompositionScatters(petsclib::PetscLibType,dm::AbstractPetscDM, scatter::external) 
+	DMShellSetCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, scatter::external) 
 Set the routine used to create the scatter contexts for domain decomposition with a `DMSHELL`
 
 Logically Collective
@@ -42496,7 +41291,7 @@ Calling sequence of `scatter`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateDomainDecompositionScatters()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateDomainDecompositionScatters()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateDomainDecompositionScatters"))
@@ -42519,7 +41314,7 @@ end
 end 
 
 """
-	DMShellSetCreateFieldDecomposition(petsclib::PetscLibType,dm::AbstractPetscDM, decomp::external) 
+	DMShellSetCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM, decomp::external) 
 Set the routine used to create a decomposition of fields for the `DMSHELL`
 
 Logically Collective
@@ -42537,7 +41332,7 @@ Calling sequence of `decomp`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateFieldDecomposition()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateFieldDecomposition()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateFieldDecomposition"))
@@ -42560,7 +41355,7 @@ end
 end 
 
 """
-	DMShellSetCreateGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM, func::external) 
+	DMShellSetCreateGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, func::external) 
 sets the routine to create a global vector associated with the `DMSHELL`
 
 Logically Collective
@@ -42575,7 +41370,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetGlobalVector()`, `DMShellSetCreateMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetGlobalVector()`, `DMShellSetCreateMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateGlobalVector"))
@@ -42598,7 +41393,7 @@ end
 end 
 
 """
-	DMShellSetCreateInjection(petsclib::PetscLibType,dm::AbstractPetscDM, inject::external) 
+	DMShellSetCreateInjection(petsclib::PetscLibType, dm::AbstractPetscDM, inject::external) 
 Set the routine used to create the injection operator
 
 Logically Collective
@@ -42614,7 +41409,7 @@ Calling sequence of `inject`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetCreateInterpolation()`, `DMCreateInjection()`, `DMShellGetCreateInjection()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetCreateInterpolation()`, `DMCreateInjection()`, `DMShellGetCreateInjection()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateInjection"))
@@ -42637,7 +41432,7 @@ end
 end 
 
 """
-	DMShellSetCreateInterpolation(petsclib::PetscLibType,dm::AbstractPetscDM, interp::external) 
+	DMShellSetCreateInterpolation(petsclib::PetscLibType, dm::AbstractPetscDM, interp::external) 
 Set the routine used to create the interpolation operator
 
 Logically Collective
@@ -42654,7 +41449,7 @@ Calling sequence of `interp`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateInterpolation()`, `DMShellSetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateInterpolation()`, `DMShellSetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateInterpolation"))
@@ -42677,7 +41472,7 @@ end
 end 
 
 """
-	DMShellSetCreateLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM, func::external) 
+	DMShellSetCreateLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, func::external) 
 sets the routine to create a local vector associated with the `DMSHELL`
 
 Logically Collective
@@ -42692,7 +41487,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetLocalVector()`, `DMShellSetCreateMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetLocalVector()`, `DMShellSetCreateMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateLocalVector"))
@@ -42715,7 +41510,7 @@ end
 end 
 
 """
-	DMShellSetCreateMatrix(petsclib::PetscLibType,dm::AbstractPetscDM, func::external) 
+	DMShellSetCreateMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, func::external) 
 sets the routine to create a matrix associated with the `DMSHELL`
 
 Logically Collective
@@ -42730,7 +41525,7 @@ Calling sequence of `func`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellSetMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellSetMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateMatrix"))
@@ -42753,7 +41548,7 @@ end
 end 
 
 """
-	DMShellSetCreateRestriction(petsclib::PetscLibType,dm::AbstractPetscDM, restriction::external) 
+	DMShellSetCreateRestriction(petsclib::PetscLibType, dm::AbstractPetscDM, restriction::external) 
 Set the routine used to create the restriction operator
 
 Logically Collective
@@ -42769,7 +41564,7 @@ Calling sequence of `restriction`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetCreateInjection()`, `DMCreateInterpolation()`, `DMShellGetCreateRestriction()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateRestriction"))
@@ -42792,7 +41587,7 @@ end
 end 
 
 """
-	DMShellSetCreateSubDM(petsclib::PetscLibType,dm::AbstractPetscDM, subdm::external) 
+	DMShellSetCreateSubDM(petsclib::PetscLibType, dm::AbstractPetscDM, subdm::external) 
 Set the routine used to create a sub `DM` from the `DMSHELL`
 
 Logically Collective
@@ -42810,7 +41605,7 @@ Calling sequence of `subdm`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateSubDM()`, `DMShellGetCreateSubDM()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateSubDM()`, `DMShellGetCreateSubDM()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetCreateSubDM"))
@@ -42833,7 +41628,7 @@ end
 end 
 
 """
-	DMShellSetDestroyContext(petsclib::PetscLibType,dm::AbstractPetscDM, destroyctx::Ptr{Cvoid}) 
+	DMShellSetDestroyContext(petsclib::PetscLibType, dm::AbstractPetscDM, destroyctx::Ptr{Cvoid}) 
 set a function that destroys the context provided with `DMShellSetContext()`
 
 Collective
@@ -42844,7 +41639,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetDestroyContext"))
@@ -42867,7 +41662,7 @@ end
 end 
 
 """
-	DMShellSetGlobalToLocal(petsclib::PetscLibType,dm::AbstractPetscDM, begin_::external, end_::external) 
+	DMShellSetGlobalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external) 
 Sets the routines used to perform a global to local scatter
 
 Logically Collective
@@ -42891,7 +41686,7 @@ Calling sequence of `end`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetLocalToGlobal()`, `DMGlobalToLocalBeginDefaultShell()`, `DMGlobalToLocalEndDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMShellSetLocalToGlobal()`, `DMGlobalToLocalBeginDefaultShell()`, `DMGlobalToLocalEndDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMShellSetGlobalToLocal"))
@@ -42914,7 +41709,7 @@ end
 end 
 
 """
-	DMShellSetGlobalToLocalVecScatter(petsclib::PetscLibType,dm::AbstractPetscDM, gtol::VecScatter) 
+	DMShellSetGlobalToLocalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, gtol::VecScatter) 
 Sets a `VecScatter` context for global to local communication
 
 Logically Collective
@@ -42925,7 +41720,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `DMGlobalToLocalBeginDefaultShell()`, `DMGlobalToLocalEndDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `DMGlobalToLocalBeginDefaultShell()`, `DMGlobalToLocalEndDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMShellSetGlobalToLocalVecScatter"))
@@ -42948,7 +41743,7 @@ end
 end 
 
 """
-	DMShellSetGlobalVector(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec) 
+	DMShellSetGlobalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec) 
 sets a template global vector associated with the `DMSHELL`
 
 Logically Collective
@@ -42959,7 +41754,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateGlobalVector()`, `DMShellSetMatrix()`, `DMShellSetCreateGlobalVector()`
+See also: `DM`, `DMSHELL`, `DMCreateGlobalVector()`, `DMShellSetMatrix()`, `DMShellSetCreateGlobalVector()`
 
 # External Links
 $(_doc_external("DM/DMShellSetGlobalVector"))
@@ -42982,7 +41777,7 @@ end
 end 
 
 """
-	DMShellSetLocalToGlobal(petsclib::PetscLibType,dm::AbstractPetscDM, begin_::external, end_::external) 
+	DMShellSetLocalToGlobal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external) 
 Sets the routines used to perform a local to global scatter
 
 Logically Collective
@@ -43006,7 +41801,7 @@ Calling sequence of `end`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `InsertMode`, `VecScatter`, `DMLocalToGlobal()`, `DMGlobalToLocal()`
+See also: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `InsertMode`, `VecScatter`, `DMLocalToGlobal()`, `DMGlobalToLocal()`
 
 # External Links
 $(_doc_external("DM/DMShellSetLocalToGlobal"))
@@ -43029,7 +41824,7 @@ end
 end 
 
 """
-	DMShellSetLocalToGlobalVecScatter(petsclib::PetscLibType,dm::AbstractPetscDM, ltog::VecScatter) 
+	DMShellSetLocalToGlobalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, ltog::VecScatter) 
 Sets a` VecScatter` context for local to global communication
 
 Logically Collective
@@ -43040,7 +41835,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetLocalToGlobal()`, `DMLocalToGlobalBeginDefaultShell()`, `DMLocalToGlobalEndDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMShellSetLocalToGlobal()`, `DMLocalToGlobalBeginDefaultShell()`, `DMLocalToGlobalEndDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMShellSetLocalToGlobalVecScatter"))
@@ -43063,7 +41858,7 @@ end
 end 
 
 """
-	DMShellSetLocalToLocal(petsclib::PetscLibType,dm::AbstractPetscDM, begin_::external, end_::external) 
+	DMShellSetLocalToLocal(petsclib::PetscLibType, dm::AbstractPetscDM, begin_::external, end_::external) 
 Sets the routines used to perform a local to local scatter
 
 Logically Collective
@@ -43087,7 +41882,7 @@ Calling sequence of `end`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `DMLocalToLocalBeginDefaultShell()`, `DMLocalToLocalEndDefaultShell()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`
+See also: `DM`, `DMSHELL`, `DMShellSetGlobalToLocal()`, `DMLocalToLocalBeginDefaultShell()`, `DMLocalToLocalEndDefaultShell()`, `DMLocalToLocalBegin()`, `DMLocalToLocalEnd()`
 
 # External Links
 $(_doc_external("DM/DMShellSetLocalToLocal"))
@@ -43110,7 +41905,7 @@ end
 end 
 
 """
-	DMShellSetLocalToLocalVecScatter(petsclib::PetscLibType,dm::AbstractPetscDM, ltol::VecScatter) 
+	DMShellSetLocalToLocalVecScatter(petsclib::PetscLibType, dm::AbstractPetscDM, ltol::VecScatter) 
 Sets a `VecScatter` context for local to local communication
 
 Logically Collective
@@ -43121,7 +41916,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetLocalToLocal()`, `DMLocalToLocalBeginDefaultShell()`, `DMLocalToLocalEndDefaultShell()`
+See also: `DM`, `DMSHELL`, `DMShellSetLocalToLocal()`, `DMLocalToLocalBeginDefaultShell()`, `DMLocalToLocalEndDefaultShell()`
 
 # External Links
 $(_doc_external("DM/DMShellSetLocalToLocalVecScatter"))
@@ -43144,7 +41939,7 @@ end
 end 
 
 """
-	DMShellSetLocalVector(petsclib::PetscLibType,dm::AbstractPetscDM, X::AbstractPetscVec) 
+	DMShellSetLocalVector(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec) 
 sets a template local vector associated with the `DMSHELL`
 
 Logically Collective
@@ -43155,7 +41950,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateLocalVector()`, `DMShellSetMatrix()`, `DMShellSetCreateLocalVector()`
+See also: `DM`, `DMSHELL`, `DMCreateLocalVector()`, `DMShellSetMatrix()`, `DMShellSetCreateLocalVector()`
 
 # External Links
 $(_doc_external("DM/DMShellSetLocalVector"))
@@ -43178,7 +41973,7 @@ end
 end 
 
 """
-	DMShellSetMatrix(petsclib::PetscLibType,dm::AbstractPetscDM, J::AbstractPetscMat) 
+	DMShellSetMatrix(petsclib::PetscLibType, dm::AbstractPetscDM, J::AbstractPetscMat) 
 sets a template matrix associated with the `DMSHELL`
 
 Collective
@@ -43189,7 +41984,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellSetCreateMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMCreateMatrix()`, `DMShellSetCreateMatrix()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetMatrix"))
@@ -43212,7 +42007,7 @@ end
 end 
 
 """
-	DMShellSetRefine(petsclib::PetscLibType,dm::AbstractPetscDM, refine::external) 
+	DMShellSetRefine(petsclib::PetscLibType, dm::AbstractPetscDM, refine::external) 
 Set the routine used to refine the `DMSHELL`
 
 Logically Collective
@@ -43228,7 +42023,7 @@ Calling sequence of `refine`:
 
 Level: advanced
 
--seealso: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMRefine()`, `DMShellGetRefine()`, `DMShellSetContext()`, `DMShellGetContext()`
+See also: `DM`, `DMSHELL`, `DMShellSetCoarsen()`, `DMRefine()`, `DMShellGetRefine()`, `DMShellSetContext()`, `DMShellGetContext()`
 
 # External Links
 $(_doc_external("DM/DMShellSetRefine"))
@@ -43251,7 +42046,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMSlicedCreate(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, nlocal::PetscInt, Nghosts::PetscInt, ghosts::Vector{PetscInt}, d_nnz::Vector{PetscInt}, o_nnz::Vector{PetscInt}) 
+	dm::PetscDM = DMSlicedCreate(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, nlocal::PetscInt, Nghosts::PetscInt, ghosts::Vector{PetscInt}, d_nnz::Vector{PetscInt}, o_nnz::Vector{PetscInt}) 
 Creates a `DM` object, used to manage data for a unstructured problem
 
 Collective
@@ -43270,7 +42065,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSLICED`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMSetType()`, `DMSlicedSetGhosts()`, `DMSlicedSetPreallocation()`,
+See also: `DM`, `DMSLICED`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMSetType()`, `DMSlicedSetGhosts()`, `DMSlicedSetPreallocation()`,
 `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`,
 `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`
 
@@ -43297,8 +42092,8 @@ end
 end 
 
 """
-	DMSlicedSetBlockFills(petsclib::PetscLibType,dm::AbstractPetscDM, dfill::Vector{PetscInt}, ofill::Vector{PetscInt}) 
-Sets the fill pattern in each block for a multi
+	DMSlicedSetBlockFills(petsclib::PetscLibType, dm::AbstractPetscDM, dfill::Vector{PetscInt}, ofill::Vector{PetscInt}) 
+Sets the fill pattern in each block for a multi-component problem
 of the matrix returned by `DMSlicedGetMatrix()`.
 
 Logically Collective
@@ -43310,7 +42105,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSLICED`, `DMSlicedGetMatrix()`, `DMDASetBlockFills()`
+See also: `DM`, `DMSLICED`, `DMSlicedGetMatrix()`, `DMDASetBlockFills()`
 
 # External Links
 $(_doc_external("DM/DMSlicedSetBlockFills"))
@@ -43333,7 +42128,7 @@ end
 end 
 
 """
-	DMSlicedSetGhosts(petsclib::PetscLibType,dm::AbstractPetscDM, bs::PetscInt, nlocal::PetscInt, Nghosts::PetscInt, ghosts::Vector{PetscInt}) 
+	DMSlicedSetGhosts(petsclib::PetscLibType, dm::AbstractPetscDM, bs::PetscInt, nlocal::PetscInt, Nghosts::PetscInt, ghosts::Vector{PetscInt}) 
 Sets the global indices of other processes elements that will
 be ghosts on this process
 
@@ -43348,7 +42143,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSLICED`, `DMDestroy()`, `DMCreateGlobalVector()`
+See also: `DM`, `DMSLICED`, `DMDestroy()`, `DMCreateGlobalVector()`
 
 # External Links
 $(_doc_external("DM/DMSlicedSetGhosts"))
@@ -43371,7 +42166,7 @@ end
 end 
 
 """
-	DMSlicedSetPreallocation(petsclib::PetscLibType,dm::AbstractPetscDM, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	DMSlicedSetPreallocation(petsclib::PetscLibType, dm::AbstractPetscDM, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 sets the matrix memory preallocation for matrices computed by `DMSLICED`
 
 Not Collective
@@ -43391,7 +42186,7 @@ each block row) or `NULL`.
 
 Level: advanced
 
--seealso: `DM`, `DMSLICED`, `DMDestroy()`, `DMCreateGlobalVector()`, `MatMPIAIJSetPreallocation()`,
+See also: `DM`, `DMSLICED`, `DMDestroy()`, `DMCreateGlobalVector()`, `MatMPIAIJSetPreallocation()`,
 `MatMPIBAIJSetPreallocation()`, `DMSlicedGetMatrix()`, `DMSlicedSetBlockFills()`
 
 # External Links
@@ -43415,7 +42210,7 @@ end
 end 
 
 """
-	DMSnapToGeomModel(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, dE::PetscInt, mcoords::Vector{PetscScalar}, gcoords::Vector{PetscScalar}) 
+	DMSnapToGeomModel(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, dE::PetscInt, mcoords::Vector{PetscScalar}, gcoords::Vector{PetscScalar}) 
 Given a coordinate point 'mcoords' on the mesh point 'p', return the closest coordinate point 'gcoords' on the geometry model associated with that point.
 
 Not Collective
@@ -43431,7 +42226,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `DMRefine()`, `DMPlexCreate()`, `DMPlexSetRefinementUniform()`
+See also: `DM`, `DMPLEX`, `DMRefine()`, `DMPlexCreate()`, `DMPlexSetRefinementUniform()`
 
 # External Links
 $(_doc_external("DM/DMSnapToGeomModel"))
@@ -43454,7 +42249,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMStagCreate1d(petsclib::PetscLibType,comm::MPI_Comm, bndx::DMBoundaryType, M::PetscInt, dof0::PetscInt, dof1::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}) 
+	dm::PetscDM = DMStagCreate1d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, M::PetscInt, dof0::PetscInt, dof1::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}) 
 Create an object to manage data living on the elements and vertices of a parallelized regular 1D grid.
 
 Collective
@@ -43480,14 +42275,7 @@ Options Database Keys:
 
 Level: beginner
 
-Notes:
-You must call `DMSetUp()` after this call before using the `DM`.
-If you wish to use the options database (see the keys above) to change values in the `DMSTAG`, you must call
-`DMSetFromOptions()` after this function but before `DMSetUp()`.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagCreate2d()`, `DMStagCreate3d()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMLocalToGlobalBegin()`, `DMDACreate1d()`
+See also: `DMSTAG`, `DMStagCreate2d()`, `DMStagCreate3d()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMLocalToGlobalBegin()`, `DMDACreate1d()`
 
 # External Links
 $(_doc_external("DMStag/DMStagCreate1d"))
@@ -43512,7 +42300,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMStagCreate2d(petsclib::PetscLibType,comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::PetscInt, N::PetscInt, M_m::PetscInt, M_n::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
+	dm::PetscDM = DMStagCreate2d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::PetscInt, N::PetscInt, M_m::PetscInt, M_n::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
 Create an object to manage data living on the elements, faces, and vertices of a parallelized regular 2D grid.
 
 Collective
@@ -43549,14 +42337,7 @@ Options Database Keys:
 
 Level: beginner
 
-Notes:
-You must call `DMSetUp()` after this call, before using the `DM`.
-If you wish to use the options database (see the keys above) to change values in the `DMSTAG`, you must call
-`DMSetFromOptions()` after this function but before `DMSetUp()`.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagCreate1d()`, `DMStagCreate3d()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`
+See also: `DMSTAG`, `DMStagCreate1d()`, `DMStagCreate3d()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMLocalToGlobalBegin()`, `DMDACreate2d()`
 
 # External Links
 $(_doc_external("DMStag/DMStagCreate2d"))
@@ -43581,7 +42362,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMStagCreate3d(petsclib::PetscLibType,comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::PetscInt, N::PetscInt, P::PetscInt, M_m::PetscInt, M_n::PetscInt, M_p::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
+	dm::PetscDM = DMStagCreate3d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::PetscInt, N::PetscInt, P::PetscInt, M_m::PetscInt, M_n::PetscInt, M_p::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}, lz::Union{Ptr, Vector{PetscInt}}) 
 Create an object to manage data living on the elements, faces, edges, and vertices of a parallelized regular 3D grid.
 
 Collective
@@ -43625,14 +42406,7 @@ Options Database Keys:
 
 Level: beginner
 
-Notes:
-You must call `DMSetUp()` after this call before using the `DM`.
-If you wish to use the options database (see the keys above) to change values in the `DMSTAG`, you must call
-`DMSetFromOptions()` after this function but before `DMSetUp()`.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagCreate1d()`, `DMStagCreate2d()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMLocalToGlobalBegin()`, `DMDACreate3d()`
+See also: `DMSTAG`, `DMStagCreate1d()`, `DMStagCreate2d()`, `DMDestroy()`, `DMView()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`, `DMLocalToGlobalBegin()`, `DMDACreate3d()`
 
 # External Links
 $(_doc_external("DMStag/DMStagCreate3d"))
@@ -43657,7 +42431,7 @@ end
 end 
 
 """
-	newdm::PetscDM = DMStagCreateCompatibleDMStag(petsclib::PetscLibType,dm::AbstractPetscDM, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt) 
+	newdm::PetscDM = DMStagCreateCompatibleDMStag(petsclib::PetscLibType, dm::AbstractPetscDM, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt) 
 create a compatible `DMSTAG` with different dof/stratum
 
 Collective
@@ -43674,16 +42448,7 @@ Output Parameter:
 
 Level: intermediate
 
-Notes:
-DOF supplied for strata too big for the dimension are ignored; these may be set to `0`.
-For example, for a 2-dimensional `DMSTAG`, `dof2` sets the number of dof per element,
-and `dof3` is unused. For a 3-dimensional `DMSTAG`, `dof3` sets the number of DOF per element.
-
-In contrast to `DMDACreateCompatibleDMDA()`, coordinates are not reused.
-
-See also: 
-=== 
-`DMSTAG`, `DMDACreateCompatibleDMDA()`, `DMGetCompatibility()`, `DMStagMigrateVec()`
+See also: `DMSTAG`, `DMDACreateCompatibleDMDA()`, `DMGetCompatibility()`, `DMStagMigrateVec()`
 
 # External Links
 $(_doc_external("DMStag/DMStagCreateCompatibleDMStag"))
@@ -43708,7 +42473,7 @@ end
 end 
 
 """
-	is::IS = DMStagCreateISFromStencils(petsclib::PetscLibType,dm::AbstractPetscDM, n_stencil::PetscInt, stencils::Vector{DMStagStencil}) 
+	is::IS = DMStagCreateISFromStencils(petsclib::PetscLibType, dm::AbstractPetscDM, n_stencil::PetscInt, stencils::Vector{DMStagStencil}) 
 Create an `IS`, using global numberings, for a subset of DOF in a `DMSTAG` object
 
 Collective
@@ -43721,14 +42486,7 @@ Input Parameters:
 Output Parameter:
 - `is` - the global `IS`
 
-Note:
-Redundant entries in the stencils argument are ignored
-
-Level: advanced
-
-See also: 
-=== 
-`DMSTAG`, `IS`, `DMStagStencil`, `DMCreateGlobalVector`
+See also: `DMSTAG`, `IS`, `DMStagStencil`, `DMCreateGlobalVector`
 
 # External Links
 $(_doc_external("DMStag/DMStagCreateISFromStencils"))
@@ -43753,7 +42511,7 @@ end
 end 
 
 """
-	boundaryTypeX::DMBoundaryType,boundaryTypeY::DMBoundaryType,boundaryTypeZ::DMBoundaryType = DMStagGetBoundaryTypes(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	boundaryTypeX::DMBoundaryType,boundaryTypeY::DMBoundaryType,boundaryTypeZ::DMBoundaryType = DMStagGetBoundaryTypes(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get boundary types
 
 Not Collective
@@ -43768,9 +42526,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMSTAG`, `DMBoundaryType`
+See also: `DMSTAG`, `DMBoundaryType`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetBoundaryTypes"))
@@ -43799,7 +42555,7 @@ end
 end 
 
 """
-	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt,nExtrax::PetscInt,nExtray::PetscInt,nExtraz::PetscInt = DMStagGetCorners(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt,nExtrax::PetscInt,nExtray::PetscInt,nExtraz::PetscInt = DMStagGetCorners(petsclib::PetscLibType, dm::AbstractPetscDM) 
 return global element indices of the local region (excluding ghost points)
 
 Not Collective
@@ -43820,16 +42576,7 @@ Output Parameters:
 
 Level: beginner
 
-Notes:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to `NULL` in this case.
-
-The number of extra partial elements is either 1 or 0.
-The value is 1 on right, top, and front non-periodic domain ("physical") boundaries,
-in the x, y, and z directions respectively, and otherwise 0.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetGhostCorners()`, `DMDAGetCorners()`
+See also: `DMSTAG`, `DMStagGetGhostCorners()`, `DMDAGetCorners()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetCorners"))
@@ -43870,7 +42617,7 @@ end
 end 
 
 """
-	dof0::PetscInt,dof1::PetscInt,dof2::PetscInt,dof3::PetscInt = DMStagGetDOF(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	dof0::PetscInt,dof1::PetscInt,dof2::PetscInt,dof3::PetscInt = DMStagGetDOF(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get number of DOF associated with each stratum of the grid
 
 Not Collective
@@ -43886,9 +42633,7 @@ Output Parameters:
 
 Level: beginner
 
-See also: 
-=== 
-`DMSTAG`, `DMStagGetCorners()`, `DMStagGetGhostCorners()`, `DMStagGetGlobalSizes()`, `DMStagGetStencilWidth()`, `DMStagGetBoundaryTypes()`, `DMStagGetLocationDOF()`, `DMDAGetDof()`
+See also: `DMSTAG`, `DMStagGetCorners()`, `DMStagGetGhostCorners()`, `DMStagGetGlobalSizes()`, `DMStagGetStencilWidth()`, `DMStagGetBoundaryTypes()`, `DMStagGetLocationDOF()`, `DMDAGetDof()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetDOF"))
@@ -43919,7 +42664,7 @@ end
 end 
 
 """
-	entries::PetscInt = DMStagGetEntries(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	entries::PetscInt = DMStagGetEntries(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get number of native entries in the global representation
 
 Not Collective
@@ -43932,15 +42677,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-This is the number of entries on this rank for a global vector associated with `dm`.
-That is, it is value of `size` returned by `VecGetLocalSize(vec,&size)` when
-`DMCreateGlobalVector(dm,&vec) is used to create a `Vec`. Users would typically
-use these functions.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetDOF()`, `DMStagGetEntriesLocal()`, `DMStagGetEntriesPerElement()`, `DMCreateLocalVector()`
+See also: `DMSTAG`, `DMStagGetDOF()`, `DMStagGetEntriesLocal()`, `DMStagGetEntriesPerElement()`, `DMCreateLocalVector()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetEntries"))
@@ -43965,7 +42702,7 @@ end
 end 
 
 """
-	entries::PetscInt = DMStagGetEntriesLocal(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	entries::PetscInt = DMStagGetEntriesLocal(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get number of entries in the local representation
 
 Not Collective
@@ -43978,15 +42715,7 @@ Output Parameter:
 
 Level: developer
 
-Note:
-This is the number of entries on this rank in the local representation.
-That is, it is value of `size` returned by `VecGetSize(vec,&size)` or
-`VecGetLocalSize(vec,&size)` when `DMCreateLocalVector(dm,&vec)` is used to
-create a `Vec`. Users would typically use these functions.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetDOF()`, `DMStagGetEntries()`, `DMStagGetEntriesPerElement()`, `DMCreateLocalVector()`
+See also: `DMSTAG`, `DMStagGetDOF()`, `DMStagGetEntries()`, `DMStagGetEntriesPerElement()`, `DMCreateLocalVector()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetEntriesLocal"))
@@ -44011,7 +42740,7 @@ end
 end 
 
 """
-	entriesPerElement::PetscInt = DMStagGetEntriesPerElement(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	entriesPerElement::PetscInt = DMStagGetEntriesPerElement(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get number of entries per element in the local representation
 
 Not Collective
@@ -44024,13 +42753,7 @@ Output Parameter:
 
 Level: developer
 
-Notes:
-This is the natural block size for most local operations. In 1D it is equal to `dof0` + `dof1`,
-in 2D it is equal to `dof0` + 2`dof1` + `dof2`, and in 3D it is equal to `dof0` + 3`dof1` + 3`dof2` + `dof3`
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetDOF()`
+See also: `DMSTAG`, `DMStagGetDOF()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetEntriesPerElement"))
@@ -44055,7 +42778,7 @@ end
 end 
 
 """
-	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt = DMStagGetGhostCorners(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	x::PetscInt,y::PetscInt,z::PetscInt,m::PetscInt,n::PetscInt,p::PetscInt = DMStagGetGhostCorners(petsclib::PetscLibType, dm::AbstractPetscDM) 
 return global element indices of the local region, including ghost points
 
 Not Collective
@@ -44073,12 +42796,7 @@ Output Parameters:
 
 Level: beginner
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to `NULL` in this case.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetCorners()`, `DMDAGetGhostCorners()`
+See also: `DMSTAG`, `DMStagGetCorners()`, `DMDAGetGhostCorners()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetGhostCorners"))
@@ -44113,7 +42831,7 @@ end
 end 
 
 """
-	M::PetscInt,N::PetscInt,P::PetscInt = DMStagGetGlobalSizes(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	M::PetscInt,N::PetscInt,P::PetscInt = DMStagGetGlobalSizes(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get global element counts
 
 Not Collective
@@ -44128,12 +42846,7 @@ Output Parameters:
 
 Level: beginner
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to `NULL` in this case.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetLocalSizes()`, `DMDAGetInfo()`
+See also: `DMSTAG`, `DMStagGetLocalSizes()`, `DMDAGetInfo()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetGlobalSizes"))
@@ -44162,7 +42875,7 @@ end
 end 
 
 """
-	isFirstRank0::PetscBool,isFirstRank1::PetscBool,isFirstRank2::PetscBool = DMStagGetIsFirstRank(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	isFirstRank0::PetscBool,isFirstRank1::PetscBool,isFirstRank2::PetscBool = DMStagGetIsFirstRank(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get boolean value for whether this rank is first in each direction in the rank grid
 
 Not Collective
@@ -44177,12 +42890,7 @@ Output Parameters:
 
 Level: intermediate
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to `NULL` in this case.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetIsLastRank()`
+See also: `DMSTAG`, `DMStagGetIsLastRank()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetIsFirstRank"))
@@ -44211,7 +42919,7 @@ end
 end 
 
 """
-	isLastRank0::PetscBool,isLastRank1::PetscBool,isLastRank2::PetscBool = DMStagGetIsLastRank(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	isLastRank0::PetscBool,isLastRank1::PetscBool,isLastRank2::PetscBool = DMStagGetIsLastRank(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get boolean value for whether this rank is last in each direction in the rank grid
 
 Not Collective
@@ -44226,12 +42934,7 @@ Output Parameters:
 
 Level: intermediate
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to `NULL` in this case.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetIsFirstRank()`
+See also: `DMSTAG`, `DMStagGetIsFirstRank()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetIsLastRank"))
@@ -44260,7 +42963,7 @@ end
 end 
 
 """
-	m::PetscInt,n::PetscInt,p::PetscInt = DMStagGetLocalSizes(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	m::PetscInt,n::PetscInt,p::PetscInt = DMStagGetLocalSizes(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get local elementwise sizes
 
 Not Collective
@@ -44275,12 +42978,7 @@ Output Parameters:
 
 Level: beginner
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to `NULL` in this case.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetGlobalSizes()`, `DMStagGetDOF()`, `DMStagGetNumRanks()`, `DMDAGetLocalInfo()`
+See also: `DMSTAG`, `DMStagGetGlobalSizes()`, `DMStagGetDOF()`, `DMStagGetNumRanks()`, `DMDAGetLocalInfo()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetLocalSizes"))
@@ -44309,7 +43007,7 @@ end
 end 
 
 """
-	dof::PetscInt = DMStagGetLocationDOF(petsclib::PetscLibType,dm::AbstractPetscDM, loc::DMStagStencilLocation) 
+	dof::PetscInt = DMStagGetLocationDOF(petsclib::PetscLibType, dm::AbstractPetscDM, loc::DMStagStencilLocation) 
 Get number of DOF associated with a given point in a `DMSTAG` grid
 
 Not Collective
@@ -44323,9 +43021,7 @@ Output Parameter:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMSTAG`, `DMStagStencilLocation`, `DMStagStencil`, `DMDAGetDof()`
+See also: `DMSTAG`, `DMStagStencilLocation`, `DMStagStencil`, `DMDAGetDof()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetLocationDOF"))
@@ -44350,7 +43046,7 @@ end
 end 
 
 """
-	slot::PetscInt = DMStagGetLocationSlot(petsclib::PetscLibType,dm::AbstractPetscDM, loc::DMStagStencilLocation, c::PetscInt) 
+	slot::PetscInt = DMStagGetLocationSlot(petsclib::PetscLibType, dm::AbstractPetscDM, loc::DMStagStencilLocation, c::PetscInt) 
 get index to use in accessing raw local arrays
 
 Not Collective
@@ -44365,14 +43061,7 @@ Output Parameter:
 
 Level: beginner
 
-Notes:
-Provides an appropriate index to use with `DMStagVecGetArray()` and friends.
-This is required so that the user doesn't need to know about the ordering of
-dof associated with each local element.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagVecGetArray()`, `DMStagVecGetArrayRead()`, `DMStagGetDOF()`, `DMStagGetEntriesPerElement()`
+See also: `DMSTAG`, `DMStagVecGetArray()`, `DMStagVecGetArrayRead()`, `DMStagGetDOF()`, `DMStagGetEntriesPerElement()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetLocationSlot"))
@@ -44397,7 +43086,7 @@ end
 end 
 
 """
-	nRanks0::PetscInt,nRanks1::PetscInt,nRanks2::PetscInt = DMStagGetNumRanks(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nRanks0::PetscInt,nRanks1::PetscInt,nRanks2::PetscInt = DMStagGetNumRanks(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get number of ranks in each direction in the global grid decomposition
 
 Not Collective
@@ -44412,9 +43101,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMSTAG`, `DMStagGetGlobalSizes()`, `DMStagGetLocalSize()`, `DMStagSetNumRanks()`, `DMDAGetInfo()`
+See also: `DMSTAG`, `DMStagGetGlobalSizes()`, `DMStagGetLocalSize()`, `DMStagSetNumRanks()`, `DMDAGetInfo()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetNumRanks"))
@@ -44444,7 +43131,7 @@ end
 
 # override for DMStagGetOwnershipRanges; C signature: DMStagGetOwnershipRanges(DM dm, PetscInt* lx[], PetscInt* ly[], PetscInt* lz[])
 """
-	lx::Vector{PetscInt},ly::Vector{PetscInt},lz::Vector{PetscInt} = DMStagGetOwnershipRanges(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	lx::Vector{PetscInt},ly::Vector{PetscInt},lz::Vector{PetscInt} = DMStagGetOwnershipRanges(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get elements per rank in each direction
 
 Not Collective
@@ -44499,7 +43186,7 @@ end
 
 # override for DMStagGetProductCoordinateArrays; C signature: DMStagGetProductCoordinateArrays(DM dm, void* arrX, void* arrY, void* arrZ)
 """
-	arrX,arrY,arrZ = DMStagGetProductCoordinateArrays(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	arrX,arrY,arrZ = DMStagGetProductCoordinateArrays(petsclib::PetscLibType, dm::AbstractPetscDM) 
 extract local product coordinate arrays, one per dimension
 
 Logically Collective
@@ -44574,7 +43261,7 @@ end
 
 # override for DMStagGetProductCoordinateArraysRead; C signature: DMStagGetProductCoordinateArraysRead(DM dm, void* arrX, void* arrY, void* arrZ)
 """
-	arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray = DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray = DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType, dm::AbstractPetscDM) 
 extract product coordinate arrays, read
 
 Logically Collective
@@ -44638,7 +43325,7 @@ function DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType, dm::Abstra
 end
 
 """
-	refine_x::PetscInt,refine_y::PetscInt,refine_z::PetscInt = DMStagGetRefinementFactor(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	refine_x::PetscInt,refine_y::PetscInt,refine_z::PetscInt = DMStagGetRefinementFactor(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get refinement ratios in each direction
 
 Not Collective
@@ -44653,9 +43340,7 @@ Output Parameters:
 
 Level: intermediate
 
-See also: 
-=== 
-`DMSTAG`, `DMRefine()`, `DMCoarsen()`, `DMStagSetRefinementFactor()`, `DMDASetRefinementFactor()`
+See also: `DMSTAG`, `DMRefine()`, `DMCoarsen()`, `DMStagSetRefinementFactor()`, `DMDASetRefinementFactor()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetRefinementFactor"))
@@ -44684,7 +43369,7 @@ end
 end 
 
 """
-	stencilType::DMStagStencilType = DMStagGetStencilType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	stencilType::DMStagStencilType = DMStagGetStencilType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get elementwise ghost/halo stencil type
 
 Not Collective
@@ -44697,9 +43382,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DMSTAG`, `DMStagSetStencilType()`, `DMStagGetStencilWidth`, `DMStagStencilType`
+See also: `DMSTAG`, `DMStagSetStencilType()`, `DMStagGetStencilWidth`, `DMStagStencilType`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetStencilType"))
@@ -44724,7 +43407,7 @@ end
 end 
 
 """
-	stencilWidth::PetscInt = DMStagGetStencilWidth(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	stencilWidth::PetscInt = DMStagGetStencilWidth(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get elementwise stencil width
 
 Not Collective
@@ -44737,9 +43420,7 @@ Output Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DMSTAG`, `DMStagSetStencilWidth()`, `DMStagGetStencilType()`, `DMDAGetStencilType()`
+See also: `DMSTAG`, `DMStagSetStencilWidth()`, `DMStagGetStencilType()`, `DMDAGetStencilType()`
 
 # External Links
 $(_doc_external("DMStag/DMStagGetStencilWidth"))
@@ -44764,7 +43445,7 @@ end
 end 
 
 """
-	val::Vector{PetscScalar} = DMStagMatGetValuesStencil(petsclib::PetscLibType,dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}) 
+	val::Vector{PetscScalar} = DMStagMatGetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}) 
 retrieve local matrix entries using grid indexing
 
 Not Collective
@@ -44782,9 +43463,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DMSTAG`, `DMStagStencil`, `DMStagStencilLocation`, `DMStagVecGetValuesStencil()`, `DMStagVecSetValuesStencil()`, `DMStagMatSetValuesStencil()`, `MatSetValuesStencil()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `DMCreateMatrix()`
+See also: `DMSTAG`, `DMStagStencil`, `DMStagStencilLocation`, `DMStagVecGetValuesStencil()`, `DMStagVecSetValuesStencil()`, `DMStagMatSetValuesStencil()`, `MatSetValuesStencil()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `DMCreateMatrix()`
 
 # External Links
 $(_doc_external("DMStag/DMStagMatGetValuesStencil"))
@@ -44808,7 +43487,7 @@ end
 end 
 
 """
-	DMStagMatSetValuesStencil(petsclib::PetscLibType,dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}, val::Vector{PetscScalar}, insertMode::InsertMode) 
+	DMStagMatSetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, mat::AbstractPetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}, val::Vector{PetscScalar}, insertMode::InsertMode) 
 insert or add matrix entries using grid indexing
 
 Not Collective
@@ -44823,14 +43502,7 @@ Input Parameters:
 - `val`        - logically two-dimensional array of values
 - `insertMode` - `INSERT_VALUES` or `ADD_VALUES`
 
-Notes:
-See notes for `MatSetValuesStencil()`
-
-Level: intermediate
-
-See also: 
-=== 
-`DMSTAG`, `DMStagStencil`, `DMStagStencilLocation`, `DMStagVecGetValuesStencil()`, `DMStagVecSetValuesStencil()`, `DMStagMatGetValuesStencil()`, `MatSetValuesStencil()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `DMCreateMatrix()`
+See also: `DMSTAG`, `DMStagStencil`, `DMStagStencilLocation`, `DMStagVecGetValuesStencil()`, `DMStagVecSetValuesStencil()`, `DMStagMatGetValuesStencil()`, `MatSetValuesStencil()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `DMCreateMatrix()`
 
 # External Links
 $(_doc_external("DMStag/DMStagMatSetValuesStencil"))
@@ -44853,7 +43525,7 @@ end
 end 
 
 """
-	DMStagMigrateVec(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, dmTo::AbstractPetscDM, vecTo::AbstractPetscVec) 
+	DMStagMigrateVec(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, dmTo::AbstractPetscDM, vecTo::AbstractPetscVec) 
 transfer a vector associated with a `DMSTAG` to a vector associated with a compatible `DMSTAG`
 
 Collective
@@ -44866,14 +43538,7 @@ Input Parameters:
 
 Level: advanced
 
-Notes:
-Extra dof are ignored, and unfilled dof are zeroed.
-Currently only implemented to migrate global vectors to global vectors.
-For the definition of compatibility of `DM`s, see `DMGetCompatibility()`.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagCreateCompatibleDMStag()`, `DMGetCompatibility()`, `DMStagVecSplitToDMDA()`
+See also: `DMSTAG`, `DMStagCreateCompatibleDMStag()`, `DMGetCompatibility()`, `DMStagVecSplitToDMDA()`
 
 # External Links
 $(_doc_external("DMStag/DMStagMigrateVec"))
@@ -44896,8 +43561,8 @@ end
 end 
 
 """
-	DMStagPopulateLocalToGlobalInjective(petsclib::PetscLibType,dm::AbstractPetscDM) 
-populate an internal 1
+	DMStagPopulateLocalToGlobalInjective(petsclib::PetscLibType, dm::AbstractPetscDM) 
+populate an internal 1-to-1 local-to-global map
 
 Collective
 
@@ -44915,20 +43580,7 @@ Input Parameter:
 
 Level: developer
 
-Notes:
-In normal usage, library users shouldn't be concerned with this function,
-as it is called during `DMSetUp()`, when required.
-
-Returns immediately if the internal map is already populated.
-
-Developer Notes:
-This could, if desired, be moved up to a general `DM` routine. It would allow,
-for example, `DMDA` to support `DMLocalToGlobal()` with `INSERT_VALUES`,
-even in the single-rank periodic case.
-
-See also: 
-=== 
-`DMSTAG`, `DMLocalToGlobal()`, `VecScatter`
+See also: `DMSTAG`, `DMLocalToGlobal()`, `VecScatter`
 
 # External Links
 $(_doc_external("DMStag/DMStagPopulateLocalToGlobalInjective"))
@@ -44952,7 +43604,7 @@ end
 
 # override for DMStagRestoreProductCoordinateArrays; C signature: DMStagRestoreProductCoordinateArrays(DM dm, void* arrX, void* arrY, void* arrZ)
 """
-	DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType,dm::AbstractPetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) 
+	DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType, dm::AbstractPetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) 
 restore local array access
 
 Logically Collective
@@ -44968,7 +43620,7 @@ Level: intermediate
 Notes:
 This function does not automatically perform a local->global scatter to populate global coordinates from the local coordinates.
 Thus, it may be required to explicitly perform these operations in some situations, as in the following partial example:
--vb
+```
 PetscCall(DMGetCoordinateDM(dm, &cdm));
 for (PetscInt d = 0; d < 3; ++d) {
 DM  subdm;
@@ -44981,7 +43633,7 @@ PetscCall(DMLocalToGlobal(subdm, coor_local, INSERT_VALUES, coor));
 PetscCall(PetscPrintf(PETSC_COMM_WORLD, "Coordinates dim %" PetscInt_FMT ":\n", d));
 PetscCall(VecView(coor, PETSC_VIEWER_STDOUT_WORLD));
 }
--ve
+```
 
 See also: 
 === 
@@ -45011,7 +43663,7 @@ end
 
 # override for DMStagRestoreProductCoordinateArraysRead; C signature: DMStagRestoreProductCoordinateArraysRead(DM dm, void* arrX, void* arrY, void* arrZ)
 """
-	DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType,dm::AbstractPetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) 
+	DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType, dm::AbstractPetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) 
 restore local product array access, read
 
 Logically Collective
@@ -45050,7 +43702,7 @@ function DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType, dm::Ab
 end
 
 """
-	DMStagRestrictSimple(petsclib::PetscLibType,dmf::AbstractPetscDM, xf::AbstractPetscVec, dmc::AbstractPetscDM, xc::AbstractPetscVec) 
+	DMStagRestrictSimple(petsclib::PetscLibType, dmf::AbstractPetscDM, xf::AbstractPetscVec, dmc::AbstractPetscDM, xc::AbstractPetscVec) 
 restricts data from a fine to a coarse `DMSTAG`, in the simplest way
 
 Values on coarse cells are averages of all fine cells that they cover.
@@ -45068,9 +43720,7 @@ Output Parameter:
 
 Level: advanced
 
-See also: 
-=== 
-`DMSTAG`, `DM`, `DMRestrict()`, `DMCoarsen()`, `DMCreateInjection()`
+See also: `DMSTAG`, `DM`, `DMRestrict()`, `DMCoarsen()`, `DMCreateInjection()`
 
 # External Links
 $(_doc_external("DMStag/DMStagRestrictSimple"))
@@ -45093,7 +43743,7 @@ end
 end 
 
 """
-	DMStagSetBoundaryTypes(petsclib::PetscLibType,dm::AbstractPetscDM, boundaryType0::DMBoundaryType, boundaryType1::DMBoundaryType, boundaryType2::DMBoundaryType) 
+	DMStagSetBoundaryTypes(petsclib::PetscLibType, dm::AbstractPetscDM, boundaryType0::DMBoundaryType, boundaryType1::DMBoundaryType, boundaryType2::DMBoundaryType) 
 set `DMSTAG` boundary types
 
 Logically Collective; boundaryType0, boundaryType1, and boundaryType2 must contain common values
@@ -45106,12 +43756,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.
-
-See also: 
-=== 
-`DMSTAG`, `DMBoundaryType`, `DMStagCreate1d()`, `DMStagCreate2d()`, `DMStagCreate3d()`, `DMDASetBoundaryType()`
+See also: `DMSTAG`, `DMBoundaryType`, `DMStagCreate1d()`, `DMStagCreate2d()`, `DMStagCreate3d()`, `DMDASetBoundaryType()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetBoundaryTypes"))
@@ -45134,7 +43779,7 @@ end
 end 
 
 """
-	DMStagSetCoordinateDMType(petsclib::PetscLibType,dm::AbstractPetscDM, dmtype::DMType) 
+	DMStagSetCoordinateDMType(petsclib::PetscLibType, dm::AbstractPetscDM, dmtype::DMType) 
 set DM type to store coordinates
 
 Logically Collective; `dmtype` must contain common value
@@ -45145,9 +43790,7 @@ Input Parameters:
 
 Level: advanced
 
-See also: 
-=== 
-`DMSTAG`, `DMPRODUCT`, `DMGetCoordinateDM()`, `DMStagSetUniformCoordinates()`, `DMStagSetUniformCoordinatesExplicit()`, `DMStagSetUniformCoordinatesProduct()`, `DMType`
+See also: `DMSTAG`, `DMPRODUCT`, `DMGetCoordinateDM()`, `DMStagSetUniformCoordinates()`, `DMStagSetUniformCoordinatesExplicit()`, `DMStagSetUniformCoordinatesProduct()`, `DMType`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetCoordinateDMType"))
@@ -45170,7 +43813,7 @@ end
 end 
 
 """
-	DMStagSetDOF(petsclib::PetscLibType,dm::AbstractPetscDM, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt) 
+	DMStagSetDOF(petsclib::PetscLibType, dm::AbstractPetscDM, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt) 
 set dof/stratum
 
 Logically Collective; `dof0`, `dof1`, `dof2`, and `dof3` must contain common values
@@ -45184,12 +43827,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.
-
-See also: 
-=== 
-`DMSTAG`, `DMDASetDof()`
+See also: `DMSTAG`, `DMDASetDof()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetDOF"))
@@ -45212,7 +43850,7 @@ end
 end 
 
 """
-	DMStagSetGlobalSizes(petsclib::PetscLibType,dm::AbstractPetscDM, N0::PetscInt, N1::PetscInt, N2::PetscInt) 
+	DMStagSetGlobalSizes(petsclib::PetscLibType, dm::AbstractPetscDM, N0::PetscInt, N1::PetscInt, N2::PetscInt) 
 set global element counts in each direction
 
 Logically Collective; `N0`, `N1`, and `N2` must contain common values
@@ -45225,12 +43863,7 @@ Input Parameters:
 
 Level: advanced
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetGlobalSizes()`, `DMDASetSizes()`
+See also: `DMSTAG`, `DMStagGetGlobalSizes()`, `DMDASetSizes()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetGlobalSizes"))
@@ -45253,7 +43886,7 @@ end
 end 
 
 """
-	DMStagSetNumRanks(petsclib::PetscLibType,dm::AbstractPetscDM, nRanks0::PetscInt, nRanks1::PetscInt, nRanks2::PetscInt) 
+	DMStagSetNumRanks(petsclib::PetscLibType, dm::AbstractPetscDM, nRanks0::PetscInt, nRanks1::PetscInt, nRanks2::PetscInt) 
 set ranks in each direction in the global rank grid
 
 Logically Collective; `nRanks0`, `nRanks1`, and `nRanks2` must contain common values
@@ -45266,12 +43899,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.
-
-See also: 
-=== 
-`DMSTAG`, `DMDASetNumProcs()`
+See also: `DMSTAG`, `DMDASetNumProcs()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetNumRanks"))
@@ -45294,7 +43922,7 @@ end
 end 
 
 """
-	DMStagSetOwnershipRanges(petsclib::PetscLibType,dm::AbstractPetscDM, lx::Vector{PetscInt}, ly::Vector{PetscInt}, lz::Vector{PetscInt}) 
+	DMStagSetOwnershipRanges(petsclib::PetscLibType, dm::AbstractPetscDM, lx::Vector{PetscInt}, ly::Vector{PetscInt}, lz::Vector{PetscInt}) 
 set elements per rank in each direction
 
 Logically Collective; `lx`, `ly`, and `lz` must contain common values
@@ -45307,12 +43935,7 @@ Input Parameters:
 
 Level: developer
 
-Note:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to `NULL` in this case.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagSetGlobalSizes()`, `DMStagGetOwnershipRanges()`, `DMDASetOwnershipRanges()`
+See also: `DMSTAG`, `DMStagSetGlobalSizes()`, `DMStagGetOwnershipRanges()`, `DMDASetOwnershipRanges()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetOwnershipRanges"))
@@ -45335,7 +43958,7 @@ end
 end 
 
 """
-	DMStagSetRefinementFactor(petsclib::PetscLibType,dm::AbstractPetscDM, refine_x::PetscInt, refine_y::PetscInt, refine_z::PetscInt) 
+	DMStagSetRefinementFactor(petsclib::PetscLibType, dm::AbstractPetscDM, refine_x::PetscInt, refine_y::PetscInt, refine_z::PetscInt) 
 set refinement ratios in each direction
 
 Logically Collective
@@ -45348,12 +43971,7 @@ Input Parameters:
 
 Level: intermediate
 
-Note:
-Pass `PETSC_IGNORE` to leave a value unchanged
-
-See also: 
-=== 
-`DMSTAG`, `DMRefine()`, `DMCoarsen()`, `DMStagGetRefinementFactor()`, `DMDAGetRefinementFactor()`
+See also: `DMSTAG`, `DMRefine()`, `DMCoarsen()`, `DMStagGetRefinementFactor()`, `DMDAGetRefinementFactor()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetRefinementFactor"))
@@ -45376,7 +43994,7 @@ end
 end 
 
 """
-	DMStagSetStencilType(petsclib::PetscLibType,dm::AbstractPetscDM, stencilType::DMStagStencilType) 
+	DMStagSetStencilType(petsclib::PetscLibType, dm::AbstractPetscDM, stencilType::DMStagStencilType) 
 set elementwise ghost/halo stencil type
 
 Logically Collective; `stencilType` must contain common value
@@ -45387,9 +44005,7 @@ Input Parameters:
 
 Level: beginner
 
-See also: 
-=== 
-`DMSTAG`, `DMStagGetStencilType()`, `DMStagSetStencilWidth()`, `DMStagStencilType`
+See also: `DMSTAG`, `DMStagGetStencilType()`, `DMStagSetStencilWidth()`, `DMStagStencilType`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetStencilType"))
@@ -45412,7 +44028,7 @@ end
 end 
 
 """
-	DMStagSetStencilWidth(petsclib::PetscLibType,dm::AbstractPetscDM, stencilWidth::PetscInt) 
+	DMStagSetStencilWidth(petsclib::PetscLibType, dm::AbstractPetscDM, stencilWidth::PetscInt) 
 set elementwise stencil width
 
 Logically Collective; `stencilWidth` must contain common value
@@ -45423,12 +44039,7 @@ Input Parameters:
 
 Level: beginner
 
-Note:
-The width value is not used when `DMSTAG_STENCIL_NONE` is specified.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagGetStencilWidth()`, `DMStagGetStencilType()`, `DMStagStencilType`
+See also: `DMSTAG`, `DMStagGetStencilWidth()`, `DMStagGetStencilType()`, `DMStagStencilType`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetStencilWidth"))
@@ -45451,7 +44062,7 @@ end
 end 
 
 """
-	DMStagSetUniformCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
+	DMStagSetUniformCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
 set `DMSTAG` coordinates to be a uniform grid
 
 Collective
@@ -45467,21 +44078,7 @@ Input Parameters:
 
 Level: advanced
 
-Notes:
-`DMSTAG` supports 2 different types of coordinate `DM`: `DMSTAG` and `DMPRODUCT`.
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.
-
-Local coordinates are populated (using `DMSetCoordinatesLocal()`), linearly
-extrapolated to ghost cells, including those outside the physical domain.
-This is also done in case of periodic boundaries, meaning that the same
-global point may have different coordinates in different local representations,
-which are equivalent assuming a periodicity implied by the arguments to this function,
-i.e. two points are equivalent if their difference is a multiple of (`xmax` - `xmin` )
-in the x direction, ( `ymax` - `ymin` ) in the y direction, and ( `zmax` - `zmin` ) in the z direction.
-
-See also: 
-=== 
-`DMSTAG`, `DMPRODUCT`, `DMStagSetUniformCoordinatesExplicit()`, `DMStagSetUniformCoordinatesProduct()`, `DMStagSetCoordinateDMType()`, `DMGetCoordinateDM()`, `DMGetCoordinates()`, `DMDASetUniformCoordinates()`, `DMBoundaryType`
+See also: `DMSTAG`, `DMPRODUCT`, `DMStagSetUniformCoordinatesExplicit()`, `DMStagSetUniformCoordinatesProduct()`, `DMStagSetCoordinateDMType()`, `DMGetCoordinateDM()`, `DMGetCoordinates()`, `DMDASetUniformCoordinates()`, `DMBoundaryType`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetUniformCoordinates"))
@@ -45504,7 +44101,7 @@ end
 end 
 
 """
-	DMStagSetUniformCoordinatesExplicit(petsclib::PetscLibType,dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
+	DMStagSetUniformCoordinatesExplicit(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
 set `DMSTAG` coordinates to be a uniform grid, storing all values
 
 Collective
@@ -45520,18 +44117,7 @@ Input Parameters:
 
 Level: beginner
 
-Notes:
-`DMSTAG` supports 2 different types of coordinate `DM`: either another `DMSTAG`, or a `DMPRODUCT`.
-If the grid is orthogonal, using `DMPRODUCT` should be more efficient.
-
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.
-
-See the manual page for `DMStagSetUniformCoordinates()` for information on how
-coordinates for dummy cells outside the physical domain boundary are populated.
-
-See also: 
-=== 
-`DMSTAG`, `DMStagSetUniformCoordinates()`, `DMStagSetUniformCoordinatesProduct()`, `DMStagSetCoordinateDMType()`
+See also: `DMSTAG`, `DMStagSetUniformCoordinates()`, `DMStagSetUniformCoordinatesProduct()`, `DMStagSetCoordinateDMType()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetUniformCoordinatesExplicit"))
@@ -45554,7 +44140,7 @@ end
 end 
 
 """
-	DMStagSetUniformCoordinatesProduct(petsclib::PetscLibType,dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
+	DMStagSetUniformCoordinatesProduct(petsclib::PetscLibType, dm::AbstractPetscDM, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, zmin::PetscReal, zmax::PetscReal) 
 create uniform coordinates, as a product of 1D arrays
 
 Set the coordinate `DM` to be a `DMPRODUCT` of 1D `DMSTAG` objects, each of which have a coordinate `DM` (also a 1d `DMSTAG`) holding uniform coordinates.
@@ -45572,19 +44158,7 @@ Input Parameters:
 
 Level: intermediate
 
-Notes:
-Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.
-
-The per-dimension 1-dimensional `DMSTAG` objects that comprise the product
-always have active 0-cells (vertices, element boundaries) and 1-cells
-(element centers).
-
-See the manual page for `DMStagSetUniformCoordinates()` for information on how
-coordinates for dummy cells outside the physical domain boundary are populated.
-
-See also: 
-=== 
-`DMSTAG`, `DMPRODUCT`, `DMStagSetUniformCoordinates()`, `DMStagSetUniformCoordinatesExplicit()`, `DMStagSetCoordinateDMType()`
+See also: `DMSTAG`, `DMPRODUCT`, `DMStagSetUniformCoordinates()`, `DMStagSetUniformCoordinatesExplicit()`, `DMStagSetCoordinateDMType()`
 
 # External Links
 $(_doc_external("DMStag/DMStagSetUniformCoordinatesProduct"))
@@ -45607,7 +44181,7 @@ end
 end 
 
 """
-	ix::Vector{PetscInt} = DMStagStencilToIndexLocal(petsclib::PetscLibType,dm::AbstractPetscDM, dim::PetscInt, n::PetscInt, pos::Vector{DMStagStencil}) 
+	ix::Vector{PetscInt} = DMStagStencilToIndexLocal(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscInt, n::PetscInt, pos::Vector{DMStagStencil}) 
 Convert an array of `DMStagStenci`l objects to an array of indices into a local vector.
 
 Not Collective
@@ -45621,19 +44195,7 @@ Input Parameters:
 Output Parameter:
 - `ix` - output array of `n` indices
 
-Notes:
-The `DMStagStencil` objects in `pos` use global element indices.
-
-The `.c` fields in `pos` must always be set (even if to `0`).
-
-Developer Notes:
-This is a "hot" function, and accepts the dimension redundantly to avoid having to perform any error checking inside the function.
-
-Level: developer
-
-See also: 
-=== 
-`DMSTAG`, `DMStagStencilLocation`, `DMStagStencil`, `DMGetLocalVector`, `DMCreateLocalVector`
+See also: `DMSTAG`, `DMStagStencilLocation`, `DMStagStencil`, `DMGetLocalVector`, `DMCreateLocalVector`
 
 # External Links
 $(_doc_external("DMStag/DMStagStencilToIndexLocal"))
@@ -45658,7 +44220,7 @@ end
 
 # override for DMStagVecGetArray; C signature: DMStagVecGetArray(DM dm, Vec vec, void* array)
 """
-	array::PetscArray = DMStagVecGetArray(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::PetscArray = DMStagVecGetArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec) 
 get access to local array
 
 Logically Collective
@@ -45742,7 +44304,7 @@ end
 
 # override for DMStagVecGetArrayRead; C signature: DMStagVecGetArrayRead(DM dm, Vec vec, void* array)
 """
-	array::PetscArray = DMStagVecGetArrayRead(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec) 
+	array::PetscArray = DMStagVecGetArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec) 
 get read
 
 Logically Collective
@@ -45807,7 +44369,7 @@ end
 
 # override for DMStagVecGetValuesStencil; C signature: DMStagVecGetValuesStencil(DM dm, Vec vec, PetscInt n, DMStagStencil* pos, PetscScalar* val)
 """
-	val::PetscScalar = DMStagVecGetValuesStencil(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, n::PetscInt, pos::DMStagStencil) 
+	val::PetscScalar = DMStagVecGetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, n::PetscInt, pos::DMStagStencil) 
 get vector values using grid indexing
 
 Not Collective
@@ -45857,7 +44419,7 @@ end
 
 # override for DMStagVecRestoreArray; C signature: DMStagVecRestoreArray(DM dm, Vec vec, void* array)
 """
-	DMStagVecRestoreArray(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, array::PetscArray) 
+	DMStagVecRestoreArray(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::PetscArray) 
 restore access to a raw array
 
 Logically Collective
@@ -45895,7 +44457,7 @@ end
 
 # override for DMStagVecRestoreArrayRead; C signature: DMStagVecRestoreArrayRead(DM dm, Vec vec, void* array)
 """
-	DMStagVecRestoreArrayRead(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, array::PetscArray) 
+	DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, array::PetscArray) 
 restore read
 
 Logically Collective
@@ -45930,7 +44492,7 @@ function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::AbstractPetscDM, 
 end
 
 """
-	DMStagVecSetValuesStencil(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, n::PetscInt, pos::Vector{DMStagStencil}, val::Vector{PetscScalar}, insertMode::InsertMode) 
+	DMStagVecSetValuesStencil(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, n::PetscInt, pos::Vector{DMStagStencil}, val::Vector{PetscScalar}, insertMode::InsertMode) 
 Set `Vec` values using global grid indexing
 
 Not Collective
@@ -45943,17 +44505,7 @@ Input Parameters:
 - `val`        - the values to set
 - `insertMode` - `INSERT_VALUES` or `ADD_VALUES`
 
-Notes:
-The vector is expected to be a global vector compatible with the DM (usually obtained by `DMGetGlobalVector()` or `DMCreateGlobalVector()`).
-
-This approach is not as efficient as setting values directly with `DMStagVecGetArray()`, which is recommended for matrix-free operators.
-For assembling systems, where overhead may be less important than convenience, this routine could be helpful in assembling a righthand side and a matrix (using `DMStagMatSetValuesStencil()`).
-
-Level: advanced
-
-See also: 
-=== 
-`DMSTAG`, `Vec`, `DMStagStencil`, `DMStagStencilLocation`, `DMStagVecGetValuesStencil()`, `DMStagMatSetValuesStencil()`, `DMCreateGlobalVector()`, `DMGetLocalVector()`, `DMStagVecGetArray()`
+See also: `DMSTAG`, `Vec`, `DMStagStencil`, `DMStagStencilLocation`, `DMStagVecGetValuesStencil()`, `DMStagMatSetValuesStencil()`, `DMCreateGlobalVector()`, `DMGetLocalVector()`, `DMStagVecGetArray()`
 
 # External Links
 $(_doc_external("DMStag/DMStagVecSetValuesStencil"))
@@ -45976,7 +44528,7 @@ end
 end 
 
 """
-	pda::PetscDM,pdavec::PetscVec = DMStagVecSplitToDMDA(petsclib::PetscLibType,dm::AbstractPetscDM, vec::AbstractPetscVec, loc::DMStagStencilLocation, c::PetscInt) 
+	pda::PetscDM,pdavec::PetscVec = DMStagVecSplitToDMDA(petsclib::PetscLibType, dm::AbstractPetscDM, vec::AbstractPetscVec, loc::DMStagStencilLocation, c::PetscInt) 
 create a `DMDA` and `Vec` from a subgrid of a `DMSTAG` and its `Vec`
 
 Collective
@@ -45993,16 +44545,7 @@ Output Parameters:
 
 Level: advanced
 
-Notes:
-If a `c` value of `-k` is provided, the first `k` DOF for that position are extracted,
-padding with zero values if needed. If a non-negative value is provided, a single
-DOF is extracted.
-
-The caller is responsible for destroying the created `DMDA` and `Vec`.
-
-See also: 
-=== 
-`DMSTAG`, `DMDA`, `DMStagStencilLocation`, `DM`, `Vec`, `DMStagMigrateVec()`, `DMStagCreateCompatibleDMStag()`
+See also: `DMSTAG`, `DMDA`, `DMStagStencilLocation`, `DM`, `Vec`, `DMStagMigrateVec()`, `DMStagCreateCompatibleDMStag()`
 
 # External Links
 $(_doc_external("DMStag/DMStagVecSplitToDMDA"))
@@ -46029,7 +44572,7 @@ end
 end 
 
 """
-	DMSubDomainHookAdd(petsclib::PetscLibType,glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
+	DMSubDomainHookAdd(petsclib::PetscLibType, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
 adds a callback to be run when restricting a problem to subdomain `DM`s with `DMCreateDomainDecomposition()`
 
 Logically Collective; No Fortran Support
@@ -46054,20 +44597,7 @@ Calling sequence of `restricthook`:
 
 Level: advanced
 
-Notes:
-This function can be used if auxiliary data needs to be set up on subdomain `DM`s.
-
-If this function is called multiple times, the hooks will be run in the order they are added.
-
-In order to compose with nonlinear preconditioning without duplicating storage, the hook should be implemented to
-extract the global information from its context (instead of from the `SNES`).
-
-Developer Note:
-It is unclear what "block solve" means within the definition of `restricthook`
-
-See also: 
-=== 
-`DM`, `DMSubDomainHookRemove()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`, `DMCreateDomainDecomposition()`
+See also: `DM`, `DMSubDomainHookRemove()`, `DMRefineHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`, `DMCreateDomainDecomposition()`
 
 # External Links
 $(_doc_external("DM/DMSubDomainHookAdd"))
@@ -46090,7 +44620,7 @@ end
 end 
 
 """
-	DMSubDomainHookRemove(petsclib::PetscLibType,glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
+	DMSubDomainHookRemove(petsclib::PetscLibType, glob::AbstractPetscDM, ddhook::external, restricthook::external, ctx::Ptr{Cvoid}) 
 remove a callback from the list to be run when restricting a problem to subdomain `DM`s with `DMCreateDomainDecomposition()`
 
 Logically Collective; No Fortran Support
@@ -46115,9 +44645,7 @@ Calling sequence of `restricthook`:
 
 Level: advanced
 
-See also: 
-=== 
-`DM`, `DMSubDomainHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`,
+See also: `DM`, `DMSubDomainHookAdd()`, `SNESFASGetInterpolation()`, `SNESFASGetInjection()`, `PetscObjectCompose()`, `PetscContainerCreate()`,
 `DMCreateDomainDecomposition()`
 
 # External Links
@@ -46141,8 +44669,8 @@ end
 end 
 
 """
-	DMSubDomainRestrict(petsclib::PetscLibType,glob::AbstractPetscDM, oscatter::VecScatter, gscatter::VecScatter, subdm::AbstractPetscDM) 
-restricts user
+	DMSubDomainRestrict(petsclib::PetscLibType, glob::AbstractPetscDM, oscatter::VecScatter, gscatter::VecScatter, subdm::AbstractPetscDM) 
+restricts user-defined problem data to a subdomain `DM` by running hooks registered by `DMSubDomainHookAdd()`
 
 Collective if any hooks are
 
@@ -46154,9 +44682,7 @@ Input Parameters:
 
 Level: developer
 
-See also: 
-=== 
-`DM`, `DMCoarsenHookAdd()`, `MatRestrict()`, `DMCreateDomainDecomposition()`
+See also: `DM`, `DMCoarsenHookAdd()`, `MatRestrict()`, `DMCreateDomainDecomposition()`
 
 # External Links
 $(_doc_external("DM/DMSubDomainRestrict"))
@@ -46179,7 +44705,7 @@ end
 end 
 
 """
-	DMSwarmAddCellDM(petsclib::PetscLibType,sw::AbstractPetscDM, celldm::DMSwarmCellDM) 
+	DMSwarmAddCellDM(petsclib::PetscLibType, sw::AbstractPetscDM, celldm::DMSwarmCellDM) 
 Adds a cell `DM` to the `DMSWARM`
 
 Collective
@@ -46190,7 +44716,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetType()`, `DMSwarmPushCellDM()`, `DMSwarmSetCellDM()`, `DMSwarmMigrate()`
+See also: `DM`, `DMSWARM`, `DMSwarmSetType()`, `DMSwarmPushCellDM()`, `DMSwarmSetCellDM()`, `DMSwarmMigrate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmAddCellDM"))
@@ -46213,7 +44739,7 @@ end
 end 
 
 """
-	DMSwarmAddNPoints(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt) 
+	DMSwarmAddNPoints(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt) 
 Add space for a number of new points in the `DMSWARM`
 
 Not Collective
@@ -46224,7 +44750,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmAddPoint()`
+See also: `DM`, `DMSWARM`, `DMSwarmAddPoint()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmAddNPoints"))
@@ -46247,7 +44773,7 @@ end
 end 
 
 """
-	DMSwarmAddPoint(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSwarmAddPoint(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Add space for one new point in the `DMSWARM`
 
 Not Collective
@@ -46257,7 +44783,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmAddNPoints()`
+See also: `DM`, `DMSWARM`, `DMSwarmAddNPoints()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmAddPoint"))
@@ -46280,7 +44806,7 @@ end
 end 
 
 """
-	DMSwarmCollectViewCreate(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSwarmCollectViewCreate(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Applies a collection method and gathers points
 in neighbour ranks into the `DMSWARM`
 
@@ -46291,7 +44817,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSWARM`, `DMSwarmCollectViewDestroy()`, `DMSwarmSetCollectType()`
+See also: `DM`, `DMSWARM`, `DMSwarmCollectViewDestroy()`, `DMSwarmSetCollectType()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCollectViewCreate"))
@@ -46314,7 +44840,7 @@ end
 end 
 
 """
-	DMSwarmCollectViewDestroy(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSwarmCollectViewDestroy(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Resets the `DMSWARM` to the size prior to calling `DMSwarmCollectViewCreate()`
 
 Collective
@@ -46322,7 +44848,7 @@ Collective
 Input Parameters:
 - `dm` - the `DMSWARM`
 
--seealso: `DM`, `DMSWARM`, `DMSwarmCollectViewCreate()`, `DMSwarmSetCollectType()`
+See also: `DM`, `DMSWARM`, `DMSwarmCollectViewCreate()`, `DMSwarmSetCollectType()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCollectViewDestroy"))
@@ -46345,7 +44871,7 @@ end
 end 
 
 """
-	DMSwarmComputeLocalSize(petsclib::PetscLibType,sw::AbstractPetscDM, N::PetscInt, density::Ptr{Cvoid}) 
+	DMSwarmComputeLocalSize(petsclib::PetscLibType, sw::AbstractPetscDM, N::PetscInt, density::Ptr{Cvoid}) 
 Compute the local number and distribution of particles based upon a density function
 
 Not Collective
@@ -46357,7 +44883,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmComputeLocalSizeFromOptions()`
+See also: `DMSWARM`, `DMSwarmComputeLocalSizeFromOptions()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmComputeLocalSize"))
@@ -46380,7 +44906,7 @@ end
 end 
 
 """
-	DMSwarmComputeLocalSizeFromOptions(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	DMSwarmComputeLocalSizeFromOptions(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Compute the local number and distribution of particles based upon a density function determined by options
 
 Not Collective
@@ -46390,7 +44916,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmComputeLocalSize()`
+See also: `DMSWARM`, `DMSwarmComputeLocalSize()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmComputeLocalSizeFromOptions"))
@@ -46413,7 +44939,7 @@ end
 end 
 
 """
-	DMSwarmComputeMoments(petsclib::PetscLibType,sw::AbstractPetscDM, coordinate::String, weight::String, moments::Vector{PetscReal}) 
+	DMSwarmComputeMoments(petsclib::PetscLibType, sw::AbstractPetscDM, coordinate::String, weight::String, moments::Vector{PetscReal}) 
 Compute the first three particle moments for a given field
 
 Noncollective
@@ -46428,7 +44954,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSWARM`, `DMPlexComputeMoments()`
+See also: `DM`, `DMSWARM`, `DMPlexComputeMoments()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmComputeMoments"))
@@ -46451,7 +44977,7 @@ end
 end 
 
 """
-	DMSwarmCopyPoint(petsclib::PetscLibType,dm::AbstractPetscDM, pi::PetscInt, pj::PetscInt) 
+	DMSwarmCopyPoint(petsclib::PetscLibType, dm::AbstractPetscDM, pi::PetscInt, pj::PetscInt) 
 Copy point pj to point pi in the `DMSWARM`
 
 Not Collective
@@ -46463,7 +44989,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRemovePoint()`
+See also: `DM`, `DMSWARM`, `DMSwarmRemovePoint()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCopyPoint"))
@@ -46486,7 +45012,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmCreateGlobalVectorFromField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+	vec::PetscVec = DMSwarmCreateGlobalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) 
 Creates a `Vec` object sharing the array associated with a given field
 
 Collective
@@ -46500,7 +45026,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyGlobalVectorFromField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyGlobalVectorFromField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateGlobalVectorFromField"))
@@ -46525,7 +45051,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmCreateGlobalVectorFromFields(petsclib::PetscLibType,dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
+	vec::PetscVec = DMSwarmCreateGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
 Creates a `Vec` object sharing the array associated with a given field set
 
 Collective
@@ -46540,7 +45066,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyGlobalVectorFromFields()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyGlobalVectorFromFields()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateGlobalVectorFromFields"))
@@ -46566,7 +45092,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmCreateLocalVectorFromField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+	vec::PetscVec = DMSwarmCreateLocalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) 
 Creates a `Vec` object sharing the array associated with a given field
 
 Collective
@@ -46580,7 +45106,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyLocalVectorFromField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyLocalVectorFromField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateLocalVectorFromField"))
@@ -46605,7 +45131,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmCreateLocalVectorFromFields(petsclib::PetscLibType,dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
+	vec::PetscVec = DMSwarmCreateLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
 Creates a `Vec` object sharing the array associated with a given field set
 
 Collective
@@ -46620,7 +45146,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyLocalVectorFromField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmDestroyLocalVectorFromField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateLocalVectorFromFields"))
@@ -46646,8 +45172,8 @@ end
 end 
 
 """
-	mass::PetscMat = DMSwarmCreateMassMatrixSquare(petsclib::PetscLibType,dmCoarse::AbstractPetscDM, dmFine::AbstractPetscDM) 
-Creates the block
+	mass::PetscMat = DMSwarmCreateMassMatrixSquare(petsclib::PetscLibType, dmCoarse::AbstractPetscDM, dmFine::AbstractPetscDM) 
+Creates the block-diagonal of the square, M^T_p M_p, of the particle mass matrix M_p
 
 Collective
 
@@ -46660,7 +45186,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSWARM`, `DMCreateMassMatrix()`
+See also: `DM`, `DMSWARM`, `DMCreateMassMatrix()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreateMassMatrixSquare"))
@@ -46685,7 +45211,7 @@ end
 end 
 
 """
-	ncells::PetscInt,count::Ptr{PetscInt} = DMSwarmCreatePointPerCellCount(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	ncells::PetscInt,count::Ptr{PetscInt} = DMSwarmCreatePointPerCellCount(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Count the number of points within all cells in the cell DM
 
 Not Collective
@@ -46699,7 +45225,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmCreatePointPerCellCount"))
@@ -46726,7 +45252,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmDestroyGlobalVectorFromField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+	vec::PetscVec = DMSwarmDestroyGlobalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) 
 Destroys the `Vec` object which share the array associated with a given field
 
 Collective
@@ -46740,7 +45266,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateGlobalVectorFromField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateGlobalVectorFromField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyGlobalVectorFromField"))
@@ -46765,7 +45291,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmDestroyGlobalVectorFromFields(petsclib::PetscLibType,dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
+	vec::PetscVec = DMSwarmDestroyGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
 Destroys the `Vec` object which share the array associated with a given field set
 
 Collective
@@ -46780,7 +45306,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateGlobalVectorFromField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateGlobalVectorFromField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyGlobalVectorFromFields"))
@@ -46806,7 +45332,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmDestroyLocalVectorFromField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+	vec::PetscVec = DMSwarmDestroyLocalVectorFromField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) 
 Destroys the `Vec` object which share the array associated with a given field
 
 Collective
@@ -46820,7 +45346,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateLocalVectorFromField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateLocalVectorFromField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyLocalVectorFromField"))
@@ -46845,7 +45371,7 @@ end
 end 
 
 """
-	vec::PetscVec = DMSwarmDestroyLocalVectorFromFields(petsclib::PetscLibType,dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
+	vec::PetscVec = DMSwarmDestroyLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
 Destroys the `Vec` object which share the array associated with a given field set
 
 Collective
@@ -46860,7 +45386,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateLocalVectorFromFields()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmCreateLocalVectorFromFields()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDestroyLocalVectorFromFields"))
@@ -46886,7 +45412,7 @@ end
 end 
 
 """
-	nsw::PetscDM = DMSwarmDuplicate(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	nsw::PetscDM = DMSwarmDuplicate(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Creates a new `DMSWARM` with the same fields and cell `DM`s but no particles
 
 Collective
@@ -46899,7 +45425,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmCreate()`, `DMClone()`
+See also: `DM`, `DMSWARM`, `DMSwarmCreate()`, `DMClone()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmDuplicate"))
@@ -46924,7 +45450,7 @@ end
 end 
 
 """
-	DMSwarmFinalizeFieldRegister(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSwarmFinalizeFieldRegister(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Finalizes the registration of fields to a `DMSWARM`
 
 Collective
@@ -46934,7 +45460,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmInitializeFieldRegister()`, `DMSwarmRegisterPetscDatatypeField()`,
+See also: `DM`, `DMSWARM`, `DMSwarmInitializeFieldRegister()`, `DMSwarmRegisterPetscDatatypeField()`,
 `DMSwarmRegisterUserStructField()`, `DMSwarmRegisterUserDatatypeField()`
 
 # External Links
@@ -46958,7 +45484,7 @@ end
 end 
 
 """
-	dm::PetscDM = DMSwarmGetCellDM(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	dm::PetscDM = DMSwarmGetCellDM(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Fetches the active cell `DM`
 
 Collective
@@ -46971,7 +45497,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`
+See also: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDM"))
@@ -46996,7 +45522,7 @@ end
 end 
 
 """
-	celldm::DMSwarmCellDM = DMSwarmGetCellDMActive(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	celldm::DMSwarmCellDM = DMSwarmGetCellDMActive(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Returns the active cell `DM` for a `DMSWARM`
 
 Collective
@@ -47009,7 +45535,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmCellDM`, `DMSwarmSetType()`, `DMSwarmAddCellDM()`, `DMSwarmSetCellDM()`, `DMSwarmMigrate()`
+See also: `DM`, `DMSWARM`, `DMSwarmCellDM`, `DMSwarmSetType()`, `DMSwarmAddCellDM()`, `DMSwarmSetCellDM()`, `DMSwarmMigrate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDMActive"))
@@ -47034,7 +45560,7 @@ end
 end 
 
 """
-	celldm::DMSwarmCellDM = DMSwarmGetCellDMByName(petsclib::PetscLibType,sw::AbstractPetscDM, name::String) 
+	celldm::DMSwarmCellDM = DMSwarmGetCellDMByName(petsclib::PetscLibType, sw::AbstractPetscDM, name::String) 
 Get a `DMSwarmCellDM` from its name
 
 Not collective
@@ -47048,7 +45574,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`, `DMSwarmGetCellDMNames()`
+See also: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`, `DMSwarmGetCellDMNames()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDMByName"))
@@ -47073,7 +45599,7 @@ end
 end 
 
 """
-	Ndm::PetscInt,celldms::Ptr{Ptr{Cchar}} = DMSwarmGetCellDMNames(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	Ndm::PetscInt,celldms::Ptr{Ptr{Cchar}} = DMSwarmGetCellDMNames(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Get the list of cell `DM` names
 
 Not collective
@@ -47087,7 +45613,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`, `DMSwarmGetCellDMByName()`
+See also: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`, `DMSwarmGetCellDMByName()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellDMNames"))
@@ -47114,7 +45640,7 @@ end
 end 
 
 """
-	DMSwarmGetCellSwarm(petsclib::PetscLibType,sw::AbstractPetscDM, cellID::PetscInt, cellswarm::AbstractPetscDM) 
+	DMSwarmGetCellSwarm(petsclib::PetscLibType, sw::AbstractPetscDM, cellID::PetscInt, cellswarm::AbstractPetscDM) 
 Extracts a single cell from the `DMSWARM` object, returns it as a single cell `DMSWARM`.
 The cell `DM` is filtered for fields of that cell, and the filtered `DM` is used as the cell `DM` of the new swarm object.
 
@@ -47127,7 +45653,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRestoreCellSwarm()`
+See also: `DM`, `DMSWARM`, `DMSwarmRestoreCellSwarm()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCellSwarm"))
@@ -47150,7 +45676,7 @@ end
 end 
 
 """
-	coordFunc::Ptr{Cvoid} = DMSwarmGetCoordinateFunction(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	coordFunc::Ptr{Cvoid} = DMSwarmGetCoordinateFunction(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Get the function setting initial particle positions, if it exists
 
 Not Collective
@@ -47163,7 +45689,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMSWARM`, `DMSwarmSetCoordinateFunction()`, `DMSwarmGetVelocityFunction()`, `DMSwarmInitializeCoordinates()`, `PetscSimplePointFn`
+See also: `DMSWARM`, `DMSwarmSetCoordinateFunction()`, `DMSwarmGetVelocityFunction()`, `DMSwarmInitializeCoordinates()`, `PetscSimplePointFn`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetCoordinateFunction"))
@@ -47188,7 +45714,7 @@ end
 end 
 
 """
-	blocksize::PetscInt,type::PetscDataType,data::Ptr{Cvoid} = DMSwarmGetField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+	blocksize::PetscInt,type::PetscDataType,data::Ptr{Cvoid} = DMSwarmGetField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) 
 Get access to the underlying array storing all entries associated with a registered field
 
 Not Collective, No Fortran Support
@@ -47204,7 +45730,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRestoreField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRestoreField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetField"))
@@ -47233,7 +45759,7 @@ end
 end 
 
 """
-	blocksize::PetscInt,type::PetscDataType = DMSwarmGetFieldInfo(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+	blocksize::PetscInt,type::PetscDataType = DMSwarmGetFieldInfo(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) 
 Return the block size and data type of a registered `DMSWARM` field without accessing its data.
 
 Not Collective
@@ -47248,7 +45774,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMSWARM`, `DMSwarmGetField()`, `DMSwarmRestoreField()`, `DMSwarmRegisterPetscDatatypeField()`
+See also: `DM`, `DMSWARM`, `DMSwarmGetField()`, `DMSwarmRestoreField()`, `DMSwarmRegisterPetscDatatypeField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetFieldInfo"))
@@ -47275,7 +45801,7 @@ end
 end 
 
 """
-	nlocal::PetscInt = DMSwarmGetLocalSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	nlocal::PetscInt = DMSwarmGetLocalSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieves the local length of fields registered
 
 Not Collective
@@ -47288,7 +45814,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmGetSize()`, `DMSwarmSetLocalSizes()`
+See also: `DM`, `DMSWARM`, `DMSwarmGetSize()`, `DMSwarmSetLocalSizes()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetLocalSize"))
@@ -47313,7 +45839,7 @@ end
 end 
 
 """
-	mtype::DMSwarmMigrateType = DMSwarmGetMigrateType(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	mtype::DMSwarmMigrateType = DMSwarmGetMigrateType(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Get the style of point migration
 
 Logically Collective
@@ -47326,7 +45852,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DM`, `DMSWARM`, `DMSwarmMigrateType`, `DMSwarmMigrate()`
+See also: `DM`, `DMSWARM`, `DMSwarmMigrateType`, `DMSwarmMigrate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetMigrateType"))
@@ -47351,7 +45877,7 @@ end
 end 
 
 """
-	Ns::PetscInt = DMSwarmGetNumSpecies(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	Ns::PetscInt = DMSwarmGetNumSpecies(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Get the number of particle species
 
 Not Collective
@@ -47364,7 +45890,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `DMSWARM`, `DMSwarmSetNumSpecies()`, `DMSwarmSetType()`, `DMSwarmType`
+See also: `DMSWARM`, `DMSwarmSetNumSpecies()`, `DMSwarmSetType()`, `DMSwarmType`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetNumSpecies"))
@@ -47389,7 +45915,7 @@ end
 end 
 
 """
-	n::PetscInt = DMSwarmGetSize(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	n::PetscInt = DMSwarmGetSize(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Retrieves the total length of fields registered
 
 Collective
@@ -47402,7 +45928,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmGetLocalSize()`, `DMSwarmSetLocalSizes()`
+See also: `DM`, `DMSWARM`, `DMSwarmGetLocalSize()`, `DMSwarmSetLocalSizes()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetSize"))
@@ -47427,7 +45953,7 @@ end
 end 
 
 """
-	stype::DMSwarmType = DMSwarmGetType(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	stype::DMSwarmType = DMSwarmGetType(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Get particular flavor of `DMSWARM`
 
 Collective
@@ -47440,7 +45966,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetMigrateType()`, `DMSwarmSetCollectType()`, `DMSwarmType`, `DMSWARM_PIC`, `DMSWARM_BASIC`
+See also: `DM`, `DMSWARM`, `DMSwarmSetMigrateType()`, `DMSwarmSetCollectType()`, `DMSwarmType`, `DMSWARM_PIC`, `DMSWARM_BASIC`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetType"))
@@ -47465,7 +45991,7 @@ end
 end 
 
 """
-	velFunc::Ptr{Cvoid} = DMSwarmGetVelocityFunction(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	velFunc::Ptr{Cvoid} = DMSwarmGetVelocityFunction(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Get the function setting initial particle velocities, if it exists
 
 Not Collective
@@ -47478,7 +46004,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `DMSWARM`, `DMSwarmSetVelocityFunction()`, `DMSwarmGetCoordinateFunction()`, `DMSwarmInitializeVelocities()`, `PetscSimplePointFn`
+See also: `DMSWARM`, `DMSwarmSetVelocityFunction()`, `DMSwarmGetCoordinateFunction()`, `DMSwarmInitializeVelocities()`, `PetscSimplePointFn`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetVelocityFunction"))
@@ -47503,7 +46029,7 @@ end
 end 
 
 """
-	DMSwarmInitializeCoordinates(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	DMSwarmInitializeCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Determine the initial coordinates of particles for a PIC method
 
 Not Collective
@@ -47513,7 +46039,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmComputeLocalSize()`, `DMSwarmInitializeVelocities()`
+See also: `DMSWARM`, `DMSwarmComputeLocalSize()`, `DMSwarmInitializeVelocities()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInitializeCoordinates"))
@@ -47536,7 +46062,7 @@ end
 end 
 
 """
-	DMSwarmInitializeFieldRegister(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSwarmInitializeFieldRegister(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Initiates the registration of fields to a `DMSWARM`
 
 Collective
@@ -47546,7 +46072,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmFinalizeFieldRegister()`, `DMSwarmRegisterPetscDatatypeField()`,
+See also: `DM`, `DMSWARM`, `DMSwarmFinalizeFieldRegister()`, `DMSwarmRegisterPetscDatatypeField()`,
 `DMSwarmRegisterUserStructField()`, `DMSwarmRegisterUserDatatypeField()`
 
 # External Links
@@ -47570,7 +46096,7 @@ end
 end 
 
 """
-	DMSwarmInitializeVelocities(petsclib::PetscLibType,sw::AbstractPetscDM, sampler::Ptr{Cvoid}, v0::Vector{PetscReal}) 
+	DMSwarmInitializeVelocities(petsclib::PetscLibType, sw::AbstractPetscDM, sampler::Ptr{Cvoid}, v0::Vector{PetscReal}) 
 Set the initial velocities of particles using a distribution.
 
 Collective
@@ -47582,7 +46108,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmComputeLocalSize()`, `DMSwarmInitializeCoordinates()`, `DMSwarmInitializeVelocitiesFromOptions()`
+See also: `DMSWARM`, `DMSwarmComputeLocalSize()`, `DMSwarmInitializeCoordinates()`, `DMSwarmInitializeVelocitiesFromOptions()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInitializeVelocities"))
@@ -47605,7 +46131,7 @@ end
 end 
 
 """
-	DMSwarmInitializeVelocitiesFromOptions(petsclib::PetscLibType,sw::AbstractPetscDM, v0::Vector{PetscReal}) 
+	DMSwarmInitializeVelocitiesFromOptions(petsclib::PetscLibType, sw::AbstractPetscDM, v0::Vector{PetscReal}) 
 Set the initial velocities of particles using a distribution determined from options.
 
 Collective
@@ -47616,7 +46142,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DMSWARM`, `DMSwarmComputeLocalSize()`, `DMSwarmInitializeCoordinates()`, `DMSwarmInitializeVelocities()`
+See also: `DMSWARM`, `DMSwarmComputeLocalSize()`, `DMSwarmInitializeCoordinates()`, `DMSwarmInitializeVelocities()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInitializeVelocitiesFromOptions"))
@@ -47639,7 +46165,7 @@ end
 end 
 
 """
-	DMSwarmInsertPointsUsingCellDM(petsclib::PetscLibType,dm::AbstractPetscDM, layout_type::DMSwarmPICLayoutType, fill_param::PetscInt) 
+	DMSwarmInsertPointsUsingCellDM(petsclib::PetscLibType, dm::AbstractPetscDM, layout_type::DMSwarmPICLayoutType, fill_param::PetscInt) 
 Insert point coordinates within each cell
 
 Not Collective
@@ -47651,7 +46177,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMSWARM`, `DMSwarmPICLayoutType`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
+See also: `DMSWARM`, `DMSwarmPICLayoutType`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmInsertPointsUsingCellDM"))
@@ -47674,8 +46200,8 @@ end
 end 
 
 """
-	DMSwarmMigrate(petsclib::PetscLibType,dm::AbstractPetscDM, remove_sent_points::PetscBool) 
-Relocates points defined in the `DMSWARM` to other MPI
+	DMSwarmMigrate(petsclib::PetscLibType, dm::AbstractPetscDM, remove_sent_points::PetscBool) 
+Relocates points defined in the `DMSWARM` to other MPI-ranks
 
 Collective
 
@@ -47685,7 +46211,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetMigrateType()`
+See also: `DM`, `DMSWARM`, `DMSwarmSetMigrateType()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmMigrate"))
@@ -47708,7 +46234,7 @@ end
 end 
 
 """
-	DMSwarmProjectFields(petsclib::PetscLibType,sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) 
+	DMSwarmProjectFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) 
 Project a set of swarm fields onto another `DM`
 
 Collective
@@ -47723,26 +46249,7 @@ Input Parameters:
 
 Level: beginner
 
-Notes:
-Currently, there are two available projection methods. The first is conservative projection, used for a `DMPLEX` cell `DM`.
-The second is the averaging which is used for a `DMDA` cell `DM`
-
-
-\\phi_i = \\sum_{p=0}^{np} N_i(x_p) \\phi_p dJ / \\sum_{p=0}^{np} N_i(x_p) dJ
-
-
-where \\phi_p  is the swarm field at point p, N_i() is the cell `DM` basis function at vertex i, dJ is the determinant of the cell Jacobian and
-\\phi_i is the projected vertex value of the field \\phi.
-
-The user is responsible for destroying both the array and the individual `Vec` objects.
-
-For the `DMPLEX` case, there is only a single vector, so the field layout in the `DMPLEX` must match the requested fields from the `DMSwarm`.
-
-For averaging projection, nly swarm fields registered with data type of `PETSC_REAL` can be projected onto the cell `DM`, and only swarm fields of block size = 1 can currently be projected.
-
-See also: 
-=== 
-`DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
 
 # External Links
 $(_doc_external("DM/DMSwarmProjectFields"))
@@ -47766,7 +46273,7 @@ end
 end 
 
 """
-	DMSwarmProjectGradientFields(petsclib::PetscLibType,sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) 
+	DMSwarmProjectGradientFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) 
 Project the gradient of continuum fields on a mesh onto particle fields in a `DMSWARM`, or the reverse
 
 Collective
@@ -47781,7 +46288,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMSWARM`, `DMPLEX`, `DMSwarmProjectFields()`, `DMSwarmVectorDefineFields()`, `DMSwarmCreateGlobalVectorFromField()`
+See also: `DMSWARM`, `DMPLEX`, `DMSwarmProjectFields()`, `DMSwarmVectorDefineFields()`, `DMSwarmCreateGlobalVectorFromField()`
 
 # External Links
 $(_doc_external("DM/DMSwarmProjectGradientFields"))
@@ -47805,7 +46312,7 @@ end
 end 
 
 """
-	DMSwarmRegisterPetscDatatypeField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String, blocksize::PetscInt, type::PetscDataType) 
+	DMSwarmRegisterPetscDatatypeField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, blocksize::PetscInt, type::PetscDataType) 
 Register a field to a `DMSWARM` with a native PETSc data type
 
 Collective
@@ -47818,7 +46325,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterUserStructField()`, `DMSwarmRegisterUserDatatypeField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterUserStructField()`, `DMSwarmRegisterUserDatatypeField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRegisterPetscDatatypeField"))
@@ -47841,7 +46348,7 @@ end
 end 
 
 """
-	DMSwarmRegisterUserDatatypeField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String, size::Csize_t, blocksize::PetscInt) 
+	DMSwarmRegisterUserDatatypeField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, size::Csize_t, blocksize::PetscInt) 
 Register a user defined data type to a `DMSWARM`
 
 Collective
@@ -47854,7 +46361,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmRegisterUserStructField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmRegisterUserStructField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRegisterUserDatatypeField"))
@@ -47877,7 +46384,7 @@ end
 end 
 
 """
-	DMSwarmRegisterUserStructField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String, size::Csize_t) 
+	DMSwarmRegisterUserStructField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, size::Csize_t) 
 Register a user defined struct to a `DMSWARM`
 
 Collective
@@ -47889,7 +46396,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmRegisterUserDatatypeField()`
+See also: `DM`, `DMSWARM`, `DMSwarmRegisterPetscDatatypeField()`, `DMSwarmRegisterUserDatatypeField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRegisterUserStructField"))
@@ -47912,7 +46419,7 @@ end
 end 
 
 """
-	DMSwarmRemap(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	DMSwarmRemap(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Project the swarm fields onto a new set of particles
 
 Collective
@@ -47922,9 +46429,7 @@ Input Parameter:
 
 Level: beginner
 
-See also: 
-=== 
-`DMSWARM`, `DMSwarmMigrate()`, `DMSwarmCrate()`
+See also: `DMSWARM`, `DMSwarmMigrate()`, `DMSwarmCrate()`
 
 # External Links
 $(_doc_external("DM/DMSwarmRemap"))
@@ -47947,7 +46452,7 @@ end
 end 
 
 """
-	DMSwarmRemovePoint(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMSwarmRemovePoint(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Remove the last point from the `DMSWARM`
 
 Not Collective
@@ -47957,7 +46462,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRemovePointAtIndex()`
+See also: `DM`, `DMSWARM`, `DMSwarmRemovePointAtIndex()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRemovePoint"))
@@ -47980,7 +46485,7 @@ end
 end 
 
 """
-	DMSwarmRemovePointAtIndex(petsclib::PetscLibType,dm::AbstractPetscDM, idx::PetscInt) 
+	DMSwarmRemovePointAtIndex(petsclib::PetscLibType, dm::AbstractPetscDM, idx::PetscInt) 
 Removes a specific point from the `DMSWARM`
 
 Not Collective
@@ -47991,7 +46496,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmRemovePoint()`
+See also: `DM`, `DMSWARM`, `DMSwarmRemovePoint()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRemovePointAtIndex"))
@@ -48014,7 +46519,7 @@ end
 end 
 
 """
-	DMSwarmReplace(petsclib::PetscLibType,dm::AbstractPetscDM, ndm::AbstractPetscDM) 
+	DMSwarmReplace(petsclib::PetscLibType, dm::AbstractPetscDM, ndm::AbstractPetscDM) 
 Replace the internal state of a `DMSWARM` with that of another `DMSWARM`, sharing the underlying particle data and destroying the source `DM`.
 
 Collective
@@ -48025,7 +46530,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DM`, `DMSWARM`, `DMSwarmDuplicate()`, `DMDestroy()`
+See also: `DM`, `DMSWARM`, `DMSwarmDuplicate()`, `DMDestroy()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmReplace"))
@@ -48050,7 +46555,7 @@ end
 end 
 
 """
-	DMSwarmRestoreCellSwarm(petsclib::PetscLibType,sw::AbstractPetscDM, cellID::PetscInt, cellswarm::AbstractPetscDM) 
+	DMSwarmRestoreCellSwarm(petsclib::PetscLibType, sw::AbstractPetscDM, cellID::PetscInt, cellswarm::AbstractPetscDM) 
 Restores a `DMSWARM` object obtained with `DMSwarmGetCellSwarm()`. All fields are copied back into the parent swarm.
 
 Noncollective
@@ -48062,7 +46567,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmGetCellSwarm()`
+See also: `DM`, `DMSWARM`, `DMSwarmGetCellSwarm()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRestoreCellSwarm"))
@@ -48085,7 +46590,7 @@ end
 end 
 
 """
-	data::Ptr{Cvoid} = DMSwarmRestoreField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String, blocksize::PetscInt, type::PetscDataType) 
+	data::Ptr{Cvoid} = DMSwarmRestoreField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String, blocksize::PetscInt, type::PetscDataType) 
 Restore access to the underlying array storing all entries associated with a registered field
 
 Not Collective
@@ -48101,7 +46606,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmGetField()`
+See also: `DM`, `DMSWARM`, `DMSwarmGetField()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRestoreField"))
@@ -48128,7 +46633,7 @@ end
 end 
 
 """
-	DMSwarmSetCellDM(petsclib::PetscLibType,sw::AbstractPetscDM, dm::AbstractPetscDM) 
+	DMSwarmSetCellDM(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM) 
 Attaches a `DM` to a `DMSWARM`
 
 Collective
@@ -48139,7 +46644,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetType()`, `DMSwarmGetCellDM()`, `DMSwarmMigrate()`
+See also: `DM`, `DMSWARM`, `DMSwarmSetType()`, `DMSwarmGetCellDM()`, `DMSwarmMigrate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetCellDM"))
@@ -48162,7 +46667,7 @@ end
 end 
 
 """
-	DMSwarmSetCellDMActive(petsclib::PetscLibType,sw::AbstractPetscDM, name::String) 
+	DMSwarmSetCellDMActive(petsclib::PetscLibType, sw::AbstractPetscDM, name::String) 
 Activates a cell `DM` for a `DMSWARM`
 
 Collective
@@ -48173,7 +46678,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmCellDM`, `DMSwarmSetType()`, `DMSwarmAddCellDM()`, `DMSwarmSetCellDM()`, `DMSwarmMigrate()`
+See also: `DM`, `DMSWARM`, `DMSwarmCellDM`, `DMSwarmSetType()`, `DMSwarmAddCellDM()`, `DMSwarmSetCellDM()`, `DMSwarmMigrate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetCellDMActive"))
@@ -48196,7 +46701,7 @@ end
 end 
 
 """
-	DMSwarmSetCoordinateFunction(petsclib::PetscLibType,sw::AbstractPetscDM, coordFunc::Ptr{Cvoid}) 
+	DMSwarmSetCoordinateFunction(petsclib::PetscLibType, sw::AbstractPetscDM, coordFunc::Ptr{Cvoid}) 
 Set the function setting initial particle positions
 
 Not Collective
@@ -48207,7 +46712,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMSWARM`, `DMSwarmGetCoordinateFunction()`, `DMSwarmSetVelocityFunction()`, `DMSwarmInitializeCoordinates()`, `PetscSimplePointFn`
+See also: `DMSWARM`, `DMSwarmGetCoordinateFunction()`, `DMSwarmSetVelocityFunction()`, `DMSwarmInitializeCoordinates()`, `PetscSimplePointFn`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetCoordinateFunction"))
@@ -48230,7 +46735,7 @@ end
 end 
 
 """
-	DMSwarmSetLocalSizes(petsclib::PetscLibType,sw::AbstractPetscDM, nlocal::PetscInt, buffer::PetscInt) 
+	DMSwarmSetLocalSizes(petsclib::PetscLibType, sw::AbstractPetscDM, nlocal::PetscInt, buffer::PetscInt) 
 Sets the length of all registered fields on the `DMSWARM`
 
 Not Collective
@@ -48242,7 +46747,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmGetLocalSize()`
+See also: `DM`, `DMSWARM`, `DMSwarmGetLocalSize()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetLocalSizes"))
@@ -48265,7 +46770,7 @@ end
 end 
 
 """
-	DMSwarmSetMigrateType(petsclib::PetscLibType,dm::AbstractPetscDM, mtype::DMSwarmMigrateType) 
+	DMSwarmSetMigrateType(petsclib::PetscLibType, dm::AbstractPetscDM, mtype::DMSwarmMigrateType) 
 Set the style of point migration
 
 Logically Collective
@@ -48276,7 +46781,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMSWARM`, `DMSwarmMigrateType`, `DMSwarmGetMigrateType()`, `DMSwarmMigrate()`
+See also: `DM`, `DMSWARM`, `DMSwarmMigrateType`, `DMSwarmGetMigrateType()`, `DMSwarmMigrate()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetMigrateType"))
@@ -48299,7 +46804,7 @@ end
 end 
 
 """
-	DMSwarmSetNumSpecies(petsclib::PetscLibType,sw::AbstractPetscDM, Ns::PetscInt) 
+	DMSwarmSetNumSpecies(petsclib::PetscLibType, sw::AbstractPetscDM, Ns::PetscInt) 
 Set the number of particle species
 
 Not Collective
@@ -48310,7 +46815,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMSWARM`, `DMSwarmGetNumSpecies()`, `DMSwarmSetType()`, `DMSwarmType`
+See also: `DMSWARM`, `DMSwarmGetNumSpecies()`, `DMSwarmSetType()`, `DMSwarmType`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetNumSpecies"))
@@ -48333,7 +46838,7 @@ end
 end 
 
 """
-	DMSwarmSetPointCoordinates(petsclib::PetscLibType,sw::AbstractPetscDM, npoints::PetscInt, coor::Vector{PetscReal}, redundant::PetscBool, mode::InsertMode) 
+	DMSwarmSetPointCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM, npoints::PetscInt, coor::Vector{PetscReal}, redundant::PetscBool, mode::InsertMode) 
 Set point coordinates in a `DMSWARM` from a user defined list
 
 Collective
@@ -48347,7 +46852,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`, `DMSwarmSetPointsUniformCoordinates()`
+See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`, `DMSwarmSetPointsUniformCoordinates()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointCoordinates"))
@@ -48370,7 +46875,7 @@ end
 end 
 
 """
-	DMSwarmSetPointCoordinatesCellwise(petsclib::PetscLibType,dm::AbstractPetscDM, npoints::PetscInt, xi::Vector{PetscReal}) 
+	DMSwarmSetPointCoordinatesCellwise(petsclib::PetscLibType, dm::AbstractPetscDM, npoints::PetscInt, xi::Vector{PetscReal}) 
 Insert point coordinates (defined over the reference cell) within each cell
 
 Not Collective
@@ -48382,7 +46887,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DMSWARM`, `DMSwarmSetCellDM()`, `DMSwarmInsertPointsUsingCellDM()`
+See also: `DMSWARM`, `DMSwarmSetCellDM()`, `DMSwarmInsertPointsUsingCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointCoordinatesCellwise"))
@@ -48405,7 +46910,7 @@ end
 end 
 
 """
-	DMSwarmSetPointCoordinatesRandom(petsclib::PetscLibType,dm::AbstractPetscDM, Npc::PetscInt) 
+	DMSwarmSetPointCoordinatesRandom(petsclib::PetscLibType, dm::AbstractPetscDM, Npc::PetscInt) 
 Sets initial coordinates for particles in each cell
 
 Collective
@@ -48416,7 +46921,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`
+See also: `DM`, `DMSWARM`, `DMSwarmSetCellDM()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointCoordinatesRandom"))
@@ -48439,7 +46944,7 @@ end
 end 
 
 """
-	DMSwarmSetPointsUniformCoordinates(petsclib::PetscLibType,sw::AbstractPetscDM, min::Vector{PetscReal}, max::Vector{PetscReal}, npoints::Vector{PetscInt}, mode::InsertMode) 
+	DMSwarmSetPointsUniformCoordinates(petsclib::PetscLibType, sw::AbstractPetscDM, min::Vector{PetscReal}, max::Vector{PetscReal}, npoints::Vector{PetscInt}, mode::InsertMode) 
 Set point coordinates in a `DMSWARM` on a regular (ijk) grid
 
 Collective
@@ -48453,7 +46958,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
+See also: `DM`, `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSetCellDM()`, `DMSwarmType`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetPointsUniformCoordinates"))
@@ -48476,7 +46981,7 @@ end
 end 
 
 """
-	DMSwarmSetType(petsclib::PetscLibType,sw::AbstractPetscDM, stype::DMSwarmType) 
+	DMSwarmSetType(petsclib::PetscLibType, sw::AbstractPetscDM, stype::DMSwarmType) 
 Set particular flavor of `DMSWARM`
 
 Collective
@@ -48487,7 +46992,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `DM`, `DMSWARM`, `DMSwarmSetMigrateType()`, `DMSwarmSetCollectType()`, `DMSwarmType`, `DMSWARM_PIC`, `DMSWARM_BASIC`
+See also: `DM`, `DMSWARM`, `DMSwarmSetMigrateType()`, `DMSwarmSetCollectType()`, `DMSwarmType`, `DMSWARM_PIC`, `DMSWARM_BASIC`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetType"))
@@ -48510,7 +47015,7 @@ end
 end 
 
 """
-	DMSwarmSetVelocityFunction(petsclib::PetscLibType,sw::AbstractPetscDM, velFunc::Ptr{Cvoid}) 
+	DMSwarmSetVelocityFunction(petsclib::PetscLibType, sw::AbstractPetscDM, velFunc::Ptr{Cvoid}) 
 Set the function setting initial particle velocities
 
 Not Collective
@@ -48521,7 +47026,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `DMSWARM`, `DMSwarmGetVelocityFunction()`, `DMSwarmSetCoordinateFunction()`, `DMSwarmInitializeVelocities()`, `PetscSimplePointFn`
+See also: `DMSWARM`, `DMSwarmGetVelocityFunction()`, `DMSwarmSetCoordinateFunction()`, `DMSwarmInitializeVelocities()`, `PetscSimplePointFn`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmSetVelocityFunction"))
@@ -48544,7 +47049,7 @@ end
 end 
 
 """
-	DMSwarmVectorDefineField(petsclib::PetscLibType,dm::AbstractPetscDM, fieldname::String) 
+	DMSwarmVectorDefineField(petsclib::PetscLibType, dm::AbstractPetscDM, fieldname::String) 
 Sets the field from which to define a `Vec` object
 when `DMCreateLocalVector()`, or `DMCreateGlobalVector()` is called
 
@@ -48556,7 +47061,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmVectorDefineFields()`, `DMSwarmVectorGetField()`, `DMSwarmRegisterPetscDatatypeField()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
+See also: `DM`, `DMSWARM`, `DMSwarmVectorDefineFields()`, `DMSwarmVectorGetField()`, `DMSwarmRegisterPetscDatatypeField()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmVectorDefineField"))
@@ -48579,7 +47084,7 @@ end
 end 
 
 """
-	DMSwarmVectorDefineFields(petsclib::PetscLibType,sw::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
+	DMSwarmVectorDefineFields(petsclib::PetscLibType, sw::AbstractPetscDM, Nf::PetscInt, fieldnames::String) 
 Sets the fields from which to define a `Vec` object
 when `DMCreateLocalVector()`, or `DMCreateGlobalVector()` is called
 
@@ -48592,7 +47097,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmVectorDefineField()`, `DMSwarmVectorGetField()`, `DMSwarmRegisterPetscDatatypeField()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
+See also: `DM`, `DMSWARM`, `DMSwarmVectorDefineField()`, `DMSwarmVectorGetField()`, `DMSwarmRegisterPetscDatatypeField()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmVectorDefineFields"))
@@ -48616,7 +47121,7 @@ end
 end 
 
 """
-	Nf::PetscInt,fieldnames::Ptr{Ptr{Cchar}} = DMSwarmVectorGetField(petsclib::PetscLibType,sw::AbstractPetscDM) 
+	Nf::PetscInt,fieldnames::Ptr{Ptr{Cchar}} = DMSwarmVectorGetField(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Gets the fields from which to define a `Vec` object
 when `DMCreateLocalVector()`, or `DMCreateGlobalVector()` is called
 
@@ -48631,7 +47136,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmVectorDefineField()`, `DMSwarmRegisterPetscDatatypeField()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
+See also: `DM`, `DMSWARM`, `DMSwarmVectorDefineField()`, `DMSwarmRegisterPetscDatatypeField()`, `DMCreateGlobalVector()`, `DMCreateLocalVector()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmVectorGetField"))
@@ -48658,7 +47163,7 @@ end
 end 
 
 """
-	DMSwarmViewFieldsXDMF(petsclib::PetscLibType,dm::AbstractPetscDM, filename::String, nfields::PetscInt, field_name_list::String) 
+	DMSwarmViewFieldsXDMF(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String, nfields::PetscInt, field_name_list::String) 
 Write a selection of DMSwarm fields to an XDMF3 file
 
 Collective
@@ -48671,7 +47176,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmViewXDMF()`
+See also: `DM`, `DMSWARM`, `DMSwarmViewXDMF()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmViewFieldsXDMF"))
@@ -48695,7 +47200,7 @@ end
 end 
 
 """
-	DMSwarmViewXDMF(petsclib::PetscLibType,dm::AbstractPetscDM, filename::String) 
+	DMSwarmViewXDMF(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String) 
 Write `DMSWARM` fields to an XDMF3 file
 
 Collective
@@ -48706,7 +47211,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `DM`, `DMSWARM`, `DMSwarmViewFieldsXDMF()`
+See also: `DM`, `DMSWARM`, `DMSwarmViewFieldsXDMF()`
 
 # External Links
 $(_doc_external("DMSwarm/DMSwarmViewXDMF"))
@@ -48729,7 +47234,7 @@ end
 end 
 
 """
-	DMTSCheckFromOptions(petsclib::PetscLibType,ts::AbstractTS, u::AbstractPetscVec) 
+	DMTSCheckFromOptions(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec) 
 Check the residual and Jacobian functions using the exact solution by outputting some diagnostic information based on
 values in the options database
 
@@ -48739,7 +47244,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMTS`
+See also: `DMTS`
 
 # External Links
 $(_doc_external("TS/DMTSCheckFromOptions"))
@@ -48762,7 +47267,7 @@ end
 end 
 
 """
-	isLinear::PetscBool,convRate::PetscReal = DMTSCheckJacobian(petsclib::PetscLibType,ts::AbstractTS, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::PetscReal) 
+	isLinear::PetscBool,convRate::PetscReal = DMTSCheckJacobian(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::PetscReal) 
 Check the Jacobian of the exact solution against the residual using the Taylor Test
 
 Input Parameters:
@@ -48779,7 +47284,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DNTSCheckFromOptions()`, `DMTSCheckResidual()`, `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckResidual()`
+See also: `DNTSCheckFromOptions()`, `DMTSCheckResidual()`, `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckResidual()`
 
 # External Links
 $(_doc_external("TS/DMTSCheckJacobian"))
@@ -48806,7 +47311,7 @@ end
 end 
 
 """
-	residual::PetscReal = DMTSCheckResidual(petsclib::PetscLibType,ts::AbstractTS, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::PetscReal) 
+	residual::PetscReal = DMTSCheckResidual(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, u_t::AbstractPetscVec, tol::PetscReal) 
 Check the residual of the exact solution
 
 Input Parameters:
@@ -48822,7 +47327,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `DM`, `DMTSCheckFromOptions()`, `DMTSCheckJacobian()`, `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckJacobian()`
+See also: `DM`, `DMTSCheckFromOptions()`, `DMTSCheckJacobian()`, `DNSNESCheckFromOptions()`, `DMSNESCheckDiscretization()`, `DMSNESCheckJacobian()`
 
 # External Links
 $(_doc_external("TS/DMTSCheckResidual"))
@@ -48847,7 +47352,7 @@ end
 end 
 
 """
-	DMTSCreateRHSMassMatrix(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMTSCreateRHSMassMatrix(petsclib::PetscLibType, dm::AbstractPetscDM) 
 This creates the mass matrix associated with the given `DM`, and a solver to invert it, and stores them in the `DM` context.
 
 Collective
@@ -48857,7 +47362,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `DM`, `DMTSCreateRHSMassMatrixLumped()`, `DMTSDestroyRHSMassMatrix()`, `DMCreateMassMatrix()`, `DMTS`
+See also: `DM`, `DMTSCreateRHSMassMatrixLumped()`, `DMTSDestroyRHSMassMatrix()`, `DMCreateMassMatrix()`, `DMTS`
 
 # External Links
 $(_doc_external("TS/DMTSCreateRHSMassMatrix"))
@@ -48880,7 +47385,7 @@ end
 end 
 
 """
-	DMTSCreateRHSMassMatrixLumped(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMTSCreateRHSMassMatrixLumped(petsclib::PetscLibType, dm::AbstractPetscDM) 
 This creates the lumped mass matrix associated with the given `DM`, and a solver to invert it, and stores them in the `DM` context.
 
 Collective
@@ -48890,7 +47395,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `DM`, `DMTSCreateRHSMassMatrix()`, `DMTSDestroyRHSMassMatrix()`, `DMCreateMassMatrix()`, `DMTS`
+See also: `DM`, `DMTSCreateRHSMassMatrix()`, `DMTSDestroyRHSMassMatrix()`, `DMCreateMassMatrix()`, `DMTS`
 
 # External Links
 $(_doc_external("TS/DMTSCreateRHSMassMatrixLumped"))
@@ -48913,7 +47418,7 @@ end
 end 
 
 """
-	DMTSDestroyRHSMassMatrix(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	DMTSDestroyRHSMassMatrix(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Destroys the mass matrix and solver stored in the `DM` context, if they exist.
 
 Logically Collective
@@ -48923,7 +47428,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `DM`, `DMTSCreateRHSMassMatrixLumped()`, `DMCreateMassMatrix()`, `DMTS`
+See also: `DM`, `DMTSCreateRHSMassMatrixLumped()`, `DMCreateMassMatrix()`, `DMTS`
 
 # External Links
 $(_doc_external("TS/DMTSDestroyRHSMassMatrix"))
@@ -48946,7 +47451,7 @@ end
 end 
 
 """
-	f::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetForcingFunction(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	f::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetForcingFunction(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `TS` forcing function evaluation function from a `DMTS`
 
 Not Collective
@@ -48960,7 +47465,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TS`, `DM`, `TSSetForcingFunction()`, `TSForcingFn`
+See also: `DMTS`, `TS`, `DM`, `TSSetForcingFunction()`, `TSForcingFn`
 
 # External Links
 $(_doc_external("TS/DMTSGetForcingFunction"))
@@ -48987,7 +47492,7 @@ end
 end 
 
 """
-	fun::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetI2Function(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	fun::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetI2Function(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `TS` implicit residual evaluation function for 2nd order systems from a `DMTS`
 
 Not Collective
@@ -49001,7 +47506,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `DMTSSetI2Function()`, `TSGetI2Function()`
+See also: `DMTS`, `DM`, `TS`, `DMTSSetI2Function()`, `TSGetI2Function()`
 
 # External Links
 $(_doc_external("TS/DMTSGetI2Function"))
@@ -49028,7 +47533,7 @@ end
 end 
 
 """
-	jac::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetI2Jacobian(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	jac::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetI2Jacobian(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `TS` implicit Jacobian evaluation function for 2nd order systems from a `DMTS`
 
 Not Collective
@@ -49042,7 +47547,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `DMTSSetI2Jacobian()`, `TSGetI2Jacobian()`, `TSI2JacobianFn`
+See also: `DMTS`, `DM`, `TS`, `DMTSSetI2Jacobian()`, `TSGetI2Jacobian()`, `TSI2JacobianFn`
 
 # External Links
 $(_doc_external("TS/DMTSGetI2Jacobian"))
@@ -49069,7 +47574,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetIFunction(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetIFunction(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `TS` implicit residual evaluation function from a `DMTS`
 
 Not Collective
@@ -49083,7 +47588,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TS`, `DM`, `DMTSSetIFunction()`, `TSIFunctionFn`
+See also: `DMTS`, `TS`, `DM`, `DMTSSetIFunction()`, `TSIFunctionFn`
 
 # External Links
 $(_doc_external("TS/DMTSGetIFunction"))
@@ -49110,7 +47615,7 @@ end
 end 
 
 """
-	DMTSGetIFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMTSGetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 get the local implicit function evaluation function. This function is called with local vector
 containing the local vector information PLUS ghost point information. It should compute a result for all local
 elements and `DM` will automatically accumulate the overlapping values.
@@ -49134,7 +47639,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_ts), `DM`, `DMTSSetIFunctionLocal()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
+See also: `DM`, `DMTSSetIFunctionLocal()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
 
 # External Links
 $(_doc_external("TS/DMTSGetIFunctionLocal"))
@@ -49157,7 +47662,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetIJacobian(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetIJacobian(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `TS` Jacobian evaluation function from a `DMTS`
 
 Not Collective
@@ -49171,7 +47676,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `DMTSSetIJacobian()`, `TSIJacobianFn`
+See also: `DMTS`, `DM`, `TS`, `DMTSSetIJacobian()`, `TSIJacobianFn`
 
 # External Links
 $(_doc_external("TS/DMTSGetIJacobian"))
@@ -49198,7 +47703,7 @@ end
 end 
 
 """
-	DMTSGetIJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMTSGetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 get a local Jacobian evaluation function
 
 Logically Collective
@@ -49222,7 +47727,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_ts), `DM`, `DMTSSetIJacobianLocal()`, `DMTSSetIFunctionLocal()`, `DMTSSetIJacobian()`, `DMTSSetIFunction()`
+See also: `DM`, `DMTSSetIJacobianLocal()`, `DMTSSetIFunctionLocal()`, `DMTSSetIJacobian()`, `DMTSSetIFunction()`
 
 # External Links
 $(_doc_external("TS/DMTSGetIJacobianLocal"))
@@ -49245,7 +47750,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetRHSFunction(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetRHSFunction(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `TS` explicit residual evaluation function from a `DMTS`
 
 Not Collective
@@ -49259,7 +47764,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `TSRHSFunctionFn`, `TSGetRHSFunction()`
+See also: `DMTS`, `DM`, `TS`, `TSRHSFunctionFn`, `TSGetRHSFunction()`
 
 # External Links
 $(_doc_external("TS/DMTSGetRHSFunction"))
@@ -49286,7 +47791,7 @@ end
 end 
 
 """
-	DMTSGetRHSFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
+	DMTSGetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, noname::Ptr{Cvoid}) 
 get a local rhs function evaluation function. This function is called with local vector
 containing the local vector information PLUS ghost point information. It should compute a result for all local
 elements and `DM` will automatically accumulate the overlapping values.
@@ -49309,7 +47814,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_ts), `DM`, `DMTSSetRHSFunctionLocal()`, `DMTSSetRHSFunction()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
+See also: `DM`, `DMTSSetRHSFunctionLocal()`, `DMTSSetRHSFunction()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
 
 # External Links
 $(_doc_external("TS/DMTSGetRHSFunctionLocal"))
@@ -49332,7 +47837,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetRHSJacobian(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetRHSJacobian(petsclib::PetscLibType, dm::AbstractPetscDM) 
 get `TS` Jacobian evaluation function from a `DMTS`
 
 Not Collective
@@ -49346,7 +47851,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `DMTSSetRHSJacobian()`, `TSRHSJacobianFn`
+See also: `DMTS`, `DM`, `TS`, `DMTSSetRHSJacobian()`, `TSRHSJacobianFn`
 
 # External Links
 $(_doc_external("TS/DMTSGetRHSJacobian"))
@@ -49373,7 +47878,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetSolutionFunction(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetSolutionFunction(petsclib::PetscLibType, dm::AbstractPetscDM) 
 gets the `TS` solution evaluation function from a `DMTS`
 
 Not Collective
@@ -49387,7 +47892,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TS`, `DM`, `DMTSSetSolutionFunction()`, `TSSolutionFn`
+See also: `DMTS`, `TS`, `DM`, `DMTSSetSolutionFunction()`, `TSSolutionFn`
 
 # External Links
 $(_doc_external("TS/DMTSGetSolutionFunction"))
@@ -49414,7 +47919,7 @@ end
 end 
 
 """
-	tvar::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetTransientVariable(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	tvar::Ptr{Cvoid},ctx::Ptr{Cvoid} = DMTSGetTransientVariable(petsclib::PetscLibType, dm::AbstractPetscDM) 
 gets function to transform from state to transient variables set with `DMTSSetTransientVariable()` from a `TSDM`
 
 Logically Collective
@@ -49428,7 +47933,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `DMTSSetTransientVariable()`, `DMTSGetIFunction()`, `DMTSGetIJacobian()`, `TSTransientVariableFn`
+See also: `DMTS`, `DM`, `DMTSSetTransientVariable()`, `DMTSGetIFunction()`, `DMTSGetIJacobian()`, `TSTransientVariableFn`
 
 # External Links
 $(_doc_external("TS/DMTSGetTransientVariable"))
@@ -49455,7 +47960,7 @@ end
 end 
 
 """
-	DMTSSetBoundaryLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMTSSetBoundaryLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set the function for essential boundary data for a local implicit function evaluation.
 
 Logically Collective
@@ -49474,7 +47979,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_ts), `DM`, `TS`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
+See also: `DM`, `TS`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
 
 # External Links
 $(_doc_external("TS/DMTSSetBoundaryLocal"))
@@ -49497,7 +48002,7 @@ end
 end 
 
 """
-	DMTSSetForcingFunction(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetForcingFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` forcing function evaluation function into a `DMTS`
 
 Not Collective
@@ -49509,7 +48014,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `TSForcingFn`, `TSSetForcingFunction()`, `DMTSGetForcingFunction()`
+See also: `DMTS`, `DM`, `TS`, `TSForcingFn`, `TSSetForcingFunction()`, `DMTSGetForcingFunction()`
 
 # External Links
 $(_doc_external("TS/DMTSSetForcingFunction"))
@@ -49532,7 +48037,7 @@ end
 end 
 
 """
-	DMTSSetI2Function(petsclib::PetscLibType,dm::AbstractPetscDM, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetI2Function(petsclib::PetscLibType, dm::AbstractPetscDM, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` implicit function evaluation function for 2nd order systems into a `TSDM`
 
 Not Collective
@@ -49544,7 +48049,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `TSSetI2Function()`
+See also: `DMTS`, `DM`, `TS`, `TSSetI2Function()`
 
 # External Links
 $(_doc_external("TS/DMTSSetI2Function"))
@@ -49567,7 +48072,7 @@ end
 end 
 
 """
-	DMTSSetI2FunctionContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMTSSetI2FunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `TS` implicit evaluation for 2nd order systems context destroy into a `DMTS`
 
 Not Collective
@@ -49578,7 +48083,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TSSetI2FunctionContextDestroy()`, `DMTSSetI2Function()`, `TSSetI2Function()`
+See also: `DMTS`, `TSSetI2FunctionContextDestroy()`, `DMTSSetI2Function()`, `TSSetI2Function()`
 
 # External Links
 $(_doc_external("TS/DMTSSetI2FunctionContextDestroy"))
@@ -49601,7 +48106,7 @@ end
 end 
 
 """
-	DMTSSetI2Jacobian(petsclib::PetscLibType,dm::AbstractPetscDM, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetI2Jacobian(petsclib::PetscLibType, dm::AbstractPetscDM, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` implicit Jacobian evaluation function for 2nd order systems from a `DMTS`
 
 Not Collective
@@ -49613,7 +48118,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `TSI2JacobianFn`, `TSSetI2Jacobian()`
+See also: `DMTS`, `DM`, `TS`, `TSI2JacobianFn`, `TSSetI2Jacobian()`
 
 # External Links
 $(_doc_external("TS/DMTSSetI2Jacobian"))
@@ -49636,7 +48141,7 @@ end
 end 
 
 """
-	DMTSSetI2JacobianContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMTSSetI2JacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `TS` implicit Jacobian evaluation for 2nd order systems context destroy function into a `DMTS`
 
 Not Collective
@@ -49647,7 +48152,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `TSSetI2JacobianContextDestroy()`, `DMTSSetI2Jacobian()`, `TSSetI2Jacobian()`
+See also: `DMTS`, `DM`, `TS`, `TSSetI2JacobianContextDestroy()`, `DMTSSetI2Jacobian()`, `TSSetI2Jacobian()`
 
 # External Links
 $(_doc_external("TS/DMTSSetI2JacobianContextDestroy"))
@@ -49670,7 +48175,7 @@ end
 end 
 
 """
-	DMTSSetIFunction(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetIFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` implicit function evaluation function into a `DMTS`
 
 Not Collective
@@ -49682,7 +48187,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TS`, `DM`, `TSIFunctionFn`
+See also: `DMTS`, `TS`, `DM`, `TSIFunctionFn`
 
 # External Links
 $(_doc_external("TS/DMTSSetIFunction"))
@@ -49705,7 +48210,7 @@ end
 end 
 
 """
-	DMTSSetIFunctionContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMTSSetIFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `TS` implicit evaluation context destroy function into a `DMTS`
 
 Not Collective
@@ -49716,7 +48221,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `DMTSSetIFunction()`, `TSSetIFunction()`, `PetscCtxDestroyFn`
+See also: `DMTS`, `DM`, `TS`, `DMTSSetIFunction()`, `TSSetIFunction()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("TS/DMTSSetIFunctionContextDestroy"))
@@ -49739,7 +48244,7 @@ end
 end 
 
 """
-	DMTSSetIFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMTSSetIFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set a local implicit function evaluation function. This function is called with local vector
 containing the local vector information PLUS ghost point information. It should compute a result for all local
 elements and `DM` will automatically accumulate the overlapping values.
@@ -49761,7 +48266,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_ts), `DM`, `DMTSGetIFunctionLocal()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
+See also: `DM`, `DMTSGetIFunctionLocal()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
 
 # External Links
 $(_doc_external("TS/DMTSSetIFunctionLocal"))
@@ -49784,7 +48289,7 @@ end
 end 
 
 """
-	DMTSSetIFunctionSerialize(petsclib::PetscLibType,dm::AbstractPetscDM, view::external, load::external) 
+	DMTSSetIFunctionSerialize(petsclib::PetscLibType, dm::AbstractPetscDM, view::external, load::external) 
 sets functions used to view and load a `TSIFunctionFn` context
 
 Not Collective
@@ -49796,7 +48301,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`
+See also: `DMTS`, `DM`, `TS`
 
 # External Links
 $(_doc_external("TS/DMTSSetIFunctionSerialize"))
@@ -49819,7 +48324,7 @@ end
 end 
 
 """
-	DMTSSetIJacobian(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetIJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` Jacobian evaluation function into a `DMTS`
 
 Not Collective
@@ -49831,7 +48336,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TS`, `DM`, `TSIJacobianFn`, `DMTSGetIJacobian()`, `TSSetIJacobian()`
+See also: `DMTS`, `TS`, `DM`, `TSIJacobianFn`, `DMTSGetIJacobian()`, `TSSetIJacobian()`
 
 # External Links
 $(_doc_external("TS/DMTSSetIJacobian"))
@@ -49854,7 +48359,7 @@ end
 end 
 
 """
-	DMTSSetIJacobianContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMTSSetIJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `TS` Jacobian evaluation context destroy function into a `DMTS`
 
 Not Collective
@@ -49865,7 +48370,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TSSetIJacobianContextDestroy()`, `TSSetI2JacobianContextDestroy()`, `DMTSSetIJacobian()`, `TSSetIJacobian()`
+See also: `DMTS`, `TSSetIJacobianContextDestroy()`, `TSSetI2JacobianContextDestroy()`, `DMTSSetIJacobian()`, `TSSetIJacobian()`
 
 # External Links
 $(_doc_external("TS/DMTSSetIJacobianContextDestroy"))
@@ -49888,7 +48393,7 @@ end
 end 
 
 """
-	DMTSSetIJacobianLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMTSSetIJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set a local Jacobian evaluation function
 
 Logically Collective
@@ -49910,7 +48415,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_ts), `DM`, `DMTSGetIJacobianLocal()`, `DMTSSetIFunctionLocal()`, `DMTSSetIJacobian()`, `DMTSSetIFunction()`
+See also: `DM`, `DMTSGetIJacobianLocal()`, `DMTSSetIFunctionLocal()`, `DMTSSetIJacobian()`, `DMTSSetIFunction()`
 
 # External Links
 $(_doc_external("TS/DMTSSetIJacobianLocal"))
@@ -49933,7 +48438,7 @@ end
 end 
 
 """
-	DMTSSetIJacobianSerialize(petsclib::PetscLibType,dm::AbstractPetscDM, view::external, load::external) 
+	DMTSSetIJacobianSerialize(petsclib::PetscLibType, dm::AbstractPetscDM, view::external, load::external) 
 sets functions used to view and load a `TSIJacobianFn` context
 
 Not Collective
@@ -49945,7 +48450,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`
+See also: `DMTS`, `DM`, `TS`
 
 # External Links
 $(_doc_external("TS/DMTSSetIJacobianSerialize"))
@@ -49968,7 +48473,7 @@ end
 end 
 
 """
-	DMTSSetRHSFunction(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetRHSFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` explicit residual evaluation function into a `DMTS`
 
 Not Collective
@@ -49980,7 +48485,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `TSRHSFunctionFn`
+See also: `DMTS`, `DM`, `TS`, `TSRHSFunctionFn`
 
 # External Links
 $(_doc_external("TS/DMTSSetRHSFunction"))
@@ -50003,7 +48508,7 @@ end
 end 
 
 """
-	DMTSSetRHSFunctionContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMTSSetRHSFunctionContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `TS` explicit residual evaluation context destroy function into a `DMTS`
 
 Not Collective
@@ -50014,7 +48519,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TSSetRHSFunctionContextDestroy()`, `DMTSSetRHSFunction()`, `TSSetRHSFunction()`
+See also: `DMTS`, `TSSetRHSFunctionContextDestroy()`, `DMTSSetRHSFunction()`, `TSSetRHSFunction()`
 
 # External Links
 $(_doc_external("TS/DMTSSetRHSFunctionContextDestroy"))
@@ -50037,7 +48542,7 @@ end
 end 
 
 """
-	DMTSSetRHSFunctionLocal(petsclib::PetscLibType,dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
+	DMTSSetRHSFunctionLocal(petsclib::PetscLibType, dm::AbstractPetscDM, func::external, ctx::Ptr{Cvoid}) 
 set a local rhs function evaluation function. This function is called with local vector
 containing the local vector information PLUS ghost point information. It should compute a result for all local
 elements and `DM` will automatically accumulate the overlapping values.
@@ -50058,7 +48563,7 @@ Calling sequence of `func`:
 
 Level: beginner
 
--seealso: [](ch_ts), `DM`, `DMTSGetRHSFunctionLocal()`, `DMTSSetRHSFunction()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
+See also: `DM`, `DMTSGetRHSFunctionLocal()`, `DMTSSetRHSFunction()`, `DMTSSetIFunction()`, `DMTSSetIJacobianLocal()`
 
 # External Links
 $(_doc_external("TS/DMTSSetRHSFunctionLocal"))
@@ -50081,7 +48586,7 @@ end
 end 
 
 """
-	DMTSSetRHSJacobian(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetRHSJacobian(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` Jacobian evaluation function into a `DMTS`
 
 Not Collective
@@ -50093,7 +48598,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TSRHSJacobianFn`, `DMTSGetRHSJacobian()`, `TSSetRHSJacobian()`
+See also: `DMTS`, `TSRHSJacobianFn`, `DMTSGetRHSJacobian()`, `TSSetRHSJacobian()`
 
 # External Links
 $(_doc_external("TS/DMTSSetRHSJacobian"))
@@ -50116,7 +48621,7 @@ end
 end 
 
 """
-	DMTSSetRHSJacobianContextDestroy(petsclib::PetscLibType,dm::AbstractPetscDM, f::Ptr{Cvoid}) 
+	DMTSSetRHSJacobianContextDestroy(petsclib::PetscLibType, dm::AbstractPetscDM, f::Ptr{Cvoid}) 
 set `TS` Jacobian evaluation context destroy function from a `DMTS`
 
 Not Collective
@@ -50127,7 +48632,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TS`, `TSSetRHSJacobianContextDestroy()`, `DMTSSetRHSJacobian()`, `TSSetRHSJacobian()`
+See also: `DMTS`, `TS`, `TSSetRHSJacobianContextDestroy()`, `DMTSSetRHSJacobian()`, `TSSetRHSJacobian()`
 
 # External Links
 $(_doc_external("TS/DMTSSetRHSJacobianContextDestroy"))
@@ -50150,7 +48655,7 @@ end
 end 
 
 """
-	DMTSSetSolutionFunction(petsclib::PetscLibType,dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetSolutionFunction(petsclib::PetscLibType, dm::AbstractPetscDM, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set `TS` solution evaluation function into a `DMTS`
 
 Not Collective
@@ -50162,7 +48667,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `DM`, `TS`, `DMTSGetSolutionFunction()`, `TSSolutionFn`
+See also: `DMTS`, `DM`, `TS`, `DMTSGetSolutionFunction()`, `TSSolutionFn`
 
 # External Links
 $(_doc_external("TS/DMTSSetSolutionFunction"))
@@ -50185,7 +48690,7 @@ end
 end 
 
 """
-	DMTSSetTransientVariable(petsclib::PetscLibType,dm::AbstractPetscDM, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	DMTSSetTransientVariable(petsclib::PetscLibType, dm::AbstractPetscDM, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 sets function to transform from state to transient variables into a `DMTS`
 
 Logically Collective
@@ -50197,7 +48702,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `DMTS`, `TS`, `TSBDF`, `TSSetTransientVariable()`, `DMTSGetTransientVariable()`, `DMTSSetIFunction()`, `DMTSSetIJacobian()`, `TSTransientVariableFn`
+See also: `DMTS`, `TS`, `TSBDF`, `TSSetTransientVariable()`, `DMTSGetTransientVariable()`, `DMTSSetIFunction()`, `DMTSSetIJacobian()`, `TSTransientVariableFn`
 
 # External Links
 $(_doc_external("TS/DMTSSetTransientVariable"))
@@ -50220,7 +48725,7 @@ end
 end 
 
 """
-	DMUseTensorOrder(petsclib::PetscLibType,dm::AbstractPetscDM, tensor::PetscBool) 
+	DMUseTensorOrder(petsclib::PetscLibType, dm::AbstractPetscDM, tensor::PetscBool) 
 Use a tensor product closure ordering for the default section
 
 Input Parameters:
@@ -50229,7 +48734,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPlexSetClosurePermutationTensor()`, `PetscSectionResetClosurePermutation()`
+See also: `DMPlexSetClosurePermutationTensor()`, `PetscSectionResetClosurePermutation()`
 
 # External Links
 $(_doc_external("DM/DMUseTensorOrder"))
@@ -50252,7 +48757,7 @@ end
 end 
 
 """
-	DMView(petsclib::PetscLibType,dm::AbstractPetscDM, v::PetscViewer) 
+	DMView(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscViewer) 
 Views a `DM`. Depending on the `PetscViewer` and its `PetscViewerFormat` it may print some ASCII information about the `DM` to the screen or a file or
 save the `DM` in a binary file to be loaded later or create a visualization of the `DM`
 
@@ -50271,27 +48776,7 @@ Options Database Keys:
 
 Level: beginner
 
-Notes:
-
-`PetscViewer` = `PETSCVIEWERHDF5` i.e. HDF5 format can be used with `PETSC_VIEWER_HDF5_PETSC` as the `PetscViewerFormat` to save multiple `DMPLEX`
-meshes in a single HDF5 file. This in turn requires one to name the `DMPLEX` object with `PetscObjectSetName()`
-before saving it with `DMView()` and before loading it with `DMLoad()` for identification of the mesh object.
-
-`PetscViewer` = `PETSCVIEWEREXODUSII` i.e. ExodusII format assumes that element blocks (mapped to "Cell sets" labels)
-consists of sequentially numbered cells.
-
-If `dm` has been distributed, only the part of the `DM` on MPI rank 0 (including "ghost" cells and vertices) will be written.
-
-Only TRI, TET, QUAD, and HEX cells are supported in ExodusII.
-
-`DMPLEX` only represents geometry while most post-processing software expect that a mesh also provides information on the discretization space. This function assumes that the file represents Lagrange finite elements of order 1 or 2.
-The order of the mesh shall be set using `PetscViewerExodusIISetOrder()`
-
-Variable names can be set and queried using `PetscViewerExodusII[Set/Get][Nodal/Zonal]VariableNames[s]`.
-
-See also: 
-=== 
-`DM`, `PetscViewer`, `PetscViewerFormat`, `PetscViewerSetFormat()`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMLoad()`, `PetscObjectSetName()`
+See also: `DM`, `PetscViewer`, `PetscViewerFormat`, `PetscViewerSetFormat()`, `DMDestroy()`, `DMCreateGlobalVector()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMLoad()`, `PetscObjectSetName()`
 
 # External Links
 $(_doc_external("DM/DMView"))
@@ -50314,7 +48799,7 @@ end
 end 
 
 """
-	DMViewFromOptions(petsclib::PetscLibType,dm::AbstractPetscDM, obj, name::String) 
+	DMViewFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, obj, name::String) 
 View a `DM` in a particular way based on a request in the options database
 
 Collective
@@ -50329,9 +48814,7 @@ Options Database Key:
 
 Level: intermediate
 
-See also: 
-=== 
-`DM`, `DMView()`, `PetscObjectViewFromOptions()`, `DMCreate()`
+See also: `DM`, `DMView()`, `PetscObjectViewFromOptions()`, `DMCreate()`
 
 # External Links
 $(_doc_external("DM/DMViewFromOptions"))

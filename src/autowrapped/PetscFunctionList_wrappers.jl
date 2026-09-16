@@ -1,5 +1,5 @@
 """
-	PetscFunctionListClear(petsclib::PetscLibType,fl::PetscFunctionList) 
+	PetscFunctionListClear(petsclib::PetscLibType, fl::PetscFunctionList) 
 Clear a `PetscFunctionList`
 
 Not Collective
@@ -9,7 +9,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscFunctionList`, `PetscFunctionListDestroy()`, `PetscFunctionListAdd()`
+See also: `PetscFunctionList`, `PetscFunctionListDestroy()`, `PetscFunctionListAdd()`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListClear"))
@@ -32,7 +32,7 @@ end
 end 
 
 """
-	PetscFunctionListDestroy(petsclib::PetscLibType,fl::Union{PetscFunctionList, Ref{PetscFunctionList}}) 
+	PetscFunctionListDestroy(petsclib::PetscLibType, fl::Union{PetscFunctionList, Ref{PetscFunctionList}}) 
 Destroys a list of registered routines.
 
 Input Parameter:
@@ -40,7 +40,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscFunctionListAdd()`, `PetscFunctionList`, `PetscFunctionListClear()`
+See also: `PetscFunctionListAdd()`, `PetscFunctionList`, `PetscFunctionListClear()`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListDestroy"))
@@ -64,7 +64,7 @@ end
 end 
 
 """
-	nl::PetscFunctionList = PetscFunctionListDuplicate(petsclib::PetscLibType,fl::PetscFunctionList) 
+	nl::PetscFunctionList = PetscFunctionListDuplicate(petsclib::PetscLibType, fl::PetscFunctionList) 
 Creates a new list from a given function list `PetscFunctionList`.
 
 Input Parameter:
@@ -75,7 +75,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFunctionList`, `PetscFunctionListAdd()`, `PetscFlistDestroy()`
+See also: `PetscFunctionList`, `PetscFunctionListAdd()`, `PetscFlistDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListDuplicate"))
@@ -100,7 +100,7 @@ end
 end 
 
 """
-	array::String,n::Cint = PetscFunctionListGet(petsclib::PetscLibType,list::PetscFunctionList) 
+	array::String,n::Cint = PetscFunctionListGet(petsclib::PetscLibType, list::PetscFunctionList) 
 Gets an array the contains the entries in `PetscFunctionList`, this is used
 by help etc.
 
@@ -115,7 +115,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscFunctionListAdd()`, `PetscFunctionList`
+See also: `PetscFunctionListAdd()`, `PetscFunctionList`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListGet"))
@@ -149,7 +149,7 @@ Not Collective
 
 Level: developer
 
--seealso: `PetscFunctionList`, `PetscFunctionListPrintNonEmpty()`, `PetscFunctionListAdd()`, `PetscFunctionListView()`
+See also: `PetscFunctionList`, `PetscFunctionListPrintNonEmpty()`, `PetscFunctionListAdd()`, `PetscFunctionListView()`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListPrintAll"))
@@ -171,7 +171,7 @@ end
 end 
 
 """
-	PetscFunctionListPrintNonEmpty(petsclib::PetscLibType,fl::PetscFunctionList) 
+	PetscFunctionListPrintNonEmpty(petsclib::PetscLibType, fl::PetscFunctionList) 
 Print composed names for non `NULL` function pointers
 
 Logically Collective, No Fortran Support
@@ -181,7 +181,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscFunctionListAdd()`, `PetscFunctionList`, `PetscObjectQueryFunction()`
+See also: `PetscFunctionListAdd()`, `PetscFunctionList`, `PetscObjectQueryFunction()`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListPrintNonEmpty"))
@@ -204,7 +204,7 @@ end
 end 
 
 """
-	PetscFunctionListPrintTypes(petsclib::PetscLibType,comm::MPI_Comm, fd::Libc.FILE, prefix::String, name::String, text::String, man::String, list::PetscFunctionList, def::String, newv::String) 
+	PetscFunctionListPrintTypes(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE, prefix::String, name::String, text::String, man::String, list::PetscFunctionList, def::String, newv::String) 
 Prints the methods available in a list of functions
 
 Collective, No Fortran Support
@@ -222,7 +222,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscFunctionListAdd()`, `PetscFunctionList`
+See also: `PetscFunctionListAdd()`, `PetscFunctionList`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListPrintTypes"))
@@ -245,7 +245,7 @@ end
 end 
 
 """
-	PetscFunctionListView(petsclib::PetscLibType,list::PetscFunctionList, viewer::PetscViewer) 
+	PetscFunctionListView(petsclib::PetscLibType, list::PetscFunctionList, viewer::PetscViewer) 
 prints out contents of a `PetscFunctionList`
 
 Collective
@@ -256,7 +256,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscFunctionListAdd()`, `PetscFunctionListPrintTypes()`, `PetscFunctionList`
+See also: `PetscFunctionListAdd()`, `PetscFunctionListPrintTypes()`, `PetscFunctionList`
 
 # External Links
 $(_doc_external("Sys/PetscFunctionListView"))

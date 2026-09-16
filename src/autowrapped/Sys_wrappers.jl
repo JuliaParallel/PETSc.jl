@@ -1,5 +1,5 @@
 """
-	PetscAbortErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+	PetscAbortErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
 Error handler that calls abort on error.
 This routine is very useful when running in the debugger, because the
 user can look directly at the stack frames and the variables where the error occurred
@@ -25,7 +25,7 @@ Terminal for the debugger unless `noxterm` is given
 
 Level: developer
 
--seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHander()`, `PetscTraceBackErrorHandler()`,
+See also: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHander()`, `PetscTraceBackErrorHandler()`,
 `PetscAttachDebuggerErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscReturnErrorHandler()`, `PetscEmacsClientErrorHandler()`,
 `PetscErrorType`, `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`
 
@@ -50,8 +50,8 @@ end
 end 
 
 """
-	tot::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDouble(petsclib::PetscLibType,value::PetscLogDouble) 
-Atomically add a `PetscLogDouble` value to both a global counter and its per
+	tot::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDouble(petsclib::PetscLibType, value::PetscLogDouble) 
+Atomically add a `PetscLogDouble` value to both a global counter and its per-thread counterpart
 
 Not Collective; No Fortran Support
 
@@ -62,7 +62,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscAddLogDoubleCnt()`, `PetscLogFlops()`, `PetscLogDouble`
+See also: `PetscAddLogDoubleCnt()`, `PetscLogFlops()`, `PetscLogDouble`
 
 # External Links
 $(_doc_external("Log/PetscAddLogDouble"))
@@ -89,8 +89,8 @@ end
 end 
 
 """
-	cnt::PetscLogDouble,tot::PetscLogDouble,cnt_th::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDoubleCnt(petsclib::PetscLibType,value::PetscLogDouble) 
-Atomically update both a count pair and a size pair of `PetscLogDouble` counters (global and per
+	cnt::PetscLogDouble,tot::PetscLogDouble,cnt_th::PetscLogDouble,tot_th::PetscLogDouble = PetscAddLogDoubleCnt(petsclib::PetscLibType, value::PetscLogDouble) 
+Atomically update both a count pair and a size pair of `PetscLogDouble` counters (global and per-thread)
 
 Not Collective; No Fortran Support
 
@@ -103,7 +103,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscAddLogDouble()`, `PetscLogFlops()`, `PetscLogDouble`
+See also: `PetscAddLogDouble()`, `PetscLogFlops()`, `PetscLogDouble`
 
 # External Links
 $(_doc_external("Log/PetscAddLogDoubleCnt"))
@@ -149,7 +149,7 @@ that take a long time for the Terminal window or xterm to start up.
 
 Level: advanced
 
--seealso: `PetscSetDebugger()`, `PetscSetDefaultDebugger()`, `PetscSetDebugTerminal()`, `PetscAttachDebuggerErrorHandler()`, `PetscStopForDebugger()`
+See also: `PetscSetDebugger()`, `PetscSetDefaultDebugger()`, `PetscSetDebugTerminal()`, `PetscAttachDebuggerErrorHandler()`, `PetscStopForDebugger()`
 
 # External Links
 $(_doc_external("Sys/PetscAttachDebugger"))
@@ -171,7 +171,7 @@ end
 end 
 
 """
-	PetscAttachDebuggerErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, num::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+	PetscAttachDebuggerErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, num::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
 Error handler that attaches
 a debugger to a running process when an error is detected.
 This routine is useful for examining variables, etc.
@@ -190,7 +190,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSetDebuggerFromString()`, `PetscSetDebugger()`, `PetscSetDefaultDebugger()`, `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscTraceBackErrorHandler()`,
+See also: `PetscSetDebuggerFromString()`, `PetscSetDebugger()`, `PetscSetDefaultDebugger()`, `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscTraceBackErrorHandler()`,
 `PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscEmacsClientErrorHandler()`, `PetscReturnErrorHandler()`, `PetscSetDebugTerminal()`
 
 # External Links
@@ -222,7 +222,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscInitialize()`, `PetscBLASSetNumThreads()`
+See also: `PetscInitialize()`, `PetscBLASSetNumThreads()`
 
 # External Links
 $(_doc_external("Sys/PetscBLASGetNumThreads"))
@@ -247,7 +247,7 @@ end
 end 
 
 """
-	PetscBLASIntCast(petsclib::PetscLibType,a::MPIU_Count, b::PetscBLASInt) 
+	PetscBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscBLASInt) 
 
 # External Links
 $(_doc_external("Sys/PetscBLASIntCast"))
@@ -270,7 +270,7 @@ end
 end 
 
 """
-	PetscBLASSetNumThreads(petsclib::PetscLibType,nt::PetscInt) 
+	PetscBLASSetNumThreads(petsclib::PetscLibType, nt::PetscInt) 
 set the number of threads for calls to BLAS to use
 
 Input Parameter:
@@ -281,7 +281,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscInitialize()`, `PetscBLASGetNumThreads()`
+See also: `PetscInitialize()`, `PetscBLASGetNumThreads()`
 
 # External Links
 $(_doc_external("Sys/PetscBLASSetNumThreads"))
@@ -304,7 +304,7 @@ end
 end 
 
 """
-	PetscBTClear(petsclib::PetscLibType,array::PetscBT, index::PetscCount) 
+	PetscBTClear(petsclib::PetscLibType, array::PetscBT, index::PetscCount) 
 
 # External Links
 $(_doc_external("Sys/PetscBTClear"))
@@ -327,7 +327,7 @@ end
 end 
 
 """
-	PetscBTCopy(petsclib::PetscLibType,dest::PetscBT, m::PetscCount, source::PetscBT) 
+	PetscBTCopy(petsclib::PetscLibType, dest::PetscBT, m::PetscCount, source::PetscBT) 
 
 # External Links
 $(_doc_external("Sys/PetscBTCopy"))
@@ -350,7 +350,7 @@ end
 end 
 
 """
-	array::PetscBT = PetscBTCreate(petsclib::PetscLibType,m::PetscCount) 
+	array::PetscBT = PetscBTCreate(petsclib::PetscLibType, m::PetscCount) 
 
 # External Links
 $(_doc_external("Sys/PetscBTCreate"))
@@ -375,7 +375,7 @@ end
 end 
 
 """
-	PetscBTDestroy(petsclib::PetscLibType,array::Union{PetscBT, Ref{PetscBT}}) 
+	PetscBTDestroy(petsclib::PetscLibType, array::Union{PetscBT, Ref{PetscBT}}) 
 
 # External Links
 $(_doc_external("Sys/PetscBTDestroy"))
@@ -399,7 +399,7 @@ end
 end 
 
 """
-	PetscBTMemzero(petsclib::PetscLibType,m::PetscCount, array::PetscBT) 
+	PetscBTMemzero(petsclib::PetscLibType, m::PetscCount, array::PetscBT) 
 
 # External Links
 $(_doc_external("Sys/PetscBTMemzero"))
@@ -422,7 +422,7 @@ end
 end 
 
 """
-	PetscBTNegate(petsclib::PetscLibType,array::PetscBT, index::PetscCount) 
+	PetscBTNegate(petsclib::PetscLibType, array::PetscBT, index::PetscCount) 
 
 # External Links
 $(_doc_external("Sys/PetscBTNegate"))
@@ -445,7 +445,7 @@ end
 end 
 
 """
-	PetscBTSet(petsclib::PetscLibType,array::PetscBT, index::PetscCount) 
+	PetscBTSet(petsclib::PetscLibType, array::PetscBT, index::PetscCount) 
 
 # External Links
 $(_doc_external("Sys/PetscBTSet"))
@@ -468,7 +468,7 @@ end
 end 
 
 """
-	PetscBTView(petsclib::PetscLibType,m::PetscCount, bt::PetscBT, viewer::PetscViewer) 
+	PetscBTView(petsclib::PetscLibType, m::PetscCount, bt::PetscBT, viewer::PetscViewer) 
 View the contents of a `PetscBT` (bit array) on a `PetscViewer`, one line per bit
 
 Collective on `viewer`; No Fortran Support
@@ -480,7 +480,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscBT`, `PetscBTCreate()`, `PetscBTLookup()`, `PetscViewer`
+See also: `PetscBT`, `PetscBTCreate()`, `PetscBTLookup()`, `PetscViewer`
 
 # External Links
 $(_doc_external("Viewer/PetscBTView"))
@@ -503,7 +503,7 @@ end
 end 
 
 """
-	PetscBarrier(petsclib::PetscLibType,obj) 
+	PetscBarrier(petsclib::PetscLibType, obj) 
 Blocks until this routine is executed by all processors owning the object `obj`.
 
 Input Parameter:
@@ -511,7 +511,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscObject`, `MPI_Comm`, `MPI_Barrier`
+See also: `PetscObject`, `MPI_Comm`, `MPI_Barrier`
 
 # External Links
 $(_doc_external("Sys/PetscBarrier"))
@@ -534,7 +534,7 @@ end
 end 
 
 """
-	PetscBinaryClose(petsclib::PetscLibType,fd::Cint) 
+	PetscBinaryClose(petsclib::PetscLibType, fd::Cint) 
 Closes a PETSc binary file.
 
 Not Collective
@@ -544,7 +544,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscBinaryRead()`, `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinarySynchronizedWrite()`, `PetscBinarySynchronizedRead()`,
+See also: `PetscBinaryRead()`, `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinarySynchronizedWrite()`, `PetscBinarySynchronizedRead()`,
 `PetscBinarySynchronizedSeek()`
 
 # External Links
@@ -568,7 +568,7 @@ end
 end 
 
 """
-	fd::Cint = PetscBinaryOpen(petsclib::PetscLibType,name::String, mode::PetscFileMode) 
+	fd::Cint = PetscBinaryOpen(petsclib::PetscLibType, name::String, mode::PetscFileMode) 
 Opens a PETSc binary file.
 
 Not Collective
@@ -582,7 +582,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscBinaryRead()`, `PetscBinaryWrite()`, `PetscFileMode`, `PetscViewerFileSetMode()`, `PetscViewerBinaryGetDescriptor()`,
+See also: `PetscBinaryRead()`, `PetscBinaryWrite()`, `PetscFileMode`, `PetscViewerFileSetMode()`, `PetscViewerBinaryGetDescriptor()`,
 `PetscBinarySynchronizedWrite()`, `PetscBinarySynchronizedRead()`, `PetscBinarySynchronizedSeek()`
 
 # External Links
@@ -608,7 +608,7 @@ end
 end 
 
 """
-	data::Ptr{Cvoid},count::PetscInt = PetscBinaryRead(petsclib::PetscLibType,fd::Cint, num::PetscCount, type::PetscDataType) 
+	data::Ptr{Cvoid},count::PetscInt = PetscBinaryRead(petsclib::PetscLibType, fd::Cint, num::PetscCount, type::PetscDataType) 
 Reads from a binary file.
 
 Not Collective
@@ -624,7 +624,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscViewerBinaryGetDescriptor()`, `PetscBinarySynchronizedWrite()`,
+See also: `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscViewerBinaryGetDescriptor()`, `PetscBinarySynchronizedWrite()`,
 `PetscBinarySynchronizedRead()`, `PetscBinarySynchronizedSeek()`
 
 # External Links
@@ -652,7 +652,7 @@ end
 end 
 
 """
-	data::Ptr{Cvoid},count::PetscInt = PetscBinarySynchronizedRead(petsclib::PetscLibType,comm::MPI_Comm, fd::Cint, num::PetscInt, type::PetscDataType) 
+	data::Ptr{Cvoid},count::PetscInt = PetscBinarySynchronizedRead(petsclib::PetscLibType, comm::MPI_Comm, fd::Cint, num::PetscInt, type::PetscDataType) 
 Reads from a binary file, all MPI processes get the same values
 
 Collective, No Fortran Support
@@ -669,7 +669,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscBinaryRead()`, `PetscBinarySynchronizedWrite()`,
+See also: `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscBinaryRead()`, `PetscBinarySynchronizedWrite()`,
 `PetscBinarySynchronizedSeek()`
 
 # External Links
@@ -697,7 +697,7 @@ end
 end 
 
 """
-	PetscBinarySynchronizedWrite(petsclib::PetscLibType,comm::MPI_Comm, fd::Cint, p::Ptr{Cvoid}, n::PetscInt, type::PetscDataType) 
+	PetscBinarySynchronizedWrite(petsclib::PetscLibType, comm::MPI_Comm, fd::Cint, p::Ptr{Cvoid}, n::PetscInt, type::PetscDataType) 
 writes to a binary file.
 
 Collective, No Fortran Support
@@ -711,7 +711,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscBinaryRead()`, `PetscBinarySynchronizedRead()`,
+See also: `PetscBinaryWrite()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscBinaryRead()`, `PetscBinarySynchronizedRead()`,
 `PetscBinarySynchronizedSeek()`
 
 # External Links
@@ -735,7 +735,7 @@ end
 end 
 
 """
-	PetscBinaryWrite(petsclib::PetscLibType,fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType) 
+	PetscBinaryWrite(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType) 
 Writes to a binary file.
 
 Not Collective
@@ -748,7 +748,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscBinaryRead()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscViewerBinaryGetDescriptor()`, `PetscBinarySynchronizedWrite()`,
+See also: `PetscBinaryRead()`, `PetscBinaryOpen()`, `PetscBinaryClose()`, `PetscViewerBinaryGetDescriptor()`, `PetscBinarySynchronizedWrite()`,
 `PetscBinarySynchronizedRead()`, `PetscBinarySynchronizedSeek()`
 
 # External Links
@@ -772,7 +772,7 @@ end
 end 
 
 """
-	PetscBoxAuthorize(petsclib::PetscLibType,comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t) 
+	PetscBoxAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t) 
 Get authorization and refresh token for accessing Box drive from PETSc
 
 Not Collective, only the first rank in `MPI_Comm` does anything
@@ -788,7 +788,7 @@ guard this like a password  it gives access to your Box Drive
 
 Level: intermediate
 
--seealso: `PetscBoxRefresh()`, `PetscBoxUpload()`
+See also: `PetscBoxRefresh()`, `PetscBoxUpload()`
 
 # External Links
 $(_doc_external("Sys/PetscBoxAuthorize"))
@@ -811,7 +811,7 @@ end
 end 
 
 """
-	PetscBoxRefresh(petsclib::PetscLibType,comm::MPI_Comm, refresh_token::String, access_token::String, new_refresh_token::String, tokensize::Csize_t) 
+	PetscBoxRefresh(petsclib::PetscLibType, comm::MPI_Comm, refresh_token::String, access_token::String, new_refresh_token::String, tokensize::Csize_t) 
 Get a new authorization token for accessing Box drive from PETSc from a refresh token
 
 Not Collective, only the first process in the `MPI_Comm` does anything
@@ -828,7 +828,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscBoxAuthorize()`, `PetscBoxUpload()`
+See also: `PetscBoxAuthorize()`, `PetscBoxUpload()`
 
 # External Links
 $(_doc_external("Sys/PetscBoxRefresh"))
@@ -851,7 +851,7 @@ end
 end 
 
 """
-	PetscBoxUpload(petsclib::PetscLibType,comm::MPI_Comm, access_token::String, filename::String) 
+	PetscBoxUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String) 
 Loads a file to the Box Drive
 
 This routine has not yet been written; it is just copied from Google Drive
@@ -866,7 +866,7 @@ Input Parameters:
 Options Database Key:
 - `-box_refresh_token XXX` - the token value
 
--seealso: `PetscBoxAuthorize()`, `PetscBoxRefresh()`
+See also: `PetscBoxAuthorize()`, `PetscBoxRefresh()`
 
 # External Links
 $(_doc_external("Sys/PetscBoxUpload"))
@@ -889,7 +889,7 @@ end
 end 
 
 """
-	PetscByteSwap(petsclib::PetscLibType,data::Ptr{Cvoid}, pdtype::PetscDataType, count::PetscCount) 
+	PetscByteSwap(petsclib::PetscLibType, data::Ptr{Cvoid}, pdtype::PetscDataType, count::PetscCount) 
 Reverse the byte order of an array of values of a given `PetscDataType`, in place
 
 Not Collective; No Fortran Support
@@ -901,7 +901,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscDataType`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWrite()`
+See also: `PetscDataType`, `PetscViewerBinaryRead()`, `PetscViewerBinaryWrite()`
 
 # External Links
 $(_doc_external("Sys/PetscByteSwap"))
@@ -924,7 +924,7 @@ end
 end 
 
 """
-	b::Cint = PetscCIntCast(petsclib::PetscLibType,a::MPIU_Count) 
+	b::Cint = PetscCIntCast(petsclib::PetscLibType, a::MPIU_Count) 
 
 # External Links
 $(_doc_external("Sys/PetscCIntCast"))
@@ -949,7 +949,7 @@ end
 end 
 
 """
-	PetscCUBLASGetHandle(petsclib::PetscLibType,handle::cublasHandle_t) 
+	PetscCUBLASGetHandle(petsclib::PetscLibType, handle::cublasHandle_t) 
 
 # External Links
 $(_doc_external("Sys/PetscCUBLASGetHandle"))
@@ -972,7 +972,7 @@ end
 end 
 
 """
-	PetscCUSOLVERDnGetHandle(petsclib::PetscLibType,handle::cusolverDnHandle_t) 
+	PetscCUSOLVERDnGetHandle(petsclib::PetscLibType, handle::cusolverDnHandle_t) 
 
 # External Links
 $(_doc_external("Sys/PetscCUSOLVERDnGetHandle"))
@@ -995,7 +995,7 @@ end
 end 
 
 """
-	dups::PetscBool = PetscCheckDupsInt(petsclib::PetscLibType,n::PetscInt, X::Vector{PetscInt}) 
+	dups::PetscBool = PetscCheckDupsInt(petsclib::PetscLibType, n::PetscInt, X::Vector{PetscInt}) 
 Checks if an `PetscInt` array has duplicates
 
 Not Collective
@@ -1009,7 +1009,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortRemoveDupsInt()`, `PetscSortedCheckDupsInt()`
+See also: `PetscSortRemoveDupsInt()`, `PetscSortedCheckDupsInt()`
 
 # External Links
 $(_doc_external("Sys/PetscCheckDupsInt"))
@@ -1034,7 +1034,7 @@ end
 end 
 
 """
-	PetscCheckPointerSetIntensity(petsclib::PetscLibType,intensity::PetscInt) 
+	PetscCheckPointerSetIntensity(petsclib::PetscLibType, intensity::PetscInt) 
 Set the intensity of debug pointer checks
 
 Not Collective
@@ -1047,7 +1047,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscCheckPointer()`, `PetscFunctionBeginHot()`
+See also: `PetscCheckPointer()`, `PetscFunctionBeginHot()`
 
 # External Links
 $(_doc_external("Sys/PetscCheckPointerSetIntensity"))
@@ -1070,7 +1070,7 @@ end
 end 
 
 """
-	set::PetscBool = PetscCitationsRegister(petsclib::PetscLibType,cit::String) 
+	set::PetscBool = PetscCitationsRegister(petsclib::PetscLibType, cit::String) 
 
 # External Links
 $(_doc_external("Sys/PetscCitationsRegister"))
@@ -1095,7 +1095,7 @@ end
 end 
 
 """
-	oclass::PetscClassId = PetscClassIdRegister(petsclib::PetscLibType,name::String) 
+	oclass::PetscClassId = PetscClassIdRegister(petsclib::PetscLibType, name::String) 
 Registers a new class name for objects and logging operations in an application code.
 
 Not Collective
@@ -1108,7 +1108,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventRegister()`
+See also: `PetscLogEventRegister()`
 
 # External Links
 $(_doc_external("Log/PetscClassIdRegister"))
@@ -1133,8 +1133,8 @@ end
 end 
 
 """
-	twosided::PetscBuildTwoSidedType = PetscCommBuildTwoSidedGetType(petsclib::PetscLibType,comm::MPI_Comm) 
-get algorithm used when building two
+	twosided::PetscBuildTwoSidedType = PetscCommBuildTwoSidedGetType(petsclib::PetscLibType, comm::MPI_Comm) 
+get algorithm used when building two-sided communication
 
 Logically Collective
 
@@ -1144,7 +1144,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscCommBuildTwoSided()`, `PetscCommBuildTwoSidedSetType()`, `PetscBuildTwoSidedType`
+See also: `PetscCommBuildTwoSided()`, `PetscCommBuildTwoSidedSetType()`, `PetscBuildTwoSidedType`
 
 # External Links
 $(_doc_external("Sys/PetscCommBuildTwoSidedGetType"))
@@ -1169,8 +1169,8 @@ end
 end 
 
 """
-	PetscCommBuildTwoSidedSetType(petsclib::PetscLibType,comm::MPI_Comm, twosided::PetscBuildTwoSidedType) 
-set algorithm to use when building two
+	PetscCommBuildTwoSidedSetType(petsclib::PetscLibType, comm::MPI_Comm, twosided::PetscBuildTwoSidedType) 
+set algorithm to use when building two-sided communication
 
 Logically Collective
 
@@ -1180,7 +1180,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscCommBuildTwoSided()`, `PetscCommBuildTwoSidedGetType()`, `PetscBuildTwoSidedType`
+See also: `PetscCommBuildTwoSided()`, `PetscCommBuildTwoSidedGetType()`, `PetscBuildTwoSidedType`
 
 # External Links
 $(_doc_external("Sys/PetscCommBuildTwoSidedSetType"))
@@ -1213,7 +1213,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscCommDuplicate()`
+See also: `PetscCommDuplicate()`
 
 # External Links
 $(_doc_external("Sys/PetscCommDestroy"))
@@ -1238,7 +1238,7 @@ end
 end 
 
 """
-	comm_out::MPI_Comm,first_tag::PetscMPIInt = PetscCommDuplicate(petsclib::PetscLibType,comm_in::MPI_Comm) 
+	comm_out::MPI_Comm,first_tag::PetscMPIInt = PetscCommDuplicate(petsclib::PetscLibType, comm_in::MPI_Comm) 
 Duplicates the communicator only if it is not already a PETSc communicator.
 
 Collective
@@ -1252,7 +1252,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscObjectGetNewTag()`, `PetscCommGetNewTag()`, `PetscCommDestroy()`
+See also: `PetscObjectGetNewTag()`, `PetscCommGetNewTag()`, `PetscCommDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscCommDuplicate"))
@@ -1279,7 +1279,7 @@ end
 end 
 
 """
-	comm_out::MPI_Comm = PetscCommGetComm(petsclib::PetscLibType,comm_in::MPI_Comm) 
+	comm_out::MPI_Comm = PetscCommGetComm(petsclib::PetscLibType, comm_in::MPI_Comm) 
 get a new MPI communicator from a PETSc communicator that can be passed off to another package
 
 Collective
@@ -1292,7 +1292,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscObjectGetNewTag()`, `PetscCommGetNewTag()`, `PetscCommDestroy()`, `PetscCommRestoreComm()`
+See also: `PetscObjectGetNewTag()`, `PetscCommGetNewTag()`, `PetscCommDestroy()`, `PetscCommRestoreComm()`
 
 # External Links
 $(_doc_external("Sys/PetscCommGetComm"))
@@ -1317,7 +1317,7 @@ end
 end 
 
 """
-	tag::PetscMPIInt = PetscCommGetNewTag(petsclib::PetscLibType,comm::MPI_Comm) 
+	tag::PetscMPIInt = PetscCommGetNewTag(petsclib::PetscLibType, comm::MPI_Comm) 
 Gets a unique new tag from a PETSc communicator
 
 Collective
@@ -1330,7 +1330,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscObjectGetNewTag()`, `PetscCommDuplicate()`
+See also: `PetscObjectGetNewTag()`, `PetscCommDuplicate()`
 
 # External Links
 $(_doc_external("Sys/PetscCommGetNewTag"))
@@ -1355,7 +1355,7 @@ end
 end 
 
 """
-	PetscCommRestoreComm(petsclib::PetscLibType,comm_in::MPI_Comm, comm_out::MPI_Comm) 
+	PetscCommRestoreComm(petsclib::PetscLibType, comm_in::MPI_Comm, comm_out::MPI_Comm) 
 restores an MPI communicator that was obtained with `PetscCommGetComm()`
 
 Collective
@@ -1366,7 +1366,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscObjectGetNewTag()`, `PetscCommGetNewTag()`, `PetscCommDestroy()`
+See also: `PetscObjectGetNewTag()`, `PetscCommGetNewTag()`, `PetscCommDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscCommRestoreComm"))
@@ -1390,8 +1390,8 @@ end
 end 
 
 """
-	PetscCommSplitReductionBegin(petsclib::PetscLibType,comm::MPI_Comm) 
-Begin an asynchronous split
+	PetscCommSplitReductionBegin(petsclib::PetscLibType, comm::MPI_Comm) 
+Begin an asynchronous split-mode reduction
 
 Collective but not synchronizing
 
@@ -1400,7 +1400,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `VecNormBegin()`, `VecNormEnd()`, `VecDotBegin()`, `VecDotEnd()`, `VecTDotBegin()`, `VecTDotEnd()`, `VecMDotBegin()`, `VecMDotEnd()`, `VecMTDotBegin()`, `VecMTDotEnd()`
+See also: `VecNormBegin()`, `VecNormEnd()`, `VecDotBegin()`, `VecDotEnd()`, `VecTDotBegin()`, `VecTDotEnd()`, `VecMDotBegin()`, `VecMDotEnd()`, `VecMTDotBegin()`, `VecMTDotEnd()`
 
 # External Links
 $(_doc_external("Vec/PetscCommSplitReductionBegin"))
@@ -1423,7 +1423,7 @@ end
 end 
 
 """
-	PetscCuBLASIntCast(petsclib::PetscLibType,a::MPIU_Count, b::PetscCuBLASInt) 
+	PetscCuBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscCuBLASInt) 
 
 # External Links
 $(_doc_external("Sys/PetscCuBLASIntCast"))
@@ -1446,7 +1446,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscDLAddr(petsclib::PetscLibType,func::Ptr{Cvoid}) 
+	name::Ptr{Cchar} = PetscDLAddr(petsclib::PetscLibType, func::Ptr{Cvoid}) 
 find the name of a symbol in a dynamic library
 
 Not Collective, No Fortran Support
@@ -1459,7 +1459,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDLClose()`, `PetscDLSym()`, `PetscDLOpen()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
+See also: `PetscDLClose()`, `PetscDLSym()`, `PetscDLOpen()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
 `PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`, `PetscDLLibrarySym()`
 
 # External Links
@@ -1485,7 +1485,7 @@ end
 end 
 
 """
-	PetscDLClose(petsclib::PetscLibType,handle::PetscDLHandle) 
+	PetscDLClose(petsclib::PetscLibType, handle::PetscDLHandle) 
 closes a dynamic library
 
 Not Collective, No Fortran Support
@@ -1495,7 +1495,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscDLOpen()`, `PetscDLSym()`, `PetscDLAddr()`
+See also: `PetscDLOpen()`, `PetscDLSym()`, `PetscDLAddr()`
 
 # External Links
 $(_doc_external("Sys/PetscDLClose"))
@@ -1518,7 +1518,7 @@ end
 end 
 
 """
-	handle::PetscDLHandle = PetscDLOpen(petsclib::PetscLibType,name::String, mode::PetscDLMode) 
+	handle::PetscDLHandle = PetscDLOpen(petsclib::PetscLibType, name::String, mode::PetscDLMode) 
 opens a dynamic library
 
 Not Collective, No Fortran Support
@@ -1532,7 +1532,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDLClose()`, `PetscDLSym()`, `PetscDLAddr()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
+See also: `PetscDLClose()`, `PetscDLSym()`, `PetscDLAddr()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
 `PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`, `PetscDLLibrarySym()`,
 `PetscDLMode`, `PetscDLHandle`
 
@@ -1559,7 +1559,7 @@ end
 end 
 
 """
-	value::Ptr{Cvoid} = PetscDLSym(petsclib::PetscLibType,handle::PetscDLHandle, symbol::String) 
+	value::Ptr{Cvoid} = PetscDLSym(petsclib::PetscLibType, handle::PetscDLHandle, symbol::String) 
 finds a symbol in a dynamic library
 
 Not Collective, No Fortran Support
@@ -1573,7 +1573,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDLClose()`, `PetscDLOpen()`, `PetscDLAddr()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
+See also: `PetscDLClose()`, `PetscDLOpen()`, `PetscDLAddr()`, `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()`,
 `PetscDLLibraryRetrieve()`, `PetscDLLibraryOpen()`, `PetscDLLibraryClose()`, `PetscDLLibrarySym()`, `PetscDLHandle`
 
 # External Links
@@ -1599,8 +1599,8 @@ end
 end 
 
 """
-	wv::PetscReal = PetscDTAltVApply(petsclib::PetscLibType,N::PetscInt, k::PetscInt, w::Vector{PetscReal}, v::Vector{PetscReal}) 
-Apply an a k
+	wv::PetscReal = PetscDTAltVApply(petsclib::PetscLibType, N::PetscInt, k::PetscInt, w::Vector{PetscReal}, v::Vector{PetscReal}) 
+Apply an a k-form (an alternating k-linear map) to a set of k N-dimensional vectors
 
 Input Parameters:
 - `N` - the dimension of the vector space, N >= 0
@@ -1615,7 +1615,7 @@ entry (j,k) given by the s_{i,k}'th coordinate of v_j
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVApply"))
@@ -1640,8 +1640,8 @@ end
 end 
 
 """
-	wIntv::PetscReal = PetscDTAltVInterior(petsclib::PetscLibType,N::PetscInt, k::PetscInt, w::Vector{PetscReal}, v::Vector{PetscReal}) 
-Compute the interior product of a k
+	wIntv::PetscReal = PetscDTAltVInterior(petsclib::PetscLibType, N::PetscInt, k::PetscInt, w::Vector{PetscReal}, v::Vector{PetscReal}) 
+Compute the interior product of a k-form with a vector
 
 Input Parameters:
 - `N` - the dimension of the vector space, N >= 0
@@ -1654,7 +1654,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVInteriorMatrix()`, `PetscDTAltVInteriorPattern()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscDTAltV`, `PetscDTAltVInteriorMatrix()`, `PetscDTAltVInteriorPattern()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVInterior"))
@@ -1679,8 +1679,8 @@ end
 end 
 
 """
-	intvMat::PetscReal = PetscDTAltVInteriorMatrix(petsclib::PetscLibType,N::PetscInt, k::PetscInt, v::Vector{PetscReal}) 
-Compute the matrix of the linear transformation induced on a k
+	intvMat::PetscReal = PetscDTAltVInteriorMatrix(petsclib::PetscLibType, N::PetscInt, k::PetscInt, v::Vector{PetscReal}) 
+Compute the matrix of the linear transformation induced on a k-form by the interior product with a vector
 
 Input Parameters:
 - `N` - the dimension of the vector space, N >= 0
@@ -1692,7 +1692,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVInterior()`, `PetscDTAltVInteriorPattern()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscDTAltV`, `PetscDTAltVInterior()`, `PetscDTAltVInteriorPattern()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVInteriorMatrix"))
@@ -1717,7 +1717,7 @@ end
 end 
 
 """
-	PetscDTAltVInteriorPattern(petsclib::PetscLibType,N::PetscInt, k::PetscInt, noname::Ptr{Cvoid}) 
+	PetscDTAltVInteriorPattern(petsclib::PetscLibType, N::PetscInt, k::PetscInt, noname::Ptr{Cvoid}) 
 compute the sparsity and sign pattern of the interior product matrix computed in `PetscDTAltVInteriorMatrix()`
 
 Input Parameters:
@@ -1731,7 +1731,7 @@ coordinate v[j] if indices[i][2] = j, or -v[j] if indices[i][2] = -(j+1)
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVInterior()`, `PetscDTAltVInteriorMatrix()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscDTAltV`, `PetscDTAltVInterior()`, `PetscDTAltVInteriorMatrix()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVInteriorPattern"))
@@ -1754,8 +1754,8 @@ end
 end 
 
 """
-	Lstarw::PetscReal = PetscDTAltVPullback(petsclib::PetscLibType,N::PetscInt, M::PetscInt, L::Vector{PetscReal}, k::PetscInt, w::Vector{PetscReal}) 
-Compute the pullback of a k
+	Lstarw::PetscReal = PetscDTAltVPullback(petsclib::PetscLibType, N::PetscInt, M::PetscInt, L::Vector{PetscReal}, k::PetscInt, w::Vector{PetscReal}) 
+Compute the pullback of a k-form under a linear transformation of the coordinate space
 
 Input Parameters:
 - `N` - the dimension of the origin vector space of the linear transformation, M >= 0
@@ -1770,7 +1770,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVPullbackMatrix()`, `PetscDTAltVStar()`
+See also: `PetscDTAltV`, `PetscDTAltVPullbackMatrix()`, `PetscDTAltVStar()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVPullback"))
@@ -1795,8 +1795,8 @@ end
 end 
 
 """
-	Lstar::PetscReal = PetscDTAltVPullbackMatrix(petsclib::PetscLibType,N::PetscInt, M::PetscInt, L::Vector{PetscReal}, k::PetscInt) 
-Compute the pullback matrix for k
+	Lstar::PetscReal = PetscDTAltVPullbackMatrix(petsclib::PetscLibType, N::PetscInt, M::PetscInt, L::Vector{PetscReal}, k::PetscInt) 
+Compute the pullback matrix for k-forms under a linear transformation
 
 Input Parameters:
 - `N` - the dimension of the origin vector space of the linear transformation, N >= 0
@@ -1810,7 +1810,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVStar()`
+See also: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVStar()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVPullbackMatrix"))
@@ -1835,8 +1835,8 @@ end
 end 
 
 """
-	starw::PetscReal = PetscDTAltVStar(petsclib::PetscLibType,N::PetscInt, k::PetscInt, pow::PetscInt, w::Vector{PetscReal}) 
-Apply a power of the Hodge star operator, which maps k
+	starw::PetscReal = PetscDTAltVStar(petsclib::PetscLibType, N::PetscInt, k::PetscInt, pow::PetscInt, w::Vector{PetscReal}) 
+Apply a power of the Hodge star operator, which maps k-forms to (N-k) forms, to a k-form
 
 Input Parameters:
 - `N`   - the dimension of the vector space, N >= 0
@@ -1849,7 +1849,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVStar"))
@@ -1874,8 +1874,8 @@ end
 end 
 
 """
-	awedgeb::PetscReal = PetscDTAltVWedge(petsclib::PetscLibType,N::PetscInt, j::PetscInt, k::PetscInt, a::Vector{PetscReal}, b::Vector{PetscReal}) 
-Compute the wedge product of a j
+	awedgeb::PetscReal = PetscDTAltVWedge(petsclib::PetscLibType, N::PetscInt, j::PetscInt, k::PetscInt, a::Vector{PetscReal}, b::Vector{PetscReal}) 
+Compute the wedge product of a j-form and a k-form, giving a (j+k) form
 
 Input Parameters:
 - `N` - the dimension of the vector space, N >= 0
@@ -1890,7 +1890,7 @@ where the sum is over permutations s such that s_1 < s_2 < ... < s_j and s_{j+1}
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVWedgeMatrix()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscDTAltV`, `PetscDTAltVWedgeMatrix()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVWedge"))
@@ -1915,8 +1915,8 @@ end
 end 
 
 """
-	awedgeMat::PetscReal = PetscDTAltVWedgeMatrix(petsclib::PetscLibType,N::PetscInt, j::PetscInt, k::PetscInt, a::Vector{PetscReal}) 
-Compute the matrix defined by the wedge product with a given j
+	awedgeMat::PetscReal = PetscDTAltVWedgeMatrix(petsclib::PetscLibType, N::PetscInt, j::PetscInt, k::PetscInt, a::Vector{PetscReal}) 
+Compute the matrix defined by the wedge product with a given j-form that maps k-forms to (j+k)-forms
 
 Input Parameters:
 - `N` - the dimension of the vector space, N >= 0
@@ -1929,7 +1929,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscDTAltVWedgeMatrix"))
@@ -1954,7 +1954,7 @@ end
 end 
 
 """
-	index::PetscInt = PetscDTBaryToIndex(petsclib::PetscLibType,len::PetscInt, sum::PetscInt, coord::Vector{PetscInt}) 
+	index::PetscInt = PetscDTBaryToIndex(petsclib::PetscLibType, len::PetscInt, sum::PetscInt, coord::Vector{PetscInt}) 
 convert a barycentric coordinate to an index
 
 Input Parameters:
@@ -1967,7 +1967,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTIndexToBary`
+See also: `PetscDTIndexToBary`
 
 # External Links
 $(_doc_external("DT/PetscDTBaryToIndex"))
@@ -1992,7 +1992,7 @@ end
 end 
 
 """
-	binomial::PetscReal = PetscDTBinomial(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
+	binomial::PetscReal = PetscDTBinomial(petsclib::PetscLibType, n::PetscInt, k::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTBinomial"))
@@ -2017,7 +2017,7 @@ end
 end 
 
 """
-	binomial::PetscInt = PetscDTBinomialInt(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
+	binomial::PetscInt = PetscDTBinomialInt(petsclib::PetscLibType, n::PetscInt, k::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTBinomialInt"))
@@ -2042,7 +2042,7 @@ end
 end 
 
 """
-	q::PetscQuadrature,fq::PetscQuadrature = PetscDTCreateDefaultQuadrature(petsclib::PetscLibType,ct::DMPolytopeType, qorder::PetscInt) 
+	q::PetscQuadrature,fq::PetscQuadrature = PetscDTCreateDefaultQuadrature(petsclib::PetscLibType, ct::DMPolytopeType, qorder::PetscInt) 
 Create default quadrature for a given cell
 
 Not collective
@@ -2057,7 +2057,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDTCreateQuadratureByCell()`, `PetscFECreateDefault()`, `PetscDTGaussTensorQuadrature()`, `PetscDTSimplexQuadrature()`, `PetscDTTensorQuadratureCreate()`
+See also: `PetscDTCreateQuadratureByCell()`, `PetscFECreateDefault()`, `PetscDTGaussTensorQuadrature()`, `PetscDTSimplexQuadrature()`, `PetscDTTensorQuadratureCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDTCreateDefaultQuadrature"))
@@ -2084,7 +2084,7 @@ end
 end 
 
 """
-	q::PetscQuadrature,fq::PetscQuadrature = PetscDTCreateQuadratureByCell(petsclib::PetscLibType,ct::DMPolytopeType, qorder::PetscInt, qtype::PetscDTSimplexQuadratureType) 
+	q::PetscQuadrature,fq::PetscQuadrature = PetscDTCreateQuadratureByCell(petsclib::PetscLibType, ct::DMPolytopeType, qorder::PetscInt, qtype::PetscDTSimplexQuadratureType) 
 Create default quadrature for a given cell
 
 Not collective
@@ -2100,7 +2100,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDTCreateDefaultQuadrature()`, `PetscFECreateDefault()`, `PetscDTGaussTensorQuadrature()`, `PetscDTSimplexQuadrature()`, `PetscDTTensorQuadratureCreate()`
+See also: `PetscDTCreateDefaultQuadrature()`, `PetscFECreateDefault()`, `PetscDTGaussTensorQuadrature()`, `PetscDTSimplexQuadrature()`, `PetscDTTensorQuadratureCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDTCreateQuadratureByCell"))
@@ -2127,7 +2127,7 @@ end
 end 
 
 """
-	perm::PetscInt,isOdd::PetscBool = PetscDTEnumPerm(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
+	perm::PetscInt,isOdd::PetscBool = PetscDTEnumPerm(petsclib::PetscLibType, n::PetscInt, k::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTEnumPerm"))
@@ -2154,7 +2154,7 @@ end
 end 
 
 """
-	perm::PetscInt,isOdd::PetscBool = PetscDTEnumSplit(petsclib::PetscLibType,n::PetscInt, k::PetscInt, j::PetscInt) 
+	perm::PetscInt,isOdd::PetscBool = PetscDTEnumSplit(petsclib::PetscLibType, n::PetscInt, k::PetscInt, j::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTEnumSplit"))
@@ -2181,7 +2181,7 @@ end
 end 
 
 """
-	subset::PetscInt = PetscDTEnumSubset(petsclib::PetscLibType,n::PetscInt, k::PetscInt, j::PetscInt) 
+	subset::PetscInt = PetscDTEnumSubset(petsclib::PetscLibType, n::PetscInt, k::PetscInt, j::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTEnumSubset"))
@@ -2206,7 +2206,7 @@ end
 end 
 
 """
-	factorial::PetscReal = PetscDTFactorial(petsclib::PetscLibType,n::PetscInt) 
+	factorial::PetscReal = PetscDTFactorial(petsclib::PetscLibType, n::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTFactorial"))
@@ -2231,7 +2231,7 @@ end
 end 
 
 """
-	factorial::PetscInt = PetscDTFactorialInt(petsclib::PetscLibType,n::PetscInt) 
+	factorial::PetscInt = PetscDTFactorialInt(petsclib::PetscLibType, n::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTFactorialInt"))
@@ -2256,7 +2256,7 @@ end
 end 
 
 """
-	PetscDTGaussJacobiQuadrature(petsclib::PetscLibType,npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) 
+	PetscDTGaussJacobiQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) 
 quadrature for the interval [a, b] with the weight function
 (x-a)^\\alpha (x-b)^\\beta.
 
@@ -2275,7 +2275,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDTGaussQuadrature()`
+See also: `PetscDTGaussQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTGaussJacobiQuadrature"))
@@ -2298,7 +2298,7 @@ end
 end 
 
 """
-	PetscDTGaussLobattoJacobiQuadrature(petsclib::PetscLibType,npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) 
+	PetscDTGaussLobattoJacobiQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) 
 quadrature for the interval [a, b] with the weight function
 (x-a)^\\alpha (x-b)^\\beta, with endpoints `a` and `b` included as quadrature points.
 
@@ -2317,7 +2317,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDTGaussJacobiQuadrature()`
+See also: `PetscDTGaussJacobiQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTGaussLobattoJacobiQuadrature"))
@@ -2340,8 +2340,8 @@ end
 end 
 
 """
-	PetscDTGaussLobattoLegendreQuadrature(petsclib::PetscLibType,npoints::PetscInt, type::PetscGaussLobattoLegendreCreateType, x::Vector{PetscReal}, w::Vector{PetscReal}) 
-creates a set of the locations and weights of the Gauss
+	PetscDTGaussLobattoLegendreQuadrature(petsclib::PetscLibType, npoints::PetscInt, type::PetscGaussLobattoLegendreCreateType, x::Vector{PetscReal}, w::Vector{PetscReal}) 
+creates a set of the locations and weights of the Gauss-Lobatto-Legendre
 nodes of a given size on the domain [-1,1]
 
 Not Collective
@@ -2356,7 +2356,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDTGaussQuadrature()`, `PetscGaussLobattoLegendreCreateType`
+See also: `PetscDTGaussQuadrature()`, `PetscGaussLobattoLegendreCreateType`
 
 # External Links
 $(_doc_external("DT/PetscDTGaussLobattoLegendreQuadrature"))
@@ -2379,8 +2379,8 @@ end
 end 
 
 """
-	PetscDTGaussQuadrature(petsclib::PetscLibType,npoints::PetscInt, a::PetscReal, b::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) 
-create Gauss
+	PetscDTGaussQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, x::Vector{PetscReal}, w::Vector{PetscReal}) 
+create Gauss-Legendre quadrature
 
 Not Collective
 
@@ -2395,7 +2395,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDTLegendreEval()`, `PetscDTGaussJacobiQuadrature()`
+See also: `PetscDTLegendreEval()`, `PetscDTGaussJacobiQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTGaussQuadrature"))
@@ -2418,8 +2418,8 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscDTGaussTensorQuadrature(petsclib::PetscLibType,dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal) 
-creates a tensor
+	q::PetscQuadrature = PetscDTGaussTensorQuadrature(petsclib::PetscLibType, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal) 
+creates a tensor-product Gauss quadrature
 
 Not Collective
 
@@ -2435,7 +2435,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTGaussQuadrature()`, `PetscDTLegendreEval()`
+See also: `PetscDTGaussQuadrature()`, `PetscDTLegendreEval()`
 
 # External Links
 $(_doc_external("DT/PetscDTGaussTensorQuadrature"))
@@ -2460,7 +2460,7 @@ end
 end 
 
 """
-	index::PetscInt = PetscDTGradedOrderToIndex(petsclib::PetscLibType,len::PetscInt, degtup::Vector{PetscInt}) 
+	index::PetscInt = PetscDTGradedOrderToIndex(petsclib::PetscLibType, len::PetscInt, degtup::Vector{PetscInt}) 
 convert a tuple into an index in a graded order, the inverse of `PetscDTIndexToGradedOrder()`.
 
 Input Parameters:
@@ -2472,7 +2472,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTIndexToGradedOrder()`
+See also: `PetscDTIndexToGradedOrder()`
 
 # External Links
 $(_doc_external("DT/PetscDTGradedOrderToIndex"))
@@ -2497,7 +2497,7 @@ end
 end 
 
 """
-	PetscDTIndexToBary(petsclib::PetscLibType,len::PetscInt, sum::PetscInt, index::PetscInt, coord::Vector{PetscInt}) 
+	PetscDTIndexToBary(petsclib::PetscLibType, len::PetscInt, sum::PetscInt, index::PetscInt, coord::Vector{PetscInt}) 
 convert an index into a barycentric coordinate.
 
 Input Parameters:
@@ -2510,7 +2510,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTBaryToIndex()`
+See also: `PetscDTBaryToIndex()`
 
 # External Links
 $(_doc_external("DT/PetscDTIndexToBary"))
@@ -2533,7 +2533,7 @@ end
 end 
 
 """
-	PetscDTIndexToGradedOrder(petsclib::PetscLibType,len::PetscInt, index::PetscInt, degtup::Vector{PetscInt}) 
+	PetscDTIndexToGradedOrder(petsclib::PetscLibType, len::PetscInt, index::PetscInt, degtup::Vector{PetscInt}) 
 convert an index into a tuple of monomial degrees in a graded order (that is, if the degree sum of tuple x is less than the degree sum of tuple y,
 then the index of x is smaller than the index of y)
 
@@ -2546,7 +2546,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTGradedOrderToIndex()`
+See also: `PetscDTGradedOrderToIndex()`
 
 # External Links
 $(_doc_external("DT/PetscDTIndexToGradedOrder"))
@@ -2569,8 +2569,8 @@ end
 end 
 
 """
-	PetscDTJacobiEval(petsclib::PetscLibType,npoints::PetscInt, alpha::PetscReal, beta::PetscReal, points::Vector{PetscReal}, ndegree::PetscInt, degrees::Vector{PetscInt}, B::Vector{PetscReal}, D::Vector{PetscReal}, D2::Vector{PetscReal}) 
-evaluate Jacobi polynomials for the weight function (1.+x)^{\\alpha} (1.
+	PetscDTJacobiEval(petsclib::PetscLibType, npoints::PetscInt, alpha::PetscReal, beta::PetscReal, points::Vector{PetscReal}, ndegree::PetscInt, degrees::Vector{PetscInt}, B::Vector{PetscReal}, D::Vector{PetscReal}, D2::Vector{PetscReal}) 
+evaluate Jacobi polynomials for the weight function (1.+x)^{\\alpha} (1.-x)^{\\beta} at a set of points
 at points
 
 Not Collective
@@ -2590,7 +2590,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDTGaussQuadrature()`, `PetscDTLegendreEval()`
+See also: `PetscDTGaussQuadrature()`, `PetscDTLegendreEval()`
 
 # External Links
 $(_doc_external("DT/PetscDTJacobiEval"))
@@ -2613,7 +2613,7 @@ end
 end 
 
 """
-	PetscDTJacobiEvalJet(petsclib::PetscLibType,alpha::PetscReal, beta::PetscReal, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt, p::Vector{PetscReal}) 
+	PetscDTJacobiEvalJet(petsclib::PetscLibType, alpha::PetscReal, beta::PetscReal, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt, p::Vector{PetscReal}) 
 Evaluate the jet (function and derivatives) of the Jacobi polynomials basis up to a given degree.
 
 Input Parameters:
@@ -2632,7 +2632,7 @@ varying) dimension is the index of the evaluation point.
 
 Level: advanced
 
--seealso: `PetscDTJacobiEval()`, `PetscDTPKDEvalJet()`
+See also: `PetscDTJacobiEval()`, `PetscDTPKDEvalJet()`
 
 # External Links
 $(_doc_external("DT/PetscDTJacobiEvalJet"))
@@ -2655,7 +2655,7 @@ end
 end 
 
 """
-	norm::PetscReal = PetscDTJacobiNorm(petsclib::PetscLibType,alpha::PetscReal, beta::PetscReal, n::PetscInt) 
+	norm::PetscReal = PetscDTJacobiNorm(petsclib::PetscLibType, alpha::PetscReal, beta::PetscReal, n::PetscInt) 
 Compute the weighted L2 norm of a Jacobi polynomial.
 
 \\| P^{\\alpha,\\beta}_n \\|_{\\alpha,\\beta}^2 = \\int_{-1}^1 (1 + x)^{\\alpha} (1 - x)^{\\beta} P^{\\alpha,\\beta}_n (x)^2 dx.
@@ -2670,7 +2670,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscQuadrature`, `PetscDTJacobiEval()`
+See also: `PetscQuadrature`, `PetscDTJacobiEval()`
 
 # External Links
 $(_doc_external("DT/PetscDTJacobiNorm"))
@@ -2695,7 +2695,7 @@ end
 end 
 
 """
-	PetscDTLegendreEval(petsclib::PetscLibType,npoints::PetscInt, points::Vector{PetscReal}, ndegree::PetscInt, degrees::Vector{PetscInt}, B::Vector{PetscReal}, D::Vector{PetscReal}, D2::Vector{PetscReal}) 
+	PetscDTLegendreEval(petsclib::PetscLibType, npoints::PetscInt, points::Vector{PetscReal}, ndegree::PetscInt, degrees::Vector{PetscInt}, B::Vector{PetscReal}, D::Vector{PetscReal}, D2::Vector{PetscReal}) 
 evaluate Legendre polynomials at points
 
 Not Collective
@@ -2713,7 +2713,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDTGaussQuadrature()`
+See also: `PetscDTGaussQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTLegendreEval"))
@@ -2736,8 +2736,8 @@ end
 end 
 
 """
-	PetscDTPKDEvalJet(petsclib::PetscLibType,dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt, p::Vector{PetscReal}) 
-Evaluate the jet (function and derivatives) of the Proriol
+	PetscDTPKDEvalJet(petsclib::PetscLibType, dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt, p::Vector{PetscReal}) 
+Evaluate the jet (function and derivatives) of the Proriol-Koornwinder-Dubiner (PKD) basis for
 the space of polynomials up to a given degree.
 
 Input Parameters:
@@ -2756,7 +2756,7 @@ index; the third (fastest varying) dimension is the index of the evaluation poin
 
 Level: advanced
 
--seealso: `PetscDTGradedOrderToIndex()`, `PetscDTIndexToGradedOrder()`, `PetscDTJacobiEvalJet()`
+See also: `PetscDTGradedOrderToIndex()`, `PetscDTIndexToGradedOrder()`, `PetscDTJacobiEvalJet()`
 
 # External Links
 $(_doc_external("DT/PetscDTPKDEvalJet"))
@@ -2779,8 +2779,8 @@ end
 end 
 
 """
-	PetscDTPTrimmedEvalJet(petsclib::PetscLibType,dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, formDegree::PetscInt, jetDegree::PetscInt, p::Vector{PetscReal}) 
-Evaluate the jet (function and derivatives) of a basis of the trimmed polynomial k
+	PetscDTPTrimmedEvalJet(petsclib::PetscLibType, dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, formDegree::PetscInt, jetDegree::PetscInt, p::Vector{PetscReal}) 
+Evaluate the jet (function and derivatives) of a basis of the trimmed polynomial k-forms up to
 a given degree.
 
 Input Parameters:
@@ -2799,7 +2799,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDTPKDEvalJet()`, `PetscDTPTrimmedSize()`
+See also: `PetscDTPKDEvalJet()`, `PetscDTPTrimmedSize()`
 
 # External Links
 $(_doc_external("DT/PetscDTPTrimmedEvalJet"))
@@ -2822,8 +2822,8 @@ end
 end 
 
 """
-	size::PetscInt = PetscDTPTrimmedSize(petsclib::PetscLibType,dim::PetscInt, degree::PetscInt, formDegree::PetscInt) 
-The size of the trimmed polynomial space of k
+	size::PetscInt = PetscDTPTrimmedSize(petsclib::PetscLibType, dim::PetscInt, degree::PetscInt, formDegree::PetscInt) 
+The size of the trimmed polynomial space of k-forms with a given degree and form degree,
 which can be evaluated in `PetscDTPTrimmedEvalJet()`.
 
 Input Parameters:
@@ -2836,7 +2836,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDTPTrimmedEvalJet()`
+See also: `PetscDTPTrimmedEvalJet()`
 
 # External Links
 $(_doc_external("DT/PetscDTPTrimmedSize"))
@@ -2861,7 +2861,7 @@ end
 end 
 
 """
-	perm::PetscInt,k::PetscInt,isOdd::PetscBool = PetscDTPermIndex(petsclib::PetscLibType,n::PetscInt) 
+	perm::PetscInt,k::PetscInt,isOdd::PetscBool = PetscDTPermIndex(petsclib::PetscLibType, n::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTPermIndex"))
@@ -2890,7 +2890,7 @@ end
 end 
 
 """
-	PetscDTReconstructPoly(petsclib::PetscLibType,degree::PetscInt, nsource::PetscInt, sourcex::Vector{PetscReal}, ntarget::PetscInt, targetx::Vector{PetscReal}, R::Vector{PetscReal}) 
+	PetscDTReconstructPoly(petsclib::PetscLibType, degree::PetscInt, nsource::PetscInt, sourcex::Vector{PetscReal}, ntarget::PetscInt, targetx::Vector{PetscReal}, R::Vector{PetscReal}) 
 create matrix representing polynomial reconstruction using cell intervals and evaluation at target intervals
 
 Not Collective
@@ -2907,7 +2907,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDTLegendreEval()`
+See also: `PetscDTLegendreEval()`
 
 # External Links
 $(_doc_external("DT/PetscDTReconstructPoly"))
@@ -2930,7 +2930,7 @@ end
 end 
 
 """
-	quad::PetscQuadrature = PetscDTSimplexQuadrature(petsclib::PetscLibType,dim::PetscInt, degree::PetscInt, type::PetscDTSimplexQuadratureType) 
+	quad::PetscQuadrature = PetscDTSimplexQuadrature(petsclib::PetscLibType, dim::PetscInt, degree::PetscInt, type::PetscDTSimplexQuadratureType) 
 Create a quadrature rule for a simplex that exactly integrates polynomials up to a given degree.
 
 Not Collective
@@ -2947,7 +2947,7 @@ polynomials up to the given degree
 
 Level: intermediate
 
--seealso: `PetscDTSimplexQuadratureType`, `PetscDTGaussQuadrature()`, `PetscDTStroudCononicalQuadrature()`, `PetscQuadrature`
+See also: `PetscDTSimplexQuadratureType`, `PetscDTGaussQuadrature()`, `PetscDTStroudCononicalQuadrature()`, `PetscQuadrature`
 
 # External Links
 $(_doc_external("DT/PetscDTSimplexQuadrature"))
@@ -2972,7 +2972,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscDTStroudConicalQuadrature(petsclib::PetscLibType,dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal) 
+	q::PetscQuadrature = PetscDTStroudConicalQuadrature(petsclib::PetscLibType, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal) 
 create Stroud conical quadrature for a simplex {cite}`karniadakis2005spectral`
 
 Not Collective
@@ -2989,7 +2989,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTGaussTensorQuadrature()`, `PetscDTGaussQuadrature()`
+See also: `PetscDTGaussTensorQuadrature()`, `PetscDTGaussQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTStroudConicalQuadrature"))
@@ -3014,7 +3014,7 @@ end
 end 
 
 """
-	subset::PetscInt,index::PetscInt = PetscDTSubsetIndex(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
+	subset::PetscInt,index::PetscInt = PetscDTSubsetIndex(petsclib::PetscLibType, n::PetscInt, k::PetscInt) 
 
 # External Links
 $(_doc_external("DM/PetscDTSubsetIndex"))
@@ -3041,8 +3041,8 @@ end
 end 
 
 """
-	sol::PetscReal = PetscDTTanhSinhIntegrate(petsclib::PetscLibType,func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) 
-Approximate \\int_a^b f(x)\\,dx to a requested precision using adaptive tanh
+	sol::PetscReal = PetscDTTanhSinhIntegrate(petsclib::PetscLibType, func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) 
+Approximate \\int_a^b f(x)\\,dx to a requested precision using adaptive tanh-sinh (double-exponential) quadrature
 
 Not Collective; No Fortran Support
 
@@ -3058,7 +3058,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDTTanhSinhIntegrateMPFR()`, `PetscDTGaussQuadrature()`
+See also: `PetscDTTanhSinhIntegrateMPFR()`, `PetscDTGaussQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhIntegrate"))
@@ -3083,8 +3083,8 @@ end
 end 
 
 """
-	sol::PetscReal = PetscDTTanhSinhIntegrateMPFR(petsclib::PetscLibType,func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) 
-High
+	sol::PetscReal = PetscDTTanhSinhIntegrateMPFR(petsclib::PetscLibType, func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Ptr{Cvoid}) 
+High-precision version of `PetscDTTanhSinhIntegrate()` that uses the MPFR arbitrary-precision library to evaluate the quadrature
 
 Not Collective; No Fortran Support
 
@@ -3100,7 +3100,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDTTanhSinhIntegrate()`, `PetscDTGaussQuadrature()`
+See also: `PetscDTTanhSinhIntegrate()`, `PetscDTGaussQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhIntegrateMPFR"))
@@ -3125,8 +3125,8 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscDTTanhSinhTensorQuadrature(petsclib::PetscLibType,dim::PetscInt, level::PetscInt, a::PetscReal, b::PetscReal) 
-create tanh
+	q::PetscQuadrature = PetscDTTanhSinhTensorQuadrature(petsclib::PetscLibType, dim::PetscInt, level::PetscInt, a::PetscReal, b::PetscReal) 
+create tanh-sinh quadrature for a tensor product cell
 
 Not Collective
 
@@ -3141,7 +3141,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDTGaussTensorQuadrature()`, `PetscQuadrature`
+See also: `PetscDTGaussTensorQuadrature()`, `PetscQuadrature`
 
 # External Links
 $(_doc_external("DT/PetscDTTanhSinhTensorQuadrature"))
@@ -3166,8 +3166,8 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscDTTensorQuadratureCreate(petsclib::PetscLibType,q1::PetscQuadrature, q2::PetscQuadrature) 
-create the tensor product quadrature from two lower
+	q::PetscQuadrature = PetscDTTensorQuadratureCreate(petsclib::PetscLibType, q1::PetscQuadrature, q2::PetscQuadrature) 
+create the tensor product quadrature from two lower-dimensional quadratures
 
 Not Collective
 
@@ -3180,7 +3180,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscDTGaussTensorQuadrature()`
+See also: `PetscQuadrature`, `PetscDTGaussTensorQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscDTTensorQuadratureCreate"))
@@ -3205,8 +3205,8 @@ end
 end 
 
 """
-	name::String = PetscDemangleSymbol(petsclib::PetscLibType,mangledName::String) 
-Convert a C++
+	name::String = PetscDemangleSymbol(petsclib::PetscLibType, mangledName::String) 
+Convert a C++-mangled symbol name to its human-readable form using `abi::__cxa_demangle()` when available
 
 Not Collective
 
@@ -3218,7 +3218,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscStackView()`, `PetscStackPrint()`
+See also: `PetscStackView()`, `PetscStackPrint()`
 
 # External Links
 $(_doc_external("Sys/PetscDemangleSymbol"))
@@ -3248,7 +3248,7 @@ Attempts to determine the floating point trapping that exists when `PetscInitial
 
 Not Collective
 
--seealso: `PetscFPTrapPush()`, `PetscFPTrapPop()`, `PetscDetermineInitialFPTrap()`
+See also: `PetscFPTrapPush()`, `PetscFPTrapPop()`, `PetscDetermineInitialFPTrap()`
 
 # External Links
 $(_doc_external("Sys/PetscDetermineInitialFPTrap"))
@@ -3270,7 +3270,7 @@ end
 end 
 
 """
-	value::PetscInt,found::PetscBool = PetscEListFind(petsclib::PetscLibType,n::PetscInt, list::Cchar, str::String) 
+	value::PetscInt,found::PetscBool = PetscEListFind(petsclib::PetscLibType, n::PetscInt, list::Cchar, str::String) 
 searches list of strings for given string, using case insensitive matching
 
 Not Collective; No Fortran Support
@@ -3286,7 +3286,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscEnumFind()`
+See also: `PetscEnumFind()`
 
 # External Links
 $(_doc_external("Sys/PetscEListFind"))
@@ -3382,7 +3382,7 @@ end
 end 
 
 """
-	PetscEmacsClientErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+	PetscEmacsClientErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
 Error handler that uses the emacsclient program to
 load the file where the error occurred. Then calls the "previous" error handler.
 
@@ -3403,7 +3403,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+See also: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
 `PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscTraceBackErrorHandler()`, `PetscReturnErrorHandler()`,
 `PetscErrorType`, `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`
 
@@ -3436,7 +3436,7 @@ Collective on `PETSC_COMM_WORLD`
 
 Level: advanced
 
--seealso: `PetscInitialize()`, `PetscOptionsView()`, `PetscMallocDump()`, `PetscMPIDump()`, `PetscFinalize()`
+See also: `PetscInitialize()`, `PetscOptionsView()`, `PetscMallocDump()`, `PetscMPIDump()`, `PetscFinalize()`
 
 # External Links
 $(_doc_external("Sys/PetscEnd"))
@@ -3458,7 +3458,7 @@ end
 end 
 
 """
-	value::PetscEnum,found::PetscBool = PetscEnumFind(petsclib::PetscLibType,enumlist::Cchar, str::String) 
+	value::PetscEnum,found::PetscBool = PetscEnumFind(petsclib::PetscLibType, enumlist::Cchar, str::String) 
 searches enum list of strings for given string, using case insensitive matching
 
 Not Collective; No Fortran Support
@@ -3473,7 +3473,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscEListFind()`
+See also: `PetscEListFind()`
 
 # External Links
 $(_doc_external("Sys/PetscEnumFind"))
@@ -3500,7 +3500,7 @@ end
 end 
 
 """
-	text::Ptr{Cchar},specific::Ptr{Cchar} = PetscErrorMessage(petsclib::PetscLibType,errnum::PetscErrorCode) 
+	text::Ptr{Cchar},specific::Ptr{Cchar} = PetscErrorMessage(petsclib::PetscLibType, errnum::PetscErrorCode) 
 Returns the text string associated with a PETSc error code.
 
 Not Collective, No Fortran Support
@@ -3515,7 +3515,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscErrorCode`, `PetscPushErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+See also: `PetscErrorCode`, `PetscPushErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
 `PetscError()`, `SETERRQ()`, `PetscCall()`, `PetscAbortErrorHandler()`,
 `PetscTraceBackErrorHandler()`
 
@@ -3545,13 +3545,13 @@ end
 
 """
 	PetscErrorPrintfInitialize(petsclib::PetscLibType) 
-Cache the architecture, host name, user name, program name and date so that PETSc's error
+Cache the architecture, host name, user name, program name and date so that PETSc's error-traceback printer does not need to make system calls from inside a signal handler
 
 Collective
 
 Level: developer
 
--seealso: `PetscErrorPrintf`, `PetscTraceBackErrorHandler()`, `PetscPushErrorHandler()`
+See also: `PetscErrorPrintf`, `PetscTraceBackErrorHandler()`, `PetscPushErrorHandler()`
 
 # External Links
 $(_doc_external("Sys/PetscErrorPrintfInitialize"))
@@ -3573,7 +3573,7 @@ end
 end 
 
 """
-	PetscFClose(petsclib::PetscLibType,comm::MPI_Comm, fd::Libc.FILE) 
+	PetscFClose(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE) 
 Has MPI rank 0 in the communicator close a
 file (usually obtained with `PetscFOpen()`; all others do nothing.
 
@@ -3585,7 +3585,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscFOpen()`
+See also: `PetscFOpen()`
 
 # External Links
 $(_doc_external("Sys/PetscFClose"))
@@ -3608,7 +3608,7 @@ end
 end 
 
 """
-	PetscFFlush(petsclib::PetscLibType,fd::Libc.FILE) 
+	PetscFFlush(petsclib::PetscLibType, fd::Libc.FILE) 
 Flush a file stream
 
 Input Parameter:
@@ -3616,7 +3616,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscPrintf()`, `PetscFPrintf()`, `PetscVFPrintf()`, `PetscVSNPrintf()`
+See also: `PetscPrintf()`, `PetscFPrintf()`, `PetscVFPrintf()`, `PetscVSNPrintf()`
 
 # External Links
 $(_doc_external("Sys/PetscFFlush"))
@@ -3639,7 +3639,7 @@ end
 end 
 
 """
-	fp::Ptr{Libc.FILE} = PetscFOpen(petsclib::PetscLibType,comm::MPI_Comm, name::String, mode::String) 
+	fp::Ptr{Libc.FILE} = PetscFOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, mode::String) 
 Has the first process in the MPI communicator open a file;
 all others do nothing.
 
@@ -3655,7 +3655,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFClose()`, `PetscSynchronizedFGets()`, `PetscSynchronizedPrintf()`, `PetscSynchronizedFlush()`,
+See also: `PetscFClose()`, `PetscSynchronizedFGets()`, `PetscSynchronizedPrintf()`, `PetscSynchronizedFlush()`,
 `PetscFPrintf()`
 
 # External Links
@@ -3688,7 +3688,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `PetscFPTrapPush()`, `PetscSetFPTrap()`, `PetscDetermineInitialFPTrap()`
+See also: `PetscFPTrapPush()`, `PetscSetFPTrap()`, `PetscDetermineInitialFPTrap()`
 
 # External Links
 $(_doc_external("Sys/PetscFPTrapPop"))
@@ -3710,7 +3710,7 @@ end
 end 
 
 """
-	PetscFPTrapPush(petsclib::PetscLibType,trap::PetscFPTrap) 
+	PetscFPTrapPush(petsclib::PetscLibType, trap::PetscFPTrap) 
 push a floating point trapping mode, restored using `PetscFPTrapPop()`
 
 Not Collective
@@ -3720,7 +3720,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscFPTrapPop()`, `PetscSetFPTrap()`, `PetscDetermineInitialFPTrap()`
+See also: `PetscFPTrapPop()`, `PetscSetFPTrap()`, `PetscDetermineInitialFPTrap()`
 
 # External Links
 $(_doc_external("Sys/PetscFPTrapPush"))
@@ -3743,7 +3743,7 @@ end
 end 
 
 """
-	found::PetscBool = PetscFileRetrieve(petsclib::PetscLibType,comm::MPI_Comm, url::String, localname::String, llen::Csize_t) 
+	found::PetscBool = PetscFileRetrieve(petsclib::PetscLibType, comm::MPI_Comm, url::String, localname::String, llen::Csize_t) 
 Obtains a file from a URL or a compressed file
 and copies into local disk space as uncompressed.
 
@@ -3760,7 +3760,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDLLibraryRetrieve()`
+See also: `PetscDLLibraryRetrieve()`
 
 # External Links
 $(_doc_external("Sys/PetscFileRetrieve"))
@@ -3802,7 +3802,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: `PetscInitialize()`, `PetscOptionsView()`, `PetscMallocDump()`, `PetscMPIDump()`, `PetscEnd()`
+See also: `PetscInitialize()`, `PetscOptionsView()`, `PetscMallocDump()`, `PetscMPIDump()`, `PetscEnd()`
 
 # External Links
 $(_doc_external("Sys/PetscFinalize"))
@@ -3832,7 +3832,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscInitialize()`, `PetscInitializeNoArguments()`, `PetscInitializeFortran()`
+See also: `PetscInitialize()`, `PetscInitializeNoArguments()`, `PetscInitializeFortran()`
 
 # External Links
 $(_doc_external("Sys/PetscFinalized"))
@@ -3857,7 +3857,7 @@ end
 end 
 
 """
-	loc::PetscCount = PetscFindCount(petsclib::PetscLibType,key::PetscCount, n::PetscCount, X::Vector{PetscCount}) 
+	loc::PetscCount = PetscFindCount(petsclib::PetscLibType, key::PetscCount, n::PetscCount, X::Vector{PetscCount}) 
 Finds the location of a `PetscCount` key in a sorted array of `PetscCount`
 
 Not Collective
@@ -3872,7 +3872,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscCount`, `PetscSortCount()`
+See also: `PetscCount`, `PetscSortCount()`
 
 # External Links
 $(_doc_external("Sys/PetscFindCount"))
@@ -3897,7 +3897,7 @@ end
 end 
 
 """
-	loc::PetscInt = PetscFindInt(petsclib::PetscLibType,key::PetscInt, n::PetscCount, X::Vector{PetscInt}) 
+	loc::PetscInt = PetscFindInt(petsclib::PetscLibType, key::PetscInt, n::PetscCount, X::Vector{PetscInt}) 
 Finds the location of a `PetscInt` key in a sorted array of `PetscInt`
 
 Not Collective
@@ -3912,7 +3912,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscIntSortSemiOrdered()`, `PetscSortInt()`, `PetscSortIntWithArray()`, `PetscSortRemoveDupsInt()`
+See also: `PetscIntSortSemiOrdered()`, `PetscSortInt()`, `PetscSortIntWithArray()`, `PetscSortRemoveDupsInt()`
 
 # External Links
 $(_doc_external("Sys/PetscFindInt"))
@@ -3937,7 +3937,7 @@ end
 end 
 
 """
-	loc::PetscInt = PetscFindMPIInt(petsclib::PetscLibType,key::PetscMPIInt, n::PetscCount, X::Vector{PetscMPIInt}) 
+	loc::PetscInt = PetscFindMPIInt(petsclib::PetscLibType, key::PetscMPIInt, n::PetscCount, X::Vector{PetscMPIInt}) 
 Finds `PetscMPIInt` in a sorted array of `PetscMPIInt`
 
 Not Collective
@@ -3952,7 +3952,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscMPIIntSortSemiOrdered()`, `PetscSortInt()`, `PetscSortIntWithArray()`, `PetscSortRemoveDupsInt()`
+See also: `PetscMPIIntSortSemiOrdered()`, `PetscSortInt()`, `PetscSortIntWithArray()`, `PetscSortRemoveDupsInt()`
 
 # External Links
 $(_doc_external("Sys/PetscFindMPIInt"))
@@ -3977,7 +3977,7 @@ end
 end 
 
 """
-	loc::PetscInt = PetscFindReal(petsclib::PetscLibType,key::PetscReal, n::PetscCount, t::Vector{PetscReal}, eps::PetscReal) 
+	loc::PetscInt = PetscFindReal(petsclib::PetscLibType, key::PetscReal, n::PetscCount, t::Vector{PetscReal}, eps::PetscReal) 
 Finds a `PetscReal` in a sorted array of `PetscReal`s
 
 Not Collective
@@ -3993,7 +3993,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`, `PetscSortRealWithArrayInt()`
+See also: `PetscSortReal()`, `PetscSortRealWithArrayInt()`
 
 # External Links
 $(_doc_external("Sys/PetscFindReal"))
@@ -4018,7 +4018,7 @@ end
 end 
 
 """
-	PetscFixFilename(petsclib::PetscLibType,filein::String, fileout::String) 
+	PetscFixFilename(petsclib::PetscLibType, filein::String, fileout::String) 
 Fixes a file name so that it is correct for both Unix and
 Microsoft Windows by using the correct / or \\ to separate directories.
 
@@ -4032,7 +4032,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFOpen()`
+See also: `PetscFOpen()`
 
 # External Links
 $(_doc_external("Sys/PetscFixFilename"))
@@ -4055,7 +4055,7 @@ end
 end 
 
 """
-	PetscFormKeySort(petsclib::PetscLibType,n::PetscInt, arr::Vector{PetscFormKey}) 
+	PetscFormKeySort(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscFormKey}) 
 Sorts an array of `PetscFormKey` in place in increasing order.
 
 Not Collective
@@ -4066,7 +4066,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFormKey`, `PetscIntSortSemiOrdered()`, `PetscSortInt()`
+See also: `PetscFormKey`, `PetscIntSortSemiOrdered()`, `PetscSortInt()`
 
 # External Links
 $(_doc_external("DT/PetscFormKeySort"))
@@ -4089,7 +4089,7 @@ end
 end 
 
 """
-	PetscFormatConvert(petsclib::PetscLibType,format::String, newformat::String) 
+	PetscFormatConvert(petsclib::PetscLibType, format::String, newformat::String) 
 converts %g to [|%g|] so that `PetscVSNPrintf()` can ensure all %g formatted numbers have a decimal point when printed.
 
 No Fortran Support
@@ -4102,7 +4102,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFormatConvertGetSize()`, `PetscVSNPrintf()`, `PetscVFPrintf()`
+See also: `PetscFormatConvertGetSize()`, `PetscVSNPrintf()`, `PetscVFPrintf()`
 
 # External Links
 $(_doc_external("Sys/PetscFormatConvert"))
@@ -4125,7 +4125,7 @@ end
 end 
 
 """
-	size::Csize_t = PetscFormatConvertGetSize(petsclib::PetscLibType,format::String) 
+	size::Csize_t = PetscFormatConvertGetSize(petsclib::PetscLibType, format::String) 
 Gets the length of a string needed to hold data converted with `PetscFormatConvert()` based on the format
 
 No Fortran Support
@@ -4138,7 +4138,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFormatConvert()`, `PetscVSNPrintf()`, `PetscVFPrintf()`
+See also: `PetscFormatConvert()`, `PetscVSNPrintf()`, `PetscVFPrintf()`
 
 # External Links
 $(_doc_external("Sys/PetscFormatConvertGetSize"))
@@ -4163,8 +4163,8 @@ end
 end 
 
 """
-	PetscFormatRealArray(petsclib::PetscLibType,buf::String, len::Csize_t, fmt::String, n::PetscInt, x::Vector{PetscReal}) 
-Format an array of `PetscReal` values as a comma
+	PetscFormatRealArray(petsclib::PetscLibType, buf::String, len::Csize_t, fmt::String, n::PetscInt, x::Vector{PetscReal}) 
+Format an array of `PetscReal` values as a comma-separated string using a `printf`-style format
 
 Not Collective; No Fortran Support
 
@@ -4179,7 +4179,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscSNPrintf()`, `PetscViewerASCIIPrintf()`
+See also: `PetscSNPrintf()`, `PetscViewerASCIIPrintf()`
 
 # External Links
 $(_doc_external("Sys/PetscFormatRealArray"))
@@ -4212,7 +4212,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscGetArguments()`
+See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscGetArguments()`
 
 # External Links
 $(_doc_external("Sys/PetscFreeArguments"))
@@ -4237,7 +4237,7 @@ end
 end 
 
 """
-	onodes::Ptr{PetscMPIInt},olengths::Ptr{PetscMPIInt} = PetscGatherMessageLengths(petsclib::PetscLibType,comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths::Vector{PetscMPIInt}) 
+	onodes::Ptr{PetscMPIInt},olengths::Ptr{PetscMPIInt} = PetscGatherMessageLengths(petsclib::PetscLibType, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths::Vector{PetscMPIInt}) 
 Computes information about messages that an MPI rank will receive,
 including (from-id,length) pairs for each message.
 
@@ -4256,7 +4256,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths2()`, `PetscCommBuildTwoSided()`
+See also: `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths2()`, `PetscCommBuildTwoSided()`
 
 # External Links
 $(_doc_external("Sys/PetscGatherMessageLengths"))
@@ -4283,7 +4283,7 @@ end
 end 
 
 """
-	onodes::Ptr{PetscMPIInt},olengths1::Ptr{PetscMPIInt},olengths2::Ptr{PetscMPIInt} = PetscGatherMessageLengths2(petsclib::PetscLibType,comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths1::Vector{PetscMPIInt}, ilengths2::Vector{PetscMPIInt}) 
+	onodes::Ptr{PetscMPIInt},olengths1::Ptr{PetscMPIInt},olengths2::Ptr{PetscMPIInt} = PetscGatherMessageLengths2(petsclib::PetscLibType, comm::MPI_Comm, nsends::PetscMPIInt, nrecvs::PetscMPIInt, ilengths1::Vector{PetscMPIInt}, ilengths2::Vector{PetscMPIInt}) 
 Computes info about messages that a MPI rank will receive,
 including (from-id,length) pairs for each message. Same functionality as `PetscGatherMessageLengths()`
 except it takes TWO ilenths and output TWO olengths.
@@ -4304,7 +4304,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscGatherMessageLengths()`, `PetscGatherNumberOfMessages()`, `PetscCommBuildTwoSided()`
+See also: `PetscGatherMessageLengths()`, `PetscGatherNumberOfMessages()`, `PetscCommBuildTwoSided()`
 
 # External Links
 $(_doc_external("Sys/PetscGatherMessageLengths2"))
@@ -4333,7 +4333,7 @@ end
 end 
 
 """
-	nrecvs::PetscMPIInt = PetscGatherNumberOfMessages(petsclib::PetscLibType,comm::MPI_Comm, iflags::Vector{PetscMPIInt}, ilengths::Vector{PetscMPIInt}) 
+	nrecvs::PetscMPIInt = PetscGatherNumberOfMessages(petsclib::PetscLibType, comm::MPI_Comm, iflags::Vector{PetscMPIInt}, ilengths::Vector{PetscMPIInt}) 
 Computes the number of messages an MPI rank expects to receive during a neighbor communication
 
 Collective, No Fortran Support
@@ -4350,7 +4350,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGatherMessageLengths()`, `PetscGatherMessageLengths2()`, `PetscCommBuildTwoSided()`
+See also: `PetscGatherMessageLengths()`, `PetscGatherMessageLengths2()`, `PetscCommBuildTwoSided()`
 
 # External Links
 $(_doc_external("Sys/PetscGatherNumberOfMessages"))
@@ -4375,7 +4375,7 @@ end
 end 
 
 """
-	AA::Ptr{PetscReal} = PetscGaussLobattoLegendreElementAdvectionCreate(petsclib::PetscLibType,n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) 
+	AA::Ptr{PetscReal} = PetscGaussLobattoLegendreElementAdvectionCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) 
 computes the advection operator for a single 1d GLL element
 
 Not Collective
@@ -4390,7 +4390,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionDestroy()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementAdvectionCreate"))
@@ -4415,7 +4415,7 @@ end
 end 
 
 """
-	PetscGaussLobattoLegendreElementAdvectionDestroy(petsclib::PetscLibType,n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) 
+	PetscGaussLobattoLegendreElementAdvectionDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) 
 frees the advection stiffness for a single 1d GLL element created with `PetscGaussLobattoLegendreElementAdvectionCreate()`
 
 Not Collective
@@ -4428,7 +4428,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementAdvectionDestroy"))
@@ -4451,7 +4451,7 @@ end
 end 
 
 """
-	AA::Ptr{PetscReal},AAT::Ptr{PetscReal} = PetscGaussLobattoLegendreElementGradientCreate(petsclib::PetscLibType,n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) 
+	AA::Ptr{PetscReal},AAT::Ptr{PetscReal} = PetscGaussLobattoLegendreElementGradientCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) 
 computes the gradient for a single 1d GLL element
 
 Not Collective
@@ -4467,7 +4467,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianDestroy()`, `PetscGaussLobattoLegendreElementGradientDestroy()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianDestroy()`, `PetscGaussLobattoLegendreElementGradientDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementGradientCreate"))
@@ -4494,7 +4494,7 @@ end
 end 
 
 """
-	PetscGaussLobattoLegendreElementGradientDestroy(petsclib::PetscLibType,n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal, AAT::PetscReal) 
+	PetscGaussLobattoLegendreElementGradientDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal, AAT::PetscReal) 
 frees the gradient for a single 1d GLL element obtained with `PetscGaussLobattoLegendreElementGradientCreate()`
 
 Not Collective
@@ -4508,7 +4508,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementGradientDestroy"))
@@ -4531,7 +4531,7 @@ end
 end 
 
 """
-	AA::Ptr{PetscReal} = PetscGaussLobattoLegendreElementLaplacianCreate(petsclib::PetscLibType,n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) 
+	AA::Ptr{PetscReal} = PetscGaussLobattoLegendreElementLaplacianCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) 
 computes the Laplacian for a single 1d GLL element
 
 Not Collective
@@ -4546,7 +4546,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianDestroy()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementLaplacianCreate"))
@@ -4571,7 +4571,7 @@ end
 end 
 
 """
-	PetscGaussLobattoLegendreElementLaplacianDestroy(petsclib::PetscLibType,n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) 
+	PetscGaussLobattoLegendreElementLaplacianDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) 
 frees the Laplacian for a single 1d GLL element created with `PetscGaussLobattoLegendreElementLaplacianCreate()`
 
 Not Collective
@@ -4584,7 +4584,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementLaplacianDestroy"))
@@ -4607,8 +4607,8 @@ end
 end 
 
 """
-	nodes::PetscReal,weights::PetscReal,AA::Ptr{PetscReal} = PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType,n::PetscInt) 
-Build the elemental mass matrix for a single 1D Gauss
+	nodes::PetscReal,weights::PetscReal,AA::Ptr{PetscReal} = PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType, n::PetscInt) 
+Build the elemental mass matrix for a single 1D Gauss-Lobatto-Legendre (GLL) spectral element
 
 Not Collective; No Fortran Support
 
@@ -4622,7 +4622,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementMassDestroy()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementMassDestroy()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementMassCreate"))
@@ -4651,7 +4651,7 @@ end
 end 
 
 """
-	nodes::PetscReal,weights::PetscReal = PetscGaussLobattoLegendreElementMassDestroy(petsclib::PetscLibType,n::PetscInt, AA::PetscReal) 
+	nodes::PetscReal,weights::PetscReal = PetscGaussLobattoLegendreElementMassDestroy(petsclib::PetscLibType, n::PetscInt, AA::PetscReal) 
 Free a 1D GLL elemental mass matrix created with `PetscGaussLobattoLegendreElementMassCreate()`
 
 Not Collective; No Fortran Support
@@ -4664,7 +4664,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscGaussLobattoLegendreElementMassCreate()`, `PetscDTGaussLobattoLegendreQuadrature()`
+See also: `PetscGaussLobattoLegendreElementMassCreate()`, `PetscDTGaussLobattoLegendreQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreElementMassDestroy"))
@@ -4691,7 +4691,7 @@ end
 end 
 
 """
-	in::PetscReal = PetscGaussLobattoLegendreIntegrate(petsclib::PetscLibType,n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, f::Vector{PetscReal}) 
+	in::PetscReal = PetscGaussLobattoLegendreIntegrate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, f::Vector{PetscReal}) 
 Compute the L2 integral of a function on the GLL points
 
 Not Collective
@@ -4707,7 +4707,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDTGaussLobattoLegendreQuadrature()`
+See also: `PetscDTGaussLobattoLegendreQuadrature()`
 
 # External Links
 $(_doc_external("DT/PetscGaussLobattoLegendreIntegrate"))
@@ -4732,7 +4732,7 @@ end
 end 
 
 """
-	PetscGetArchType(petsclib::PetscLibType,str::String, slen::Csize_t) 
+	PetscGetArchType(petsclib::PetscLibType, str::String, slen::Csize_t) 
 Returns the PETSC_ARCH that was used for this configuration of PETSc
 
 Not Collective
@@ -4745,7 +4745,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetUserName()`, `PetscGetHostName()`
+See also: `PetscGetUserName()`, `PetscGetHostName()`
 
 # External Links
 $(_doc_external("Sys/PetscGetArchType"))
@@ -4780,7 +4780,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArguments()`, `PetscInitialize()`
+See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArguments()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscGetArgs"))
@@ -4818,7 +4818,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscFreeArguments()`, `PetscInitialize()`
+See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscFreeArguments()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscGetArguments"))
@@ -4852,7 +4852,20 @@ Output Parameter:
 - `t`   - Time in seconds charged to the process.
 
 Example:
--seealso: `PetscTime()`, `PetscLogView()`
+``
+#include <petscsys.h>
+-..
+PetscLogDouble t1, t2;
+
+PetscCall(PetscGetCPUTime(&t1));
+-.. code to time ...
+PetscCall(PetscGetCPUTime(&t2));
+printf("Code took %f CPU seconds\\n", t2-t1);
+``
+
+Level: intermediate
+
+See also: `PetscTime()`, `PetscLogView()`
 
 # External Links
 $(_doc_external("Sys/PetscGetCPUTime"))
@@ -4877,7 +4890,7 @@ end
 end 
 
 """
-	PetscGetCurrentCUDAStream(petsclib::PetscLibType,stream::cudaStream_t) 
+	PetscGetCurrentCUDAStream(petsclib::PetscLibType, stream::cudaStream_t) 
 
 # External Links
 $(_doc_external("Sys/PetscGetCurrentCUDAStream"))
@@ -4900,7 +4913,7 @@ end
 end 
 
 """
-	PetscGetCurrentHIPStream(petsclib::PetscLibType,stream::hipStream_t) 
+	PetscGetCurrentHIPStream(petsclib::PetscLibType, stream::hipStream_t) 
 
 # External Links
 $(_doc_external("Sys/PetscGetCurrentHIPStream"))
@@ -4923,7 +4936,7 @@ end
 end 
 
 """
-	PetscGetDate(petsclib::PetscLibType,date::String, len::Csize_t) 
+	PetscGetDate(petsclib::PetscLibType, date::String, len::Csize_t) 
 Gets the current date.
 
 Not Collective
@@ -4936,7 +4949,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscGetHostName()`
+See also: `PetscGetHostName()`
 
 # External Links
 $(_doc_external("Sys/PetscGetDate"))
@@ -4959,7 +4972,7 @@ end
 end 
 
 """
-	PetscGetDisplay(petsclib::PetscLibType,display::String, n::Csize_t) 
+	PetscGetDisplay(petsclib::PetscLibType, display::String, n::Csize_t) 
 Gets the X windows display variable for all processors.
 
 Input Parameter:
@@ -4975,7 +4988,7 @@ started up in PetscSetDisplay() with this option
 
 Level: advanced
 
--seealso: `PETSC_DRAW_X`, `PetscDrawOpenX()`
+See also: `PETSC_DRAW_X`, `PetscDrawOpenX()`
 
 # External Links
 $(_doc_external("Sys/PetscGetDisplay"))
@@ -5009,7 +5022,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogGpuFlops()`, `PetscTime()`, `PetscLogFlops()`
+See also: `PetscLogGpuFlops()`, `PetscTime()`, `PetscLogFlops()`
 
 # External Links
 $(_doc_external("Log/PetscGetFlops"))
@@ -5034,7 +5047,7 @@ end
 end 
 
 """
-	PetscGetFullPath(petsclib::PetscLibType,path::String, fullpath::String, flen::Csize_t) 
+	PetscGetFullPath(petsclib::PetscLibType, path::String, fullpath::String, flen::Csize_t) 
 Given a filename, returns the fully qualified file name.
 
 Not Collective
@@ -5048,7 +5061,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetRelativePath()`
+See also: `PetscGetRelativePath()`
 
 # External Links
 $(_doc_external("Sys/PetscGetFullPath"))
@@ -5071,7 +5084,7 @@ end
 end 
 
 """
-	PetscGetHomeDirectory(petsclib::PetscLibType,dir::String, maxlen::Csize_t) 
+	PetscGetHomeDirectory(petsclib::PetscLibType, dir::String, maxlen::Csize_t) 
 Returns the name of the user's home directory
 
 Not Collective
@@ -5084,7 +5097,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetTmp()`, `PetscSharedTmp()`, `PetscGetWorkingDirectory()`
+See also: `PetscGetTmp()`, `PetscSharedTmp()`, `PetscGetWorkingDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscGetHomeDirectory"))
@@ -5107,7 +5120,7 @@ end
 end 
 
 """
-	PetscGetHostName(petsclib::PetscLibType,name::String, nlen::Csize_t) 
+	PetscGetHostName(petsclib::PetscLibType, name::String, nlen::Csize_t) 
 Returns the name of the host. This attempts to
 return the entire Internet name. It may not return the same name
 as `MPI_Get_processor_name()`.
@@ -5123,7 +5136,7 @@ This is the fully qualified name, including the domain.
 
 Level: developer
 
--seealso: `PetscGetUserName()`, `PetscGetArchType()`
+See also: `PetscGetUserName()`, `PetscGetArchType()`
 
 # External Links
 $(_doc_external("Sys/PetscGetHostName"))
@@ -5146,7 +5159,7 @@ end
 end 
 
 """
-	type::PetscMemType = PetscGetMemType(petsclib::PetscLibType,ptr::Ptr{Cvoid}) 
+	type::PetscMemType = PetscGetMemType(petsclib::PetscLibType, ptr::Ptr{Cvoid}) 
 Query the `PetscMemType` of a pointer
 
 Not Collective, No Fortran Support
@@ -5159,7 +5172,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscMemType`, `PetscDeviceMalloc()`, `PetscDeviceCalloc()`, `PetscDeviceFree()`,
+See also: `PetscMemType`, `PetscDeviceMalloc()`, `PetscDeviceCalloc()`, `PetscDeviceFree()`,
 `PetscDeviceArrayCopy()`, `PetscDeviceArrayZero()`
 
 # External Links
@@ -5195,7 +5208,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetArchType()`
+See also: `PetscGetArchType()`
 
 # External Links
 $(_doc_external("Sys/PetscGetPetscDir"))
@@ -5220,7 +5233,7 @@ end
 end 
 
 """
-	PetscGetProgramName(petsclib::PetscLibType,name::String, len::Csize_t) 
+	PetscGetProgramName(petsclib::PetscLibType, name::String, len::Csize_t) 
 Gets the name of the running program.
 
 Not Collective
@@ -5233,7 +5246,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArguments()`, `PetscInitialize()`
+See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArguments()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscGetProgramName"))
@@ -5256,7 +5269,7 @@ end
 end 
 
 """
-	PetscGetRealPath(petsclib::PetscLibType,path::String, rpath::String) 
+	PetscGetRealPath(petsclib::PetscLibType, path::String, rpath::String) 
 Get the path without symbolic links etc. in absolute form.
 
 Not Collective
@@ -5269,7 +5282,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetFullPath()`
+See also: `PetscGetFullPath()`
 
 # External Links
 $(_doc_external("Sys/PetscGetRealPath"))
@@ -5292,7 +5305,7 @@ end
 end 
 
 """
-	PetscGetRelativePath(petsclib::PetscLibType,fullpath::String, path::String, flen::Csize_t) 
+	PetscGetRelativePath(petsclib::PetscLibType, fullpath::String, path::String, flen::Csize_t) 
 Given a filename, returns the relative path (removes
 all directory specifiers).
 
@@ -5307,7 +5320,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetFullPath()`
+See also: `PetscGetFullPath()`
 
 # External Links
 $(_doc_external("Sys/PetscGetRelativePath"))
@@ -5330,7 +5343,7 @@ end
 end 
 
 """
-	PetscGetTmp(petsclib::PetscLibType,comm::MPI_Comm, dir::String, len::Csize_t) 
+	PetscGetTmp(petsclib::PetscLibType, comm::MPI_Comm, dir::String, len::Csize_t) 
 Gets the name of the "tmp" directory, often this is `/tmp`
 
 Collective
@@ -5349,7 +5362,7 @@ Environmental Variables:
 
 Level: developer
 
--seealso: `PetscSharedTmp()`, `PetscSharedWorkingDirectory()`, `PetscGetWorkingDirectory()`, `PetscGetHomeDirectory()`
+See also: `PetscSharedTmp()`, `PetscSharedWorkingDirectory()`, `PetscGetWorkingDirectory()`, `PetscGetHomeDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscGetTmp"))
@@ -5372,7 +5385,7 @@ end
 end 
 
 """
-	PetscGetUserName(petsclib::PetscLibType,name::String, nlen::Csize_t) 
+	PetscGetUserName(petsclib::PetscLibType, name::String, nlen::Csize_t) 
 Get the login name of the user running the program on the current MPI process
 
 Not Collective
@@ -5385,7 +5398,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetHostName()`, `PetscGetProgramName()`
+See also: `PetscGetHostName()`, `PetscGetProgramName()`
 
 # External Links
 $(_doc_external("Sys/PetscGetUserName"))
@@ -5408,7 +5421,7 @@ end
 end 
 
 """
-	PetscGetVersion(petsclib::PetscLibType,version::String, len::Csize_t) 
+	PetscGetVersion(petsclib::PetscLibType, version::String, len::Csize_t) 
 Gets the PETSc version information in a string.
 
 Not Collective; No Fortran Support
@@ -5421,7 +5434,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetProgramName()`, `PetscGetVersionNumber()`
+See also: `PetscGetProgramName()`, `PetscGetVersionNumber()`
 
 # External Links
 $(_doc_external("Sys/PetscGetVersion"))
@@ -5457,7 +5470,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscGetProgramName()`, `PetscGetVersion()`, `PetscInitialize()`
+See also: `PetscGetProgramName()`, `PetscGetVersion()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscGetVersionNumber"))
@@ -5488,7 +5501,7 @@ end
 end 
 
 """
-	PetscGetWorkingDirectory(petsclib::PetscLibType,path::String, len::Csize_t) 
+	PetscGetWorkingDirectory(petsclib::PetscLibType, path::String, len::Csize_t) 
 Gets the current working directory.
 
 Not Collective
@@ -5501,7 +5514,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscGetTmp()`, `PetscSharedTmp()`, `PetscSharedWorkingDirectory()`, `PetscGetHomeDirectory()`
+See also: `PetscGetTmp()`, `PetscSharedTmp()`, `PetscSharedWorkingDirectory()`, `PetscGetHomeDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscGetWorkingDirectory"))
@@ -5524,7 +5537,7 @@ end
 end 
 
 """
-	PetscGlobalMinMaxInt(petsclib::PetscLibType,comm::MPI_Comm, minMaxVal::Vector{PetscInt}, minMaxValGlobal::Vector{PetscInt}) 
+	PetscGlobalMinMaxInt(petsclib::PetscLibType, comm::MPI_Comm, minMaxVal::Vector{PetscInt}, minMaxValGlobal::Vector{PetscInt}) 
 Get the global min/max from local min/max input
 
 Collective
@@ -5538,7 +5551,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscSplitOwnership()`, `PetscGlobalMinMaxReal()`
+See also: `PetscSplitOwnership()`, `PetscGlobalMinMaxReal()`
 
 # External Links
 $(_doc_external("Sys/PetscGlobalMinMaxInt"))
@@ -5561,7 +5574,7 @@ end
 end 
 
 """
-	PetscGlobalMinMaxReal(petsclib::PetscLibType,comm::MPI_Comm, minMaxVal::Vector{PetscReal}, minMaxValGlobal::Vector{PetscReal}) 
+	PetscGlobalMinMaxReal(petsclib::PetscLibType, comm::MPI_Comm, minMaxVal::Vector{PetscReal}, minMaxValGlobal::Vector{PetscReal}) 
 Get the global min/max from local min/max input
 
 Collective
@@ -5575,7 +5588,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscSplitOwnership()`, `PetscGlobalMinMaxInt()`
+See also: `PetscSplitOwnership()`, `PetscGlobalMinMaxInt()`
 
 # External Links
 $(_doc_external("Sys/PetscGlobalMinMaxReal"))
@@ -5598,7 +5611,7 @@ end
 end 
 
 """
-	PetscGlobusAuthorize(petsclib::PetscLibType,comm::MPI_Comm, access_token::String, tokensize::Csize_t) 
+	PetscGlobusAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, tokensize::Csize_t) 
 Get an access token allowing PETSc applications to make Globus file transfer requests
 
 Not Collective, only the first process in `MPI_Comm` does anything
@@ -5612,7 +5625,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscGoogleDriveRefresh()`, `PetscGoogleDriveUpload()`, `PetscGlobusUpload()`
+See also: `PetscGoogleDriveRefresh()`, `PetscGoogleDriveUpload()`, `PetscGlobusUpload()`
 
 # External Links
 $(_doc_external("Sys/PetscGlobusAuthorize"))
@@ -5635,7 +5648,7 @@ end
 end 
 
 """
-	PetscGlobusGetTransfers(petsclib::PetscLibType,comm::MPI_Comm, access_token::String, buff::String, buffsize::Csize_t) 
+	PetscGlobusGetTransfers(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, buff::String, buffsize::Csize_t) 
 Get a record of current transfers requested from Globus
 
 Not Collective, only the first process in `MPI_Comm` does anything
@@ -5651,7 +5664,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscGoogleDriveRefresh()`, `PetscGoogleDriveUpload()`, `PetscGlobusUpload()`, `PetscGlobusAuthorize()`
+See also: `PetscGoogleDriveRefresh()`, `PetscGoogleDriveUpload()`, `PetscGlobusUpload()`, `PetscGlobusAuthorize()`
 
 # External Links
 $(_doc_external("Sys/PetscGlobusGetTransfers"))
@@ -5674,7 +5687,7 @@ end
 end 
 
 """
-	PetscGlobusUpload(petsclib::PetscLibType,comm::MPI_Comm, access_token::String, filename::String) 
+	PetscGlobusUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String) 
 Loads a file to Globus
 
 Not Collective, only the first process in the `MPI_Comm` uploads the file
@@ -5689,7 +5702,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscGoogleDriveAuthorize()`, `PetscGoogleDriveRefresh()`, `PetscGlobusAuthorize()`
+See also: `PetscGoogleDriveAuthorize()`, `PetscGoogleDriveRefresh()`, `PetscGlobusAuthorize()`
 
 # External Links
 $(_doc_external("Sys/PetscGlobusUpload"))
@@ -5712,7 +5725,7 @@ end
 end 
 
 """
-	PetscGoogleDriveAuthorize(petsclib::PetscLibType,comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t) 
+	PetscGoogleDriveAuthorize(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, refresh_token::String, tokensize::Csize_t) 
 Get authorization and refresh token for accessing Google drive from PETSc
 
 Not Collective, only the first process in `MPI_Comm` does anything
@@ -5728,7 +5741,7 @@ it gives access to your Google Drive
 
 Level: intermediate
 
--seealso: `PetscGoogleDriveRefresh()`, `PetscGoogleDriveUpload()`
+See also: `PetscGoogleDriveRefresh()`, `PetscGoogleDriveUpload()`
 
 # External Links
 $(_doc_external("Sys/PetscGoogleDriveAuthorize"))
@@ -5751,7 +5764,7 @@ end
 end 
 
 """
-	PetscGoogleDriveRefresh(petsclib::PetscLibType,comm::MPI_Comm, refresh_token::String, access_token::String, tokensize::Csize_t) 
+	PetscGoogleDriveRefresh(petsclib::PetscLibType, comm::MPI_Comm, refresh_token::String, access_token::String, tokensize::Csize_t) 
 Get a new authorization token for accessing Google drive from PETSc from a refresh token
 
 Not Collective, only the first process in the `MPI_Comm` does anything
@@ -5770,7 +5783,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscGoogleDriveAuthorize()`, `PetscGoogleDriveUpload()`
+See also: `PetscGoogleDriveAuthorize()`, `PetscGoogleDriveUpload()`
 
 # External Links
 $(_doc_external("Sys/PetscGoogleDriveRefresh"))
@@ -5793,7 +5806,7 @@ end
 end 
 
 """
-	PetscGoogleDriveUpload(petsclib::PetscLibType,comm::MPI_Comm, access_token::String, filename::String) 
+	PetscGoogleDriveUpload(petsclib::PetscLibType, comm::MPI_Comm, access_token::String, filename::String) 
 Loads a file to the Google Drive
 
 Not Collective, only the first process in the `MPI_Comm` uploads the file
@@ -5806,7 +5819,7 @@ Input Parameters:
 Options Database Key:
 - `-google_refresh_token XXX` - pass the access token for the operation
 
--seealso: `PetscGoogleDriveAuthorize()`, `PetscGoogleDriveRefresh()`
+See also: `PetscGoogleDriveAuthorize()`, `PetscGoogleDriveRefresh()`
 
 # External Links
 $(_doc_external("Sys/PetscGoogleDriveUpload"))
@@ -5829,7 +5842,7 @@ end
 end 
 
 """
-	ptype::PetscDataType = PetscHDF5DataTypeToPetscDataType(petsclib::PetscLibType,htype::hid_t) 
+	ptype::PetscDataType = PetscHDF5DataTypeToPetscDataType(petsclib::PetscLibType, htype::hid_t) 
 Finds the PETSc name of a datatype from its HDF5 name
 
 Not Collective
@@ -5842,7 +5855,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_viewers), `PetscDataType`
+See also: [](sec_viewers), `PetscDataType`
 
 # External Links
 $(_doc_external("Viewer/PetscHDF5DataTypeToPetscDataType"))
@@ -5867,7 +5880,7 @@ end
 end 
 
 """
-	PetscHDF5IntCast(petsclib::PetscLibType,a::PetscInt, b::hCsize_t) 
+	PetscHDF5IntCast(petsclib::PetscLibType, a::PetscInt, b::hCsize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscHDF5IntCast"))
@@ -5890,7 +5903,7 @@ end
 end 
 
 """
-	PetscHIPBLASGetHandle(petsclib::PetscLibType,handle::hipblasHandle_t) 
+	PetscHIPBLASGetHandle(petsclib::PetscLibType, handle::hipblasHandle_t) 
 
 # External Links
 $(_doc_external("Sys/PetscHIPBLASGetHandle"))
@@ -5913,7 +5926,7 @@ end
 end 
 
 """
-	PetscHIPSOLVERGetHandle(petsclib::PetscLibType,handle::hipsolverHandle_t) 
+	PetscHIPSOLVERGetHandle(petsclib::PetscLibType, handle::hipsolverHandle_t) 
 
 # External Links
 $(_doc_external("Sys/PetscHIPSOLVERGetHandle"))
@@ -5936,7 +5949,7 @@ end
 end 
 
 """
-	PetscHTTPRequest(petsclib::PetscLibType,type::String, url::String, header::String, ctype::String, body::String, sock::Cint, buff::String, buffsize::Csize_t) 
+	PetscHTTPRequest(petsclib::PetscLibType, type::String, url::String, header::String, ctype::String, body::String, sock::Cint, buff::String, buffsize::Csize_t) 
 Send a request to an HTTP server
 
 Input Parameters:
@@ -5953,7 +5966,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscHTTPSRequest()`, `PetscOpenSocket()`, `PetscHTTPSConnect()`, `PetscPullJSONValue()`
+See also: `PetscHTTPSRequest()`, `PetscOpenSocket()`, `PetscHTTPSConnect()`, `PetscPullJSONValue()`
 
 # External Links
 $(_doc_external("Sys/PetscHTTPRequest"))
@@ -5976,7 +5989,7 @@ end
 end 
 
 """
-	sock::Cint,ssl::Ptr{SSL} = PetscHTTPSConnect(petsclib::PetscLibType,host::String, port::Cint, ctx::SSL_CTX) 
+	sock::Cint,ssl::Ptr{SSL} = PetscHTTPSConnect(petsclib::PetscLibType, host::String, port::Cint, ctx::SSL_CTX) 
 connect to a HTTPS server
 
 Input Parameters:
@@ -5990,7 +6003,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscOpenSocket()`, `PetscHTTPSRequest()`, `PetscSSLInitializeContext()`
+See also: `PetscOpenSocket()`, `PetscHTTPSRequest()`, `PetscSSLInitializeContext()`
 
 # External Links
 $(_doc_external("Sys/PetscHTTPSConnect"))
@@ -6017,7 +6030,7 @@ end
 end 
 
 """
-	PetscHTTPSRequest(petsclib::PetscLibType,type::String, url::String, header::String, ctype::String, body::String, ssl::SSL, buff::String, buffsize::Csize_t) 
+	PetscHTTPSRequest(petsclib::PetscLibType, type::String, url::String, header::String, ctype::String, body::String, ssl::SSL, buff::String, buffsize::Csize_t) 
 Send a request to an HTTPS server
 
 Input Parameters:
@@ -6034,7 +6047,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscHTTPRequest()`, `PetscHTTPSConnect()`, `PetscSSLInitializeContext()`, `PetscSSLDestroyContext()`, `PetscPullJSONValue()`
+See also: `PetscHTTPRequest()`, `PetscHTTPSConnect()`, `PetscSSLInitializeContext()`, `PetscSSLDestroyContext()`, `PetscPullJSONValue()`
 
 # External Links
 $(_doc_external("Sys/PetscHTTPSRequest"))
@@ -6057,7 +6070,7 @@ end
 end 
 
 """
-	has::PetscBool = PetscHasExternalPackage(petsclib::PetscLibType,pkg::String) 
+	has::PetscBool = PetscHasExternalPackage(petsclib::PetscLibType, pkg::String) 
 Determine whether PETSc has been configured with the given package
 
 Not Collective
@@ -6070,7 +6083,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscViewerType`, `MatPartitioningType`, `MatSolverType`
+See also: `PetscViewerType`, `MatPartitioningType`, `MatSolverType`
 
 # External Links
 $(_doc_external("Sys/PetscHasExternalPackage"))
@@ -6095,7 +6108,7 @@ end
 end 
 
 """
-	PetscHipBLASIntCast(petsclib::PetscLibType,a::MPIU_Count, b::PetscHipBLASInt) 
+	PetscHipBLASIntCast(petsclib::PetscLibType, a::MPIU_Count, b::PetscHipBLASInt) 
 
 # External Links
 $(_doc_external("Sys/PetscHipBLASIntCast"))
@@ -6118,7 +6131,7 @@ end
 end 
 
 """
-	PetscInfoActivateClass(petsclib::PetscLibType,classid::PetscClassId) 
+	PetscInfoActivateClass(petsclib::PetscLibType, classid::PetscClassId) 
 Activates `PetscInfo()` messages for a PETSc object class.
 
 Not Collective
@@ -6131,7 +6144,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](sec_PetscInfo), `PetscInfoDeactivateClass()`, `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFromOptions()`
+See also: [](sec_PetscInfo), `PetscInfoDeactivateClass()`, `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFromOptions()`
 
 # External Links
 $(_doc_external("Log/PetscInfoActivateClass"))
@@ -6154,7 +6167,7 @@ end
 end 
 
 """
-	PetscInfoAllow(petsclib::PetscLibType,flag::PetscBool) 
+	PetscInfoAllow(petsclib::PetscLibType, flag::PetscBool) 
 Enables/disables `PetscInfo()` messages
 
 Not Collective
@@ -6164,7 +6177,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoEnabled()`, `PetscInfoGetInfo()`, `PetscInfoSetFromOptions()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoEnabled()`, `PetscInfoGetInfo()`, `PetscInfoSetFromOptions()`
 
 # External Links
 $(_doc_external("Log/PetscInfoAllow"))
@@ -6187,7 +6200,7 @@ end
 end 
 
 """
-	PetscInfoDeactivateClass(petsclib::PetscLibType,classid::PetscClassId) 
+	PetscInfoDeactivateClass(petsclib::PetscLibType, classid::PetscClassId) 
 Deactivates `PetscInfo()` messages for a PETSc object class.
 
 Not Collective
@@ -6200,7 +6213,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](sec_PetscInfo), `PetscInfoActivateClass()`, `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFromOptions()`
+See also: [](sec_PetscInfo), `PetscInfoActivateClass()`, `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFromOptions()`
 
 # External Links
 $(_doc_external("Log/PetscInfoDeactivateClass"))
@@ -6230,7 +6243,7 @@ Not Collective
 
 Level: developer
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoSetFromOptions()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoSetFromOptions()`
 
 # External Links
 $(_doc_external("Log/PetscInfoDestroy"))
@@ -6252,7 +6265,7 @@ end
 end 
 
 """
-	enabled::PetscBool = PetscInfoEnabled(petsclib::PetscLibType,classid::PetscClassId) 
+	enabled::PetscBool = PetscInfoEnabled(petsclib::PetscLibType, classid::PetscClassId) 
 Checks whether a given `PetscClassid` is allowed to print using `PetscInfo()`
 
 Not Collective
@@ -6265,7 +6278,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoGetInfo()`, `PetscObjectGetClassid()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoGetInfo()`, `PetscObjectGetClassid()`
 
 # External Links
 $(_doc_external("Log/PetscInfoEnabled"))
@@ -6290,7 +6303,7 @@ end
 end 
 
 """
-	found::PetscBool = PetscInfoGetClass(petsclib::PetscLibType,classname::String) 
+	found::PetscBool = PetscInfoGetClass(petsclib::PetscLibType, classname::String) 
 Indicates whether the provided `classname` is marked as a filter in `PetscInfo()` as set by `PetscInfoSetClasses()`
 
 Not Collective
@@ -6303,7 +6316,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoSetClasses()`, `PetscInfoSetFromOptions()`, `PetscObjectGetName()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoSetClasses()`, `PetscInfoSetFromOptions()`, `PetscObjectGetName()`
 
 # External Links
 $(_doc_external("Log/PetscInfoGetClass"))
@@ -6339,7 +6352,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoSetFile()`, `PetscInfoSetFromOptions()`, `PetscInfoDestroy()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoSetFile()`, `PetscInfoSetFromOptions()`, `PetscInfoDestroy()`
 
 # External Links
 $(_doc_external("Log/PetscInfoGetFile"))
@@ -6381,7 +6394,7 @@ communicators
 
 Level: developer
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFilterCommSelf`, `PetscInfoSetFromOptions()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFilterCommSelf`, `PetscInfoSetFromOptions()`
 
 # External Links
 $(_doc_external("Log/PetscInfoGetInfo"))
@@ -6414,7 +6427,7 @@ end
 end 
 
 """
-	PetscInfoProcessClass(petsclib::PetscLibType,classname::String, numClassID::PetscInt, classIDs::Vector{PetscClassId}) 
+	PetscInfoProcessClass(petsclib::PetscLibType, classname::String, numClassID::PetscInt, classIDs::Vector{PetscClassId}) 
 Activates or deactivates a class based on the filtering status of `PetscInfo()`
 
 Not Collective
@@ -6429,7 +6442,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoActivateClass()`, `PetscInfoDeactivateClass()`, `PetscInfoSetFromOptions()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoActivateClass()`, `PetscInfoDeactivateClass()`, `PetscInfoSetFromOptions()`
 
 # External Links
 $(_doc_external("Log/PetscInfoProcessClass"))
@@ -6452,7 +6465,7 @@ end
 end 
 
 """
-	PetscInfoSetClasses(petsclib::PetscLibType,exclude::PetscBool, n::PetscInt, classnames::Cchar) 
+	PetscInfoSetClasses(petsclib::PetscLibType, exclude::PetscBool, n::PetscInt, classnames::Cchar) 
 Sets the classes which `PetscInfo()` is filtered for/against
 
 Not Collective; No Fortran Support
@@ -6465,7 +6478,7 @@ is NOT one of the classes specified
 
 Level: developer
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoGetClass()`, `PetscInfoProcessClass()`, `PetscInfoSetFromOptions()`, `PetscStrToArray()`, `PetscObjectGetName()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoGetClass()`, `PetscInfoProcessClass()`, `PetscInfoSetFromOptions()`, `PetscStrToArray()`, `PetscObjectGetName()`
 
 # External Links
 $(_doc_external("Log/PetscInfoSetClasses"))
@@ -6488,7 +6501,7 @@ end
 end 
 
 """
-	PetscInfoSetFile(petsclib::PetscLibType,filename::String, mode::String) 
+	PetscInfoSetFile(petsclib::PetscLibType, filename::String, mode::String) 
 Sets the printing destination for all `PetscInfo()` calls
 
 Not Collective
@@ -6499,7 +6512,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoGetFile()`, `PetscInfoSetFromOptions()`, `PetscFOpen()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoGetFile()`, `PetscInfoSetFromOptions()`, `PetscFOpen()`
 
 # External Links
 $(_doc_external("Log/PetscInfoSetFile"))
@@ -6522,7 +6535,7 @@ end
 end 
 
 """
-	PetscInfoSetFilterCommSelf(petsclib::PetscLibType,commSelfFlag::PetscInfoCommFlag) 
+	PetscInfoSetFilterCommSelf(petsclib::PetscLibType, commSelfFlag::PetscInfoCommFlag) 
 Sets `PetscInfoCommFlag` enum to determine communicator filtering for `PetscInfo()`
 
 Not Collective
@@ -6535,7 +6548,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoGetInfo()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoGetInfo()`
 
 # External Links
 $(_doc_external("Log/PetscInfoSetFilterCommSelf"))
@@ -6558,7 +6571,7 @@ end
 end 
 
 """
-	PetscInfoSetFromOptions(petsclib::PetscLibType,options::AbstractPetscOptions) 
+	PetscInfoSetFromOptions(petsclib::PetscLibType, options::AbstractPetscOptions) 
 Configure `PetscInfo()` using command line options, enabling or disabling various calls to `PetscInfo()`
 
 Not Collective
@@ -6571,7 +6584,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFile()`, `PetscInfoSetClasses()`, `PetscInfoSetFilterCommSelf()`, `PetscInfoDestroy()`
+See also: [](sec_PetscInfo), `PetscInfo()`, `PetscInfoAllow()`, `PetscInfoSetFile()`, `PetscInfoSetClasses()`, `PetscInfoSetFilterCommSelf()`, `PetscInfoDestroy()`
 
 # External Links
 $(_doc_external("Log/PetscInfoSetFromOptions"))
@@ -6594,7 +6607,7 @@ end
 end 
 
 """
-	argc::Cint = PetscInitialize(petsclib::PetscLibType,args::Cchar, file::String, help::String) 
+	argc::Cint = PetscInitialize(petsclib::PetscLibType, args::Cchar, file::String, help::String) 
 Initializes the PETSc database and MPI.
 `PetscInitialize()` calls MPI_Init() if that has yet to be called,
 so this routine should always be called near the beginning of
@@ -6693,7 +6706,7 @@ Environmental Variables:
 
 Level: beginner
 
--seealso: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscInitializeNoArguments()`, `PetscLogGpuTime()`
+See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscInitializeNoArguments()`, `PetscLogGpuTime()`
 
 # External Links
 $(_doc_external("Sys/PetscInitialize"))
@@ -6727,7 +6740,7 @@ Collective on `PETSC_COMM_WORLD`
 
 Level: beginner
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscInitializeFortran"))
@@ -6757,7 +6770,7 @@ Collective
 
 Level: advanced
 
--seealso: `PetscInitialize()`, `PetscInitializeFortran()`
+See also: `PetscInitialize()`, `PetscInitializeFortran()`
 
 # External Links
 $(_doc_external("Sys/PetscInitializeNoArguments"))
@@ -6779,7 +6792,7 @@ end
 end 
 
 """
-	PetscInitializeNoPointers(petsclib::PetscLibType,argc::Cint, args::Cchar, filename::String, help::String) 
+	PetscInitializeNoPointers(petsclib::PetscLibType, argc::Cint, args::Cchar, filename::String, help::String) 
 Calls PetscInitialize() from C/C++ without the pointers to argc and args
 
 Collective, No Fortran Support
@@ -6792,7 +6805,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscInitialize()`, `PetscInitializeFortran()`, `PetscInitializeNoArguments()`
+See also: `PetscInitialize()`, `PetscInitializeFortran()`, `PetscInitializeNoArguments()`
 
 # External Links
 $(_doc_external("Sys/PetscInitializeNoPointers"))
@@ -6823,7 +6836,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscInitialize()`, `PetscInitializeNoArguments()`, `PetscInitializeFortran()`
+See also: `PetscInitialize()`, `PetscInitializeNoArguments()`, `PetscInitializeFortran()`
 
 # External Links
 $(_doc_external("Sys/PetscInitialized"))
@@ -6848,7 +6861,7 @@ end
 end 
 
 """
-	b::PetscInt = PetscIntCast(petsclib::PetscLibType,a::MPIU_Count) 
+	b::PetscInt = PetscIntCast(petsclib::PetscLibType, a::MPIU_Count) 
 
 # External Links
 $(_doc_external("Sys/PetscIntCast"))
@@ -6873,7 +6886,7 @@ end
 end 
 
 """
-	result::PetscInt = PetscIntMultError(petsclib::PetscLibType,a::PetscInt, b::PetscInt) 
+	result::PetscInt = PetscIntMultError(petsclib::PetscLibType, a::PetscInt, b::PetscInt) 
 
 # External Links
 $(_doc_external("Sys/PetscIntMultError"))
@@ -6898,7 +6911,7 @@ end
 end 
 
 """
-	PetscIntSortSemiOrdered(petsclib::PetscLibType,n::PetscInt, arr::Vector{PetscInt}) 
+	PetscIntSortSemiOrdered(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscInt}) 
 Sorts an array of `PetscInt` in place in increasing order.
 
 Not Collective
@@ -6912,7 +6925,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTimSort()`, `PetscSortInt()`, `PetscSortIntWithPermutation()`
+See also: `PetscTimSort()`, `PetscSortInt()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscIntSortSemiOrdered"))
@@ -6935,7 +6948,7 @@ end
 end 
 
 """
-	PetscIntSortSemiOrderedWithArray(petsclib::PetscLibType,n::PetscInt, arr1::Vector{PetscInt}, arr2::Vector{PetscInt}) 
+	PetscIntSortSemiOrderedWithArray(petsclib::PetscLibType, n::PetscInt, arr1::Vector{PetscInt}, arr2::Vector{PetscInt}) 
 Sorts an array of `PetscInt` in place in increasing order and reorders a second
 `PetscInt` array to match the first.
 
@@ -6950,7 +6963,7 @@ Input/Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscTimSortWithArray()`, `PetscSortIntWithArray()`, `PetscSortIntWithPermutation()`
+See also: `PetscTimSortWithArray()`, `PetscSortIntWithArray()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscIntSortSemiOrderedWithArray"))
@@ -6973,7 +6986,7 @@ end
 end 
 
 """
-	result::PetscInt = PetscIntSumError(petsclib::PetscLibType,a::PetscInt, b::PetscInt) 
+	result::PetscInt = PetscIntSumError(petsclib::PetscLibType, a::PetscInt, b::PetscInt) 
 
 # External Links
 $(_doc_external("Sys/PetscIntSumError"))
@@ -6998,7 +7011,7 @@ end
 end 
 
 """
-	PetscIntView(petsclib::PetscLibType,N::PetscInt, idx::Vector{PetscInt}, viewer::PetscViewer) 
+	PetscIntView(petsclib::PetscLibType, N::PetscInt, idx::Vector{PetscInt}, viewer::PetscViewer) 
 Prints an array of integers; useful for debugging.
 
 Collective
@@ -7010,7 +7023,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PetscIntViewNumColumns()`, `PetscRealView()`
+See also: `PetscViewer`, `PetscIntViewNumColumns()`, `PetscRealView()`
 
 # External Links
 $(_doc_external("Sys/PetscIntView"))
@@ -7033,7 +7046,7 @@ end
 end 
 
 """
-	PetscIntViewNumColumns(petsclib::PetscLibType,N::PetscInt, Ncol::PetscInt, idx::Vector{PetscInt}, viewer::PetscViewer) 
+	PetscIntViewNumColumns(petsclib::PetscLibType, N::PetscInt, Ncol::PetscInt, idx::Vector{PetscInt}, viewer::PetscViewer) 
 Prints an array of integers; useful for debugging.
 
 Collective
@@ -7046,7 +7059,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PetscIntView()`, `PetscRealView()`
+See also: `PetscViewer`, `PetscIntView()`, `PetscRealView()`
 
 # External Links
 $(_doc_external("Sys/PetscIntViewNumColumns"))
@@ -7091,8 +7104,8 @@ end
 end 
 
 """
-	slope::PetscReal,intercept::PetscReal = PetscLinearRegression(petsclib::PetscLibType,n::PetscInt, x::Vector{PetscReal}, y::Vector{PetscReal}) 
-Gives the best least
+	slope::PetscReal,intercept::PetscReal = PetscLinearRegression(petsclib::PetscLibType, n::PetscInt, x::Vector{PetscReal}, y::Vector{PetscReal}) 
+Gives the best least-squares linear fit to some x-y data points
 
 Input Parameters:
 - `n` - The number of points
@@ -7105,7 +7118,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscConvEstGetConvRate()`
+See also: `PetscConvEstGetConvRate()`
 
 # External Links
 $(_doc_external("Sys/PetscLinearRegression"))
@@ -7132,7 +7145,7 @@ end
 end 
 
 """
-	PetscLogActions(petsclib::PetscLibType,flag::PetscBool) 
+	PetscLogActions(petsclib::PetscLibType, flag::PetscBool) 
 Determines whether actions are logged for the default log handler.
 
 Not Collective
@@ -7146,7 +7159,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogActions"))
@@ -7169,7 +7182,7 @@ end
 end 
 
 """
-	classid::PetscClassId = PetscLogClassGetClassId(petsclib::PetscLibType,name::String) 
+	classid::PetscClassId = PetscLogClassGetClassId(petsclib::PetscLibType, name::String) 
 Returns the `PetscClassId` when given the class name.
 
 Not Collective
@@ -7182,7 +7195,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogStageGetId()`
+See also: `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogStageGetId()`
 
 # External Links
 $(_doc_external("Log/PetscLogClassGetClassId"))
@@ -7207,7 +7220,7 @@ end
 end 
 
 """
-	name::String = PetscLogClassIdGetName(petsclib::PetscLibType,classid::PetscClassId) 
+	name::String = PetscLogClassIdGetName(petsclib::PetscLibType, classid::PetscClassId) 
 Returns a `PetscClassId`'s name.
 
 Not Collective
@@ -7220,7 +7233,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogClassRegister()`, `PetscLogClassBegin()`, `PetscLogClassEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadClass()`
+See also: `PetscLogClassRegister()`, `PetscLogClassBegin()`, `PetscLogClassEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadClass()`
 
 # External Links
 $(_doc_external("Log/PetscLogClassIdGetName"))
@@ -7245,7 +7258,7 @@ end
 end 
 
 """
-	PetscLogCpuToGpu(petsclib::PetscLibType,size::PetscLogDouble) 
+	PetscLogCpuToGpu(petsclib::PetscLibType, size::PetscLogDouble) 
 
 # External Links
 $(_doc_external("Sys/PetscLogCpuToGpu"))
@@ -7268,7 +7281,7 @@ end
 end 
 
 """
-	PetscLogCpuToGpuScalar(petsclib::PetscLibType,size::PetscLogDouble) 
+	PetscLogCpuToGpuScalar(petsclib::PetscLibType, size::PetscLogDouble) 
 
 # External Links
 $(_doc_external("Sys/PetscLogCpuToGpuScalar"))
@@ -7302,7 +7315,7 @@ Options Database Key:
 screen (for PETSc configured with `--with-log=1` (which is the default)).
 This option must be provided before `PetscInitialize()`.
 
--seealso: [](ch_profiling), `PetscLogDump()`, `PetscLogView()`, `PetscLogTraceBegin()`
+See also: `PetscLogDump()`, `PetscLogView()`, `PetscLogTraceBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogDefaultBegin"))
@@ -7324,7 +7337,7 @@ end
 end 
 
 """
-	PetscLogDump(petsclib::PetscLibType,sname::String) 
+	PetscLogDump(petsclib::PetscLibType, sname::String) 
 Dumps logs of objects to a file. There is currently no utility to read the dump file.
 
 Collective on `PETSC_COMM_WORLD`
@@ -7332,7 +7345,7 @@ Collective on `PETSC_COMM_WORLD`
 Input Parameter:
 - `sname` - an optional file name
 
--seealso: [](ch_profiling), `PetscLogDefaultBegin()`, `PetscLogView()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogDefaultBegin()`, `PetscLogView()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogDump"))
@@ -7355,7 +7368,7 @@ end
 end 
 
 """
-	PetscLogEventActivate(petsclib::PetscLibType,event::PetscLogEvent) 
+	PetscLogEventActivate(petsclib::PetscLibType, event::PetscLogEvent) 
 Indicates that a particular event should be logged.
 
 Not Collective
@@ -7363,7 +7376,7 @@ Not Collective
 Input Parameter:
 - `event` - The event id
 
--seealso: [](ch_profiling), `PetscLogEventDeactivate()`, `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`
+See also: `PetscLogEventDeactivate()`, `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventActivate"))
@@ -7386,7 +7399,7 @@ end
 end 
 
 """
-	PetscLogEventActivateClass(petsclib::PetscLibType,classid::PetscClassId) 
+	PetscLogEventActivateClass(petsclib::PetscLibType, classid::PetscClassId) 
 Activates event logging for a PETSc object class for the current stage
 
 Not Collective
@@ -7396,7 +7409,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventIncludeClass()`, `PetscLogEventExcludeClass()`, `PetscLogEventDeactivateClass()`, `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
+See also: `PetscLogEventIncludeClass()`, `PetscLogEventExcludeClass()`, `PetscLogEventDeactivateClass()`, `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventActivateClass"))
@@ -7419,7 +7432,7 @@ end
 end 
 
 """
-	PetscLogEventDeactivate(petsclib::PetscLibType,event::PetscLogEvent) 
+	PetscLogEventDeactivate(petsclib::PetscLibType, event::PetscLogEvent) 
 Indicates that a particular event should not be logged.
 
 Not Collective
@@ -7427,7 +7440,7 @@ Not Collective
 Input Parameter:
 - `event` - The event id
 
--seealso: [](ch_profiling), `PetscLogEventActivate()`, `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`
+See also: `PetscLogEventActivate()`, `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivate"))
@@ -7450,7 +7463,7 @@ end
 end 
 
 """
-	PetscLogEventDeactivateClass(petsclib::PetscLibType,classid::PetscClassId) 
+	PetscLogEventDeactivateClass(petsclib::PetscLibType, classid::PetscClassId) 
 Deactivates event logging for a PETSc object class for the current stage
 
 Not Collective
@@ -7460,7 +7473,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventIncludeClass()`, `PetscLogEventExcludeClass()`, `PetscLogEventActivateClass()`, `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
+See also: `PetscLogEventIncludeClass()`, `PetscLogEventExcludeClass()`, `PetscLogEventActivateClass()`, `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivateClass"))
@@ -7483,7 +7496,7 @@ end
 end 
 
 """
-	PetscLogEventDeactivatePop(petsclib::PetscLibType,event::PetscLogEvent) 
+	PetscLogEventDeactivatePop(petsclib::PetscLibType, event::PetscLogEvent) 
 Indicates that a particular event should again be logged after the logging was turned off with `PetscLogEventDeactivatePush()`
 
 Not Collective
@@ -7491,7 +7504,7 @@ Not Collective
 Input Parameter:
 - `event` - The event id
 
--seealso: [](ch_profiling), `PetscLogEventActivate()`, `PetscLogEventDeactivatePush()`
+See also: `PetscLogEventActivate()`, `PetscLogEventDeactivatePush()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivatePop"))
@@ -7514,7 +7527,7 @@ end
 end 
 
 """
-	PetscLogEventDeactivatePush(petsclib::PetscLibType,event::PetscLogEvent) 
+	PetscLogEventDeactivatePush(petsclib::PetscLibType, event::PetscLogEvent) 
 Indicates that a particular event should not be logged until `PetscLogEventDeactivatePop()` is called
 
 Not Collective
@@ -7522,7 +7535,7 @@ Not Collective
 Input Parameter:
 - `event` - The event id
 
--seealso: [](ch_profiling), `PetscLogEventActivate()`, `PetscLogEventDeactivate()`, `PetscLogEventDeactivatePop()`
+See also: `PetscLogEventActivate()`, `PetscLogEventDeactivate()`, `PetscLogEventDeactivatePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventDeactivatePush"))
@@ -7545,7 +7558,7 @@ end
 end 
 
 """
-	PetscLogEventExcludeClass(petsclib::PetscLibType,classid::PetscClassId) 
+	PetscLogEventExcludeClass(petsclib::PetscLibType, classid::PetscClassId) 
 Deactivates event logging for a PETSc object class in every stage.
 
 Not Collective
@@ -7555,7 +7568,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventDeactivateClass()`, `PetscLogEventActivateClass()`, `PetscLogEventDeactivate()`, `PetscLogEventActivate()`
+See also: `PetscLogEventDeactivateClass()`, `PetscLogEventActivateClass()`, `PetscLogEventDeactivate()`, `PetscLogEventActivate()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventExcludeClass"))
@@ -7578,7 +7591,7 @@ end
 end 
 
 """
-	event::PetscLogEvent = PetscLogEventGetId(petsclib::PetscLibType,name::String) 
+	event::PetscLogEvent = PetscLogEventGetId(petsclib::PetscLibType, name::String) 
 Returns the event id when given the event name.
 
 Not Collective
@@ -7591,7 +7604,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogStageGetId()`
+See also: `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogStageGetId()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventGetId"))
@@ -7616,7 +7629,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscLogEventGetName(petsclib::PetscLibType,event::PetscLogEvent) 
+	name::Ptr{Cchar} = PetscLogEventGetName(petsclib::PetscLibType, event::PetscLogEvent) 
 Returns the event name when given the event id.
 
 Not Collective
@@ -7629,7 +7642,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogEventRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
+See also: `PetscLogEventRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventGetName"))
@@ -7654,7 +7667,7 @@ end
 end 
 
 """
-	info::PetscEventPerfInfo = PetscLogEventGetPerfInfo(petsclib::PetscLibType,stage::PetscLogStage, event::PetscLogEvent) 
+	info::PetscEventPerfInfo = PetscLogEventGetPerfInfo(petsclib::PetscLibType, stage::PetscLogStage, event::PetscLogEvent) 
 Return the performance information about the given event in the given stage
 
 No Fortran Support
@@ -7668,7 +7681,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogEventRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogEventRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventGetPerfInfo"))
@@ -7693,7 +7706,7 @@ end
 end 
 
 """
-	PetscLogEventIncludeClass(petsclib::PetscLibType,classid::PetscClassId) 
+	PetscLogEventIncludeClass(petsclib::PetscLibType, classid::PetscClassId) 
 Activates event logging for a PETSc object class in every stage.
 
 Not Collective
@@ -7703,7 +7716,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventActivateClass()`, `PetscLogEventDeactivateClass()`, `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
+See also: `PetscLogEventActivateClass()`, `PetscLogEventDeactivateClass()`, `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventIncludeClass"))
@@ -7726,7 +7739,7 @@ end
 end 
 
 """
-	event::PetscLogEvent = PetscLogEventRegister(petsclib::PetscLibType,name::String, classid::PetscClassId) 
+	event::PetscLogEvent = PetscLogEventRegister(petsclib::PetscLibType, name::String, classid::PetscClassId) 
 Registers an event name for logging operations
 
 Not Collective
@@ -7740,7 +7753,7 @@ are only available in C code
 Output Parameter:
 - `event` - The event id for use with `PetscLogEventBegin()` and `PetscLogEventEnd()`.
 
--seealso: [](ch_profiling), `PetscLogStageRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogFlops()`,
+See also: `PetscLogStageRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogFlops()`,
 `PetscLogEventActivate()`, `PetscLogEventDeactivate()`, `PetscClassIdRegister()`
 
 # External Links
@@ -7766,7 +7779,7 @@ end
 end 
 
 """
-	PetscLogEventSetActiveAll(petsclib::PetscLibType,event::PetscLogEvent, isActive::PetscBool) 
+	PetscLogEventSetActiveAll(petsclib::PetscLibType, event::PetscLogEvent, isActive::PetscBool) 
 Turns on logging of all events
 
 Not Collective
@@ -7777,7 +7790,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
+See also: `PetscLogEventActivate()`, `PetscLogEventDeactivate()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventSetActiveAll"))
@@ -7800,7 +7813,7 @@ end
 end 
 
 """
-	PetscLogEventSetCollective(petsclib::PetscLibType,event::PetscLogEvent, collective::PetscBool) 
+	PetscLogEventSetCollective(petsclib::PetscLibType, event::PetscLogEvent, collective::PetscBool) 
 Indicates that a particular event is collective.
 
 Logically Collective
@@ -7811,7 +7824,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventRegister()`
+See also: `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogEventRegister()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventSetCollective"))
@@ -7834,7 +7847,7 @@ end
 end 
 
 """
-	PetscLogEventSetDof(petsclib::PetscLibType,event::PetscLogEvent, n::PetscInt, dof::PetscLogDouble) 
+	PetscLogEventSetDof(petsclib::PetscLibType, event::PetscLogEvent, n::PetscInt, dof::PetscLogDouble) 
 Set the nth number of degrees of freedom of a numerical problem associated with this event
 
 Not Collective
@@ -7849,7 +7862,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscLogEventSetError()`, `PetscLogEventRegister()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogEventSetError()`, `PetscLogEventRegister()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventSetDof"))
@@ -7872,7 +7885,7 @@ end
 end 
 
 """
-	PetscLogEventSetError(petsclib::PetscLibType,event::PetscLogEvent, n::PetscInt, error::PetscLogDouble) 
+	PetscLogEventSetError(petsclib::PetscLibType, event::PetscLogEvent, n::PetscInt, error::PetscLogDouble) 
 Set the nth error associated with a numerical problem associated with this event
 
 Not Collective
@@ -7887,7 +7900,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscLogEventSetDof()`, `PetscLogEventRegister()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogEventSetDof()`, `PetscLogEventRegister()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventSetError"))
@@ -7910,7 +7923,7 @@ end
 end 
 
 """
-	PetscLogEventSync(petsclib::PetscLibType,e::PetscLogEvent, comm::MPI_Comm) 
+	PetscLogEventSync(petsclib::PetscLibType, e::PetscLogEvent, comm::MPI_Comm) 
 
 # External Links
 $(_doc_external("Log/PetscLogEventSync"))
@@ -7934,13 +7947,13 @@ end
 
 """
 	PetscLogEventsPause(petsclib::PetscLibType) 
-Put event logging into "paused" mode: timers and counters for in
+Put event logging into "paused" mode: timers and counters for in-progress events are paused, and any events that happen before logging is resumed with `PetscLogEventsResume()` are logged in the "Main Stage" of execution.
 
 Not collective
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`, `PetscLogEventsResume()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`, `PetscLogEventsResume()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventsPause"))
@@ -7969,7 +7982,7 @@ Not collective
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`, `PetscLogEventsPause()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogEventDeactivatePush()`, `PetscLogEventDeactivatePop()`, `PetscLogEventsPause()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogEventsResume"))
@@ -7991,7 +8004,7 @@ end
 end 
 
 """
-	PetscLogFlops(petsclib::PetscLibType,f::PetscLogDouble) 
+	PetscLogFlops(petsclib::PetscLibType, f::PetscLogDouble) 
 
 # External Links
 $(_doc_external("Log/PetscLogFlops"))
@@ -8024,7 +8037,11 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling)
+Notes:
+The default handler is started with `PetscLogDefaultBegin()`,
+if the options flags `-log_all` or `-log_view` is given without arguments,
+or for `-log_view :output:format` if `format` is not `ascii_xml` or `ascii_flamegraph`.
+
 
 # External Links
 $(_doc_external("Log/PetscLogGetDefaultHandler"))
@@ -8064,7 +8081,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogState`
+See also: `PetscLogState`
 
 # External Links
 $(_doc_external("Log/PetscLogGetState"))
@@ -8097,7 +8114,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeter()`
+See also: `PetscLogView()`, `PetscLogGpuEnergyMeter()`
 
 # External Links
 $(_doc_external("Log/PetscLogGpuEnergy"))
@@ -8127,7 +8144,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeterEnd()`, `PetscLogGpuEnergyMeterBegin()`
+See also: `PetscLogView()`, `PetscLogGpuEnergyMeterEnd()`, `PetscLogGpuEnergyMeterBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogGpuEnergyMeter"))
@@ -8154,7 +8171,7 @@ Start energy meter for device
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeterEnd()`, `PetscLogGpuEnergyMeter()`
+See also: `PetscLogView()`, `PetscLogGpuEnergyMeterEnd()`, `PetscLogGpuEnergyMeter()`
 
 # External Links
 $(_doc_external("Log/PetscLogGpuEnergyMeterBegin"))
@@ -8181,7 +8198,7 @@ Stop energy meter for device
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuEnergyMeterBegin()`
+See also: `PetscLogView()`, `PetscLogGpuEnergyMeterBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogGpuEnergyMeterEnd"))
@@ -8203,7 +8220,7 @@ end
 end 
 
 """
-	PetscLogGpuFlops(petsclib::PetscLibType,n::PetscLogDouble) 
+	PetscLogGpuFlops(petsclib::PetscLibType, n::PetscLogDouble) 
 
 # External Links
 $(_doc_external("Sys/PetscLogGpuFlops"))
@@ -8234,7 +8251,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuFlops()`, `PetscLogGpuTimeEnd()`, `PetscLogGpuTimeBegin()`
+See also: `PetscLogView()`, `PetscLogGpuFlops()`, `PetscLogGpuTimeEnd()`, `PetscLogGpuTimeBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogGpuTime"))
@@ -8256,7 +8273,7 @@ end
 end 
 
 """
-	PetscLogGpuTimeAdd(petsclib::PetscLibType,t::PetscLogDouble) 
+	PetscLogGpuTimeAdd(petsclib::PetscLibType, t::PetscLogDouble) 
 
 # External Links
 $(_doc_external("Sys/PetscLogGpuTimeAdd"))
@@ -8284,7 +8301,7 @@ Start timer for device
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuFlops()`, `PetscLogGpuTimeEnd()`, `PetscLogGpuTime()`
+See also: `PetscLogView()`, `PetscLogGpuFlops()`, `PetscLogGpuTimeEnd()`, `PetscLogGpuTime()`
 
 # External Links
 $(_doc_external("Log/PetscLogGpuTimeBegin"))
@@ -8311,7 +8328,7 @@ Stop timer for device
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogView()`, `PetscLogGpuFlops()`, `PetscLogGpuTimeBegin()`
+See also: `PetscLogView()`, `PetscLogGpuFlops()`, `PetscLogGpuTimeBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogGpuTimeEnd"))
@@ -8333,7 +8350,7 @@ end
 end 
 
 """
-	PetscLogGpuToCpu(petsclib::PetscLibType,size::PetscLogDouble) 
+	PetscLogGpuToCpu(petsclib::PetscLibType, size::PetscLogDouble) 
 
 # External Links
 $(_doc_external("Sys/PetscLogGpuToCpu"))
@@ -8356,7 +8373,7 @@ end
 end 
 
 """
-	PetscLogGpuToCpuScalar(petsclib::PetscLibType,size::PetscLogDouble) 
+	PetscLogGpuToCpuScalar(petsclib::PetscLibType, size::PetscLogDouble) 
 
 # External Links
 $(_doc_external("Sys/PetscLogGpuToCpuScalar"))
@@ -8389,7 +8406,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_profiling), `PetscLogDefaultBegin()`
+See also: `PetscLogDefaultBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogIsActive"))
@@ -8414,7 +8431,7 @@ end
 end 
 
 """
-	PetscLogLegacyCallbacksBegin(petsclib::PetscLibType,PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external) 
+	PetscLogLegacyCallbacksBegin(petsclib::PetscLibType, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external) 
 Create and start a log handler from callbacks
 matching the now deprecated function pointers `PetscLogPLB`, `PetscLogPLE`,
 `PetscLogPHC`, `PetscLogPHD`.
@@ -8451,7 +8468,7 @@ Calling sequence of `PetscLogPHD`:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogHandler`, `PetscLogHandlerStart()`, `PetscLogState`
+See also: `PetscLogHandler`, `PetscLogHandlerStart()`, `PetscLogState`
 
 # External Links
 $(_doc_external("Log/PetscLogLegacyCallbacksBegin"))
@@ -8485,7 +8502,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogDump()`, `PetscLogDefaultBegin()`, `PetscLogEventActivate()`,
+See also: `PetscLogDump()`, `PetscLogDefaultBegin()`, `PetscLogEventActivate()`,
 `PetscLogEventDeactivate()`
 
 # External Links
@@ -8508,7 +8525,7 @@ end
 end 
 
 """
-	PetscLogMPEDump(petsclib::PetscLibType,sname::String) 
+	PetscLogMPEDump(petsclib::PetscLibType, sname::String) 
 Dumps the MPE logging info to file for later use with Jumpshot.
 
 Collective on `PETSC_COMM_WORLD`
@@ -8518,7 +8535,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogDump()`, `PetscLogMPEBegin()`
+See also: `PetscLogDump()`, `PetscLogMPEBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogMPEDump"))
@@ -8550,7 +8567,7 @@ Logically Collective on `PETSC_COMM_WORLD`, No Fortran Support
 Options Database Keys:
 - `-log_view :filename.xml:ascii_xml` - Prints an XML summary of flop and timing information to the file
 
--seealso: `PetscLogDump()`, `PetscLogView()`, `PetscLogTraceBegin()`, `PetscLogDefaultBegin()`
+See also: `PetscLogDump()`, `PetscLogView()`, `PetscLogTraceBegin()`, `PetscLogDefaultBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogNestedBegin"))
@@ -8572,7 +8589,7 @@ end
 end 
 
 """
-	PetscLogObjectCreate(petsclib::PetscLibType,h) 
+	PetscLogObjectCreate(petsclib::PetscLibType, h) 
 
 # External Links
 $(_doc_external("Log/PetscLogObjectCreate"))
@@ -8595,7 +8612,7 @@ end
 end 
 
 """
-	PetscLogObjectDestroy(petsclib::PetscLibType,h) 
+	PetscLogObjectDestroy(petsclib::PetscLibType, h) 
 
 # External Links
 $(_doc_external("Log/PetscLogObjectDestroy"))
@@ -8618,7 +8635,7 @@ end
 end 
 
 """
-	PetscLogObjects(petsclib::PetscLibType,flag::PetscBool) 
+	PetscLogObjects(petsclib::PetscLibType, flag::PetscBool) 
 Determines whether objects are logged for the graphical viewer.
 
 Not Collective
@@ -8632,7 +8649,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogObjects"))
@@ -8665,7 +8682,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](ch_profiling), `PetscLogDefaultBegin()`, `PetscLogEventActivate()`
+See also: `PetscLogDefaultBegin()`, `PetscLogEventActivate()`
 
 # External Links
 $(_doc_external("Log/PetscLogPerfstubsBegin"))
@@ -8687,7 +8704,7 @@ end
 end 
 
 """
-	oldThresh::PetscLogDouble = PetscLogSetThreshold(petsclib::PetscLibType,newThresh::PetscLogDouble) 
+	oldThresh::PetscLogDouble = PetscLogSetThreshold(petsclib::PetscLibType, newThresh::PetscLogDouble) 
 Set the threshold time for logging the events; this is a percentage out of 100, so 1. means any event
 that takes 1 or more percent of the time.
 
@@ -8702,7 +8719,7 @@ Output Parameter:
 Options Database Keys:
 - `-log_view :filename.xml:ascii_xml` - Prints an XML summary of flop and timing information to the file
 
--seealso: `PetscLogDump()`, `PetscLogView()`, `PetscLogTraceBegin()`, `PetscLogDefaultBegin()`,
+See also: `PetscLogDump()`, `PetscLogView()`, `PetscLogTraceBegin()`, `PetscLogDefaultBegin()`,
 `PetscLogNestedBegin()`
 
 # External Links
@@ -8728,7 +8745,7 @@ end
 end 
 
 """
-	isActive::PetscBool = PetscLogStageGetActive(petsclib::PetscLibType,stage::PetscLogStage) 
+	isActive::PetscBool = PetscLogStageGetActive(petsclib::PetscLibType, stage::PetscLogStage) 
 Checks if a stage is used for `PetscLogEventBegin()` and `PetscLogEventEnd()`.
 
 Not Collective
@@ -8741,7 +8758,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
+See also: `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageGetActive"))
@@ -8766,7 +8783,7 @@ end
 end 
 
 """
-	stage::PetscLogStage = PetscLogStageGetId(petsclib::PetscLibType,name::String) 
+	stage::PetscLogStage = PetscLogStageGetId(petsclib::PetscLibType, name::String) 
 Returns the stage id when given the stage name.
 
 Not Collective
@@ -8779,7 +8796,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
+See also: `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageGetId"))
@@ -8804,7 +8821,7 @@ end
 end 
 
 """
-	name::Ptr{Cchar} = PetscLogStageGetName(petsclib::PetscLibType,stage::PetscLogStage) 
+	name::Ptr{Cchar} = PetscLogStageGetName(petsclib::PetscLibType, stage::PetscLogStage) 
 Returns the stage name when given the stage id.
 
 Not Collective
@@ -8817,7 +8834,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
+See also: `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageGetName"))
@@ -8842,7 +8859,7 @@ end
 end 
 
 """
-	info::PetscEventPerfInfo = PetscLogStageGetPerfInfo(petsclib::PetscLibType,stage::PetscLogStage) 
+	info::PetscEventPerfInfo = PetscLogStageGetPerfInfo(petsclib::PetscLibType, stage::PetscLogStage) 
 Return the performance information about the given stage
 
 No Fortran Support
@@ -8855,7 +8872,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogEventRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogEventRegister()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageGetPerfInfo"))
@@ -8880,7 +8897,7 @@ end
 end 
 
 """
-	isVisible::PetscBool = PetscLogStageGetVisible(petsclib::PetscLibType,stage::PetscLogStage) 
+	isVisible::PetscBool = PetscLogStageGetVisible(petsclib::PetscLibType, stage::PetscLogStage) 
 Returns stage visibility in `PetscLogView()`
 
 Not Collective
@@ -8893,7 +8910,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStageSetVisible()`, `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogView()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogStageSetVisible()`, `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogView()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageGetVisible"))
@@ -8923,7 +8940,7 @@ This function pops a stage from the logging stack that was pushed with `PetscLog
 
 Not Collective
 
--seealso: [](ch_profiling), `PetscLogStagePush()`, `PetscLogStageRegister()`, `PetscBarrier()`
+See also: `PetscLogStagePush()`, `PetscLogStageRegister()`, `PetscBarrier()`
 
 # External Links
 $(_doc_external("Log/PetscLogStagePop"))
@@ -8945,7 +8962,7 @@ end
 end 
 
 """
-	PetscLogStagePush(petsclib::PetscLibType,stage::PetscLogStage) 
+	PetscLogStagePush(petsclib::PetscLibType, stage::PetscLogStage) 
 This function pushes a stage on the logging stack. Events started and stopped until `PetscLogStagePop()` will be associated with the stage
 
 Not Collective
@@ -8953,7 +8970,7 @@ Not Collective
 Input Parameter:
 - `stage` - The stage on which to log
 
--seealso: [](ch_profiling), `PetscLogStagePop()`, `PetscLogStageRegister()`, `PetscBarrier()`
+See also: `PetscLogStagePop()`, `PetscLogStageRegister()`, `PetscBarrier()`
 
 # External Links
 $(_doc_external("Log/PetscLogStagePush"))
@@ -8976,7 +8993,7 @@ end
 end 
 
 """
-	stage::PetscLogStage = PetscLogStageRegister(petsclib::PetscLibType,sname::String) 
+	stage::PetscLogStage = PetscLogStageRegister(petsclib::PetscLibType, sname::String) 
 Attaches a character string name to a logging stage.
 
 Not Collective
@@ -8989,7 +9006,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStagePush()`, `PetscLogStagePop()`
+See also: `PetscLogStagePush()`, `PetscLogStagePop()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageRegister"))
@@ -9014,7 +9031,7 @@ end
 end 
 
 """
-	PetscLogStageSetActive(petsclib::PetscLibType,stage::PetscLogStage, isActive::PetscBool) 
+	PetscLogStageSetActive(petsclib::PetscLibType, stage::PetscLogStage, isActive::PetscBool) 
 Sets if a stage is used for `PetscLogEventBegin()` and `PetscLogEventEnd()`.
 
 Not Collective
@@ -9025,7 +9042,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
+See also: `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `PetscPreLoadBegin()`, `PetscPreLoadEnd()`, `PetscPreLoadStage()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageSetActive"))
@@ -9048,7 +9065,7 @@ end
 end 
 
 """
-	PetscLogStageSetVisible(petsclib::PetscLibType,stage::PetscLogStage, isVisible::PetscBool) 
+	PetscLogStageSetVisible(petsclib::PetscLibType, stage::PetscLogStage, isVisible::PetscBool) 
 Determines stage visibility in `PetscLogView()`
 
 Not Collective
@@ -9059,7 +9076,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogStageGetVisible()`, `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogView()`, `PetscLogGetDefaultHandler()`
+See also: `PetscLogStageGetVisible()`, `PetscLogStageRegister()`, `PetscLogStagePush()`, `PetscLogStagePop()`, `PetscLogView()`, `PetscLogGetDefaultHandler()`
 
 # External Links
 $(_doc_external("Log/PetscLogStageSetVisible"))
@@ -9082,7 +9099,7 @@ end
 end 
 
 """
-	PetscLogTraceBegin(petsclib::PetscLibType,file::Libc.FILE) 
+	PetscLogTraceBegin(petsclib::PetscLibType, file::Libc.FILE) 
 Begins trace logging.  Every time a PETSc event
 begins or ends, the event name is printed.
 
@@ -9096,7 +9113,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_profiling), `PetscLogDump()`, `PetscLogView()`, `PetscLogDefaultBegin()`
+See also: `PetscLogDump()`, `PetscLogView()`, `PetscLogDefaultBegin()`
 
 # External Links
 $(_doc_external("Log/PetscLogTraceBegin"))
@@ -9119,7 +9136,7 @@ end
 end 
 
 """
-	PetscLogView(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscLogView(petsclib::PetscLibType, viewer::PetscViewer) 
 Prints a summary of the logging.
 
 Collective
@@ -9144,7 +9161,7 @@ This option is ignored if `-log_view_gpu_energy` is provided.
 
 Level: beginner
 
--seealso: [](ch_profiling), `PetscLogDefaultBegin()`, `PetscLogDump()`
+See also: `PetscLogDefaultBegin()`, `PetscLogDump()`
 
 # External Links
 $(_doc_external("Log/PetscLogView"))
@@ -9174,7 +9191,7 @@ Collective on `PETSC_COMM_WORLD`
 
 Level: developer
 
--seealso: [](ch_profiling), `PetscLogView()`
+See also: `PetscLogView()`
 
 # External Links
 $(_doc_external("Log/PetscLogViewFromOptions"))
@@ -9196,7 +9213,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscLs(petsclib::PetscLibType,comm::MPI_Comm, dirname::String, found::String, tlen::Csize_t) 
+	flg::PetscBool = PetscLs(petsclib::PetscLibType, comm::MPI_Comm, dirname::String, found::String, tlen::Csize_t) 
 produce a listing of the files in a directory
 
 Collective
@@ -9212,7 +9229,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscTestFile()`, `PetscRMTree()`, `PetscTestDirectory()`
+See also: `PetscTestFile()`, `PetscRMTree()`, `PetscTestDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscLs"))
@@ -9237,7 +9254,7 @@ end
 end 
 
 """
-	PetscMPIAbortErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+	PetscMPIAbortErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
 Calls `PETSCABORT()` and exits.
 
 Not Collective, No Fortran Support
@@ -9254,7 +9271,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+See also: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
 `PetscAbortErrorHandler()`, `PetscTraceBackErrorHandler()`, `PetscEmacsClientErrorHandler()`, `PetscReturnErrorHandler()`
 
 # External Links
@@ -9278,7 +9295,7 @@ end
 end 
 
 """
-	PetscMPIDump(petsclib::PetscLibType,fd::Libc.FILE) 
+	PetscMPIDump(petsclib::PetscLibType, fd::Libc.FILE) 
 Dumps a listing of incomplete MPI operations, such as sends that
 have never been received, etc.
 
@@ -9292,7 +9309,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscMallocDump()`
+See also: `PetscMallocDump()`
 
 # External Links
 $(_doc_external("Sys/PetscMPIDump"))
@@ -9315,7 +9332,7 @@ end
 end 
 
 """
-	b::PetscMPIInt = PetscMPIIntCast(petsclib::PetscLibType,a::MPIU_Count) 
+	b::PetscMPIInt = PetscMPIIntCast(petsclib::PetscLibType, a::MPIU_Count) 
 
 # External Links
 $(_doc_external("Sys/PetscMPIIntCast"))
@@ -9340,7 +9357,7 @@ end
 end 
 
 """
-	PetscMPIIntSortSemiOrdered(petsclib::PetscLibType,n::PetscInt, arr::Vector{PetscMPIInt}) 
+	PetscMPIIntSortSemiOrdered(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscMPIInt}) 
 Sorts an array of `PetscMPIInt` in place in increasing order.
 
 Not Collective
@@ -9354,7 +9371,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTimSort()`, `PetscSortMPIInt()`
+See also: `PetscTimSort()`, `PetscSortMPIInt()`
 
 # External Links
 $(_doc_external("Sys/PetscMPIIntSortSemiOrdered"))
@@ -9377,7 +9394,7 @@ end
 end 
 
 """
-	PetscMPIIntSortSemiOrderedWithArray(petsclib::PetscLibType,n::PetscInt, arr1::Vector{PetscMPIInt}, arr2::Vector{PetscMPIInt}) 
+	PetscMPIIntSortSemiOrderedWithArray(petsclib::PetscLibType, n::PetscInt, arr1::Vector{PetscMPIInt}, arr2::Vector{PetscMPIInt}) 
 Sorts an array of `PetscMPIInt` in place in increasing order and reorders a second `PetscMPIInt`
 array to match the first.
 
@@ -9392,7 +9409,7 @@ Input/Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscTimSortWithArray()`, `PetscSortMPIIntWithArray()`, `PetscSortIntWithPermutation()`
+See also: `PetscTimSortWithArray()`, `PetscSortMPIIntWithArray()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscMPIIntSortSemiOrderedWithArray"))
@@ -9422,7 +9439,7 @@ Not Collective
 
 Level: developer
 
--seealso: `PetscMallocSet()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocSet()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocClear"))
@@ -9444,7 +9461,7 @@ end
 end 
 
 """
-	PetscMallocDump(petsclib::PetscLibType,fp::Libc.FILE) 
+	PetscMallocDump(petsclib::PetscLibType, fp::Libc.FILE) 
 Dumps the currently allocated memory blocks to a file. The information
 printed is: size of space (in bytes), address of space, id of space,
 file in which space was allocated, and line number at which it was
@@ -9460,7 +9477,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscMallocGetCurrentUsage()`, `PetscMallocView()`, `PetscMallocViewSet()`, `PetscMallocValidate()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocGetCurrentUsage()`, `PetscMallocView()`, `PetscMallocViewSet()`, `PetscMallocValidate()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocDump"))
@@ -9493,7 +9510,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscMallocDump()`, `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
+See also: `PetscMallocDump()`, `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
 `PetscMemoryGetMaximumUsage()`
 
 # External Links
@@ -9531,7 +9548,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `CHKMEMQ`, `PetscMallocValidate()`, `PetscMallocSetDebug()`, `PetscMalloc()`, `PetscFree()`
+See also: `CHKMEMQ`, `PetscMallocValidate()`, `PetscMallocSetDebug()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocGetDebug"))
@@ -9571,7 +9588,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscMallocDump()`, `PetscMallocView()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
+See also: `PetscMallocDump()`, `PetscMallocView()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
 `PetscMallocPushMaximumUsage()`
 
 # External Links
@@ -9607,7 +9624,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscMallocLogRequestedSizeSet()`, `PetscMallocViewSet()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocLogRequestedSizeSet()`, `PetscMallocViewSet()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocLogRequestedSizeGet"))
@@ -9632,7 +9649,7 @@ end
 end 
 
 """
-	PetscMallocLogRequestedSizeSet(petsclib::PetscLibType,flg::PetscBool) 
+	PetscMallocLogRequestedSizeSet(petsclib::PetscLibType, flg::PetscBool) 
 Whether to log the requested or aligned memory size
 
 Not Collective
@@ -9645,7 +9662,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscMallocLogRequestedSizeGet()`, `PetscMallocViewSet()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocLogRequestedSizeGet()`, `PetscMallocViewSet()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocLogRequestedSizeSet"))
@@ -9668,7 +9685,7 @@ end
 end 
 
 """
-	mu::PetscLogDouble = PetscMallocPopMaximumUsage(petsclib::PetscLibType,event::Cint) 
+	mu::PetscLogDouble = PetscMallocPopMaximumUsage(petsclib::PetscLibType, event::Cint) 
 collect the maximum memory usage over an event
 
 Not Collective
@@ -9681,7 +9698,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
+See also: `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
 `PetscMallocPushMaximumUsage()`
 
 # External Links
@@ -9707,7 +9724,7 @@ end
 end 
 
 """
-	PetscMallocPushMaximumUsage(petsclib::PetscLibType,event::Cint) 
+	PetscMallocPushMaximumUsage(petsclib::PetscLibType, event::Cint) 
 Adds another event to collect the maximum memory usage over an event
 
 Not Collective
@@ -9717,7 +9734,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
+See also: `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMalloc()`, `PetscFree()`,
 `PetscMallocPopMaximumUsage()`
 
 # External Links
@@ -9770,7 +9787,7 @@ Not Collective
 
 Level: developer
 
--seealso: `PetscMallocSetDRAM()`
+See also: `PetscMallocSetDRAM()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocResetDRAM"))
@@ -9792,7 +9809,7 @@ end
 end 
 
 """
-	PetscMallocSet(petsclib::PetscLibType,imalloc::external, ifree::external, iralloc::external) 
+	PetscMallocSet(petsclib::PetscLibType, imalloc::external, ifree::external, iralloc::external) 
 Sets the underlying allocation routines used by `PetscMalloc()` and `PetscFree()`
 
 Not Collective, No Fortran Support
@@ -9804,7 +9821,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscMallocClear()`, `PetscInitialize()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocClear()`, `PetscInitialize()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocSet"))
@@ -9849,7 +9866,7 @@ end
 end 
 
 """
-	PetscMallocSetCoalesce(petsclib::PetscLibType,coalesce::PetscBool) 
+	PetscMallocSetCoalesce(petsclib::PetscLibType, coalesce::PetscBool) 
 Use coalesced `PetscMalloc()` when allocating groups of objects, that is when using `PetscMallocN()`
 
 Not Collective
@@ -9862,7 +9879,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscMallocA()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocA()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocSetCoalesce"))
@@ -9895,7 +9912,7 @@ Not Collective
 
 Level: developer
 
--seealso: `PetscMallocReset()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocReset()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocSetDRAM"))
@@ -9917,7 +9934,7 @@ end
 end 
 
 """
-	PetscMallocSetDebug(petsclib::PetscLibType,eachcall::PetscBool, initializenan::PetscBool) 
+	PetscMallocSetDebug(petsclib::PetscLibType, eachcall::PetscBool, initializenan::PetscBool) 
 Set's PETSc memory debugging
 
 Not Collective
@@ -9934,7 +9951,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: `CHKMEMQ`, `PetscMallocValidate()`, `PetscMallocGetDebug()`, `PetscMalloc()`, `PetscFree()`
+See also: `CHKMEMQ`, `PetscMallocValidate()`, `PetscMallocGetDebug()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocSetDebug"))
@@ -9972,7 +9989,7 @@ Level: advanced
 
 This only does anything if `-malloc_debug` (or `-malloc_test` if PETSc was configured with debugging) has been used
 
--seealso: `PetscMallocTraceSet()`, `PetscMallocViewGet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocTraceSet()`, `PetscMallocViewGet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocTraceGet"))
@@ -9997,7 +10014,7 @@ end
 end 
 
 """
-	PetscMallocTraceSet(petsclib::PetscLibType,viewer::PetscViewer, active::PetscBool, logmin::PetscLogDouble) 
+	PetscMallocTraceSet(petsclib::PetscLibType, viewer::PetscViewer, active::PetscBool, logmin::PetscLogDouble) 
 Trace all calls to `PetscMalloc()`. That is print each `PetscMalloc()` and `PetscFree()` call to a viewer.
 
 Not Collective
@@ -10009,7 +10026,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscMallocTraceGet()`, `PetscMallocViewGet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocTraceGet()`, `PetscMallocViewGet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocTraceSet"))
@@ -10032,7 +10049,7 @@ end
 end 
 
 """
-	PetscMallocValidate(petsclib::PetscLibType,line::Cint, fnc::String, file::String) 
+	PetscMallocValidate(petsclib::PetscLibType, line::Cint, fnc::String, file::String) 
 Test the memory for corruption.  This can be called at any time between `PetscInitialize()` and `PetscFinalize()`
 
 Input Parameters:
@@ -10046,7 +10063,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: `CHKMEMQ`, `PetscMalloc()`, `PetscFree()`, `PetscMallocSetDebug()`
+See also: `CHKMEMQ`, `PetscMalloc()`, `PetscFree()`, `PetscMallocSetDebug()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocValidate"))
@@ -10069,7 +10086,7 @@ end
 end 
 
 """
-	PetscMallocView(petsclib::PetscLibType,fp::Libc.FILE) 
+	PetscMallocView(petsclib::PetscLibType, fp::Libc.FILE) 
 Saves the log of all calls to `PetscMalloc()`; also calls `PetscMemoryGetMaximumUsage()`
 
 Not Collective
@@ -10082,7 +10099,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscMallocGetCurrentUsage()`, `PetscMallocDump()`, `PetscMallocViewSet()`, `PetscMemoryView()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocGetCurrentUsage()`, `PetscMallocDump()`, `PetscMallocViewSet()`, `PetscMemoryView()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocView"))
@@ -10118,7 +10135,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscMallocViewSet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocTraceGet()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocViewSet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocTraceGet()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocViewGet"))
@@ -10143,7 +10160,7 @@ end
 end 
 
 """
-	PetscMallocViewSet(petsclib::PetscLibType,logmin::PetscLogDouble) 
+	PetscMallocViewSet(petsclib::PetscLibType, logmin::PetscLogDouble) 
 Activates logging of all calls to `PetscMalloc()` with a minimum size to view
 
 Not Collective
@@ -10158,7 +10175,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: `PetscMallocViewGet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocTraceSet()`, `PetscMallocValidate()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocViewGet()`, `PetscMallocDump()`, `PetscMallocView()`, `PetscMallocTraceSet()`, `PetscMallocValidate()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMallocViewSet"))
@@ -10181,7 +10198,7 @@ end
 end 
 
 """
-	max::PetscInt,sum::PetscInt = PetscMaxSum(petsclib::PetscLibType,comm::MPI_Comm, array::Vector{PetscInt}) 
+	max::PetscInt,sum::PetscInt = PetscMaxSum(petsclib::PetscLibType, comm::MPI_Comm, array::Vector{PetscInt}) 
 Returns the max of the first entry over all MPI processes and the sum of the second entry.
 
 Collective
@@ -10196,7 +10213,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscMaxSum"))
@@ -10223,7 +10240,7 @@ end
 end 
 
 """
-	e::PetscBool = PetscMemcmp(petsclib::PetscLibType,str1::Ptr{Cvoid}, str2::Ptr{Cvoid}, len::Csize_t) 
+	e::PetscBool = PetscMemcmp(petsclib::PetscLibType, str1::Ptr{Cvoid}, str2::Ptr{Cvoid}, len::Csize_t) 
 Compares two byte streams in memory.
 
 Not Collective
@@ -10239,7 +10256,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscMemcpy()`, `PetscArrayzero()`, `PetscMemzero()`, `PetscArraycmp()`, `PetscArraycpy()`, `PetscStrallocpy()`,
+See also: `PetscMemcpy()`, `PetscArrayzero()`, `PetscMemzero()`, `PetscArraycmp()`, `PetscArraycpy()`, `PetscStrallocpy()`,
 `PetscArraymove()`
 
 # External Links
@@ -10265,7 +10282,7 @@ end
 end 
 
 """
-	PetscMemcpy(petsclib::PetscLibType,a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t) 
+	PetscMemcpy(petsclib::PetscLibType, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscMemcpy"))
@@ -10288,7 +10305,7 @@ end
 end 
 
 """
-	PetscMemmove(petsclib::PetscLibType,a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t) 
+	PetscMemmove(petsclib::PetscLibType, a::Ptr{Cvoid}, b::Ptr{Cvoid}, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscMemmove"))
@@ -10327,7 +10344,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscMallocGetMaximumUsage()`, `PetscMemoryGetMaximumUsage()`, `PetscMallocGetCurrentUsage()`, `PetscMemorySetGetMaximumUsage()`, `PetscMemoryView()`
+See also: `PetscMallocGetMaximumUsage()`, `PetscMemoryGetMaximumUsage()`, `PetscMallocGetCurrentUsage()`, `PetscMemorySetGetMaximumUsage()`, `PetscMemoryView()`
 
 # External Links
 $(_doc_external("Sys/PetscMemoryGetCurrentUsage"))
@@ -10368,7 +10385,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMallocGetCurrentUsage()`,
+See also: `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMallocGetCurrentUsage()`,
 `PetscMemorySetGetMaximumUsage()`
 
 # External Links
@@ -10407,7 +10424,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMallocGetCurrentUsage()`,
+See also: `PetscMallocGetMaximumUsage()`, `PetscMemoryGetCurrentUsage()`, `PetscMallocGetCurrentUsage()`,
 `PetscMemoryGetMaximumUsage()`
 
 # External Links
@@ -10430,8 +10447,8 @@ end
 end 
 
 """
-	PetscMemoryTrace(petsclib::PetscLibType,label::String) 
-Print the current and high
+	PetscMemoryTrace(petsclib::PetscLibType, label::String) 
+Print the current and high-water memory usage and the delta since the last call, tagged with a user-supplied label
 
 Collective on `PETSC_COMM_WORLD`; No Fortran Support
 
@@ -10440,7 +10457,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscMemoryGetCurrentUsage()`, `PetscMallocGetCurrentUsage()`, `PetscMallocDump()`
+See also: `PetscMemoryGetCurrentUsage()`, `PetscMallocGetCurrentUsage()`, `PetscMallocDump()`
 
 # External Links
 $(_doc_external("Sys/PetscMemoryTrace"))
@@ -10463,7 +10480,7 @@ end
 end 
 
 """
-	PetscMemoryView(petsclib::PetscLibType,viewer::PetscViewer, message::String) 
+	PetscMemoryView(petsclib::PetscLibType, viewer::PetscViewer, message::String) 
 Shows the amount of memory currently being used in a communicator.
 
 Collective
@@ -10479,7 +10496,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscMallocDump()`, `PetscMemoryGetCurrentUsage()`, `PetscMemorySetGetMaximumUsage()`, `PetscMallocView()`, `PetscMalloc()`, `PetscFree()`
+See also: `PetscMallocDump()`, `PetscMemoryGetCurrentUsage()`, `PetscMemorySetGetMaximumUsage()`, `PetscMallocView()`, `PetscMalloc()`, `PetscFree()`
 
 # External Links
 $(_doc_external("Sys/PetscMemoryView"))
@@ -10502,7 +10519,7 @@ end
 end 
 
 """
-	PetscMemzero(petsclib::PetscLibType,a::Ptr{Cvoid}, n::Csize_t) 
+	PetscMemzero(petsclib::PetscLibType, a::Ptr{Cvoid}, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscMemzero"))
@@ -10525,7 +10542,7 @@ end
 end 
 
 """
-	n::PetscInt,L::Ptr{PetscInt} = PetscMergeIntArray(petsclib::PetscLibType,an::PetscInt, aI::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}) 
+	n::PetscInt,L::Ptr{PetscInt} = PetscMergeIntArray(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}) 
 Merges two SORTED `PetscInt` arrays, removes duplicate elements.
 
 Not Collective
@@ -10542,7 +10559,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
+See also: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscMergeIntArray"))
@@ -10569,7 +10586,7 @@ end
 end 
 
 """
-	n::PetscInt,L::Ptr{PetscInt},J::Ptr{PetscInt} = PetscMergeIntArrayPair(petsclib::PetscLibType,an::PetscInt, aI::Vector{PetscInt}, aJ::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}, bJ::Vector{PetscInt}) 
+	n::PetscInt,L::Ptr{PetscInt},J::Ptr{PetscInt} = PetscMergeIntArrayPair(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscInt}, aJ::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}, bJ::Vector{PetscInt}) 
 Merges two SORTED `PetscInt` arrays that share NO common values along with an additional array of `PetscInt`.
 The additional arrays are the same length as sorted arrays and are merged
 in the order determined by the merging of the sorted pair.
@@ -10589,7 +10606,7 @@ Output Parameters:
 - `L` - merged sorted array
 - `J` - merged additional array
 
--seealso: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
+See also: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscMergeIntArrayPair"))
@@ -10618,7 +10635,7 @@ end
 end 
 
 """
-	n::PetscInt,L::Ptr{PetscMPIInt} = PetscMergeMPIIntArray(petsclib::PetscLibType,an::PetscInt, aI::Vector{PetscMPIInt}, bn::PetscInt, bI::Vector{PetscMPIInt}) 
+	n::PetscInt,L::Ptr{PetscMPIInt} = PetscMergeMPIIntArray(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscMPIInt}, bn::PetscInt, bI::Vector{PetscMPIInt}) 
 Merges two SORTED `PetscMPIInt` arrays.
 
 Not Collective
@@ -10635,7 +10652,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
+See also: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscMergeMPIIntArray"))
@@ -10662,7 +10679,7 @@ end
 end 
 
 """
-	PetscMkdir(petsclib::PetscLibType,dir::String) 
+	PetscMkdir(petsclib::PetscLibType, dir::String) 
 Create a directory
 
 Not Collective
@@ -10672,7 +10689,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscMkdtemp()`, `PetscRMTree()`
+See also: `PetscMkdtemp()`, `PetscRMTree()`
 
 # External Links
 $(_doc_external("Sys/PetscMkdir"))
@@ -10695,7 +10712,7 @@ end
 end 
 
 """
-	PetscMkdtemp(petsclib::PetscLibType,dir::String) 
+	PetscMkdtemp(petsclib::PetscLibType, dir::String) 
 Create a directory with a unique name given a name template.
 
 Input Parameter:
@@ -10703,7 +10720,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscMkdir()`, `PetscRMTree()`
+See also: `PetscMkdir()`, `PetscRMTree()`
 
 # External Links
 $(_doc_external("Sys/PetscMkdtemp"))
@@ -10726,7 +10743,7 @@ end
 end 
 
 """
-	identical::PetscBool = PetscMonitorCompare(petsclib::PetscLibType,nmon::external, nmctx::Ptr{Cvoid}, nmdestroy::Ptr{Cvoid}, mon::external, mctx::Ptr{Cvoid}, mdestroy::Ptr{Cvoid}) 
+	identical::PetscBool = PetscMonitorCompare(petsclib::PetscLibType, nmon::external, nmctx::Ptr{Cvoid}, nmdestroy::Ptr{Cvoid}, mon::external, mctx::Ptr{Cvoid}, mdestroy::Ptr{Cvoid}) 
 Checks if two monitors are identical; if they are then it destroys the new one
 
 Not Collective
@@ -10744,7 +10761,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_viewers), `DMMonitorSetFromOptions()`, `KSPMonitorSetFromOptions()`, `SNESMonitorSetFromOptions()`, `PetscCtxDestroyFn`
+See also: [](sec_viewers), `DMMonitorSetFromOptions()`, `KSPMonitorSetFromOptions()`, `SNESMonitorSetFromOptions()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("Viewer/PetscMonitorCompare"))
@@ -10791,7 +10808,7 @@ end
 end 
 
 """
-	t::Cint = PetscOpenSocket(petsclib::PetscLibType,hostname::String, portnum::Cint) 
+	t::Cint = PetscOpenSocket(petsclib::PetscLibType, hostname::String, portnum::Cint) 
 handles connected to an open port where someone is waiting.
 
 Input Parameters:
@@ -10801,7 +10818,7 @@ Input Parameters:
 Output Parameter:
 - `t` - the socket number
 
--seealso: `PetscSocketListen()`, `PetscSocketEstablish()`, `PetscHTTPRequest()`, `PetscHTTPSConnect()`
+See also: `PetscSocketListen()`, `PetscSocketEstablish()`, `PetscHTTPRequest()`, `PetscHTTPSConnect()`
 
 # External Links
 $(_doc_external("Viewer/PetscOpenSocket"))
@@ -10826,7 +10843,7 @@ end
 end 
 
 """
-	PetscOptionsBegin(petsclib::PetscLibType,comm::MPI_Comm, prefix::String, mess::String, sec::String) 
+	PetscOptionsBegin(petsclib::PetscLibType, comm::MPI_Comm, prefix::String, mess::String, sec::String) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsBegin"))
@@ -10849,7 +10866,7 @@ end
 end 
 
 """
-	value::PetscBool,set::PetscBool = PetscOptionsBool(petsclib::PetscLibType,opt::String, text::String, man::String, currentvalue::PetscBool) 
+	value::PetscBool,set::PetscBool = PetscOptionsBool(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscBool) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsBool"))
@@ -10876,7 +10893,7 @@ end
 end 
 
 """
-	value::PetscBool3,set::PetscBool3 = PetscOptionsBool3(petsclib::PetscLibType,opt::String, text::String, man::String, currentvalue::PetscBool3) 
+	value::PetscBool3,set::PetscBool3 = PetscOptionsBool3(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscBool3) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsBool3"))
@@ -10903,7 +10920,7 @@ end
 end 
 
 """
-	n::PetscInt,set::PetscBool = PetscOptionsBoolArray(petsclib::PetscLibType,opt::String, text::String, man::String, value::Vector{PetscBool}) 
+	n::PetscInt,set::PetscBool = PetscOptionsBoolArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscBool}) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsBoolArray"))
@@ -10952,7 +10969,7 @@ end
 end 
 
 """
-	value::PetscInt,set::PetscBool = PetscOptionsInt(petsclib::PetscLibType,opt::String, text::String, man::String, currentvalue::PetscInt) 
+	value::PetscInt,set::PetscBool = PetscOptionsInt(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscInt) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsInt"))
@@ -10979,7 +10996,7 @@ end
 end 
 
 """
-	n::PetscInt,set::PetscBool = PetscOptionsIntArray(petsclib::PetscLibType,opt::String, text::String, man::String, value::Vector{PetscInt}) 
+	n::PetscInt,set::PetscBool = PetscOptionsIntArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscInt}) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsIntArray"))
@@ -11006,7 +11023,7 @@ end
 end 
 
 """
-	value::PetscReal,set::PetscBool = PetscOptionsReal(petsclib::PetscLibType,opt::String, text::String, man::String, currentvalue::PetscReal) 
+	value::PetscReal,set::PetscBool = PetscOptionsReal(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscReal) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsReal"))
@@ -11033,7 +11050,7 @@ end
 end 
 
 """
-	n::PetscInt,set::PetscBool = PetscOptionsRealArray(petsclib::PetscLibType,opt::String, text::String, man::String, value::Vector{PetscReal}) 
+	n::PetscInt,set::PetscBool = PetscOptionsRealArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscReal}) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsRealArray"))
@@ -11060,7 +11077,7 @@ end
 end 
 
 """
-	value::PetscScalar,set::PetscBool = PetscOptionsScalar(petsclib::PetscLibType,opt::String, text::String, man::String, currentvalue::PetscScalar) 
+	value::PetscScalar,set::PetscBool = PetscOptionsScalar(petsclib::PetscLibType, opt::String, text::String, man::String, currentvalue::PetscScalar) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsScalar"))
@@ -11087,7 +11104,7 @@ end
 end 
 
 """
-	n::PetscInt,set::PetscBool = PetscOptionsScalarArray(petsclib::PetscLibType,opt::String, text::String, man::String, value::Vector{PetscScalar}) 
+	n::PetscInt,set::PetscBool = PetscOptionsScalarArray(petsclib::PetscLibType, opt::String, text::String, man::String, value::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Sys/PetscOptionsScalarArray"))
@@ -11114,7 +11131,7 @@ end
 end 
 
 """
-	PetscPClose(petsclib::PetscLibType,comm::MPI_Comm, fd::Libc.FILE) 
+	PetscPClose(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE) 
 Closes (ends) a program on MPI rank 0 run with `PetscPOpen()`
 
 Collective, but only MPI rank 0 does anything
@@ -11125,7 +11142,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFOpen()`, `PetscFClose()`, `PetscPOpen()`
+See also: `PetscFOpen()`, `PetscFClose()`, `PetscPOpen()`
 
 # External Links
 $(_doc_external("Sys/PetscPClose"))
@@ -11148,7 +11165,7 @@ end
 end 
 
 """
-	fp::Ptr{Libc.FILE} = PetscPOpen(petsclib::PetscLibType,comm::MPI_Comm, machine::String, program::String, mode::String) 
+	fp::Ptr{Libc.FILE} = PetscPOpen(petsclib::PetscLibType, comm::MPI_Comm, machine::String, program::String, mode::String) 
 Runs a program on MPI rank 0 and sends either its input or output to
 a file.
 
@@ -11165,7 +11182,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFOpen()`, `PetscFClose()`, `PetscPClose()`, `PetscPOpenSetMachine()`
+See also: `PetscFOpen()`, `PetscFClose()`, `PetscPClose()`, `PetscPOpenSetMachine()`
 
 # External Links
 $(_doc_external("Sys/PetscPOpen"))
@@ -11190,7 +11207,7 @@ end
 end 
 
 """
-	PetscPOpenSetMachine(petsclib::PetscLibType,machine::String) 
+	PetscPOpenSetMachine(petsclib::PetscLibType, machine::String) 
 Sets the name of the default machine to run `PetscPOpen()` calls on
 
 Logically Collective, but only the MPI process with rank 0 runs the command
@@ -11203,7 +11220,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscFOpen()`, `PetscFClose()`, `PetscPClose()`, `PetscPOpen()`
+See also: `PetscFOpen()`, `PetscFClose()`, `PetscPClose()`, `PetscPOpen()`
 
 # External Links
 $(_doc_external("Sys/PetscPOpenSetMachine"))
@@ -11226,7 +11243,7 @@ end
 end 
 
 """
-	PetscParallelSortInt(petsclib::PetscLibType,mapin::PetscLayout, mapout::PetscLayout, keysin::Vector{PetscInt}, keysout::Vector{PetscInt}) 
+	PetscParallelSortInt(petsclib::PetscLibType, mapin::PetscLayout, mapout::PetscLayout, keysin::Vector{PetscInt}, keysout::Vector{PetscInt}) 
 Globally sort a distributed array of integers
 
 Collective
@@ -11241,7 +11258,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscSortInt()`, `PetscParallelSortedInt()`
+See also: `PetscSortInt()`, `PetscParallelSortedInt()`
 
 # External Links
 $(_doc_external("IS/PetscParallelSortInt"))
@@ -11264,7 +11281,7 @@ end
 end 
 
 """
-	is_sorted::PetscBool = PetscParallelSortedInt(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, keys::Vector{PetscInt}) 
+	is_sorted::PetscBool = PetscParallelSortedInt(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, keys::Vector{PetscInt}) 
 Check whether a `PetscInt` array, distributed over a communicator, is globally sorted.
 
 Collective
@@ -11279,7 +11296,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscParallelSortInt()`
+See also: `PetscParallelSortInt()`
 
 # External Links
 $(_doc_external("Sys/PetscParallelSortedInt"))
@@ -11312,7 +11329,7 @@ Not Collective
 
 Level: intermediate
 
--seealso: `PetscPushErrorHandler()`
+See also: `PetscPushErrorHandler()`
 
 # External Links
 $(_doc_external("Sys/PetscPopErrorHandler"))
@@ -11343,7 +11360,7 @@ Not Collective
 
 Level: developer
 
--seealso: [](sec_errors), `PetscPushSignalHandler()`
+See also: [](sec_errors), `PetscPushSignalHandler()`
 
 # External Links
 $(_doc_external("Sys/PetscPopSignalHandler"))
@@ -11365,8 +11382,8 @@ end
 end 
 
 """
-	rbuf::Ptr{PetscInt},r_waits::Ptr{MPI_Request} = PetscPostIrecvInt(petsclib::PetscLibType,comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}) 
-Allocate the receive buffers for an irregular all
+	rbuf::Ptr{PetscInt},r_waits::Ptr{MPI_Request} = PetscPostIrecvInt(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}) 
+Allocate the receive buffers for an irregular all-to-all of `PetscInt` messages and post non-blocking `MPI_Irecv()`s on them
 
 Collective; No Fortran Support
 
@@ -11383,7 +11400,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscPostIrecvScalar()`, `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths()`
+See also: `PetscPostIrecvScalar()`, `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths()`
 
 # External Links
 $(_doc_external("Sys/PetscPostIrecvInt"))
@@ -11410,8 +11427,8 @@ end
 end 
 
 """
-	rbuf::Ptr{PetscScalar},r_waits::Ptr{MPI_Request} = PetscPostIrecvScalar(petsclib::PetscLibType,comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}) 
-Allocate the receive buffers for an irregular all
+	rbuf::Ptr{PetscScalar},r_waits::Ptr{MPI_Request} = PetscPostIrecvScalar(petsclib::PetscLibType, comm::MPI_Comm, tag::PetscMPIInt, nrecvs::PetscMPIInt, onodes::Vector{PetscMPIInt}, olengths::Vector{PetscMPIInt}) 
+Allocate the receive buffers for an irregular all-to-all of `PetscScalar` messages and post non-blocking `MPI_Irecv()`s on them
 
 Collective; No Fortran Support
 
@@ -11428,7 +11445,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscPostIrecvInt()`, `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths()`
+See also: `PetscPostIrecvInt()`, `PetscGatherNumberOfMessages()`, `PetscGatherMessageLengths()`
 
 # External Links
 $(_doc_external("Sys/PetscPostIrecvScalar"))
@@ -11455,8 +11472,8 @@ end
 end 
 
 """
-	alpha::PetscReal = PetscProbComputeKSStatistic(petsclib::PetscLibType,v::AbstractPetscVec, cdf::Ptr{Cvoid}) 
-Compute the Kolmogorov
+	alpha::PetscReal = PetscProbComputeKSStatistic(petsclib::PetscLibType, v::AbstractPetscVec, cdf::Ptr{Cvoid}) 
+Compute the Kolmogorov-Smirnov statistic for the empirical distribution for an input vector, compared to an analytic CDF.
 
 Collective
 
@@ -11469,7 +11486,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscProbComputeKSStatisticWeighted()`, `PetscProbComputeKSStatisticMagnitude()`, `PetscProbFn`
+See also: `PetscProbComputeKSStatisticWeighted()`, `PetscProbComputeKSStatisticMagnitude()`, `PetscProbFn`
 
 # External Links
 $(_doc_external("DT/PetscProbComputeKSStatistic"))
@@ -11494,8 +11511,8 @@ end
 end 
 
 """
-	alpha::PetscReal = PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType,v::AbstractPetscVec, cdf::Ptr{Cvoid}) 
-Compute the Kolmogorov
+	alpha::PetscReal = PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType, v::AbstractPetscVec, cdf::Ptr{Cvoid}) 
+Compute the Kolmogorov-Smirnov statistic for the empirical distribution for the magnitude over each block of an input vector, compared to an analytic CDF.
 
 Collective
 
@@ -11508,7 +11525,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscProbComputeKSStatistic()`, `PetscProbComputeKSStatisticWeighted()`, `PetscProbFn`
+See also: `PetscProbComputeKSStatistic()`, `PetscProbComputeKSStatisticWeighted()`, `PetscProbFn`
 
 # External Links
 $(_doc_external("DT/PetscProbComputeKSStatisticMagnitude"))
@@ -11533,8 +11550,8 @@ end
 end 
 
 """
-	alpha::PetscReal = PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec, cdf::Ptr{Cvoid}) 
-Compute the Kolmogorov
+	alpha::PetscReal = PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec, cdf::Ptr{Cvoid}) 
+Compute the Kolmogorov-Smirnov statistic for the weighted empirical distribution for an input vector, compared to an analytic CDF.
 
 Collective
 
@@ -11548,7 +11565,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscProbComputeKSStatistic()`, `PetscProbComputeKSStatisticMagnitude()`, `PetscProbFn`
+See also: `PetscProbComputeKSStatistic()`, `PetscProbComputeKSStatisticMagnitude()`, `PetscProbFn`
 
 # External Links
 $(_doc_external("DT/PetscProbComputeKSStatisticWeighted"))
@@ -11573,7 +11590,7 @@ end
 end 
 
 """
-	pdf::Ptr{Cvoid},cdf::Ptr{Cvoid},sampler::Ptr{Cvoid} = PetscProbCreateFromOptions(petsclib::PetscLibType,dim::PetscInt, prefix::String, name::String) 
+	pdf::Ptr{Cvoid},cdf::Ptr{Cvoid},sampler::Ptr{Cvoid} = PetscProbCreateFromOptions(petsclib::PetscLibType, dim::PetscInt, prefix::String, name::String) 
 Return the probability distribution specified by the arguments and options
 
 Not Collective
@@ -11590,7 +11607,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscProbFn`, `PetscPDFMaxwellBoltzmann1D()`, `PetscPDFGaussian1D()`, `PetscPDFConstant1D()`
+See also: `PetscProbFn`, `PetscPDFMaxwellBoltzmann1D()`, `PetscPDFGaussian1D()`, `PetscPDFConstant1D()`
 
 # External Links
 $(_doc_external("DT/PetscProbCreateFromOptions"))
@@ -11619,7 +11636,7 @@ end
 end 
 
 """
-	PetscProcessPlacementView(petsclib::PetscLibType,viewer::PetscViewer) 
+	PetscProcessPlacementView(petsclib::PetscLibType, viewer::PetscViewer) 
 display the MPI rank placement by core
 
 Input Parameter:
@@ -11627,7 +11644,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscProcessPlacementView"))
@@ -11650,7 +11667,7 @@ end
 end 
 
 """
-	Nlevels::PetscInt,Level::Ptr{PetscInt},Levelcnt::Ptr{PetscInt},Idbylevel::Ptr{PetscInt},Column::Ptr{PetscInt} = PetscProcessTree(petsclib::PetscLibType,n::PetscInt, mask::Vector{PetscBool}, parentid::Vector{PetscInt}) 
+	Nlevels::PetscInt,Level::Ptr{PetscInt},Levelcnt::Ptr{PetscInt},Idbylevel::Ptr{PetscInt},Column::Ptr{PetscInt} = PetscProcessTree(petsclib::PetscLibType, n::PetscInt, mask::Vector{PetscBool}, parentid::Vector{PetscInt}) 
 Prepares tree data to be displayed graphically
 
 Not Collective, No Fortran Support
@@ -11669,7 +11686,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscSortReal()`, `PetscSortIntWithPermutation()`
+See also: `PetscSortReal()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscProcessTree"))
@@ -11702,7 +11719,7 @@ end
 end 
 
 """
-	found::PetscBool = PetscPullJSONValue(petsclib::PetscLibType,buff::String, key::String, value::String, valuelen::Csize_t) 
+	found::PetscBool = PetscPullJSONValue(petsclib::PetscLibType, buff::String, key::String, value::String, valuelen::Csize_t) 
 Given a JSON response containing the substring with "key" : "value"  where there may or not be spaces around the : returns the value.
 
 Input Parameters:
@@ -11716,7 +11733,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscOpenSocket()`, `PetscHTTPSRequest()`, `PetscSSLInitializeContext()`, `PetscPushJSONValue()`
+See also: `PetscOpenSocket()`, `PetscHTTPSRequest()`, `PetscSSLInitializeContext()`, `PetscPushJSONValue()`
 
 # External Links
 $(_doc_external("Sys/PetscPullJSONValue"))
@@ -11741,7 +11758,7 @@ end
 end 
 
 """
-	PetscPushErrorHandler(petsclib::PetscLibType,handler::external, ctx::Ptr{Cvoid}) 
+	PetscPushErrorHandler(petsclib::PetscLibType, handler::external, ctx::Ptr{Cvoid}) 
 Sets a routine to be called on detection of errors.
 
 Not Collective, No Fortran Support
@@ -11767,7 +11784,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`, `PetscAbortErrorHandler()`, `PetscTraceBackErrorHandler()`, `PetscPushSignalHandler()`,
+See also: `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`, `PetscAbortErrorHandler()`, `PetscTraceBackErrorHandler()`, `PetscPushSignalHandler()`,
 `PetscErrorType`, `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`
 
 # External Links
@@ -11791,7 +11808,7 @@ end
 end 
 
 """
-	PetscPushJSONValue(petsclib::PetscLibType,buff::String, key::String, value::String, bufflen::Csize_t) 
+	PetscPushJSONValue(petsclib::PetscLibType, buff::String, key::String, value::String, bufflen::Csize_t) 
 Puts a "key" : "value" pair onto a string
 
 Input Parameters:
@@ -11802,7 +11819,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscOpenSocket()`, `PetscHTTPSRequest()`, `PetscSSLInitializeContext()`, `PetscPullJSONValue()`
+See also: `PetscOpenSocket()`, `PetscHTTPSRequest()`, `PetscSSLInitializeContext()`, `PetscPullJSONValue()`
 
 # External Links
 $(_doc_external("Sys/PetscPushJSONValue"))
@@ -11825,7 +11842,7 @@ end
 end 
 
 """
-	PetscPushSignalHandler(petsclib::PetscLibType,routine::external, ctx::Ptr{Cvoid}) 
+	PetscPushSignalHandler(petsclib::PetscLibType, routine::external, ctx::Ptr{Cvoid}) 
 Catches the usual fatal errors and
 calls a user-provided routine.
 
@@ -11837,7 +11854,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_errors), `PetscPopSignalHandler()`, `PetscSignalHandlerDefault()`, `PetscPushErrorHandler()`
+See also: [](sec_errors), `PetscPopSignalHandler()`, `PetscSignalHandlerDefault()`, `PetscPushErrorHandler()`
 
 # External Links
 $(_doc_external("Sys/PetscPushSignalHandler"))
@@ -11865,7 +11882,7 @@ Finalize PETSc for use with Python.
 
 Level: intermediate
 
--seealso: `PetscPythonInitialize()`, `PetscPythonPrintError()`
+See also: `PetscPythonInitialize()`, `PetscPythonPrintError()`
 
 # External Links
 $(_doc_external("Sys/PetscPythonFinalize"))
@@ -11887,7 +11904,7 @@ end
 end 
 
 """
-	PetscPythonInitialize(petsclib::PetscLibType,pyexe::String, pylib::String) 
+	PetscPythonInitialize(petsclib::PetscLibType, pyexe::String, pylib::String) 
 Initialize Python for use with PETSc and import petsc4py.
 
 Input Parameters:
@@ -11899,7 +11916,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscPythonFinalize()`, `PetscPythonPrintError()`
+See also: `PetscPythonFinalize()`, `PetscPythonPrintError()`
 
 # External Links
 $(_doc_external("Sys/PetscPythonInitialize"))
@@ -11922,12 +11939,12 @@ end
 end 
 
 """
-	PetscPythonMonitorSet(petsclib::PetscLibType,obj, url::String) 
+	PetscPythonMonitorSet(petsclib::PetscLibType, obj, url::String) 
 Set a Python monitor for a `PetscObject`
 
 Level: developer
 
--seealso: `PetscPythonInitialize()`, `PetscPythonFinalize()`, `PetscPythonPrintError()`
+See also: `PetscPythonInitialize()`, `PetscPythonFinalize()`, `PetscPythonPrintError()`
 
 # External Links
 $(_doc_external("Sys/PetscPythonMonitorSet"))
@@ -11955,7 +11972,7 @@ Print any current Python errors.
 
 Level: developer
 
--seealso: `PetscPythonInitialize()`, `PetscPythonFinalize()`
+See also: `PetscPythonInitialize()`, `PetscPythonFinalize()`
 
 # External Links
 $(_doc_external("Sys/PetscPythonPrintError"))
@@ -11977,7 +11994,7 @@ end
 end 
 
 """
-	PetscRMTree(petsclib::PetscLibType,dir::String) 
+	PetscRMTree(petsclib::PetscLibType, dir::String) 
 Recursively delete a directory tree on the current MPI process
 
 Not Collective
@@ -11987,7 +12004,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscMkdir()`, `PetscTestDirectory()`
+See also: `PetscMkdir()`, `PetscTestDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscRMTree"))
@@ -12010,7 +12027,7 @@ end
 end 
 
 """
-	PetscRealSortSemiOrdered(petsclib::PetscLibType,n::PetscInt, arr::Vector{PetscReal}) 
+	PetscRealSortSemiOrdered(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscReal}) 
 Sorts an array of `PetscReal` in place in increasing order.
 
 Not Collective
@@ -12024,7 +12041,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTimSort()`, `PetscSortReal()`, `PetscSortRealWithPermutation()`
+See also: `PetscTimSort()`, `PetscSortReal()`, `PetscSortRealWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscRealSortSemiOrdered"))
@@ -12047,7 +12064,7 @@ end
 end 
 
 """
-	PetscRealSortSemiOrderedWithArrayInt(petsclib::PetscLibType,n::PetscInt, arr1::Vector{PetscReal}, arr2::Vector{PetscInt}) 
+	PetscRealSortSemiOrderedWithArrayInt(petsclib::PetscLibType, n::PetscInt, arr1::Vector{PetscReal}, arr2::Vector{PetscInt}) 
 Sorts an array of `PetscReal` in place in increasing order and reorders a second
 array of `PetscInt` to match the first.
 
@@ -12062,7 +12079,7 @@ Input/Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscTimSortWithArray()`, `PetscSortRealWithArrayInt()`, `PetscSortRealWithPermutation()`
+See also: `PetscTimSortWithArray()`, `PetscSortRealWithArrayInt()`, `PetscSortRealWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscRealSortSemiOrderedWithArrayInt"))
@@ -12085,7 +12102,7 @@ end
 end 
 
 """
-	PetscRealView(petsclib::PetscLibType,N::PetscInt, idx::Vector{PetscReal}, viewer::PetscViewer) 
+	PetscRealView(petsclib::PetscLibType, N::PetscInt, idx::Vector{PetscReal}, viewer::PetscViewer) 
 Prints an array of doubles; useful for debugging.
 
 Collective
@@ -12097,7 +12114,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PetscIntView()`
+See also: `PetscViewer`, `PetscIntView()`
 
 # External Links
 $(_doc_external("Sys/PetscRealView"))
@@ -12120,7 +12137,7 @@ end
 end 
 
 """
-	PetscRealViewNumColumns(petsclib::PetscLibType,N::PetscInt, Ncol::PetscInt, idx::Vector{PetscReal}, viewer::PetscViewer) 
+	PetscRealViewNumColumns(petsclib::PetscLibType, N::PetscInt, Ncol::PetscInt, idx::Vector{PetscReal}, viewer::PetscViewer) 
 Prints an array of doubles; useful for debugging.
 
 Collective
@@ -12133,7 +12150,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PetscRealView()`, `PetscIntView()`
+See also: `PetscViewer`, `PetscRealView()`, `PetscIntView()`
 
 # External Links
 $(_doc_external("Sys/PetscRealViewNumColumns"))
@@ -12156,7 +12173,7 @@ end
 end 
 
 """
-	PetscRegisterFinalize(petsclib::PetscLibType,f::external) 
+	PetscRegisterFinalize(petsclib::PetscLibType, f::external) 
 Registers a function that is to be called in `PetscFinalize()`
 
 Not Collective
@@ -12166,7 +12183,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscRegisterFinalizeAll()`, `PetscObjectRegisterDestroy()`
+See also: `PetscRegisterFinalizeAll()`, `PetscObjectRegisterDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscRegisterFinalize"))
@@ -12196,7 +12213,7 @@ Not Collective except for registered functions that are collective
 
 Level: developer
 
--seealso: `PetscRegisterFinalize()`, `PetscObjectRegisterDestroyAll()`
+See also: `PetscRegisterFinalize()`, `PetscObjectRegisterDestroyAll()`
 
 # External Links
 $(_doc_external("Sys/PetscRegisterFinalizeAll"))
@@ -12218,7 +12235,7 @@ end
 end 
 
 """
-	PetscReturnErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+	PetscReturnErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
 Error handler that causes a return without printing an error message.
 
 Not Collective, No Fortran Support
@@ -12235,7 +12252,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscError()`, `PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscTraceBackErrorHandler()`,
+See also: `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscError()`, `PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscTraceBackErrorHandler()`,
 `PetscAttachDebuggerErrorHandler()`, `PetscEmacsClientErrorHandler()`,
 `PetscErrorType`, `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`
 
@@ -12267,7 +12284,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsSetBlock()`, `PetscObjectSAWsBlock()`
+See also: `PetscObjectSetName()`, `PetscObjectSAWsViewOff()`, `PetscObjectSAWsSetBlock()`, `PetscObjectSAWsBlock()`
 
 # External Links
 $(_doc_external("Sys/PetscSAWsBlock"))
@@ -12289,7 +12306,7 @@ end
 end 
 
 """
-	PetscSSLDestroyContext(petsclib::PetscLibType,ctx::SSL_CTX) 
+	PetscSSLDestroyContext(petsclib::PetscLibType, ctx::SSL_CTX) 
 frees a `SSL_CTX` obtained with `PetscSSLInitializeContext()`
 
 Input Parameter:
@@ -12297,7 +12314,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscSSLInitializeContext()`, `PetscHTTPSConnect()`
+See also: `PetscSSLInitializeContext()`, `PetscHTTPSConnect()`
 
 # External Links
 $(_doc_external("Sys/PetscSSLDestroyContext"))
@@ -12329,7 +12346,15 @@ Output Parameter:
 Level: advanced
 
 If PETSc was ./configure -with-ssl-certificate requires the user have created a self-signed certificate with
--seealso: `PetscSSLDestroyContext()`, `PetscHTTPSConnect()`, `PetscHTTPSRequest()`
+``
+saws/CA.pl  -newcert  (using the passphrase of password)
+cat newkey.pem newcert.pem > sslclient.pem
+``
+
+and put the resulting file in either the current directory (with the application) or in the home directory. This seems kind of
+silly but it was all I could figure out.
+
+See also: `PetscSSLDestroyContext()`, `PetscHTTPSConnect()`, `PetscHTTPSRequest()`
 
 # External Links
 $(_doc_external("Sys/PetscSSLInitializeContext"))
@@ -12354,7 +12379,7 @@ end
 end 
 
 """
-	PetscScalarView(petsclib::PetscLibType,N::PetscInt, idx::Vector{PetscScalar}, viewer::PetscViewer) 
+	PetscScalarView(petsclib::PetscLibType, N::PetscInt, idx::Vector{PetscScalar}, viewer::PetscViewer) 
 Prints an array of `PetscScalar`; useful for debugging.
 
 Collective
@@ -12366,7 +12391,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PetscIntView()`, `PetscRealView()`
+See also: `PetscViewer`, `PetscIntView()`, `PetscRealView()`
 
 # External Links
 $(_doc_external("Sys/PetscScalarView"))
@@ -12389,7 +12414,7 @@ end
 end 
 
 """
-	PetscScalarViewNumColumns(petsclib::PetscLibType,N::PetscInt, Ncol::PetscInt, idx::Vector{PetscScalar}, viewer::PetscViewer) 
+	PetscScalarViewNumColumns(petsclib::PetscLibType, N::PetscInt, Ncol::PetscInt, idx::Vector{PetscScalar}, viewer::PetscViewer) 
 Prints an array of doubles; useful for debugging.
 
 Collective
@@ -12402,7 +12427,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscViewer`, `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`
+See also: `PetscViewer`, `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`
 
 # External Links
 $(_doc_external("Sys/PetscScalarViewNumColumns"))
@@ -12425,7 +12450,7 @@ end
 end 
 
 """
-	PetscSequentialPhaseBegin(petsclib::PetscLibType,comm::MPI_Comm, ng::Cint) 
+	PetscSequentialPhaseBegin(petsclib::PetscLibType, comm::MPI_Comm, ng::Cint) 
 Begins a sequential section of code.
 
 Collective
@@ -12437,7 +12462,7 @@ at the same time (usually 1)
 
 Level: intermediate
 
--seealso: `PetscSequentialPhaseEnd()`, `PetscSynchronizedPrintf()`
+See also: `PetscSequentialPhaseEnd()`, `PetscSynchronizedPrintf()`
 
 # External Links
 $(_doc_external("Sys/PetscSequentialPhaseBegin"))
@@ -12460,7 +12485,7 @@ end
 end 
 
 """
-	PetscSequentialPhaseEnd(petsclib::PetscLibType,comm::MPI_Comm, ng::Cint) 
+	PetscSequentialPhaseEnd(petsclib::PetscLibType, comm::MPI_Comm, ng::Cint) 
 Ends a sequential section of code.
 
 Collective
@@ -12472,7 +12497,7 @@ at the same time (usually 1)
 
 Level: intermediate
 
--seealso: `PetscSequentialPhaseBegin()`
+See also: `PetscSequentialPhaseBegin()`
 
 # External Links
 $(_doc_external("Sys/PetscSequentialPhaseEnd"))
@@ -12495,7 +12520,7 @@ end
 end 
 
 """
-	PetscSetDebugTerminal(petsclib::PetscLibType,terminal::String) 
+	PetscSetDebugTerminal(petsclib::PetscLibType, terminal::String) 
 Sets the terminal to use for debugging.
 
 Not Collective; No Fortran Support
@@ -12510,7 +12535,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscSetDebugger()`, `PetscAttachDebugger()`
+See also: `PetscSetDebugger()`, `PetscAttachDebugger()`
 
 # External Links
 $(_doc_external("Sys/PetscSetDebugTerminal"))
@@ -12533,7 +12558,7 @@ end
 end 
 
 """
-	PetscSetDebugger(petsclib::PetscLibType,debugger::String, usedebugterminal::PetscBool) 
+	PetscSetDebugger(petsclib::PetscLibType, debugger::String, usedebugterminal::PetscBool) 
 Sets options associated with the debugger.
 
 Not Collective; No Fortran Support
@@ -12550,7 +12575,7 @@ than one MPI process.)
 
 Level: developer
 
--seealso: `PetscAttachDebugger()`, `PetscAttachDebuggerErrorHandler()`, `PetscSetDebugTerminal()`
+See also: `PetscAttachDebugger()`, `PetscAttachDebuggerErrorHandler()`, `PetscSetDebugTerminal()`
 
 # External Links
 $(_doc_external("Sys/PetscSetDebugger"))
@@ -12573,7 +12598,7 @@ end
 end 
 
 """
-	PetscSetDebuggerFromString(petsclib::PetscLibType,string::String) 
+	PetscSetDebuggerFromString(petsclib::PetscLibType, string::String) 
 Set the complete path for the
 debugger for PETSc to use.
 
@@ -12584,7 +12609,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscSetDebugger()`, `PetscSetDefaultDebugger()`, `PetscAttachDebugger()`
+See also: `PetscSetDebugger()`, `PetscSetDefaultDebugger()`, `PetscAttachDebugger()`
 
 # External Links
 $(_doc_external("Sys/PetscSetDebuggerFromString"))
@@ -12614,7 +12639,7 @@ Not Collective, No Fortran Support
 
 Level: developer
 
--seealso: `PetscSetDebugger()`, `PetscSetDebuggerFromString()`, `PetscAttachDebugger()`
+See also: `PetscSetDebugger()`, `PetscSetDebuggerFromString()`, `PetscAttachDebugger()`
 
 # External Links
 $(_doc_external("Sys/PetscSetDefaultDebugger"))
@@ -12637,13 +12662,13 @@ end
 
 """
 	PetscSetDisplay(petsclib::PetscLibType) 
-Determine and set PETSc's X11 display string from the `
+Determine and set PETSc's X11 display string from the `-display` option, the `DISPLAY` environment variable, or the hostname of MPI rank 0 when running across multiple nodes
 
 Collective; No Fortran Support
 
 Level: developer
 
--seealso: `PetscGetDisplay()`, `PetscDraw`, `PETSC_DRAW_X`
+See also: `PetscGetDisplay()`, `PetscDraw`, `PETSC_DRAW_X`
 
 # External Links
 $(_doc_external("Sys/PetscSetDisplay"))
@@ -12665,7 +12690,7 @@ end
 end 
 
 """
-	PetscSetFPTrap(petsclib::PetscLibType,flag::PetscFPTrap) 
+	PetscSetFPTrap(petsclib::PetscLibType, flag::PetscFPTrap) 
 Enables traps/exceptions on common floating point errors. This option may not work on certain systems or only a
 subset of exceptions may be trapable.
 
@@ -12673,7 +12698,23 @@ Not Collective
 
 Input Parameter:
 - `flag`  - values are
--seealso: `PetscFPTrapPush()`, `PetscFPTrapPop()`, `PetscDetermineInitialFPTrap()`
+``
+PETSC_FP_TRAP_OFF   - do not trap any exceptions
+PETSC_FP_TRAP_ON - all exceptions that are possible on the system except underflow
+PETSC_FP_TRAP_INDIV - integer divide by zero
+PETSC_FP_TRAP_FLTOPERR - improper argument to function, for example with real numbers, the square root of a negative number
+PETSC_FP_TRAP_FLTOVF - overflow
+PETSC_FP_TRAP_FLTUND - underflow - not trapped by default on most systems
+PETSC_FP_TRAP_FLTDIV - floating point divide by zero
+PETSC_FP_TRAP_FLTINEX - inexact floating point result
+``
+
+Options Database Key:
+- `-fp_trap (off|on)`  - turn on or off trapping of floating point exceptions
+
+Level: advanced
+
+See also: `PetscFPTrapPush()`, `PetscFPTrapPop()`, `PetscDetermineInitialFPTrap()`
 
 # External Links
 $(_doc_external("Sys/PetscSetFPTrap"))
@@ -12696,7 +12737,7 @@ end
 end 
 
 """
-	PetscSetHelpVersionFunctions(petsclib::PetscLibType,help::external, version::external) 
+	PetscSetHelpVersionFunctions(petsclib::PetscLibType, help::external, version::external) 
 Sets functions that print help and version information
 before the PETSc help and version information is printed.
 
@@ -12708,7 +12749,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscSetHelpVersionFunctions"))
@@ -12731,7 +12772,7 @@ end
 end 
 
 """
-	PetscSetProgramName(petsclib::PetscLibType,name::String) 
+	PetscSetProgramName(petsclib::PetscLibType, name::String) 
 Set the program name reported by `PetscGetProgramName()`
 
 Not Collective
@@ -12741,7 +12782,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscGetProgramName()`, `PetscInitialize()`
+See also: `PetscGetProgramName()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscSetProgramName"))
@@ -12764,7 +12805,7 @@ end
 end 
 
 """
-	shared::PetscBool = PetscSharedTmp(petsclib::PetscLibType,comm::MPI_Comm) 
+	shared::PetscBool = PetscSharedTmp(petsclib::PetscLibType, comm::MPI_Comm) 
 Determines if all processors in a communicator share a
 tmp directory or have different ones.
 
@@ -12788,7 +12829,7 @@ Environmental Variables:
 
 Level: developer
 
--seealso: `PetscGetTmp()`, `PetscSharedWorkingDirectory()`, `PetscGetWorkingDirectory()`, `PetscGetHomeDirectory()`
+See also: `PetscGetTmp()`, `PetscSharedWorkingDirectory()`, `PetscGetWorkingDirectory()`, `PetscGetHomeDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscSharedTmp"))
@@ -12813,7 +12854,7 @@ end
 end 
 
 """
-	shared::PetscBool = PetscSharedWorkingDirectory(petsclib::PetscLibType,comm::MPI_Comm) 
+	shared::PetscBool = PetscSharedWorkingDirectory(petsclib::PetscLibType, comm::MPI_Comm) 
 Determines if all processors in a communicator share a working directory or have different ones.
 
 Collective
@@ -12834,7 +12875,7 @@ Environmental Variables:
 
 Level: developer
 
--seealso: `PetscGetTmp()`, `PetscSharedTmp()`, `PetscGetWorkingDirectory()`, `PetscGetHomeDirectory()`
+See also: `PetscGetTmp()`, `PetscSharedTmp()`, `PetscGetWorkingDirectory()`, `PetscGetHomeDirectory()`
 
 # External Links
 $(_doc_external("Sys/PetscSharedWorkingDirectory"))
@@ -12867,7 +12908,7 @@ Not Collective
 
 Level: developer
 
--seealso: `PetscShmgetAllocateArray()`, `PetscShmgetDeallocateArray()`, `PetscShmgetUnmapAddresses()`
+See also: `PetscShmgetAllocateArray()`, `PetscShmgetDeallocateArray()`, `PetscShmgetUnmapAddresses()`
 
 # External Links
 $(_doc_external("Sys/PetscShmgetAddressesFinalize"))
@@ -12889,7 +12930,7 @@ end
 end 
 
 """
-	addr::Ptr{Cvoid} = PetscShmgetAllocateArray(petsclib::PetscLibType,sz::Csize_t, asz::Csize_t) 
+	addr::Ptr{Cvoid} = PetscShmgetAllocateArray(petsclib::PetscLibType, sz::Csize_t, asz::Csize_t) 
 allocates shared memory that will later be made accessible by all MPI processes in the server
 
 Not Collective, only called on the first MPI process
@@ -12903,7 +12944,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](sec_pcmpi), `PCMPIServerBegin()`, `PCMPI`, `KSPCheckPCMPI()`, `PetscShmgetDeallocateArray()`
+See also: [](sec_pcmpi), `PCMPIServerBegin()`, `PCMPI`, `KSPCheckPCMPI()`, `PetscShmgetDeallocateArray()`
 
 # External Links
 $(_doc_external("Sys/PetscShmgetAllocateArray"))
@@ -12928,7 +12969,7 @@ end
 end 
 
 """
-	PetscShmgetDeallocateArray(petsclib::PetscLibType,addr::Union{Ptr, AbstractArray{Cvoid}}) 
+	PetscShmgetDeallocateArray(petsclib::PetscLibType, addr::Union{Ptr, AbstractArray{Cvoid}}) 
 deallocates shared memory accessible by all MPI processes in the server obtained with `PetscShmgetAllocateArray()`
 
 Not Collective, only called on the first MPI process
@@ -12938,7 +12979,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](sec_pcmpi), `PCMPIServerBegin()`, `PCMPI`, `KSPCheckPCMPI()`, `PetscShmgetAllocateArray()`
+See also: [](sec_pcmpi), `PCMPIServerBegin()`, `PCMPI`, `KSPCheckPCMPI()`, `PetscShmgetAllocateArray()`
 
 # External Links
 $(_doc_external("Sys/PetscShmgetDeallocateArray"))
@@ -12962,7 +13003,7 @@ end
 end 
 
 """
-	addres::Ptr{Cvoid} = PetscShmgetMapAddresses(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, baseaddres::Ptr{Ptr{Cvoid}}) 
+	addres::Ptr{Cvoid} = PetscShmgetMapAddresses(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, baseaddres::Ptr{Ptr{Cvoid}}) 
 given shared address on the first MPI process determines the
 addresses on the other MPI processes that map to the same physical memory
 
@@ -12978,7 +13019,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscShmgetDeallocateArray()`, `PetscShmgetAllocateArray()`, `PetscShmgetUnmapAddresses()`
+See also: `PetscShmgetDeallocateArray()`, `PetscShmgetAllocateArray()`, `PetscShmgetUnmapAddresses()`
 
 # External Links
 $(_doc_external("Sys/PetscShmgetMapAddresses"))
@@ -13003,7 +13044,7 @@ end
 end 
 
 """
-	PetscShmgetUnmapAddresses(petsclib::PetscLibType,n::PetscInt, addres::Ptr{Ptr{Cvoid}}) 
+	PetscShmgetUnmapAddresses(petsclib::PetscLibType, n::PetscInt, addres::Ptr{Ptr{Cvoid}}) 
 unlinks given shared addresses on a MPI process that is not of `PetscGlobalRank` 0
 
 Not Collective
@@ -13014,7 +13055,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscShmgetDeallocateArray()`, `PetscShmgetAllocateArray()`, `PetscShmgetMapAddresses()`
+See also: `PetscShmgetDeallocateArray()`, `PetscShmgetAllocateArray()`, `PetscShmgetMapAddresses()`
 
 # External Links
 $(_doc_external("Sys/PetscShmgetUnmapAddresses"))
@@ -13037,7 +13078,7 @@ end
 end 
 
 """
-	PetscSignalHandlerDefault(petsclib::PetscLibType,sig::Cint, ptr::Ptr{Cvoid}) 
+	PetscSignalHandlerDefault(petsclib::PetscLibType, sig::Cint, ptr::Ptr{Cvoid}) 
 Default signal handler.
 
 Not Collective
@@ -13048,7 +13089,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_errors), `PetscPushSignalHandler()`
+See also: [](sec_errors), `PetscPushSignalHandler()`
 
 # External Links
 $(_doc_external("Sys/PetscSignalHandlerDefault"))
@@ -13071,7 +13112,7 @@ end
 end 
 
 """
-	PetscSleep(petsclib::PetscLibType,s::PetscReal) 
+	PetscSleep(petsclib::PetscLibType, s::PetscReal) 
 Sleeps some number of seconds.
 
 Not Collective
@@ -13081,7 +13122,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscTime()`
+See also: `PetscTime()`
 
 # External Links
 $(_doc_external("Sys/PetscSleep"))
@@ -13104,7 +13145,7 @@ end
 end 
 
 """
-	PetscSortCount(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscCount}) 
+	PetscSortCount(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscCount}) 
 Sorts an array of `PetscCount` in place in increasing order.
 
 Not Collective
@@ -13113,7 +13154,7 @@ Input Parameters:
 - `n` - number of values
 - `X` - array of `PetscCount`
 
--seealso: `PetscSortInt()`
+See also: `PetscSortInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortCount"))
@@ -13136,7 +13177,7 @@ end
 end 
 
 """
-	PetscSortInt(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}) 
+	PetscSortInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) 
 Sorts an array of `PetscInt` in place in increasing order.
 
 Not Collective
@@ -13145,7 +13186,7 @@ Input Parameters:
 - `n` - number of values
 - `X` - array of `PetscInt`
 
--seealso: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`
+See also: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscSortInt"))
@@ -13168,7 +13209,7 @@ end
 end 
 
 """
-	PetscSortInt64(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt64}) 
+	PetscSortInt64(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt64}) 
 Sorts an array of `PetscInt64` in place in increasing order.
 
 Not Collective
@@ -13177,7 +13218,7 @@ Input Parameters:
 - `n` - number of values
 - `X` - array of `PetscInt64`
 
--seealso: `PetscSortInt()`
+See also: `PetscSortInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortInt64"))
@@ -13200,7 +13241,7 @@ end
 end 
 
 """
-	PetscSortIntWithArray(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}) 
+	PetscSortIntWithArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}) 
 Sorts an array of `PetscInt` in place in increasing order;
 changes a second array of `PetscInt` to match the sorted first array.
 
@@ -13213,7 +13254,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithCountArray()`
+See also: `PetscIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithCountArray()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithArray"))
@@ -13236,7 +13277,7 @@ end
 end 
 
 """
-	PetscSortIntWithArrayPair(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}, Z::Vector{PetscInt}) 
+	PetscSortIntWithArrayPair(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}, Z::Vector{PetscInt}) 
 Sorts an array of `PetscInt` in place in increasing order;
 changes a pair of `PetscInt` arrays to match the sorted first array.
 
@@ -13250,7 +13291,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortIntWithArray()`, `PetscIntSortSemiOrdered()`, `PetscSortIntWithIntCountArrayPair()`
+See also: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortIntWithArray()`, `PetscIntSortSemiOrdered()`, `PetscSortIntWithIntCountArrayPair()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithArrayPair"))
@@ -13273,7 +13314,7 @@ end
 end 
 
 """
-	PetscSortIntWithCountArray(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscCount}) 
+	PetscSortIntWithCountArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscCount}) 
 Sorts an array of `PetscInt` in place in increasing order;
 changes a second array of `PetscCount` to match the sorted first array.
 
@@ -13286,7 +13327,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
+See also: `PetscIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithCountArray"))
@@ -13309,7 +13350,7 @@ end
 end 
 
 """
-	PetscSortIntWithDataArray(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}, Y::Ptr{Cvoid}, size::Csize_t, t2::Ptr{Cvoid}) 
+	PetscSortIntWithDataArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Ptr{Cvoid}, size::Csize_t, t2::Ptr{Cvoid}) 
 Sorts an array of `PetscInt` in place in increasing order;
 changes a second array to match the sorted first INTEGER array.  Unlike other sort routines, the user must
 provide workspace (the size of an element in the data array) to use when sorting.
@@ -13325,7 +13366,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscTimSortWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
+See also: `PetscTimSortWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithDataArray"))
@@ -13348,7 +13389,7 @@ end
 end 
 
 """
-	PetscSortIntWithIntCountArrayPair(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}, Z::Vector{PetscCount}) 
+	PetscSortIntWithIntCountArrayPair(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscInt}, Z::Vector{PetscCount}) 
 Sorts an array of `PetscInt` in place in increasing order;
 changes a `PetscInt`  array and a `PetscCount` array to match the sorted first array.
 
@@ -13362,7 +13403,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortIntWithArray()`, `PetscIntSortSemiOrdered()`, `PetscSortIntWithArrayPair()`
+See also: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortIntWithArray()`, `PetscIntSortSemiOrdered()`, `PetscSortIntWithArrayPair()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithIntCountArrayPair"))
@@ -13385,7 +13426,7 @@ end
 end 
 
 """
-	PetscSortIntWithMPIIntArray(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscMPIInt}) 
+	PetscSortIntWithMPIIntArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscMPIInt}) 
 Sorts an array of `PetscInt` in place in increasing order;
 changes a second array of `PetscMPI` to match the sorted first array.
 
@@ -13398,7 +13439,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
+See also: `PetscIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithMPIIntArray"))
@@ -13421,7 +13462,7 @@ end
 end 
 
 """
-	PetscSortIntWithPermutation(petsclib::PetscLibType,n::PetscInt, i::Vector{PetscInt}, idx::Vector{PetscInt}) 
+	PetscSortIntWithPermutation(petsclib::PetscLibType, n::PetscInt, i::Vector{PetscInt}, idx::Vector{PetscInt}) 
 Computes the permutation of `PetscInt` that gives
 a sorted sequence.
 
@@ -13434,7 +13475,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortInt()`, `PetscSortRealWithPermutation()`, `PetscSortIntWithArray()`
+See also: `PetscSortInt()`, `PetscSortRealWithPermutation()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithPermutation"))
@@ -13457,7 +13498,7 @@ end
 end 
 
 """
-	PetscSortIntWithScalarArray(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscScalar}) 
+	PetscSortIntWithScalarArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}, Y::Vector{PetscScalar}) 
 Sorts an array of `PetscInt` in place in increasing order;
 changes a second `PetscScalar` array to match the sorted first array.
 
@@ -13470,7 +13511,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscTimSortWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
+See also: `PetscTimSortWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortIntWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscSortIntWithScalarArray"))
@@ -13493,7 +13534,7 @@ end
 end 
 
 """
-	PetscSortMPIInt(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscMPIInt}) 
+	PetscSortMPIInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}) 
 Sorts an array of `PetscMPIInt` in place in increasing order.
 
 Not Collective
@@ -13504,7 +13545,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscMPIIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`
+See also: `PetscMPIIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscSortMPIInt"))
@@ -13527,7 +13568,7 @@ end
 end 
 
 """
-	PetscSortMPIIntWithArray(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscMPIInt}) 
+	PetscSortMPIIntWithArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscMPIInt}) 
 Sorts an array of `PetscMPIInt` in place in increasing order;
 changes a second `PetscMPIInt` array to match the sorted first array.
 
@@ -13540,7 +13581,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscMPIIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`
+See also: `PetscMPIIntSortSemiOrderedWithArray()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortMPIIntWithArray"))
@@ -13563,7 +13604,7 @@ end
 end 
 
 """
-	PetscSortMPIIntWithIntArray(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscInt}) 
+	PetscSortMPIIntWithIntArray(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}, Y::Vector{PetscInt}) 
 Sorts an array of `PetscMPIInt` in place in increasing order;
 changes a second array of `PetscInt` to match the sorted first array.
 
@@ -13576,7 +13617,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortMPIIntWithArray()`, `PetscIntSortSemiOrderedWithArray()`, `PetscTimSortWithArray()`
+See also: `PetscSortMPIIntWithArray()`, `PetscIntSortSemiOrderedWithArray()`, `PetscTimSortWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscSortMPIIntWithIntArray"))
@@ -13599,7 +13640,7 @@ end
 end 
 
 """
-	PetscSortReal(petsclib::PetscLibType,n::PetscCount, v::Vector{PetscReal}) 
+	PetscSortReal(petsclib::PetscLibType, n::PetscCount, v::Vector{PetscReal}) 
 Sorts an array of `PetscReal` in place in increasing order.
 
 Not Collective
@@ -13610,7 +13651,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscRealSortSemiOrdered()`, `PetscSortInt()`, `PetscSortRealWithPermutation()`, `PetscSortRealWithArrayInt()`
+See also: `PetscRealSortSemiOrdered()`, `PetscSortInt()`, `PetscSortRealWithPermutation()`, `PetscSortRealWithArrayInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortReal"))
@@ -13633,7 +13674,7 @@ end
 end 
 
 """
-	PetscSortRealWithArrayInt(petsclib::PetscLibType,n::PetscCount, r::Vector{PetscReal}, Ii::Vector{PetscInt}) 
+	PetscSortRealWithArrayInt(petsclib::PetscLibType, n::PetscCount, r::Vector{PetscReal}, Ii::Vector{PetscInt}) 
 Sorts an array of `PetscReal` in place in increasing order;
 changes a second `PetscInt` array to match the sorted first array.
 
@@ -13646,7 +13687,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`
+See also: `PetscSortReal()`
 
 # External Links
 $(_doc_external("Sys/PetscSortRealWithArrayInt"))
@@ -13669,7 +13710,7 @@ end
 end 
 
 """
-	PetscSortRealWithPermutation(petsclib::PetscLibType,n::PetscInt, i::Vector{PetscReal}, idx::Vector{PetscInt}) 
+	PetscSortRealWithPermutation(petsclib::PetscLibType, n::PetscInt, i::Vector{PetscReal}, idx::Vector{PetscInt}) 
 Computes the permutation of `PetscReal` that gives
 a sorted sequence.
 
@@ -13682,7 +13723,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`, `PetscSortIntWithPermutation()`
+See also: `PetscSortReal()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscSortRealWithPermutation"))
@@ -13705,7 +13746,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscSortRemoveDupsInt(petsclib::PetscLibType,X::Vector{PetscInt}) 
+	n::PetscInt = PetscSortRemoveDupsInt(petsclib::PetscLibType, X::Vector{PetscInt}) 
 Sorts an array of `PetscInt` in place in increasing order removes all duplicate entries
 
 Not Collective
@@ -13719,7 +13760,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortedRemoveDupsInt()`
+See also: `PetscIntSortSemiOrdered()`, `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`, `PetscSortedRemoveDupsInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortRemoveDupsInt"))
@@ -13744,7 +13785,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscSortRemoveDupsMPIInt(petsclib::PetscLibType,X::Vector{PetscMPIInt}) 
+	n::PetscInt = PetscSortRemoveDupsMPIInt(petsclib::PetscLibType, X::Vector{PetscMPIInt}) 
 Sorts an array of `PetscMPIInt` in place in increasing order removes all duplicate entries
 
 Not Collective
@@ -13758,7 +13799,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`
+See also: `PetscSortReal()`, `PetscSortIntWithPermutation()`, `PetscSortInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortRemoveDupsMPIInt"))
@@ -13783,7 +13824,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscSortRemoveDupsReal(petsclib::PetscLibType,v::Vector{PetscReal}) 
+	n::PetscInt = PetscSortRemoveDupsReal(petsclib::PetscLibType, v::Vector{PetscReal}) 
 Sorts an array of `PetscReal` in place in increasing order and removes all duplicate entries
 
 Not Collective
@@ -13792,7 +13833,7 @@ Input Parameters:
 - `n` - initial number of values
 - `v` - array of values
 
--seealso: `PetscSortReal()`, `PetscSortRemoveDupsInt()`
+See also: `PetscSortReal()`, `PetscSortRemoveDupsInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortRemoveDupsReal"))
@@ -13817,7 +13858,7 @@ end
 end 
 
 """
-	PetscSortReverseInt(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}) 
+	PetscSortReverseInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) 
 Sorts an array of `PetscInt` in place in decreasing order.
 
 Not Collective
@@ -13828,7 +13869,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscIntSortSemiOrdered()`, `PetscSortInt()`, `PetscSortIntWithPermutation()`
+See also: `PetscIntSortSemiOrdered()`, `PetscSortInt()`, `PetscSortIntWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscSortReverseInt"))
@@ -13851,8 +13892,8 @@ end
 end 
 
 """
-	PetscSortSplit(petsclib::PetscLibType,ncut::PetscInt, n::PetscInt, a::Vector{PetscScalar}, idx::Vector{PetscInt}) 
-Quick
+	PetscSortSplit(petsclib::PetscLibType, ncut::PetscInt, n::PetscInt, a::Vector{PetscScalar}, idx::Vector{PetscInt}) 
+Quick-sort split of an array of `PetscScalar`s in place.
 
 Not Collective
 
@@ -13868,7 +13909,7 @@ abs(a[i]) <= abs(a[ncut-1]) for i >= ncut
 
 Level: intermediate
 
--seealso: `PetscSortInt()`, `PetscSortRealWithPermutation()`
+See also: `PetscSortInt()`, `PetscSortRealWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscSortSplit"))
@@ -13891,8 +13932,8 @@ end
 end 
 
 """
-	PetscSortSplitReal(petsclib::PetscLibType,ncut::PetscInt, n::PetscInt, a::Vector{PetscReal}, idx::Vector{PetscInt}) 
-Quick
+	PetscSortSplitReal(petsclib::PetscLibType, ncut::PetscInt, n::PetscInt, a::Vector{PetscReal}, idx::Vector{PetscInt}) 
+Quick-sort split of an array of `PetscReal`s in place.
 
 Not Collective
 
@@ -13908,7 +13949,7 @@ abs(a[i]) <= abs(a[ncut-1]) for i >= ncut
 
 Level: intermediate
 
--seealso: `PetscSortInt()`, `PetscSortRealWithPermutation()`
+See also: `PetscSortInt()`, `PetscSortRealWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscSortSplitReal"))
@@ -13931,7 +13972,7 @@ end
 end 
 
 """
-	PetscSortStrWithPermutation(petsclib::PetscLibType,n::PetscInt, i::String, idx::Vector{PetscInt}) 
+	PetscSortStrWithPermutation(petsclib::PetscLibType, n::PetscInt, i::String, idx::Vector{PetscInt}) 
 Computes the permutation of strings that gives
 a sorted sequence.
 
@@ -13944,7 +13985,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSortInt()`, `PetscSortRealWithPermutation()`
+See also: `PetscSortInt()`, `PetscSortRealWithPermutation()`
 
 # External Links
 $(_doc_external("Sys/PetscSortStrWithPermutation"))
@@ -13968,7 +14009,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscSortedCheckDupsCount(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscCount}) 
+	flg::PetscBool = PetscSortedCheckDupsCount(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscCount}) 
 Checks if a sorted `PetscCount` array has duplicates
 
 Not Collective
@@ -13982,7 +14023,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscCount`, `PetscSortCount()`, `PetscSortedCheckDupsInt()`
+See also: `PetscCount`, `PetscSortCount()`, `PetscSortedCheckDupsInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortedCheckDupsCount"))
@@ -14007,7 +14048,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscSortedCheckDupsInt(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}) 
+	flg::PetscBool = PetscSortedCheckDupsInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) 
 Checks if a sorted `PetscInt` array has duplicates
 
 Not Collective
@@ -14021,7 +14062,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortInt()`, `PetscCheckDupsInt()`, `PetscSortRemoveDupsInt()`, `PetscSortedRemoveDupsInt()`
+See also: `PetscSortInt()`, `PetscCheckDupsInt()`, `PetscSortRemoveDupsInt()`, `PetscSortedRemoveDupsInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortedCheckDupsInt"))
@@ -14046,7 +14087,7 @@ end
 end 
 
 """
-	sorted::PetscBool = PetscSortedInt(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt}) 
+	sorted::PetscBool = PetscSortedInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) 
 Determines whether the `PetscInt` array is sorted.
 
 Not Collective
@@ -14060,7 +14101,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortInt()`, `PetscSortedMPIInt()`, `PetscSortedReal()`
+See also: `PetscSortInt()`, `PetscSortedMPIInt()`, `PetscSortedReal()`
 
 # External Links
 $(_doc_external("Sys/PetscSortedInt"))
@@ -14085,7 +14126,7 @@ end
 end 
 
 """
-	sorted::PetscBool = PetscSortedInt64(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscInt64}) 
+	sorted::PetscBool = PetscSortedInt64(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt64}) 
 Determines whether the `PetscInt64` array is sorted.
 
 Not Collective
@@ -14099,7 +14140,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortInt64()`, `PetscSortInt()`, `PetscSortedMPIInt()`, `PetscSortedReal()`
+See also: `PetscSortInt64()`, `PetscSortInt()`, `PetscSortedMPIInt()`, `PetscSortedReal()`
 
 # External Links
 $(_doc_external("Sys/PetscSortedInt64"))
@@ -14124,7 +14165,7 @@ end
 end 
 
 """
-	sorted::PetscBool = PetscSortedMPIInt(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscMPIInt}) 
+	sorted::PetscBool = PetscSortedMPIInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}) 
 Determines whether the `PetscMPIInt` array is sorted.
 
 Not Collective
@@ -14138,7 +14179,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscMPIIntSortSemiOrdered()`, `PetscSortMPIInt()`, `PetscSortedInt()`, `PetscSortedReal()`
+See also: `PetscMPIIntSortSemiOrdered()`, `PetscSortMPIInt()`, `PetscSortedInt()`, `PetscSortedReal()`
 
 # External Links
 $(_doc_external("Sys/PetscSortedMPIInt"))
@@ -14163,7 +14204,7 @@ end
 end 
 
 """
-	sorted::PetscBool = PetscSortedReal(petsclib::PetscLibType,n::PetscCount, X::Vector{PetscReal}) 
+	sorted::PetscBool = PetscSortedReal(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscReal}) 
 Determines whether the array of `PetscReal` is sorted.
 
 Not Collective
@@ -14177,7 +14218,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortReal()`, `PetscSortedInt()`, `PetscSortedMPIInt()`
+See also: `PetscSortReal()`, `PetscSortedInt()`, `PetscSortedMPIInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortedReal"))
@@ -14202,7 +14243,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscSortedRemoveDupsInt(petsclib::PetscLibType,X::Vector{PetscInt}) 
+	n::PetscInt = PetscSortedRemoveDupsInt(petsclib::PetscLibType, X::Vector{PetscInt}) 
 Removes all duplicate entries of a sorted `PetscInt` array
 
 Not Collective
@@ -14216,7 +14257,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSortInt()`
+See also: `PetscSortInt()`
 
 # External Links
 $(_doc_external("Sys/PetscSortedRemoveDupsInt"))
@@ -14241,7 +14282,7 @@ end
 end 
 
 """
-	n::PetscInt,M_N::PetscInt = PetscSplitOwnership(petsclib::PetscLibType,comm::MPI_Comm) 
+	n::PetscInt,M_N::PetscInt = PetscSplitOwnership(petsclib::PetscLibType, comm::MPI_Comm) 
 Given a global (or local) length determines a local
 (or global) length via a simple formula
 
@@ -14254,7 +14295,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSplitOwnershipBlock()`, `PetscSplitOwnershipEqual()`, `PETSC_DECIDE`, `PETSC_DETERMINE`
+See also: `PetscSplitOwnershipBlock()`, `PetscSplitOwnershipEqual()`, `PETSC_DECIDE`, `PETSC_DETERMINE`
 
 # External Links
 $(_doc_external("Sys/PetscSplitOwnership"))
@@ -14281,7 +14322,7 @@ end
 end 
 
 """
-	n::PetscInt,M_N::PetscInt = PetscSplitOwnershipBlock(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt) 
+	n::PetscInt,M_N::PetscInt = PetscSplitOwnershipBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt) 
 Given a global (or local) length determines a local
 (or global) length via a simple formula. Splits so each processors local size
 is divisible by the block size.
@@ -14296,7 +14337,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSplitOwnership()`, `PetscSplitOwnershipEqual()`
+See also: `PetscSplitOwnership()`, `PetscSplitOwnershipEqual()`
 
 # External Links
 $(_doc_external("Sys/PetscSplitOwnershipBlock"))
@@ -14323,7 +14364,7 @@ end
 end 
 
 """
-	n::PetscInt,M_N::PetscInt = PetscSplitOwnershipEqual(petsclib::PetscLibType,comm::MPI_Comm) 
+	n::PetscInt,M_N::PetscInt = PetscSplitOwnershipEqual(petsclib::PetscLibType, comm::MPI_Comm) 
 Given a global (or local) length determines a local
 (or global) length via a simple formula, trying to have all local lengths equal
 
@@ -14336,7 +14377,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSplitOwnership()`, `PetscSplitOwnershipBlock()`
+See also: `PetscSplitOwnership()`, `PetscSplitOwnershipBlock()`
 
 # External Links
 $(_doc_external("Sys/PetscSplitOwnershipEqual"))
@@ -14363,7 +14404,7 @@ end
 end 
 
 """
-	fp::Ptr{Libc.FILE} = PetscStartMatlab(petsclib::PetscLibType,comm::MPI_Comm, machine::String, script::String) 
+	fp::Ptr{Libc.FILE} = PetscStartMatlab(petsclib::PetscLibType, comm::MPI_Comm, machine::String, script::String) 
 starts up MATLAB with a MATLAB script
 
 Logically Collective, but only MPI rank 0 in the communicator does anything
@@ -14378,7 +14419,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscPOpen()`, `PetscPClose()`, `PetscMatlabEngine`
+See also: `PetscPOpen()`, `PetscPClose()`, `PetscMatlabEngine`
 
 # External Links
 $(_doc_external("Sys/PetscStartMatlab"))
@@ -14415,7 +14456,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: `PetscSetDebugger()`, `PetscAttachDebugger()`
+See also: `PetscSetDebugger()`, `PetscAttachDebugger()`
 
 # External Links
 $(_doc_external("Sys/PetscStopForDebugger"))
@@ -14447,7 +14488,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscStrArrayallocpy()`
+See also: `PetscStrArrayallocpy()`
 
 # External Links
 $(_doc_external("Sys/PetscStrArrayDestroy"))
@@ -14472,7 +14513,7 @@ end
 end 
 
 """
-	t::String = PetscStrArrayallocpy(petsclib::PetscLibType,list::Cchar) 
+	t::String = PetscStrArrayallocpy(petsclib::PetscLibType, list::Cchar) 
 Allocates space to hold a copy of an array of strings then copies the strings
 
 Not Collective; No Fortran Support
@@ -14485,7 +14526,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscStrallocpy()`, `PetscStrArrayDestroy()`, `PetscStrNArrayallocpy()`
+See also: `PetscStrallocpy()`, `PetscStrArrayDestroy()`, `PetscStrNArrayallocpy()`
 
 # External Links
 $(_doc_external("Sys/PetscStrArrayallocpy"))
@@ -14510,8 +14551,8 @@ end
 end 
 
 """
-	found::PetscBool = PetscStrInList(petsclib::PetscLibType,str::String, list::String, sep::Cchar) 
-search for a string in character
+	found::PetscBool = PetscStrInList(petsclib::PetscLibType, str::String, list::String, sep::Cchar) 
+search for a string in character-delimited list
 
 Not Collective; No Fortran Support
 
@@ -14525,7 +14566,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTokenCreate()`, `PetscTokenFind()`, `PetscStrcmp()`
+See also: `PetscTokenCreate()`, `PetscTokenFind()`, `PetscStrcmp()`
 
 # External Links
 $(_doc_external("Sys/PetscStrInList"))
@@ -14550,7 +14591,7 @@ end
 end 
 
 """
-	list::String = PetscStrNArrayDestroy(petsclib::PetscLibType,n::PetscInt) 
+	list::String = PetscStrNArrayDestroy(petsclib::PetscLibType, n::PetscInt) 
 Frees array of strings created with `PetscStrNArrayallocpy()`.
 
 Not Collective; No Fortran Support
@@ -14561,7 +14602,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscStrNArrayallocpy()`, `PetscStrArrayallocpy()`
+See also: `PetscStrNArrayallocpy()`, `PetscStrArrayallocpy()`
 
 # External Links
 $(_doc_external("Sys/PetscStrNArrayDestroy"))
@@ -14586,7 +14627,7 @@ end
 end 
 
 """
-	t::String = PetscStrNArrayallocpy(petsclib::PetscLibType,n::PetscInt, list::Cchar) 
+	t::String = PetscStrNArrayallocpy(petsclib::PetscLibType, n::PetscInt, list::Cchar) 
 Allocates space to hold a copy of an array of strings then copies the strings
 
 Not Collective; No Fortran Support
@@ -14600,7 +14641,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscStrallocpy()`, `PetscStrArrayallocpy()`, `PetscStrNArrayDestroy()`
+See also: `PetscStrallocpy()`, `PetscStrArrayallocpy()`, `PetscStrNArrayDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscStrNArrayallocpy"))
@@ -14625,7 +14666,7 @@ end
 end 
 
 """
-	argc::Cint,args::String = PetscStrToArray(petsclib::PetscLibType,s::String, sp::Cchar) 
+	argc::Cint,args::String = PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) 
 Separates a string by a character (for example ' ' or '\\n') and creates an array of strings
 
 Not Collective; No Fortran Support
@@ -14640,7 +14681,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscStrToArrayDestroy()`, `PetscToken`, `PetscTokenCreate()`
+See also: `PetscStrToArrayDestroy()`, `PetscToken`, `PetscTokenCreate()`
 
 # External Links
 $(_doc_external("Sys/PetscStrToArray"))
@@ -14667,7 +14708,7 @@ end
 end 
 
 """
-	args::String = PetscStrToArrayDestroy(petsclib::PetscLibType,argc::Cint) 
+	args::String = PetscStrToArrayDestroy(petsclib::PetscLibType, argc::Cint) 
 Frees array created with `PetscStrToArray()`.
 
 Not Collective; No Fortran Support
@@ -14678,7 +14719,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscStrToArray()`
+See also: `PetscStrToArray()`
 
 # External Links
 $(_doc_external("Sys/PetscStrToArrayDestroy"))
@@ -14703,7 +14744,7 @@ end
 end 
 
 """
-	PetscStrallocpy(petsclib::PetscLibType,s::String, t::String) 
+	PetscStrallocpy(petsclib::PetscLibType, s::String, t::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrallocpy"))
@@ -14727,7 +14768,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscStrbeginswith(petsclib::PetscLibType,a::String, b::String) 
+	flg::PetscBool = PetscStrbeginswith(petsclib::PetscLibType, a::String, b::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrbeginswith"))
@@ -14752,7 +14793,7 @@ end
 end 
 
 """
-	t::PetscBool = PetscStrcasecmp(petsclib::PetscLibType,a::String, b::String) 
+	t::PetscBool = PetscStrcasecmp(petsclib::PetscLibType, a::String, b::String) 
 Returns true if the two strings are the same
 except possibly for case.
 
@@ -14767,7 +14808,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscStrcmp()`, `PetscStrncmp()`, `PetscStrgrt()`
+See also: `PetscStrcmp()`, `PetscStrncmp()`, `PetscStrgrt()`
 
 # External Links
 $(_doc_external("Sys/PetscStrcasecmp"))
@@ -14792,7 +14833,7 @@ end
 end 
 
 """
-	PetscStrcat(petsclib::PetscLibType,s::String, t::String) 
+	PetscStrcat(petsclib::PetscLibType, s::String, t::String) 
 Concatenates a string onto a given string
 
 Not Collective, No Fortran Support
@@ -14803,7 +14844,7 @@ Input Parameters:
 
 Level: deprecated (since 3.18.5)
 
--seealso: `PetscStrlcat()`
+See also: `PetscStrlcat()`
 
 # External Links
 $(_doc_external("Sys/PetscStrcat"))
@@ -14826,7 +14867,7 @@ end
 end 
 
 """
-	PetscStrchr(petsclib::PetscLibType,a::String, b::Cchar, c::String) 
+	PetscStrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrchr"))
@@ -14850,7 +14891,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscStrcmp(petsclib::PetscLibType,a::String, b::String) 
+	flg::PetscBool = PetscStrcmp(petsclib::PetscLibType, a::String, b::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrcmp"))
@@ -14875,7 +14916,7 @@ end
 end 
 
 """
-	PetscStrcpy(petsclib::PetscLibType,s::String, t::String) 
+	PetscStrcpy(petsclib::PetscLibType, s::String, t::String) 
 Copies a string
 
 Not Collective, No Fortran Support
@@ -14888,7 +14929,7 @@ Output Parameter:
 
 Level: deprecated (since 3.18.5)
 
--seealso: `PetscStrncpy()`
+See also: `PetscStrncpy()`
 
 # External Links
 $(_doc_external("Sys/PetscStrcpy"))
@@ -14911,7 +14952,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscStrendswith(petsclib::PetscLibType,a::String, b::String) 
+	flg::PetscBool = PetscStrendswith(petsclib::PetscLibType, a::String, b::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrendswith"))
@@ -14936,7 +14977,7 @@ end
 end 
 
 """
-	cnt::PetscInt = PetscStrendswithwhich(petsclib::PetscLibType,a::String, bs::Cchar) 
+	cnt::PetscInt = PetscStrendswithwhich(petsclib::PetscLibType, a::String, bs::Cchar) 
 Determines if a string ends with one of several possible strings
 
 Not Collective; No Fortran Support
@@ -14950,7 +14991,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscStrbeginswithwhich()`, `PetscStrendswith()`, `PetscStrtoupper`, `PetscStrtolower()`, `PetscStrrchr()`, `PetscStrchr()`,
+See also: `PetscStrbeginswithwhich()`, `PetscStrendswith()`, `PetscStrtoupper`, `PetscStrtolower()`, `PetscStrrchr()`, `PetscStrchr()`,
 `PetscStrncmp()`, `PetscStrlen()`, `PetscStrcmp()`
 
 # External Links
@@ -14976,7 +15017,7 @@ end
 end 
 
 """
-	t::PetscBool = PetscStrgrt(petsclib::PetscLibType,a::String, b::String) 
+	t::PetscBool = PetscStrgrt(petsclib::PetscLibType, a::String, b::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrgrt"))
@@ -15001,7 +15042,7 @@ end
 end 
 
 """
-	PetscStrlcat(petsclib::PetscLibType,s::String, t::String, n::Csize_t) 
+	PetscStrlcat(petsclib::PetscLibType, s::String, t::String, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscStrlcat"))
@@ -15024,7 +15065,7 @@ end
 end 
 
 """
-	len::Csize_t = PetscStrlen(petsclib::PetscLibType,s::String) 
+	len::Csize_t = PetscStrlen(petsclib::PetscLibType, s::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrlen"))
@@ -15049,7 +15090,7 @@ end
 end 
 
 """
-	t::PetscBool = PetscStrncmp(petsclib::PetscLibType,a::String, b::String, n::Csize_t) 
+	t::PetscBool = PetscStrncmp(petsclib::PetscLibType, a::String, b::String, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscStrncmp"))
@@ -15074,7 +15115,7 @@ end
 end 
 
 """
-	PetscStrncpy(petsclib::PetscLibType,s::String, t::String, n::Csize_t) 
+	PetscStrncpy(petsclib::PetscLibType, s::String, t::String, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscStrncpy"))
@@ -15097,7 +15138,7 @@ end
 end 
 
 """
-	PetscStrrchr(petsclib::PetscLibType,a::String, b::Cchar, c::String) 
+	PetscStrrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrrchr"))
@@ -15121,7 +15162,7 @@ end
 end 
 
 """
-	PetscStrreplace(petsclib::PetscLibType,comm::MPI_Comm, aa::String, b::String, len::Csize_t) 
+	PetscStrreplace(petsclib::PetscLibType, comm::MPI_Comm, aa::String, b::String, len::Csize_t) 
 Replaces substrings in string with other substrings
 
 Not Collective; No Fortran Support
@@ -15134,7 +15175,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscStrcmp()`
+See also: `PetscStrcmp()`
 
 # External Links
 $(_doc_external("Sys/PetscStrreplace"))
@@ -15157,7 +15198,7 @@ end
 end 
 
 """
-	PetscStrrstr(petsclib::PetscLibType,a::String, b::String, tmp::String) 
+	PetscStrrstr(petsclib::PetscLibType, a::String, b::String, tmp::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrrstr"))
@@ -15181,7 +15222,7 @@ end
 end 
 
 """
-	PetscStrstr(petsclib::PetscLibType,haystack::String, needle::String, tmp::String) 
+	PetscStrstr(petsclib::PetscLibType, haystack::String, needle::String, tmp::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrstr"))
@@ -15205,7 +15246,7 @@ end
 end 
 
 """
-	PetscStrtolower(petsclib::PetscLibType,a::String) 
+	PetscStrtolower(petsclib::PetscLibType, a::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrtolower"))
@@ -15228,7 +15269,7 @@ end
 end 
 
 """
-	PetscStrtoupper(petsclib::PetscLibType,a::String) 
+	PetscStrtoupper(petsclib::PetscLibType, a::String) 
 
 # External Links
 $(_doc_external("Sys/PetscStrtoupper"))
@@ -15251,7 +15292,7 @@ end
 end 
 
 """
-	PetscSynchronizedFGets(petsclib::PetscLibType,comm::MPI_Comm, fp::Libc.FILE, len::Csize_t, string::String) 
+	PetscSynchronizedFGets(petsclib::PetscLibType, comm::MPI_Comm, fp::Libc.FILE, len::Csize_t, string::String) 
 Multiple MPI processes all get the same line from a file.
 
 Collective
@@ -15266,7 +15307,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSynchronizedPrintf()`, `PetscSynchronizedFlush()`,
+See also: `PetscSynchronizedPrintf()`, `PetscSynchronizedFlush()`,
 `PetscFOpen()`, `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerASCIIPrintf()`
 
 # External Links
@@ -15290,7 +15331,7 @@ end
 end 
 
 """
-	PetscSynchronizedFlush(petsclib::PetscLibType,comm::MPI_Comm, fd::Libc.FILE) 
+	PetscSynchronizedFlush(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE) 
 Flushes to the screen output from all processors
 involved in previous `PetscSynchronizedPrintf()`/`PetscSynchronizedFPrintf()` calls.
 
@@ -15302,7 +15343,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSynchronizedPrintf()`, `PetscFPrintf()`, `PetscPrintf()`, `PetscViewerASCIIPrintf()`,
+See also: `PetscSynchronizedPrintf()`, `PetscFPrintf()`, `PetscPrintf()`, `PetscViewerASCIIPrintf()`,
 `PetscViewerASCIISynchronizedPrintf()`
 
 # External Links
@@ -15332,7 +15373,7 @@ It is called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PetscSysInitializePackage()`, `PetscFinalize()`
+See also: `PetscSysInitializePackage()`, `PetscFinalize()`
 
 # External Links
 $(_doc_external("Viewer/PetscSysFinalizePackage"))
@@ -15361,7 +15402,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: `PetscSysFinalizePackage()`, `PetscInitialize()`
+See also: `PetscSysFinalizePackage()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Viewer/PetscSysInitializePackage"))
@@ -15383,7 +15424,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscTestDirectory(petsclib::PetscLibType,dirname::String, mode::Cchar) 
+	flg::PetscBool = PetscTestDirectory(petsclib::PetscLibType, dirname::String, mode::Cchar) 
 checks for the existence of a directory
 
 Not Collective
@@ -15397,7 +15438,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTestFile()`, `PetscLs()`, `PetscRMTree()`
+See also: `PetscTestFile()`, `PetscLs()`, `PetscRMTree()`
 
 # External Links
 $(_doc_external("Sys/PetscTestDirectory"))
@@ -15422,7 +15463,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscTestFile(petsclib::PetscLibType,fname::String, mode::Cchar) 
+	flg::PetscBool = PetscTestFile(petsclib::PetscLibType, fname::String, mode::Cchar) 
 checks for the existence of a file
 
 Not Collective
@@ -15436,7 +15477,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTestDirectory()`, `PetscLs()`
+See also: `PetscTestDirectory()`, `PetscLs()`
 
 # External Links
 $(_doc_external("Sys/PetscTestFile"))
@@ -15461,7 +15502,7 @@ end
 end 
 
 """
-	arr::Ptr{Cvoid} = PetscTimSort(petsclib::PetscLibType,n::PetscInt, size::Csize_t, cmp::external, ctx::Ptr{Cvoid}) 
+	arr::Ptr{Cvoid} = PetscTimSort(petsclib::PetscLibType, n::PetscInt, size::Csize_t, cmp::external, ctx::Ptr{Cvoid}) 
 Sorts an array in place in increasing order using Tim Peters <https://bugs.python.org/file4451/timsort.txt> adaptive sorting algorithm.
 
 Not Collective, No Fortran Support
@@ -15478,7 +15519,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscTimSortWithArray()`, `PetscIntSortSemiOrdered()`, `PetscRealSortSemiOrdered()`, `PetscMPIIntSortSemiOrdered()`
+See also: `PetscTimSortWithArray()`, `PetscIntSortSemiOrdered()`, `PetscRealSortSemiOrdered()`, `PetscMPIIntSortSemiOrdered()`
 
 # External Links
 $(_doc_external("Sys/PetscTimSort"))
@@ -15503,7 +15544,7 @@ end
 end 
 
 """
-	PetscTimSortWithArray(petsclib::PetscLibType,n::PetscInt, arr::Ptr{Cvoid}, asize::Csize_t, barr::Ptr{Cvoid}, bsize::Csize_t, cmp::external, ctx::Ptr{Cvoid}) 
+	PetscTimSortWithArray(petsclib::PetscLibType, n::PetscInt, arr::Ptr{Cvoid}, asize::Csize_t, barr::Ptr{Cvoid}, bsize::Csize_t, cmp::external, ctx::Ptr{Cvoid}) 
 Sorts an array in place in increasing order using Tim Peters <https://bugs.python.org/file4451/timsort.txt> adaptive sorting algorithm and
 reorders a second array to match the first. The arrays need not be the same type.
 
@@ -15522,7 +15563,7 @@ Input/Output Parameters:
 
 Level: developer
 
--seealso: `PetscTimSort()`, `PetscIntSortSemiOrderedWithArray()`, `PetscRealSortSemiOrderedWithArrayInt()`, `PetscMPIIntSortSemiOrderedWithArray()`
+See also: `PetscTimSort()`, `PetscIntSortSemiOrderedWithArray()`, `PetscRealSortSemiOrderedWithArrayInt()`, `PetscMPIIntSortSemiOrderedWithArray()`
 
 # External Links
 $(_doc_external("Sys/PetscTimSortWithArray"))
@@ -15620,7 +15661,7 @@ end
 end 
 
 """
-	PetscTraceBackErrorHandler(petsclib::PetscLibType,comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
+	PetscTraceBackErrorHandler(petsclib::PetscLibType, comm::MPI_Comm, line::Cint, fun::String, file::String, n::PetscErrorCode, p::PetscErrorType, mess::String, ctx::Ptr{Cvoid}) 
 Default error handler routine that generates a traceback on error detection.
 
 Not Collective, No Fortran Support
@@ -15639,7 +15680,7 @@ Options Database Keys:
 - `-error_output_stdout` - output the error messages to `stdout` instead of the default `stderr`
 - `-error_output_none`   - do not output the error messages
 
--seealso: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
+See also: `PetscError()`, `PetscPushErrorHandler()`, `PetscPopErrorHandler()`, `PetscAttachDebuggerErrorHandler()`,
 `PetscAbortErrorHandler()`, `PetscMPIAbortErrorHandler()`, `PetscReturnErrorHandler()`, `PetscEmacsClientErrorHandler()`,
 `PETSC_ERROR_INITIAL`, `PETSC_ERROR_REPEAT`, `PetscErrorCode`, `PetscErrorType`
 
@@ -15672,7 +15713,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `PetscSetDebugger()`, `PetscAttachDebugger()`
+See also: `PetscSetDebugger()`, `PetscAttachDebugger()`
 
 # External Links
 $(_doc_external("Sys/PetscWaitOnError"))

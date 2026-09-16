@@ -1,5 +1,5 @@
 """
-	PetscDeviceConfigure(petsclib::PetscLibType,device::PetscDevice) 
+	PetscDeviceConfigure(petsclib::PetscLibType, device::PetscDevice) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceConfigure"))
@@ -47,7 +47,7 @@ end
 end 
 
 """
-	PetscDeviceContextDestroy(petsclib::PetscLibType,dctx::Union{PetscDeviceContext, Ref{PetscDeviceContext}}) 
+	PetscDeviceContextDestroy(petsclib::PetscLibType, dctx::Union{PetscDeviceContext, Ref{PetscDeviceContext}}) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextDestroy"))
@@ -71,7 +71,7 @@ end
 end 
 
 """
-	dctxdup::PetscDeviceContext = PetscDeviceContextDuplicate(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	dctxdup::PetscDeviceContext = PetscDeviceContextDuplicate(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextDuplicate"))
@@ -96,7 +96,7 @@ end
 end 
 
 """
-	PetscDeviceContextFork(petsclib::PetscLibType,dctx::PetscDeviceContext, n::PetscInt, dsub::PetscDeviceContext) 
+	PetscDeviceContextFork(petsclib::PetscLibType, dctx::PetscDeviceContext, n::PetscInt, dsub::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextFork"))
@@ -119,7 +119,7 @@ end
 end 
 
 """
-	PetscDeviceContextForkWithStreamType(petsclib::PetscLibType,dctx::PetscDeviceContext, stype::PetscStreamType, n::PetscInt, dsub::PetscDeviceContext) 
+	PetscDeviceContextForkWithStreamType(petsclib::PetscLibType, dctx::PetscDeviceContext, stype::PetscStreamType, n::PetscInt, dsub::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextForkWithStreamType"))
@@ -142,7 +142,7 @@ end
 end 
 
 """
-	PetscDeviceContextGetCurrentContext(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	PetscDeviceContextGetCurrentContext(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextGetCurrentContext"))
@@ -165,7 +165,7 @@ end
 end 
 
 """
-	PetscDeviceContextGetDevice(petsclib::PetscLibType,dctx::PetscDeviceContext, device::PetscDevice) 
+	PetscDeviceContextGetDevice(petsclib::PetscLibType, dctx::PetscDeviceContext, device::PetscDevice) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextGetDevice"))
@@ -188,7 +188,7 @@ end
 end 
 
 """
-	type::PetscDeviceType = PetscDeviceContextGetDeviceType(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	type::PetscDeviceType = PetscDeviceContextGetDeviceType(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextGetDeviceType"))
@@ -213,7 +213,7 @@ end
 end 
 
 """
-	handle::Ptr{Cvoid} = PetscDeviceContextGetStreamHandle(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	handle::Ptr{Cvoid} = PetscDeviceContextGetStreamHandle(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextGetStreamHandle"))
@@ -238,7 +238,7 @@ end
 end 
 
 """
-	type::PetscStreamType = PetscDeviceContextGetStreamType(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	type::PetscStreamType = PetscDeviceContextGetStreamType(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextGetStreamType"))
@@ -263,7 +263,7 @@ end
 end 
 
 """
-	PetscDeviceContextJoin(petsclib::PetscLibType,dctx::PetscDeviceContext, n::PetscInt, joinMode::PetscDeviceContextJoinMode, dsub::PetscDeviceContext) 
+	PetscDeviceContextJoin(petsclib::PetscLibType, dctx::PetscDeviceContext, n::PetscInt, joinMode::PetscDeviceContextJoinMode, dsub::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextJoin"))
@@ -286,7 +286,7 @@ end
 end 
 
 """
-	idle::PetscBool = PetscDeviceContextQueryIdle(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	idle::PetscBool = PetscDeviceContextQueryIdle(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextQueryIdle"))
@@ -311,7 +311,7 @@ end
 end 
 
 """
-	PetscDeviceContextSetCurrentContext(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	PetscDeviceContextSetCurrentContext(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextSetCurrentContext"))
@@ -334,7 +334,7 @@ end
 end 
 
 """
-	PetscDeviceContextSetDevice(petsclib::PetscLibType,dctx::PetscDeviceContext, device::PetscDevice) 
+	PetscDeviceContextSetDevice(petsclib::PetscLibType, dctx::PetscDeviceContext, device::PetscDevice) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextSetDevice"))
@@ -357,7 +357,7 @@ end
 end 
 
 """
-	PetscDeviceContextSetFromOptions(petsclib::PetscLibType,comm::MPI_Comm, dctx::PetscDeviceContext) 
+	PetscDeviceContextSetFromOptions(petsclib::PetscLibType, comm::MPI_Comm, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextSetFromOptions"))
@@ -380,7 +380,7 @@ end
 end 
 
 """
-	PetscDeviceContextSetStreamType(petsclib::PetscLibType,dctx::PetscDeviceContext, type::PetscStreamType) 
+	PetscDeviceContextSetStreamType(petsclib::PetscLibType, dctx::PetscDeviceContext, type::PetscStreamType) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextSetStreamType"))
@@ -403,7 +403,7 @@ end
 end 
 
 """
-	PetscDeviceContextSetUp(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	PetscDeviceContextSetUp(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextSetUp"))
@@ -426,7 +426,7 @@ end
 end 
 
 """
-	PetscDeviceContextSynchronize(petsclib::PetscLibType,dctx::PetscDeviceContext) 
+	PetscDeviceContextSynchronize(petsclib::PetscLibType, dctx::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextSynchronize"))
@@ -449,7 +449,7 @@ end
 end 
 
 """
-	PetscDeviceContextView(petsclib::PetscLibType,dctx::PetscDeviceContext, viewer::PetscViewer) 
+	PetscDeviceContextView(petsclib::PetscLibType, dctx::PetscDeviceContext, viewer::PetscViewer) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextView"))
@@ -472,7 +472,7 @@ end
 end 
 
 """
-	PetscDeviceContextViewFromOptions(petsclib::PetscLibType,dctx::PetscDeviceContext, obj, name::String) 
+	PetscDeviceContextViewFromOptions(petsclib::PetscLibType, dctx::PetscDeviceContext, obj, name::String) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextViewFromOptions"))
@@ -495,7 +495,7 @@ end
 end 
 
 """
-	PetscDeviceContextWaitForContext(petsclib::PetscLibType,dctxa::PetscDeviceContext, dctxb::PetscDeviceContext) 
+	PetscDeviceContextWaitForContext(petsclib::PetscLibType, dctxa::PetscDeviceContext, dctxb::PetscDeviceContext) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextWaitForContext"))
@@ -518,7 +518,7 @@ end
 end 
 
 """
-	device::PetscDevice = PetscDeviceCreate(petsclib::PetscLibType,type::PetscDeviceType, devid::PetscInt) 
+	device::PetscDevice = PetscDeviceCreate(petsclib::PetscLibType, type::PetscDeviceType, devid::PetscInt) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceCreate"))
@@ -543,7 +543,7 @@ end
 end 
 
 """
-	PetscDeviceDestroy(petsclib::PetscLibType,device::Union{PetscDevice, Ref{PetscDevice}}) 
+	PetscDeviceDestroy(petsclib::PetscLibType, device::Union{PetscDevice, Ref{PetscDevice}}) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceDestroy"))
@@ -571,7 +571,7 @@ end
 This function cleans up all components of the `PetscDevice`
 package. It is called from `PetscFinalize()`.
 
--seealso: `PetscFinalize()`, `PetscDeviceInitializePackage()`
+See also: `PetscFinalize()`, `PetscDeviceInitializePackage()`
 
 # External Links
 $(_doc_external("Sys/PetscDeviceFinalizePackage"))
@@ -593,7 +593,7 @@ end
 end 
 
 """
-	id::PetscInt = PetscDeviceGetDeviceId(petsclib::PetscLibType,device::PetscDevice) 
+	id::PetscInt = PetscDeviceGetDeviceId(petsclib::PetscLibType, device::PetscDevice) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceGetDeviceId"))
@@ -618,7 +618,7 @@ end
 end 
 
 """
-	type::PetscDeviceType = PetscDeviceGetType(petsclib::PetscLibType,device::PetscDevice) 
+	type::PetscDeviceType = PetscDeviceGetType(petsclib::PetscLibType, device::PetscDevice) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceGetType"))
@@ -643,7 +643,7 @@ end
 end 
 
 """
-	PetscDeviceInitialize(petsclib::PetscLibType,type::PetscDeviceType) 
+	PetscDeviceInitialize(petsclib::PetscLibType, type::PetscDeviceType) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceInitialize"))
@@ -673,7 +673,7 @@ package. It is called on the first call to `PetscDeviceContextCreate()` or
 
 Level: developer
 
--seealso: `PetscInitialize()`, `PetscDeviceFinalizePackage()`, `PetscDeviceContextCreate()`,
+See also: `PetscInitialize()`, `PetscDeviceFinalizePackage()`, `PetscDeviceContextCreate()`,
 `PetscDeviceCreate()`
 
 # External Links
@@ -696,7 +696,7 @@ end
 end 
 
 """
-	PetscDeviceMemcpy(petsclib::PetscLibType,dctx::PetscDeviceContext, dest::Ptr{Cvoid}, src::Ptr{Cvoid}, n::Csize_t) 
+	PetscDeviceMemcpy(petsclib::PetscLibType, dctx::PetscDeviceContext, dest::Ptr{Cvoid}, src::Ptr{Cvoid}, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceMemcpy"))
@@ -719,7 +719,7 @@ end
 end 
 
 """
-	PetscDeviceMemset(petsclib::PetscLibType,dctx::PetscDeviceContext, ptr::Ptr{Cvoid}, v::PetscInt, n::Csize_t) 
+	PetscDeviceMemset(petsclib::PetscLibType, dctx::PetscDeviceContext, ptr::Ptr{Cvoid}, v::PetscInt, n::Csize_t) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceMemset"))
@@ -742,7 +742,7 @@ end
 end 
 
 """
-	PetscDeviceSetDefaultDeviceType(petsclib::PetscLibType,type::PetscDeviceType) 
+	PetscDeviceSetDefaultDeviceType(petsclib::PetscLibType, type::PetscDeviceType) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceSetDefaultDeviceType"))
@@ -765,7 +765,7 @@ end
 end 
 
 """
-	PetscDeviceView(petsclib::PetscLibType,device::PetscDevice, viewer::PetscViewer) 
+	PetscDeviceView(petsclib::PetscLibType, device::PetscDevice, viewer::PetscViewer) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceView"))

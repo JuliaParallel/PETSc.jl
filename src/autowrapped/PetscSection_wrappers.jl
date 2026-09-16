@@ -1,5 +1,5 @@
 """
-	PetscSectionAddConstraintDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, numDof::PetscInt) 
+	PetscSectionAddConstraintDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, numDof::PetscInt) 
 Increment the number of constrained degrees of freedom associated with a given point.
 
 Not Collective
@@ -11,7 +11,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddConstraintDof"))
@@ -34,7 +34,7 @@ end
 end 
 
 """
-	PetscSectionAddDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, numDof::PetscInt) 
+	PetscSectionAddDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, numDof::PetscInt) 
 Adds to the total number of degrees of freedom associated with a given point.
 
 Not Collective
@@ -46,7 +46,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddDof"))
@@ -69,7 +69,7 @@ end
 end 
 
 """
-	PetscSectionAddFieldConstraintDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
+	PetscSectionAddFieldConstraintDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
 Increment the number of constrained degrees of freedom associated with a given field on a point.
 
 Not Collective
@@ -82,7 +82,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddFieldConstraintDof"))
@@ -105,7 +105,7 @@ end
 end 
 
 """
-	PetscSectionAddFieldDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
+	PetscSectionAddFieldDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
 Adds a number of degrees of freedom associated with a field on a given point.
 
 Not Collective
@@ -118,7 +118,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionAddFieldDof"))
@@ -141,7 +141,7 @@ end
 end 
 
 """
-	PetscSectionArrayView(petsclib::PetscLibType,s::PetscSection, array::Ptr{Cvoid}, data_type::PetscDataType, viewer::PetscViewer) 
+	PetscSectionArrayView(petsclib::PetscLibType, s::PetscSection, array::Ptr{Cvoid}, data_type::PetscDataType, viewer::PetscViewer) 
 View an array, using the section to structure the values
 
 Collective
@@ -154,7 +154,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSection`, `PetscViewer`, `PetscSectionCreate()`, `VecSetValuesSection()`, `PetscSectionVecView()`
+See also: `PetscSection`, `PetscViewer`, `PetscSectionCreate()`, `VecSetValuesSection()`, `PetscSectionVecView()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionArrayView"))
@@ -177,7 +177,7 @@ end
 end 
 
 """
-	newSection::PetscSection = PetscSectionClone(petsclib::PetscLibType,section::PetscSection) 
+	newSection::PetscSection = PetscSectionClone(petsclib::PetscLibType, section::PetscSection) 
 Creates a shallow (if possible) copy of the `PetscSection`
 
 Collective
@@ -190,7 +190,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionCopy()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionCopy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionClone"))
@@ -215,7 +215,7 @@ end
 end 
 
 """
-	congruent::PetscBool = PetscSectionCompare(petsclib::PetscLibType,s1::PetscSection, s2::PetscSection) 
+	congruent::PetscBool = PetscSectionCompare(petsclib::PetscLibType, s1::PetscSection, s2::PetscSection) 
 Compares two sections
 
 Collective
@@ -229,7 +229,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionCopy()`, `PetscSectionClone()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionCopy()`, `PetscSectionClone()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCompare"))
@@ -254,7 +254,7 @@ end
 end 
 
 """
-	PetscSectionCopy(petsclib::PetscLibType,section::PetscSection, newSection::PetscSection) 
+	PetscSectionCopy(petsclib::PetscLibType, section::PetscSection, newSection::PetscSection) 
 Creates a shallow (if possible) copy of the `PetscSection`
 
 Collective
@@ -267,7 +267,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCopy"))
@@ -290,7 +290,7 @@ end
 end 
 
 """
-	s::PetscSection = PetscSectionCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	s::PetscSection = PetscSectionCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Allocates a `PetscSection` and sets the map contents to the default.
 
 Collective
@@ -301,7 +301,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetChart()`, `PetscSectionDestroy()`, `PetscSectionCreateGlobalSection()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetChart()`, `PetscSectionDestroy()`, `PetscSectionCreateGlobalSection()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreate"))
@@ -326,7 +326,7 @@ end
 end 
 
 """
-	subs::PetscSection = PetscSectionCreateComponentSubsection(petsclib::PetscLibType,s::PetscSection, len::PetscInt, comps::Vector{PetscInt}) 
+	subs::PetscSection = PetscSectionCreateComponentSubsection(petsclib::PetscLibType, s::PetscSection, len::PetscInt, comps::Vector{PetscInt}) 
 Create a new, smaller `PetscSection` composed of only selected components
 
 Collective
@@ -341,7 +341,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateComponentSubsection"))
@@ -366,7 +366,7 @@ end
 end 
 
 """
-	gsection::PetscSection = PetscSectionCreateGlobalSection(petsclib::PetscLibType,s::PetscSection, sf::PetscSF, usePermutation::PetscBool, includeConstraints::PetscBool, localOffsets::PetscBool) 
+	gsection::PetscSection = PetscSectionCreateGlobalSection(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, usePermutation::PetscBool, includeConstraints::PetscBool, localOffsets::PetscBool) 
 Create a parallel section describing the global layout using
 a local (sequential) `PetscSection` on each MPI process and a `PetscSF` describing the section point overlap.
 
@@ -382,7 +382,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionCreateGlobalSectionCensored()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionCreateGlobalSectionCensored()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateGlobalSection"))
@@ -407,7 +407,7 @@ end
 end 
 
 """
-	gsection::PetscSection = PetscSectionCreateGlobalSectionCensored(petsclib::PetscLibType,s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, numExcludes::PetscInt, excludes::Vector{PetscInt}) 
+	gsection::PetscSection = PetscSectionCreateGlobalSectionCensored(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, numExcludes::PetscInt, excludes::Vector{PetscInt}) 
 Create a `PetscSection` describing the globallayout using
 a local (sequential) `PetscSection` on each MPI process and an `PetscSF` describing the section point overlap.
 
@@ -423,7 +423,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateGlobalSectionCensored"))
@@ -448,7 +448,7 @@ end
 end 
 
 """
-	gsection::PetscSection = PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType,s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::DMLabel, labelValue::PetscInt) 
+	gsection::PetscSection = PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::DMLabel, labelValue::PetscInt) 
 Create a section describing the global field layout using
 the local section and an `PetscSF` describing the section point overlap.
 
@@ -466,7 +466,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `PetscSectionCreate()`
+See also: `DMLabel`, `DM`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("DMLabel/PetscSectionCreateGlobalSectionLabel"))
@@ -491,7 +491,7 @@ end
 end 
 
 """
-	subs::PetscSection = PetscSectionCreateSubdomainSection(petsclib::PetscLibType,s::PetscSection, subpointMap::AbstractIS) 
+	subs::PetscSection = PetscSectionCreateSubdomainSection(petsclib::PetscLibType, s::PetscSection, subpointMap::AbstractIS) 
 Create a new, smaller section with support on a subdomain of the mesh
 
 Collective
@@ -505,7 +505,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubmeshSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubmeshSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSubdomainSection"))
@@ -530,7 +530,7 @@ end
 end 
 
 """
-	subs::PetscSection = PetscSectionCreateSubmeshSection(petsclib::PetscLibType,s::PetscSection, subpointIS::AbstractIS) 
+	subs::PetscSection = PetscSectionCreateSubmeshSection(petsclib::PetscLibType, s::PetscSection, subpointIS::AbstractIS) 
 Create a new, smaller section with support on the submesh
 
 Collective
@@ -544,7 +544,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubdomainSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubdomainSection()`, `PetscSectionCreateSubsection()`, `DMPlexGetSubpointMap()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSubmeshSection"))
@@ -569,7 +569,7 @@ end
 end 
 
 """
-	subs::PetscSection = PetscSectionCreateSubsection(petsclib::PetscLibType,s::PetscSection, len::PetscInt, fields::Vector{PetscInt}) 
+	subs::PetscSection = PetscSectionCreateSubsection(petsclib::PetscLibType, s::PetscSection, len::PetscInt, fields::Vector{PetscInt}) 
 Create a new, smaller `PetscSection` composed of only selected fields
 
 Collective
@@ -584,7 +584,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSupersection()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSubsection"))
@@ -609,7 +609,7 @@ end
 end 
 
 """
-	supers::PetscSection = PetscSectionCreateSupersection(petsclib::PetscLibType,s::Vector{PetscSection}, len::PetscInt) 
+	supers::PetscSection = PetscSectionCreateSupersection(petsclib::PetscLibType, s::Vector{PetscSection}, len::PetscInt) 
 Create a new, larger section composed of multiple `PetscSection`s
 
 Collective
@@ -623,7 +623,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubsection()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreateSubsection()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreateSupersection"))
@@ -648,7 +648,7 @@ end
 end 
 
 """
-	PetscSectionDestroy(petsclib::PetscLibType,s::Union{PetscSection, Ref{PetscSection}}) 
+	PetscSectionDestroy(petsclib::PetscLibType, s::Union{PetscSection, Ref{PetscSection}}) 
 Frees a `PetscSection`
 
 Not Collective
@@ -658,7 +658,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionReset()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionReset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionDestroy"))
@@ -682,7 +682,7 @@ end
 end 
 
 """
-	blockStarts::PetscBT = PetscSectionGetBlockStarts(petsclib::PetscLibType,s::PetscSection) 
+	blockStarts::PetscBT = PetscSectionGetBlockStarts(petsclib::PetscLibType, s::PetscSection) 
 Returns a table indicating which points start new blocks
 
 Not Collective, No Fortran Support
@@ -693,7 +693,7 @@ Input Parameter:
 Output Parameter:
 - `blockStarts` - The `PetscBT` with a 1 for each point that begins a block
 
--seealso: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
+See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetBlockStarts"))
@@ -718,7 +718,7 @@ end
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = PetscSectionGetChart(petsclib::PetscLibType,s::PetscSection) 
+	pStart::PetscInt,pEnd::PetscInt = PetscSectionGetChart(petsclib::PetscLibType, s::PetscSection) 
 Returns the range [`pStart`, `pEnd`) in which points (indices) lie for this `PetscSection` on this MPI process
 
 Not Collective
@@ -732,7 +732,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetChart()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetChart()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetChart"))
@@ -759,7 +759,7 @@ end
 end 
 
 """
-	clSection::PetscSection,clPoints::IS = PetscSectionGetClosureIndex(petsclib::PetscLibType,section::PetscSection, obj) 
+	clSection::PetscSection,clPoints::IS = PetscSectionGetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj) 
 Get the cache of points in the closure of each point in the section set with `PetscSectionSetClosureIndex()`
 
 Collective
@@ -774,7 +774,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetClosureIndex"))
@@ -801,7 +801,7 @@ end
 end 
 
 """
-	perm::IS = PetscSectionGetClosureInversePermutation(petsclib::PetscLibType,section::PetscSection, obj, depth::PetscInt, clSize::PetscInt) 
+	perm::IS = PetscSectionGetClosureInversePermutation(petsclib::PetscLibType, section::PetscSection, obj, depth::PetscInt, clSize::PetscInt) 
 Get the inverse dof permutation for the closure of each cell in the section, meaning clPerm[oldIndex] = newIndex.
 
 Not Collective
@@ -817,7 +817,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetClosureInversePermutation"))
@@ -842,7 +842,7 @@ end
 end 
 
 """
-	perm::IS = PetscSectionGetClosurePermutation(petsclib::PetscLibType,section::PetscSection, obj, depth::PetscInt, clSize::PetscInt) 
+	perm::IS = PetscSectionGetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj, depth::PetscInt, clSize::PetscInt) 
 Get the dof permutation for the closure of each cell in the section, meaning clPerm[newIndex] = oldIndex.
 
 Not Collective
@@ -858,7 +858,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureInversePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetClosurePermutation()`, `PetscSectionGetClosureInversePermutation()`, `PetscSectionGetClosureIndex()`, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetClosurePermutation"))
@@ -883,7 +883,7 @@ end
 end 
 
 """
-	compName::Ptr{Cchar} = PetscSectionGetComponentName(petsclib::PetscLibType,s::PetscSection, field::PetscInt, comp::PetscInt) 
+	compName::Ptr{Cchar} = PetscSectionGetComponentName(petsclib::PetscLibType, s::PetscSection, field::PetscInt, comp::PetscInt) 
 Gets the name of a field component in the `PetscSection`
 
 Not Collective
@@ -898,7 +898,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
 `PetscSectionSetComponentName()`, `PetscSectionSetFieldName()`, `PetscSectionGetFieldComponents()`, `PetscSectionSetFieldComponents()`
 
 # External Links
@@ -924,7 +924,7 @@ end
 end 
 
 """
-	size::PetscInt = PetscSectionGetConstrainedStorageSize(petsclib::PetscLibType,s::PetscSection) 
+	size::PetscInt = PetscSectionGetConstrainedStorageSize(petsclib::PetscLibType, s::PetscSection) 
 Return the size of an array or local `Vec` capable of holding all unconstrained degrees of freedom in a `PetscSection`
 
 Not Collective
@@ -937,7 +937,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetStorageSize()`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetStorageSize()`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetConstrainedStorageSize"))
@@ -962,7 +962,7 @@ end
 end 
 
 """
-	numDof::PetscInt = PetscSectionGetConstraintDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt) 
+	numDof::PetscInt = PetscSectionGetConstraintDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt) 
 Return the number of constrained degrees of freedom associated with a given point.
 
 Not Collective
@@ -976,7 +976,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetConstraintDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetConstraintDof"))
@@ -1001,7 +1001,7 @@ end
 end 
 
 """
-	indices::Vector{PetscInt} = PetscSectionGetConstraintIndices(petsclib::PetscLibType,s::PetscSection, point::PetscInt) 
+	indices::Vector{PetscInt} = PetscSectionGetConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::PetscInt) 
 Get the point dof numbers, in [0, dof), which are constrained for a given point
 
 Not Collective
@@ -1015,7 +1015,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetConstraintIndices"))
@@ -1041,7 +1041,7 @@ end
 end 
 
 """
-	numDof::PetscInt = PetscSectionGetDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt) 
+	numDof::PetscInt = PetscSectionGetDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt) 
 Return the total number of degrees of freedom associated with a given point.
 
 Not Collective
@@ -1055,7 +1055,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetDof"))
@@ -1080,7 +1080,7 @@ end
 end 
 
 """
-	subs::PetscSection = PetscSectionGetField(petsclib::PetscLibType,s::PetscSection, field::PetscInt) 
+	subs::PetscSection = PetscSectionGetField(petsclib::PetscLibType, s::PetscSection, field::PetscInt) 
 Get the `PetscSection` associated with a single field
 
 Input Parameters:
@@ -1092,7 +1092,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetNumFields()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionSetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetField"))
@@ -1117,7 +1117,7 @@ end
 end 
 
 """
-	numComp::PetscInt = PetscSectionGetFieldComponents(petsclib::PetscLibType,s::PetscSection, field::PetscInt) 
+	numComp::PetscInt = PetscSectionGetFieldComponents(petsclib::PetscLibType, s::PetscSection, field::PetscInt) 
 Returns the number of field components for the given field.
 
 Not Collective
@@ -1131,7 +1131,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldComponents()`, `PetscSectionGetNumFields()`,
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldComponents()`, `PetscSectionGetNumFields()`,
 `PetscSectionSetComponentName()`, `PetscSectionGetComponentName()`
 
 # External Links
@@ -1157,7 +1157,7 @@ end
 end 
 
 """
-	numDof::PetscInt = PetscSectionGetFieldConstraintDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt) 
+	numDof::PetscInt = PetscSectionGetFieldConstraintDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt) 
 Return the number of constrained degrees of freedom associated with a given field on a point.
 
 Not Collective
@@ -1172,7 +1172,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetFieldConstraintDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetFieldConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldConstraintDof"))
@@ -1197,7 +1197,7 @@ end
 end 
 
 """
-	indices::Vector{PetscInt} = PetscSectionGetFieldConstraintIndices(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt) 
+	indices::Vector{PetscInt} = PetscSectionGetFieldConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt) 
 Get the field dof numbers, in [0, fdof), which are constrained
 
 Not Collective
@@ -1212,7 +1212,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSetFieldConstraintIndices()`, `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: [PetscSection](ch_petscsection), `PetscSectionSetFieldConstraintIndices()`, `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldConstraintIndices"))
@@ -1238,7 +1238,7 @@ end
 end 
 
 """
-	numDof::PetscInt = PetscSectionGetFieldDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt) 
+	numDof::PetscInt = PetscSectionGetFieldDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt) 
 Return the number of degrees of freedom associated with a field on a given point.
 
 Not Collective
@@ -1253,7 +1253,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldDof"))
@@ -1278,7 +1278,7 @@ end
 end 
 
 """
-	fieldName::Ptr{Cchar} = PetscSectionGetFieldName(petsclib::PetscLibType,s::PetscSection, field::PetscInt) 
+	fieldName::Ptr{Cchar} = PetscSectionGetFieldName(petsclib::PetscLibType, s::PetscSection, field::PetscInt) 
 Returns the name of a field in the `PetscSection`
 
 Not Collective
@@ -1292,7 +1292,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldName"))
@@ -1317,7 +1317,7 @@ end
 end 
 
 """
-	offset::PetscInt = PetscSectionGetFieldOffset(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt) 
+	offset::PetscInt = PetscSectionGetFieldOffset(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt) 
 Return the offset into an array or `Vec` for the field dof associated with the given point.
 
 Not Collective
@@ -1332,7 +1332,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldPointOffset()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldPointOffset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldOffset"))
@@ -1357,7 +1357,7 @@ end
 end 
 
 """
-	offset::PetscInt = PetscSectionGetFieldPointOffset(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt) 
+	offset::PetscInt = PetscSectionGetFieldPointOffset(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt) 
 Return the offset for the first field dof associated with the given point relative to the offset for that point for the
 unnamed default field's first dof
 
@@ -1373,7 +1373,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldOffset()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`, `PetscSectionGetFieldOffset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldPointOffset"))
@@ -1398,7 +1398,7 @@ end
 end 
 
 """
-	perms::Ptr{PetscInt},rots::Ptr{PetscScalar} = PetscSectionGetFieldPointSyms(petsclib::PetscLibType,section::PetscSection, field::PetscInt, numPoints::PetscInt, points::Vector{PetscInt}) 
+	perms::Ptr{PetscInt},rots::Ptr{PetscScalar} = PetscSectionGetFieldPointSyms(petsclib::PetscLibType, section::PetscSection, field::PetscInt, numPoints::PetscInt, points::Vector{PetscInt}) 
 Get the symmetries for a set of points in a field of a `PetscSection` under specific orientations.
 
 Not Collective
@@ -1418,7 +1418,7 @@ identity).
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionRestoreFieldPointSyms()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionRestoreFieldPointSyms()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldPointSyms"))
@@ -1445,7 +1445,7 @@ end
 end 
 
 """
-	sym::PetscSectionSym = PetscSectionGetFieldSym(petsclib::PetscLibType,section::PetscSection, field::PetscInt) 
+	sym::PetscSectionSym = PetscSectionGetFieldSym(petsclib::PetscLibType, section::PetscSection, field::PetscInt) 
 Get the symmetries for the data referred to by a field of the section
 
 Collective
@@ -1459,7 +1459,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetFieldSym()`, `PetscSectionSymCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetFieldSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetFieldSym"))
@@ -1484,7 +1484,7 @@ end
 end 
 
 """
-	includesConstraints::PetscBool = PetscSectionGetIncludesConstraints(petsclib::PetscLibType,s::PetscSection) 
+	includesConstraints::PetscBool = PetscSectionGetIncludesConstraints(petsclib::PetscLibType, s::PetscSection) 
 Returns the flag indicating if constrained dofs were included when computing offsets in the `PetscSection`.
 The value is set with `PetscSectionSetIncludesConstraints()`
 
@@ -1498,7 +1498,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetIncludesConstraints()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetIncludesConstraints()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetIncludesConstraints"))
@@ -1523,7 +1523,7 @@ end
 end 
 
 """
-	maxDof::PetscInt = PetscSectionGetMaxDof(petsclib::PetscLibType,s::PetscSection) 
+	maxDof::PetscInt = PetscSectionGetMaxDof(petsclib::PetscLibType, s::PetscSection) 
 Return the maximum number of degrees of freedom on any point in the `PetscSection`
 
 Not Collective
@@ -1536,7 +1536,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetMaxDof"))
@@ -1561,7 +1561,7 @@ end
 end 
 
 """
-	numFields::PetscInt = PetscSectionGetNumFields(petsclib::PetscLibType,s::PetscSection) 
+	numFields::PetscInt = PetscSectionGetNumFields(petsclib::PetscLibType, s::PetscSection) 
 Returns the number of fields in a `PetscSection`, or 0 if no fields were defined.
 
 Not Collective
@@ -1574,7 +1574,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetNumFields()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetNumFields"))
@@ -1599,7 +1599,7 @@ end
 end 
 
 """
-	offset::PetscInt = PetscSectionGetOffset(petsclib::PetscLibType,s::PetscSection, point::PetscInt) 
+	offset::PetscInt = PetscSectionGetOffset(petsclib::PetscLibType, s::PetscSection, point::PetscInt) 
 Return the offset into an array or `Vec` for the dof associated with the given point.
 
 Not Collective
@@ -1613,7 +1613,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetPointMajor()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetPointMajor()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetOffset"))
@@ -1638,7 +1638,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = PetscSectionGetOffsetRange(petsclib::PetscLibType,s::PetscSection) 
+	start::PetscInt,end_::PetscInt = PetscSectionGetOffsetRange(petsclib::PetscLibType, s::PetscSection) 
 Return the full range of offsets [`start`, `end`) for a `PetscSection`
 
 Not Collective
@@ -1652,7 +1652,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetOffsetRange"))
@@ -1679,8 +1679,8 @@ end
 end 
 
 """
-	perm::IS = PetscSectionGetPermutation(petsclib::PetscLibType,s::PetscSection) 
-Returns the permutation of [0, `pEnd`
+	perm::IS = PetscSectionGetPermutation(petsclib::PetscLibType, s::PetscSection) 
+Returns the permutation of [0, `pEnd` - `pStart`) or `NULL` that was set with `PetscSectionSetPermutation()`
 
 Not Collective
 
@@ -1692,7 +1692,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetPermutation()`, `PetscSectionCreate()`
+See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetPermutation()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPermutation"))
@@ -1717,7 +1717,7 @@ end
 end 
 
 """
-	layout::PetscLayout = PetscSectionGetPointLayout(petsclib::PetscLibType,comm::MPI_Comm, s::PetscSection) 
+	layout::PetscLayout = PetscSectionGetPointLayout(petsclib::PetscLibType, comm::MPI_Comm, s::PetscSection) 
 Get a `PetscLayout` for the points with nonzero dof counts of the unnamed default field within this `PetscSection`s local chart
 
 Collective
@@ -1731,7 +1731,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetValueLayout()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetValueLayout()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPointLayout"))
@@ -1756,7 +1756,7 @@ end
 end 
 
 """
-	pm::PetscBool = PetscSectionGetPointMajor(petsclib::PetscLibType,s::PetscSection) 
+	pm::PetscBool = PetscSectionGetPointMajor(petsclib::PetscLibType, s::PetscSection) 
 Returns the flag for dof ordering, `PETSC_TRUE` if it is point major, `PETSC_FALSE` if it is field major
 
 Not Collective
@@ -1769,7 +1769,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetPointMajor()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetPointMajor()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPointMajor"))
@@ -1794,7 +1794,7 @@ end
 end 
 
 """
-	perms::Ptr{PetscInt},rots::Ptr{PetscScalar} = PetscSectionGetPointSyms(petsclib::PetscLibType,section::PetscSection, numPoints::PetscInt, points::Vector{PetscInt}) 
+	perms::Ptr{PetscInt},rots::Ptr{PetscScalar} = PetscSectionGetPointSyms(petsclib::PetscLibType, section::PetscSection, numPoints::PetscInt, points::Vector{PetscInt}) 
 Get the symmetries for a set of points in a `PetscSection` under specific orientations.
 
 Not Collective
@@ -1812,7 +1812,53 @@ Output Parameters:
 identity).
 
 Example of usage, gathering dofs into a local array (lArray) from a section array (sArray):
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
+``
+const PetscInt    **perms;
+const PetscScalar **rots;
+PetscInt            lOffset;
+
+PetscSectionGetPointSyms(section,numPoints,points,&perms,&rots);
+for (i = 0, lOffset = 0; i < numPoints; i++) {
+PetscInt           point = points[2*i], dof, sOffset;
+const PetscInt    *perm  = perms ? perms[i] : NULL;
+const PetscScalar *rot   = rots  ? rots[i]  : NULL;
+
+PetscSectionGetDof(section,point,&dof);
+PetscSectionGetOffset(section,point,&sOffset);
+
+if (perm) { for (j = 0; j < dof; j++) lArray[lOffset + perm[j]]  = sArray[sOffset + j]; }
+else      { for (j = 0; j < dof; j++) lArray[lOffset +      j ]  = sArray[sOffset + j]; }
+if (rot)  { for (j = 0; j < dof; j++) lArray[lOffset +      j ] *= rot[j];              }
+lOffset += dof;
+}
+PetscSectionRestorePointSyms(section,numPoints,points,&perms,&rots);
+``
+
+Example of usage, adding dofs into a section array (sArray) from a local array (lArray):
+``
+const PetscInt    **perms;
+const PetscScalar **rots;
+PetscInt            lOffset;
+
+PetscSectionGetPointSyms(section,numPoints,points,&perms,&rots);
+for (i = 0, lOffset = 0; i < numPoints; i++) {
+PetscInt           point = points[2*i], dof, sOffset;
+const PetscInt    *perm  = perms ? perms[i] : NULL;
+const PetscScalar *rot   = rots  ? rots[i]  : NULL;
+
+PetscSectionGetDof(section,point,&dof);
+PetscSectionGetOffset(section,point,&sOff);
+
+if (perm) { for (j = 0; j < dof; j++) sArray[sOffset + j] += lArray[lOffset + perm[j]] * (rot ? PetscConj(rot[perm[j]]) : 1.); }
+else      { for (j = 0; j < dof; j++) sArray[sOffset + j] += lArray[lOffset +      j ] * (rot ? PetscConj(rot[     j ]) : 1.); }
+offset += dof;
+}
+PetscSectionRestorePointSyms(section,numPoints,points,&perms,&rots);
+``
+
+Level: developer
+
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetPointSyms"))
@@ -1839,7 +1885,7 @@ end
 end 
 
 """
-	size::PetscInt = PetscSectionGetStorageSize(petsclib::PetscLibType,s::PetscSection) 
+	size::PetscInt = PetscSectionGetStorageSize(petsclib::PetscLibType, s::PetscSection) 
 Return the size of an array or local `Vec` capable of holding all the degrees of freedom defined in a `PetscSection`
 
 Not Collective
@@ -1852,7 +1898,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionGetConstrainedStorageSize()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetOffset()`, `PetscSectionGetConstrainedStorageSize()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetStorageSize"))
@@ -1877,7 +1923,7 @@ end
 end 
 
 """
-	sym::PetscSectionSym = PetscSectionGetSym(petsclib::PetscLibType,section::PetscSection) 
+	sym::PetscSectionSym = PetscSectionGetSym(petsclib::PetscLibType, section::PetscSection) 
 Get the symmetries for the data referred to by the section
 
 Not Collective
@@ -1890,7 +1936,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetSym()`, `PetscSectionSymCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetSym"))
@@ -1915,7 +1961,7 @@ end
 end 
 
 """
-	flg::PetscBool = PetscSectionGetUseFieldOffsets(petsclib::PetscLibType,s::PetscSection) 
+	flg::PetscBool = PetscSectionGetUseFieldOffsets(petsclib::PetscLibType, s::PetscSection) 
 Get the flag indicating if field offsets are used directly in a global section, rather than just the point offset
 
 Not Collective
@@ -1928,7 +1974,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetChart()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSetChart()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetUseFieldOffsets"))
@@ -1953,7 +1999,7 @@ end
 end 
 
 """
-	layout::PetscLayout = PetscSectionGetValueLayout(petsclib::PetscLibType,comm::MPI_Comm, s::PetscSection) 
+	layout::PetscLayout = PetscSectionGetValueLayout(petsclib::PetscLibType, comm::MPI_Comm, s::PetscSection) 
 Get the `PetscLayout` associated with the section dofs of a `PetscSection`
 
 Collective
@@ -1967,7 +2013,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetPointLayout()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetPointLayout()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionGetValueLayout"))
@@ -1992,7 +2038,7 @@ end
 end 
 
 """
-	hasConstraints::PetscBool = PetscSectionHasConstraints(petsclib::PetscLibType,s::PetscSection) 
+	hasConstraints::PetscBool = PetscSectionHasConstraints(petsclib::PetscLibType, s::PetscSection) 
 Determine whether a `PetscSection` has constrained dofs
 
 Not Collective
@@ -2005,7 +2051,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionHasConstraints"))
@@ -2030,7 +2076,7 @@ end
 end 
 
 """
-	PetscSectionLoad(petsclib::PetscLibType,s::PetscSection, viewer::PetscViewer) 
+	PetscSectionLoad(petsclib::PetscLibType, s::PetscSection, viewer::PetscViewer) 
 Loads a `PetscSection`
 
 Collective
@@ -2041,7 +2087,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionView()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionView()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionLoad"))
@@ -2064,7 +2110,7 @@ end
 end 
 
 """
-	sectionNew::PetscSection = PetscSectionPermute(petsclib::PetscLibType,section::PetscSection, permutation::AbstractIS) 
+	sectionNew::PetscSection = PetscSectionPermute(petsclib::PetscLibType, section::PetscSection, permutation::AbstractIS) 
 Reorder the section according to the input point permutation
 
 Collective
@@ -2078,7 +2124,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `IS`, `PetscSection`, `MatPermute()`, `PetscSectionSetPermutation()`
+See also: [PetscSection](ch_petscsection), `IS`, `PetscSection`, `MatPermute()`, `PetscSectionSetPermutation()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionPermute"))
@@ -2103,7 +2149,7 @@ end
 end 
 
 """
-	PetscSectionReset(petsclib::PetscLibType,s::PetscSection) 
+	PetscSectionReset(petsclib::PetscLibType, s::PetscSection) 
 Frees all section data, the section is then as if `PetscSectionCreate()` had just been called.
 
 Not Collective
@@ -2113,7 +2159,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionReset"))
@@ -2136,7 +2182,7 @@ end
 end 
 
 """
-	PetscSectionResetClosurePermutation(petsclib::PetscLibType,section::PetscSection) 
+	PetscSectionResetClosurePermutation(petsclib::PetscLibType, section::PetscSection) 
 Remove any existing closure permutation
 
 Input Parameter:
@@ -2144,7 +2190,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscSectionSetClosurePermutation()`, `PetscSectionSetClosureIndex()`, `PetscSectionReset()`
+See also: `PetscSectionSetClosurePermutation()`, `PetscSectionSetClosureIndex()`, `PetscSectionReset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionResetClosurePermutation"))
@@ -2167,7 +2213,7 @@ end
 end 
 
 """
-	PetscSectionRestoreFieldPointSyms(petsclib::PetscLibType,section::PetscSection, field::PetscInt, numPoints::PetscInt, points::PetscInt, perms::PetscInt, rots::PetscScalar) 
+	PetscSectionRestoreFieldPointSyms(petsclib::PetscLibType, section::PetscSection, field::PetscInt, numPoints::PetscInt, points::PetscInt, perms::PetscInt, rots::PetscScalar) 
 Restore the symmetries returned by `PetscSectionGetFieldPointSyms()`
 
 Not Collective
@@ -2184,7 +2230,7 @@ context, see `DMPlexGetConeOrientation()`).
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `petscSectionGetFieldPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `petscSectionGetFieldPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionRestoreFieldPointSyms"))
@@ -2208,7 +2254,7 @@ end
 end 
 
 """
-	PetscSectionRestorePointSyms(petsclib::PetscLibType,section::PetscSection, numPoints::PetscInt, points::PetscInt, perms::PetscInt, rots::PetscScalar) 
+	PetscSectionRestorePointSyms(petsclib::PetscLibType, section::PetscSection, numPoints::PetscInt, points::PetscInt, perms::PetscInt, rots::PetscScalar) 
 Restore the symmetries returned by `PetscSectionGetPointSyms()`
 
 Not Collective
@@ -2224,7 +2270,7 @@ context, see `DMPlexGetConeOrientation()`).
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionRestorePointSyms"))
@@ -2248,7 +2294,7 @@ end
 end 
 
 """
-	PetscSectionSetBlockStarts(petsclib::PetscLibType,s::PetscSection, blockStarts::PetscBT) 
+	PetscSectionSetBlockStarts(petsclib::PetscLibType, s::PetscSection, blockStarts::PetscBT) 
 Sets a table indicating which points start new blocks
 
 Not Collective, No Fortran Support
@@ -2259,7 +2305,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionGetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
+See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionGetBlockStarts()`, `PetscSectionCreate()`, `DMCreateMatrix()`, `MatSetVariableBlockSizes()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetBlockStarts"))
@@ -2282,7 +2328,7 @@ end
 end 
 
 """
-	PetscSectionSetChart(petsclib::PetscLibType,s::PetscSection, pStart::PetscInt, pEnd::PetscInt) 
+	PetscSectionSetChart(petsclib::PetscLibType, s::PetscSection, pStart::PetscInt, pEnd::PetscInt) 
 Sets the range [`pStart`, `pEnd`) in which points (indices) lie for this `PetscSection` on this MPI process
 
 Not Collective
@@ -2294,7 +2340,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetChart()`, `PetscSectionCreate()`, `PetscSectionSetNumFields()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetChart()`, `PetscSectionCreate()`, `PetscSectionSetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetChart"))
@@ -2317,7 +2363,7 @@ end
 end 
 
 """
-	PetscSectionSetClosureIndex(petsclib::PetscLibType,section::PetscSection, obj, clSection::PetscSection, clPoints::AbstractIS) 
+	PetscSectionSetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj, clSection::PetscSection, clPoints::AbstractIS) 
 Create an internal data structure to speed up closure queries.
 
 Collective
@@ -2330,7 +2376,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetClosureIndex"))
@@ -2353,7 +2399,7 @@ end
 end 
 
 """
-	PetscSectionSetClosurePermutation(petsclib::PetscLibType,section::PetscSection, obj, depth::PetscInt, perm::AbstractIS) 
+	PetscSectionSetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj, depth::PetscInt, perm::AbstractIS) 
 Set the dof permutation for the closure of each cell in the section, meaning clPerm[newIndex] = oldIndex.
 
 Not Collective
@@ -2366,7 +2412,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionGetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`, `PetscCopyMode`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `IS`, `PetscSectionGetClosurePermutation()`, `PetscSectionGetClosureIndex()`, `DMPlexCreateClosureIndex()`, `PetscCopyMode`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetClosurePermutation"))
@@ -2389,7 +2435,7 @@ end
 end 
 
 """
-	PetscSectionSetComponentName(petsclib::PetscLibType,s::PetscSection, field::PetscInt, comp::PetscInt, compName::String) 
+	PetscSectionSetComponentName(petsclib::PetscLibType, s::PetscSection, field::PetscInt, comp::PetscInt, compName::String) 
 Sets the name of a field component in the `PetscSection`
 
 Not Collective
@@ -2402,7 +2448,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetComponentName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetComponentName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`,
 `PetscSectionSetFieldName()`, `PetscSectionGetFieldComponents()`, `PetscSectionSetFieldComponents()`
 
 # External Links
@@ -2426,7 +2472,7 @@ end
 end 
 
 """
-	PetscSectionSetConstraintDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, numDof::PetscInt) 
+	PetscSectionSetConstraintDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, numDof::PetscInt) 
 Set the number of constrained degrees of freedom associated with a given point.
 
 Not Collective
@@ -2438,7 +2484,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetConstraintDof"))
@@ -2461,7 +2507,7 @@ end
 end 
 
 """
-	PetscSectionSetConstraintIndices(petsclib::PetscLibType,s::PetscSection, point::PetscInt, indices::Vector{PetscInt}) 
+	PetscSectionSetConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::PetscInt, indices::Vector{PetscInt}) 
 Set the point dof numbers, in [0, dof), which are constrained
 
 Not Collective
@@ -2473,7 +2519,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: [PetscSection](ch_petscsection), `PetscSectionGetConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetConstraintIndices"))
@@ -2496,7 +2542,7 @@ end
 end 
 
 """
-	PetscSectionSetDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, numDof::PetscInt) 
+	PetscSectionSetDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, numDof::PetscInt) 
 Sets the total number of degrees of freedom associated with a given point.
 
 Not Collective
@@ -2508,7 +2554,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetDof()`, `PetscSectionAddDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetDof"))
@@ -2531,7 +2577,7 @@ end
 end 
 
 """
-	PetscSectionSetFieldComponents(petsclib::PetscLibType,s::PetscSection, field::PetscInt, numComp::PetscInt) 
+	PetscSectionSetFieldComponents(petsclib::PetscLibType, s::PetscSection, field::PetscInt, numComp::PetscInt) 
 Sets the number of field components for the given field.
 
 Not Collective
@@ -2543,7 +2589,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldComponents()`, `PetscSectionSetComponentName()`,
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldComponents()`, `PetscSectionSetComponentName()`,
 `PetscSectionGetComponentName()`, `PetscSectionGetNumFields()`
 
 # External Links
@@ -2567,7 +2613,7 @@ end
 end 
 
 """
-	PetscSectionSetFieldConstraintDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
+	PetscSectionSetFieldConstraintDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
 Set the number of constrained degrees of freedom associated with a given field on a point.
 
 Not Collective
@@ -2580,7 +2626,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGetFieldConstraintDof()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldConstraintDof"))
@@ -2603,7 +2649,7 @@ end
 end 
 
 """
-	PetscSectionSetFieldConstraintIndices(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt, indices::Vector{PetscInt}) 
+	PetscSectionSetFieldConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt, indices::Vector{PetscInt}) 
 Set the field dof numbers, in [0, fdof), which are constrained
 
 Not Collective
@@ -2616,7 +2662,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetFieldConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
+See also: [PetscSection](ch_petscsection), `PetscSectionSetConstraintIndices()`, `PetscSectionGetFieldConstraintIndices()`, `PetscSectionGetConstraintDof()`, `PetscSection`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldConstraintIndices"))
@@ -2639,7 +2685,7 @@ end
 end 
 
 """
-	PetscSectionSetFieldDof(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
+	PetscSectionSetFieldDof(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt, numDof::PetscInt) 
 Sets the number of degrees of freedom associated with a field on a given point.
 
 Not Collective
@@ -2652,7 +2698,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`, `PetscSectionAddDof()`, `PetscSectionSetDof()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldDof()`, `PetscSectionCreate()`, `PetscSectionAddDof()`, `PetscSectionSetDof()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldDof"))
@@ -2675,7 +2721,7 @@ end
 end 
 
 """
-	PetscSectionSetFieldName(petsclib::PetscLibType,s::PetscSection, field::PetscInt, fieldName::String) 
+	PetscSectionSetFieldName(petsclib::PetscLibType, s::PetscSection, field::PetscInt, fieldName::String) 
 Sets the name of a field in the `PetscSection`
 
 Not Collective
@@ -2687,7 +2733,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
+See also: [PetscSection](ch_petscsection), `PetscSectionGetFieldName()`, `PetscSectionSetNumFields()`, `PetscSectionGetNumFields()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldName"))
@@ -2710,7 +2756,7 @@ end
 end 
 
 """
-	PetscSectionSetFieldOffset(petsclib::PetscLibType,s::PetscSection, point::PetscInt, field::PetscInt, offset::PetscInt) 
+	PetscSectionSetFieldOffset(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt, offset::PetscInt) 
 Set the offset into an array or `Vec` for the dof associated with the given field at a point.
 
 Not Collective
@@ -2723,7 +2769,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionSetOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionSetOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldOffset"))
@@ -2746,7 +2792,7 @@ end
 end 
 
 """
-	PetscSectionSetFieldSym(petsclib::PetscLibType,section::PetscSection, field::PetscInt, sym::PetscSectionSym) 
+	PetscSectionSetFieldSym(petsclib::PetscLibType, section::PetscSection, field::PetscInt, sym::PetscSectionSym) 
 Set the symmetries for the data referred to by a field of the section
 
 Collective
@@ -2758,7 +2804,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetFieldSym()`, `PetscSectionSymCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetFieldSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFieldSym"))
@@ -2781,7 +2827,7 @@ end
 end 
 
 """
-	PetscSectionSetFromOptions(petsclib::PetscLibType,s::PetscSection) 
+	PetscSectionSetFromOptions(petsclib::PetscLibType, s::PetscSection) 
 sets parameters in a `PetscSection` from the options database
 
 Collective
@@ -2794,7 +2840,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetFromOptions"))
@@ -2817,7 +2863,7 @@ end
 end 
 
 """
-	PetscSectionSetIncludesConstraints(petsclib::PetscLibType,s::PetscSection, includesConstraints::PetscBool) 
+	PetscSectionSetIncludesConstraints(petsclib::PetscLibType, s::PetscSection, includesConstraints::PetscBool) 
 Sets the flag indicating if constrained dofs are to be included when computing offsets
 
 Not Collective
@@ -2828,7 +2874,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetIncludesConstraints()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetIncludesConstraints()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetIncludesConstraints"))
@@ -2851,7 +2897,7 @@ end
 end 
 
 """
-	PetscSectionSetNumFields(petsclib::PetscLibType,s::PetscSection, numFields::PetscInt) 
+	PetscSectionSetNumFields(petsclib::PetscLibType, s::PetscSection, numFields::PetscInt) 
 Sets the number of fields in a `PetscSection`
 
 Not Collective
@@ -2862,7 +2908,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetNumFields()`, `PetscSectionSetChart()`, `PetscSectionReset()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetNumFields()`, `PetscSectionSetChart()`, `PetscSectionReset()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetNumFields"))
@@ -2885,7 +2931,7 @@ end
 end 
 
 """
-	PetscSectionSetOffset(petsclib::PetscLibType,s::PetscSection, point::PetscInt, offset::PetscInt) 
+	PetscSectionSetOffset(petsclib::PetscLibType, s::PetscSection, point::PetscInt, offset::PetscInt) 
 Set the offset into an array or `Vec` for the dof associated with the given point.
 
 Not Collective
@@ -2897,7 +2943,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSectionCreate()`, `PetscSectionSetUp()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetOffset"))
@@ -2920,8 +2966,8 @@ end
 end 
 
 """
-	PetscSectionSetPermutation(petsclib::PetscLibType,s::PetscSection, perm::AbstractIS) 
-Sets a permutation of the chart for this section, [0, `pEnd`
+	PetscSectionSetPermutation(petsclib::PetscLibType, s::PetscSection, perm::AbstractIS) 
+Sets a permutation of the chart for this section, [0, `pEnd` - `pStart`), which determines the order to store the `PetscSection` information
 
 Not Collective
 
@@ -2931,7 +2977,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetUp()`, `PetscSectionGetPermutation()`, `PetscSectionPermute()`, `PetscSectionCreate()`
+See also: [](sec_scatter), `IS`, `PetscSection`, `PetscSectionSetUp()`, `PetscSectionGetPermutation()`, `PetscSectionPermute()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetPermutation"))
@@ -2954,7 +3000,7 @@ end
 end 
 
 """
-	PetscSectionSetPointMajor(petsclib::PetscLibType,s::PetscSection, pm::PetscBool) 
+	PetscSectionSetPointMajor(petsclib::PetscLibType, s::PetscSection, pm::PetscBool) 
 Sets the flag for dof ordering, `PETSC_TRUE` for point major, otherwise it will be field major
 
 Not Collective
@@ -2965,7 +3011,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetPointMajor()`, `PetscSectionSetPermutation()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionGetPointMajor()`, `PetscSectionSetPermutation()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetPointMajor"))
@@ -2988,7 +3034,7 @@ end
 end 
 
 """
-	PetscSectionSetSym(petsclib::PetscLibType,section::PetscSection, sym::PetscSectionSym) 
+	PetscSectionSetSym(petsclib::PetscLibType, section::PetscSection, sym::PetscSectionSym) 
 Set the symmetries for the data referred to by the section
 
 Collective
@@ -2999,7 +3045,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetSym()`, `PetscSectionSymCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetSym()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetSym"))
@@ -3022,7 +3068,7 @@ end
 end 
 
 """
-	PetscSectionSetUp(petsclib::PetscLibType,s::PetscSection) 
+	PetscSectionSetUp(petsclib::PetscLibType, s::PetscSection) 
 Calculate offsets based upon the number of degrees of freedom for each point in preparation for use of the `PetscSection`
 
 Not Collective
@@ -3032,7 +3078,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionSetPermutation()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionSetPermutation()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetUp"))
@@ -3055,7 +3101,7 @@ end
 end 
 
 """
-	PetscSectionSetUpBC(petsclib::PetscLibType,s::PetscSection) 
+	PetscSectionSetUpBC(petsclib::PetscLibType, s::PetscSection) 
 Setup the subsections describing boundary conditions.
 
 Not Collective
@@ -3065,7 +3111,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetUp()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSetUp()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetUpBC"))
@@ -3088,7 +3134,7 @@ end
 end 
 
 """
-	PetscSectionSetUseFieldOffsets(petsclib::PetscLibType,s::PetscSection, flg::PetscBool) 
+	PetscSectionSetUseFieldOffsets(petsclib::PetscLibType, s::PetscSection, flg::PetscBool) 
 Set the flag to use field offsets directly in a global section, rather than just the point offset
 
 Not Collective
@@ -3099,7 +3145,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetUseFieldOffsets()`, `PetscSectionSetChart()`, `PetscSectionCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionGetUseFieldOffsets()`, `PetscSectionSetChart()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSetUseFieldOffsets"))
@@ -3122,7 +3168,7 @@ end
 end 
 
 """
-	PetscSectionSymCopy(petsclib::PetscLibType,sym::PetscSectionSym, nsym::PetscSectionSym) 
+	PetscSectionSymCopy(petsclib::PetscLibType, sym::PetscSectionSym, nsym::PetscSectionSym) 
 Copy the symmetries, assuming that the point structure is compatible
 
 Not Collective
@@ -3135,7 +3181,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymCopy"))
@@ -3158,7 +3204,7 @@ end
 end 
 
 """
-	sym::PetscSectionSym = PetscSectionSymCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	sym::PetscSectionSym = PetscSectionSymCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `PetscSectionSym` object.
 
 Collective
@@ -3171,7 +3217,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSym`, `PetscSectionSymDestroy()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionSym`, `PetscSectionSymDestroy()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymCreate"))
@@ -3196,7 +3242,7 @@ end
 end 
 
 """
-	sym::PetscSectionSym = PetscSectionSymCreateLabel(petsclib::PetscLibType,comm::MPI_Comm, label::DMLabel) 
+	sym::PetscSectionSym = PetscSectionSymCreateLabel(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel) 
 Create a section symmetry that assigns one symmetry to each stratum of a label
 
 Collective
@@ -3210,7 +3256,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
+See also: `DMLabel`, `DM`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
 
 # External Links
 $(_doc_external("DMLabel/PetscSectionSymCreateLabel"))
@@ -3235,7 +3281,7 @@ end
 end 
 
 """
-	PetscSectionSymDestroy(petsclib::PetscLibType,sym::Union{PetscSectionSym, Ref{PetscSectionSym}}) 
+	PetscSectionSymDestroy(petsclib::PetscLibType, sym::Union{PetscSectionSym, Ref{PetscSectionSym}}) 
 Destroys a section symmetry.
 
 Collective
@@ -3245,7 +3291,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymDestroy"))
@@ -3269,7 +3315,7 @@ end
 end 
 
 """
-	dsym::PetscSectionSym = PetscSectionSymDistribute(petsclib::PetscLibType,sym::PetscSectionSym, migrationSF::PetscSF) 
+	dsym::PetscSectionSym = PetscSectionSymDistribute(petsclib::PetscLibType, sym::PetscSectionSym, migrationSF::PetscSF) 
 Distribute the symmetries in accordance with the input `PetscSF`
 
 Collective
@@ -3283,7 +3329,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetSym()`, `PetscSectionSymLabelSetStratum()`, `PetscSectionGetPointSyms()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymDistribute"))
@@ -3308,7 +3354,7 @@ end
 end 
 
 """
-	type::PetscSectionSymType = PetscSectionSymGetType(petsclib::PetscLibType,sym::PetscSectionSym) 
+	type::PetscSectionSymType = PetscSectionSymGetType(petsclib::PetscLibType, sym::PetscSectionSym) 
 Gets the section symmetry type name (as a string) from the `PetscSectionSym`.
 
 Not Collective
@@ -3321,7 +3367,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymSetType()`, `PetscSectionSymCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymSetType()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymGetType"))
@@ -3346,7 +3392,7 @@ end
 end 
 
 """
-	size::PetscInt,minOrient::PetscInt,maxOrient::PetscInt,perms::Ptr{PetscInt},rots::Ptr{PetscScalar} = PetscSectionSymLabelGetStratum(petsclib::PetscLibType,sym::PetscSectionSym, stratum::PetscInt) 
+	size::PetscInt,minOrient::PetscInt,maxOrient::PetscInt,perms::Ptr{PetscInt},rots::Ptr{PetscScalar} = PetscSectionSymLabelGetStratum(petsclib::PetscLibType, sym::PetscSectionSym, stratum::PetscInt) 
 get the symmetries for the orientations of a stratum
 
 Logically Collective
@@ -3364,7 +3410,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `PetscSectionSymLabelSetStratum()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreateLabel()`
+See also: `DMLabel`, `DM`, `PetscSectionSymLabelSetStratum()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreateLabel()`
 
 # External Links
 $(_doc_external("DMLabel/PetscSectionSymLabelGetStratum"))
@@ -3397,7 +3443,7 @@ end
 end 
 
 """
-	PetscSectionSymLabelSetLabel(petsclib::PetscLibType,sym::PetscSectionSym, label::DMLabel) 
+	PetscSectionSymLabelSetLabel(petsclib::PetscLibType, sym::PetscSectionSym, label::DMLabel) 
 set the label whose strata will define the points that receive symmetries
 
 Logically
@@ -3408,7 +3454,7 @@ Input Parameters:
 
 Level: developer:
 
--seealso: `DMLabel`, `DM`, `PetscSectionSymLabelSetStratum()`, `PetscSectionSymCreateLabel()`, `PetscSectionGetPointSyms()`
+See also: `DMLabel`, `DM`, `PetscSectionSymLabelSetStratum()`, `PetscSectionSymCreateLabel()`, `PetscSectionGetPointSyms()`
 
 # External Links
 $(_doc_external("DMLabel/PetscSectionSymLabelSetLabel"))
@@ -3431,7 +3477,7 @@ end
 end 
 
 """
-	PetscSectionSymLabelSetStratum(petsclib::PetscLibType,sym::PetscSectionSym, stratum::PetscInt, size::PetscInt, minOrient::PetscInt, maxOrient::PetscInt, mode::PetscCopyMode, perms::PetscInt, rots::PetscScalar) 
+	PetscSectionSymLabelSetStratum(petsclib::PetscLibType, sym::PetscSectionSym, stratum::PetscInt, size::PetscInt, minOrient::PetscInt, maxOrient::PetscInt, mode::PetscCopyMode, perms::PetscInt, rots::PetscScalar) 
 set the symmetries for the orientations of a stratum
 
 Logically
@@ -3448,7 +3494,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMLabel`, `DM`, `PetscSectionSymLabelGetStratum()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreateLabel()`
+See also: `DMLabel`, `DM`, `PetscSectionSymLabelGetStratum()`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `PetscSectionGetPointSyms()`, `PetscSectionSymCreateLabel()`
 
 # External Links
 $(_doc_external("DMLabel/PetscSectionSymLabelSetStratum"))
@@ -3471,7 +3517,7 @@ end
 end 
 
 """
-	PetscSectionSymRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscSectionSymRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Registers a new section symmetry implementation
 
 Not Collective, No Fortran Support
@@ -3482,7 +3528,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymCreate()`, `PetscSectionSymSetType()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymCreate()`, `PetscSectionSymSetType()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymRegister"))
@@ -3505,7 +3551,7 @@ end
 end 
 
 """
-	PetscSectionSymSetType(petsclib::PetscLibType,sym::PetscSectionSym, method::PetscSectionSymType) 
+	PetscSectionSymSetType(petsclib::PetscLibType, sym::PetscSectionSym, method::PetscSectionSymType) 
 Builds a `PetscSectionSym`, for a particular implementation.
 
 Collective
@@ -3516,7 +3562,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymGetType()`, `PetscSectionSymCreate()`
+See also: [PetscSection](ch_petscsection), `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionSymGetType()`, `PetscSectionSymCreate()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymSetType"))
@@ -3539,7 +3585,7 @@ end
 end 
 
 """
-	PetscSectionSymView(petsclib::PetscLibType,sym::PetscSectionSym, viewer::PetscViewer) 
+	PetscSectionSymView(petsclib::PetscLibType, sym::PetscSectionSym, viewer::PetscViewer) 
 Displays a section symmetry
 
 Collective
@@ -3550,7 +3596,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSectionSym`, `PetscViewer`, `PetscViewerASCIIOpen()`
+See also: `PetscSectionSym`, `PetscViewer`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionSymView"))
@@ -3573,7 +3619,7 @@ end
 end 
 
 """
-	PetscSectionVecNorm(petsclib::PetscLibType,s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType, val::Vector{PetscReal}) 
+	PetscSectionVecNorm(petsclib::PetscLibType, s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType, val::Vector{PetscReal}) 
 Computes the vector norm of each field
 
 Input Parameters:
@@ -3587,7 +3633,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `VecNorm()`, `PetscSectionCreate()`
+See also: `VecNorm()`, `PetscSectionCreate()`
 
 # External Links
 $(_doc_external("Vec/PetscSectionVecNorm"))
@@ -3610,7 +3656,7 @@ end
 end 
 
 """
-	PetscSectionVecView(petsclib::PetscLibType,s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer) 
+	PetscSectionVecView(petsclib::PetscLibType, s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer) 
 View a vector, using the section to structure the values
 
 Collective
@@ -3622,7 +3668,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSection`, `PetscViewer`, `PetscSectionCreate()`, `VecSetValuesSection()`, `PetscSectionArrayView()`
+See also: `PetscSection`, `PetscViewer`, `PetscSectionCreate()`, `VecSetValuesSection()`, `PetscSectionArrayView()`
 
 # External Links
 $(_doc_external("Vec/PetscSectionVecView"))
@@ -3645,7 +3691,7 @@ end
 end 
 
 """
-	PetscSectionView(petsclib::PetscLibType,s::PetscSection, viewer::PetscViewer) 
+	PetscSectionView(petsclib::PetscLibType, s::PetscSection, viewer::PetscViewer) 
 Views a `PetscSection`
 
 Collective
@@ -3656,7 +3702,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionLoad()`, `PetscViewer`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionCreate()`, `PetscSectionDestroy()`, `PetscSectionLoad()`, `PetscViewer`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionView"))
@@ -3679,7 +3725,7 @@ end
 end 
 
 """
-	PetscSectionViewFromOptions(petsclib::PetscLibType,A::PetscSection, obj, name::String) 
+	PetscSectionViewFromOptions(petsclib::PetscLibType, A::PetscSection, obj, name::String) 
 View the `PetscSection` based on values in the options database
 
 Collective
@@ -3694,7 +3740,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionView`, `PetscObjectViewFromOptions()`, `PetscSectionCreate()`, `PetscSectionView()`
+See also: [PetscSection](ch_petscsection), `PetscSection`, `PetscSectionView`, `PetscObjectViewFromOptions()`, `PetscSectionCreate()`, `PetscSectionView()`
 
 # External Links
 $(_doc_external("PetscSection/PetscSectionViewFromOptions"))

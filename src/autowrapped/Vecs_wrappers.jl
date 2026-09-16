@@ -1,6 +1,6 @@
 """
-	VecSFischer(petsclib::PetscLibType,X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, mu::PetscReal, FB::AbstractPetscVec) 
-Evaluates the Smoothed Fischer
+	VecSFischer(petsclib::PetscLibType, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, mu::PetscReal, FB::AbstractPetscVec) 
+Evaluates the Smoothed Fischer-Burmeister function for
 complementarity problems.
 
 Logically Collective
@@ -15,7 +15,7 @@ Input Parameters:
 Output Parameter:
 - `FB` - The Smoothed Fischer-Burmeister function vector
 
--seealso: `Vec`, `VecFischer()`, `MatDFischer()`, `MatDSFischer()`
+See also: `Vec`, `VecFischer()`, `MatDFischer()`, `MatDSFischer()`
 
 # External Links
 $(_doc_external("Tao/VecSFischer"))
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	VecScale(petsclib::PetscLibType,x::AbstractPetscVec, alpha::PetscScalar) 
+	VecScale(petsclib::PetscLibType, x::AbstractPetscVec, alpha::PetscScalar) 
 Scales a vector.
 
 Logically Collective
@@ -49,7 +49,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecSet()`
+See also: `Vec`, `VecSet()`
 
 # External Links
 $(_doc_external("Vec/VecScale"))
@@ -72,7 +72,7 @@ end
 end 
 
 """
-	VecScatterBegin(petsclib::PetscLibType,sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode) 
+	VecScatterBegin(petsclib::PetscLibType, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode) 
 Begins a generalized scatter from one vector to
 another. Complete the scattering phase with `VecScatterEnd()`.
 
@@ -88,7 +88,7 @@ not scattered to retains its old value; i.e. the vector is NOT first zeroed.
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `InsertMode`, `ScatterMode`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `InsertMode`, `ScatterMode`
 
 # External Links
 $(_doc_external("Vec/VecScatterBegin"))
@@ -111,7 +111,7 @@ end
 end 
 
 """
-	newsf::VecScatter = VecScatterCopy(petsclib::PetscLibType,sf::VecScatter) 
+	newsf::VecScatter = VecScatterCopy(petsclib::PetscLibType, sf::VecScatter) 
 Makes a copy of a scatter context.
 
 Collective
@@ -124,7 +124,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterCreate()`, `VecScatterDestroy()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterCreate()`, `VecScatterDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecScatterCopy"))
@@ -149,7 +149,7 @@ end
 end 
 
 """
-	newsf::VecScatter = VecScatterCreate(petsclib::PetscLibType,x::AbstractPetscVec, ix::AbstractIS, y::AbstractPetscVec, iy::AbstractIS) 
+	newsf::VecScatter = VecScatterCreate(petsclib::PetscLibType, x::AbstractPetscVec, ix::AbstractIS, y::AbstractPetscVec, iy::AbstractIS) 
 Creates a vector scatter `VecScatter` context that is used to communicate entries between two vectors `Vec`
 
 Collective
@@ -171,7 +171,7 @@ eliminates the chance for overlap of computation and communication
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterDestroy()`, `VecScatterCreateToAll()`, `VecScatterCreateToZero()`, `PetscSFCreate()`,
+See also: [](sec_scatter), `VecScatter`, `VecScatterDestroy()`, `VecScatterCreateToAll()`, `VecScatterCreateToZero()`, `PetscSFCreate()`,
 `VecScatterType`, `InsertMode`, `ScatterMode`, `VecScatterBegin()`, `VecScatterEnd()`
 
 # External Links
@@ -197,7 +197,7 @@ end
 end 
 
 """
-	ctx::VecScatter,vout::PetscVec = VecScatterCreateToAll(petsclib::PetscLibType,vin::AbstractPetscVec) 
+	ctx::VecScatter,vout::PetscVec = VecScatterCreateToAll(petsclib::PetscLibType, vin::AbstractPetscVec) 
 Creates a vector and a scatter context that copies all
 vector values to each processor
 
@@ -212,7 +212,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToZero()`, `VecScatterBegin()`, `VecScatterEnd()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToZero()`, `VecScatterBegin()`, `VecScatterEnd()`
 
 # External Links
 $(_doc_external("Vec/VecScatterCreateToAll"))
@@ -239,7 +239,7 @@ end
 end 
 
 """
-	ctx::VecScatter,vout::PetscVec = VecScatterCreateToZero(petsclib::PetscLibType,vin::AbstractPetscVec) 
+	ctx::VecScatter,vout::PetscVec = VecScatterCreateToZero(petsclib::PetscLibType, vin::AbstractPetscVec) 
 Creates an output vector and a scatter context used to
 copy all vector values into the output vector on the zeroth processor
 
@@ -255,7 +255,7 @@ of length zero on all other processors
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToAll()`, `VecScatterBegin()`, `VecScatterEnd()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCreateToAll()`, `VecScatterBegin()`, `VecScatterEnd()`
 
 # External Links
 $(_doc_external("Vec/VecScatterCreateToZero"))
@@ -282,7 +282,7 @@ end
 end 
 
 """
-	VecScatterDestroy(petsclib::PetscLibType,sf::Union{VecScatter, Ref{VecScatter}}) 
+	VecScatterDestroy(petsclib::PetscLibType, sf::Union{VecScatter, Ref{VecScatter}}) 
 Destroys a scatter context created by `VecScatterCreate()`
 
 Collective
@@ -292,7 +292,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
 
 # External Links
 $(_doc_external("Vec/VecScatterDestroy"))
@@ -316,7 +316,7 @@ end
 end 
 
 """
-	VecScatterEnd(petsclib::PetscLibType,sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode) 
+	VecScatterEnd(petsclib::PetscLibType, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode) 
 Ends a generalized scatter from one vector to another. Call
 after first calling `VecScatterBegin()`.
 
@@ -331,7 +331,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterBegin()`, `VecScatterCreate()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterBegin()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterEnd"))
@@ -354,7 +354,7 @@ end
 end 
 
 """
-	VecScatterFFTWToPetsc(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
+	VecScatterFFTWToPetsc(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 Converts `MATFFTW` output vector to a PETSc vector.
 
 Collective
@@ -368,7 +368,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `VecScatterPetscToFFTW()`, `MATFFTW`, `MatCreateVecsFFTW()`
+See also: `Mat`, `VecScatterPetscToFFTW()`, `MATFFTW`, `MatCreateVecsFFTW()`
 
 # External Links
 $(_doc_external("Mat/VecScatterFFTWToPetsc"))
@@ -391,7 +391,7 @@ end
 end 
 
 """
-	flg::PetscBool = VecScatterGetMerged(petsclib::PetscLibType,sf::VecScatter) 
+	flg::PetscBool = VecScatterGetMerged(petsclib::PetscLibType, sf::VecScatter) 
 Returns true if the scatter is completed in the `VecScatterBegin()`
 and the `VecScatterEnd()` does nothing
 
@@ -405,7 +405,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `VecScatterBegin()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterEnd()`, `VecScatterBegin()`
 
 # External Links
 $(_doc_external("Vec/VecScatterGetMerged"))
@@ -430,7 +430,7 @@ end
 end 
 
 """
-	type::VecScatterType = VecScatterGetType(petsclib::PetscLibType,sf::VecScatter) 
+	type::VecScatterType = VecScatterGetType(petsclib::PetscLibType, sf::VecScatter) 
 Gets the vector scatter type name (as a string) from the `VecScatter`.
 
 Not Collective
@@ -443,7 +443,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterSetType()`, `VecScatterCreate()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterSetType()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterGetType"))
@@ -468,7 +468,7 @@ end
 end 
 
 """
-	VecScatterPetscToFFTW(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
+	VecScatterPetscToFFTW(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 Copies a PETSc vector to the vector that goes into `MATFFTW` calls.
 
 Collective
@@ -482,7 +482,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MATFFTW`, `VecScatterFFTWToPetsc()`, `MatCreateVecsFFTW()`
+See also: `Mat`, `MATFFTW`, `VecScatterFFTWToPetsc()`, `MatCreateVecsFFTW()`
 
 # External Links
 $(_doc_external("Mat/VecScatterPetscToFFTW"))
@@ -505,7 +505,7 @@ end
 end 
 
 """
-	VecScatterRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	VecScatterRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new vector scatter component implementation
 
 Not Collective
@@ -516,7 +516,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecRegister()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecRegister()`
 
 # External Links
 $(_doc_external("Vec/VecScatterRegister"))
@@ -539,7 +539,7 @@ end
 end 
 
 """
-	VecScatterRemap(petsclib::PetscLibType,sf::VecScatter, tomap::Vector{PetscInt}, frommap::Vector{PetscInt}) 
+	VecScatterRemap(petsclib::PetscLibType, sf::VecScatter, tomap::Vector{PetscInt}, frommap::Vector{PetscInt}) 
 Remaps the "from" and "to" indices in a
 vector scatter context.
 
@@ -552,7 +552,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterRemap"))
@@ -575,7 +575,7 @@ end
 end 
 
 """
-	VecScatterSetFromOptions(petsclib::PetscLibType,sf::VecScatter) 
+	VecScatterSetFromOptions(petsclib::PetscLibType, sf::VecScatter) 
 Configures the vector scatter from values in the options database.
 
 Collective
@@ -583,7 +583,7 @@ Collective
 Input Parameter:
 - `sf` - The vector scatter
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterDestroy()`, `VecScatterSetUp()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterDestroy()`, `VecScatterSetUp()`
 
 # External Links
 $(_doc_external("Vec/VecScatterSetFromOptions"))
@@ -606,7 +606,7 @@ end
 end 
 
 """
-	VecScatterSetType(petsclib::PetscLibType,sf::VecScatter, type::VecScatterType) 
+	VecScatterSetType(petsclib::PetscLibType, sf::VecScatter, type::VecScatterType) 
 Builds a vector scatter, for a particular vector scatter implementation.
 
 Collective
@@ -620,7 +620,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterGetType()`, `VecScatterCreate()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterType`, `VecScatterGetType()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterSetType"))
@@ -643,7 +643,7 @@ end
 end 
 
 """
-	VecScatterSetUp(petsclib::PetscLibType,sf::VecScatter) 
+	VecScatterSetUp(petsclib::PetscLibType, sf::VecScatter) 
 Sets up the `VecScatter` to be able to actually scatter information between vectors
 
 Collective
@@ -653,7 +653,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterCreate()`, `VecScatterCopy()`
 
 # External Links
 $(_doc_external("Vec/VecScatterSetUp"))
@@ -676,7 +676,7 @@ end
 end 
 
 """
-	VecScatterView(petsclib::PetscLibType,sf::VecScatter, viewer::PetscViewer) 
+	VecScatterView(petsclib::PetscLibType, sf::VecScatter, viewer::PetscViewer) 
 Views a vector scatter context.
 
 Collective
@@ -687,7 +687,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `PetscViewer`, `VecScatterViewFromOptions()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
+See also: [](sec_scatter), `VecScatter`, `PetscViewer`, `VecScatterViewFromOptions()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterView"))
@@ -710,7 +710,7 @@ end
 end 
 
 """
-	VecScatterViewFromOptions(petsclib::PetscLibType,sf::VecScatter, obj, name::String) 
+	VecScatterViewFromOptions(petsclib::PetscLibType, sf::VecScatter, obj, name::String) 
 View a `VecScatter` object based on values in the options database
 
 Collective
@@ -725,7 +725,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `VecScatter`, `VecScatterView()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
+See also: [](sec_scatter), `VecScatter`, `VecScatterView()`, `PetscObjectViewFromOptions()`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecScatterViewFromOptions"))
@@ -748,7 +748,7 @@ end
 end 
 
 """
-	VecSet(petsclib::PetscLibType,x::AbstractPetscVec, alpha::PetscScalar) 
+	VecSet(petsclib::PetscLibType, x::AbstractPetscVec, alpha::PetscScalar) 
 Sets all components of a vector to a single scalar value.
 
 Logically Collective
@@ -759,7 +759,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecSetValues()`, `VecSetValuesBlocked()`, `VecSetRandom()`
+See also: `Vec`, `VecSetValues()`, `VecSetValuesBlocked()`, `VecSetRandom()`
 
 # External Links
 $(_doc_external("Vec/VecSet"))
@@ -782,7 +782,7 @@ end
 end 
 
 """
-	VecSetBindingPropagates(petsclib::PetscLibType,v::AbstractPetscVec, flg::PetscBool) 
+	VecSetBindingPropagates(petsclib::PetscLibType, v::AbstractPetscVec, flg::PetscBool) 
 Sets whether the state of being bound to the CPU for a GPU vector type propagates to child and some other associated objects
 
 Input Parameters:
@@ -791,7 +791,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `MatSetBindingPropagates()`, `VecGetBindingPropagates()`
+See also: `Vec`, `MatSetBindingPropagates()`, `VecGetBindingPropagates()`
 
 # External Links
 $(_doc_external("Vec/VecSetBindingPropagates"))
@@ -814,7 +814,7 @@ end
 end 
 
 """
-	VecSetBlockSize(petsclib::PetscLibType,v::AbstractPetscVec, bs::PetscInt) 
+	VecSetBlockSize(petsclib::PetscLibType, v::AbstractPetscVec, bs::PetscInt) 
 Sets the block size for future calls to `VecSetValuesBlocked()`
 and `VecSetValuesBlockedLocal()`.
 
@@ -826,7 +826,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecSetValuesBlocked()`, `VecSetLocalToGlobalMapping()`, `VecGetBlockSize()`
+See also: `Vec`, `VecSetValuesBlocked()`, `VecSetLocalToGlobalMapping()`, `VecGetBlockSize()`
 
 # External Links
 $(_doc_external("Vec/VecSetBlockSize"))
@@ -849,7 +849,7 @@ end
 end 
 
 """
-	VecSetDM(petsclib::PetscLibType,v::AbstractPetscVec, dm::AbstractPetscDM) 
+	VecSetDM(petsclib::PetscLibType, v::AbstractPetscVec, dm::AbstractPetscDM) 
 Sets the `DM` defining the data layout of the vector.
 
 Not Collective
@@ -860,14 +860,7 @@ Input Parameters:
 
 Level: developer
 
-Notes:
-This is rarely used, generally one uses `DMGetLocalVector()` or  `DMGetGlobalVector()` to create a vector associated with a given `DM`
-
-This is NOT the same as `DMCreateGlobalVector()` since it does not change the view methods or perform other customization, but merely sets the `DM` member.
-
-See also: 
-=== 
-`DM`, `VecGetDM()`, `DMGetLocalVector()`, `DMGetGlobalVector()`, `DMSetVecType()`
+See also: `DM`, `VecGetDM()`, `DMGetLocalVector()`, `DMGetGlobalVector()`, `DMSetVecType()`
 
 # External Links
 $(_doc_external("DM/VecSetDM"))
@@ -890,7 +883,7 @@ end
 end 
 
 """
-	VecSetErrorIfLocked(petsclib::PetscLibType,x::AbstractPetscVec, arg::PetscInt) 
+	VecSetErrorIfLocked(petsclib::PetscLibType, x::AbstractPetscVec, arg::PetscInt) 
 
 # External Links
 $(_doc_external("Vec/VecSetErrorIfLocked"))
@@ -913,7 +906,7 @@ end
 end 
 
 """
-	VecSetFromOptions(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	VecSetFromOptions(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Configures the vector from the options database.
 
 Collective
@@ -923,7 +916,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecCreate()`, `VecSetOptionsPrefix()`
+See also: `Vec`, `VecCreate()`, `VecSetOptionsPrefix()`
 
 # External Links
 $(_doc_external("Vec/VecSetFromOptions"))
@@ -946,7 +939,7 @@ end
 end 
 
 """
-	VecSetLayout(petsclib::PetscLibType,x::AbstractPetscVec, map::PetscLayout) 
+	VecSetLayout(petsclib::PetscLibType, x::AbstractPetscVec, map::PetscLayout) 
 set `PetscLayout` describing vector layout
 
 Not Collective
@@ -957,7 +950,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `PetscLayout`, `VecGetLayout()`, `VecGetSize()`, `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`
+See also: `Vec`, `PetscLayout`, `VecGetLayout()`, `VecGetSize()`, `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`
 
 # External Links
 $(_doc_external("Vec/VecSetLayout"))
@@ -980,7 +973,7 @@ end
 end 
 
 """
-	VecSetLocalToGlobalMapping(petsclib::PetscLibType,x::AbstractPetscVec, mapping::ISLocalToGlobalMapping) 
+	VecSetLocalToGlobalMapping(petsclib::PetscLibType, x::AbstractPetscVec, mapping::ISLocalToGlobalMapping) 
 Sets a local numbering to global numbering used
 by the routine `VecSetValuesLocal()` to allow users to insert vector entries
 using a local (per-processor) numbering.
@@ -993,7 +986,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`, `VecSetValuesLocal()`,
+See also: `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`, `VecSetValuesLocal()`,
 `VecGetLocalToGlobalMapping()`, `VecSetValuesBlockedLocal()`
 
 # External Links
@@ -1017,7 +1010,7 @@ end
 end 
 
 """
-	VecSetOperation(petsclib::PetscLibType,vec::AbstractPetscVec, op::VecOperation, f::Ptr{Cvoid}) 
+	VecSetOperation(petsclib::PetscLibType, vec::AbstractPetscVec, op::VecOperation, f::Ptr{Cvoid}) 
 Allows the user to override a particular vector operation.
 
 Logically Collective; No Fortran Support
@@ -1029,7 +1022,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecCreate()`, `VecGetOperation()`, `MatSetOperation()`, `MatShellSetOperation()`
+See also: `Vec`, `VecCreate()`, `VecGetOperation()`, `MatSetOperation()`, `MatShellSetOperation()`
 
 # External Links
 $(_doc_external("Vec/VecSetOperation"))
@@ -1052,7 +1045,7 @@ end
 end 
 
 """
-	VecSetOption(petsclib::PetscLibType,x::AbstractPetscVec, op::VecOption, flag::PetscBool) 
+	VecSetOption(petsclib::PetscLibType, x::AbstractPetscVec, op::VecOption, flag::PetscBool) 
 Sets an option for controlling a vector's behavior with `VecSetValues()` and related routines
 
 Collective
@@ -1064,7 +1057,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecSetValues()`, `VecOption`, `MatSetOption()`
+See also: `Vec`, `VecSetValues()`, `VecOption`, `MatSetOption()`
 
 # External Links
 $(_doc_external("Vec/VecSetOption"))
@@ -1087,7 +1080,7 @@ end
 end 
 
 """
-	VecSetOptionsPrefix(petsclib::PetscLibType,v::AbstractPetscVec, prefix::String) 
+	VecSetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec, prefix::String) 
 Sets the prefix used for searching for all
 `Vec` options in the database.
 
@@ -1099,7 +1092,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecSetFromOptions()`
+See also: `Vec`, `VecSetFromOptions()`
 
 # External Links
 $(_doc_external("Vec/VecSetOptionsPrefix"))
@@ -1122,7 +1115,7 @@ end
 end 
 
 """
-	VecSetPinnedMemoryMin(petsclib::PetscLibType,v::AbstractPetscVec, mbytes::Csize_t) 
+	VecSetPinnedMemoryMin(petsclib::PetscLibType, v::AbstractPetscVec, mbytes::Csize_t) 
 Set the minimum data size for which pinned memory will be used for host (CPU) allocations.
 
 Logically Collective
@@ -1136,7 +1129,7 @@ Options Database Key:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetPinnedMemoryMin()`
+See also: `Vec`, `VecGetPinnedMemoryMin()`
 
 # External Links
 $(_doc_external("Vec/VecSetPinnedMemoryMin"))
@@ -1159,7 +1152,7 @@ end
 end 
 
 """
-	VecSetPreallocationCOO(petsclib::PetscLibType,x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{PetscInt}) 
+	VecSetPreallocationCOO(petsclib::PetscLibType, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{PetscInt}) 
 set preallocation for a vector using a coordinate format of the entries with global indices
 
 Collective
@@ -1171,7 +1164,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecSetValuesCOO()`, `VecSetPreallocationCOOLocal()`
+See also: `Vec`, `VecSetValuesCOO()`, `VecSetPreallocationCOOLocal()`
 
 # External Links
 $(_doc_external("Vec/VecSetPreallocationCOO"))
@@ -1194,7 +1187,7 @@ end
 end 
 
 """
-	VecSetPreallocationCOOLocal(petsclib::PetscLibType,x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{PetscInt}) 
+	VecSetPreallocationCOOLocal(petsclib::PetscLibType, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{PetscInt}) 
 set preallocation for vectors using a coordinate format of the entries with local indices
 
 Collective
@@ -1206,7 +1199,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecSetPreallocationCOO()`, `VecSetValuesCOO()`
+See also: `Vec`, `VecSetPreallocationCOO()`, `VecSetValuesCOO()`
 
 # External Links
 $(_doc_external("Vec/VecSetPreallocationCOOLocal"))
@@ -1229,7 +1222,7 @@ end
 end 
 
 """
-	VecSetRandom(petsclib::PetscLibType,x::AbstractPetscVec, rctx::PetscRandom) 
+	VecSetRandom(petsclib::PetscLibType, x::AbstractPetscVec, rctx::PetscRandom) 
 Sets all components of a vector to random numbers.
 
 Logically Collective
@@ -1242,7 +1235,15 @@ Output Parameter:
 - `x` - the vector
 
 Example of Usage:
--seealso: [](ch_vectors), `Vec`, `VecSet()`, `VecSetValues()`, `PetscRandomCreate()`, `PetscRandomDestroy()`
+``
+PetscRandomCreate(PETSC_COMM_WORLD,&rctx);
+VecSetRandom(x,rctx);
+PetscRandomDestroy(&rctx);
+``
+
+Level: intermediate
+
+See also: `Vec`, `VecSet()`, `VecSetValues()`, `PetscRandomCreate()`, `PetscRandomDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecSetRandom"))
@@ -1265,7 +1266,7 @@ end
 end 
 
 """
-	VecSetRandomGaussian(petsclib::PetscLibType,v::AbstractPetscVec, rng::PetscRandom, mean::PetscReal, std_dev::PetscReal) 
+	VecSetRandomGaussian(petsclib::PetscLibType, v::AbstractPetscVec, rng::PetscRandom, mean::PetscReal, std_dev::PetscReal) 
 Fills a vector with Gaussian random values of the given mean and standard deviation.
 
 Collective
@@ -1278,7 +1279,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), [](ch_da), `PetscDA`, `PetscRandom`, `PetscRandomSetInterval()`, `VecSetRandom()`
+See also: `PetscDA`, `PetscRandom`, `PetscRandomSetInterval()`, `VecSetRandom()`
 
 # External Links
 $(_doc_external("Vec/VecSetRandomGaussian"))
@@ -1301,7 +1302,7 @@ end
 end 
 
 """
-	VecSetSizes(petsclib::PetscLibType,v::AbstractPetscVec, n::PetscInt, M_N::PetscInt) 
+	VecSetSizes(petsclib::PetscLibType, v::AbstractPetscVec, n::PetscInt, M_N::PetscInt) 
 Sets the local and global sizes, and checks to determine compatibility of the sizes
 
 Collective
@@ -1313,7 +1314,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecCreate()`, `VecCreateSeq()`, `VecCreateMPI()`, `VecGetSize()`, `PetscSplitOwnership()`, `PetscLayout`,
+See also: `Vec`, `VecCreate()`, `VecCreateSeq()`, `VecCreateMPI()`, `VecGetSize()`, `PetscSplitOwnership()`, `PetscLayout`,
 `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`, `MatSetSizes()`
 
 # External Links
@@ -1337,7 +1338,7 @@ end
 end 
 
 """
-	VecSetType(petsclib::PetscLibType,vec::AbstractPetscVec, newType::VecType) 
+	VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::VecType) 
 Builds a vector, for a particular vector implementation.
 
 Collective
@@ -1351,7 +1352,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecGetType()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`
+See also: `Vec`, `VecType`, `VecGetType()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`
 
 # External Links
 $(_doc_external("Vec/VecSetType"))
@@ -1374,7 +1375,7 @@ end
 end 
 
 """
-	VecSetUp(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecSetUp(petsclib::PetscLibType, v::AbstractPetscVec) 
 Sets up the internal vector data structures for the later use.
 
 Collective
@@ -1384,7 +1385,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecCreate()`, `VecDestroy()`
+See also: `Vec`, `VecCreate()`, `VecDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecSetUp"))
@@ -1407,7 +1408,7 @@ end
 end 
 
 """
-	VecSetValue(petsclib::PetscLibType,v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) 
+	VecSetValue(petsclib::PetscLibType, v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) 
 
 # External Links
 $(_doc_external("Vec/VecSetValue"))
@@ -1430,7 +1431,7 @@ end
 end 
 
 """
-	VecSetValueLocal(petsclib::PetscLibType,v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) 
+	VecSetValueLocal(petsclib::PetscLibType, v::AbstractPetscVec, i::PetscInt, va::PetscScalar, mode::InsertMode) 
 
 # External Links
 $(_doc_external("Vec/VecSetValueLocal"))
@@ -1453,7 +1454,7 @@ end
 end 
 
 """
-	VecSetValues(petsclib::PetscLibType,x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
+	VecSetValues(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
 Inserts or adds values into certain locations of a vector.
 
 Not Collective
@@ -1467,7 +1468,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValuesLocal()`,
+See also: `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValuesLocal()`,
 `VecSetValue()`, `VecSetValuesBlocked()`, `InsertMode`, `INSERT_VALUES`, `ADD_VALUES`, `VecGetValues()`,
 `VecOption`, `VecSetOption()`
 
@@ -1492,7 +1493,7 @@ end
 end 
 
 """
-	VecSetValuesBlocked(petsclib::PetscLibType,x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
+	VecSetValuesBlocked(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
 Inserts or adds blocks of values into certain locations of a vector.
 
 Not Collective
@@ -1506,7 +1507,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValuesBlockedLocal()`,
+See also: `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValuesBlockedLocal()`,
 `VecSetValues()`
 
 # External Links
@@ -1530,7 +1531,7 @@ end
 end 
 
 """
-	VecSetValuesBlockedLocal(petsclib::PetscLibType,x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
+	VecSetValuesBlockedLocal(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
 Inserts or adds values into certain locations of a vector,
 using a local ordering of the nodes.
 
@@ -1545,7 +1546,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`, `VecSetValuesBlocked()`,
+See also: `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`, `VecSetValuesBlocked()`,
 `VecSetLocalToGlobalMapping()`
 
 # External Links
@@ -1569,7 +1570,7 @@ end
 end 
 
 """
-	VecSetValuesCOO(petsclib::PetscLibType,x::AbstractPetscVec, coo_v::Vector{PetscScalar}, imode::InsertMode) 
+	VecSetValuesCOO(petsclib::PetscLibType, x::AbstractPetscVec, coo_v::Vector{PetscScalar}, imode::InsertMode) 
 set values at once in a vector preallocated using `VecSetPreallocationCOO()`
 
 Collective
@@ -1581,7 +1582,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecSetPreallocationCOO()`, `VecSetPreallocationCOOLocal()`, `VecSetValues()`
+See also: `Vec`, `VecSetPreallocationCOO()`, `VecSetPreallocationCOOLocal()`, `VecSetValues()`
 
 # External Links
 $(_doc_external("Vec/VecSetValuesCOO"))
@@ -1604,7 +1605,7 @@ end
 end 
 
 """
-	VecSetValuesLocal(petsclib::PetscLibType,x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
+	VecSetValuesLocal(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) 
 Inserts or adds values into certain locations of a vector,
 using a local ordering of the nodes.
 
@@ -1619,7 +1620,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`, `VecSetLocalToGlobalMapping()`,
+See also: `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`, `VecSetLocalToGlobalMapping()`,
 `VecSetValuesBlockedLocal()`
 
 # External Links
@@ -1643,7 +1644,7 @@ end
 end 
 
 """
-	VecSetValuesSection(petsclib::PetscLibType,v::AbstractPetscVec, s::PetscSection, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
+	VecSetValuesSection(petsclib::PetscLibType, v::AbstractPetscVec, s::PetscSection, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
 Sets all the values associated with a given point, according to the section, in the given `Vec`
 
 Not Collective
@@ -1657,7 +1658,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscSection`, `PetscSectionCreate()`, `VecGetValuesSection()`
+See also: `PetscSection`, `PetscSectionCreate()`, `VecGetValuesSection()`
 
 # External Links
 $(_doc_external("Vec/VecSetValuesSection"))
@@ -1680,7 +1681,7 @@ end
 end 
 
 """
-	VecShift(petsclib::PetscLibType,v::AbstractPetscVec, shift::PetscScalar) 
+	VecShift(petsclib::PetscLibType, v::AbstractPetscVec, shift::PetscScalar) 
 Shifts all of the components of a vector by computing
 `x[i] = x[i] + shift`.
 
@@ -1692,7 +1693,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `Vec`, `VecISShift()`
+See also: `Vec`, `VecISShift()`
 
 # External Links
 $(_doc_external("Vec/VecShift"))
@@ -1715,7 +1716,7 @@ end
 end 
 
 """
-	VecSqrtAbs(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecSqrtAbs(petsclib::PetscLibType, v::AbstractPetscVec) 
 Replaces each component of a vector by the square root of its magnitude.
 
 Not Collective
@@ -1725,7 +1726,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `Vec`, `VecLog()`, `VecExp()`, `VecReciprocal()`, `VecAbs()`
+See also: `Vec`, `VecLog()`, `VecExp()`, `VecReciprocal()`, `VecAbs()`
 
 # External Links
 $(_doc_external("Vec/VecSqrtAbs"))
@@ -1748,7 +1749,7 @@ end
 end 
 
 """
-	nstash::PetscInt,reallocs::PetscInt,bnstash::PetscInt,breallocs::PetscInt = VecStashGetInfo(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	nstash::PetscInt,reallocs::PetscInt,bnstash::PetscInt,breallocs::PetscInt = VecStashGetInfo(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Gets how many values are currently in the vector stash, i.e. need
 to be communicated to other processors during the `VecAssemblyBegin()`/`VecAssemblyEnd()` process
 
@@ -1765,7 +1766,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecStashSetInitialSize()`, `VecStashView()`
+See also: `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecStashSetInitialSize()`, `VecStashView()`
 
 # External Links
 $(_doc_external("Vec/VecStashGetInfo"))
@@ -1796,8 +1797,8 @@ end
 end 
 
 """
-	VecStashSetInitialSize(petsclib::PetscLibType,vec::AbstractPetscVec, size::PetscInt, bsize::PetscInt) 
-sets the sizes of the vec
+	VecStashSetInitialSize(petsclib::PetscLibType, vec::AbstractPetscVec, size::PetscInt, bsize::PetscInt) 
+sets the sizes of the vec-stash, that is
 used during the assembly process to store values that belong to
 other processors.
 
@@ -1814,7 +1815,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecSetBlockSize()`, `VecSetValues()`, `VecSetValuesBlocked()`, `VecStashView()`
+See also: `Vec`, `VecSetBlockSize()`, `VecSetValues()`, `VecSetValuesBlocked()`, `VecStashView()`
 
 # External Links
 $(_doc_external("Vec/VecStashSetInitialSize"))
@@ -1837,7 +1838,7 @@ end
 end 
 
 """
-	VecStashView(petsclib::PetscLibType,v::AbstractPetscVec, viewer::PetscViewer) 
+	VecStashView(petsclib::PetscLibType, v::AbstractPetscVec, viewer::PetscViewer) 
 Prints the entries in the vector stash and block stash.
 
 Collective
@@ -1848,7 +1849,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecSetBlockSize()`, `VecSetValues()`, `VecSetValuesBlocked()`
+See also: `Vec`, `VecSetBlockSize()`, `VecSetValues()`, `VecSetValuesBlocked()`
 
 # External Links
 $(_doc_external("Vec/VecStashView"))
@@ -1871,7 +1872,7 @@ end
 end 
 
 """
-	VecStashViewFromOptions(petsclib::PetscLibType,obj::AbstractPetscVec, bobj, name::String) 
+	VecStashViewFromOptions(petsclib::PetscLibType, obj::AbstractPetscVec, bobj, name::String) 
 Processes command line options to determine if/how a `VecStash` object is to be viewed.
 
 Collective
@@ -1886,7 +1887,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecStashSetInitialSize()`
+See also: `Vec`, `VecStashSetInitialSize()`
 
 # External Links
 $(_doc_external("Vec/VecStashViewFromOptions"))
@@ -1909,7 +1910,7 @@ end
 end 
 
 """
-	boundmin::PetscReal,wolfemin::PetscReal,boundmax::PetscReal = VecStepBoundInfo(petsclib::PetscLibType,X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec) 
+	boundmin::PetscReal,wolfemin::PetscReal,boundmax::PetscReal = VecStepBoundInfo(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec) 
 See below
 
 Collective
@@ -1927,7 +1928,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecStepBoundInfo"))
@@ -1956,7 +1957,7 @@ end
 end 
 
 """
-	step::PetscReal = VecStepMax(petsclib::PetscLibType,X::AbstractPetscVec, DX::AbstractPetscVec) 
+	step::PetscReal = VecStepMax(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec) 
 Returns the largest value so that x[i] + step*DX[i] >= 0 for all i
 
 Collective
@@ -1970,7 +1971,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecStepMax"))
@@ -1995,7 +1996,7 @@ end
 end 
 
 """
-	stepmax::PetscReal = VecStepMaxBounded(petsclib::PetscLibType,X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec) 
+	stepmax::PetscReal = VecStepMaxBounded(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec) 
 See below
 
 Collective
@@ -2011,7 +2012,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecStepMaxBounded"))
@@ -2036,8 +2037,8 @@ end
 end 
 
 """
-	VecStrideGather(petsclib::PetscLibType,v::AbstractPetscVec, start::PetscInt, s::AbstractPetscVec, addv::InsertMode) 
-Gathers a single component from a multi
+	VecStrideGather(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, s::AbstractPetscVec, addv::InsertMode) 
+Gathers a single component from a multi-component vector into
 another vector.
 
 Collective
@@ -2052,7 +2053,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
+See also: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
 `VecStrideScatterAll()`
 
 # External Links
@@ -2076,8 +2077,8 @@ end
 end 
 
 """
-	VecStrideGatherAll(petsclib::PetscLibType,v::AbstractPetscVec, s::Vector{<:AbstractPetscVec}, addv::InsertMode) 
-Gathers all the single components from a multi
+	VecStrideGatherAll(petsclib::PetscLibType, v::AbstractPetscVec, s::Vector{<:AbstractPetscVec}, addv::InsertMode) 
+Gathers all the single components from a multi-component vector into
 separate vectors.
 
 Collective
@@ -2091,7 +2092,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGather()`,
+See also: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGather()`,
 `VecStrideScatterAll()`
 
 # External Links
@@ -2115,7 +2116,7 @@ end
 end 
 
 """
-	idex::PetscInt,nrm::PetscReal = VecStrideMax(petsclib::PetscLibType,v::AbstractPetscVec, start::PetscInt) 
+	idex::PetscInt,nrm::PetscReal = VecStrideMax(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt) 
 Computes the maximum of subvector of a vector defined
 by a starting point and a stride and optionally its location.
 
@@ -2131,7 +2132,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `Vec`, `VecMax()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`
+See also: `Vec`, `VecMax()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`
 
 # External Links
 $(_doc_external("Vec/VecStrideMax"))
@@ -2158,7 +2159,7 @@ end
 end 
 
 """
-	VecStrideMaxAll(petsclib::PetscLibType,v::AbstractPetscVec, idex::Vector{PetscInt}, nrm::Vector{PetscReal}) 
+	VecStrideMaxAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::Vector{PetscInt}, nrm::Vector{PetscReal}) 
 Computes the maximums of subvectors of a vector defined
 by a starting point and a stride and optionally its location.
 
@@ -2174,7 +2175,7 @@ if you need this, send mail to petsc-maint@mcs.anl.gov to request it)
 
 Level: advanced
 
--seealso: `Vec`, `VecMax()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`
+See also: `Vec`, `VecMax()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`
 
 # External Links
 $(_doc_external("Vec/VecStrideMaxAll"))
@@ -2197,7 +2198,7 @@ end
 end 
 
 """
-	idex::PetscInt,nrm::PetscReal = VecStrideMin(petsclib::PetscLibType,v::AbstractPetscVec, start::PetscInt) 
+	idex::PetscInt,nrm::PetscReal = VecStrideMin(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt) 
 Computes the minimum of subvector of a vector defined
 by a starting point and a stride and optionally its location.
 
@@ -2213,7 +2214,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `Vec`, `VecMin()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMax()`
+See also: `Vec`, `VecMin()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideMin"))
@@ -2240,7 +2241,7 @@ end
 end 
 
 """
-	VecStrideMinAll(petsclib::PetscLibType,v::AbstractPetscVec, idex::Vector{PetscInt}, nrm::Vector{PetscReal}) 
+	VecStrideMinAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::Vector{PetscInt}, nrm::Vector{PetscReal}) 
 Computes the minimum of subvector of a vector defined
 by a starting point and a stride and optionally its location.
 
@@ -2256,7 +2257,7 @@ if you need this, send mail to petsc-maint@mcs.anl.gov to request it)
 
 Level: advanced
 
--seealso: `Vec`, `VecMin()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMax()`
+See also: `Vec`, `VecMin()`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideMinAll"))
@@ -2279,7 +2280,7 @@ end
 end 
 
 """
-	nrm::PetscReal = VecStrideNorm(petsclib::PetscLibType,v::AbstractPetscVec, start::PetscInt, ntype::NormType) 
+	nrm::PetscReal = VecStrideNorm(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, ntype::NormType) 
 Computes the norm of subvector of a vector defined
 by a starting point and a stride.
 
@@ -2295,7 +2296,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
+See also: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideNorm"))
@@ -2320,7 +2321,7 @@ end
 end 
 
 """
-	VecStrideNormAll(petsclib::PetscLibType,v::AbstractPetscVec, ntype::NormType, nrm::Vector{PetscReal}) 
+	VecStrideNormAll(petsclib::PetscLibType, v::AbstractPetscVec, ntype::NormType, nrm::Vector{PetscReal}) 
 Computes the norms of subvectors of a vector defined
 by a starting point and a stride.
 
@@ -2335,7 +2336,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
+See also: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideNormAll"))
@@ -2358,7 +2359,7 @@ end
 end 
 
 """
-	VecStrideScale(petsclib::PetscLibType,v::AbstractPetscVec, start::PetscInt, scale::PetscScalar) 
+	VecStrideScale(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, scale::PetscScalar) 
 Scales a subvector of a vector defined
 by a starting point and a stride.
 
@@ -2371,7 +2372,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
+See also: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideScale"))
@@ -2394,7 +2395,7 @@ end
 end 
 
 """
-	VecStrideScaleAll(petsclib::PetscLibType,v::AbstractPetscVec, scales::Vector{PetscScalar}) 
+	VecStrideScaleAll(petsclib::PetscLibType, v::AbstractPetscVec, scales::Vector{PetscScalar}) 
 Scales the subvectors of a vector defined
 by a starting point and a stride.
 
@@ -2406,7 +2407,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `Vec`, `VecNorm()`, `VecStrideScale()`, `VecScale()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
+See also: `Vec`, `VecNorm()`, `VecStrideScale()`, `VecScale()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideScaleAll"))
@@ -2429,8 +2430,8 @@ end
 end 
 
 """
-	VecStrideScatter(petsclib::PetscLibType,s::AbstractPetscVec, start::PetscInt, v::AbstractPetscVec, addv::InsertMode) 
-Scatters a single component from a vector into a multi
+	VecStrideScatter(petsclib::PetscLibType, s::AbstractPetscVec, start::PetscInt, v::AbstractPetscVec, addv::InsertMode) 
+Scatters a single component from a vector into a multi-component vector.
 
 Collective
 
@@ -2444,7 +2445,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
+See also: `Vec`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
 `VecStrideScatterAll()`, `VecStrideSubSetScatter()`, `VecStrideSubSetGather()`
 
 # External Links
@@ -2468,7 +2469,7 @@ end
 end 
 
 """
-	VecStrideScatterAll(petsclib::PetscLibType,s::Vector{<:AbstractPetscVec}, v::AbstractPetscVec, addv::InsertMode) 
+	VecStrideScatterAll(petsclib::PetscLibType, s::Vector{<:AbstractPetscVec}, v::AbstractPetscVec, addv::InsertMode) 
 Scatters all the single components from separate vectors into
 a multi-component vector.
 
@@ -2483,7 +2484,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGather()`
+See also: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGather()`
 
 # External Links
 $(_doc_external("Vec/VecStrideScatterAll"))
@@ -2506,7 +2507,7 @@ end
 end 
 
 """
-	VecStrideSet(petsclib::PetscLibType,v::AbstractPetscVec, start::PetscInt, s::PetscScalar) 
+	VecStrideSet(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt, s::PetscScalar) 
 Sets a subvector of a vector defined
 by a starting point and a stride with a given value
 
@@ -2519,7 +2520,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideScale()`
+See also: `Vec`, `VecNorm()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideScale()`
 
 # External Links
 $(_doc_external("Vec/VecStrideSet"))
@@ -2542,8 +2543,8 @@ end
 end 
 
 """
-	VecStrideSubSetGather(petsclib::PetscLibType,v::AbstractPetscVec, nidx::PetscInt, idxv::Vector{PetscInt}, idxs::Vector{PetscInt}, s::AbstractPetscVec, addv::InsertMode) 
-Gathers a subset of components from a multi
+	VecStrideSubSetGather(petsclib::PetscLibType, v::AbstractPetscVec, nidx::PetscInt, idxv::Vector{PetscInt}, idxs::Vector{PetscInt}, s::AbstractPetscVec, addv::InsertMode) 
+Gathers a subset of components from a multi-component vector into
 another vector.
 
 Collective
@@ -2560,7 +2561,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideGather()`, `VecStrideSubSetScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
+See also: `Vec`, `VecStrideNorm()`, `VecStrideScatter()`, `VecStrideGather()`, `VecStrideSubSetScatter()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
 `VecStrideScatterAll()`
 
 # External Links
@@ -2584,8 +2585,8 @@ end
 end 
 
 """
-	VecStrideSubSetScatter(petsclib::PetscLibType,s::AbstractPetscVec, nidx::PetscInt, idxs::Vector{PetscInt}, idxv::Vector{PetscInt}, v::AbstractPetscVec, addv::InsertMode) 
-Scatters components from a vector into a subset of components of a multi
+	VecStrideSubSetScatter(petsclib::PetscLibType, s::AbstractPetscVec, nidx::PetscInt, idxs::Vector{PetscInt}, idxv::Vector{PetscInt}, v::AbstractPetscVec, addv::InsertMode) 
+Scatters components from a vector into a subset of components of a multi-component vector.
 
 Collective
 
@@ -2601,7 +2602,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideSubSetGather()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
+See also: `Vec`, `VecStrideNorm()`, `VecStrideGather()`, `VecStrideSubSetGather()`, `VecStrideMin()`, `VecStrideMax()`, `VecStrideGatherAll()`,
 `VecStrideScatterAll()`
 
 # External Links
@@ -2625,7 +2626,7 @@ end
 end 
 
 """
-	sum::PetscScalar = VecStrideSum(petsclib::PetscLibType,v::AbstractPetscVec, start::PetscInt) 
+	sum::PetscScalar = VecStrideSum(petsclib::PetscLibType, v::AbstractPetscVec, start::PetscInt) 
 Computes the sum of subvector of a vector defined
 by a starting point and a stride.
 
@@ -2640,7 +2641,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecSum()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
+See also: `Vec`, `VecSum()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideSum"))
@@ -2665,7 +2666,7 @@ end
 end 
 
 """
-	VecStrideSumAll(petsclib::PetscLibType,v::AbstractPetscVec, sums::Vector{PetscScalar}) 
+	VecStrideSumAll(petsclib::PetscLibType, v::AbstractPetscVec, sums::Vector{PetscScalar}) 
 Computes the sums of subvectors of a vector defined by a stride.
 
 Collective
@@ -2678,7 +2679,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecSum()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
+See also: `Vec`, `VecSum()`, `VecStrideGather()`, `VecStrideScatter()`, `VecStrideMin()`, `VecStrideMax()`
 
 # External Links
 $(_doc_external("Vec/VecStrideSumAll"))
@@ -2701,7 +2702,7 @@ end
 end 
 
 """
-	sum::PetscScalar = VecSum(petsclib::PetscLibType,v::AbstractPetscVec) 
+	sum::PetscScalar = VecSum(petsclib::PetscLibType, v::AbstractPetscVec) 
 Computes the sum of all the components of a vector.
 
 Collective
@@ -2714,7 +2715,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `Vec`, `VecMean()`, `VecNorm()`
+See also: `Vec`, `VecMean()`, `VecNorm()`
 
 # External Links
 $(_doc_external("Vec/VecSum"))
@@ -2739,7 +2740,7 @@ end
 end 
 
 """
-	VecSwap(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	VecSwap(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Swaps the values between two vectors, `x` and `y`.
 
 Logically Collective
@@ -2750,7 +2751,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecSet()`
+See also: `Vec`, `VecSet()`
 
 # External Links
 $(_doc_external("Vec/VecSwap"))
@@ -2773,7 +2774,7 @@ end
 end 
 
 """
-	x::Vecs = VecsCreateSeq(petsclib::PetscLibType,comm::MPI_Comm, p::PetscInt, m::PetscInt) 
+	x::Vecs = VecsCreateSeq(petsclib::PetscLibType, comm::MPI_Comm, p::PetscInt, m::PetscInt) 
 Creates a `Vecs` object holding `p` sequential `Vec`s of length `m`, all stored contiguously in a single underlying `Vec`
 
 Collective
@@ -2788,7 +2789,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vecs`, `VecsCreateSeqWithArray()`, `VecsDuplicate()`, `VecsDestroy()`, `VecCreateSeq()`
+See also: `Vecs`, `VecsCreateSeqWithArray()`, `VecsDuplicate()`, `VecsDestroy()`, `VecCreateSeq()`
 
 # External Links
 $(_doc_external("Vec/VecsCreateSeq"))
@@ -2813,8 +2814,8 @@ end
 end 
 
 """
-	a::PetscScalar,x::Vecs = VecsCreateSeqWithArray(petsclib::PetscLibType,comm::MPI_Comm, p::PetscInt, m::PetscInt) 
-Creates a `Vecs` object holding `p` sequential `Vec`s of length `m` that use a user
+	a::PetscScalar,x::Vecs = VecsCreateSeqWithArray(petsclib::PetscLibType, comm::MPI_Comm, p::PetscInt, m::PetscInt) 
+Creates a `Vecs` object holding `p` sequential `Vec`s of length `m` that use a user-provided contiguous array as storage
 
 Collective
 
@@ -2829,7 +2830,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vecs`, `VecsCreateSeq()`, `VecsDuplicate()`, `VecsDestroy()`, `VecCreateSeqWithArray()`
+See also: `Vecs`, `VecsCreateSeq()`, `VecsDuplicate()`, `VecsDestroy()`, `VecCreateSeqWithArray()`
 
 # External Links
 $(_doc_external("Vec/VecsCreateSeqWithArray"))
@@ -2856,7 +2857,7 @@ end
 end 
 
 """
-	VecsDestroy(petsclib::PetscLibType,x::Vecs) 
+	VecsDestroy(petsclib::PetscLibType, x::Vecs) 
 Destroys a `Vecs` collection of vectors
 
 Collective
@@ -2866,7 +2867,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `Vecs`, `VecsCreateSeq()`, `VecsCreateSeqWithArray()`, `VecsDuplicate()`
+See also: `Vecs`, `VecsCreateSeq()`, `VecsCreateSeqWithArray()`, `VecsDuplicate()`
 
 # External Links
 $(_doc_external("Vec/VecsDestroy"))
@@ -2889,7 +2890,7 @@ end
 end 
 
 """
-	y::Vecs = VecsDuplicate(petsclib::PetscLibType,x::Vecs) 
+	y::Vecs = VecsDuplicate(petsclib::PetscLibType, x::Vecs) 
 Creates a new `Vecs` with the same size and layout as an existing `Vecs`, but does not copy the values
 
 Collective
@@ -2902,7 +2903,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vecs`, `VecsCreateSeq()`, `VecsCreateSeqWithArray()`, `VecsDestroy()`, `VecDuplicate()`
+See also: `Vecs`, `VecsCreateSeq()`, `VecsCreateSeqWithArray()`, `VecsDestroy()`, `VecDuplicate()`
 
 # External Links
 $(_doc_external("Vec/VecsDuplicate"))

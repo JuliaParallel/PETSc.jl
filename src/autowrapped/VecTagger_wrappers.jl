@@ -1,5 +1,5 @@
 """
-	box::Ptr{VecTaggerBox} = VecTaggerAbsoluteGetBox(petsclib::PetscLibType,tagger::VecTagger) 
+	box::Ptr{VecTaggerBox} = VecTaggerAbsoluteGetBox(petsclib::PetscLibType, tagger::VecTagger) 
 Get the box defining the values to be tagged by the tagger.
 
 Logically Collective
@@ -12,7 +12,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerBox`, `VecTaggerAbsoluteSetBox()`
+See also: `VecTagger`, `VecTaggerBox`, `VecTaggerAbsoluteSetBox()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerAbsoluteGetBox"))
@@ -37,7 +37,7 @@ end
 end 
 
 """
-	VecTaggerAbsoluteSetBox(petsclib::PetscLibType,tagger::VecTagger, box::Vector{VecTaggerBox}) 
+	VecTaggerAbsoluteSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox}) 
 Set the box defining the values to be tagged by the tagger.
 
 Logically Collective
@@ -48,7 +48,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerBox`, `VecTaggerAbsoluteGetBox()`
+See also: `VecTagger`, `VecTaggerBox`, `VecTaggerAbsoluteGetBox()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerAbsoluteSetBox"))
@@ -71,7 +71,7 @@ end
 end 
 
 """
-	nsubs::PetscInt,subs::Ptr{VecTagger} = VecTaggerAndGetSubs(petsclib::PetscLibType,tagger::VecTagger) 
+	nsubs::PetscInt,subs::Ptr{VecTagger} = VecTaggerAndGetSubs(petsclib::PetscLibType, tagger::VecTagger) 
 Get the sub `VecTagger`s whose intersection defines the outer `VecTagger`
 
 Not Collective
@@ -85,7 +85,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerAndSetSubs()`
+See also: `VecTagger`, `VecTaggerAndSetSubs()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerAndGetSubs"))
@@ -112,7 +112,7 @@ end
 end 
 
 """
-	VecTaggerAndSetSubs(petsclib::PetscLibType,tagger::VecTagger, nsubs::PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode) 
+	VecTaggerAndSetSubs(petsclib::PetscLibType, tagger::VecTagger, nsubs::PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode) 
 Set the sub `VecTagger`s whose intersection defines the outer `VecTagger`
 
 Logically Collective
@@ -125,7 +125,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTagger`
+See also: `VecTagger`
 
 # External Links
 $(_doc_external("Vec/VecTaggerAndSetSubs"))
@@ -148,8 +148,8 @@ end
 end 
 
 """
-	box::Ptr{VecTaggerBox} = VecTaggerCDFGetBox(petsclib::PetscLibType,tagger::VecTagger) 
-Get the cumulative box (multi
+	box::Ptr{VecTaggerBox} = VecTaggerCDFGetBox(petsclib::PetscLibType, tagger::VecTagger) 
+Get the cumulative box (multi-dimensional box) defining the values to be tagged by the tagger, where cumulative boxes
 are subsets of [0,1], where 0 indicates the smallest value present in the vector and 1 indicates the largest.
 
 Logically Collective
@@ -162,7 +162,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerCDFSetBox()`, `VecTaggerBox`
+See also: `VecTagger`, `VecTaggerCDFSetBox()`, `VecTaggerBox`
 
 # External Links
 $(_doc_external("Vec/VecTaggerCDFGetBox"))
@@ -187,7 +187,7 @@ end
 end 
 
 """
-	method::VecTaggerCDFMethod = VecTaggerCDFGetMethod(petsclib::PetscLibType,tagger::VecTagger) 
+	method::VecTaggerCDFMethod = VecTaggerCDFGetMethod(petsclib::PetscLibType, tagger::VecTagger) 
 Get the method used to compute absolute boxes from CDF boxes
 
 Logically Collective
@@ -200,7 +200,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`, `VecTagger`, `VecTaggerCDFMethod`
+See also: `Vec`, `VecTagger`, `VecTaggerCDFMethod`
 
 # External Links
 $(_doc_external("Vec/VecTaggerCDFGetMethod"))
@@ -225,7 +225,7 @@ end
 end 
 
 """
-	maxit::PetscInt,rtol::PetscReal,atol::PetscReal = VecTaggerCDFIterativeGetTolerances(petsclib::PetscLibType,tagger::VecTagger) 
+	maxit::PetscInt,rtol::PetscReal,atol::PetscReal = VecTaggerCDFIterativeGetTolerances(petsclib::PetscLibType, tagger::VecTagger) 
 Get the tolerances for iterative computation of absolute boxes from CDF boxes.
 
 Logically Collective
@@ -241,7 +241,7 @@ mean, and standard deviation of the box endpoints.
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerCDFSetMethod()`
+See also: `VecTagger`, `VecTaggerCDFSetMethod()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerCDFIterativeGetTolerances"))
@@ -270,7 +270,7 @@ end
 end 
 
 """
-	VecTaggerCDFIterativeSetTolerances(petsclib::PetscLibType,tagger::VecTagger, maxit::PetscInt, rtol::PetscReal, atol::PetscReal) 
+	VecTaggerCDFIterativeSetTolerances(petsclib::PetscLibType, tagger::VecTagger, maxit::PetscInt, rtol::PetscReal, atol::PetscReal) 
 Set the tolerances for iterative computation of absolute boxes from CDF boxes.
 
 Logically Collective
@@ -284,7 +284,7 @@ and standard deviation of the box endpoints.
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerCDFSetMethod()`
+See also: `VecTagger`, `VecTaggerCDFSetMethod()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerCDFIterativeSetTolerances"))
@@ -307,7 +307,7 @@ end
 end 
 
 """
-	VecTaggerCDFSetBox(petsclib::PetscLibType,tagger::VecTagger, box::Vector{VecTaggerBox}) 
+	VecTaggerCDFSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox}) 
 Set the cumulative box defining the values to be tagged by the tagger, where cumulative boxes are subsets of [0,1], where 0 indicates the smallest value present in the vector and 1 indicates the largest.
 
 Logically Collective
@@ -318,7 +318,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerCDFGetBox()`, `VecTaggerBox`
+See also: `VecTagger`, `VecTaggerCDFGetBox()`, `VecTaggerBox`
 
 # External Links
 $(_doc_external("Vec/VecTaggerCDFSetBox"))
@@ -341,7 +341,7 @@ end
 end 
 
 """
-	VecTaggerCDFSetMethod(petsclib::PetscLibType,tagger::VecTagger, method::VecTaggerCDFMethod) 
+	VecTaggerCDFSetMethod(petsclib::PetscLibType, tagger::VecTagger, method::VecTaggerCDFMethod) 
 Set the method used to compute absolute boxes from CDF boxes
 
 Logically Collective
@@ -352,7 +352,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `Vec`, `VecTagger`, `VecTaggerCDFMethod`
+See also: `Vec`, `VecTagger`, `VecTaggerCDFMethod`
 
 # External Links
 $(_doc_external("Vec/VecTaggerCDFSetMethod"))
@@ -375,7 +375,7 @@ end
 end 
 
 """
-	numBoxes::PetscInt,boxes::Ptr{VecTaggerBox},listed::PetscBool = VecTaggerComputeBoxes(petsclib::PetscLibType,tagger::VecTagger, vec::AbstractPetscVec) 
+	numBoxes::PetscInt,boxes::Ptr{VecTaggerBox},listed::PetscBool = VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec) 
 If the tagged index set can be summarized as a list of boxes of values, returns that list, otherwise returns
 in listed `PETSC_FALSE`
 
@@ -392,7 +392,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerComputeIS()`, `VecTagger`, `VecTaggerCreate()`
+See also: `VecTaggerComputeIS()`, `VecTagger`, `VecTaggerCreate()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerComputeBoxes"))
@@ -421,7 +421,7 @@ end
 end 
 
 """
-	listed::PetscBool = VecTaggerComputeIS(petsclib::PetscLibType,tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS}) 
+	listed::PetscBool = VecTaggerComputeIS(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS}) 
 Use a `VecTagger` context to tag a set of indices based on a vector's values
 
 Collective
@@ -436,7 +436,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerComputeBoxes()`, `VecTagger`, `VecTaggerCreate()`
+See also: `VecTaggerComputeBoxes()`, `VecTagger`, `VecTaggerCreate()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerComputeIS"))
@@ -461,7 +461,7 @@ end
 end 
 
 """
-	tagger::VecTagger = VecTaggerCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	tagger::VecTagger = VecTaggerCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 create a `VecTagger` context.
 
 Collective
@@ -474,7 +474,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerSetBlockSize()`, `VecTaggerSetFromOptions()`, `VecTaggerSetUp()`, `VecTaggerComputeIS()`, `VecTaggerComputeBoxes()`, `VecTaggerDestroy()`
+See also: `VecTagger`, `VecTaggerSetBlockSize()`, `VecTaggerSetFromOptions()`, `VecTaggerSetUp()`, `VecTaggerComputeIS()`, `VecTaggerComputeBoxes()`, `VecTaggerDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerCreate"))
@@ -499,7 +499,7 @@ end
 end 
 
 """
-	VecTaggerDestroy(petsclib::PetscLibType,tagger::Union{VecTagger, Ref{VecTagger}}) 
+	VecTaggerDestroy(petsclib::PetscLibType, tagger::Union{VecTagger, Ref{VecTagger}}) 
 destroy a `VecTagger` context
 
 Collective
@@ -509,7 +509,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `VecTaggerCreate()`, `VecTaggerSetType()`, `VecTagger`
+See also: `VecTaggerCreate()`, `VecTaggerSetType()`, `VecTagger`
 
 # External Links
 $(_doc_external("Vec/VecTaggerDestroy"))
@@ -540,7 +540,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `VecTaggerInitializePackage()`
+See also: `VecTaggerInitializePackage()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerFinalizePackage"))
@@ -562,7 +562,7 @@ end
 end 
 
 """
-	blocksize::PetscInt = VecTaggerGetBlockSize(petsclib::PetscLibType,tagger::VecTagger) 
+	blocksize::PetscInt = VecTaggerGetBlockSize(petsclib::PetscLibType, tagger::VecTagger) 
 get the block size of the indices created by `VecTaggerComputeIS()`.
 
 Logically Collective
@@ -575,7 +575,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecTaggerComputeIS()`, `VecTaggerSetBlockSize()`, `VecTagger`, `VecTaggerCreate()`
+See also: `VecTaggerComputeIS()`, `VecTaggerSetBlockSize()`, `VecTagger`, `VecTaggerCreate()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerGetBlockSize"))
@@ -600,7 +600,7 @@ end
 end 
 
 """
-	invert::PetscBool = VecTaggerGetInvert(petsclib::PetscLibType,tagger::VecTagger) 
+	invert::PetscBool = VecTaggerGetInvert(petsclib::PetscLibType, tagger::VecTagger) 
 get whether the set of indices returned by `VecTaggerComputeIS()` are inverted
 
 Logically Collective
@@ -613,7 +613,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecTaggerComputeIS()`, `VecTaggerSetInvert()`, `VecTagger`, `VecTaggerCreate()`
+See also: `VecTaggerComputeIS()`, `VecTaggerSetInvert()`, `VecTagger`, `VecTaggerCreate()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerGetInvert"))
@@ -638,7 +638,7 @@ end
 end 
 
 """
-	type::VecTaggerType = VecTaggerGetType(petsclib::PetscLibType,tagger::VecTagger) 
+	type::VecTaggerType = VecTaggerGetType(petsclib::PetscLibType, tagger::VecTagger) 
 Gets the `VecTaggerType` name (as a string) from the `VecTagger`.
 
 Not Collective
@@ -651,7 +651,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecTaggerSetType()`, `VecTaggerCreate()`, `VecTaggerSetFromOptions()`, `VecTagger`, `VecTaggerType`
+See also: `VecTaggerSetType()`, `VecTaggerCreate()`, `VecTaggerSetFromOptions()`, `VecTagger`, `VecTaggerType`
 
 # External Links
 $(_doc_external("Vec/VecTaggerGetType"))
@@ -683,7 +683,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `VecTaggerFinalizePackage()`
+See also: `VecTaggerFinalizePackage()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerInitializePackage"))
@@ -705,7 +705,7 @@ end
 end 
 
 """
-	nsubs::PetscInt,subs::Ptr{VecTagger} = VecTaggerOrGetSubs(petsclib::PetscLibType,tagger::VecTagger) 
+	nsubs::PetscInt,subs::Ptr{VecTagger} = VecTaggerOrGetSubs(petsclib::PetscLibType, tagger::VecTagger) 
 Get the sub `VecTagger`s whose union defines the outer `VecTagger`
 
 Not Collective
@@ -719,7 +719,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerOrSetSubs()`
+See also: `VecTaggerOrSetSubs()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerOrGetSubs"))
@@ -746,7 +746,7 @@ end
 end 
 
 """
-	VecTaggerOrSetSubs(petsclib::PetscLibType,tagger::VecTagger, nsubs::PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode) 
+	VecTaggerOrSetSubs(petsclib::PetscLibType, tagger::VecTagger, nsubs::PetscInt, subs::Vector{VecTagger}, mode::PetscCopyMode) 
 Set the sub `VecTagger`s whose union defines the outer `VecTagger`
 
 Logically Collective
@@ -759,7 +759,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTaggetOrGetStubs()`
+See also: `VecTaggetOrGetStubs()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerOrSetSubs"))
@@ -782,7 +782,7 @@ end
 end 
 
 """
-	VecTaggerRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	VecTaggerRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds an implementation of the `VecTagger` communication protocol.
 
 Not Collective, No Fortran Support
@@ -793,7 +793,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerType`, `VecTaggerCreate()`, `VecTagger`, `VecTaggerRegisterAll()`, `VecTaggerRegisterDestroy()`
+See also: `VecTaggerType`, `VecTaggerCreate()`, `VecTagger`, `VecTaggerRegisterAll()`, `VecTaggerRegisterDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerRegister"))
@@ -823,7 +823,7 @@ Not Collective
 
 Level: advanced
 
--seealso: `VecTaggerRegisterDestroy()`
+See also: `VecTaggerRegisterDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerRegisterAll"))
@@ -845,7 +845,7 @@ end
 end 
 
 """
-	box::Ptr{VecTaggerBox} = VecTaggerRelativeGetBox(petsclib::PetscLibType,tagger::VecTagger) 
+	box::Ptr{VecTaggerBox} = VecTaggerRelativeGetBox(petsclib::PetscLibType, tagger::VecTagger) 
 Get the relative box defining the values to be tagged by the tagger, where relative boxess are subsets of [0,1] (or [0,1]+[0,1]i for complex scalars), where 0 indicates the smallest value present in the vector and 1 indicates the largest.
 
 Logically Collective
@@ -858,7 +858,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecTaggerRelativeSetBox()`
+See also: `VecTaggerRelativeSetBox()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerRelativeGetBox"))
@@ -883,7 +883,7 @@ end
 end 
 
 """
-	VecTaggerRelativeSetBox(petsclib::PetscLibType,tagger::VecTagger, box::Vector{VecTaggerBox}) 
+	VecTaggerRelativeSetBox(petsclib::PetscLibType, tagger::VecTagger, box::Vector{VecTaggerBox}) 
 Set the relative box defining the values to be tagged by the tagger, where relative boxes are subsets of [0,1] (or [0,1]+[0,1]i for complex scalars), where 0 indicates the smallest value present in the vector and 1 indicates the largest.
 
 Logically Collective
@@ -894,7 +894,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerRelativeGetBox()`
+See also: `VecTaggerRelativeGetBox()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerRelativeSetBox"))
@@ -917,7 +917,7 @@ end
 end 
 
 """
-	VecTaggerSetBlockSize(petsclib::PetscLibType,tagger::VecTagger, blocksize::PetscInt) 
+	VecTaggerSetBlockSize(petsclib::PetscLibType, tagger::VecTagger, blocksize::PetscInt) 
 set the block size of the set of indices returned by `VecTaggerComputeIS()`.
 
 Logically Collective
@@ -928,7 +928,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerComputeIS()`, `VecTaggerGetBlockSize()`, `VecSetBlockSize()`, `VecGetBlockSize()`, `VecTagger`, `VecTaggerCreate()`
+See also: `VecTaggerComputeIS()`, `VecTaggerGetBlockSize()`, `VecSetBlockSize()`, `VecGetBlockSize()`, `VecTagger`, `VecTaggerCreate()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerSetBlockSize"))
@@ -951,7 +951,7 @@ end
 end 
 
 """
-	VecTaggerSetFromOptions(petsclib::PetscLibType,tagger::VecTagger) 
+	VecTaggerSetFromOptions(petsclib::PetscLibType, tagger::VecTagger) 
 set `VecTagger` options using the options database
 
 Logically Collective
@@ -966,7 +966,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: `VecTagger`, `VecTaggerCreate()`, `VecTaggerSetUp()`
+See also: `VecTagger`, `VecTaggerCreate()`, `VecTaggerSetUp()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerSetFromOptions"))
@@ -989,7 +989,7 @@ end
 end 
 
 """
-	VecTaggerSetInvert(petsclib::PetscLibType,tagger::VecTagger, invert::PetscBool) 
+	VecTaggerSetInvert(petsclib::PetscLibType, tagger::VecTagger, invert::PetscBool) 
 If the tagged index sets are based on boxes that can be returned by `VecTaggerComputeBoxes()`,
 then this option inverts values used to compute the IS, i.e., from being in the union of the boxes to being in the
 intersection of their exteriors.
@@ -1002,7 +1002,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerComputeIS()`, `VecTaggerGetInvert()`, `VecTagger`, `VecTaggerCreate()`
+See also: `VecTaggerComputeIS()`, `VecTaggerGetInvert()`, `VecTagger`, `VecTaggerCreate()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerSetInvert"))
@@ -1025,7 +1025,7 @@ end
 end 
 
 """
-	VecTaggerSetType(petsclib::PetscLibType,tagger::VecTagger, type::VecTaggerType) 
+	VecTaggerSetType(petsclib::PetscLibType, tagger::VecTagger, type::VecTaggerType) 
 set the Vec tagger implementation
 
 Collective
@@ -1039,7 +1039,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `VecTaggerType`, `VecTaggerCreate()`, `VecTagger`
+See also: `VecTaggerType`, `VecTaggerCreate()`, `VecTagger`
 
 # External Links
 $(_doc_external("Vec/VecTaggerSetType"))
@@ -1062,7 +1062,7 @@ end
 end 
 
 """
-	VecTaggerSetUp(petsclib::PetscLibType,tagger::VecTagger) 
+	VecTaggerSetUp(petsclib::PetscLibType, tagger::VecTagger) 
 set up a `VecTagger` context
 
 Collective
@@ -1072,7 +1072,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `VecTaggerSetFromOptions()`, `VecTaggerSetType()`, `VecTagger`, `VecTaggerCreate()`
+See also: `VecTaggerSetFromOptions()`, `VecTaggerSetType()`, `VecTagger`, `VecTaggerCreate()`
 
 # External Links
 $(_doc_external("Vec/VecTaggerSetUp"))
@@ -1095,7 +1095,7 @@ end
 end 
 
 """
-	VecTaggerView(petsclib::PetscLibType,tagger::VecTagger, viewer::PetscViewer) 
+	VecTaggerView(petsclib::PetscLibType, tagger::VecTagger, viewer::PetscViewer) 
 view a `VecTagger` context
 
 Collective
@@ -1106,7 +1106,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTaggerCreate()`, `VecTagger`
+See also: `VecTaggerCreate()`, `VecTagger`
 
 # External Links
 $(_doc_external("Vec/VecTaggerView"))

@@ -1,5 +1,5 @@
 """
-	numSubelements::PetscInt,v0::Ptr{PetscReal},jac::Ptr{PetscReal},invjac::Ptr{PetscReal} = PetscFECompositeGetMapping(petsclib::PetscLibType,fem::PetscFE) 
+	numSubelements::PetscInt,v0::Ptr{PetscReal},jac::Ptr{PetscReal},invjac::Ptr{PetscReal} = PetscFECompositeGetMapping(petsclib::PetscLibType, fem::PetscFE) 
 Returns the mappings from the reference element to each subelement
 
 Not Collective
@@ -15,7 +15,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFECreate()`
+See also: `PetscFE`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFECompositeGetMapping"))
@@ -46,7 +46,7 @@ end
 end 
 
 """
-	PetscFEComputeTabulation(petsclib::PetscLibType,fem::PetscFE, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt, T::PetscTabulation) 
+	PetscFEComputeTabulation(petsclib::PetscLibType, fem::PetscFE, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt, T::PetscTabulation) 
 Tabulates the basis functions, and perhaps derivatives, at the points provided.
 
 Not Collective
@@ -63,7 +63,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`, `PetscFECreateTabulation()`
+See also: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`, `PetscFECreateTabulation()`
 
 # External Links
 $(_doc_external("FE/PetscFEComputeTabulation"))
@@ -86,7 +86,7 @@ end
 end 
 
 """
-	PetscFECopyQuadrature(petsclib::PetscLibType,sfe::PetscFE, tfe::PetscFE) 
+	PetscFECopyQuadrature(petsclib::PetscLibType, sfe::PetscFE, tfe::PetscFE) 
 Copy both volumetric and surface quadrature to a new `PetscFE`
 
 Not Collective
@@ -97,7 +97,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`, `PetscFESetFaceQuadrature()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`, `PetscFESetFaceQuadrature()`
 
 # External Links
 $(_doc_external("FE/PetscFECopyQuadrature"))
@@ -120,7 +120,7 @@ end
 end 
 
 """
-	fem::PetscFE = PetscFECreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	fem::PetscFE = PetscFECreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `PetscFE` object. The type can then be set with `PetscFESetType()`.
 
 Collective
@@ -133,7 +133,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscFEType`, `PetscFESetType()`, `PetscFECreateDefault()`, `PETSCFEGALERKIN`
+See also: `PetscFE`, `PetscFEType`, `PetscFESetType()`, `PetscFECreateDefault()`, `PETSCFEGALERKIN`
 
 # External Links
 $(_doc_external("FE/PetscFECreate"))
@@ -158,7 +158,7 @@ end
 end 
 
 """
-	dgfe::PetscFE = PetscFECreateBrokenElement(petsclib::PetscLibType,cgfe::PetscFE) 
+	dgfe::PetscFE = PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::PetscFE) 
 Create a discontinuous version of the input `PetscFE`
 
 Collective
@@ -171,7 +171,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`, `PetscFECreateLagrange()`, `PetscFECreateLagrangeByCell()`, `PetscDualSpaceLagrangeSetContinuity()`
+See also: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`, `PetscFECreateLagrange()`, `PetscFECreateLagrangeByCell()`, `PetscDualSpaceLagrangeSetContinuity()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateBrokenElement"))
@@ -196,7 +196,7 @@ end
 end 
 
 """
-	fem::PetscFE = PetscFECreateByCell(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, prefix::String, qorder::PetscInt) 
+	fem::PetscFE = PetscFECreateByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, prefix::String, qorder::PetscInt) 
 Create a `PetscFE` for basic FEM computation
 
 Collective
@@ -214,7 +214,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscFECreateDefault()`, `PetscFECreateLagrange()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`,
+See also: `PetscFE`, `PetscFECreateDefault()`, `PetscFECreateLagrange()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`,
 `PetscFESetFromOptions()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`, `DMPolytopeType`
 
 # External Links
@@ -240,7 +240,7 @@ end
 end 
 
 """
-	cgeom::PetscFEGeom = PetscFECreateCellGeometry(petsclib::PetscLibType,fe::PetscFE, quad::PetscQuadrature) 
+	cgeom::PetscFEGeom = PetscFECreateCellGeometry(petsclib::PetscLibType, fe::PetscFE, quad::PetscQuadrature) 
 Populates the arrays in a `PetscFEGeom` for a single reference cell of a `PetscFE`.
 
 Not Collective
@@ -254,7 +254,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFE`, `PetscFEGeom`, `PetscFEDestroyCellGeometry()`, `PetscFEGetQuadrature()`, `DMPlexComputeCellGeometryFEM()`
+See also: `PetscFE`, `PetscFEGeom`, `PetscFEDestroyCellGeometry()`, `PetscFEGetQuadrature()`, `DMPlexComputeCellGeometryFEM()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateCellGeometry"))
@@ -279,7 +279,7 @@ end
 end 
 
 """
-	fem::PetscFE = PetscFECreateDefault(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, prefix::String, qorder::PetscInt) 
+	fem::PetscFE = PetscFECreateDefault(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, prefix::String, qorder::PetscInt) 
 Create a `PetscFE` for basic FEM computation
 
 Collective
@@ -297,7 +297,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscFECreateLagrange()`, `PetscFECreateByCell()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`, `PetscFESetFromOptions()`,
+See also: `PetscFE`, `PetscFECreateLagrange()`, `PetscFECreateByCell()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`, `PetscFESetFromOptions()`,
 `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
@@ -323,7 +323,7 @@ end
 end 
 
 """
-	fem::PetscFE = PetscFECreateFromSpaces(petsclib::PetscLibType,P::PetscSpace, Q::PetscDualSpace, M_q::PetscQuadrature, fq::PetscQuadrature) 
+	fem::PetscFE = PetscFECreateFromSpaces(petsclib::PetscLibType, P::PetscSpace, Q::PetscDualSpace, M_q::PetscQuadrature, fq::PetscQuadrature) 
 Create a `PetscFE` from the basis and dual spaces
 
 Collective
@@ -339,7 +339,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`,
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`,
 `PetscFECreateLagrangeByCell()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
@@ -365,7 +365,7 @@ end
 end 
 
 """
-	trFE::PetscFE = PetscFECreateHeightTrace(petsclib::PetscLibType,fe::PetscFE, height::PetscInt) 
+	trFE::PetscFE = PetscFECreateHeightTrace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt) 
 Create the trace `PetscFE` for the first mesh point of the given height stratum.
 
 Not Collective
@@ -379,7 +379,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFE`, `PetscFECreatePointTrace()`, `PetscFEGetHeightSubspace()`, `DMPlexGetHeightStratum()`
+See also: `PetscFE`, `PetscFECreatePointTrace()`, `PetscFEGetHeightSubspace()`, `DMPlexGetHeightStratum()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateHeightTrace"))
@@ -404,7 +404,7 @@ end
 end 
 
 """
-	fem::PetscFE = PetscFECreateLagrange(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, k::PetscInt, qorder::PetscInt) 
+	fem::PetscFE = PetscFECreateLagrange(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, k::PetscInt, qorder::PetscInt) 
 Create a `PetscFE` for the basic Lagrange space of degree `k`
 
 Collective
@@ -422,7 +422,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscFECreateLagrangeByCell()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
+See also: `PetscFE`, `PetscFECreateLagrangeByCell()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateLagrange"))
@@ -447,7 +447,7 @@ end
 end 
 
 """
-	fem::PetscFE = PetscFECreateLagrangeByCell(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, k::PetscInt, qorder::PetscInt) 
+	fem::PetscFE = PetscFECreateLagrangeByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, k::PetscInt, qorder::PetscInt) 
 Create a `PetscFE` for the basic Lagrange space of degree `k`
 
 Collective
@@ -465,7 +465,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`,
+See also: `PetscFE`, `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`,
 `DMPolytopeType`
 
 # External Links
@@ -491,7 +491,7 @@ end
 end 
 
 """
-	T::PetscTabulation = PetscFECreateTabulation(petsclib::PetscLibType,fem::PetscFE, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) 
+	T::PetscTabulation = PetscFECreateTabulation(petsclib::PetscLibType, fem::PetscFE, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) 
 Creates a `PetscTabulation` object to hold the basis functions, and perhaps derivatives, at the points provided.
 
 Not Collective
@@ -508,7 +508,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`, `PetscFEComputeTabulation()`
+See also: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`, `PetscFEComputeTabulation()`
 
 # External Links
 $(_doc_external("FE/PetscFECreateTabulation"))
@@ -533,8 +533,8 @@ end
 end 
 
 """
-	vector_fe::PetscFE = PetscFECreateVector(petsclib::PetscLibType,scalar_fe::PetscFE, num_copies::PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool) 
-Create a vector
+	vector_fe::PetscFE = PetscFECreateVector(petsclib::PetscLibType, scalar_fe::PetscFE, num_copies::PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool) 
+Create a vector-valued `PetscFE` from multiple copies of an underlying
 `PetscFE`.
 
 Collective
@@ -560,7 +560,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`, `PETSCFEBASIC`, `PETSCFEVECTOR`
+See also: `PetscFE`, `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`, `PETSCFEBASIC`, `PETSCFEVECTOR`
 
 # External Links
 $(_doc_external("FE/PetscFECreateVector"))
@@ -585,7 +585,7 @@ end
 end 
 
 """
-	PetscFEDestroy(petsclib::PetscLibType,fem::Union{PetscFE, Ref{PetscFE}}) 
+	PetscFEDestroy(petsclib::PetscLibType, fem::Union{PetscFE, Ref{PetscFE}}) 
 Destroys a `PetscFE` object
 
 Collective
@@ -595,7 +595,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscFEView()`
+See also: `PetscFE`, `PetscFEView()`
 
 # External Links
 $(_doc_external("FE/PetscFEDestroy"))
@@ -619,7 +619,7 @@ end
 end 
 
 """
-	PetscFEDestroyCellGeometry(petsclib::PetscLibType,fe::PetscFE, cgeom::Vector{PetscFEGeom}) 
+	PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::PetscFE, cgeom::Vector{PetscFEGeom}) 
 Free the arrays inside a `PetscFEGeom` allocated by `PetscFECreateCellGeometry()`.
 
 Not Collective
@@ -630,7 +630,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscFE`, `PetscFEGeom`, `PetscFECreateCellGeometry()`
+See also: `PetscFE`, `PetscFEGeom`, `PetscFECreateCellGeometry()`
 
 # External Links
 $(_doc_external("FE/PetscFEDestroyCellGeometry"))
@@ -653,7 +653,7 @@ end
 end 
 
 """
-	efq::PetscQuadrature = PetscFEExpandFaceQuadrature(petsclib::PetscLibType,fe::PetscFE, fq::PetscQuadrature) 
+	efq::PetscQuadrature = PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature) 
 Expand a face quadrature into a cell quadrature by mapping the face
 quadrature points and weights through each face of the cell reference geometry.
 
@@ -668,7 +668,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFE`, `PetscQuadrature`, `PetscFECreateFaceQuadrature()`, `PetscFEGetQuadrature()`
+See also: `PetscFE`, `PetscQuadrature`, `PetscFECreateFaceQuadrature()`, `PetscFEGetQuadrature()`
 
 # External Links
 $(_doc_external("FE/PetscFEExpandFaceQuadrature"))
@@ -699,7 +699,7 @@ from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("DM/PetscFEFinalizePackage"))
@@ -721,7 +721,7 @@ end
 end 
 
 """
-	PetscFEGeomComplete(petsclib::PetscLibType,geom::Vector{PetscFEGeom}) 
+	PetscFEGeomComplete(petsclib::PetscLibType, geom::Vector{PetscFEGeom}) 
 Calculate derived quantities from a base geometry specification
 
 Input Parameter:
@@ -729,7 +729,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEGeom`, `PetscFEGeomCreate()`
+See also: `PetscFEGeom`, `PetscFEGeomCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGeomComplete"))
@@ -752,7 +752,7 @@ end
 end 
 
 """
-	geom::Ptr{PetscFEGeom} = PetscFEGeomCreate(petsclib::PetscLibType,quad::PetscQuadrature, numCells::PetscInt, dimEmbed::PetscInt, mode::PetscFEGeomMode) 
+	geom::Ptr{PetscFEGeom} = PetscFEGeomCreate(petsclib::PetscLibType, quad::PetscQuadrature, numCells::PetscInt, dimEmbed::PetscInt, mode::PetscFEGeomMode) 
 Create a `PetscFEGeom` object to manage geometry for a group of cells
 
 Input Parameters:
@@ -766,7 +766,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscFEGeom`, `PetscQuadrature`, `PetscFEGeomDestroy()`, `PetscFEGeomComplete()`
+See also: `PetscFEGeom`, `PetscQuadrature`, `PetscFEGeomDestroy()`, `PetscFEGeomComplete()`
 
 # External Links
 $(_doc_external("FE/PetscFEGeomCreate"))
@@ -791,7 +791,7 @@ end
 end 
 
 """
-	PetscFEGeomDestroy(petsclib::PetscLibType,geom::PetscFEGeom) 
+	PetscFEGeomDestroy(petsclib::PetscLibType, geom::PetscFEGeom) 
 Destroy a `PetscFEGeom` object
 
 Input Parameter:
@@ -799,7 +799,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscFEGeom`, `PetscFEGeomCreate()`
+See also: `PetscFEGeom`, `PetscFEGeomCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGeomDestroy"))
@@ -822,7 +822,7 @@ end
 end 
 
 """
-	pgeom::PetscFEGeom = PetscFEGeomGetCellPoint(petsclib::PetscLibType,geom::Vector{PetscFEGeom}, c::PetscInt, p::PetscInt) 
+	pgeom::PetscFEGeom = PetscFEGeomGetCellPoint(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, c::PetscInt, p::PetscInt) 
 Get the cell geometry for cell `c` at point `p` as a `PetscFEGeom`
 
 Input Parameters:
@@ -835,7 +835,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEGeom`, `PetscFEGeomMode`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
+See also: `PetscFEGeom`, `PetscFEGeomMode`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGeomGetCellPoint"))
@@ -860,7 +860,7 @@ end
 end 
 
 """
-	chunkGeom::Ptr{PetscFEGeom} = PetscFEGeomGetChunk(petsclib::PetscLibType,geom::Vector{PetscFEGeom}, cStart::PetscInt, cEnd::PetscInt) 
+	chunkGeom::Ptr{PetscFEGeom} = PetscFEGeomGetChunk(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, cStart::PetscInt, cEnd::PetscInt) 
 Get a chunk of cells in the group as a `PetscFEGeom`
 
 Input Parameters:
@@ -873,7 +873,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEGeom`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
+See also: `PetscFEGeom`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGeomGetChunk"))
@@ -898,7 +898,7 @@ end
 end 
 
 """
-	pgeom::PetscFEGeom = PetscFEGeomGetPoint(petsclib::PetscLibType,geom::Vector{PetscFEGeom}, c::PetscInt, p::PetscInt, pcoords::Vector{PetscReal}) 
+	pgeom::PetscFEGeom = PetscFEGeomGetPoint(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, c::PetscInt, p::PetscInt, pcoords::Vector{PetscReal}) 
 Get the geometry for cell `c` at point `p` as a `PetscFEGeom`
 
 Input Parameters:
@@ -912,7 +912,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEGeom`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
+See also: `PetscFEGeom`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGeomGetPoint"))
@@ -937,7 +937,7 @@ end
 end 
 
 """
-	PetscFEGeomRestoreChunk(petsclib::PetscLibType,geom::Vector{PetscFEGeom}, cStart::PetscInt, cEnd::PetscInt, chunkGeom::PetscFEGeom) 
+	PetscFEGeomRestoreChunk(petsclib::PetscLibType, geom::Vector{PetscFEGeom}, cStart::PetscInt, cEnd::PetscInt, chunkGeom::PetscFEGeom) 
 Restore the chunk obtained with `PetscFEGeomCreateChunk()`
 
 Input Parameters:
@@ -948,7 +948,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFEGeom`, `PetscFEGeomGetChunk()`, `PetscFEGeomCreate()`
+See also: `PetscFEGeom`, `PetscFEGeomGetChunk()`, `PetscFEGeomCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGeomRestoreChunk"))
@@ -971,7 +971,7 @@ end
 end 
 
 """
-	sp::PetscSpace = PetscFEGetBasisSpace(petsclib::PetscLibType,fem::PetscFE) 
+	sp::PetscSpace = PetscFEGetBasisSpace(petsclib::PetscLibType, fem::PetscFE) 
 Returns the `PetscSpace` used for the approximation of the solution for the `PetscFE`
 
 Not Collective
@@ -984,7 +984,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscFECreate()`
+See also: `PetscFE`, `PetscSpace`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetBasisSpace"))
@@ -1009,7 +1009,7 @@ end
 end 
 
 """
-	T::PetscTabulation = PetscFEGetCellTabulation(petsclib::PetscLibType,fem::PetscFE, k::PetscInt) 
+	T::PetscTabulation = PetscFEGetCellTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt) 
 Returns the tabulation of the basis functions at the quadrature points on the reference cell
 
 Not Collective
@@ -1023,7 +1023,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetCellTabulation"))
@@ -1048,7 +1048,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscFEGetDimension(petsclib::PetscLibType,fem::PetscFE) 
+	dim::PetscInt = PetscFEGetDimension(petsclib::PetscLibType, fem::PetscFE) 
 Get the dimension of the finite element space on a cell
 
 Not Collective
@@ -1061,7 +1061,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFECreate()`, `PetscSpaceGetDimension()`, `PetscDualSpaceGetDimension()`
+See also: `PetscFE`, `PetscFECreate()`, `PetscSpaceGetDimension()`, `PetscDualSpaceGetDimension()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetDimension"))
@@ -1086,7 +1086,7 @@ end
 end 
 
 """
-	sp::PetscDualSpace = PetscFEGetDualSpace(petsclib::PetscLibType,fem::PetscFE) 
+	sp::PetscDualSpace = PetscFEGetDualSpace(petsclib::PetscLibType, fem::PetscFE) 
 Returns the `PetscDualSpace` used to define the inner product for a `PetscFE`
 
 Not Collective
@@ -1099,7 +1099,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetDualSpace"))
@@ -1124,7 +1124,7 @@ end
 end 
 
 """
-	Tc::PetscTabulation = PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType,fem::PetscFE) 
+	Tc::PetscTabulation = PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::PetscFE) 
 Returns the tabulation of the basis functions at the face centroid points
 
 Not Collective
@@ -1137,7 +1137,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFEGetFaceTabulation()`, `PetscFEGetCellTabulation()`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFEGetFaceTabulation()`, `PetscFEGetCellTabulation()`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetFaceCentroidTabulation"))
@@ -1162,7 +1162,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscFEGetFaceQuadrature(petsclib::PetscLibType,fem::PetscFE) 
+	q::PetscQuadrature = PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE) 
 Returns the `PetscQuadrature` used to calculate inner products on faces
 
 Not Collective
@@ -1175,7 +1175,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`, `PetscFESetFaceQuadrature()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`, `PetscFESetFaceQuadrature()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetFaceQuadrature"))
@@ -1200,7 +1200,7 @@ end
 end 
 
 """
-	Tf::PetscTabulation = PetscFEGetFaceTabulation(petsclib::PetscLibType,fem::PetscFE, k::PetscInt) 
+	Tf::PetscTabulation = PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt) 
 Returns the tabulation of the basis functions at the face quadrature points for each face of the reference cell
 
 Not Collective
@@ -1214,7 +1214,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetFaceTabulation"))
@@ -1239,7 +1239,7 @@ end
 end 
 
 """
-	subfe::PetscFE = PetscFEGetHeightSubspace(petsclib::PetscLibType,fe::PetscFE, height::PetscInt) 
+	subfe::PetscFE = PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt) 
 Get the subspace of this space for a mesh point of a given height
 
 Input Parameters:
@@ -1251,7 +1251,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFECreateDefault()`
+See also: `PetscFECreateDefault()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetHeightSubspace"))
@@ -1276,7 +1276,7 @@ end
 end 
 
 """
-	comp::PetscInt = PetscFEGetNumComponents(petsclib::PetscLibType,fem::PetscFE) 
+	comp::PetscInt = PetscFEGetNumComponents(petsclib::PetscLibType, fem::PetscFE) 
 Returns the number of components in the element
 
 Not Collective
@@ -1289,7 +1289,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`
+See also: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetNumComponents"))
@@ -1314,7 +1314,7 @@ end
 end 
 
 """
-	numDof::Ptr{PetscInt} = PetscFEGetNumDof(petsclib::PetscLibType,fem::PetscFE) 
+	numDof::Ptr{PetscInt} = PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE) 
 Returns the number of dofs (dual basis vectors) associated to mesh points on the reference cell of a given dimension
 
 Not Collective
@@ -1327,7 +1327,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetNumDof"))
@@ -1352,7 +1352,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscFEGetQuadrature(petsclib::PetscLibType,fem::PetscFE) 
+	q::PetscQuadrature = PetscFEGetQuadrature(petsclib::PetscLibType, fem::PetscFE) 
 Returns the `PetscQuadrature` used to calculate inner products
 
 Not Collective
@@ -1365,7 +1365,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetQuadrature"))
@@ -1390,7 +1390,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscFEGetSpatialDimension(petsclib::PetscLibType,fem::PetscFE) 
+	dim::PetscInt = PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::PetscFE) 
 Returns the spatial dimension of the element
 
 Not Collective
@@ -1403,7 +1403,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFECreate()`
+See also: `PetscFE`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetSpatialDimension"))
@@ -1428,7 +1428,7 @@ end
 end 
 
 """
-	blockSize::PetscInt,numBlocks::PetscInt,batchSize::PetscInt,numBatches::PetscInt = PetscFEGetTileSizes(petsclib::PetscLibType,fem::PetscFE) 
+	blockSize::PetscInt,numBlocks::PetscInt,batchSize::PetscInt,numBatches::PetscInt = PetscFEGetTileSizes(petsclib::PetscLibType, fem::PetscFE) 
 Returns the tile sizes for evaluation
 
 Not Collective
@@ -1444,7 +1444,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFECreate()`, `PetscFESetTileSizes()`
+See also: `PetscFE`, `PetscFECreate()`, `PetscFESetTileSizes()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetTileSizes"))
@@ -1475,7 +1475,7 @@ end
 end 
 
 """
-	name::PetscFEType = PetscFEGetType(petsclib::PetscLibType,fem::PetscFE) 
+	name::PetscFEType = PetscFEGetType(petsclib::PetscLibType, fem::PetscFE) 
 Gets the `PetscFEType` (as a string) from the `PetscFE` object.
 
 Not Collective
@@ -1488,7 +1488,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEType`, `PetscFE`, `PetscFESetType()`, `PetscFECreate()`
+See also: `PetscFEType`, `PetscFE`, `PetscFESetType()`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEGetType"))
@@ -1520,7 +1520,7 @@ when using static libraries.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("DM/PetscFEInitializePackage"))
@@ -1542,7 +1542,7 @@ end
 end 
 
 """
-	PetscFEIntegrate(petsclib::PetscLibType,prob::PetscDS, field::PetscInt, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, integral::Vector{PetscScalar}) 
+	PetscFEIntegrate(petsclib::PetscLibType, prob::PetscDS, field::PetscInt, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, integral::Vector{PetscScalar}) 
 Produce the integral for the given field for a chunk of elements by quadrature integration
 
 Not Collective
@@ -1561,7 +1561,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscDS`, `PetscFEIntegrateResidual()`, `PetscFEIntegrateBd()`
+See also: `PetscFE`, `PetscDS`, `PetscFEIntegrateResidual()`, `PetscFEIntegrateBd()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrate"))
@@ -1584,7 +1584,7 @@ end
 end 
 
 """
-	PetscFEIntegrateBd(petsclib::PetscLibType,prob::PetscDS, field::PetscInt, noname::Ptr{Cvoid}) 
+	PetscFEIntegrateBd(petsclib::PetscLibType, prob::PetscDS, field::PetscInt, noname::Ptr{Cvoid}) 
 Produce the integral for the given field for a chunk of elements by quadrature integration
 
 Not Collective
@@ -1604,7 +1604,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscDS`, `PetscFEIntegrateResidual()`, `PetscFEIntegrate()`
+See also: `PetscFE`, `PetscDS`, `PetscFEIntegrateResidual()`, `PetscFEIntegrate()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrateBd"))
@@ -1627,7 +1627,7 @@ end
 end 
 
 """
-	PetscFEIntegrateBdJacobian(petsclib::PetscLibType,ds::PetscDS, wf::PetscWeakForm, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) 
+	PetscFEIntegrateBdJacobian(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) 
 Produce the boundary element Jacobian for a chunk of elements by quadrature integration
 
 Not Collective
@@ -1651,7 +1651,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEIntegrateJacobian()`, `PetscFEIntegrateResidual()`
+See also: `PetscFEIntegrateJacobian()`, `PetscFEIntegrateResidual()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrateBdJacobian"))
@@ -1674,7 +1674,7 @@ end
 end 
 
 """
-	PetscFEIntegrateBdResidual(petsclib::PetscLibType,ds::PetscDS, wf::PetscWeakForm, key::PetscFormKey, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) 
+	PetscFEIntegrateBdResidual(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, key::PetscFormKey, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) 
 Produce the element residual vector for a chunk of elements by quadrature integration over a boundary
 
 Not Collective
@@ -1696,7 +1696,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEIntegrateResidual()`
+See also: `PetscFEIntegrateResidual()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrateBdResidual"))
@@ -1719,7 +1719,7 @@ end
 end 
 
 """
-	PetscFEIntegrateHybridJacobian(petsclib::PetscLibType,ds::PetscDS, dsIn::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) 
+	PetscFEIntegrateHybridJacobian(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) 
 Produce the boundary element Jacobian for a chunk of hybrid elements by quadrature integration
 
 Not Collective
@@ -1745,7 +1745,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFEIntegrateJacobian()`, `PetscFEIntegrateResidual()`
+See also: `PetscFEIntegrateJacobian()`, `PetscFEIntegrateResidual()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrateHybridJacobian"))
@@ -1768,7 +1768,7 @@ end
 end 
 
 """
-	PetscFEIntegrateHybridResidual(petsclib::PetscLibType,ds::PetscDS, dsIn::PetscDS, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) 
+	PetscFEIntegrateHybridResidual(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::Vector{PetscFEGeom}, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) 
 Produce the element residual vector for a chunk of hybrid element faces by quadrature integration
 
 Not Collective
@@ -1792,7 +1792,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFEIntegrateResidual()`
+See also: `PetscFEIntegrateResidual()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrateHybridResidual"))
@@ -1815,7 +1815,7 @@ end
 end 
 
 """
-	PetscFEIntegrateJacobian(petsclib::PetscLibType,rds::PetscDS, cds::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, dsAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) 
+	PetscFEIntegrateJacobian(petsclib::PetscLibType, rds::PetscDS, cds::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, dsAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal, elemMat::Vector{PetscScalar}) 
 Produce the element Jacobian for a chunk of elements by quadrature integration
 
 Not Collective
@@ -1839,7 +1839,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEIntegrateResidual()`
+See also: `PetscFEIntegrateResidual()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrateJacobian"))
@@ -1862,7 +1862,7 @@ end
 end 
 
 """
-	PetscFEIntegrateResidual(petsclib::PetscLibType,ds::PetscDS, key::PetscFormKey, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) 
+	PetscFEIntegrateResidual(petsclib::PetscLibType, ds::PetscDS, key::PetscFormKey, Ne::PetscInt, cgeom::Vector{PetscFEGeom}, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, elemVec::Vector{PetscScalar}) 
 Produce the element residual vector for a chunk of elements by quadrature integration
 
 Not Collective
@@ -1883,7 +1883,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscFEIntegrateBdResidual()`
+See also: `PetscFEIntegrateBdResidual()`
 
 # External Links
 $(_doc_external("FE/PetscFEIntegrateResidual"))
@@ -1906,7 +1906,7 @@ end
 end 
 
 """
-	newfe::PetscFE = PetscFELimitDegree(petsclib::PetscLibType,fe::PetscFE, minDegree::PetscInt, maxDegree::PetscInt) 
+	newfe::PetscFE = PetscFELimitDegree(petsclib::PetscLibType, fe::PetscFE, minDegree::PetscInt, maxDegree::PetscInt) 
 Copy a `PetscFE` but limit the degree to be in the given range
 
 Collective
@@ -1921,7 +1921,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
+See also: `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFELimitDegree"))
@@ -1946,7 +1946,7 @@ end
 end 
 
 """
-	realType::PetscDataType = PetscFEOpenCLGetRealType(petsclib::PetscLibType,fem::PetscFE) 
+	realType::PetscDataType = PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::PetscFE) 
 Get the scalar type for running on the OpenCL accelerator
 
 Input Parameter:
@@ -1957,7 +1957,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscFE`, `PetscFEOpenCLSetRealType()`
+See also: `PetscFE`, `PetscFEOpenCLSetRealType()`
 
 # External Links
 $(_doc_external("FE/PetscFEOpenCLGetRealType"))
@@ -1982,7 +1982,7 @@ end
 end 
 
 """
-	PetscFEOpenCLSetRealType(petsclib::PetscLibType,fem::PetscFE, realType::PetscDataType) 
+	PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::PetscFE, realType::PetscDataType) 
 Set the scalar type for running on the OpenCL accelerator
 
 Input Parameters:
@@ -1991,7 +1991,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscFE`, `PetscFEOpenCLGetRealType()`
+See also: `PetscFE`, `PetscFEOpenCLGetRealType()`
 
 # External Links
 $(_doc_external("FE/PetscFEOpenCLSetRealType"))
@@ -2014,7 +2014,7 @@ end
 end 
 
 """
-	PetscFEPushforward(petsclib::PetscLibType,fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
+	PetscFEPushforward(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
 Map the reference element function to real space
 
 Input Parameters:
@@ -2028,7 +2028,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscDualSpacePushforward()`
+See also: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscDualSpacePushforward()`
 
 # External Links
 $(_doc_external("FE/PetscFEPushforward"))
@@ -2051,7 +2051,7 @@ end
 end 
 
 """
-	PetscFEPushforwardGradient(petsclib::PetscLibType,fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
+	PetscFEPushforwardGradient(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
 Map the reference element function gradient to real space
 
 Input Parameters:
@@ -2065,7 +2065,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `PetscDualSpacePushforwardGradient()`, `PetscDualSpacePushforward()`
+See also: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `PetscDualSpacePushforwardGradient()`, `PetscDualSpacePushforward()`
 
 # External Links
 $(_doc_external("FE/PetscFEPushforwardGradient"))
@@ -2088,7 +2088,7 @@ end
 end 
 
 """
-	PetscFEPushforwardHessian(petsclib::PetscLibType,fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
+	PetscFEPushforwardHessian(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
 Map the reference element function Hessian to real space
 
 Input Parameters:
@@ -2102,7 +2102,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `PetscDualSpacePushforwardHessian()`, `PetscDualSpacePushforward()`
+See also: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `PetscDualSpacePushforwardHessian()`, `PetscDualSpacePushforward()`
 
 # External Links
 $(_doc_external("FE/PetscFEPushforwardHessian"))
@@ -2125,7 +2125,7 @@ end
 end 
 
 """
-	feRef::PetscFE = PetscFERefine(petsclib::PetscLibType,fe::PetscFE) 
+	feRef::PetscFE = PetscFERefine(petsclib::PetscLibType, fe::PetscFE) 
 Create a "refined" `PetscFE` object that refines the reference cell into
 smaller copies.
 
@@ -2139,7 +2139,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`
+See also: `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`
 
 # External Links
 $(_doc_external("FE/PetscFERefine"))
@@ -2164,7 +2164,7 @@ end
 end 
 
 """
-	PetscFERegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscFERegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new `PetscFEType`
 
 Not Collective, No Fortran Support
@@ -2173,7 +2173,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine
 
--seealso: `PetscFE`, `PetscFEType`, `PetscFERegisterAll()`, `PetscFERegisterDestroy()`
+See also: `PetscFE`, `PetscFEType`, `PetscFERegisterAll()`, `PetscFERegisterDestroy()`
 
 # External Links
 $(_doc_external("FE/PetscFERegister"))
@@ -2196,7 +2196,7 @@ end
 end 
 
 """
-	PetscFESetBasisSpace(petsclib::PetscLibType,fem::PetscFE, sp::PetscSpace) 
+	PetscFESetBasisSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscSpace) 
 Sets the `PetscSpace` used for the approximation of the solution
 
 Not Collective
@@ -2207,7 +2207,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFESetDualSpace()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFESetDualSpace()`
 
 # External Links
 $(_doc_external("FE/PetscFESetBasisSpace"))
@@ -2230,7 +2230,7 @@ end
 end 
 
 """
-	PetscFESetDualSpace(petsclib::PetscLibType,fem::PetscFE, sp::PetscDualSpace) 
+	PetscFESetDualSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscDualSpace) 
 Sets the `PetscDualSpace` used to define the inner product
 
 Not Collective
@@ -2241,7 +2241,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFESetBasisSpace()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFESetBasisSpace()`
 
 # External Links
 $(_doc_external("FE/PetscFESetDualSpace"))
@@ -2264,7 +2264,7 @@ end
 end 
 
 """
-	PetscFESetFaceQuadrature(petsclib::PetscLibType,fem::PetscFE, q::PetscQuadrature) 
+	PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) 
 Sets the `PetscQuadrature` used to calculate inner products on faces
 
 Not Collective
@@ -2275,7 +2275,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`
 
 # External Links
 $(_doc_external("FE/PetscFESetFaceQuadrature"))
@@ -2298,7 +2298,7 @@ end
 end 
 
 """
-	PetscFESetFromOptions(petsclib::PetscLibType,fem::PetscFE) 
+	PetscFESetFromOptions(petsclib::PetscLibType, fem::PetscFE) 
 sets parameters in a `PetscFE` from the options database
 
 Collective
@@ -2312,7 +2312,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFEView()`
+See also: `PetscFE`, `PetscFEView()`
 
 # External Links
 $(_doc_external("FE/PetscFESetFromOptions"))
@@ -2335,7 +2335,7 @@ end
 end 
 
 """
-	PetscFESetName(petsclib::PetscLibType,fe::PetscFE, name::String) 
+	PetscFESetName(petsclib::PetscLibType, fe::PetscFE, name::String) 
 Names the `PetscFE` and its subobjects
 
 Not Collective
@@ -2346,7 +2346,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
+See also: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
 $(_doc_external("FE/PetscFESetName"))
@@ -2369,7 +2369,7 @@ end
 end 
 
 """
-	PetscFESetNumComponents(petsclib::PetscLibType,fem::PetscFE, comp::PetscInt) 
+	PetscFESetNumComponents(petsclib::PetscLibType, fem::PetscFE, comp::PetscInt) 
 Sets the number of field components in the element
 
 Not Collective
@@ -2380,7 +2380,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`, `PetscFEGetNumComponents()`
+See also: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`, `PetscFEGetNumComponents()`
 
 # External Links
 $(_doc_external("FE/PetscFESetNumComponents"))
@@ -2403,7 +2403,7 @@ end
 end 
 
 """
-	PetscFESetQuadrature(petsclib::PetscLibType,fem::PetscFE, q::PetscQuadrature) 
+	PetscFESetQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) 
 Sets the `PetscQuadrature` used to calculate inner products
 
 Not Collective
@@ -2414,7 +2414,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFEGetFaceQuadrature()`
+See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFEGetFaceQuadrature()`
 
 # External Links
 $(_doc_external("FE/PetscFESetQuadrature"))
@@ -2437,7 +2437,7 @@ end
 end 
 
 """
-	PetscFESetTileSizes(petsclib::PetscLibType,fem::PetscFE, blockSize::PetscInt, numBlocks::PetscInt, batchSize::PetscInt, numBatches::PetscInt) 
+	PetscFESetTileSizes(petsclib::PetscLibType, fem::PetscFE, blockSize::PetscInt, numBlocks::PetscInt, batchSize::PetscInt, numBatches::PetscInt) 
 Sets the tile sizes for evaluation
 
 Not Collective
@@ -2451,7 +2451,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFECreate()`, `PetscFEGetTileSizes()`
+See also: `PetscFE`, `PetscFECreate()`, `PetscFEGetTileSizes()`
 
 # External Links
 $(_doc_external("FE/PetscFESetTileSizes"))
@@ -2474,7 +2474,7 @@ end
 end 
 
 """
-	PetscFESetType(petsclib::PetscLibType,fem::PetscFE, name::PetscFEType) 
+	PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::PetscFEType) 
 Builds a particular `PetscFE`
 
 Collective
@@ -2488,7 +2488,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscFEType`, `PetscFE`, `PetscFEGetType()`, `PetscFECreate()`
+See also: `PetscFEType`, `PetscFE`, `PetscFEGetType()`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFESetType"))
@@ -2511,7 +2511,7 @@ end
 end 
 
 """
-	PetscFESetUp(petsclib::PetscLibType,fem::PetscFE) 
+	PetscFESetUp(petsclib::PetscLibType, fem::PetscFE) 
 Construct data structures for the `PetscFE` after the `PetscFEType` has been set
 
 Collective
@@ -2521,7 +2521,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFEView()`, `PetscFEDestroy()`
+See also: `PetscFE`, `PetscFEView()`, `PetscFEDestroy()`
 
 # External Links
 $(_doc_external("FE/PetscFESetUp"))
@@ -2544,7 +2544,7 @@ end
 end 
 
 """
-	PetscFEView(petsclib::PetscLibType,fem::PetscFE, viewer::PetscViewer) 
+	PetscFEView(petsclib::PetscLibType, fem::PetscFE, viewer::PetscViewer) 
 Views a `PetscFE`
 
 Collective
@@ -2555,7 +2555,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscFE`, `PetscViewer`, `PetscFEDestroy()`, `PetscFEViewFromOptions()`
+See also: `PetscFE`, `PetscViewer`, `PetscFEDestroy()`, `PetscFEViewFromOptions()`
 
 # External Links
 $(_doc_external("FE/PetscFEView"))
@@ -2578,7 +2578,7 @@ end
 end 
 
 """
-	PetscFEViewFromOptions(petsclib::PetscLibType,A::PetscFE, obj, name::String) 
+	PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj, name::String) 
 View a `PetscFE` based on values in the options database
 
 Collective
@@ -2593,7 +2593,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscFE`, `PetscFEView()`, `PetscObjectViewFromOptions()`, `PetscFECreate()`
+See also: `PetscFE`, `PetscFEView()`, `PetscObjectViewFromOptions()`, `PetscFECreate()`
 
 # External Links
 $(_doc_external("FE/PetscFEViewFromOptions"))
@@ -2616,7 +2616,7 @@ end
 end 
 
 """
-	Np::PetscInt,perm::Ptr{IS} = PetscQuadratureComputePermutations(petsclib::PetscLibType,quad::PetscQuadrature) 
+	Np::PetscInt,perm::Ptr{IS} = PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature) 
 Compute permutations of quadrature points corresponding to domain orientations
 
 Input Parameter:
@@ -2628,7 +2628,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscQuadratureSetCellType()`, `PetscQuadrature`
+See also: `PetscQuadratureSetCellType()`, `PetscQuadrature`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureComputePermutations"))
@@ -2655,7 +2655,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscQuadratureCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	q::PetscQuadrature = PetscQuadratureCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Create a `PetscQuadrature` object
 
 Collective
@@ -2668,7 +2668,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscQuadrature`, `Petscquadraturedestroy()`, `PetscQuadratureGetData()`
+See also: `PetscQuadrature`, `Petscquadraturedestroy()`, `PetscQuadratureGetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureCreate"))
@@ -2693,7 +2693,7 @@ end
 end 
 
 """
-	PetscQuadratureDestroy(petsclib::PetscLibType,q::Union{PetscQuadrature, Ref{PetscQuadrature}}) 
+	PetscQuadratureDestroy(petsclib::PetscLibType, q::Union{PetscQuadrature, Ref{PetscQuadrature}}) 
 Destroys a `PetscQuadrature` object
 
 Collective
@@ -2703,7 +2703,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
+See also: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureDestroy"))
@@ -2727,7 +2727,7 @@ end
 end 
 
 """
-	r::PetscQuadrature = PetscQuadratureDuplicate(petsclib::PetscLibType,q::PetscQuadrature) 
+	r::PetscQuadrature = PetscQuadratureDuplicate(petsclib::PetscLibType, q::PetscQuadrature) 
 Create a deep copy of the `PetscQuadrature` object
 
 Collective
@@ -2740,7 +2740,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureDestroy()`, `PetscQuadratureGetData()`
+See also: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureDestroy()`, `PetscQuadratureGetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureDuplicate"))
@@ -2765,7 +2765,7 @@ end
 end 
 
 """
-	equal::PetscBool = PetscQuadratureEqual(petsclib::PetscLibType,A::PetscQuadrature, B::PetscQuadrature) 
+	equal::PetscBool = PetscQuadratureEqual(petsclib::PetscLibType, A::PetscQuadrature, B::PetscQuadrature) 
 determine whether two quadratures are equivalent
 
 Input Parameters:
@@ -2777,7 +2777,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureCreate()`
+See also: `PetscQuadrature`, `PetscQuadratureCreate()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureEqual"))
@@ -2802,7 +2802,7 @@ end
 end 
 
 """
-	qref::PetscQuadrature = PetscQuadratureExpandComposite(petsclib::PetscLibType,q::PetscQuadrature, numSubelements::PetscInt, v0::Vector{PetscReal}, jac::Vector{PetscReal}) 
+	qref::PetscQuadrature = PetscQuadratureExpandComposite(petsclib::PetscLibType, q::PetscQuadrature, numSubelements::PetscInt, v0::Vector{PetscReal}, jac::Vector{PetscReal}) 
 Return a quadrature over the composite element, which has the original quadrature in each subelement
 
 Not Collective; No Fortran Support
@@ -2818,7 +2818,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscFECreate()`, `PetscSpaceGetDimension()`, `PetscDualSpaceGetDimension()`
+See also: `PetscQuadrature`, `PetscFECreate()`, `PetscSpaceGetDimension()`, `PetscDualSpaceGetDimension()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureExpandComposite"))
@@ -2843,7 +2843,7 @@ end
 end 
 
 """
-	ct::DMPolytopeType = PetscQuadratureGetCellType(petsclib::PetscLibType,q::PetscQuadrature) 
+	ct::DMPolytopeType = PetscQuadratureGetCellType(petsclib::PetscLibType, q::PetscQuadrature) 
 Return the cell type of the integration domain
 
 Not Collective
@@ -2856,7 +2856,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureSetCellType()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
+See also: `PetscQuadrature`, `PetscQuadratureSetCellType()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureGetCellType"))
@@ -2881,7 +2881,7 @@ end
 end 
 
 """
-	dim::PetscInt,Nc::PetscInt,npoints::PetscInt,points::Ptr{PetscReal},weights::Ptr{PetscReal} = PetscQuadratureGetData(petsclib::PetscLibType,q::PetscQuadrature) 
+	dim::PetscInt,Nc::PetscInt,npoints::PetscInt,points::Ptr{PetscReal},weights::Ptr{PetscReal} = PetscQuadratureGetData(petsclib::PetscLibType, q::PetscQuadrature) 
 Returns the data defining the `PetscQuadrature`
 
 Not Collective
@@ -2898,7 +2898,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureSetData()`
+See also: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureSetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureGetData"))
@@ -2931,7 +2931,7 @@ end
 end 
 
 """
-	Nc::PetscInt = PetscQuadratureGetNumComponents(petsclib::PetscLibType,q::PetscQuadrature) 
+	Nc::PetscInt = PetscQuadratureGetNumComponents(petsclib::PetscLibType, q::PetscQuadrature) 
 Return the number of components for functions to be integrated
 
 Not Collective
@@ -2944,7 +2944,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureSetNumComponents()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
+See also: `PetscQuadrature`, `PetscQuadratureSetNumComponents()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureGetNumComponents"))
@@ -2969,7 +2969,7 @@ end
 end 
 
 """
-	order::PetscInt = PetscQuadratureGetOrder(petsclib::PetscLibType,q::PetscQuadrature) 
+	order::PetscInt = PetscQuadratureGetOrder(petsclib::PetscLibType, q::PetscQuadrature) 
 Return the order of the method in the `PetscQuadrature`
 
 Not Collective
@@ -2982,7 +2982,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureSetOrder()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
+See also: `PetscQuadrature`, `PetscQuadratureSetOrder()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureGetOrder"))
@@ -3007,7 +3007,7 @@ end
 end 
 
 """
-	Jinvstarq::PetscQuadrature = PetscQuadraturePushForward(petsclib::PetscLibType,q::PetscQuadrature, imageDim::PetscInt, origin::Vector{PetscReal}, originImage::Vector{PetscReal}, J::Vector{PetscReal}, formDegree::PetscInt) 
+	Jinvstarq::PetscQuadrature = PetscQuadraturePushForward(petsclib::PetscLibType, q::PetscQuadrature, imageDim::PetscInt, origin::Vector{PetscReal}, originImage::Vector{PetscReal}, J::Vector{PetscReal}, formDegree::PetscInt) 
 Push forward a quadrature functional under an affine transformation.
 
 Collective
@@ -3027,7 +3027,7 @@ been pulled-back by the pseudoinverse of `J` to the k-form weights in the image 
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
+See also: `PetscQuadrature`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
 $(_doc_external("DT/PetscQuadraturePushForward"))
@@ -3052,7 +3052,7 @@ end
 end 
 
 """
-	PetscQuadratureSetCellType(petsclib::PetscLibType,q::PetscQuadrature, ct::DMPolytopeType) 
+	PetscQuadratureSetCellType(petsclib::PetscLibType, q::PetscQuadrature, ct::DMPolytopeType) 
 Set the cell type of the integration domain
 
 Not Collective
@@ -3063,7 +3063,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureGetCellType()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
+See also: `PetscQuadrature`, `PetscQuadratureGetCellType()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureSetCellType"))
@@ -3086,7 +3086,7 @@ end
 end 
 
 """
-	PetscQuadratureSetData(petsclib::PetscLibType,q::PetscQuadrature, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, weights::Vector{PetscReal}) 
+	PetscQuadratureSetData(petsclib::PetscLibType, q::PetscQuadrature, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, weights::Vector{PetscReal}) 
 Sets the data defining the quadrature
 
 Not Collective
@@ -3101,7 +3101,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
+See also: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureSetData"))
@@ -3124,7 +3124,7 @@ end
 end 
 
 """
-	PetscQuadratureSetNumComponents(petsclib::PetscLibType,q::PetscQuadrature, Nc::PetscInt) 
+	PetscQuadratureSetNumComponents(petsclib::PetscLibType, q::PetscQuadrature, Nc::PetscInt) 
 Sets the number of components for functions to be integrated
 
 Not Collective
@@ -3135,7 +3135,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureGetNumComponents()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
+See also: `PetscQuadrature`, `PetscQuadratureGetNumComponents()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureSetNumComponents"))
@@ -3158,7 +3158,7 @@ end
 end 
 
 """
-	PetscQuadratureSetOrder(petsclib::PetscLibType,q::PetscQuadrature, order::PetscInt) 
+	PetscQuadratureSetOrder(petsclib::PetscLibType, q::PetscQuadrature, order::PetscInt) 
 Set the order of the method in the `PetscQuadrature`
 
 Not Collective
@@ -3169,7 +3169,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscQuadrature`, `PetscQuadratureGetOrder()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
+See also: `PetscQuadrature`, `PetscQuadratureGetOrder()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureSetOrder"))
@@ -3192,7 +3192,7 @@ end
 end 
 
 """
-	PetscQuadratureView(petsclib::PetscLibType,quad::PetscQuadrature, viewer::PetscViewer) 
+	PetscQuadratureView(petsclib::PetscLibType, quad::PetscQuadrature, viewer::PetscViewer) 
 View a `PetscQuadrature` object
 
 Collective
@@ -3203,7 +3203,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscQuadrature`, `PetscViewer`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
+See also: `PetscQuadrature`, `PetscViewer`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
 
 # External Links
 $(_doc_external("DT/PetscQuadratureView"))
@@ -3226,7 +3226,7 @@ end
 end 
 
 """
-	PetscTabulationDestroy(petsclib::PetscLibType,T::Union{PetscTabulation, Ref{PetscTabulation}}) 
+	PetscTabulationDestroy(petsclib::PetscLibType, T::Union{PetscTabulation, Ref{PetscTabulation}}) 
 Frees memory from the associated tabulation.
 
 Not Collective
@@ -3236,7 +3236,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscTabulation`, `PetscFECreateTabulation()`, `PetscFEGetCellTabulation()`
+See also: `PetscTabulation`, `PetscFECreateTabulation()`, `PetscFEGetCellTabulation()`
 
 # External Links
 $(_doc_external("FE/PetscTabulationDestroy"))
@@ -3260,7 +3260,7 @@ end
 end 
 
 """
-	PetscWeakFormAddBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3279,7 +3279,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormAddJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormAddJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobian"))
@@ -3302,7 +3302,7 @@ end
 end 
 
 """
-	PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3321,7 +3321,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobianPreconditioner"))
@@ -3344,7 +3344,7 @@ end
 end 
 
 """
-	PetscWeakFormAddBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
+	PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
 Append boundary residual pointwise functions `f0` and `f1` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3360,7 +3360,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormAddResidual()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormAddResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdResidual"))
@@ -3383,7 +3383,7 @@ end
 end 
 
 """
-	PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3402,7 +3402,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormAddJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormAddJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddDynamicJacobian"))
@@ -3425,7 +3425,7 @@ end
 end 
 
 """
-	PetscWeakFormAddJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3444,7 +3444,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormSetIndexJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormSetIndexJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobian"))
@@ -3467,7 +3467,7 @@ end
 end 
 
 """
-	PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3486,7 +3486,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormAddJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormAddJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobianPreconditioner"))
@@ -3509,7 +3509,7 @@ end
 end 
 
 """
-	PetscWeakFormAddObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) 
+	PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) 
 Append an objective pointwise function to the list for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3524,7 +3524,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormGetObjective()`, `PetscWeakFormSetIndexObjective()`
+See also: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormGetObjective()`, `PetscWeakFormSetIndexObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddObjective"))
@@ -3547,7 +3547,7 @@ end
 end 
 
 """
-	PetscWeakFormAddResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
+	PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
 Append residual pointwise functions `f0` and `f1` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3563,7 +3563,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormGetResidual()`, `PetscWeakFormSetIndexResidual()`, `PetscWeakFormAddBdResidual()`
+See also: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormGetResidual()`, `PetscWeakFormSetIndexResidual()`, `PetscWeakFormAddBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormAddResidual"))
@@ -3586,7 +3586,7 @@ end
 end 
 
 """
-	PetscWeakFormClear(petsclib::PetscLibType,wf::PetscWeakForm) 
+	PetscWeakFormClear(petsclib::PetscLibType, wf::PetscWeakForm) 
 Clear all functions from the `PetscWeakForm`
 
 Not Collective
@@ -3596,7 +3596,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormCopy()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
+See also: `PetscWeakForm`, `PetscWeakFormCopy()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormClear"))
@@ -3619,7 +3619,7 @@ end
 end 
 
 """
-	PetscWeakFormClearIndex(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) 
+	PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) 
 Clear the pointwise function at a given index for the given key from a `PetscWeakForm`
 
 Not Collective
@@ -3635,7 +3635,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormKind`, `PetscWeakFormCreate()`
+See also: `PetscWeakForm`, `PetscWeakFormKind`, `PetscWeakFormCreate()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormClearIndex"))
@@ -3658,7 +3658,7 @@ end
 end 
 
 """
-	PetscWeakFormCopy(petsclib::PetscLibType,wf::PetscWeakForm, wfNew::PetscWeakForm) 
+	PetscWeakFormCopy(petsclib::PetscLibType, wf::PetscWeakForm, wfNew::PetscWeakForm) 
 Copy the pointwise functions to another `PetscWeakForm`
 
 Not Collective
@@ -3671,7 +3671,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
+See also: `PetscWeakForm`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormCopy"))
@@ -3694,7 +3694,7 @@ end
 end 
 
 """
-	wf::PetscWeakForm = PetscWeakFormCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	wf::PetscWeakForm = PetscWeakFormCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `PetscWeakForm` object.
 
 Collective
@@ -3707,7 +3707,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscWeakForm`, `PetscDS`, `PetscWeakFormDestroy()`
+See also: `PetscWeakForm`, `PetscDS`, `PetscWeakFormDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormCreate"))
@@ -3732,7 +3732,7 @@ end
 end 
 
 """
-	PetscWeakFormDestroy(petsclib::PetscLibType,wf::Union{PetscWeakForm, Ref{PetscWeakForm}}) 
+	PetscWeakFormDestroy(petsclib::PetscLibType, wf::Union{PetscWeakForm, Ref{PetscWeakForm}}) 
 Destroys a `PetscWeakForm` object
 
 Collective
@@ -3742,7 +3742,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscWeakForm`, `PetscWeakFormCreate()`, `PetscWeakFormView()`
+See also: `PetscWeakForm`, `PetscWeakFormCreate()`, `PetscWeakFormView()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormDestroy"))
@@ -3766,7 +3766,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3791,7 +3791,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormHasBdJacobian()`, `PetscWeakFormGetJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormHasBdJacobian()`, `PetscWeakFormGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobian"))
@@ -3816,7 +3816,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3841,7 +3841,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormHasBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormHasBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobianPreconditioner"))
@@ -3866,7 +3866,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of boundary residual pointwise functions `f0` and `f1` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3886,7 +3886,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormGetResidual()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormGetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdResidual"))
@@ -3911,7 +3911,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3936,7 +3936,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormHasDynamicJacobian()`, `PetscWeakFormGetJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormHasDynamicJacobian()`, `PetscWeakFormGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetDynamicJacobian"))
@@ -3961,7 +3961,7 @@ end
 end 
 
 """
-	PetscWeakFormGetIndexObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve a single objective pointwise function at the given index for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3979,7 +3979,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetIndexObjective()`, `PetscWeakFormGetObjective()`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`
+See also: `PetscWeakForm`, `PetscWeakFormSetIndexObjective()`, `PetscWeakFormGetObjective()`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetIndexObjective"))
@@ -4002,7 +4002,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4027,7 +4027,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormGetJacobianPreconditioner()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormGetJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobian"))
@@ -4052,7 +4052,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4077,7 +4077,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormHasJacobianPreconditioner()`, `PetscWeakFormGetJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormHasJacobianPreconditioner()`, `PetscWeakFormGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobianPreconditioner"))
@@ -4102,7 +4102,7 @@ end
 end 
 
 """
-	Nf::PetscInt = PetscWeakFormGetNumFields(petsclib::PetscLibType,wf::PetscWeakForm) 
+	Nf::PetscInt = PetscWeakFormGetNumFields(petsclib::PetscLibType, wf::PetscWeakForm) 
 Returns the number of fields in a `PetscWeakForm`
 
 Not Collective
@@ -4115,7 +4115,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetNumFields()`, `PetscWeakFormCreate()`
+See also: `PetscWeakForm`, `PetscWeakFormSetNumFields()`, `PetscWeakFormCreate()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetNumFields"))
@@ -4140,7 +4140,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscWeakFormGetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n::PetscInt = PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the list of objective pointwise functions for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4158,7 +4158,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormSetIndexObjective()`, `PetscWeakFormGetIndexObjective()`
+See also: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormSetIndexObjective()`, `PetscWeakFormGetIndexObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetObjective"))
@@ -4183,7 +4183,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of residual pointwise functions `f0` and `f1` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4203,7 +4203,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormGetBdResidual()`
+See also: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormGetBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetResidual"))
@@ -4228,7 +4228,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscWeakFormGetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n::PetscInt = PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the list of Riemann solver pointwise functions for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4246,7 +4246,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormSetIndexRiemannSolver()`
+See also: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormSetIndexRiemannSolver()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormGetRiemannSolver"))
@@ -4271,7 +4271,7 @@ end
 end 
 
 """
-	hasJac::PetscBool = PetscWeakFormHasBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
+	hasJac::PetscBool = PetscWeakFormHasBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm) 
 Returns whether the `PetscWeakForm` has any boundary Jacobian (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
 
 Not Collective
@@ -4284,7 +4284,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormHasBdJacobianPreconditioner()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormHasBdJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasBdJacobian"))
@@ -4309,7 +4309,7 @@ end
 end 
 
 """
-	hasJacPre::PetscBool = PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm) 
+	hasJacPre::PetscBool = PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) 
 Returns whether the `PetscWeakForm` has any boundary Jacobian preconditioner (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
 
 Not Collective
@@ -4322,7 +4322,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormHasBdJacobian()`, `PetscWeakFormHasJacobianPreconditioner()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormHasBdJacobian()`, `PetscWeakFormHasJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasBdJacobianPreconditioner"))
@@ -4347,7 +4347,7 @@ end
 end 
 
 """
-	hasDynJac::PetscBool = PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
+	hasDynJac::PetscBool = PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm) 
 Returns whether the `PetscWeakForm` has any dynamic Jacobian (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
 
 Not Collective
@@ -4360,7 +4360,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormHasJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormHasJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasDynamicJacobian"))
@@ -4385,7 +4385,7 @@ end
 end 
 
 """
-	hasJac::PetscBool = PetscWeakFormHasJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
+	hasJac::PetscBool = PetscWeakFormHasJacobian(petsclib::PetscLibType, wf::PetscWeakForm) 
 Returns whether the `PetscWeakForm` has any Jacobian (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
 
 Not Collective
@@ -4398,7 +4398,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormHasJacobianPreconditioner()`, `PetscWeakFormHasBdJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormHasJacobianPreconditioner()`, `PetscWeakFormHasBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasJacobian"))
@@ -4423,7 +4423,7 @@ end
 end 
 
 """
-	hasJacPre::PetscBool = PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm) 
+	hasJacPre::PetscBool = PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) 
 Returns whether the `PetscWeakForm` has any Jacobian preconditioner (`g0`, `g1`, `g2`, or `g3`) pointwise functions registered
 
 Not Collective
@@ -4436,7 +4436,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormHasBdJacobianPreconditioner()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormHasJacobian()`, `PetscWeakFormHasBdJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormHasJacobianPreconditioner"))
@@ -4461,7 +4461,7 @@ end
 end 
 
 """
-	PetscWeakFormReplaceLabel(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel) 
+	PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel) 
 Change any key on a label of the same name to use the new label
 
 Not Collective
@@ -4472,7 +4472,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `DMLabel`, `PetscWeakFormRewriteKeys()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
+See also: `PetscWeakForm`, `DMLabel`, `PetscWeakFormRewriteKeys()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormReplaceLabel"))
@@ -4495,7 +4495,7 @@ end
 end 
 
 """
-	PetscWeakFormRewriteKeys(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}) 
+	PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}) 
 Change any key on the given label to use the new set of label values
 
 Not Collective
@@ -4508,7 +4508,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `DMLabel`, `PetscWeakFormReplaceLabel()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
+See also: `PetscWeakForm`, `DMLabel`, `PetscWeakFormReplaceLabel()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormRewriteKeys"))
@@ -4531,7 +4531,7 @@ end
 end 
 
 """
-	PetscWeakFormSetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4554,7 +4554,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormSetJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormSetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobian"))
@@ -4577,7 +4577,7 @@ end
 end 
 
 """
-	PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4600,7 +4600,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormSetBdJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormSetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobianPreconditioner"))
@@ -4623,7 +4623,7 @@ end
 end 
 
 """
-	PetscWeakFormSetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of boundary residual pointwise functions `f0` and `f1` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4641,7 +4641,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormSetResidual()`
+See also: `PetscWeakForm`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormSetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdResidual"))
@@ -4664,7 +4664,7 @@ end
 end 
 
 """
-	PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4687,7 +4687,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormSetJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormSetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetDynamicJacobian"))
@@ -4710,7 +4710,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4733,7 +4733,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJacobian()`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobian"))
@@ -4756,7 +4756,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4779,7 +4779,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscWeakFormAddBdJacobianPreconditioner()`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobianPreconditioner"))
@@ -4802,7 +4802,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
+	PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
 Set the boundary residual pointwise functions `f0` and `f1` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4820,7 +4820,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdResidual()`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdResidual"))
@@ -4843,7 +4843,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4866,7 +4866,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAddDynamicJacobian()`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexDynamicJacobian"))
@@ -4889,7 +4889,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4912,7 +4912,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormGetJacobian()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobian"))
@@ -4935,7 +4935,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4958,7 +4958,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobianPreconditioner"))
@@ -4981,7 +4981,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) 
+	PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) 
 Set a single objective pointwise function at the given index for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4997,7 +4997,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetIndexObjective()`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormGetIndexObjective()`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexObjective"))
@@ -5020,7 +5020,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
+	PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
 Set the residual pointwise functions `f0` and `f1` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5038,7 +5038,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormGetResidual()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormGetResidual()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexResidual"))
@@ -5061,7 +5061,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) 
+	PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) 
 Set a single Riemann solver pointwise function at the given index for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5077,7 +5077,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormGetRiemannSolver()`, `PetscWeakFormClearIndex()`
+See also: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormGetRiemannSolver()`, `PetscWeakFormClearIndex()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexRiemannSolver"))
@@ -5100,7 +5100,7 @@ end
 end 
 
 """
-	PetscWeakFormSetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5123,7 +5123,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormSetIndexJacobian()`, `PetscWeakFormSetJacobianPreconditioner()`
+See also: `PetscWeakForm`, `PetscWeakFormGetJacobian()`, `PetscWeakFormAddJacobian()`, `PetscWeakFormSetIndexJacobian()`, `PetscWeakFormSetJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobian"))
@@ -5146,7 +5146,7 @@ end
 end 
 
 """
-	PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5169,7 +5169,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormSetJacobian()`
+See also: `PetscWeakForm`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWeakFormAddJacobianPreconditioner()`, `PetscWeakFormSetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobianPreconditioner"))
@@ -5192,7 +5192,7 @@ end
 end 
 
 """
-	PetscWeakFormSetNumFields(petsclib::PetscLibType,wf::PetscWeakForm, Nf::PetscInt) 
+	PetscWeakFormSetNumFields(petsclib::PetscLibType, wf::PetscWeakForm, Nf::PetscInt) 
 Sets the number of fields
 
 Not Collective
@@ -5203,7 +5203,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetNumFields()`, `PetscWeakFormCreate()`
+See also: `PetscWeakForm`, `PetscWeakFormGetNumFields()`, `PetscWeakFormCreate()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetNumFields"))
@@ -5226,7 +5226,7 @@ end
 end 
 
 """
-	PetscWeakFormSetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
 Set the list of objective pointwise functions for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5242,7 +5242,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormSetIndexObjective()`
+See also: `PetscWeakForm`, `PetscWeakFormGetObjective()`, `PetscWeakFormAddObjective()`, `PetscWeakFormSetIndexObjective()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetObjective"))
@@ -5265,7 +5265,7 @@ end
 end 
 
 """
-	PetscWeakFormSetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of residual pointwise functions `f0` and `f1` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5283,7 +5283,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormSetIndexResidual()`
+See also: `PetscWeakForm`, `PetscWeakFormGetResidual()`, `PetscWeakFormAddResidual()`, `PetscWeakFormSetIndexResidual()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetResidual"))
@@ -5306,7 +5306,7 @@ end
 end 
 
 """
-	PetscWeakFormSetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
 Set the list of Riemann solver pointwise functions for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5322,7 +5322,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscWeakForm`, `PetscWeakFormGetRiemannSolver()`, `PetscWeakFormSetIndexRiemannSolver()`
+See also: `PetscWeakForm`, `PetscWeakFormGetRiemannSolver()`, `PetscWeakFormSetIndexRiemannSolver()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormSetRiemannSolver"))
@@ -5345,7 +5345,7 @@ end
 end 
 
 """
-	PetscWeakFormView(petsclib::PetscLibType,wf::PetscWeakForm, v::PetscViewer) 
+	PetscWeakFormView(petsclib::PetscLibType, wf::PetscWeakForm, v::PetscViewer) 
 Views a `PetscWeakForm`
 
 Collective
@@ -5356,7 +5356,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscViewer`, `PetscWeakForm`, `PetscWeakFormDestroy()`, `PetscWeakFormCreate()`
+See also: `PetscViewer`, `PetscWeakForm`, `PetscWeakFormDestroy()`, `PetscWeakFormCreate()`
 
 # External Links
 $(_doc_external("DT/PetscWeakFormView"))

@@ -1,5 +1,5 @@
 """
-	SNESLineSearchAppendOptionsPrefix(petsclib::PetscLibType,linesearch::SNESLineSearch, prefix::String) 
+	SNESLineSearchAppendOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch, prefix::String) 
 Appends to the prefix used for searching for all
 `SNESLineSearch` options in the database.
 
@@ -11,7 +11,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch()`, `SNESLineSearchSetFromOptions()`, `SNESGetOptionsPrefix()`
+See also: `SNES`, `SNESLineSearch()`, `SNESLineSearchSetFromOptions()`, `SNESGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchAppendOptionsPrefix"))
@@ -34,8 +34,8 @@ end
 end 
 
 """
-	fnorm::PetscReal = SNESLineSearchApply(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec) 
-Computes the line
+	fnorm::PetscReal = SNESLineSearchApply(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec) 
+Computes the line-search update.
 
 Collective
 
@@ -58,7 +58,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchGetLambda()`, `SNESLineSearchPreCheck()`, `SNESLineSearchPostCheck()`, `SNESSolve()`, `SNESComputeFunction()`, `SNESLineSearchSetComputeNorms()`,
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchGetLambda()`, `SNESLineSearchPreCheck()`, `SNESLineSearchPostCheck()`, `SNESSolve()`, `SNESComputeFunction()`, `SNESLineSearchSetComputeNorms()`,
 `SNESLineSearchType`, `SNESLineSearchSetType()`
 
 # External Links
@@ -84,7 +84,7 @@ end
 end 
 
 """
-	alpha::PetscReal = SNESLineSearchBTGetAlpha(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	alpha::PetscReal = SNESLineSearchBTGetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the descent parameter, `alpha`, in the `SNESLINESEARCHBT` variant that was set with `SNESLineSearchBTSetAlpha()`
 
 Input Parameter:
@@ -95,7 +95,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNESLineSearch`, `SNESLineSearchGetLambda()`, `SNESLineSearchGetTolerances()`, `SNESLINESEARCHBT`, `SNESLineSearchBTSetAlpha()`
+See also: `SNESLineSearch`, `SNESLineSearchGetLambda()`, `SNESLineSearchGetTolerances()`, `SNESLINESEARCHBT`, `SNESLineSearchBTSetAlpha()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchBTGetAlpha"))
@@ -120,7 +120,7 @@ end
 end 
 
 """
-	SNESLineSearchBTSetAlpha(petsclib::PetscLibType,linesearch::SNESLineSearch, alpha::PetscReal) 
+	SNESLineSearchBTSetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch, alpha::PetscReal) 
 Sets the descent parameter, `alpha`, in the `SNESLINESEARCHBT` `SNESLineSearch` variant.
 
 Input Parameters:
@@ -129,7 +129,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNESLineSearch`, `SNESLineSearchSetLambda()`, `SNESLineSearchGetTolerances()`, `SNESLINESEARCHBT`, `SNESLineSearchBTGetAlpha()`
+See also: `SNESLineSearch`, `SNESLineSearchSetLambda()`, `SNESLineSearchGetTolerances()`, `SNESLINESEARCHBT`, `SNESLineSearchBTGetAlpha()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchBTSetAlpha"))
@@ -152,7 +152,7 @@ end
 end 
 
 """
-	SNESLineSearchComputeNorms(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	SNESLineSearchComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Explicitly computes the norms of the current solution `X`, the current update `Y`, and the current function value `F`.
 
 Input Parameter:
@@ -163,7 +163,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms`, `SNESLineSearchSetNorms()`, `SNESLineSearchSetComputeNorms()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms`, `SNESLineSearchSetNorms()`, `SNESLineSearchSetComputeNorms()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchComputeNorms"))
@@ -186,7 +186,7 @@ end
 end 
 
 """
-	outlinesearch::SNESLineSearch = SNESLineSearchCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	outlinesearch::SNESLineSearch = SNESLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `SNESLineSearch` context.
 
 Logically Collective
@@ -199,7 +199,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `LineSearchDestroy()`, `SNESGetLineSearch()`
+See also: `SNES`, `SNESLineSearch`, `LineSearchDestroy()`, `SNESGetLineSearch()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchCreate"))
@@ -224,7 +224,7 @@ end
 end 
 
 """
-	SNESLineSearchDestroy(petsclib::PetscLibType,linesearch::Union{SNESLineSearch, Ref{SNESLineSearch}}) 
+	SNESLineSearchDestroy(petsclib::PetscLibType, linesearch::Union{SNESLineSearch, Ref{SNESLineSearch}}) 
 Destroys the line search instance.
 
 Collective
@@ -234,7 +234,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchReset()`, `SNESDestroy()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchReset()`, `SNESDestroy()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchDestroy"))
@@ -258,7 +258,7 @@ end
 end 
 
 """
-	damping::PetscReal = SNESLineSearchGetDamping(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	damping::PetscReal = SNESLineSearchGetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the line search damping parameter.
 
 Input Parameter:
@@ -269,7 +269,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearchGetStepTolerance()`, `SNESQN`
+See also: `SNES`, `SNESLineSearchGetStepTolerance()`, `SNESQN`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetDamping"))
@@ -294,7 +294,7 @@ end
 end 
 
 """
-	monitor::PetscViewer = SNESLineSearchGetDefaultMonitor(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	monitor::PetscViewer = SNESLineSearchGetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the `PetscViewer` instance for the default line search monitor that is turned on with `SNESLineSearchSetDefaultMonitor()`
 
 Logically Collective
@@ -307,7 +307,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchSetDefaultMonitor()`, `PetscViewer`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchSetDefaultMonitor()`, `PetscViewer`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetDefaultMonitor"))
@@ -332,7 +332,7 @@ end
 end 
 
 """
-	lambda::PetscReal = SNESLineSearchGetLambda(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	lambda::PetscReal = SNESLineSearchGetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the last line search `lambda` used
 
 Not Collective
@@ -345,7 +345,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetLambda()`, `SNESLineSearchGetDamping()`, `SNESLineSearchApply()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetLambda()`, `SNESLineSearchGetDamping()`, `SNESLineSearchApply()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetLambda"))
@@ -370,7 +370,7 @@ end
 end 
 
 """
-	xnorm::PetscReal,fnorm::PetscReal,ynorm::PetscReal = SNESLineSearchGetNorms(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	xnorm::PetscReal,fnorm::PetscReal,ynorm::PetscReal = SNESLineSearchGetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the norms for the current solution `X`, the current update `Y`, and the current function value `F`.
 
 Not Collective
@@ -385,7 +385,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetNorms()`, `SNESLineSearchGetVecs()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetNorms()`, `SNESLineSearchGetVecs()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetNorms"))
@@ -414,7 +414,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = SNESLineSearchGetOptionsPrefix(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	prefix::Ptr{Cchar} = SNESLineSearchGetOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the prefix used for searching for all
 SNESLineSearch options in the database.
 
@@ -428,7 +428,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESAppendOptionsPrefix()`
+See also: `SNES`, `SNESLineSearch`, `SNESAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetOptionsPrefix"))
@@ -453,7 +453,7 @@ end
 end 
 
 """
-	order::PetscInt = SNESLineSearchGetOrder(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	order::PetscInt = SNESLineSearchGetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the line search approximation order.
 
 Input Parameter:
@@ -464,7 +464,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetOrder()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetOrder()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetOrder"))
@@ -489,8 +489,8 @@ end
 end 
 
 """
-	SNESLineSearchGetPostCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, noname::Ptr{Cvoid}) 
-Gets the post
+	SNESLineSearchGetPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, noname::Ptr{Cvoid}) 
+Gets the post-check function for the line search routine.
 
 Input Parameter:
 - `linesearch` - the `SNESLineSearch` context
@@ -501,7 +501,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchGetPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchPostCheck()`, `SNESLineSearchSetPreCheck()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchGetPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchPostCheck()`, `SNESLineSearchSetPreCheck()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetPostCheck"))
@@ -524,8 +524,8 @@ end
 end 
 
 """
-	SNESLineSearchGetPreCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, noname::Ptr{Cvoid}) 
-Gets the pre
+	SNESLineSearchGetPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, noname::Ptr{Cvoid}) 
+Gets the pre-check function for the line search routine.
 
 Input Parameter:
 - `linesearch` - the `SNESLineSearch` context
@@ -536,7 +536,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetPreCheck"))
@@ -559,7 +559,7 @@ end
 end 
 
 """
-	reason::SNESLineSearchReason = SNESLineSearchGetReason(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	reason::SNESLineSearchReason = SNESLineSearchGetReason(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the success/failure status of the last line search application
 
 Input Parameter:
@@ -570,7 +570,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetReason()`, `SNESLineSearchReason`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetReason()`, `SNESLineSearchReason`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetReason"))
@@ -595,7 +595,7 @@ end
 end 
 
 """
-	snes::SNES = SNESLineSearchGetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	snes::SNES = SNESLineSearchGetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the `SNES` instance associated with the line search.
 
 Not Collective
@@ -608,7 +608,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESType`, `SNESLineSearchSetVecs()`
+See also: `SNES`, `SNESLineSearch`, `SNESType`, `SNESLineSearchSetVecs()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetSNES"))
@@ -633,7 +633,7 @@ end
 end 
 
 """
-	minlambda::PetscReal,maxlambda::PetscReal,rtol::PetscReal,atol::PetscReal,ltol::PetscReal,max_it::PetscInt = SNESLineSearchGetTolerances(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	minlambda::PetscReal,maxlambda::PetscReal,rtol::PetscReal,atol::PetscReal,ltol::PetscReal,max_it::PetscInt = SNESLineSearchGetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the tolerances for the line search.
 
 Not Collective
@@ -651,7 +651,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetTolerances()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetTolerances()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetTolerances"))
@@ -686,7 +686,7 @@ end
 end 
 
 """
-	type::SNESLineSearchType = SNESLineSearchGetType(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	type::SNESLineSearchType = SNESLineSearchGetType(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the `SNESLinesearchType` of a `SNESLineSearch`
 
 Logically Collective
@@ -699,7 +699,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`, `SNESLineSearchSetType()`,
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`, `SNESLineSearchSetType()`,
 `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
@@ -725,8 +725,8 @@ end
 end 
 
 """
-	projectfunc::Ptr{Cvoid},normfunc::Ptr{Cvoid},dirderivfunc::Ptr{Cvoid} = SNESLineSearchGetVIFunctions(petsclib::PetscLibType,linesearch::SNESLineSearch) 
-Sets VI
+	projectfunc::Ptr{Cvoid},normfunc::Ptr{Cvoid},dirderivfunc::Ptr{Cvoid} = SNESLineSearchGetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch) 
+Sets VI-specific functions for line search computation.
 
 Not Collective
 
@@ -740,7 +740,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetVIFunctions()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchGetPreCheck()`,
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetVIFunctions()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchGetPreCheck()`,
 `SNESLineSearchVIProjectFn`, `SNESLineSearchVINormFn`
 
 # External Links
@@ -770,7 +770,7 @@ end
 end 
 
 """
-	X::PetscVec,F::PetscVec,Y::PetscVec,W::PetscVec,G::PetscVec = SNESLineSearchGetVecs(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	X::PetscVec,F::PetscVec,Y::PetscVec,W::PetscVec,G::PetscVec = SNESLineSearchGetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the vectors from the `SNESLineSearch` context
 
 Not Collective but the vectors are parallel
@@ -787,7 +787,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetVecs()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetVecs()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetVecs"))
@@ -820,7 +820,7 @@ end
 end 
 
 """
-	SNESLineSearchMonitor(petsclib::PetscLibType,ls::SNESLineSearch) 
+	SNESLineSearchMonitor(petsclib::PetscLibType, ls::SNESLineSearch) 
 runs the user provided monitor routines, if they exist
 
 Collective
@@ -830,7 +830,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorSet()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorSet()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitor"))
@@ -853,7 +853,7 @@ end
 end 
 
 """
-	SNESLineSearchMonitorCancel(petsclib::PetscLibType,ls::SNESLineSearch) 
+	SNESLineSearchMonitorCancel(petsclib::PetscLibType, ls::SNESLineSearch) 
 Clears all the monitor functions for a `SNESLineSearch` object.
 
 Logically Collective
@@ -868,7 +868,7 @@ set via the options database
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorDefault()`, `SNESLineSearchMonitorSet()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorDefault()`, `SNESLineSearchMonitorSet()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitorCancel"))
@@ -891,7 +891,7 @@ end
 end 
 
 """
-	SNESLineSearchMonitorSet(petsclib::PetscLibType,ls::SNESLineSearch, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
+	SNESLineSearchMonitorSet(petsclib::PetscLibType, ls::SNESLineSearch, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function that is to be used at every
 iteration of the nonlinear solver to display the iteration's
 progress.
@@ -910,7 +910,7 @@ Calling sequence of `f`:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorDefault()`, `SNESLineSearchMonitorCancel()`, `PetscCtxDestroyFn`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorDefault()`, `SNESLineSearchMonitorCancel()`, `PetscCtxDestroyFn`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitorSet"))
@@ -933,7 +933,7 @@ end
 end 
 
 """
-	SNESLineSearchMonitorSetFromOptions(petsclib::PetscLibType,ls::SNESLineSearch, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
+	SNESLineSearchMonitorSetFromOptions(petsclib::PetscLibType, ls::SNESLineSearch, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
 Sets a monitor function and viewer appropriate for the type indicated in the options database
 
 Collective
@@ -956,7 +956,7 @@ Calling sequence of `monitorsetup`:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetMonitor()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetMonitor()`, `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHasName()`, `PetscOptionsGetString()`,
 `PetscOptionsGetIntArray()`, `PetscOptionsGetRealArray()`, `PetscOptionsBool()`,
 `PetscOptionsInt()`, `PetscOptionsString()`, `PetscOptionsReal()`,
 `PetscOptionsName()`, `PetscOptionsBegin()`, `PetscOptionsEnd()`, `PetscOptionsHeadBegin()`,
@@ -985,7 +985,7 @@ end
 end 
 
 """
-	SNESLineSearchMonitorSolutionUpdate(petsclib::PetscLibType,ls::SNESLineSearch, vf::Vector{PetscViewerAndFormat}) 
+	SNESLineSearchMonitorSolutionUpdate(petsclib::PetscLibType, ls::SNESLineSearch, vf::Vector{PetscViewerAndFormat}) 
 Monitors each update of the function value the linesearch tries
 
 Collective
@@ -1001,7 +1001,7 @@ Level: developer
 
 This is not normally called directly but is passed to `SNESLineSearchMonitorSet()`
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorSet()`, `SNESMonitorSolution()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorSet()`, `SNESMonitorSolution()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchMonitorSolutionUpdate"))
@@ -1024,7 +1024,7 @@ end
 end 
 
 """
-	changed_Y::PetscBool,changed_W::PetscBool = SNESLineSearchPostCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec) 
+	changed_Y::PetscBool,changed_W::PetscBool = SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec) 
 Hook to modify step direction or updated solution after a successful linesearch
 
 Logically Collective
@@ -1041,7 +1041,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchSetPrecheck()`, `SNESLineSearchGetPrecheck()`
+See also: `SNES`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchSetPrecheck()`, `SNESLineSearchGetPrecheck()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchPostCheck"))
@@ -1068,7 +1068,7 @@ end
 end 
 
 """
-	changed::PetscBool = SNESLineSearchPreCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec) 
+	changed::PetscBool = SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec) 
 Prepares the line search for being applied.
 
 Logically Collective
@@ -1083,7 +1083,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchGetPreCheck()`, `SNESLineSearchSetPostCheck()`,
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchGetPreCheck()`, `SNESLineSearchSetPostCheck()`,
 `SNESLineSearchGetPostCheck()`
 
 # External Links
@@ -1109,7 +1109,7 @@ end
 end 
 
 """
-	changed::PetscBool = SNESLineSearchPreCheckPicard(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Ptr{Cvoid}) 
+	changed::PetscBool = SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Ptr{Cvoid}) 
 Implements a correction that is sometimes useful to improve the convergence rate of Picard iteration {cite}`hindmarsh1996time`
 
 Logically Collective
@@ -1131,7 +1131,7 @@ Options Database Keys:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESSetPicard()`, `SNESGetLineSearch()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`
+See also: `SNES`, `SNESLineSearch`, `SNESSetPicard()`, `SNESGetLineSearch()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchPreCheckPicard"))
@@ -1156,7 +1156,7 @@ end
 end 
 
 """
-	SNESLineSearchRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	SNESLineSearchRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 register a line search type `SNESLineSearchType`
 
 Logically Collective, No Fortran Support
@@ -1170,7 +1170,7 @@ Calling sequence of `function`:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchSetType()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchSetType()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchRegister"))
@@ -1193,7 +1193,7 @@ end
 end 
 
 """
-	SNESLineSearchReset(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	SNESLineSearchReset(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Undoes the `SNESLineSearchSetUp()` and deletes any `Vec`s or `Mat`s allocated by the line search.
 
 Collective
@@ -1203,7 +1203,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchSetUp()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchSetUp()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchReset"))
@@ -1226,7 +1226,7 @@ end
 end 
 
 """
-	SNESLineSearchSetComputeNorms(petsclib::PetscLibType,linesearch::SNESLineSearch, flg::PetscBool) 
+	SNESLineSearchSetComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, flg::PetscBool) 
 Turns on or off the computation of final norms in the line search.
 
 Input Parameters:
@@ -1238,7 +1238,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetNorms()`, `SNESLineSearchComputeNorms()`, `SNESLINESEARCHBASIC`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetNorms()`, `SNESLineSearchComputeNorms()`, `SNESLINESEARCHBASIC`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetComputeNorms"))
@@ -1261,7 +1261,7 @@ end
 end 
 
 """
-	SNESLineSearchSetDamping(petsclib::PetscLibType,linesearch::SNESLineSearch, damping::PetscReal) 
+	SNESLineSearchSetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch, damping::PetscReal) 
 Sets the line search damping parameter.
 
 Input Parameters:
@@ -1273,7 +1273,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetDamping()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetDamping()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetDamping"))
@@ -1296,7 +1296,7 @@ end
 end 
 
 """
-	SNESLineSearchSetDefaultMonitor(petsclib::PetscLibType,linesearch::SNESLineSearch, viewer::PetscViewer) 
+	SNESLineSearchSetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer) 
 Turns on/off printing useful information and debugging output about the line search.
 
 Logically Collective
@@ -1310,7 +1310,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `PETSCVIEWERASCII`, `SNESGetLineSearch()`, `SNESLineSearchGetDefaultMonitor()`, `PetscViewer`, `SNESLineSearchSetMonitor()`,
+See also: `SNES`, `SNESLineSearch`, `PETSCVIEWERASCII`, `SNESGetLineSearch()`, `SNESLineSearchGetDefaultMonitor()`, `PetscViewer`, `SNESLineSearchSetMonitor()`,
 `SNESLineSearchMonitorSetFromOptions()`
 
 # External Links
@@ -1334,7 +1334,7 @@ end
 end 
 
 """
-	SNESLineSearchSetFromOptions(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	SNESLineSearchSetFromOptions(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Sets options for the line search
 
 Logically Collective
@@ -1361,7 +1361,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchSetOrder()`, `SNESLineSearchSetType()`, `SNESLineSearchSetTolerances()`, `SNESLineSearchSetDamping()`, `SNESLineSearchPreCheckPicard()`,
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchSetOrder()`, `SNESLineSearchSetType()`, `SNESLineSearchSetTolerances()`, `SNESLineSearchSetDamping()`, `SNESLineSearchPreCheckPicard()`,
 `SNESLineSearchType`, `SNESLineSearchSetComputeNorms()`
 
 # External Links
@@ -1385,7 +1385,7 @@ end
 end 
 
 """
-	SNESLineSearchSetFunction(petsclib::PetscLibType,linesearch::SNESLineSearch, func::external) 
+	SNESLineSearchSetFunction(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external) 
 Sets the function evaluation used by the `SNES` line search
 `
 
@@ -1400,7 +1400,7 @@ Calling sequence of `func`:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESSetFunction()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESSetFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetFunction"))
@@ -1423,7 +1423,7 @@ end
 end 
 
 """
-	SNESLineSearchSetLambda(petsclib::PetscLibType,linesearch::SNESLineSearch, lambda::PetscReal) 
+	SNESLineSearchSetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch, lambda::PetscReal) 
 Sets the line search `lambda` (scaling of the solution update)
 
 Input Parameters:
@@ -1432,7 +1432,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetLambda()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetLambda()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetLambda"))
@@ -1455,7 +1455,7 @@ end
 end 
 
 """
-	SNESLineSearchSetNorms(petsclib::PetscLibType,linesearch::SNESLineSearch, xnorm::PetscReal, fnorm::PetscReal, ynorm::PetscReal) 
+	SNESLineSearchSetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, xnorm::PetscReal, fnorm::PetscReal, ynorm::PetscReal) 
 Sets the computed norms for the current solution `X`, the current update `Y`, and the current function value `F`.
 
 Collective
@@ -1468,7 +1468,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetVecs()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetVecs()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetNorms"))
@@ -1491,7 +1491,7 @@ end
 end 
 
 """
-	SNESLineSearchSetOrder(petsclib::PetscLibType,linesearch::SNESLineSearch, order::PetscInt) 
+	SNESLineSearchSetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch, order::PetscInt) 
 Sets the maximum order of the polynomial fit used in the line search
 
 Input Parameters:
@@ -1508,7 +1508,7 @@ Values for `order`:
 Options Database Key:
 - `-snes_linesearch_order order` - 1, 2, 3.  Most types only support certain orders (`SNESLINESEARCHBT` supports 2 or 3)
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetOrder()`, `SNESLineSearchSetDamping()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetOrder()`, `SNESLineSearchSetDamping()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetOrder"))
@@ -1531,7 +1531,7 @@ end
 end 
 
 """
-	SNESLineSearchSetPostCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid}) 
+	SNESLineSearchSetPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid}) 
 Sets a user function that is called after the line search has been applied to determine the step
 direction and length. Allows the user a chance to change or override the decision of the line search routine
 
@@ -1553,7 +1553,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchGetPreCheck()`, `SNESLineSearchGetPostCheck()`,
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchGetPreCheck()`, `SNESLineSearchGetPostCheck()`,
 `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`
 
 # External Links
@@ -1577,7 +1577,7 @@ end
 end 
 
 """
-	SNESLineSearchSetPreCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid}) 
+	SNESLineSearchSetPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Ptr{Cvoid}) 
 Sets a function that is called after the initial search direction has been computed but
 before the line search routine has been applied. Allows adjusting the result of (usually a linear solve) that
 determined the search direction.
@@ -1598,7 +1598,7 @@ Calling sequence of `func`:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchGetPreCheck()`,
+See also: `SNES`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchGetPreCheck()`,
 `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`
 
 # External Links
@@ -1622,7 +1622,7 @@ end
 end 
 
 """
-	SNESLineSearchSetReason(petsclib::PetscLibType,linesearch::SNESLineSearch, reason::SNESLineSearchReason) 
+	SNESLineSearchSetReason(petsclib::PetscLibType, linesearch::SNESLineSearch, reason::SNESLineSearchReason) 
 Sets the success/failure reason of the line search application
 
 Logically Collective; No Fortran Support
@@ -1633,7 +1633,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchReason`, `SNESLineSearchGetSResult()`, `SNESSetFunctionDomainError()`, `SNESSetFunction()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchReason`, `SNESLineSearchGetSResult()`, `SNESSetFunctionDomainError()`, `SNESSetFunction()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetReason"))
@@ -1656,7 +1656,7 @@ end
 end 
 
 """
-	SNESLineSearchSetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch, snes::AbstractSNES) 
+	SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::AbstractSNES) 
 Sets the `SNES` for the linesearch for function evaluation.
 
 Input Parameters:
@@ -1665,7 +1665,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetSNES()`, `SNESLineSearchSetVecs()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetSNES()`, `SNESLineSearchSetVecs()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetSNES"))
@@ -1688,7 +1688,7 @@ end
 end 
 
 """
-	SNESLineSearchSetTolerances(petsclib::PetscLibType,linesearch::SNESLineSearch, minlambda::PetscReal, maxlambda::PetscReal, rtol::PetscReal, atol::PetscReal, ltol::PetscReal, max_it::PetscInt) 
+	SNESLineSearchSetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch, minlambda::PetscReal, maxlambda::PetscReal, rtol::PetscReal, atol::PetscReal, ltol::PetscReal, max_it::PetscInt) 
 Sets the tolerances for the linesearch.
 
 Collective
@@ -1712,7 +1712,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetTolerances()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetTolerances()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetTolerances"))
@@ -1735,7 +1735,7 @@ end
 end 
 
 """
-	SNESLineSearchSetType(petsclib::PetscLibType,linesearch::SNESLineSearch, type::SNESLineSearchType) 
+	SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::SNESLineSearchType) 
 Sets the `SNESLinesearchType` of a `SNESLineSearch` object to indicate the line search algorithm that should be used by a given `SNES` solver
 
 Logically Collective
@@ -1749,7 +1749,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`, `SNESLineSearchGetType()`,
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`, `SNESLineSearchGetType()`,
 `SNESGetLineSearch()`
 
 # External Links
@@ -1773,7 +1773,7 @@ end
 end 
 
 """
-	SNESLineSearchSetUp(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	SNESLineSearchSetUp(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Prepares the line search for being applied by allocating
 any required vectors.
 
@@ -1784,7 +1784,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchReset()`
+See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchReset()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetUp"))
@@ -1807,8 +1807,8 @@ end
 end 
 
 """
-	SNESLineSearchSetVIFunctions(petsclib::PetscLibType,linesearch::SNESLineSearch, projectfunc::Ptr{Cvoid}, normfunc::Ptr{Cvoid}, dirderivfunc::Ptr{Cvoid}) 
-Sets VI
+	SNESLineSearchSetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch, projectfunc::Ptr{Cvoid}, normfunc::Ptr{Cvoid}, dirderivfunc::Ptr{Cvoid}) 
+Sets VI-specific functions for line search computation.
 
 Logically Collective
 
@@ -1820,7 +1820,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetVIFunctions()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchSetPreCheck()`,
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchGetVIFunctions()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchSetPreCheck()`,
 `SNESLineSearchVIProjectFn`, `SNESLineSearchVINormFn`, `SNESLineSearchVIDirDerivFn`
 
 # External Links
@@ -1844,7 +1844,7 @@ end
 end 
 
 """
-	SNESLineSearchSetVecs(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec) 
+	SNESLineSearchSetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec) 
 Sets the vectors on the `SNESLineSearch` context
 
 Logically Collective
@@ -1859,7 +1859,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetNorms()`, `SNESLineSearchGetVecs()`
+See also: `SNES`, `SNESLineSearch`, `SNESLineSearchSetNorms()`, `SNESLineSearchGetVecs()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetVecs"))
@@ -1882,7 +1882,7 @@ end
 end 
 
 """
-	SNESLineSearchSetWorkVecs(petsclib::PetscLibType,linesearch::SNESLineSearch, nwork::PetscInt) 
+	SNESLineSearchSetWorkVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, nwork::PetscInt) 
 Sets work vectors for the line search.
 
 Input Parameters:
@@ -1891,7 +1891,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESSetWorkVecs()`
+See also: `SNES`, `SNESLineSearch`, `SNESSetWorkVecs()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetWorkVecs"))
@@ -1914,7 +1914,7 @@ end
 end 
 
 """
-	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = SNESLineSearchShellGetApply(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	func::Ptr{Cvoid},ctx::Ptr{Cvoid} = SNESLineSearchShellGetApply(petsclib::PetscLibType, linesearch::SNESLineSearch) 
 Gets the apply function and context for the `SNESLINESEARCHSHELL`
 
 Not Collective
@@ -1928,7 +1928,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_snes), `SNESLineSearchShellSetApply()`, `SNESLINESEARCHSHELL`, `SNESLineSearchType`, `SNESLineSearch`,
+See also: `SNESLineSearchShellSetApply()`, `SNESLINESEARCHSHELL`, `SNESLineSearchType`, `SNESLineSearch`,
 `SNESLineSearchShellApplyFn`
 
 # External Links
@@ -1956,7 +1956,7 @@ end
 end 
 
 """
-	SNESLineSearchShellSetApply(petsclib::PetscLibType,linesearch::SNESLineSearch, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	SNESLineSearchShellSetApply(petsclib::PetscLibType, linesearch::SNESLineSearch, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets the apply function for the `SNESLINESEARCHSHELL` implementation.
 
 Not Collective
@@ -1967,7 +1967,31 @@ Input Parameters:
 - `ctx`        - context for func
 
 Usage:
--seealso: [](ch_snes), `SNESLineSearchShellGetApply()`, `SNESLINESEARCHSHELL`, `SNESLineSearchType`, `SNESLineSearch`,
+``
+PetscErrorCode shellfunc(SNESLineSearch linesearch,void * ctx)
+{
+Vec  X,Y,F,W,G;
+SNES snes;
+
+PetscFunctionBegin;
+PetscCall(SNESLineSearchGetSNES(linesearch,&snes));
+PetscCall(SNESLineSearchSetReason(linesearch,SNES_LINESEARCH_SUCCEEDED));
+PetscCall(SNESLineSearchGetVecs(linesearch,&X,&F,&Y,&W,&G));
+// determine lambda using W and G as work vecs..
+PetscCall(VecAXPY(X,-lambda,Y));
+PetscCall(SNESComputeFunction(snes,X,F));
+PetscCall(SNESLineSearchComputeNorms(linesearch));
+PetscFunctionReturn(PETSC_SUCCESS);
+}
+
+PetscCall(SNESGetLineSearch(snes, &linesearch));
+PetscCall(SNESLineSearchSetType(linesearch, SNESLINESEARCHSHELL));
+PetscCall(SNESLineSearchShellSetApply(linesearch, shellfunc, NULL));
+``
+
+Level: advanced
+
+See also: `SNESLineSearchShellGetApply()`, `SNESLINESEARCHSHELL`, `SNESLineSearchType`, `SNESLineSearch`,
 `SNESLineSearchShellApplyFn`
 
 # External Links
@@ -1991,7 +2015,7 @@ end
 end 
 
 """
-	SNESLineSearchView(petsclib::PetscLibType,linesearch::SNESLineSearch, viewer::PetscViewer) 
+	SNESLineSearchView(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer) 
 Prints useful information about the line search
 
 Logically Collective
@@ -2002,7 +2026,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `PetscViewer`, `SNESLineSearchCreate()`
+See also: `SNES`, `SNESLineSearch`, `PetscViewer`, `SNESLineSearchCreate()`
 
 # External Links
 $(_doc_external("SNES/SNESLineSearchView"))

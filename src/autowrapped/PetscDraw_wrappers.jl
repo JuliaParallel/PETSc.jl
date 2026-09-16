@@ -1,5 +1,5 @@
 """
-	PetscDrawAppendTitle(petsclib::PetscLibType,draw::PetscDraw, title::String) 
+	PetscDrawAppendTitle(petsclib::PetscLibType, draw::PetscDraw, title::String) 
 Appends to the title of a `PetscDraw` context.
 
 Collective
@@ -10,7 +10,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawSetTitle()`, `PetscDrawGetTitle()`
+See also: `PetscDraw`, `PetscDrawSetTitle()`, `PetscDrawGetTitle()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAppendTitle"))
@@ -33,7 +33,7 @@ end
 end 
 
 """
-	PetscDrawArrow(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal, cl::Cint) 
+	PetscDrawArrow(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal, cl::Cint) 
 draws a line with arrow head at end if the line is long enough
 
 Not Collective
@@ -48,7 +48,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawLine()`, `PetscDrawLineSetWidth()`, `PetscDrawLineGetWidth()`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
+See also: `PetscDraw`, `PetscDrawLine()`, `PetscDrawLineSetWidth()`, `PetscDrawLineGetWidth()`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
 `PetscDrawMarker()`, `PetscDrawPoint()`
 
 # External Links
@@ -72,7 +72,7 @@ end
 end 
 
 """
-	axis::PetscDrawAxis = PetscDrawAxisCreate(petsclib::PetscLibType,draw::PetscDraw) 
+	axis::PetscDrawAxis = PetscDrawAxisCreate(petsclib::PetscLibType, draw::PetscDraw) 
 Generate the axis data structure.
 
 Collective
@@ -83,7 +83,7 @@ Input Parameter:
 Output Parameter:
 - `axis` - the axis datastructure
 
--seealso: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCreate()`, `PetscDrawSP`, `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawLGGetAxis()`, `PetscDrawSPGetAxis()`,
+See also: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCreate()`, `PetscDrawSP`, `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawLGGetAxis()`, `PetscDrawSPGetAxis()`,
 `PetscDrawHGGetAxis()`, `PetscDrawBarGetAxis()`, `PetscDrawAxis`, `PetscDrawAxisDestroy()`, `PetscDrawAxisSetColors()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetLimits()`, `PetscDrawAxisGetLimits()`, `PetscDrawAxisSetHoldLimits()`,
 `PetscDrawAxisDraw()`
 
@@ -110,7 +110,7 @@ end
 end 
 
 """
-	PetscDrawAxisDestroy(petsclib::PetscLibType,axis::Union{PetscDrawAxis, Ref{PetscDrawAxis}}) 
+	PetscDrawAxisDestroy(petsclib::PetscLibType, axis::Union{PetscDrawAxis, Ref{PetscDrawAxis}}) 
 Frees the space used by an axis structure.
 
 Collective
@@ -120,7 +120,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`
+See also: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAxisDestroy"))
@@ -144,7 +144,7 @@ end
 end 
 
 """
-	PetscDrawAxisDraw(petsclib::PetscLibType,axis::PetscDrawAxis) 
+	PetscDrawAxisDraw(petsclib::PetscLibType, axis::PetscDrawAxis) 
 draws an axis.
 
 Collective
@@ -154,7 +154,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisGetLimits()`, `PetscDrawAxisSetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
+See also: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisGetLimits()`, `PetscDrawAxisSetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAxisDraw"))
@@ -177,7 +177,7 @@ end
 end 
 
 """
-	xmin::PetscReal,xmax::PetscReal,ymin::PetscReal,ymax::PetscReal = PetscDrawAxisGetLimits(petsclib::PetscLibType,axis::PetscDrawAxis) 
+	xmin::PetscReal,xmax::PetscReal,ymin::PetscReal,ymax::PetscReal = PetscDrawAxisGetLimits(petsclib::PetscLibType, axis::PetscDrawAxis) 
 Gets the limits (in user coords) of the axis
 
 Not Collective
@@ -191,7 +191,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisSetHoldLimits()`, `PetscDrawAxisSetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
+See also: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisSetHoldLimits()`, `PetscDrawAxisSetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAxisGetLimits"))
@@ -222,7 +222,7 @@ end
 end 
 
 """
-	PetscDrawAxisSetColors(petsclib::PetscLibType,axis::PetscDrawAxis, ac::Cint, tc::Cint, cc::Cint) 
+	PetscDrawAxisSetColors(petsclib::PetscLibType, axis::PetscDrawAxis, ac::Cint, tc::Cint, cc::Cint) 
 Sets the colors to be used for the axis,
 tickmarks, and text.
 
@@ -236,7 +236,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisDraw()`, `PetscDrawAxisSetLimits()`
+See also: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisDraw()`, `PetscDrawAxisSetLimits()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAxisSetColors"))
@@ -259,7 +259,7 @@ end
 end 
 
 """
-	PetscDrawAxisSetHoldLimits(petsclib::PetscLibType,axis::PetscDrawAxis, hold::PetscBool) 
+	PetscDrawAxisSetHoldLimits(petsclib::PetscLibType, axis::PetscDrawAxis, hold::PetscBool) 
 Causes an axis to keep the same limits until this is called
 again
 
@@ -271,7 +271,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisGetLimits()`, `PetscDrawAxisSetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
+See also: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisGetLimits()`, `PetscDrawAxisSetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAxisSetHoldLimits"))
@@ -294,7 +294,7 @@ end
 end 
 
 """
-	PetscDrawAxisSetLabels(petsclib::PetscLibType,axis::PetscDrawAxis, top::String, xlabel::String, ylabel::String) 
+	PetscDrawAxisSetLabels(petsclib::PetscLibType, axis::PetscDrawAxis, top::String, xlabel::String, ylabel::String) 
 Sets the x and y axis labels.
 
 Logically Collective
@@ -307,7 +307,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisSetColors()`, `PetscDrawAxisDraw()`, `PetscDrawAxisSetLimits()`
+See also: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisSetColors()`, `PetscDrawAxisDraw()`, `PetscDrawAxisSetLimits()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAxisSetLabels"))
@@ -330,7 +330,7 @@ end
 end 
 
 """
-	PetscDrawAxisSetLimits(petsclib::PetscLibType,axis::PetscDrawAxis, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal) 
+	PetscDrawAxisSetLimits(petsclib::PetscLibType, axis::PetscDrawAxis, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal) 
 Sets the limits (in user coords) of the axis
 
 Logically Collective
@@ -347,7 +347,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscDrawAxisSetHoldLimits()`, `PetscDrawAxisGetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
+See also: `PetscDrawAxisSetHoldLimits()`, `PetscDrawAxisGetLimits()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetColors()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawAxisSetLimits"))
@@ -370,7 +370,7 @@ end
 end 
 
 """
-	PetscDrawBOP(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawBOP(petsclib::PetscLibType, draw::PetscDraw) 
 Begins a new page or frame on the selected graphical device.
 
 Logically Collective
@@ -380,7 +380,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDrawEOP()`, `PetscDrawClear()`
+See also: `PetscDrawEOP()`, `PetscDrawClear()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBOP"))
@@ -403,7 +403,7 @@ end
 end 
 
 """
-	bar::PetscDrawBar = PetscDrawBarCreate(petsclib::PetscLibType,draw::PetscDraw) 
+	bar::PetscDrawBar = PetscDrawBarCreate(petsclib::PetscLibType, draw::PetscDraw) 
 Creates a bar graph data structure.
 
 Collective
@@ -414,7 +414,7 @@ Input Parameter:
 Output Parameter:
 - `bar` - The bar graph context
 
--seealso: `PetscDrawBar`, `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCreate()`, `PetscDrawSP`, `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawBarDestroy()`, `PetscDrawBarSetData()`,
+See also: `PetscDrawBar`, `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCreate()`, `PetscDrawSP`, `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawBarDestroy()`, `PetscDrawBarSetData()`,
 `PetscDrawBarDraw()`, `PetscDrawBarSave()`, `PetscDrawBarSetColor()`, `PetscDrawBarSort()`, `PetscDrawBarSetLimits()`, `PetscDrawBarGetAxis()`, `PetscDrawAxis`,
 `PetscDrawBarGetDraw()`, `PetscDrawBarSetFromOptions()`
 
@@ -441,7 +441,7 @@ end
 end 
 
 """
-	PetscDrawBarDestroy(petsclib::PetscLibType,bar::Union{PetscDrawBar, Ref{PetscDrawBar}}) 
+	PetscDrawBarDestroy(petsclib::PetscLibType, bar::Union{PetscDrawBar, Ref{PetscDrawBar}}) 
 Frees all space taken up by bar graph data structure.
 
 Collective
@@ -451,7 +451,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDrawBarCreate()`
+See also: `PetscDrawBar`, `PetscDrawBarCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarDestroy"))
@@ -475,7 +475,7 @@ end
 end 
 
 """
-	PetscDrawBarDraw(petsclib::PetscLibType,bar::PetscDrawBar) 
+	PetscDrawBarDraw(petsclib::PetscLibType, bar::PetscDrawBar) 
 Redraws a bar graph.
 
 Collective
@@ -485,7 +485,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarSetData()`
+See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarSetData()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarDraw"))
@@ -508,7 +508,7 @@ end
 end 
 
 """
-	axis::PetscDrawAxis = PetscDrawBarGetAxis(petsclib::PetscLibType,bar::PetscDrawBar) 
+	axis::PetscDrawAxis = PetscDrawBarGetAxis(petsclib::PetscLibType, bar::PetscDrawBar) 
 Gets the axis context associated with a bar graph.
 This is useful if one wants to change some axis property, such as
 labels, color, etc. The axis context should not be destroyed by the
@@ -524,7 +524,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawAxis`, `PetscDrawAxisCreate()`
+See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawAxis`, `PetscDrawAxisCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarGetAxis"))
@@ -549,7 +549,7 @@ end
 end 
 
 """
-	draw::PetscDraw = PetscDrawBarGetDraw(petsclib::PetscLibType,bar::PetscDrawBar) 
+	draw::PetscDraw = PetscDrawBarGetDraw(petsclib::PetscLibType, bar::PetscDrawBar) 
 Gets the draw context associated with a bar graph.
 
 Not Collective, draw is parallel if bar is parallel
@@ -562,7 +562,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDraw`, `PetscDrawBarCreate()`, `PetscDrawBarDraw()`
+See also: `PetscDrawBar`, `PetscDraw`, `PetscDrawBarCreate()`, `PetscDrawBarDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarGetDraw"))
@@ -587,7 +587,7 @@ end
 end 
 
 """
-	PetscDrawBarSave(petsclib::PetscLibType,bar::PetscDrawBar) 
+	PetscDrawBarSave(petsclib::PetscLibType, bar::PetscDrawBar) 
 Saves a drawn bar graph
 
 Collective
@@ -597,7 +597,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSave()`, `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarGetDraw()`, `PetscDrawSetSave()`, `PetscDrawBarSetData()`
+See also: `PetscDrawSave()`, `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarGetDraw()`, `PetscDrawSetSave()`, `PetscDrawBarSetData()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarSave"))
@@ -620,7 +620,7 @@ end
 end 
 
 """
-	PetscDrawBarSetColor(petsclib::PetscLibType,bar::PetscDrawBar, color::Cint) 
+	PetscDrawBarSetColor(petsclib::PetscLibType, bar::PetscDrawBar, color::Cint) 
 Sets the color the bars will be drawn with.
 
 Logically Collective
@@ -632,7 +632,7 @@ different color
 
 Level: intermediate
 
--seealso: `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawBarSetData()`, `PetscDrawBarDraw()`, `PetscDrawBarGetAxis()`
+See also: `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawBarSetData()`, `PetscDrawBarDraw()`, `PetscDrawBarGetAxis()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarSetColor"))
@@ -655,7 +655,7 @@ end
 end 
 
 """
-	PetscDrawBarSetData(petsclib::PetscLibType,bar::PetscDrawBar, bins::PetscInt, data::Vector{PetscReal}, labels::String) 
+	PetscDrawBarSetData(petsclib::PetscLibType, bar::PetscDrawBar, bins::PetscInt, data::Vector{PetscReal}, labels::String) 
 Set the data for a bar graph
 
 Logically Collective
@@ -668,7 +668,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarDraw()`
+See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarSetData"))
@@ -692,7 +692,7 @@ end
 end 
 
 """
-	PetscDrawBarSetFromOptions(petsclib::PetscLibType,bar::PetscDrawBar) 
+	PetscDrawBarSetFromOptions(petsclib::PetscLibType, bar::PetscDrawBar) 
 Sets options related to the display of the `PetscDrawBar`
 
 Collective
@@ -705,7 +705,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDrawBarDestroy()`, `PetscDrawBarCreate()`, `PetscDrawBarSort()`
+See also: `PetscDrawBar`, `PetscDrawBarDestroy()`, `PetscDrawBarCreate()`, `PetscDrawBarSort()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarSetFromOptions"))
@@ -728,7 +728,7 @@ end
 end 
 
 """
-	PetscDrawBarSetLimits(petsclib::PetscLibType,bar::PetscDrawBar, y_min::PetscReal, y_max::PetscReal) 
+	PetscDrawBarSetLimits(petsclib::PetscLibType, bar::PetscDrawBar, y_min::PetscReal, y_max::PetscReal) 
 Sets the axis limits for a bar graph. If more
 points are added after this call, the limits will be adjusted to
 include those additional points.
@@ -742,7 +742,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarGetAxis()`, `PetscDrawBarSetData()`, `PetscDrawBarDraw()`
+See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarGetAxis()`, `PetscDrawBarSetData()`, `PetscDrawBarDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarSetLimits"))
@@ -765,7 +765,7 @@ end
 end 
 
 """
-	PetscDrawBarSort(petsclib::PetscLibType,bar::PetscDrawBar, sort::PetscBool, tolerance::PetscReal) 
+	PetscDrawBarSort(petsclib::PetscLibType, bar::PetscDrawBar, sort::PetscBool, tolerance::PetscReal) 
 Sorts the values before drawing the bar chart, the bars will be in ascending order from left to right
 
 Logically Collective
@@ -777,7 +777,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarSetData()`, `PetscDrawBarSetColor()`, `PetscDrawBarDraw()`, `PetscDrawBarGetAxis()`
+See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarSetData()`, `PetscDrawBarSetColor()`, `PetscDrawBarDraw()`, `PetscDrawBarGetAxis()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawBarSort"))
@@ -800,7 +800,7 @@ end
 end 
 
 """
-	PetscDrawCheckResizedWindow(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawCheckResizedWindow(petsclib::PetscLibType, draw::PetscDraw) 
 Checks if the user has resized the window.
 
 Collective
@@ -810,7 +810,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawResizeWindow()`
+See also: `PetscDraw`, `PetscDrawResizeWindow()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawCheckResizedWindow"))
@@ -833,7 +833,7 @@ end
 end 
 
 """
-	PetscDrawClear(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawClear(petsclib::PetscLibType, draw::PetscDraw) 
 Clears graphical output. All processors must call this routine.
 Does not return until the draw in context is clear.
 
@@ -844,7 +844,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawBOP()`, `PetscDrawEOP()`
+See also: `PetscDrawBOP()`, `PetscDrawEOP()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawClear"))
@@ -867,7 +867,7 @@ end
 end 
 
 """
-	i::Cint,j::Cint = PetscDrawCoordinateToPixel(petsclib::PetscLibType,draw::PetscDraw, x::PetscReal, y::PetscReal) 
+	i::Cint,j::Cint = PetscDrawCoordinateToPixel(petsclib::PetscLibType, draw::PetscDraw, x::PetscReal, y::PetscReal) 
 given a coordinate in a `PetscDraw` returns the pixel location
 
 Not Collective
@@ -883,7 +883,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDraw`
+See also: `PetscDraw`
 
 # External Links
 $(_doc_external("Draw/PetscDrawCoordinateToPixel"))
@@ -910,7 +910,7 @@ end
 end 
 
 """
-	indraw::PetscDraw = PetscDrawCreate(petsclib::PetscLibType,comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
+	indraw::PetscDraw = PetscDrawCreate(petsclib::PetscLibType, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
 Creates a graphics context.
 
 Collective
@@ -929,7 +929,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDrawSetType()`, `PetscDrawSetFromOptions()`, `PetscDrawDestroy()`, `PetscDrawLGCreate()`, `PetscDrawSPCreate()`,
+See also: `PetscDrawSetType()`, `PetscDrawSetFromOptions()`, `PetscDrawDestroy()`, `PetscDrawLGCreate()`, `PetscDrawSPCreate()`,
 `PetscDrawViewPortsCreate()`, `PetscDrawViewPortsSet()`, `PetscDrawAxisCreate()`, `PetscDrawHGCreate()`, `PetscDrawBarCreate()`,
 `PetscViewerDrawGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSetSaveMovie()`, `PetscDrawSetSaveFinalImage()`,
 `PetscDrawOpenX()`, `PetscDrawOpenImage()`, `PetscDrawIsNull()`, `PetscDrawGetPopup()`, `PetscDrawCheckResizedWindow()`, `PetscDrawResizeWindow()`,
@@ -963,7 +963,7 @@ end
 end 
 
 """
-	PetscDrawDestroy(petsclib::PetscLibType,draw::Union{PetscDraw, Ref{PetscDraw}}) 
+	PetscDrawDestroy(petsclib::PetscLibType, draw::Union{PetscDraw, Ref{PetscDraw}}) 
 Deletes a draw context.
 
 Collective
@@ -973,7 +973,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawCreate()`
+See also: `PetscDraw`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawDestroy"))
@@ -997,7 +997,7 @@ end
 end 
 
 """
-	PetscDrawEOP(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawEOP(petsclib::PetscLibType, draw::PetscDraw) 
 Ends a page or frame on the selected graphical device.
 
 Logically Collective
@@ -1007,7 +1007,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDrawBOP()`, `PetscDrawClear()`
+See also: `PetscDrawBOP()`, `PetscDrawClear()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawEOP"))
@@ -1030,7 +1030,7 @@ end
 end 
 
 """
-	PetscDrawEllipse(petsclib::PetscLibType,draw::PetscDraw, x::PetscReal, y::PetscReal, a::PetscReal, b::PetscReal, c::Cint) 
+	PetscDrawEllipse(petsclib::PetscLibType, draw::PetscDraw, x::PetscReal, y::PetscReal, a::PetscReal, b::PetscReal, c::Cint) 
 Draws an ellipse onto a drawable.
 
 Not Collective
@@ -1045,7 +1045,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawMarker()`, `PetscDrawPoint()`, `PetscDrawString()`, `PetscDrawArrow()`
+See also: `PetscDraw`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawMarker()`, `PetscDrawPoint()`, `PetscDrawString()`, `PetscDrawArrow()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawEllipse"))
@@ -1074,7 +1074,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PetscDraw`, `PetscFinalize()`
+See also: `PetscDraw`, `PetscFinalize()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawFinalizePackage"))
@@ -1096,7 +1096,7 @@ end
 end 
 
 """
-	PetscDrawFlush(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawFlush(petsclib::PetscLibType, draw::PetscDraw) 
 Flushes graphical output.
 
 Collective
@@ -1106,7 +1106,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawClear()`
+See also: `PetscDraw`, `PetscDrawClear()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawFlush"))
@@ -1129,7 +1129,7 @@ end
 end 
 
 """
-	xl::PetscReal,yl::PetscReal,xr::PetscReal,yr::PetscReal = PetscDrawGetBoundingBox(petsclib::PetscLibType,draw::PetscDraw) 
+	xl::PetscReal,yl::PetscReal,xr::PetscReal,yr::PetscReal = PetscDrawGetBoundingBox(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the bounding box of all `PetscDrawStringBoxed()` commands
 
 Not Collective
@@ -1145,7 +1145,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint()`, `PetscDrawSetCurrentPoint()`
+See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint()`, `PetscDrawSetCurrentPoint()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetBoundingBox"))
@@ -1176,7 +1176,7 @@ end
 end 
 
 """
-	xl::PetscReal,yl::PetscReal,xr::PetscReal,yr::PetscReal = PetscDrawGetCoordinates(petsclib::PetscLibType,draw::PetscDraw) 
+	xl::PetscReal,yl::PetscReal,xr::PetscReal,yr::PetscReal = PetscDrawGetCoordinates(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the application coordinates of the corners of
 the window (or page).
 
@@ -1193,7 +1193,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawSetCoordinates()`
+See also: `PetscDraw`, `PetscDrawSetCoordinates()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetCoordinates"))
@@ -1224,7 +1224,7 @@ end
 end 
 
 """
-	x::PetscReal,y::PetscReal = PetscDrawGetCurrentPoint(petsclib::PetscLibType,draw::PetscDraw) 
+	x::PetscReal,y::PetscReal = PetscDrawGetCurrentPoint(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the current draw point, some codes use this point to determine where to draw next
 
 Not Collective
@@ -1238,7 +1238,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint()`, `PetscDrawSetCurrentPoint()`
+See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint()`, `PetscDrawSetCurrentPoint()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetCurrentPoint"))
@@ -1265,7 +1265,7 @@ end
 end 
 
 """
-	mtype::PetscDrawMarkerType = PetscDrawGetMarkerType(petsclib::PetscLibType,draw::PetscDraw) 
+	mtype::PetscDrawMarkerType = PetscDrawGetMarkerType(petsclib::PetscLibType, draw::PetscDraw) 
 gets the type of marker to display with `PetscDrawMarker()`
 
 Not Collective
@@ -1276,7 +1276,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`, `PetscDrawSetMarkerType()`, `PetscDrawMarkerType`
+See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`, `PetscDrawSetMarkerType()`, `PetscDrawMarkerType`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetMarkerType"))
@@ -1301,7 +1301,7 @@ end
 end 
 
 """
-	button::PetscDrawButton,x_user::PetscReal,y_user::PetscReal,x_phys::PetscReal,y_phys::PetscReal = PetscDrawGetMouseButton(petsclib::PetscLibType,draw::PetscDraw) 
+	button::PetscDrawButton,x_user::PetscReal,y_user::PetscReal,x_phys::PetscReal,y_phys::PetscReal = PetscDrawGetMouseButton(petsclib::PetscLibType, draw::PetscDraw) 
 Returns location of mouse and which button was
 pressed. Waits for button to be pressed.
 
@@ -1317,7 +1317,7 @@ Output Parameters:
 - `x_phys` - horizontal window coordinate (user may pass in NULL).
 - `y_phys` - vertical window coordinate (user may pass in NULL).
 
--seealso: `PetscDraw`, `PetscDrawButton`
+See also: `PetscDraw`, `PetscDrawButton`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetMouseButton"))
@@ -1350,7 +1350,7 @@ end
 end 
 
 """
-	lpause::PetscReal = PetscDrawGetPause(petsclib::PetscLibType,draw::PetscDraw) 
+	lpause::PetscReal = PetscDrawGetPause(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the amount of time that program pauses after
 a `PetscDrawPause()` is called.
 
@@ -1362,7 +1362,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawSetPause()`, `PetscDrawPause()`
+See also: `PetscDraw`, `PetscDrawSetPause()`, `PetscDrawPause()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetPause"))
@@ -1387,7 +1387,7 @@ end
 end 
 
 """
-	popup::PetscDraw = PetscDrawGetPopup(petsclib::PetscLibType,draw::PetscDraw) 
+	popup::PetscDraw = PetscDrawGetPopup(petsclib::PetscLibType, draw::PetscDraw) 
 Creates a popup window associated with a `PetscDraw` window.
 
 Collective
@@ -1400,7 +1400,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawScalePopup()`, `PetscDrawCreate()`
+See also: `PetscDraw`, `PetscDrawScalePopup()`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetPopup"))
@@ -1425,7 +1425,7 @@ end
 end 
 
 """
-	sdraw::PetscDraw = PetscDrawGetSingleton(petsclib::PetscLibType,draw::PetscDraw) 
+	sdraw::PetscDraw = PetscDrawGetSingleton(petsclib::PetscLibType, draw::PetscDraw) 
 Gain access to a `PetscDraw` object as if it were owned
 by the one process.
 
@@ -1439,7 +1439,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawRestoreSingleton()`, `PetscViewerGetSingleton()`, `PetscViewerRestoreSingleton()`
+See also: `PetscDraw`, `PetscDrawRestoreSingleton()`, `PetscViewerGetSingleton()`, `PetscViewerRestoreSingleton()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetSingleton"))
@@ -1464,7 +1464,7 @@ end
 end 
 
 """
-	title::Ptr{Cchar} = PetscDrawGetTitle(petsclib::PetscLibType,draw::PetscDraw) 
+	title::Ptr{Cchar} = PetscDrawGetTitle(petsclib::PetscLibType, draw::PetscDraw) 
 Gets pointer to title of a `PetscDraw` context.
 
 Not Collective
@@ -1477,7 +1477,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawSetTitle()`
+See also: `PetscDraw`, `PetscDrawSetTitle()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetTitle"))
@@ -1502,7 +1502,7 @@ end
 end 
 
 """
-	type::PetscDrawType = PetscDrawGetType(petsclib::PetscLibType,draw::PetscDraw) 
+	type::PetscDrawType = PetscDrawGetType(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the `PetscDraw` type as a string from the `PetscDraw` object.
 
 Not Collective
@@ -1515,7 +1515,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawType`, `PetscDrawSetType()`, `PetscDrawCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `PetscDraw`, `PetscDrawType`, `PetscDrawSetType()`, `PetscDrawCreate()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetType"))
@@ -1540,7 +1540,7 @@ end
 end 
 
 """
-	xl::PetscReal,yl::PetscReal,xr::PetscReal,yr::PetscReal = PetscDrawGetViewPort(petsclib::PetscLibType,draw::PetscDraw) 
+	xl::PetscReal,yl::PetscReal,xr::PetscReal,yr::PetscReal = PetscDrawGetViewPort(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the portion of the window (page) to which draw
 routines will write.
 
@@ -1557,7 +1557,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`
+See also: `PetscDraw`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetViewPort"))
@@ -1588,7 +1588,7 @@ end
 end 
 
 """
-	w::Cint,h::Cint = PetscDrawGetWindowSize(petsclib::PetscLibType,draw::PetscDraw) 
+	w::Cint,h::Cint = PetscDrawGetWindowSize(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the size of the window.
 
 Not Collective
@@ -1602,7 +1602,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawResizeWindow()`, `PetscDrawCheckResizedWindow()`
+See also: `PetscDraw`, `PetscDrawResizeWindow()`, `PetscDrawCheckResizedWindow()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawGetWindowSize"))
@@ -1629,7 +1629,7 @@ end
 end 
 
 """
-	PetscDrawHGAddValue(petsclib::PetscLibType,hist::PetscDrawHG, value::PetscReal) 
+	PetscDrawHGAddValue(petsclib::PetscLibType, hist::PetscDrawHG, value::PetscReal) 
 Adds another value to the histogram.
 
 Logically Collective
@@ -1640,7 +1640,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGReset()`, `PetscDrawHGAddWeightedValue()`
+See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGReset()`, `PetscDrawHGAddWeightedValue()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGAddValue"))
@@ -1663,7 +1663,7 @@ end
 end 
 
 """
-	PetscDrawHGAddWeightedValue(petsclib::PetscLibType,hist::PetscDrawHG, value::PetscReal, weight::PetscReal) 
+	PetscDrawHGAddWeightedValue(petsclib::PetscLibType, hist::PetscDrawHG, value::PetscReal, weight::PetscReal) 
 Adds another value to the histogram with a weight.
 
 Logically Collective
@@ -1675,7 +1675,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGReset()`, `PetscDrawHGAddValue()`
+See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGReset()`, `PetscDrawHGAddValue()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGAddWeightedValue"))
@@ -1698,7 +1698,7 @@ end
 end 
 
 """
-	PetscDrawHGCalcStats(petsclib::PetscLibType,hist::PetscDrawHG, calc::PetscBool) 
+	PetscDrawHGCalcStats(petsclib::PetscLibType, hist::PetscDrawHG, calc::PetscBool) 
 Turns on calculation of descriptive statistics associated with the histogram
 
 Not Collective
@@ -1709,7 +1709,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`
+See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGCalcStats"))
@@ -1732,7 +1732,7 @@ end
 end 
 
 """
-	hist::PetscDrawHG = PetscDrawHGCreate(petsclib::PetscLibType,draw::PetscDraw, bins::Cint) 
+	hist::PetscDrawHG = PetscDrawHGCreate(petsclib::PetscLibType, draw::PetscDraw, bins::Cint) 
 Creates a histogram data structure.
 
 Collective
@@ -1746,7 +1746,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawHGDestroy()`, `PetscDrawHG`, `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCreate()`, `PetscDrawSP`,
+See also: `PetscDrawHGDestroy()`, `PetscDrawHG`, `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCreate()`, `PetscDrawSP`,
 `PetscDrawHGSetNumberBins()`, `PetscDrawHGReset()`, `PetscDrawHGAddValue()`, `PetscDrawHGDraw()`, `PetscDrawHGSave()`, `PetscDrawHGView()`, `PetscDrawHGSetColor()`,
 `PetscDrawHGSetLimits()`, `PetscDrawHGCalcStats()`, `PetscDrawHGIntegerBins()`, `PetscDrawHGGetAxis()`, `PetscDrawAxis`, `PetscDrawHGGetDraw()`
 
@@ -1773,7 +1773,7 @@ end
 end 
 
 """
-	PetscDrawHGDestroy(petsclib::PetscLibType,hist::Union{PetscDrawHG, Ref{PetscDrawHG}}) 
+	PetscDrawHGDestroy(petsclib::PetscLibType, hist::Union{PetscDrawHG, Ref{PetscDrawHG}}) 
 Frees all space taken up by histogram data structure.
 
 Collective
@@ -1783,7 +1783,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawHGCreate()`, `PetscDrawHG`
+See also: `PetscDrawHGCreate()`, `PetscDrawHG`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGDestroy"))
@@ -1807,7 +1807,7 @@ end
 end 
 
 """
-	PetscDrawHGDraw(petsclib::PetscLibType,hist::PetscDrawHG) 
+	PetscDrawHGDraw(petsclib::PetscLibType, hist::PetscDrawHG) 
 Redraws a histogram.
 
 Collective
@@ -1817,7 +1817,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGAddValue()`, `PetscDrawHGReset()`
+See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGAddValue()`, `PetscDrawHGReset()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGDraw"))
@@ -1840,7 +1840,7 @@ end
 end 
 
 """
-	axis::PetscDrawAxis = PetscDrawHGGetAxis(petsclib::PetscLibType,hist::PetscDrawHG) 
+	axis::PetscDrawAxis = PetscDrawHGGetAxis(petsclib::PetscLibType, hist::PetscDrawHG) 
 Gets the axis context associated with a histogram.
 This is useful if one wants to change some axis property, such as
 labels, color, etc. The axis context should not be destroyed by the
@@ -1856,7 +1856,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawHG`, `PetscDrawAxis`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`, `PetscDrawHGSetColor()`, `PetscDrawHGSetLimits()`
+See also: `PetscDrawHG`, `PetscDrawAxis`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`, `PetscDrawHGSetColor()`, `PetscDrawHGSetLimits()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGGetAxis"))
@@ -1881,7 +1881,7 @@ end
 end 
 
 """
-	draw::PetscDraw = PetscDrawHGGetDraw(petsclib::PetscLibType,hist::PetscDrawHG) 
+	draw::PetscDraw = PetscDrawHGGetDraw(petsclib::PetscLibType, hist::PetscDrawHG) 
 Gets the draw context associated with a histogram.
 
 Not Collective, draw is parallel if hist is parallel
@@ -1894,7 +1894,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`, `PetscDrawHGSetColor()`, `PetscDrawAxis`, `PetscDrawHGSetLimits()`
+See also: `PetscDraw`, `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`, `PetscDrawHGSetColor()`, `PetscDrawAxis`, `PetscDrawHGSetLimits()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGGetDraw"))
@@ -1919,7 +1919,7 @@ end
 end 
 
 """
-	PetscDrawHGIntegerBins(petsclib::PetscLibType,hist::PetscDrawHG, ints::PetscBool) 
+	PetscDrawHGIntegerBins(petsclib::PetscLibType, hist::PetscDrawHG, ints::PetscBool) 
 Turns on integer width bins
 
 Not Collective
@@ -1930,7 +1930,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`, `PetscDrawHGSetColor()`
+See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscDrawHGView()`, `PetscDrawHGDraw()`, `PetscDrawHGSetColor()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGIntegerBins"))
@@ -1953,7 +1953,7 @@ end
 end 
 
 """
-	PetscDrawHGReset(petsclib::PetscLibType,hist::PetscDrawHG) 
+	PetscDrawHGReset(petsclib::PetscLibType, hist::PetscDrawHG) 
 Clears histogram to allow for reuse with new data.
 
 Logically Collective
@@ -1963,7 +1963,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGAddValue()`
+See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGAddValue()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGReset"))
@@ -1986,7 +1986,7 @@ end
 end 
 
 """
-	PetscDrawHGSave(petsclib::PetscLibType,hg::PetscDrawHG) 
+	PetscDrawHGSave(petsclib::PetscLibType, hg::PetscDrawHG) 
 Saves a drawn image
 
 Collective
@@ -1996,7 +1996,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSave()`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawHGDraw()`
+See also: `PetscDrawSave()`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawHGDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGSave"))
@@ -2019,7 +2019,7 @@ end
 end 
 
 """
-	PetscDrawHGSetColor(petsclib::PetscLibType,hist::PetscDrawHG, color::Cint) 
+	PetscDrawHGSetColor(petsclib::PetscLibType, hist::PetscDrawHG, color::Cint) 
 Sets the color the bars will be drawn with.
 
 Logically Collective
@@ -2030,7 +2030,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`, `PetscDrawHGDraw()`, `PetscDrawHGGetAxis()`
+See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`, `PetscDrawHGDraw()`, `PetscDrawHGGetAxis()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGSetColor"))
@@ -2053,7 +2053,7 @@ end
 end 
 
 """
-	PetscDrawHGSetLimits(petsclib::PetscLibType,hist::PetscDrawHG, x_min::PetscReal, x_max::PetscReal, y_min::Cint, y_max::Cint) 
+	PetscDrawHGSetLimits(petsclib::PetscLibType, hist::PetscDrawHG, x_min::PetscReal, x_max::PetscReal, y_min::Cint, y_max::Cint) 
 Sets the axis limits for a histogram. If more
 points are added after this call, the limits will be adjusted to
 include those additional points.
@@ -2069,7 +2069,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`, `PetscDrawHGDraw()`, `PetscDrawHGGetAxis()`
+See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`, `PetscDrawHGDraw()`, `PetscDrawHGGetAxis()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGSetLimits"))
@@ -2092,7 +2092,7 @@ end
 end 
 
 """
-	PetscDrawHGSetNumberBins(petsclib::PetscLibType,hist::PetscDrawHG, bins::Cint) 
+	PetscDrawHGSetNumberBins(petsclib::PetscLibType, hist::PetscDrawHG, bins::Cint) 
 Change the number of bins that are to be drawn in the histogram
 
 Logically Collective
@@ -2103,7 +2103,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGIntegerBins()`
+See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawHGIntegerBins()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGSetNumberBins"))
@@ -2126,7 +2126,7 @@ end
 end 
 
 """
-	PetscDrawHGView(petsclib::PetscLibType,hist::PetscDrawHG, viewer::PetscViewer) 
+	PetscDrawHGView(petsclib::PetscLibType, hist::PetscDrawHG, viewer::PetscViewer) 
 Prints the histogram information to a viewer
 
 Not Collective
@@ -2137,7 +2137,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDrawHG`, `PetscViewer`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`, `PetscDrawHGDraw()`
+See also: `PetscDrawHG`, `PetscViewer`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`, `PetscDrawHGDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawHGView"))
@@ -2160,7 +2160,7 @@ end
 end 
 
 """
-	PetscDrawIndicatorFunction(petsclib::PetscLibType,draw::PetscDraw, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, c::Cint, indicator::external, ctx::Ptr{Cvoid}) 
+	PetscDrawIndicatorFunction(petsclib::PetscLibType, draw::PetscDraw, xmin::PetscReal, xmax::PetscReal, ymin::PetscReal, ymax::PetscReal, c::Cint, indicator::external, ctx::Ptr{Cvoid}) 
 Draws an indicator function (where a relationship is true) on a `PetscDraw`
 
 Not Collective
@@ -2177,7 +2177,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscDraw`
+See also: `PetscDraw`
 
 # External Links
 $(_doc_external("Draw/PetscDrawIndicatorFunction"))
@@ -2207,7 +2207,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: `PetscDraw`, `PetscInitialize()`
+See also: `PetscDraw`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawInitializePackage"))
@@ -2229,7 +2229,7 @@ end
 end 
 
 """
-	yes::PetscBool = PetscDrawIsNull(petsclib::PetscLibType,draw::PetscDraw) 
+	yes::PetscBool = PetscDrawIsNull(petsclib::PetscLibType, draw::PetscDraw) 
 Returns `PETSC_TRUE` if draw is a null draw object.
 
 Not Collective
@@ -2242,7 +2242,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PETSC_DRAW_NULL`, `PetscDrawOpenX()`
+See also: `PetscDraw`, `PETSC_DRAW_NULL`, `PetscDrawOpenX()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawIsNull"))
@@ -2267,7 +2267,7 @@ end
 end 
 
 """
-	PetscDrawLGAddCommonPoint(petsclib::PetscLibType,lg::PetscDrawLG, x::PetscReal, y::Vector{PetscReal}) 
+	PetscDrawLGAddCommonPoint(petsclib::PetscLibType, lg::PetscDrawLG, x::PetscReal, y::Vector{PetscReal}) 
 Adds another point to each of the line graphs. All the points share
 the same new X coordinate.  The new point must have an X coordinate larger than the old points.
 
@@ -2280,7 +2280,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoints()`, `PetscDrawLGAddPoint()`, `PetscDrawLGReset()`, `PetscDrawLGDraw()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoints()`, `PetscDrawLGAddPoint()`, `PetscDrawLGReset()`, `PetscDrawLGDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGAddCommonPoint"))
@@ -2303,7 +2303,7 @@ end
 end 
 
 """
-	PetscDrawLGAddPoint(petsclib::PetscLibType,lg::PetscDrawLG, x::Vector{PetscReal}, y::Vector{PetscReal}) 
+	PetscDrawLGAddPoint(petsclib::PetscLibType, lg::PetscDrawLG, x::Vector{PetscReal}, y::Vector{PetscReal}) 
 Adds another point to each of the line graphs.
 The new point must have an X coordinate larger than the old points.
 
@@ -2316,7 +2316,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoints()`, `PetscDrawLGAddCommonPoint()`, `PetscDrawLGReset()`, `PetscDrawLGDraw()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoints()`, `PetscDrawLGAddCommonPoint()`, `PetscDrawLGReset()`, `PetscDrawLGDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGAddPoint"))
@@ -2339,7 +2339,7 @@ end
 end 
 
 """
-	PetscDrawLGAddPoints(petsclib::PetscLibType,lg::PetscDrawLG, n::PetscInt, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) 
+	PetscDrawLGAddPoints(petsclib::PetscLibType, lg::PetscDrawLG, n::PetscInt, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) 
 Adds several points to each of the line graphs.
 The new points must have an X coordinate larger than the old points.
 
@@ -2353,7 +2353,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoint()`, `PetscDrawLGAddCommonPoint()`, `PetscDrawLGReset()`, `PetscDrawLGDraw()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoint()`, `PetscDrawLGAddCommonPoint()`, `PetscDrawLGReset()`, `PetscDrawLGDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGAddPoints"))
@@ -2378,7 +2378,7 @@ end
 end 
 
 """
-	outlg::PetscDrawLG = PetscDrawLGCreate(petsclib::PetscLibType,draw::PetscDraw, dim::PetscInt) 
+	outlg::PetscDrawLG = PetscDrawLGCreate(petsclib::PetscLibType, draw::PetscDraw, dim::PetscInt) 
 Creates a line graph data structure.
 
 Collective
@@ -2392,7 +2392,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLGDestroy()`, `PetscDrawLGAddPoint()`, `PetscDrawLGAddCommonPoint()`, `PetscDrawLGAddPoints()`, `PetscDrawLGDraw()`, `PetscDrawLGSave()`,
+See also: `PetscDrawLGDestroy()`, `PetscDrawLGAddPoint()`, `PetscDrawLGAddCommonPoint()`, `PetscDrawLGAddPoints()`, `PetscDrawLGDraw()`, `PetscDrawLGSave()`,
 `PetscDrawLGView()`, `PetscDrawLGReset()`, `PetscDrawLGSetDimension()`, `PetscDrawLGGetDimension()`, `PetscDrawLGSetLegend()`, `PetscDrawLGGetAxis()`,
 `PetscDrawLGGetDraw()`, `PetscDrawLGSetUseMarkers()`, `PetscDrawLGSetLimits()`, `PetscDrawLGSetColors()`, `PetscDrawLGSetOptionsPrefix()`, `PetscDrawLGSetFromOptions()`
 
@@ -2419,7 +2419,7 @@ end
 end 
 
 """
-	PetscDrawLGDestroy(petsclib::PetscLibType,lg::Union{PetscDrawLG, Ref{PetscDrawLG}}) 
+	PetscDrawLGDestroy(petsclib::PetscLibType, lg::Union{PetscDrawLG, Ref{PetscDrawLG}}) 
 Frees all space taken up by line graph data structure.
 
 Collective
@@ -2429,7 +2429,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGDestroy"))
@@ -2453,7 +2453,7 @@ end
 end 
 
 """
-	PetscDrawLGDraw(petsclib::PetscLibType,lg::PetscDrawLG) 
+	PetscDrawLGDraw(petsclib::PetscLibType, lg::PetscDrawLG) 
 Redraws a line graph.
 
 Collective
@@ -2463,7 +2463,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawSPDraw()`, `PetscDrawLGSPDraw()`, `PetscDrawLGReset()`
+See also: `PetscDrawLG`, `PetscDrawSPDraw()`, `PetscDrawLGSPDraw()`, `PetscDrawLGReset()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGDraw"))
@@ -2486,7 +2486,7 @@ end
 end 
 
 """
-	axis::PetscDrawAxis = PetscDrawLGGetAxis(petsclib::PetscLibType,lg::PetscDrawLG) 
+	axis::PetscDrawAxis = PetscDrawLGGetAxis(petsclib::PetscLibType, lg::PetscDrawLG) 
 Gets the axis context associated with a line graph.
 This is useful if one wants to change some axis property, such as
 labels, color, etc. The axis context should not be destroyed by the
@@ -2502,7 +2502,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDrawLGCreate()`, `PetscDrawAxis`, `PetscDrawLG`
+See also: `PetscDrawLGCreate()`, `PetscDrawAxis`, `PetscDrawLG`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGGetAxis"))
@@ -2527,7 +2527,7 @@ end
 end 
 
 """
-	dim::PetscInt,n::PetscInt,x::Ptr{PetscReal},y::Ptr{PetscReal} = PetscDrawLGGetData(petsclib::PetscLibType,lg::PetscDrawLG) 
+	dim::PetscInt,n::PetscInt,x::Ptr{PetscReal},y::Ptr{PetscReal} = PetscDrawLGGetData(petsclib::PetscLibType, lg::PetscDrawLG) 
 Get the data being plotted.
 
 Not Collective
@@ -2543,7 +2543,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLGC`, `PetscDrawLGCreate()`, `PetscDrawLGGetDimension()`
+See also: `PetscDrawLGC`, `PetscDrawLGCreate()`, `PetscDrawLGGetDimension()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGGetData"))
@@ -2574,7 +2574,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscDrawLGGetDimension(petsclib::PetscLibType,lg::PetscDrawLG) 
+	dim::PetscInt = PetscDrawLGGetDimension(petsclib::PetscLibType, lg::PetscDrawLG) 
 Get the number of curves that are to be drawn.
 
 Not Collective
@@ -2587,7 +2587,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLGC`, `PetscDrawLGCreate()`, `PetscDrawLGSetDimension()`
+See also: `PetscDrawLGC`, `PetscDrawLGCreate()`, `PetscDrawLGSetDimension()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGGetDimension"))
@@ -2612,7 +2612,7 @@ end
 end 
 
 """
-	draw::PetscDraw = PetscDrawLGGetDraw(petsclib::PetscLibType,lg::PetscDrawLG) 
+	draw::PetscDraw = PetscDrawLGGetDraw(petsclib::PetscLibType, lg::PetscDrawLG) 
 Gets the draw context associated with a line graph.
 
 Not Collective, if lg is parallel then draw is parallel
@@ -2625,7 +2625,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLGCreate()`, `PetscDraw`, `PetscDrawLG`
+See also: `PetscDrawLGCreate()`, `PetscDraw`, `PetscDrawLG`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGGetDraw"))
@@ -2650,7 +2650,7 @@ end
 end 
 
 """
-	PetscDrawLGReset(petsclib::PetscLibType,lg::PetscDrawLG) 
+	PetscDrawLGReset(petsclib::PetscLibType, lg::PetscDrawLG) 
 Clears line graph to allow for reuse with new data.
 
 Logically Collective
@@ -2660,7 +2660,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGReset"))
@@ -2683,7 +2683,7 @@ end
 end 
 
 """
-	PetscDrawLGSPDraw(petsclib::PetscLibType,lg::PetscDrawLG, spin::PetscDrawSP) 
+	PetscDrawLGSPDraw(petsclib::PetscLibType, lg::PetscDrawLG, spin::PetscDrawSP) 
 Redraws a line graph and a scatter plot on the same `PetscDraw` they must share
 
 Collective
@@ -2694,7 +2694,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLGDraw()`, `PetscDrawSPDraw()`
+See also: `PetscDrawLGDraw()`, `PetscDrawSPDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSPDraw"))
@@ -2717,7 +2717,7 @@ end
 end 
 
 """
-	PetscDrawLGSave(petsclib::PetscLibType,lg::PetscDrawLG) 
+	PetscDrawLGSave(petsclib::PetscLibType, lg::PetscDrawLG) 
 Saves a drawn image
 
 Collective
@@ -2727,7 +2727,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawSave()`, `PetscDrawLGCreate()`, `PetscDrawLGGetDraw()`, `PetscDrawSetSave()`
+See also: `PetscDrawLG`, `PetscDrawSave()`, `PetscDrawLGCreate()`, `PetscDrawLGGetDraw()`, `PetscDrawSetSave()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSave"))
@@ -2750,7 +2750,7 @@ end
 end 
 
 """
-	PetscDrawLGSetColors(petsclib::PetscLibType,lg::PetscDrawLG, colors::Vector{Cint}) 
+	PetscDrawLGSetColors(petsclib::PetscLibType, lg::PetscDrawLG, colors::Vector{Cint}) 
 Sets the color of each line graph drawn
 
 Logically Collective
@@ -2761,7 +2761,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGSetDimension()`, `PetscDrawLGGetDimension()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGSetDimension()`, `PetscDrawLGGetDimension()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSetColors"))
@@ -2784,7 +2784,7 @@ end
 end 
 
 """
-	PetscDrawLGSetDimension(petsclib::PetscLibType,lg::PetscDrawLG, dim::PetscInt) 
+	PetscDrawLGSetDimension(petsclib::PetscLibType, lg::PetscDrawLG, dim::PetscInt) 
 Change the number of curves that are to be drawn.
 
 Logically Collective
@@ -2795,7 +2795,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLGCreate()`, `PetscDrawLGGetDimension()`
+See also: `PetscDrawLGCreate()`, `PetscDrawLGGetDimension()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSetDimension"))
@@ -2818,7 +2818,7 @@ end
 end 
 
 """
-	PetscDrawLGSetFromOptions(petsclib::PetscLibType,lg::PetscDrawLG) 
+	PetscDrawLGSetFromOptions(petsclib::PetscLibType, lg::PetscDrawLG) 
 Sets options related to the line graph object
 
 Collective
@@ -2831,7 +2831,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGDestroy()`, `PetscDrawLGCreate()`
+See also: `PetscDrawLG`, `PetscDrawLGDestroy()`, `PetscDrawLGCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSetFromOptions"))
@@ -2854,7 +2854,7 @@ end
 end 
 
 """
-	PetscDrawLGSetLegend(petsclib::PetscLibType,lg::PetscDrawLG, names::String) 
+	PetscDrawLGSetLegend(petsclib::PetscLibType, lg::PetscDrawLG, names::String) 
 sets the names of each curve plotted
 
 Logically Collective
@@ -2865,7 +2865,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLGGetAxis()`, `PetscDrawAxis`, `PetscDrawAxisSetColors()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetHoldLimits()`
+See also: `PetscDrawLGGetAxis()`, `PetscDrawAxis`, `PetscDrawAxisSetColors()`, `PetscDrawAxisSetLabels()`, `PetscDrawAxisSetHoldLimits()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSetLegend"))
@@ -2889,7 +2889,7 @@ end
 end 
 
 """
-	PetscDrawLGSetLimits(petsclib::PetscLibType,lg::PetscDrawLG, x_min::PetscReal, x_max::PetscReal, y_min::PetscReal, y_max::PetscReal) 
+	PetscDrawLGSetLimits(petsclib::PetscLibType, lg::PetscDrawLG, x_min::PetscReal, x_max::PetscReal, y_min::PetscReal, y_max::PetscReal) 
 Sets the axis limits for a line graph. If more
 points are added after this call, the limits will be adjusted to
 include those additional points.
@@ -2905,7 +2905,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawAxis`
+See also: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawAxis`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSetLimits"))
@@ -2928,7 +2928,7 @@ end
 end 
 
 """
-	PetscDrawLGSetOptionsPrefix(petsclib::PetscLibType,lg::PetscDrawLG, prefix::String) 
+	PetscDrawLGSetOptionsPrefix(petsclib::PetscLibType, lg::PetscDrawLG, prefix::String) 
 Sets the prefix used for searching for all
 `PetscDrawLG` options in the database.
 
@@ -2940,7 +2940,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDrawLG`, `PetscDrawLGSetFromOptions()`, `PetscDrawLGCreate()`
+See also: `PetscDrawLG`, `PetscDrawLGSetFromOptions()`, `PetscDrawLGCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSetOptionsPrefix"))
@@ -2963,8 +2963,8 @@ end
 end 
 
 """
-	PetscDrawLGSetUseMarkers(petsclib::PetscLibType,lg::PetscDrawLG, flg::PetscBool) 
-Causes the line graph object to draw a marker for each data
+	PetscDrawLGSetUseMarkers(petsclib::PetscLibType, lg::PetscDrawLG, flg::PetscBool) 
+Causes the line graph object to draw a marker for each data-point.
 
 Logically Collective
 
@@ -2977,7 +2977,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGSetUseMarkers"))
@@ -3000,7 +3000,7 @@ end
 end 
 
 """
-	PetscDrawLGView(petsclib::PetscLibType,lg::PetscDrawLG, viewer::PetscViewer) 
+	PetscDrawLGView(petsclib::PetscLibType, lg::PetscDrawLG, viewer::PetscViewer) 
 Prints a line graph.
 
 Collective
@@ -3011,7 +3011,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDrawLG`, `PetscDrawLGCreate()`
+See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLGView"))
@@ -3034,7 +3034,7 @@ end
 end 
 
 """
-	PetscDrawLine(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal, cl::Cint) 
+	PetscDrawLine(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal, cl::Cint) 
 draws a line onto a drawable.
 
 Not Collective
@@ -3049,7 +3049,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawArrow()`, `PetscDrawLineSetWidth()`, `PetscDrawLineGetWidth()`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
+See also: `PetscDraw`, `PetscDrawArrow()`, `PetscDrawLineSetWidth()`, `PetscDrawLineGetWidth()`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
 `PetscDrawMarker()`, `PetscDrawPoint()`
 
 # External Links
@@ -3073,7 +3073,7 @@ end
 end 
 
 """
-	width::PetscReal = PetscDrawLineGetWidth(petsclib::PetscLibType,draw::PetscDraw) 
+	width::PetscReal = PetscDrawLineGetWidth(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the line width for future draws.  The width is
 relative to the user coordinates of the window; 0.0 denotes the natural
 width; 1.0 denotes the interior viewport.
@@ -3088,7 +3088,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawLineSetWidth()`, `PetscDrawLine()`, `PetscDrawArrow()`
+See also: `PetscDraw`, `PetscDrawLineSetWidth()`, `PetscDrawLine()`, `PetscDrawArrow()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLineGetWidth"))
@@ -3113,7 +3113,7 @@ end
 end 
 
 """
-	PetscDrawLineSetWidth(petsclib::PetscLibType,draw::PetscDraw, width::PetscReal) 
+	PetscDrawLineSetWidth(petsclib::PetscLibType, draw::PetscDraw, width::PetscReal) 
 Sets the line width for future draws.  The width is
 relative to the user coordinates of the window; 0.0 denotes the natural
 width; 1.0 denotes the entire viewport.
@@ -3126,7 +3126,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawLineGetWidth()`, `PetscDrawLine()`, `PetscDrawArrow()`
+See also: `PetscDraw`, `PetscDrawLineGetWidth()`, `PetscDrawLine()`, `PetscDrawArrow()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawLineSetWidth"))
@@ -3149,7 +3149,7 @@ end
 end 
 
 """
-	PetscDrawMarker(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint) 
+	PetscDrawMarker(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint) 
 draws a marker onto a drawable.
 
 Not Collective
@@ -3162,7 +3162,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawString()`, `PetscDrawSetMarkerType()`, `PetscDrawGetMarkerType()`
+See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawString()`, `PetscDrawSetMarkerType()`, `PetscDrawGetMarkerType()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawMarker"))
@@ -3185,7 +3185,7 @@ end
 end 
 
 """
-	draw::PetscDraw = PetscDrawOpenImage(petsclib::PetscLibType,comm::MPI_Comm, filename::String, w::Cint, h::Cint) 
+	draw::PetscDraw = PetscDrawOpenImage(petsclib::PetscLibType, comm::MPI_Comm, filename::String, w::Cint, h::Cint) 
 Opens an image for use with the `PetscDraw` routines.
 
 Collective
@@ -3201,7 +3201,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PETSC_DRAW_IMAGE`, `PETSC_DRAW_X`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`
+See also: `PetscDraw`, `PETSC_DRAW_IMAGE`, `PETSC_DRAW_X`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawOpenImage"))
@@ -3226,7 +3226,7 @@ end
 end 
 
 """
-	win::PetscDraw = PetscDrawOpenNull(petsclib::PetscLibType,comm::MPI_Comm) 
+	win::PetscDraw = PetscDrawOpenNull(petsclib::PetscLibType, comm::MPI_Comm) 
 Opens a null drawing context. All draw commands to
 it are ignored.
 
@@ -3238,7 +3238,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawIsNull()`, `PETSC_DRAW_NULL`, `PetscDrawOpenX()`
+See also: `PetscDraw`, `PetscDrawIsNull()`, `PETSC_DRAW_NULL`, `PetscDrawOpenX()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawOpenNull"))
@@ -3263,8 +3263,8 @@ end
 end 
 
 """
-	draw::PetscDraw = PetscDrawOpenX(petsclib::PetscLibType,comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
-Opens an X
+	draw::PetscDraw = PetscDrawOpenX(petsclib::PetscLibType, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint) 
+Opens an X-window for use with the `PetscDraw` routines.
 
 Collective
 
@@ -3299,7 +3299,7 @@ in bad contour plots.
 
 Level: beginner
 
--seealso: `PetscDrawFlush()`, `PetscDrawDestroy()`, `PetscDrawCreate()`
+See also: `PetscDrawFlush()`, `PetscDrawDestroy()`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawOpenX"))
@@ -3324,7 +3324,7 @@ end
 end 
 
 """
-	PetscDrawPause(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawPause(petsclib::PetscLibType, draw::PetscDraw) 
 Waits n seconds or until user input, depending on input
 to `PetscDrawSetPause()`.
 
@@ -3335,7 +3335,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawSetPause()`, `PetscDrawGetPause()`
+See also: `PetscDraw`, `PetscDrawSetPause()`, `PetscDrawGetPause()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawPause"))
@@ -3358,7 +3358,7 @@ end
 end 
 
 """
-	x::PetscReal,y::PetscReal = PetscDrawPixelToCoordinate(petsclib::PetscLibType,draw::PetscDraw, i::Cint, j::Cint) 
+	x::PetscReal,y::PetscReal = PetscDrawPixelToCoordinate(petsclib::PetscLibType, draw::PetscDraw, i::Cint, j::Cint) 
 given a pixel in a `PetscDraw` returns the coordinate
 
 Not Collective
@@ -3374,7 +3374,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDraw`
+See also: `PetscDraw`
 
 # External Links
 $(_doc_external("Draw/PetscDrawPixelToCoordinate"))
@@ -3401,7 +3401,7 @@ end
 end 
 
 """
-	PetscDrawPoint(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint) 
+	PetscDrawPoint(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint) 
 draws a point onto a drawable.
 
 Not Collective
@@ -3414,7 +3414,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawPointPixel()`, `PetscDrawPointSetSize()`, `PetscDrawLine()`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
+See also: `PetscDraw`, `PetscDrawPointPixel()`, `PetscDrawPointSetSize()`, `PetscDrawLine()`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
 `PetscDrawMarker()`, `PetscDrawString()`, `PetscDrawArrow()`
 
 # External Links
@@ -3438,7 +3438,7 @@ end
 end 
 
 """
-	PetscDrawPointPixel(petsclib::PetscLibType,draw::PetscDraw, x::Cint, y::Cint, c::Cint) 
+	PetscDrawPointPixel(petsclib::PetscLibType, draw::PetscDraw, x::Cint, y::Cint, c::Cint) 
 draws a point onto a drawable, in pixel coordinates
 
 Not Collective
@@ -3451,7 +3451,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawPointSetSize()`
+See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawPointSetSize()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawPointPixel"))
@@ -3474,7 +3474,7 @@ end
 end 
 
 """
-	PetscDrawPointSetSize(petsclib::PetscLibType,draw::PetscDraw, width::PetscReal) 
+	PetscDrawPointSetSize(petsclib::PetscLibType, draw::PetscDraw, width::PetscReal) 
 Sets the point size for future draws.  The size is
 relative to the user coordinates of the window; 0.0 denotes the natural
 width, 1.0 denotes the entire viewport.
@@ -3487,7 +3487,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`
+See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawPointSetSize"))
@@ -3510,7 +3510,7 @@ end
 end 
 
 """
-	PetscDrawPopCurrentPoint(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawPopCurrentPoint(petsclib::PetscLibType, draw::PetscDraw) 
 Pops a current draw point (discarding it)
 
 Not Collective
@@ -3520,7 +3520,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawSetCurrentPoint()`, `PetscDrawGetCurrentPoint()`
+See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawSetCurrentPoint()`, `PetscDrawGetCurrentPoint()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawPopCurrentPoint"))
@@ -3543,7 +3543,7 @@ end
 end 
 
 """
-	PetscDrawPushCurrentPoint(petsclib::PetscLibType,draw::PetscDraw, x::PetscReal, y::PetscReal) 
+	PetscDrawPushCurrentPoint(petsclib::PetscLibType, draw::PetscDraw, x::PetscReal, y::PetscReal) 
 Pushes a new current draw point, retaining the old one, some codes use this point to determine where to draw next
 
 Not Collective
@@ -3555,7 +3555,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawPopCurrentPoint()`, `PetscDrawGetCurrentPoint()`
+See also: `PetscDraw`, `PetscDrawPopCurrentPoint()`, `PetscDrawGetCurrentPoint()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawPushCurrentPoint"))
@@ -3578,7 +3578,7 @@ end
 end 
 
 """
-	PetscDrawRectangle(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal, c1::Cint, c2::Cint, c3::Cint, c4::Cint) 
+	PetscDrawRectangle(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal, c1::Cint, c2::Cint, c3::Cint, c4::Cint) 
 draws a rectangle onto a `PetscDraw` object
 
 Not Collective
@@ -3596,7 +3596,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawLine()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
+See also: `PetscDraw`, `PetscDrawLine()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
 `PetscDrawMarker()`, `PetscDrawPoint()`, `PetscDrawString()`, `PetscDrawArrow()`
 
 # External Links
@@ -3620,7 +3620,7 @@ end
 end 
 
 """
-	PetscDrawRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscDrawRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a method to the graphics package.
 
 Not Collective, No Fortran Support
@@ -3631,7 +3631,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscDraw`, `PetscDrawRegisterAll()`, `PetscDrawRegisterDestroy()`, `PetscDrawType`, `PetscDrawSetType()`
+See also: `PetscDraw`, `PetscDrawRegisterAll()`, `PetscDrawRegisterDestroy()`, `PetscDrawType`, `PetscDrawSetType()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawRegister"))
@@ -3654,7 +3654,7 @@ end
 end 
 
 """
-	PetscDrawResizeWindow(petsclib::PetscLibType,draw::PetscDraw, w::Cint, h::Cint) 
+	PetscDrawResizeWindow(petsclib::PetscLibType, draw::PetscDraw, w::Cint, h::Cint) 
 Allows one to resize a window from a program.
 
 Collective
@@ -3666,7 +3666,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawCheckResizedWindow()`
+See also: `PetscDraw`, `PetscDrawCheckResizedWindow()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawResizeWindow"))
@@ -3689,7 +3689,7 @@ end
 end 
 
 """
-	PetscDrawRestoreSingleton(petsclib::PetscLibType,draw::PetscDraw, sdraw::PetscDraw) 
+	PetscDrawRestoreSingleton(petsclib::PetscLibType, draw::PetscDraw, sdraw::PetscDraw) 
 Remove access to a `PetscDraw` object obtained with `PetscDrawGetSingleton()`
 by the one process.
 
@@ -3701,7 +3701,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawGetSingleton()`, `PetscViewerGetSingleton()`, `PetscViewerRestoreSingleton()`
+See also: `PetscDraw`, `PetscDrawGetSingleton()`, `PetscViewerGetSingleton()`, `PetscViewerRestoreSingleton()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawRestoreSingleton"))
@@ -3724,7 +3724,7 @@ end
 end 
 
 """
-	x::PetscReal,y::PetscReal = PetscDrawSPAddPoint(petsclib::PetscLibType,sp::PetscDrawSP) 
+	x::PetscReal,y::PetscReal = PetscDrawSPAddPoint(petsclib::PetscLibType, sp::PetscDrawSP) 
 Adds another point to each of the scatter plot point curves.
 
 Not Collective
@@ -3736,7 +3736,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawSPAddPoints()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPointColorized()`
+See also: `PetscDrawSPAddPoints()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPointColorized()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPAddPoint"))
@@ -3763,7 +3763,7 @@ end
 end 
 
 """
-	x::PetscReal,y::PetscReal,z::PetscReal = PetscDrawSPAddPointColorized(petsclib::PetscLibType,sp::PetscDrawSP) 
+	x::PetscReal,y::PetscReal,z::PetscReal = PetscDrawSPAddPointColorized(petsclib::PetscLibType, sp::PetscDrawSP) 
 Adds another point to each of the scatter plots as well as a numeric value to be used to colorize the scatter point.
 
 Not Collective
@@ -3776,7 +3776,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawSPAddPoints()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPoint()`
+See also: `PetscDrawSPAddPoints()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPoint()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPAddPointColorized"))
@@ -3805,7 +3805,7 @@ end
 end 
 
 """
-	PetscDrawSPAddPoints(petsclib::PetscLibType,sp::PetscDrawSP, n::Cint, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) 
+	PetscDrawSPAddPoints(petsclib::PetscLibType, sp::PetscDrawSP, n::Cint, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) 
 Adds several points to each of the scatter plot point curves.
 
 Not Collective
@@ -3818,7 +3818,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawSPAddPoint()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPointColorized()`
+See also: `PetscDrawSPAddPoint()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPointColorized()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPAddPoints"))
@@ -3843,7 +3843,7 @@ end
 end 
 
 """
-	drawsp::PetscDrawSP = PetscDrawSPCreate(petsclib::PetscLibType,draw::PetscDraw, dim::Cint) 
+	drawsp::PetscDrawSP = PetscDrawSPCreate(petsclib::PetscLibType, draw::PetscDraw, dim::Cint) 
 Creates a scatter plot data structure.
 
 Collective
@@ -3857,7 +3857,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawSPDestroy()`, `PetscDraw`, `PetscDrawSP`, `PetscDrawSPSetDimension()`, `PetscDrawSPReset()`,
+See also: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawSPDestroy()`, `PetscDraw`, `PetscDrawSP`, `PetscDrawSPSetDimension()`, `PetscDrawSPReset()`,
 `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`, `PetscDrawSPDraw()`, `PetscDrawSPSave()`, `PetscDrawSPSetLimits()`, `PetscDrawSPGetAxis()`, `PetscDrawAxis`, `PetscDrawSPGetDraw()`
 
 # External Links
@@ -3883,7 +3883,7 @@ end
 end 
 
 """
-	PetscDrawSPDestroy(petsclib::PetscLibType,sp::Union{PetscDrawSP, Ref{PetscDrawSP}}) 
+	PetscDrawSPDestroy(petsclib::PetscLibType, sp::Union{PetscDrawSP, Ref{PetscDrawSP}}) 
 Frees all space taken up by scatter plot data structure.
 
 Collective
@@ -3893,7 +3893,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSPCreate()`, `PetscDrawSP`, `PetscDrawSPReset()`
+See also: `PetscDrawSPCreate()`, `PetscDrawSP`, `PetscDrawSPReset()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPDestroy"))
@@ -3917,7 +3917,7 @@ end
 end 
 
 """
-	PetscDrawSPDraw(petsclib::PetscLibType,sp::PetscDrawSP, clear::PetscBool) 
+	PetscDrawSPDraw(petsclib::PetscLibType, sp::PetscDrawSP, clear::PetscBool) 
 Redraws a scatter plot.
 
 Collective
@@ -3928,7 +3928,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawLGDraw()`, `PetscDrawLGSPDraw()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`
+See also: `PetscDrawLGDraw()`, `PetscDrawLGSPDraw()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPReset()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPDraw"))
@@ -3951,7 +3951,7 @@ end
 end 
 
 """
-	axis::PetscDrawAxis = PetscDrawSPGetAxis(petsclib::PetscLibType,sp::PetscDrawSP) 
+	axis::PetscDrawAxis = PetscDrawSPGetAxis(petsclib::PetscLibType, sp::PetscDrawSP) 
 Gets the axis context associated with a scatter plot
 
 Not Collective
@@ -3964,7 +3964,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`, `PetscDrawAxis`, `PetscDrawAxisCreate()`
+See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`, `PetscDrawAxis`, `PetscDrawAxisCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPGetAxis"))
@@ -3989,7 +3989,7 @@ end
 end 
 
 """
-	dim::Cint = PetscDrawSPGetDimension(petsclib::PetscLibType,sp::PetscDrawSP) 
+	dim::Cint = PetscDrawSPGetDimension(petsclib::PetscLibType, sp::PetscDrawSP) 
 Get the number of sets of points that are to be drawn at each `PetscDrawSPAddPoint()`
 
 Not Collective
@@ -4002,7 +4002,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`
+See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPGetDimension"))
@@ -4027,7 +4027,7 @@ end
 end 
 
 """
-	draw::PetscDraw = PetscDrawSPGetDraw(petsclib::PetscLibType,sp::PetscDrawSP) 
+	draw::PetscDraw = PetscDrawSPGetDraw(petsclib::PetscLibType, sp::PetscDrawSP) 
 Gets the draw context associated with a scatter plot
 
 Not Collective
@@ -4040,7 +4040,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDraw`
+See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDraw`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPGetDraw"))
@@ -4065,7 +4065,7 @@ end
 end 
 
 """
-	PetscDrawSPReset(petsclib::PetscLibType,sp::PetscDrawSP) 
+	PetscDrawSPReset(petsclib::PetscLibType, sp::PetscDrawSP) 
 Clears scatter plot to allow for reuse with new data.
 
 Not Collective
@@ -4075,7 +4075,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`, `PetscDrawSPDraw()`
+See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`, `PetscDrawSPDraw()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPReset"))
@@ -4098,7 +4098,7 @@ end
 end 
 
 """
-	PetscDrawSPSave(petsclib::PetscLibType,sp::PetscDrawSP) 
+	PetscDrawSPSave(petsclib::PetscLibType, sp::PetscDrawSP) 
 Saves a drawn image
 
 Collective
@@ -4108,7 +4108,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDrawSPCreate()`, `PetscDrawSPGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`
+See also: `PetscDrawSPCreate()`, `PetscDrawSPGetDraw()`, `PetscDrawSetSave()`, `PetscDrawSave()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPSave"))
@@ -4131,7 +4131,7 @@ end
 end 
 
 """
-	PetscDrawSPSetDimension(petsclib::PetscLibType,sp::PetscDrawSP, dim::Cint) 
+	PetscDrawSPSetDimension(petsclib::PetscLibType, sp::PetscDrawSP, dim::Cint) 
 Change the number of points that are added at each  `PetscDrawSPAddPoint()`
 
 Not Collective
@@ -4142,7 +4142,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`
+See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPSetDimension"))
@@ -4165,7 +4165,7 @@ end
 end 
 
 """
-	PetscDrawSPSetLimits(petsclib::PetscLibType,sp::PetscDrawSP, x_min::PetscReal, x_max::PetscReal, y_min::PetscReal, y_max::PetscReal) 
+	PetscDrawSPSetLimits(petsclib::PetscLibType, sp::PetscDrawSP, x_min::PetscReal, x_max::PetscReal, y_min::PetscReal, y_max::PetscReal) 
 Sets the axis limits for a scatter plot. If more points are added after this call, the limits will be adjusted to include those additional points.
 
 Not Collective
@@ -4179,7 +4179,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDrawSP`, `PetscDrawAxis`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`, `PetscDrawSPGetAxis()`
+See also: `PetscDrawSP`, `PetscDrawAxis`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDrawSPAddPoint()`, `PetscDrawSPAddPoints()`, `PetscDrawSPGetAxis()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSPSetLimits"))
@@ -4202,7 +4202,7 @@ end
 end 
 
 """
-	PetscDrawSave(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawSave(petsclib::PetscLibType, draw::PetscDraw) 
 Saves a drawn image
 
 Collective
@@ -4212,7 +4212,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawSetSave()`
+See also: `PetscDraw`, `PetscDrawSetSave()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSave"))
@@ -4235,7 +4235,7 @@ end
 end 
 
 """
-	PetscDrawSaveMovie(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawSaveMovie(petsclib::PetscLibType, draw::PetscDraw) 
 Saves a movie from previously saved images
 
 Collective
@@ -4245,7 +4245,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetSaveMovie()`
+See also: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetSaveMovie()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSaveMovie"))
@@ -4268,7 +4268,7 @@ end
 end 
 
 """
-	PetscDrawScalePopup(petsclib::PetscLibType,popup::PetscDraw, min::PetscReal, max::PetscReal) 
+	PetscDrawScalePopup(petsclib::PetscLibType, popup::PetscDraw, min::PetscReal, max::PetscReal) 
 draws a contour scale window.
 
 Collective
@@ -4280,7 +4280,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawGetPopup()`, `PetscDrawTensorContour()`
+See also: `PetscDraw`, `PetscDrawGetPopup()`, `PetscDrawTensorContour()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawScalePopup"))
@@ -4303,7 +4303,7 @@ end
 end 
 
 """
-	PetscDrawSetCoordinates(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal) 
+	PetscDrawSetCoordinates(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal) 
 Sets the application coordinates of the corners of
 the window (or page).
 
@@ -4318,7 +4318,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawGetCoordinates()`
+See also: `PetscDraw`, `PetscDrawGetCoordinates()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetCoordinates"))
@@ -4341,7 +4341,7 @@ end
 end 
 
 """
-	PetscDrawSetCurrentPoint(petsclib::PetscLibType,draw::PetscDraw, x::PetscReal, y::PetscReal) 
+	PetscDrawSetCurrentPoint(petsclib::PetscLibType, draw::PetscDraw, x::PetscReal, y::PetscReal) 
 Sets the current draw point, some codes use this point to determine where to draw next
 
 Not Collective
@@ -4353,7 +4353,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint()`, `PetscDrawGetCurrentPoint()`
+See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint()`, `PetscDrawGetCurrentPoint()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetCurrentPoint"))
@@ -4376,7 +4376,7 @@ end
 end 
 
 """
-	PetscDrawSetDisplay(petsclib::PetscLibType,draw::PetscDraw, display::String) 
+	PetscDrawSetDisplay(petsclib::PetscLibType, draw::PetscDraw, display::String) 
 Sets the display where a `PetscDraw` object will be displayed
 
 Input Parameters:
@@ -4385,7 +4385,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawCreate()`
+See also: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetDisplay"))
@@ -4408,7 +4408,7 @@ end
 end 
 
 """
-	PetscDrawSetDoubleBuffer(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawSetDoubleBuffer(petsclib::PetscLibType, draw::PetscDraw) 
 Sets a window to be double buffered.
 
 Logically Collective
@@ -4418,7 +4418,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawCreate()`
+See also: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetDoubleBuffer"))
@@ -4441,7 +4441,7 @@ end
 end 
 
 """
-	PetscDrawSetFromOptions(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawSetFromOptions(petsclib::PetscLibType, draw::PetscDraw) 
 Sets the graphics type from the options database.
 Defaults to a PETSc X Windows graphics.
 
@@ -4464,7 +4464,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawCreate()`, `PetscDrawSetType()`, `PetscDrawSetSave()`, `PetscDrawSetSaveFinalImage()`, `PetscDrawPause()`, `PetscDrawSetPause()`
+See also: `PetscDraw`, `PetscDrawCreate()`, `PetscDrawSetType()`, `PetscDrawSetSave()`, `PetscDrawSetSaveFinalImage()`, `PetscDrawPause()`, `PetscDrawSetPause()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetFromOptions"))
@@ -4487,7 +4487,7 @@ end
 end 
 
 """
-	PetscDrawSetMarkerType(petsclib::PetscLibType,draw::PetscDraw, mtype::PetscDrawMarkerType) 
+	PetscDrawSetMarkerType(petsclib::PetscLibType, draw::PetscDraw, mtype::PetscDrawMarkerType) 
 sets the type of marker to display with `PetscDrawMarker()`
 
 Not Collective
@@ -4501,7 +4501,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`, `PetscDrawGetMarkerType()`, `PetscDrawMarkerType`
+See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`, `PetscDrawGetMarkerType()`, `PetscDrawMarkerType`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetMarkerType"))
@@ -4524,7 +4524,7 @@ end
 end 
 
 """
-	PetscDrawSetOptionsPrefix(petsclib::PetscLibType,draw::PetscDraw, prefix::String) 
+	PetscDrawSetOptionsPrefix(petsclib::PetscLibType, draw::PetscDraw, prefix::String) 
 Sets the prefix used for searching for all
 `PetscDraw` options in the database.
 
@@ -4536,7 +4536,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`
+See also: `PetscDraw`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetOptionsPrefix"))
@@ -4559,7 +4559,7 @@ end
 end 
 
 """
-	PetscDrawSetPause(petsclib::PetscLibType,draw::PetscDraw, lpause::PetscReal) 
+	PetscDrawSetPause(petsclib::PetscLibType, draw::PetscDraw, lpause::PetscReal) 
 Sets the amount of time that program pauses after
 a `PetscDrawPause()` is called.
 
@@ -4574,7 +4574,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawGetPause()`, `PetscDrawPause()`
+See also: `PetscDraw`, `PetscDrawGetPause()`, `PetscDrawPause()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetPause"))
@@ -4597,7 +4597,7 @@ end
 end 
 
 """
-	PetscDrawSetSave(petsclib::PetscLibType,draw::PetscDraw, filename::String) 
+	PetscDrawSetSave(petsclib::PetscLibType, draw::PetscDraw, filename::String) 
 Saves images produced in a `PetscDraw` into a file
 
 Collective
@@ -4613,7 +4613,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawOpenImage()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`, `PetscDrawSetSaveFinalImage()`
+See also: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawOpenImage()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`, `PetscDrawSetSaveFinalImage()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetSave"))
@@ -4636,7 +4636,7 @@ end
 end 
 
 """
-	PetscDrawSetSaveFinalImage(petsclib::PetscLibType,draw::PetscDraw, filename::String) 
+	PetscDrawSetSaveFinalImage(petsclib::PetscLibType, draw::PetscDraw, filename::String) 
 Saves the final image produced in a `PetscDraw` into a file
 
 Collective
@@ -4650,7 +4650,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`
+See also: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetSaveFinalImage"))
@@ -4673,7 +4673,7 @@ end
 end 
 
 """
-	PetscDrawSetSaveMovie(petsclib::PetscLibType,draw::PetscDraw, movieext::String) 
+	PetscDrawSetSaveMovie(petsclib::PetscLibType, draw::PetscDraw, movieext::String) 
 Saves a movie produced from a `PetscDraw` into a file
 
 Collective
@@ -4687,7 +4687,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`
+See also: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetSaveMovie"))
@@ -4710,7 +4710,7 @@ end
 end 
 
 """
-	PetscDrawSetTitle(petsclib::PetscLibType,draw::PetscDraw, title::String) 
+	PetscDrawSetTitle(petsclib::PetscLibType, draw::PetscDraw, title::String) 
 Sets the title of a `PetscDraw` context.
 
 Collective
@@ -4721,7 +4721,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawGetTitle()`, `PetscDrawAppendTitle()`
+See also: `PetscDraw`, `PetscDrawGetTitle()`, `PetscDrawAppendTitle()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetTitle"))
@@ -4744,7 +4744,7 @@ end
 end 
 
 """
-	PetscDrawSetType(petsclib::PetscLibType,draw::PetscDraw, type::PetscDrawType) 
+	PetscDrawSetType(petsclib::PetscLibType, draw::PetscDraw, type::PetscDrawType) 
 Builds graphics object for a particular implementation
 
 Collective
@@ -4758,7 +4758,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PETSC_DRAW_X`, `PETSC_DRAW_TIKZ`, `PETSC_DRAW_IMAGE`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`, `PetscDrawType`
+See also: `PetscDraw`, `PETSC_DRAW_X`, `PETSC_DRAW_TIKZ`, `PETSC_DRAW_IMAGE`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`, `PetscDrawDestroy()`, `PetscDrawType`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetType"))
@@ -4781,7 +4781,7 @@ end
 end 
 
 """
-	PetscDrawSetViewPort(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal) 
+	PetscDrawSetViewPort(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, xr::PetscReal, yr::PetscReal) 
 Sets the portion of the window (page) to which draw
 routines will write.
 
@@ -4796,7 +4796,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDrawGetViewPort()`, `PetscDraw`, `PetscDrawSplitViewPort()`, `PetscDrawViewPortsCreate()`
+See also: `PetscDrawGetViewPort()`, `PetscDraw`, `PetscDrawSplitViewPort()`, `PetscDrawViewPortsCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetViewPort"))
@@ -4819,7 +4819,7 @@ end
 end 
 
 """
-	PetscDrawSetVisible(petsclib::PetscLibType,draw::PetscDraw, visible::PetscBool) 
+	PetscDrawSetVisible(petsclib::PetscLibType, draw::PetscDraw, visible::PetscBool) 
 Sets if the drawing surface (the 'window') is visible on its display.
 
 Input Parameters:
@@ -4828,7 +4828,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDraw`
+See also: `PetscDraw`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSetVisible"))
@@ -4851,7 +4851,7 @@ end
 end 
 
 """
-	PetscDrawSplitViewPort(petsclib::PetscLibType,draw::PetscDraw) 
+	PetscDrawSplitViewPort(petsclib::PetscLibType, draw::PetscDraw) 
 Splits a window shared by several processes into smaller
 view ports. One for each process.
 
@@ -4862,7 +4862,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDrawDivideViewPort()`, `PetscDrawSetViewPort()`
+See also: `PetscDrawDivideViewPort()`, `PetscDrawSetViewPort()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawSplitViewPort"))
@@ -4885,7 +4885,7 @@ end
 end 
 
 """
-	PetscDrawString(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint, text::String) 
+	PetscDrawString(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint, text::String) 
 draws text onto a drawable.
 
 Not Collective
@@ -4899,7 +4899,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`, `PetscDrawStringSetSize()`,
+See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`, `PetscDrawStringSetSize()`,
 `PetscDrawStringGetSize()`, `PetscDrawLine()`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDrawEllipse()`,
 `PetscDrawMarker()`, `PetscDrawPoint()`
 
@@ -4924,7 +4924,7 @@ end
 end 
 
 """
-	w::PetscReal,h::PetscReal = PetscDrawStringBoxed(petsclib::PetscLibType,draw::PetscDraw, sxl::PetscReal, syl::PetscReal, sc::Cint, bc::Cint, text::String) 
+	w::PetscReal,h::PetscReal = PetscDrawStringBoxed(petsclib::PetscLibType, draw::PetscDraw, sxl::PetscReal, syl::PetscReal, sc::Cint, bc::Cint, text::String) 
 Draws a string with a box around it
 
 Not Collective
@@ -4943,7 +4943,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringSetSize()`,
+See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringSetSize()`,
 `PetscDrawStringGetSize()`
 
 # External Links
@@ -4971,7 +4971,7 @@ end
 end 
 
 """
-	PetscDrawStringCentered(petsclib::PetscLibType,draw::PetscDraw, xc::PetscReal, yl::PetscReal, cl::Cint, text::String) 
+	PetscDrawStringCentered(petsclib::PetscLibType, draw::PetscDraw, xc::PetscReal, yl::PetscReal, cl::Cint, text::String) 
 draws text onto a drawable centered at a point
 
 Not Collective
@@ -4985,7 +4985,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringBoxed()`, `PetscDrawStringSetSize()`,
+See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringBoxed()`, `PetscDrawStringSetSize()`,
 `PetscDrawStringGetSize()`
 
 # External Links
@@ -5009,7 +5009,7 @@ end
 end 
 
 """
-	width::PetscReal,height::PetscReal = PetscDrawStringGetSize(petsclib::PetscLibType,draw::PetscDraw) 
+	width::PetscReal,height::PetscReal = PetscDrawStringGetSize(petsclib::PetscLibType, draw::PetscDraw) 
 Gets the size for character text.  The width is
 relative to the user coordinates of the window.
 
@@ -5022,7 +5022,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`,
+See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`,
 `PetscDrawStringSetSize()`
 
 # External Links
@@ -5050,7 +5050,7 @@ end
 end 
 
 """
-	PetscDrawStringSetSize(petsclib::PetscLibType,draw::PetscDraw, width::PetscReal, height::PetscReal) 
+	PetscDrawStringSetSize(petsclib::PetscLibType, draw::PetscDraw, width::PetscReal, height::PetscReal) 
 Sets the size for character text.
 
 Not Collective
@@ -5062,7 +5062,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`,
+See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`,
 `PetscDrawStringGetSize()`
 
 # External Links
@@ -5086,7 +5086,7 @@ end
 end 
 
 """
-	PetscDrawStringVertical(petsclib::PetscLibType,draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint, text::String) 
+	PetscDrawStringVertical(petsclib::PetscLibType, draw::PetscDraw, xl::PetscReal, yl::PetscReal, cl::Cint, text::String) 
 draws text onto a drawable.
 
 Not Collective
@@ -5100,7 +5100,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`, `PetscDrawStringSetSize()`,
+See also: `PetscDraw`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscDrawStringBoxed()`, `PetscDrawStringSetSize()`,
 `PetscDrawStringGetSize()`
 
 # External Links
@@ -5124,8 +5124,8 @@ end
 end 
 
 """
-	PetscDrawTensorContour(petsclib::PetscLibType,draw::PetscDraw, m::Cint, n::Cint, xi::Vector{PetscReal}, yi::Vector{PetscReal}, v::Vector{PetscReal}) 
-draws a contour plot for a two
+	PetscDrawTensorContour(petsclib::PetscLibType, draw::PetscDraw, m::Cint, n::Cint, xi::Vector{PetscReal}, yi::Vector{PetscReal}, v::Vector{PetscReal}) 
+draws a contour plot for a two-dimensional array
 
 Collective, but `draw` must be sequential
 
@@ -5143,7 +5143,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawTensorContourPatch()`, `PetscDrawScalePopup()`
+See also: `PetscDraw`, `PetscDrawTensorContourPatch()`, `PetscDrawScalePopup()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawTensorContour"))
@@ -5166,7 +5166,7 @@ end
 end 
 
 """
-	x::PetscReal,y::PetscReal,v::PetscReal = PetscDrawTensorContourPatch(petsclib::PetscLibType,draw::PetscDraw, m::Cint, n::Cint, min::PetscReal, max::PetscReal) 
+	x::PetscReal,y::PetscReal,v::PetscReal = PetscDrawTensorContourPatch(petsclib::PetscLibType, draw::PetscDraw, m::Cint, n::Cint, min::PetscReal, max::PetscReal) 
 draws a rectangular patch of a contour plot
 for a two-dimensional array.
 
@@ -5187,7 +5187,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawTensorContour()`
+See also: `PetscDraw`, `PetscDrawTensorContour()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawTensorContourPatch"))
@@ -5216,7 +5216,7 @@ end
 end 
 
 """
-	PetscDrawTriangle(petsclib::PetscLibType,draw::PetscDraw, x1::PetscReal, y_1::PetscReal, x2::PetscReal, y2::PetscReal, x3::PetscReal, y3::PetscReal, c1::Cint, c2::Cint, c3::Cint) 
+	PetscDrawTriangle(petsclib::PetscLibType, draw::PetscDraw, x1::PetscReal, y_1::PetscReal, x2::PetscReal, y2::PetscReal, x3::PetscReal, y3::PetscReal, c1::Cint, c2::Cint, c3::Cint) 
 draws a triangle  onto a drawable.
 
 Not Collective
@@ -5235,7 +5235,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDraw`, `PetscDrawLine()`, `PetscDrawRectangle()`, `PetscDrawEllipse()`, `PetscDrawMarker()`, `PetscDrawPoint()`, `PetscDrawArrow()`
+See also: `PetscDraw`, `PetscDrawLine()`, `PetscDrawRectangle()`, `PetscDrawEllipse()`, `PetscDrawMarker()`, `PetscDrawPoint()`, `PetscDrawArrow()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawTriangle"))
@@ -5258,8 +5258,8 @@ end
 end 
 
 """
-	PetscDrawUtilitySetCmap(petsclib::PetscLibType,colormap::String, mapsize::Cint, char::Vector{Cuchar}, M_char::Vector{Cuchar}, M_char_2::Vector{Cuchar}) 
-Populate the RGB entries of a colormap from a named palette, honoring options
+	PetscDrawUtilitySetCmap(petsclib::PetscLibType, colormap::String, mapsize::Cint, char::Vector{Cuchar}, M_char::Vector{Cuchar}, M_char_2::Vector{Cuchar}) 
+Populate the RGB entries of a colormap from a named palette, honoring options-database
 overrides for the colormap name, reversal, and brightness.
 
 Not Collective
@@ -5280,7 +5280,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: `PetscDraw`, `PetscDrawUtilitySetGamma()`
+See also: `PetscDraw`, `PetscDrawUtilitySetGamma()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawUtilitySetCmap"))
@@ -5303,8 +5303,8 @@ end
 end 
 
 """
-	PetscDrawUtilitySetGamma(petsclib::PetscLibType,g::PetscReal) 
-Set the monitor gamma
+	PetscDrawUtilitySetGamma(petsclib::PetscLibType, g::PetscReal) 
+Set the monitor gamma-correction value used by the drawing colormap utilities.
 
 Not Collective
 
@@ -5313,7 +5313,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscDraw`, `PetscDrawUtilitySetCmap()`
+See also: `PetscDraw`, `PetscDrawUtilitySetCmap()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawUtilitySetGamma"))
@@ -5336,7 +5336,7 @@ end
 end 
 
 """
-	PetscDrawView(petsclib::PetscLibType,indraw::PetscDraw, viewer::PetscViewer) 
+	PetscDrawView(petsclib::PetscLibType, indraw::PetscDraw, viewer::PetscViewer) 
 Prints the `PetscDraw` data structure.
 
 Collective
@@ -5347,7 +5347,7 @@ Input Parameters:
 
 See PetscDrawSetFromOptions() for options database keys
 
--seealso: `PetscDraw`, `PetscViewerASCIIOpen()`, `PetscViewer`
+See also: `PetscDraw`, `PetscViewerASCIIOpen()`, `PetscViewer`
 
 # External Links
 $(_doc_external("Draw/PetscDrawView"))
@@ -5370,7 +5370,7 @@ end
 end 
 
 """
-	PetscDrawViewFromOptions(petsclib::PetscLibType,A::PetscDraw, obj, name::String) 
+	PetscDrawViewFromOptions(petsclib::PetscLibType, A::PetscDraw, obj, name::String) 
 View a `PetscDraw` from the option database
 
 Collective
@@ -5385,7 +5385,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDraw`, `PetscDrawView`, `PetscObjectViewFromOptions()`, `PetscDrawCreate()`
+See also: `PetscDraw`, `PetscDrawView`, `PetscObjectViewFromOptions()`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawViewFromOptions"))
@@ -5408,7 +5408,7 @@ end
 end 
 
 """
-	newports::Ptr{PetscDrawViewPorts} = PetscDrawViewPortsCreate(petsclib::PetscLibType,draw::PetscDraw, nports::PetscInt) 
+	newports::Ptr{PetscDrawViewPorts} = PetscDrawViewPortsCreate(petsclib::PetscLibType, draw::PetscDraw, nports::PetscInt) 
 Splits a window into smaller view ports. Each processor shares all the viewports.
 
 Collective
@@ -5425,7 +5425,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsSet()`, `PetscDrawViewPortsDestroy()`
+See also: `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsSet()`, `PetscDrawViewPortsDestroy()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawViewPortsCreate"))
@@ -5450,7 +5450,7 @@ end
 end 
 
 """
-	newports::Ptr{PetscDrawViewPorts} = PetscDrawViewPortsCreateRect(petsclib::PetscLibType,draw::PetscDraw, nx::PetscInt, ny::PetscInt) 
+	newports::Ptr{PetscDrawViewPorts} = PetscDrawViewPortsCreateRect(petsclib::PetscLibType, draw::PetscDraw, nx::PetscInt, ny::PetscInt) 
 Splits a window into smaller
 view ports. Each processor shares all the viewports. The number
 of views in the x- and y-directions is specified.
@@ -5467,7 +5467,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsSet()`, `PetscDrawViewPortsDestroy()`, `PetscDrawViewPorts`
+See also: `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsSet()`, `PetscDrawViewPortsDestroy()`, `PetscDrawViewPorts`
 
 # External Links
 $(_doc_external("Draw/PetscDrawViewPortsCreateRect"))
@@ -5492,7 +5492,7 @@ end
 end 
 
 """
-	PetscDrawViewPortsDestroy(petsclib::PetscLibType,ports::Vector{PetscDrawViewPorts}) 
+	PetscDrawViewPortsDestroy(petsclib::PetscLibType, ports::Vector{PetscDrawViewPorts}) 
 frees a `PetscDrawViewPorts` object
 
 Collective on the `PetscDraw` inside `ports`
@@ -5502,7 +5502,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `PetscDrawViewPorts`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsSet()`, `PetscDrawViewPortsCreate()`
+See also: `PetscDrawViewPorts`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsSet()`, `PetscDrawViewPortsCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawViewPortsDestroy"))
@@ -5525,7 +5525,7 @@ end
 end 
 
 """
-	PetscDrawViewPortsSet(petsclib::PetscLibType,ports::Vector{PetscDrawViewPorts}, port::PetscInt) 
+	PetscDrawViewPortsSet(petsclib::PetscLibType, ports::Vector{PetscDrawViewPorts}, port::PetscInt) 
 sets a draw object to use a particular subport
 
 Logically Collective on the `PetscDraw` inside `ports`
@@ -5536,7 +5536,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscDrawViewPorts`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsDestroy()`, `PetscDrawViewPortsCreate()`
+See also: `PetscDrawViewPorts`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPortsDestroy()`, `PetscDrawViewPortsCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawViewPortsSet"))
@@ -5559,7 +5559,7 @@ end
 end 
 
 """
-	PetscDrawZoom(petsclib::PetscLibType,draw::PetscDraw, func::external, ctx::Ptr{Cvoid}) 
+	PetscDrawZoom(petsclib::PetscLibType, draw::PetscDraw, func::external, ctx::Ptr{Cvoid}) 
 Allows one to provide a function that gets called for zooming in on a drawing using the mouse buttons
 
 Collective draw
@@ -5575,7 +5575,7 @@ Calling sequence of func:
 
 Level: advanced
 
--seealso: `PetscDraw`, `PetscDrawCreate()`
+See also: `PetscDraw`, `PetscDrawCreate()`
 
 # External Links
 $(_doc_external("Draw/PetscDrawZoom"))

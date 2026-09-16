@@ -98,16 +98,31 @@ end
 
 function _finish_block(comment::Vector{String})
     if !isempty(comment)
-        comment[1] = strip(comment[1])
-        parts = split(comment[1], "-")
-        comment[1] = length(parts) >= 2 ? String(strip(parts[2])) : ""
+        # "Name - description": keep everything after the first " - " (a description may contain "-")
+        first = strip(comment[1])
+        m = match(r"^\S+\s+-\s*(.*)$", first)
+        comment[1] = m === nothing ? "" : String(m.captures[1])
     end
-    comment = replace.(comment, "\$" => "")
-    comment = replace.(comment, "[](ch_stag)," => "")
-    comment = replace.(comment, "[](ch_dmbase)," => "")
-    comment = replace.(comment, "-seealso:  " => "See also: \n=== \n")
-    comment = replace.(comment, "seealso:  " => "See also: \n=== \n")
-    return String.(comment)
+    out = String[]
+    incode = false
+    for c in comment
+        c = replace(c, "\$" => "")
+        c = replace(c, r"\[\]\(ch_\w+\),?\s*" => "")          # empty chapter links of the PETSc docs
+        if startswith(c, "-vb") || startswith(c, ".vb")               # PETSc verbatim block
+            push!(out, "```"); incode = true; continue
+        elseif startswith(c, "-ve") || startswith(c, ".ve")
+            push!(out, "```"); incode = false; continue
+        end
+        m = match(r"^-?seealso:\s*(.*)$", c)
+        if m !== nothing
+            refs = strip(m.captures[1])
+            isempty(refs) || push!(out, "See also: " * refs)
+            continue
+        end
+        push!(out, c)
+    end
+    incode && push!(out, "```")
+    return out
 end
 
 # original: iterate defining files in walk order, return the first file's non-empty block
@@ -156,7 +171,7 @@ end
 function _remove_notes!(comment::Vector{String}, keyword::String)
     note_start = findfirst(c -> occursin(keyword, c), comment)
     note_start === nothing && return comment
-    l = findfirst(c -> occursin("-seealso:", c), comment)
+    l = findfirst(c -> startswith(c, "See also:"), comment)
     l === nothing && return comment
     note_end = l - 1
     note_start <= note_end && deleteat!(comment, note_start:note_end)

@@ -1,5 +1,5 @@
 """
-	sp::PetscSpace = PetscSpaceCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	sp::PetscSpace = PetscSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `PetscSpace` object. The type can then be set with `PetscSpaceSetType()`.
 
 Collective
@@ -12,7 +12,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscSpace`, `PetscSpaceSetType()`, `PETSCSPACEPOLYNOMIAL`
+See also: `PetscSpace`, `PetscSpaceSetType()`, `PETSCSPACEPOLYNOMIAL`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceCreate"))
@@ -37,7 +37,7 @@ end
 end 
 
 """
-	x::PetscReal,Jx::PetscReal,u::PetscReal,Ju::PetscReal,subspace::PetscSpace = PetscSpaceCreateSubspace(petsclib::PetscLibType,origSpace::PetscSpace, dualSubspace::PetscDualSpace, copymode::PetscCopyMode) 
+	x::PetscReal,Jx::PetscReal,u::PetscReal,Ju::PetscReal,subspace::PetscSpace = PetscSpaceCreateSubspace(petsclib::PetscLibType, origSpace::PetscSpace, dualSubspace::PetscDualSpace, copymode::PetscCopyMode) 
 creates a subspace from a an `origSpace` and its dual `dualSubspace`
 
 Input Parameters:
@@ -54,7 +54,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscSpace`, `PetscDualSpace`, `PetscCopyMode`, `PetscSpaceType`
+See also: `PetscSpace`, `PetscDualSpace`, `PetscCopyMode`, `PetscSpaceType`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceCreateSubspace"))
@@ -87,7 +87,7 @@ end
 end 
 
 """
-	PetscSpaceDestroy(petsclib::PetscLibType,sp::Union{PetscSpace, Ref{PetscSpace}}) 
+	PetscSpaceDestroy(petsclib::PetscLibType, sp::Union{PetscSpace, Ref{PetscSpace}}) 
 Destroys a `PetscSpace` object
 
 Collective
@@ -97,7 +97,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscSpace`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceDestroy"))
@@ -121,7 +121,7 @@ end
 end 
 
 """
-	PetscSpaceEvaluate(petsclib::PetscLibType,sp::PetscSpace, npoints::PetscInt, points::Vector{PetscReal}, B::Vector{PetscReal}, D::Vector{PetscReal}, H::Vector{PetscReal}) 
+	PetscSpaceEvaluate(petsclib::PetscLibType, sp::PetscSpace, npoints::PetscInt, points::Vector{PetscReal}, B::Vector{PetscReal}, D::Vector{PetscReal}, H::Vector{PetscReal}) 
 Evaluate the basis functions and their derivatives (jet) at each point
 
 Input Parameters:
@@ -136,7 +136,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: `PetscSpace`, `PetscFECreateTabulation()`, `PetscFEGetCellTabulation()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscFECreateTabulation()`, `PetscFEGetCellTabulation()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceEvaluate"))
@@ -159,7 +159,7 @@ end
 end 
 
 """
-	minDegree::PetscInt,maxDegree::PetscInt = PetscSpaceGetDegree(petsclib::PetscLibType,sp::PetscSpace) 
+	minDegree::PetscInt,maxDegree::PetscInt = PetscSpaceGetDegree(petsclib::PetscLibType, sp::PetscSpace) 
 Return the polynomial degrees that characterize this space
 
 Input Parameter:
@@ -171,7 +171,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceSetDegree()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceSetDegree()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetDegree"))
@@ -198,7 +198,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscSpaceGetDimension(petsclib::PetscLibType,sp::PetscSpace) 
+	dim::PetscInt = PetscSpaceGetDimension(petsclib::PetscLibType, sp::PetscSpace) 
 Return the dimension of this space, i.e. the number of basis vectors
 
 Input Parameter:
@@ -209,7 +209,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceGetDegree()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceGetDegree()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetDimension"))
@@ -234,7 +234,7 @@ end
 end 
 
 """
-	subsp::PetscSpace = PetscSpaceGetHeightSubspace(petsclib::PetscLibType,sp::PetscSpace, height::PetscInt) 
+	subsp::PetscSpace = PetscSpaceGetHeightSubspace(petsclib::PetscLibType, sp::PetscSpace, height::PetscInt) 
 Get the subset of the primal space basis that is supported on a mesh point of a given height.
 
 Not Collective
@@ -248,7 +248,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscDualSpaceGetHeightSubspace()`, `PetscSpace`
+See also: `PetscDualSpaceGetHeightSubspace()`, `PetscSpace`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetHeightSubspace"))
@@ -273,7 +273,7 @@ end
 end 
 
 """
-	Nc::PetscInt = PetscSpaceGetNumComponents(petsclib::PetscLibType,sp::PetscSpace) 
+	Nc::PetscInt = PetscSpaceGetNumComponents(petsclib::PetscLibType, sp::PetscSpace) 
 Return the number of components for this space
 
 Input Parameter:
@@ -284,7 +284,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceSetNumComponents()`, `PetscSpaceGetNumVariables()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceSetNumComponents()`, `PetscSpaceGetNumVariables()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetNumComponents"))
@@ -309,7 +309,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscSpaceGetNumVariables(petsclib::PetscLibType,sp::PetscSpace) 
+	n::PetscInt = PetscSpaceGetNumVariables(petsclib::PetscLibType, sp::PetscSpace) 
 Return the number of variables for this space
 
 Input Parameter:
@@ -320,7 +320,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceSetNumVariables()`, `PetscSpaceGetNumComponents()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceSetNumVariables()`, `PetscSpaceGetNumComponents()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetNumVariables"))
@@ -345,7 +345,7 @@ end
 end 
 
 """
-	name::PetscSpaceType = PetscSpaceGetType(petsclib::PetscLibType,sp::PetscSpace) 
+	name::PetscSpaceType = PetscSpaceGetType(petsclib::PetscLibType, sp::PetscSpace) 
 Gets the `PetscSpaceType` (as a string) from the object.
 
 Not Collective
@@ -358,7 +358,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpaceType`, `PetscSpace`, `PetscSpaceSetType()`, `PetscSpaceCreate()`
+See also: `PetscSpaceType`, `PetscSpace`, `PetscSpaceSetType()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceGetType"))
@@ -383,7 +383,7 @@ end
 end 
 
 """
-	formDegree::PetscInt = PetscSpacePTrimmedGetFormDegree(petsclib::PetscLibType,sp::PetscSpace) 
+	formDegree::PetscInt = PetscSpacePTrimmedGetFormDegree(petsclib::PetscLibType, sp::PetscSpace) 
 Get the form degree of the trimmed polynomials.
 
 Input Parameter:
@@ -394,7 +394,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscDTAltV`, `PetscDTPTrimmedEvalJet()`, `PetscSpacePTrimmedSetFormDegree()`
+See also: `PetscSpace`, `PetscDTAltV`, `PetscDTPTrimmedEvalJet()`, `PetscSpacePTrimmedSetFormDegree()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpacePTrimmedGetFormDegree"))
@@ -419,7 +419,7 @@ end
 end 
 
 """
-	PetscSpacePTrimmedSetFormDegree(petsclib::PetscLibType,sp::PetscSpace, formDegree::PetscInt) 
+	PetscSpacePTrimmedSetFormDegree(petsclib::PetscLibType, sp::PetscSpace, formDegree::PetscInt) 
 Set the form degree of the trimmed polynomials.
 
 Input Parameters:
@@ -431,7 +431,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscDTAltV`, `PetscDTPTrimmedEvalJet()`, `PetscSpacePTrimmedGetFormDegree()`
+See also: `PetscSpace`, `PetscDTAltV`, `PetscDTPTrimmedEvalJet()`, `PetscSpacePTrimmedGetFormDegree()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpacePTrimmedSetFormDegree"))
@@ -454,7 +454,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscSpacePointGetPoints(petsclib::PetscLibType,sp::PetscSpace) 
+	q::PetscQuadrature = PetscSpacePointGetPoints(petsclib::PetscLibType, sp::PetscSpace) 
 Gets the evaluation points for the space as the points of a quadrature rule
 
 Logically Collective
@@ -467,7 +467,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscQuadrature`, `PetscSpaceCreate()`, `PetscSpaceSetType()`
+See also: `PetscSpace`, `PetscQuadrature`, `PetscSpaceCreate()`, `PetscSpaceSetType()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpacePointGetPoints"))
@@ -492,7 +492,7 @@ end
 end 
 
 """
-	PetscSpacePointSetPoints(petsclib::PetscLibType,sp::PetscSpace, q::PetscQuadrature) 
+	PetscSpacePointSetPoints(petsclib::PetscLibType, sp::PetscSpace, q::PetscQuadrature) 
 Sets the evaluation points for the space to coincide with the points of a quadrature rule
 
 Logically Collective
@@ -503,7 +503,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscQuadrature`, `PetscSpaceCreate()`, `PetscSpaceSetType()`
+See also: `PetscSpace`, `PetscQuadrature`, `PetscSpaceCreate()`, `PetscSpaceSetType()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpacePointSetPoints"))
@@ -526,7 +526,7 @@ end
 end 
 
 """
-	tensor::PetscBool = PetscSpacePolynomialGetTensor(petsclib::PetscLibType,sp::PetscSpace) 
+	tensor::PetscBool = PetscSpacePolynomialGetTensor(petsclib::PetscLibType, sp::PetscSpace) 
 Get whether a function space is a space of tensor
 polynomials.
 
@@ -538,7 +538,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpacePolynomialSetTensor()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PetscSpace`, `PetscSpacePolynomialSetTensor()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpacePolynomialGetTensor"))
@@ -563,7 +563,7 @@ end
 end 
 
 """
-	PetscSpacePolynomialSetTensor(petsclib::PetscLibType,sp::PetscSpace, tensor::PetscBool) 
+	PetscSpacePolynomialSetTensor(petsclib::PetscLibType, sp::PetscSpace, tensor::PetscBool) 
 Set whether a function space is a space of tensor polynomials.
 
 Input Parameters:
@@ -575,7 +575,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpacePolynomialGetTensor()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PetscSpace`, `PetscSpacePolynomialGetTensor()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpacePolynomialSetTensor"))
@@ -598,7 +598,7 @@ end
 end 
 
 """
-	PetscSpaceRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscSpaceRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new `PetscSpace` implementation
 
 Not Collective, No Fortran Support
@@ -607,7 +607,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine for the implementation type
 
--seealso: `PetscSpace`, `PetscSpaceRegisterAll()`, `PetscSpaceRegisterDestroy()`
+See also: `PetscSpace`, `PetscSpaceRegisterAll()`, `PetscSpaceRegisterDestroy()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceRegister"))
@@ -630,7 +630,7 @@ end
 end 
 
 """
-	PetscSpaceSetDegree(petsclib::PetscLibType,sp::PetscSpace, degree::PetscInt, maxDegree::PetscInt) 
+	PetscSpaceSetDegree(petsclib::PetscLibType, sp::PetscSpace, degree::PetscInt, maxDegree::PetscInt) 
 Set the degree of approximation for this space.
 
 Input Parameters:
@@ -640,7 +640,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceGetDegree()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceGetDegree()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetDegree"))
@@ -663,7 +663,7 @@ end
 end 
 
 """
-	PetscSpaceSetFromOptions(petsclib::PetscLibType,sp::PetscSpace) 
+	PetscSpaceSetFromOptions(petsclib::PetscLibType, sp::PetscSpace) 
 sets parameters in a `PetscSpace` from the options database
 
 Collective
@@ -678,7 +678,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceView()`
+See also: `PetscSpace`, `PetscSpaceView()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetFromOptions"))
@@ -701,7 +701,7 @@ end
 end 
 
 """
-	PetscSpaceSetNumComponents(petsclib::PetscLibType,sp::PetscSpace, Nc::PetscInt) 
+	PetscSpaceSetNumComponents(petsclib::PetscLibType, sp::PetscSpace, Nc::PetscInt) 
 Set the number of components for this space
 
 Input Parameters:
@@ -710,7 +710,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceGetNumComponents()`, `PetscSpaceSetNumVariables()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceGetNumComponents()`, `PetscSpaceSetNumVariables()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetNumComponents"))
@@ -733,7 +733,7 @@ end
 end 
 
 """
-	PetscSpaceSetNumVariables(petsclib::PetscLibType,sp::PetscSpace, n::PetscInt) 
+	PetscSpaceSetNumVariables(petsclib::PetscLibType, sp::PetscSpace, n::PetscInt) 
 Set the number of variables for this space
 
 Input Parameters:
@@ -742,7 +742,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceGetNumVariables()`, `PetscSpaceSetNumComponents()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceGetNumVariables()`, `PetscSpaceSetNumComponents()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetNumVariables"))
@@ -765,7 +765,7 @@ end
 end 
 
 """
-	PetscSpaceSetType(petsclib::PetscLibType,sp::PetscSpace, name::PetscSpaceType) 
+	PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::PetscSpaceType) 
 Builds a particular `PetscSpace`
 
 Collective
@@ -779,7 +779,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceType`, `PetscSpaceGetType()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceType`, `PetscSpaceGetType()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetType"))
@@ -802,7 +802,7 @@ end
 end 
 
 """
-	PetscSpaceSetUp(petsclib::PetscLibType,sp::PetscSpace) 
+	PetscSpaceSetUp(petsclib::PetscLibType, sp::PetscSpace) 
 Construct data structures for the `PetscSpace`
 
 Collective
@@ -812,7 +812,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceView()`, `PetscSpaceDestroy()`
+See also: `PetscSpace`, `PetscSpaceView()`, `PetscSpaceDestroy()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSetUp"))
@@ -835,7 +835,7 @@ end
 end 
 
 """
-	concatenate::PetscBool = PetscSpaceSumGetConcatenate(petsclib::PetscLibType,sp::PetscSpace) 
+	concatenate::PetscBool = PetscSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscSpace) 
 Get the concatenate flag for this space.
 
 Input Parameter:
@@ -846,7 +846,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetConcatenate()`
+See also: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetConcatenate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetConcatenate"))
@@ -871,7 +871,7 @@ end
 end 
 
 """
-	interleave_basis::PetscBool,interleave_components::PetscBool = PetscSpaceSumGetInterleave(petsclib::PetscLibType,sp::PetscSpace) 
+	interleave_basis::PetscBool,interleave_components::PetscBool = PetscSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscSpace) 
 Get whether the basis functions and components of a uniform sum are interleaved
 
 Logically collective
@@ -886,7 +886,7 @@ interleave the concatenated components
 
 Level: developer
 
--seealso: `PetscSpace`, `PETSCSPACESUM`, `PETSCFEVECTOR`, `PetscSpaceSumSetInterleave()`
+See also: `PetscSpace`, `PETSCSPACESUM`, `PETSCFEVECTOR`, `PetscSpaceSumSetInterleave()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetInterleave"))
@@ -913,7 +913,7 @@ end
 end 
 
 """
-	numSumSpaces::PetscInt = PetscSpaceSumGetNumSubspaces(petsclib::PetscLibType,sp::PetscSpace) 
+	numSumSpaces::PetscInt = PetscSpaceSumGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace) 
 Get the number of spaces in the sum space
 
 Input Parameter:
@@ -924,7 +924,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetNumSubspaces"))
@@ -949,7 +949,7 @@ end
 end 
 
 """
-	subsp::PetscSpace = PetscSpaceSumGetSubspace(petsclib::PetscLibType,sp::PetscSpace, s::PetscInt) 
+	subsp::PetscSpace = PetscSpaceSumGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt) 
 Get a space in the sum space
 
 Input Parameters:
@@ -961,7 +961,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumGetSubspace"))
@@ -986,7 +986,7 @@ end
 end 
 
 """
-	PetscSpaceSumSetConcatenate(petsclib::PetscLibType,sp::PetscSpace, concatenate::PetscBool) 
+	PetscSpaceSumSetConcatenate(petsclib::PetscLibType, sp::PetscSpace, concatenate::PetscBool) 
 Sets the concatenate flag for this space.
 
 Input Parameters:
@@ -995,7 +995,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetConcatenate()`
+See also: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetConcatenate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetConcatenate"))
@@ -1018,7 +1018,7 @@ end
 end 
 
 """
-	PetscSpaceSumSetInterleave(petsclib::PetscLibType,sp::PetscSpace, interleave_basis::PetscBool, interleave_components::PetscBool) 
+	PetscSpaceSumSetInterleave(petsclib::PetscLibType, sp::PetscSpace, interleave_basis::PetscBool, interleave_components::PetscBool) 
 Set whether the basis functions and components of a uniform sum are interleaved
 
 Logically collective
@@ -1031,7 +1031,7 @@ interleave the concatenated components
 
 Level: developer
 
--seealso: `PetscSpace`, `PETSCSPACESUM`, `PETSCFEVECTOR`, `PetscSpaceSumGetInterleave()`
+See also: `PetscSpace`, `PETSCSPACESUM`, `PETSCFEVECTOR`, `PetscSpaceSumGetInterleave()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetInterleave"))
@@ -1054,7 +1054,7 @@ end
 end 
 
 """
-	PetscSpaceSumSetNumSubspaces(petsclib::PetscLibType,sp::PetscSpace, numSumSpaces::PetscInt) 
+	PetscSpaceSumSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numSumSpaces::PetscInt) 
 Set the number of spaces in the sum space
 
 Input Parameters:
@@ -1063,7 +1063,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetNumSubspaces"))
@@ -1086,7 +1086,7 @@ end
 end 
 
 """
-	PetscSpaceSumSetSubspace(petsclib::PetscLibType,sp::PetscSpace, s::PetscInt, subsp::PetscSpace) 
+	PetscSpaceSumSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) 
 Set a space in the sum space
 
 Input Parameters:
@@ -1096,7 +1096,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceSumSetSubspace"))
@@ -1119,7 +1119,7 @@ end
 end 
 
 """
-	numTensSpaces::PetscInt = PetscSpaceTensorGetNumSubspaces(petsclib::PetscLibType,sp::PetscSpace) 
+	numTensSpaces::PetscInt = PetscSpaceTensorGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace) 
 Get the number of spaces in the tensor product space
 
 Input Parameter:
@@ -1130,7 +1130,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorSetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorSetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorGetNumSubspaces"))
@@ -1155,7 +1155,7 @@ end
 end 
 
 """
-	subsp::PetscSpace = PetscSpaceTensorGetSubspace(petsclib::PetscLibType,sp::PetscSpace, s::PetscInt) 
+	subsp::PetscSpace = PetscSpaceTensorGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt) 
 Get a space in the tensor product space
 
 Input Parameters:
@@ -1167,7 +1167,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorSetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorSetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorGetSubspace"))
@@ -1192,7 +1192,7 @@ end
 end 
 
 """
-	PetscSpaceTensorSetNumSubspaces(petsclib::PetscLibType,sp::PetscSpace, numTensSpaces::PetscInt) 
+	PetscSpaceTensorSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numTensSpaces::PetscInt) 
 Set the number of spaces in the tensor product space
 
 Input Parameters:
@@ -1201,7 +1201,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorGetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorGetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorSetNumSubspaces"))
@@ -1224,7 +1224,7 @@ end
 end 
 
 """
-	PetscSpaceTensorSetSubspace(petsclib::PetscLibType,sp::PetscSpace, s::PetscInt, subsp::PetscSpace) 
+	PetscSpaceTensorSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) 
 Set a space in the tensor product space
 
 Input Parameters:
@@ -1234,7 +1234,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorGetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
+See also: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorGetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceTensorSetSubspace"))
@@ -1257,7 +1257,7 @@ end
 end 
 
 """
-	PetscSpaceView(petsclib::PetscLibType,sp::PetscSpace, v::PetscViewer) 
+	PetscSpaceView(petsclib::PetscLibType, sp::PetscSpace, v::PetscViewer) 
 Views a `PetscSpace`
 
 Collective
@@ -1268,7 +1268,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscSpace`, `PetscViewer`, `PetscSpaceViewFromOptions()`, `PetscSpaceDestroy()`
+See also: `PetscSpace`, `PetscViewer`, `PetscSpaceViewFromOptions()`, `PetscSpaceDestroy()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceView"))
@@ -1291,7 +1291,7 @@ end
 end 
 
 """
-	PetscSpaceViewFromOptions(petsclib::PetscLibType,A::PetscSpace, obj, name::String) 
+	PetscSpaceViewFromOptions(petsclib::PetscLibType, A::PetscSpace, obj, name::String) 
 View a `PetscSpace` based on values in the options database
 
 Collective
@@ -1306,7 +1306,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscSpace`, `PetscSpaceView()`, `PetscObjectViewFromOptions()`, `PetscSpaceCreate()`
+See also: `PetscSpace`, `PetscSpaceView()`, `PetscObjectViewFromOptions()`, `PetscSpaceCreate()`
 
 # External Links
 $(_doc_external("SPACE/PetscSpaceViewFromOptions"))

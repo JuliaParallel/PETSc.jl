@@ -1,5 +1,5 @@
 """
-	part::PetscPartitioner = PetscPartitionerCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	part::PetscPartitioner = PetscPartitionerCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `PetscPartitioner` object. The type can then be set with `PetscPartitionerSetType()`.
 
 Collective
@@ -12,7 +12,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscPartitionerSetType()`, `PetscPartitionerDestroy()`
+See also: `PetscPartitionerSetType()`, `PetscPartitionerDestroy()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerCreate"))
@@ -37,8 +37,8 @@ end
 end 
 
 """
-	partition::IS = PetscPartitionerDMPlexPartition(petsclib::PetscLibType,part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection) 
-Create a non
+	partition::IS = PetscPartitionerDMPlexPartition(petsclib::PetscLibType, part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection) 
+Create a non-overlapping partition of the cells in the mesh
 
 Collective
 
@@ -53,7 +53,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_unstructured), `DM`, `DMPLEX`, `PetscPartitioner`, `PetscSection`, `DMPlexDistribute()`, `PetscPartitionerCreate()`, `PetscSectionCreate()`,
+See also: `DM`, `DMPLEX`, `PetscPartitioner`, `PetscSection`, `DMPlexDistribute()`, `PetscPartitionerCreate()`, `PetscSectionCreate()`,
 `PetscSectionSetChart()`, `PetscPartitionerPartition()`
 
 # External Links
@@ -79,7 +79,7 @@ end
 end 
 
 """
-	PetscPartitionerDestroy(petsclib::PetscLibType,part::Union{PetscPartitioner, Ref{PetscPartitioner}}) 
+	PetscPartitionerDestroy(petsclib::PetscLibType, part::Union{PetscPartitioner, Ref{PetscPartitioner}}) 
 Destroys a `PetscPartitioner` object
 
 Collective
@@ -89,7 +89,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscPartitionerView()`
+See also: `PetscPartitionerView()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerDestroy"))
@@ -119,7 +119,7 @@ It is called from PetscFinalize().
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerFinalizePackage"))
@@ -141,7 +141,7 @@ end
 end 
 
 """
-	name::PetscPartitionerType = PetscPartitionerGetType(petsclib::PetscLibType,part::PetscPartitioner) 
+	name::PetscPartitionerType = PetscPartitionerGetType(petsclib::PetscLibType, part::PetscPartitioner) 
 Gets the PetscPartitioner type name (as a string) from the object.
 
 Not Collective
@@ -154,7 +154,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscPartitionerSetType()`, `PetscPartitionerCreate()`
+See also: `PetscPartitionerSetType()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerGetType"))
@@ -184,7 +184,7 @@ This function initializes everything in the PetscPartitioner package.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerInitializePackage"))
@@ -206,7 +206,7 @@ end
 end 
 
 """
-	mp::MatPartitioning = PetscPartitionerMatPartitioningGetMatPartitioning(petsclib::PetscLibType,part::PetscPartitioner) 
+	mp::MatPartitioning = PetscPartitionerMatPartitioningGetMatPartitioning(petsclib::PetscLibType, part::PetscPartitioner) 
 Get a `MatPartitioning` instance wrapped by this `PetscPartitioner`.
 
 Not Collective
@@ -219,7 +219,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `DMPlexDistribute()`, `PetscPartitionerCreate()`
+See also: `DMPlexDistribute()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerMatPartitioningGetMatPartitioning"))
@@ -244,7 +244,7 @@ end
 end 
 
 """
-	partition::IS = PetscPartitionerPartition(petsclib::PetscLibType,part::PetscPartitioner, nparts::PetscInt, numVertices::PetscInt, start::Vector{PetscInt}, adjacency::Vector{PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection) 
+	partition::IS = PetscPartitionerPartition(petsclib::PetscLibType, part::PetscPartitioner, nparts::PetscInt, numVertices::PetscInt, start::Vector{PetscInt}, adjacency::Vector{PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection) 
 Partition a graph
 
 Collective
@@ -269,7 +269,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: `PetscPartitionerCreate()`, `PetscPartitionerSetType()`, `PetscSectionCreate()`, `PetscSectionSetChart()`, `PetscSectionSetDof()`
+See also: `PetscPartitionerCreate()`, `PetscPartitionerSetType()`, `PetscSectionCreate()`, `PetscSectionSetChart()`, `PetscSectionSetDof()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerPartition"))
@@ -294,7 +294,7 @@ end
 end 
 
 """
-	PetscPartitionerRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscPartitionerRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new PetscPartitioner implementation
 
 Not Collective, No Fortran Support
@@ -303,7 +303,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine
 
--seealso: `PetscPartitionerRegisterAll()`
+See also: `PetscPartitionerRegisterAll()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerRegister"))
@@ -326,7 +326,7 @@ end
 end 
 
 """
-	PetscPartitionerReset(petsclib::PetscLibType,part::PetscPartitioner) 
+	PetscPartitionerReset(petsclib::PetscLibType, part::PetscPartitioner) 
 Resets data structures for the `PetscPartitioner`
 
 Collective
@@ -336,7 +336,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscPartitionerSetUp()`, `PetscPartitionerDestroy()`
+See also: `PetscPartitionerSetUp()`, `PetscPartitionerDestroy()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerReset"))
@@ -359,7 +359,7 @@ end
 end 
 
 """
-	PetscPartitionerSetFromOptions(petsclib::PetscLibType,part::PetscPartitioner) 
+	PetscPartitionerSetFromOptions(petsclib::PetscLibType, part::PetscPartitioner) 
 sets parameters in a `PetscPartitioner` from the options database
 
 Collective
@@ -374,7 +374,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: `PetscPartitionerView()`, `PetscPartitionerSetType()`, `PetscPartitionerPartition()`
+See also: `PetscPartitionerView()`, `PetscPartitionerSetType()`, `PetscPartitionerPartition()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerSetFromOptions"))
@@ -397,7 +397,7 @@ end
 end 
 
 """
-	PetscPartitionerSetType(petsclib::PetscLibType,part::PetscPartitioner, name::PetscPartitionerType) 
+	PetscPartitionerSetType(petsclib::PetscLibType, part::PetscPartitioner, name::PetscPartitionerType) 
 Builds a particular `PetscPartitioner`
 
 Collective
@@ -411,7 +411,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscPartitionerGetType()`, `PetscPartitionerCreate()`
+See also: `PetscPartitionerGetType()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerSetType"))
@@ -434,7 +434,7 @@ end
 end 
 
 """
-	PetscPartitionerSetUp(petsclib::PetscLibType,part::PetscPartitioner) 
+	PetscPartitionerSetUp(petsclib::PetscLibType, part::PetscPartitioner) 
 Construct data structures for the `PetscPartitioner`
 
 Collective
@@ -444,7 +444,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscPartitionerView()`, `PetscPartitionerDestroy()`
+See also: `PetscPartitionerView()`, `PetscPartitionerDestroy()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerSetUp"))
@@ -467,7 +467,7 @@ end
 end 
 
 """
-	random::PetscBool = PetscPartitionerShellGetRandom(petsclib::PetscLibType,part::PetscPartitioner) 
+	random::PetscBool = PetscPartitionerShellGetRandom(petsclib::PetscLibType, part::PetscPartitioner) 
 get the flag to use a random partition
 
 Collective
@@ -480,7 +480,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscPartitionerShellSetRandom()`, `PetscPartitionerCreate()`
+See also: `PetscPartitionerShellSetRandom()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerShellGetRandom"))
@@ -505,7 +505,7 @@ end
 end 
 
 """
-	PetscPartitionerShellSetPartition(petsclib::PetscLibType,part::PetscPartitioner, size::PetscInt, sizes::Vector{PetscInt}, points::Vector{PetscInt}) 
+	PetscPartitionerShellSetPartition(petsclib::PetscLibType, part::PetscPartitioner, size::PetscInt, sizes::Vector{PetscInt}, points::Vector{PetscInt}) 
 Set an artificial partition for a mesh
 
 Collective
@@ -518,7 +518,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `DMPlexDistribute()`, `PetscPartitionerCreate()`
+See also: `DMPlexDistribute()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerShellSetPartition"))
@@ -541,7 +541,7 @@ end
 end 
 
 """
-	PetscPartitionerShellSetRandom(petsclib::PetscLibType,part::PetscPartitioner, random::PetscBool) 
+	PetscPartitionerShellSetRandom(petsclib::PetscLibType, part::PetscPartitioner, random::PetscBool) 
 Set the flag to use a random partition
 
 Collective
@@ -552,7 +552,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscPartitionerShellGetRandom()`, `PetscPartitionerCreate()`
+See also: `PetscPartitionerShellGetRandom()`, `PetscPartitionerCreate()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerShellSetRandom"))
@@ -575,7 +575,7 @@ end
 end 
 
 """
-	PetscPartitionerView(petsclib::PetscLibType,part::PetscPartitioner, v::PetscViewer) 
+	PetscPartitionerView(petsclib::PetscLibType, part::PetscPartitioner, v::PetscViewer) 
 Views a `PetscPartitioner`
 
 Collective
@@ -586,7 +586,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscPartitionerDestroy()`
+See also: `PetscPartitionerDestroy()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerView"))
@@ -609,7 +609,7 @@ end
 end 
 
 """
-	PetscPartitionerViewFromOptions(petsclib::PetscLibType,A::PetscPartitioner, obj, name::String) 
+	PetscPartitionerViewFromOptions(petsclib::PetscLibType, A::PetscPartitioner, obj, name::String) 
 View a `PetscPartitioner` object based on options in the options database
 
 Collective
@@ -624,7 +624,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscPartitionerView()`, `PetscObjectViewFromOptions()`
+See also: `PetscPartitionerView()`, `PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerViewFromOptions"))

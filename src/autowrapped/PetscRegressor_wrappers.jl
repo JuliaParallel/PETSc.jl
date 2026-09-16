@@ -1,5 +1,5 @@
 """
-	PetscRegressorAppendOptionsPrefix(petsclib::PetscLibType,regressor::PetscRegressor, p::String) 
+	PetscRegressorAppendOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor, p::String) 
 Appends to the prefix used for searching for all PetscRegressor options in the database.
 
 Logically Collective
@@ -10,7 +10,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_regressor), `PetscRegressor`, `PetscRegressorSetFromOptions()`, `PetscRegressorSetOptionsPrefix()`, `PetscRegressorGetOptionsPrefix()`
+See also: `PetscRegressor`, `PetscRegressorSetFromOptions()`, `PetscRegressorSetOptionsPrefix()`, `PetscRegressorGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorAppendOptionsPrefix"))
@@ -33,7 +33,7 @@ end
 end 
 
 """
-	newregressor::PetscRegressor = PetscRegressorCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	newregressor::PetscRegressor = PetscRegressorCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `PetscRegressor` object.
 
 Collective
@@ -46,7 +46,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscRegressorFit()`, `PetscRegressorPredict()`, `PetscRegressor`
+See also: `PetscRegressorFit()`, `PetscRegressorPredict()`, `PetscRegressor`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorCreate"))
@@ -71,7 +71,7 @@ end
 end 
 
 """
-	PetscRegressorDestroy(petsclib::PetscLibType,regressor::Union{PetscRegressor, Ref{PetscRegressor}}) 
+	PetscRegressorDestroy(petsclib::PetscLibType, regressor::Union{PetscRegressor, Ref{PetscRegressor}}) 
 Destroys the regressor context that was created with `PetscRegressorCreate()`.
 
 Collective
@@ -81,7 +81,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PetscRegressorCreate()`, `PetscRegressorSetUp()`, `PetscRegressorReset()`, `PetscRegressor`
+See also: `PetscRegressorCreate()`, `PetscRegressorSetUp()`, `PetscRegressorReset()`, `PetscRegressor`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorDestroy"))
@@ -112,7 +112,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `PetscRegressorInitializePackage()`
+See also: `PetscRegressorInitializePackage()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorFinalizePackage"))
@@ -134,7 +134,7 @@ end
 end 
 
 """
-	PetscRegressorFit(petsclib::PetscLibType,regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) 
+	PetscRegressorFit(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) 
 Fit, or train, a regressor from a training dataset
 
 Collective
@@ -146,7 +146,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscRegressorCreate()`, `PetscRegressorSetUp()`, `PetscRegressorDestroy()`, `PetscRegressorPredict()`
+See also: `PetscRegressorCreate()`, `PetscRegressorSetUp()`, `PetscRegressorDestroy()`, `PetscRegressorPredict()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorFit"))
@@ -169,7 +169,7 @@ end
 end 
 
 """
-	p::Ptr{Cchar} = PetscRegressorGetOptionsPrefix(petsclib::PetscLibType,regressor::PetscRegressor) 
+	p::Ptr{Cchar} = PetscRegressorGetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor) 
 Gets the prefix used for searching for all
 PetscRegressor options in the database
 
@@ -181,7 +181,7 @@ Input Parameter:
 Output Parameter:
 - `p` - pointer to the prefix string used is returned
 
--seealso: [](ch_regressor), `PetscRegressor`, `PetscRegressorSetFromOptions()`, `PetscRegressorSetOptionsPrefix()`, `PetscRegressorAppendOptionsPrefix()`
+See also: `PetscRegressor`, `PetscRegressorSetFromOptions()`, `PetscRegressorSetOptionsPrefix()`, `PetscRegressorAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorGetOptionsPrefix"))
@@ -206,7 +206,7 @@ end
 end 
 
 """
-	tao::Tao = PetscRegressorGetTao(petsclib::PetscLibType,regressor::PetscRegressor) 
+	tao::Tao = PetscRegressorGetTao(petsclib::PetscLibType, regressor::PetscRegressor) 
 Returns the `Tao` context for a `PetscRegressor` object.
 
 Not Collective, but if the `PetscRegressor` is parallel, then the `Tao` object is parallel
@@ -219,7 +219,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscRegressorLinearGetKSP()`
+See also: `PetscRegressorLinearGetKSP()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorGetTao"))
@@ -244,7 +244,7 @@ end
 end 
 
 """
-	type::PetscRegressorType = PetscRegressorGetType(petsclib::PetscLibType,regressor::PetscRegressor) 
+	type::PetscRegressorType = PetscRegressorGetType(petsclib::PetscLibType, regressor::PetscRegressor) 
 Gets the current `PetscRegressorType` being used in the `PetscRegressor` object
 
 Not Collective
@@ -257,7 +257,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_regressor), `PetscRegressor`, `PetscRegressorType`, `PetscRegressorSetType()`
+See also: `PetscRegressor`, `PetscRegressorType`, `PetscRegressorSetType()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorGetType"))
@@ -289,7 +289,7 @@ Logically Collective
 
 Level: developer
 
--seealso: `PetscRegressorFinalizePackage()`
+See also: `PetscRegressorFinalizePackage()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorInitializePackage"))
@@ -311,7 +311,7 @@ end
 end 
 
 """
-	ksp::KSP = PetscRegressorLinearGetKSP(petsclib::PetscLibType,regressor::PetscRegressor) 
+	ksp::KSP = PetscRegressorLinearGetKSP(petsclib::PetscLibType, regressor::PetscRegressor) 
 Returns the `KSP` context for a `PETSCREGRESSORLINEAR` object.
 
 Not Collective, but if the `PetscRegressor` is parallel, then the `KSP` object is parallel
@@ -324,7 +324,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscRegressorGetTao()`
+See also: `PetscRegressorGetTao()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearGetKSP"))
@@ -349,7 +349,7 @@ end
 end 
 
 """
-	type::PetscRegressorLinearType = PetscRegressorLinearGetType(petsclib::PetscLibType,regressor::PetscRegressor) 
+	type::PetscRegressorLinearType = PetscRegressorLinearGetType(petsclib::PetscLibType, regressor::PetscRegressor) 
 Return the type for the `PETSCREGRESSORLINEAR` solver
 
 Input Parameter:
@@ -360,7 +360,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscRegressor`, `PETSCREGRESSORLINEAR`, `PetscRegressorLinearSetType()`, `PetscRegressorLinearType`
+See also: `PetscRegressor`, `PETSCREGRESSORLINEAR`, `PetscRegressorLinearSetType()`, `PetscRegressorLinearType`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearGetType"))
@@ -385,7 +385,7 @@ end
 end 
 
 """
-	PetscRegressorLinearSetFitIntercept(petsclib::PetscLibType,regressor::PetscRegressor, flg::PetscBool) 
+	PetscRegressorLinearSetFitIntercept(petsclib::PetscLibType, regressor::PetscRegressor, flg::PetscBool) 
 Set a flag to indicate that the intercept (also known as the "bias" or "offset") should
 be calculated; data are assumed to be mean-centered if false.
 
@@ -400,7 +400,7 @@ Level: intermediate
 Options Database Key:
 - `regressor_linear_fit_intercept (true|false)` - fit the intercept
 
--seealso: `PetscRegressor`, `PetscRegressorFit()`
+See also: `PetscRegressor`, `PetscRegressorFit()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearSetFitIntercept"))
@@ -423,7 +423,7 @@ end
 end 
 
 """
-	PetscRegressorLinearSetType(petsclib::PetscLibType,regressor::PetscRegressor, type::PetscRegressorLinearType) 
+	PetscRegressorLinearSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorLinearType) 
 Sets the type of linear regression to be performed
 
 Logically Collective
@@ -438,7 +438,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscRegressorLinearGetType()`, `PetscRegressorLinearType`, `PetscRegressorSetType()`, `REGRESSOR_LINEAR_OLS`,
+See also: `PetscRegressorLinearGetType()`, `PetscRegressorLinearType`, `PetscRegressorSetType()`, `REGRESSOR_LINEAR_OLS`,
 `REGRESSOR_LINEAR_LASSO`, `REGRESSOR_LINEAR_RIDGE`
 
 # External Links
@@ -462,7 +462,7 @@ end
 end 
 
 """
-	PetscRegressorLinearSetUseKSP(petsclib::PetscLibType,regressor::PetscRegressor, flg::PetscBool) 
+	PetscRegressorLinearSetUseKSP(petsclib::PetscLibType, regressor::PetscRegressor, flg::PetscBool) 
 Set a flag to indicate that a `KSP` object, instead of a `Tao` one, should be used
 to fit the linear regressor
 
@@ -477,7 +477,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscRegressor`, `PetscRegressorLinearGetKSP()`, `KSPLSQR`, `PCQR`, `MATSOLVERSPQR`, `MatSolverType`, `MATSEQDENSE`, `PCSVD`
+See also: `PetscRegressor`, `PetscRegressorLinearGetKSP()`, `KSPLSQR`, `PCQR`, `MATSOLVERSPQR`, `MatSolverType`, `MATSEQDENSE`, `PCSVD`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorLinearSetUseKSP"))
@@ -500,7 +500,7 @@ end
 end 
 
 """
-	PetscRegressorPredict(petsclib::PetscLibType,regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) 
+	PetscRegressorPredict(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) 
 Compute predictions (that is, perform inference) using a fitted regression model.
 
 Collective
@@ -514,7 +514,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscRegressorFit()`, `PetscRegressorDestroy()`
+See also: `PetscRegressorFit()`, `PetscRegressorDestroy()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorPredict"))
@@ -537,7 +537,7 @@ end
 end 
 
 """
-	PetscRegressorRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscRegressorRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a method to the `PetscRegressor` package.
 
 Not collective
@@ -546,7 +546,7 @@ Input Parameters:
 - `sname`    - name of a new user-defined regressor
 - `function` - routine to create method context
 
--seealso: `PetscRegressorRegisterAll()`
+See also: `PetscRegressorRegisterAll()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorRegister"))
@@ -569,7 +569,7 @@ end
 end 
 
 """
-	PetscRegressorReset(petsclib::PetscLibType,regressor::PetscRegressor) 
+	PetscRegressorReset(petsclib::PetscLibType, regressor::PetscRegressor) 
 Resets a `PetscRegressor` context by removing any allocated `Vec` and `Mat`. Any options set in the object remain.
 
 Collective
@@ -579,7 +579,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscRegressorCreate()`, `PetscRegressorSetUp()`, `PetscRegressorFit()`, `PetscRegressorPredict()`, `PetscRegressorDestroy()`
+See also: `PetscRegressorCreate()`, `PetscRegressorSetUp()`, `PetscRegressorFit()`, `PetscRegressorPredict()`, `PetscRegressorDestroy()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorReset"))
@@ -602,7 +602,7 @@ end
 end 
 
 """
-	PetscRegressorSetFromOptions(petsclib::PetscLibType,regressor::PetscRegressor) 
+	PetscRegressorSetFromOptions(petsclib::PetscLibType, regressor::PetscRegressor) 
 Sets `PetscRegressor` options from the options database.
 
 Collective
@@ -615,7 +615,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: `PetscRegressor`, `PetscRegressorCreate()`
+See also: `PetscRegressor`, `PetscRegressorCreate()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetFromOptions"))
@@ -638,7 +638,7 @@ end
 end 
 
 """
-	PetscRegressorSetOptionsPrefix(petsclib::PetscLibType,regressor::PetscRegressor, p::String) 
+	PetscRegressorSetOptionsPrefix(petsclib::PetscLibType, regressor::PetscRegressor, p::String) 
 Sets the prefix used for searching for all
 PetscRegressor options in the database.
 
@@ -650,7 +650,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_regressor), `PetscRegressor`, `PetscRegressorSetFromOptions()`, `PetscRegressorAppendOptionsPrefix()`, `PetscRegressorGetOptionsPrefix()`
+See also: `PetscRegressor`, `PetscRegressorSetFromOptions()`, `PetscRegressorAppendOptionsPrefix()`, `PetscRegressorGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetOptionsPrefix"))
@@ -673,7 +673,7 @@ end
 end 
 
 """
-	PetscRegressorSetRegularizerWeight(petsclib::PetscLibType,regressor::PetscRegressor, weight::PetscReal) 
+	PetscRegressorSetRegularizerWeight(petsclib::PetscLibType, regressor::PetscRegressor, weight::PetscReal) 
 Sets the weight to be used for the regularizer for a `PetscRegressor` context
 
 Logically Collective
@@ -687,7 +687,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: `PetscRegressorSetType`
+See also: `PetscRegressorSetType`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetRegularizerWeight"))
@@ -710,7 +710,7 @@ end
 end 
 
 """
-	PetscRegressorSetType(petsclib::PetscLibType,regressor::PetscRegressor, type::PetscRegressorType) 
+	PetscRegressorSetType(petsclib::PetscLibType, regressor::PetscRegressor, type::PetscRegressorType) 
 Sets the type for the regressor.
 
 Collective
@@ -724,7 +724,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscRegressorType`
+See also: `PetscRegressorType`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetType"))
@@ -747,7 +747,7 @@ end
 end 
 
 """
-	PetscRegressorSetUp(petsclib::PetscLibType,regressor::PetscRegressor) 
+	PetscRegressorSetUp(petsclib::PetscLibType, regressor::PetscRegressor) 
 Sets up the internal data structures for the later use of a regressor.
 
 Collective
@@ -755,7 +755,7 @@ Collective
 Input Parameter:
 - `regressor` - the `PetscRegressor` context
 
--seealso: `PetscRegressorCreate()`, `PetscRegressorFit()`, `PetscRegressorDestroy()`
+See also: `PetscRegressorCreate()`, `PetscRegressorFit()`, `PetscRegressorDestroy()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorSetUp"))
@@ -778,7 +778,7 @@ end
 end 
 
 """
-	PetscRegressorView(petsclib::PetscLibType,regressor::PetscRegressor, viewer::PetscViewer) 
+	PetscRegressorView(petsclib::PetscLibType, regressor::PetscRegressor, viewer::PetscViewer) 
 Prints information about the `PetscRegressor` object
 
 Collective
@@ -792,7 +792,7 @@ Options Database Key:
 
 Level: beginner
 
--seealso: [](ch_regressor), `PetscRegressor`, `PetscViewerASCIIOpen()`
+See also: `PetscRegressor`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorView"))
@@ -815,7 +815,7 @@ end
 end 
 
 """
-	PetscRegressorViewFromOptions(petsclib::PetscLibType,A::PetscRegressor, obj, name::String) 
+	PetscRegressorViewFromOptions(petsclib::PetscLibType, A::PetscRegressor, obj, name::String) 
 View a `PetscRegressor` object based on values in the options database
 
 Collective
@@ -830,7 +830,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_regressor), `PetscRegressor`, `PetscRegressorView`, `PetscObjectViewFromOptions()`, `PetscRegressorCreate()`
+See also: `PetscRegressor`, `PetscRegressorView`, `PetscObjectViewFromOptions()`, `PetscRegressorCreate()`
 
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorViewFromOptions"))

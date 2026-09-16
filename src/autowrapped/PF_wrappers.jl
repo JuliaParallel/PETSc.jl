@@ -1,5 +1,5 @@
 """
-	PFAppendOptionsPrefix(petsclib::PetscLibType,pf::AbstractPF, prefix::String) 
+	PFAppendOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::String) 
 Appends to the prefix used for searching for all
 `PF` options in the database.
 
@@ -11,7 +11,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFGetOptionsPrefix()`
+See also: `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PF/PFAppendOptionsPrefix"))
@@ -34,7 +34,7 @@ end
 end 
 
 """
-	y::PetscScalar = PFApply(petsclib::PetscLibType,pf::AbstractPF, n::PetscInt, x::Vector{PetscScalar}) 
+	y::PetscScalar = PFApply(petsclib::PetscLibType, pf::AbstractPF, n::PetscInt, x::Vector{PetscScalar}) 
 Applies the mathematical function to an array of values.
 
 Collective
@@ -51,7 +51,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PF`, `PFApplyVec()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
+See also: `PF`, `PFApplyVec()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
 
 # External Links
 $(_doc_external("PF/PFApply"))
@@ -76,7 +76,7 @@ end
 end 
 
 """
-	PFApplyVec(petsclib::PetscLibType,pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) 
+	PFApplyVec(petsclib::PetscLibType, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the mathematical function to a vector
 
 Collective
@@ -90,7 +90,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PF`, `PFApply()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
+See also: `PF`, `PFApply()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet()`
 
 # External Links
 $(_doc_external("PF/PFApplyVec"))
@@ -113,7 +113,7 @@ end
 end 
 
 """
-	pf::PF = PFCreate(petsclib::PetscLibType,comm::MPI_Comm, dimin::PetscInt, dimout::PetscInt) 
+	pf::PF = PFCreate(petsclib::PetscLibType, comm::MPI_Comm, dimin::PetscInt, dimout::PetscInt) 
 Creates a mathematical function context.
 
 Collective
@@ -128,7 +128,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PF`, `PFSet()`, `PFApply()`, `PFDestroy()`, `PFApplyVec()`
+See also: `PF`, `PFSet()`, `PFApply()`, `PFDestroy()`, `PFApplyVec()`
 
 # External Links
 $(_doc_external("PF/PFCreate"))
@@ -153,7 +153,7 @@ end
 end 
 
 """
-	PFDestroy(petsclib::PetscLibType,pf::AbstractPF) 
+	PFDestroy(petsclib::PetscLibType, pf::AbstractPF) 
 Destroys `PF` context that was created with `PFCreate()`.
 
 Collective
@@ -163,7 +163,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `PF`, `PFCreate()`, `PFSet()`, `PFSetType()`
+See also: `PF`, `PFCreate()`, `PFSet()`, `PFSetType()`
 
 # External Links
 $(_doc_external("PF/PFDestroy"))
@@ -194,7 +194,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PF`, `PetscFinalize()`
+See also: `PF`, `PetscFinalize()`
 
 # External Links
 $(_doc_external("PF/PFFinalizePackage"))
@@ -216,7 +216,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = PFGetOptionsPrefix(petsclib::PetscLibType,pf::AbstractPF) 
+	prefix::Ptr{Cchar} = PFGetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF) 
 Gets the prefix used for searching for all
 `PF` options in the database.
 
@@ -230,7 +230,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFAppendOptionsPrefix()`
+See also: `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("PF/PFGetOptionsPrefix"))
@@ -255,7 +255,7 @@ end
 end 
 
 """
-	type::PFType = PFGetType(petsclib::PetscLibType,pf::AbstractPF) 
+	type::PFType = PFGetType(petsclib::PetscLibType, pf::AbstractPF) 
 Gets the `PFType` name (as a string) from the `PF`
 context.
 
@@ -269,7 +269,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PF`, `PFSetType()`, `PFType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `PF`, `PFSetType()`, `PFType`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("PF/PFGetType"))
@@ -301,7 +301,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: `PF`, `PetscInitialize()`
+See also: `PF`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("PF/PFInitializePackage"))
@@ -323,7 +323,7 @@ end
 end 
 
 """
-	PFRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PFRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a method to the mathematical function package.
 
 Not Collective
@@ -332,7 +332,7 @@ Input Parameters:
 - `sname`    - name of a new user-defined solver
 - `function` - routine to create method context
 
--seealso: `PF`, `PFRegisterAll()`, `PFRegisterDestroy()`
+See also: `PF`, `PFRegisterAll()`, `PFRegisterDestroy()`
 
 # External Links
 $(_doc_external("PF/PFRegister"))
@@ -355,7 +355,7 @@ end
 end 
 
 """
-	PFSet(petsclib::PetscLibType,pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Ptr{Cvoid}) 
+	PFSet(petsclib::PetscLibType, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Ptr{Cvoid}) 
 Sets the C/C++/Fortran functions to be used by the PF function
 
 Collective
@@ -370,7 +370,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PF`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFApply()`, `PFApplyVec()`
+See also: `PF`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFApply()`, `PFApplyVec()`
 
 # External Links
 $(_doc_external("PF/PFSet"))
@@ -393,7 +393,7 @@ end
 end 
 
 """
-	PFSetFromOptions(petsclib::PetscLibType,pf::AbstractPF) 
+	PFSetFromOptions(petsclib::PetscLibType, pf::AbstractPF) 
 Sets `PF` options from the options database.
 
 Collective
@@ -403,7 +403,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PF`
+See also: `PF`
 
 # External Links
 $(_doc_external("PF/PFSetFromOptions"))
@@ -426,7 +426,7 @@ end
 end 
 
 """
-	PFSetOptionsPrefix(petsclib::PetscLibType,pf::AbstractPF, prefix::String) 
+	PFSetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::String) 
 Sets the prefix used for searching for all
 `PF` options in the database.
 
@@ -438,7 +438,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ksp), `PF`, `PFSetFromOptions()`, `PFAppendOptionsPrefix()`, `PFGetOptionsPrefix()`
+See also: `PF`, `PFSetFromOptions()`, `PFAppendOptionsPrefix()`, `PFGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("PF/PFSetOptionsPrefix"))
@@ -461,7 +461,7 @@ end
 end 
 
 """
-	PFSetType(petsclib::PetscLibType,pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid}) 
+	PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::PFType, ctx::Ptr{Cvoid}) 
 Builds `PF` for a particular function
 
 Collective
@@ -476,7 +476,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`, `PFType`, `PFGetType()`
+See also: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`, `PFType`, `PFGetType()`
 
 # External Links
 $(_doc_external("PF/PFSetType"))
@@ -499,7 +499,7 @@ end
 end 
 
 """
-	PFStringSetFunction(petsclib::PetscLibType,pf::AbstractPF, string::String) 
+	PFStringSetFunction(petsclib::PetscLibType, pf::AbstractPF, string::String) 
 Creates a function from a string
 
 Collective
@@ -510,7 +510,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PFSetFromOptions()`
+See also: `PFSetFromOptions()`
 
 # External Links
 $(_doc_external("PF/PFStringSetFunction"))
@@ -533,7 +533,7 @@ end
 end 
 
 """
-	PFView(petsclib::PetscLibType,pf::AbstractPF, viewer::PetscViewer) 
+	PFView(petsclib::PetscLibType, pf::AbstractPF, viewer::PetscViewer) 
 Prints information about a mathematical function
 
 Collective unless `viewer` is `PETSC_VIEWER_STDOUT_SELF`
@@ -544,7 +544,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PF`, `PetscViewerCreate()`, `PetscViewerASCIIOpen()`
+See also: `PF`, `PetscViewerCreate()`, `PetscViewerASCIIOpen()`
 
 # External Links
 $(_doc_external("PF/PFView"))
@@ -567,7 +567,7 @@ end
 end 
 
 """
-	PFViewFromOptions(petsclib::PetscLibType,A::AbstractPF, obj, name::String) 
+	PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj, name::String) 
 View a `PF` based on options set in the options database
 
 Collective
@@ -582,7 +582,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PF`, `PFView`, `PetscObjectViewFromOptions()`, `PFCreate()`
+See also: `PF`, `PFView`, `PetscObjectViewFromOptions()`, `PFCreate()`
 
 # External Links
 $(_doc_external("PF/PFViewFromOptions"))

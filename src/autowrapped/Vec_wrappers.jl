@@ -1,5 +1,5 @@
 """
-	VecAXPBY(petsclib::PetscLibType,y::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, x::AbstractPetscVec) 
+	VecAXPBY(petsclib::PetscLibType, y::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, x::AbstractPetscVec) 
 Computes `y = alpha x + beta y`.
 
 Logically Collective
@@ -15,7 +15,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAYPX()`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`
+See also: `Vec`, `VecAYPX()`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`
 
 # External Links
 $(_doc_external("Vec/VecAXPBY"))
@@ -38,7 +38,7 @@ end
 end 
 
 """
-	VecAXPBYPCZ(petsclib::PetscLibType,z::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, gamma::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) 
+	VecAXPBYPCZ(petsclib::PetscLibType, z::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, gamma::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes `z = alpha x + beta y + gamma z`
 
 Logically Collective
@@ -56,7 +56,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAYPX()`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBY()`
+See also: `Vec`, `VecAYPX()`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBY()`
 
 # External Links
 $(_doc_external("Vec/VecAXPBYPCZ"))
@@ -79,7 +79,7 @@ end
 end 
 
 """
-	VecAXPY(petsclib::PetscLibType,y::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec) 
+	VecAXPY(petsclib::PetscLibType, y::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec) 
 Computes `y = alpha x + y`.
 
 Logically Collective
@@ -94,7 +94,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAYPX()`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`
+See also: `Vec`, `VecAYPX()`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`
 
 # External Links
 $(_doc_external("Vec/VecAXPY"))
@@ -117,7 +117,7 @@ end
 end 
 
 """
-	VecAYPX(petsclib::PetscLibType,y::AbstractPetscVec, beta::PetscScalar, x::AbstractPetscVec) 
+	VecAYPX(petsclib::PetscLibType, y::AbstractPetscVec, beta::PetscScalar, x::AbstractPetscVec) 
 Computes `y = x + beta y`.
 
 Logically Collective
@@ -132,7 +132,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`
+See also: `Vec`, `VecMAXPY()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`
 
 # External Links
 $(_doc_external("Vec/VecAYPX"))
@@ -155,7 +155,7 @@ end
 end 
 
 """
-	VecAbs(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecAbs(petsclib::PetscLibType, v::AbstractPetscVec) 
 Replaces every element in a vector with its absolute value.
 
 Logically Collective
@@ -165,7 +165,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `Vec`, `VecExp()`, `VecSqrtAbs()`, `VecReciprocal()`, `VecLog()`, `VecPointwiseSign()`
+See also: `Vec`, `VecExp()`, `VecSqrtAbs()`, `VecReciprocal()`, `VecLog()`, `VecPointwiseSign()`
 
 # External Links
 $(_doc_external("Vec/VecAbs"))
@@ -188,7 +188,7 @@ end
 end 
 
 """
-	VecAppendOptionsPrefix(petsclib::PetscLibType,v::AbstractPetscVec, prefix::String) 
+	VecAppendOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec, prefix::String) 
 Appends to the prefix used for searching for all
 `Vec` options in the database.
 
@@ -200,7 +200,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecGetOptionsPrefix()`
+See also: `Vec`, `VecGetOptionsPrefix()`
 
 # External Links
 $(_doc_external("Vec/VecAppendOptionsPrefix"))
@@ -223,7 +223,7 @@ end
 end 
 
 """
-	VecAssemblyBegin(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	VecAssemblyBegin(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Begins assembling the vector; that is ensuring all the vector's entries are stored on the correct MPI process. This routine should
 be called after completing all calls to `VecSetValues()`.
 
@@ -234,7 +234,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyEnd()`, `VecSetValues()`
+See also: `Vec`, `VecAssemblyEnd()`, `VecSetValues()`
 
 # External Links
 $(_doc_external("Vec/VecAssemblyBegin"))
@@ -257,7 +257,7 @@ end
 end 
 
 """
-	VecAssemblyEnd(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	VecAssemblyEnd(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Completes assembling the vector.  This routine should be called after `VecAssemblyBegin()`.
 
 Collective
@@ -271,7 +271,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecSetValues()`, `VecViewFromOptions()`, `VecStashViewFromOptions()`,
+See also: `Vec`, `VecAssemblyBegin()`, `VecSetValues()`, `VecViewFromOptions()`, `VecStashViewFromOptions()`,
 `PetscObjectViewFromOptions()`
 
 # External Links
@@ -295,7 +295,7 @@ end
 end 
 
 """
-	VecBindToCPU(petsclib::PetscLibType,v::AbstractPetscVec, flg::PetscBool) 
+	VecBindToCPU(petsclib::PetscLibType, v::AbstractPetscVec, flg::PetscBool) 
 marks a vector to temporarily stay on the CPU and perform computations on the CPU
 
 Logically collective
@@ -306,7 +306,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecBoundToCPU()`
+See also: `Vec`, `VecBoundToCPU()`
 
 # External Links
 $(_doc_external("Vec/VecBindToCPU"))
@@ -329,7 +329,7 @@ end
 end 
 
 """
-	VecBoundGradientProjection(petsclib::PetscLibType,G::AbstractPetscVec, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, GP::AbstractPetscVec) 
+	VecBoundGradientProjection(petsclib::PetscLibType, G::AbstractPetscVec, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, GP::AbstractPetscVec) 
 Projects vector according to this definition.
 If XL[i] < X[i] < XU[i], then GP[i] = G[i];
 If X[i] <= XL[i], then GP[i] = min(G[i],0);
@@ -346,7 +346,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecBoundGradientProjection"))
@@ -369,7 +369,7 @@ end
 end 
 
 """
-	flg::PetscBool = VecBoundToCPU(petsclib::PetscLibType,v::AbstractPetscVec) 
+	flg::PetscBool = VecBoundToCPU(petsclib::PetscLibType, v::AbstractPetscVec) 
 query if a vector is bound to the CPU
 
 Not collective
@@ -382,7 +382,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecBindToCPU()`
+See also: `Vec`, `VecBindToCPU()`
 
 # External Links
 $(_doc_external("Vec/VecBoundToCPU"))
@@ -407,7 +407,7 @@ end
 end 
 
 """
-	Y::PetscVec,x_is::Ptr{IS} = VecConcatenate(petsclib::PetscLibType,nx::PetscInt, X::Vector{<:AbstractPetscVec}) 
+	Y::PetscVec,x_is::Ptr{IS} = VecConcatenate(petsclib::PetscLibType, nx::PetscInt, X::Vector{<:AbstractPetscVec}) 
 Creates a new vector that is a vertical concatenation of all the given array of vectors
 in the order they appear in the array. The concatenated vector resides on the same
 communicator and is the same type as the source vectors.
@@ -424,7 +424,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VECNEST`, `VECSCATTER`, `VecScatterCreate()`
+See also: `Vec`, `VECNEST`, `VECSCATTER`, `VecScatterCreate()`
 
 # External Links
 $(_doc_external("Vec/VecConcatenate"))
@@ -451,7 +451,7 @@ end
 end 
 
 """
-	VecConjugate(petsclib::PetscLibType,x::AbstractPetscVec) 
+	VecConjugate(petsclib::PetscLibType, x::AbstractPetscVec) 
 Conjugates a vector. That is, replace every entry in a vector with its complex conjugate
 
 Logically Collective
@@ -461,7 +461,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecSet()`
+See also: `Vec`, `VecSet()`
 
 # External Links
 $(_doc_external("Vec/VecConjugate"))
@@ -484,7 +484,7 @@ end
 end 
 
 """
-	VecCopy(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	VecCopy(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Copies a vector `y = x`
 
 Logically Collective
@@ -497,7 +497,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecDuplicate()`
+See also: `Vec`, `VecDuplicate()`
 
 # External Links
 $(_doc_external("Vec/VecCopy"))
@@ -520,7 +520,7 @@ end
 end 
 
 """
-	vec::PetscVec = VecCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	vec::PetscVec = VecCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty vector object. The type can then be set with `VecSetType()`,
 or `VecSetFromOptions().`
 
@@ -534,7 +534,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecSetType()`, `VecSetSizes()`, `VecCreateMPIWithArray()`, `VecCreateMPI()`, `VecDuplicate()`,
+See also: `Vec`, `VecSetType()`, `VecSetSizes()`, `VecCreateMPIWithArray()`, `VecCreateMPI()`, `VecDuplicate()`,
 `VecDuplicateVecs()`, `VecCreateGhost()`, `VecCreateSeq()`, `VecPlaceArray()`
 
 # External Links
@@ -560,7 +560,7 @@ end
 end 
 
 """
-	vec::PetscVec = VecCreateFromOptions(petsclib::PetscLibType,comm::MPI_Comm, prefix::String, bs::PetscInt, m::PetscInt, n::PetscInt) 
+	vec::PetscVec = VecCreateFromOptions(petsclib::PetscLibType, comm::MPI_Comm, prefix::String, bs::PetscInt, m::PetscInt, n::PetscInt) 
 Creates a vector whose type is set from the options database
 
 Collective
@@ -580,7 +580,7 @@ Options Database Keys:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecSetType()`, `VecSetSizes()`, `VecCreateMPIWithArray()`, `VecCreateMPI()`, `VecDuplicate()`,
+See also: `Vec`, `VecSetType()`, `VecSetSizes()`, `VecCreateMPIWithArray()`, `VecCreateMPI()`, `VecDuplicate()`,
 `VecDuplicateVecs()`, `VecCreateGhost()`, `VecCreateSeq()`, `VecPlaceArray()`, `VecCreate()`, `VecType`
 
 # External Links
@@ -606,7 +606,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhost(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
+	vv::PetscVec = VecCreateGhost(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
 Creates a parallel vector with ghost padding on each processor.
 
 Collective
@@ -623,7 +623,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateMPI()`,
+See also: `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateMPI()`,
 `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`, `VecGhostUpdateBegin()`,
 `VecCreateGhostWithArray()`, `VecCreateMPIWithArray()`, `VecGhostUpdateEnd()`,
 `VecCreateGhostBlock()`, `VecCreateGhostBlockWithArray()`, `VecMPISetGhost()`
@@ -651,7 +651,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhostBlock(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
+	vv::PetscVec = VecCreateGhostBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}) 
 Creates a parallel vector with ghost padding on each processor.
 The indicing of the ghost points is done with blocks.
 
@@ -670,7 +670,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateMPI()`,
+See also: `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateMPI()`,
 `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`, `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`,
 `VecCreateGhostWithArray()`, `VecCreateMPIWithArray()`, `VecCreateGhostBlockWithArray()`
 
@@ -697,7 +697,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhostBlockWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
+	vv::PetscVec = VecCreateGhostBlockWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
 Creates a parallel vector with ghost padding on each processor;
 the caller allocates the array space. Indices in the ghost region are based on blocks.
 
@@ -717,7 +717,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`,
+See also: `Vec`, `VecType`, `VecCreate()`, `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`,
 `VecCreateGhost()`, `VecCreateSeqWithArray()`, `VecCreateMPIWithArray()`,
 `VecCreateGhostWithArray()`, `VecCreateGhostBlock()`, `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`
 
@@ -744,7 +744,7 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateGhostWithArray(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
+	vv::PetscVec = VecCreateGhostWithArray(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, M_N::PetscInt, nghost::PetscInt, ghosts::Vector{PetscInt}, array::Vector{PetscScalar}) 
 Creates a parallel vector with ghost padding on each processor;
 the caller allocates the array space.
 
@@ -763,7 +763,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`,
+See also: `Vec`, `VecType`, `VecCreate()`, `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`,
 `VecCreateGhost()`, `VecCreateSeqWithArray()`, `VecCreateMPIWithArray()`,
 `VecCreateGhostBlock()`, `VecCreateGhostBlockWithArray()`, `VecMPISetGhost()`, `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`
 
@@ -790,7 +790,7 @@ end
 end 
 
 """
-	w::PetscVec = VecCreateLocalVector(petsclib::PetscLibType,v::AbstractPetscVec) 
+	w::PetscVec = VecCreateLocalVector(petsclib::PetscLibType, v::AbstractPetscVec) 
 Creates a vector object suitable for use with `VecGetLocalVector()` and friends. You must call `VecDestroy()` when the
 vector is no longer needed.
 
@@ -804,7 +804,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetLocalVectorRead()`, `VecRestoreLocalVectorRead()`, `VecGetLocalVector()`, `VecRestoreLocalVector()`
+See also: `Vec`, `VecGetLocalVectorRead()`, `VecRestoreLocalVectorRead()`, `VecGetLocalVector()`, `VecRestoreLocalVector()`
 
 # External Links
 $(_doc_external("Vec/VecCreateLocalVector"))
@@ -829,7 +829,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateMPI(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
+	v::PetscVec = VecCreateMPI(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a parallel vector.
 
 Collective
@@ -844,7 +844,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateGhost()`,
+See also: `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateGhost()`,
 `VecCreateMPIWithArray()`, `VecCreateGhostWithArray()`, `VecMPISetGhost()`, `PetscLayout`,
 `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`
 
@@ -871,7 +871,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateMPIKokkosWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, darray::Vector{PetscScalar}) 
+	v::PetscVec = VecCreateMPIKokkosWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, darray::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecCreateMPIKokkosWithArray"))
@@ -896,7 +896,7 @@ end
 end 
 
 """
-	array::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt) 
+	array::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt) 
 
 # External Links
 $(_doc_external("Vec/VecCreateMPIViennaCLWithArray"))
@@ -923,7 +923,7 @@ end
 end 
 
 """
-	viennaclvec::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, cpuarray::Vector{PetscScalar}) 
+	viennaclvec::ViennaCLVector,vv::PetscVec = VecCreateMPIViennaCLWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, cpuarray::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecCreateMPIViennaCLWithArrays"))
@@ -950,8 +950,8 @@ end
 end 
 
 """
-	vv::PetscVec = VecCreateMPIWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, array::Vector{PetscScalar}) 
-Creates a parallel, array
+	vv::PetscVec = VecCreateMPIWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, M_N::PetscInt, array::Vector{PetscScalar}) 
+Creates a parallel, array-style vector,
 where the user provides the array space to store the vector values.
 
 Collective
@@ -968,7 +968,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateSeqWithArray()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateGhost()`,
+See also: `Vec`, `VecType`, `VecCreateSeqWithArray()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateGhost()`,
 `VecCreateMPI()`, `VecCreateGhostWithArray()`, `VecPlaceArray()`
 
 # External Links
@@ -994,7 +994,7 @@ end
 end 
 
 """
-	Y::PetscVec = VecCreateNest(petsclib::PetscLibType,comm::MPI_Comm, nb::PetscInt, is::Vector{<:AbstractIS}, x::Vector{<:AbstractPetscVec}) 
+	Y::PetscVec = VecCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nb::PetscInt, is::Vector{<:AbstractIS}, x::Vector{<:AbstractPetscVec}) 
 Creates a new vector containing several nested subvectors, each stored separately
 
 Collective
@@ -1010,7 +1010,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `MatCreateNest()`, `DMSetVecType()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecCreate()`, `MatCreateNest()`, `DMSetVecType()`
 
 # External Links
 $(_doc_external("Vec/VecCreateNest"))
@@ -1035,8 +1035,8 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateSeq(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt) 
-Creates a standard, sequential array
+	v::PetscVec = VecCreateSeq(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt) 
+Creates a standard, sequential array-style vector.
 
 Collective
 
@@ -1049,7 +1049,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateMPI()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateGhost()`
+See also: `Vec`, `VecType`, `VecCreateMPI()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateGhost()`
 
 # External Links
 $(_doc_external("Vec/VecCreateSeq"))
@@ -1074,7 +1074,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateSeqKokkos(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt) 
+	v::PetscVec = VecCreateSeqKokkos(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt) 
 
 # External Links
 $(_doc_external("Vec/VecCreateSeqKokkos"))
@@ -1099,7 +1099,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateSeqKokkosWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, darray::Vector{PetscScalar}) 
+	v::PetscVec = VecCreateSeqKokkosWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, darray::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecCreateSeqKokkosWithArray"))
@@ -1124,7 +1124,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateSeqViennaCL(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt) 
+	v::PetscVec = VecCreateSeqViennaCL(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt) 
 
 # External Links
 $(_doc_external("Vec/VecCreateSeqViennaCL"))
@@ -1149,7 +1149,7 @@ end
 end 
 
 """
-	viennaclvec::ViennaCLVector,V::PetscVec = VecCreateSeqViennaCLWithArrays(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, cpuarray::Vector{PetscScalar}) 
+	viennaclvec::ViennaCLVector,V::PetscVec = VecCreateSeqViennaCLWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, cpuarray::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecCreateSeqViennaCLWithArrays"))
@@ -1176,8 +1176,8 @@ end
 end 
 
 """
-	V::PetscVec = VecCreateSeqWithArray(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, array::Vector{PetscScalar}) 
-Creates a standard,sequential array
+	V::PetscVec = VecCreateSeqWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, array::Vector{PetscScalar}) 
+Creates a standard,sequential array-style vector,
 where the user provides the array space to store the vector values.
 
 Collective
@@ -1193,7 +1193,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `VecCreateMPIWithArray()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `VecCreateMPIWithArray()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `VecCreateGhost()`, `VecCreateSeq()`, `VecPlaceArray()`
 
 # External Links
@@ -1219,7 +1219,7 @@ end
 end 
 
 """
-	v::PetscVec = VecCreateShared(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
+	v::PetscVec = VecCreateShared(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, M_N::PetscInt) 
 Creates a parallel vector that uses shared memory.
 
 Collective
@@ -1234,7 +1234,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecCreateMPI()`, `VecDuplicate()`, `VecDuplicateVecs()`,
+See also: `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecCreateMPI()`, `VecDuplicate()`, `VecDuplicateVecs()`,
 `VecCreateGhost()`, `VecCreateMPIWithArray()`, `VecCreateGhostWithArray()`
 
 # External Links
@@ -1260,7 +1260,7 @@ end
 end 
 
 """
-	VecDestroy(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecDestroy(petsclib::PetscLibType, v::AbstractPetscVec) 
 Destroys a vector.
 
 Collective
@@ -1270,7 +1270,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecCreate()`, `VecDuplicate()`, `VecDestroyVecs()`
+See also: `Vec`, `VecCreate()`, `VecDuplicate()`, `VecDestroyVecs()`
 
 # External Links
 $(_doc_external("Vec/VecDestroy"))
@@ -1295,7 +1295,7 @@ end
 end 
 
 """
-	VecDestroyVecs(petsclib::PetscLibType,m::PetscInt, vv::Union{Ptr, AbstractArray{PetscVec}}) 
+	VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::Union{Ptr, AbstractArray{PetscVec}}) 
 Frees a block of vectors obtained with `VecDuplicateVecs()`.
 
 Collective
@@ -1306,7 +1306,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, [](ch_fortran), `VecDuplicateVecs()`, `VecDestroyVecsf90()`
+See also: `Vec`, `VecDuplicateVecs()`, `VecDestroyVecsf90()`
 
 # External Links
 $(_doc_external("Vec/VecDestroyVecs"))
@@ -1330,7 +1330,7 @@ end
 end 
 
 """
-	val::PetscScalar = VecDot(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	val::PetscScalar = VecDot(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the vector dot product.
 
 Collective
@@ -1344,7 +1344,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecMDot()`, `VecTDot()`, `VecNorm()`, `VecDotBegin()`, `VecDotEnd()`, `VecDotRealPart()`
+See also: `Vec`, `VecMDot()`, `VecTDot()`, `VecNorm()`, `VecDotBegin()`, `VecDotEnd()`, `VecDotRealPart()`
 
 # External Links
 $(_doc_external("Vec/VecDot"))
@@ -1369,7 +1369,7 @@ end
 end 
 
 """
-	result::PetscScalar = VecDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	result::PetscScalar = VecDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Starts a split phase dot product computation.
 
 Input Parameters:
@@ -1379,7 +1379,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecTDotBegin()`, `VecTDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
@@ -1405,7 +1405,7 @@ end
 end 
 
 """
-	result::PetscScalar = VecDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	result::PetscScalar = VecDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Ends a split phase dot product computation.
 
 Input Parameters:
@@ -1415,7 +1415,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecTDotBegin()`, `VecTDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
@@ -1441,8 +1441,8 @@ end
 end 
 
 """
-	dp::PetscScalar,nm::PetscReal = VecDotNorm2(petsclib::PetscLibType,s::AbstractPetscVec, t::AbstractPetscVec) 
-computes the inner product of two vectors and the 2
+	dp::PetscScalar,nm::PetscReal = VecDotNorm2(petsclib::PetscLibType, s::AbstractPetscVec, t::AbstractPetscVec) 
+computes the inner product of two vectors and the 2-norm squared of the second vector
 
 Collective
 
@@ -1456,7 +1456,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `Vec`, `VecDot()`, `VecNorm()`, `VecDotBegin()`, `VecNormBegin()`, `VecDotEnd()`, `VecNormEnd()`
+See also: `Vec`, `VecDot()`, `VecNorm()`, `VecDotBegin()`, `VecNormBegin()`, `VecDotEnd()`, `VecNormEnd()`
 
 # External Links
 $(_doc_external("Vec/VecDotNorm2"))
@@ -1483,7 +1483,7 @@ end
 end 
 
 """
-	val::PetscReal = VecDotRealPart(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	val::PetscReal = VecDotRealPart(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the real part of the vector dot product.
 
 Collective
@@ -1505,7 +1505,7 @@ For real numbers this returns the same value as `VecDot()`
 For complex numbers in C^n (that is a vector of n components with a complex number for each component) this is equal to the usual real dot product on the
 the space R^{2n} (that is a vector of 2n components with the real or imaginary part of the complex numbers for components)
 
--seealso: [](ch_vectors), `Vec`, `VecMDot()`, `VecTDot()`, `VecNorm()`, `VecDotBegin()`, `VecDotEnd()`, `VecDot()`, `VecDotNorm2()`
+See also: `Vec`, `VecMDot()`, `VecTDot()`, `VecNorm()`, `VecDotBegin()`, `VecDotEnd()`, `VecDot()`, `VecDotNorm2()`
 
 # External Links
 $(_doc_external("Vec/VecDotRealPart"))
@@ -1530,7 +1530,7 @@ end
 end 
 
 """
-	newv::PetscVec = VecDuplicate(petsclib::PetscLibType,v::AbstractPetscVec) 
+	newv::PetscVec = VecDuplicate(petsclib::PetscLibType, v::AbstractPetscVec) 
 Creates a new vector of the same type as an existing vector.
 
 Collective
@@ -1543,7 +1543,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecDestroy()`, `VecDuplicateVecs()`, `VecCreate()`, `VecCopy()`
+See also: `Vec`, `VecDestroy()`, `VecDuplicateVecs()`, `VecCreate()`, `VecCopy()`
 
 # External Links
 $(_doc_external("Vec/VecDuplicate"))
@@ -1568,7 +1568,7 @@ end
 end 
 
 """
-	M_V::Ptr{PetscVec} = VecDuplicateVecs(petsclib::PetscLibType,v::AbstractPetscVec, m::PetscInt) 
+	M_V::Ptr{PetscVec} = VecDuplicateVecs(petsclib::PetscLibType, v::AbstractPetscVec, m::PetscInt) 
 Creates several vectors of the same type as an existing vector.
 
 Collective
@@ -1582,7 +1582,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, [](ch_fortran), `VecDestroyVecs()`, `VecDuplicate()`, `VecCreate()`, `VecMDot()`, `VecMAXPY()`, `KSPGMRES`,
+See also: `Vec`, `VecDestroyVecs()`, `VecDuplicate()`, `VecCreate()`, `VecMDot()`, `VecMAXPY()`, `KSPGMRES`,
 `KSPGMRESSetPreAllocateVectors()`
 
 # External Links
@@ -1608,7 +1608,7 @@ end
 end 
 
 """
-	flg::PetscBool = VecEqual(petsclib::PetscLibType,vec1::AbstractPetscVec, vec2::AbstractPetscVec) 
+	flg::PetscBool = VecEqual(petsclib::PetscLibType, vec1::AbstractPetscVec, vec2::AbstractPetscVec) 
 Compares two vectors. Returns true if the two vectors are either pointing to the same memory buffer,
 or if the two vectors have the same local and global layout as well as bitwise equality of all entries.
 Does NOT take round-off errors into account.
@@ -1624,7 +1624,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecEqual"))
@@ -1649,7 +1649,7 @@ end
 end 
 
 """
-	norm::PetscReal,norm_loc::PetscInt,norma::PetscReal,norma_loc::PetscInt,normr::PetscReal,normr_loc::PetscInt = VecErrorWeightedNorms(petsclib::PetscLibType,U::AbstractPetscVec, Y::AbstractPetscVec, E::AbstractPetscVec, wnormtype::NormType, atol::PetscReal, vatol::AbstractPetscVec, rtol::PetscReal, vrtol::AbstractPetscVec, ignore_max::PetscReal) 
+	norm::PetscReal,norm_loc::PetscInt,norma::PetscReal,norma_loc::PetscInt,normr::PetscReal,normr_loc::PetscInt = VecErrorWeightedNorms(petsclib::PetscLibType, U::AbstractPetscVec, Y::AbstractPetscVec, E::AbstractPetscVec, wnormtype::NormType, atol::PetscReal, vatol::AbstractPetscVec, rtol::PetscReal, vrtol::AbstractPetscVec, ignore_max::PetscReal) 
 compute a weighted norm of the difference between two vectors
 
 Collective
@@ -1675,7 +1675,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `NormType`, `TSErrorWeightedNorm()`, `TSErrorWeightedENorm()`
+See also: `Vec`, `NormType`, `TSErrorWeightedNorm()`, `TSErrorWeightedENorm()`
 
 # External Links
 $(_doc_external("Vec/VecErrorWeightedNorms"))
@@ -1710,7 +1710,7 @@ end
 end 
 
 """
-	VecExp(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecExp(petsclib::PetscLibType, v::AbstractPetscVec) 
 Replaces each component of a vector by e^x_i
 
 Not Collective
@@ -1723,7 +1723,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `Vec`, `VecLog()`, `VecAbs()`, `VecSqrtAbs()`, `VecReciprocal()`
+See also: `Vec`, `VecLog()`, `VecAbs()`, `VecSqrtAbs()`, `VecReciprocal()`
 
 # External Links
 $(_doc_external("Vec/VecExp"))
@@ -1746,7 +1746,7 @@ end
 end 
 
 """
-	VecFilter(petsclib::PetscLibType,v::AbstractPetscVec, tol::PetscReal) 
+	VecFilter(petsclib::PetscLibType, v::AbstractPetscVec, tol::PetscReal) 
 Set all values in the vector with an absolute value less than or equal to the tolerance to zero
 
 Input Parameters:
@@ -1758,7 +1758,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `VecCreate()`, `VecSet()`, `MatFilter()`
+See also: `VecCreate()`, `VecSet()`, `MatFilter()`
 
 # External Links
 $(_doc_external("Vec/VecFilter"))
@@ -1787,7 +1787,7 @@ from PetscFinalize().
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Vec/VecFinalizePackage"))
@@ -1809,8 +1809,8 @@ end
 end 
 
 """
-	VecFischer(petsclib::PetscLibType,X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, FB::AbstractPetscVec) 
-Evaluates the Fischer
+	VecFischer(petsclib::PetscLibType, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, FB::AbstractPetscVec) 
+Evaluates the Fischer-Burmeister function for complementarity
 problems.
 
 Logically Collective
@@ -1826,7 +1826,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `Vec`, `VecSFischer()`, `MatDFischer()`, `MatDSFischer()`
+See also: `Vec`, `VecSFischer()`, `MatDFischer()`, `MatDSFischer()`
 
 # External Links
 $(_doc_external("Tao/VecFischer"))
@@ -1849,7 +1849,7 @@ end
 end 
 
 """
-	VecFlag(petsclib::PetscLibType,xin::AbstractPetscVec, flg::PetscInt) 
+	VecFlag(petsclib::PetscLibType, xin::AbstractPetscVec, flg::PetscInt) 
 set infinity into the local part of the vector on any subset of MPI processes
 
 Logically Collective
@@ -1860,7 +1860,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `PetscLayout`, `VecGetLayout()`, `VecGetSize()`, `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`
+See also: `Vec`, `PetscLayout`, `VecGetLayout()`, `VecGetSize()`, `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`
 
 # External Links
 $(_doc_external("Vec/VecFlag"))
@@ -1883,7 +1883,7 @@ end
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArray(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar} = VecGetArray(petsclib::PetscLibType, x::AbstractPetscVec) 
 Returns a pointer to a contiguous array that contains this
 MPI processes's portion of the vector data
 
@@ -1897,7 +1897,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecGetArrays()`, `VecPlaceArray()`, `VecGetArray2d()`,
+See also: `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecGetArrays()`, `VecPlaceArray()`, `VecGetArray2d()`,
 `VecGetArrayPair()`, `VecRestoreArrayPair()`, `VecGetArrayWrite()`, `VecRestoreArrayWrite()`, `VecGetArrayAndMemType()`
 
 # External Links
@@ -1924,7 +1924,7 @@ end
 
 # override for VecGetArray1d; C signature: VecGetArray1d(Vec x, PetscInt m, PetscInt mstart, PetscScalar* a[])
 """
-	a::PetscArray = VecGetArray1d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) 
+	a::PetscArray = VecGetArray1d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) 
 Returns a pointer to a 1d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray1d()`
 when you no longer need access to the array.
@@ -1941,7 +1941,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray2d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -1969,7 +1969,7 @@ end
 
 # override for VecGetArray1dWrite; C signature: VecGetArray1dWrite(Vec x, PetscInt m, PetscInt mstart, PetscScalar* a[])
 """
-	a::PetscArray = VecGetArray1dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) 
+	a::PetscArray = VecGetArray1dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) 
 Returns a pointer to a 1d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray1dWrite()`
 when you no longer need access to the array.
@@ -1986,7 +1986,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray2d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2014,7 +2014,7 @@ end
 
 # override for VecGetArray2d; C signature: VecGetArray2d(Vec x, PetscInt m, PetscInt n, PetscInt mstart, PetscInt nstart, PetscScalar** a[])
 """
-	a::Vector{PetscScalar} = VecGetArray2d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
+	a::Vector{PetscScalar} = VecGetArray2d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
 Returns a pointer to a 2d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray2d()`
 when you no longer need access to the array.
@@ -2033,7 +2033,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2071,7 +2071,7 @@ end
 
 # override for VecGetArray2dRead; C signature: VecGetArray2dRead(Vec x, PetscInt m, PetscInt n, PetscInt mstart, PetscInt nstart, PetscScalar** a[])
 """
-	a::Vector{PetscScalar} = VecGetArray2dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
+	a::Vector{PetscScalar} = VecGetArray2dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
 Returns a pointer to a 2d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray2dRead()`
 when you no longer need access to the array.
@@ -2090,7 +2090,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2119,7 +2119,7 @@ end
 
 # override for VecGetArray2dWrite; C signature: VecGetArray2dWrite(Vec x, PetscInt m, PetscInt n, PetscInt mstart, PetscInt nstart, PetscScalar** a[])
 """
-	a::Vector{PetscScalar} = VecGetArray2dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
+	a::Vector{PetscScalar} = VecGetArray2dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
 Returns a pointer to a 2d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray2dWrite()`
 when you no longer need access to the array.
@@ -2138,7 +2138,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2167,7 +2167,7 @@ end
 
 # override for VecGetArray3d; C signature: VecGetArray3d(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscScalar** a[])
 """
-	a::PetscArray = VecGetArray3d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
+	a::PetscArray = VecGetArray3d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
 Returns a pointer to a 3d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray3d()`
 when you no longer need access to the array.
@@ -2188,7 +2188,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetarray()`, `DMDAVecRestoreArray()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2216,7 +2216,7 @@ end
 
 # override for VecGetArray3dRead; C signature: VecGetArray3dRead(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscScalar** a[])
 """
-	a::PetscArray = VecGetArray3dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
+	a::PetscArray = VecGetArray3dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
 Returns a pointer to a 3d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray3dRead()`
 when you no longer need access to the array.
@@ -2237,7 +2237,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetarray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2265,7 +2265,7 @@ end
 
 # override for VecGetArray3dWrite; C signature: VecGetArray3dWrite(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscScalar** a[])
 """
-	a::PetscArray = VecGetArray3dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
+	a::PetscArray = VecGetArray3dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
 Returns a pointer to a 3d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray3dWrite()`
 when you no longer need access to the array.
@@ -2286,7 +2286,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetarray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2314,7 +2314,7 @@ end
 
 # override for VecGetArray4d; C signature: VecGetArray4d(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt q, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscInt qstart, PetscScalar** a[])
 """
-	a::PetscArray = VecGetArray4d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
+	a::PetscArray = VecGetArray4d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
 Returns a pointer to a 4d contiguous array that contains this processor's portion of the vector data.  You MUST call `VecRestoreArray4d()` when you no longer need access to the array.
 
 Logically Collective
@@ -2335,7 +2335,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetarray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecRestoreArray4d()`
 
@@ -2363,7 +2363,7 @@ end
 
 # override for VecGetArray4dRead; C signature: VecGetArray4dRead(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt q, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscInt qstart, PetscScalar** a[])
 """
-	a::PetscArray = VecGetArray4dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
+	a::PetscArray = VecGetArray4dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
 Returns a pointer to a 4d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray4dRead()`
 when you no longer need access to the array.
@@ -2386,7 +2386,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetarray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2414,7 +2414,7 @@ end
 
 # override for VecGetArray4dWrite; C signature: VecGetArray4dWrite(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt q, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscInt qstart, PetscScalar** a[])
 """
-	a::PetscArray = VecGetArray4dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
+	a::PetscArray = VecGetArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
 Returns a pointer to a 4d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray4dWrite()`
 when you no longer need access to the array.
@@ -2437,7 +2437,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrays()`, `VecPlaceArray()`,
 `VecRestoreArray2d()`, `DMDAVecGetarray()`, `DMDAVecRestoreArray()`, `VecGetArray3d()`, `VecRestoreArray3d()`,
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -2464,7 +2464,7 @@ function VecGetArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::Pets
 end
 
 """
-	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) 
 Like `VecGetArray()`, but if this is a standard device vector (e.g.,
 `VECCUDA`), the returned pointer will be a device pointer to the device memory that contains
 this MPI processes's portion of the vector data.
@@ -2480,7 +2480,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArrayAndMemType()`, `VecGetArrayReadAndMemType()`, `VecGetArrayWriteAndMemType()`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecGetArrays()`,
+See also: `Vec`, `VecRestoreArrayAndMemType()`, `VecGetArrayReadAndMemType()`, `VecGetArrayWriteAndMemType()`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecGetArrays()`,
 `VecPlaceArray()`, `VecGetArray2d()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`, `VecGetArrayWrite()`, `VecRestoreArrayWrite()`
 
 # External Links
@@ -2508,7 +2508,7 @@ end
 end 
 
 """
-	xv::Vector{PetscScalar},yv::Vector{PetscScalar} = VecGetArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	xv::Vector{PetscScalar},yv::Vector{PetscScalar} = VecGetArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/VecGetArrayPair"))
@@ -2535,8 +2535,8 @@ end
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArrayRead(petsclib::PetscLibType,x::AbstractPetscVec) 
-Get read
+	a::Vector{PetscScalar} = VecGetArrayRead(petsclib::PetscLibType, x::AbstractPetscVec) 
+Get read-only pointer to contiguous array containing this processor's portion of the vector data.
 
 Not Collective
 
@@ -2548,7 +2548,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`,
 `VecGetArrayAndMemType()`
 
 # External Links
@@ -2574,8 +2574,8 @@ end
 end 
 
 """
-	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
-Like `VecGetArrayRead()`, but if the input vector is a device vector, it will return a read
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) 
+Like `VecGetArrayRead()`, but if the input vector is a device vector, it will return a read-only device pointer.
 The returned pointer is guaranteed to point to up-to-date data. For host vectors, it functions as `VecGetArrayRead()`.
 
 Not Collective; No Fortran Support
@@ -2589,7 +2589,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArrayReadAndMemType()`, `VecGetArrayAndMemType()`, `VecGetArrayWriteAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
+See also: `Vec`, `VecRestoreArrayReadAndMemType()`, `VecGetArrayAndMemType()`, `VecGetArrayWriteAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
 $(_doc_external("Vec/VecGetArrayReadAndMemType"))
@@ -2616,7 +2616,7 @@ end
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar} = VecGetArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec) 
 Returns a pointer to a contiguous array that WILL contain this
 MPI processes's portion of the vector data.
 
@@ -2630,7 +2630,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecGetArrays()`, `VecPlaceArray()`, `VecGetArray2d()`,
+See also: `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecGetArrays()`, `VecPlaceArray()`, `VecGetArray2d()`,
 `VecGetArrayPair()`, `VecRestoreArrayPair()`, `VecGetArray()`, `VecRestoreArrayWrite()`, `VecGetArrayAndMemType()`
 
 # External Links
@@ -2656,7 +2656,7 @@ end
 end 
 
 """
-	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayWriteAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) 
 Like `VecGetArrayWrite()`, but if this is a device vector it will always return
 a device pointer to the device memory that contains this processor's portion of the vector data.
 
@@ -2671,7 +2671,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArrayWriteAndMemType()`, `VecGetArrayReadAndMemType()`, `VecGetArrayAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
+See also: `Vec`, `VecRestoreArrayWriteAndMemType()`, `VecGetArrayReadAndMemType()`, `VecGetArrayAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
 $(_doc_external("Vec/VecGetArrayWriteAndMemType"))
@@ -2698,7 +2698,7 @@ end
 end 
 
 """
-	a::Ptr{Ptr{PetscScalar}} = VecGetArrays(petsclib::PetscLibType,x::Vector{<:AbstractPetscVec}, n::PetscInt) 
+	a::Ptr{Ptr{PetscScalar}} = VecGetArrays(petsclib::PetscLibType, x::Vector{<:AbstractPetscVec}, n::PetscInt) 
 Returns a pointer to the arrays in a set of vectors
 that were created by a call to `VecDuplicateVecs()`.
 
@@ -2713,7 +2713,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArrays()`
+See also: `Vec`, `VecGetArray()`, `VecRestoreArrays()`
 
 # External Links
 $(_doc_external("Vec/VecGetArrays"))
@@ -2738,7 +2738,7 @@ end
 end 
 
 """
-	flg::PetscBool = VecGetBindingPropagates(petsclib::PetscLibType,v::AbstractPetscVec) 
+	flg::PetscBool = VecGetBindingPropagates(petsclib::PetscLibType, v::AbstractPetscVec) 
 Gets whether the state of being bound to the CPU for a GPU vector type propagates to child and some other associated objects
 
 Input Parameter:
@@ -2749,7 +2749,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecSetBindingPropagates()`
+See also: `Vec`, `VecSetBindingPropagates()`
 
 # External Links
 $(_doc_external("Vec/VecGetBindingPropagates"))
@@ -2774,7 +2774,7 @@ end
 end 
 
 """
-	bs::PetscInt = VecGetBlockSize(petsclib::PetscLibType,v::AbstractPetscVec) 
+	bs::PetscInt = VecGetBlockSize(petsclib::PetscLibType, v::AbstractPetscVec) 
 Gets the blocksize for the vector, i.e. what is used for `VecSetValuesBlocked()`
 and `VecSetValuesBlockedLocal()`.
 
@@ -2788,7 +2788,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecSetValuesBlocked()`, `VecSetLocalToGlobalMapping()`, `VecSetBlockSize()`
+See also: `Vec`, `VecSetValuesBlocked()`, `VecSetLocalToGlobalMapping()`, `VecSetBlockSize()`
 
 # External Links
 $(_doc_external("Vec/VecGetBlockSize"))
@@ -2813,7 +2813,7 @@ end
 end 
 
 """
-	dm::PetscDM = VecGetDM(petsclib::PetscLibType,v::AbstractPetscVec) 
+	dm::PetscDM = VecGetDM(petsclib::PetscLibType, v::AbstractPetscVec) 
 Gets the `DM` defining the data layout of the vector
 
 Not Collective
@@ -2826,12 +2826,7 @@ Output Parameter:
 
 Level: intermediate
 
-Note:
-A `Vec` may not have a `DM` associated with it.
-
-See also: 
-=== 
-`DM`, `VecSetDM()`, `DMGetLocalVector()`, `DMGetGlobalVector()`, `DMSetVecType()`
+See also: `DM`, `VecSetDM()`, `DMGetLocalVector()`, `DMGetGlobalVector()`, `DMSetVecType()`
 
 # External Links
 $(_doc_external("DM/VecGetDM"))
@@ -2856,7 +2851,7 @@ end
 end 
 
 """
-	map::PetscLayout = VecGetLayout(petsclib::PetscLibType,x::AbstractPetscVec) 
+	map::PetscLayout = VecGetLayout(petsclib::PetscLibType, x::AbstractPetscVec) 
 get `PetscLayout` describing a vector layout
 
 Not Collective
@@ -2869,7 +2864,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `PetscLayout`, `Vec`, `VecGetSize()`, `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`
+See also: `PetscLayout`, `Vec`, `VecGetSize()`, `VecGetOwnershipRange()`, `VecGetOwnershipRanges()`
 
 # External Links
 $(_doc_external("Vec/VecGetLayout"))
@@ -2894,7 +2889,7 @@ end
 end 
 
 """
-	size::PetscInt = VecGetLocalSize(petsclib::PetscLibType,x::AbstractPetscVec) 
+	size::PetscInt = VecGetLocalSize(petsclib::PetscLibType, x::AbstractPetscVec) 
 Returns the number of elements of the vector stored
 in local memory (that is on this MPI process)
 
@@ -2908,7 +2903,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetSize()`
+See also: `Vec`, `VecGetSize()`
 
 # External Links
 $(_doc_external("Vec/VecGetLocalSize"))
@@ -2933,8 +2928,8 @@ end
 end 
 
 """
-	mapping::ISLocalToGlobalMapping = VecGetLocalToGlobalMapping(petsclib::PetscLibType,X::AbstractPetscVec) 
-Gets the local
+	mapping::ISLocalToGlobalMapping = VecGetLocalToGlobalMapping(petsclib::PetscLibType, X::AbstractPetscVec) 
+Gets the local-to-global numbering set by `VecSetLocalToGlobalMapping()`
 
 Not Collective
 
@@ -2946,7 +2941,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecSetValuesLocal()`, `VecSetLocalToGlobalMapping()`
+See also: `Vec`, `VecSetValuesLocal()`, `VecSetLocalToGlobalMapping()`
 
 # External Links
 $(_doc_external("Vec/VecGetLocalToGlobalMapping"))
@@ -2971,7 +2966,7 @@ end
 end 
 
 """
-	VecGetLocalVector(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
+	VecGetLocalVector(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) 
 Maps the local portion of a vector into a
 vector.
 
@@ -2985,7 +2980,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecCreateLocalVector()`, `VecRestoreLocalVector()`, `VecGetLocalVectorRead()`, `VecGetArrayRead()`, `VecGetArray()`
+See also: `Vec`, `VecCreateLocalVector()`, `VecRestoreLocalVector()`, `VecGetLocalVectorRead()`, `VecGetArrayRead()`, `VecGetArray()`
 
 # External Links
 $(_doc_external("Vec/VecGetLocalVector"))
@@ -3008,7 +3003,7 @@ end
 end 
 
 """
-	VecGetLocalVectorRead(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
+	VecGetLocalVectorRead(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) 
 Maps the local portion of a vector into a
 vector.
 
@@ -3022,7 +3017,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecCreateLocalVector()`, `VecRestoreLocalVectorRead()`, `VecGetLocalVector()`, `VecGetArrayRead()`, `VecGetArray()`
+See also: `Vec`, `VecCreateLocalVector()`, `VecRestoreLocalVectorRead()`, `VecGetLocalVector()`, `VecGetArrayRead()`, `VecGetArray()`
 
 # External Links
 $(_doc_external("Vec/VecGetLocalVectorRead"))
@@ -3045,7 +3040,7 @@ end
 end 
 
 """
-	mask::PetscOffloadMask = VecGetOffloadMask(petsclib::PetscLibType,v::AbstractPetscVec) 
+	mask::PetscOffloadMask = VecGetOffloadMask(petsclib::PetscLibType, v::AbstractPetscVec) 
 Get the offload mask of a `Vec`
 
 Not Collective
@@ -3058,7 +3053,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecCreateSeqCUDA()`, `VecCreateSeqViennaCL()`, `VecGetArray()`, `VecGetType()`
+See also: `Vec`, `VecCreateSeqCUDA()`, `VecCreateSeqViennaCL()`, `VecGetArray()`, `VecGetType()`
 
 # External Links
 $(_doc_external("Vec/VecGetOffloadMask"))
@@ -3083,7 +3078,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = VecGetOptionsPrefix(petsclib::PetscLibType,v::AbstractPetscVec) 
+	prefix::Ptr{Cchar} = VecGetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec) 
 Sets the prefix used for searching for all
 Vec options in the database.
 
@@ -3097,7 +3092,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecAppendOptionsPrefix()`
+See also: `Vec`, `VecAppendOptionsPrefix()`
 
 # External Links
 $(_doc_external("Vec/VecGetOptionsPrefix"))
@@ -3122,7 +3117,7 @@ end
 end 
 
 """
-	low::PetscInt,high::PetscInt = VecGetOwnershipRange(petsclib::PetscLibType,x::AbstractPetscVec) 
+	low::PetscInt,high::PetscInt = VecGetOwnershipRange(petsclib::PetscLibType, x::AbstractPetscVec) 
 Returns the range of indices owned by
 this process. The vector is laid out with the
 first `n1` elements on the first processor, next `n2` elements on the
@@ -3140,7 +3135,7 @@ Output Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `VecGetOwnershipRanges()`, `PetscSplitOwnership()`,
+See also: `Vec`, `MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `VecGetOwnershipRanges()`, `PetscSplitOwnership()`,
 `VecSetSizes()`, `VecCreateMPI()`, `PetscLayout`, `DMDAGetGhostCorners()`, `DM`
 
 # External Links
@@ -3168,7 +3163,7 @@ end
 end 
 
 """
-	ranges::Ptr{PetscInt} = VecGetOwnershipRanges(petsclib::PetscLibType,x::AbstractPetscVec) 
+	ranges::Ptr{PetscInt} = VecGetOwnershipRanges(petsclib::PetscLibType, x::AbstractPetscVec) 
 Returns the range of indices owned by EACH processor,
 The vector is laid out with the
 first `n1` elements on the first processor, next `n2` elements on the
@@ -3185,7 +3180,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `VecGetOwnershipRange()`, `PetscSplitOwnership()`,
+See also: `Vec`, `MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `VecGetOwnershipRange()`, `PetscSplitOwnership()`,
 `VecSetSizes()`, `VecCreateMPI()`, `PetscLayout`, `DMDAGetGhostCorners()`, `DM`
 
 # External Links
@@ -3211,7 +3206,7 @@ end
 end 
 
 """
-	mbytes::Csize_t = VecGetPinnedMemoryMin(petsclib::PetscLibType,v::AbstractPetscVec) 
+	mbytes::Csize_t = VecGetPinnedMemoryMin(petsclib::PetscLibType, v::AbstractPetscVec) 
 Get the minimum data size for which pinned memory will be used for host (CPU) allocations.
 
 Logically Collective
@@ -3224,7 +3219,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecSetPinnedMemoryMin()`
+See also: `Vec`, `VecSetPinnedMemoryMin()`
 
 # External Links
 $(_doc_external("Vec/VecGetPinnedMemoryMin"))
@@ -3249,7 +3244,7 @@ end
 end 
 
 """
-	size::PetscInt = VecGetSize(petsclib::PetscLibType,x::AbstractPetscVec) 
+	size::PetscInt = VecGetSize(petsclib::PetscLibType, x::AbstractPetscVec) 
 Returns the global number of elements of the vector.
 
 Not Collective
@@ -3262,7 +3257,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetLocalSize()`
+See also: `Vec`, `VecGetLocalSize()`
 
 # External Links
 $(_doc_external("Vec/VecGetSize"))
@@ -3287,7 +3282,7 @@ end
 end 
 
 """
-	state::PetscObjectState = VecGetState(petsclib::PetscLibType,v::AbstractPetscVec) 
+	state::PetscObjectState = VecGetState(petsclib::PetscLibType, v::AbstractPetscVec) 
 Gets the state of a `Vec`.
 
 Not Collective
@@ -3300,7 +3295,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecCreate()`, `PetscObjectStateGet()`
+See also: `Vec`, `VecCreate()`, `PetscObjectStateGet()`
 
 # External Links
 $(_doc_external("Vec/VecGetState"))
@@ -3325,7 +3320,7 @@ end
 end 
 
 """
-	Y::PetscVec = VecGetSubVector(petsclib::PetscLibType,X::AbstractPetscVec, is::AbstractIS) 
+	Y::PetscVec = VecGetSubVector(petsclib::PetscLibType, X::AbstractPetscVec, is::AbstractIS) 
 Gets a vector representing part of another vector
 
 Collective
@@ -3339,7 +3334,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `IS`, `VECNEST`, `MatCreateSubMatrix()`
+See also: `Vec`, `IS`, `VECNEST`, `MatCreateSubMatrix()`
 
 # External Links
 $(_doc_external("Vec/VecGetSubVector"))
@@ -3364,7 +3359,7 @@ end
 end 
 
 """
-	type::VecType = VecGetType(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	type::VecType = VecGetType(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Gets the vector type name (as a string) from a `Vec`.
 
 Not Collective
@@ -3377,7 +3372,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
+See also: `Vec`, `VecType`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
 $(_doc_external("Vec/VecGetType"))
@@ -3402,7 +3397,7 @@ end
 end 
 
 """
-	y::Vector{PetscScalar} = VecGetValues(petsclib::PetscLibType,x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}) 
+	y::Vector{PetscScalar} = VecGetValues(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}) 
 Gets values from certain locations of a vector. Currently
 can only get values on the same processor on which they are owned
 
@@ -3418,7 +3413,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`
+See also: `Vec`, `VecAssemblyBegin()`, `VecAssemblyEnd()`, `VecSetValues()`
 
 # External Links
 $(_doc_external("Vec/VecGetValues"))
@@ -3442,7 +3437,7 @@ end
 end 
 
 """
-	values::Ptr{PetscScalar} = VecGetValuesSection(petsclib::PetscLibType,v::AbstractPetscVec, s::PetscSection, point::PetscInt) 
+	values::Ptr{PetscScalar} = VecGetValuesSection(petsclib::PetscLibType, v::AbstractPetscVec, s::PetscSection, point::PetscInt) 
 Gets all the values associated with a given point, according to the section, in the given `Vec`
 
 Not Collective
@@ -3457,7 +3452,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscSection`, `PetscSectionCreate()`, `VecSetValuesSection()`
+See also: `PetscSection`, `PetscSectionCreate()`, `VecSetValuesSection()`
 
 # External Links
 $(_doc_external("Vec/VecGetValuesSection"))
@@ -3482,7 +3477,7 @@ end
 end 
 
 """
-	ghost::IS = VecGhostGetGhostIS(petsclib::PetscLibType,X::AbstractPetscVec) 
+	ghost::IS = VecGhostGetGhostIS(petsclib::PetscLibType, X::AbstractPetscVec) 
 Return ghosting indices of a ghost vector
 
 Input Parameters:
@@ -3493,7 +3488,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `VecCreateGhostWithArray()`, `VecCreateMPIWithArray()`
+See also: `VecCreateGhostWithArray()`, `VecCreateMPIWithArray()`
 
 # External Links
 $(_doc_external("Vec/VecGhostGetGhostIS"))
@@ -3518,7 +3513,7 @@ end
 end 
 
 """
-	l::PetscVec = VecGhostGetLocalForm(petsclib::PetscLibType,g::AbstractPetscVec) 
+	l::PetscVec = VecGhostGetLocalForm(petsclib::PetscLibType, g::AbstractPetscVec) 
 Obtains the local ghosted representation of
 a parallel vector (obtained with `VecCreateGhost()`, `VecCreateGhostWithArray()` or `VecCreateSeq()`).
 
@@ -3532,7 +3527,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`, `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostRestoreLocalForm()`, `VecCreateGhostWithArray()`
+See also: `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`, `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostRestoreLocalForm()`, `VecCreateGhostWithArray()`
 
 # External Links
 $(_doc_external("Vec/VecGhostGetLocalForm"))
@@ -3557,7 +3552,7 @@ end
 end 
 
 """
-	flg::PetscBool = VecGhostIsLocalForm(petsclib::PetscLibType,g::AbstractPetscVec, l::AbstractPetscVec) 
+	flg::PetscBool = VecGhostIsLocalForm(petsclib::PetscLibType, g::AbstractPetscVec, l::AbstractPetscVec) 
 Checks if a given vector is the local form of a global vector
 
 Not Collective
@@ -3571,7 +3566,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostRestoreLocalForm()`, `VecCreateGhostWithArray()`, `VecGhostGetLocalForm()`
+See also: `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostRestoreLocalForm()`, `VecCreateGhostWithArray()`, `VecGhostGetLocalForm()`
 
 # External Links
 $(_doc_external("Vec/VecGhostIsLocalForm"))
@@ -3596,7 +3591,7 @@ end
 end 
 
 """
-	VecGhostRestoreLocalForm(petsclib::PetscLibType,g::AbstractPetscVec, l::AbstractPetscVec) 
+	VecGhostRestoreLocalForm(petsclib::PetscLibType, g::AbstractPetscVec, l::AbstractPetscVec) 
 Restores the local ghosted representation of
 a parallel vector obtained with `VecGhostGetLocalForm()`.
 
@@ -3608,7 +3603,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`, `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostGetLocalForm()`, `VecCreateGhostWithArray()`
+See also: `VecGhostUpdateBegin()`, `VecGhostUpdateEnd()`, `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostGetLocalForm()`, `VecCreateGhostWithArray()`
 
 # External Links
 $(_doc_external("Vec/VecGhostRestoreLocalForm"))
@@ -3633,7 +3628,7 @@ end
 end 
 
 """
-	VecGhostUpdateBegin(petsclib::PetscLibType,g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
+	VecGhostUpdateBegin(petsclib::PetscLibType, g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
 Begins the vector scatter to update the vector from
 local representation to global or global representation to local.
 
@@ -3646,7 +3641,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostUpdateEnd()`, `VecGhostGetLocalForm()`,
+See also: `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostUpdateEnd()`, `VecGhostGetLocalForm()`,
 `VecGhostRestoreLocalForm()`, `VecCreateGhostWithArray()`
 
 # External Links
@@ -3670,7 +3665,7 @@ end
 end 
 
 """
-	VecGhostUpdateEnd(petsclib::PetscLibType,g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
+	VecGhostUpdateEnd(petsclib::PetscLibType, g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
 End the vector scatter to update the vector from
 local representation to global or global representation to local.
 
@@ -3683,7 +3678,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostUpdateBegin()`, `VecGhostGetLocalForm()`,
+See also: `Vec`, `VecType`, `VecCreateGhost()`, `VecGhostUpdateBegin()`, `VecGhostGetLocalForm()`,
 `VecGhostRestoreLocalForm()`, `VecCreateGhostWithArray()`
 
 # External Links
@@ -3707,8 +3702,8 @@ end
 end 
 
 """
-	VecISAXPY(petsclib::PetscLibType,vfull::AbstractPetscVec, is::AbstractIS, alpha::PetscScalar, vreduced::AbstractPetscVec) 
-Adds a reduced vector to the appropriate elements of a full
+	VecISAXPY(petsclib::PetscLibType, vfull::AbstractPetscVec, is::AbstractIS, alpha::PetscScalar, vreduced::AbstractPetscVec) 
+Adds a reduced vector to the appropriate elements of a full-space vector.
 vfull[is[i]] += alpha*vreduced[i]
 
 Logically Collective
@@ -3724,7 +3719,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecISCopy()`, `VecISSet()`, `VecAXPY()`
+See also: `VecISCopy()`, `VecISSet()`, `VecAXPY()`
 
 # External Links
 $(_doc_external("Vec/VecISAXPY"))
@@ -3747,8 +3742,8 @@ end
 end 
 
 """
-	VecISCopy(petsclib::PetscLibType,vfull::AbstractPetscVec, is::AbstractIS, mode::ScatterMode, vreduced::AbstractPetscVec) 
-Copies between a reduced vector and the appropriate elements of a full
+	VecISCopy(petsclib::PetscLibType, vfull::AbstractPetscVec, is::AbstractIS, mode::ScatterMode, vreduced::AbstractPetscVec) 
+Copies between a reduced vector and the appropriate elements of a full-space vector.
 
 Logically Collective
 
@@ -3763,7 +3758,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecISSet()`, `VecISAXPY()`, `VecCopy()`
+See also: `VecISSet()`, `VecISAXPY()`, `VecCopy()`
 
 # External Links
 $(_doc_external("Vec/VecISCopy"))
@@ -3786,7 +3781,7 @@ end
 end 
 
 """
-	VecISSet(petsclib::PetscLibType,V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) 
+	VecISSet(petsclib::PetscLibType, V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) 
 Sets the elements of a vector, specified by an index set, to a constant
 
 Logically Collective
@@ -3798,7 +3793,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecISCopy()`, `VecISAXPY()`, `VecISShift()`, `VecSet()`
+See also: `VecISCopy()`, `VecISAXPY()`, `VecISShift()`, `VecSet()`
 
 # External Links
 $(_doc_external("Vec/VecISSet"))
@@ -3821,7 +3816,7 @@ end
 end 
 
 """
-	VecISShift(petsclib::PetscLibType,V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) 
+	VecISShift(petsclib::PetscLibType, V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) 
 Shifts the elements of a vector, specified by an index set, by a constant
 
 Logically Collective
@@ -3833,7 +3828,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecISCopy()`, `VecISAXPY()`, `VecISSet()`, `VecShift()`
+See also: `VecISCopy()`, `VecISAXPY()`, `VecISSet()`, `VecShift()`
 
 # External Links
 $(_doc_external("Vec/VecISShift"))
@@ -3856,7 +3851,7 @@ end
 end 
 
 """
-	VecImaginaryPart(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecImaginaryPart(petsclib::PetscLibType, v::AbstractPetscVec) 
 Replaces a complex vector with its imaginary part
 
 Collective
@@ -3866,7 +3861,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `Vec`, `VecNorm()`, `VecRealPart()`
+See also: `Vec`, `VecNorm()`, `VecRealPart()`
 
 # External Links
 $(_doc_external("Vec/VecImaginaryPart"))
@@ -3896,7 +3891,7 @@ when using shared or static libraries.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/VecInitializePackage"))
@@ -3918,7 +3913,7 @@ end
 end 
 
 """
-	a::PetscScalar = VecKokkosPlaceArray(petsclib::PetscLibType,v::AbstractPetscVec) 
+	a::PetscScalar = VecKokkosPlaceArray(petsclib::PetscLibType, v::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/VecKokkosPlaceArray"))
@@ -3943,7 +3938,7 @@ end
 end 
 
 """
-	VecKokkosResetArray(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecKokkosResetArray(petsclib::PetscLibType, v::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/VecKokkosResetArray"))
@@ -3966,7 +3961,7 @@ end
 end 
 
 """
-	VecLoad(petsclib::PetscLibType,vec::AbstractPetscVec, viewer::PetscViewer) 
+	VecLoad(petsclib::PetscLibType, vec::AbstractPetscVec, viewer::PetscViewer) 
 Loads a vector that has been stored in binary or HDF5 format
 with `VecView()`.
 
@@ -3980,7 +3975,7 @@ HDF5 file viewer, obtained from `PetscViewerHDF5Open()`
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `PetscViewerBinaryOpen()`, `VecView()`, `MatLoad()`
+See also: `Vec`, `PetscViewerBinaryOpen()`, `VecView()`, `MatLoad()`
 
 # External Links
 $(_doc_external("Vec/VecLoad"))
@@ -4003,7 +3998,7 @@ end
 end 
 
 """
-	state::PetscInt = VecLockGet(petsclib::PetscLibType,x::AbstractPetscVec) 
+	state::PetscInt = VecLockGet(petsclib::PetscLibType, x::AbstractPetscVec) 
 Get the current lock status of a vector
 
 Logically Collective
@@ -4017,7 +4012,7 @@ locked for write; equal to zero means the vector is unlocked, that is, it is fre
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPush()`, `VecLockReadPop()`
+See also: `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPush()`, `VecLockReadPop()`
 
 # External Links
 $(_doc_external("Vec/VecLockGet"))
@@ -4042,8 +4037,8 @@ end
 end 
 
 """
-	file::Ptr{Cchar},func::Ptr{Cchar},line::Cint = VecLockGetLocation(petsclib::PetscLibType,x::AbstractPetscVec) 
-Return the source code location where a `Vec` was most recently read
+	file::Ptr{Cchar},func::Ptr{Cchar},line::Cint = VecLockGetLocation(petsclib::PetscLibType, x::AbstractPetscVec) 
+Return the source code location where a `Vec` was most recently read-locked
 
 Not Collective
 
@@ -4057,7 +4052,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `Vec`, `VecLockGet()`, `VecLockReadPush()`, `VecLockReadPop()`, `VecGetArray()`
+See also: `Vec`, `VecLockGet()`, `VecLockReadPush()`, `VecLockReadPop()`, `VecGetArray()`
 
 # External Links
 $(_doc_external("Vec/VecLockGetLocation"))
@@ -4086,8 +4081,8 @@ end
 end 
 
 """
-	VecLockReadPop(petsclib::PetscLibType,x::AbstractPetscVec) 
-Pop a read
+	VecLockReadPop(petsclib::PetscLibType, x::AbstractPetscVec) 
+Pop a read-only lock from a vector
 
 Logically Collective
 
@@ -4096,7 +4091,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPush()`, `VecLockGet()`
+See also: `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPush()`, `VecLockGet()`
 
 # External Links
 $(_doc_external("Vec/VecLockReadPop"))
@@ -4119,8 +4114,8 @@ end
 end 
 
 """
-	VecLockReadPush(petsclib::PetscLibType,x::AbstractPetscVec) 
-Push a read
+	VecLockReadPush(petsclib::PetscLibType, x::AbstractPetscVec) 
+Push a read-only lock on a vector to prevent it from being written to
 
 Logically Collective
 
@@ -4129,7 +4124,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPop()`, `VecLockGet()`
+See also: `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPop()`, `VecLockGet()`
 
 # External Links
 $(_doc_external("Vec/VecLockReadPush"))
@@ -4152,7 +4147,7 @@ end
 end 
 
 """
-	VecLockWriteSet(petsclib::PetscLibType,x::AbstractPetscVec, flg::PetscBool) 
+	VecLockWriteSet(petsclib::PetscLibType, x::AbstractPetscVec, flg::PetscBool) 
 Lock or unlock a vector for exclusive read/write access
 
 Logically Collective
@@ -4163,7 +4158,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPush()`, `VecLockReadPop()`, `VecLockGet()`
+See also: `Vec`, `VecRestoreArray()`, `VecGetArrayRead()`, `VecLockReadPush()`, `VecLockReadPop()`, `VecLockGet()`
 
 # External Links
 $(_doc_external("Vec/VecLockWriteSet"))
@@ -4186,7 +4181,7 @@ end
 end 
 
 """
-	VecLog(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecLog(petsclib::PetscLibType, v::AbstractPetscVec) 
 Replaces each component of a vector by log(x_i), the natural logarithm
 
 Not Collective
@@ -4199,7 +4194,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `Vec`, `VecExp()`, `VecAbs()`, `VecSqrtAbs()`, `VecReciprocal()`
+See also: `Vec`, `VecExp()`, `VecAbs()`, `VecSqrtAbs()`, `VecReciprocal()`
 
 # External Links
 $(_doc_external("Vec/VecLog"))
@@ -4222,7 +4217,7 @@ end
 end 
 
 """
-	VecMAXPBY(petsclib::PetscLibType,y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, beta::PetscScalar, x::Vector{<:AbstractPetscVec}) 
+	VecMAXPBY(petsclib::PetscLibType, y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, beta::PetscScalar, x::Vector{<:AbstractPetscVec}) 
 Computes `y = beta y + sum alpha[i] x[i]`
 
 Logically Collective
@@ -4236,7 +4231,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecMAXPY()`, `VecAYPX()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`
+See also: `Vec`, `VecMAXPY()`, `VecAYPX()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`
 
 # External Links
 $(_doc_external("Vec/VecMAXPBY"))
@@ -4259,7 +4254,7 @@ end
 end 
 
 """
-	VecMAXPY(petsclib::PetscLibType,y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, x::Vector{<:AbstractPetscVec}) 
+	VecMAXPY(petsclib::PetscLibType, y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, x::Vector{<:AbstractPetscVec}) 
 Computes `y = y + sum alpha[i] x[i]`
 
 Logically Collective
@@ -4272,7 +4267,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecMAXPBY()`, `VecAYPX()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`, `VecDuplicateVecs()`
+See also: `Vec`, `VecMAXPBY()`, `VecAYPX()`, `VecWAXPY()`, `VecAXPY()`, `VecAXPBYPCZ()`, `VecAXPBY()`, `VecDuplicateVecs()`
 
 # External Links
 $(_doc_external("Vec/VecMAXPY"))
@@ -4295,7 +4290,7 @@ end
 end 
 
 """
-	VecMDot(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, val::Vector{PetscScalar}) 
+	VecMDot(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, val::Vector{PetscScalar}) 
 Computes multiple vector dot products.
 
 Collective
@@ -4312,7 +4307,18 @@ Level: intermediate
 
 Notes for Users of Complex Numbers:
 For complex vectors, `VecMDot()` computes
--seealso: [](ch_vectors), `Vec`, `VecMTDot()`, `VecDot()`, `VecDuplicateVecs()`
+``
+val = (x,y) = y^H x,
+``
+where y^H denotes the conjugate transpose of y.
+
+Use `VecMTDot()` for the indefinite form
+``
+val = (x,y) = y^T x,
+``
+where y^T denotes the transpose of y.
+
+See also: `Vec`, `VecMTDot()`, `VecDot()`, `VecDuplicateVecs()`
 
 # External Links
 $(_doc_external("Vec/VecMDot"))
@@ -4335,7 +4341,7 @@ end
 end 
 
 """
-	VecMDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
+	VecMDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
 Starts a split phase multiple dot product computation.
 
 Input Parameters:
@@ -4346,7 +4352,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecMDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecMDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecTDotBegin()`, `VecTDotEnd()`, `VecMTDotBegin()`, `VecMTDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
@@ -4370,7 +4376,7 @@ end
 end 
 
 """
-	VecMDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
+	VecMDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
 Ends a split phase multiple dot product computation.
 
 Input Parameters:
@@ -4383,7 +4389,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecMDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecMDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecTDotBegin()`, `VecTDotEnd()`, `VecMTDotBegin()`, `VecMTDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
@@ -4407,7 +4413,7 @@ end
 end 
 
 """
-	VecMPISetGhost(petsclib::PetscLibType,vv::AbstractPetscVec, nghost::PetscInt, ghosts::Vector{PetscInt}) 
+	VecMPISetGhost(petsclib::PetscLibType, vv::AbstractPetscVec, nghost::PetscInt, ghosts::Vector{PetscInt}) 
 Sets the ghost points for an MPI ghost vector
 
 Collective
@@ -4419,7 +4425,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateMPI()`,
+See also: `Vec`, `VecType`, `VecCreateSeq()`, `VecCreate()`, `VecDuplicate()`, `VecDuplicateVecs()`, `VecCreateMPI()`,
 `VecGhostGetLocalForm()`, `VecGhostRestoreLocalForm()`, `VecGhostUpdateBegin()`,
 `VecCreateGhostWithArray()`, `VecCreateMPIWithArray()`, `VecGhostUpdateEnd()`,
 `VecCreateGhostBlock()`, `VecCreateGhostBlockWithArray()`
@@ -4445,7 +4451,7 @@ end
 end 
 
 """
-	VecMTDot(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, val::Vector{PetscScalar}) 
+	VecMTDot(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, val::Vector{PetscScalar}) 
 Computes indefinite vector multiple dot products.
 That is, it does NOT use the complex conjugate.
 
@@ -4463,7 +4469,18 @@ Level: intermediate
 
 Notes for Users of Complex Numbers:
 For complex vectors, `VecMTDot()` computes the indefinite form
--seealso: [](ch_vectors), `Vec`, `VecMDot()`, `VecTDot()`
+``
+val = (x,y) = y^T x,
+``
+where y^T denotes the transpose of y.
+
+Use `VecMDot()` for the inner product
+``
+val = (x,y) = y^H x,
+``
+where y^H denotes the conjugate transpose of y.
+
+See also: `Vec`, `VecMDot()`, `VecTDot()`
 
 # External Links
 $(_doc_external("Vec/VecMTDot"))
@@ -4486,7 +4503,7 @@ end
 end 
 
 """
-	VecMTDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
+	VecMTDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
 Starts a split phase transpose multiple dot product computation.
 
 Input Parameters:
@@ -4497,7 +4514,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecMTDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecMTDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecDotBegin()`, `VecDotEnd()`, `VecMDotBegin()`, `VecMDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
@@ -4521,7 +4538,7 @@ end
 end 
 
 """
-	result::Vector{PetscScalar} = VecMTDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) 
+	result::Vector{PetscScalar} = VecMTDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) 
 Ends a split phase transpose multiple dot product computation.
 
 Input Parameters:
@@ -4534,7 +4551,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `VecMTDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecMTDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecDotBegin()`, `VecDotEnd()`, `VecMDotBegin()`, `VecMDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
@@ -4559,7 +4576,7 @@ end
 end 
 
 """
-	p::PetscInt,val::PetscReal = VecMax(petsclib::PetscLibType,x::AbstractPetscVec) 
+	p::PetscInt,val::PetscReal = VecMax(petsclib::PetscLibType, x::AbstractPetscVec) 
 Determines the vector component with maximum real part and its location.
 
 Collective
@@ -4573,7 +4590,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecNorm()`, `VecMin()`
+See also: `Vec`, `VecNorm()`, `VecMin()`
 
 # External Links
 $(_doc_external("Vec/VecMax"))
@@ -4600,7 +4617,7 @@ end
 end 
 
 """
-	max::PetscReal = VecMaxPointwiseDivide(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	max::PetscReal = VecMaxPointwiseDivide(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the maximum of the componentwise division `max = max_i abs(x[i]/y[i])`.
 
 Logically Collective
@@ -4614,7 +4631,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMax()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`
+See also: `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMax()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`
 
 # External Links
 $(_doc_external("Vec/VecMaxPointwiseDivide"))
@@ -4639,7 +4656,7 @@ end
 end 
 
 """
-	mean::PetscScalar = VecMean(petsclib::PetscLibType,v::AbstractPetscVec) 
+	mean::PetscScalar = VecMean(petsclib::PetscLibType, v::AbstractPetscVec) 
 Computes the arithmetic mean of all the components of a vector.
 
 Collective
@@ -4652,7 +4669,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `Vec`, `VecSum()`, `VecNorm()`
+See also: `Vec`, `VecSum()`, `VecNorm()`
 
 # External Links
 $(_doc_external("Vec/VecMean"))
@@ -4677,7 +4694,7 @@ end
 end 
 
 """
-	VecMedian(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, Vec3::AbstractPetscVec, VMedian::AbstractPetscVec) 
+	VecMedian(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, Vec3::AbstractPetscVec, VMedian::AbstractPetscVec) 
 Computes the componentwise median of three vectors
 and stores the result in this vector.  Used primarily for projecting
 a vector within upper and lower bounds.
@@ -4694,7 +4711,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecMedian"))
@@ -4717,7 +4734,7 @@ end
 end 
 
 """
-	p::PetscInt,val::PetscReal = VecMin(petsclib::PetscLibType,x::AbstractPetscVec) 
+	p::PetscInt,val::PetscReal = VecMin(petsclib::PetscLibType, x::AbstractPetscVec) 
 Determines the vector component with minimum real part and its location.
 
 Collective
@@ -4731,7 +4748,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecMax()`
+See also: `Vec`, `VecMax()`
 
 # External Links
 $(_doc_external("Vec/VecMin"))
@@ -4758,7 +4775,7 @@ end
 end 
 
 """
-	N::PetscInt = VecNestGetSize(petsclib::PetscLibType,X::AbstractPetscVec) 
+	N::PetscInt = VecNestGetSize(petsclib::PetscLibType, X::AbstractPetscVec) 
 Returns the size of the nest vector.
 
 Not Collective
@@ -4771,7 +4788,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSubVec()`, `VecNestGetSubVecs()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSubVec()`, `VecNestGetSubVecs()`
 
 # External Links
 $(_doc_external("Vec/VecNestGetSize"))
@@ -4796,8 +4813,8 @@ end
 end 
 
 """
-	sx::PetscVec = VecNestGetSubVec(petsclib::PetscLibType,X::AbstractPetscVec, idxm::PetscInt) 
-Returns a single, sub
+	sx::PetscVec = VecNestGetSubVec(petsclib::PetscLibType, X::AbstractPetscVec, idxm::PetscInt) 
+Returns a single, sub-vector from a nest vector.
 
 Not Collective
 
@@ -4810,7 +4827,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVecs()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVecs()`
 
 # External Links
 $(_doc_external("Vec/VecNestGetSubVec"))
@@ -4835,7 +4852,7 @@ end
 end 
 
 """
-	N::PetscInt,sx::Ptr{PetscVec} = VecNestGetSubVecs(petsclib::PetscLibType,X::AbstractPetscVec) 
+	N::PetscInt,sx::Ptr{PetscVec} = VecNestGetSubVecs(petsclib::PetscLibType, X::AbstractPetscVec) 
 Returns the entire array of vectors defining a nest vector.
 
 Not Collective
@@ -4849,7 +4866,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestGetSubVecsRead()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestGetSubVecsRead()`
 
 # External Links
 $(_doc_external("Vec/VecNestGetSubVecs"))
@@ -4876,8 +4893,8 @@ end
 end 
 
 """
-	N::PetscInt,sx::Ptr{PetscVec} = VecNestGetSubVecsRead(petsclib::PetscLibType,X::AbstractPetscVec) 
-Access the subvecs of a `VECNEST` vector for read
+	N::PetscInt,sx::Ptr{PetscVec} = VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec) 
+Access the subvecs of a `VECNEST` vector for read-only access
 
 Logically collective
 
@@ -4890,7 +4907,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestRestoreSubVecsRead()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestRestoreSubVecsRead()`
 
 # External Links
 $(_doc_external("Vec/VecNestGetSubVecsRead"))
@@ -4917,7 +4934,7 @@ end
 end 
 
 """
-	subparams::PetscVec = VecNestGetTaoTermSumParameters(petsclib::PetscLibType,params::AbstractPetscVec, index::PetscInt) 
+	subparams::PetscVec = VecNestGetTaoTermSumParameters(petsclib::PetscLibType, params::AbstractPetscVec, index::PetscInt) 
 A wrapper around `VecNestGetSubVec()` for `TAOTERMSUM`.
 
 Not collective
@@ -4931,7 +4948,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_tao_term),
+See also: [](sec_tao_term),
 `TaoTerm`,
 `TAOTERMSUM`,
 `TaoTermSumParametersPack()`,
@@ -4962,7 +4979,7 @@ end
 end 
 
 """
-	VecNestRestoreSubVecsRead(petsclib::PetscLibType,X::AbstractPetscVec, N::PetscInt, sx::Union{Ptr, AbstractArray{PetscVec}}) 
+	VecNestRestoreSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec, N::PetscInt, sx::Union{Ptr, AbstractArray{PetscVec}}) 
 Restore access the subvecs of a `VECNEST` vector obtained with `VecNestGetSubVecsRead()`
 
 Logically collective
@@ -4974,7 +4991,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestGetSubVecsRead()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`, `VecNestGetSubVecsRead()`
 
 # External Links
 $(_doc_external("Vec/VecNestRestoreSubVecsRead"))
@@ -4999,7 +5016,7 @@ end
 end 
 
 """
-	VecNestSetSubVec(petsclib::PetscLibType,X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) 
+	VecNestSetSubVec(petsclib::PetscLibType, X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) 
 Set a single component vector in a nest vector at specified index.
 
 Not Collective
@@ -5011,7 +5028,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestSetSubVecs()`, `VecNestGetSubVec()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecNestSetSubVecs()`, `VecNestGetSubVec()`
 
 # External Links
 $(_doc_external("Vec/VecNestSetSubVec"))
@@ -5034,7 +5051,7 @@ end
 end 
 
 """
-	VecNestSetSubVecs(petsclib::PetscLibType,X::AbstractPetscVec, N::PetscInt, idxm::Vector{PetscInt}, sx::Vector{<:AbstractPetscVec}) 
+	VecNestSetSubVecs(petsclib::PetscLibType, X::AbstractPetscVec, N::PetscInt, idxm::Vector{PetscInt}, sx::Vector{<:AbstractPetscVec}) 
 Sets the component vectors at the specified indices in a nest vector.
 
 Not Collective
@@ -5047,7 +5064,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `VECNEST`, [](ch_vectors), `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`
+See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`
 
 # External Links
 $(_doc_external("Vec/VecNestSetSubVecs"))
@@ -5070,7 +5087,7 @@ end
 end 
 
 """
-	val::PetscReal = VecNorm(petsclib::PetscLibType,x::AbstractPetscVec, type::NormType) 
+	val::PetscReal = VecNorm(petsclib::PetscLibType, x::AbstractPetscVec, type::NormType) 
 Computes the vector norm.
 
 Collective
@@ -5084,7 +5101,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `NormType`, `VecDot()`, `VecTDot()`, `VecDotBegin()`, `VecDotEnd()`, `VecNormAvailable()`,
+See also: `Vec`, `NormType`, `VecDot()`, `VecTDot()`, `VecDotBegin()`, `VecDotEnd()`, `VecNormAvailable()`,
 `VecNormBegin()`, `VecNormEnd()`, `NormType()`
 
 # External Links
@@ -5110,7 +5127,7 @@ end
 end 
 
 """
-	available::PetscBool,val::PetscReal = VecNormAvailable(petsclib::PetscLibType,x::AbstractPetscVec, type::NormType) 
+	available::PetscBool,val::PetscReal = VecNormAvailable(petsclib::PetscLibType, x::AbstractPetscVec, type::NormType) 
 Returns the vector norm if it is already known. That is, it has been previously computed and cached in the vector
 
 Not Collective
@@ -5127,7 +5144,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecDot()`, `VecTDot()`, `VecNorm()`, `VecDotBegin()`, `VecDotEnd()`,
+See also: `Vec`, `VecDot()`, `VecTDot()`, `VecNorm()`, `VecDotBegin()`, `VecDotEnd()`,
 `VecNormBegin()`, `VecNormEnd()`
 
 # External Links
@@ -5155,7 +5172,7 @@ end
 end 
 
 """
-	result::PetscReal = VecNormBegin(petsclib::PetscLibType,x::AbstractPetscVec, ntype::NormType) 
+	result::PetscReal = VecNormBegin(petsclib::PetscLibType, x::AbstractPetscVec, ntype::NormType) 
 Starts a split phase norm computation.
 
 Input Parameters:
@@ -5165,7 +5182,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`, `VecDotBegin()`, `VecDotEnd()`, `PetscCommSplitReductionBegin()`
+See also: `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`, `VecDotBegin()`, `VecDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
 $(_doc_external("Vec/VecNormBegin"))
@@ -5190,7 +5207,7 @@ end
 end 
 
 """
-	result::PetscReal = VecNormEnd(petsclib::PetscLibType,x::AbstractPetscVec, ntype::NormType) 
+	result::PetscReal = VecNormEnd(petsclib::PetscLibType, x::AbstractPetscVec, ntype::NormType) 
 Ends a split phase norm computation.
 
 Input Parameters:
@@ -5200,7 +5217,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecNormBegin()`, `VecNorm()`, `VecDot()`, `VecMDot()`, `VecDotBegin()`, `VecDotEnd()`, `PetscCommSplitReductionBegin()`
+See also: `VecNormBegin()`, `VecNorm()`, `VecDot()`, `VecMDot()`, `VecDotBegin()`, `VecDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
 $(_doc_external("Vec/VecNormEnd"))
@@ -5225,8 +5242,8 @@ end
 end 
 
 """
-	val::PetscReal = VecNormalize(petsclib::PetscLibType,x::AbstractPetscVec) 
-Normalizes a vector by its 2
+	val::PetscReal = VecNormalize(petsclib::PetscLibType, x::AbstractPetscVec) 
+Normalizes a vector by its 2-norm.
 
 Collective
 
@@ -5238,7 +5255,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecNorm()`, `NORM_2`, `NormType`
+See also: `Vec`, `VecNorm()`, `NORM_2`, `NormType`
 
 # External Links
 $(_doc_external("Vec/VecNormalize"))
@@ -5263,7 +5280,7 @@ end
 end 
 
 """
-	VecPermute(petsclib::PetscLibType,x::AbstractPetscVec, row::AbstractIS, inv::PetscBool) 
+	VecPermute(petsclib::PetscLibType, x::AbstractPetscVec, row::AbstractIS, inv::PetscBool) 
 Permutes a vector in place using the given ordering.
 
 Input Parameters:
@@ -5273,7 +5290,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `Vec`, `MatPermute()`
+See also: `Vec`, `MatPermute()`
 
 # External Links
 $(_doc_external("Vec/VecPermute"))
@@ -5296,7 +5313,7 @@ end
 end 
 
 """
-	VecPlaceArray(petsclib::PetscLibType,vec::AbstractPetscVec, array::Vector{PetscScalar}) 
+	VecPlaceArray(petsclib::PetscLibType, vec::AbstractPetscVec, array::Vector{PetscScalar}) 
 Allows one to replace the array in a vector with an
 array provided by the user. This is useful to avoid copying an array
 into a vector.
@@ -5309,7 +5326,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecReplaceArray()`, `VecResetArray()`
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecReplaceArray()`, `VecResetArray()`
 
 # External Links
 $(_doc_external("Vec/VecPlaceArray"))
@@ -5332,8 +5349,8 @@ end
 end 
 
 """
-	VecPointwiseDivide(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
-Computes the component
+	VecPointwiseDivide(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
+Computes the component-wise division `w[i] = x[i] / y[i]`.
 
 Logically Collective
 
@@ -5346,7 +5363,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecPointwiseMult()`, `VecPointwiseMax()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
+See also: `Vec`, `VecPointwiseMult()`, `VecPointwiseMax()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
 
 # External Links
 $(_doc_external("Vec/VecPointwiseDivide"))
@@ -5369,8 +5386,8 @@ end
 end 
 
 """
-	VecPointwiseMax(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
-Computes the component
+	VecPointwiseMax(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
+Computes the component-wise maximum `w[i] = max(x[i], y[i])`.
 
 Logically Collective
 
@@ -5383,7 +5400,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
+See also: `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
 
 # External Links
 $(_doc_external("Vec/VecPointwiseMax"))
@@ -5406,8 +5423,8 @@ end
 end 
 
 """
-	VecPointwiseMaxAbs(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
-Computes the component
+	VecPointwiseMaxAbs(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
+Computes the component-wise maximum of the absolute values `w[i] = max(abs(x[i]), abs(y[i]))`.
 
 Logically Collective
 
@@ -5420,7 +5437,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMin()`, `VecPointwiseMax()`, `VecMaxPointwiseDivide()`
+See also: `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMin()`, `VecPointwiseMax()`, `VecMaxPointwiseDivide()`
 
 # External Links
 $(_doc_external("Vec/VecPointwiseMaxAbs"))
@@ -5443,8 +5460,8 @@ end
 end 
 
 """
-	VecPointwiseMin(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
-Computes the component
+	VecPointwiseMin(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
+Computes the component-wise minimum `w[i] = min(x[i], y[i])`.
 
 Logically Collective
 
@@ -5457,7 +5474,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
+See also: `Vec`, `VecPointwiseDivide()`, `VecPointwiseMult()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
 
 # External Links
 $(_doc_external("Vec/VecPointwiseMin"))
@@ -5480,8 +5497,8 @@ end
 end 
 
 """
-	VecPointwiseMult(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
-Computes the component
+	VecPointwiseMult(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
+Computes the component-wise multiplication `w[i] = x[i] * y[i]`.
 
 Logically Collective
 
@@ -5494,7 +5511,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecPointwiseDivide()`, `VecPointwiseMax()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
+See also: `Vec`, `VecPointwiseDivide()`, `VecPointwiseMax()`, `VecPointwiseMin()`, `VecPointwiseMaxAbs()`, `VecMaxPointwiseDivide()`
 
 # External Links
 $(_doc_external("Vec/VecPointwiseMult"))
@@ -5517,8 +5534,8 @@ end
 end 
 
 """
-	VecPointwiseSign(petsclib::PetscLibType,y::AbstractPetscVec, x::AbstractPetscVec, sign_type::VecSignMode) 
-Computes the component
+	VecPointwiseSign(petsclib::PetscLibType, y::AbstractPetscVec, x::AbstractPetscVec, sign_type::VecSignMode) 
+Computes the component-wise sign `y[i] = sign(x[i])`.
 
 Logically Collective
 
@@ -5531,7 +5548,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecSignMode`
+See also: `Vec`, `VecSignMode`
 
 # External Links
 $(_doc_external("Vec/VecPointwiseSign"))
@@ -5554,7 +5571,7 @@ end
 end 
 
 """
-	VecPow(petsclib::PetscLibType,v::AbstractPetscVec, p::PetscScalar) 
+	VecPow(petsclib::PetscLibType, v::AbstractPetscVec, p::PetscScalar) 
 Replaces each component of a vector by  x_i^p 
 
 Logically Collective
@@ -5565,7 +5582,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecPow"))
@@ -5588,7 +5605,7 @@ end
 end 
 
 """
-	VecRealPart(petsclib::PetscLibType,v::AbstractPetscVec) 
+	VecRealPart(petsclib::PetscLibType, v::AbstractPetscVec) 
 Replaces a complex vector with its real part
 
 Collective
@@ -5598,7 +5615,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `Vec`, `VecNorm()`, `VecImaginaryPart()`
+See also: `Vec`, `VecNorm()`, `VecImaginaryPart()`
 
 # External Links
 $(_doc_external("Vec/VecRealPart"))
@@ -5621,7 +5638,7 @@ end
 end 
 
 """
-	VecReciprocal(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	VecReciprocal(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Replaces each component of a vector by its reciprocal.
 
 Logically Collective
@@ -5634,7 +5651,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecLog()`, `VecExp()`, `VecSqrtAbs()`
+See also: `Vec`, `VecLog()`, `VecExp()`, `VecSqrtAbs()`
 
 # External Links
 $(_doc_external("Vec/VecReciprocal"))
@@ -5657,7 +5674,7 @@ end
 end 
 
 """
-	VecRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	VecRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new vector component implementation
 
 Not Collective, No Fortran Support
@@ -5666,7 +5683,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine
 
--seealso: `VecRegisterAll()`, `VecRegisterDestroy()`
+See also: `VecRegisterAll()`, `VecRegisterDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecRegister"))
@@ -5696,7 +5713,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `VecType`, `VecRegister()`, `VecRegisterDestroy()`
+See also: `Vec`, `VecType`, `VecRegister()`, `VecRegisterDestroy()`
 
 # External Links
 $(_doc_external("Vec/VecRegisterAll"))
@@ -5718,7 +5735,7 @@ end
 end 
 
 """
-	VecReplaceArray(petsclib::PetscLibType,vec::AbstractPetscVec, array::Vector{PetscScalar}) 
+	VecReplaceArray(petsclib::PetscLibType, vec::AbstractPetscVec, array::Vector{PetscScalar}) 
 Allows one to replace the array in a vector with an
 array provided by the user. This is useful to avoid copying an array
 into a vector.
@@ -5731,7 +5748,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecPlaceArray()`, `VecResetArray()`
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecPlaceArray()`, `VecResetArray()`
 
 # External Links
 $(_doc_external("Vec/VecReplaceArray"))
@@ -5754,7 +5771,7 @@ end
 end 
 
 """
-	VecResetArray(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	VecResetArray(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Resets a vector to use its default memory. Call this
 after the use of `VecPlaceArray()`.
 
@@ -5765,7 +5782,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecReplaceArray()`, `VecPlaceArray()`
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecReplaceArray()`, `VecPlaceArray()`
 
 # External Links
 $(_doc_external("Vec/VecResetArray"))
@@ -5788,7 +5805,7 @@ end
 end 
 
 """
-	VecRestoreArray(petsclib::PetscLibType,x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
+	VecRestoreArray(petsclib::PetscLibType, x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restores a vector after `VecGetArray()` has been called and the array is no longer needed
 
 Logically Collective
@@ -5799,7 +5816,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArrayRead()`, `VecRestoreArrays()`, `VecPlaceArray()`, `VecRestoreArray2d()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArrayRead()`, `VecRestoreArrays()`, `VecPlaceArray()`, `VecRestoreArray2d()`,
 `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
@@ -5825,7 +5842,7 @@ end
 
 # override for VecRestoreArray1d; C signature: VecRestoreArray1d(Vec x, PetscInt m, PetscInt mstart, PetscScalar* a[])
 """
-	VecRestoreArray1d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
+	VecRestoreArray1d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
 Restores a vector after `VecGetArray1d()` has been called.
 
 Logically Collective
@@ -5838,7 +5855,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray2d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -5868,7 +5885,7 @@ end
 
 # override for VecRestoreArray1dRead; C signature: VecRestoreArray1dRead(Vec x, PetscInt m, PetscInt mstart, PetscScalar* a[])
 """
-	VecRestoreArray1dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
+	VecRestoreArray1dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
 Restores a vector after `VecGetArray1dRead()` has been called.
 
 Logically Collective
@@ -5881,7 +5898,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray2d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -5908,7 +5925,7 @@ end
 
 # override for VecRestoreArray1dWrite; C signature: VecRestoreArray1dWrite(Vec x, PetscInt m, PetscInt mstart, PetscScalar* a[])
 """
-	VecRestoreArray1dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
+	VecRestoreArray1dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
 Restores a vector after `VecGetArray1dWrite()` has been called.
 
 Logically Collective
@@ -5921,7 +5938,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray2d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -5951,7 +5968,7 @@ end
 
 # override for VecRestoreArray2d; C signature: VecRestoreArray2d(Vec x, PetscInt m, PetscInt n, PetscInt mstart, PetscInt nstart, PetscScalar** a[])
 """
-	VecRestoreArray2d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
+	VecRestoreArray2d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
 Restores a vector after `VecGetArray2d()` has been called.
 
 Logically Collective
@@ -5966,7 +5983,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -5995,7 +6012,7 @@ end
 
 # override for VecRestoreArray2dRead; C signature: VecRestoreArray2dRead(Vec x, PetscInt m, PetscInt n, PetscInt mstart, PetscInt nstart, PetscScalar** a[])
 """
-	VecRestoreArray2dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
+	VecRestoreArray2dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
 Restores a vector after `VecGetArray2dRead()` has been called.
 
 Logically Collective
@@ -6010,7 +6027,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -6040,7 +6057,7 @@ end
 
 # override for VecRestoreArray2dWrite; C signature: VecRestoreArray2dWrite(Vec x, PetscInt m, PetscInt n, PetscInt mstart, PetscInt nstart, PetscScalar** a[])
 """
-	VecRestoreArray2dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
+	VecRestoreArray2dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
 Restores a vector after `VecGetArray2dWrite()` has been called.
 
 Logically Collective
@@ -6055,7 +6072,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -6085,7 +6102,7 @@ end
 
 # override for VecRestoreArray3d; C signature: VecRestoreArray3d(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscScalar** a[])
 """
-	VecRestoreArray3d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
+	VecRestoreArray3d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
 Restores a vector after `VecGetArray3d()` has been called.
 
 Logically Collective
@@ -6102,7 +6119,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -6132,7 +6149,7 @@ end
 
 # override for VecRestoreArray3dRead; C signature: VecRestoreArray3dRead(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscScalar** a[])
 """
-	VecRestoreArray3dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
+	VecRestoreArray3dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
 Restores a vector after `VecGetArray3dRead()` has been called.
 
 Logically Collective
@@ -6149,7 +6166,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -6179,7 +6196,7 @@ end
 
 # override for VecRestoreArray3dWrite; C signature: VecRestoreArray3dWrite(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscScalar** a[])
 """
-	VecRestoreArray3dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
+	VecRestoreArray3dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
 Restores a vector after `VecGetArray3dWrite()` has been called.
 
 Logically Collective
@@ -6196,7 +6213,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -6226,7 +6243,7 @@ end
 
 # override for VecRestoreArray4d; C signature: VecRestoreArray4d(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt q, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscInt qstart, PetscScalar** a[])
 """
-	VecRestoreArray4d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
+	VecRestoreArray4d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
 Restores a vector after `VecGetArray4d()` has been called.
 
 Logically Collective
@@ -6245,7 +6262,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`
 
@@ -6274,7 +6291,7 @@ end
 
 # override for VecRestoreArray4dRead; C signature: VecRestoreArray4dRead(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt q, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscInt qstart, PetscScalar** a[])
 """
-	VecRestoreArray4dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
+	VecRestoreArray4dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
 Restores a vector after `VecGetArray4d()` has been called.
 
 Logically Collective
@@ -6293,7 +6310,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -6323,7 +6340,7 @@ end
 
 # override for VecRestoreArray4dWrite; C signature: VecRestoreArray4dWrite(Vec x, PetscInt m, PetscInt n, PetscInt p, PetscInt q, PetscInt mstart, PetscInt nstart, PetscInt pstart, PetscInt qstart, PetscScalar** a[])
 """
-	VecRestoreArray4dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
+	VecRestoreArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
 Restores a vector after `VecGetArray4dWrite()` has been called.
 
 Logically Collective
@@ -6342,7 +6359,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecRestoreArrays()`, `VecPlaceArray()`,
 `VecGetArray2d()`, `VecGetArray3d()`, `VecRestoreArray3d()`, `DMDAVecGetArray()`, `DMDAVecRestoreArray()`
 `VecGetArray1d()`, `VecRestoreArray1d()`, `VecGetArray4d()`, `VecRestoreArray4d()`
 
@@ -6369,7 +6386,7 @@ function VecRestoreArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::
 end
 
 """
-	VecRestoreArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
+	VecRestoreArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restores a vector after `VecGetArrayAndMemType()` has been called.
 
 Logically Collective; No Fortran Support
@@ -6380,7 +6397,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArrayAndMemType()`, `VecGetArray()`, `VecRestoreArrayRead()`, `VecRestoreArrays()`,
+See also: `Vec`, `VecGetArrayAndMemType()`, `VecGetArray()`, `VecRestoreArrayRead()`, `VecRestoreArrays()`,
 `VecPlaceArray()`, `VecRestoreArray2d()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
@@ -6405,7 +6422,7 @@ end
 end 
 
 """
-	VecRestoreArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, xv::Union{Ptr, AbstractArray{PetscScalar}}, yv::Union{Ptr, AbstractArray{PetscScalar}}) 
+	VecRestoreArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, xv::Union{Ptr, AbstractArray{PetscScalar}}, yv::Union{Ptr, AbstractArray{PetscScalar}}) 
 
 # External Links
 $(_doc_external("Vec/VecRestoreArrayPair"))
@@ -6430,7 +6447,7 @@ end
 end 
 
 """
-	VecRestoreArrayRead(petsclib::PetscLibType,x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
+	VecRestoreArrayRead(petsclib::PetscLibType, x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore array obtained with `VecGetArrayRead()`
 
 Not Collective
@@ -6441,7 +6458,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
+See also: `Vec`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
 $(_doc_external("Vec/VecRestoreArrayRead"))
@@ -6465,7 +6482,7 @@ end
 end 
 
 """
-	VecRestoreArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
+	VecRestoreArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore array obtained with `VecGetArrayReadAndMemType()`
 
 Not Collective; No Fortran Support
@@ -6476,7 +6493,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArrayReadAndMemType()`, `VecRestoreArrayAndMemType()`, `VecRestoreArrayWriteAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
+See also: `Vec`, `VecGetArrayReadAndMemType()`, `VecRestoreArrayAndMemType()`, `VecRestoreArrayWriteAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
 $(_doc_external("Vec/VecRestoreArrayReadAndMemType"))
@@ -6500,7 +6517,7 @@ end
 end 
 
 """
-	VecRestoreArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
+	VecRestoreArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restores a vector after `VecGetArrayWrite()` has been called.
 
 Logically Collective
@@ -6511,7 +6528,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArray()`, `VecRestoreArrayRead()`, `VecRestoreArrays()`, `VecPlaceArray()`, `VecRestoreArray2d()`,
+See also: `Vec`, `VecGetArray()`, `VecRestoreArrayRead()`, `VecRestoreArrays()`, `VecPlaceArray()`, `VecRestoreArray2d()`,
 `VecGetArrayPair()`, `VecRestoreArrayPair()`, `VecGetArrayWrite()`
 
 # External Links
@@ -6536,7 +6553,7 @@ end
 end 
 
 """
-	VecRestoreArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
+	VecRestoreArrayWriteAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore array obtained with `VecGetArrayWriteAndMemType()`
 
 Logically Collective; No Fortran Support
@@ -6547,7 +6564,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecGetArrayWriteAndMemType()`, `VecRestoreArrayAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
+See also: `Vec`, `VecGetArrayWriteAndMemType()`, `VecRestoreArrayAndMemType()`, `VecGetArray()`, `VecRestoreArray()`, `VecGetArrayPair()`, `VecRestoreArrayPair()`
 
 # External Links
 $(_doc_external("Vec/VecRestoreArrayWriteAndMemType"))
@@ -6571,7 +6588,7 @@ end
 end 
 
 """
-	VecRestoreArrays(petsclib::PetscLibType,x::Vector{<:AbstractPetscVec}, n::PetscInt, a::Vector{PetscScalar}) 
+	VecRestoreArrays(petsclib::PetscLibType, x::Vector{<:AbstractPetscVec}, n::PetscInt, a::Vector{PetscScalar}) 
 Restores a group of vectors after `VecGetArrays()`
 has been called.
 
@@ -6582,7 +6599,7 @@ Input Parameters:
 - `n` - the number of vectors
 - `a` - location of pointer to arrays obtained from `VecGetArrays()`
 
--seealso: [](ch_vectors), `Vec`, `VecGetArrays()`, `VecRestoreArray()`
+See also: `Vec`, `VecGetArrays()`, `VecRestoreArray()`
 
 # External Links
 $(_doc_external("Vec/VecRestoreArrays"))
@@ -6605,7 +6622,7 @@ end
 end 
 
 """
-	VecRestoreLocalVector(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
+	VecRestoreLocalVector(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) 
 Unmaps the local portion of a vector
 previously mapped into a vector using `VecGetLocalVector()`.
 
@@ -6617,7 +6634,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecCreateLocalVector()`, `VecGetLocalVector()`, `VecGetLocalVectorRead()`, `VecRestoreLocalVectorRead()`, `LocalVectorRead()`, `VecGetArrayRead()`, `VecGetArray()`
+See also: `Vec`, `VecCreateLocalVector()`, `VecGetLocalVector()`, `VecGetLocalVectorRead()`, `VecRestoreLocalVectorRead()`, `LocalVectorRead()`, `VecGetArrayRead()`, `VecGetArray()`
 
 # External Links
 $(_doc_external("Vec/VecRestoreLocalVector"))
@@ -6640,7 +6657,7 @@ end
 end 
 
 """
-	VecRestoreLocalVectorRead(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
+	VecRestoreLocalVectorRead(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) 
 Unmaps the local portion of a vector
 previously mapped into a vector using `VecGetLocalVectorRead()`.
 
@@ -6652,7 +6669,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecCreateLocalVector()`, `VecGetLocalVectorRead()`, `VecGetLocalVector()`, `VecGetArrayRead()`, `VecGetArray()`
+See also: `Vec`, `VecCreateLocalVector()`, `VecGetLocalVectorRead()`, `VecGetLocalVector()`, `VecGetArrayRead()`, `VecGetArray()`
 
 # External Links
 $(_doc_external("Vec/VecRestoreLocalVectorRead"))
@@ -6675,7 +6692,7 @@ end
 end 
 
 """
-	VecRestoreSubVector(petsclib::PetscLibType,X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec) 
+	VecRestoreSubVector(petsclib::PetscLibType, X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec) 
 Restores a subvector extracted using `VecGetSubVector()`
 
 Collective
@@ -6687,7 +6704,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_vectors), `Vec`, `IS`, `VecGetSubVector()`
+See also: `Vec`, `IS`, `VecGetSubVector()`
 
 # External Links
 $(_doc_external("Vec/VecRestoreSubVector"))
@@ -6712,7 +6729,7 @@ end
 end 
 
 """
-	val::PetscScalar = VecTDot(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	val::PetscScalar = VecTDot(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes an indefinite vector dot product. That is, this
 routine does NOT use the complex conjugate.
 
@@ -6729,7 +6746,18 @@ Level: intermediate
 
 Notes for Users of Complex Numbers:
 For complex vectors, `VecTDot()` computes the indefinite form
--seealso: [](ch_vectors), `Vec`, `VecDot()`, `VecMTDot()`
+``
+val = (x,y) = y^T x,
+``
+where y^T denotes the transpose of y.
+
+Use `VecDot()` for the inner product
+``
+val = (x,y) = y^H x,
+``
+where y^H denotes the conjugate transpose of y.
+
+See also: `Vec`, `VecDot()`, `VecMTDot()`
 
 # External Links
 $(_doc_external("Vec/VecTDot"))
@@ -6754,7 +6782,7 @@ end
 end 
 
 """
-	result::PetscScalar = VecTDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	result::PetscScalar = VecTDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Starts a split phase transpose dot product computation.
 
 Input Parameters:
@@ -6764,7 +6792,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecTDotEnd()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecDotBegin()`, `VecDotEnd()`, `PetscCommSplitReductionBegin()`
 
 # External Links
@@ -6790,7 +6818,7 @@ end
 end 
 
 """
-	result::PetscScalar = VecTDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	result::PetscScalar = VecTDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) 
 Ends a split phase transpose dot product computation.
 
 Input Parameters:
@@ -6800,7 +6828,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `VecTDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
+See also: `VecTDotBegin()`, `VecNormBegin()`, `VecNormEnd()`, `VecNorm()`, `VecDot()`, `VecMDot()`,
 `VecDotBegin()`, `VecDotEnd()`
 
 # External Links
@@ -6826,7 +6854,7 @@ end
 end 
 
 """
-	n::PetscInt,e::Ptr{PetscScalar} = VecUniqueEntries(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	n::PetscInt,e::Ptr{PetscScalar} = VecUniqueEntries(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Compute the number of unique entries, and those entries
 
 Collective
@@ -6840,7 +6868,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecUniqueEntries"))
@@ -6867,7 +6895,7 @@ end
 end 
 
 """
-	VecView(petsclib::PetscLibType,vec::AbstractPetscVec, viewer::PetscViewer) 
+	VecView(petsclib::PetscLibType, vec::AbstractPetscVec, viewer::PetscViewer) 
 Views a vector object.
 
 Collective
@@ -6878,7 +6906,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecViewFromOptions()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscDrawLGCreate()`,
+See also: `Vec`, `VecViewFromOptions()`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscDrawLGCreate()`,
 `PetscViewerSocketOpen()`, `PetscViewerBinaryOpen()`, `VecLoad()`, `PetscViewerCreate()`,
 `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`, `PetscViewerHDF5SetTimestep()`
 
@@ -6903,7 +6931,7 @@ end
 end 
 
 """
-	VecViewFromOptions(petsclib::PetscLibType,A::AbstractPetscVec, obj, name::String) 
+	VecViewFromOptions(petsclib::PetscLibType, A::AbstractPetscVec, obj, name::String) 
 View a vector based on values in the options database
 
 Collective
@@ -6918,7 +6946,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecView`, `PetscObjectViewFromOptions()`, `VecCreate()`
+See also: `Vec`, `VecView`, `PetscObjectViewFromOptions()`, `VecCreate()`
 
 # External Links
 $(_doc_external("Vec/VecViewFromOptions"))
@@ -6941,7 +6969,7 @@ end
 end 
 
 """
-	VecViewNative(petsclib::PetscLibType,vec::AbstractPetscVec, viewer::PetscViewer) 
+	VecViewNative(petsclib::PetscLibType, vec::AbstractPetscVec, viewer::PetscViewer) 
 Views a vector object with the original type specific viewer
 
 Collective
@@ -6952,7 +6980,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_vectors), `Vec`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscDrawLGCreate()`, `VecView()`,
+See also: `Vec`, `PetscViewerASCIIOpen()`, `PetscViewerDrawOpen()`, `PetscDrawLGCreate()`, `VecView()`,
 `PetscViewerSocketOpen()`, `PetscViewerBinaryOpen()`, `VecLoad()`, `PetscViewerCreate()`,
 `PetscRealView()`, `PetscScalarView()`, `PetscIntView()`, `PetscViewerHDF5SetTimestep()`
 
@@ -6977,7 +7005,7 @@ end
 end 
 
 """
-	VecWAXPY(petsclib::PetscLibType,w::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) 
+	VecWAXPY(petsclib::PetscLibType, w::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes `w = alpha x + y`.
 
 Logically Collective
@@ -6992,7 +7020,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](ch_vectors), `Vec`, `VecAXPY()`, `VecAYPX()`, `VecAXPBY()`, `VecMAXPY()`, `VecAXPBYPCZ()`
+See also: `Vec`, `VecAXPY()`, `VecAYPX()`, `VecAXPBY()`, `VecMAXPY()`, `VecAXPBYPCZ()`
 
 # External Links
 $(_doc_external("Vec/VecWAXPY"))
@@ -7015,7 +7043,7 @@ end
 end 
 
 """
-	S::IS = VecWhichBetween(petsclib::PetscLibType,VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec) 
+	S::IS = VecWhichBetween(petsclib::PetscLibType, VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec) 
 Creates an index set containing the indices
 where  `VecLow` < `V` < `VecHigh`
 
@@ -7031,7 +7059,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecWhichBetween"))
@@ -7056,7 +7084,7 @@ end
 end 
 
 """
-	S::IS = VecWhichBetweenOrEqual(petsclib::PetscLibType,VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec) 
+	S::IS = VecWhichBetweenOrEqual(petsclib::PetscLibType, VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec) 
 Creates an index set containing the indices
 where  `VecLow` <= `V` <= `VecHigh`
 
@@ -7072,7 +7100,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecWhichBetweenOrEqual"))
@@ -7097,7 +7125,7 @@ end
 end 
 
 """
-	S::IS = VecWhichEqual(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec) 
+	S::IS = VecWhichEqual(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec) 
 Creates an index set containing the indices
 where the vectors `Vec1` and `Vec2` have identical elements.
 
@@ -7112,7 +7140,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecWhichEqual"))
@@ -7137,7 +7165,7 @@ end
 end 
 
 """
-	S::IS = VecWhichGreaterThan(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec) 
+	S::IS = VecWhichGreaterThan(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec) 
 Creates an index set containing the indices
 where the vectors `Vec1` > `Vec2`
 
@@ -7152,7 +7180,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecWhichGreaterThan"))
@@ -7177,7 +7205,7 @@ end
 end 
 
 """
-	S::IS = VecWhichInactive(petsclib::PetscLibType,VecLow::AbstractPetscVec, V::AbstractPetscVec, D::AbstractPetscVec, VecHigh::AbstractPetscVec, Strong::PetscBool) 
+	S::IS = VecWhichInactive(petsclib::PetscLibType, VecLow::AbstractPetscVec, V::AbstractPetscVec, D::AbstractPetscVec, VecHigh::AbstractPetscVec, Strong::PetscBool) 
 Creates an `IS` based on a set of vectors
 
 Collective
@@ -7194,7 +7222,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecWhichInactive"))
@@ -7219,7 +7247,7 @@ end
 end 
 
 """
-	S::IS = VecWhichLessThan(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec) 
+	S::IS = VecWhichLessThan(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec) 
 Creates an index set containing the indices
 where the vectors `Vec1` < `Vec2`
 
@@ -7234,7 +7262,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `Vec`
+See also: `Vec`
 
 # External Links
 $(_doc_external("Vec/VecWhichLessThan"))
@@ -7259,7 +7287,7 @@ end
 end 
 
 """
-	VecZeroEntries(petsclib::PetscLibType,vec::AbstractPetscVec) 
+	VecZeroEntries(petsclib::PetscLibType, vec::AbstractPetscVec) 
 puts a `0.0` in each element of a vector
 
 Logically Collective
@@ -7269,7 +7297,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: [](ch_vectors), `Vec`, `VecCreate()`, `VecSetOptionsPrefix()`, `VecSet()`, `VecSetValues()`
+See also: `Vec`, `VecCreate()`, `VecSetOptionsPrefix()`, `VecSet()`, `VecSetValues()`
 
 # External Links
 $(_doc_external("Vec/VecZeroEntries"))

@@ -1,5 +1,5 @@
 """
-	bd::PetscInt = PetscDSAddBoundary(petsclib::PetscLibType,ds::PetscDS, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	bd::PetscInt = PetscDSAddBoundary(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Add a boundary condition to the model.
 
 Collective
@@ -27,7 +27,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscWeakForm`, `DMLabel`, `DMBoundaryConditionType`, `PetscDSAddBoundaryByName()`, `PetscDSGetBoundary()`, `PetscDSSetResidual()`, `PetscDSSetBdResidual()`
+See also: `PetscDS`, `PetscWeakForm`, `DMLabel`, `DMBoundaryConditionType`, `PetscDSAddBoundaryByName()`, `PetscDSGetBoundary()`, `PetscDSSetResidual()`, `PetscDSSetBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSAddBoundary"))
@@ -52,7 +52,7 @@ end
 end 
 
 """
-	bd::PetscInt = PetscDSAddBoundaryByName(petsclib::PetscLibType,ds::PetscDS, type::DMBoundaryConditionType, name::String, lname::String, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	bd::PetscInt = PetscDSAddBoundaryByName(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, lname::String, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Add a boundary condition to the model.
 
 Collective
@@ -80,7 +80,37 @@ Options Database Keys:
 
 Calling Sequence of `bcFunc` and `bcFunc_t`:
 If the type is `DM_BC_ESSENTIAL`
--seealso: `PetscDS`, `PetscWeakForm`, `DMLabel`, `DMBoundaryConditionType`, `PetscDSAddBoundary()`, `PetscDSGetBoundary()`, `PetscDSSetResidual()`, `PetscDSSetBdResidual()`
+``
+void bcFunc(PetscInt dim, PetscReal time, const PetscReal x[], PetscInt Nc, PetscScalar bcval[])
+``
+If the type is `DM_BC_ESSENTIAL_FIELD` or other _FIELD value,
+``
+void bcFunc(PetscInt dim, PetscInt Nf, PetscInt NfAux,
+const PetscInt uOff[], const PetscInt uOff_x[], const PetscScalar u[], const PetscScalar u_t[], const PetscScalar u_x[],
+const PetscInt aOff[], const PetscInt aOff_x[], const PetscScalar a[], const PetscScalar a_t[], const PetscScalar a_x[],
+PetscReal time, const PetscReal x[], PetscScalar bcval[])
+``
+- `dim`          - the coordinate dimension
+- `Nf`           - the number of fields
+- `uOff`         - the offset into `u`[] and `u_t`[] for each field
+- `uOff_x`       - the offset into `u_x`[] for each field
+- `u`            - each field evaluated at the current point
+- `u_t`          - the time derivative of each field evaluated at the current point
+- `u_x`          - the gradient of each field evaluated at the current point
+- `aOff`         - the offset into `a`[] and `a_t`[] for each auxiliary field
+- `aOff_x`       - the offset into `a_x`[] for each auxiliary field
+- `a`            - each auxiliary field evaluated at the current point
+- `a_t`          - the time derivative of each auxiliary field evaluated at the current point
+- `a_x`          - the gradient of auxiliary each field evaluated at the current point
+- `t`            - current time
+- `x`            - coordinates of the current point
+- `numConstants` - number of constant parameters
+- `constants`    - constant parameters
+- `bcval`        - output values at the current point
+
+Level: developer
+
+See also: `PetscDS`, `PetscWeakForm`, `DMLabel`, `DMBoundaryConditionType`, `PetscDSAddBoundary()`, `PetscDSGetBoundary()`, `PetscDSSetResidual()`, `PetscDSSetBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSAddBoundaryByName"))
@@ -105,7 +135,7 @@ end
 end 
 
 """
-	PetscDSAddDiscretization(petsclib::PetscLibType,prob::PetscDS, disc) 
+	PetscDSAddDiscretization(petsclib::PetscLibType, prob::PetscDS, disc) 
 Adds a discretization object
 
 Not Collective
@@ -116,7 +146,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscWeakForm`, `PetscFE`, `PetscFV`, `PetscDSGetDiscretization()`, `PetscDSSetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscWeakForm`, `PetscFE`, `PetscFV`, `PetscDSGetDiscretization()`, `PetscDSSetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSAddDiscretization"))
@@ -139,7 +169,7 @@ end
 end 
 
 """
-	PetscDSCopy(petsclib::PetscLibType,ds::PetscDS, minDegree::PetscInt, maxDegree::PetscInt, dmNew::AbstractPetscDM, dsNew::PetscDS) 
+	PetscDSCopy(petsclib::PetscLibType, ds::PetscDS, minDegree::PetscInt, maxDegree::PetscInt, dmNew::AbstractPetscDM, dsNew::PetscDS) 
 Copy the contents of a `PetscDS` into another `PetscDS` on a new `DM`.
 
 Collective
@@ -155,7 +185,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSCopyEquations()`, `PetscDSCopyConstants()`, `PetscDSCopyExactSolutions()`, `PetscDSCopyBounds()`, `PetscDSCopyBoundary()`
+See also: `PetscDS`, `PetscDSCopyEquations()`, `PetscDSCopyConstants()`, `PetscDSCopyExactSolutions()`, `PetscDSCopyBounds()`, `PetscDSCopyBoundary()`
 
 # External Links
 $(_doc_external("DT/PetscDSCopy"))
@@ -178,7 +208,7 @@ end
 end 
 
 """
-	PetscDSCopyBoundary(petsclib::PetscLibType,ds::PetscDS, numFields::PetscInt, fields::Vector{PetscInt}, newds::PetscDS) 
+	PetscDSCopyBoundary(petsclib::PetscLibType, ds::PetscDS, numFields::PetscInt, fields::Vector{PetscInt}, newds::PetscDS) 
 Copy all boundary condition objects to the new `PetscDS`
 
 Not Collective
@@ -193,7 +223,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `DMBoundary`, `PetscDSCopyEquations()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
+See also: `PetscDS`, `DMBoundary`, `PetscDSCopyEquations()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSCopyBoundary"))
@@ -216,7 +246,7 @@ end
 end 
 
 """
-	PetscDSCopyBounds(petsclib::PetscLibType,ds::PetscDS, newds::PetscDS) 
+	PetscDSCopyBounds(petsclib::PetscLibType, ds::PetscDS, newds::PetscDS) 
 Copy lower and upper solution bounds set with `PetscDSSetLowerBound()` and `PetscDSSetLowerBound()` to another `PetscDS`
 
 Not Collective
@@ -229,7 +259,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDSCopyExactSolutions()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDSCopyExactSolutions()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSCopyBounds"))
@@ -252,7 +282,7 @@ end
 end 
 
 """
-	PetscDSCopyConstants(petsclib::PetscLibType,prob::PetscDS, newprob::PetscDS) 
+	PetscDSCopyConstants(petsclib::PetscLibType, prob::PetscDS, newprob::PetscDS) 
 Copy all constants set with `PetscDSSetConstants()` to another `PetscDS`
 
 Not Collective
@@ -265,7 +295,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSCopyConstants"))
@@ -288,7 +318,7 @@ end
 end 
 
 """
-	PetscDSCopyEquations(petsclib::PetscLibType,prob::PetscDS, newprob::PetscDS) 
+	PetscDSCopyEquations(petsclib::PetscLibType, prob::PetscDS, newprob::PetscDS) 
 Copy all pointwise function pointers to another `PetscDS`
 
 Not Collective
@@ -301,7 +331,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSCopyEquations"))
@@ -324,7 +354,7 @@ end
 end 
 
 """
-	PetscDSCopyExactSolutions(petsclib::PetscLibType,ds::PetscDS, newds::PetscDS) 
+	PetscDSCopyExactSolutions(petsclib::PetscLibType, ds::PetscDS, newds::PetscDS) 
 Copy all exact solutions set with `PetscDSSetExactSolution()` and `PetscDSSetExactSolutionTimeDerivative()` to another `PetscDS`
 
 Not Collective
@@ -337,7 +367,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDSCopyBounds()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDSCopyBounds()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSCopyExactSolutions"))
@@ -360,7 +390,7 @@ end
 end 
 
 """
-	ds::PetscDS = PetscDSCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	ds::PetscDS = PetscDSCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates an empty `PetscDS` object. The type can then be set with `PetscDSSetType()`.
 
 Collective
@@ -373,7 +403,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSSetType()`, `PETSCDSBASIC`, `PetscDSType`, `PetscDSDestroy()`
+See also: `PetscDS`, `PetscDSSetType()`, `PETSCDSBASIC`, `PetscDSType`, `PetscDSDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscDSCreate"))
@@ -398,7 +428,7 @@ end
 end 
 
 """
-	PetscDSDestroy(petsclib::PetscLibType,ds::Union{PetscDS, Ref{PetscDS}}) 
+	PetscDSDestroy(petsclib::PetscLibType, ds::Union{PetscDS, Ref{PetscDS}}) 
 Destroys a `PetscDS` object
 
 Collective
@@ -408,7 +438,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscDSView()`
+See also: `PetscDSView()`
 
 # External Links
 $(_doc_external("DT/PetscDSDestroy"))
@@ -432,7 +462,7 @@ end
 end 
 
 """
-	PetscDSDestroyBoundary(petsclib::PetscLibType,ds::PetscDS) 
+	PetscDSDestroyBoundary(petsclib::PetscLibType, ds::PetscDS) 
 Remove all `DMBoundary` objects from the `PetscDS`
 
 Not Collective
@@ -442,7 +472,7 @@ Input Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `DMBoundary`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`
+See also: `PetscDS`, `DMBoundary`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`
 
 # External Links
 $(_doc_external("DT/PetscDSDestroyBoundary"))
@@ -471,7 +501,7 @@ from `PetscFinalize()`.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("DM/PetscDSFinalizePackage"))
@@ -493,7 +523,7 @@ end
 end 
 
 """
-	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetBdJacobian(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt) 
+	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetBdJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt) 
 Get the pointwise boundary Jacobian function for given test and basis field
 
 Not Collective
@@ -511,7 +541,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscBdPointJacFn`, `PetscDSSetBdJacobian()`
+See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSSetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetBdJacobian"))
@@ -542,7 +572,7 @@ end
 end 
 
 """
-	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetBdJacobianPreconditioner(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt) 
+	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetBdJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt) 
 Get the pointwise boundary Jacobian function for given test and basis field that constructs the
 matrix used to construct the preconditioner
 
@@ -561,7 +591,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscBdPointJacFn`, `PetscDSSetBdJacobianPreconditioner()`
+See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSSetBdJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetBdJacobianPreconditioner"))
@@ -592,7 +622,7 @@ end
 end 
 
 """
-	f0::Ptr{Cvoid},f1::Ptr{Cvoid} = PetscDSGetBdResidual(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	f0::Ptr{Cvoid},f1::Ptr{Cvoid} = PetscDSGetBdResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Get the pointwise boundary residual function for a given test field
 
 Not Collective
@@ -607,7 +637,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscBdPointFn`, `PetscDSSetBdResidual()`
+See also: `PetscDS`, `PetscBdPointFn`, `PetscDSSetBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetBdResidual"))
@@ -635,7 +665,7 @@ end
 
 # override for PetscDSGetBoundary; C signature: PetscDSGetBoundary(PetscDS ds, PetscInt bd, PetscWeakForm* wf, DMBoundaryConditionType* type, char* name[], DMLabel* label, PetscInt* Nv, PetscInt* values[], PetscInt* field, PetscInt* Nc, PetscInt* comps[], PetscVoidFn** func, PetscVoidFn** func_t, void** ctx)
 """
-	Nv::PetscInt,values::Vector{PetscInt},field::PetscInt,Nc::PetscInt,comps::Vector{PetscInt} = PetscDSGetBoundary(petsclib::PetscLibType,ds::PetscDS, bd::PetscInt, wf::PetscWeakForm, type::DMBoundaryConditionType, name::String, label::DMLabel, func::PetscVoidFn, func_t::PetscVoidFn, ctx::Cvoid) 
+	Nv::PetscInt,values::Vector{PetscInt},field::PetscInt,Nc::PetscInt,comps::Vector{PetscInt} = PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt, wf::PetscWeakForm, type::DMBoundaryConditionType, name::String, label::DMLabel, func::PetscVoidFn, func_t::PetscVoidFn, ctx::Cvoid) 
 Gets a boundary condition from the model
 
 Input Parameters:
@@ -662,7 +692,7 @@ Options Database Keys:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscWeakForm`, `DMBoundaryConditionType`, `PetscDSAddBoundary()`, `DMLabel`
+See also: `PetscDS`, `PetscWeakForm`, `DMBoundaryConditionType`, `PetscDSAddBoundary()`, `DMLabel`
 
 # External Links
 $(_doc_external("Dm/PetscDSGetBoundary"))
@@ -707,7 +737,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
 end
 
 """
-	isCohesive::PetscBool = PetscDSGetCohesive(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	isCohesive::PetscBool = PetscDSGetCohesive(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Returns the flag indicating that a field is cohesive, meaning it is defined on the interior of a cohesive cell
 
 Not Collective
@@ -721,7 +751,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSSetCohesive()`, `PetscDSIsCohesive()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetCohesive()`, `PetscDSIsCohesive()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetCohesive"))
@@ -746,7 +776,7 @@ end
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentDerivativeOffsets(petsclib::PetscLibType,prob::PetscDS) 
+	offsets::Ptr{PetscInt} = PetscDSGetComponentDerivativeOffsets(petsclib::PetscLibType, prob::PetscDS) 
 Returns the offset of each field derivative on an evaluation point
 
 Not Collective
@@ -759,7 +789,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetComponentDerivativeOffsets"))
@@ -784,7 +814,7 @@ end
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentDerivativeOffsetsCohesive(petsclib::PetscLibType,ds::PetscDS, s::PetscInt) 
+	offsets::Ptr{PetscInt} = PetscDSGetComponentDerivativeOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::PetscInt) 
 Returns the offset of each field derivative on an evaluation point
 
 Not Collective
@@ -798,7 +828,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetComponentDerivativeOffsetsCohesive"))
@@ -823,7 +853,7 @@ end
 end 
 
 """
-	off::PetscInt = PetscDSGetComponentOffset(petsclib::PetscLibType,prob::PetscDS, f::PetscInt) 
+	off::PetscInt = PetscDSGetComponentOffset(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) 
 Returns the offset of the given field on an evaluation point
 
 Not Collective
@@ -837,7 +867,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetComponentOffset"))
@@ -862,7 +892,7 @@ end
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentOffsets(petsclib::PetscLibType,prob::PetscDS) 
+	offsets::Ptr{PetscInt} = PetscDSGetComponentOffsets(petsclib::PetscLibType, prob::PetscDS) 
 Returns the offset of each field on an evaluation point
 
 Not Collective
@@ -875,7 +905,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetComponentOffsets"))
@@ -900,7 +930,7 @@ end
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentOffsetsCohesive(petsclib::PetscLibType,ds::PetscDS, s::PetscInt) 
+	offsets::Ptr{PetscInt} = PetscDSGetComponentOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::PetscInt) 
 Returns the offset of each field on an evaluation point
 
 Not Collective
@@ -914,7 +944,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetComponentOffsetsCohesive"))
@@ -939,7 +969,7 @@ end
 end 
 
 """
-	components::Ptr{PetscInt} = PetscDSGetComponents(petsclib::PetscLibType,prob::PetscDS) 
+	components::Ptr{PetscInt} = PetscDSGetComponents(petsclib::PetscLibType, prob::PetscDS) 
 Returns the number of components for each field on an evaluation point
 
 Not Collective
@@ -952,7 +982,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetComponentOffsets()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetComponentOffsets()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetComponents"))
@@ -977,7 +1007,7 @@ end
 end 
 
 """
-	numConstants::PetscInt,constants::Ptr{PetscScalar} = PetscDSGetConstants(petsclib::PetscLibType,ds::PetscDS) 
+	numConstants::PetscInt,constants::Ptr{PetscScalar} = PetscDSGetConstants(petsclib::PetscLibType, ds::PetscDS) 
 Returns the array of constants passed to point functions from a `PetscDS` object
 
 Not Collective
@@ -991,7 +1021,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSetConstants()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetConstants()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetConstants"))
@@ -1018,7 +1048,7 @@ end
 end 
 
 """
-	PetscDSGetContext(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, ctx::Ptr{Cvoid}) 
+	PetscDSGetContext(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, ctx::Ptr{Cvoid}) 
 Returns the context that was passed by `PetscDSSetContext()`
 
 Not Collective
@@ -1030,7 +1060,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointFn`, `PetscDSSetContext()`
+See also: `PetscDS`, `PetscPointFn`, `PetscDSSetContext()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetContext"))
@@ -1053,7 +1083,7 @@ end
 end 
 
 """
-	dimEmbed::PetscInt = PetscDSGetCoordinateDimension(petsclib::PetscLibType,prob::PetscDS) 
+	dimEmbed::PetscInt = PetscDSGetCoordinateDimension(petsclib::PetscLibType, prob::PetscDS) 
 Returns the coordinate dimension of the `PetscDS`, meaning the dimension of the space into which the discretiaztions are embedded
 
 Not Collective
@@ -1066,7 +1096,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSSetCoordinateDimension()`, `PetscDSGetSpatialDimension()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetCoordinateDimension()`, `PetscDSGetSpatialDimension()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetCoordinateDimension"))
@@ -1091,7 +1121,7 @@ end
 end 
 
 """
-	dimensions::Ptr{PetscInt} = PetscDSGetDimensions(petsclib::PetscLibType,prob::PetscDS) 
+	dimensions::Ptr{PetscInt} = PetscDSGetDimensions(petsclib::PetscLibType, prob::PetscDS) 
 Returns the size of the approximation space for each field on an evaluation point
 
 Not Collective
@@ -1104,7 +1134,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetComponentOffsets()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetComponentOffsets()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetDimensions"))
@@ -1129,7 +1159,7 @@ end
 end 
 
 """
-	disc::PetscObject = PetscDSGetDiscretization(petsclib::PetscLibType,prob::PetscDS, f::PetscInt) 
+	disc::PetscObject = PetscDSGetDiscretization(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) 
 Returns the discretization object for the given field
 
 Not Collective
@@ -1143,7 +1173,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscFE`, `PetscFV`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscFE`, `PetscFV`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetDiscretization"))
@@ -1168,7 +1198,7 @@ end
 end 
 
 """
-	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetDynamicJacobian(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt) 
+	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetDynamicJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt) 
 Get the pointwise dynamic Jacobian, dF/du_t, function for given test and basis field
 
 Not Collective
@@ -1186,7 +1216,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSetJacobian()`, `PetscDSSetDynamicJacobian()`, `PetscPointJacFn`
+See also: `PetscDS`, `PetscDSSetJacobian()`, `PetscDSSetDynamicJacobian()`, `PetscPointJacFn`
 
 # External Links
 $(_doc_external("DT/PetscDSGetDynamicJacobian"))
@@ -1217,7 +1247,7 @@ end
 end 
 
 """
-	u::Ptr{PetscScalar},u_t::Ptr{PetscScalar},u_x::Ptr{PetscScalar} = PetscDSGetEvaluationArrays(petsclib::PetscLibType,prob::PetscDS) 
+	u::Ptr{PetscScalar},u_t::Ptr{PetscScalar},u_x::Ptr{PetscScalar} = PetscDSGetEvaluationArrays(petsclib::PetscLibType, prob::PetscDS) 
 Get scratch arrays used to evaluate fields, time derivatives, and field gradients at quadrature points.
 
 Not Collective
@@ -1232,7 +1262,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSGetWeakFormArrays()`, `PetscDSGetWorkspace()`
+See also: `PetscDS`, `PetscDSGetWeakFormArrays()`, `PetscDSGetWorkspace()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetEvaluationArrays"))
@@ -1261,7 +1291,7 @@ end
 end 
 
 """
-	sol::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetExactSolution(petsclib::PetscLibType,prob::PetscDS, f::PetscInt) 
+	sol::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) 
 Get the pointwise exact solution function for a given test field
 
 Not Collective
@@ -1276,7 +1306,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSSetExactSolution()`, `PetscDSGetExactSolutionTimeDerivative()`
+See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSSetExactSolution()`, `PetscDSGetExactSolutionTimeDerivative()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetExactSolution"))
@@ -1303,7 +1333,7 @@ end
 end 
 
 """
-	sol::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetExactSolutionTimeDerivative(petsclib::PetscLibType,prob::PetscDS, f::PetscInt) 
+	sol::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) 
 Get the pointwise time derivative of the exact solution function for a given test field
 
 Not Collective
@@ -1318,7 +1348,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSSetExactSolutionTimeDerivative()`, `PetscDSGetExactSolution()`
+See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSSetExactSolutionTimeDerivative()`, `PetscDSGetExactSolution()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetExactSolutionTimeDerivative"))
@@ -1345,7 +1375,7 @@ end
 end 
 
 """
-	Tf::Ptr{PetscTabulation} = PetscDSGetFaceTabulation(petsclib::PetscLibType,prob::PetscDS) 
+	Tf::Ptr{PetscTabulation} = PetscDSGetFaceTabulation(petsclib::PetscLibType, prob::PetscDS) 
 Return the basis tabulation at quadrature points on the faces
 
 Not Collective
@@ -1358,7 +1388,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscTabulation`, `PetscDS`, `PetscDSGetTabulation()`, `PetscDSCreate()`
+See also: `PetscTabulation`, `PetscDS`, `PetscDSGetTabulation()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetFaceTabulation"))
@@ -1383,7 +1413,7 @@ end
 end 
 
 """
-	f::PetscInt = PetscDSGetFieldIndex(petsclib::PetscLibType,prob::PetscDS, disc) 
+	f::PetscInt = PetscDSGetFieldIndex(petsclib::PetscLibType, prob::PetscDS, disc) 
 Returns the index of the given field
 
 Not Collective
@@ -1397,7 +1427,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscGetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscGetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetFieldIndex"))
@@ -1422,7 +1452,7 @@ end
 end 
 
 """
-	off::PetscInt = PetscDSGetFieldOffset(petsclib::PetscLibType,prob::PetscDS, f::PetscInt) 
+	off::PetscInt = PetscDSGetFieldOffset(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) 
 Returns the offset of the given field in the full space basis
 
 Not Collective
@@ -1436,7 +1466,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetFieldSize()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetFieldSize()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetFieldOffset"))
@@ -1461,7 +1491,7 @@ end
 end 
 
 """
-	off::PetscInt = PetscDSGetFieldOffsetCohesive(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	off::PetscInt = PetscDSGetFieldOffsetCohesive(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Returns the offset of the given field in the full space basis on a cohesive cell
 
 Not Collective
@@ -1475,7 +1505,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetFieldSize()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetFieldSize()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetFieldOffsetCohesive"))
@@ -1500,7 +1530,7 @@ end
 end 
 
 """
-	size::PetscInt = PetscDSGetFieldSize(petsclib::PetscLibType,prob::PetscDS, f::PetscInt) 
+	size::PetscInt = PetscDSGetFieldSize(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) 
 Returns the size of the given field in the full space basis
 
 Not Collective
@@ -1514,7 +1544,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetFieldOffset()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetFieldOffset()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetFieldSize"))
@@ -1539,7 +1569,7 @@ end
 end 
 
 """
-	forceQuad::PetscBool = PetscDSGetForceQuad(petsclib::PetscLibType,ds::PetscDS) 
+	forceQuad::PetscBool = PetscDSGetForceQuad(petsclib::PetscLibType, ds::PetscDS) 
 Returns the flag to force matching quadratures among the field discretizations
 
 Not collective
@@ -1552,7 +1582,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSetForceQuad()`, `PetscDSGetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetForceQuad()`, `PetscDSGetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetForceQuad"))
@@ -1577,7 +1607,7 @@ end
 end 
 
 """
-	subprob::PetscDS = PetscDSGetHeightSubspace(petsclib::PetscLibType,prob::PetscDS, height::PetscInt) 
+	subprob::PetscDS = PetscDSGetHeightSubspace(petsclib::PetscLibType, prob::PetscDS, height::PetscInt) 
 Get the `PetscDS` for the trace subspace at a given height in the mesh.
 
 Not Collective
@@ -1591,7 +1621,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscFE`, `PetscFEGetHeightSubspace()`, `PetscDSGetSpatialDimension()`
+See also: `PetscDS`, `PetscFE`, `PetscFEGetHeightSubspace()`, `PetscDSGetSpatialDimension()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetHeightSubspace"))
@@ -1616,7 +1646,7 @@ end
 end 
 
 """
-	implicit::PetscBool = PetscDSGetImplicit(petsclib::PetscLibType,prob::PetscDS, f::PetscInt) 
+	implicit::PetscBool = PetscDSGetImplicit(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) 
 Returns the flag for implicit solve for this field. This is just a guide for `TSARKIMEX`
 
 Not Collective
@@ -1630,7 +1660,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `TSARKIMEX`, `PetscDS`, `PetscDSSetImplicit()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `TSARKIMEX`, `PetscDS`, `PetscDSSetImplicit()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetImplicit"))
@@ -1655,7 +1685,7 @@ end
 end 
 
 """
-	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetJacobian(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt) 
+	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt) 
 Get the pointwise Jacobian function for given test and basis field
 
 Not Collective
@@ -1673,7 +1703,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSetJacobian()`, `PetscPointJacFn`
+See also: `PetscDS`, `PetscDSSetJacobian()`, `PetscPointJacFn`
 
 # External Links
 $(_doc_external("DT/PetscDSGetJacobian"))
@@ -1704,7 +1734,7 @@ end
 end 
 
 """
-	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetJacobianPreconditioner(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt) 
+	g0::Ptr{Cvoid},g1::Ptr{Cvoid},g2::Ptr{Cvoid},g3::Ptr{Cvoid} = PetscDSGetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt) 
 Get the pointwise Jacobian function for given test and basis field that constructs the matrix used
 to compute the preconditioner. If this is missing, the system matrix is used to build the preconditioner.
 
@@ -1723,7 +1753,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`, `PetscPointJacFn`
+See also: `PetscDS`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`, `PetscPointJacFn`
 
 # External Links
 $(_doc_external("DT/PetscDSGetJacobianPreconditioner"))
@@ -1754,8 +1784,8 @@ end
 end 
 
 """
-	k::PetscInt = PetscDSGetJetDegree(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
-Returns the highest derivative for this field equation, or the k
+	k::PetscInt = PetscDSGetJetDegree(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
+Returns the highest derivative for this field equation, or the k-jet that the discretization needs to tabulate.
 
 Not Collective
 
@@ -1768,7 +1798,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSSetJetDegree()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetJetDegree()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetJetDegree"))
@@ -1793,7 +1823,7 @@ end
 end 
 
 """
-	lb::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetLowerBound(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	lb::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetLowerBound(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Get the pointwise lower bound function for a given field
 
 Not Collective
@@ -1808,7 +1838,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointBoundFn`, `PetscDSSetLowerBound()`, `PetscDSGetUpperBound()`, `PetscDSGetExactSolution()`
+See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSSetLowerBound()`, `PetscDSGetUpperBound()`, `PetscDSGetExactSolution()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetLowerBound"))
@@ -1835,7 +1865,7 @@ end
 end 
 
 """
-	numBd::PetscInt = PetscDSGetNumBoundary(petsclib::PetscLibType,ds::PetscDS) 
+	numBd::PetscInt = PetscDSGetNumBoundary(petsclib::PetscLibType, ds::PetscDS) 
 Get the number of registered boundary conditions
 
 Input Parameter:
@@ -1846,7 +1876,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSAddBoundary()`, `PetscDSGetBoundary()`
+See also: `PetscDS`, `PetscDSAddBoundary()`, `PetscDSGetBoundary()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetNumBoundary"))
@@ -1871,7 +1901,7 @@ end
 end 
 
 """
-	numCohesive::PetscInt = PetscDSGetNumCohesive(petsclib::PetscLibType,ds::PetscDS) 
+	numCohesive::PetscInt = PetscDSGetNumCohesive(petsclib::PetscLibType, ds::PetscDS) 
 Returns the number of cohesive fields, meaning those defined on the interior of a cohesive cell
 
 Not Collective
@@ -1884,7 +1914,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSSetCohesive()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetCohesive()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetNumCohesive"))
@@ -1909,7 +1939,7 @@ end
 end 
 
 """
-	Nf::PetscInt = PetscDSGetNumFields(petsclib::PetscLibType,prob::PetscDS) 
+	Nf::PetscInt = PetscDSGetNumFields(petsclib::PetscLibType, prob::PetscDS) 
 Returns the number of fields in the `PetscDS`
 
 Not Collective
@@ -1922,7 +1952,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetSpatialDimension()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetSpatialDimension()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetNumFields"))
@@ -1947,7 +1977,7 @@ end
 end 
 
 """
-	obj::Ptr{Cvoid} = PetscDSGetObjective(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	obj::Ptr{Cvoid} = PetscDSGetObjective(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Get the pointwise objective function for a given test field that was provided with `PetscDSSetObjective()`
 
 Not Collective
@@ -1961,7 +1991,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscPointFn`, `PetscDS`, `PetscDSSetObjective()`, `PetscDSGetResidual()`
+See also: `PetscPointFn`, `PetscDS`, `PetscDSSetObjective()`, `PetscDSGetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetObjective"))
@@ -1986,7 +2016,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscDSGetQuadrature(petsclib::PetscLibType,prob::PetscDS) 
+	q::PetscQuadrature = PetscDSGetQuadrature(petsclib::PetscLibType, prob::PetscDS) 
 Returns the quadrature, which must agree for all fields in the `PetscDS`
 
 Not Collective
@@ -1999,7 +2029,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscQuadrature`, `PetscDSSetImplicit()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscQuadrature`, `PetscDSSetImplicit()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetQuadrature"))
@@ -2024,7 +2054,7 @@ end
 end 
 
 """
-	f0::Ptr{Cvoid},f1::Ptr{Cvoid} = PetscDSGetRHSResidual(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	f0::Ptr{Cvoid},f1::Ptr{Cvoid} = PetscDSGetRHSResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Get the pointwise RHS residual function for explicit timestepping for a given test field
 
 Not Collective
@@ -2039,7 +2069,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscPointFn`, `PetscDS`, `PetscDSSetRHSResidual()`
+See also: `PetscPointFn`, `PetscDS`, `PetscDSSetRHSResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetRHSResidual"))
@@ -2066,7 +2096,7 @@ end
 end 
 
 """
-	f0::Ptr{Cvoid},f1::Ptr{Cvoid} = PetscDSGetResidual(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	f0::Ptr{Cvoid},f1::Ptr{Cvoid} = PetscDSGetResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Get the pointwise residual function for a given test field
 
 Not Collective
@@ -2081,7 +2111,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscPointFn`, `PetscDS`, `PetscDSSetResidual()`
+See also: `PetscPointFn`, `PetscDS`, `PetscDSSetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetResidual"))
@@ -2108,7 +2138,7 @@ end
 end 
 
 """
-	r::Ptr{Cvoid} = PetscDSGetRiemannSolver(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	r::Ptr{Cvoid} = PetscDSGetRiemannSolver(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Returns the Riemann solver for the given field
 
 Not Collective
@@ -2122,7 +2152,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscRiemannFn`, `PetscDSSetRiemannSolver()`
+See also: `PetscDS`, `PetscRiemannFn`, `PetscDSSetRiemannSolver()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetRiemannSolver"))
@@ -2147,7 +2177,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscDSGetSpatialDimension(petsclib::PetscLibType,prob::PetscDS) 
+	dim::PetscInt = PetscDSGetSpatialDimension(petsclib::PetscLibType, prob::PetscDS) 
 Returns the spatial dimension of the `PetscDS`, meaning the topological dimension of the discretizations
 
 Not Collective
@@ -2160,7 +2190,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetCoordinateDimension()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetCoordinateDimension()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetSpatialDimension"))
@@ -2185,7 +2215,7 @@ end
 end 
 
 """
-	T::Ptr{PetscTabulation} = PetscDSGetTabulation(petsclib::PetscLibType,prob::PetscDS) 
+	T::Ptr{PetscTabulation} = PetscDSGetTabulation(petsclib::PetscLibType, prob::PetscDS) 
 Return the basis tabulation at quadrature points for the volume discretization
 
 Not Collective
@@ -2198,7 +2228,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscTabulation`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscTabulation`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetTabulation"))
@@ -2223,7 +2253,7 @@ end
 end 
 
 """
-	Nc::PetscInt = PetscDSGetTotalComponents(petsclib::PetscLibType,prob::PetscDS) 
+	Nc::PetscInt = PetscDSGetTotalComponents(petsclib::PetscLibType, prob::PetscDS) 
 Returns the total number of components in this system
 
 Not Collective
@@ -2236,7 +2266,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetTotalComponents"))
@@ -2261,7 +2291,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscDSGetTotalDimension(petsclib::PetscLibType,prob::PetscDS) 
+	dim::PetscInt = PetscDSGetTotalDimension(petsclib::PetscLibType, prob::PetscDS) 
 Returns the total size of the approximation space for this system
 
 Not Collective
@@ -2274,7 +2304,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetTotalDimension"))
@@ -2299,7 +2329,7 @@ end
 end 
 
 """
-	name::PetscDSType = PetscDSGetType(petsclib::PetscLibType,prob::PetscDS) 
+	name::PetscDSType = PetscDSGetType(petsclib::PetscLibType, prob::PetscDS) 
 Gets the `PetscDSType` name (as a string) from the `PetscDS`
 
 Not Collective; No Fortran Support
@@ -2312,7 +2342,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDSType`, `PetscDS`, `PetscDSSetType()`, `PetscDSCreate()`
+See also: `PetscDSType`, `PetscDS`, `PetscDSSetType()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetType"))
@@ -2337,7 +2367,7 @@ end
 end 
 
 """
-	update::Ptr{Cvoid} = PetscDSGetUpdate(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	update::Ptr{Cvoid} = PetscDSGetUpdate(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Get the pointwise update function for a given field
 
 Not Collective
@@ -2351,7 +2381,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointFn`, `PetscDSSetUpdate()`, `PetscDSSetResidual()`
+See also: `PetscDS`, `PetscPointFn`, `PetscDSSetUpdate()`, `PetscDSSetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetUpdate"))
@@ -2376,7 +2406,7 @@ end
 end 
 
 """
-	ub::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetUpperBound(petsclib::PetscLibType,ds::PetscDS, f::PetscInt) 
+	ub::Ptr{Cvoid},ctx::Ptr{Cvoid} = PetscDSGetUpperBound(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) 
 Get the pointwise upper bound function for a given field
 
 Not Collective
@@ -2391,7 +2421,7 @@ Output Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointBoundFn`, `PetscDSSetUpperBound()`, `PetscDSGetLowerBound()`, `PetscDSGetExactSolution()`
+See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSSetUpperBound()`, `PetscDSGetLowerBound()`, `PetscDSGetExactSolution()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetUpperBound"))
@@ -2418,7 +2448,7 @@ end
 end 
 
 """
-	wf::PetscWeakForm = PetscDSGetWeakForm(petsclib::PetscLibType,ds::PetscDS) 
+	wf::PetscWeakForm = PetscDSGetWeakForm(petsclib::PetscLibType, ds::PetscDS) 
 Returns the weak form object from within the `PetscDS`
 
 Not Collective
@@ -2431,7 +2461,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `PetscWeakForm`, `PetscDSSetWeakForm()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscWeakForm`, `PetscDSSetWeakForm()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetWeakForm"))
@@ -2456,7 +2486,7 @@ end
 end 
 
 """
-	f0::Ptr{PetscScalar},f1::Ptr{PetscScalar},g0::Ptr{PetscScalar},g1::Ptr{PetscScalar},g2::Ptr{PetscScalar},g3::Ptr{PetscScalar} = PetscDSGetWeakFormArrays(petsclib::PetscLibType,prob::PetscDS) 
+	f0::Ptr{PetscScalar},f1::Ptr{PetscScalar},g0::Ptr{PetscScalar},g1::Ptr{PetscScalar},g2::Ptr{PetscScalar},g3::Ptr{PetscScalar} = PetscDSGetWeakFormArrays(petsclib::PetscLibType, prob::PetscDS) 
 
 # External Links
 $(_doc_external("DT/PetscDSGetWeakFormArrays"))
@@ -2491,7 +2521,7 @@ end
 end 
 
 """
-	x::Ptr{PetscReal},basisReal::Ptr{PetscScalar},basisDerReal::Ptr{PetscScalar},testReal::Ptr{PetscScalar},testDerReal::Ptr{PetscScalar} = PetscDSGetWorkspace(petsclib::PetscLibType,prob::PetscDS) 
+	x::Ptr{PetscReal},basisReal::Ptr{PetscScalar},basisDerReal::Ptr{PetscScalar},testReal::Ptr{PetscScalar},testDerReal::Ptr{PetscScalar} = PetscDSGetWorkspace(petsclib::PetscLibType, prob::PetscDS) 
 Get scratch storage used during discretization computations.
 
 Not Collective
@@ -2508,7 +2538,7 @@ Output Parameters:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSGetEvaluationArrays()`, `PetscDSGetWeakFormArrays()`
+See also: `PetscDS`, `PetscDSGetEvaluationArrays()`, `PetscDSGetWeakFormArrays()`
 
 # External Links
 $(_doc_external("DT/PetscDSGetWorkspace"))
@@ -2541,7 +2571,7 @@ end
 end 
 
 """
-	hasBdJac::PetscBool = PetscDSHasBdJacobian(petsclib::PetscLibType,ds::PetscDS) 
+	hasBdJac::PetscBool = PetscDSHasBdJacobian(petsclib::PetscLibType, ds::PetscDS) 
 Indicates that boundary Jacobian functions have been set
 
 Not Collective
@@ -2554,7 +2584,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSHasJacobian()`, `PetscDSSetBdJacobian()`, `PetscDSGetBdJacobian()`
+See also: `PetscDS`, `PetscDSHasJacobian()`, `PetscDSSetBdJacobian()`, `PetscDSGetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSHasBdJacobian"))
@@ -2579,7 +2609,7 @@ end
 end 
 
 """
-	hasBdJacPre::PetscBool = PetscDSHasBdJacobianPreconditioner(petsclib::PetscLibType,ds::PetscDS) 
+	hasBdJacPre::PetscBool = PetscDSHasBdJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS) 
 Signals that boundary Jacobian preconditioner functions have been set with `PetscDSSetBdJacobianPreconditioner()`
 
 Not Collective
@@ -2592,7 +2622,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSHasJacobian()`, `PetscDSSetBdJacobian()`, `PetscDSGetBdJacobian()`
+See also: `PetscDS`, `PetscDSHasJacobian()`, `PetscDSSetBdJacobian()`, `PetscDSGetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSHasBdJacobianPreconditioner"))
@@ -2617,7 +2647,7 @@ end
 end 
 
 """
-	hasDynJac::PetscBool = PetscDSHasDynamicJacobian(petsclib::PetscLibType,ds::PetscDS) 
+	hasDynJac::PetscBool = PetscDSHasDynamicJacobian(petsclib::PetscLibType, ds::PetscDS) 
 Signals that a dynamic Jacobian, dF/du_t, has been set
 
 Not Collective
@@ -2630,7 +2660,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetDynamicJacobian()`, `PetscDSSetDynamicJacobian()`, `PetscDSGetJacobian()`
+See also: `PetscDS`, `PetscDSGetDynamicJacobian()`, `PetscDSSetDynamicJacobian()`, `PetscDSGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSHasDynamicJacobian"))
@@ -2655,7 +2685,7 @@ end
 end 
 
 """
-	hasJac::PetscBool = PetscDSHasJacobian(petsclib::PetscLibType,ds::PetscDS) 
+	hasJac::PetscBool = PetscDSHasJacobian(petsclib::PetscLibType, ds::PetscDS) 
 Checks that the Jacobian functions have been set
 
 Not Collective
@@ -2668,7 +2698,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`
+See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSHasJacobian"))
@@ -2693,7 +2723,7 @@ end
 end 
 
 """
-	hasJacPre::PetscBool = PetscDSHasJacobianPreconditioner(petsclib::PetscLibType,ds::PetscDS) 
+	hasJacPre::PetscBool = PetscDSHasJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS) 
 Checks if a Jacobian matrix for constructing a preconditioner has been set
 
 Not Collective
@@ -2706,7 +2736,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`
+See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSHasJacobianPreconditioner"))
@@ -2738,7 +2768,7 @@ when using static libraries.
 
 Level: developer
 
--seealso: `PetscInitialize()`
+See also: `PetscInitialize()`
 
 # External Links
 $(_doc_external("DM/PetscDSInitializePackage"))
@@ -2760,7 +2790,7 @@ end
 end 
 
 """
-	isCohesive::PetscBool = PetscDSIsCohesive(petsclib::PetscLibType,ds::PetscDS) 
+	isCohesive::PetscBool = PetscDSIsCohesive(petsclib::PetscLibType, ds::PetscDS) 
 Returns the flag indicating that this `PetscDS` is for a cohesive cell
 
 Not Collective
@@ -2773,7 +2803,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSGetNumCohesive()`, `PetscDSGetCohesive()`, `PetscDSSetCohesive()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetNumCohesive()`, `PetscDSGetCohesive()`, `PetscDSSetCohesive()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSIsCohesive"))
@@ -2798,7 +2828,7 @@ end
 end 
 
 """
-	qperm::PetscInt = PetscDSPermuteQuadPoint(petsclib::PetscLibType,ds::PetscDS, ornt::PetscInt, field::PetscInt, q::PetscInt) 
+	qperm::PetscInt = PetscDSPermuteQuadPoint(petsclib::PetscLibType, ds::PetscDS, ornt::PetscInt, field::PetscInt, q::PetscInt) 
 Permute a quadrature point index according to a cell orientation.
 
 Not Collective
@@ -2814,7 +2844,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscQuadrature`, `PetscQuadratureComputePermutations()`, `DMPolytopeTypeGetNumArrangements()`
+See also: `PetscDS`, `PetscQuadrature`, `PetscQuadratureComputePermutations()`, `DMPolytopeTypeGetNumArrangements()`
 
 # External Links
 $(_doc_external("DT/PetscDSPermuteQuadPoint"))
@@ -2839,7 +2869,7 @@ end
 end 
 
 """
-	PetscDSRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	PetscDSRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds a new `PetscDS` implementation
 
 Not Collective; No Fortran Support
@@ -2848,7 +2878,7 @@ Input Parameters:
 - `sname`    - The name of a new user-defined creation routine
 - `function` - The creation routine itself
 
--seealso: `PetscDSType`, `PetscDS`, `PetscDSRegisterAll()`, `PetscDSRegisterDestroy()`
+See also: `PetscDSType`, `PetscDS`, `PetscDSRegisterAll()`, `PetscDSRegisterDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscDSRegister"))
@@ -2871,7 +2901,7 @@ end
 end 
 
 """
-	PetscDSSelectDiscretizations(petsclib::PetscLibType,prob::PetscDS, numFields::PetscInt, fields::Vector{PetscInt}, minDegree::PetscInt, maxDegree::PetscInt, newprob::PetscDS) 
+	PetscDSSelectDiscretizations(petsclib::PetscLibType, prob::PetscDS, numFields::PetscInt, fields::Vector{PetscInt}, minDegree::PetscInt, maxDegree::PetscInt, newprob::PetscDS) 
 Copy discretizations to the new `PetscDS` with different field layout
 
 Not Collective
@@ -2888,7 +2918,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSelectEquations()`, `PetscDSCopyBoundary()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSelectEquations()`, `PetscDSCopyBoundary()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSelectDiscretizations"))
@@ -2911,7 +2941,7 @@ end
 end 
 
 """
-	PetscDSSelectEquations(petsclib::PetscLibType,prob::PetscDS, numFields::PetscInt, fields::Vector{PetscInt}, newprob::PetscDS) 
+	PetscDSSelectEquations(petsclib::PetscLibType, prob::PetscDS, numFields::PetscInt, fields::Vector{PetscInt}, newprob::PetscDS) 
 Copy pointwise function pointers to the new `PetscDS` with different field layout
 
 Not Collective
@@ -2926,7 +2956,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSelectDiscretizations()`, `PetscDSCopyBoundary()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSelectDiscretizations()`, `PetscDSCopyBoundary()`, `PetscDSSetResidual()`, `PetscDSSetJacobian()`, `PetscDSSetRiemannSolver()`, `PetscDSSetBdResidual()`, `PetscDSSetBdJacobian()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSelectEquations"))
@@ -2949,7 +2979,7 @@ end
 end 
 
 """
-	PetscDSSetBdJacobian(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
+	PetscDSSetBdJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
 Set the pointwise boundary Jacobian function for given test and basis field
 
 Not Collective
@@ -2965,7 +2995,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscBdPointJacFn`, `PetscDSGetBdJacobian()`
+See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSGetBdJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetBdJacobian"))
@@ -2988,7 +3018,7 @@ end
 end 
 
 """
-	PetscDSSetBdJacobianPreconditioner(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
+	PetscDSSetBdJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
 Set the pointwise boundary Jacobian preconditioner function for given test and basis field that constructs the
 matrix used to construct the preconditioner
 
@@ -3005,7 +3035,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscBdPointJacFn`, `PetscDSGetBdJacobianPreconditioner()`
+See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSGetBdJacobianPreconditioner()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetBdJacobianPreconditioner"))
@@ -3028,7 +3058,7 @@ end
 end 
 
 """
-	PetscDSSetBdResidual(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) 
+	PetscDSSetBdResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) 
 Get the pointwise boundary residual function for a given test field
 
 Not Collective
@@ -3041,7 +3071,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscBdPointFn`, `PetscDSGetBdResidual()`
+See also: `PetscDS`, `PetscBdPointFn`, `PetscDSGetBdResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetBdResidual"))
@@ -3064,7 +3094,7 @@ end
 end 
 
 """
-	PetscDSSetCellParameters(petsclib::PetscLibType,ds::PetscDS, volume::PetscReal) 
+	PetscDSSetCellParameters(petsclib::PetscLibType, ds::PetscDS, volume::PetscReal) 
 Set the parameters for a particular cell
 
 Not Collective
@@ -3075,7 +3105,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSetConstants()`, `PetscDSGetConstants()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetConstants()`, `PetscDSGetConstants()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetCellParameters"))
@@ -3098,7 +3128,7 @@ end
 end 
 
 """
-	PetscDSSetCohesive(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, isCohesive::PetscBool) 
+	PetscDSSetCohesive(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, isCohesive::PetscBool) 
 Set the flag indicating that a field is cohesive, meaning it is defined on the interior of a cohesive cell
 
 Not Collective
@@ -3110,7 +3140,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSGetCohesive()`, `PetscDSIsCohesive()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetCohesive()`, `PetscDSIsCohesive()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetCohesive"))
@@ -3133,7 +3163,7 @@ end
 end 
 
 """
-	PetscDSSetConstants(petsclib::PetscLibType,ds::PetscDS, numConstants::PetscInt, constants::Vector{PetscScalar}) 
+	PetscDSSetConstants(petsclib::PetscLibType, ds::PetscDS, numConstants::PetscInt, constants::Vector{PetscScalar}) 
 Set the array of constants passed to point functions from a `PetscDS`
 
 Not Collective
@@ -3145,7 +3175,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetConstants()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetConstants()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetConstants"))
@@ -3168,7 +3198,7 @@ end
 end 
 
 """
-	PetscDSSetContext(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, ctx::Ptr{Cvoid}) 
+	PetscDSSetContext(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, ctx::Ptr{Cvoid}) 
 Sets the context that is passed back to some of the pointwise function callbacks used by this `PetscDS`
 
 Not Collective
@@ -3180,7 +3210,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointFn`, `PetscDSGetContext()`
+See also: `PetscDS`, `PetscPointFn`, `PetscDSGetContext()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetContext"))
@@ -3203,7 +3233,7 @@ end
 end 
 
 """
-	PetscDSSetCoordinateDimension(petsclib::PetscLibType,prob::PetscDS, dimEmbed::PetscInt) 
+	PetscDSSetCoordinateDimension(petsclib::PetscLibType, prob::PetscDS, dimEmbed::PetscInt) 
 Set the coordinate dimension of the `PetscDS`, meaning the dimension of the space into which the discretiaztions are embedded
 
 Logically Collective
@@ -3214,7 +3244,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscDSGetCoordinateDimension()`, `PetscDSGetSpatialDimension()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetCoordinateDimension()`, `PetscDSGetSpatialDimension()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetCoordinateDimension"))
@@ -3237,7 +3267,7 @@ end
 end 
 
 """
-	PetscDSSetDiscretization(petsclib::PetscLibType,prob::PetscDS, f::PetscInt, disc) 
+	PetscDSSetDiscretization(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, disc) 
 Sets the discretization object for the given field
 
 Not Collective
@@ -3249,7 +3279,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscDS`, `PetscFE`, `PetscFV`, `PetscDSGetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscFE`, `PetscFV`, `PetscDSGetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetDiscretization"))
@@ -3272,7 +3302,7 @@ end
 end 
 
 """
-	PetscDSSetDynamicJacobian(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
+	PetscDSSetDynamicJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
 Set the pointwise dynamic Jacobian, dF/du_t, function for given test and basis fields
 
 Not Collective
@@ -3288,7 +3318,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetDynamicJacobian()`, `PetscDSGetJacobian()`, `PetscPointJacFn`
+See also: `PetscDS`, `PetscDSGetDynamicJacobian()`, `PetscDSGetJacobian()`, `PetscPointJacFn`
 
 # External Links
 $(_doc_external("DT/PetscDSSetDynamicJacobian"))
@@ -3311,7 +3341,7 @@ end
 end 
 
 """
-	PetscDSSetExactSolution(petsclib::PetscLibType,prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	PetscDSSetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the pointwise exact solution function for a given test field
 
 Not Collective
@@ -3324,7 +3354,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSGetExactSolution()`
+See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSGetExactSolution()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetExactSolution"))
@@ -3347,7 +3377,7 @@ end
 end 
 
 """
-	PetscDSSetExactSolutionTimeDerivative(petsclib::PetscLibType,prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	PetscDSSetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the pointwise time derivative of the exact solution function for a given test field
 
 Not Collective
@@ -3360,7 +3390,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSGetExactSolutionTimeDerivative()`, `PetscDSSetExactSolution()`
+See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSGetExactSolutionTimeDerivative()`, `PetscDSSetExactSolution()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetExactSolutionTimeDerivative"))
@@ -3383,7 +3413,7 @@ end
 end 
 
 """
-	PetscDSSetForceQuad(petsclib::PetscLibType,ds::PetscDS, forceQuad::PetscBool) 
+	PetscDSSetForceQuad(petsclib::PetscLibType, ds::PetscDS, forceQuad::PetscBool) 
 Set the flag to force matching quadratures among the field discretizations
 
 Logically collective on ds
@@ -3394,7 +3424,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetForceQuad()`, `PetscDSGetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetForceQuad()`, `PetscDSGetDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetForceQuad"))
@@ -3417,7 +3447,7 @@ end
 end 
 
 """
-	PetscDSSetFromOptions(petsclib::PetscLibType,prob::PetscDS) 
+	PetscDSSetFromOptions(petsclib::PetscLibType, prob::PetscDS) 
 sets parameters in a `PetscDS` from the options database
 
 Collective
@@ -3434,7 +3464,7 @@ Options Database Keys:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSView()`
+See also: `PetscDS`, `PetscDSView()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetFromOptions"))
@@ -3457,7 +3487,7 @@ end
 end 
 
 """
-	PetscDSSetImplicit(petsclib::PetscLibType,prob::PetscDS, f::PetscInt, implicit::PetscBool) 
+	PetscDSSetImplicit(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, implicit::PetscBool) 
 Set the flag for implicit solve for this field. This is just a guide for `TSARKIMEX`
 
 Not Collective
@@ -3469,7 +3499,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `TSARKIMEX`, `PetscDSGetImplicit()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `TSARKIMEX`, `PetscDSGetImplicit()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetImplicit"))
@@ -3492,7 +3522,7 @@ end
 end 
 
 """
-	PetscDSSetIntegrationParameters(petsclib::PetscLibType,ds::PetscDS, fieldI::PetscInt, fieldJ::PetscInt) 
+	PetscDSSetIntegrationParameters(petsclib::PetscLibType, ds::PetscDS, fieldI::PetscInt, fieldJ::PetscInt) 
 Set the parameters for a particular integration
 
 Not Collective
@@ -3504,7 +3534,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSSetConstants()`, `PetscDSGetConstants()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSSetConstants()`, `PetscDSGetConstants()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetIntegrationParameters"))
@@ -3527,7 +3557,7 @@ end
 end 
 
 """
-	PetscDSSetJacobian(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
+	PetscDSSetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
 Set the pointwise Jacobian function for given test and basis fields
 
 Not Collective
@@ -3543,7 +3573,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetJacobian()`, `PetscPointJacFn`
+See also: `PetscDS`, `PetscDSGetJacobian()`, `PetscPointJacFn`
 
 # External Links
 $(_doc_external("DT/PetscDSSetJacobian"))
@@ -3566,7 +3596,7 @@ end
 end 
 
 """
-	PetscDSSetJacobianPreconditioner(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
+	PetscDSSetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) 
 Set the pointwise Jacobian function for given test and basis fields that constructs the matrix used
 to compute the preconditioner. If this is missing, the system matrix is used to build the preconditioner.
 
@@ -3583,7 +3613,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobian()`, `PetscPointJacFn`
+See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobian()`, `PetscPointJacFn`
 
 # External Links
 $(_doc_external("DT/PetscDSSetJacobianPreconditioner"))
@@ -3606,8 +3636,8 @@ end
 end 
 
 """
-	PetscDSSetJetDegree(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, k::PetscInt) 
-Set the highest derivative for this field equation, or the k
+	PetscDSSetJetDegree(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, k::PetscInt) 
+Set the highest derivative for this field equation, or the k-jet that the discretization needs to tabulate.
 
 Not Collective
 
@@ -3618,7 +3648,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSGetJetDegree()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscDS`, `PetscDSGetJetDegree()`, `PetscDSSetDiscretization()`, `PetscDSAddDiscretization()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetJetDegree"))
@@ -3641,7 +3671,7 @@ end
 end 
 
 """
-	PetscDSSetLowerBound(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, lb::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	PetscDSSetLowerBound(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, lb::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the pointwise lower bound function for a given field
 
 Not Collective
@@ -3654,7 +3684,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointBoundFn`, `PetscDSGetLowerBound()`, `PetscDSGetUpperBound()`, `PetscDSGetExactSolution()`
+See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSGetLowerBound()`, `PetscDSGetUpperBound()`, `PetscDSGetExactSolution()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetLowerBound"))
@@ -3677,7 +3707,7 @@ end
 end 
 
 """
-	PetscDSSetObjective(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, obj::Ptr{Cvoid}) 
+	PetscDSSetObjective(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, obj::Ptr{Cvoid}) 
 Set the pointwise objective function for a given test field
 
 Not Collective
@@ -3689,7 +3719,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscPointFn`, `PetscDS`, `PetscDSGetObjective()`, `PetscDSSetResidual()`
+See also: `PetscPointFn`, `PetscDS`, `PetscDSGetObjective()`, `PetscDSSetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetObjective"))
@@ -3712,7 +3742,7 @@ end
 end 
 
 """
-	PetscDSSetRHSResidual(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) 
+	PetscDSSetRHSResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) 
 Set the pointwise residual function for explicit timestepping for a given test field
 
 Not Collective
@@ -3725,7 +3755,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetResidual()`
+See also: `PetscDS`, `PetscDSGetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetRHSResidual"))
@@ -3748,7 +3778,7 @@ end
 end 
 
 """
-	PetscDSSetResidual(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) 
+	PetscDSSetResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) 
 Set the pointwise residual function for a given test field
 
 Not Collective
@@ -3761,7 +3791,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscPointFn`, `PetscDS`, `PetscDSGetResidual()`
+See also: `PetscPointFn`, `PetscDS`, `PetscDSGetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetResidual"))
@@ -3784,7 +3814,7 @@ end
 end 
 
 """
-	PetscDSSetRiemannSolver(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, r::Ptr{Cvoid}) 
+	PetscDSSetRiemannSolver(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, r::Ptr{Cvoid}) 
 Sets the Riemann solver for the given field
 
 Not Collective
@@ -3796,7 +3826,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscRiemannFn`, `PetscDSGetRiemannSolver()`
+See also: `PetscDS`, `PetscRiemannFn`, `PetscDSGetRiemannSolver()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetRiemannSolver"))
@@ -3819,7 +3849,7 @@ end
 end 
 
 """
-	PetscDSSetType(petsclib::PetscLibType,prob::PetscDS, name::PetscDSType) 
+	PetscDSSetType(petsclib::PetscLibType, prob::PetscDS, name::PetscDSType) 
 Builds a particular `PetscDS`
 
 Collective; No Fortran Support
@@ -3833,7 +3863,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDSType`, `PetscDS`, `PetscDSGetType()`, `PetscDSCreate()`
+See also: `PetscDSType`, `PetscDS`, `PetscDSGetType()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetType"))
@@ -3856,7 +3886,7 @@ end
 end 
 
 """
-	PetscDSSetUp(petsclib::PetscLibType,prob::PetscDS) 
+	PetscDSSetUp(petsclib::PetscLibType, prob::PetscDS) 
 Construct data structures for the `PetscDS`
 
 Collective
@@ -3866,7 +3896,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscDSView()`, `PetscDSDestroy()`
+See also: `PetscDS`, `PetscDSView()`, `PetscDSDestroy()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetUp"))
@@ -3889,7 +3919,7 @@ end
 end 
 
 """
-	PetscDSSetUpdate(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, update::Ptr{Cvoid}) 
+	PetscDSSetUpdate(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, update::Ptr{Cvoid}) 
 Set the pointwise update function for a given field
 
 Not Collective
@@ -3901,7 +3931,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointFn`, `PetscDSGetResidual()`
+See also: `PetscDS`, `PetscPointFn`, `PetscDSGetResidual()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetUpdate"))
@@ -3924,7 +3954,7 @@ end
 end 
 
 """
-	PetscDSSetUpperBound(petsclib::PetscLibType,ds::PetscDS, f::PetscInt, ub::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	PetscDSSetUpperBound(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, ub::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Set the pointwise upper bound function for a given field
 
 Not Collective
@@ -3937,7 +3967,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscPointBoundFn`, `PetscDSGetUpperBound()`, `PetscDSGetLowerBound()`, `PetscDSGetExactSolution()`
+See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSGetUpperBound()`, `PetscDSGetLowerBound()`, `PetscDSGetExactSolution()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetUpperBound"))
@@ -3960,7 +3990,7 @@ end
 end 
 
 """
-	PetscDSSetWeakForm(petsclib::PetscLibType,ds::PetscDS, wf::PetscWeakForm) 
+	PetscDSSetWeakForm(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm) 
 Sets the weak form object to be used by the `PetscDS`
 
 Not Collective
@@ -3971,7 +4001,7 @@ Input Parameters:
 
 Level: beginner
 
--seealso: `PetscWeakForm`, `PetscDSGetWeakForm()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
+See also: `PetscWeakForm`, `PetscDSGetWeakForm()`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSSetWeakForm"))
@@ -3994,7 +4024,7 @@ end
 end 
 
 """
-	PetscDSUpdateBoundary(petsclib::PetscLibType,ds::PetscDS, bd::PetscInt, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	PetscDSUpdateBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Change a boundary condition for the model.
 
 Input Parameters:
@@ -4014,7 +4044,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscDS`, `PetscWeakForm`, `DMBoundaryConditionType`, `PetscDSAddBoundary()`, `PetscDSGetBoundary()`, `PetscDSGetNumBoundary()`, `DMLabel`
+See also: `PetscDS`, `PetscWeakForm`, `DMBoundaryConditionType`, `PetscDSAddBoundary()`, `PetscDSGetBoundary()`, `PetscDSGetNumBoundary()`, `DMLabel`
 
 # External Links
 $(_doc_external("DT/PetscDSUpdateBoundary"))
@@ -4037,7 +4067,7 @@ end
 end 
 
 """
-	PetscDSUpdateBoundaryLabels(petsclib::PetscLibType,ds::PetscDS, dm::AbstractPetscDM) 
+	PetscDSUpdateBoundaryLabels(petsclib::PetscLibType, ds::PetscDS, dm::AbstractPetscDM) 
 Update `DMLabel` in each boundary condition using the label name and the input `DM`
 
 Not Collective
@@ -4048,7 +4078,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `DMBoundary`, `DM`, `PetscDSCopyBoundary()`, `PetscDSCreate()`, `DMGetLabel()`
+See also: `PetscDS`, `DMBoundary`, `DM`, `PetscDSCopyBoundary()`, `PetscDSCreate()`, `DMGetLabel()`
 
 # External Links
 $(_doc_external("DT/PetscDSUpdateBoundaryLabels"))
@@ -4071,7 +4101,7 @@ end
 end 
 
 """
-	PetscDSUseJacobianPreconditioner(petsclib::PetscLibType,prob::PetscDS, useJacPre::PetscBool) 
+	PetscDSUseJacobianPreconditioner(petsclib::PetscLibType, prob::PetscDS, useJacPre::PetscBool) 
 Set whether to construct a Jacobian preconditioner
 
 Not Collective
@@ -4082,7 +4112,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`
+See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()`
 
 # External Links
 $(_doc_external("DT/PetscDSUseJacobianPreconditioner"))
@@ -4105,7 +4135,7 @@ end
 end 
 
 """
-	PetscDSView(petsclib::PetscLibType,prob::PetscDS, v::PetscViewer) 
+	PetscDSView(petsclib::PetscLibType, prob::PetscDS, v::PetscViewer) 
 Views a `PetscDS`
 
 Collective
@@ -4116,7 +4146,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: `PetscDSType`, `PetscDS`, `PetscViewer`, `PetscDSDestroy()`, `PetscDSViewFromOptions()`
+See also: `PetscDSType`, `PetscDS`, `PetscViewer`, `PetscDSDestroy()`, `PetscDSViewFromOptions()`
 
 # External Links
 $(_doc_external("DT/PetscDSView"))
@@ -4139,7 +4169,7 @@ end
 end 
 
 """
-	PetscDSViewFromOptions(petsclib::PetscLibType,A::PetscDS, obj, name::String) 
+	PetscDSViewFromOptions(petsclib::PetscLibType, A::PetscDS, obj, name::String) 
 View a `PetscDS` based on values in the options database
 
 Collective
@@ -4154,7 +4184,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `PetscDSType`, `PetscDS`, `PetscDSView()`, `PetscObjectViewFromOptions()`, `PetscDSCreate()`
+See also: `PetscDSType`, `PetscDS`, `PetscDSView()`, `PetscObjectViewFromOptions()`, `PetscDSCreate()`
 
 # External Links
 $(_doc_external("DT/PetscDSViewFromOptions"))

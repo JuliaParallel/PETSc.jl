@@ -1,11 +1,11 @@
 """
-	PetscOmpCtrlBarrier(petsclib::PetscLibType,ctrl::PetscOmpCtrl) 
+	PetscOmpCtrlBarrier(petsclib::PetscLibType, ctrl::PetscOmpCtrl) 
 Do barrier on MPI ranks in omp_comm contained by the PETSc OMP controller (to let slave ranks free their CPU)
 
 Input Parameter:
 - `ctrl` - a PETSc OMP controller
 
--seealso: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`
+See also: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlBarrier"))
@@ -28,7 +28,7 @@ end
 end 
 
 """
-	pctrl::PetscOmpCtrl = PetscOmpCtrlCreate(petsclib::PetscLibType,petsc_comm::MPI_Comm, nthreads::PetscInt) 
+	pctrl::PetscOmpCtrl = PetscOmpCtrlCreate(petsclib::PetscLibType, petsc_comm::MPI_Comm, nthreads::PetscInt) 
 create a PETSc OpenMP controller, which manages PETSc's interaction with third party libraries that use OpenMP
 
 Input Parameters:
@@ -40,7 +40,7 @@ Output Parameter:
 
 Level: developer
 
--seealso: `PetscOmpCtrlDestroy()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
+See also: `PetscOmpCtrlDestroy()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlCreate"))
@@ -65,7 +65,7 @@ end
 end 
 
 """
-	PetscOmpCtrlDestroy(petsclib::PetscLibType,pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}}) 
+	PetscOmpCtrlDestroy(petsclib::PetscLibType, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}}) 
 destroy the PETSc OpenMP controller
 
 Input Parameter:
@@ -73,7 +73,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `PetscOmpCtrlCreate()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
+See also: `PetscOmpCtrlCreate()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlDestroy"))
@@ -97,7 +97,7 @@ end
 end 
 
 """
-	omp_comm::MPI_Comm,omp_master_comm::MPI_Comm,is_omp_master::PetscBool = PetscOmpCtrlGetOmpComms(petsclib::PetscLibType,ctrl::PetscOmpCtrl) 
+	omp_comm::MPI_Comm,omp_master_comm::MPI_Comm,is_omp_master::PetscBool = PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl) 
 Get MPI communicators from a PETSc OMP controller
 
 Input Parameter:
@@ -109,7 +109,7 @@ Output Parameters:
 on slave ranks, `MPI_COMM_NULL` will be return in reality.
 - `is_omp_master`   - true if the calling process is an OMP master rank.
 
--seealso: `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
+See also: `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`, `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMasterEnd()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlGetOmpComms"))
@@ -138,13 +138,13 @@ end
 end 
 
 """
-	PetscOmpCtrlOmpRegionOnMasterBegin(petsclib::PetscLibType,ctrl::PetscOmpCtrl) 
+	PetscOmpCtrlOmpRegionOnMasterBegin(petsclib::PetscLibType, ctrl::PetscOmpCtrl) 
 Mark the beginning of an OpenMP library call on master ranks
 
 Input Parameter:
 - `ctrl` - a PETSc OMP controller
 
--seealso: `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`
+See also: `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlOmpRegionOnMasterBegin"))
@@ -167,13 +167,13 @@ end
 end 
 
 """
-	PetscOmpCtrlOmpRegionOnMasterEnd(petsclib::PetscLibType,ctrl::PetscOmpCtrl) 
+	PetscOmpCtrlOmpRegionOnMasterEnd(petsclib::PetscLibType, ctrl::PetscOmpCtrl) 
 Mark the end of an OpenMP library call on master ranks
 
 Input Parameter:
 - `ctrl` - a PETSc OMP controller
 
--seealso: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`
+See also: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier()`
 
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlOmpRegionOnMasterEnd"))

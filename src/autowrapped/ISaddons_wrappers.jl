@@ -1,5 +1,5 @@
 """
-	iscoloring::ISColoring = ISColoringCreate(petsclib::PetscLibType,comm::MPI_Comm, ncolors::PetscInt, n::PetscInt, colors::Vector{ISColoringValue}, mode::PetscCopyMode) 
+	iscoloring::ISColoring = ISColoringCreate(petsclib::PetscLibType, comm::MPI_Comm, ncolors::PetscInt, n::PetscInt, colors::Vector{ISColoringValue}, mode::PetscCopyMode) 
 Generates an `ISColoring` context from lists (provided by each MPI process) of colors for each node.
 
 Collective
@@ -19,7 +19,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: `ISColoring`, `ISColoringValue`, `MatColoringCreate()`, `ISColoringView()`, `ISColoringDestroy()`, `ISColoringSetType()`
+See also: `ISColoring`, `ISColoringValue`, `MatColoringCreate()`, `ISColoringView()`, `ISColoringDestroy()`, `ISColoringSetType()`
 
 # External Links
 $(_doc_external("IS/ISColoringCreate"))
@@ -44,7 +44,7 @@ end
 end 
 
 """
-	ISColoringDestroy(petsclib::PetscLibType,iscoloring::Union{ISColoring, Ref{ISColoring}}) 
+	ISColoringDestroy(petsclib::PetscLibType, iscoloring::Union{ISColoring, Ref{ISColoring}}) 
 Destroys an `ISColoring` coloring context.
 
 Collective
@@ -54,7 +54,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: `ISColoring`, `ISColoringView()`, `MatColoring`
+See also: `ISColoring`, `ISColoringView()`, `MatColoring`
 
 # External Links
 $(_doc_external("IS/ISColoringDestroy"))
@@ -94,7 +94,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `ISColoring`, `ISColoringValue`, `ISColoringRestoreIS()`, `ISColoringView()`, `ISColoringGetIS()`
+See also: `ISColoring`, `ISColoringValue`, `ISColoringRestoreIS()`, `ISColoringView()`, `ISColoringGetIS()`
 
 # External Links
 $(_doc_external("Vec/ISColoringGetColors"))
@@ -126,7 +126,7 @@ function ISColoringGetColors(petsclib::PetscLibType, iscoloring::ISColoring) end
 end
 
 """
-	nn::PetscInt,isis::Ptr{IS} = ISColoringGetIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode) 
+	nn::PetscInt,isis::Ptr{IS} = ISColoringGetIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode) 
 Extracts index sets from the coloring context. Each is contains the nodes of one color
 
 Collective
@@ -141,7 +141,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `ISColoring`, `IS`, `ISColoringRestoreIS()`, `ISColoringView()`, `ISColoringGetColoring()`, `ISColoringGetColors()`
+See also: `ISColoring`, `IS`, `ISColoringRestoreIS()`, `ISColoringView()`, `ISColoringGetColoring()`, `ISColoringGetColors()`
 
 # External Links
 $(_doc_external("IS/ISColoringGetIS"))
@@ -168,7 +168,7 @@ end
 end 
 
 """
-	type::ISColoringType = ISColoringGetType(petsclib::PetscLibType,coloring::ISColoring) 
+	type::ISColoringType = ISColoringGetType(petsclib::PetscLibType, coloring::ISColoring) 
 gets if the coloring is for the local representation (including ghost points) or the global representation
 
 Collective
@@ -181,7 +181,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: `MatFDColoringCreate()`, `ISColoring`, `ISColoringType`, `ISColoringCreate()`, `IS_COLORING_LOCAL`, `IS_COLORING_GLOBAL`, `ISColoringSetType()`
+See also: `MatFDColoringCreate()`, `ISColoring`, `ISColoringType`, `ISColoringCreate()`, `IS_COLORING_LOCAL`, `IS_COLORING_GLOBAL`, `ISColoringSetType()`
 
 # External Links
 $(_doc_external("IS/ISColoringGetType"))
@@ -206,7 +206,7 @@ end
 end 
 
 """
-	ISColoringReference(petsclib::PetscLibType,coloring::ISColoring) 
+	ISColoringReference(petsclib::PetscLibType, coloring::ISColoring) 
 Increases the reference count of an `ISColoring` object by one
 
 Logically collective
@@ -216,7 +216,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: `ISColoring`, `ISColoringCreate()`, `ISColoringDestroy()`
+See also: `ISColoring`, `ISColoringCreate()`, `ISColoringDestroy()`
 
 # External Links
 $(_doc_external("IS/ISColoringReference"))
@@ -239,7 +239,7 @@ end
 end 
 
 """
-	ISColoringRestoreIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode, is::Union{Ptr, AbstractArray{IS}}) 
+	ISColoringRestoreIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode, is::Union{Ptr, AbstractArray{IS}}) 
 Restores the index sets extracted from the coloring context with `ISColoringGetIS()` using `PETSC_USE_POINTER`
 
 Collective
@@ -251,7 +251,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `ISColoring()`, `IS`, `ISColoringGetIS()`, `ISColoringView()`, `PetscCopyMode`
+See also: `ISColoring()`, `IS`, `ISColoringGetIS()`, `ISColoringView()`, `PetscCopyMode`
 
 # External Links
 $(_doc_external("IS/ISColoringRestoreIS"))
@@ -275,7 +275,7 @@ end
 end 
 
 """
-	ISColoringSetType(petsclib::PetscLibType,coloring::ISColoring, type::ISColoringType) 
+	ISColoringSetType(petsclib::PetscLibType, coloring::ISColoring, type::ISColoringType) 
 indicates if the coloring is for the local representation (including ghost points) or the global representation of a `Mat`
 
 Collective
@@ -286,7 +286,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: `MatFDColoringCreate()`, `ISColoring`, `ISColoringType`, `ISColoringCreate()`, `IS_COLORING_LOCAL`, `IS_COLORING_GLOBAL`, `ISColoringGetType()`
+See also: `MatFDColoringCreate()`, `ISColoring`, `ISColoringType`, `ISColoringCreate()`, `IS_COLORING_LOCAL`, `IS_COLORING_GLOBAL`, `ISColoringGetType()`
 
 # External Links
 $(_doc_external("IS/ISColoringSetType"))
@@ -309,7 +309,7 @@ end
 end 
 
 """
-	ISColoringValueCast(petsclib::PetscLibType,a::PetscCount, b::ISColoringValue) 
+	ISColoringValueCast(petsclib::PetscLibType, a::PetscCount, b::ISColoringValue) 
 
 # External Links
 $(_doc_external("Vec/ISColoringValueCast"))
@@ -332,7 +332,7 @@ end
 end 
 
 """
-	ISColoringView(petsclib::PetscLibType,iscoloring::ISColoring, viewer::PetscViewer) 
+	ISColoringView(petsclib::PetscLibType, iscoloring::ISColoring, viewer::PetscViewer) 
 Views an `ISColoring` coloring context.
 
 Collective
@@ -343,7 +343,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `ISColoring()`, `ISColoringViewFromOptions()`, `ISColoringDestroy()`, `ISColoringGetIS()`, `MatColoring`
+See also: `ISColoring()`, `ISColoringViewFromOptions()`, `ISColoringDestroy()`, `ISColoringGetIS()`, `MatColoring`
 
 # External Links
 $(_doc_external("IS/ISColoringView"))
@@ -366,7 +366,7 @@ end
 end 
 
 """
-	ISColoringViewFromOptions(petsclib::PetscLibType,obj::ISColoring, bobj, name::String) 
+	ISColoringViewFromOptions(petsclib::PetscLibType, obj::ISColoring, bobj, name::String) 
 Processes command line options to determine if/how an `ISColoring` object is to be viewed.
 
 Collective
@@ -381,7 +381,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: `ISColoring`, `ISColoringView()`, `PetscObjectViewFromOptions()`
+See also: `ISColoring`, `ISColoringView()`, `PetscObjectViewFromOptions()`
 
 # External Links
 $(_doc_external("IS/ISColoringViewFromOptions"))
@@ -404,7 +404,7 @@ end
 end 
 
 """
-	out::Vector{PetscInt} = ISLocalToGlobalMappingApply(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, N::PetscInt, in::Vector{PetscInt}) 
+	out::Vector{PetscInt} = ISLocalToGlobalMappingApply(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, N::PetscInt, in::Vector{PetscInt}) 
 Takes a list of integers in a local numbering
 and converts them to the global numbering.
 
@@ -420,7 +420,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApplyBlock()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
 `ISLocalToGlobalMappingApplyIS()`, `AOCreateBasic()`, `AOApplicationToPetsc()`,
 `AOPetscToApplication()`, `ISGlobalToLocalMappingApply()`
 
@@ -446,7 +446,7 @@ end
 end 
 
 """
-	out::Vector{PetscInt} = ISLocalToGlobalMappingApplyBlock(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, N::PetscInt, in::Vector{PetscInt}) 
+	out::Vector{PetscInt} = ISLocalToGlobalMappingApplyBlock(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, N::PetscInt, in::Vector{PetscInt}) 
 Takes a list of integers in a local block numbering and converts them to the global block numbering
 
 Not Collective
@@ -465,7 +465,7 @@ If the index values are {0,1,6,7} set with a call to `ISLocalToGlobalMappingCrea
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingDestroy()`,
 `ISLocalToGlobalMappingApplyIS()`, `AOCreateBasic()`, `AOApplicationToPetsc()`,
 `AOPetscToApplication()`, `ISGlobalToLocalMappingApply()`
 
@@ -491,7 +491,7 @@ end
 end 
 
 """
-	newis::IS = ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, is::AbstractIS) 
+	newis::IS = ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, is::AbstractIS) 
 Creates from an `IS` in the local numbering
 a new index set using the global numbering defined in an `ISLocalToGlobalMapping`
 context.
@@ -507,7 +507,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingDestroy()`, `ISGlobalToLocalMappingApply()`
 
 # External Links
@@ -533,7 +533,7 @@ end
 end 
 
 """
-	ltogcat::ISLocalToGlobalMapping = ISLocalToGlobalMappingConcatenate(petsclib::PetscLibType,comm::MPI_Comm, n::PetscInt, ltogs::Vector{ISLocalToGlobalMapping}) 
+	ltogcat::ISLocalToGlobalMapping = ISLocalToGlobalMappingConcatenate(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, ltogs::Vector{ISLocalToGlobalMapping}) 
 Create a new mapping that concatenates a list of mappings
 
 Not Collective
@@ -548,7 +548,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingConcatenate"))
@@ -573,7 +573,7 @@ end
 end 
 
 """
-	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreate(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, n::PetscInt, indices::Vector{PetscInt}, mode::PetscCopyMode) 
+	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreate(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, n::PetscInt, indices::Vector{PetscInt}, mode::PetscCopyMode) 
 Creates a mapping between a local (0 to n)
 ordering and a global parallel ordering.
 
@@ -591,7 +591,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`,
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`,
 `ISLOCALTOGLOBALMAPPINGBASIC`, `ISLOCALTOGLOBALMAPPINGHASH`,
 `ISLocalToGlobalMappingSetType()`, `ISLocalToGlobalMappingType`
 
@@ -618,7 +618,7 @@ end
 end 
 
 """
-	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType,is::AbstractIS) 
+	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType, is::AbstractIS) 
 Creates a mapping between a local (0 to n)
 ordering and a global parallel ordering.
 
@@ -632,7 +632,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetFromOptions()`
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetFromOptions()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingCreateIS"))
@@ -657,7 +657,7 @@ end
 end 
 
 """
-	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreateSF(petsclib::PetscLibType,sf::PetscSF, start::PetscInt) 
+	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreateSF(petsclib::PetscLibType, sf::PetscSF, start::PetscInt) 
 Creates a mapping between a local (0 to n) ordering and a global parallel ordering induced by a star forest.
 
 Collective
@@ -671,7 +671,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `PetscSF`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`
+See also: [](sec_scatter), `PetscSF`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingSetFromOptions()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingCreateSF"))
@@ -696,7 +696,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingDestroy(petsclib::PetscLibType,mapping::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}}) 
+	ISLocalToGlobalMappingDestroy(petsclib::PetscLibType, mapping::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}}) 
 Destroys a mapping between a local (0 to n)
 ordering and a global parallel ordering.
 
@@ -707,7 +707,7 @@ Input Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingDestroy"))
@@ -731,7 +731,7 @@ end
 end 
 
 """
-	nltog::ISLocalToGlobalMapping = ISLocalToGlobalMappingDuplicate(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping) 
+	nltog::ISLocalToGlobalMapping = ISLocalToGlobalMappingDuplicate(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) 
 Duplicates the local to global mapping object
 
 Not Collective
@@ -744,7 +744,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingDuplicate"))
@@ -769,7 +769,7 @@ end
 end 
 
 """
-	array::Vector{PetscInt} = ISLocalToGlobalMappingGetBlockIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping) 
+	array::Vector{PetscInt} = ISLocalToGlobalMappingGetBlockIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) 
 Get global indices for every local block in a `ISLocalToGlobalMapping`
 
 Not Collective
@@ -782,7 +782,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`,
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`,
 `ISLocalToGlobalMappingRestoreBlockIndices()`
 
 # External Links
@@ -809,7 +809,7 @@ end
 end 
 
 """
-	nproc::PetscInt,procs::Ptr{PetscInt},numprocs::Ptr{PetscInt},indices::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
+	nproc::PetscInt,procs::Ptr{PetscInt},numprocs::Ptr{PetscInt},indices::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information
 
 Collective the first time it is called
@@ -825,7 +825,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingRestoreBlockInfo()`, `ISLocalToGlobalMappingGetBlockMultiLeavesSF()`
 
 # External Links
@@ -857,8 +857,8 @@ end
 end 
 
 """
-	mlsf::PetscSF = ISLocalToGlobalMappingGetBlockMultiLeavesSF(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
-Get the star
+	mlsf::PetscSF = ISLocalToGlobalMappingGetBlockMultiLeavesSF(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
+Get the star-forest to communicate multi-leaf block data
 
 Collective the first time it is called
 
@@ -870,7 +870,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingGetBlockNodeInfo()`, `PetscSF`
+See also: [](sec_scatter), `ISLocalToGlobalMappingGetBlockNodeInfo()`, `PetscSF`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockMultiLeavesSF"))
@@ -895,7 +895,7 @@ end
 end 
 
 """
-	n::PetscInt,n_procs::Ptr{PetscInt},procs::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
+	n::PetscInt,n_procs::Ptr{PetscInt},procs::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information for each local block index
 
 Collective the first time it is called
@@ -910,7 +910,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetBlockInfo()`, `ISLocalToGlobalMappingRestoreBlockNodeInfo()`, `ISLocalToGlobalMappingGetNodeInfo()`
 
 # External Links
@@ -940,7 +940,7 @@ end
 end 
 
 """
-	bs::PetscInt = ISLocalToGlobalMappingGetBlockSize(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
+	bs::PetscInt = ISLocalToGlobalMappingGetBlockSize(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the blocksize of the mapping
 ordering and a global parallel ordering.
 
@@ -954,7 +954,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockSize"))
@@ -979,7 +979,7 @@ end
 end 
 
 """
-	array::Vector{PetscInt} = ISLocalToGlobalMappingGetIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping) 
+	array::Vector{PetscInt} = ISLocalToGlobalMappingGetIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) 
 Get global indices for every local point that is mapped
 
 Not Collective
@@ -992,7 +992,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingRestoreIndices()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingRestoreIndices()`,
 `ISLocalToGlobalMappingGetBlockIndices()`, `ISLocalToGlobalMappingRestoreBlockIndices()`
 
 # External Links
@@ -1019,7 +1019,7 @@ end
 end 
 
 """
-	nproc::PetscInt,procs::Ptr{PetscInt},numprocs::Ptr{PetscInt},indices::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
+	nproc::PetscInt,procs::Ptr{PetscInt},numprocs::Ptr{PetscInt},indices::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information for each process
 
 Collective the first time it is called
@@ -1035,7 +1035,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingRestoreInfo()`, `ISLocalToGlobalMappingGetNodeInfo()`
 
 # External Links
@@ -1067,7 +1067,7 @@ end
 end 
 
 """
-	n::PetscInt,n_procs::Ptr{PetscInt},procs::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
+	n::PetscInt,n_procs::Ptr{PetscInt},procs::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information of local nodes
 
 Collective the first time it is called
@@ -1082,7 +1082,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`, `ISLocalToGlobalMappingRestoreNodeInfo()`, `ISLocalToGlobalMappingGetBlockNodeInfo()`
 
 # External Links
@@ -1112,7 +1112,7 @@ end
 end 
 
 """
-	n::PetscInt = ISLocalToGlobalMappingGetSize(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
+	n::PetscInt = ISLocalToGlobalMappingGetSize(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the local size of a local to global mapping
 
 Not Collective
@@ -1125,7 +1125,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingGetSize"))
@@ -1150,7 +1150,7 @@ end
 end 
 
 """
-	type::ISLocalToGlobalMappingType = ISLocalToGlobalMappingGetType(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping) 
+	type::ISLocalToGlobalMappingType = ISLocalToGlobalMappingGetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) 
 Get the type of the `ISLocalToGlobalMapping`
 
 Not Collective
@@ -1163,7 +1163,7 @@ Output Parameter:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetType()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingSetType()`,
 `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny()`
 
 # External Links
@@ -1189,8 +1189,8 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingLoad(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, viewer::PetscViewer) 
-Loads a local
+	ISLocalToGlobalMappingLoad(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, viewer::PetscViewer) 
+Loads a local-to-global mapping that has been stored in binary format.
 
 Collective on viewer
 
@@ -1200,7 +1200,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView()`, `ISLocalToGlobalMappingCreate()`
+See also: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingLoad"))
@@ -1223,7 +1223,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	ISLocalToGlobalMappingRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Registers a method for applying a global to local mapping with an `ISLocalToGlobalMapping`
 
 Not Collective, No Fortran Support
@@ -1232,7 +1232,7 @@ Input Parameters:
 - `sname`    - name of a new method
 - `function` - routine to create method context
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingRegisterAll()`, `ISLocalToGlobalMappingRegisterDestroy()`, `ISLOCALTOGLOBALMAPPINGBASIC`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingRegisterAll()`, `ISLocalToGlobalMappingRegisterDestroy()`, `ISLOCALTOGLOBALMAPPINGBASIC`,
 `ISLOCALTOGLOBALMAPPINGHASH`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`
 
 # External Links
@@ -1263,7 +1263,7 @@ Not Collective
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISRegister()`, `ISLocalToGlobalRegister()`
+See also: [](sec_scatter), `ISRegister()`, `ISLocalToGlobalRegister()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRegisterAll"))
@@ -1285,7 +1285,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) 
+	ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore indices obtained with `ISLocalToGlobalMappingGetBlockIndices()`
 
 Not Collective
@@ -1296,7 +1296,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
+See also: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockIndices"))
@@ -1320,7 +1320,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetBlockInfo()`
 
 Not Collective
@@ -1334,7 +1334,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`
 
 # External Links
@@ -1361,7 +1361,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetBlockNodeInfo()`
 
 Not Collective
@@ -1374,7 +1374,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetBlockNodeInfo()`
 
 # External Links
@@ -1400,7 +1400,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) 
+	ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore indices obtained with `ISLocalToGlobalMappingGetIndices()`
 
 Not Collective
@@ -1411,7 +1411,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
+See also: [](sec_scatter), `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingGetIndices()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreIndices"))
@@ -1435,7 +1435,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetInfo()`
 
 Not Collective
@@ -1449,7 +1449,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`
 
 # External Links
@@ -1476,7 +1476,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingRestoreNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetNodeInfo()`
 
 Not Collective
@@ -1489,7 +1489,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
+See also: [](sec_scatter), `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`, `ISLocalToGlobalMappingCreate()`,
 `ISLocalToGlobalMappingGetInfo()`
 
 # External Links
@@ -1515,7 +1515,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingSetBlockSize(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, bs::PetscInt) 
+	ISLocalToGlobalMappingSetBlockSize(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, bs::PetscInt) 
 Sets the blocksize of the mapping
 
 Not Collective
@@ -1526,7 +1526,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingSetBlockSize"))
@@ -1549,7 +1549,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingSetFromOptions(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping) 
+	ISLocalToGlobalMappingSetFromOptions(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Set mapping options from the options database.
 
 Not Collective
@@ -1562,7 +1562,7 @@ Options Database Key:
 
 Level: advanced
 
--seealso: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`,
+See also: [](sec_scatter), `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`,
 `ISLocalToGlobalMappingCreateIS()`, `ISLOCALTOGLOBALMAPPINGBASIC`,
 `ISLOCALTOGLOBALMAPPINGHASH`, `ISLocalToGlobalMappingSetType()`, `ISLocalToGlobalMappingType`
 
@@ -1587,7 +1587,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingSetType(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping, type::ISLocalToGlobalMappingType) 
+	ISLocalToGlobalMappingSetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, type::ISLocalToGlobalMappingType) 
 Sets the implementation type `ISLocalToGlobalMapping` will use
 
 Logically Collective
@@ -1601,7 +1601,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingGetType()`
+See also: [](sec_scatter), `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingGetType()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingSetType"))
@@ -1624,7 +1624,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingView(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, viewer::PetscViewer) 
+	ISLocalToGlobalMappingView(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, viewer::PetscViewer) 
 View a local to global mapping
 
 Collective on viewer
@@ -1635,7 +1635,7 @@ Input Parameters:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
+See also: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingView"))
@@ -1658,7 +1658,7 @@ end
 end 
 
 """
-	ISLocalToGlobalMappingViewFromOptions(petsclib::PetscLibType,A::ISLocalToGlobalMapping, obj, name::String) 
+	ISLocalToGlobalMappingViewFromOptions(petsclib::PetscLibType, A::ISLocalToGlobalMapping, obj, name::String) 
 View an `ISLocalToGlobalMapping` based on values in the options database
 
 Collective
@@ -1673,7 +1673,7 @@ Options Database Key:
 
 Level: intermediate
 
--seealso: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView`, `PetscObjectViewFromOptions()`, `ISLocalToGlobalMappingCreate()`
+See also: [](sec_scatter), `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView`, `PetscObjectViewFromOptions()`, `ISLocalToGlobalMappingCreate()`
 
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingViewFromOptions"))

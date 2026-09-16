@@ -1,5 +1,5 @@
 """
-	c::Characteristic = CharacteristicCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	c::Characteristic = CharacteristicCreate(petsclib::PetscLibType, comm::MPI_Comm) 
 Creates a `Characteristic` context for use with the Method of Characteristics
 
 Collective
@@ -12,7 +12,7 @@ Output Parameter:
 
 Level: beginner
 
--seealso: `Characteristic`, `CharacteristicDestroy()`
+See also: `Characteristic`, `CharacteristicDestroy()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicCreate"))
@@ -37,7 +37,7 @@ end
 end 
 
 """
-	CharacteristicDestroy(petsclib::PetscLibType,c::Union{Characteristic, Ref{Characteristic}}) 
+	CharacteristicDestroy(petsclib::PetscLibType, c::Union{Characteristic, Ref{Characteristic}}) 
 Destroys a `Characteristic` context created with `CharacteristicCreate()`
 
 Collective
@@ -47,7 +47,7 @@ Input Parameter:
 
 Level: beginner
 
--seealso: `Characteristic`, `CharacteristicCreate()`
+See also: `Characteristic`, `CharacteristicCreate()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicDestroy"))
@@ -77,7 +77,7 @@ called from `PetscFinalize()`.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscFinalize()`, `CharacteristicInitializePackage()`
+See also: `PetscFinalize()`, `CharacteristicInitializePackage()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicFinalizePackage"))
@@ -106,7 +106,7 @@ when using static libraries.
 
 Level: developer
 
--seealso: [](ch_ts), `PetscInitialize()`, `CharacteristicFinalizePackage()`
+See also: `PetscInitialize()`, `CharacteristicFinalizePackage()`
 
 # External Links
 $(_doc_external("Sys/CharacteristicInitializePackage"))
@@ -128,7 +128,7 @@ end
 end 
 
 """
-	CharacteristicRegister(petsclib::PetscLibType,sname::String, fnc::external) 
+	CharacteristicRegister(petsclib::PetscLibType, sname::String, fnc::external) 
 Adds an approarch to the method of characteristics package.
 
 Not Collective, No Fortran Support
@@ -139,7 +139,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: [](ch_ts), `CharacteristicRegisterAll()`, `CharacteristicRegisterDestroy()`
+See also: `CharacteristicRegisterAll()`, `CharacteristicRegisterDestroy()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicRegister"))
@@ -162,7 +162,7 @@ end
 end 
 
 """
-	CharacteristicSetFieldInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
+	CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
 Sets the routine used to interpolate the field being advected at the foot of a characteristic
 
 Not Collective
@@ -186,7 +186,7 @@ Calling sequence of `interp`:
 
 Level: developer
 
--seealso: [](ch_ts), `Characteristic`, `CharacteristicSetFieldInterpolationLocal()`, `CharacteristicSetVelocityInterpolation()`
+See also: `Characteristic`, `CharacteristicSetFieldInterpolationLocal()`, `CharacteristicSetVelocityInterpolation()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetFieldInterpolation"))
@@ -209,8 +209,8 @@ end
 end 
 
 """
-	CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
-Sets the routine used to interpolate the field being advected at the foot of a characteristic using a locally
+	CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
+Sets the routine used to interpolate the field being advected at the foot of a characteristic using a locally-accessible array
 
 Not Collective
 
@@ -233,7 +233,7 @@ Calling sequence of `interp`:
 
 Level: developer
 
--seealso: [](ch_ts), `Characteristic`, `CharacteristicSetFieldInterpolation()`, `CharacteristicSetVelocityInterpolationLocal()`
+See also: `Characteristic`, `CharacteristicSetFieldInterpolation()`, `CharacteristicSetVelocityInterpolationLocal()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetFieldInterpolationLocal"))
@@ -256,7 +256,7 @@ end
 end 
 
 """
-	CharacteristicSetType(petsclib::PetscLibType,c::Characteristic, type::CharacteristicType) 
+	CharacteristicSetType(petsclib::PetscLibType, c::Characteristic, type::CharacteristicType) 
 Builds Characteristic for a particular solver.
 
 Logically Collective
@@ -271,7 +271,7 @@ of available methods
 
 Level: intermediate
 
--seealso: [](ch_ts), `CharacteristicType`
+See also: `CharacteristicType`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetType"))
@@ -294,7 +294,7 @@ end
 end 
 
 """
-	CharacteristicSetUp(petsclib::PetscLibType,c::Characteristic) 
+	CharacteristicSetUp(petsclib::PetscLibType, c::Characteristic) 
 Sets up the internal data structures for the
 later use of a `Charactoristic` .
 
@@ -305,7 +305,7 @@ Input Parameter:
 
 Level: developer
 
--seealso: [](ch_ts), `Characteristic`, `CharacteristicCreate()`, `CharacteristicSolve()`, `CharacteristicDestroy()`
+See also: `Characteristic`, `CharacteristicCreate()`, `CharacteristicSolve()`, `CharacteristicDestroy()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetUp"))
@@ -328,7 +328,7 @@ end
 end 
 
 """
-	CharacteristicSetVelocityInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
+	CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
 Sets the routine used to interpolate the velocity field at points along a characteristic
 
 Not Collective
@@ -353,7 +353,7 @@ Calling sequence of `interp`:
 
 Level: developer
 
--seealso: [](ch_ts), `Characteristic`, `CharacteristicSetVelocityInterpolationLocal()`, `CharacteristicSetFieldInterpolation()`
+See also: `Characteristic`, `CharacteristicSetVelocityInterpolationLocal()`, `CharacteristicSetFieldInterpolation()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetVelocityInterpolation"))
@@ -376,8 +376,8 @@ end
 end 
 
 """
-	CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
-Sets the routine used to interpolate the velocity field along a characteristic using a locally
+	CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Ptr{Cvoid}) 
+Sets the routine used to interpolate the velocity field along a characteristic using a locally-accessible array
 
 Not Collective
 
@@ -401,7 +401,7 @@ Calling sequence of `interp`:
 
 Level: developer
 
--seealso: [](ch_ts), `Characteristic`, `CharacteristicSetVelocityInterpolation()`, `CharacteristicSetFieldInterpolationLocal()`
+See also: `Characteristic`, `CharacteristicSetVelocityInterpolation()`, `CharacteristicSetFieldInterpolationLocal()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicSetVelocityInterpolationLocal"))
@@ -424,7 +424,7 @@ end
 end 
 
 """
-	CharacteristicSolve(petsclib::PetscLibType,c::Characteristic, dt::PetscReal, solution::AbstractPetscVec) 
+	CharacteristicSolve(petsclib::PetscLibType, c::Characteristic, dt::PetscReal, solution::AbstractPetscVec) 
 Apply the Method of Characteristics solver
 
 Collective
@@ -436,7 +436,7 @@ Input Parameters:
 
 Level: developer
 
--seealso: [](ch_ts), `Characteristic`, `CharacteristicCreate()`, `CharacteristicDestroy()`
+See also: `Characteristic`, `CharacteristicCreate()`, `CharacteristicDestroy()`
 
 # External Links
 $(_doc_external("Characteristic/CharacteristicSolve"))

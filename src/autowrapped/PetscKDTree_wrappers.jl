@@ -1,5 +1,5 @@
 """
-	new_tree::PetscKDTree = PetscKDTreeCreate(petsclib::PetscLibType,num_coords::PetscCount, dim::PetscInt, coords::Vector{PetscReal}, copy_mode::PetscCopyMode, max_bucket_size::PetscInt) 
+	new_tree::PetscKDTree = PetscKDTreeCreate(petsclib::PetscLibType, num_coords::PetscCount, dim::PetscInt, coords::Vector{PetscReal}, copy_mode::PetscCopyMode, max_bucket_size::PetscInt) 
 create a `PetscKDTree`
 
 Not Collective, No Fortran Support
@@ -16,7 +16,7 @@ Output Parameter:
 
 Level: advanced
 
--seealso: `PetscKDTree`, `PetscKDTreeDestroy()`, `PetscKDTreeQueryPointsNearestNeighbor()`
+See also: `PetscKDTree`, `PetscKDTreeDestroy()`, `PetscKDTreeQueryPointsNearestNeighbor()`
 
 # External Links
 $(_doc_external("IS/PetscKDTreeCreate"))
@@ -41,7 +41,7 @@ end
 end 
 
 """
-	PetscKDTreeDestroy(petsclib::PetscLibType,tree::Union{PetscKDTree, Ref{PetscKDTree}}) 
+	PetscKDTreeDestroy(petsclib::PetscLibType, tree::Union{PetscKDTree, Ref{PetscKDTree}}) 
 destroy a `PetscKDTree`
 
 Not Collective, No Fortran Support
@@ -51,7 +51,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscKDTree`, `PetscKDTreeCreate()`
+See also: `PetscKDTree`, `PetscKDTreeCreate()`
 
 # External Links
 $(_doc_external("IS/PetscKDTreeDestroy"))
@@ -75,7 +75,7 @@ end
 end 
 
 """
-	PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType,tree::PetscKDTree, num_points::PetscCount, points::Vector{PetscReal}, tolerance::PetscReal, indices::Vector{PetscCount}, distances::Vector{PetscReal}) 
+	PetscKDTreeQueryPointsNearestNeighbor(petsclib::PetscLibType, tree::PetscKDTree, num_points::PetscCount, points::Vector{PetscReal}, tolerance::PetscReal, indices::Vector{PetscCount}, distances::Vector{PetscReal}) 
 find the nearest neighbor in a `PetscKDTree`
 
 Not Collective, No Fortran Support
@@ -92,7 +92,7 @@ Output Parameters:
 
 Level: advanced
 
--seealso: `PetscKDTree`, `PetscKDTreeCreate()`
+See also: `PetscKDTree`, `PetscKDTreeCreate()`
 
 # External Links
 $(_doc_external("IS/PetscKDTreeQueryPointsNearestNeighbor"))
@@ -115,7 +115,7 @@ end
 end 
 
 """
-	PetscKDTreeView(petsclib::PetscLibType,tree::PetscKDTree, viewer::PetscViewer) 
+	PetscKDTreeView(petsclib::PetscLibType, tree::PetscKDTree, viewer::PetscViewer) 
 view a `PetscKDTree`
 
 Not Collective, No Fortran Support
@@ -126,7 +126,7 @@ Input Parameters:
 
 Level: advanced
 
--seealso: `PetscKDTree`, `PetscKDTreeCreate()`, `PetscViewer`
+See also: `PetscKDTree`, `PetscKDTreeCreate()`, `PetscViewer`
 
 # External Links
 $(_doc_external("IS/PetscKDTreeView"))

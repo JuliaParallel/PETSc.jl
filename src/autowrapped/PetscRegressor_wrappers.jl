@@ -311,7 +311,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = PetscRegressorLinearGetKSP(petsclib::PetscLibType,regressor::PetscRegressor) 
+	ksp::KSP = PetscRegressorLinearGetKSP(petsclib::PetscLibType,regressor::PetscRegressor) 
 Returns the `KSP` context for a `PETSCREGRESSORLINEAR` object.
 
 Not Collective, but if the `PetscRegressor` is parallel, then the `KSP` object is parallel
@@ -343,7 +343,7 @@ end
                regressor, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 

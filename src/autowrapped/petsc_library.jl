@@ -89,8 +89,8 @@ Base.unsafe_convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
 
 # ----- Custom Julia struct for PETSc KSP -----
 const CKSP = Ptr{Cvoid}
-abstract type AbstractPetscKSP{T} end
-mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
+abstract type AbstractKSP{T} end
+mutable struct KSP{PetscLib} <: AbstractKSP{PetscLib}
     ptr::CKSP
     age::Int
     computerhs!::Function
@@ -98,25 +98,25 @@ mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
     opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
     
     # Constructor from pointer and age (with default callback placeholders)
-    PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0, computerhs!::Function = x -> error("computerhs! not defined"), computeops!::Function = x -> error("computeops! not defined"), opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, computerhs!, computeops!, opts)
+    KSP{PetscLib}(ptr::CKSP, age::Int = 0, computerhs!::Function = x -> error("computerhs! not defined"), computeops!::Function = x -> error("computeops! not defined"), opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, computerhs!, computeops!, opts)
 
     # Constructor for empty KSP (null pointer)
-    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0, x -> error("computerhs! not defined"), x -> error("computeops! not defined"), nothing)
+    KSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0, x -> error("computerhs! not defined"), x -> error("computeops! not defined"), nothing)
 end
 
 # Convenience constructor from petsclib instance
-PetscKSP(lib::PetscLib) where {PetscLib} = PetscKSP{PetscLib}(C_NULL, lib.age)
-PetscKSP(ptr::CKSP, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscKSP{PetscLib}(ptr, age)
-Base.convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
-Base.unsafe_convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
+KSP(lib::PetscLib) where {PetscLib} = KSP{PetscLib}(C_NULL, lib.age)
+KSP(ptr::CKSP, lib::PetscLib, age::Int = lib.age) where {PetscLib} = KSP{PetscLib}(ptr, age)
+Base.convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
+Base.unsafe_convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
 
 
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc SNES -----
 const CSNES = Ptr{Cvoid}
-abstract type AbstractPetscSNES{T} end
-mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
+abstract type AbstractSNES{T} end
+mutable struct SNES{PetscLib} <: AbstractSNES{PetscLib}
     ptr::CSNES
     age::Int
     f!::Function
@@ -125,10 +125,10 @@ mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
     opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
 
     # Constructor from pointer and age (with defaults for callbacks and context)
-    PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts)
+    SNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts)
     
     # Constructor for empty SNES (null pointer)
-    PetscSNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
+    SNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
                         ptr,
                         age,
                         x -> error("function not defined"),
@@ -139,11 +139,11 @@ mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
 end
 
 # Convenience constructor from petsclib instance
-PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}(C_NULL, lib.age)
-PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx::Any=nothing, age::Int = lib.age) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
-PetscSNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
-Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
-Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
+SNES(lib::PetscLib) where {PetscLib} = SNES{PetscLib}(C_NULL, lib.age)
+SNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx::Any=nothing, age::Int = lib.age) where {PetscLib} = SNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
+SNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age) where {PetscLib} = SNES{PetscLib}(ptr, age)
+Base.convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
+Base.unsafe_convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc DM -----
@@ -324,12 +324,20 @@ Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
 # ------------------------------------------------------
 # Constructors taking the library *type* (wrappers are called with either the petsclib instance
 # or its type, see @for_petsc): look the instance up to get the current age.
-for T in (:PetscVec, :PetscMat, :PetscKSP, :PetscSNES, :PetscDM, :TS)
+for T in (:PetscVec, :PetscMat, :KSP, :SNES, :PetscDM, :TS)
     @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}) where {PetscLib} = $T(ptr, getlib(PetscLib))
 end
 for T in (:PetscOptions, :IS, :PF, :Tao, :AO)
     @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}) where {PetscLib} = $T{PetscLib}(ptr)
 end
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# Deprecated names (v0.4), kept as aliases for one minor cycle: remove in v0.6
+const PetscKSP = KSP
+const PetscSNES = SNES
+const AbstractPetscKSP = AbstractKSP
+const AbstractPetscSNES = AbstractSNES
 # ------------------------------------------------------
 
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?

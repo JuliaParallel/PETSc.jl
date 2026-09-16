@@ -1,5 +1,5 @@
 """
-	InAdapt::PetscMat = DMAdaptInterpolator(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid}) 
+	InAdapt::PetscMat = DMAdaptInterpolator(petsclib::PetscLibType,dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid}) 
 Adapts a grid interpolator so that it accurately reproduces a set of sample fine
 
 Collective
@@ -26,11 +26,11 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMAdaptInterpolator"))
 """
-function DMAdaptInterpolator(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid})
+function DMAdaptInterpolator(petsclib::PetscLibType, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid})
     error("DMAdaptInterpolator: no generated method for these argument types")
 end
 
-@for_petsc function DMAdaptInterpolator(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractPetscKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid} )
+@for_petsc function DMAdaptInterpolator(petsclib::$UnionPetscLib, dmc::AbstractPetscDM, dmf::AbstractPetscDM, In::AbstractPetscMat, smoother::AbstractKSP, MF::AbstractPetscMat, MC::AbstractPetscMat, user::Ptr{Cvoid} )
 	InAdapt_ = Ref{CMat}()
 
     @chk ccall(
@@ -35461,7 +35461,7 @@ end
 end 
 
 """
-	DMPlexSetSNESVariableBounds(petsclib::PetscLibType,dm::AbstractPetscDM, snes::AbstractPetscSNES) 
+	DMPlexSetSNESVariableBounds(petsclib::PetscLibType,dm::AbstractPetscDM, snes::AbstractSNES) 
 Compute upper and lower bounds for the solution using pointsie functions from the `PetscDS`
 
 Collective
@@ -35477,11 +35477,11 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/DMPlexSetSNESVariableBounds"))
 """
-function DMPlexSetSNESVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, snes::AbstractPetscSNES)
+function DMPlexSetSNESVariableBounds(petsclib::PetscLibType, dm::AbstractPetscDM, snes::AbstractSNES)
     error("DMPlexSetSNESVariableBounds: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexSetSNESVariableBounds(petsclib::$UnionPetscLib, dm::AbstractPetscDM, snes::AbstractPetscSNES )
+@for_petsc function DMPlexSetSNESVariableBounds(petsclib::$UnionPetscLib, dm::AbstractPetscDM, snes::AbstractSNES )
 
     @chk ccall(
                (:DMPlexSetSNESVariableBounds, $petsc_library),
@@ -38711,7 +38711,7 @@ end
 end 
 
 """
-	DMSNESCheckDiscretization(petsclib::PetscLibType,snes::AbstractPetscSNES, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, tol::PetscReal, error::Vector{PetscReal}) 
+	DMSNESCheckDiscretization(petsclib::PetscLibType,snes::AbstractSNES, dm::AbstractPetscDM, t::PetscReal, u::AbstractPetscVec, tol::PetscReal, error::Vector{PetscReal}) 
 Check the discretization error of the exact solution
 
 Input Parameters:
@@ -38731,11 +38731,11 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckDiscretization"))
 """
-function DMSNESCheckDiscretization(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, t::Real, u::AbstractPetscVec, tol::Real, error::AbstractVector{<:Number})
+function DMSNESCheckDiscretization(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetscDM, t::Real, u::AbstractPetscVec, tol::Real, error::AbstractVector{<:Number})
     error("DMSNESCheckDiscretization: no generated method for these argument types")
 end
 
-@for_petsc function DMSNESCheckDiscretization(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dm::AbstractPetscDM, t::$PetscReal, u::AbstractPetscVec, tol::$PetscReal, error::Vector{$PetscReal} )
+@for_petsc function DMSNESCheckDiscretization(petsclib::$UnionPetscLib, snes::AbstractSNES, dm::AbstractPetscDM, t::$PetscReal, u::AbstractPetscVec, tol::$PetscReal, error::Vector{$PetscReal} )
 
     @chk ccall(
                (:DMSNESCheckDiscretization, $petsc_library),
@@ -38749,7 +38749,7 @@ end
 end 
 
 """
-	DMSNESCheckFromOptions(petsclib::PetscLibType,snes::AbstractPetscSNES, u::AbstractPetscVec) 
+	DMSNESCheckFromOptions(petsclib::PetscLibType,snes::AbstractSNES, u::AbstractPetscVec) 
 Check the residual and Jacobian functions using the exact solution by outputting some diagnostic information
 
 Input Parameters:
@@ -38763,11 +38763,11 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckFromOptions"))
 """
-function DMSNESCheckFromOptions(petsclib::PetscLibType, snes::AbstractPetscSNES, u::AbstractPetscVec)
+function DMSNESCheckFromOptions(petsclib::PetscLibType, snes::AbstractSNES, u::AbstractPetscVec)
     error("DMSNESCheckFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function DMSNESCheckFromOptions(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, u::AbstractPetscVec )
+@for_petsc function DMSNESCheckFromOptions(petsclib::$UnionPetscLib, snes::AbstractSNES, u::AbstractPetscVec )
 
     @chk ccall(
                (:DMSNESCheckFromOptions, $petsc_library),
@@ -38781,7 +38781,7 @@ end
 end 
 
 """
-	isLinear::PetscBool,convRate::PetscReal = DMSNESCheckJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
+	isLinear::PetscBool,convRate::PetscReal = DMSNESCheckJacobian(petsclib::PetscLibType,snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
 Check the Jacobian of the exact solution against the residual using the Taylor Test
 
 Input Parameters:
@@ -38801,11 +38801,11 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckJacobian"))
 """
-function DMSNESCheckJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::Real)
+function DMSNESCheckJacobian(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::Real)
     error("DMSNESCheckJacobian: no generated method for these argument types")
 end
 
-@for_petsc function DMSNESCheckJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::$PetscReal )
+@for_petsc function DMSNESCheckJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::$PetscReal )
 	isLinear_ = Ref{PetscBool}()
 	convRate_ = Ref{$PetscReal}()
 
@@ -38823,7 +38823,7 @@ end
 end 
 
 """
-	residual::PetscReal = DMSNESCheckResidual(petsclib::PetscLibType,snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
+	residual::PetscReal = DMSNESCheckResidual(petsclib::PetscLibType,snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::PetscReal) 
 Check the residual of the exact solution
 
 Input Parameters:
@@ -38842,11 +38842,11 @@ Level: developer
 # External Links
 $(_doc_external("SNES/DMSNESCheckResidual"))
 """
-function DMSNESCheckResidual(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::Real)
+function DMSNESCheckResidual(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::Real)
     error("DMSNESCheckResidual: no generated method for these argument types")
 end
 
-@for_petsc function DMSNESCheckResidual(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::$PetscReal )
+@for_petsc function DMSNESCheckResidual(petsclib::$UnionPetscLib, snes::AbstractSNES, dm::AbstractPetscDM, u::AbstractPetscVec, tol::$PetscReal )
 	residual_ = Ref{$PetscReal}()
 
     @chk ccall(

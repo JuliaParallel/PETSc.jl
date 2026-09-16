@@ -462,7 +462,7 @@ end
             PETSc.set_type!(ts, :beuler)
 
             s = PETSc.snes(ts)
-            @test s isa PETSc.LibPETSc.PetscSNES
+            @test s isa PETSc.LibPETSc.SNES
             @test s.ptr != C_NULL
             # The handle we are given must survive being asked for twice; the
             # generated three-argument form nulls it instead.
@@ -471,7 +471,7 @@ end
             # A KSP is only offered for a problem declared linear.
             PETSc.set_problem_type!(ts, PETSc.LibPETSc.TS_LINEAR)
             k = PETSc.ksp(ts)
-            @test k isa PETSc.LibPETSc.PetscKSP
+            @test k isa PETSc.LibPETSc.KSP
             @test k.ptr != C_NULL
 
             PETSc.destroy!(ts)

@@ -103,7 +103,7 @@ function categorize(g::AbstractString, n::AbstractString)
     if all(occursin(".ptr = C_NULL", l) for l in go) && all(occursin(r"\.ptr = \w+_\[\]", l) for l in no) && !isempty(go)
         return "writeback-fix"
     end
-    if occursin(r"Ptr\{(Ptr\{)?(IS|PetscVec|PetscMat|PetscDM|PetscKSP|PetscSNES|TS|AO|Tao|PF)\}", G) && occursin(r"Ptr\{(Ptr\{)?C(IS|Vec|Mat|DM|KSP|SNES|TS|AO|Tao|PF)\}", N)
+    if occursin(r"Ptr\{(Ptr\{)?(IS|PetscVec|PetscMat|PetscDM|KSP|SNES|TS|AO|Tao|PF)\}", G) && occursin(r"Ptr\{(Ptr\{)?C(IS|Vec|Mat|DM|KSP|SNES|TS|AO|Tao|PF)\}", N)
         return "handle-ccall-fix"
     end
     if occursin("::Ptr{Cvoid}", G) && occursin(r"::\w*Fn\b", N)
@@ -165,7 +165,7 @@ function categorize(g::AbstractString, n::AbstractString)
     if (occursin("Union{Ptr{", G) || occursin("Union{Ptr,", G)) && occursin("Union{Ptr, ", N)
         return "nullable-form"
     end
-    if occursin(r"Ref\{(IS|TS|AO|PF|Tao|PetscVec|PetscMat|PetscDM|PetscKSP|PetscSNES)\}\(\)", G) && occursin(r"Ref\{C\w+\}\(\)", N)
+    if occursin(r"Ref\{(IS|TS|AO|PF|Tao|PetscVec|PetscMat|PetscDM|KSP|SNES)\}\(\)", G) && occursin(r"Ref\{C\w+\}\(\)", N)
         return "handle-return-fix"
     end
     if occursin("(undef, ni)", G) && !occursin("(undef, ni)", N)
@@ -187,7 +187,7 @@ function categorize(g::AbstractString, n::AbstractString)
             # the new outputs are enums (or other plain by-value types) that the old heuristics refused
             hdr = match(r"^\s*(.*?)\s*=\s*\w+\(petsclib", nd)
             types = Dict(String(first(split(strip(x), "::"))) => String(last(split(strip(x), "::"))) for x in split(hdr.captures[1], ","))
-            if all(!occursin(r"Vector|Ptr|Petsc(Int|Real|Scalar|Bool)|^(IS|TS|AO|PF|Tao|PetscVec|PetscMat|PetscDM|PetscKSP|PetscSNES)$", get(types, e, "?")) for e in extra)
+            if all(!occursin(r"Vector|Ptr|Petsc(Int|Real|Scalar|Bool)|^(IS|TS|AO|PF|Tao|PetscVec|PetscMat|PetscDM|KSP|SNES)$", get(types, e, "?")) for e in extra)
                 return "enum-direction-fix"
             end
             return "direction-new-output"

@@ -595,7 +595,7 @@ end
 end 
 
 """
-	snes::PetscSNES = SNESLineSearchGetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch) 
+	snes::SNES = SNESLineSearchGetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch) 
 Gets the `SNES` instance associated with the line search.
 
 Not Collective
@@ -627,7 +627,7 @@ end
                linesearch, snes_,
               )
 
-	snes = PetscSNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib)
 
 	return snes
 end 
@@ -1656,7 +1656,7 @@ end
 end 
 
 """
-	SNESLineSearchSetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch, snes::AbstractPetscSNES) 
+	SNESLineSearchSetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch, snes::AbstractSNES) 
 Sets the `SNES` for the linesearch for function evaluation.
 
 Input Parameters:
@@ -1670,11 +1670,11 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetSNES"))
 """
-function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::AbstractPetscSNES)
+function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::AbstractSNES)
     error("SNESLineSearchSetSNES: no generated method for these argument types")
 end
 
-@for_petsc function SNESLineSearchSetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::AbstractPetscSNES )
+@for_petsc function SNESLineSearchSetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::AbstractSNES )
 
     @chk ccall(
                (:SNESLineSearchSetSNES, $petsc_library),

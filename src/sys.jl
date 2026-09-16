@@ -5,8 +5,8 @@
                             obj::Union{
                                 PetscVec{PetscLib},
                                 PetscMat{PetscLib},
-                                PetscKSP{PetscLib},
-                                #PetscSNES{PetscLib},
+                                KSP{PetscLib},
+                                #SNES{PetscLib},
                                 #PetscDM{PetscLib},
                             },
                         ) where {PetscLib}
@@ -18,8 +18,8 @@ function getcomm(
     obj::Union{
         AbstractPetscVec{PetscLib},
         AbstractPetscMat{PetscLib},
-        AbstractPetscKSP{PetscLib},
-        AbstractPetscSNES{PetscLib},
+        AbstractKSP{PetscLib},
+        AbstractSNES{PetscLib},
         AbstractPetscDM{PetscLib},
     },
 ) where {PetscLib}

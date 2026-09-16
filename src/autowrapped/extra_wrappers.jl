@@ -131,9 +131,9 @@ Return the assembled system (A) matrix from `snes`, passing `NULL` for the
 preconditioner matrix, Jacobian function, and context.  Use this when only
 the system matrix is needed (e.g. to attach a null space via `MatSetNullSpace`).
 """
-function SNESGetJacobianMat(petsclib::PetscLibType, snes::AbstractPetscSNES) end
+function SNESGetJacobianMat(petsclib::PetscLibType, snes::AbstractSNES) end
 
-@for_petsc function SNESGetJacobianMat(petsclib::$UnionPetscLib, snes::AbstractPetscSNES)
+@for_petsc function SNESGetJacobianMat(petsclib::$UnionPetscLib, snes::AbstractSNES)
     J_ref = Ref{CMat}(C_NULL)
     @chk ccall(
         (:SNESGetJacobian, $petsc_library), PetscErrorCode,

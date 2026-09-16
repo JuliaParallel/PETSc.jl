@@ -293,16 +293,17 @@ end
 # (e.g. `CUDAMemBackend`) by overloading `memtype_backend(::Val{MT})`.
 
 """
-    AbstractPETScMemBackend
+    AbstractPetscMemBackend
 
 Abstract supertype for GPU memory backends used by PETSc extensions.
 Host memory is represented by `nothing`, not a subtype of this.
 GPU extensions define their own concrete subtype (e.g. `CUDAMemBackend`).
 """
-abstract type AbstractPETScMemBackend end
+abstract type AbstractPetscMemBackend end
+const AbstractPETScMemBackend = AbstractPetscMemBackend   # deprecated spelling, remove in v0.6
 
 """
-    memtype_backend(mtype::PetscMemType) → Nothing | AbstractPETScMemBackend
+    memtype_backend(mtype::PetscMemType) → Nothing | AbstractPetscMemBackend
 
 Convert a `PetscMemType` to a dispatch tag.  Returns `nothing` for host memory;
 GPU extensions return their own singleton for device memory.
@@ -372,7 +373,7 @@ function wrap_localarray(
 end
 
 # Fallback: no backend loaded for this PetscMemType.
-function wrap_localarray(cpu_arr, b::AbstractPETScMemBackend, vec; kw...)
+function wrap_localarray(cpu_arr, b::AbstractPetscMemBackend, vec; kw...)
     error("wrap_localarray not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 end
@@ -412,7 +413,7 @@ end
 
 # CPU: the raw PETSc array is already a Vector — return it directly.
 make_local_array(cpu_arr, ::Nothing) = cpu_arr
-make_local_array(_, b::AbstractPETScMemBackend) =
+make_local_array(_, b::AbstractPetscMemBackend) =
     error("make_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 
@@ -435,7 +436,7 @@ function release_petsc_local_array(
     end
     return nothing
 end
-release_petsc_local_array(cpu_arr, b::AbstractPETScMemBackend, vec; kw...) =
+release_petsc_local_array(cpu_arr, b::AbstractPetscMemBackend, vec; kw...) =
     error("release_petsc_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 

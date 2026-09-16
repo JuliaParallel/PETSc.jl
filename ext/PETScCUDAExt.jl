@@ -7,7 +7,7 @@ using CUDA
 
 # ── CUDA memory backend ───────────────────────────────────────────────────────
 
-struct CUDAMemBackend <: PETSc.AbstractPETScMemBackend end
+struct CUDAMemBackend <: PETSc.AbstractPetscMemBackend end
 
 PETSc.memtype_backend(::Val{PETSC_MEMTYPE_DEVICE}) = CUDAMemBackend()
 PETSc.array_type(::Val{PETSC_MEMTYPE_DEVICE}) = CuArray
@@ -93,7 +93,7 @@ end
 # the method above when both are on the device.
 function PETSc.get_petsc_arrays_impl(
     petsclib, g_fx, l_x, ::Type{T}, fx_arr, lx_arr,
-    fx_b::PETSc.AbstractPETScMemBackend, lx_b::PETSc.AbstractPETScMemBackend,
+    fx_b::PETSc.AbstractPetscMemBackend, lx_b::PETSc.AbstractPetscMemBackend,
 ) where {T}
     lx_gpu = if lx_b isa CUDAMemBackend
         CUDA.unsafe_wrap(CuArray,

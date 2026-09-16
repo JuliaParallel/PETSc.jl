@@ -1,5 +1,5 @@
 """
-	KSPAppendOptionsPrefix(petsclib::PetscLibType,ksp::AbstractPetscKSP, prefix::String) 
+	KSPAppendOptionsPrefix(petsclib::PetscLibType,ksp::AbstractKSP, prefix::String) 
 Appends to the prefix used for searching for all
 `KSP` options in the database.
 
@@ -16,11 +16,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPAppendOptionsPrefix"))
 """
-function KSPAppendOptionsPrefix(petsclib::PetscLibType, ksp::AbstractPetscKSP, prefix::String)
+function KSPAppendOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP, prefix::String)
     error("KSPAppendOptionsPrefix: no generated method for these argument types")
 end
 
-@for_petsc function KSPAppendOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, prefix::String )
+@for_petsc function KSPAppendOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractKSP, prefix::String )
 
     @chk ccall(
                (:KSPAppendOptionsPrefix, $petsc_library),
@@ -34,7 +34,7 @@ end
 end 
 
 """
-	KSPBCGSLSetEll(petsclib::PetscLibType,ksp::AbstractPetscKSP, ell::PetscInt) 
+	KSPBCGSLSetEll(petsclib::PetscLibType,ksp::AbstractKSP, ell::PetscInt) 
 Sets the number of search directions to use in the `KSPBCGSL` Krylov solver
 
 Logically Collective
@@ -53,11 +53,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetEll"))
 """
-function KSPBCGSLSetEll(petsclib::PetscLibType, ksp::AbstractPetscKSP, ell::Integer)
+function KSPBCGSLSetEll(petsclib::PetscLibType, ksp::AbstractKSP, ell::Integer)
     error("KSPBCGSLSetEll: no generated method for these argument types")
 end
 
-@for_petsc function KSPBCGSLSetEll(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ell::$PetscInt )
+@for_petsc function KSPBCGSLSetEll(petsclib::$UnionPetscLib, ksp::AbstractKSP, ell::$PetscInt )
 
     @chk ccall(
                (:KSPBCGSLSetEll, $petsc_library),
@@ -71,7 +71,7 @@ end
 end 
 
 """
-	KSPBCGSLSetPol(petsclib::PetscLibType,ksp::AbstractPetscKSP, uMROR::PetscBool) 
+	KSPBCGSLSetPol(petsclib::PetscLibType,ksp::AbstractKSP, uMROR::PetscBool) 
 Sets the type of polynomial part that will
 be used in the `KSPCBGSL` `KSPSolve()`
 
@@ -92,11 +92,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetPol"))
 """
-function KSPBCGSLSetPol(petsclib::PetscLibType, ksp::AbstractPetscKSP, uMROR::PetscBool)
+function KSPBCGSLSetPol(petsclib::PetscLibType, ksp::AbstractKSP, uMROR::PetscBool)
     error("KSPBCGSLSetPol: no generated method for these argument types")
 end
 
-@for_petsc function KSPBCGSLSetPol(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, uMROR::PetscBool )
+@for_petsc function KSPBCGSLSetPol(petsclib::$UnionPetscLib, ksp::AbstractKSP, uMROR::PetscBool )
 
     @chk ccall(
                (:KSPBCGSLSetPol, $petsc_library),
@@ -110,7 +110,7 @@ end
 end 
 
 """
-	KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType,ksp::AbstractPetscKSP, use_pinv::PetscBool) 
+	KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType,ksp::AbstractKSP, use_pinv::PetscBool) 
 Use pseudoinverse (via SVD) to solve polynomial part of the update in `KSPCBGSL` solver
 
 Logically Collective
@@ -129,11 +129,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetUsePseudoinverse"))
 """
-function KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType, ksp::AbstractPetscKSP, use_pinv::PetscBool)
+function KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType, ksp::AbstractKSP, use_pinv::PetscBool)
     error("KSPBCGSLSetUsePseudoinverse: no generated method for these argument types")
 end
 
-@for_petsc function KSPBCGSLSetUsePseudoinverse(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, use_pinv::PetscBool )
+@for_petsc function KSPBCGSLSetUsePseudoinverse(petsclib::$UnionPetscLib, ksp::AbstractKSP, use_pinv::PetscBool )
 
     @chk ccall(
                (:KSPBCGSLSetUsePseudoinverse, $petsc_library),
@@ -147,7 +147,7 @@ end
 end 
 
 """
-	KSPBCGSLSetXRes(petsclib::PetscLibType,ksp::AbstractPetscKSP, delta::PetscReal) 
+	KSPBCGSLSetXRes(petsclib::PetscLibType,ksp::AbstractKSP, delta::PetscReal) 
 Sets the parameter governing when
 exact residuals will be used instead of computed residuals for `KSPCBGSL`.
 
@@ -167,11 +167,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetXRes"))
 """
-function KSPBCGSLSetXRes(petsclib::PetscLibType, ksp::AbstractPetscKSP, delta::Real)
+function KSPBCGSLSetXRes(petsclib::PetscLibType, ksp::AbstractKSP, delta::Real)
     error("KSPBCGSLSetXRes: no generated method for these argument types")
 end
 
-@for_petsc function KSPBCGSLSetXRes(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, delta::$PetscReal )
+@for_petsc function KSPBCGSLSetXRes(petsclib::$UnionPetscLib, ksp::AbstractKSP, delta::$PetscReal )
 
     @chk ccall(
                (:KSPBCGSLSetXRes, $petsc_library),
@@ -185,7 +185,7 @@ end
 end 
 
 """
-	KSPBuildResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildResidual(petsclib::PetscLibType,ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Builds the residual in a vector provided.
 
 Collective
@@ -205,11 +205,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPBuildResidual"))
 """
-function KSPBuildResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec)
+function KSPBuildResidual(petsclib::PetscLibType, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildResidual: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
+@for_petsc function KSPBuildResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
 	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
@@ -225,7 +225,7 @@ end
 end 
 
 """
-	KSPBuildResidualDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildResidualDefault(petsclib::PetscLibType,ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Default code to compute the residual.
 
 Collecive on ksp
@@ -245,11 +245,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPBuildResidualDefault"))
 """
-function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec)
+function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildResidualDefault: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildResidualDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
+@for_petsc function KSPBuildResidualDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
 	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
@@ -265,7 +265,7 @@ end
 end 
 
 """
-	KSPBuildSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildSolution(petsclib::PetscLibType,ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Builds the approximate solution in a vector provided.
 
 Collective
@@ -285,11 +285,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPBuildSolution"))
 """
-function KSPBuildSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec)
+function KSPBuildSolution(petsclib::PetscLibType, ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildSolution: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec )
+@for_petsc function KSPBuildSolution(petsclib::$UnionPetscLib, ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec )
 	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
@@ -305,7 +305,7 @@ end
 end 
 
 """
-	KSPBuildSolutionDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
+	KSPBuildSolutionDefault(petsclib::PetscLibType,ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec) 
 Default code to build/move the solution.
 
 Collective
@@ -324,11 +324,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPBuildSolutionDefault"))
 """
-function KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec)
+function KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec)
     error("KSPBuildSolutionDefault: no generated method for these argument types")
 end
 
-@for_petsc function KSPBuildSolutionDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec, M_V::AbstractPetscVec )
+@for_petsc function KSPBuildSolutionDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec )
 	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
@@ -344,7 +344,7 @@ end
 end 
 
 """
-	norm_d::PetscReal = KSPCGGetNormD(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	norm_d::PetscReal = KSPCGGetNormD(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get norm of the direction when the solver is used inside `SNESNEWTONTR`
 
 Not collective
@@ -360,11 +360,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGGetNormD"))
 """
-function KSPCGGetNormD(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPCGGetNormD(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPCGGetNormD: no generated method for these argument types")
 end
 
-@for_petsc function KSPCGGetNormD(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPCGGetNormD(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	norm_d_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -380,7 +380,7 @@ end
 end 
 
 """
-	o_fcn::PetscReal = KSPCGGetObjFcn(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	o_fcn::PetscReal = KSPCGGetObjFcn(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get the conjugate gradient objective function value
 
 Not collective
@@ -396,11 +396,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGGetObjFcn"))
 """
-function KSPCGGetObjFcn(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPCGGetObjFcn(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPCGGetObjFcn: no generated method for these argument types")
 end
 
-@for_petsc function KSPCGGetObjFcn(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPCGGetObjFcn(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	o_fcn_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -416,7 +416,7 @@ end
 end 
 
 """
-	KSPCGSetObjectiveTarget(petsclib::PetscLibType,ksp::AbstractPetscKSP, obj::PetscReal) 
+	KSPCGSetObjectiveTarget(petsclib::PetscLibType,ksp::AbstractKSP, obj::PetscReal) 
 Sets the target value for the CG quadratic model
 
 Logically Collective
@@ -432,11 +432,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGSetObjectiveTarget"))
 """
-function KSPCGSetObjectiveTarget(petsclib::PetscLibType, ksp::AbstractPetscKSP, obj::Real)
+function KSPCGSetObjectiveTarget(petsclib::PetscLibType, ksp::AbstractKSP, obj::Real)
     error("KSPCGSetObjectiveTarget: no generated method for these argument types")
 end
 
-@for_petsc function KSPCGSetObjectiveTarget(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, obj::$PetscReal )
+@for_petsc function KSPCGSetObjectiveTarget(petsclib::$UnionPetscLib, ksp::AbstractKSP, obj::$PetscReal )
 
     @chk ccall(
                (:KSPCGSetObjectiveTarget, $petsc_library),
@@ -450,7 +450,7 @@ end
 end 
 
 """
-	KSPCGSetRadius(petsclib::PetscLibType,ksp::AbstractPetscKSP, radius::PetscReal) 
+	KSPCGSetRadius(petsclib::PetscLibType,ksp::AbstractKSP, radius::PetscReal) 
 Sets the radius of the trust region used by the `KSPCG` when the solver is used inside `SNESNEWTONTR`
 
 Logically Collective
@@ -466,11 +466,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGSetRadius"))
 """
-function KSPCGSetRadius(petsclib::PetscLibType, ksp::AbstractPetscKSP, radius::Real)
+function KSPCGSetRadius(petsclib::PetscLibType, ksp::AbstractKSP, radius::Real)
     error("KSPCGSetRadius: no generated method for these argument types")
 end
 
-@for_petsc function KSPCGSetRadius(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, radius::$PetscReal )
+@for_petsc function KSPCGSetRadius(petsclib::$UnionPetscLib, ksp::AbstractKSP, radius::$PetscReal )
 
     @chk ccall(
                (:KSPCGSetRadius, $petsc_library),
@@ -484,7 +484,7 @@ end
 end 
 
 """
-	KSPCGSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPCGType) 
+	KSPCGSetType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPCGType) 
 Sets the variant of the conjugate gradient method to
 use for solving a linear system with a complex coefficient matrix.
 This option is irrelevant when solving a real system.
@@ -499,11 +499,11 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPCGSetType"))
 """
-function KSPCGSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPCGType)
+function KSPCGSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPCGType)
     error("KSPCGSetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPCGSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPCGType )
+@for_petsc function KSPCGSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::KSPCGType )
 
     @chk ccall(
                (:KSPCGSetType, $petsc_library),
@@ -517,7 +517,7 @@ end
 end 
 
 """
-	KSPCGUseSingleReduction(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPCGUseSingleReduction(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Merge the two inner products needed in `KSPCG` into a single `MPI_Allreduce()` call.
 
 Logically Collective
@@ -536,11 +536,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPCGUseSingleReduction"))
 """
-function KSPCGUseSingleReduction(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPCGUseSingleReduction(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPCGUseSingleReduction: no generated method for these argument types")
 end
 
-@for_petsc function KSPCGUseSingleReduction(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPCGUseSingleReduction(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPCGUseSingleReduction, $petsc_library),
@@ -554,7 +554,7 @@ end
 end 
 
 """
-	kspest::PetscKSP = KSPChebyshevEstEigGetKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	kspest::KSP = KSPChebyshevEstEigGetKSP(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get the Krylov method context used to estimate the eigenvalues for the Chebyshev method.
 
 Input Parameter:
@@ -570,11 +570,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigGetKSP"))
 """
-function KSPChebyshevEstEigGetKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPChebyshevEstEigGetKSP(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPChebyshevEstEigGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function KSPChebyshevEstEigGetKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPChebyshevEstEigGetKSP(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	kspest_ = Ref{CKSP}()
 
     @chk ccall(
@@ -584,13 +584,13 @@ end
                ksp, kspest_,
               )
 
-	kspest = PetscKSP(kspest_[], petsclib)
+	kspest = KSP(kspest_[], petsclib)
 
 	return kspest
 end 
 
 """
-	KSPChebyshevEstEigSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) 
+	KSPChebyshevEstEigSet(petsclib::PetscLibType,ksp::AbstractKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) 
 Automatically estimate the eigenvalues to use for Chebyshev
 
 Logically Collective
@@ -610,11 +610,11 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigSet"))
 """
-function KSPChebyshevEstEigSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, a::Real, b::Real, c::Real, d::Real)
+function KSPChebyshevEstEigSet(petsclib::PetscLibType, ksp::AbstractKSP, a::Real, b::Real, c::Real, d::Real)
     error("KSPChebyshevEstEigSet: no generated method for these argument types")
 end
 
-@for_petsc function KSPChebyshevEstEigSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, a::$PetscReal, b::$PetscReal, c::$PetscReal, d::$PetscReal )
+@for_petsc function KSPChebyshevEstEigSet(petsclib::$UnionPetscLib, ksp::AbstractKSP, a::$PetscReal, b::$PetscReal, c::$PetscReal, d::$PetscReal )
 
     @chk ccall(
                (:KSPChebyshevEstEigSet, $petsc_library),
@@ -628,7 +628,7 @@ end
 end 
 
 """
-	KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType,ksp::AbstractPetscKSP, use::PetscBool) 
+	KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType,ksp::AbstractKSP, use::PetscBool) 
 use a noisy random number generated right
 
 Logically Collective
@@ -647,11 +647,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigSetUseNoisy"))
 """
-function KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType, ksp::AbstractPetscKSP, use::PetscBool)
+function KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType, ksp::AbstractKSP, use::PetscBool)
     error("KSPChebyshevEstEigSetUseNoisy: no generated method for these argument types")
 end
 
-@for_petsc function KSPChebyshevEstEigSetUseNoisy(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, use::PetscBool )
+@for_petsc function KSPChebyshevEstEigSetUseNoisy(petsclib::$UnionPetscLib, ksp::AbstractKSP, use::PetscBool )
 
     @chk ccall(
                (:KSPChebyshevEstEigSetUseNoisy, $petsc_library),
@@ -665,7 +665,7 @@ end
 end 
 
 """
-	kind::KSPChebyshevKind = KSPChebyshevGetKind(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	kind::KSPChebyshevKind = KSPChebyshevGetKind(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the kind of Chebyshev polynomial to use
 
 Logically Collective
@@ -681,11 +681,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevGetKind"))
 """
-function KSPChebyshevGetKind(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPChebyshevGetKind(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPChebyshevGetKind: no generated method for these argument types")
 end
 
-@for_petsc function KSPChebyshevGetKind(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPChebyshevGetKind(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	kind_ = Ref{KSPChebyshevKind}()
 
     @chk ccall(
@@ -701,7 +701,7 @@ end
 end 
 
 """
-	KSPChebyshevSetEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP, emax::PetscReal, emin::PetscReal) 
+	KSPChebyshevSetEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP, emax::PetscReal, emin::PetscReal) 
 Sets estimates for the extreme eigenvalues of the preconditioned problem.
 
 Logically Collective
@@ -721,11 +721,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevSetEigenvalues"))
 """
-function KSPChebyshevSetEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP, emax::Real, emin::Real)
+function KSPChebyshevSetEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, emax::Real, emin::Real)
     error("KSPChebyshevSetEigenvalues: no generated method for these argument types")
 end
 
-@for_petsc function KSPChebyshevSetEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, emax::$PetscReal, emin::$PetscReal )
+@for_petsc function KSPChebyshevSetEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP, emax::$PetscReal, emin::$PetscReal )
 
     @chk ccall(
                (:KSPChebyshevSetEigenvalues, $petsc_library),
@@ -739,7 +739,7 @@ end
 end 
 
 """
-	KSPChebyshevSetKind(petsclib::PetscLibType,ksp::AbstractPetscKSP, kind::KSPChebyshevKind) 
+	KSPChebyshevSetKind(petsclib::PetscLibType,ksp::AbstractKSP, kind::KSPChebyshevKind) 
 set the kind of Chebyshev polynomial to use
 
 Logically Collective
@@ -758,11 +758,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevSetKind"))
 """
-function KSPChebyshevSetKind(petsclib::PetscLibType, ksp::AbstractPetscKSP, kind::KSPChebyshevKind)
+function KSPChebyshevSetKind(petsclib::PetscLibType, ksp::AbstractKSP, kind::KSPChebyshevKind)
     error("KSPChebyshevSetKind: no generated method for these argument types")
 end
 
-@for_petsc function KSPChebyshevSetKind(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, kind::KSPChebyshevKind )
+@for_petsc function KSPChebyshevSetKind(petsclib::$UnionPetscLib, ksp::AbstractKSP, kind::KSPChebyshevKind )
 
     @chk ccall(
                (:KSPChebyshevSetKind, $petsc_library),
@@ -776,7 +776,7 @@ end
 end 
 
 """
-	KSPCheckSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC, vec::AbstractPetscVec) 
+	KSPCheckSolve(petsclib::PetscLibType,ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec) 
 Checks if the `PCSetUp()` or `KSPSolve()` failed and set the error flag for the outer `PC`. A `KSP_DIVERGED_ITS` is
 not considered a failure in this context
 
@@ -794,11 +794,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPCheckSolve"))
 """
-function KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC, vec::AbstractPetscVec)
+function KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec)
     error("KSPCheckSolve: no generated method for these argument types")
 end
 
-@for_petsc function KSPCheckSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC, vec::AbstractPetscVec )
+@for_petsc function KSPCheckSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec )
 
     @chk ccall(
                (:KSPCheckSolve, $petsc_library),
@@ -812,7 +812,7 @@ end
 end 
 
 """
-	cr::PetscReal,rRsq::PetscReal,ce::PetscReal,eRsq::PetscReal = KSPComputeConvergenceRate(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	cr::PetscReal,rRsq::PetscReal,ce::PetscReal,eRsq::PetscReal = KSPComputeConvergenceRate(petsclib::PetscLibType,ksp::AbstractKSP) 
 Compute the convergence rate for the iteration <https:/en.wikipedia.org/wiki/Coefficient_of_determination>
 
 Not Collective
@@ -833,11 +833,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeConvergenceRate"))
 """
-function KSPComputeConvergenceRate(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPComputeConvergenceRate(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPComputeConvergenceRate: no generated method for these argument types")
 end
 
-@for_petsc function KSPComputeConvergenceRate(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPComputeConvergenceRate(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	cr_ = Ref{$PetscReal}()
 	rRsq_ = Ref{$PetscReal}()
 	ce_ = Ref{$PetscReal}()
@@ -859,7 +859,7 @@ end
 end 
 
 """
-	neig::PetscInt = KSPComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
+	neig::PetscInt = KSPComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
 Computes the extreme eigenvalues for the
 preconditioned operator. Called after or during `KSPSolve()`.
 
@@ -884,11 +884,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeEigenvalues"))
 """
-function KSPComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, r::AbstractVector{<:Number}, c::AbstractVector{<:Number})
+function KSPComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, r::AbstractVector{<:Number}, c::AbstractVector{<:Number})
     error("KSPComputeEigenvalues: no generated method for these argument types")
 end
 
-@for_petsc function KSPComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, r::Vector{$PetscReal}, c::Vector{$PetscReal} )
+@for_petsc function KSPComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, r::Vector{$PetscReal}, c::Vector{$PetscReal} )
 	neig_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -904,7 +904,7 @@ end
 end 
 
 """
-	KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType,ksp::AbstractPetscKSP, nmax::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
+	KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType,ksp::AbstractKSP, nmax::PetscInt, r::Vector{PetscReal}, c::Vector{PetscReal}) 
 Computes all of the eigenvalues of the
 preconditioned operator using LAPACK.
 
@@ -925,11 +925,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeEigenvaluesExplicitly"))
 """
-function KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType, ksp::AbstractPetscKSP, nmax::Integer, r::AbstractVector{<:Number}, c::AbstractVector{<:Number})
+function KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType, ksp::AbstractKSP, nmax::Integer, r::AbstractVector{<:Number}, c::AbstractVector{<:Number})
     error("KSPComputeEigenvaluesExplicitly: no generated method for these argument types")
 end
 
-@for_petsc function KSPComputeEigenvaluesExplicitly(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nmax::$PetscInt, r::Vector{$PetscReal}, c::Vector{$PetscReal} )
+@for_petsc function KSPComputeEigenvaluesExplicitly(petsclib::$UnionPetscLib, ksp::AbstractKSP, nmax::$PetscInt, r::Vector{$PetscReal}, c::Vector{$PetscReal} )
 
     @chk ccall(
                (:KSPComputeEigenvaluesExplicitly, $petsc_library),
@@ -943,7 +943,7 @@ end
 end 
 
 """
-	emax::PetscReal,emin::PetscReal = KSPComputeExtremeSingularValues(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	emax::PetscReal,emin::PetscReal = KSPComputeExtremeSingularValues(petsclib::PetscLibType,ksp::AbstractKSP) 
 Computes the extreme singular values
 for the preconditioned operator. Called after or during `KSPSolve()`.
 
@@ -966,11 +966,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeExtremeSingularValues"))
 """
-function KSPComputeExtremeSingularValues(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPComputeExtremeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPComputeExtremeSingularValues: no generated method for these argument types")
 end
 
-@for_petsc function KSPComputeExtremeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPComputeExtremeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	emax_ = Ref{$PetscReal}()
 	emin_ = Ref{$PetscReal}()
 
@@ -988,7 +988,7 @@ end
 end 
 
 """
-	mat::PetscMat = KSPComputeOperator(petsclib::PetscLibType,ksp::AbstractPetscKSP, mattype::MatType) 
+	mat::PetscMat = KSPComputeOperator(petsclib::PetscLibType,ksp::AbstractKSP, mattype::MatType) 
 Computes the explicit preconditioned operator, including diagonal scaling and null
 space removal if applicable.
 
@@ -1008,11 +1008,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeOperator"))
 """
-function KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractPetscKSP, mattype::MatType)
+function KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractKSP, mattype::MatType)
     error("KSPComputeOperator: no generated method for these argument types")
 end
 
-@for_petsc function KSPComputeOperator(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mattype::MatType )
+@for_petsc function KSPComputeOperator(petsclib::$UnionPetscLib, ksp::AbstractKSP, mattype::MatType )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1028,7 +1028,7 @@ end
 end 
 
 """
-	nrit::PetscInt = KSPComputeRitz(petsclib::PetscLibType,ksp::AbstractPetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::Vector{PetscReal}, tetai::Vector{PetscReal}) 
+	nrit::PetscInt = KSPComputeRitz(petsclib::PetscLibType,ksp::AbstractKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::Vector{PetscReal}, tetai::Vector{PetscReal}) 
 Computes the Ritz or harmonic Ritz pairs associated with the
 smallest or largest in modulus, for the preconditioned operator.
 
@@ -1052,11 +1052,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeRitz"))
 """
-function KSPComputeRitz(petsclib::PetscLibType, ksp::AbstractPetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::AbstractVector{<:Number}, tetai::AbstractVector{<:Number})
+function KSPComputeRitz(petsclib::PetscLibType, ksp::AbstractKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::AbstractVector{<:Number}, tetai::AbstractVector{<:Number})
     error("KSPComputeRitz: no generated method for these argument types")
 end
 
-@for_petsc function KSPComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::Vector{$PetscReal}, tetai::Vector{$PetscReal} )
+@for_petsc function KSPComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::Vector{$PetscReal}, tetai::Vector{$PetscReal} )
 	nrit_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1072,7 +1072,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPConvergedDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	reason::KSPConvergedReason = KSPConvergedDefault(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
 Default code to determine convergence of the linear iterative solvers
 
 Collective
@@ -1106,11 +1106,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPConvergedDefault"))
 """
-function KSPConvergedDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, ctx::Ptr{Cvoid})
+function KSPConvergedDefault(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, ctx::Ptr{Cvoid})
     error("KSPConvergedDefault: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
+@for_petsc function KSPConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -1197,7 +1197,7 @@ end
 end 
 
 """
-	KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 allows the default convergence test to declare convergence and return `KSP_CONVERGED_ITS` if the maximum number of iterations is reached
 
 Collective
@@ -1216,11 +1216,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetConvergedMaxits"))
 """
-function KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPConvergedDefaultSetConvergedMaxits: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedDefaultSetConvergedMaxits(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPConvergedDefaultSetConvergedMaxits(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPConvergedDefaultSetConvergedMaxits, $petsc_library),
@@ -1234,7 +1234,7 @@ end
 end 
 
 """
-	KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
 makes the default convergence test use  || B*(b
 instead of  || B*b ||. In the case of right preconditioner or if `KSPSetNormType`(ksp,`KSP_NORM_UNPRECONDITIONED`)
 is used there is no B in the above formula.
@@ -1254,11 +1254,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetUIRNorm"))
 """
-function KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPConvergedDefaultSetUIRNorm: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedDefaultSetUIRNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPConvergedDefaultSetUIRNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPConvergedDefaultSetUIRNorm, $petsc_library),
@@ -1272,7 +1272,7 @@ end
 end 
 
 """
-	KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
 makes the default convergence test use \\min(|| B*(b
 In the case of right preconditioner or if `KSPSetNormType`(ksp,`KSP_NORM_UNPRECONDITIONED`)
 is used there is no B in the above formula.
@@ -1292,11 +1292,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetUMIRNorm"))
 """
-function KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPConvergedDefaultSetUMIRNorm: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedDefaultSetUMIRNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPConvergedDefaultSetUMIRNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPConvergedDefaultSetUMIRNorm, $petsc_library),
@@ -1310,7 +1310,7 @@ end
 end 
 
 """
-	KSPConvergedRateView(petsclib::PetscLibType,ksp::AbstractPetscKSP, viewer::PetscViewer) 
+	KSPConvergedRateView(petsclib::PetscLibType,ksp::AbstractKSP, viewer::PetscViewer) 
 Displays the convergence rate <https://en.wikipedia.org/wiki/Coefficient_of_determination> of `KSPSolve()` to a viewer
 
 Collective
@@ -1329,11 +1329,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedRateView"))
 """
-function KSPConvergedRateView(petsclib::PetscLibType, ksp::AbstractPetscKSP, viewer::PetscViewer)
+function KSPConvergedRateView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::PetscViewer)
     error("KSPConvergedRateView: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedRateView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, viewer::PetscViewer )
+@for_petsc function KSPConvergedRateView(petsclib::$UnionPetscLib, ksp::AbstractKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPConvergedRateView, $petsc_library),
@@ -1347,7 +1347,7 @@ end
 end 
 
 """
-	KSPConvergedReasonView(petsclib::PetscLibType,ksp::AbstractPetscKSP, viewer::PetscViewer) 
+	KSPConvergedReasonView(petsclib::PetscLibType,ksp::AbstractKSP, viewer::PetscViewer) 
 Displays the reason a `KSP` solve converged or diverged, `KSPConvergedReason` to a `PetscViewer`
 
 Collective
@@ -1368,11 +1368,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonView"))
 """
-function KSPConvergedReasonView(petsclib::PetscLibType, ksp::AbstractPetscKSP, viewer::PetscViewer)
+function KSPConvergedReasonView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::PetscViewer)
     error("KSPConvergedReasonView: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedReasonView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, viewer::PetscViewer )
+@for_petsc function KSPConvergedReasonView(petsclib::$UnionPetscLib, ksp::AbstractKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPConvergedReasonView, $petsc_library),
@@ -1386,7 +1386,7 @@ end
 end 
 
 """
-	KSPConvergedReasonViewCancel(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPConvergedReasonViewCancel(petsclib::PetscLibType,ksp::AbstractKSP) 
 Clears all the `KSPConvergedReason` view functions for a `KSP` object set with `KSPConvergedReasonViewSet()`
 as well as the default viewer.
 
@@ -1402,11 +1402,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewCancel"))
 """
-function KSPConvergedReasonViewCancel(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPConvergedReasonViewCancel(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPConvergedReasonViewCancel: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedReasonViewCancel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPConvergedReasonViewCancel(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPConvergedReasonViewCancel, $petsc_library),
@@ -1420,7 +1420,7 @@ end
 end 
 
 """
-	KSPConvergedReasonViewFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPConvergedReasonViewFromOptions(petsclib::PetscLibType,ksp::AbstractKSP) 
 Processes command line options to determine if/how a `KSPConvergedReason` is to be viewed.
 
 Collective
@@ -1435,11 +1435,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewFromOptions"))
 """
-function KSPConvergedReasonViewFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPConvergedReasonViewFromOptions(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPConvergedReasonViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedReasonViewFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPConvergedReasonViewFromOptions(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPConvergedReasonViewFromOptions, $petsc_library),
@@ -1453,7 +1453,7 @@ end
 end 
 
 """
-	KSPConvergedReasonViewSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid}) 
+	KSPConvergedReasonViewSet(petsclib::PetscLibType,ksp::AbstractKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function that is to be used at the
 end of the linear solver to display the convergence reason of the linear solver.
 
@@ -1477,11 +1477,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewSet"))
 """
-function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid})
+function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::AbstractKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid})
     error("KSPConvergedReasonViewSet: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedReasonViewSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid} )
+@for_petsc function KSPConvergedReasonViewSet(petsclib::$UnionPetscLib, ksp::AbstractKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPConvergedReasonViewSet, $petsc_library),
@@ -1495,7 +1495,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPConvergedSkip(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, dtx::Ptr{Cvoid}) 
+	reason::KSPConvergedReason = KSPConvergedSkip(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, dtx::Ptr{Cvoid}) 
 Convergence test that do not return as converged
 until the maximum number of iterations is reached.
 
@@ -1521,11 +1521,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPConvergedSkip"))
 """
-function KSPConvergedSkip(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, dtx::Ptr{Cvoid})
+function KSPConvergedSkip(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, dtx::Ptr{Cvoid})
     error("KSPConvergedSkip: no generated method for these argument types")
 end
 
-@for_petsc function KSPConvergedSkip(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, dtx::Ptr{Cvoid} )
+@for_petsc function KSPConvergedSkip(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, dtx::Ptr{Cvoid} )
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -1541,7 +1541,7 @@ end
 end 
 
 """
-	inksp::PetscKSP = KSPCreate(petsclib::PetscLibType,comm::MPI_Comm) 
+	inksp::KSP = KSPCreate(petsclib::PetscLibType,comm::MPI_Comm) 
 Creates the `KSP` context. This `KSP` context is used in PETSc to solve linear systems with `KSPSolve()`
 
 Collective
@@ -1573,14 +1573,14 @@ end
                comm, inksp_,
               )
 
-	inksp = PetscKSP(inksp_[], petsclib)
+	inksp = KSP(inksp_[], petsclib)
 
 	return inksp
 end 
 
 # override for KSPCreateVecs; C signature: KSPCreateVecs(KSP ksp, PetscInt rightn, Vec* right[], PetscInt leftn, Vec* left[])
 """
-	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType,ksp::AbstractPetscKSP, rightn::PetscInt, leftn::PetscInt) 
+	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType,ksp::AbstractKSP, rightn::PetscInt, leftn::PetscInt) 
 Gets a number of work vectors suitably sized for the operator in the `KSP`
 
 Collective
@@ -1601,9 +1601,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCreateVecs"))
 """
-function KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractPetscKSP, rightn::PetscInt, leftn::PetscInt) end
+function KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractKSP, rightn::PetscInt, leftn::PetscInt) end
 
-@for_petsc function KSPCreateVecs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, rightn::$PetscInt, leftn::$PetscInt )
+@for_petsc function KSPCreateVecs(petsclib::$UnionPetscLib, ksp::AbstractKSP, rightn::$PetscInt, leftn::$PetscInt )
 	right_ = Ref{Ptr{CVec}}()
 	left_ = Ref{Ptr{CVec}}()
 
@@ -1635,7 +1635,7 @@ function KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractPetscKSP, rightn::Pe
 end
 
 """
-	KSPDestroy(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPDestroy(petsclib::PetscLibType,ksp::AbstractKSP) 
 Destroys a `KSP` context.
 
 Collective
@@ -1650,11 +1650,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPDestroy"))
 """
-function KSPDestroy(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPDestroy(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPDestroy: no generated method for these argument types")
 end
 
-@for_petsc function KSPDestroy(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPDestroy(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -1670,7 +1670,7 @@ end
 end 
 
 """
-	KSPDestroyDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPDestroyDefault(petsclib::PetscLibType,ksp::AbstractKSP) 
 Destroys an iterative context variable for methods with no separate context.  Preferred calling sequence `KSPDestroy()`.
 
 Collective
@@ -1685,11 +1685,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPDestroyDefault"))
 """
-function KSPDestroyDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPDestroyDefault(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPDestroyDefault: no generated method for these argument types")
 end
 
-@for_petsc function KSPDestroyDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPDestroyDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPDestroyDefault, $petsc_library),
@@ -1703,7 +1703,7 @@ end
 end 
 
 """
-	mmax::PetscInt = KSPFCGGetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	mmax::PetscInt = KSPFCGGetMmax(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the maximum number of previous directions `KSPFCG` will store
 
 Not Collective
@@ -1721,11 +1721,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFCGGetMmax"))
 """
-function KSPFCGGetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPFCGGetMmax(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPFCGGetMmax: no generated method for these argument types")
 end
 
-@for_petsc function KSPFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1741,7 +1741,7 @@ end
 end 
 
 """
-	nprealloc::PetscInt = KSPFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	nprealloc::PetscInt = KSPFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the number of directions preallocate by `KSPFCG`
 
 Not Collective
@@ -1759,11 +1759,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFCGGetNprealloc"))
 """
-function KSPFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPFCGGetNprealloc: no generated method for these argument types")
 end
 
-@for_petsc function KSPFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1779,7 +1779,7 @@ end
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	truncstrat::KSPFCDTruncationType = KSPFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the truncation strategy employed by `KSPFCG`
 
 Not Collective
@@ -1797,11 +1797,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFCGGetTruncationType"))
 """
-function KSPFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPFCGGetTruncationType: no generated method for these argument types")
 end
 
-@for_petsc function KSPFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -1817,7 +1817,7 @@ end
 end 
 
 """
-	KSPFCGSetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP, mmax::PetscInt) 
+	KSPFCGSetMmax(petsclib::PetscLibType,ksp::AbstractKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPFCG` will store for orthogonalization
 
 Logically Collective
@@ -1836,11 +1836,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFCGSetMmax"))
 """
-function KSPFCGSetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP, mmax::Integer)
+function KSPFCGSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::Integer)
     error("KSPFCGSetMmax: no generated method for these argument types")
 end
 
-@for_petsc function KSPFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mmax::$PetscInt )
+@for_petsc function KSPFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP, mmax::$PetscInt )
 
     @chk ccall(
                (:KSPFCGSetMmax, $petsc_library),
@@ -1854,7 +1854,7 @@ end
 end 
 
 """
-	KSPFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP, nprealloc::PetscInt) 
+	KSPFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPFCG`
 
 Logically Collective
@@ -1873,11 +1873,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFCGSetNprealloc"))
 """
-function KSPFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP, nprealloc::Integer)
+function KSPFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, nprealloc::Integer)
     error("KSPFCGSetNprealloc: no generated method for these argument types")
 end
 
-@for_petsc function KSPFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nprealloc::$PetscInt )
+@for_petsc function KSPFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP, nprealloc::$PetscInt )
 
     @chk ccall(
                (:KSPFCGSetNprealloc, $petsc_library),
@@ -1891,7 +1891,7 @@ end
 end 
 
 """
-	KSPFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
+	KSPFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPFCG` uses during orthogonalization
 
 Logically Collective
@@ -1905,11 +1905,11 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPFCGSetTruncationType"))
 """
-function KSPFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType)
+function KSPFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType)
     error("KSPFCGSetTruncationType: no generated method for these argument types")
 end
 
-@for_petsc function KSPFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType )
+@for_petsc function KSPFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType )
 
     @chk ccall(
                (:KSPFCGSetTruncationType, $petsc_library),
@@ -1923,7 +1923,7 @@ end
 end 
 
 """
-	pc::PC = KSPFETIDPGetInnerBDDC(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	pc::PC = KSPFETIDPGetInnerBDDC(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the `PCBDDC` preconditioner used to set up the `KSPFETIDP` matrix for the Lagrange multipliers
 
 Input Parameter:
@@ -1939,11 +1939,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPGetInnerBDDC"))
 """
-function KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPFETIDPGetInnerBDDC: no generated method for these argument types")
 end
 
-@for_petsc function KSPFETIDPGetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPFETIDPGetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	pc_ = Ref{PC}()
 
     @chk ccall(
@@ -1959,7 +1959,7 @@ end
 end 
 
 """
-	innerksp::PetscKSP = KSPFETIDPGetInnerKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	innerksp::KSP = KSPFETIDPGetInnerKSP(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the `KSP` object for the Lagrange multipliers from inside a `KSPFETIDP`
 
 Input Parameter:
@@ -1975,11 +1975,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPGetInnerKSP"))
 """
-function KSPFETIDPGetInnerKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPFETIDPGetInnerKSP(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPFETIDPGetInnerKSP: no generated method for these argument types")
 end
 
-@for_petsc function KSPFETIDPGetInnerKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPFETIDPGetInnerKSP(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -1989,13 +1989,13 @@ end
                ksp, innerksp_,
               )
 
-	innerksp = PetscKSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib)
 
 	return innerksp
 end 
 
 """
-	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC) 
+	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType,ksp::AbstractKSP, pc::PC) 
 Provides the `PCBDDC` preconditioner used to set up the `KSPFETIDP` matrix for the Lagrange multipliers
 
 Collective
@@ -2011,11 +2011,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPSetInnerBDDC"))
 """
-function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC)
+function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC)
     error("KSPFETIDPSetInnerBDDC: no generated method for these argument types")
 end
 
-@for_petsc function KSPFETIDPSetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC )
+@for_petsc function KSPFETIDPSetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::PC )
 
     @chk ccall(
                (:KSPFETIDPSetInnerBDDC, $petsc_library),
@@ -2029,7 +2029,7 @@ end
 end 
 
 """
-	KSPFETIDPSetPressureOperator(petsclib::PetscLibType,ksp::AbstractPetscKSP, P::AbstractPetscMat) 
+	KSPFETIDPSetPressureOperator(petsclib::PetscLibType,ksp::AbstractKSP, P::AbstractPetscMat) 
 Sets the operator used to set up the pressure preconditioner for the saddle point `KSPFETIDP` solver,
 
 Collective
@@ -2045,11 +2045,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPSetPressureOperator"))
 """
-function KSPFETIDPSetPressureOperator(petsclib::PetscLibType, ksp::AbstractPetscKSP, P::AbstractPetscMat)
+function KSPFETIDPSetPressureOperator(petsclib::PetscLibType, ksp::AbstractKSP, P::AbstractPetscMat)
     error("KSPFETIDPSetPressureOperator: no generated method for these argument types")
 end
 
-@for_petsc function KSPFETIDPSetPressureOperator(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, P::AbstractPetscMat )
+@for_petsc function KSPFETIDPSetPressureOperator(petsclib::$UnionPetscLib, ksp::AbstractKSP, P::AbstractPetscMat )
 
     @chk ccall(
                (:KSPFETIDPSetPressureOperator, $petsc_library),
@@ -2091,7 +2091,7 @@ end
 end 
 
 """
-	KSPFlexibleModifyPCKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
+	KSPFlexibleModifyPCKSP(petsclib::PetscLibType,ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
 modifies the attributes of the `PCKSP` preconditioner, see [](sec_flexibleksp).
 
 Input Parameters:
@@ -2108,11 +2108,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFlexibleModifyPCKSP"))
 """
-function KSPFlexibleModifyPCKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
+function KSPFlexibleModifyPCKSP(petsclib::PetscLibType, ksp::AbstractKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
     error("KSPFlexibleModifyPCKSP: no generated method for these argument types")
 end
 
-@for_petsc function KSPFlexibleModifyPCKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
+@for_petsc function KSPFlexibleModifyPCKSP(petsclib::$UnionPetscLib, ksp::AbstractKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPFlexibleModifyPCKSP, $petsc_library),
@@ -2126,7 +2126,7 @@ end
 end 
 
 """
-	KSPFlexibleModifyPCNoChange(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
+	KSPFlexibleModifyPCNoChange(petsclib::PetscLibType,ksp::AbstractKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Ptr{Cvoid}) 
 this is the default used by the flexible Krylov methods
 
 Input Parameters:
@@ -2143,11 +2143,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFlexibleModifyPCNoChange"))
 """
-function KSPFlexibleModifyPCNoChange(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
+function KSPFlexibleModifyPCNoChange(petsclib::PetscLibType, ksp::AbstractKSP, total_its::Integer, loc_its::Integer, res_norm::Real, ctx::Ptr{Cvoid})
     error("KSPFlexibleModifyPCNoChange: no generated method for these argument types")
 end
 
-@for_petsc function KSPFlexibleModifyPCNoChange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
+@for_petsc function KSPFlexibleModifyPCNoChange(petsclib::$UnionPetscLib, ksp::AbstractKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPFlexibleModifyPCNoChange, $petsc_library),
@@ -2161,7 +2161,7 @@ end
 end 
 
 """
-	KSPFlexibleSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+	KSPFlexibleSetModifyPC(petsclib::PetscLibType,ksp::AbstractKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Sets the routine used by flexible `KSP` methods to modify the preconditioner. [](sec_flexibleksp)
 
 Logically Collective
@@ -2179,11 +2179,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFlexibleSetModifyPC"))
 """
-function KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
+function KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::AbstractKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
     error("KSPFlexibleSetModifyPC: no generated method for these argument types")
 end
 
-@for_petsc function KSPFlexibleSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
+@for_petsc function KSPFlexibleSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPFlexibleSetModifyPC, $petsc_library),
@@ -2197,7 +2197,7 @@ end
 end 
 
 """
-	restart::PetscInt = KSPGCRGetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	restart::PetscInt = KSPGCRGetRestart(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets number of iterations at which `KSPGCR` restarts.
 
 Not Collective
@@ -2215,11 +2215,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGCRGetRestart"))
 """
-function KSPGCRGetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGCRGetRestart(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGCRGetRestart: no generated method for these argument types")
 end
 
-@for_petsc function KSPGCRGetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGCRGetRestart(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	restart_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2235,7 +2235,7 @@ end
 end 
 
 """
-	KSPGCRSetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP, restart::PetscInt) 
+	KSPGCRSetRestart(petsclib::PetscLibType,ksp::AbstractKSP, restart::PetscInt) 
 Sets number of iterations at which `KSPGCR` restarts.
 
 Not Collective
@@ -2254,11 +2254,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGCRSetRestart"))
 """
-function KSPGCRSetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP, restart::Integer)
+function KSPGCRSetRestart(petsclib::PetscLibType, ksp::AbstractKSP, restart::Integer)
     error("KSPGCRSetRestart: no generated method for these argument types")
 end
 
-@for_petsc function KSPGCRSetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, restart::$PetscInt )
+@for_petsc function KSPGCRSetRestart(petsclib::$UnionPetscLib, ksp::AbstractKSP, restart::$PetscInt )
 
     @chk ccall(
                (:KSPGCRSetRestart, $petsc_library),
@@ -2272,7 +2272,7 @@ end
 end 
 
 """
-	lambda::PetscReal = KSPGLTRGetLambda(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	lambda::PetscReal = KSPGLTRGetLambda(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get the multiplier on the trust
 
 Not Collective
@@ -2290,11 +2290,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGLTRGetLambda"))
 """
-function KSPGLTRGetLambda(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGLTRGetLambda(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGLTRGetLambda: no generated method for these argument types")
 end
 
-@for_petsc function KSPGLTRGetLambda(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGLTRGetLambda(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	lambda_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2310,7 +2310,7 @@ end
 end 
 
 """
-	e_min::PetscReal = KSPGLTRGetMinEig(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	e_min::PetscReal = KSPGLTRGetMinEig(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get minimum eigenvalue computed by `KSPGLTR`
 
 Collective
@@ -2328,11 +2328,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGLTRGetMinEig"))
 """
-function KSPGLTRGetMinEig(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGLTRGetMinEig(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGLTRGetMinEig: no generated method for these argument types")
 end
 
-@for_petsc function KSPGLTRGetMinEig(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGLTRGetMinEig(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	e_min_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2348,7 +2348,7 @@ end
 end 
 
 """
-	KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt) 
+	KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt) 
 This is the basic orthogonalization routine
 using classical Gram-Schmidt with possible iterative refinement to improve the stability
 
@@ -2371,11 +2371,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESClassicalGramSchmidtOrthogonalization"))
 """
-function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::Integer)
+function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, it::Integer)
     error("KSPGMRESClassicalGramSchmidtOrthogonalization: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt )
+@for_petsc function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractKSP, it::$PetscInt )
 
     @chk ccall(
                (:KSPGMRESClassicalGramSchmidtOrthogonalization, $petsc_library),
@@ -2389,7 +2389,7 @@ end
 end 
 
 """
-	type::KSPGMRESCGSRefinementType = KSPGMRESGetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	type::KSPGMRESCGSRefinementType = KSPGMRESGetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the type of iterative refinement to use
 in the classical Gram-Schmidt orthogonalization used by `KSPGMRES` and other PETSc GMRES implementations.
 
@@ -2409,11 +2409,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESGetCGSRefinementType"))
 """
-function KSPGMRESGetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGMRESGetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGMRESGetCGSRefinementType: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESGetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGMRESGetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	type_ = Ref{KSPGMRESCGSRefinementType}()
 
     @chk ccall(
@@ -2429,7 +2429,7 @@ end
 end 
 
 """
-	KSPGMRESGetOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, noname::Ptr{Cvoid}) 
+	KSPGMRESGetOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, noname::Ptr{Cvoid}) 
 Gets the orthogonalization routine used by `KSPGMRES` and `KSPFGMRES`.
 
 Not Collective
@@ -2452,11 +2452,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESGetOrthogonalization"))
 """
-function KSPGMRESGetOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, noname::Ptr{Cvoid})
+function KSPGMRESGetOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, noname::Ptr{Cvoid})
     error("KSPGMRESGetOrthogonalization: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESGetOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, noname::Ptr{Cvoid} )
+@for_petsc function KSPGMRESGetOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractKSP, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPGMRESGetOrthogonalization, $petsc_library),
@@ -2470,7 +2470,7 @@ end
 end 
 
 """
-	restart::PetscInt = KSPGMRESGetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	restart::PetscInt = KSPGMRESGetRestart(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets number of iterations at which GMRES (`KSPGMRES`, `KSPFGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`,
 and `KSPLGMRES`) restarts.
 
@@ -2490,11 +2490,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESGetRestart"))
 """
-function KSPGMRESGetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGMRESGetRestart(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGMRESGetRestart: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESGetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGMRESGetRestart(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	restart_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2510,7 +2510,7 @@ end
 end 
 
 """
-	KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt) 
+	KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt) 
 This is the basic orthogonalization routine
 using modified Gram-Schmidt.
 
@@ -2530,11 +2530,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESModifiedGramSchmidtOrthogonalization"))
 """
-function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::Integer)
+function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, it::Integer)
     error("KSPGMRESModifiedGramSchmidtOrthogonalization: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt )
+@for_petsc function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractKSP, it::$PetscInt )
 
     @chk ccall(
                (:KSPGMRESModifiedGramSchmidtOrthogonalization, $petsc_library),
@@ -2548,7 +2548,7 @@ end
 end 
 
 """
-	KSPGMRESMonitorKrylov(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fgnorm::PetscReal, Viewers::Ptr{Cvoid}) 
+	KSPGMRESMonitorKrylov(petsclib::PetscLibType,ksp::AbstractKSP, its::PetscInt, fgnorm::PetscReal, Viewers::Ptr{Cvoid}) 
 Calls `VecView()` to monitor each new direction in the `KSPGMRES` accumulated Krylov space.
 
 Collective
@@ -2569,11 +2569,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESMonitorKrylov"))
 """
-function KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::Integer, fgnorm::Real, Viewers::Ptr{Cvoid})
+function KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::AbstractKSP, its::Integer, fgnorm::Real, Viewers::Ptr{Cvoid})
     error("KSPGMRESMonitorKrylov: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESMonitorKrylov(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fgnorm::$PetscReal, Viewers::Ptr{Cvoid} )
+@for_petsc function KSPGMRESMonitorKrylov(petsclib::$UnionPetscLib, ksp::AbstractKSP, its::$PetscInt, fgnorm::$PetscReal, Viewers::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPGMRESMonitorKrylov, $petsc_library),
@@ -2587,7 +2587,7 @@ end
 end 
 
 """
-	KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType,ksp::AbstractPetscKSP, tol::PetscReal) 
+	KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType,ksp::AbstractKSP, tol::PetscReal) 
 Sets the tolerance for determining divergence breakdown in `KSPGMRES` at restart.
 
 Logically Collective
@@ -2606,11 +2606,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetBreakdownTolerance"))
 """
-function KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType, ksp::AbstractPetscKSP, tol::Real)
+function KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType, ksp::AbstractKSP, tol::Real)
     error("KSPGMRESSetBreakdownTolerance: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESSetBreakdownTolerance(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, tol::$PetscReal )
+@for_petsc function KSPGMRESSetBreakdownTolerance(petsclib::$UnionPetscLib, ksp::AbstractKSP, tol::$PetscReal )
 
     @chk ccall(
                (:KSPGMRESSetBreakdownTolerance, $petsc_library),
@@ -2624,7 +2624,7 @@ end
 end 
 
 """
-	KSPGMRESSetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPGMRESCGSRefinementType) 
+	KSPGMRESSetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPGMRESCGSRefinementType) 
 Sets the type of iterative refinement to use
 in the classical Gram-Schmidt orthogonalization used by `KSPGMRES` and other PETSc GMRES implementations.
 
@@ -2639,11 +2639,11 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPGMRESSetCGSRefinementType"))
 """
-function KSPGMRESSetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPGMRESCGSRefinementType)
+function KSPGMRESSetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPGMRESCGSRefinementType)
     error("KSPGMRESSetCGSRefinementType: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESSetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPGMRESCGSRefinementType )
+@for_petsc function KSPGMRESSetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::KSPGMRESCGSRefinementType )
 
     @chk ccall(
                (:KSPGMRESSetCGSRefinementType, $petsc_library),
@@ -2657,7 +2657,7 @@ end
 end 
 
 """
-	KSPGMRESSetHapTol(petsclib::PetscLibType,ksp::AbstractPetscKSP, tol::PetscReal) 
+	KSPGMRESSetHapTol(petsclib::PetscLibType,ksp::AbstractKSP, tol::PetscReal) 
 Sets the tolerance for detecting a happy breakdown in GMRES (`KSPGMRES`, `KSPFGMRES` and `KSPLGMRES` and others)
 
 Logically Collective
@@ -2676,11 +2676,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetHapTol"))
 """
-function KSPGMRESSetHapTol(petsclib::PetscLibType, ksp::AbstractPetscKSP, tol::Real)
+function KSPGMRESSetHapTol(petsclib::PetscLibType, ksp::AbstractKSP, tol::Real)
     error("KSPGMRESSetHapTol: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESSetHapTol(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, tol::$PetscReal )
+@for_petsc function KSPGMRESSetHapTol(petsclib::$UnionPetscLib, ksp::AbstractKSP, tol::$PetscReal )
 
     @chk ccall(
                (:KSPGMRESSetHapTol, $petsc_library),
@@ -2694,7 +2694,7 @@ end
 end 
 
 """
-	KSPGMRESSetOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, fcn::external) 
+	KSPGMRESSetOrthogonalization(petsclib::PetscLibType,ksp::AbstractKSP, fcn::external) 
 Sets the orthogonalization routine used by `KSPGMRES` and `KSPFGMRES`.
 
 Logically Collective
@@ -2720,11 +2720,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetOrthogonalization"))
 """
-function KSPGMRESSetOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, fcn::external)
+function KSPGMRESSetOrthogonalization(petsclib::PetscLibType, ksp::AbstractKSP, fcn::external)
     error("KSPGMRESSetOrthogonalization: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESSetOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fcn::external )
+@for_petsc function KSPGMRESSetOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractKSP, fcn::external )
 
     @chk ccall(
                (:KSPGMRESSetOrthogonalization, $petsc_library),
@@ -2738,7 +2738,7 @@ end
 end 
 
 """
-	KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType,ksp::AbstractKSP) 
 Causes `KSPGMRES` and `KSPFGMRES` to preallocate all its
 needed work vectors at initial setup rather than the default, which
 is to allocate several at a time when needed.
@@ -2759,11 +2759,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetPreAllocateVectors"))
 """
-function KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGMRESSetPreAllocateVectors: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESSetPreAllocateVectors(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGMRESSetPreAllocateVectors(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPGMRESSetPreAllocateVectors, $petsc_library),
@@ -2777,7 +2777,7 @@ end
 end 
 
 """
-	KSPGMRESSetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP, restart::PetscInt) 
+	KSPGMRESSetRestart(petsclib::PetscLibType,ksp::AbstractKSP, restart::PetscInt) 
 Sets number of iterations at which GMRES (`KSPGMRES`, `KSPFGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`,
 and `KSPLGMRES`) restarts.
 
@@ -2798,11 +2798,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetRestart"))
 """
-function KSPGMRESSetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP, restart::Integer)
+function KSPGMRESSetRestart(petsclib::PetscLibType, ksp::AbstractKSP, restart::Integer)
     error("KSPGMRESSetRestart: no generated method for these argument types")
 end
 
-@for_petsc function KSPGMRESSetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, restart::$PetscInt )
+@for_petsc function KSPGMRESSetRestart(petsclib::$UnionPetscLib, ksp::AbstractKSP, restart::$PetscInt )
 
     @chk ccall(
                (:KSPGMRESSetRestart, $petsc_library),
@@ -2816,7 +2816,7 @@ end
 end 
 
 """
-	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetAndClearConvergenceTest(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetAndClearConvergenceTest(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the function to be used to determine convergence. Removes the current test without calling destroy on the test context
 
 Logically Collective
@@ -2836,11 +2836,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetAndClearConvergenceTest"))
 """
-function KSPGetAndClearConvergenceTest(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetAndClearConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetAndClearConvergenceTest: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetAndClearConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetAndClearConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	converge_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
 	destroy_ = Ref{Ptr{Cvoid}}()
@@ -2860,7 +2860,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPGetApplicationContext(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	ctx::Ptr{Cvoid} = KSPGetApplicationContext(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the user
 
 Not Collective
@@ -2878,11 +2878,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetApplicationContext"))
 """
-function KSPGetApplicationContext(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetApplicationContext(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -2898,7 +2898,7 @@ end
 end 
 
 """
-	flg::PetscBool = KSPGetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	flg::PetscBool = KSPGetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the flag indicating that the extreme eigenvalues
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -2918,11 +2918,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetComputeEigenvalues"))
 """
-function KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetComputeEigenvalues: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2938,7 +2938,7 @@ end
 end 
 
 """
-	flg::PetscBool = KSPGetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	flg::PetscBool = KSPGetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the flag indicating whether the extreme singular
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -2961,11 +2961,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetComputeSingularValues"))
 """
-function KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetComputeSingularValues: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2981,7 +2981,7 @@ end
 end 
 
 """
-	flg::PetscBool = KSPGetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	flg::PetscBool = KSPGetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get the flag to declare convergence if negative curvature is detected
 
 Collective
@@ -2999,11 +2999,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetConvergedNegativeCurvature"))
 """
-function KSPGetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetConvergedNegativeCurvature: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3019,7 +3019,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPGetConvergedReason(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	reason::KSPConvergedReason = KSPGetConvergedReason(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the reason the `KSP` iteration was stopped.
 
 Not Collective
@@ -3041,11 +3041,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetConvergedReason"))
 """
-function KSPGetConvergedReason(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetConvergedReason(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetConvergedReason: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetConvergedReason(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetConvergedReason(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -3061,7 +3061,7 @@ end
 end 
 
 """
-	strreason::Ptr{Cchar} = KSPGetConvergedReasonString(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	strreason::Ptr{Cchar} = KSPGetConvergedReasonString(petsclib::PetscLibType,ksp::AbstractKSP) 
 Return a human readable string for a `KSPConvergedReason`
 
 Not Collective
@@ -3079,11 +3079,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPGetConvergedReasonString"))
 """
-function KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetConvergedReasonString: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetConvergedReasonString(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetConvergedReasonString(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	strreason_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -3099,7 +3099,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPGetConvergenceContext(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	ctx::Ptr{Cvoid} = KSPGetConvergenceContext(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the convergence context set with `KSPSetConvergenceTest()`.
 
 Not Collective
@@ -3117,11 +3117,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetConvergenceContext"))
 """
-function KSPGetConvergenceContext(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetConvergenceContext(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetConvergenceContext: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetConvergenceContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetConvergenceContext(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -3137,7 +3137,7 @@ end
 end 
 
 """
-	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetConvergenceTest(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	converge::Ptr{Cvoid},ctx::Ptr{Cvoid},destroy::Ptr{Cvoid} = KSPGetConvergenceTest(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the function to be used to determine convergence.
 
 Logically Collective
@@ -3157,11 +3157,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetConvergenceTest"))
 """
-function KSPGetConvergenceTest(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetConvergenceTest: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	converge_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
 	destroy_ = Ref{Ptr{Cvoid}}()
@@ -3181,7 +3181,7 @@ end
 end 
 
 """
-	dm::PetscDM = KSPGetDM(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	dm::PetscDM = KSPGetDM(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
 
 Not Collective
@@ -3199,11 +3199,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetDM"))
 """
-function KSPGetDM(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetDM(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetDM: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetDM(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetDM(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -3219,7 +3219,7 @@ end
 end 
 
 """
-	scale::PetscBool = KSPGetDiagonalScale(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	scale::PetscBool = KSPGetDiagonalScale(petsclib::PetscLibType,ksp::AbstractKSP) 
 Checks if `KSP` solver scales the matrix and right
 
 Not Collective
@@ -3237,11 +3237,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetDiagonalScale"))
 """
-function KSPGetDiagonalScale(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetDiagonalScale(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetDiagonalScale: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	scale_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3257,7 +3257,7 @@ end
 end 
 
 """
-	fix::PetscBool = KSPGetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	fix::PetscBool = KSPGetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractKSP) 
 Determines if `KSP` diagonally scales the system back after solving. That is `KSPSetDiagonalScaleFix()` has been called
 
 Not Collective
@@ -3276,11 +3276,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetDiagonalScaleFix"))
 """
-function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetDiagonalScaleFix: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	fix_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3296,7 +3296,7 @@ end
 end 
 
 """
-	a::Ptr{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	a::Ptr{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the array used to hold the error history and the number of residuals it contains.
 
 Not Collective
@@ -3315,11 +3315,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetErrorHistory"))
 """
-function KSPGetErrorHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetErrorHistory: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	a_ = Ref{Ptr{$PetscReal}}()
 	na_ = Ref{$PetscInt}()
 
@@ -3337,7 +3337,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	flag::PetscBool = KSPGetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractKSP) 
 Will `KSPSolve()` generate an error if the solver does not converge?
 
 Not Collective
@@ -3355,11 +3355,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetErrorIfNotConverged"))
 """
-function KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetErrorIfNotConverged: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3375,7 +3375,7 @@ end
 end 
 
 """
-	guess::KSPGuess = KSPGetGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	guess::KSPGuess = KSPGetGuess(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the initial guess generator for the `KSP`.
 
 Not Collective
@@ -3393,11 +3393,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetGuess"))
 """
-function KSPGetGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetGuess(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetGuess: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	guess_ = Ref{KSPGuess}()
 
     @chk ccall(
@@ -3413,7 +3413,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	flag::PetscBool = KSPGetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractKSP) 
 Determines whether the `KSP` solver is using the Knoll trick (using PCApply(pc,b,...) to compute
 the initial guess
 
@@ -3432,11 +3432,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetInitialGuessKnoll"))
 """
-function KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetInitialGuessKnoll: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3452,7 +3452,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	flag::PetscBool = KSPGetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractKSP) 
 Determines whether the `KSP` solver is using
 a zero initial guess.
 
@@ -3471,11 +3471,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetInitialGuessNonzero"))
 """
-function KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetInitialGuessNonzero: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3491,7 +3491,7 @@ end
 end 
 
 """
-	its::PetscInt = KSPGetIterationNumber(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	its::PetscInt = KSPGetIterationNumber(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the current iteration number; if the `KSPSolve()` is complete, returns the number of iterations used.
 
 Not Collective
@@ -3509,11 +3509,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetIterationNumber"))
 """
-function KSPGetIterationNumber(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetIterationNumber(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetIterationNumber: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetIterationNumber(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetIterationNumber(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	its_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3529,7 +3529,7 @@ end
 end 
 
 """
-	bs::PetscInt = KSPGetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	bs::PetscInt = KSPGetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the maximum number of columns treated simultaneously in `KSPMatSolve()`.
 
 Input Parameter:
@@ -3545,11 +3545,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetMatSolveBatchSize"))
 """
-function KSPGetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetMatSolveBatchSize: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3565,7 +3565,7 @@ end
 end 
 
 """
-	minit::PetscInt = KSPGetMinimumIterations(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	minit::PetscInt = KSPGetMinimumIterations(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the minimum number of iterations to use, regardless of the tolerances, that was set with `KSPSetMinimumIterations()` or `
 
 Not Collective
@@ -3583,11 +3583,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetMinimumIterations"))
 """
-function KSPGetMinimumIterations(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetMinimumIterations(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetMinimumIterations: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	minit_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3603,7 +3603,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPGetMonitorContext(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	ctx::Ptr{Cvoid} = KSPGetMonitorContext(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the monitoring context, as set by `KSPMonitorSet()` for the FIRST monitor only.
 
 Not Collective
@@ -3621,11 +3621,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetMonitorContext"))
 """
-function KSPGetMonitorContext(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetMonitorContext(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetMonitorContext: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetMonitorContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetMonitorContext(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -3641,7 +3641,7 @@ end
 end 
 
 """
-	level::PetscInt = KSPGetNestLevel(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	level::PetscInt = KSPGetNestLevel(petsclib::PetscLibType,ksp::AbstractKSP) 
 gets the amount of nesting the `KSP` has
 
 Not Collective
@@ -3659,11 +3659,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetNestLevel"))
 """
-function KSPGetNestLevel(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetNestLevel(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetNestLevel: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	level_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3679,7 +3679,7 @@ end
 end 
 
 """
-	normtype::KSPNormType = KSPGetNormType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	normtype::KSPNormType = KSPGetNormType(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the `KSPNormType` that is used for convergence testing during `KSPSolve()` for this `KSP` context
 
 Not Collective
@@ -3697,11 +3697,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetNormType"))
 """
-function KSPGetNormType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetNormType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetNormType: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetNormType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetNormType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	normtype_ = Ref{KSPNormType}()
 
     @chk ccall(
@@ -3717,7 +3717,7 @@ end
 end 
 
 """
-	Amat::PetscMat,Pmat::PetscMat = KSPGetOperators(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	Amat::PetscMat,Pmat::PetscMat = KSPGetOperators(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the matrix associated with the linear system
 and a (possibly) different one used to construct the preconditioner from the `KSP` context
 
@@ -3737,11 +3737,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetOperators"))
 """
-function KSPGetOperators(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetOperators(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetOperators: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetOperators(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetOperators(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	Amat_ = Ref{CMat}()
 	Pmat_ = Ref{CMat}()
 
@@ -3759,7 +3759,7 @@ end
 end 
 
 """
-	mat::PetscBool,pmat::PetscBool = KSPGetOperatorsSet(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	mat::PetscBool,pmat::PetscBool = KSPGetOperatorsSet(petsclib::PetscLibType,ksp::AbstractKSP) 
 Determines if the matrix associated with the linear system and
 possibly a different one from which the preconditioner will be built have been set in the `KSP` with `KSPSetOperators()`
 
@@ -3779,11 +3779,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetOperatorsSet"))
 """
-function KSPGetOperatorsSet(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetOperatorsSet(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetOperatorsSet: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetOperatorsSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetOperatorsSet(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	mat_ = Ref{PetscBool}()
 	pmat_ = Ref{PetscBool}()
 
@@ -3801,7 +3801,7 @@ end
 end 
 
 """
-	prefix::Ptr{Cchar} = KSPGetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	prefix::Ptr{Cchar} = KSPGetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the prefix used for searching for all
 `KSP` options in the database.
 
@@ -3820,11 +3820,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetOptionsPrefix"))
 """
-function KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetOptionsPrefix: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -3840,7 +3840,7 @@ end
 end 
 
 """
-	pc::PC = KSPGetPC(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	pc::PC = KSPGetPC(petsclib::PetscLibType,ksp::AbstractKSP) 
 Returns a pointer to the preconditioner context with the `KSP`
 
 Not Collective
@@ -3858,11 +3858,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPGetPC"))
 """
-function KSPGetPC(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetPC(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetPC: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetPC(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	pc_ = Ref{PC}()
 
     @chk ccall(
@@ -3878,7 +3878,7 @@ end
 end 
 
 """
-	side::PCSide = KSPGetPCSide(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	side::PCSide = KSPGetPCSide(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the preconditioning side.
 
 Not Collective
@@ -3893,11 +3893,11 @@ Output Parameter:
 # External Links
 $(_doc_external("KSP/KSPGetPCSide"))
 """
-function KSPGetPCSide(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetPCSide(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetPCSide: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetPCSide(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetPCSide(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	side_ = Ref{PCSide}()
 
     @chk ccall(
@@ -3913,7 +3913,7 @@ end
 end 
 
 """
-	a::Ptr{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	a::Ptr{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the array used to hold the residual history and the number of residuals it contains.
 
 Not Collective
@@ -3932,11 +3932,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetResidualHistory"))
 """
-function KSPGetResidualHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetResidualHistory: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	a_ = Ref{Ptr{$PetscReal}}()
 	na_ = Ref{$PetscInt}()
 
@@ -3954,7 +3954,7 @@ end
 end 
 
 """
-	rnorm::PetscReal = KSPGetResidualNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	rnorm::PetscReal = KSPGetResidualNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the last (possibly approximate and/or preconditioned) residual norm that has been computed.
 
 Not Collective
@@ -3972,11 +3972,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetResidualNorm"))
 """
-function KSPGetResidualNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetResidualNorm(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetResidualNorm: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetResidualNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetResidualNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	rnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3992,7 +3992,7 @@ end
 end 
 
 """
-	flag::PetscBool = KSPGetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	flag::PetscBool = KSPGetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractKSP) 
 Determines if the `KSP` reuses the current preconditioner even if the `Mat` operator in the `KSP` has changed.
 
 Collective
@@ -4010,11 +4010,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetReusePreconditioner"))
 """
-function KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetReusePreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4030,7 +4030,7 @@ end
 end 
 
 """
-	r::PetscVec = KSPGetRhs(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	r::PetscVec = KSPGetRhs(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the right
 be solved.
 
@@ -4049,11 +4049,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetRhs"))
 """
-function KSPGetRhs(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetRhs(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetRhs: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetRhs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetRhs(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	r_ = Ref{CVec}()
 
     @chk ccall(
@@ -4069,7 +4069,7 @@ end
 end 
 
 """
-	v::PetscVec = KSPGetSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	v::PetscVec = KSPGetSolution(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the location of the solution for the
 linear system to be solved.
 
@@ -4088,11 +4088,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetSolution"))
 """
-function KSPGetSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetSolution(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetSolution: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetSolution(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -4108,7 +4108,7 @@ end
 end 
 
 """
-	rtol::PetscReal,abstol::PetscReal,dtol::PetscReal,maxits::PetscInt = KSPGetTolerances(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	rtol::PetscReal,abstol::PetscReal,dtol::PetscReal,maxits::PetscInt = KSPGetTolerances(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the relative, absolute, divergence, and maximum
 iteration tolerances used by the default `KSP` convergence tests.
 
@@ -4130,11 +4130,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetTolerances"))
 """
-function KSPGetTolerances(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetTolerances(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetTolerances: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetTolerances(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetTolerances(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	rtol_ = Ref{$PetscReal}()
 	abstol_ = Ref{$PetscReal}()
 	dtol_ = Ref{$PetscReal}()
@@ -4156,7 +4156,7 @@ end
 end 
 
 """
-	its::PetscInt = KSPGetTotalIterations(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	its::PetscInt = KSPGetTotalIterations(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the total number of iterations this `KSP` object has performed since was created, counted over all linear solves
 
 Not Collective
@@ -4174,11 +4174,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetTotalIterations"))
 """
-function KSPGetTotalIterations(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetTotalIterations(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetTotalIterations: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetTotalIterations(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetTotalIterations(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	its_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -4194,7 +4194,7 @@ end
 end 
 
 """
-	type::KSPType = KSPGetType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	type::KSPType = KSPGetType(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the `KSP` type as a string from the `KSP` object.
 
 Not Collective
@@ -4212,11 +4212,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetType"))
 """
-function KSPGetType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPGetType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPGetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPGetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPGetType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	type_ = Ref{KSPType}()
 
     @chk ccall(
@@ -4232,16 +4232,16 @@ end
 end 
 
 """
-	KSPHPDDMGetDeflationMat(petsclib::PetscLibType,ksp::AbstractPetscKSP, U::AbstractPetscMat) 
+	KSPHPDDMGetDeflationMat(petsclib::PetscLibType,ksp::AbstractKSP, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMGetDeflationMat"))
 """
-function KSPHPDDMGetDeflationMat(petsclib::PetscLibType, ksp::AbstractPetscKSP, U::AbstractPetscMat)
+function KSPHPDDMGetDeflationMat(petsclib::PetscLibType, ksp::AbstractKSP, U::AbstractPetscMat)
     error("KSPHPDDMGetDeflationMat: no generated method for these argument types")
 end
 
-@for_petsc function KSPHPDDMGetDeflationMat(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, U::AbstractPetscMat )
+@for_petsc function KSPHPDDMGetDeflationMat(petsclib::$UnionPetscLib, ksp::AbstractKSP, U::AbstractPetscMat )
 	U_ = Ref(U.ptr)
 
     @chk ccall(
@@ -4257,16 +4257,16 @@ end
 end 
 
 """
-	type::KSPHPDDMType = KSPHPDDMGetType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	type::KSPHPDDMType = KSPHPDDMGetType(petsclib::PetscLibType,ksp::AbstractKSP) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMGetType"))
 """
-function KSPHPDDMGetType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPHPDDMGetType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPHPDDMGetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPHPDDMGetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPHPDDMGetType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	type_ = Ref{KSPHPDDMType}()
 
     @chk ccall(
@@ -4282,16 +4282,16 @@ end
 end 
 
 """
-	KSPHPDDMSetDeflationMat(petsclib::PetscLibType,ksp::AbstractPetscKSP, U::AbstractPetscMat) 
+	KSPHPDDMSetDeflationMat(petsclib::PetscLibType,ksp::AbstractKSP, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMSetDeflationMat"))
 """
-function KSPHPDDMSetDeflationMat(petsclib::PetscLibType, ksp::AbstractPetscKSP, U::AbstractPetscMat)
+function KSPHPDDMSetDeflationMat(petsclib::PetscLibType, ksp::AbstractKSP, U::AbstractPetscMat)
     error("KSPHPDDMSetDeflationMat: no generated method for these argument types")
 end
 
-@for_petsc function KSPHPDDMSetDeflationMat(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, U::AbstractPetscMat )
+@for_petsc function KSPHPDDMSetDeflationMat(petsclib::$UnionPetscLib, ksp::AbstractKSP, U::AbstractPetscMat )
 
     @chk ccall(
                (:KSPHPDDMSetDeflationMat, $petsc_library),
@@ -4305,16 +4305,16 @@ end
 end 
 
 """
-	KSPHPDDMSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPHPDDMType) 
+	KSPHPDDMSetType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPHPDDMType) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMSetType"))
 """
-function KSPHPDDMSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPHPDDMType)
+function KSPHPDDMSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPHPDDMType)
     error("KSPHPDDMSetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPHPDDMSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPHPDDMType )
+@for_petsc function KSPHPDDMSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::KSPHPDDMType )
 
     @chk ccall(
                (:KSPHPDDMSetType, $petsc_library),
@@ -4328,7 +4328,7 @@ end
 end 
 
 """
-	KSPInitialResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec) 
+	KSPInitialResidual(petsclib::PetscLibType,ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec) 
 Computes the residual. Either b
 preconditioning or C*(b - A*x) with left preconditioning; the latter
 residual is often called the "preconditioned residual".
@@ -4352,11 +4352,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPInitialResidual"))
 """
-function KSPInitialResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec)
+function KSPInitialResidual(petsclib::PetscLibType, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec)
     error("KSPInitialResidual: no generated method for these argument types")
 end
 
-@for_petsc function KSPInitialResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec )
+@for_petsc function KSPInitialResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec )
 
     @chk ccall(
                (:KSPInitialResidual, $petsc_library),
@@ -4399,7 +4399,7 @@ end
 end 
 
 """
-	KSPLGMRESSetAugDim(petsclib::PetscLibType,ksp::AbstractPetscKSP, dim::PetscInt) 
+	KSPLGMRESSetAugDim(petsclib::PetscLibType,ksp::AbstractKSP, dim::PetscInt) 
 Set the number of error approximations to include in the approximation space (default is 2) for `KSPLGMRES`
 
 Collective
@@ -4418,11 +4418,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLGMRESSetAugDim"))
 """
-function KSPLGMRESSetAugDim(petsclib::PetscLibType, ksp::AbstractPetscKSP, dim::Integer)
+function KSPLGMRESSetAugDim(petsclib::PetscLibType, ksp::AbstractKSP, dim::Integer)
     error("KSPLGMRESSetAugDim: no generated method for these argument types")
 end
 
-@for_petsc function KSPLGMRESSetAugDim(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, dim::$PetscInt )
+@for_petsc function KSPLGMRESSetAugDim(petsclib::$UnionPetscLib, ksp::AbstractKSP, dim::$PetscInt )
 
     @chk ccall(
                (:KSPLGMRESSetAugDim, $petsc_library),
@@ -4436,7 +4436,7 @@ end
 end 
 
 """
-	KSPLGMRESSetConstant(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPLGMRESSetConstant(petsclib::PetscLibType,ksp::AbstractKSP) 
 keep the error approximation space a constant size for every restart cycle
 
 Collective
@@ -4454,11 +4454,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLGMRESSetConstant"))
 """
-function KSPLGMRESSetConstant(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPLGMRESSetConstant(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPLGMRESSetConstant: no generated method for these argument types")
 end
 
-@for_petsc function KSPLGMRESSetConstant(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPLGMRESSetConstant(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPLGMRESSetConstant, $petsc_library),
@@ -4472,7 +4472,7 @@ end
 end 
 
 """
-	reason::KSPConvergedReason = KSPLSQRConvergedDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	reason::KSPConvergedReason = KSPLSQRConvergedDefault(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
 Determines convergence of the `KSPLSQR` Krylov method, including a check on the residual norm of the normal equations.
 
 Collective
@@ -4495,11 +4495,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPLSQRConvergedDefault"))
 """
-function KSPLSQRConvergedDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, ctx::Ptr{Cvoid})
+function KSPLSQRConvergedDefault(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, ctx::Ptr{Cvoid})
     error("KSPLSQRConvergedDefault: no generated method for these argument types")
 end
 
-@for_petsc function KSPLSQRConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
+@for_petsc function KSPLSQRConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -4515,7 +4515,7 @@ end
 end 
 
 """
-	arnorm::PetscReal,anorm::PetscReal = KSPLSQRGetNorms(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	arnorm::PetscReal,anorm::PetscReal = KSPLSQRGetNorms(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get the norm estimates that `KSPLSQR` computes internally during `KSPSolve()`.
 
 Not Collective
@@ -4534,11 +4534,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRGetNorms"))
 """
-function KSPLSQRGetNorms(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPLSQRGetNorms(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPLSQRGetNorms: no generated method for these argument types")
 end
 
-@for_petsc function KSPLSQRGetNorms(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPLSQRGetNorms(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	arnorm_ = Ref{$PetscReal}()
 	anorm_ = Ref{$PetscReal}()
 
@@ -4556,7 +4556,7 @@ end
 end 
 
 """
-	se::PetscVec = KSPLSQRGetStandardErrorVec(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	se::PetscVec = KSPLSQRGetStandardErrorVec(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get vector of standard error estimates.
 Only available if -ksp_lsqr_set_standard_error was set to true
 or `KSPLSQRSetComputeStandardErrorVec`(ksp, `PETSC_TRUE`) was called.
@@ -4577,11 +4577,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRGetStandardErrorVec"))
 """
-function KSPLSQRGetStandardErrorVec(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPLSQRGetStandardErrorVec(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPLSQRGetStandardErrorVec: no generated method for these argument types")
 end
 
-@for_petsc function KSPLSQRGetStandardErrorVec(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPLSQRGetStandardErrorVec(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	se_ = Ref{CVec}()
 
     @chk ccall(
@@ -4597,7 +4597,7 @@ end
 end 
 
 """
-	KSPLSQRMonitorResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPLSQRMonitorResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the residual norm, as well as the normal equation residual norm, at each iteration of an iterative solver for the `KSPLSQR` solver
 
 Collective
@@ -4618,11 +4618,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRMonitorResidual"))
 """
-function KSPLSQRMonitorResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPLSQRMonitorResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPLSQRMonitorResidual: no generated method for these argument types")
 end
 
-@for_petsc function KSPLSQRMonitorResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPLSQRMonitorResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPLSQRMonitorResidual, $petsc_library),
@@ -4636,7 +4636,7 @@ end
 end 
 
 """
-	KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the true residual norm at each iteration of an iterative solver for the `KSPLSQR` solver
 
 Collective
@@ -4657,11 +4657,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRMonitorResidualDrawLG"))
 """
-function KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPLSQRMonitorResidualDrawLG: no generated method for these argument types")
 end
 
-@for_petsc function KSPLSQRMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPLSQRMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPLSQRMonitorResidualDrawLG, $petsc_library),
@@ -4715,7 +4715,7 @@ end
 end 
 
 """
-	KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Compute a vector of standard error estimates during `KSPSolve()` for  `KSPLSQR`.
 
 Logically Collective
@@ -4731,11 +4731,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRSetComputeStandardErrorVec"))
 """
-function KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPLSQRSetComputeStandardErrorVec: no generated method for these argument types")
 end
 
-@for_petsc function KSPLSQRSetComputeStandardErrorVec(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPLSQRSetComputeStandardErrorVec(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPLSQRSetComputeStandardErrorVec, $petsc_library),
@@ -4749,7 +4749,7 @@ end
 end 
 
 """
-	KSPLSQRSetExactMatNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPLSQRSetExactMatNorm(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Compute exact matrix norm instead of iteratively refined estimate.
 
 Not Collective
@@ -4765,11 +4765,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRSetExactMatNorm"))
 """
-function KSPLSQRSetExactMatNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPLSQRSetExactMatNorm(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPLSQRSetExactMatNorm: no generated method for these argument types")
 end
 
-@for_petsc function KSPLSQRSetExactMatNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPLSQRSetExactMatNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPLSQRSetExactMatNorm, $petsc_library),
@@ -4783,7 +4783,7 @@ end
 end 
 
 """
-	KSPLoad(petsclib::PetscLibType,newdm::AbstractPetscKSP, viewer::PetscViewer) 
+	KSPLoad(petsclib::PetscLibType,newdm::AbstractKSP, viewer::PetscViewer) 
 Loads a `KSP` that has been stored in a `PETSCVIEWERBINARY`  with `KSPView()`.
 
 Collective
@@ -4800,11 +4800,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLoad"))
 """
-function KSPLoad(petsclib::PetscLibType, newdm::AbstractPetscKSP, viewer::PetscViewer)
+function KSPLoad(petsclib::PetscLibType, newdm::AbstractKSP, viewer::PetscViewer)
     error("KSPLoad: no generated method for these argument types")
 end
 
-@for_petsc function KSPLoad(petsclib::$UnionPetscLib, newdm::AbstractPetscKSP, viewer::PetscViewer )
+@for_petsc function KSPLoad(petsclib::$UnionPetscLib, newdm::AbstractKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPLoad, $petsc_library),
@@ -4818,7 +4818,7 @@ end
 end 
 
 """
-	qlp::PetscBool = KSPMINRESGetUseQLP(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	qlp::PetscBool = KSPMINRESGetUseQLP(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get the flag that indicates if the QLP variant is being used
 
 Logically Collective
@@ -4836,11 +4836,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPMINRESGetUseQLP"))
 """
-function KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPMINRESGetUseQLP: no generated method for these argument types")
 end
 
-@for_petsc function KSPMINRESGetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPMINRESGetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	qlp_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4856,7 +4856,7 @@ end
 end 
 
 """
-	KSPMINRESSetRadius(petsclib::PetscLibType,ksp::AbstractPetscKSP, radius::PetscReal) 
+	KSPMINRESSetRadius(petsclib::PetscLibType,ksp::AbstractKSP, radius::PetscReal) 
 Set the maximum solution norm allowed for use with trust region methods
 
 Logically Collective
@@ -4875,11 +4875,11 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPMINRESSetRadius"))
 """
-function KSPMINRESSetRadius(petsclib::PetscLibType, ksp::AbstractPetscKSP, radius::Real)
+function KSPMINRESSetRadius(petsclib::PetscLibType, ksp::AbstractKSP, radius::Real)
     error("KSPMINRESSetRadius: no generated method for these argument types")
 end
 
-@for_petsc function KSPMINRESSetRadius(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, radius::$PetscReal )
+@for_petsc function KSPMINRESSetRadius(petsclib::$UnionPetscLib, ksp::AbstractKSP, radius::$PetscReal )
 
     @chk ccall(
                (:KSPMINRESSetRadius, $petsc_library),
@@ -4893,7 +4893,7 @@ end
 end 
 
 """
-	KSPMINRESSetUseQLP(petsclib::PetscLibType,ksp::AbstractPetscKSP, qlp::PetscBool) 
+	KSPMINRESSetUseQLP(petsclib::PetscLibType,ksp::AbstractKSP, qlp::PetscBool) 
 Use the QLP variant of `KSPMINRES`
 
 Logically Collective
@@ -4909,11 +4909,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPMINRESSetUseQLP"))
 """
-function KSPMINRESSetUseQLP(petsclib::PetscLibType, ksp::AbstractPetscKSP, qlp::PetscBool)
+function KSPMINRESSetUseQLP(petsclib::PetscLibType, ksp::AbstractKSP, qlp::PetscBool)
     error("KSPMINRESSetUseQLP: no generated method for these argument types")
 end
 
-@for_petsc function KSPMINRESSetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, qlp::PetscBool )
+@for_petsc function KSPMINRESSetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractKSP, qlp::PetscBool )
 
     @chk ccall(
                (:KSPMINRESSetUseQLP, $petsc_library),
@@ -4927,7 +4927,7 @@ end
 end 
 
 """
-	KSPMatSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
+	KSPMatSolve(petsclib::PetscLibType,ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
 Solves a linear system with multiple right
 
 Input Parameters:
@@ -4944,11 +4944,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMatSolve"))
 """
-function KSPMatSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat)
+function KSPMatSolve(petsclib::PetscLibType, ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat)
     error("KSPMatSolve: no generated method for these argument types")
 end
 
-@for_petsc function KSPMatSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat )
+@for_petsc function KSPMatSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat )
 
     @chk ccall(
                (:KSPMatSolve, $petsc_library),
@@ -4962,7 +4962,7 @@ end
 end 
 
 """
-	KSPMatSolveTranspose(petsclib::PetscLibType,ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
+	KSPMatSolveTranspose(petsclib::PetscLibType,ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
 Solves a linear system with the transposed matrix with multiple right
 
 Input Parameters:
@@ -4979,11 +4979,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMatSolveTranspose"))
 """
-function KSPMatSolveTranspose(petsclib::PetscLibType, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat)
+function KSPMatSolveTranspose(petsclib::PetscLibType, ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat)
     error("KSPMatSolveTranspose: no generated method for these argument types")
 end
 
-@for_petsc function KSPMatSolveTranspose(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat )
+@for_petsc function KSPMatSolveTranspose(petsclib::$UnionPetscLib, ksp::AbstractKSP, B::AbstractPetscMat, X::AbstractPetscMat )
 
     @chk ccall(
                (:KSPMatSolveTranspose, $petsc_library),
@@ -4997,7 +4997,7 @@ end
 end 
 
 """
-	KSPMonitor(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt, rnorm::PetscReal) 
+	KSPMonitor(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt, rnorm::PetscReal) 
 runs the user provided monitor routines, if they exist
 
 Collective
@@ -5014,11 +5014,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPMonitor"))
 """
-function KSPMonitor(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::Integer, rnorm::Real)
+function KSPMonitor(petsclib::PetscLibType, ksp::AbstractKSP, it::Integer, rnorm::Real)
     error("KSPMonitor: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitor(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt, rnorm::$PetscReal )
+@for_petsc function KSPMonitor(petsclib::$UnionPetscLib, ksp::AbstractKSP, it::$PetscInt, rnorm::$PetscReal )
 
     @chk ccall(
                (:KSPMonitor, $petsc_library),
@@ -5032,7 +5032,7 @@ end
 end 
 
 """
-	KSPMonitorCancel(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPMonitorCancel(petsclib::PetscLibType,ksp::AbstractKSP) 
 Clears all monitors for a `KSP` object.
 
 Logically Collective
@@ -5050,11 +5050,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorCancel"))
 """
-function KSPMonitorCancel(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPMonitorCancel(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPMonitorCancel: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorCancel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPMonitorCancel(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPMonitorCancel, $petsc_library),
@@ -5068,7 +5068,7 @@ end
 end 
 
 """
-	KSPMonitorDynamicTolerance(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	KSPMonitorDynamicTolerance(petsclib::PetscLibType,ksp::AbstractKSP, its::PetscInt, fnorm::PetscReal, ctx::Ptr{Cvoid}) 
 A monitor that changes the inner tolerance of nested preconditioners in every outer iteration in an adaptive way.
 
 Collective
@@ -5089,11 +5089,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicTolerance"))
 """
-function KSPMonitorDynamicTolerance(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::Integer, fnorm::Real, ctx::Ptr{Cvoid})
+function KSPMonitorDynamicTolerance(petsclib::PetscLibType, ksp::AbstractKSP, its::Integer, fnorm::Real, ctx::Ptr{Cvoid})
     error("KSPMonitorDynamicTolerance: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorDynamicTolerance(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
+@for_petsc function KSPMonitorDynamicTolerance(petsclib::$UnionPetscLib, ksp::AbstractKSP, its::$PetscInt, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorDynamicTolerance, $petsc_library),
@@ -5215,7 +5215,7 @@ end
 end 
 
 """
-	KSPMonitorError(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorError(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the error norm, as well as the (possibly preconditioned) residual norm, at each iteration of an iterative solver.
 
 Collective
@@ -5236,11 +5236,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorError"))
 """
-function KSPMonitorError(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorError(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorError: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorError(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorError(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorError, $petsc_library),
@@ -5254,7 +5254,7 @@ end
 end 
 
 """
-	KSPMonitorErrorDraw(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorErrorDraw(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the error at each iteration of an iterative solver.
 
 Collective
@@ -5275,11 +5275,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorErrorDraw"))
 """
-function KSPMonitorErrorDraw(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorErrorDraw(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorErrorDraw: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorErrorDraw(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorErrorDraw(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorErrorDraw, $petsc_library),
@@ -5293,7 +5293,7 @@ end
 end 
 
 """
-	KSPMonitorErrorDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorErrorDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the error and residual norm at each iteration of an iterative solver.
 
 Collective
@@ -5314,11 +5314,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorErrorDrawLG"))
 """
-function KSPMonitorErrorDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorErrorDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorErrorDrawLG: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorErrorDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorErrorDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorErrorDrawLG, $petsc_library),
@@ -5372,7 +5372,7 @@ end
 end 
 
 """
-	KSPMonitorLGRange(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, monctx::Ptr{Cvoid}) 
+	KSPMonitorLGRange(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, monctx::Ptr{Cvoid}) 
 Prints line graphs summarizing the residual norm, the fraction of elements that dominate the residual, and the convergence factor at each iteration of the `KSP` solver
 
 Collective
@@ -5390,11 +5390,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorLGRange"))
 """
-function KSPMonitorLGRange(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, monctx::Ptr{Cvoid})
+function KSPMonitorLGRange(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, monctx::Ptr{Cvoid})
     error("KSPMonitorLGRange: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorLGRange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, monctx::Ptr{Cvoid} )
+@for_petsc function KSPMonitorLGRange(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, monctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorLGRange, $petsc_library),
@@ -5446,7 +5446,7 @@ end
 end 
 
 """
-	KSPMonitorResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Print the (possibly preconditioned, possibly approximate) residual norm at each iteration of an iterative solver.
 
 Collective
@@ -5470,11 +5470,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidual"))
 """
-function KSPMonitorResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorResidual: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorResidual, $petsc_library),
@@ -5488,7 +5488,7 @@ end
 end 
 
 """
-	KSPMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the (possibly preconditioned) residual norm at each iteration of an iterative solver.
 
 Collective
@@ -5509,11 +5509,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualDrawLG"))
 """
-function KSPMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorResidualDrawLG: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorResidualDrawLG, $petsc_library),
@@ -5568,7 +5568,7 @@ end
 end 
 
 """
-	KSPMonitorResidualRange(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualRange(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the percentage of residual elements that are more than 10 percent of the maximum value.
 
 Collective
@@ -5589,11 +5589,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualRange"))
 """
-function KSPMonitorResidualRange(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorResidualRange(petsclib::PetscLibType, ksp::AbstractKSP, it::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorResidualRange: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorResidualRange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorResidualRange(petsclib::$UnionPetscLib, ksp::AbstractKSP, it::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorResidualRange, $petsc_library),
@@ -5607,16 +5607,16 @@ end
 end 
 
 """
-	KSPMonitorResidualShort(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualShort(petsclib::PetscLibType,ksp::AbstractKSP, its::PetscInt, fnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualShort"))
 """
-function KSPMonitorResidualShort(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::Integer, fnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorResidualShort(petsclib::PetscLibType, ksp::AbstractKSP, its::Integer, fnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorResidualShort: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorResidualShort(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorResidualShort(petsclib::$UnionPetscLib, ksp::AbstractKSP, its::$PetscInt, fnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorResidualShort, $petsc_library),
@@ -5630,7 +5630,7 @@ end
 end 
 
 """
-	KSPMonitorResidualView(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorResidualView(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the (possibly preconditioned) residual at each iteration of an iterative solver.
 
 Collective
@@ -5651,11 +5651,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualView"))
 """
-function KSPMonitorResidualView(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorResidualView(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorResidualView: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorResidualView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorResidualView(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorResidualView, $petsc_library),
@@ -5669,7 +5669,7 @@ end
 end 
 
 """
-	KSPMonitorSAWs(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
+	KSPMonitorSAWs(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, ctx::Ptr{Cvoid}) 
 monitor `KSP` solution using SAWs
 
 Logically Collective
@@ -5687,11 +5687,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWs"))
 """
-function KSPMonitorSAWs(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, ctx::Ptr{Cvoid})
+function KSPMonitorSAWs(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, ctx::Ptr{Cvoid})
     error("KSPMonitorSAWs: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSAWs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
+@for_petsc function KSPMonitorSAWs(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorSAWs, $petsc_library),
@@ -5705,7 +5705,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = KSPMonitorSAWsCreate(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	ctx::Ptr{Cvoid} = KSPMonitorSAWsCreate(petsclib::PetscLibType,ksp::AbstractKSP) 
 create an SAWs monitor context for `KSP`
 
 Collective
@@ -5723,11 +5723,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWsCreate"))
 """
-function KSPMonitorSAWsCreate(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPMonitorSAWsCreate(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPMonitorSAWsCreate: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSAWsCreate(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPMonitorSAWsCreate(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -5776,7 +5776,7 @@ end
 end 
 
 """
-	KSPMonitorSNESResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSNESResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the `SNES` residual norm, as well as the `KSP` residual norm, at each iteration of a `KSPSolve()` called within a `SNESSolve()`.
 
 Collective
@@ -5797,11 +5797,11 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/KSPMonitorSNESResidual"))
 """
-function KSPMonitorSNESResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorSNESResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorSNESResidual: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSNESResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorSNESResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorSNESResidual, $petsc_library),
@@ -5815,7 +5815,7 @@ end
 end 
 
 """
-	KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the linear `KSP` residual norm and the `SNES` residual norm of a `KSPSolve()` called within a `SNESSolve()`.
 
 Collective
@@ -5836,11 +5836,11 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/KSPMonitorSNESResidualDrawLG"))
 """
-function KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorSNESResidualDrawLG: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSNESResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorSNESResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorSNESResidualDrawLG, $petsc_library),
@@ -5894,7 +5894,7 @@ end
 end 
 
 """
-	KSPMonitorSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
+	KSPMonitorSet(petsclib::PetscLibType,ksp::AbstractKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid}) 
 Sets an ADDITIONAL function to be called at every iteration to monitor, i.e. display in some way, perhaps by printing in the terminal,
 the residual norm computed in a `KSPSolve()`
 
@@ -5926,11 +5926,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPMonitorSet"))
 """
-function KSPMonitorSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid})
+function KSPMonitorSet(petsclib::PetscLibType, ksp::AbstractKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid})
     error("KSPMonitorSet: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
+@for_petsc function KSPMonitorSet(petsclib::$UnionPetscLib, ksp::AbstractKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorSet, $petsc_library),
@@ -5944,7 +5944,7 @@ end
 end 
 
 """
-	KSPMonitorSetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP, opt::String, name::String, ctx::Ptr{Cvoid}) 
+	KSPMonitorSetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP, opt::String, name::String, ctx::Ptr{Cvoid}) 
 Sets a monitor function and viewer appropriate for the type indicated by the user in the options database
 
 Collective
@@ -5968,11 +5968,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPMonitorSetFromOptions"))
 """
-function KSPMonitorSetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP, opt::String, name::String, ctx::Ptr{Cvoid})
+function KSPMonitorSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP, opt::String, name::String, ctx::Ptr{Cvoid})
     error("KSPMonitorSetFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, opt::String, name::String, ctx::Ptr{Cvoid} )
+@for_petsc function KSPMonitorSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractKSP, opt::String, name::String, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPMonitorSetFromOptions, $petsc_library),
@@ -5986,7 +5986,7 @@ end
 end 
 
 """
-	KSPMonitorSingularValue(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSingularValue(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the two norm of the true residual and estimation of the extreme singular values of the preconditioned problem at each iteration.
 
 Logically Collective
@@ -6007,11 +6007,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSingularValue"))
 """
-function KSPMonitorSingularValue(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorSingularValue(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorSingularValue: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSingularValue(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorSingularValue(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorSingularValue, $petsc_library),
@@ -6065,7 +6065,7 @@ end
 end 
 
 """
-	KSPMonitorSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSolution(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Print the solution norm at each iteration of an iterative solver.
 
 Collective
@@ -6086,11 +6086,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSolution"))
 """
-function KSPMonitorSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorSolution(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorSolution: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorSolution(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorSolution, $petsc_library),
@@ -6104,7 +6104,7 @@ end
 end 
 
 """
-	KSPMonitorSolutionDraw(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSolutionDraw(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the solution at each iteration of an iterative solver.
 
 Collective
@@ -6125,11 +6125,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSolutionDraw"))
 """
-function KSPMonitorSolutionDraw(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorSolutionDraw(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorSolutionDraw: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSolutionDraw(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorSolutionDraw(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorSolutionDraw, $petsc_library),
@@ -6143,7 +6143,7 @@ end
 end 
 
 """
-	KSPMonitorSolutionDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorSolutionDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the solution norm at each iteration of an iterative solver.
 
 Collective
@@ -6164,11 +6164,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSolutionDrawLG"))
 """
-function KSPMonitorSolutionDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorSolutionDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorSolutionDrawLG: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorSolutionDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorSolutionDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorSolutionDrawLG, $petsc_library),
@@ -6222,7 +6222,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidual(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the true residual norm, as well as the (possibly preconditioned, possibly approximate) residual norm,
 at each iteration of a `KSPSolve()` iterative solver.
 
@@ -6244,11 +6244,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidual"))
 """
-function KSPMonitorTrueResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorTrueResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorTrueResidual: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorTrueResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorTrueResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorTrueResidual, $petsc_library),
@@ -6262,7 +6262,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the true residual norm at each iteration of an iterative solver.
 
 Collective
@@ -6284,11 +6284,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualDrawLG"))
 """
-function KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorTrueResidualDrawLG: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorTrueResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorTrueResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorTrueResidualDrawLG, $petsc_library),
@@ -6342,7 +6342,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidualMax(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidualMax(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Prints the true residual max norm at each iteration of an iterative solver.
 
 Collective
@@ -6363,11 +6363,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualMax"))
 """
-function KSPMonitorTrueResidualMax(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorTrueResidualMax(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorTrueResidualMax: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorTrueResidualMax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorTrueResidualMax(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorTrueResidualMax, $petsc_library),
@@ -6381,7 +6381,7 @@ end
 end 
 
 """
-	KSPMonitorTrueResidualView(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
+	KSPMonitorTrueResidualView(petsclib::PetscLibType,ksp::AbstractKSP, n::PetscInt, rnorm::PetscReal, vf::Vector{PetscViewerAndFormat}) 
 Plots the true residual at each iteration of an iterative solver.
 
 Collective
@@ -6403,11 +6403,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualView"))
 """
-function KSPMonitorTrueResidualView(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
+function KSPMonitorTrueResidualView(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
     error("KSPMonitorTrueResidualView: no generated method for these argument types")
 end
 
-@for_petsc function KSPMonitorTrueResidualView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+@for_petsc function KSPMonitorTrueResidualView(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
 
     @chk ccall(
                (:KSPMonitorTrueResidualView, $petsc_library),
@@ -6421,7 +6421,7 @@ end
 end 
 
 """
-	mmax::PetscInt = KSPPIPEFCGGetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	mmax::PetscInt = KSPPIPEFCGGetMmax(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the maximum number of previous directions `KSPPIPEFCG` will store
 
 Not Collective
@@ -6439,11 +6439,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetMmax"))
 """
-function KSPPIPEFCGGetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPIPEFCGGetMmax(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPIPEFCGGetMmax: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPIPEFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6459,7 +6459,7 @@ end
 end 
 
 """
-	nprealloc::PetscInt = KSPPIPEFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	nprealloc::PetscInt = KSPPIPEFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the number of directions to preallocate by `KSPPIPEFCG`
 
 Not Collective
@@ -6477,11 +6477,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetNprealloc"))
 """
-function KSPPIPEFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPIPEFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPIPEFCGGetNprealloc: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPIPEFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6497,7 +6497,7 @@ end
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPPIPEFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	truncstrat::KSPFCDTruncationType = KSPPIPEFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the truncation strategy employed by `KSPPIPEFCG`
 
 Not Collective
@@ -6515,11 +6515,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetTruncationType"))
 """
-function KSPPIPEFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPIPEFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPIPEFCGGetTruncationType: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPIPEFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -6535,7 +6535,7 @@ end
 end 
 
 """
-	KSPPIPEFCGSetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP, mmax::PetscInt) 
+	KSPPIPEFCGSetMmax(petsclib::PetscLibType,ksp::AbstractKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPPIPEFCG` will store for orthogonalization
 
 Logically Collective
@@ -6554,11 +6554,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetMmax"))
 """
-function KSPPIPEFCGSetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP, mmax::Integer)
+function KSPPIPEFCGSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::Integer)
     error("KSPPIPEFCGSetMmax: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mmax::$PetscInt )
+@for_petsc function KSPPIPEFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP, mmax::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEFCGSetMmax, $petsc_library),
@@ -6572,7 +6572,7 @@ end
 end 
 
 """
-	KSPPIPEFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP, nprealloc::PetscInt) 
+	KSPPIPEFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPPIPEFCG`
 
 Logically Collective
@@ -6591,11 +6591,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetNprealloc"))
 """
-function KSPPIPEFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP, nprealloc::Integer)
+function KSPPIPEFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, nprealloc::Integer)
     error("KSPPIPEFCGSetNprealloc: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nprealloc::$PetscInt )
+@for_petsc function KSPPIPEFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP, nprealloc::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEFCGSetNprealloc, $petsc_library),
@@ -6609,7 +6609,7 @@ end
 end 
 
 """
-	KSPPIPEFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
+	KSPPIPEFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPPIPEFCG` uses during orthogonalization
 
 Logically Collective
@@ -6622,11 +6622,11 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetTruncationType"))
 """
-function KSPPIPEFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType)
+function KSPPIPEFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType)
     error("KSPPIPEFCGSetTruncationType: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType )
+@for_petsc function KSPPIPEFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType )
 
     @chk ccall(
                (:KSPPIPEFCGSetTruncationType, $petsc_library),
@@ -6640,7 +6640,7 @@ end
 end 
 
 """
-	KSPPIPEFGMRESSetShift(petsclib::PetscLibType,ksp::AbstractPetscKSP, shift::PetscScalar) 
+	KSPPIPEFGMRESSetShift(petsclib::PetscLibType,ksp::AbstractKSP, shift::PetscScalar) 
 Set the shift parameter for the flexible, pipelined `KSPPIPEFGMRES` solver.
 
 Logically Collective
@@ -6659,11 +6659,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFGMRESSetShift"))
 """
-function KSPPIPEFGMRESSetShift(petsclib::PetscLibType, ksp::AbstractPetscKSP, shift::Number)
+function KSPPIPEFGMRESSetShift(petsclib::PetscLibType, ksp::AbstractKSP, shift::Number)
     error("KSPPIPEFGMRESSetShift: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEFGMRESSetShift(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, shift::$PetscScalar )
+@for_petsc function KSPPIPEFGMRESSetShift(petsclib::$UnionPetscLib, ksp::AbstractKSP, shift::$PetscScalar )
 
     @chk ccall(
                (:KSPPIPEFGMRESSetShift, $petsc_library),
@@ -6677,7 +6677,7 @@ end
 end 
 
 """
-	mmax::PetscInt = KSPPIPEGCRGetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	mmax::PetscInt = KSPPIPEGCRGetMmax(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the maximum number of previous directions `KSPPIPEGCR` will store
 
 Not Collective
@@ -6695,11 +6695,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetMmax"))
 """
-function KSPPIPEGCRGetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPIPEGCRGetMmax(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPIPEGCRGetMmax: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRGetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPIPEGCRGetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6715,7 +6715,7 @@ end
 end 
 
 """
-	nprealloc::PetscInt = KSPPIPEGCRGetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	nprealloc::PetscInt = KSPPIPEGCRGetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the number of directions preallocate by `KSPPIPEGCR`
 
 Not Collective
@@ -6733,11 +6733,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetNprealloc"))
 """
-function KSPPIPEGCRGetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPIPEGCRGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPIPEGCRGetNprealloc: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPIPEGCRGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6753,7 +6753,7 @@ end
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPPIPEGCRGetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	truncstrat::KSPFCDTruncationType = KSPPIPEGCRGetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP) 
 get the truncation strategy employed by `KSPPIPEGCR`
 
 Not Collective
@@ -6768,11 +6768,11 @@ Output Parameter:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetTruncationType"))
 """
-function KSPPIPEGCRGetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPIPEGCRGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPIPEGCRGetTruncationType: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPIPEGCRGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -6788,7 +6788,7 @@ end
 end 
 
 """
-	unroll_w::PetscBool = KSPPIPEGCRGetUnrollW(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	unroll_w::PetscBool = KSPPIPEGCRGetUnrollW(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get information on `KSPPIPEGCR` if it uses unrolling the w vector
 
 Logically Collective
@@ -6806,11 +6806,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetUnrollW"))
 """
-function KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPIPEGCRGetUnrollW: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRGetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPIPEGCRGetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	unroll_w_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6826,7 +6826,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP, mmax::PetscInt) 
+	KSPPIPEGCRSetMmax(petsclib::PetscLibType,ksp::AbstractKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPPIPEGCR` will store for orthogonalization
 
 Logically Collective
@@ -6845,11 +6845,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetMmax"))
 """
-function KSPPIPEGCRSetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP, mmax::Integer)
+function KSPPIPEGCRSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::Integer)
     error("KSPPIPEGCRSetMmax: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRSetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mmax::$PetscInt )
+@for_petsc function KSPPIPEGCRSetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP, mmax::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEGCRSetMmax, $petsc_library),
@@ -6863,7 +6863,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP, nprealloc::PetscInt) 
+	KSPPIPEGCRSetNprealloc(petsclib::PetscLibType,ksp::AbstractKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPPIPEGCR`
 
 Logically Collective
@@ -6882,11 +6882,11 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetNprealloc"))
 """
-function KSPPIPEGCRSetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP, nprealloc::Integer)
+function KSPPIPEGCRSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, nprealloc::Integer)
     error("KSPPIPEGCRSetNprealloc: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nprealloc::$PetscInt )
+@for_petsc function KSPPIPEGCRSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP, nprealloc::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEGCRSetNprealloc, $petsc_library),
@@ -6900,7 +6900,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
+	KSPPIPEGCRSetTruncationType(petsclib::PetscLibType,ksp::AbstractKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPPIPEGCR` uses during orthogonalization
 
 Logically Collective
@@ -6913,11 +6913,11 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetTruncationType"))
 """
-function KSPPIPEGCRSetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType)
+function KSPPIPEGCRSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType)
     error("KSPPIPEGCRSetTruncationType: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType )
+@for_petsc function KSPPIPEGCRSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType )
 
     @chk ccall(
                (:KSPPIPEGCRSetTruncationType, $petsc_library),
@@ -6931,7 +6931,7 @@ end
 end 
 
 """
-	KSPPIPEGCRSetUnrollW(petsclib::PetscLibType,ksp::AbstractPetscKSP, unroll_w::PetscBool) 
+	KSPPIPEGCRSetUnrollW(petsclib::PetscLibType,ksp::AbstractKSP, unroll_w::PetscBool) 
 Set to `PETSC_TRUE` to use `KSPPIPEGCR` with unrolling of the w vector
 
 Logically Collective
@@ -6950,11 +6950,11 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetUnrollW"))
 """
-function KSPPIPEGCRSetUnrollW(petsclib::PetscLibType, ksp::AbstractPetscKSP, unroll_w::PetscBool)
+function KSPPIPEGCRSetUnrollW(petsclib::PetscLibType, ksp::AbstractKSP, unroll_w::PetscBool)
     error("KSPPIPEGCRSetUnrollW: no generated method for these argument types")
 end
 
-@for_petsc function KSPPIPEGCRSetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, unroll_w::PetscBool )
+@for_petsc function KSPPIPEGCRSetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractKSP, unroll_w::PetscBool )
 
     @chk ccall(
                (:KSPPIPEGCRSetUnrollW, $petsc_library),
@@ -6968,7 +6968,7 @@ end
 end 
 
 """
-	pyname::Ptr{Cchar} = KSPPythonGetType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	pyname::Ptr{Cchar} = KSPPythonGetType(petsclib::PetscLibType,ksp::AbstractKSP) 
 Get the type of a `KSP` object implemented in Python.
 
 Not Collective
@@ -6986,11 +6986,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPythonGetType"))
 """
-function KSPPythonGetType(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPPythonGetType(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPPythonGetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPPythonGetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPPythonGetType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -7006,7 +7006,7 @@ end
 end 
 
 """
-	KSPPythonSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, pyname::String) 
+	KSPPythonSetType(petsclib::PetscLibType,ksp::AbstractKSP, pyname::String) 
 Initialize a `KSP` object to a type implemented in Python.
 
 Collective
@@ -7025,11 +7025,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPythonSetType"))
 """
-function KSPPythonSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, pyname::String)
+function KSPPythonSetType(petsclib::PetscLibType, ksp::AbstractKSP, pyname::String)
     error("KSPPythonSetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPPythonSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pyname::String )
+@for_petsc function KSPPythonSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, pyname::String )
 
     @chk ccall(
                (:KSPPythonSetType, $petsc_library),
@@ -7043,7 +7043,7 @@ end
 end 
 
 """
-	quadratic::PetscReal = KSPQCGGetQuadratic(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	quadratic::PetscReal = KSPQCGGetQuadratic(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the value of the quadratic function, evaluated at the new iterate
 
 Collective
@@ -7061,11 +7061,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPQCGGetQuadratic"))
 """
-function KSPQCGGetQuadratic(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPQCGGetQuadratic(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPQCGGetQuadratic: no generated method for these argument types")
 end
 
-@for_petsc function KSPQCGGetQuadratic(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPQCGGetQuadratic(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	quadratic_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7081,7 +7081,7 @@ end
 end 
 
 """
-	tsnorm::PetscReal = KSPQCGGetTrialStepNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	tsnorm::PetscReal = KSPQCGGetTrialStepNorm(petsclib::PetscLibType,ksp::AbstractKSP) 
 Gets the norm of a trial step vector in `KSPQCG`.  The WCG step may be
 constrained, so this is not necessarily the length of the ultimate step taken in `KSPQCG`.
 
@@ -7100,11 +7100,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPQCGGetTrialStepNorm"))
 """
-function KSPQCGGetTrialStepNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPQCGGetTrialStepNorm(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPQCGGetTrialStepNorm: no generated method for these argument types")
 end
 
-@for_petsc function KSPQCGGetTrialStepNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPQCGGetTrialStepNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 	tsnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7120,7 +7120,7 @@ end
 end 
 
 """
-	KSPQCGSetTrustRegionRadius(petsclib::PetscLibType,ksp::AbstractPetscKSP, delta::PetscReal) 
+	KSPQCGSetTrustRegionRadius(petsclib::PetscLibType,ksp::AbstractKSP, delta::PetscReal) 
 Sets the radius of the trust region for `KSPQCG`
 
 Logically Collective
@@ -7139,11 +7139,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPQCGSetTrustRegionRadius"))
 """
-function KSPQCGSetTrustRegionRadius(petsclib::PetscLibType, ksp::AbstractPetscKSP, delta::Real)
+function KSPQCGSetTrustRegionRadius(petsclib::PetscLibType, ksp::AbstractKSP, delta::Real)
     error("KSPQCGSetTrustRegionRadius: no generated method for these argument types")
 end
 
-@for_petsc function KSPQCGSetTrustRegionRadius(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, delta::$PetscReal )
+@for_petsc function KSPQCGSetTrustRegionRadius(petsclib::$UnionPetscLib, ksp::AbstractKSP, delta::$PetscReal )
 
     @chk ccall(
                (:KSPQCGSetTrustRegionRadius, $petsc_library),
@@ -7191,7 +7191,7 @@ end
 end 
 
 """
-	KSPReset(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPReset(petsclib::PetscLibType,ksp::AbstractKSP) 
 Removes any allocated `Vec` and `Mat` from the `KSP` data structures.
 
 Collective
@@ -7206,11 +7206,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPReset"))
 """
-function KSPReset(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPReset(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPReset: no generated method for these argument types")
 end
 
-@for_petsc function KSPReset(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPReset(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPReset, $petsc_library),
@@ -7224,7 +7224,7 @@ end
 end 
 
 """
-	KSPResetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPResetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP) 
 Sets `KSP` parameters from user options ONLY if the `KSP` was previously set from options
 
 Collective
@@ -7239,11 +7239,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPResetFromOptions"))
 """
-function KSPResetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPResetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPResetFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function KSPResetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPResetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPResetFromOptions, $petsc_library),
@@ -7257,7 +7257,7 @@ end
 end 
 
 """
-	KSPResetViewers(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPResetViewers(petsclib::PetscLibType,ksp::AbstractKSP) 
 Resets all the viewers set from the options database during `KSPSetFromOptions()`
 
 Collective
@@ -7272,11 +7272,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPResetViewers"))
 """
-function KSPResetViewers(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPResetViewers(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPResetViewers: no generated method for these argument types")
 end
 
-@for_petsc function KSPResetViewers(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPResetViewers(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPResetViewers, $petsc_library),
@@ -7290,7 +7290,7 @@ end
 end 
 
 """
-	KSPRichardsonSetScale(petsclib::PetscLibType,ksp::AbstractPetscKSP, scale::PetscReal) 
+	KSPRichardsonSetScale(petsclib::PetscLibType,ksp::AbstractKSP, scale::PetscReal) 
 Set the damping factor; if this routine is not called, the factor defaults to 1.0.
 
 Logically Collective
@@ -7309,11 +7309,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPRichardsonSetScale"))
 """
-function KSPRichardsonSetScale(petsclib::PetscLibType, ksp::AbstractPetscKSP, scale::Real)
+function KSPRichardsonSetScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::Real)
     error("KSPRichardsonSetScale: no generated method for these argument types")
 end
 
-@for_petsc function KSPRichardsonSetScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, scale::$PetscReal )
+@for_petsc function KSPRichardsonSetScale(petsclib::$UnionPetscLib, ksp::AbstractKSP, scale::$PetscReal )
 
     @chk ccall(
                (:KSPRichardsonSetScale, $petsc_library),
@@ -7327,7 +7327,7 @@ end
 end 
 
 """
-	KSPRichardsonSetSelfScale(petsclib::PetscLibType,ksp::AbstractPetscKSP, scale::PetscBool) 
+	KSPRichardsonSetSelfScale(petsclib::PetscLibType,ksp::AbstractKSP, scale::PetscBool) 
 Sets Richardson to automatically determine optimal scaling at each iteration to minimize the 2
 preconditioned residual
 
@@ -7347,11 +7347,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPRichardsonSetSelfScale"))
 """
-function KSPRichardsonSetSelfScale(petsclib::PetscLibType, ksp::AbstractPetscKSP, scale::PetscBool)
+function KSPRichardsonSetSelfScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::PetscBool)
     error("KSPRichardsonSetSelfScale: no generated method for these argument types")
 end
 
-@for_petsc function KSPRichardsonSetSelfScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, scale::PetscBool )
+@for_petsc function KSPRichardsonSetSelfScale(petsclib::$UnionPetscLib, ksp::AbstractKSP, scale::PetscBool )
 
     @chk ccall(
                (:KSPRichardsonSetSelfScale, $petsc_library),
@@ -7365,7 +7365,7 @@ end
 end 
 
 """
-	KSPSetApplicationContext(petsclib::PetscLibType,ksp::AbstractPetscKSP, ctx::Ptr{Cvoid}) 
+	KSPSetApplicationContext(petsclib::PetscLibType,ksp::AbstractKSP, ctx::Ptr{Cvoid}) 
 Sets the optional user
 
 Logically Collective
@@ -7381,11 +7381,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetApplicationContext"))
 """
-function KSPSetApplicationContext(petsclib::PetscLibType, ksp::AbstractPetscKSP, ctx::Ptr{Cvoid})
+function KSPSetApplicationContext(petsclib::PetscLibType, ksp::AbstractKSP, ctx::Ptr{Cvoid})
     error("KSPSetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ctx::Ptr{Cvoid} )
+@for_petsc function KSPSetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractKSP, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPSetApplicationContext, $petsc_library),
@@ -7399,7 +7399,7 @@ end
 end 
 
 """
-	KSPSetCheckNormIteration(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt) 
+	KSPSetCheckNormIteration(petsclib::PetscLibType,ksp::AbstractKSP, it::PetscInt) 
 Sets the first iteration at which the norm of the residual will be
 computed and used in the convergence test of `KSPSolve()` for the given `KSP` context
 
@@ -7416,11 +7416,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetCheckNormIteration"))
 """
-function KSPSetCheckNormIteration(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::Integer)
+function KSPSetCheckNormIteration(petsclib::PetscLibType, ksp::AbstractKSP, it::Integer)
     error("KSPSetCheckNormIteration: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetCheckNormIteration(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt )
+@for_petsc function KSPSetCheckNormIteration(petsclib::$UnionPetscLib, ksp::AbstractKSP, it::$PetscInt )
 
     @chk ccall(
                (:KSPSetCheckNormIteration, $petsc_library),
@@ -7434,7 +7434,7 @@ end
 end 
 
 """
-	KSPSetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Sets a flag so that the extreme eigenvalues
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -7452,11 +7452,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetComputeEigenvalues"))
 """
-function KSPSetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetComputeEigenvalues: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetComputeEigenvalues, $petsc_library),
@@ -7470,7 +7470,7 @@ end
 end 
 
 """
-	KSPSetComputeInitialGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetComputeInitialGuess(petsclib::PetscLibType,ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set routine to compute the initial guess of the linear system
 
 Logically Collective
@@ -7488,11 +7488,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeInitialGuess"))
 """
-function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("KSPSetComputeInitialGuess: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetComputeInitialGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function KSPSetComputeInitialGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPSetComputeInitialGuess, $petsc_library),
@@ -7506,7 +7506,7 @@ end
 end 
 
 """
-	KSPSetComputeOperators(petsclib::PetscLibType,ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetComputeOperators(petsclib::PetscLibType,ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set routine to compute the linear operators
 
 Logically Collective
@@ -7523,11 +7523,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeOperators"))
 """
-function KSPSetComputeOperators(petsclib::PetscLibType, ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function KSPSetComputeOperators(petsclib::PetscLibType, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("KSPSetComputeOperators: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetComputeOperators(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function KSPSetComputeOperators(petsclib::$UnionPetscLib, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPSetComputeOperators, $petsc_library),
@@ -7541,7 +7541,7 @@ end
 end 
 
 """
-	KSPSetComputeRHS(petsclib::PetscLibType,ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetComputeRHS(petsclib::PetscLibType,ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set routine to compute the right
 
 Logically Collective
@@ -7558,11 +7558,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeRHS"))
 """
-function KSPSetComputeRHS(petsclib::PetscLibType, ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function KSPSetComputeRHS(petsclib::PetscLibType, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("KSPSetComputeRHS: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetComputeRHS(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function KSPSetComputeRHS(petsclib::$UnionPetscLib, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPSetComputeRHS, $petsc_library),
@@ -7576,7 +7576,7 @@ end
 end 
 
 """
-	KSPSetComputeRitz(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetComputeRitz(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Sets a flag so that the Ritz or harmonic Ritz pairs
 will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -7594,11 +7594,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetComputeRitz"))
 """
-function KSPSetComputeRitz(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetComputeRitz(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetComputeRitz: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetComputeRitz, $petsc_library),
@@ -7612,7 +7612,7 @@ end
 end 
 
 """
-	KSPSetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Sets a flag so that the extreme singular
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -7633,11 +7633,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetComputeSingularValues"))
 """
-function KSPSetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetComputeSingularValues: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetComputeSingularValues, $petsc_library),
@@ -7651,7 +7651,7 @@ end
 end 
 
 """
-	KSPSetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Allows to declare convergence and return `KSP_CONVERGED_NEG_CURVE` when negative curvature is detected
 
 Collective
@@ -7670,11 +7670,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetConvergedNegativeCurvature"))
 """
-function KSPSetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetConvergedNegativeCurvature: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetConvergedNegativeCurvature, $petsc_library),
@@ -7688,7 +7688,7 @@ end
 end 
 
 """
-	KSPSetConvergenceTest(petsclib::PetscLibType,ksp::AbstractPetscKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
+	KSPSetConvergenceTest(petsclib::PetscLibType,ksp::AbstractKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid}) 
 Sets the function to be used to determine convergence of `KSPSolve()`
 
 Logically Collective
@@ -7706,11 +7706,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetConvergenceTest"))
 """
-function KSPSetConvergenceTest(petsclib::PetscLibType, ksp::AbstractPetscKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
+function KSPSetConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
     error("KSPSetConvergenceTest: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
+@for_petsc function KSPSetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPSetConvergenceTest, $petsc_library),
@@ -7724,7 +7724,7 @@ end
 end 
 
 """
-	KSPSetDM(petsclib::PetscLibType,ksp::AbstractPetscKSP, dm::AbstractPetscDM) 
+	KSPSetDM(petsclib::PetscLibType,ksp::AbstractKSP, dm::AbstractPetscDM) 
 Sets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
 
 Logically Collective
@@ -7740,11 +7740,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetDM"))
 """
-function KSPSetDM(petsclib::PetscLibType, ksp::AbstractPetscKSP, dm::AbstractPetscDM)
+function KSPSetDM(petsclib::PetscLibType, ksp::AbstractKSP, dm::AbstractPetscDM)
     error("KSPSetDM: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetDM(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, dm::AbstractPetscDM )
+@for_petsc function KSPSetDM(petsclib::$UnionPetscLib, ksp::AbstractKSP, dm::AbstractPetscDM )
 
     @chk ccall(
                (:KSPSetDM, $petsc_library),
@@ -7758,7 +7758,7 @@ end
 end 
 
 """
-	KSPSetDMActive(petsclib::PetscLibType,ksp::AbstractPetscKSP, active::KSPDMActive, flg::PetscBool) 
+	KSPSetDMActive(petsclib::PetscLibType,ksp::AbstractKSP, active::KSPDMActive, flg::PetscBool) 
 Indicates the `DM` should be used to generate the linear system matrix, the right
 
 Logically Collective
@@ -7775,11 +7775,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetDMActive"))
 """
-function KSPSetDMActive(petsclib::PetscLibType, ksp::AbstractPetscKSP, active::KSPDMActive, flg::PetscBool)
+function KSPSetDMActive(petsclib::PetscLibType, ksp::AbstractKSP, active::KSPDMActive, flg::PetscBool)
     error("KSPSetDMActive: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, active::KSPDMActive, flg::PetscBool )
+@for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::AbstractKSP, active::KSPDMActive, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetDMActive, $petsc_library),
@@ -7793,7 +7793,7 @@ end
 end 
 
 """
-	KSPSetDiagonalScale(petsclib::PetscLibType,ksp::AbstractPetscKSP, scale::PetscBool) 
+	KSPSetDiagonalScale(petsclib::PetscLibType,ksp::AbstractKSP, scale::PetscBool) 
 Tells `KSP` to symmetrically diagonally scale the system
 before solving. This actually CHANGES the matrix (and right-hand side).
 
@@ -7814,11 +7814,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetDiagonalScale"))
 """
-function KSPSetDiagonalScale(petsclib::PetscLibType, ksp::AbstractPetscKSP, scale::PetscBool)
+function KSPSetDiagonalScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::PetscBool)
     error("KSPSetDiagonalScale: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, scale::PetscBool )
+@for_petsc function KSPSetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractKSP, scale::PetscBool )
 
     @chk ccall(
                (:KSPSetDiagonalScale, $petsc_library),
@@ -7832,7 +7832,7 @@ end
 end 
 
 """
-	KSPSetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractPetscKSP, fix::PetscBool) 
+	KSPSetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractKSP, fix::PetscBool) 
 Tells `KSP` to diagonally scale the system back after solving.
 
 Logically Collective
@@ -7849,11 +7849,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetDiagonalScaleFix"))
 """
-function KSPSetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractPetscKSP, fix::PetscBool)
+function KSPSetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractKSP, fix::PetscBool)
     error("KSPSetDiagonalScaleFix: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fix::PetscBool )
+@for_petsc function KSPSetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractKSP, fix::PetscBool )
 
     @chk ccall(
                (:KSPSetDiagonalScaleFix, $petsc_library),
@@ -7867,7 +7867,7 @@ end
 end 
 
 """
-	KSPSetErrorHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
+	KSPSetErrorHistory(petsclib::PetscLibType,ksp::AbstractKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
 Sets the array used to hold the error history. If set, this array will contain the error norms computed at each iteration of the solver.
 
 Not Collective
@@ -7885,11 +7885,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetErrorHistory"))
 """
-function KSPSetErrorHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP, a::AbstractVector{<:Number}, na::PetscCount, reset::PetscBool)
+function KSPSetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP, a::AbstractVector{<:Number}, na::PetscCount, reset::PetscBool)
     error("KSPSetErrorHistory: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
+@for_petsc function KSPSetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
 
     @chk ccall(
                (:KSPSetErrorHistory, $petsc_library),
@@ -7903,7 +7903,7 @@ end
 end 
 
 """
-	KSPSetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Causes `KSPSolve()` to generate an error if the solver has not converged as soon as the error is detected.
 
 Logically Collective
@@ -7922,11 +7922,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetErrorIfNotConverged"))
 """
-function KSPSetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetErrorIfNotConverged: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetErrorIfNotConverged, $petsc_library),
@@ -7940,7 +7940,7 @@ end
 end 
 
 """
-	KSPSetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPSetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP) 
 Sets `KSP` options from the options database.
 This routine must be called before `KSPSetUp()` if the user is to be
 allowed to set the Krylov type.
@@ -7996,11 +7996,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetFromOptions"))
 """
-function KSPSetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPSetFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPSetFromOptions, $petsc_library),
@@ -8014,7 +8014,7 @@ end
 end 
 
 """
-	KSPSetGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP, guess::KSPGuess) 
+	KSPSetGuess(petsclib::PetscLibType,ksp::AbstractKSP, guess::KSPGuess) 
 Set the initial guess object `KSPGuess` to be used by the `KSP` object to generate initial guesses
 
 Logically Collective
@@ -8030,11 +8030,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetGuess"))
 """
-function KSPSetGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP, guess::KSPGuess)
+function KSPSetGuess(petsclib::PetscLibType, ksp::AbstractKSP, guess::KSPGuess)
     error("KSPSetGuess: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, guess::KSPGuess )
+@for_petsc function KSPSetGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP, guess::KSPGuess )
 
     @chk ccall(
                (:KSPSetGuess, $petsc_library),
@@ -8048,7 +8048,7 @@ end
 end 
 
 """
-	KSPSetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Tells the iterative solver to use `PCApply()` on the right hand side vector to compute the initial guess (The Knoll trick)
 
 Logically Collective
@@ -8064,11 +8064,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetInitialGuessKnoll"))
 """
-function KSPSetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetInitialGuessKnoll: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetInitialGuessKnoll, $petsc_library),
@@ -8082,7 +8082,7 @@ end
 end 
 
 """
-	KSPSetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Tells the iterative solver that the
 initial guess is nonzero; otherwise `KSP` assumes the initial guess
 is to be zero (and thus zeros it out before solving).
@@ -8103,11 +8103,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetInitialGuessNonzero"))
 """
-function KSPSetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetInitialGuessNonzero: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetInitialGuessNonzero, $petsc_library),
@@ -8121,7 +8121,7 @@ end
 end 
 
 """
-	KSPSetLagNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetLagNorm(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Lags the residual norm calculation so that it is computed as part of the `MPI_Allreduce()` used for
 computing the inner products needed for the next iteration.
 
@@ -8141,11 +8141,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetLagNorm"))
 """
-function KSPSetLagNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetLagNorm(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetLagNorm: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetLagNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetLagNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetLagNorm, $petsc_library),
@@ -8159,7 +8159,7 @@ end
 end 
 
 """
-	KSPSetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractPetscKSP, bs::PetscInt) 
+	KSPSetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractKSP, bs::PetscInt) 
 Sets the maximum number of columns treated simultaneously in `KSPMatSolve()`.
 
 Logically Collective
@@ -8175,11 +8175,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetMatSolveBatchSize"))
 """
-function KSPSetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractPetscKSP, bs::Integer)
+function KSPSetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractKSP, bs::Integer)
     error("KSPSetMatSolveBatchSize: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, bs::$PetscInt )
+@for_petsc function KSPSetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractKSP, bs::$PetscInt )
 
     @chk ccall(
                (:KSPSetMatSolveBatchSize, $petsc_library),
@@ -8193,7 +8193,7 @@ end
 end 
 
 """
-	KSPSetMinimumIterations(petsclib::PetscLibType,ksp::AbstractPetscKSP, minit::PetscInt) 
+	KSPSetMinimumIterations(petsclib::PetscLibType,ksp::AbstractKSP, minit::PetscInt) 
 Sets the minimum number of iterations to use, regardless of the tolerances
 
 Logically Collective
@@ -8212,11 +8212,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetMinimumIterations"))
 """
-function KSPSetMinimumIterations(petsclib::PetscLibType, ksp::AbstractPetscKSP, minit::Integer)
+function KSPSetMinimumIterations(petsclib::PetscLibType, ksp::AbstractKSP, minit::Integer)
     error("KSPSetMinimumIterations: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, minit::$PetscInt )
+@for_petsc function KSPSetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractKSP, minit::$PetscInt )
 
     @chk ccall(
                (:KSPSetMinimumIterations, $petsc_library),
@@ -8230,7 +8230,7 @@ end
 end 
 
 """
-	KSPSetNestLevel(petsclib::PetscLibType,ksp::AbstractPetscKSP, level::PetscInt) 
+	KSPSetNestLevel(petsclib::PetscLibType,ksp::AbstractKSP, level::PetscInt) 
 sets the amount of nesting the `KSP` has. That is the number of levels of `KSP` above this `KSP` in a linear solve.
 
 Collective
@@ -8246,11 +8246,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetNestLevel"))
 """
-function KSPSetNestLevel(petsclib::PetscLibType, ksp::AbstractPetscKSP, level::Integer)
+function KSPSetNestLevel(petsclib::PetscLibType, ksp::AbstractKSP, level::Integer)
     error("KSPSetNestLevel: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, level::$PetscInt )
+@for_petsc function KSPSetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractKSP, level::$PetscInt )
 
     @chk ccall(
                (:KSPSetNestLevel, $petsc_library),
@@ -8264,7 +8264,7 @@ end
 end 
 
 """
-	KSPSetNormType(petsclib::PetscLibType,ksp::AbstractPetscKSP, normtype::KSPNormType) 
+	KSPSetNormType(petsclib::PetscLibType,ksp::AbstractKSP, normtype::KSPNormType) 
 Sets the type of residual norm that is used for convergence testing in `KSPSolve()` for the given `KSP` context
 
 Logically Collective
@@ -8277,11 +8277,11 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPSetNormType"))
 """
-function KSPSetNormType(petsclib::PetscLibType, ksp::AbstractPetscKSP, normtype::KSPNormType)
+function KSPSetNormType(petsclib::PetscLibType, ksp::AbstractKSP, normtype::KSPNormType)
     error("KSPSetNormType: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetNormType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, normtype::KSPNormType )
+@for_petsc function KSPSetNormType(petsclib::$UnionPetscLib, ksp::AbstractKSP, normtype::KSPNormType )
 
     @chk ccall(
                (:KSPSetNormType, $petsc_library),
@@ -8295,7 +8295,7 @@ end
 end 
 
 """
-	KSPSetOperators(petsclib::PetscLibType,ksp::AbstractPetscKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
+	KSPSetOperators(petsclib::PetscLibType,ksp::AbstractKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets the matrix associated with the linear system
 and a (possibly) different one from which the preconditioner will be built into the `KSP` context. The matrix will then be used during `KSPSolve()`
 
@@ -8313,11 +8313,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetOperators"))
 """
-function KSPSetOperators(petsclib::PetscLibType, ksp::AbstractPetscKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
+function KSPSetOperators(petsclib::PetscLibType, ksp::AbstractKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
     error("KSPSetOperators: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetOperators(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
+@for_petsc function KSPSetOperators(petsclib::$UnionPetscLib, ksp::AbstractKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
     @chk ccall(
                (:KSPSetOperators, $petsc_library),
@@ -8331,7 +8331,7 @@ end
 end 
 
 """
-	KSPSetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractPetscKSP, prefix::String) 
+	KSPSetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractKSP, prefix::String) 
 Sets the prefix used for searching for all
 `KSP` options in the database.
 
@@ -8348,11 +8348,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetOptionsPrefix"))
 """
-function KSPSetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractPetscKSP, prefix::String)
+function KSPSetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP, prefix::String)
     error("KSPSetOptionsPrefix: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, prefix::String )
+@for_petsc function KSPSetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractKSP, prefix::String )
 
     @chk ccall(
                (:KSPSetOptionsPrefix, $petsc_library),
@@ -8366,7 +8366,7 @@ end
 end 
 
 """
-	KSPSetPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC) 
+	KSPSetPC(petsclib::PetscLibType,ksp::AbstractKSP, pc::PC) 
 Sets the preconditioner to be used to calculate the
 application of the preconditioner on a vector into a `KSP`.
 
@@ -8383,11 +8383,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetPC"))
 """
-function KSPSetPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC)
+function KSPSetPC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC)
     error("KSPSetPC: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC )
+@for_petsc function KSPSetPC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::PC )
 
     @chk ccall(
                (:KSPSetPC, $petsc_library),
@@ -8401,7 +8401,7 @@ end
 end 
 
 """
-	KSPSetPCSide(petsclib::PetscLibType,ksp::AbstractPetscKSP, side::PCSide) 
+	KSPSetPCSide(petsclib::PetscLibType,ksp::AbstractKSP, side::PCSide) 
 Sets the preconditioning side.
 
 Logically Collective
@@ -8416,11 +8416,11 @@ Output Parameter:
 # External Links
 $(_doc_external("KSP/KSPSetPCSide"))
 """
-function KSPSetPCSide(petsclib::PetscLibType, ksp::AbstractPetscKSP, side::PCSide)
+function KSPSetPCSide(petsclib::PetscLibType, ksp::AbstractKSP, side::PCSide)
     error("KSPSetPCSide: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetPCSide(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, side::PCSide )
+@for_petsc function KSPSetPCSide(petsclib::$UnionPetscLib, ksp::AbstractKSP, side::PCSide )
 
     @chk ccall(
                (:KSPSetPCSide, $petsc_library),
@@ -8434,7 +8434,7 @@ end
 end 
 
 """
-	KSPSetPostSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetPostSolve(petsclib::PetscLibType,ksp::AbstractKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets a function that is called at the end of each `KSPSolve()` (whether it converges or not). Used in conjunction with `KSPSetPreSolve()`.
 
 Logically Collective
@@ -8451,11 +8451,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetPostSolve"))
 """
-function KSPSetPostSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function KSPSetPostSolve(petsclib::PetscLibType, ksp::AbstractKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("KSPSetPostSolve: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetPostSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function KSPSetPostSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPSetPostSolve, $petsc_library),
@@ -8469,7 +8469,7 @@ end
 end 
 
 """
-	KSPSetPreSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	KSPSetPreSolve(petsclib::PetscLibType,ksp::AbstractKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets a function that is called at the beginning of each `KSPSolve()`. Used in conjunction with `KSPSetPostSolve()`.
 
 Logically Collective
@@ -8486,11 +8486,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetPreSolve"))
 """
-function KSPSetPreSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function KSPSetPreSolve(petsclib::PetscLibType, ksp::AbstractKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("KSPSetPreSolve: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetPreSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function KSPSetPreSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:KSPSetPreSolve, $petsc_library),
@@ -8504,7 +8504,7 @@ end
 end 
 
 """
-	KSPSetResidualHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
+	KSPSetResidualHistory(petsclib::PetscLibType,ksp::AbstractKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
 Sets the array used to hold the residual history.
 If set, this array will contain the residual norms computed at each
 iteration of the solver.
@@ -8525,11 +8525,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetResidualHistory"))
 """
-function KSPSetResidualHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP, a::AbstractVector{<:Number}, na::PetscCount, reset::PetscBool)
+function KSPSetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP, a::AbstractVector{<:Number}, na::PetscCount, reset::PetscBool)
     error("KSPSetResidualHistory: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
+@for_petsc function KSPSetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
 
     @chk ccall(
                (:KSPSetResidualHistory, $petsc_library),
@@ -8543,7 +8543,7 @@ end
 end 
 
 """
-	KSPSetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractPetscKSP, flag::PetscBool) 
+	KSPSetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractKSP, flag::PetscBool) 
 reuse the current preconditioner for future `KSPSolve()`, do not construct a new preconditioner even if the `Mat` operator
 in the `KSP` has different values
 
@@ -8564,11 +8564,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetReusePreconditioner"))
 """
-function KSPSetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractPetscKSP, flag::PetscBool)
+function KSPSetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractKSP, flag::PetscBool)
     error("KSPSetReusePreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flag::PetscBool )
+@for_petsc function KSPSetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractKSP, flag::PetscBool )
 
     @chk ccall(
                (:KSPSetReusePreconditioner, $petsc_library),
@@ -8582,7 +8582,7 @@ end
 end 
 
 """
-	KSPSetSkipPCSetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP, flag::PetscBool) 
+	KSPSetSkipPCSetFromOptions(petsclib::PetscLibType,ksp::AbstractKSP, flag::PetscBool) 
 prevents `KSPSetFromOptions()` from calling `PCSetFromOptions()`.
 This is used if the same `PC` is shared by more than one `KSP` so its options are not reset for each `KSP`
 
@@ -8599,11 +8599,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetSkipPCSetFromOptions"))
 """
-function KSPSetSkipPCSetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP, flag::PetscBool)
+function KSPSetSkipPCSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP, flag::PetscBool)
     error("KSPSetSkipPCSetFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetSkipPCSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flag::PetscBool )
+@for_petsc function KSPSetSkipPCSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractKSP, flag::PetscBool )
 
     @chk ccall(
                (:KSPSetSkipPCSetFromOptions, $petsc_library),
@@ -8617,7 +8617,7 @@ end
 end 
 
 """
-	KSPSetSupportedNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) 
+	KSPSetSupportedNorm(petsclib::PetscLibType,ksp::AbstractKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) 
 Sets a norm and preconditioner side supported by a `KSPType`
 
 Logically Collective
@@ -8635,11 +8635,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetSupportedNorm"))
 """
-function KSPSetSupportedNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP, normtype::KSPNormType, pcside::PCSide, priority::Integer)
+function KSPSetSupportedNorm(petsclib::PetscLibType, ksp::AbstractKSP, normtype::KSPNormType, pcside::PCSide, priority::Integer)
     error("KSPSetSupportedNorm: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetSupportedNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, normtype::KSPNormType, pcside::PCSide, priority::$PetscInt )
+@for_petsc function KSPSetSupportedNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP, normtype::KSPNormType, pcside::PCSide, priority::$PetscInt )
 
     @chk ccall(
                (:KSPSetSupportedNorm, $petsc_library),
@@ -8653,7 +8653,7 @@ end
 end 
 
 """
-	KSPSetTolerances(petsclib::PetscLibType,ksp::AbstractPetscKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) 
+	KSPSetTolerances(petsclib::PetscLibType,ksp::AbstractKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) 
 Sets the relative, absolute, divergence, and maximum
 iteration tolerances used by the default `KSP` convergence testers.
 
@@ -8679,11 +8679,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetTolerances"))
 """
-function KSPSetTolerances(petsclib::PetscLibType, ksp::AbstractPetscKSP, rtol::Real, abstol::Real, dtol::Real, maxits::Integer)
+function KSPSetTolerances(petsclib::PetscLibType, ksp::AbstractKSP, rtol::Real, abstol::Real, dtol::Real, maxits::Integer)
     error("KSPSetTolerances: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetTolerances(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, maxits::$PetscInt )
+@for_petsc function KSPSetTolerances(petsclib::$UnionPetscLib, ksp::AbstractKSP, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, maxits::$PetscInt )
 
     @chk ccall(
                (:KSPSetTolerances, $petsc_library),
@@ -8697,7 +8697,7 @@ end
 end 
 
 """
-	KSPSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPType) 
+	KSPSetType(petsclib::PetscLibType,ksp::AbstractKSP, type::KSPType) 
 Sets the algorithm/method to be used to solve the linear system with the given `KSP`
 
 Logically Collective
@@ -8716,11 +8716,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetType"))
 """
-function KSPSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPType)
+function KSPSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPType)
     error("KSPSetType: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPType )
+@for_petsc function KSPSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::KSPType )
 
     @chk ccall(
                (:KSPSetType, $petsc_library),
@@ -8734,7 +8734,7 @@ end
 end 
 
 """
-	KSPSetUp(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPSetUp(petsclib::PetscLibType,ksp::AbstractKSP) 
 Sets up the internal data structures for the
 later use `KSPSolve()` the `KSP` linear iterative solver.
 
@@ -8750,11 +8750,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetUp"))
 """
-function KSPSetUp(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPSetUp(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPSetUp: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetUp(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPSetUp(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPSetUp, $petsc_library),
@@ -8768,7 +8768,7 @@ end
 end 
 
 """
-	KSPSetUpOnBlocks(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
+	KSPSetUpOnBlocks(petsclib::PetscLibType,ksp::AbstractKSP) 
 Sets up the preconditioner for each block in
 the block Jacobi `PCJACOBI`, overlapping Schwarz `PCASM`, and fieldsplit `PCFIELDSPLIT` preconditioners
 
@@ -8784,11 +8784,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetUpOnBlocks"))
 """
-function KSPSetUpOnBlocks(petsclib::PetscLibType, ksp::AbstractPetscKSP)
+function KSPSetUpOnBlocks(petsclib::PetscLibType, ksp::AbstractKSP)
     error("KSPSetUpOnBlocks: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetUpOnBlocks(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
+@for_petsc function KSPSetUpOnBlocks(petsclib::$UnionPetscLib, ksp::AbstractKSP )
 
     @chk ccall(
                (:KSPSetUpOnBlocks, $petsc_library),
@@ -8802,7 +8802,7 @@ end
 end 
 
 """
-	KSPSetUseExplicitTranspose(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
+	KSPSetUseExplicitTranspose(petsclib::PetscLibType,ksp::AbstractKSP, flg::PetscBool) 
 Determines the explicit transpose of the operator is formed in `KSPSolveTranspose()`. In some configurations (like GPUs) it may
 be explicitly formed since the solve is much more efficient.
 
@@ -8821,11 +8821,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetUseExplicitTranspose"))
 """
-function KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool)
+function KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
     error("KSPSetUseExplicitTranspose: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetUseExplicitTranspose(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
+@for_petsc function KSPSetUseExplicitTranspose(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetUseExplicitTranspose, $petsc_library),
@@ -8839,7 +8839,7 @@ end
 end 
 
 """
-	KSPSetUseFischerGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP, model::PetscInt, size::PetscInt) 
+	KSPSetUseFischerGuess(petsclib::PetscLibType,ksp::AbstractKSP, model::PetscInt, size::PetscInt) 
 Use the Paul Fischer algorithm or its variants to compute initial guesses for a set of solves with related right
 
 Logically Collective
@@ -8859,11 +8859,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetUseFischerGuess"))
 """
-function KSPSetUseFischerGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP, model::Integer, size::Integer)
+function KSPSetUseFischerGuess(petsclib::PetscLibType, ksp::AbstractKSP, model::Integer, size::Integer)
     error("KSPSetUseFischerGuess: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetUseFischerGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, model::$PetscInt, size::$PetscInt )
+@for_petsc function KSPSetUseFischerGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP, model::$PetscInt, size::$PetscInt )
 
     @chk ccall(
                (:KSPSetUseFischerGuess, $petsc_library),
@@ -8877,7 +8877,7 @@ end
 end 
 
 """
-	KSPSetWorkVecs(petsclib::PetscLibType,ksp::AbstractPetscKSP, nw::PetscInt) 
+	KSPSetWorkVecs(petsclib::PetscLibType,ksp::AbstractKSP, nw::PetscInt) 
 Sets a number of work vectors into a `KSP` object
 
 Collective
@@ -8893,11 +8893,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetWorkVecs"))
 """
-function KSPSetWorkVecs(petsclib::PetscLibType, ksp::AbstractPetscKSP, nw::Integer)
+function KSPSetWorkVecs(petsclib::PetscLibType, ksp::AbstractKSP, nw::Integer)
     error("KSPSetWorkVecs: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetWorkVecs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nw::$PetscInt )
+@for_petsc function KSPSetWorkVecs(petsclib::$UnionPetscLib, ksp::AbstractKSP, nw::$PetscInt )
 
     @chk ccall(
                (:KSPSetWorkVecs, $petsc_library),
@@ -8911,7 +8911,7 @@ end
 end 
 
 """
-	KSPSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec}) 
+	KSPSolve(petsclib::PetscLibType,ksp::AbstractKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec}) 
 Solves a linear system associated with `KSP` object
 
 Collective
@@ -8948,11 +8948,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSolve"))
 """
-function KSPSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec})
+function KSPSolve(petsclib::PetscLibType, ksp::AbstractKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec})
     error("KSPSolve: no generated method for these argument types")
 end
 
-@for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec} )
+@for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec} )
 
     @chk ccall(
                (:KSPSolve, $petsc_library),
@@ -8966,7 +8966,7 @@ end
 end 
 
 """
-	KSPSolveTranspose(petsclib::PetscLibType,ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec) 
+	KSPSolveTranspose(petsclib::PetscLibType,ksp::AbstractKSP, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves a linear system with the transpose of the matrix associated with the `KSP` object, A^T x = b.
 
 Collective
@@ -8984,11 +8984,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSolveTranspose"))
 """
-function KSPSolveTranspose(petsclib::PetscLibType, ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec)
+function KSPSolveTranspose(petsclib::PetscLibType, ksp::AbstractKSP, b::AbstractPetscVec, x::AbstractPetscVec)
     error("KSPSolveTranspose: no generated method for these argument types")
 end
 
-@for_petsc function KSPSolveTranspose(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec )
+@for_petsc function KSPSolveTranspose(petsclib::$UnionPetscLib, ksp::AbstractKSP, b::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:KSPSolveTranspose, $petsc_library),
@@ -9002,7 +9002,7 @@ end
 end 
 
 """
-	KSPUnwindPreconditioner(petsclib::PetscLibType,ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec) 
+	KSPUnwindPreconditioner(petsclib::PetscLibType,ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec) 
 Unwinds the preconditioning in the solution. That is,
 takes solution to the preconditioned problem and gets the solution to the
 original problem from it.
@@ -9024,11 +9024,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPUnwindPreconditioner"))
 """
-function KSPUnwindPreconditioner(petsclib::PetscLibType, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec)
+function KSPUnwindPreconditioner(petsclib::PetscLibType, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec)
     error("KSPUnwindPreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function KSPUnwindPreconditioner(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec )
+@for_petsc function KSPUnwindPreconditioner(petsclib::$UnionPetscLib, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec )
 
     @chk ccall(
                (:KSPUnwindPreconditioner, $petsc_library),
@@ -9042,7 +9042,7 @@ end
 end 
 
 """
-	KSPView(petsclib::PetscLibType,ksp::AbstractPetscKSP, viewer::PetscViewer) 
+	KSPView(petsclib::PetscLibType,ksp::AbstractKSP, viewer::PetscViewer) 
 Prints the various parameters currently set in the `KSP` object. For example, the convergence tolerances and `KSPType`.
 Also views the `PC` and `Mat` contained by the `KSP` with `PCView()` and `MatView()`.
 
@@ -9062,11 +9062,11 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPView"))
 """
-function KSPView(petsclib::PetscLibType, ksp::AbstractPetscKSP, viewer::PetscViewer)
+function KSPView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::PetscViewer)
     error("KSPView: no generated method for these argument types")
 end
 
-@for_petsc function KSPView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, viewer::PetscViewer )
+@for_petsc function KSPView(petsclib::$UnionPetscLib, ksp::AbstractKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPView, $petsc_library),
@@ -9080,7 +9080,7 @@ end
 end 
 
 """
-	KSPViewFromOptions(petsclib::PetscLibType,A::AbstractPetscKSP, obj, name::String) 
+	KSPViewFromOptions(petsclib::PetscLibType,A::AbstractKSP, obj, name::String) 
 View (print) a `KSP` object based on values in the options database. Also views the `PC` and `Mat` contained by the `KSP`
 with `PCView()` and `MatView()`.
 
@@ -9101,11 +9101,11 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPViewFromOptions"))
 """
-function KSPViewFromOptions(petsclib::PetscLibType, A::AbstractPetscKSP, obj, name::String)
+function KSPViewFromOptions(petsclib::PetscLibType, A::AbstractKSP, obj, name::String)
     error("KSPViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function KSPViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscKSP, obj, name::String )
+@for_petsc function KSPViewFromOptions(petsclib::$UnionPetscLib, A::AbstractKSP, obj, name::String )
 
     @chk ccall(
                (:KSPViewFromOptions, $petsc_library),

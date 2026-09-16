@@ -1051,7 +1051,7 @@ attach `nullsp` to it.  Must be called after `SNESSetUp` and before `SNESSolve`.
 function snes_set_jacobian_null_space! end
 
 LibPETSc.@for_petsc function snes_set_jacobian_null_space!(
-    snes::LibPETSc.PetscSNES{$PetscLib},
+    snes::LibPETSc.SNES{$PetscLib},
     nullsp::LibPETSc.MatNullSpace,
 )
     petsclib = getlib($PetscLib)

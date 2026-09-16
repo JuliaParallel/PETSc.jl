@@ -18,8 +18,8 @@ end
 
 const HANDLE_CONCRETE = Dict(
     LibPETSc.AbstractPetscVec => LibPETSc.PetscVec, LibPETSc.AbstractPetscMat => LibPETSc.PetscMat,
-    LibPETSc.AbstractPetscDM => LibPETSc.PetscDM, LibPETSc.AbstractPetscKSP => LibPETSc.PetscKSP,
-    LibPETSc.AbstractPetscSNES => LibPETSc.PetscSNES, LibPETSc.AbstractPetscOptions => LibPETSc.PetscOptions,
+    LibPETSc.AbstractPetscDM => LibPETSc.PetscDM, LibPETSc.AbstractKSP => LibPETSc.KSP,
+    LibPETSc.AbstractSNES => LibPETSc.SNES, LibPETSc.AbstractPetscOptions => LibPETSc.PetscOptions,
     LibPETSc.AbstractIS => LibPETSc.IS, LibPETSc.AbstractPF => LibPETSc.PF, LibPETSc.AbstractTS => LibPETSc.TS,
     LibPETSc.AbstractAO => LibPETSc.AO, LibPETSc.AbstractTao => LibPETSc.Tao,
 )

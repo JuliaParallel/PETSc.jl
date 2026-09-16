@@ -4320,7 +4320,7 @@ end
 end 
 
 """
-	J::PetscMat = MatCreateSNESMF(petsclib::PetscLibType,snes::AbstractPetscSNES) 
+	J::PetscMat = MatCreateSNESMF(petsclib::PetscLibType,snes::AbstractSNES) 
 Creates a finite differencing based matrix
 a `SNES` solver.  This matrix can be used as the Jacobian argument for
 the routine `SNESSetJacobian()`. See `MatCreateMFFD()` for details on how
@@ -4343,11 +4343,11 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/MatCreateSNESMF"))
 """
-function MatCreateSNESMF(petsclib::PetscLibType, snes::AbstractPetscSNES)
+function MatCreateSNESMF(petsclib::PetscLibType, snes::AbstractSNES)
     error("MatCreateSNESMF: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateSNESMF(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
+@for_petsc function MatCreateSNESMF(petsclib::$UnionPetscLib, snes::AbstractSNES )
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -4363,7 +4363,7 @@ end
 end 
 
 """
-	J::PetscMat = MatCreateSNESMFMore(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec) 
+	J::PetscMat = MatCreateSNESMFMore(petsclib::PetscLibType,snes::AbstractSNES, x::AbstractPetscVec) 
 Creates a matrix
 context for use with a `SNES` solver that uses the More method to compute an optimal h based on the noise of the function.  This matrix can be used as
 the Jacobian argument for the routine `SNESSetJacobian()`.
@@ -4389,11 +4389,11 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/MatCreateSNESMFMore"))
 """
-function MatCreateSNESMFMore(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec)
+function MatCreateSNESMFMore(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec)
     error("MatCreateSNESMFMore: no generated method for these argument types")
 end
 
-@for_petsc function MatCreateSNESMFMore(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec )
+@for_petsc function MatCreateSNESMFMore(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec )
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -14206,7 +14206,7 @@ end
 end 
 
 """
-	J0ksp::PetscKSP = MatLMVMGetJ0KSP(petsclib::PetscLibType,B::AbstractPetscMat) 
+	J0ksp::KSP = MatLMVMGetJ0KSP(petsclib::PetscLibType,B::AbstractPetscMat) 
 Returns a pointer to the internal `KSP` solver
 associated with the initial Jacobian.
 
@@ -14237,7 +14237,7 @@ end
                B, J0ksp_,
               )
 
-	J0ksp = PetscKSP(J0ksp_[], petsclib)
+	J0ksp = KSP(J0ksp_[], petsclib)
 
 	return J0ksp
 end 
@@ -14635,7 +14635,7 @@ end
 end 
 
 """
-	MatLMVMSetJ0KSP(petsclib::PetscLibType,B::AbstractPetscMat, J0ksp::AbstractPetscKSP) 
+	MatLMVMSetJ0KSP(petsclib::PetscLibType,B::AbstractPetscMat, J0ksp::AbstractKSP) 
 Allows the user to provide a pre
 approximation.
 
@@ -14650,11 +14650,11 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/MatLMVMSetJ0KSP"))
 """
-function MatLMVMSetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat, J0ksp::AbstractPetscKSP)
+function MatLMVMSetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat, J0ksp::AbstractKSP)
     error("MatLMVMSetJ0KSP: no generated method for these argument types")
 end
 
-@for_petsc function MatLMVMSetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0ksp::AbstractPetscKSP )
+@for_petsc function MatLMVMSetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0ksp::AbstractKSP )
 
     @chk ccall(
                (:MatLMVMSetJ0KSP, $petsc_library),
@@ -19888,7 +19888,7 @@ end
 end 
 
 """
-	snes::PetscSNES = MatSNESMFGetSNES(petsclib::PetscLibType,J::AbstractPetscMat) 
+	snes::SNES = MatSNESMFGetSNES(petsclib::PetscLibType,J::AbstractPetscMat) 
 returns the `SNES` associated with a matrix created with `MatCreateSNESMF()`
 
 Not Collective
@@ -19920,7 +19920,7 @@ end
                J, snes_,
               )
 
-	snes = PetscSNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib)
 
 	return snes
 end 
@@ -21182,7 +21182,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = MatSchurComplementGetKSP(petsclib::PetscLibType,S::AbstractPetscMat) 
+	ksp::KSP = MatSchurComplementGetKSP(petsclib::PetscLibType,S::AbstractPetscMat) 
 Gets the `KSP` object that is used to solve with `A00` in the Schur complement matrix S = A11
 
 Not Collective
@@ -21214,7 +21214,7 @@ end
                S, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
@@ -21347,7 +21347,7 @@ end
 end 
 
 """
-	MatSchurComplementSetKSP(petsclib::PetscLibType,S::AbstractPetscMat, ksp::AbstractPetscKSP) 
+	MatSchurComplementSetKSP(petsclib::PetscLibType,S::AbstractPetscMat, ksp::AbstractKSP) 
 Sets the `KSP` object that is used to solve with `A00` in the Schur complement matrix  S = A11
 
 Not Collective
@@ -21363,11 +21363,11 @@ Level: developer
 # External Links
 $(_doc_external("KSP/MatSchurComplementSetKSP"))
 """
-function MatSchurComplementSetKSP(petsclib::PetscLibType, S::AbstractPetscMat, ksp::AbstractPetscKSP)
+function MatSchurComplementSetKSP(petsclib::PetscLibType, S::AbstractPetscMat, ksp::AbstractKSP)
     error("MatSchurComplementSetKSP: no generated method for these argument types")
 end
 
-@for_petsc function MatSchurComplementSetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat, ksp::AbstractPetscKSP )
+@for_petsc function MatSchurComplementSetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat, ksp::AbstractKSP )
 
     @chk ccall(
                (:MatSchurComplementSetKSP, $petsc_library),

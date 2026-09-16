@@ -5202,7 +5202,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = TSGetKSP(petsclib::PetscLibType,ts::AbstractTS) 
+	ksp::KSP = TSGetKSP(petsclib::PetscLibType,ts::AbstractTS) 
 Returns the `KSP` (linear solver) associated with
 a `TS` (timestepper) context.
 
@@ -5235,7 +5235,7 @@ end
                ts, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
@@ -5718,7 +5718,7 @@ end
 end 
 
 """
-	snes::PetscSNES = TSGetSNES(petsclib::PetscLibType,ts::AbstractTS) 
+	snes::SNES = TSGetSNES(petsclib::PetscLibType,ts::AbstractTS) 
 Returns the `SNES` (nonlinear solver) associated with
 a `TS` (timestepper) context. Valid only for nonlinear problems.
 
@@ -5751,7 +5751,7 @@ end
                ts, snes_,
               )
 
-	snes = PetscSNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib)
 
 	return snes
 end 
@@ -9143,7 +9143,7 @@ end
 end 
 
 """
-	snes::PetscSNES = TSRHSSplitGetSNES(petsclib::PetscLibType,ts::AbstractTS) 
+	snes::SNES = TSRHSSplitGetSNES(petsclib::PetscLibType,ts::AbstractTS) 
 Returns the `SNES` (nonlinear solver) associated with
 a `TS` (timestepper) context when RHS splits are used.
 
@@ -9176,7 +9176,7 @@ end
                ts, snes_,
               )
 
-	snes = PetscSNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib)
 
 	return snes
 end 
@@ -9409,7 +9409,7 @@ end
 end 
 
 """
-	TSRHSSplitSetSNES(petsclib::PetscLibType,ts::AbstractTS, snes::AbstractPetscSNES) 
+	TSRHSSplitSetSNES(petsclib::PetscLibType,ts::AbstractTS, snes::AbstractSNES) 
 Set the `SNES` (nonlinear solver) to be used by the
 timestepping context when RHS splits are used.
 
@@ -9426,11 +9426,11 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSRHSSplitSetSNES"))
 """
-function TSRHSSplitSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::AbstractPetscSNES)
+function TSRHSSplitSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::AbstractSNES)
     error("TSRHSSplitSetSNES: no generated method for these argument types")
 end
 
-@for_petsc function TSRHSSplitSetSNES(petsclib::$UnionPetscLib, ts::AbstractTS, snes::AbstractPetscSNES )
+@for_petsc function TSRHSSplitSetSNES(petsclib::$UnionPetscLib, ts::AbstractTS, snes::AbstractSNES )
 
     @chk ccall(
                (:TSRHSSplitSetSNES, $petsc_library),
@@ -12313,7 +12313,7 @@ end
 end 
 
 """
-	TSSetSNES(petsclib::PetscLibType,ts::AbstractTS, snes::AbstractPetscSNES) 
+	TSSetSNES(petsclib::PetscLibType,ts::AbstractTS, snes::AbstractSNES) 
 Set the `SNES` (nonlinear solver) to be used by the `TS` timestepping context
 
 Collective
@@ -12329,11 +12329,11 @@ Level: developer
 # External Links
 $(_doc_external("TS/TSSetSNES"))
 """
-function TSSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::AbstractPetscSNES)
+function TSSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::AbstractSNES)
     error("TSSetSNES: no generated method for these argument types")
 end
 
-@for_petsc function TSSetSNES(petsclib::$UnionPetscLib, ts::AbstractTS, snes::AbstractPetscSNES )
+@for_petsc function TSSetSNES(petsclib::$UnionPetscLib, ts::AbstractTS, snes::AbstractSNES )
 
     @chk ccall(
                (:TSSetSNES, $petsc_library),

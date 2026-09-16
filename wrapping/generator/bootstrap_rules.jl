@@ -53,7 +53,7 @@ function mine(golden::AbstractString)
             end
         end
         # a handle output the heuristics would treat as an input, hand-changed to return a new object
-        for m in eachmatch(r"^\s*(\w+)\s*=\s*(PetscVec|PetscMat|PetscDM|PetscKSP|PetscSNES|IS|TS|AO|Tao|PF|PetscOptions)(?:\{PetscLib\})?\((?:\1_\[\], petsclib|C_NULL, \w+\.age)\)"m, code)
+        for m in eachmatch(r"^\s*(\w+)\s*=\s*(PetscVec|PetscMat|PetscDM|KSP|SNES|IS|TS|AO|Tao|PF|PetscOptions)(?:\{PetscLib\})?\((?:\1_\[\], petsclib|C_NULL, \w+\.age)\)"m, code)
             if !occursin("Create", fn) && !occursin("Duplicate", fn)
                 add!(fn, m.captures[1], "direction", "out")
             end

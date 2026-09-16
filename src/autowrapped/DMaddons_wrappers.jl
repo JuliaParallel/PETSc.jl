@@ -240,7 +240,7 @@ end
 end 
 
 """
-	snes::PetscSNES = DMAdaptorGetSolver(petsclib::PetscLibType,adaptor::DMAdaptor) 
+	snes::SNES = DMAdaptorGetSolver(petsclib::PetscLibType,adaptor::DMAdaptor) 
 Gets the solver used to produce discrete solutions
 
 Not Collective
@@ -274,7 +274,7 @@ end
                adaptor, snes_,
               )
 
-	snes = PetscSNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib)
 
 	return snes
 end 
@@ -1111,7 +1111,7 @@ end
 end 
 
 """
-	DMAdaptorSetSolver(petsclib::PetscLibType,adaptor::DMAdaptor, snes::AbstractPetscSNES) 
+	DMAdaptorSetSolver(petsclib::PetscLibType,adaptor::DMAdaptor, snes::AbstractSNES) 
 Sets the solver used to produce discrete solutions
 
 Not Collective
@@ -1129,11 +1129,11 @@ See also:
 # External Links
 $(_doc_external("DM/DMAdaptorSetSolver"))
 """
-function DMAdaptorSetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::AbstractPetscSNES)
+function DMAdaptorSetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::AbstractSNES)
     error("DMAdaptorSetSolver: no generated method for these argument types")
 end
 
-@for_petsc function DMAdaptorSetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::AbstractPetscSNES )
+@for_petsc function DMAdaptorSetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::AbstractSNES )
 
     @chk ccall(
                (:DMAdaptorSetSolver, $petsc_library),

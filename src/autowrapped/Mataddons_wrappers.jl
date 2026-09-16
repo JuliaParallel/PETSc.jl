@@ -1869,7 +1869,7 @@ end
 end 
 
 """
-	MatMFFDComputeJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid}) 
+	MatMFFDComputeJacobian(petsclib::PetscLibType,snes::AbstractSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid}) 
 Tells the matrix
 Jacobian matrix-vector products will be computed at, i.e. J(x) * a. The x is obtained
 from the `SNES` object (using `SNESGetSolution()`).
@@ -1894,11 +1894,11 @@ Level: developer
 # External Links
 $(_doc_external("SNES/MatMFFDComputeJacobian"))
 """
-function MatMFFDComputeJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid})
+function MatMFFDComputeJacobian(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid})
     error("MatMFFDComputeJacobian: no generated method for these argument types")
 end
 
-@for_petsc function MatMFFDComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid} )
+@for_petsc function MatMFFDComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid} )
 
     @chk ccall(
                (:MatMFFDComputeJacobian, $petsc_library),

@@ -85,14 +85,14 @@ c = "CDM"
 
 [[handles]]
 c_name = "KSP"
-julia = "PetscKSP"
-abstract = "AbstractPetscKSP"
+julia = "KSP"
+abstract = "AbstractKSP"
 c = "CKSP"
 
 [[handles]]
 c_name = "SNES"
-julia = "PetscSNES"
-abstract = "AbstractPetscSNES"
+julia = "SNES"
+abstract = "AbstractSNES"
 c = "CSNES"
 
 [[handles]]

@@ -3496,7 +3496,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = TaoGetKSP(petsclib::PetscLibType,tao::AbstractTao) 
+	ksp::KSP = TaoGetKSP(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the linear solver used by the optimization solver.
 
 Not Collective
@@ -3528,7 +3528,7 @@ end
                tao, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
@@ -4497,7 +4497,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = TaoLMVMGetH0KSP(petsclib::PetscLibType,tao::AbstractTao) 
+	ksp::KSP = TaoLMVMGetH0KSP(petsclib::PetscLibType,tao::AbstractTao) 
 Get the iterative solver for applying the inverse of the QN initial Hessian
 
 Input Parameter:
@@ -4527,7 +4527,7 @@ end
                tao, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 

@@ -1,6 +1,6 @@
 # override for KSPCreateVecs; C signature: KSPCreateVecs(KSP ksp, PetscInt rightn, Vec* right[], PetscInt leftn, Vec* left[])
 """
-	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType,ksp::AbstractPetscKSP, rightn::PetscInt, leftn::PetscInt) 
+	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType,ksp::AbstractKSP, rightn::PetscInt, leftn::PetscInt) 
 Gets a number of work vectors suitably sized for the operator in the `KSP`
 
 Collective
@@ -21,9 +21,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCreateVecs"))
 """
-function KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractPetscKSP, rightn::PetscInt, leftn::PetscInt) end
+function KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractKSP, rightn::PetscInt, leftn::PetscInt) end
 
-@for_petsc function KSPCreateVecs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, rightn::$PetscInt, leftn::$PetscInt )
+@for_petsc function KSPCreateVecs(petsclib::$UnionPetscLib, ksp::AbstractKSP, rightn::$PetscInt, leftn::$PetscInt )
 	right_ = Ref{Ptr{CVec}}()
 	left_ = Ref{Ptr{CVec}}()
 

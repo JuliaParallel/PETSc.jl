@@ -60,3 +60,11 @@ High-level code adapted for the return convention: `dm.jl` (`DMGetCoordinatesLoc
 `ts.jl` (hand overloads of `TSSetRHSFunction`, `TSSetIFunction`, `TSSetIJacobian`,
 `TSSetRHSJacobian`, `TSGetAdapt`, `TSIRKGetNumStages`, `TSGetSolution`, `TSGetSNES`, `TSGetKSP`,
 `TSMonitorSet` removed; the generated ones now have the same behaviour).
+
+## Type renames (PR #260 naming conventions)
+
+`PetscKSP` -> `KSP`, `PetscSNES` -> `SNES`, `AbstractPetscKSP` -> `AbstractKSP`,
+`AbstractPetscSNES` -> `AbstractSNES` (prologue and `rules/types.toml`), and
+`AbstractPETScMemBackend` -> `AbstractPetscMemBackend` (high-level). The old names remain as
+aliases until v0.6. The high-level `KSP(...)`/`SNES(...)` factories are now constructor methods of
+the LibPETSc types, as §5.1 of the naming document asks.

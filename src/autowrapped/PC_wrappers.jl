@@ -291,7 +291,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{PetscKSP} = PCASMGetSubKSP(petsclib::PetscLibType,pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{KSP} = PCASMGetSubKSP(petsclib::PetscLibType,pc::PC) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -320,7 +320,7 @@ end
 @for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{PetscKSP}}()
+	ksp_ = Ref{Ptr{KSP}}()
 
     @chk ccall(
                (:PCASMGetSubKSP, $petsc_library),
@@ -1997,16 +1997,16 @@ end
 end 
 
 """
-	PCBJKOKKOSGetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
+	PCBJKOKKOSGetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractKSP) 
 
 # External Links
 $(_doc_external("KSP/PCBJKOKKOSGetKSP"))
 """
-function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
     error("PCBJKOKKOSGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCBJKOKKOSGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
+@for_petsc function PCBJKOKKOSGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -2022,16 +2022,16 @@ end
 end 
 
 """
-	PCBJKOKKOSSetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
+	PCBJKOKKOSSetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractKSP) 
 
 # External Links
 $(_doc_external("KSP/PCBJKOKKOSSetKSP"))
 """
-function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
     error("PCBJKOKKOSSetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCBJKOKKOSSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
+@for_petsc function PCBJKOKKOSSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCBJKOKKOSSetKSP, $petsc_library),
@@ -2084,7 +2084,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{PetscKSP} = PCBJacobiGetSubKSP(petsclib::PetscLibType,pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{KSP} = PCBJacobiGetSubKSP(petsclib::PetscLibType,pc::PC) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -2112,7 +2112,7 @@ end
 @for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{PetscKSP}}()
+	ksp_ = Ref{Ptr{KSP}}()
 
     @chk ccall(
                (:PCBJacobiGetSubKSP, $petsc_library),
@@ -2619,7 +2619,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = PCDeflationGetCoarseKSP(petsclib::PetscLibType,pc::PC) 
+	ksp::KSP = PCDeflationGetCoarseKSP(petsclib::PetscLibType,pc::PC) 
 Returns the coarse problem `KSP`.
 
 Not Collective
@@ -2651,7 +2651,7 @@ end
                pc, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
@@ -4508,7 +4508,7 @@ end
 end 
 
 """
-	n::PetscInt,subksp::Ptr{PetscKSP} = PCFieldSplitGetSubKSP(petsclib::PetscLibType,pc::PC) 
+	n::PetscInt,subksp::Ptr{KSP} = PCFieldSplitGetSubKSP(petsclib::PetscLibType,pc::PC) 
 Gets the `KSP` contexts for all splits
 
 Collective
@@ -4533,7 +4533,7 @@ end
 
 @for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	subksp_ = Ref{Ptr{PetscKSP}}()
+	subksp_ = Ref{Ptr{KSP}}()
 
     @chk ccall(
                (:PCFieldSplitGetSubKSP, $petsc_library),
@@ -4659,7 +4659,7 @@ end
 end 
 
 """
-	n::PetscInt,subksp::Ptr{PetscKSP} = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType,pc::PC) 
+	n::PetscInt,subksp::Ptr{KSP} = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType,pc::PC) 
 Gets the `KSP` contexts used inside the Schur complement based `PCFIELDSPLIT`
 
 Collective
@@ -4684,7 +4684,7 @@ end
 
 @for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	subksp_ = Ref{Ptr{PetscKSP}}()
+	subksp_ = Ref{Ptr{KSP}}()
 
     @chk ccall(
                (:PCFieldSplitSchurGetSubKSP, $petsc_library),
@@ -6644,7 +6644,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{PetscKSP} = PCGASMGetSubKSP(petsclib::PetscLibType,pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{KSP} = PCGASMGetSubKSP(petsclib::PetscLibType,pc::PC) 
 Gets the local `KSP` contexts for all subdomains on this MPI process.
 
 Collective iff first_local is requested
@@ -6672,7 +6672,7 @@ end
 @for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{PetscKSP}}()
+	ksp_ = Ref{Ptr{KSP}}()
 
     @chk ccall(
                (:PCGASMGetSubKSP, $petsc_library),
@@ -7040,7 +7040,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = PCGalerkinGetKSP(petsclib::PetscLibType,pc::PC) 
+	ksp::KSP = PCGalerkinGetKSP(petsclib::PetscLibType,pc::PC) 
 Gets the `KSP` object in the `PCGALERKIN`
 
 Not Collective
@@ -7073,7 +7073,7 @@ end
                pc, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
@@ -9200,7 +9200,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = PCKSPGetKSP(petsclib::PetscLibType,pc::PC) 
+	ksp::KSP = PCKSPGetKSP(petsclib::PetscLibType,pc::PC) 
 Gets the `KSP` context for a `PCKSP`.
 
 Not Collective but ksp returned is parallel if pc was parallel
@@ -9230,13 +9230,13 @@ end
                pc, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
 
 """
-	PCKSPSetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
+	PCKSPSetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractKSP) 
 Sets the `KSP` context for a `PCKSP`.
 
 Collective
@@ -9252,11 +9252,11 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCKSPSetKSP"))
 """
-function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
     error("PCKSPSetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
+@for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCKSPSetKSP, $petsc_library),
@@ -9658,7 +9658,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = PCMGGetCoarseSolve(petsclib::PetscLibType,pc::PC) 
+	ksp::KSP = PCMGGetCoarseSolve(petsclib::PetscLibType,pc::PC) 
 Gets the solver context to be used on the coarse grid.
 
 Not Collective
@@ -9690,7 +9690,7 @@ end
                pc, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
@@ -10006,7 +10006,7 @@ end
 end 
 
 """
-	ksp::PetscKSP = PCMGGetSmoother(petsclib::PetscLibType,pc::PC, l::PetscInt) 
+	ksp::KSP = PCMGGetSmoother(petsclib::PetscLibType,pc::PC, l::PetscInt) 
 Gets the `KSP` context to be used as smoother for
 both pre- and post-smoothing.  Call both `PCMGGetSmootherUp()` and
 `PCMGGetSmootherDown()` to use different functions for pre- and
@@ -10040,13 +10040,13 @@ end
                pc, l, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
 
 """
-	ksp::PetscKSP = PCMGGetSmootherDown(petsclib::PetscLibType,pc::PC, l::PetscInt) 
+	ksp::KSP = PCMGGetSmootherDown(petsclib::PetscLibType,pc::PC, l::PetscInt) 
 Gets the `KSP` context to be used as smoother before
 coarse grid correction (pre-smoother).
 
@@ -10080,13 +10080,13 @@ end
                pc, l, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
 
 """
-	ksp::PetscKSP = PCMGGetSmootherUp(petsclib::PetscLibType,pc::PC, l::PetscInt) 
+	ksp::KSP = PCMGGetSmootherUp(petsclib::PetscLibType,pc::PC, l::PetscInt) 
 Gets the KSP context to be used as smoother after
 coarse grid correction (post-smoother).
 
@@ -10120,7 +10120,7 @@ end
                pc, l, ksp_,
               )
 
-	ksp = PetscKSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib)
 
 	return ksp
 end 
@@ -11131,7 +11131,7 @@ end
 end 
 
 """
-	innerksp::PetscKSP = PCMPIGetKSP(petsclib::PetscLibType,pc::PC) 
+	innerksp::KSP = PCMPIGetKSP(petsclib::PetscLibType,pc::PC) 
 Gets the `KSP` created by the `PCMPI`
 
 Not Collective
@@ -11163,7 +11163,7 @@ end
                pc, innerksp_,
               )
 
-	innerksp = PetscKSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib)
 
 	return innerksp
 end 
@@ -11880,7 +11880,7 @@ end
 end 
 
 """
-	npatch::PetscInt,ksp::Ptr{PetscKSP} = PCPatchGetSubKSP(petsclib::PetscLibType,pc::PC) 
+	npatch::PetscInt,ksp::Ptr{KSP} = PCPatchGetSubKSP(petsclib::PetscLibType,pc::PC) 
 Get the per
 
 Not Collective
@@ -11905,7 +11905,7 @@ end
 
 @for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	npatch_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{PetscKSP}}()
+	ksp_ = Ref{Ptr{KSP}}()
 
     @chk ccall(
                (:PCPatchGetSubKSP, $petsc_library),
@@ -12491,7 +12491,7 @@ end
 end 
 
 """
-	PCPostSolve(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
+	PCPostSolve(petsclib::PetscLibType,pc::PC, ksp::AbstractKSP) 
 Optional post
 preconditioner-specific actions that must be performed after
 the iterative solve itself.
@@ -12507,11 +12507,11 @@ Input Parameters:
 # External Links
 $(_doc_external("PC/PCPostSolve"))
 """
-function PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+function PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
     error("PCPostSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
+@for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCPostSolve, $petsc_library),
@@ -12525,7 +12525,7 @@ end
 end 
 
 """
-	PCPreSolve(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
+	PCPreSolve(petsclib::PetscLibType,pc::PC, ksp::AbstractKSP) 
 Optional pre
 the iterative solve itself. Used in conjunction with `PCPostSolve()`
 
@@ -12542,11 +12542,11 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCPreSolve"))
 """
-function PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
+function PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
     error("PCPreSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
+@for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCPreSolve, $petsc_library),
@@ -12635,7 +12635,7 @@ end
 end 
 
 """
-	innerksp::PetscKSP = PCRedistributeGetKSP(petsclib::PetscLibType,pc::PC) 
+	innerksp::KSP = PCRedistributeGetKSP(petsclib::PetscLibType,pc::PC) 
 Gets the `KSP` created by the `PCREDISTRIBUTE`
 
 Not Collective
@@ -12667,7 +12667,7 @@ end
                pc, innerksp_,
               )
 
-	innerksp = PetscKSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib)
 
 	return innerksp
 end 
@@ -12706,7 +12706,7 @@ end
 end 
 
 """
-	innerksp::PetscKSP = PCRedundantGetKSP(petsclib::PetscLibType,pc::PC) 
+	innerksp::KSP = PCRedundantGetKSP(petsclib::PetscLibType,pc::PC) 
 Gets the less parallel `KSP` created by the redundant `PC`.
 
 Not Collective
@@ -12738,7 +12738,7 @@ end
                pc, innerksp_,
               )
 
-	innerksp = PetscKSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib)
 
 	return innerksp
 end 
@@ -14780,7 +14780,7 @@ end
 end 
 
 """
-	subksp::PetscKSP = PCTelescopeGetKSP(petsclib::PetscLibType,pc::PC) 
+	subksp::KSP = PCTelescopeGetKSP(petsclib::PetscLibType,pc::PC) 
 Gets the `KSP` created by the telescoping `PC`.
 
 Not Collective
@@ -14812,7 +14812,7 @@ end
                pc, subksp_,
               )
 
-	subksp = PetscKSP(subksp_[], petsclib)
+	subksp = KSP(subksp_[], petsclib)
 
 	return subksp
 end 

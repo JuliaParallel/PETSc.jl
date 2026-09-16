@@ -1,6 +1,9 @@
 using PETSc
 
 # Minimal TAO helper test
+if !PETSc.tao_usable_after_reinitialize()
+    @info "Skipping Tao tests: PETSc 3.25.x loses the TaoTerm types at PetscFinalize and the workaround is not possible with these binaries (Windows)"
+else
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
@@ -13,3 +16,4 @@ reason = LibPETSc.TaoGetConvergedReason(petsclib, tao)
 
 LibPETSc.TaoDestroy(petsclib, tao)
 PETSc.finalize(petsclib)
+end

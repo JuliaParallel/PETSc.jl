@@ -212,12 +212,37 @@ end
 # PETSc 3.25.x: `TaoFinalizePackage` destroys the `TaoTerm` type list but never resets
 # `TaoTermRegisterAllCalled`, so after a finalize/initialize cycle `TaoCreate` fails with
 # "Unable to find requested TaoTerm type callbacks". Reset the flag so the list is rebuilt.
+# The flag is an internal symbol: reachable on Linux/macOS (ELF/Mach-O export everything),
+# not on Windows, where Tao therefore only works in the first initialize/finalize cycle.
+const _taoterm_resettable = Ref{Union{Nothing,Bool}}(nothing)
+
+"""
+    tao_usable_after_reinitialize()
+
+Whether `Tao` objects can be created after `finalize` followed by `initialize` with the current
+PETSc binaries (false on Windows with PETSc 3.25.x, see `_reset_stale_register_flags`).
+"""
+tao_usable_after_reinitialize() = _taoterm_resettable[] !== false
+
 function _reset_stale_register_flags(petsclib)
     handle, _ = _ensure_library_handle(petsclib)
-    for sym in (:TaoTermRegisterAllCalled,)
-        p = Libdl.dlsym_e(_library_ptr(handle), sym)
-        p == C_NULL || unsafe_store!(Ptr{Int32}(p), Int32(0))
+    lib = _library_ptr(handle)
+    # PETSc 3.25.x: these packages destroy their type lists at PetscFinalize without resetting
+    # the RegisterAll flag (TaoFinalizePackage for Tao and TaoTerm; TSTrajectory likewise)
+    ok = true
+    for sym in (:TaoRegisterAllCalled, :TaoTermRegisterAllCalled, :TSTrajectoryRegisterAllCalled)
+        p = Libdl.dlsym_e(lib, sym)
+        if p == C_NULL
+            ok = false
+        else
+            unsafe_store!(Ptr{Int32}(p), Int32(0))
+        end
     end
+    if !ok && _taoterm_resettable[] === nothing
+        @warn "PETSc 3.25.x loses its Tao/TaoTerm types at PetscFinalize and the workaround cannot be applied " *
+              "with these binaries (internal symbols not exported): Tao objects can only be created before the first finalize" maxlog = 1
+    end
+    _taoterm_resettable[] = ok
     return nothing
 end
 

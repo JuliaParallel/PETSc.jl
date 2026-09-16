@@ -24,9 +24,6 @@ otherwise: four PRs of hand fixes were silently lost the moment someone reran th
 wrapping/
   WRAPPING.md            this file
   REWRITE_PLAN.md        analysis and plan of the 2026 rewrite (background, milestones)
-  REGENERATING.md        notes from PR #263 on the bugs of the old generator (background)
-  generatejuliabindings.jl, find_doc_strings.jl, local_types.jl, Project/Manifest.toml
-                         the OLD PythonCall-based generator; obsolete, kept until deleted
   generator/             the generator (a Julia project, deps: JSON3, TOML)
     generate.jl            entry point
     getapi_dump.py         runs PETSc's getAPI.py and writes an API snapshot (JSON)
@@ -237,5 +234,14 @@ julia --project=. -e 'using Pkg; Pkg.test()'             # includes test/wrapper
   substring replacement (`dispatch_types`), exactly like the old generator.
 - `struct_wrappers.jl` is hand-maintained (`generator/structs.jl`): field order must match the
   C struct. Check `api/petsc-X.Y.Z.json` (`structs`) when moving to a new release.
-- The prologue (`generator/prologue.jl`) is the only copy of the handle structs. The old
-  `wrapping/prologue.jl` and `local_types.jl` are gone; do not resurrect them.
+- The prologue (`generator/prologue.jl`) is the only copy of the handle structs.
+
+## History
+
+The wrappers were first produced (PETSc 3.23/3.24) by a PythonCall-based script,
+`wrapping/generatejuliabindings.jl`, whose output was then fixed by hand in `src/autowrapped/`
+over several PRs (#254, #257, #258, #259, #261, #263). Those fixes were lost on every rerun, which
+is why the generator was rewritten in September 2026 (see `REWRITE_PLAN.md` for the analysis and
+`DEVIATIONS.md` for what changed in the output). The old script, its helper files and the
+`REGENERATING.md` notes that accompanied PR #263 were removed afterwards; they remain in the git
+history before commit `0d58b5f`.

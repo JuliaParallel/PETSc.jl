@@ -103,7 +103,7 @@ plain generator rule. **Merge #263 into `v0.5` before freezing the golden baseli
 
 ### 1.7 `REGENERATING.md` from the PR #263 discussion
 
-filoferra attached [REGENERATING.md](REGENERATING.md) to PR #263 (kept verbatim next to this plan). It
+filoferra attached `REGENERATING.md` to PR #263 (kept in this repository until the old generator was removed; see git history). It
 matches categories A-F and H above and adds these points, which become explicit rules or checks:
 
 - Output-ness must come from the man-page `Input Parameters:` / `Output Parameters:` sections, not from

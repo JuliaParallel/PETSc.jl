@@ -13,7 +13,7 @@ You can thus help in many ways:
 
 
 #### Autowrappers
-We originally used the function `/wrapping/generatejuliabindings.jl` to wrap the whole PETSc library, which borrows python routines by Barry Smith. The PETSc version for which we generated these original wrappers was 3.23.6.
+The low-level `LibPETSc` wrappers are generated, once per PETSc release, by the maintainer-only generator in `wrapping/generator/`; see `wrapping/WRAPPING.md` for how it works and what to watch for. Never edit files in `src/autowrapped/` by hand.
 
 Note, however, that a range of additional changes were necessary and we thus had manually fix a number of things. It is therefore *not* recommended to rerun these autowrappers for newer versions of PETSc. 
 Since there are usually only a limited number of new or updated functions between PETSc releases, it is recommended to run the a wrapper only for these new functions and replace those affected accordingly.   

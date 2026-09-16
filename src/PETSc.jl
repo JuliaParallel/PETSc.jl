@@ -63,7 +63,6 @@ include("pc.jl")            # to be fixed/wrapped
 include("ksp.jl")           # part is wrapped
 include("sys.jl")
 
-##include("startup.jl")  # can be removed (later)
 ##include("lib.jl")      # can be removed (later)
 ##include("ref.jl")      # can be removed (later)
 

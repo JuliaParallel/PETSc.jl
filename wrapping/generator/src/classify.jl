@@ -62,7 +62,8 @@ function init_extract(r::Rules, typename::String, name::String, isarray::Bool, i
     elseif isarray && isoutput && stars > 0
         # a PETSc-owned array; without a size rule the raw pointer is returned rather than a guess
         name_ccall = "$(name)_"
-        init = "$name_ccall = Ref{" * "Ptr{"^stars * typename * "}"^stars * "}()"
+        elt = is_handle(r, typename) ? r.handles[typename].c : typename
+        init = "$name_ccall = Ref{" * "Ptr{"^stars * elt * "}"^stars * "}()"
         extract = "$name = $name_ccall[]"
     elseif isarray && isoutput && stars == 0
         init = "$name = Vector{$typename}(undef, ni)"   # only reached when the function has an `ni` argument
@@ -161,7 +162,8 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
         if !isoutput
             typename = typename == "Cchar" ? "String" : (stars == 1 ? "Union{Ptr, AbstractArray{$typename}}" : "Vector{$typename}")
         elseif stars > 0 && !haskey(ov, "size")
-            typename = "Ptr{"^stars * typename * "}"^stars    # raw pointer to a PETSc-owned array
+            # raw pointer to a PETSc-owned array (C handle type for arrays of PETSc objects)
+            typename = "Ptr{"^stars * (is_handle(r, typename) ? r.handles[typename].c : typename) * "}"^stars
         else
             typename = "Vector{$typename}"
         end
@@ -196,12 +198,30 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
         end
     end
     if isarray && isoutput && stars > 0 && (haskey(ov, "size") || get(ov, "nullinit", false))
-        base = "Ptr{"^stars * (is_handle(r, typename) ? r.handles[typename].c : replace(typename, r"^(Vector|Ptr)\{" => "", "}" => "")) * "}"^stars
+        elt0 = replace(typename, r"^(Vector|Ptr)\{" => "", "}" => "")   # element type before decoration
+        ishandle = is_handle(r, elt0)
+        base = "Ptr{"^stars * (ishandle ? r.handles[elt0].c : elt0) * "}"^stars
         init = get(ov, "nullinit", false) ? "$name_ccall = Ref{$base}(C_NULL)" : "$name_ccall = Ref{$base}()"
         if haskey(ov, "size")
             pre = get(ov, "prelude", "")
-            extract = (isempty(pre) ? "" : pre * "\n\t") * "$name = unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"
-            typename = "Vector{" * replace(typename, r"^(Vector|Ptr)\{" => "", "}" => "") * "}"
+            wrap = "unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"
+            if ishandle                     # array of PETSc handles -> Vector of Julia handles
+                h = r.handles[elt0]
+                body = "$name = $name_ccall[] == C_NULL ? $(h.julia){\$PetscLib}[] : [$(h.julia)(p, petsclib) for p in $wrap]"
+                typename = "Vector{$(h.julia)}"
+            elseif elt0 == "Ptr{Cchar}" || (stars == 2 && elt0 == "Cchar")   # char** -> strings
+                wrap = "unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"
+                body = "$name = $name_ccall[] == C_NULL ? String[] : [unsafe_string(p) for p in $wrap]"
+                typename = "Vector{String}"
+            else
+                velt = "Ptr{"^(stars - 1) * elt0 * "}"^(stars - 1)      # element type of the wrapped array
+                sz = strip(String(ov["size"]))
+                nd = startswith(sz, "(") ? count(",", sz) + 1 : 1       # a tuple size gives an N-d array
+                empty = nd == 1 ? "$velt[]" : "Array{$velt,$nd}(undef, $(join(fill("0", nd), ", ")))"
+                body = "$name = $name_ccall[] == C_NULL ? $empty : $wrap"
+                typename = nd == 1 ? "Vector{$velt}" : "Array{$velt,$nd}"
+            end
+            extract = (isempty(pre) ? "" : pre * "\n\t") * body
         end
     end
     if isarray && isoutput && stars == 0 && haskey(ov, "len")

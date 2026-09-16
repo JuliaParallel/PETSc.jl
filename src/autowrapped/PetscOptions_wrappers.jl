@@ -1688,7 +1688,7 @@ end
 end 
 
 """
-	N::PetscInt,names::Ptr{Ptr{Cchar}},values::Ptr{Ptr{Cchar}} = PetscOptionsLeftGet(petsclib::PetscLibType, options::AbstractPetscOptions) 
+	N::PetscInt,names::Vector{String},values::Vector{String} = PetscOptionsLeftGet(petsclib::PetscLibType, options::AbstractPetscOptions) 
 Returns all options that were set and never used.
 
 Not Collective
@@ -1725,8 +1725,8 @@ end
               )
 
 	N = N_[]
-	names = names_[]
-	values = values_[]
+	names = names_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, names_[], N; own = false)]
+	values = values_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, values_[], N; own = false)]
 
 	return N,names,values
 end 

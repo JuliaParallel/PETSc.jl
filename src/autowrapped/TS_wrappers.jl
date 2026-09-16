@@ -4644,7 +4644,7 @@ end
 end 
 
 """
-	numcost::PetscInt,lambda::Ptr{PetscVec},mu::Ptr{PetscVec} = TSGetCostGradients(petsclib::PetscLibType, ts::AbstractTS) 
+	numcost::PetscInt,lambda::Vector{PetscVec},mu::Vector{PetscVec} = TSGetCostGradients(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the gradients from the `TSAdjointSolve()`
 
 Not Collective, but the vectors returned are parallel if `TS` is parallel
@@ -4670,8 +4670,8 @@ end
 
 @for_petsc function TSGetCostGradients(petsclib::$UnionPetscLib, ts::AbstractTS )
 	numcost_ = Ref{$PetscInt}()
-	lambda_ = Ref{Ptr{PetscVec}}()
-	mu_ = Ref{Ptr{PetscVec}}()
+	lambda_ = Ref{Ptr{CVec}}()
+	mu_ = Ref{Ptr{CVec}}()
 
     @chk ccall(
                (:TSGetCostGradients, $petsc_library),
@@ -4681,14 +4681,14 @@ end
               )
 
 	numcost = numcost_[]
-	lambda = lambda_[]
-	mu = mu_[]
+	lambda = lambda_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, lambda_[], numcost; own = false)]
+	mu = mu_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, mu_[], numcost; own = false)]
 
 	return numcost,lambda,mu
 end 
 
 """
-	numcost::PetscInt,lambda2::Ptr{PetscVec},mu2::Ptr{PetscVec},dir::PetscVec = TSGetCostHessianProducts(petsclib::PetscLibType, ts::AbstractTS) 
+	numcost::PetscInt,lambda2::Vector{PetscVec},mu2::Vector{PetscVec},dir::PetscVec = TSGetCostHessianProducts(petsclib::PetscLibType, ts::AbstractTS) 
 Returns the gradients from the `TSAdjointSolve()`
 
 Not Collective, but vectors returned are parallel if `TS` is parallel
@@ -4715,8 +4715,8 @@ end
 
 @for_petsc function TSGetCostHessianProducts(petsclib::$UnionPetscLib, ts::AbstractTS )
 	numcost_ = Ref{$PetscInt}()
-	lambda2_ = Ref{Ptr{PetscVec}}()
-	mu2_ = Ref{Ptr{PetscVec}}()
+	lambda2_ = Ref{Ptr{CVec}}()
+	mu2_ = Ref{Ptr{CVec}}()
 	dir_ = Ref{CVec}()
 
     @chk ccall(
@@ -4727,9 +4727,9 @@ end
               )
 
 	numcost = numcost_[]
-	lambda2 = lambda2_[]
-	mu2 = mu2_[]
 	dir = PetscVec(dir_[], petsclib)
+	lambda2 = lambda2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, lambda2_[], numcost; own = false)]
+	mu2 = mu2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, mu2_[], numcost; own = false)]
 
 	return numcost,lambda2,mu2,dir
 end 
@@ -4850,7 +4850,7 @@ end
 end 
 
 """
-	nsol::PetscInt,sol_times::Ptr{PetscReal},Sols::Ptr{PetscVec} = TSGetEvaluationSolutions(petsclib::PetscLibType, ts::AbstractTS) 
+	nsol::PetscInt,sol_times::Vector{PetscReal},Sols::Vector{PetscVec} = TSGetEvaluationSolutions(petsclib::PetscLibType, ts::AbstractTS) 
 Get the number of solutions and the solutions at the evaluation time points specified
 
 Input Parameter:
@@ -4875,7 +4875,7 @@ end
 @for_petsc function TSGetEvaluationSolutions(petsclib::$UnionPetscLib, ts::AbstractTS )
 	nsol_ = Ref{$PetscInt}()
 	sol_times_ = Ref{Ptr{$PetscReal}}()
-	Sols_ = Ref{Ptr{PetscVec}}()
+	Sols_ = Ref{Ptr{CVec}}()
 
     @chk ccall(
                (:TSGetEvaluationSolutions, $petsc_library),
@@ -4885,14 +4885,14 @@ end
               )
 
 	nsol = nsol_[]
-	sol_times = sol_times_[]
-	Sols = Sols_[]
+	sol_times = sol_times_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, sol_times_[], nsol; own = false)
+	Sols = Sols_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, Sols_[], nsol; own = false)]
 
 	return nsol,sol_times,Sols
 end 
 
 """
-	n::PetscInt,time_points::Ptr{PetscReal} = TSGetEvaluationTimes(petsclib::PetscLibType, ts::AbstractTS) 
+	n::PetscInt,time_points::Vector{PetscReal} = TSGetEvaluationTimes(petsclib::PetscLibType, ts::AbstractTS) 
 gets the evaluation times set with `TSSetEvaluationTimes()`
 
 Not Collective
@@ -4927,7 +4927,7 @@ end
               )
 
 	n = n_[]
-	time_points = time_points_[]
+	time_points = time_points_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, time_points_[], n; own = false)
 
 	return n,time_points
 end 
@@ -9229,7 +9229,7 @@ end
 end 
 
 """
-	n::PetscInt,subts::Ptr{TS} = TSRHSSplitGetSubTSs(petsclib::PetscLibType, ts::AbstractTS) 
+	n::PetscInt,subts::Vector{TS} = TSRHSSplitGetSubTSs(petsclib::PetscLibType, ts::AbstractTS) 
 Get an array of all sub-`TS` contexts.
 
 Logically Collective
@@ -9254,7 +9254,7 @@ end
 
 @for_petsc function TSRHSSplitGetSubTSs(petsclib::$UnionPetscLib, ts::AbstractTS )
 	n_ = Ref{$PetscInt}()
-	subts_ = Ref{Ptr{TS}}()
+	subts_ = Ref{Ptr{CTS}}()
 
     @chk ccall(
                (:TSRHSSplitGetSubTSs, $petsc_library),
@@ -9264,7 +9264,7 @@ end
               )
 
 	n = n_[]
-	subts = subts_[]
+	subts = subts_[] == C_NULL ? TS{$PetscLib}[] : [TS(p, petsclib) for p in unsafe_wrap(Array, subts_[], n; own = false)]
 
 	return n,subts
 end 
@@ -9556,7 +9556,7 @@ end
 end 
 
 """
-	s::PetscInt,A::Ptr{PetscReal},b::Ptr{PetscReal},c::Ptr{PetscReal},bembed::Ptr{PetscReal},p::PetscInt,binterp::Ptr{PetscReal},FSAL::PetscBool = TSRKGetTableau(petsclib::PetscLibType, ts::AbstractTS) 
+	s::PetscInt,A::Vector{PetscReal},b::Vector{PetscReal},c::Vector{PetscReal},bembed::Vector{PetscReal},p::PetscInt,binterp::Vector{PetscReal},FSAL::PetscBool = TSRKGetTableau(petsclib::PetscLibType, ts::AbstractTS) 
 Get info on the `TSRK` tableau
 
 Not Collective
@@ -9603,13 +9603,13 @@ end
               )
 
 	s = s_[]
-	A = A_[]
-	b = b_[]
-	c = c_[]
-	bembed = bembed_[]
 	p = p_[]
-	binterp = binterp_[]
 	FSAL = FSAL_[]
+	A = A_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, A_[], s * s; own = false)
+	b = b_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, b_[], s; own = false)
+	c = c_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, c_[], s; own = false)
+	bembed = bembed_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, bembed_[], s; own = false)
+	binterp = binterp_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, binterp_[], s * p; own = false)
 
 	return s,A,b,c,bembed,p,binterp,FSAL
 end 

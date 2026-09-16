@@ -5547,7 +5547,7 @@ end
 end 
 
 """
-	submat::Ptr{PetscMat} = MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
+	submat::Vector{PetscMat} = MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
 Extracts several submatrices from a matrix. If submat
 points to an array of valid matrices, they may be reused to store the new
 submatrices.
@@ -5576,7 +5576,7 @@ function MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::
 end
 
 @for_petsc function MatCreateSubMatrices(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse )
-	submat_ = Ref{Ptr{PetscMat}}()
+	submat_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:MatCreateSubMatrices, $petsc_library),
@@ -5585,13 +5585,13 @@ end
                mat, n, irow, icol, scall, submat_,
               )
 
-	submat = submat_[]
+	submat = submat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, submat_[], n; own = false)]
 
 	return submat
 end 
 
 """
-	submat::Ptr{PetscMat} = MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
+	submat::Vector{PetscMat} = MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
 Extracts MPI submatrices across a sub communicator of `mat` (by pairs of `IS` that may live on subcomms).
 
 Collective
@@ -5618,7 +5618,7 @@ function MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatCreateSubMatricesMPI(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse )
-	submat_ = Ref{Ptr{PetscMat}}()
+	submat_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:MatCreateSubMatricesMPI, $petsc_library),
@@ -5627,7 +5627,7 @@ end
                mat, n, irow, icol, scall, submat_,
               )
 
-	submat = submat_[]
+	submat = submat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, submat_[], n; own = false)]
 
 	return submat
 end 
@@ -6214,7 +6214,7 @@ end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseGetArray(petsclib::PetscLibType, A::AbstractPetscMat) 
+	array::Array{PetscScalar,2} = MatDenseGetArray(petsclib::PetscLibType, A::AbstractPetscMat) 
 gives read-write access to the array where the data for a `MATDENSE` matrix is stored
 
 Logically Collective
@@ -6247,13 +6247,13 @@ end
               )
 
 	m, n = MatGetLocalSize(petsclib, A)
-	array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
+	array = array_[] == C_NULL ? Array{$PetscScalar,2}(undef, 0, 0) : unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
 	return array
 end 
 
 """
-	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) 
+	array::Array{PetscScalar,2},mtype::PetscMemType = MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) 
 gives read-write access to the array where the data for a `MATDENSE` matrix is stored
 
 Logically Collective
@@ -6288,15 +6288,15 @@ end
                A, array_, mtype_,
               )
 
-	m, n = MatGetLocalSize(petsclib, A)
-	array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 	mtype = mtype_[]
+	m, n = MatGetLocalSize(petsclib, A)
+	array = array_[] == C_NULL ? Array{$PetscScalar,2}(undef, 0, 0) : unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
 	return array,mtype
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) 
+	array::Array{PetscScalar,2} = MatDenseGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) 
 gives read-only access to the array where the data for a `MATDENSE` matrix is stored
 
 Not Collective
@@ -6329,13 +6329,13 @@ end
               )
 
 	m, n = MatGetLocalSize(petsclib, A)
-	array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
+	array = array_[] == C_NULL ? Array{$PetscScalar,2}(undef, 0, 0) : unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
 	return array
 end 
 
 """
-	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) 
+	array::Array{PetscScalar,2},mtype::PetscMemType = MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) 
 gives read-only access to the array where the data for a `MATDENSE` matrix is stored
 
 Logically Collective
@@ -6370,15 +6370,15 @@ end
                A, array_, mtype_,
               )
 
-	m, n = MatGetLocalSize(petsclib, A)
-	array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 	mtype = mtype_[]
+	m, n = MatGetLocalSize(petsclib, A)
+	array = array_[] == C_NULL ? Array{$PetscScalar,2}(undef, 0, 0) : unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
 	return array,mtype
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat) 
+	array::Array{PetscScalar,2} = MatDenseGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat) 
 gives write-only access to the array where the data for a `MATDENSE` matrix is stored
 
 Not Collective
@@ -6411,13 +6411,13 @@ end
               )
 
 	m, n = MatGetLocalSize(petsclib, A)
-	array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
+	array = array_[] == C_NULL ? Array{$PetscScalar,2}(undef, 0, 0) : unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
 	return array
 end 
 
 """
-	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) 
+	array::Array{PetscScalar,2},mtype::PetscMemType = MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) 
 gives write-only access to the array where the data for a `MATDENSE` matrix is stored
 
 Logically Collective
@@ -6452,9 +6452,9 @@ end
                A, array_, mtype_,
               )
 
-	m, n = MatGetLocalSize(petsclib, A)
-	array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 	mtype = mtype_[]
+	m, n = MatGetLocalSize(petsclib, A)
+	array = array_[] == C_NULL ? Array{$PetscScalar,2}(undef, 0, 0) : unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
 	return array,mtype
 end 
@@ -9775,7 +9775,7 @@ end
 
 	nghosts = nghosts_[]
 	nghosts = nghosts_[]
-	ghosts = unsafe_wrap(Array, ghosts_[], Int(nghosts); own = false)
+	ghosts = ghosts_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ghosts_[], Int(nghosts); own = false)
 
 	return nghosts,ghosts
 end 
@@ -10184,7 +10184,7 @@ end
 end 
 
 """
-	nullsp::Ptr{MatNullSpace} = MatGetNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}) 
+	nullsp::Vector{MatNullSpace} = MatGetNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}) 
 gets the null spaces, transpose null spaces, and near null spaces from an array of matrices
 
 Logically Collective
@@ -10218,7 +10218,7 @@ end
                n, mat, nullsp_,
               )
 
-	nullsp = nullsp_[]
+	nullsp = nullsp_[] == C_NULL ? MatNullSpace[] : unsafe_wrap(Array, nullsp_[], 3 * n; own = false)
 
 	return nullsp
 end 
@@ -10597,7 +10597,7 @@ end
               )
 
 	nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))
-	ranges = unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
+	ranges = ranges_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
 
 	return ranges
 end 
@@ -10639,7 +10639,7 @@ end
               )
 
 	nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))
-	ranges = unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
+	ranges = ranges_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
 
 	return ranges
 end 
@@ -10686,9 +10686,9 @@ end
 
 	ncols = ncols_[]
 	ncols = ncols_[]
-	cols = unsafe_wrap(Array, cols_[], Int(ncols); own = false)
+	cols = cols_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, cols_[], Int(ncols); own = false)
 	ncols = ncols_[]
-	vals = unsafe_wrap(Array, vals_[], Int(ncols); own = false)
+	vals = vals_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, vals_[], Int(ncols); own = false)
 
 	return ncols,cols,vals
 end 
@@ -11401,7 +11401,7 @@ end
 end 
 
 """
-	nblocks::PetscInt,bsizes::Ptr{PetscInt} = MatGetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat) 
+	nblocks::PetscInt,bsizes::Vector{PetscInt} = MatGetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat) 
 Gets a diagonal blocks of the matrix that need not be of the same size
 
 Not Collective; No Fortran Support
@@ -11436,7 +11436,7 @@ end
               )
 
 	nblocks = nblocks_[]
-	bsizes = bsizes_[]
+	bsizes = bsizes_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, bsizes_[], nblocks; own = false)
 
 	return nblocks,bsizes
 end 
@@ -12869,7 +12869,7 @@ end
 end 
 
 """
-	node_count::PetscInt,sizes::Ptr{PetscInt},limit::PetscInt = MatInodeGetInodeSizes(petsclib::PetscLibType, A::AbstractPetscMat) 
+	node_count::PetscInt,sizes::Vector{PetscInt},limit::PetscInt = MatInodeGetInodeSizes(petsclib::PetscLibType, A::AbstractPetscMat) 
 Returns the inode information of a matrix with inodes
 
 Not Collective
@@ -12906,8 +12906,8 @@ end
               )
 
 	node_count = node_count_[]
-	sizes = sizes_[]
 	limit = limit_[]
+	sizes = sizes_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, sizes_[], node_count; own = false)
 
 	return node_count,sizes,limit
 end 
@@ -13615,7 +13615,7 @@ end
 end 
 
 """
-	m::PetscInt,n::PetscInt,S::Ptr{PetscScalar} = MatKAIJGetS(petsclib::PetscLibType, A::AbstractPetscMat) 
+	m::PetscInt,n::PetscInt,S::Vector{PetscScalar} = MatKAIJGetS(petsclib::PetscLibType, A::AbstractPetscMat) 
 Get the `S` matrix describing the shift action of the `MATKAIJ` matrix
 
 Not Collective; the entire `S` is stored and returned independently on all processes.
@@ -13653,13 +13653,13 @@ end
 
 	m = m_[]
 	n = n_[]
-	S = S_[]
+	S = S_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, S_[], m * n; own = false)
 
 	return m,n,S
 end 
 
 """
-	m::PetscInt,n::PetscInt,S::Ptr{PetscScalar} = MatKAIJGetSRead(petsclib::PetscLibType, A::AbstractPetscMat) 
+	m::PetscInt,n::PetscInt,S::Vector{PetscScalar} = MatKAIJGetSRead(petsclib::PetscLibType, A::AbstractPetscMat) 
 Get a read-only pointer to the `S` matrix describing the shift action of the `MATKAIJ` matrix
 
 Not Collective; the entire `S` is stored and returned independently on all processes.
@@ -13697,7 +13697,7 @@ end
 
 	m = m_[]
 	n = n_[]
-	S = S_[]
+	S = S_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, S_[], m * n; own = false)
 
 	return m,n,S
 end 
@@ -13741,7 +13741,7 @@ end
 end 
 
 """
-	m::PetscInt,n::PetscInt,T::Ptr{PetscScalar} = MatKAIJGetT(petsclib::PetscLibType, A::AbstractPetscMat) 
+	m::PetscInt,n::PetscInt,T::Vector{PetscScalar} = MatKAIJGetT(petsclib::PetscLibType, A::AbstractPetscMat) 
 Get the transformation matrix `T` associated with the `MATKAIJ` matrix
 
 Not Collective; the entire `T` is stored and returned independently on all processes
@@ -13779,13 +13779,13 @@ end
 
 	m = m_[]
 	n = n_[]
-	T = T_[]
+	T = T_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, T_[], m * n; own = false)
 
 	return m,n,T
 end 
 
 """
-	m::PetscInt,n::PetscInt,T::Ptr{PetscScalar} = MatKAIJGetTRead(petsclib::PetscLibType, A::AbstractPetscMat) 
+	m::PetscInt,n::PetscInt,T::Vector{PetscScalar} = MatKAIJGetTRead(petsclib::PetscLibType, A::AbstractPetscMat) 
 Get a read-only pointer to the transformation matrix `T` associated with the `MATKAIJ` matrix
 
 Not Collective; the entire `T` is stored and returned independently on all processes
@@ -13823,7 +13823,7 @@ end
 
 	m = m_[]
 	n = n_[]
-	T = T_[]
+	T = T_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, T_[], m * n; own = false)
 
 	return m,n,T
 end 
@@ -22090,15 +22090,15 @@ end
                mat, i_, j_, a_, mtype_,
               )
 
-	m, _ = MatGetLocalSize(petsclib, mat)
-	i = unsafe_wrap(Array, i_[], Int(m) + 1; own = false)
-	m, _ = MatGetLocalSize(petsclib, mat)
-	nnz = Int(i[end])
-	j = unsafe_wrap(Array, j_[], nnz; own = false)
-	m, _ = MatGetLocalSize(petsclib, mat)
-	nnz = Int(i[end])
-	a = unsafe_wrap(Array, a_[], nnz; own = false)
 	mtype = mtype_[]
+	m, _ = MatGetLocalSize(petsclib, mat)
+	i = i_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, i_[], Int(m) + 1; own = false)
+	m, _ = MatGetLocalSize(petsclib, mat)
+	nnz = Int(i[end])
+	j = j_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, j_[], nnz; own = false)
+	m, _ = MatGetLocalSize(petsclib, mat)
+	nnz = Int(i[end])
+	a = a_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, a_[], nnz; own = false)
 
 	return i,j,a,mtype
 end 
@@ -25814,7 +25814,7 @@ end
 end 
 
 """
-	M_n::PetscInt,iss::Ptr{IS} = MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::AbstractPetscMat, N::PetscInt) 
+	M_n::PetscInt,iss::Vector{IS} = MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::AbstractPetscMat, N::PetscInt) 
 Creates index subdomains by coalescing adjacent MPI processes' ownership ranges.
 
 Collective
@@ -25840,7 +25840,7 @@ end
 
 @for_petsc function MatSubdomainsCreateCoalesce(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
 	M_n_ = Ref{$PetscInt}()
-	iss_ = Ref{Ptr{IS}}()
+	iss_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:MatSubdomainsCreateCoalesce, $petsc_library),
@@ -25850,7 +25850,7 @@ end
               )
 
 	M_n = M_n_[]
-	iss = iss_[]
+	iss = iss_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iss_[], M_n; own = false)]
 
 	return M_n,iss
 end 

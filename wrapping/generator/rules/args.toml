@@ -36,3 +36,414 @@ size = "nproc + 1"
 # PETSc fills nRow*nCol values
 [DMStagMatGetValuesStencil.val]
 len = "nRow * nCol"
+
+# ---------------------------------------------------------------------------------------------
+# Sizes of PETSc-owned output arrays, from the manual pages (added 2026-09-16). An array whose
+# length is not documented keeps returning the raw pointer.
+# ---------------------------------------------------------------------------------------------
+
+# arrays of PETSc objects, one per subdomain/field/level
+[DMCreateDomainDecomposition.innerislist]
+size = "n"
+[DMCreateDomainDecomposition.outerislist]
+size = "n"
+[DMCreateDomainDecomposition.dmlist]
+size = "n"
+[DMCreateDomainDecomposition.namelist]
+size = "n"
+[DMCreateDomainDecompositionScatters.iscat]
+size = "n"
+[DMCreateDomainDecompositionScatters.oscat]
+size = "n"
+[DMCreateDomainDecompositionScatters.gscat]
+size = "n"
+[DMCreateFieldDecomposition.islist]
+size = "len"
+[DMCreateFieldDecomposition.dmlist]
+size = "len"
+[DMCreateFieldDecomposition.namelist]
+size = "len"
+[DMCreateSectionSuperDM.is]
+size = "len"
+[DMCreateSuperDM.is]
+size = "n"
+[MatCreateSubMatrices.submat]
+size = "n"
+[MatCreateSubMatricesMPI.submat]
+size = "n"
+[MatGetNullSpaces.nullsp]
+size = "3 * n"
+[MatNullSpaceGetVecs.vecs]
+size = "n"
+[MatSubdomainsCreateCoalesce.iss]
+size = "M_n"
+[PCASMCreateSubdomains.outis]
+size = "n"
+[PCASMCreateSubdomains2D.is]
+size = "Nsub"
+[PCASMCreateSubdomains2D.is_local]
+size = "Nsub"
+[PCASMGetLocalSubdomains.is]
+size = "n"
+[PCASMGetLocalSubdomains.is_local]
+size = "n"
+[PCASMGetLocalSubmatrices.mat]
+size = "n"
+[PCASMGetSubKSP.ksp]
+size = "n_local"
+[PCBJacobiGetSubKSP.ksp]
+size = "n_local"
+[PCBJacobiGetTotalBlocks.lens]
+size = "blocks"
+[PCFieldSplitGetSubKSP.subksp]
+size = "n"
+[PCFieldSplitSchurGetSubKSP.subksp]
+size = "n"
+[PCGASMCreateSubdomains.iis]
+size = "M_n"
+[PCGASMCreateSubdomains2D.iis]
+size = "nsub"
+[PCGASMCreateSubdomains2D.ois]
+size = "nsub"
+[PCGASMGetSubdomains.iis]
+size = "n"
+[PCGASMGetSubdomains.ois]
+size = "n"
+[PCGASMGetSubmatrices.mat]
+size = "n"
+[PCGASMGetSubKSP.ksp]
+size = "n_local"
+[PCGetCoarseOperators.coarseOperators]
+size = "num_levels - 1"
+[PCGetInterpolations.interpolations]
+size = "num_levels - 1"
+[PCPatchGetSubKSP.ksp]
+size = "npatch"
+[SNESMultiblockGetSubSNES.subsnes]
+size = "n"
+[SNESNASMGetSubdomainVecs.x]
+size = "n"
+[SNESNASMGetSubdomainVecs.y]
+size = "n"
+[SNESNASMGetSubdomainVecs.b]
+size = "n"
+[SNESNASMGetSubdomainVecs.xl]
+size = "n"
+[SNESNASMGetSubdomains.subsnes]
+size = "n"
+[SNESNASMGetSubdomains.iscatter]
+size = "n"
+[SNESNASMGetSubdomains.oscatter]
+size = "n"
+[SNESNASMGetSubdomains.gscatter]
+size = "n"
+[TSGetCostGradients.lambda]
+size = "numcost"
+[TSGetCostGradients.mu]
+size = "numcost"
+[TSGetCostHessianProducts.lambda2]
+size = "numcost"
+[TSGetCostHessianProducts.mu2]
+size = "numcost"
+[TSGetEvaluationSolutions.sol_times]
+size = "nsol"
+[TSGetEvaluationSolutions.Sols]
+size = "nsol"
+[TSRHSSplitGetSubTSs.subts]
+size = "n"
+[VecTaggerAndGetSubs.subs]
+size = "nsubs"
+[VecTaggerOrGetSubs.subs]
+size = "nsubs"
+[VecConcatenate.x_is]
+size = "nx"
+[VecGetArrays.a]
+size = "n"
+[VecNestGetSubVecs.sx]
+size = "N"
+[VecNestGetSubVecsRead.sx]
+size = "N"
+[ISColoringGetIS.isis]
+size = "nn"
+[DMPlexGetIsoperiodicFaceSF.face_sfs]
+size = "num_face_sfs"
+[PetscQuadratureComputePermutations.perm]
+size = "Np"
+
+# counts documented in the same function
+[DMDAGetElements.e]
+size = "nel * nen"
+[DMGetNeighbors.ranks]
+size = "nranks"
+[DMNetworkGetConnectedVertices.vertices]
+size = "2"
+[DMNetworkGetSharedVertices.svtx]
+size = "nsv"
+[DMNetworkGetSubnetwork.vtx]
+size = "nv"
+[DMNetworkGetSubnetwork.edge]
+size = "ne"
+[DMNetworkGetSupportingEdges.edges]
+size = "nedges"
+[DMNetworkSharedVertexGetInfo.sv]
+size = "2 * n"
+[DMPlexCreateNeighborCSR.offsets]
+size = "numVertices + 1"
+[DMPlexCreateNeighborCSR.adjacency]
+size = "offsets[end]"
+[DMPlexCreatePartitionerGraph.offsets]
+size = "numVertices + 1"
+[DMPlexCreatePartitionerGraph.adjacency]
+size = "offsets[end]"
+[DMPlexGetAdjacency.adj]
+size = "adjSize"
+[DMPlexGetCompressedClosure.points]
+size = "2 * numPoints"
+[DMPlexGetFaceGeometry.fgeom]
+size = "Nface"
+[DMPlexGetFaceGeometry.vol]
+size = "Nface"
+[DMPlexGetGeomBodyMassProperties.centerOfGravity]
+size = "COGsize"
+[DMPlexGetGeomBodyMassProperties.inertiaMatrixCOG]
+size = "IMCOGsize"
+[DMPlexGetGeomCntrlPntAndWeightData.cpCoordData]
+size = "cpCoordDataLength"
+[DMPlexGetGeomCntrlPntAndWeightData.wData]
+size = "wDataLength"
+[DMPlexGetGeomCntrlPntMaps.cntrlPntFaceMap]
+size = "numCntrlPnts"
+[DMPlexGetGeomCntrlPntMaps.cntrlPntWeightFaceMap]
+size = "numCntrlPnts"
+[DMPlexGetGeomCntrlPntMaps.cntrlPntEdgeMap]
+size = "numCntrlPnts"
+[DMPlexGetGeomCntrlPntMaps.cntrlPntWeightEdgeMap]
+size = "numCntrlPnts"
+[DMPlexGetGeomCntrlPntMaps.cntrlPntVertexMap]
+size = "numCntrlPnts"
+[DMPlexGetGeomCntrlPntMaps.cntrlPntWeightVertexMap]
+size = "numCntrlPnts"
+[DMPlexGetGeomGradData.gradSACP]
+size = "cpArraySize"
+[DMPlexGetGeomGradData.gradVolCP]
+size = "cpArraySize"
+[DMPlexGetGeomGradData.gradSAW]
+size = "wArraySize"
+[DMPlexGetGeomGradData.gradVolW]
+size = "wArraySize"
+[DMPlexGetGeomModelBodies.bodies]
+size = "numBodies"
+[DMPlexGetGeomModelBodyEdges.edges]
+size = "numEdges"
+[DMPlexGetGeomModelBodyFaces.faces]
+size = "numFaces"
+[DMPlexGetGeomModelBodyLoops.loops]
+size = "numLoops"
+[DMPlexGetGeomModelBodyNodes.nodes]
+size = "numNodes"
+[DMPlexGetGeomModelBodyShells.shells]
+size = "numShells"
+[DMPlexGetGeomModelEdgeNodes.nodes]
+size = "numNodes"
+[DMPlexGetGeomModelFaceEdges.edges]
+size = "numEdges"
+[DMPlexGetGeomModelFaceLoops.loops]
+size = "numLoops"
+[DMPlexGetGeomModelShellFaces.faces]
+size = "numFaces"
+[DMPlexGetLocalOffsets.offsets]
+size = "num_cells * cell_size"
+[DMPlexGetTreeChildren.children]
+size = "numChildren"
+[DMPlexRefineRegularGetAffineFaceTransforms.detJ]
+size = "Nf"
+[DMPlexTransformCellTransform.target]
+size = "Nt"
+[DMPlexTransformCellTransform.size]
+size = "Nt"
+[DMPlexTransformCellTransformIdentity.target]
+size = "Nt"
+[DMPlexTransformCellTransformIdentity.size]
+size = "Nt"
+[DMSwarmCreatePointPerCellCount.count]
+size = "ncells"
+[DMSwarmGetCellDMNames.celldms]
+size = "Ndm"
+[DMSwarmVectorGetField.fieldnames]
+size = "Nf"
+[DMSwarmCellDMGetCoordinateFields.names]
+size = "Nfc"
+[DMSwarmCellDMGetFields.names]
+size = "Nf"
+[ISAllGatherColors.outindices]
+size = "outN"
+[ISGetPointRange.points]
+size = "pEnd - pStart"
+[ISLocalToGlobalMappingGetBlockInfo.procs]
+size = "nproc"
+[ISLocalToGlobalMappingGetBlockInfo.numprocs]
+size = "nproc"
+[ISLocalToGlobalMappingGetBlockInfo.indices]
+size = "nproc"
+[ISLocalToGlobalMappingGetInfo.procs]
+size = "nproc"
+[ISLocalToGlobalMappingGetInfo.numprocs]
+size = "nproc"
+[ISLocalToGlobalMappingGetInfo.indices]
+size = "nproc"
+[ISLocalToGlobalMappingGetBlockNodeInfo.n_procs]
+size = "n"
+[ISLocalToGlobalMappingGetBlockNodeInfo.procs]
+size = "n"
+[ISLocalToGlobalMappingGetNodeInfo.n_procs]
+size = "n"
+[ISLocalToGlobalMappingGetNodeInfo.procs]
+size = "n"
+[KSPGetErrorHistory.a]
+size = "na"
+[KSPGetResidualHistory.a]
+size = "na"
+[MatGetVariableBlockSizes.bsizes]
+size = "nblocks"
+[MatInodeGetInodeSizes.sizes]
+size = "node_count"
+[MatKAIJGetS.S]
+size = "m * n"
+[MatKAIJGetSRead.S]
+size = "m * n"
+[MatKAIJGetT.T]
+size = "m * n"
+[MatKAIJGetTRead.T]
+size = "m * n"
+[MatMumpsGetNullPivots.array]
+size = "size"
+[MatFDColoringGetPerturbedColumns.cols]
+size = "n"
+[PetscDSGetConstants.constants]
+size = "numConstants"
+[PetscDrawLGGetData.x]
+size = "n * dim"
+[PetscDrawLGGetData.y]
+size = "n * dim"
+[PetscQuadratureGetData.points]
+size = "npoints * dim"
+[PetscQuadratureGetData.weights]
+size = "npoints * Nc"
+[PetscOptionsLeftGet.names]
+size = "N"
+[PetscOptionsLeftGet.values]
+size = "N"
+[PetscSFComputeMultiRootOriginalNumbering.multiRootsOrigNumbering]
+size = "nMultiRoots"
+[PetscSFGetLeafRanks.iranks]
+size = "niranks"
+[PetscSFGetLeafRanks.ioffset]
+size = "niranks + 1"
+[PetscSFGetLeafRanks.irootloc]
+size = "ioffset[end]"
+[PetscSFGetRootRanks.ranks]
+size = "nranks"
+[PetscSFGetRootRanks.roffset]
+size = "nranks + 1"
+[PetscSFGetRootRanks.rmine]
+size = "roffset[end]"
+[PetscSFGetRootRanks.rremote]
+size = "roffset[end]"
+[PetscViewerDrawGetBounds.bounds]
+size = "2 * nbounds"
+[SNESGetConvergenceHistory.a]
+size = "na"
+[SNESGetConvergenceHistory.its]
+size = "na"
+[PetscGatherMessageLengths.onodes]
+size = "nrecvs"
+[PetscGatherMessageLengths.olengths]
+size = "nrecvs"
+[PetscGatherMessageLengths2.onodes]
+size = "nrecvs"
+[PetscGatherMessageLengths2.olengths1]
+size = "nrecvs"
+[PetscGatherMessageLengths2.olengths2]
+size = "nrecvs"
+[PetscMergeIntArray.L]
+size = "n"
+[PetscMergeIntArrayPair.L]
+size = "n"
+[PetscMergeIntArrayPair.J]
+size = "n"
+[PetscMergeMPIIntArray.L]
+size = "n"
+[PetscProcessTree.Level]
+size = "n"
+[PetscProcessTree.Levelcnt]
+size = "Nlevels"
+[PetscProcessTree.Idbylevel]
+size = "n"
+[PetscProcessTree.Column]
+size = "n"
+[TSGetEvaluationTimes.time_points]
+size = "n"
+[TSRKGetTableau.A]
+size = "s * s"
+[TSRKGetTableau.b]
+size = "s"
+[TSRKGetTableau.c]
+size = "s"
+[TSRKGetTableau.bembed]
+size = "s"
+[TSRKGetTableau.binterp]
+size = "s * p"
+[TSAdaptCandidatesGet.order]
+size = "n"
+[TSAdaptCandidatesGet.stageorder]
+size = "n"
+[TSAdaptCandidatesGet.ccfl]
+size = "n"
+[TSAdaptCandidatesGet.cost]
+size = "n"
+[TaoGetConvergenceHistory.obj]
+size = "nhist"
+[TaoGetConvergenceHistory.resid]
+size = "nhist"
+[TaoGetConvergenceHistory.cnorm]
+size = "nhist"
+[TaoGetConvergenceHistory.lits]
+size = "nhist"
+[VecUniqueEntries.e]
+size = "n"
+
+# sizes that need a helper call
+[DMDAGetOwnershipRanges.lx]
+prelude = "_, _, _, _, m, n, p, _, _, _, _, _, _ = DMDAGetInfo(petsclib, da)"
+size = "m"
+[DMDAGetOwnershipRanges.ly]
+size = "n"
+[DMDAGetOwnershipRanges.lz]
+size = "p"
+[VecGetOwnershipRanges.ranges]
+prelude = "nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, x))"
+size = "nproc + 1"
+[PetscDSGetComponents.components]
+prelude = "Nf = PetscDSGetNumFields(petsclib, prob)"
+size = "Nf"
+[PetscDSGetDimensions.dimensions]
+prelude = "Nf = PetscDSGetNumFields(petsclib, prob)"
+size = "Nf"
+[PetscDSGetComponentOffsets.offsets]
+prelude = "Nf = PetscDSGetNumFields(petsclib, prob)"
+size = "Nf"
+[PetscDSGetComponentDerivativeOffsets.offsets]
+prelude = "Nf = PetscDSGetNumFields(petsclib, prob)"
+size = "Nf"
+[PetscDSGetComponentOffsetsCohesive.offsets]
+prelude = "Nf = PetscDSGetNumFields(petsclib, ds)"
+size = "Nf"
+[PetscDSGetComponentDerivativeOffsetsCohesive.offsets]
+prelude = "Nf = PetscDSGetNumFields(petsclib, ds)"
+size = "Nf"
+[PetscFEGetNumDof.numDof]
+prelude = "dim = PetscFEGetSpatialDimension(petsclib, fem)"
+size = "dim + 1"
+[VecTaggerComputeBoxes.boxes]
+prelude = "bs = VecTaggerGetBlockSize(petsclib, tagger)"
+size = "numBoxes * bs"

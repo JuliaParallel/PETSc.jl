@@ -2527,7 +2527,7 @@ end
 end 
 
 """
-	dim::PetscInt,n::PetscInt,x::Ptr{PetscReal},y::Ptr{PetscReal} = PetscDrawLGGetData(petsclib::PetscLibType, lg::PetscDrawLG) 
+	dim::PetscInt,n::PetscInt,x::Vector{PetscReal},y::Vector{PetscReal} = PetscDrawLGGetData(petsclib::PetscLibType, lg::PetscDrawLG) 
 Get the data being plotted.
 
 Not Collective
@@ -2567,8 +2567,8 @@ end
 
 	dim = dim_[]
 	n = n_[]
-	x = x_[]
-	y = y_[]
+	x = x_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, x_[], n * dim; own = false)
+	y = y_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, y_[], n * dim; own = false)
 
 	return dim,n,x,y
 end 

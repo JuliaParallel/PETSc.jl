@@ -3328,7 +3328,7 @@ end
 end 
 
 """
-	a::Ptr{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP) 
+	a::Vector{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the array used to hold the error history and the number of residuals it contains.
 
 Not Collective
@@ -3362,8 +3362,8 @@ end
                ksp, a_, na_,
               )
 
-	a = a_[]
 	na = na_[]
+	a = a_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, a_[], na; own = false)
 
 	return a,na
 end 
@@ -3953,7 +3953,7 @@ end
 end 
 
 """
-	a::Ptr{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP) 
+	a::Vector{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP) 
 Gets the array used to hold the residual history and the number of residuals it contains.
 
 Not Collective
@@ -3987,8 +3987,8 @@ end
                ksp, a_, na_,
               )
 
-	a = a_[]
 	na = na_[]
+	a = a_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, a_[], na; own = false)
 
 	return a,na
 end 

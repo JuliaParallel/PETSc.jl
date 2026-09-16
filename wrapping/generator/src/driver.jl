@@ -26,6 +26,39 @@ function plan_files(api::API, r::Rules)
     return plans
 end
 
+const _RULE_KEYWORDS = Set(["petsclib", "MPI", "end", "Int", "for", "in", "p", "own", "false", "true", "C_NULL", "Array", "Ref", "Ptr", "Cvoid", "unsafe_wrap", "length", "div", "max", "min", "sum"])
+
+"""Every identifier in a size/prelude/len rule must be an argument, an output, a wrapper, or a known name."""
+function validate_rules(r::Rules, api::API, fn::Fn, args::Vector{FArg})
+    rules = get(r.args, fn.name, nothing)
+    rules === nothing && return
+    names = Set(a.name for a in args)
+    for (arg, ov) in rules
+        # names assigned by a prelude, and the `x_` Refs of outputs, are legitimate too
+        for m in eachmatch(r"(?m)^\s*([\w, ]+?)\s*=[^=]", get(ov, "prelude", ""))
+            for lhs in split(m.captures[1], ",")
+                push!(names, String(strip(lhs)))
+            end
+        end
+        for a in args
+            push!(names, a.name * "_")
+        end
+        for key in ("size", "prelude", "len")
+            haskey(ov, key) || continue
+            expr = replace(String(ov[key]), r"#[^\n]*" => "")          # drop comments
+            for m in eachmatch(r"(?<![\w.])([A-Za-z_]\w*)(\s*\()?", expr)   # skip `Mod.name` members
+                id, call = m.captures
+                if call !== nothing
+                    haskey(api.functions, id) || id in _RULE_KEYWORDS || occursin(".", id) || @warn "rule [$(fn.name).$arg] $key calls unknown function $id"
+                else
+                    id in names || id in _RULE_KEYWORDS || occursin(r"^\d", id) || all(c -> c == '_', id) ||
+                        @warn "rule [$(fn.name).$arg] $key uses `$id`, which is not an argument of $(fn.name)"
+                end
+            end
+        end
+    end
+end
+
 """Split a Julia argument list on commas that are not inside braces/parentheses."""
 function split_toplevel(str::AbstractString)
     parts = String[]; depth = 0; buf = IOBuffer()
@@ -136,6 +169,7 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
                 end
                 input_vars, output_vars, doc_lines = function_docs(docs, name)
                 args = classify_all(r, fn, input_vars, output_vars)
+                validate_rules(r, api, fn, args)
                 for t in referenced_types(args)
                     isknown(t) || push!(opaque, t)
                 end

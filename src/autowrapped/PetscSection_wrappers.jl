@@ -1035,7 +1035,7 @@ end
               )
 
 	n = PetscSectionGetConstraintDof(petsclib, s, point)
-	indices = unsafe_wrap(Array, indices_[], n; own = false)
+	indices = indices_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, indices_[], n; own = false)
 
 	return indices
 end 
@@ -1232,7 +1232,7 @@ end
               )
 
 	n = PetscSectionGetFieldConstraintDof(petsclib, s, point, field)
-	indices = unsafe_wrap(Array, indices_[], n; own = false)
+	indices = indices_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, indices_[], n; own = false)
 
 	return indices
 end 

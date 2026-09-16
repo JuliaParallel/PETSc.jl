@@ -149,7 +149,7 @@ end
 end 
 
 """
-	nMultiRoots::PetscInt,multiRootsOrigNumbering::Ptr{PetscInt} = PetscSFComputeMultiRootOriginalNumbering(petsclib::PetscLibType, sf::PetscSF, degree::Vector{PetscInt}) 
+	nMultiRoots::PetscInt,multiRootsOrigNumbering::Vector{PetscInt} = PetscSFComputeMultiRootOriginalNumbering(petsclib::PetscLibType, sf::PetscSF, degree::Vector{PetscInt}) 
 Returns original numbering of multi-roots (roots of multi-`PetscSF` returned by `PetscSFGetMultiSF()`).
 Each multi-root is assigned index of the corresponding original root.
 
@@ -186,7 +186,7 @@ end
               )
 
 	nMultiRoots = nMultiRoots_[]
-	multiRootsOrigNumbering = multiRootsOrigNumbering_[]
+	multiRootsOrigNumbering = multiRootsOrigNumbering_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, multiRootsOrigNumbering_[], nMultiRoots; own = false)
 
 	return nMultiRoots,multiRootsOrigNumbering
 end 
@@ -966,7 +966,7 @@ end
 end 
 
 """
-	niranks::PetscMPIInt,iranks::Ptr{PetscMPIInt},ioffset::Ptr{PetscInt},irootloc::Ptr{PetscInt} = PetscSFGetLeafRanks(petsclib::PetscLibType, sf::PetscSF) 
+	niranks::PetscMPIInt,iranks::Vector{PetscMPIInt},ioffset::Vector{PetscInt},irootloc::Vector{PetscInt} = PetscSFGetLeafRanks(petsclib::PetscLibType, sf::PetscSF) 
 Get leaf MPI ranks referencing roots on this process
 
 Not Collective
@@ -1005,9 +1005,9 @@ end
               )
 
 	niranks = niranks_[]
-	iranks = iranks_[]
-	ioffset = ioffset_[]
-	irootloc = irootloc_[]
+	iranks = iranks_[] == C_NULL ? PetscMPIInt[] : unsafe_wrap(Array, iranks_[], niranks; own = false)
+	ioffset = ioffset_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ioffset_[], niranks + 1; own = false)
+	irootloc = irootloc_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, irootloc_[], ioffset[end]; own = false)
 
 	return niranks,iranks,ioffset,irootloc
 end 
@@ -1089,7 +1089,7 @@ end
 end 
 
 """
-	nranks::PetscMPIInt,ranks::Ptr{PetscMPIInt},roffset::Ptr{PetscInt},rmine::Ptr{PetscInt},rremote::Ptr{PetscInt} = PetscSFGetRootRanks(petsclib::PetscLibType, sf::PetscSF) 
+	nranks::PetscMPIInt,ranks::Vector{PetscMPIInt},roffset::Vector{PetscInt},rmine::Vector{PetscInt},rremote::Vector{PetscInt} = PetscSFGetRootRanks(petsclib::PetscLibType, sf::PetscSF) 
 Get the root MPI ranks and number of vertices referenced by leaves on this process
 
 Not Collective
@@ -1130,10 +1130,10 @@ end
               )
 
 	nranks = nranks_[]
-	ranks = ranks_[]
-	roffset = roffset_[]
-	rmine = rmine_[]
-	rremote = rremote_[]
+	ranks = ranks_[] == C_NULL ? PetscMPIInt[] : unsafe_wrap(Array, ranks_[], nranks; own = false)
+	roffset = roffset_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, roffset_[], nranks + 1; own = false)
+	rmine = rmine_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, rmine_[], roffset[end]; own = false)
+	rremote = rremote_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, rremote_[], roffset[end]; own = false)
 
 	return nranks,ranks,roffset,rmine,rremote
 end 

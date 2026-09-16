@@ -407,7 +407,7 @@ end
 end 
 
 """
-	Y::PetscVec,x_is::Ptr{IS} = VecConcatenate(petsclib::PetscLibType, nx::PetscInt, X::Vector{<:AbstractPetscVec}) 
+	Y::PetscVec,x_is::Vector{IS} = VecConcatenate(petsclib::PetscLibType, nx::PetscInt, X::Vector{<:AbstractPetscVec}) 
 Creates a new vector that is a vertical concatenation of all the given array of vectors
 in the order they appear in the array. The concatenated vector resides on the same
 communicator and is the same type as the source vectors.
@@ -435,7 +435,7 @@ end
 
 @for_petsc function VecConcatenate(petsclib::$UnionPetscLib, nx::$PetscInt, X::Vector{<:AbstractPetscVec} )
 	Y_ = Ref{CVec}()
-	x_is_ = Ref{Ptr{IS}}()
+	x_is_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:VecConcatenate, $petsc_library),
@@ -445,7 +445,7 @@ end
               )
 
 	Y = PetscVec(Y_[], petsclib)
-	x_is = x_is_[]
+	x_is = x_is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, x_is_[], nx; own = false)]
 
 	return Y,x_is
 end 
@@ -1568,7 +1568,7 @@ end
 end 
 
 """
-	M_V::Ptr{PetscVec} = VecDuplicateVecs(petsclib::PetscLibType, v::AbstractPetscVec, m::PetscInt) 
+	M_V::Ptr{CVec} = VecDuplicateVecs(petsclib::PetscLibType, v::AbstractPetscVec, m::PetscInt) 
 Creates several vectors of the same type as an existing vector.
 
 Collective
@@ -1593,7 +1593,7 @@ function VecDuplicateVecs(petsclib::PetscLibType, v::AbstractPetscVec, m::Intege
 end
 
 @for_petsc function VecDuplicateVecs(petsclib::$UnionPetscLib, v::AbstractPetscVec, m::$PetscInt )
-	M_V_ = Ref{Ptr{PetscVec}}()
+	M_V_ = Ref{Ptr{CVec}}()
 
     @chk ccall(
                (:VecDuplicateVecs, $petsc_library),
@@ -1917,7 +1917,7 @@ end
                x, a_,
               )
 
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
+	a = a_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a
 end 
@@ -2501,8 +2501,8 @@ end
                x, a_, mtype_,
               )
 
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 	mtype = mtype_[]
+	a = a_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a,mtype
 end 
@@ -2528,8 +2528,8 @@ end
                x, y, xv_, yv_,
               )
 
-	xv = unsafe_wrap(Array, xv_[], VecGetLocalSize(petsclib, x); own = false)
-	yv = unsafe_wrap(Array, yv_[], VecGetLocalSize(petsclib, x); own = false)
+	xv = xv_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, xv_[], VecGetLocalSize(petsclib, x); own = false)
+	yv = yv_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, yv_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return xv,yv
 end 
@@ -2568,7 +2568,7 @@ end
                x, a_,
               )
 
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
+	a = a_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a
 end 
@@ -2609,8 +2609,8 @@ end
                x, a_, mtype_,
               )
 
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 	mtype = mtype_[]
+	a = a_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a,mtype
 end 
@@ -2650,7 +2650,7 @@ end
                x, a_,
               )
 
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
+	a = a_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a
 end 
@@ -2691,14 +2691,14 @@ end
                x, a_, mtype_,
               )
 
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 	mtype = mtype_[]
+	a = a_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a,mtype
 end 
 
 """
-	a::Ptr{Ptr{PetscScalar}} = VecGetArrays(petsclib::PetscLibType, x::Vector{<:AbstractPetscVec}, n::PetscInt) 
+	a::Vector{Ptr{PetscScalar}} = VecGetArrays(petsclib::PetscLibType, x::Vector{<:AbstractPetscVec}, n::PetscInt) 
 Returns a pointer to the arrays in a set of vectors
 that were created by a call to `VecDuplicateVecs()`.
 
@@ -2732,7 +2732,7 @@ end
                x, n, a_,
               )
 
-	a = a_[]
+	a = a_[] == C_NULL ? Ptr{$PetscScalar}[] : unsafe_wrap(Array, a_[], n; own = false)
 
 	return a
 end 
@@ -3163,7 +3163,7 @@ end
 end 
 
 """
-	ranges::Ptr{PetscInt} = VecGetOwnershipRanges(petsclib::PetscLibType, x::AbstractPetscVec) 
+	ranges::Vector{PetscInt} = VecGetOwnershipRanges(petsclib::PetscLibType, x::AbstractPetscVec) 
 Returns the range of indices owned by EACH processor,
 The vector is laid out with the
 first `n1` elements on the first processor, next `n2` elements on the
@@ -3200,7 +3200,8 @@ end
                x, ranges_,
               )
 
-	ranges = ranges_[]
+	nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, x))
+	ranges = ranges_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
 
 	return ranges
 end 
@@ -4852,7 +4853,7 @@ end
 end 
 
 """
-	N::PetscInt,sx::Ptr{PetscVec} = VecNestGetSubVecs(petsclib::PetscLibType, X::AbstractPetscVec) 
+	N::PetscInt,sx::Vector{PetscVec} = VecNestGetSubVecs(petsclib::PetscLibType, X::AbstractPetscVec) 
 Returns the entire array of vectors defining a nest vector.
 
 Not Collective
@@ -4877,7 +4878,7 @@ end
 
 @for_petsc function VecNestGetSubVecs(petsclib::$UnionPetscLib, X::AbstractPetscVec )
 	N_ = Ref{$PetscInt}()
-	sx_ = Ref{Ptr{PetscVec}}()
+	sx_ = Ref{Ptr{CVec}}()
 
     @chk ccall(
                (:VecNestGetSubVecs, $petsc_library),
@@ -4887,13 +4888,13 @@ end
               )
 
 	N = N_[]
-	sx = sx_[]
+	sx = sx_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, sx_[], N; own = false)]
 
 	return N,sx
 end 
 
 """
-	N::PetscInt,sx::Ptr{PetscVec} = VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec) 
+	N::PetscInt,sx::Vector{PetscVec} = VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec) 
 Access the subvecs of a `VECNEST` vector for read-only access
 
 Logically collective
@@ -4918,7 +4919,7 @@ end
 
 @for_petsc function VecNestGetSubVecsRead(petsclib::$UnionPetscLib, X::AbstractPetscVec )
 	N_ = Ref{$PetscInt}()
-	sx_ = Ref{Ptr{PetscVec}}()
+	sx_ = Ref{Ptr{CVec}}()
 
     @chk ccall(
                (:VecNestGetSubVecsRead, $petsc_library),
@@ -4928,7 +4929,7 @@ end
               )
 
 	N = N_[]
-	sx = sx_[]
+	sx = sx_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, sx_[], N; own = false)]
 
 	return N,sx
 end 
@@ -6854,7 +6855,7 @@ end
 end 
 
 """
-	n::PetscInt,e::Ptr{PetscScalar} = VecUniqueEntries(petsclib::PetscLibType, vec::AbstractPetscVec) 
+	n::PetscInt,e::Vector{PetscScalar} = VecUniqueEntries(petsclib::PetscLibType, vec::AbstractPetscVec) 
 Compute the number of unique entries, and those entries
 
 Collective
@@ -6889,7 +6890,7 @@ end
               )
 
 	n = n_[]
-	e = e_[]
+	e = e_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, e_[], n; own = false)
 
 	return n,e
 end 

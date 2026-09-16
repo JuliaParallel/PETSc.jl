@@ -1,5 +1,5 @@
 """
-	outis::Ptr{IS} = PCASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, n::PetscInt) 
+	outis::Vector{IS} = PCASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, n::PetscInt) 
 Creates the index sets for the overlapping Schwarz
 preconditioner, `PCASM`,  for any problem on a general grid.
 
@@ -24,7 +24,7 @@ function PCASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, n::I
 end
 
 @for_petsc function PCASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, n::$PetscInt )
-	outis_ = Ref{Ptr{IS}}()
+	outis_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:PCASMCreateSubdomains, $petsc_library),
@@ -33,13 +33,13 @@ end
                A, n, outis_,
               )
 
-	outis = outis_[]
+	outis = outis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, outis_[], n; own = false)]
 
 	return outis
 end 
 
 """
-	Nsub::PetscInt,is::Ptr{IS},is_local::Ptr{IS} = PCASMCreateSubdomains2D(petsclib::PetscLibType, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, dof::PetscInt, overlap::PetscInt) 
+	Nsub::PetscInt,is::Vector{IS},is_local::Vector{IS} = PCASMCreateSubdomains2D(petsclib::PetscLibType, m::PetscInt, n::PetscInt, M_M::PetscInt, M_N::PetscInt, dof::PetscInt, overlap::PetscInt) 
 Creates the index sets for the overlapping Schwarz
 preconditioner, `PCASM`, for a two-dimensional problem on a regular grid.
 
@@ -72,8 +72,8 @@ end
 
 @for_petsc function PCASMCreateSubdomains2D(petsclib::$UnionPetscLib, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
 	Nsub_ = Ref{$PetscInt}()
-	is_ = Ref{Ptr{IS}}()
-	is_local_ = Ref{Ptr{IS}}()
+	is_ = Ref{Ptr{CIS}}()
+	is_local_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:PCASMCreateSubdomains2D, $petsc_library),
@@ -83,8 +83,8 @@ end
               )
 
 	Nsub = Nsub_[]
-	is = is_[]
-	is_local = is_local_[]
+	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], Nsub; own = false)]
+	is_local = is_local_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_local_[], Nsub; own = false)]
 
 	return Nsub,is,is_local
 end 
@@ -167,7 +167,7 @@ end
 end 
 
 """
-	n::PetscInt,is::Ptr{IS},is_local::Ptr{IS} = PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,is::Vector{IS},is_local::Vector{IS} = PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC) 
 Gets the local subdomains (for this processor
 only) for the additive Schwarz preconditioner, `PCASM`.
 
@@ -195,8 +195,8 @@ end
 
 @for_petsc function PCASMGetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	is_ = Ref{Ptr{IS}}()
-	is_local_ = Ref{Ptr{IS}}()
+	is_ = Ref{Ptr{CIS}}()
+	is_local_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:PCASMGetLocalSubdomains, $petsc_library),
@@ -206,14 +206,14 @@ end
               )
 
 	n = n_[]
-	is = is_[]
-	is_local = is_local_[]
+	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], n; own = false)]
+	is_local = is_local_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_local_[], n; own = false)]
 
 	return n,is,is_local
 end 
 
 """
-	n::PetscInt,mat::Ptr{PetscMat} = PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,mat::Vector{PetscMat} = PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC) 
 Gets the local submatrices (for this processor
 only) for the additive Schwarz preconditioner, `PCASM`.
 
@@ -240,7 +240,7 @@ end
 
 @for_petsc function PCASMGetLocalSubmatrices(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	mat_ = Ref{Ptr{PetscMat}}()
+	mat_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCASMGetLocalSubmatrices, $petsc_library),
@@ -250,7 +250,7 @@ end
               )
 
 	n = n_[]
-	mat = mat_[]
+	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, mat_[], n; own = false)]
 
 	return n,mat
 end 
@@ -301,7 +301,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{KSP} = PCASMGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCASMGetSubKSP(petsclib::PetscLibType, pc::PC) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -330,7 +330,7 @@ end
 @for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{KSP}}()
+	ksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCASMGetSubKSP, $petsc_library),
@@ -341,7 +341,7 @@ end
 
 	n_local = n_local_[]
 	first_local = first_local_[]
-	ksp = ksp_[]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
 
 	return n_local,first_local,ksp
 end 
@@ -2128,7 +2128,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{KSP} = PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -2156,7 +2156,7 @@ end
 @for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{KSP}}()
+	ksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCBJacobiGetSubKSP, $petsc_library),
@@ -2167,13 +2167,13 @@ end
 
 	n_local = n_local_[]
 	first_local = first_local_[]
-	ksp = ksp_[]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
 
 	return n_local,first_local,ksp
 end 
 
 """
-	blocks::PetscInt,lens::Ptr{PetscInt} = PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::PC) 
+	blocks::PetscInt,lens::Vector{PetscInt} = PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::PC) 
 Gets the global number of blocks for the block
 Jacobi, `PCBJACOBI`, preconditioner.
 
@@ -2209,7 +2209,7 @@ end
               )
 
 	blocks = blocks_[]
-	lens = lens_[]
+	lens = lens_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, lens_[], blocks; own = false)
 
 	return blocks,lens
 end 
@@ -4552,7 +4552,7 @@ end
 end 
 
 """
-	n::PetscInt,subksp::Ptr{KSP} = PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,subksp::Vector{KSP} = PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC) 
 Gets the `KSP` contexts for all splits
 
 Collective
@@ -4577,7 +4577,7 @@ end
 
 @for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	subksp_ = Ref{Ptr{KSP}}()
+	subksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCFieldSplitGetSubKSP, $petsc_library),
@@ -4587,7 +4587,7 @@ end
               )
 
 	n = n_[]
-	subksp = subksp_[]
+	subksp = subksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, subksp_[], n; own = false)]
 
 	return n,subksp
 end 
@@ -4703,7 +4703,7 @@ end
 end 
 
 """
-	n::PetscInt,subksp::Ptr{KSP} = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,subksp::Vector{KSP} = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC) 
 Gets the `KSP` contexts used inside the Schur complement based `PCFIELDSPLIT`
 
 Collective
@@ -4728,7 +4728,7 @@ end
 
 @for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	subksp_ = Ref{Ptr{KSP}}()
+	subksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCFieldSplitSchurGetSubKSP, $petsc_library),
@@ -4738,7 +4738,7 @@ end
               )
 
 	n = n_[]
-	subksp = subksp_[]
+	subksp = subksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, subksp_[], n; own = false)]
 
 	return n,subksp
 end 
@@ -6554,7 +6554,7 @@ end
 end 
 
 """
-	M_n::PetscInt,iis::Ptr{IS} = PCGASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, N::PetscInt) 
+	M_n::PetscInt,iis::Vector{IS} = PCGASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, N::PetscInt) 
 Creates `n` index sets defining `n` nonoverlapping subdomains on this MPI process for the `PCGASM` additive
 Schwarz preconditioner for a any problem based on its matrix.
 
@@ -6581,7 +6581,7 @@ end
 
 @for_petsc function PCGASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
 	M_n_ = Ref{$PetscInt}()
-	iis_ = Ref{Ptr{IS}}()
+	iis_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:PCGASMCreateSubdomains, $petsc_library),
@@ -6591,13 +6591,13 @@ end
               )
 
 	M_n = M_n_[]
-	iis = iis_[]
+	iis = iis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iis_[], M_n; own = false)]
 
 	return M_n,iis
 end 
 
 """
-	nsub::PetscInt,iis::Ptr{IS},ois::Ptr{IS} = PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::PetscInt, N::PetscInt, Mdomains::PetscInt, Ndomains::PetscInt, dof::PetscInt, overlap::PetscInt) 
+	nsub::PetscInt,iis::Vector{IS},ois::Vector{IS} = PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::PetscInt, N::PetscInt, Mdomains::PetscInt, Ndomains::PetscInt, dof::PetscInt, overlap::PetscInt) 
 Creates the index sets for the `PCGASM` overlapping Schwarz
 preconditioner for a two-dimensional problem on a regular grid.
 
@@ -6631,8 +6631,8 @@ end
 
 @for_petsc function PCGASMCreateSubdomains2D(petsclib::$UnionPetscLib, pc::PC, M::$PetscInt, N::$PetscInt, Mdomains::$PetscInt, Ndomains::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
 	nsub_ = Ref{$PetscInt}()
-	iis_ = Ref{Ptr{IS}}()
-	ois_ = Ref{Ptr{IS}}()
+	iis_ = Ref{Ptr{CIS}}()
+	ois_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:PCGASMCreateSubdomains2D, $petsc_library),
@@ -6642,8 +6642,8 @@ end
               )
 
 	nsub = nsub_[]
-	iis = iis_[]
-	ois = ois_[]
+	iis = iis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iis_[], nsub; own = false)]
+	ois = ois_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, ois_[], nsub; own = false)]
 
 	return nsub,iis,ois
 end 
@@ -6688,7 +6688,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Ptr{KSP} = PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC) 
 Gets the local `KSP` contexts for all subdomains on this MPI process.
 
 Collective iff first_local is requested
@@ -6716,7 +6716,7 @@ end
 @for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{KSP}}()
+	ksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCGASMGetSubKSP, $petsc_library),
@@ -6727,13 +6727,13 @@ end
 
 	n_local = n_local_[]
 	first_local = first_local_[]
-	ksp = ksp_[]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
 
 	return n_local,first_local,ksp
 end 
 
 """
-	n::PetscInt,iis::Ptr{IS},ois::Ptr{IS} = PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,iis::Vector{IS},ois::Vector{IS} = PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC) 
 Gets the subdomains supported on this MPI process
 for the `PCGASM` additive Schwarz preconditioner.
 
@@ -6761,8 +6761,8 @@ end
 
 @for_petsc function PCGASMGetSubdomains(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	iis_ = Ref{Ptr{IS}}()
-	ois_ = Ref{Ptr{IS}}()
+	iis_ = Ref{Ptr{CIS}}()
+	ois_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:PCGASMGetSubdomains, $petsc_library),
@@ -6772,14 +6772,14 @@ end
               )
 
 	n = n_[]
-	iis = iis_[]
-	ois = ois_[]
+	iis = iis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iis_[], n; own = false)]
+	ois = ois_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, ois_[], n; own = false)]
 
 	return n,iis,ois
 end 
 
 """
-	n::PetscInt,mat::Ptr{PetscMat} = PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,mat::Vector{PetscMat} = PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC) 
 Gets the local submatrices (for this MPI process
 only) for the `PCGASM` additive Schwarz preconditioner.
 
@@ -6806,7 +6806,7 @@ end
 
 @for_petsc function PCGASMGetSubmatrices(petsclib::$UnionPetscLib, pc::PC )
 	n_ = Ref{$PetscInt}()
-	mat_ = Ref{Ptr{PetscMat}}()
+	mat_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCGASMGetSubmatrices, $petsc_library),
@@ -6816,7 +6816,7 @@ end
               )
 
 	n = n_[]
-	mat = mat_[]
+	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, mat_[], n; own = false)]
 
 	return n,mat
 end 
@@ -7286,7 +7286,7 @@ end
 end 
 
 """
-	num_levels::PetscInt,coarseOperators::Ptr{PetscMat} = PCGetCoarseOperators(petsclib::PetscLibType, pc::PC) 
+	num_levels::PetscInt,coarseOperators::Vector{PetscMat} = PCGetCoarseOperators(petsclib::PetscLibType, pc::PC) 
 Gets coarse operator matrices for all levels (except the finest level)
 
 Logically Collective
@@ -7311,7 +7311,7 @@ end
 
 @for_petsc function PCGetCoarseOperators(petsclib::$UnionPetscLib, pc::PC )
 	num_levels_ = Ref{$PetscInt}()
-	coarseOperators_ = Ref{Ptr{PetscMat}}()
+	coarseOperators_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCGetCoarseOperators, $petsc_library),
@@ -7321,7 +7321,7 @@ end
               )
 
 	num_levels = num_levels_[]
-	coarseOperators = coarseOperators_[]
+	coarseOperators = coarseOperators_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, coarseOperators_[], num_levels - 1; own = false)]
 
 	return num_levels,coarseOperators
 end 
@@ -7442,7 +7442,7 @@ end
 end 
 
 """
-	num_levels::PetscInt,interpolations::Ptr{PetscMat} = PCGetInterpolations(petsclib::PetscLibType, pc::PC) 
+	num_levels::PetscInt,interpolations::Vector{PetscMat} = PCGetInterpolations(petsclib::PetscLibType, pc::PC) 
 Gets interpolation matrices for all levels (except level 0)
 
 Logically Collective
@@ -7467,7 +7467,7 @@ end
 
 @for_petsc function PCGetInterpolations(petsclib::$UnionPetscLib, pc::PC )
 	num_levels_ = Ref{$PetscInt}()
-	interpolations_ = Ref{Ptr{PetscMat}}()
+	interpolations_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCGetInterpolations, $petsc_library),
@@ -7477,7 +7477,7 @@ end
               )
 
 	num_levels = num_levels_[]
-	interpolations = interpolations_[]
+	interpolations = interpolations_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, interpolations_[], num_levels - 1; own = false)]
 
 	return num_levels,interpolations
 end 
@@ -11959,7 +11959,7 @@ end
 end 
 
 """
-	npatch::PetscInt,ksp::Ptr{KSP} = PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	npatch::PetscInt,ksp::Vector{KSP} = PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC) 
 Get the per-patch `KSP` objects used to solve each local patch problem in a `PCPATCH` preconditioner
 
 Not Collective
@@ -11984,7 +11984,7 @@ end
 
 @for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
 	npatch_ = Ref{$PetscInt}()
-	ksp_ = Ref{Ptr{KSP}}()
+	ksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCPatchGetSubKSP, $petsc_library),
@@ -11994,7 +11994,7 @@ end
               )
 
 	npatch = npatch_[]
-	ksp = ksp_[]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], npatch; own = false)]
 
 	return npatch,ksp
 end 

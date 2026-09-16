@@ -86,8 +86,12 @@ function render_function(io::IO, r::Rules, fn::Fn, args::Vector{FArg}, doc_lines
     isempty(args) || println(io, "               $cnames,")
     println(io, "              )")
     println(io, "")
+    # scalar outputs first, then the array wraps (which may use the scalars as sizes)
     for a in args
-        isempty(a.extract) || println(io, "\t$(a.extract)")
+        (isempty(a.extract) || occursin("unsafe_wrap", a.extract)) || println(io, "\t$(dispatch(r, a.extract))")
+    end
+    for a in args
+        (!isempty(a.extract) && occursin("unsafe_wrap", a.extract)) && println(io, "\t$(dispatch(r, a.extract))")
     end
     if num_out > 0
         println(io, "\n\treturn $str_out")

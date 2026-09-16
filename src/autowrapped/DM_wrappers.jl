@@ -1082,7 +1082,7 @@ end
 end 
 
 """
-	is::Ptr{IS} = DMCompositeGetGlobalISs(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	is::Ptr{CIS} = DMCompositeGetGlobalISs(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets the index sets for each composed object in a `DMCOMPOSITE`
 
 Collective
@@ -1107,7 +1107,7 @@ function DMCompositeGetGlobalISs(petsclib::PetscLibType, dm::AbstractPetscDM)
 end
 
 @for_petsc function DMCompositeGetGlobalISs(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
-	is_ = Ref{Ptr{IS}}()
+	is_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:DMCompositeGetGlobalISs, $petsc_library),
@@ -1204,7 +1204,7 @@ end
 end 
 
 """
-	is::Ptr{IS} = DMCompositeGetLocalISs(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	is::Ptr{CIS} = DMCompositeGetLocalISs(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets index sets for each component of a composite local vector
 
 Not Collective; No Fortran Support
@@ -1228,7 +1228,7 @@ function DMCompositeGetLocalISs(petsclib::PetscLibType, dm::AbstractPetscDM)
 end
 
 @for_petsc function DMCompositeGetLocalISs(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
-	is_ = Ref{Ptr{IS}}()
+	is_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:DMCompositeGetLocalISs, $petsc_library),
@@ -2101,7 +2101,7 @@ end
 end 
 
 """
-	n::PetscInt,namelist::Ptr{Ptr{Cchar}},innerislist::Ptr{IS},outerislist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	n::PetscInt,namelist::Vector{String},innerislist::Vector{IS},outerislist::Vector{IS},dmlist::Vector{PetscDM} = DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns lists of `IS` objects defining a decomposition of a
 problem into subproblems corresponding to restrictions to pairs of nested subdomains.
 
@@ -2132,9 +2132,9 @@ end
 @for_petsc function DMCreateDomainDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	n_ = Ref{$PetscInt}()
 	namelist_ = Ref{Ptr{Ptr{Cchar}}}()
-	innerislist_ = Ref{Ptr{IS}}()
-	outerislist_ = Ref{Ptr{IS}}()
-	dmlist_ = Ref{Ptr{PetscDM}}()
+	innerislist_ = Ref{Ptr{CIS}}()
+	outerislist_ = Ref{Ptr{CIS}}()
+	dmlist_ = Ref{Ptr{CDM}}()
 
     @chk ccall(
                (:DMCreateDomainDecomposition, $petsc_library),
@@ -2144,16 +2144,16 @@ end
               )
 
 	n = n_[]
-	namelist = namelist_[]
-	innerislist = innerislist_[]
-	outerislist = outerislist_[]
-	dmlist = dmlist_[]
+	namelist = namelist_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, namelist_[], n; own = false)]
+	innerislist = innerislist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, innerislist_[], n; own = false)]
+	outerislist = outerislist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, outerislist_[], n; own = false)]
+	dmlist = dmlist_[] == C_NULL ? PetscDM{$PetscLib}[] : [PetscDM(p, petsclib) for p in unsafe_wrap(Array, dmlist_[], n; own = false)]
 
 	return n,namelist,innerislist,outerislist,dmlist
 end 
 
 """
-	iscat::Ptr{VecScatter},oscat::Ptr{VecScatter},gscat::Ptr{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, subdms::Vector{<:AbstractPetscDM}) 
+	iscat::Vector{VecScatter},oscat::Vector{VecScatter},gscat::Vector{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, subdms::Vector{<:AbstractPetscDM}) 
 Returns scatters to the subdomain vectors from the global vector for subdomains created with
 `DMCreateDomainDecomposition()`
 
@@ -2192,9 +2192,9 @@ end
                dm, n, subdms, iscat_, oscat_, gscat_,
               )
 
-	iscat = iscat_[]
-	oscat = oscat_[]
-	gscat = gscat_[]
+	iscat = iscat_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, iscat_[], n; own = false)
+	oscat = oscat_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, oscat_[], n; own = false)
+	gscat = gscat_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, gscat_[], n; own = false)
 
 	return iscat,oscat,gscat
 end 
@@ -2241,7 +2241,7 @@ end
 end 
 
 """
-	len::PetscInt,namelist::String,islist::Ptr{IS},dmlist::Ptr{PetscDM} = DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	len::PetscInt,namelist::String,islist::Vector{IS},dmlist::Vector{PetscDM} = DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns a list of `IS` objects defining a decomposition of a problem into subproblems
 corresponding to different fields.
 
@@ -2270,8 +2270,8 @@ end
 @for_petsc function DMCreateFieldDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	len_ = Ref{$PetscInt}()
 	namelist_ = Ref{Ptr{Cchar}}()
-	islist_ = Ref{Ptr{IS}}()
-	dmlist_ = Ref{Ptr{PetscDM}}()
+	islist_ = Ref{Ptr{CIS}}()
+	dmlist_ = Ref{Ptr{CDM}}()
 
     @chk ccall(
                (:DMCreateFieldDecomposition, $petsc_library),
@@ -2282,8 +2282,8 @@ end
 
 	len = len_[]
 	namelist = unsafe_string(namelist_[])
-	islist = islist_[]
-	dmlist = dmlist_[]
+	islist = islist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, islist_[], len; own = false)]
+	dmlist = dmlist_[] == C_NULL ? PetscDM{$PetscLib}[] : [PetscDM(p, petsclib) for p in unsafe_wrap(Array, dmlist_[], len; own = false)]
 
 	return len,namelist,islist,dmlist
 end 
@@ -2941,7 +2941,7 @@ end
 end 
 
 """
-	is::Ptr{IS},superdm::PetscDM = DMCreateSectionSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, len::PetscInt) 
+	is::Vector{IS},superdm::PetscDM = DMCreateSectionSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, len::PetscInt) 
 Returns an arrays of `IS` and a `DM` containing a `PetscSection` that encapsulates a superproblem defined by the array of `DM` and their `PetscSection`
 
 Not Collective
@@ -2966,7 +2966,7 @@ function DMCreateSectionSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPe
 end
 
 @for_petsc function DMCreateSectionSuperDM(petsclib::$UnionPetscLib, dms::Vector{<:AbstractPetscDM}, len::$PetscInt )
-	is_ = Ref{Ptr{IS}}()
+	is_ = Ref{Ptr{CIS}}()
 	superdm_ = Ref{CDM}()
 
     @chk ccall(
@@ -2976,8 +2976,8 @@ end
                dms, len, is_, superdm_,
               )
 
-	is = is_[]
 	superdm = PetscDM(superdm_[], petsclib)
+	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], len; own = false)]
 
 	return is,superdm
 end 
@@ -3027,7 +3027,7 @@ end
 end 
 
 """
-	is::Ptr{IS},superdm::PetscDM = DMCreateSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, n::PetscInt) 
+	is::Vector{IS},superdm::PetscDM = DMCreateSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM}, n::PetscInt) 
 Returns an arrays of `IS` and a single `DM` encapsulating a superproblem defined by multiple `DM`s passed in.
 
 Not collective
@@ -3052,7 +3052,7 @@ function DMCreateSuperDM(petsclib::PetscLibType, dms::Vector{<:AbstractPetscDM},
 end
 
 @for_petsc function DMCreateSuperDM(petsclib::$UnionPetscLib, dms::Vector{<:AbstractPetscDM}, n::$PetscInt )
-	is_ = Ref{Ptr{IS}}()
+	is_ = Ref{Ptr{CIS}}()
 	superdm_ = Ref{CDM}()
 
     @chk ccall(
@@ -3062,8 +3062,8 @@ end
                dms, n, is_, superdm_,
               )
 
-	is = is_[]
 	superdm = PetscDM(superdm_[], petsclib)
+	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], n; own = false)]
 
 	return is,superdm
 end 
@@ -3958,7 +3958,7 @@ end
 end 
 
 """
-	nel::PetscInt,nen::PetscInt,e::Ptr{PetscInt} = DMDAGetElements(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	nel::PetscInt,nen::PetscInt,e::Vector{PetscInt} = DMDAGetElements(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets an array containing the indices (in local indexing)
 of all the local elements
 
@@ -4000,7 +4000,7 @@ end
 
 	nel = nel_[]
 	nen = nen_[]
-	e = e_[]
+	e = e_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, e_[], nel * nen; own = false)
 
 	return nel,nen,e
 end 
@@ -4854,7 +4854,7 @@ end
 end 
 
 """
-	lx::Ptr{PetscInt},ly::Ptr{PetscInt},lz::Ptr{PetscInt} = DMDAGetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM) 
+	lx::Vector{PetscInt},ly::Vector{PetscInt},lz::Vector{PetscInt} = DMDAGetOwnershipRanges(petsclib::PetscLibType, da::AbstractPetscDM) 
 Gets the number of indices in the x, y and z direction that are owned by each process in that direction
 
 Not Collective
@@ -4890,9 +4890,10 @@ end
                da, lx_, ly_, lz_,
               )
 
-	lx = lx_[]
-	ly = ly_[]
-	lz = lz_[]
+	_, _, _, _, m, n, p, _, _, _, _, _, _ = DMDAGetInfo(petsclib, da)
+	lx = lx_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, lx_[], m; own = false)
+	ly = ly_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ly_[], n; own = false)
+	lz = lz_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, lz_[], p; own = false)
 
 	return lx,ly,lz
 end 
@@ -11815,7 +11816,7 @@ end
 end 
 
 """
-	nranks::PetscInt,ranks::Ptr{PetscMPIInt} = DMGetNeighbors(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	nranks::PetscInt,ranks::Vector{PetscMPIInt} = DMGetNeighbors(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Gets an array containing the MPI ranks of all the processes neighbors
 
 Not Collective
@@ -11850,7 +11851,7 @@ end
               )
 
 	nranks = nranks_[]
-	ranks = ranks_[]
+	ranks = ranks_[] == C_NULL ? PetscMPIInt[] : unsafe_wrap(Array, ranks_[], nranks; own = false)
 
 	return nranks,ranks
 end 
@@ -16760,7 +16761,7 @@ end
 end 
 
 """
-	vertices::Ptr{PetscInt} = DMNetworkGetConnectedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, edge::PetscInt) 
+	vertices::Vector{PetscInt} = DMNetworkGetConnectedVertices(petsclib::PetscLibType, dm::AbstractPetscDM, edge::PetscInt) 
 Return the connected vertices for this edge point
 
 Not Collective
@@ -16793,7 +16794,7 @@ end
                dm, edge, vertices_,
               )
 
-	vertices = vertices_[]
+	vertices = vertices_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, vertices_[], 2; own = false)
 
 	return vertices
 end 
@@ -17237,7 +17238,7 @@ end
 end 
 
 """
-	nsv::PetscInt,svtx::Ptr{PetscInt} = DMNetworkGetSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	nsv::PetscInt,svtx::Vector{PetscInt} = DMNetworkGetSharedVertices(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns the info for the shared vertices
 
 Not Collective
@@ -17272,13 +17273,13 @@ end
               )
 
 	nsv = nsv_[]
-	svtx = svtx_[]
+	svtx = svtx_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, svtx_[], nsv; own = false)
 
 	return nsv,svtx
 end 
 
 """
-	nv::PetscInt,ne::PetscInt,vtx::Ptr{PetscInt},edge::Ptr{PetscInt} = DMNetworkGetSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, netnum::PetscInt) 
+	nv::PetscInt,ne::PetscInt,vtx::Vector{PetscInt},edge::Vector{PetscInt} = DMNetworkGetSubnetwork(petsclib::PetscLibType, dm::AbstractPetscDM, netnum::PetscInt) 
 Returns the information about a requested subnetwork
 
 Not Collective
@@ -17319,14 +17320,14 @@ end
 
 	nv = nv_[]
 	ne = ne_[]
-	vtx = vtx_[]
-	edge = edge_[]
+	vtx = vtx_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, vtx_[], nv; own = false)
+	edge = edge_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, edge_[], ne; own = false)
 
 	return nv,ne,vtx,edge
 end 
 
 """
-	nedges::PetscInt,edges::Ptr{PetscInt} = DMNetworkGetSupportingEdges(petsclib::PetscLibType, dm::AbstractPetscDM, vertex::PetscInt) 
+	nedges::PetscInt,edges::Vector{PetscInt} = DMNetworkGetSupportingEdges(petsclib::PetscLibType, dm::AbstractPetscDM, vertex::PetscInt) 
 Return the supporting edges for this vertex point
 
 Not Collective
@@ -17362,7 +17363,7 @@ end
               )
 
 	nedges = nedges_[]
-	edges = edges_[]
+	edges = edges_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, edges_[], nedges; own = false)
 
 	return nedges,edges
 end 
@@ -17742,7 +17743,7 @@ end
 end 
 
 """
-	gidx::PetscInt,n::PetscInt,sv::Ptr{PetscInt} = DMNetworkSharedVertexGetInfo(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscInt) 
+	gidx::PetscInt,n::PetscInt,sv::Vector{PetscInt} = DMNetworkSharedVertexGetInfo(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscInt) 
 Get info of a shared vertex struct, see petsc/private/dmnetworkimpl.h
 
 Not Collective
@@ -17781,7 +17782,7 @@ end
 
 	gidx = gidx_[]
 	n = n_[]
-	sv = sv_[]
+	sv = sv_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, sv_[], 2 * n; own = false)
 
 	return gidx,n,sv
 end 
@@ -23536,7 +23537,7 @@ end
 end 
 
 """
-	adjSize::PetscInt,adj::Ptr{PetscInt} = DMPlexGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
+	adjSize::PetscInt,adj::Vector{PetscInt} = DMPlexGetAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt) 
 Return all points adjacent to the given point
 
 Input Parameters:
@@ -23572,7 +23573,7 @@ end
               )
 
 	adjSize = adjSize_[]
-	adj = adj_[]
+	adj = adj_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, adj_[], adjSize; own = false)
 
 	return adjSize,adj
 end 
@@ -23732,11 +23733,11 @@ end
 
 	isDG = isDG_[]
 	Nc = Nc_[]
-	array = unsafe_wrap(Array, array_[], Nc; own = false)
+	array = array_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, array_[], Nc; own = false)
 	isDG = isDG_[]
 	Nc = Nc_[]
 	array = array_[]   # opaque pointer, passed back to DMPlexRestoreCellCoordinates
-	coords = unsafe_wrap(Array, coords_[], Nc; own = false)
+	coords = coords_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, coords_[], Nc; own = false)
 
 	return isDG,Nc,array,coords
 end 
@@ -24027,7 +24028,7 @@ end
 
 	numIndices = numIndices_[]
 	numIndices = numIndices_[]
-	indices = unsafe_wrap(Array, indices_[], numIndices; own = false)
+	indices = indices_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, indices_[], numIndices; own = false)
 
 	return numIndices,indices,outOffsets
 end 
@@ -24120,7 +24121,7 @@ end
               )
 
 	n = DMPlexGetConeSize(petsclib, dm, p)
-	cone = unsafe_wrap(Array, cone_[], n; own = false)
+	cone = cone_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, cone_[], n; own = false)
 
 	return cone
 end 
@@ -24162,7 +24163,7 @@ end
               )
 
 	n = DMPlexGetConeSize(petsclib, dm, p)
-	coneOrientation = unsafe_wrap(Array, coneOrientation_[], n; own = false)
+	coneOrientation = coneOrientation_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, coneOrientation_[], n; own = false)
 
 	return coneOrientation
 end 
@@ -24206,7 +24207,7 @@ end
 end 
 
 """
-	depth::PetscInt,expandedPoints::Ptr{IS},sections::Ptr{PetscSection} = DMPlexGetConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS) 
+	depth::PetscInt,expandedPoints::Ptr{CIS},sections::Ptr{PetscSection} = DMPlexGetConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS) 
 Expand each given point into its cone points and do that recursively until we end up just with vertices
 (DAG points of depth 0, i.e., without cones).
 
@@ -24235,7 +24236,7 @@ end
 
 @for_petsc function DMPlexGetConeRecursive(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS )
 	depth_ = Ref{$PetscInt}()
-	expandedPoints_ = Ref{Ptr{IS}}()
+	expandedPoints_ = Ref{Ptr{CIS}}()
 	sections_ = Ref{Ptr{PetscSection}}()
 
     @chk ccall(
@@ -24737,7 +24738,7 @@ end
 end 
 
 """
-	Nface::PetscInt,fgeom::Ptr{PetscFVFaceGeom},vol::Ptr{PetscReal} = DMPlexGetFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) 
+	Nface::PetscInt,fgeom::Vector{PetscFVFaceGeom},vol::Vector{PetscReal} = DMPlexGetFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec) 
 Retrieve the geometric values for a chunk of faces
 
 Input Parameters:
@@ -24776,8 +24777,8 @@ end
               )
 
 	Nface = Nface_[]
-	fgeom = fgeom_[]
-	vol = vol_[]
+	fgeom = fgeom_[] == C_NULL ? PetscFVFaceGeom[] : unsafe_wrap(Array, fgeom_[], Nface; own = false)
+	vol = vol_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, vol_[], Nface; own = false)
 
 	return Nface,fgeom,vol
 end 
@@ -24821,7 +24822,7 @@ end
 
 	numCoveredPoints = numCoveredPoints_[]
 	numCoveredPoints = numCoveredPoints_[]
-	coveredPoints = unsafe_wrap(Array, coveredPoints_[], numCoveredPoints; own = false)
+	coveredPoints = coveredPoints_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, coveredPoints_[], numCoveredPoints; own = false)
 
 	return numCoveredPoints,coveredPoints
 end 
@@ -25950,13 +25951,13 @@ end
 
 	numCoveredPoints = numCoveredPoints_[]
 	numCoveredPoints = numCoveredPoints_[]
-	coveredPoints = unsafe_wrap(Array, coveredPoints_[], numCoveredPoints; own = false)
+	coveredPoints = coveredPoints_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, coveredPoints_[], numCoveredPoints; own = false)
 
 	return numCoveredPoints,coveredPoints
 end 
 
 """
-	num_cells::PetscInt,cell_size::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsets::Ptr{PetscInt} = DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt, height::PetscInt, dm_field::PetscInt) 
+	num_cells::PetscInt,cell_size::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsets::Vector{PetscInt} = DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt, height::PetscInt, dm_field::PetscInt) 
 Allocate and populate array of local offsets for each cell closure.
 
 Not collective
@@ -26004,7 +26005,7 @@ end
 	cell_size = cell_size_[]
 	num_comp = num_comp_[]
 	l_size = l_size_[]
-	offsets = offsets_[]
+	offsets = offsets_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, offsets_[], num_cells * cell_size; own = false)
 
 	return num_cells,cell_size,num_comp,l_size,offsets
 end 
@@ -26178,7 +26179,7 @@ end
 
 	numCoveringPoints = numCoveringPoints_[]
 	numCoveringPoints = numCoveringPoints_[]
-	coveringPoints = unsafe_wrap(Array, coveringPoints_[], numCoveringPoints; own = false)
+	coveringPoints = coveringPoints_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, coveringPoints_[], numCoveringPoints; own = false)
 
 	return numCoveringPoints,coveringPoints
 end 
@@ -26415,9 +26416,9 @@ end
               )
 
 	n = DMPlexGetConeSize(petsclib, dm, p)
-	cone = unsafe_wrap(Array, cone_[], n; own = false)
+	cone = cone_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, cone_[], n; own = false)
 	n = DMPlexGetConeSize(petsclib, dm, p)
-	ornt = unsafe_wrap(Array, ornt_[], n; own = false)
+	ornt = ornt_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ornt_[], n; own = false)
 
 	return cone,ornt
 end 
@@ -27315,7 +27316,7 @@ end
               )
 
 	n = DMPlexGetSupportSize(petsclib, dm, p)
-	support = unsafe_wrap(Array, support_[], n; own = false)
+	support = support_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, support_[], n; own = false)
 
 	return support
 end 
@@ -27514,7 +27515,7 @@ end
 
 	numPoints = numPoints_[]
 	numPoints = numPoints_[]
-	points = unsafe_wrap(Array, points_[], 2*numPoints; own = false)
+	points = points_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, points_[], 2*numPoints; own = false)
 
 	return numPoints,points
 end 
@@ -27571,7 +27572,7 @@ end
 end 
 
 """
-	numChildren::PetscInt,children::Ptr{PetscInt} = DMPlexGetTreeChildren(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
+	numChildren::PetscInt,children::Vector{PetscInt} = DMPlexGetTreeChildren(petsclib::PetscLibType, dm::AbstractPetscDM, point::PetscInt) 
 get the children of a point in the tree describing the point hierarchy (not the DAG)
 
 Input Parameters:
@@ -27605,7 +27606,7 @@ end
               )
 
 	numChildren = numChildren_[]
-	children = children_[]
+	children = children_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, children_[], numChildren; own = false)
 
 	return numChildren,children
 end 
@@ -32334,7 +32335,7 @@ end
 end 
 
 """
-	Nf::PetscInt,v0::Ptr{PetscReal},J::Ptr{PetscReal},invJ::Ptr{PetscReal},detJ::Ptr{PetscReal} = DMPlexRefineRegularGetAffineFaceTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType) 
+	Nf::PetscInt,v0::Ptr{PetscReal},J::Ptr{PetscReal},invJ::Ptr{PetscReal},detJ::Vector{PetscReal} = DMPlexRefineRegularGetAffineFaceTransforms(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType) 
 Gets the affine map from the reference face cell to each face in the given cell
 
 Input Parameters:
@@ -32377,7 +32378,7 @@ end
 	v0 = v0_[]
 	J = J_[]
 	invJ = invJ_[]
-	detJ = detJ_[]
+	detJ = detJ_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, detJ_[], Nf; own = false)
 
 	return Nf,v0,J,invJ,detJ
 end 
@@ -35713,7 +35714,7 @@ end
 
 	csize = csize_[]
 	csize = csize_[]
-	values = unsafe_wrap(Array, values_[], csize; own = false)
+	values = values_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, values_[], csize; own = false)
 
 	return csize,values
 end 
@@ -45599,7 +45600,7 @@ end
 end 
 
 """
-	Ndm::PetscInt,celldms::Ptr{Ptr{Cchar}} = DMSwarmGetCellDMNames(petsclib::PetscLibType, sw::AbstractPetscDM) 
+	Ndm::PetscInt,celldms::Vector{String} = DMSwarmGetCellDMNames(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Get the list of cell `DM` names
 
 Not collective
@@ -45634,7 +45635,7 @@ end
               )
 
 	Ndm = Ndm_[]
-	celldms = celldms_[]
+	celldms = celldms_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, celldms_[], Ndm; own = false)]
 
 	return Ndm,celldms
 end 
@@ -47121,7 +47122,7 @@ end
 end 
 
 """
-	Nf::PetscInt,fieldnames::Ptr{Ptr{Cchar}} = DMSwarmVectorGetField(petsclib::PetscLibType, sw::AbstractPetscDM) 
+	Nf::PetscInt,fieldnames::Vector{String} = DMSwarmVectorGetField(petsclib::PetscLibType, sw::AbstractPetscDM) 
 Gets the fields from which to define a `Vec` object
 when `DMCreateLocalVector()`, or `DMCreateGlobalVector()` is called
 
@@ -47157,7 +47158,7 @@ end
               )
 
 	Nf = Nf_[]
-	fieldnames = fieldnames_[]
+	fieldnames = fieldnames_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, fieldnames_[], Nf; own = false)]
 
 	return Nf,fieldnames
 end 

@@ -71,7 +71,7 @@ end
 end 
 
 """
-	nsubs::PetscInt,subs::Ptr{VecTagger} = VecTaggerAndGetSubs(petsclib::PetscLibType, tagger::VecTagger) 
+	nsubs::PetscInt,subs::Vector{VecTagger} = VecTaggerAndGetSubs(petsclib::PetscLibType, tagger::VecTagger) 
 Get the sub `VecTagger`s whose intersection defines the outer `VecTagger`
 
 Not Collective
@@ -106,7 +106,7 @@ end
               )
 
 	nsubs = nsubs_[]
-	subs = subs_[]
+	subs = subs_[] == C_NULL ? VecTagger[] : unsafe_wrap(Array, subs_[], nsubs; own = false)
 
 	return nsubs,subs
 end 
@@ -375,7 +375,7 @@ end
 end 
 
 """
-	numBoxes::PetscInt,boxes::Ptr{VecTaggerBox},listed::PetscBool = VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec) 
+	numBoxes::PetscInt,boxes::Vector{VecTaggerBox},listed::PetscBool = VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec) 
 If the tagged index set can be summarized as a list of boxes of values, returns that list, otherwise returns
 in listed `PETSC_FALSE`
 
@@ -414,8 +414,9 @@ end
               )
 
 	numBoxes = numBoxes_[]
-	boxes = boxes_[]
 	listed = listed_[]
+	bs = VecTaggerGetBlockSize(petsclib, tagger)
+	boxes = boxes_[] == C_NULL ? VecTaggerBox[] : unsafe_wrap(Array, boxes_[], numBoxes * bs; own = false)
 
 	return numBoxes,boxes,listed
 end 
@@ -705,7 +706,7 @@ end
 end 
 
 """
-	nsubs::PetscInt,subs::Ptr{VecTagger} = VecTaggerOrGetSubs(petsclib::PetscLibType, tagger::VecTagger) 
+	nsubs::PetscInt,subs::Vector{VecTagger} = VecTaggerOrGetSubs(petsclib::PetscLibType, tagger::VecTagger) 
 Get the sub `VecTagger`s whose union defines the outer `VecTagger`
 
 Not Collective
@@ -740,7 +741,7 @@ end
               )
 
 	nsubs = nsubs_[]
-	subs = subs_[]
+	subs = subs_[] == C_NULL ? VecTagger[] : unsafe_wrap(Array, subs_[], nsubs; own = false)
 
 	return nsubs,subs
 end 

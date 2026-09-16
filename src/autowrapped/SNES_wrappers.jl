@@ -2748,7 +2748,7 @@ end
 end 
 
 """
-	a::Ptr{PetscReal},its::Ptr{PetscInt},na::PetscInt = SNESGetConvergenceHistory(petsclib::PetscLibType, snes::AbstractSNES) 
+	a::Vector{PetscReal},its::Vector{PetscInt},na::PetscInt = SNESGetConvergenceHistory(petsclib::PetscLibType, snes::AbstractSNES) 
 Gets the arrays used to hold the convergence history.
 
 Not Collective
@@ -2785,9 +2785,9 @@ end
                snes, a_, its_, na_,
               )
 
-	a = a_[]
-	its = its_[]
 	na = na_[]
+	a = a_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, a_[], na; own = false)
+	its = its_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, its_[], na; own = false)
 
 	return a,its,na
 end 
@@ -5623,7 +5623,7 @@ end
 end 
 
 """
-	n::PetscInt,subsnes::Ptr{SNES} = SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::AbstractSNES) 
+	n::PetscInt,subsnes::Vector{SNES} = SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::AbstractSNES) 
 Gets the `SNES` contexts for all blocks in a `SNESMULTIBLOCK` solver.
 
 Not Collective but each `SNES` obtained is parallel
@@ -5648,7 +5648,7 @@ end
 
 @for_petsc function SNESMultiblockGetSubSNES(petsclib::$UnionPetscLib, snes::AbstractSNES )
 	n_ = Ref{$PetscInt}()
-	subsnes_ = Ref{Ptr{SNES}}()
+	subsnes_ = Ref{Ptr{CSNES}}()
 
     @chk ccall(
                (:SNESMultiblockGetSubSNES, $petsc_library),
@@ -5658,7 +5658,7 @@ end
               )
 
 	n = n_[]
-	subsnes = subsnes_[]
+	subsnes = subsnes_[] == C_NULL ? SNES{$PetscLib}[] : [SNES(p, petsclib) for p in unsafe_wrap(Array, subsnes_[], n; own = false)]
 
 	return n,subsnes
 end 
@@ -5922,7 +5922,7 @@ end
 end 
 
 """
-	n::PetscInt,x::Ptr{PetscVec},y::Ptr{PetscVec},b::Ptr{PetscVec},xl::Ptr{PetscVec} = SNESNASMGetSubdomainVecs(petsclib::PetscLibType, snes::AbstractSNES) 
+	n::PetscInt,x::Vector{PetscVec},y::Vector{PetscVec},b::Vector{PetscVec},xl::Vector{PetscVec} = SNESNASMGetSubdomainVecs(petsclib::PetscLibType, snes::AbstractSNES) 
 Get the processor-local subdomain vectors for the nonlinear additive Schwarz solver
 
 Not Collective
@@ -5950,10 +5950,10 @@ end
 
 @for_petsc function SNESNASMGetSubdomainVecs(petsclib::$UnionPetscLib, snes::AbstractSNES )
 	n_ = Ref{$PetscInt}()
-	x_ = Ref{Ptr{PetscVec}}()
-	y_ = Ref{Ptr{PetscVec}}()
-	b_ = Ref{Ptr{PetscVec}}()
-	xl_ = Ref{Ptr{PetscVec}}()
+	x_ = Ref{Ptr{CVec}}()
+	y_ = Ref{Ptr{CVec}}()
+	b_ = Ref{Ptr{CVec}}()
+	xl_ = Ref{Ptr{CVec}}()
 
     @chk ccall(
                (:SNESNASMGetSubdomainVecs, $petsc_library),
@@ -5963,16 +5963,16 @@ end
               )
 
 	n = n_[]
-	x = x_[]
-	y = y_[]
-	b = b_[]
-	xl = xl_[]
+	x = x_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, x_[], n; own = false)]
+	y = y_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, y_[], n; own = false)]
+	b = b_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, b_[], n; own = false)]
+	xl = xl_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, xl_[], n; own = false)]
 
 	return n,x,y,b,xl
 end 
 
 """
-	n::PetscInt,subsnes::Ptr{SNES},iscatter::Ptr{VecScatter},oscatter::Ptr{VecScatter},gscatter::Ptr{VecScatter} = SNESNASMGetSubdomains(petsclib::PetscLibType, snes::AbstractSNES) 
+	n::PetscInt,subsnes::Vector{SNES},iscatter::Vector{VecScatter},oscatter::Vector{VecScatter},gscatter::Vector{VecScatter} = SNESNASMGetSubdomains(petsclib::PetscLibType, snes::AbstractSNES) 
 Get the local subdomain contexts for the nonlinear additive Schwarz solver
 
 Not Collective but some of the objects returned will be parallel
@@ -6000,7 +6000,7 @@ end
 
 @for_petsc function SNESNASMGetSubdomains(petsclib::$UnionPetscLib, snes::AbstractSNES )
 	n_ = Ref{$PetscInt}()
-	subsnes_ = Ref{Ptr{SNES}}()
+	subsnes_ = Ref{Ptr{CSNES}}()
 	iscatter_ = Ref{Ptr{VecScatter}}()
 	oscatter_ = Ref{Ptr{VecScatter}}()
 	gscatter_ = Ref{Ptr{VecScatter}}()
@@ -6013,10 +6013,10 @@ end
               )
 
 	n = n_[]
-	subsnes = subsnes_[]
-	iscatter = iscatter_[]
-	oscatter = oscatter_[]
-	gscatter = gscatter_[]
+	subsnes = subsnes_[] == C_NULL ? SNES{$PetscLib}[] : [SNES(p, petsclib) for p in unsafe_wrap(Array, subsnes_[], n; own = false)]
+	iscatter = iscatter_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, iscatter_[], n; own = false)
+	oscatter = oscatter_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, oscatter_[], n; own = false)
+	gscatter = gscatter_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, gscatter_[], n; own = false)
 
 	return n,subsnes,iscatter,oscatter,gscatter
 end 

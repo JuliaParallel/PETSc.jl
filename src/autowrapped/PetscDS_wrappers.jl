@@ -776,7 +776,7 @@ end
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentDerivativeOffsets(petsclib::PetscLibType, prob::PetscDS) 
+	offsets::Vector{PetscInt} = PetscDSGetComponentDerivativeOffsets(petsclib::PetscLibType, prob::PetscDS) 
 Returns the offset of each field derivative on an evaluation point
 
 Not Collective
@@ -808,13 +808,14 @@ end
                prob, offsets_,
               )
 
-	offsets = offsets_[]
+	Nf = PetscDSGetNumFields(petsclib, prob)
+	offsets = offsets_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, offsets_[], Nf; own = false)
 
 	return offsets
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentDerivativeOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::PetscInt) 
+	offsets::Vector{PetscInt} = PetscDSGetComponentDerivativeOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::PetscInt) 
 Returns the offset of each field derivative on an evaluation point
 
 Not Collective
@@ -847,7 +848,8 @@ end
                ds, s, offsets_,
               )
 
-	offsets = offsets_[]
+	Nf = PetscDSGetNumFields(petsclib, ds)
+	offsets = offsets_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, offsets_[], Nf; own = false)
 
 	return offsets
 end 
@@ -892,7 +894,7 @@ end
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentOffsets(petsclib::PetscLibType, prob::PetscDS) 
+	offsets::Vector{PetscInt} = PetscDSGetComponentOffsets(petsclib::PetscLibType, prob::PetscDS) 
 Returns the offset of each field on an evaluation point
 
 Not Collective
@@ -924,13 +926,14 @@ end
                prob, offsets_,
               )
 
-	offsets = offsets_[]
+	Nf = PetscDSGetNumFields(petsclib, prob)
+	offsets = offsets_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, offsets_[], Nf; own = false)
 
 	return offsets
 end 
 
 """
-	offsets::Ptr{PetscInt} = PetscDSGetComponentOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::PetscInt) 
+	offsets::Vector{PetscInt} = PetscDSGetComponentOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::PetscInt) 
 Returns the offset of each field on an evaluation point
 
 Not Collective
@@ -963,13 +966,14 @@ end
                ds, s, offsets_,
               )
 
-	offsets = offsets_[]
+	Nf = PetscDSGetNumFields(petsclib, ds)
+	offsets = offsets_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, offsets_[], Nf; own = false)
 
 	return offsets
 end 
 
 """
-	components::Ptr{PetscInt} = PetscDSGetComponents(petsclib::PetscLibType, prob::PetscDS) 
+	components::Vector{PetscInt} = PetscDSGetComponents(petsclib::PetscLibType, prob::PetscDS) 
 Returns the number of components for each field on an evaluation point
 
 Not Collective
@@ -1001,13 +1005,14 @@ end
                prob, components_,
               )
 
-	components = components_[]
+	Nf = PetscDSGetNumFields(petsclib, prob)
+	components = components_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, components_[], Nf; own = false)
 
 	return components
 end 
 
 """
-	numConstants::PetscInt,constants::Ptr{PetscScalar} = PetscDSGetConstants(petsclib::PetscLibType, ds::PetscDS) 
+	numConstants::PetscInt,constants::Vector{PetscScalar} = PetscDSGetConstants(petsclib::PetscLibType, ds::PetscDS) 
 Returns the array of constants passed to point functions from a `PetscDS` object
 
 Not Collective
@@ -1042,7 +1047,7 @@ end
               )
 
 	numConstants = numConstants_[]
-	constants = constants_[]
+	constants = constants_[] == C_NULL ? $PetscScalar[] : unsafe_wrap(Array, constants_[], numConstants; own = false)
 
 	return numConstants,constants
 end 
@@ -1121,7 +1126,7 @@ end
 end 
 
 """
-	dimensions::Ptr{PetscInt} = PetscDSGetDimensions(petsclib::PetscLibType, prob::PetscDS) 
+	dimensions::Vector{PetscInt} = PetscDSGetDimensions(petsclib::PetscLibType, prob::PetscDS) 
 Returns the size of the approximation space for each field on an evaluation point
 
 Not Collective
@@ -1153,7 +1158,8 @@ end
                prob, dimensions_,
               )
 
-	dimensions = dimensions_[]
+	Nf = PetscDSGetNumFields(petsclib, prob)
+	dimensions = dimensions_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, dimensions_[], Nf; own = false)
 
 	return dimensions
 end 

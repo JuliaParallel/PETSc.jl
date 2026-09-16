@@ -5102,7 +5102,7 @@ end
 end 
 
 """
-	rt::PetscInt,Nt::PetscInt,target::Ptr{DMPolytopeType},size::Ptr{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransform(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
+	rt::PetscInt,Nt::PetscInt,target::Vector{DMPolytopeType},size::Vector{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransform(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
 Describes the transform of a given source cell into a set of other target cells. These produced cells become the new mesh.
 
 Input Parameters:
@@ -5146,16 +5146,16 @@ end
 
 	rt = rt_[]
 	Nt = Nt_[]
-	target = target_[]
-	size = size_[]
 	cone = cone_[]
 	ornt = ornt_[]
+	target = target_[] == C_NULL ? DMPolytopeType[] : unsafe_wrap(Array, target_[], Nt; own = false)
+	size = size_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, size_[], Nt; own = false)
 
 	return rt,Nt,target,size,cone,ornt
 end 
 
 """
-	rt::PetscInt,Nt::PetscInt,target::Ptr{DMPolytopeType},size::Ptr{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransformIdentity(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
+	rt::PetscInt,Nt::PetscInt,target::Vector{DMPolytopeType},size::Vector{PetscInt},cone::Ptr{PetscInt},ornt::Ptr{PetscInt} = DMPlexTransformCellTransformIdentity(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::PetscInt) 
 Default `celltransform` implementation for transforms that reproduce the input mesh
 
 Not Collective
@@ -5201,10 +5201,10 @@ end
 
 	rt = rt_[]
 	Nt = Nt_[]
-	target = target_[]
-	size = size_[]
 	cone = cone_[]
 	ornt = ornt_[]
+	target = target_[] == C_NULL ? DMPolytopeType[] : unsafe_wrap(Array, target_[], Nt; own = false)
+	size = size_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, size_[], Nt; own = false)
 
 	return rt,Nt,target,size,cone,ornt
 end 
@@ -7393,7 +7393,7 @@ end
 end 
 
 """
-	Nfc::PetscInt,names::Ptr{Ptr{Cchar}} = DMSwarmCellDMGetCoordinateFields(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
+	Nfc::PetscInt,names::Vector{String} = DMSwarmCellDMGetCoordinateFields(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the `DM` coordinate fields for the `DMSwarm`
 
 Not Collective
@@ -7428,7 +7428,7 @@ end
               )
 
 	Nfc = Nfc_[]
-	names = names_[]
+	names = names_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, names_[], Nfc; own = false)]
 
 	return Nfc,names
 end 
@@ -7472,7 +7472,7 @@ end
 end 
 
 """
-	Nf::PetscInt,names::Ptr{Ptr{Cchar}} = DMSwarmCellDMGetFields(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
+	Nf::PetscInt,names::Vector{String} = DMSwarmCellDMGetFields(petsclib::PetscLibType, celldm::DMSwarmCellDM) 
 Returns the `DM` fields for the `DMSwarm`
 
 Not Collective
@@ -7507,7 +7507,7 @@ end
               )
 
 	Nf = Nf_[]
-	names = names_[]
+	names = names_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, names_[], Nf; own = false)]
 
 	return Nf,names
 end 

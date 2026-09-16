@@ -126,7 +126,7 @@ function ISColoringGetColors(petsclib::PetscLibType, iscoloring::ISColoring) end
 end
 
 """
-	nn::PetscInt,isis::Ptr{IS} = ISColoringGetIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode) 
+	nn::PetscInt,isis::Vector{IS} = ISColoringGetIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode) 
 Extracts index sets from the coloring context. Each is contains the nodes of one color
 
 Collective
@@ -152,7 +152,7 @@ end
 
 @for_petsc function ISColoringGetIS(petsclib::$UnionPetscLib, iscoloring::ISColoring, mode::PetscCopyMode )
 	nn_ = Ref{$PetscInt}()
-	isis_ = Ref{Ptr{IS}}()
+	isis_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:ISColoringGetIS, $petsc_library),
@@ -162,7 +162,7 @@ end
               )
 
 	nn = nn_[]
-	isis = isis_[]
+	isis = isis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, isis_[], nn; own = false)]
 
 	return nn,isis
 end 
@@ -803,13 +803,13 @@ end
               )
 
 	n = div(ISLocalToGlobalMappingGetSize(petsclib, ltog), ISLocalToGlobalMappingGetBlockSize(petsclib, ltog))
-	array = unsafe_wrap(Array, array_[], n; own = false)
+	array = array_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, array_[], n; own = false)
 
 	return array
 end 
 
 """
-	nproc::PetscInt,procs::Ptr{PetscInt},numprocs::Ptr{PetscInt},indices::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
+	nproc::PetscInt,procs::Vector{PetscInt},numprocs::Vector{PetscInt},indices::Vector{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information
 
 Collective the first time it is called
@@ -849,9 +849,9 @@ end
               )
 
 	nproc = nproc_[]
-	procs = procs_[]
-	numprocs = numprocs_[]
-	indices = indices_[]
+	procs = procs_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, procs_[], nproc; own = false)
+	numprocs = numprocs_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, numprocs_[], nproc; own = false)
+	indices = indices_[] == C_NULL ? Ptr{$PetscInt}[] : unsafe_wrap(Array, indices_[], nproc; own = false)
 
 	return nproc,procs,numprocs,indices
 end 
@@ -895,7 +895,7 @@ end
 end 
 
 """
-	n::PetscInt,n_procs::Ptr{PetscInt},procs::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
+	n::PetscInt,n_procs::Vector{PetscInt},procs::Vector{Ptr{PetscInt}} = ISLocalToGlobalMappingGetBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information for each local block index
 
 Collective the first time it is called
@@ -933,8 +933,8 @@ end
               )
 
 	n = n_[]
-	n_procs = n_procs_[]
-	procs = procs_[]
+	n_procs = n_procs_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, n_procs_[], n; own = false)
+	procs = procs_[] == C_NULL ? Ptr{$PetscInt}[] : unsafe_wrap(Array, procs_[], n; own = false)
 
 	return n,n_procs,procs
 end 
@@ -1013,13 +1013,13 @@ end
               )
 
 	n = ISLocalToGlobalMappingGetSize(petsclib, ltog)
-	array = unsafe_wrap(Array, array_[], n; own = false)
+	array = array_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, array_[], n; own = false)
 
 	return array
 end 
 
 """
-	nproc::PetscInt,procs::Ptr{PetscInt},numprocs::Ptr{PetscInt},indices::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
+	nproc::PetscInt,procs::Vector{PetscInt},numprocs::Vector{PetscInt},indices::Vector{Ptr{PetscInt}} = ISLocalToGlobalMappingGetInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information for each process
 
 Collective the first time it is called
@@ -1059,15 +1059,15 @@ end
               )
 
 	nproc = nproc_[]
-	procs = procs_[]
-	numprocs = numprocs_[]
-	indices = indices_[]
+	procs = procs_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, procs_[], nproc; own = false)
+	numprocs = numprocs_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, numprocs_[], nproc; own = false)
+	indices = indices_[] == C_NULL ? Ptr{$PetscInt}[] : unsafe_wrap(Array, indices_[], nproc; own = false)
 
 	return nproc,procs,numprocs,indices
 end 
 
 """
-	n::PetscInt,n_procs::Ptr{PetscInt},procs::Ptr{Ptr{PetscInt}} = ISLocalToGlobalMappingGetNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
+	n::PetscInt,n_procs::Vector{PetscInt},procs::Vector{Ptr{PetscInt}} = ISLocalToGlobalMappingGetNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) 
 Gets the neighbor information of local nodes
 
 Collective the first time it is called
@@ -1105,8 +1105,8 @@ end
               )
 
 	n = n_[]
-	n_procs = n_procs_[]
-	procs = procs_[]
+	n_procs = n_procs_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, n_procs_[], n; own = false)
+	procs = procs_[] == C_NULL ? Ptr{$PetscInt}[] : unsafe_wrap(Array, procs_[], n; own = false)
 
 	return n,n_procs,procs
 end 

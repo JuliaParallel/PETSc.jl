@@ -39,7 +39,7 @@ end
 end 
 
 """
-	outN::PetscInt,outindices::Ptr{ISColoringValue} = ISAllGatherColors(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, lindices::Vector{ISColoringValue}) 
+	outN::PetscInt,outindices::Vector{ISColoringValue} = ISAllGatherColors(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, lindices::Vector{ISColoringValue}) 
 Given a set of colors on each processor, generates a large
 set (same on each processor) by concatenating together each processors colors
 
@@ -77,7 +77,7 @@ end
               )
 
 	outN = outN_[]
-	outindices = outindices_[]
+	outindices = outindices_[] == C_NULL ? ISColoringValue[] : unsafe_wrap(Array, outindices_[], outN; own = false)
 
 	return outN,outindices
 end 
@@ -116,7 +116,7 @@ end
               )
 
 	n = div(ISGetLocalSize(petsclib, is), ISGetBlockSize(petsclib, is))
-	idx = unsafe_wrap(Array, idx_[], n; own = false)
+	idx = idx_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, idx_[], n; own = false)
 
 	return idx
 end 
@@ -1353,7 +1353,7 @@ end
                is, ptr_,
               )
 
-	ptr = unsafe_wrap(Array, ptr_[], ISGetLocalSize(petsclib, is); own = false)
+	ptr = ptr_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ptr_[], ISGetLocalSize(petsclib, is); own = false)
 
 	return ptr
 end 
@@ -1594,13 +1594,13 @@ end
               )
 
 	n = ISGetSize(petsclib, is) - ISGetLocalSize(petsclib, is)
-	indices = unsafe_wrap(Array, indices_[], n; own = false)
+	indices = indices_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, indices_[], n; own = false)
 
 	return indices
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt,points::Ptr{PetscInt} = ISGetPointRange(petsclib::PetscLibType, pointIS::AbstractIS) 
+	pStart::PetscInt,pEnd::PetscInt,points::Vector{PetscInt} = ISGetPointRange(petsclib::PetscLibType, pointIS::AbstractIS) 
 Returns a description of the points in an `IS` suitable for traversal
 
 Not Collective
@@ -1638,7 +1638,7 @@ end
 
 	pStart = pStart_[]
 	pEnd = pEnd_[]
-	points = points_[]
+	points = points_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, points_[], pEnd - pStart; own = false)
 
 	return pStart,pEnd,points
 end 
@@ -1755,7 +1755,7 @@ end
               )
 
 	n = ISGetSize(petsclib, is)
-	indices = unsafe_wrap(Array, indices_[], n; own = false)
+	indices = indices_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, indices_[], n; own = false)
 
 	return indices
 end 

@@ -12,7 +12,7 @@ formatting or still to be reviewed. Counts are from the run of 2026-09-15 (6086 
 | `voidptr-fix` | 415 | `void *ctx` is `ctx::Ptr{Cvoid}` instead of `ctx::Cvoid` | `::Cvoid` could never be satisfied by a caller |
 | `pointer-input-as-array` | 185 | `const T *x` inputs are `x::Vector{T}` instead of `x::T` | a pointer to an array was passed a scalar |
 | `string-arg-fix` | 128 | `const char s[]` inputs are `s::String` instead of `s::Vector{Cchar}` | consistent with the majority of the baseline and usable |
-| `placeholder-removed` | 118 | PETSc-owned output arrays without a size rule return the raw pointer (`Ptr{T}`) | the baseline called `VecGetLocalSize(petsclib, x)` with an undefined `x` (UndefVarError) |
+| `placeholder-removed` | 118 | PETSc-owned output arrays without a size rule return the raw pointer (`Ptr{T}`) | the baseline called `VecGetLocalSize(petsclib, x)` with an undefined `x` (UndefVarError). Since 2026-09-16 `rules/args.toml` carries `size` rules for the ~145 arrays whose length the manual page documents (they come back as `Vector`s, handles as `Vector{IS}` etc., `char**` as `Vector{String}`); about 190 outputs with no documented length (workspaces, tabulations, CAD data, cones of whole meshes, file pointers) still return the raw pointer |
 | `type-null-guard` | 59 | `*GetType` returns `""` when PETSc returns NULL | baseline segfaulted on `unsafe_string(C_NULL)` (`MatGetType` had the guard by hand) |
 | `enum-out-fix` | 47 | enum outputs whose name contains `Type` are returned as the enum, not `unsafe_string`d | `unsafe_string` on an enum is wrong |
 | `nullable-form` | 40 | `Union{Ptr, X}` instead of `Union{Ptr,X}` / `Union{Ptr{X}, Ptr{Nothing}}` | one spelling |

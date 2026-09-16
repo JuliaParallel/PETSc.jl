@@ -1435,7 +1435,7 @@ end
 end 
 
 """
-	n::PetscInt,cols::Ptr{PetscInt} = MatFDColoringGetPerturbedColumns(petsclib::PetscLibType, coloring::MatFDColoring) 
+	n::PetscInt,cols::Vector{PetscInt} = MatFDColoringGetPerturbedColumns(petsclib::PetscLibType, coloring::MatFDColoring) 
 Returns the indices of the columns that
 that are currently being perturbed.
 
@@ -1471,7 +1471,7 @@ end
               )
 
 	n = n_[]
-	cols = cols_[]
+	cols = cols_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, cols_[], n; own = false)
 
 	return n,cols
 end 
@@ -2641,7 +2641,7 @@ end
 end 
 
 """
-	has_const::PetscBool,n::PetscInt,vecs::Ptr{PetscVec} = MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace) 
+	has_const::PetscBool,n::PetscInt,vecs::Vector{PetscVec} = MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace) 
 get the vectors defining the null space
 
 Not Collective
@@ -2668,7 +2668,7 @@ end
 @for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::MatNullSpace )
 	has_const_ = Ref{PetscBool}()
 	n_ = Ref{$PetscInt}()
-	vecs_ = Ref{Ptr{PetscVec}}()
+	vecs_ = Ref{Ptr{CVec}}()
 
     @chk ccall(
                (:MatNullSpaceGetVecs, $petsc_library),
@@ -2679,7 +2679,7 @@ end
 
 	has_const = has_const_[]
 	n = n_[]
-	vecs = vecs_[]
+	vecs = vecs_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, vecs_[], n; own = false)]
 
 	return has_const,n,vecs
 end 

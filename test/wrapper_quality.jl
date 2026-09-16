@@ -123,6 +123,9 @@ end
         # caller-allocated array output (sized by `ni`)
         y = @inferred LibPETSc.VecGetValues(petsclib, v, PetscInt(2), ix)
         @test y == vals
+        # PETSc-owned arrays with a documented size come back as Vectors
+        rng = @inferred LibPETSc.VecGetOwnershipRanges(petsclib, v)
+        @test rng == [0, n]
         # enum output and MPI_Comm output
         @test (@inferred LibPETSc.PetscObjectGetComm(petsclib, v)) isa MPI.Comm
         # opaque handle create/destroy by reference

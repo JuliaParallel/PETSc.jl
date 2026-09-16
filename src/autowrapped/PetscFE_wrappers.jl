@@ -1314,7 +1314,7 @@ end
 end 
 
 """
-	numDof::Ptr{PetscInt} = PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE) 
+	numDof::Vector{PetscInt} = PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE) 
 Returns the number of dofs (dual basis vectors) associated to mesh points on the reference cell of a given dimension
 
 Not Collective
@@ -1346,7 +1346,8 @@ end
                fem, numDof_,
               )
 
-	numDof = numDof_[]
+	dim = PetscFEGetSpatialDimension(petsclib, fem)
+	numDof = numDof_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, numDof_[], dim + 1; own = false)
 
 	return numDof
 end 
@@ -2616,7 +2617,7 @@ end
 end 
 
 """
-	Np::PetscInt,perm::Ptr{IS} = PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature) 
+	Np::PetscInt,perm::Vector{IS} = PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature) 
 Compute permutations of quadrature points corresponding to domain orientations
 
 Input Parameter:
@@ -2639,7 +2640,7 @@ end
 
 @for_petsc function PetscQuadratureComputePermutations(petsclib::$UnionPetscLib, quad::PetscQuadrature )
 	Np_ = Ref{$PetscInt}()
-	perm_ = Ref{Ptr{IS}}()
+	perm_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:PetscQuadratureComputePermutations, $petsc_library),
@@ -2649,7 +2650,7 @@ end
               )
 
 	Np = Np_[]
-	perm = perm_[]
+	perm = perm_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, perm_[], Np; own = false)]
 
 	return Np,perm
 end 
@@ -2881,7 +2882,7 @@ end
 end 
 
 """
-	dim::PetscInt,Nc::PetscInt,npoints::PetscInt,points::Ptr{PetscReal},weights::Ptr{PetscReal} = PetscQuadratureGetData(petsclib::PetscLibType, q::PetscQuadrature) 
+	dim::PetscInt,Nc::PetscInt,npoints::PetscInt,points::Vector{PetscReal},weights::Vector{PetscReal} = PetscQuadratureGetData(petsclib::PetscLibType, q::PetscQuadrature) 
 Returns the data defining the `PetscQuadrature`
 
 Not Collective
@@ -2924,8 +2925,8 @@ end
 	dim = dim_[]
 	Nc = Nc_[]
 	npoints = npoints_[]
-	points = points_[]
-	weights = weights_[]
+	points = points_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, points_[], npoints * dim; own = false)
+	weights = weights_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, weights_[], npoints * Nc; own = false)
 
 	return dim,Nc,npoints,points,weights
 end 

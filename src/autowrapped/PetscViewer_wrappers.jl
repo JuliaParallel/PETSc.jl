@@ -2143,7 +2143,7 @@ end
 end 
 
 """
-	nbounds::PetscInt,bounds::Ptr{PetscReal} = PetscViewerDrawGetBounds(petsclib::PetscLibType, viewer::PetscViewer) 
+	nbounds::PetscInt,bounds::Vector{PetscReal} = PetscViewerDrawGetBounds(petsclib::PetscLibType, viewer::PetscViewer) 
 gets the upper and lower bounds to be used in plotting set with `PetscViewerDrawSetBounds()`
 
 Collective
@@ -2178,7 +2178,7 @@ end
               )
 
 	nbounds = nbounds_[]
-	bounds = bounds_[]
+	bounds = bounds_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, bounds_[], 2 * nbounds; own = false)
 
 	return nbounds,bounds
 end 

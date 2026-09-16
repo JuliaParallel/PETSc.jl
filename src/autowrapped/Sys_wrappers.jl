@@ -10586,7 +10586,7 @@ end
 end 
 
 """
-	n::PetscInt,L::Ptr{PetscInt},J::Ptr{PetscInt} = PetscMergeIntArrayPair(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscInt}, aJ::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}, bJ::Vector{PetscInt}) 
+	n::PetscInt,L::Vector{PetscInt},J::Vector{PetscInt} = PetscMergeIntArrayPair(petsclib::PetscLibType, an::PetscInt, aI::Vector{PetscInt}, aJ::Vector{PetscInt}, bn::PetscInt, bI::Vector{PetscInt}, bJ::Vector{PetscInt}) 
 Merges two SORTED `PetscInt` arrays that share NO common values along with an additional array of `PetscInt`.
 The additional arrays are the same length as sorted arrays and are merged
 in the order determined by the merging of the sorted pair.
@@ -10628,8 +10628,8 @@ end
               )
 
 	n = n_[]
-	L = L_[]
-	J = J_[]
+	L = L_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, L_[], n; own = false)
+	J = J_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, J_[], n; own = false)
 
 	return n,L,J
 end 

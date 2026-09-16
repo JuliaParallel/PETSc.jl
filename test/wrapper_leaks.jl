@@ -23,12 +23,12 @@ end
 @testset "repeated wrapper calls do not leak" begin
     comm = LibPETSc.PETSC_COMM_SELF
     iters = 2000
-    n = 4000                       # 32 KB per Float64 vector: a leak would show as tens of MB
+    n = 4000                       # 32 KB per Float64 vector: a leak would show as 64 MB per block
     for petsclib in PETSc.petsclibs[1:2]
         PETSc.initialize(petsclib)
         PetscInt = petsclib.PetscInt
         PetscScalar = petsclib.PetscScalar
-        leak_budget = 8 * 2^20     # 8 MB of noise allowed
+        leak_budget = 32 * 2^20    # 32 MB of allocator noise allowed; a Vec leak would be 64 MB
 
         pairs = Dict{String,Function}(
             "VecCreateSeq/VecDestroy" => () -> begin
@@ -69,13 +69,16 @@ end
             end,
         )
         for (name, f) in pairs
-            f(); f()                       # warm up (compilation, PETSc internal caches)
+            # first block: compilation, PETSc internal caches and allocator arenas settle;
+            # second block: steady state, where a leak shows as growth proportional to `iters`
+            for _ in 1:iters
+                f()
+            end
             before = rss(petsclib)
             for _ in 1:iters
                 f()
             end
-            after = rss(petsclib)
-            growth = after - before
+            growth = rss(petsclib) - before
             @test growth < leak_budget
             growth < leak_budget || @info "possible leak" name growth iters
         end

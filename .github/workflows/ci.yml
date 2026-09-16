@@ -31,11 +31,10 @@ jobs:
         version:
           - '1'
         os:
-          - macOS-15-intel        # with intel processors 
+          - macOS-15-intel        # with intel processors
           - ubuntu-latest
-          # - windows-latest  # Disabled: Windows PETSc_jll built without MPI, requires WSL for testing
         arch:
-          - x64 
+          - x64
         include:
           - os: macOS-latest
             arch: aarch64
@@ -43,6 +42,10 @@ jobs:
           - os: ubuntu-latest
             arch: x64
             version: 'lts'
+          # PETSc_jll 3.25.4 is the first Windows build with MS-MPI, needs Julia 1.12
+          - os: windows-latest
+            arch: x64
+            version: '1'
             
     steps:
       - uses: actions/checkout@v7

@@ -193,7 +193,42 @@ end
 function _post_initialize(petsclib)
     # disable signal handler
     LibPETSc.PetscPopSignalHandler(petsclib)
+    _reset_stale_register_flags(petsclib)
+    _warn_windows_without_mpi(petsclib)
     atexit(() -> finalize(petsclib))
+    return nothing
+end
+
+# The Windows PETSc_jll before 3.25 is configured `--with-mpi=0`, 
+# so the first object creation fails inside `PetscCommDuplicate` 
+# with a bare "General MPI error".
+function _warn_windows_without_mpi(petsclib)
+    Sys.iswindows() || return nothing
+    version = try
+        LibPETSc.petsc_version(petsclib)
+    catch
+        return nothing
+    end
+    version < v"3.25" && @warn(
+        "This Windows PETSc_jll is built without MPI, so creating any PETSc " *
+        "object will fail. PETSc_jll 3.25 is the first Windows build with " *
+        "MS-MPI; it needs Julia 1.12 or newer.",
+        installed_version = version,
+    )
+    return nothing
+end
+
+# PETSc 3.25.x: `TaoFinalizePackage` destroys the `TaoTerm` type list but never
+# resets `TaoTermRegisterAllCalled`, so after a finalize/initialize cycle
+# `TaoCreate` fails with "Unable to find requested TaoTerm type callbacks".
+# Reset the flag so the list is rebuilt. The symbol is absent on 3.22, 
+# where `dlsym_e` returns null and this does nothing.
+function _reset_stale_register_flags(petsclib)
+    handle, _ = _ensure_library_handle(petsclib)
+    for sym in (:TaoTermRegisterAllCalled,)
+        p = Libdl.dlsym_e(_library_ptr(handle), sym)
+        p == C_NULL || unsafe_store!(Ptr{Int32}(p), Int32(0))
+    end
     return nothing
 end
 
@@ -393,6 +428,14 @@ function unset_library!()
     @info "PETSc library preference removed — restart Julia to revert to PETSc_jll."
 end
 
+"""
+    SUPPORTED_PETSC_VERSIONS
+
+The PETSc minor releases this version of PETSc.jl is tested against. The
+generated wrappers bind one ABI for all of them; the calls whose C signature
+differs branch on [`LibPETSc.petsc_version`](@ref).
+"""
+const SUPPORTED_PETSC_VERSIONS = (v"3.22", v"3.25")
 
 """
     check_petsc_wrappers_version(petsclib=nothing)
@@ -406,8 +449,9 @@ Arguments
   first available `PETSc.petsclibs[1]` is used.
 
 Returns a named tuple: `(:wrappers_version, :installed_version, :match)`.
-`match` is `true` when versions are equal, `false` when they differ, and
-`nothing` if either side could not be determined.
+`match` is `true` when the library is one of [`SUPPORTED_PETSC_VERSIONS`],
+`false` when it is not, and `nothing` if the library version could not be
+determined.
 """
 function check_petsc_wrappers_version(petsclib=nothing)
     verfile = joinpath(@__DIR__, "autowrapped", "petsc_wrappers_version.jl")
@@ -442,9 +486,13 @@ function check_petsc_wrappers_version(petsclib=nothing)
         @warn "Failed to query installed PETSc version" exception=(err,)
     end
 
-    match = isnothing(wrappers_version) || isnothing(installed_version) ? nothing : (installed_version.major == wrappers_version.major && installed_version.minor == wrappers_version.minor)
-    if !isnothing(match) && match === false
-        @warn "PETSc wrappers version does not match PETSc version of library (major.minor); this can cause undesired behavior" wrappers_version=wrappers_version installed_version=installed_version
+    # One wrapper set serves every release in SUPPORTED_PETSC_VERSIONS, so the
+    # question is whether the library is one we bind, not whether it matches the
+    # release the wrappers were generated from.
+    match = isnothing(installed_version) ? nothing :
+            VersionNumber(installed_version.major, installed_version.minor) in SUPPORTED_PETSC_VERSIONS
+    if match === false
+        @warn "PETSc library version is not one this version of PETSc.jl binds; this can cause undesired behavior" installed_version=installed_version supported=SUPPORTED_PETSC_VERSIONS wrappers_version=wrappers_version
     end
 
     return (wrappers_version = wrappers_version, installed_version = installed_version, match = match)

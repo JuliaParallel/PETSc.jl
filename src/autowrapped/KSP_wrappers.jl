@@ -4164,12 +4164,23 @@ function KSPSetDMActive(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) e
 
 @for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
 
-    @chk ccall(
-               (:KSPSetDMActive, $petsc_library),
-               PetscErrorCode,
-               (CKSP, PetscBool),
-               ksp, flg,
-              )
+    # PETSc 3.25 takes a KSPDMActive mask before the flag. Passing the mask that
+    # names every use reproduces what the two-argument call meant before.
+    if petsc_version(petsclib) >= PETSC_SIGNATURE_BREAK
+        @chk ccall(
+                   (:KSPSetDMActive, $petsc_library),
+                   PetscErrorCode,
+                   (CKSP, Cint, PetscBool),
+                   ksp, KSP_DMACTIVE_ALL_MASK, flg,
+                  )
+    else
+        @chk ccall(
+                   (:KSPSetDMActive, $petsc_library),
+                   PetscErrorCode,
+                   (CKSP, PetscBool),
+                   ksp, flg,
+                  )
+    end
 
 
 	return nothing

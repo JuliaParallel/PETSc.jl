@@ -8,7 +8,7 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
         return
     end
     
-    mat_type = type(v)
+    mat_type = type_name(v)
     if mat_type == "(not set)"
         print(io, "PETSc Mat (type not set)")
     else
@@ -24,7 +24,7 @@ Container type for a PETSc Mat that is just a raw pointer.
 
 If `own` is `true` a finalizer is set on the matrix, but only on a serial
 communicator, since `MatDestroy` is collective and a GC finalizer runs at an
-arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy`
+arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy!`
 is a no-op, leaving the wrapper usable.
 """
 mutable struct MatPtr{PetscLib} <:
@@ -42,7 +42,7 @@ function MatPtr(
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned matrices on every invocation and never need the communicator.
     if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), m)) == 1
-        finalizer(destroy, m)
+        finalizer(destroy!, m)
     end
     return m
 end
@@ -53,7 +53,7 @@ owns(m::MatPtr) = m.own
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
 Base.ndims(m::AbstractPetscMat{PetscLib}) where {PetscLib} = length(LibPETSc.MatGetSize(PetscLib,m))
-type(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetType(PetscLib,m)
+type_name(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetType(PetscLib, m)
 Base.axes(m::PetscMat{PetscLib}, i::Integer) where {PetscLib} = Base.OneTo(Base.size(m)[i])
 
 """
@@ -103,7 +103,7 @@ each row.
 Memory allocation is handled by PETSc and garbage collection can be used.
 
 # External Links
-$(_doc_external("Mat/MatCreateSeqAIJ"))
+$(doc_external("Mat/MatCreateSeqAIJ"))
 """
 function MatSeqAIJ(
     petsclib::PetscLib,
@@ -138,7 +138,7 @@ function MatSeqAIJ(
                 PetscInt(0), PetscInt.(nonzeros))    
     end
 
-    finalizer(destroy, mat)
+    finalizer(destroy!, mat)
 
     return mat
 end
@@ -149,7 +149,7 @@ end
 PETSc dense array. This wraps a Julia `Matrix{PetscScalar}` object.
 
 # External Links
-$(_doc_external("Mat/MatCreateSeqDense"))
+$(doc_external("Mat/MatCreateSeqDense"))
 """
 function MatSeqDense(
     petsclib::PetscLib,
@@ -172,7 +172,7 @@ function MatSeqDense(
     data = vec(A)
     mat = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(size(A, 1)), PetscInt(size(A, 2)), data)
 
-    finalizer(m -> (destroy(m); data), mat)
+    finalizer(m -> (destroy!(m); data), mat)
     return mat
 end
 
@@ -415,7 +415,7 @@ end
 Set up the interal data for `mat`
 
 # External Links
-$(_doc_external("Mat/MatSetUp"))
+$(doc_external("Mat/MatSetUp"))
 """
 function setup!(mat::PetscMat{PetscLib}) where {PetscLib}
     check_initialized(PetscLib)
@@ -424,7 +424,7 @@ function setup!(mat::PetscMat{PetscLib}) where {PetscLib}
 end
 
 # MatCreateSeqAIJWithArrays requires the caller to keep the backing CSR arrays
-# alive for as long as the Mat exists. We store them here and release on destroy.
+# alive for as long as the Mat exists. We store them here and release on destroy!().
 const _MATSEQAIJ_WITHARRAYS_STORAGE = IdDict{Ptr{Cvoid}, Any}()
 
 """
@@ -497,7 +497,7 @@ function MatSeqAIJWithArrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC{T}
 end
 
 """
-    destroy(m::AbstractPetscMat)
+    destroy!(m::AbstractPetscMat)
 
 Destroy a Mat (matrix) object and release associated resources.
 
@@ -506,9 +506,9 @@ is garbage collected, but can be called explicitly to free resources immediately
 Does nothing on a matrix that only borrows its handle: see [`owns`](@ref).
 
 # External Links
-$(_doc_external("Mat/MatDestroy"))
+$(doc_external("Mat/MatDestroy"))
 """
-function destroy(m::AbstractPetscMat{PetscLib}) where {PetscLib}
+function destroy!(m::AbstractPetscMat{PetscLib}) where {PetscLib}
     owns(m) || return nothing
     # Drop the backing arrays: Julia-side bookkeeping
     # that has to go when PETSc no longer owns the matrix.
@@ -519,12 +519,6 @@ function destroy(m::AbstractPetscMat{PetscLib}) where {PetscLib}
     m.ptr = C_NULL
     return nothing
 end
-
-const MatAT{PetscLib, PetscScalar} = Union{
-    PetscMat{PetscLib},
-    Transpose{PetscScalar, <:PetscMat{PetscLib}},
-    Adjoint{PetscScalar, <:PetscMat{PetscLib}},
-}
 
 function LinearAlgebra.mul!(
     y::PetscVec{PetscLib},
@@ -554,7 +548,7 @@ function Base.copyto!(
 end
 
 """
-    setvalues!(
+    set_values!(
         M::AbstractPetscMat{PetscLib},
         row0idxs::Vector{MatStencil},
         col0idxs::Vector{MatStencil},
@@ -571,9 +565,9 @@ If the keyword arguments `num_rows` or `num_cols` is specified then only the
 first `num_rows * num_cols` values of `rowvals` will be used.
 
 # External Links
-$(_doc_external("Mat/MatSetValuesStencil"))
+$(doc_external("Mat/MatSetValuesStencil"))
 """
-function setvalues!(
+function set_values!(
     M::AbstractPetscMat{PetscLib},
     row0idxs::Vector{MatStencil},
     col0idxs::Vector{MatStencil},
@@ -628,11 +622,11 @@ function Base.setindex!(
         PetscInt(j[1] - 1),
         N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
     )
-    setvalues!(M, [ms_i], [ms_j], [PetscScalar(val)], INSERT_VALUES)
+    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)], INSERT_VALUES)
     return val
 end
 
-function addindex!(
+function add_index!(
     M::AbstractPetscMat{PetscLib},
     val,
     i::CartesianIndex{N},
@@ -652,7 +646,7 @@ function addindex!(
         PetscInt(j[1] - 1),
         N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
     )
-    setvalues!(M, [ms_i], [ms_j], [PetscScalar(val)], ADD_VALUES)
+    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)], ADD_VALUES)
     return val
 end
 
@@ -705,12 +699,12 @@ The `obj` will be registered as an `MATOP_MULT` function and if if `obj` is a
 obj, x)`.
 
 if `comm == MPI.COMM_SELF` then the garbage connector can finalize the object,
-otherwise the user is responsible for calling [`destroy`](@ref).
+otherwise the user is responsible for calling [`destroy!`](@ref).
 
 # External Links
-$(_doc_external("Mat/MatCreateShell"))
-$(_doc_external("Mat/MatShellSetOperation"))
-$(_doc_external("Mat/MATOP_MULT"))
+$(doc_external("Mat/MatCreateShell"))
+$(doc_external("Mat/MatShellSetOperation"))
+$(doc_external("Mat/MATOP_MULT"))
 """
 mutable struct MatShell{PetscLib, OType} <: AbstractPetscMat{PetscLib}
     ptr::CMat
@@ -797,7 +791,7 @@ LibPETSc.@for_petsc function MatShell(
     LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT, mulptr)
 
     #if MPI.Comm_size(comm) == 1
-    #    finalizer(destroy, mat)
+    #    finalizer(destroy!, mat)
     #end
     
     return mat
@@ -836,14 +830,14 @@ function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
     result = PetscScalar.(petsc_y[:])
     
     # Clean up
-    PETSc.destroy(petsc_x)
-    PETSc.destroy(petsc_y)
+    PETSc.destroy!(petsc_x)
+    PETSc.destroy!(petsc_y)
     
     return result
 end
 
 """
-    ownershiprange(mat::AbstractMat, [base_one = true])
+    ownership_range(mat::AbstractMat, [base_one = true])
 
 The range of row indices owned by this processor, assuming that the `mat` is
 laid out with the first `n1` rows on the first processor, next `n2` rows on the
@@ -857,20 +851,20 @@ otherwise base-0 index is used.
     unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
 
 # External Links
-$(_doc_external("Mat/MatGetOwnershipRange"))
+$(doc_external("Mat/MatGetOwnershipRange"))
 """
-function ownershiprange(
+function ownership_range(
     mat::AbstractPetscMat{PetscLib},
     base_one::Bool = true,
 ) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     r_lo, r_hi = LibPETSc.MatGetOwnershipRange(PetscLib, mat)
-    return base_one ? ((r_lo[] + PetscInt(1)):(r_hi[])) :
-           ((r_lo[]):(r_hi[] - PetscInt(1)))
+    # The wrapper returns two plain integers, not `Ref`s.
+    return base_one ? ((r_lo + PetscInt(1)):r_hi) : (r_lo:(r_hi - PetscInt(1)))
 end
 
 """
-    setvalues!(
+    set_values!(
         M::AbstractMat{PetscLib},
         row0idxs::Vector{PetscInt},
         col0idxs::Vector{PetscInt},
@@ -887,9 +881,9 @@ If the keyword arguments `num_rows` or `num_cols` is specified then only the
 first `num_rows * num_cols` values of `rowvals` will be used.
 
 # External Links
-$(_doc_external("Mat/MatSetValues"))
+$(doc_external("Mat/MatSetValues"))
 """
-function setvalues!(
+function set_values!(
     M::AbstractPetscMat{PetscLib},
     row0idxs::Vector{PetscInt},
     col0idxs::Vector{PetscInt},

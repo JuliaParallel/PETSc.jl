@@ -30,22 +30,22 @@ end
 Throw [`PetscNotInitialized`](@ref) unless `petsclib` is initialized.
 """
 function check_initialized(petsclib)
-    initialized(petsclib) || throw(PetscNotInitialized(petsclib))
+    isinitialized(petsclib) || throw(PetscNotInitialized(petsclib))
     return nothing
 end
 
 """
-   initialized(petsclib)
+   isinitialized(petsclib)
 
 Check if `petsclib` is initialized
 
 # External Links
-$(_doc_external("Sys/PetscInitialized"))
+$(doc_external("Sys/PetscInitialized"))
 """
-initialized(petsclib) = LibPETSc.PetscInitialized(petsclib)
+isinitialized(petsclib) = LibPETSc.PetscInitialized(petsclib)
 
-const _petsc_program_name = "petsc_julia"
-const _lib_handles = IdDict{Any, Tuple{Any, Bool}}()
+const petsc_program_name = "petsc_julia"
+const lib_handles = IdDict{Any, Tuple{Any, Bool}}()
 
 """
     initialize([petsclib]; log_view = false, options = String[])
@@ -56,7 +56,7 @@ will be initialized.
 Additionally:
  - This will initialize MPI if it has not already been initialized.
  - It will disable the PETSc signal handler (via
-   $(_petsc_link("Sys/PetscPopSignalHandler"))
+   $(petsc_link("Sys/PetscPopSignalHandler"))
  - Add an [`atexit`](https://docs.julialang.org/en/v1/base/base/#Base.atexit)
    hook to call [`PETSc.finalize`](@ref).
 
@@ -85,7 +85,7 @@ PETSc.initialize(petsclib; options = ["-malloc_debug", "-on_error_abort"])
 ```
 
 # External Links
-$(_doc_external("Sys/PetscInitializeNoArguments"))
+$(doc_external("Sys/PetscInitializeNoArguments"))
 """
 function initialize(; log_view::Bool = false, options = String[])
     map(petsclib -> initialize(petsclib; log_view, options), petsclibs)
@@ -93,20 +93,20 @@ function initialize(; log_view::Bool = false, options = String[])
 end
 
 function initialize(petsclib; log_view::Bool = false, options = String[])
-    if !initialized(petsclib)
+    if !isinitialized(petsclib)
 
         # deactivate the signal handler to avoid conflicts with Julia's own handlers when using multithreading
         push!(options, " -no_signal_handler ")
 
         if log_view || !isempty(options)
-            cli_opts = _build_petsc_options(log_view, options)
+            cli_opts = build_petsc_options(log_view, options)
             prev_opts = get(ENV, "PETSC_OPTIONS", "")
             ENV["PETSC_OPTIONS"] = isempty(prev_opts) ? cli_opts : "$prev_opts $cli_opts"
             try
-                _ensure_mpi_initialized()
+                ensure_mpi_initialized()
                 petsclib.age += 1
                 LibPETSc.PetscInitializeNoArguments(petsclib)
-                _post_initialize(petsclib)
+                post_initialize(petsclib)
             finally
                 if isempty(prev_opts)
                     delete!(ENV, "PETSC_OPTIONS")
@@ -115,10 +115,10 @@ function initialize(petsclib; log_view::Bool = false, options = String[])
                 end
             end
         else
-            _ensure_mpi_initialized()
+            ensure_mpi_initialized()
             petsclib.age += 1
             LibPETSc.PetscInitializeNoArguments(petsclib)
-            _post_initialize(petsclib)
+            post_initialize(petsclib)
         end
     end
     return nothing
@@ -131,7 +131,7 @@ Finalize the `petsclib`, if no `petsclib` is given then all `PETSc.petsclibs`
 will be finalized.
 
 # External Links
-$(_doc_external("Sys/PetscFinalize"))
+$(doc_external("Sys/PetscFinalize"))
 """
 function finalize()
     map(finalize, petsclibs)
@@ -139,7 +139,7 @@ function finalize()
 end
 
 function finalize(petsclib)
-    if !finalized(petsclib)
+    if !isfinalized(petsclib)
         petsclib.age += 1
         LibPETSc.PetscFinalize(petsclib)
     end
@@ -147,14 +147,14 @@ function finalize(petsclib)
 end
 
 """
-   finalized(petsclib)
+   isfinalized(petsclib)
 
 Check if `petsclib` is finalized
 
 # External Links
-$(_doc_external("Sys/PetscFinalized"))
+$(doc_external("Sys/PetscFinalized"))
 """
-finalized(petsclib) = LibPETSc.PetscFinalized(petsclib)
+isfinalized(petsclib) = LibPETSc.PetscFinalized(petsclib)
 
 """
     isdestroyable(obj, ::Type{PetscLib})
@@ -171,7 +171,7 @@ MPI with "Invalid communicator". That happens from a GC finalizer, so it
 surfaces at an arbitrary later point rather than where the object was dropped.
 """
 function isdestroyable(obj, ::Type{PetscLib}) where {PetscLib}
-    finalized(PetscLib) && return false
+    isfinalized(PetscLib) && return false
     obj.ptr == C_NULL && return false
     return obj.age == getlib(PetscLib).age
 end
@@ -182,12 +182,12 @@ end
 Whether `obj` is responsible for destroying the handle it holds.
 
 Wrappers that borrow a handle from PETSc carry an `own` field and override this;
-every other wrapper owns what it holds. `destroy` returns without doing anything
+every other wrapper owns what it holds. `destroy!` returns without doing anything
 when this is `false`, so a borrowed wrapper stays usable after the call.
 """
 owns(obj) = true
 
-function _build_petsc_options(log_view::Bool, options)
+function build_petsc_options(log_view::Bool, options)
     opts = String[]
     if log_view
         push!(opts, "-log_view")
@@ -196,12 +196,12 @@ function _build_petsc_options(log_view::Bool, options)
     return join(opts, " ")
 end
 
-function _ensure_mpi_initialized()
+function ensure_mpi_initialized()
     MPI.Initialized() || MPI.Init()
     return nothing
 end
 
-function _post_initialize(petsclib)
+function post_initialize(petsclib)
     # disable signal handler
     LibPETSc.PetscPopSignalHandler(petsclib)
     _reset_stale_register_flags(petsclib)
@@ -225,8 +225,8 @@ PETSc binaries (false on Windows with PETSc 3.25.x, see `_reset_stale_register_f
 tao_usable_after_reinitialize() = _taoterm_resettable[] !== false
 
 function _reset_stale_register_flags(petsclib)
-    handle, _ = _ensure_library_handle(petsclib)
-    lib = _library_ptr(handle)
+    handle, _ = ensure_library_handle(petsclib)
+    lib = library_ptr(handle)
     # PETSc 3.25.x: these packages destroy their type lists at PetscFinalize without resetting
     # the RegisterAll flag (TaoFinalizePackage for Tao and TaoTerm; TSTrajectory likewise)
     ok = true
@@ -247,8 +247,8 @@ function _reset_stale_register_flags(petsclib)
     return nothing
 end
 
-function _ensure_library_handle(petsclib)
-    return get!(_lib_handles, petsclib) do
+function ensure_library_handle(petsclib)
+    return get!(lib_handles, petsclib) do
         libref = petsclib.petsc_library
         if libref isa AbstractString
             return (Libdl.dlopen(libref), true)
@@ -258,7 +258,7 @@ function _ensure_library_handle(petsclib)
     end
 end
 
-function _library_ptr(lib_handle)
+function library_ptr(lib_handle)
     if lib_handle isa Ptr{Cvoid}
         return lib_handle
     end
@@ -269,12 +269,12 @@ function _library_ptr(lib_handle)
     end
 end
 
-function _release_library_handle(petsclib)
-    entry = pop!(_lib_handles, petsclib, nothing)
+function release_library_handle(petsclib)
+    entry = pop!(lib_handles, petsclib, nothing)
     isnothing(entry) && return nothing
     handle, owned = entry
     owned || return nothing
-    Libdl.dlclose(_library_ptr(handle))
+    Libdl.dlclose(library_ptr(handle))
     return nothing
 end
 
@@ -355,7 +355,7 @@ petsclib = PETSc.set_petsclib("/opt/petsc/lib/libpetsc.so";
 function set_petsclib(library_path::String; PetscScalar::Type=Float64, PetscInt::Type=Int64)
     petsclib = LibPETSc.PetscLibType{PetscScalar, PetscInt}(library_path)
     try
-        check_petsc_wrappers_version(petsclib)
+        check_wrappers_version(petsclib)
     catch err
         @warn "Failed to perform PETSc wrappers version check" exception=(err,)
     end
@@ -445,7 +445,7 @@ end
 
 
 """
-    check_petsc_wrappers_version(petsclib=nothing)
+    check_wrappers_version(petsclib=nothing)
 
 Load the generated `petsc_wrappers_version.jl` (if present) and compare the
 declared wrapper version `PETSC_WRAPPERS_VERSION` with the installed PETSc
@@ -459,7 +459,7 @@ Returns a named tuple: `(:wrappers_version, :installed_version, :match)`.
 `match` is `true` when versions are equal, `false` when they differ, and
 `nothing` if either side could not be determined.
 """
-function check_petsc_wrappers_version(petsclib=nothing)
+function check_wrappers_version(petsclib=nothing)
     verfile = joinpath(@__DIR__, "autowrapped", "petsc_wrappers_version.jl")
 
     if !isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) && isfile(verfile)

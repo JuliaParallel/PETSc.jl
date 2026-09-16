@@ -74,11 +74,11 @@ ERROR: KeyError: key "bad_key" not found
 ```
 
 # External Links
-$(_doc_external("Sys/PetscOptionsCreate"))
+$(doc_external("Sys/PetscOptionsCreate"))
 """
 function Options(petsclib::PetscLibType; kwargs...)
     opts = LibPETSc.PetscOptionsCreate(petsclib)
-    finalizer(destroy, opts)
+    finalizer(destroy!, opts)
     for (k, v) in kwargs
         opts[k] = v
     end
@@ -86,10 +86,10 @@ function Options(petsclib::PetscLibType; kwargs...)
     return opts
 end
 
-function destroy(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
+function destroy!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     # PetscOptions carries no `age`, so this cannot use `isdestroyable`. 
     # TODO: Adding the field would make it consistent with Vec, Mat, KSP, SNES and DM.
-    if !(finalized(PetscLib)) && opts.ptr != C_NULL
+    if !(isfinalized(PetscLib)) && opts.ptr != C_NULL
         LibPETSc.PetscOptionsDestroy(PetscLib, opts)
     end
     opts.ptr = C_NULL
@@ -170,7 +170,7 @@ function Base.pop!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
 end
 
 """
-    typedget(opt::NamedTuple, key::Symbol, default::T)
+    parse_option(opt::NamedTuple, key::Symbol, default::T)
 
 Parse `opt` similar to `Base.get` but ensures that the returned value is the
 same type as the default value. When `T <: NTuple` keys that result in a single
@@ -182,31 +182,31 @@ strings it is parsed using `Base.split` with comma delimiter
 julia> opt = (tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
 (tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
 
-julia> typedget(opt, :int, 7)
+julia> parse_option(opt, :int, 7)
 4
 
-julia> typedget(opt, :bad_key, 7)
+julia> parse_option(opt, :bad_key, 7)
 7
 
-julia> typedget(opt, :tup, (1, 1, 1))
+julia> parse_option(opt, :tup, (1, 1, 1))
 (1, 2, 3)
 
-julia> typedget(opt, :string_tup, (1, 1, 1))
+julia> parse_option(opt, :string_tup, (1, 1, 1))
 tokens = SubString{String}["1", "2", "3"]
 (1, 2, 3)
 
-julia> typedget(opt, :string_int, (1, 1, 1))
+julia> parse_option(opt, :string_int, (1, 1, 1))
 tokens = SubString{String}["4"]
 (4, 4, 4)
 
-julia> typedget(opt, :int, (1, 1, 1))
+julia> parse_option(opt, :int, (1, 1, 1))
 (4, 4, 4)
 
-julia> typedget(opt, :int, (1., 1., 1.))
+julia> parse_option(opt, :int, (1., 1., 1.))
 (4.0, 4.0, 4.0)
 ```
 """
-function typedget(opt::NamedTuple, key::Symbol, default::T) where {T}
+function parse_option(opt::NamedTuple, key::Symbol, default::T) where {T}
     v = get(opt, key, default)
     if !(v isa T)
         if T <: String

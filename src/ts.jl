@@ -195,8 +195,8 @@ If `comm` has size 1 the garbage collector calls [`destroy!`](@ref).
 Otherwise destruction is the caller's responsibility.
 
 # External Links
-$(_doc_external("TS/TSCreate"))
-$(_doc_external("TS/TSSetExactFinalTime"))
+$(doc_external("TS/TSCreate"))
+$(doc_external("TS/TSSetExactFinalTime"))
 """
 function TS(
     petsclib::PetscLib,
@@ -234,7 +234,7 @@ Choose how the final step meets the time set by [`set_max_time!`](@ref):
 `TS_EXACTFINALTIME_MATCHSTEP`, `TS_EXACTFINALTIME_INTERPOLATE` or `TS_EXACTFINALTIME_STEPOVER`.
 
 # External Links
-$(_doc_external("TS/TSSetExactFinalTime"))
+$(doc_external("TS/TSSetExactFinalTime"))
 """
 function set_exact_final_time!(
     ts::AbstractTS{PetscLib},
@@ -251,7 +251,7 @@ Set the timestep adaptivity controller, for example `:none` to hold the step siz
 or `:basic` for the default error-based controller.
 
 # External Links
-$(_doc_external("TS/TSAdaptSetType"))
+$(doc_external("TS/TSAdaptSetType"))
 """
 function set_adapt_type!(ts::AbstractTS{PetscLib}, type::Symbol) where {PetscLib}
     petsclib = getlib(PetscLib)
@@ -272,11 +272,11 @@ The call is a no-op when the library has been finalized or when `ts` predates
 the current initialize/finalize cycle, so a stale handle never reaches `TSDestroy`.
 
 # External Links
-$(_doc_external("TS/TSDestroy"))
+$(doc_external("TS/TSDestroy"))
 """
 function destroy!(ts::AbstractTS{PetscLib}) where {PetscLib}
     if !isnothing(ts.opts)
-        destroy(ts.opts)
+        destroy!(ts.opts)
         ts.opts = nothing
     end
     if isdestroyable(ts, PetscLib)
@@ -287,41 +287,41 @@ function destroy!(ts::AbstractTS{PetscLib}) where {PetscLib}
 end
 
 """
-    destroy(ts::AbstractTS)
-
-Destroy `ts`. Provided so that the spelling used by the rest of the package keeps working; 
-[`destroy!`](@ref) is the name to prefer, since the call mutates `ts`.
-
-# External Links
-$(_doc_external("TS/TSDestroy"))
-"""
-destroy(ts::AbstractTS) = destroy!(ts)
-
-"""
     comm(ts::AbstractTS)
 
 The MPI communicator `ts` was built on.
 
 # External Links
-$(_doc_external("Sys/PetscObjectGetComm"))
+$(doc_external("Sys/PetscObjectGetComm"))
 """
 comm(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.PetscObjectGetComm(PetscLib, ts)
 
 """
-    type(ts::AbstractTS)
+    type_name(obj)
 
-The time-stepping method currently set on `ts`, as a `Symbol`, or `nothing` when none has been set yet.
+The name of the PETSc implementation `obj` currently uses.
 
-PETSc reports an unset type as a null string, which the generated `TSGetType` cannot convert. 
-Asking a freshly created stepper for its type is reasonable, so it is answered with `nothing` here.
+The reader is `type_name` rather than `type`, because `type` is the conventional name
+for the argument of the matching setter and would be shadowed by it, and because what
+comes back is the name of a PETSc implementation rather than a Julia type
+(docs/src/man/naming.md §3).
+
+Declared here, with methods on `TS`, `KSP`, `PetscVec`, `PetscMat` and `AbstractPetscDM`.
+On a `TS` the answer is a `Symbol` (or `nothing` before a type is set); the other
+methods still answer with a `String`.
 
 # External Links
-$(_doc_external("TS/TSGetType"))
+$(doc_external("TS/TSGetType"))
+$(doc_external("KSP/KSPGetType"))
+$(doc_external("DM/DMGetType"))
 """
-function type end
+function type_name end
 
-LibPETSc.@for_petsc function type(ts::AbstractTS{$PetscLib})
+# `type_name(ts)` answers with a `Symbol`, or `nothing` when no type has been set yet:
+# PETSc reports an unset type as a null string, which the generated `TSGetType` cannot
+# convert, and asking a freshly created stepper for its type is reasonable.
+LibPETSc.@for_petsc function type_name(ts::AbstractTS{$PetscLib})
     r_type = Ref{Ptr{Cchar}}(C_NULL)
     LibPETSc.@chk ccall(
         (:TSGetType, $petsc_library),
@@ -339,7 +339,7 @@ end
 Set the time-stepping method, for example `:bdf`, `:rk` or `:arkimex`.
 
 # External Links
-$(_doc_external("TS/TSSetType"))
+$(doc_external("TS/TSSetType"))
 """
 function set_type!(ts::AbstractTS{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.TSSetType(getlib(PetscLib), ts, String(type))
@@ -352,7 +352,7 @@ end
 Declare the problem as `LibPETSc.TS_LINEAR` or `LibPETSc.TS_NONLINEAR`.
 
 # External Links
-$(_doc_external("TS/TSSetProblemType"))
+$(doc_external("TS/TSSetProblemType"))
 """
 function set_problem_type!(
     ts::AbstractTS{PetscLib},
@@ -368,7 +368,7 @@ end
 The DM attached to `ts`. The DM is owned by `ts`.
 
 # External Links
-$(_doc_external("TS/TSGetDM"))
+$(doc_external("TS/TSGetDM"))
 """
 dm(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetDM(getlib(PetscLib), ts)
@@ -379,7 +379,7 @@ dm(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Attach `dm` to `ts`.
 
 # External Links
-$(_doc_external("TS/TSSetDM"))
+$(doc_external("TS/TSSetDM"))
 """
 function set_dm!(
     ts::AbstractTS{PetscLib},
@@ -395,7 +395,7 @@ end
 The solution vector held by `ts`. It is owned by `ts`, so do not destroy it.
 
 # External Links
-$(_doc_external("TS/TSGetSolution"))
+$(doc_external("TS/TSGetSolution"))
 """
 function solution(ts::AbstractTS{PetscLib}) where {PetscLib}
     petsclib = getlib(PetscLib)
@@ -409,7 +409,7 @@ end
 Set the initial condition of `ts`.
 
 # External Links
-$(_doc_external("TS/TSSetSolution"))
+$(doc_external("TS/TSSetSolution"))
 """
 function set_solution!(
     ts::AbstractTS{PetscLib},
@@ -428,7 +428,7 @@ end
 The time `ts` has reached.
 
 # External Links
-$(_doc_external("TS/TSGetTime"))
+$(doc_external("TS/TSGetTime"))
 """
 current_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetTime(getlib(PetscLib), ts)
@@ -439,7 +439,7 @@ current_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Set the current time of `ts`.
 
 # External Links
-$(_doc_external("TS/TSSetTime"))
+$(doc_external("TS/TSSetTime"))
 """
 function set_time!(ts::AbstractTS{PetscLib}, t) where {PetscLib}
     LibPETSc.TSSetTime(getlib(PetscLib), ts, PetscLib.PetscReal(t))
@@ -452,7 +452,7 @@ end
 The current step size.
 
 # External Links
-$(_doc_external("TS/TSGetTimeStep"))
+$(doc_external("TS/TSGetTimeStep"))
 """
 timestep(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetTimeStep(getlib(PetscLib), ts)
@@ -463,7 +463,7 @@ timestep(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Set the step size.
 
 # External Links
-$(_doc_external("TS/TSSetTimeStep"))
+$(doc_external("TS/TSSetTimeStep"))
 """
 function set_timestep!(ts::AbstractTS{PetscLib}, dt) where {PetscLib}
     LibPETSc.TSSetTimeStep(getlib(PetscLib), ts, PetscLib.PetscReal(dt))
@@ -476,7 +476,7 @@ end
 The time at which integration stops.
 
 # External Links
-$(_doc_external("TS/TSGetMaxTime"))
+$(doc_external("TS/TSGetMaxTime"))
 """
 max_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetMaxTime(getlib(PetscLib), ts)
@@ -487,7 +487,7 @@ max_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Set the time at which integration stops.
 
 # External Links
-$(_doc_external("TS/TSSetMaxTime"))
+$(doc_external("TS/TSSetMaxTime"))
 """
 function set_max_time!(ts::AbstractTS{PetscLib}, t) where {PetscLib}
     LibPETSc.TSSetMaxTime(getlib(PetscLib), ts, PetscLib.PetscReal(t))
@@ -500,7 +500,7 @@ end
 The step count at which integration stops.
 
 # External Links
-$(_doc_external("TS/TSGetMaxSteps"))
+$(doc_external("TS/TSGetMaxSteps"))
 """
 max_steps(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetMaxSteps(getlib(PetscLib), ts)
@@ -511,7 +511,7 @@ max_steps(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Set the step count at which integration stops.
 
 # External Links
-$(_doc_external("TS/TSSetMaxSteps"))
+$(doc_external("TS/TSSetMaxSteps"))
 """
 function set_max_steps!(ts::AbstractTS{PetscLib}, n) where {PetscLib}
     LibPETSc.TSSetMaxSteps(getlib(PetscLib), ts, PetscLib.PetscInt(n))
@@ -524,7 +524,7 @@ end
 The number of steps taken so far.
 
 # External Links
-$(_doc_external("TS/TSGetStepNumber"))
+$(doc_external("TS/TSGetStepNumber"))
 """
 step_number(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetStepNumber(getlib(PetscLib), ts)
@@ -538,7 +538,7 @@ Local truncation error tolerances, as `(; atol, rtol, vatol, vrtol)`.
 only the scalar tolerances are set. Both are owned by `ts`.
 
 # External Links
-$(_doc_external("TS/TSGetTolerances"))
+$(doc_external("TS/TSGetTolerances"))
 """
 function tolerances(ts::AbstractTS{PetscLib}) where {PetscLib}
     atol, vatol, rtol, vrtol = LibPETSc.TSGetTolerances(getlib(PetscLib), ts)
@@ -554,7 +554,7 @@ the value `ts` currently has.
 Pass `vatol` or `vrtol` to give per-component tolerances.
 
 # External Links
-$(_doc_external("TS/TSSetTolerances"))
+$(doc_external("TS/TSSetTolerances"))
 """
 function set_tolerances!(
     ts::AbstractTS{PetscLib};
@@ -584,7 +584,7 @@ end
 Why the integration stopped, as a `LibPETSc.TSConvergedReason`.
 
 # External Links
-$(_doc_external("TS/TSGetConvergedReason"))
+$(doc_external("TS/TSGetConvergedReason"))
 """
 converged_reason(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetConvergedReason(getlib(PetscLib), ts)
@@ -599,7 +599,7 @@ asked for by [`set_max_time!`](@ref) unless the final step was made to land on i
 see [`set_exact_final_time!`](@ref).
 
 # External Links
-$(_doc_external("TS/TSGetSolveTime"))
+$(doc_external("TS/TSGetSolveTime"))
 """
 solve_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetSolveTime(getlib(PetscLib), ts)
@@ -610,7 +610,7 @@ solve_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Total number of nonlinear iterations taken so far, summed over the steps.
 
 # External Links
-$(_doc_external("TS/TSGetSNESIterations"))
+$(doc_external("TS/TSGetSNESIterations"))
 """
 snes_iterations(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetSNESIterations(getlib(PetscLib), ts)
@@ -621,7 +621,7 @@ snes_iterations(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Total number of linear iterations taken so far, summed over the steps.
 
 # External Links
-$(_doc_external("TS/TSGetKSPIterations"))
+$(doc_external("TS/TSGetKSPIterations"))
 """
 ksp_iterations(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetKSPIterations(getlib(PetscLib), ts)
@@ -632,7 +632,7 @@ ksp_iterations(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Number of steps the adaptivity controller has rejected.
 
 # External Links
-$(_doc_external("TS/TSGetStepRejections"))
+$(doc_external("TS/TSGetStepRejections"))
 """
 step_rejections(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetStepRejections(getlib(PetscLib), ts)
@@ -643,7 +643,7 @@ step_rejections(ts::AbstractTS{PetscLib}) where {PetscLib} =
 Number of failed nonlinear solves.
 
 # External Links
-$(_doc_external("TS/TSGetSNESFailures"))
+$(doc_external("TS/TSGetSNESFailures"))
 """
 snes_failures(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetSNESFailures(getlib(PetscLib), ts)
@@ -657,7 +657,7 @@ Only the implicit methods build one. Asking an explicit method for its `SNES`
 creates an unused solver rather than reporting an error.
 
 # External Links
-$(_doc_external("TS/TSGetSNES"))
+$(doc_external("TS/TSGetSNES"))
 """
 snes(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetSNES(getlib(PetscLib), ts)
@@ -672,7 +672,7 @@ and raises `PETSC_ERR_ARG_WRONG` otherwise. The linear solver of a nonlinear pro
 belongs to its `SNES`, so reach it through [`snes`](@ref).
 
 # External Links
-$(_doc_external("TS/TSGetKSP"))
+$(doc_external("TS/TSGetKSP"))
 """
 ksp(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetKSP(getlib(PetscLib), ts)
@@ -684,7 +684,7 @@ Complete the setup of `ts`. [`solve!`](@ref) calls this, so it is only needed
 when the setup must happen at a controlled point.
 
 # External Links
-$(_doc_external("TS/TSSetUp"))
+$(doc_external("TS/TSSetUp"))
 """
 function setup!(ts::AbstractTS{PetscLib}) where {PetscLib}
     LibPETSc.TSSetUp(getlib(PetscLib), ts)
@@ -697,7 +697,7 @@ end
 Apply the PETSc options database to `ts`.
 
 # External Links
-$(_doc_external("TS/TSSetFromOptions"))
+$(doc_external("TS/TSSetFromOptions"))
 """
 function set_from_options!(ts::AbstractTS{PetscLib}) where {PetscLib}
     LibPETSc.TSSetFromOptions(getlib(PetscLib), ts)
@@ -713,7 +713,7 @@ The generated binding requires a vector. PETSc reads the solution set by
 `TSSetSolution` when it is handed `NULL` instead, which is what this overload passes.
 
 # External Links
-$(_doc_external("TS/TSSolve"))
+$(doc_external("TS/TSSolve"))
 """
 function LibPETSc.TSSolve(
     petsclib::LibPETSc.PetscLibType,
@@ -738,7 +738,7 @@ end
 
 # Options given to the constructor are applied here rather than there, so that
 # a DM and callbacks attached in between are visible to `TSSetFromOptions`.
-function _with_options(f, ts::AbstractTS{PetscLib}) where {PetscLib}
+function with_options(f, ts::AbstractTS{PetscLib}) where {PetscLib}
     isnothing(ts.opts) && return f()
     push!(ts.opts)
     try
@@ -764,22 +764,22 @@ Options passed to the [`TS`](@ref) constructor are applied here,
 once the DM and the callbacks are attached.
 
 # External Links
-$(_doc_external("TS/TSSolve"))
-$(_doc_external("TS/TSSetSolution"))
+$(doc_external("TS/TSSolve"))
+$(doc_external("TS/TSSetSolution"))
 """
 function solve!(
     u::AbstractPetscVec{PetscLib},
     ts::AbstractTS{PetscLib},
 ) where {PetscLib}
     LibPETSc.TSSetSolution(PetscLib, ts, u)
-    _with_options(ts) do
+    with_options(ts) do
         LibPETSc.TSSolve(PetscLib, ts, u)
     end
     return u
 end
 
 function solve!(ts::AbstractTS{PetscLib}) where {PetscLib}
-    _with_options(ts) do
+    with_options(ts) do
         LibPETSc.TSSolve(PetscLib, ts, nothing)
     end
     return ts
@@ -792,7 +792,7 @@ Take a single step. Unlike [`solve!`](@ref) this does not apply the options
 given to the constructor, and it ignores the time set by [`set_max_time!`](@ref).
 
 # External Links
-$(_doc_external("TS/TSStep"))
+$(doc_external("TS/TSStep"))
 """
 function step!(ts::AbstractTS{PetscLib}) where {PetscLib}
     LibPETSc.TSStep(getlib(PetscLib), ts)
@@ -809,7 +809,7 @@ The clock is not part of that state: the time and the step count survive, so
 set them with [`set_time!`](@ref) and [`set_max_time!`](@ref) before integrating again.
 
 # External Links
-$(_doc_external("TS/TSReset"))
+$(doc_external("TS/TSReset"))
 """
 function reset!(ts::AbstractTS{PetscLib}) where {PetscLib}
     LibPETSc.TSReset(getlib(PetscLib), ts)
@@ -825,7 +825,7 @@ Only the methods that keep a dense output can do this,
 and `t` must lie inside the step just taken.
 
 # External Links
-$(_doc_external("TS/TSInterpolate"))
+$(doc_external("TS/TSInterpolate"))
 """
 function interpolate!(
     u::AbstractPetscVec{PetscLib},
@@ -866,7 +866,7 @@ end
 # A callback may return an error code; anything else is treated as success.
 
 # A callback may return a PETSc error code; anything else counts as success.
-_errorcode(r) =
+errorcode(r) =
     r isa Integer ? LibPETSc.PetscErrorCode(r) : LibPETSc.PetscErrorCode(0)
 
 # "error in library called by PETSc", from `petscsystypes.h`.
@@ -878,9 +878,9 @@ const _PETSC_ERR_LIB = LibPETSc.PetscErrorCode(76)
 # cannot unwind a Julia frame, so an escaping error takes the process down. 
 # Log it here instead and report failure to PETSc, which unwinds its own stack 
 # and leaves `@chk` to raise a `PetscError` from the enclosing `solve!`.
-function _run_callback(f, name)
+function run_callback(f, name)
     try
-        return _errorcode(f())
+        return errorcode(f())
     catch e
         bt = catch_backtrace()
         # Reporting is itself Julia code, and nothing here may throw either.
@@ -905,7 +905,7 @@ is set, `f!(F, ts, t, u, user_ctx)` is used instead when that method exists.
 `r` is an optional template vector for the residual.
 
 # External Links
-$(_doc_external("TS/TSSetRHSFunction"))
+$(doc_external("TS/TSSetRHSFunction"))
 """
 set_rhs_function!(ts::AbstractTS, f!, r = nothing) =
     set_rhs_function!(f!, ts, r)
@@ -923,7 +923,7 @@ function (::TSSetRHSFunctionFn{PetscLib, PetscReal})(
     u = PetscVec{PetscLib}(u_ptr)
     F = PetscVec{PetscLib}(F_ptr)
 
-    _run_callback("rhs_function!") do
+    run_callback("rhs_function!") do
         if Base.applicable(ts.rhs_function!, F, actual_ts, t, u, ts.user_ctx)
             ts.rhs_function!(F, actual_ts, t, u, ts.user_ctx)
         else
@@ -958,7 +958,7 @@ and the preconditioning matrix `P`. If `ts.user_ctx` is set,
 `updateJ!(A, P, ts, t, u, user_ctx)` is used instead when that method exists.
 
 # External Links
-$(_doc_external("TS/TSSetRHSJacobian"))
+$(doc_external("TS/TSSetRHSJacobian"))
 """
 set_rhs_jacobian!(ts::AbstractTS, updateJ!, A, P = A) =
     set_rhs_jacobian!(updateJ!, ts, A, P)
@@ -978,7 +978,7 @@ function (::TSSetRHSJacobianFn{PetscLib, PetscReal})(
     A = PetscMat{PetscLib}(A_ptr)
     P = PetscMat{PetscLib}(P_ptr)
 
-    _run_callback("rhs_jacobian!") do
+    run_callback("rhs_jacobian!") do
         if Base.applicable(ts.rhs_jacobian!, A, P, actual_ts, t, u, ts.user_ctx)
             ts.rhs_jacobian!(A, P, actual_ts, t, u, ts.user_ctx)
         else
@@ -1021,7 +1021,7 @@ If `ts.user_ctx` is set, `f!(F, ts, t, u, u_t, user_ctx)` is used instead
 when that method exists.
 
 # External Links
-$(_doc_external("TS/TSSetIFunction"))
+$(doc_external("TS/TSSetIFunction"))
 """
 set_ifunction!(ts::AbstractTS, f!, r = nothing) = set_ifunction!(f!, ts, r)
 
@@ -1040,7 +1040,7 @@ function (::TSSetIFunctionFn{PetscLib, PetscReal})(
     u_t = PetscVec{PetscLib}(udot_ptr)
     F = PetscVec{PetscLib}(F_ptr)
 
-    _run_callback("ifunction!") do
+    run_callback("ifunction!") do
         if Base.applicable(ts.ifunction!, F, actual_ts, t, u, u_t, ts.user_ctx)
             ts.ifunction!(F, actual_ts, t, u, u_t, ts.user_ctx)
         else
@@ -1075,7 +1075,7 @@ Set the Jacobian of the implicit residual ``F``.
 taking a trailing `user_ctx` is used instead when it exists.
 
 # External Links
-$(_doc_external("TS/TSSetIJacobian"))
+$(doc_external("TS/TSSetIJacobian"))
 """
 set_ijacobian!(ts::AbstractTS, updateJ!, A, P = A) =
     set_ijacobian!(updateJ!, ts, A, P)
@@ -1098,7 +1098,7 @@ function (::TSSetIJacobianFn{PetscLib, PetscReal})(
     A = PetscMat{PetscLib}(A_ptr)
     P = PetscMat{PetscLib}(P_ptr)
 
-    _run_callback("ijacobian!") do
+    run_callback("ijacobian!") do
         if Base.applicable(
             ts.ijacobian!,
             A,
@@ -1156,7 +1156,7 @@ The monitors PETSc installs from the options database, such as `-ts_monitor`,
 are unaffected.
 
 # External Links
-$(_doc_external("TS/TSMonitorSet"))
+$(doc_external("TS/TSMonitorSet"))
 """
 set_monitor!(ts::AbstractTS, f) = set_monitor!(f, ts)
 
@@ -1172,7 +1172,7 @@ function (::TSMonitorSetFn{PetscLib, PetscInt, PetscReal})(
     actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age)
     u = PetscVec{PetscLib}(u_ptr)
 
-    _run_callback("monitor") do
+    run_callback("monitor") do
         if Base.applicable(ts.monitor, actual_ts, step, t, u, ts.user_ctx)
             ts.monitor(actual_ts, step, t, u, ts.user_ctx)
         else

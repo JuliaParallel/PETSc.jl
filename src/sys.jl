@@ -1,7 +1,7 @@
 
 
 """
-    comm = function getcomm(
+    comm = function comm(
                             obj::Union{
                                 PetscVec{PetscLib},
                                 PetscMat{PetscLib},
@@ -14,7 +14,7 @@
 Gets the MPI communicator for any of the objects above                         
 
 """
-function getcomm(
+function comm(
     obj::Union{
         AbstractPetscVec{PetscLib},
         AbstractPetscMat{PetscLib},

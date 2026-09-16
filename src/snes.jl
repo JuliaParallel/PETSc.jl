@@ -23,11 +23,11 @@ Create a PETSc nonlinear solver (SNES) context on the communicator `comm`.
 - `options...`: Additional PETSc options as keyword arguments
 
 If `comm` has size 1, the garbage collector will handle cleanup automatically.
-Otherwise, the user is responsible for calling `destroy`.
+Otherwise, the user is responsible for calling `destroy!`.
 
 # External Links
-$(_doc_external("SNES/SNESCreate"))
-$(_doc_external("SNES/SNESSetFromOptions"))
+$(doc_external("SNES/SNESCreate"))
+$(doc_external("SNES/SNESSetFromOptions"))
 """
 function SNES(
     petsclib::PetscLib,
@@ -46,7 +46,7 @@ function SNES(
     
     # Store options for deferred SNESSetFromOptions in solve!.
     # We do NOT call SetFromOptions here because the DM is typically
-    # set after construction (via setDM!), and PCs like MG need the
+    # set after construction (via set_dm!), and PCs like MG need the
     # DM hierarchy to be available during SetFromOptions/SetUp.
     if !isempty(options)
         snes.opts = PETSc.Options(petsclib; options...)
@@ -55,20 +55,20 @@ function SNES(
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if MPI.Comm_size(comm) == 1
-        finalizer(destroy, snes)
+        finalizer(destroy!, snes)
     end
 
     return snes
 end
 
 
-function gettype(snes::AbstractSNES{PetscLib}) where {PetscLib}
+function type_name(snes::AbstractSNES{PetscLib}) where {PetscLib}
     return LibPETSc.SNESGetType(PetscLib, snes)
 end
 
 """
-    setfunction!(snes, f!, vec)
-    setfunction!(f!, snes, vec)
+    set_function!(snes, f!, vec)
+    set_function!(f!, snes, vec)
 
 Set the residual function `f!` for the nonlinear solver `snes`.
 
@@ -80,21 +80,21 @@ The function `f!` will be called as `f!(fx, snes, x)` where:
 The `vec` argument is a template vector used for the residual.
 
 # External Links
-$(_doc_external("SNES/SNESSetFunction"))
+$(doc_external("SNES/SNESSetFunction"))
 """
-setfunction!(snes::AbstractSNES, rhs!, vec) = setfunction!(rhs!, snes, vec)
+set_function!(snes::AbstractSNES, rhs!, vec) = set_function!(rhs!, snes, vec)
 
-# Wrapper for calls to setfunction!
-mutable struct Fn_SNESSetFunction{PetscLib} end
-function (w::Fn_SNESSetFunction{PetscLib})(
+# Wrapper for calls to set_function!
+mutable struct SNESSetFunctionFn{PetscLib} end
+function (w::SNESSetFunctionFn{PetscLib})(
     actual_snes_ptr::CSNES,
     r_x::CVec,
     r_fx::CVec,
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)
-    # Wrap the actual C SNES for the current MG level so that getDM() inside
-    # the callback returns the correct DM (matches the pattern in Fn_KSPComputeRHS).
+    # Wrap the actual C SNES for the current MG level so that dm() inside
+    # the callback returns the correct DM (matches the pattern in KSPComputeRHSFn).
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age)
     x  = PetscVec{PetscLib}(r_x)
     fx = PetscVec{PetscLib}(r_fx)
@@ -106,7 +106,7 @@ function (w::Fn_SNESSetFunction{PetscLib})(
     end
 end
 
-LibPETSc.@for_petsc function setfunction!(
+LibPETSc.@for_petsc function set_function!(
     f!,
     snes::AbstractSNES{$PetscLib},
     vec::AbstractPetscVec{$PetscLib},
@@ -115,7 +115,7 @@ LibPETSc.@for_petsc function setfunction!(
     ctx = pointer_from_objref(snes)
     PetscInt = $PetscLib.PetscInt
     fptr = @cfunction(
-        Fn_SNESSetFunction{$PetscLib}(),
+        SNESSetFunctionFn{$PetscLib}(),
         $PetscInt,
         (CSNES, CVec, CVec, Ptr{Cvoid})
     )
@@ -128,13 +128,13 @@ LibPETSc.@for_petsc function setfunction!(
 end
 
 """
-    setjacobian!(
+    set_snes_jacobian!(
         snes::AbstractSNES,
         updateJ!::Function,
         J::AbstractMat,
         P::AbstractMat = J
     )
-    setjacobian!(
+    set_snes_jacobian!(
         updateJ!::Function,
         snes::AbstractSNES,
         J::AbstractMat,
@@ -156,14 +156,14 @@ additional last argument:
 - `updateJ!(J, P, snes, x, user_ctx)` when `J ≠ P`
 
 # External Links
-$(_doc_external("SNES/SNESSetJacobian"))
+$(doc_external("SNES/SNESSetJacobian"))
 """
-setjacobian!(snes::AbstractSNES, updateJ!, J, PJ = J) =
-    setjacobian!(updateJ!, snes, J, PJ)
+set_snes_jacobian!(snes::AbstractSNES, updateJ!, J, PJ = J) =
+    set_snes_jacobian!(updateJ!, snes, J, PJ)
 
-# Wrapper for calls to setjacobian!
-mutable struct Fn_SNESSetJacobian{PetscLib} end
-function (w::Fn_SNESSetJacobian{PetscLib})(
+# Wrapper for calls to set_snes_jacobian!
+mutable struct SNESSetJacobianFn{PetscLib} end
+function (w::SNESSetJacobianFn{PetscLib})(
     actual_snes_ptr::CSNES,
     r_x::CVec,
     r_A::CMat,
@@ -193,7 +193,7 @@ function (w::Fn_SNESSetJacobian{PetscLib})(
     end
 end
 
-LibPETSc.@for_petsc function setjacobian!(
+LibPETSc.@for_petsc function set_snes_jacobian!(
     updateJ!,
     snes::AbstractSNES{$PetscLib},
     J::AbstractPetscMat{$PetscLib},
@@ -201,7 +201,7 @@ LibPETSc.@for_petsc function setjacobian!(
 )
     ctx = pointer_from_objref(snes)
     fptr = @cfunction(
-        Fn_SNESSetJacobian{$PetscLib}(),
+        SNESSetJacobianFn{$PetscLib}(),
         $PetscInt,
         (CSNES, CVec, CMat, CMat, Ptr{Cvoid})
     )
@@ -213,8 +213,8 @@ LibPETSc.@for_petsc function setjacobian!(
 end
 
 """
-    setconvergencetest!(snes::AbstractSNES, test!::Function)
-    setconvergencetest!(test!::Function, snes::AbstractSNES)
+    set_convergence_test!(snes::AbstractSNES, test!::Function)
+    set_convergence_test!(test!::Function, snes::AbstractSNES)
 
 Install a Julia closure as the `SNES` convergence test (`SNESSetConvergenceTest`).
 
@@ -234,21 +234,21 @@ already in use — pass distinct context through the closure's own captures if
 or a new test is installed.
 
 # External Links
-$(_doc_external("SNES/SNESSetConvergenceTest"))
+$(doc_external("SNES/SNESSetConvergenceTest"))
 """
-setconvergencetest!(snes::AbstractSNES, test!) = setconvergencetest!(test!, snes)
+set_convergence_test!(snes::AbstractSNES, test!) = set_convergence_test!(test!, snes)
 
 # Context box holding the user's closure; its address is passed as `cctx` and recovered
 # with `unsafe_pointer_to_objref` inside the callback, following the same pattern as
-# Fn_SNESSetFunction/Fn_SNESSetJacobian recover `snes` itself from their `ctx` pointer
+# SNESSetFunctionFn/SNESSetJacobianFn recover `snes` itself from their `ctx` pointer
 # (there, `ctx = pointer_from_objref(snes)`; here the SNES is otherwise gettable from its
 # own first argument, but the closure needs a place to live, so it gets its own box).
 mutable struct SNESConvergenceTestBox
     test!::Any
 end
 
-mutable struct Fn_SNESSetConvergenceTest{PetscLib} end
-function (w::Fn_SNESSetConvergenceTest{PetscLib})(
+mutable struct SNESSetConvergenceTestFn{PetscLib} end
+function (w::SNESSetConvergenceTestFn{PetscLib})(
     actual_snes_ptr::CSNES,
     it,
     xnorm,
@@ -264,7 +264,7 @@ function (w::Fn_SNESSetConvergenceTest{PetscLib})(
     return Cint(0)
 end
 
-LibPETSc.@for_petsc function setconvergencetest!(
+LibPETSc.@for_petsc function set_convergence_test!(
     test!,
     snes::AbstractSNES{$PetscLib},
 )
@@ -273,7 +273,7 @@ LibPETSc.@for_petsc function setconvergencetest!(
     # PetscErrorCode is always Cint (see LibPETSc_const.jl), regardless of PetscInt's width;
     # SNESConvergedReason is a plain C enum, i.e. also Cint-sized.
     fptr = @cfunction(
-        Fn_SNESSetConvergenceTest{$PetscLib}(),
+        SNESSetConvergenceTestFn{$PetscLib}(),
         Cint,
         (CSNES, $PetscInt, $PetscReal, $PetscReal, $PetscReal, Ptr{Cint}, Ptr{Cvoid})
     )
@@ -306,7 +306,7 @@ end
 
 
 """
-    destroy(snes::AbstractSNES)
+    destroy!(snes::AbstractSNES)
 
 Destroy a SNES (nonlinear solver) object and release associated resources.
 
@@ -314,11 +314,11 @@ This function is typically called automatically via finalizers when the object
 is garbage collected, but can be called explicitly to free resources immediately.
 
 # External Links
-$(_doc_external("SNES/SNESDestroy"))
+$(doc_external("SNES/SNESDestroy"))
 """
-function destroy(snes::AbstractSNES{PetscLib}) where {PetscLib}
+function destroy!(snes::AbstractSNES{PetscLib}) where {PetscLib}
     if !isnothing(snes.opts)
-        destroy(snes.opts)
+        destroy!(snes.opts)
         snes.opts = nothing
     end
     if isdestroyable(snes, PetscLib)
@@ -330,16 +330,16 @@ end
 
 
 """
-    dm = getDM(snes::AbstractSNES)
+    dm = dm(snes::AbstractSNES)
 
 Get `dmda` for `snes`
 
 The returned `dmda` is owned by the `snes`
 
 # External Links
-$(_doc_external("SNES/SNESGetDM"))
+$(doc_external("SNES/SNESGetDM"))
 """
-function getDM(
+function dm(
     snes::AbstractSNES{PetscLib},
 ) where {PetscLib}
     dmda = LibPETSc.SNESGetDM(getlib(PetscLib), snes)
@@ -348,14 +348,14 @@ end
 
 
 """
-    setDM!(snes::AbstractSNES, dm::AbstractDM)
+    set_dm!(snes::AbstractSNES, dm::AbstractDM)
 
 Set `dm` for `snes`
 
 # External Links
-$(_doc_external("SNES/SNESSetDM"))
+$(doc_external("SNES/SNESSetDM"))
 """
-function setDM!(
+function set_dm!(
     snes::AbstractSNES{PetscLib},
     dm::AbstractPetscDM{PetscLib},
 ) where {PetscLib}

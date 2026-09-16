@@ -12,7 +12,7 @@ struct CUDAMemBackend <: PETSc.AbstractPetscMemBackend end
 PETSc.memtype_backend(::Val{PETSC_MEMTYPE_DEVICE}) = CUDAMemBackend()
 PETSc.array_type(::Val{PETSC_MEMTYPE_DEVICE}) = CuArray
 
-# ── No-finalizer acquire/release for withlocalarray! ─────────────────────────
+# ── No-finalizer acquire/release for with_local_array! ─────────────────────────
 
 function PETSc.make_local_array(cpu_arr, ::CUDAMemBackend)
     T   = eltype(cpu_arr)
@@ -21,7 +21,7 @@ function PETSc.make_local_array(cpu_arr, ::CUDAMemBackend)
     return CUDA.unsafe_wrap(CuArray, ptr, n; own = false)
 end
 
-function PETSc.release_petsc_local_array(
+function PETSc.release_local_array(
     cpu_arr, ::CUDAMemBackend, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
     pv = PETSc.as_petsc_vec(vec)
@@ -35,12 +35,12 @@ function PETSc.release_petsc_local_array(
     return nothing
 end
 
-# ── wrap_localarray: device branch (legacy, kept for backward compat) ─────────
+# ── wrap_local_array: device branch (legacy, kept for backward compat) ─────────
 #
-# No longer called by withlocalarray! (which uses acquire/release instead).
-# Retained in case external code calls unsafe_localarray directly.
+# No longer called by with_local_array! (which uses acquire/release instead).
+# Retained in case external code calls unsafe_local_array directly.
 
-function PETSc.wrap_localarray(
+function PETSc.wrap_local_array(
     cpu_arr, ::CUDAMemBackend, vec::AbstractPetscVec{PetscLib};
     read::Bool, write::Bool,
 ) where {PetscLib}
@@ -62,7 +62,7 @@ function PETSc.wrap_localarray(
     return dev_arr
 end
 
-# ── get_petsc_arrays_impl: CUDA cases ────────────────────────────────────────
+# ── _local_arrays: CUDA cases ────────────────────────────────────────
 #
 # Two methods cover all GPU sub-cases:
 #
@@ -77,7 +77,7 @@ end
 # reaches these methods.
 
 # Both Vecs on the device: zero-copy wrap, no scratch needed.
-function PETSc.get_petsc_arrays_impl(
+function PETSc._local_arrays(
     petsclib, g_fx, l_x, ::Type{T}, fx_arr, lx_arr,
     ::CUDAMemBackend, ::CUDAMemBackend,
 ) where {T}
@@ -91,7 +91,7 @@ end
 # At least one Vec is host-resident (e.g. MG coarser levels, FD-coloring path).
 # Catch-all: less specific than (CUDAMemBackend, CUDAMemBackend), so Julia prefers
 # the method above when both are on the device.
-function PETSc.get_petsc_arrays_impl(
+function PETSc._local_arrays(
     petsclib, g_fx, l_x, ::Type{T}, fx_arr, lx_arr,
     fx_b::PETSc.AbstractPetscMemBackend, lx_b::PETSc.AbstractPetscMemBackend,
 ) where {T}
@@ -107,13 +107,13 @@ function PETSc.get_petsc_arrays_impl(
     return fx_gpu, lx_gpu, fx_arr, lx_arr, fx_gpu
 end
 
-# ── restore_petsc_arrays_impl: CUDA ──────────────────────────────────────────
+# ── _restore_local_arrays!: CUDA ──────────────────────────────────────────
 #
-# When fx is a CuArray (returned by the GPU get_petsc_arrays_impl above):
+# When fx is a CuArray (returned by the GPU _local_arrays above):
 #   - if fx_bounce !== nothing, sync the device and copy the scratch D2H
 #   - call VecRestoreArray*AndMemType on both raw PETSc arrays
 
-function PETSc.restore_petsc_arrays_impl(
+function PETSc._restore_local_arrays!(
     petsclib, g_fx, l_x, fx::CuArray, lx, fx_arr, lx_arr, fx_bounce,
 )
     if fx_bounce !== nothing

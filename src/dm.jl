@@ -9,7 +9,7 @@ function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
     # DMGetType internally calls DMInitializePackage which queries the PETSc
     # options database.  Calling it before PETSc is initialised causes a C-level
     # SIGSEGV that cannot be caught with try/catch.
-    if !initialized(PetscLib)
+    if !isinitialized(PetscLib)
         print(io, "PETSc DM (PETSc not initialized)")
         return
     end
@@ -25,7 +25,7 @@ end
 
 
 """
-    destroy(dm::AbstractPetscDM)
+    destroy!(dm::AbstractPetscDM)
 
 Destroy a DM object and release associated resources.
 
@@ -33,9 +33,9 @@ This function is typically called automatically via finalizers when the object
 is garbage collected, but can be called explicitly to free resources immediately.
 
 # External Links
-$(_doc_external("DM/DMDestroy"))
+$(doc_external("DM/DMDestroy"))
 """
-function destroy(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function destroy!(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     if isdestroyable(dm, PetscLib)
         LibPETSc.DMDestroy(PetscLib, dm)
     end
@@ -46,7 +46,7 @@ end
 
 
 """
-    getinfo(dm::AbstractPetscDM)
+    info(dm::AbstractPetscDM)
 
 Get information about a DMDA.
 
@@ -62,9 +62,9 @@ A `NamedTuple` with the following fields:
 - `stencil_type`: Stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
 
 # External Links
-$(_doc_external("DMDA/DMDAGetInfo"))
+$(doc_external("DMDA/DMDAGetInfo"))
 """
-function getinfo(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function info(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 
     dim, M, N, P, m, n, p, dof, s, bx, by, bz, st = LibPETSc.DMDAGetInfo(PetscLib, dm)
     global_size   = (M,N,P)
@@ -78,7 +78,7 @@ function getinfo(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 end
 
 """
-    lower, upper, size = getcorners_dmda(da::AbstractDMDA)
+    lower, upper, size = corners_dmda(da::AbstractDMDA)
 
 Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`.
@@ -86,17 +86,17 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 
 Calls `LibPETSc.DMDAGetCorners`.
 """
-function getcorners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function corners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     PetscInt = inttype(PetscLib)
     xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetCorners(PetscLib, dm)
-    corners = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
+    lo = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
     local_size = [PetscInt(xm), PetscInt(ym), PetscInt(zm)]
-    
-    corners .+= 1
-    upper = corners .+ local_size .- PetscInt(1)
+
+    lo .+= 1
+    upper = lo .+ local_size .- PetscInt(1)
 
     return (
-        lower = CartesianIndex(corners...),
+        lower = CartesianIndex(lo...),
         upper = CartesianIndex(upper...),
         size = (local_size...,),
     )
@@ -104,60 +104,60 @@ end
 
 
 """
-    lower, upper, size = getcorners(da::AbstractDMDA)
+    lower, upper, size = corners(da::AbstractDMDA)
 
 Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`. 
 Works for both a DMDA and DMStag object
 """
-function getcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
-    type = gettype(dm)
-    if type == "da"
-        return getcorners_dmda(dm)
-    elseif type == "stag"
-        return getcorners_dmstag(dm)
+function corners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    tname = type_name(dm)
+    if tname == "da"
+        return corners_dmda(dm)
+    elseif tname == "stag"
+        return corners_dmstag(dm)
     else
-        error("getcorners only works for DMDA and DMStag objects")
+        error("corners only works for DMDA and DMStag objects")
     end
 end
 
 """
-    lower, upper, size = getghostcorners(da::AbstractDMDA)
+    lower, upper, size = ghost_corners(da::AbstractDMDA)
 
 Returns a `NamedTuple` with the global indices (including ghost points) of the
 `lower` and `upper` corners as well as the `size`. 
 Works for both a `DMDA` and `DMStag` object
 """
-function getghostcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
-    type = gettype(dm)
-    if type == "da"
-        return getghostcorners_dmda(dm)
-    elseif type == "stag"
-        return getghostcorners_dmstag(dm)
+function ghost_corners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    tname = type_name(dm)
+    if tname == "da"
+        return ghost_corners_dmda(dm)
+    elseif tname == "stag"
+        return ghost_corners_dmstag(dm)
     else
-        error("getghostcorners only works for DMDA and DMStag objects")
+        error("ghost_corners only works for DMDA and DMStag objects")
     end
 end
 
 """
-    lower, upper, size = getghostcorners_dmda(da::AbstractDMDA)
+    lower, upper, size = ghost_corners_dmda(da::AbstractDMDA)
 
 Returns a `NamedTuple` with the global indices (including ghost points) of the
 `lower` and `upper` corners as well as the `size` of the local part of the domain.
 
 Calls `LibPETSc.DMDAGetCorners`.
 """
-function getghostcorners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function ghost_corners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     PetscInt = inttype(PetscLib)
     xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetGhostCorners(PetscLib, dm)
-    corners = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
+    lo = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
     local_size = [PetscInt(xm), PetscInt(ym), PetscInt(zm)]
-    
-    corners .+= 1
-    upper = corners .+ local_size .- PetscInt(1)
+
+    lo .+= 1
+    upper = lo .+ local_size .- PetscInt(1)
 
     return (
-        lower = CartesianIndex(corners...),
+        lower = CartesianIndex(lo...),
         upper = CartesianIndex(upper...),
         size = (local_size...,),
     )
@@ -168,46 +168,38 @@ end
     setup!(dm::DM)
 
 # External Links
-$(_doc_external("DM/DMSetUp"))
+$(doc_external("DM/DMSetUp"))
 """
 setup!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSetUp(PetscLib, dm)
 
 
 """
-    setfromoptions!(dm::AbstractPetscDM)
+    set_from_options!(dm::AbstractPetscDM)
 
 Sets the global options to the `dm`    
 # External Links
-$(_doc_external("DM/DMSetFromOptions"))
+$(doc_external("DM/DMSetFromOptions"))
 """
-setfromoptions!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSetFromOptions(PetscLib, dm)
+set_from_options!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSetFromOptions(PetscLib, dm)
 
-
-
-"""
-    empty(da::AbstractPetscDM)
-
-return an uninitialized `DMDA` struct.
-"""
-Base.empty(da::AbstractPetscDM{PetscLib}) where {PetscLib} = PetscDM{PetscLib}(C_NULL, da.age)
 
 
 """
-    v::PetscVec = DMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    v::PetscVec = local_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 
 Returns a local vector `v` from the `dm` object.
 """
-DMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateLocalVector(getlib(PetscLib), dm)
+local_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateLocalVector(getlib(PetscLib), dm)
 
 """
-    v::PetscVec = DMGlobalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    v::PetscVec = global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 
 Returns a global vector `v` from the `dm` object.
 """
-DMGlobalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
+global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
 
 """
-    dm_local_to_global!(local_vec, global_vec, dm, mode = INSERT_VALUES)
+    local_to_global!(local_vec, global_vec, dm, mode = INSERT_VALUES)
 
 Transfer values from the `local_vec` to the `global_vec` associated with the `dm` object.
 
@@ -218,10 +210,10 @@ Transfer values from the `local_vec` to the `global_vec` associated with the `dm
 - `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
 
 # External Links
-$(_doc_external("DM/DMLocalToGlobal"))
+$(doc_external("DM/DMLocalToGlobal"))
 
 """
-function dm_local_to_global!(   local_vec::AbstractPetscVec{PetscLib},
+function local_to_global!(   local_vec::AbstractPetscVec{PetscLib},
                                 global_vec::AbstractPetscVec{PetscLib},
                                    dm::AbstractPetscDM{PetscLib},
                                    mode::InsertMode = INSERT_VALUES) where {PetscLib}
@@ -233,7 +225,7 @@ end
 
 
 """
-    dm_global_to_local!(global_vec, local_vec, dm, mode = INSERT_VALUES)
+    global_to_local!(global_vec, local_vec, dm, mode = INSERT_VALUES)
 
 Transfer values from the `global_vec` to the `local_vec` associated with the `dm` object,
 including ghost point values from neighboring processes.
@@ -245,9 +237,9 @@ including ghost point values from neighboring processes.
 - `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
 
 # External Links
-$(_doc_external("DM/DMLocalToGlobal"))
+$(doc_external("DM/DMLocalToGlobal"))
 """
-function dm_global_to_local!(global_vec::AbstractPetscVec{PetscLib},
+function global_to_local!(global_vec::AbstractPetscVec{PetscLib},
                               local_vec::AbstractPetscVec{PetscLib},
                                      dm::AbstractPetscDM{PetscLib},
                                    mode::InsertMode = INSERT_VALUES) where {PetscLib}
@@ -259,25 +251,57 @@ end
 
 
 """
-    setuniformcoordinates!(
-        da::DMDA
+    set_uniform_coordinates!(
+        dm::AbstractPetscDM,
         xyzmin::NTuple{N, Real},
         xyzmax::NTuple{N, Real},
     ) where {N}
 
-Set uniform coordinates for the `da` using the lower and upper corners defined
-by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
-`da` then the value of the trailing coordinates is set to `0`.
+Set uniform coordinates on `dm` using the lower and upper corners defined by the
+`NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the `dm`
+then the value of the trailing coordinates is set to `0`.
+
+Works for both a `DMDA` and a `DMStag`. The flavour is still resolved at runtime
+from `type_name(dm)`, because both are the same concrete type until the typed DM
+hierarchy lands.
 
 # External Links
-$(_doc_external("DMDA/DMDASetUniformCoordinates"))
+$(doc_external("DMDA/DMDASetUniformCoordinates"))
+$(doc_external("DMSTAG/DMStagSetUniformCoordinatesProduct"))
 """
-function setuniformcoordinates_dmda!(
-    da::PetscDM{PetscLib},
+function set_uniform_coordinates!(
+    dm::AbstractPetscDM{PetscLib},
+    xyzmin::NTuple,
+    xyzmax::NTuple,
+) where {PetscLib}
+    tname = type_name(dm)
+    if tname == "da"
+        return set_uniform_coordinates_dmda!(dm, xyzmin, xyzmax)
+    elseif tname == "stag"
+        return set_uniform_coordinates_stag!(dm, xyzmin, xyzmax)
+    else
+        throw(
+            ArgumentError(
+                "set_uniform_coordinates! only works for DMDA and DMStag objects, " *
+                "got a DM of type \"$tname\"",
+            ),
+        )
+    end
+end
+
+"""
+    set_uniform_coordinates_dmda!(da, xyzmin, xyzmax)
+
+The `DMDA` method behind [`set_uniform_coordinates!`](@ref).
+
+# External Links
+$(doc_external("DMDA/DMDASetUniformCoordinates"))
+"""
+function set_uniform_coordinates_dmda!(
+    da::AbstractPetscDM{PetscLib},
     xyzmin::NTuple{N, Real},
     xyzmax::NTuple{N, Real},
 ) where {N, PetscLib}
-    @assert gettype(da) == "da" "setuniformcoordinates_dmda! only works for DMDA objects"
     PetscReal = PetscLib.PetscReal
     xmin = PetscReal(xyzmin[1])
     xmax = PetscReal(xyzmax[1])
@@ -303,24 +327,24 @@ function setuniformcoordinates_dmda!(
 end
 
 """
-    coordinatesDMLocalVec(dm::AbstractDM)
+    local_coordinates(dm::AbstractDM)
 
 Gets a local vector with the coordinates associated with `dm`.
 
 Note that the returned vector is borrowed from the `dm` and is not a new vector.
 
 # External Links
-$(_doc_external("DM/DMGetCoordinatesLocal"))
+$(doc_external("DM/DMGetCoordinatesLocal"))
 """
-function coordinatesDMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function local_coordinates(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     petsclib = getlib(PetscLib)
     coord_vec = LibPETSc.DMGetCoordinatesLocal(petsclib, dm)
-    # borrowed from the DM: `destroy` on the returned handle is a no-op
+    # borrowed from the DM: `destroy!` on the returned handle is a no-op
     return VecPtr(petsclib, coord_vec.ptr, false)
 end
 
 """
-    getlocalcoordinatearray(da::AbstractPetscDM)
+    local_coordinate_array(da::AbstractPetscDM)
 
 Return coordinate arrays for the local portion of the domain.
 
@@ -328,33 +352,41 @@ The returned arrays are `OffsetArray`s that can be addressed using global indice
 accounting for ghost points.
 
 # External Links
-$(_doc_external("DM/DMGetCoordinatesLocal"))
+$(doc_external("DM/DMGetCoordinatesLocal"))
 """
-function getlocalcoordinatearray(da::AbstractPetscDM{PetscLib}) where {PetscLib}
+function local_coordinate_array(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     # retrieve local coordinates
-    coord_vec = coordinatesDMLocalVec(da)
+    coord_vec = local_coordinates(da)
     # array
-    array1D = unsafe_localarray(coord_vec; read = true, write = false)
+    array1D = unsafe_local_array(coord_vec; read = true, write = false)
     dim = [PetscLib.PetscInt(0)]
     dim = LibPETSc.DMGetCoordinateDim(PetscLib, da)
     dim = dim[1]
-    corners = getghostcorners(da)
 
-    return reshapelocalarray(array1D, da, dim)
+    return reshape_local_array(array1D, da, dim)
 end
 
 
-gettype(dm::PetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMGetType(PetscLib,dm)
+"""
+    type_name(dm::PetscDM)
+
+The name PETSc knows this DM's flavour by, as a `String` (`"da"`, `"stag"`, `"plex"`, …).
+
+# External Links
+$(doc_external("DM/DMGetType"))
+"""
+type_name(dm::PetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMGetType(PetscLib, dm)
 
 """
-    getdimension(dm::AbstractPetscDM)
+    ndims(dm::AbstractPetscDM)
 
 Return the topological dimension of the `dm`
 
 # External Links
-$(_doc_external("DM/DMGetDimension"))
+$(doc_external("DM/DMGetDimension"))
 """
-getdimension(dm::AbstractPetscDM{PetscLib}) where PetscLib = LibPETSc.DMGetDimension(PetscLib,dm)
+Base.ndims(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
+    LibPETSc.DMGetDimension(PetscLib, dm)
 
 
 """
@@ -365,15 +397,20 @@ Return the global size of a DM object as a tuple.
 For DMDA and DMStag, returns `(M, N, P)` where unused dimensions are 1.
 """
 function Base.size(dm::AbstractPetscDM{PetscLib}) where PetscLib
-    if gettype(dm) == "stag"
-        size = LibPETSc.DMStagGetGlobalSizes(PetscLib,dm)
-    elseif gettype(dm) == "da"
-        dim, M,N,P,_ = LibPETSc.DMDAGetInfo(PetscLib, dm)
-        size = (M,N,P)
+    tname = type_name(dm)
+    if tname == "stag"
+        sz = LibPETSc.DMStagGetGlobalSizes(PetscLib, dm)
+    elseif tname == "da"
+        dim, M, N, P, _ = LibPETSc.DMDAGetInfo(PetscLib, dm)
+        sz = (M, N, P)
     else
-        error("Size not defined for DMStag objects. Use getinfo(dm).global_size instead.")
+        throw(
+            ArgumentError(
+                "size is only defined for DMDA and DMStag objects, got a DM of type \"$tname\"",
+            ),
+        )
     end
-    return size
+    return sz
 end
 
 #=
@@ -389,7 +426,7 @@ Transfer values from the local vector `x_L` to the global vector `x_G`.
 - `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
 
 # External Links
-$(_doc_external("DM/DMLocalToGlobal"))
+$(doc_external("DM/DMLocalToGlobal"))
 """
 function dm_local_to_global(dm::PetscDM{PetscLib},
                              x_L::AbstractPetscVec{PetscLib},
@@ -417,7 +454,7 @@ including ghost point values from neighboring processes.
 - `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
 
 # External Links
-$(_doc_external("DM/DMGlobalToLocal"))
+$(doc_external("DM/DMGlobalToLocal"))
 """
 function dm_global_to_local(dm::PetscDM{PetscLib},
                              x_G::AbstractPetscVec{PetscLib},
@@ -442,7 +479,7 @@ Create a sparse matrix (AIJ format) with sparsity pattern determined by the DM.
 A `PetscMat` object compatible with vectors from the DM.
 
 # External Links
-$(_doc_external("DM/DMCreateMatrix"))
+$(doc_external("DM/DMCreateMatrix"))
 """
 function MatAIJ(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)

@@ -20,12 +20,12 @@ with optional `prefix` and `options`.
 
 The communicator is obtained from `A` and if it has size `1` then the garbage
 collector is set, otherwise the user is responsible for calling
-[`destroy`](@ref).
+[`destroy!`](@ref).
 
 # External Links
-$(_doc_external("KSP/KSPCreate"))
-$(_doc_external("KSP/KSPSetOperators"))
-$(_doc_external("KSP/KSPSetFromOptions"))
+$(doc_external("KSP/KSPCreate"))
+$(doc_external("KSP/KSPSetOperators"))
+$(doc_external("KSP/KSPSetFromOptions"))
 """
 function KSP(
     A::AbstractPetscMat{PetscLib},
@@ -36,8 +36,8 @@ function KSP(
     check_initialized(getlib(PetscLib))
 
     petsclib = getlib(PetscLib)
-    comm = getcomm(A)
-    ksp = LibPETSc.KSPCreate(petsclib,comm)
+    c = comm(A)
+    ksp = LibPETSc.KSPCreate(petsclib, c)
     
     LibPETSc.KSPSetOperators(petsclib, ksp, A, P)
     
@@ -71,9 +71,9 @@ multigrid when the DM provides grid hierarchy information.
 - `options...`: Additional PETSc options as keyword arguments
 
 # External Links
-$(_doc_external("KSP/KSPCreate"))
-$(_doc_external("KSP/KSPSetDM"))
-$(_doc_external("KSP/KSPSetFromOptions"))
+$(doc_external("KSP/KSPCreate"))
+$(doc_external("KSP/KSPSetDM"))
+$(doc_external("KSP/KSPSetFromOptions"))
 """
 function KSP(dm::AbstractPetscDM{PetscLib};
     prefix::String="",
@@ -81,8 +81,8 @@ function KSP(dm::AbstractPetscDM{PetscLib};
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
     petsclib = getlib(PetscLib)
-    comm = getcomm(dm)
-    ksp = LibPETSc.KSPCreate(petsclib,comm)
+    c = comm(dm)
+    ksp = LibPETSc.KSPCreate(petsclib, c)
     
     if !isempty(prefix)
         LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, prefix)
@@ -164,26 +164,26 @@ function Base.:\(
             "but the library uses $(PetscLib.PetscScalar)",
         ),
     )
-    comm = getcomm(ksp)
-    MPI.Comm_size(comm) == 1 || throw(
+    c = comm(ksp)
+    MPI.Comm_size(c) == 1 || throw(
         ArgumentError(
             "solving into a Julia Vector requires a sequential KSP, " *
-            "but its communicator spans $(MPI.Comm_size(comm)) ranks",
+            "but its communicator spans $(MPI.Comm_size(c)) ranks",
         ),
     )
     PetscInt = PetscLib.PetscInt
 
-    petsc_b = LibPETSc.VecCreateSeqWithArray(getlib(PetscLib),comm, PetscInt(1), PetscInt(length(b)), PetscScalar.(b))
+    petsc_b = LibPETSc.VecCreateSeqWithArray(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), PetscScalar.(b))
     petsc_x = ksp \ petsc_b
     x = petsc_x[:]
-    destroy(petsc_b)
-    destroy(petsc_x)
+    destroy!(petsc_b)
+    destroy!(petsc_x)
 
     return x
 end
 
 
-function destroy(ksp::KSP{PetscLib}) where {PetscLib}
+function destroy!(ksp::KSP{PetscLib}) where {PetscLib}
     if isdestroyable(ksp, PetscLib)
         LibPETSc.KSPDestroy(PetscLib, ksp)
     end
@@ -194,24 +194,24 @@ end
 
 
 """
-    getDM(ksp::AbstractKSP)
+    dm(ksp::AbstractKSP)
 
 Get `dmda` for `ksp`
 
 The returned `dmda` is owned by the `ksp`
 
 # External Links
-$(_doc_external("KSP/KSPGetDM"))
+$(doc_external("KSP/KSPGetDM"))
 """
-function getDM(ksp::AbstractKSP{PetscLib}) where PetscLib
+function dm(ksp::AbstractKSP{PetscLib}) where PetscLib
     dmda = LibPETSc.KSPGetDM(getlib(PetscLib),ksp)
     return dmda
 end
 
 #
-# Wrapper for calls to setcomputerhs!
-mutable struct Fn_KSPComputeRHS{PetscLib, PetscInt} end
-function (w::Fn_KSPComputeRHS{PetscLib, PetscInt})(
+# Wrapper for calls to set_compute_rhs!
+mutable struct KSPComputeRHSFn{PetscLib, PetscInt} end
+function (w::KSPComputeRHSFn{PetscLib, PetscInt})(
     new_ksp_ptr::CKSP,
     cb::CVec,
     ksp_ptr::Ptr{Cvoid},
@@ -227,8 +227,8 @@ function (w::Fn_KSPComputeRHS{PetscLib, PetscInt})(
 end
 
 """
-    setcomputerhs!(ksp::AbstractKSP, rhs!::Function)
-    setcomputerhs!(rhs!::Function, ksp::AbstractKSP)
+    set_compute_rhs!(ksp::AbstractKSP, rhs!::Function)
+    set_compute_rhs!(rhs!::Function, ksp::AbstractKSP)
 
 Define `rhs!` to be the right-hand side function of the `ksp`. A call to
 `rhs!(b, new_ksp)` should set the elements of the PETSc vector `b` based on the
@@ -237,17 +237,17 @@ Define `rhs!` to be the right-hand side function of the `ksp`. A call to
 !!! note
 
     The `new_ksp` passed to `rhs!` may not be the same as the `ksp` passed to
-    `setcomputerhs!`.
+    `set_compute_rhs!`.
 
 # External Links
-$(_doc_external("KSP/KSPSetComputeRHS"))
+$(doc_external("KSP/KSPSetComputeRHS"))
 """
-setcomputerhs!(ksp::AbstractKSP, rhs!) = setcomputerhs!(rhs!, ksp)
+set_compute_rhs!(ksp::AbstractKSP, rhs!) = set_compute_rhs!(rhs!, ksp)
 # We have to use the macro here because of the @cfunction
-LibPETSc.@for_petsc function setcomputerhs!(rhs!, ksp::AbstractKSP{$PetscLib})
+LibPETSc.@for_petsc function set_compute_rhs!(rhs!, ksp::AbstractKSP{$PetscLib})
     # We must wrap the user function in our own object
     fptr = @cfunction(
-        Fn_KSPComputeRHS{$PetscLib, $PetscInt}(),
+        KSPComputeRHSFn{$PetscLib, $PetscInt}(),
         $PetscInt,
         (CKSP, CVec, Ptr{Cvoid})
     )
@@ -257,9 +257,9 @@ LibPETSc.@for_petsc function setcomputerhs!(rhs!, ksp::AbstractKSP{$PetscLib})
     return ksp
 end
 
-# Wrapper for calls to setcomputerhs!
-mutable struct Fn_KSPComputeOperators{PetscLib, PetscInt} end
-function (w::Fn_KSPComputeOperators{PetscLib, PetscInt})(
+# Wrapper for calls to set_compute_rhs!
+mutable struct KSPComputeOperatorsFn{PetscLib, PetscInt} end
+function (w::KSPComputeOperatorsFn{PetscLib, PetscInt})(
     new_ksp_ptr::CKSP,
     cA::CMat,
     cP::CMat,
@@ -276,8 +276,8 @@ function (w::Fn_KSPComputeOperators{PetscLib, PetscInt})(
 end
 
 """
-    setcomputeoperators!(ksp::KSP, ops!::Function)
-    setcomputeoperators!(ops!::Function, ksp::KSP)
+    set_compute_operators!(ksp::KSP, ops!::Function)
+    set_compute_operators!(ops!::Function, ksp::KSP)
 
 Define `ops!` to be the compute operators function for the `ksp`. A call to
 `ops!(A, P, new_ksp)` should set the elements of the PETSc matrix linear
@@ -286,17 +286,17 @@ operator `A` and preconditioning matrix `P` based on the `new_ksp`.
 !!! note
 
     The `new_ksp` passed to `ops!` may not be the same as the `ksp` passed to
-    `setcomputeoperators!`.
+    `set_compute_operators!`.
 
 # External Links
-$(_doc_external("KSP/KSPSetComputeOperators"))
+$(doc_external("KSP/KSPSetComputeOperators"))
 """
-setcomputeoperators!(ksp::AbstractKSP, ops!) = setcomputeoperators!(ops!, ksp)
+set_compute_operators!(ksp::AbstractKSP, ops!) = set_compute_operators!(ops!, ksp)
 # We have to use the macro here because of the @cfunction
-LibPETSc.@for_petsc function setcomputeoperators!(ops!, ksp::AbstractKSP{$PetscLib})
+LibPETSc.@for_petsc function set_compute_operators!(ops!, ksp::AbstractKSP{$PetscLib})
     # We must wrap the user function in our own object
     fptr = @cfunction(
-        Fn_KSPComputeOperators{$PetscLib, $PetscInt}(),
+        KSPComputeOperatorsFn{$PetscLib, $PetscInt}(),
         $PetscInt,
         (CKSP, CMat, CMat, Ptr{Cvoid})
     )
@@ -307,14 +307,14 @@ LibPETSc.@for_petsc function setcomputeoperators!(ops!, ksp::AbstractKSP{$PetscL
 end
 
 """
-    sol = get_solution(ksp::AbstractKSP)
+    sol = solution(ksp::AbstractKSP)
 Returns the soluteion vector associated with the KSP object.
 """
-function get_solution(ksp::AbstractKSP{PetscLib}) where PetscLib
+function solution(ksp::AbstractKSP{PetscLib}) where PetscLib
     petsclib = getlib(PetscLib)
     sol = LibPETSc.KSPGetSolution(petsclib, ksp)
     return VecPtr(petsclib, sol.ptr, false)   # owned by the KSP
 end
 
 
-type(ksp::AbstractKSP{PetscLib}) where PetscLib = LibPETSc.KSPGetType(getlib(PetscLib),ksp)
+type_name(ksp::AbstractKSP{PetscLib}) where PetscLib = LibPETSc.KSPGetType(getlib(PetscLib), ksp)

@@ -27,16 +27,16 @@ specifies the points per processor in dimension `k`.
 If keyword argument `processors[k] isa Integer` then this specifies the number of
 processors used in dimension `k`; ignored when `D == 1`.
 
-If keyword argument `setfromoptions == true` then `setfromoptions!` called.
+If keyword argument `setfromoptions == true` then `set_from_options!` called.
 
 If keyword argument `dmsetup == true` then `setup!` is called.
 
 When `D == 1` the `stencil_type` argument is not required and ignored if specified.
 
 # External Links
-$(_doc_external("DMDA/DMDACreate1d"))
-$(_doc_external("DMDA/DMDACreate2d"))
-$(_doc_external("DMDA/DMDACreate3d"))
+$(doc_external("DMDA/DMDACreate1d"))
+$(doc_external("DMDA/DMDACreate2d"))
+$(doc_external("DMDA/DMDACreate3d"))
 """
 function DMDA(
     petsclib::PetscLib,
@@ -139,7 +139,7 @@ function DMDA(
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if MPI.Comm_size(comm) == 1
-        finalizer(destroy, da)
+        finalizer(destroy!, da)
     end
     return da
 end
@@ -150,7 +150,7 @@ end
 Return the number of dofs in for `da`
 
 # External Links
-$(_doc_external("DMDA/DMDAGetDof"))
+$(doc_external("DMDA/DMDAGetDof"))
 """
 function ndofs(da::AbstractPetscDM{PetscLib}) where PetscLib
     PetscInt = PetscLib.PetscInt
@@ -163,66 +163,66 @@ end
 
 
 """
-    reshapelocalarray(Arr, da::AbstractPetscDM{PetscLib}, ndof = ndofs(da))
+    reshape_local_array(Arr, da::AbstractPetscDM{PetscLib}, ndof = ndofs(da))
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
 be addressed with global indexing.
 """
-function reshapelocalarray(
+function reshape_local_array(
     Arr,
     da::AbstractPetscDM{PetscLib},
     ndof::Integer = ndofs(da),
 ) where {PetscLib}
 
     # First we try to use a ghosted size
-    corners = getghostcorners(da)
+    c = ghost_corners(da)
     # If this is two big for the array use non-ghosted
-    if length(Arr) < prod(corners.size) * ndof
-        corners = getcorners(da)
+    if length(Arr) < prod(c.size) * ndof
+        c = corners(da)
     end
-    length(Arr) == prod(corners.size) * ndof || throw(
+    length(Arr) == prod(c.size) * ndof || throw(
         DimensionMismatch(
             "array has $(length(Arr)) entries, but the local domain needs " *
-            "$(prod(corners.size) * ndof) ($(corners.size) points x $ndof dofs)",
+            "$(prod(c.size) * ndof) ($(c.size) points x $ndof dofs)",
         ),
     )
 
     oArr = OffsetArray(
-        reshape(Arr, Int64(ndof), Int64.(corners.size)...),
+        reshape(Arr, Int64(ndof), Int64.(c.size)...),
         1:ndof,
-        (corners.lower[1]):(corners.upper[1]),
-        (corners.lower[2]):(corners.upper[2]),
-        (corners.lower[3]):(corners.upper[3]),
+        (c.lower[1]):(c.upper[1]),
+        (c.lower[2]):(c.upper[2]),
+        (c.lower[3]):(c.upper[3]),
     )
 
     return oArr
 end
 
 """
-    ind = localinteriorlinearindex(dmda::AbstractPetscDM)
+    ind = local_interior_linear_index(dmda::AbstractPetscDM)
 
 Returns the linear indices associated with the degrees of freedom own by this MPI rank embedded in the ghost index space for the `dmda`
 """
-function localinteriorlinearindex(da::AbstractPetscDM{PetscLib}) where PetscLib
+function local_interior_linear_index(da::AbstractPetscDM{PetscLib}) where PetscLib
     # Determine the indices of the linear indices of the local part of the
     # matrix we own
-    @assert gettype(da) == "da" 
-    ghost_corners = PETSc.getghostcorners(da)
-    corners = PETSc.getcorners(da)
+    @assert type_name(da) == "da" 
+    gc = PETSc.ghost_corners(da)
+    c = PETSc.corners(da)
 
     # First compute the Cartesian indices for the local portion we own
-    offset = ghost_corners.lower - CartesianIndex(1, 1, 1)
-    l_inds = ((corners.lower):(corners.upper)) .- offset
+    offset = gc.lower - CartesianIndex(1, 1, 1)
+    l_inds = ((c.lower):(c.upper)) .- offset
 
     # Create a grid of indices with ghost then extract only the local part
-    lower = CartesianIndex(1, ghost_corners.lower)
-    upper = CartesianIndex(ndofs(da), ghost_corners.upper)
+    lower = CartesianIndex(1, gc.lower)
+    upper = CartesianIndex(ndofs(da), gc.upper)
     ind_local = LinearIndices(lower:upper)[:, l_inds][:]
     return ind_local
 end
 
 """
-    dmda_star_fd_coloring(petsclib, da)
+    star_fd_coloring(petsclib, da)
 
 Build all data needed for manual FD coloring of a **2-D** DMDA with a STAR
 stencil, using `IS_COLORING_LOCAL` and ghost-local COO indexing.
@@ -255,7 +255,7 @@ Returns a `NamedTuple`:
     - reshape `col_colors_mat` to `(dof, nx_g, ny_g, nz_g)`,
     - decode `z_owned` in the `perturb_cols` loop.
 """
-function dmda_star_fd_coloring(petsclib::PetscLib, da::AbstractPetscDM{PetscLib}) where PetscLib
+function star_fd_coloring(petsclib::PetscLib, da::AbstractPetscDM{PetscLib}) where PetscLib
     CPetscInt = petsclib.PetscInt
 
     # ── ISColoring ────────────────────────────────────────────────────────────
@@ -267,16 +267,16 @@ function dmda_star_fd_coloring(petsclib::PetscLib, da::AbstractPetscDM{PetscLib}
     LibPETSc.ISColoringDestroy(petsclib, iscoloring)
 
     # ── DMDA geometry ─────────────────────────────────────────────────────────
-    info          = getinfo(da)
-    mx            = Int(info.global_size[1])
-    my            = Int(info.global_size[2])
-    dof_per_node  = Int(info.dof)
-    corners       = getcorners(da)
-    ghost_corners = getghostcorners(da)
-    xs_da  = corners.lower[1];       ys_da  = corners.lower[2]
-    xe_da  = corners.upper[1];       ye_da  = corners.upper[2]
-    xsg_da = ghost_corners.lower[1]; ysg_da = ghost_corners.lower[2]
-    xeg_da = ghost_corners.upper[1]; yeg_da = ghost_corners.upper[2]
+    da_info = info(da)
+    mx            = Int(da_info.global_size[1])
+    my            = Int(da_info.global_size[2])
+    dof_per_node  = Int(da_info.dof)
+    c             = corners(da)
+    gc            = ghost_corners(da)
+    xs_da  = c.lower[1];       ys_da  = c.lower[2]
+    xe_da  = c.upper[1];       ye_da  = c.upper[2]
+    xsg_da = gc.lower[1]; ysg_da = gc.lower[2]
+    xeg_da = gc.upper[1]; yeg_da = gc.upper[2]
     nx_g_da = xeg_da - xsg_da + 1
     ny_g_da = yeg_da - ysg_da + 1
     nx_own  = xe_da  - xs_da  + 1

@@ -12,7 +12,7 @@ function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
     # VecGetType internally calls VecInitializePackage which queries the PETSc
     # options database.  Calling it before PETSc is initialised causes a C-level
     # SIGSEGV that cannot be caught with try/catch.
-    if !initialized(PetscLib)
+    if !isinitialized(PetscLib)
         print(io, "PETSc Vec (PETSc not initialized)")
         return
     end
@@ -33,7 +33,7 @@ Container type for a PETSc Vec that is just a raw pointer.
 
 If `own` is `true` a finalizer is set on the vector, but only on a serial
 communicator, since `VecDestroy` is collective and a GC finalizer runs at an
-arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy`
+arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy!`
 is a no-op, leaving the wrapper usable.
 """
 mutable struct VecPtr{PetscLib} <:
@@ -51,7 +51,7 @@ function VecPtr(
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned vectors on every invocation and never need the communicator.
     if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)) == 1
-        finalizer(destroy, v)
+        finalizer(destroy!, v)
     end
     return v
 end
@@ -66,14 +66,14 @@ A standard, sequentially-stored serial PETSc vector for `petsclib.PetscScalar`
 of length `n`.
 
 # External Links
-$(_doc_external("Vec/VecCreateSeq"))
+$(doc_external("Vec/VecCreateSeq"))
 """
 function VecSeq(petsclib::PetscLib, n::Integer) where {PetscLib <: PetscLibType}
     comm = MPI.COMM_SELF
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
     v = LibPETSc.VecCreateSeq(petsclib, comm, PetscInt(n))
-    finalizer(destroy, v)
+    finalizer(destroy!, v)
     return v
 end
 
@@ -92,7 +92,7 @@ usecases, users should be able to pass `Vector`s directly and have the wrapping
 performed automatically
 
 # External Links
-$(_doc_external("Vec/VecCreateSeqWithArray"))
+$(doc_external("Vec/VecCreateSeqWithArray"))
 """
 function VecSeq(
     petsclib::PetscLib,
@@ -115,7 +115,7 @@ function VecSeq(
         PetscInt(length(array)),
         array,
     )
-    finalizer(destroy, v)
+    finalizer(destroy!, v)
     return v
 end
 
@@ -135,7 +135,7 @@ Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(
 Base.length(v::AbstractPetscVec{PetscLib}) where {PetscLib} = prod(size(v))
 Base.lastindex(v::AbstractPetscVec{PetscLib}) where {PetscLib} = length(v)
 Base.similar(v::AbstractPetscVec{PetscLib}) where {PetscLib} =  LibPETSc.VecDuplicate(getlib(PetscLib), v)
-type(m::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetType(PetscLib,m)
+type_name(m::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetType(PetscLib, m)
 
 function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib} 
     PetscInt = inttype(PetscLib)
@@ -214,7 +214,7 @@ end
 
 
 """
-    destroy(v::AbstractPetscVec)
+    destroy!(v::AbstractPetscVec)
 
 Destroy a PETSc vector and release its resources.
 
@@ -223,9 +223,9 @@ library has been finalized or re-initialized: see [`isdestroyable`](@ref). Does
 nothing on a vector that only borrows its handle: see [`owns`](@ref).
 
 # External Links
-$(_doc_external("Vec/VecDestroy"))
+$(doc_external("Vec/VecDestroy"))
 """
-function destroy(m::AbstractPetscVec{PetscLib}) where {PetscLib}
+function destroy!(m::AbstractPetscVec{PetscLib}) where {PetscLib}
     owns(m) || return nothing
     if isdestroyable(m, PetscLib)
         LibPETSc.VecDestroy(PetscLib, m)
@@ -236,7 +236,7 @@ end
 
 
 """
-    unsafe_localarray(vec::AbstractVec; read=true, write=true)
+    unsafe_local_array(vec::AbstractVec; read=true, write=true)
 
 Return an `Array{PetscScalar}` containing local portion of the PETSc `vec`
 
@@ -246,14 +246,14 @@ Use `read=false` if the array is write-only; `write=false` if read-only.
     `Base.finalize` should be called on the `Array` before the data can be used.
 
 # External Links
-$(_doc_external("Vec/VecGetArray"))
-$(_doc_external("Vec/VecGetArrayWrite"))
-$(_doc_external("Vec/VecGetArrayRead"))
-$(_doc_external("Vec/VecRestoreArray"))
-$(_doc_external("Vec/VecRestoreArrayWrite"))
-$(_doc_external("Vec/VecRestoreArrayRead"))
+$(doc_external("Vec/VecGetArray"))
+$(doc_external("Vec/VecGetArrayWrite"))
+$(doc_external("Vec/VecGetArrayRead"))
+$(doc_external("Vec/VecRestoreArray"))
+$(doc_external("Vec/VecRestoreArrayWrite"))
+$(doc_external("Vec/VecRestoreArrayRead"))
 """
-function unsafe_localarray(
+function unsafe_local_array(
     vec::AbstractPetscVec{PetscLib};
     read::Bool = true,
     write::Bool = true,
@@ -315,16 +315,16 @@ memtype_backend(mt::LibPETSc.PetscMemType) = memtype_backend(Val(mt))
 
 # ── Device-aware local array access ───────────────────────────────────────────
 #
-# `_unsafe_localarray` is the unified entry point: it calls
+# `_unsafe_local_array` is the unified entry point: it calls
 # `VecGetArray*AndMemType`, converts the returned `PetscMemType` to a backend
-# singleton via `memtype_backend`, and dispatches to `wrap_localarray`.
-# GPU extensions add `wrap_localarray` methods for their own backend types.
+# singleton via `memtype_backend`, and dispatches to `wrap_local_array`.
+# GPU extensions add `wrap_local_array` methods for their own backend types.
 #
-# The typed overload `_unsafe_localarray(::Type{A}, vec; ...)` additionally
+# The typed overload `_unsafe_local_array(::Type{A}, vec; ...)` additionally
 # asserts that the returned array is of type `A`, giving a clear error when a
 # Vec is on an unexpected device.
 
-function _unsafe_localarray(
+function _unsafe_local_array(
     vec::AbstractPetscVec{PetscLib};
     read::Bool = true,
     write::Bool = true,
@@ -337,16 +337,16 @@ function _unsafe_localarray(
     else
         cpu_arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, pv)
     end
-    return wrap_localarray(cpu_arr, memtype_backend(mtype), vec; read, write)
+    return wrap_local_array(cpu_arr, memtype_backend(mtype), vec; read, write)
 end
 
-function _unsafe_localarray(
+function _unsafe_local_array(
     ::Type{A},
     vec::AbstractPetscVec;
     read::Bool = true,
     write::Bool = true,
 ) where {A <: AbstractArray}
-    arr = _unsafe_localarray(vec; read, write)
+    arr = _unsafe_local_array(vec; read, write)
     arr isa A && return arr
     Base.finalize(arr)   # release the PETSc handle before throwing
     throw(ArgumentError(
@@ -355,7 +355,7 @@ function _unsafe_localarray(
     ))
 end
 
-function wrap_localarray(
+function wrap_local_array(
     cpu_arr, ::Nothing, vec::AbstractPetscVec{PetscLib};
     read::Bool, write::Bool,
 ) where {PetscLib}
@@ -373,21 +373,21 @@ function wrap_localarray(
 end
 
 # Fallback: no backend loaded for this PetscMemType.
-function wrap_localarray(cpu_arr, b::AbstractPetscMemBackend, vec; kw...)
-    error("wrap_localarray not implemented for backend $(typeof(b)) — " *
+function wrap_local_array(cpu_arr, b::AbstractPetscMemBackend, vec; kw...)
+    error("wrap_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 end
 
 # ── No-finalizer acquire/release ─────────────────────────────────────────────
 #
-# `withlocalarray!` uses these instead of the finalizer-based `unsafe_localarray`
+# `with_local_array!` uses these instead of the finalizer-based `unsafe_local_array`
 # to avoid a documented Julia pitfall: after `Base.finalize(x)` is called, if
 # `x` later becomes unreachable GC may invoke the finalizer *again*, leading to
 # a double VecRestore call on an already-freed Vec (→ SIGSEGV).
 # `try/finally` provides deterministic, single-execution cleanup.
 
 """
-    acquire_petsc_local_array(vec; read, write) -> (arr, cpu_arr, backend)
+    acquire_local_array(vec; read, write) -> (arr, cpu_arr, backend)
 
 Get the local array from `vec` via `VecGetArray*AndMemType` without
 registering a Julia finalizer.  Returns the user-visible array, the raw PETSc
@@ -395,7 +395,7 @@ cpu_arr needed for restore, and the backend singleton.
 Extensions overload `make_local_array(cpu_arr, backend)` to wrap the raw
 array for their device (e.g. `CUDAMemBackend` → `CuArray`).
 """
-function acquire_petsc_local_array(
+function acquire_local_array(
     vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
     pv = as_petsc_vec(vec)
@@ -418,12 +418,12 @@ make_local_array(_, b::AbstractPetscMemBackend) =
           "load the corresponding GPU package (e.g. CUDA.jl)")
 
 """
-    release_petsc_local_array(cpu_arr, backend, vec; read, write)
+    release_local_array(cpu_arr, backend, vec; read, write)
 
 Restore a previously acquired local array.  Called in `finally` blocks by
-`withlocalarray!`.  Extensions overload this for GPU backends.
+`with_local_array!`.  Extensions overload this for GPU backends.
 """
-function release_petsc_local_array(
+function release_local_array(
     cpu_arr, ::Nothing, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
     pv = as_petsc_vec(vec)
@@ -436,8 +436,8 @@ function release_petsc_local_array(
     end
     return nothing
 end
-release_petsc_local_array(cpu_arr, b::AbstractPetscMemBackend, vec; kw...) =
-    error("release_petsc_local_array not implemented for backend $(typeof(b)) — " *
+release_local_array(cpu_arr, b::AbstractPetscMemBackend, vec; kw...) =
+    error("release_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 
 # The auto-generated *AndMemType wrappers are typed `x::PetscVec`, but
@@ -450,14 +450,14 @@ as_petsc_vec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
 
 Query the `PetscMemType` of each Vec and return the corresponding array type.
 Errors if the Vecs are on heterogeneous devices (different `PetscMemType`
-values), since a single `withlocalarray!` call cannot handle mixed backends.
+values), since a single `with_local_array!` call cannot handle mixed backends.
 Returns `Vector` when all Vecs are host-resident.
 
 Extensions overload `array_type(::Val{MT})` for a `PetscMemType` enum value
 `MT` to register the corresponding array type (e.g. `PETSC_MEMTYPE_DEVICE` →
 `CuArray`).
 """
-function determine_memtype(vecs::AbstractPetscVec...)
+function memtype(vecs::AbstractPetscVec...)
     mtypes = map(vecs) do v
         PetscLib = typeof(v).parameters[1]
         pv = as_petsc_vec(v)
@@ -467,7 +467,7 @@ function determine_memtype(vecs::AbstractPetscVec...)
     end
     allequal(mtypes) || throw(ArgumentError(
         "Vecs are on heterogeneous devices: $(unique(mtypes)). " *
-        "Use withlocalarray!(f!, ::Type{A}, ...) to handle each backend explicitly."
+        "Use with_local_array!(f!, ::Type{A}, ...) to handle each backend explicitly."
     ))
     return array_type(Val(first(mtypes)))
 end
@@ -478,13 +478,13 @@ array_type(::Val{MT}) where {MT} =
 # GPU extensions add: array_type(::Val{LibPETSc.PETSC_MEMTYPE_DEVICE}) = CuArray
 
 """
-    withlocalarray!(
+    with_local_array!(
         f!,
         vecs::NTuple{N, AbstractVec};
         read::Union{Bool, NTuple{N, Bool}} = true,
         write::Union{Bool, NTuple{N, Bool}} = true,
     )
-    withlocalarray!(::Type{A}, f!, vecs...; read, write) where {A <: AbstractArray}
+    with_local_array!(::Type{A}, f!, vecs...; read, write) where {A <: AbstractArray}
 
 Apply `f!` to local array views of `vecs`.
 
@@ -493,23 +493,23 @@ that every array returned from `VecGetArray*AndMemType` is of type `A`.  Use
 it with do-block syntax:
 
 ```julia
-withlocalarray!(Vector, petsc_x; write=true) do x
+with_local_array!(Vector, petsc_x; write=true) do x
     x .= 1
 end
 ```
 
 """
-function withlocalarray!(
+function with_local_array!(
     f!,
     vecs::NTuple{N, AbstractPetscVec};
     kwargs...,
 ) where {N}
-    A = determine_memtype(vecs...)
-    return withlocalarray!(f!, A, vecs; kwargs...)
+    A = memtype(vecs...)
+    return with_local_array!(f!, A, vecs; kwargs...)
 end
-withlocalarray!(f!, vecs...; kwargs...) = withlocalarray!(f!, vecs; kwargs...)
+with_local_array!(f!, vecs...; kwargs...) = with_local_array!(f!, vecs; kwargs...)
 
-function withlocalarray!(
+function with_local_array!(
     f!,
     ::Type{A},
     vecs::NTuple{N, AbstractPetscVec};
@@ -522,7 +522,7 @@ function withlocalarray!(
     # This avoids the Julia pitfall where Base.finalize + GC can both run the
     # finalizer if the object becomes unreachable again (double-restore → crash).
     acquired = map(vecs, read, write) do v, r, w
-        acquire_petsc_local_array(v; read=r, write=w)
+        acquire_local_array(v; read=r, write=w)
     end
     try
         # Type check inside try so finally still releases on mismatch.
@@ -536,16 +536,16 @@ function withlocalarray!(
         return f!(arrays...)
     finally
         foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
-            release_petsc_local_array(cpu_arr, backend, v; read=r, write=w)
+            release_local_array(cpu_arr, backend, v; read=r, write=w)
         end
     end
 end
-withlocalarray!(f!, ::Type{A}, vecs...; kwargs...) where {A <: AbstractArray} =
-    withlocalarray!(f!, A, vecs; kwargs...)
+with_local_array!(f!, ::Type{A}, vecs...; kwargs...) where {A <: AbstractArray} =
+    with_local_array!(f!, A, vecs; kwargs...)
 
 
 """
-    ghostupdatebegin!(
+    ghost_update_begin!(
         vec::AbstractPetscVec,
         insertmode = INSERT_VALUES,
         scattermode = SCATTER_FORWARD,
@@ -554,9 +554,9 @@ withlocalarray!(f!, ::Type{A}, vecs...; kwargs...) where {A <: AbstractArray} =
 Begins scattering `vec` to the local or global representations
 
 # External Links
-$(_doc_external("Vec/VecGhostUpdateBegin"))
+$(doc_external("Vec/VecGhostUpdateBegin"))
 """
-function ghostupdatebegin!(
+function ghost_update_begin!(
     vec::AbstractPetscVec{PetscLib},
     insertmode = INSERT_VALUES,
     scattermode = SCATTER_FORWARD,
@@ -566,7 +566,7 @@ function ghostupdatebegin!(
 end
 
 """
-    ghostupdateend!(
+    ghost_update_end!(
         vec::AbstractPetscVec,
         insertmode = INSERT_VALUES,
         scattermode = SCATTER_FORWARD,
@@ -575,9 +575,9 @@ end
 Finishes scattering `vec` to the local or global representations
 
 # External Links
-$(_doc_external("Vec/VecGhostUpdateEnd"))
+$(doc_external("Vec/VecGhostUpdateEnd"))
 """
-function ghostupdateend!(
+function ghost_update_end!(
     vec::AbstractPetscVec{PetscLib},
     insertmode = INSERT_VALUES,
     scattermode = SCATTER_FORWARD,
@@ -587,7 +587,7 @@ function ghostupdateend!(
 end
 
 """
-    ghostupdate!(
+    ghost_update!(
         vec::AbstractPetscVec,
         insertmode = INSERT_VALUES,
         scattermode = SCATTER_FORWARD,
@@ -596,15 +596,15 @@ end
 Finishes scattering `vec` to the local or global representations
 
 # External Links
-$(_doc_external("Vec/VecGhostUpdateEnd"))
+$(doc_external("Vec/VecGhostUpdateEnd"))
 """
-function ghostupdate!(
+function ghost_update!(
     vec::AbstractPetscVec{PetscLib},
     insertmode = INSERT_VALUES,
     scattermode = SCATTER_FORWARD,
 ) where {PetscLib}
-    ghostupdatebegin!(vec,insertmode,scattermode)
-    ghostupdateend!(vec,insertmode,scattermode)
+    ghost_update_begin!(vec,insertmode,scattermode)
+    ghost_update_end!(vec,insertmode,scattermode)
     return nothing
 end
 
@@ -617,7 +617,7 @@ function VecSeq(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLib
     PetscInt = petsclib.PetscInt
 
     v = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)    # solution vector
-    finalizer(destroy, v)
+    finalizer(destroy!, v)
 
     return v
 end
@@ -625,7 +625,7 @@ end
 
 
 """
-    ownershiprange(vec::AbstractVec, [base_one = true])
+    ownership_range(vec::AbstractVec, [base_one = true])
 
 The range of indices owned by this processor, assuming that the `vec` is laid
 out with the first `n1` elements on the first processor, next `n2` elements on
@@ -640,18 +640,16 @@ otherwise base-0 index is used.
     unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
 
 # External Links
-$(_doc_external("Vec/VecGetOwnershipRange"))
+$(doc_external("Vec/VecGetOwnershipRange"))
 """
-function ownershiprange(
+function ownership_range(
     vec::AbstractPetscVec{PetscLib},
     base_one::Bool = true,
 ) where {PetscLib}
     PetscInt = PetscLib.PetscInt
-    r_lo = Ref{PetscInt}()
-    r_hi = Ref{PetscInt}()
+    # The wrapper returns two plain integers, not `Ref`s.
     r_lo, r_hi = LibPETSc.VecGetOwnershipRange(PetscLib, vec)
-    return base_one ? ((r_lo[] + PetscInt(1)):(r_hi[])) :
-           ((r_lo[]):(r_hi[] - PetscInt(1)))
+    return base_one ? ((r_lo + PetscInt(1)):r_hi) : (r_lo:(r_hi - PetscInt(1)))
 end
 
 # Overload norm function
@@ -666,12 +664,12 @@ end
 
 # ── GPU-aware array access helpers ────────────────────────────────────────────
 #
-# `get_petsc_arrays` calls `VecGetArrayAndMemType` on both Vecs, converts the
+# `local_arrays` calls `VecGetArrayAndMemType` on both Vecs, converts the
 # returned `PetscMemType` values to backend singletons, and dispatches to
-# `get_petsc_arrays_impl`.  The base package handles the pure-CPU case
-# (host × host (both backends nothing)).  GPU extensions add `get_petsc_arrays_impl`
+# `_local_arrays`.  The base package handles the pure-CPU case
+# (host × host (both backends nothing)).  GPU extensions add `_local_arrays`
 # methods for their backend combinations and a matching
-# `restore_petsc_arrays_impl` method dispatched by `restore_petsc_arrays`.
+# `_restore_local_arrays!` method dispatched by `restore_local_arrays!`.
 #
 # Return tuple:  (fx, lx, fx_arr, lx_arr, fx_bounce)
 #   CPU:  fx, lx are plain Arrays with VecRestore finalizers;
@@ -680,7 +678,7 @@ end
 #         (needed for restore); fx_bounce is a scratch device array or nothing.
 
 """
-    get_petsc_arrays(petsclib, g_fx, l_x) -> (fx, lx, fx_arr, lx_arr, fx_bounce)
+    local_arrays(petsclib, g_fx, l_x) -> (fx, lx, fx_arr, lx_arr, fx_bounce)
 
 Return arrays for `g_fx` (read-write) and `l_x` (read-only) suitable for
 passing to a compute kernel.  Dispatches on the memory location of each Vec
@@ -690,45 +688,45 @@ On the pure-CPU path (`host × host (both backends nothing)`) `fx`/`lx` are plai
 `Array`s and `fx_arr = lx_arr = fx_bounce = nothing`.  When a GPU backend
 extension is loaded and a Vec lives on the device the returned `fx`/`lx` are
 device arrays.  An optional bounce buffer `fx_bounce` is allocated when `g_fx`
-is host-resident; its contents must be written back by `restore_petsc_arrays`
+is host-resident; its contents must be written back by `restore_local_arrays!`
 after the kernel completes.
 
-See also: [`restore_petsc_arrays`](@ref)
+See also: [`restore_local_arrays!`](@ref)
 """
-function get_petsc_arrays(petsclib, g_fx, l_x)
+function local_arrays(petsclib, g_fx, l_x)
     T = petsclib.PetscScalar
     fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, as_petsc_vec(g_fx))
     lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, as_petsc_vec(l_x))
-    return get_petsc_arrays_impl(
+    return _local_arrays(
         petsclib, g_fx, l_x, T, fx_arr, lx_arr,
         memtype_backend(fx_mtype), memtype_backend(lx_mtype),
     )
 end
 
-# CPU base case: return arrays directly. restore_petsc_arrays calls VecRestore
+# CPU base case: return arrays directly. restore_local_arrays! calls VecRestore
 # explicitly — no finalizers to avoid the double-finalization crash.
-function get_petsc_arrays_impl(
+function _local_arrays(
     petsclib, g_fx, l_x, ::Type, fx_arr, lx_arr, ::Nothing, ::Nothing,
 )
     return fx_arr, lx_arr, nothing, nothing, nothing
 end
 
 """
-    restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
 
-Restore PETSc Vecs after a kernel launched via [`get_petsc_arrays`](@ref).
+Restore PETSc Vecs after a kernel launched via [`local_arrays`](@ref).
 
-Dispatches to `restore_petsc_arrays_impl`.  On the CPU path (`fx_arr`,
+Dispatches to `_restore_local_arrays!`.  On the CPU path (`fx_arr`,
 `lx_arr`, `fx_bounce` all `nothing`) this simply finalizes `fx` and `lx`,
 triggering the registered `VecRestoreArray*AndMemType` finalizers.  GPU backend
-extensions add a `restore_petsc_arrays_impl` method for their array types.
+extensions add a `_restore_local_arrays!` method for their array types.
 """
-function restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
-    restore_petsc_arrays_impl(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+function restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    _restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
 end
 
 # CPU base case: call VecRestore directly (no finalizers).
-function restore_petsc_arrays_impl(
+function _restore_local_arrays!(
     petsclib, g_fx, l_x, fx, lx, ::Nothing, ::Nothing, ::Nothing,
 )
     LibPETSc.VecRestoreArrayAndMemType(petsclib, as_petsc_vec(g_fx), fx)

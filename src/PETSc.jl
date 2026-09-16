@@ -6,25 +6,35 @@ using MPI, LinearAlgebra, SparseArrays, OffsetArrays, Preferences
 
 MPI.Initialized() || MPI.Init()
 
-function _petsc_link(fname)
+function petsc_link(fname)
 """
 [`$fname`](https://petsc.org/release/docs/manualpages/$fname.html)
 """
 end
 
-function _doc_external(fname)
+function doc_external(fname)
 """
-- PETSc Manual: $(_petsc_link(fname))
+- PETSc Manual: $(petsc_link(fname))
 """
 end
 
+# `_doc_external` is interpolated into several thousand docstrings in
+# src/autowrapped/, which the generator in wrapping/ emits verbatim. Keeping the
+# old spelling as an alias leaves those files untouched by the rename.
+const _doc_external = doc_external
+
 include("LibPETSc.jl")
 using .LibPETSc
+
+# The export list is the v0.4 one (§13 replaces it in a later step), minus
+# `HostBackend`, which was exported but never defined: host memory is `nothing`,
+# not a backend type. The exported names that were renamed stay exported through
+# their shims in src/deprecations.jl.
 export LibPETSc
 export audit_petsc_file
 export set_petsclib
 export set_library!, unset_library!, library_info
-export AbstractPetscMemBackend, AbstractPETScMemBackend, HostBackend
+export AbstractPetscMemBackend, AbstractPETScMemBackend
 export determine_memtype
 export get_petsc_arrays, restore_petsc_arrays
 export dmda_star_fd_coloring
@@ -45,7 +55,11 @@ include("dmda.jl")
 include("dmstag.jl")
 include("dmplex.jl")
 
+include("audit_names.jl")   # generated from scripts/renames.jl
 include("audit.jl")
+
+include("deprecations.jl")  # generated from scripts/renames.jl
+include("public_names.jl")  # generated from scripts/renames.jl
 
 
 

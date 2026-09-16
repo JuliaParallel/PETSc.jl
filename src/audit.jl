@@ -6,26 +6,9 @@
 # Matching on source text instead would miss multi-statement lines and
 # would fire inside comments and string literals.
 
-# Names that create an object the caller owns
-# ----------------------------------------------------------------------------
-
-const AUDIT_TYPE_CREATORS =
-    Dict(:KSP => "KSP", :SNES => "SNES", :DMDA => "DM", :DMStag => "DM", :DMPlex => "DM")
-
-const AUDIT_NAMED_CREATORS = Dict(
-    :DMGlobalVec => "Vec",
-    :DMLocalVec => "Vec",
-    :DMGetCoordinateDM => "DM",
-    :DMStagCreateCompatibleDMStag => "DM",
-    :DMCreateMatrix => "Mat",
-    :MatCreateVecs => "Vec",
-    # high-level factories, whose names carry no Create/Duplicate marker
-    :VecSeq => "Vec",
-    :MatAIJ => "Mat",
-    :MatShell => "Mat",
-    :MatSeqAIJ => "Mat",
-    :MatSeqDense => "Mat",
-)
+# The names matched against — `AUDIT_TYPE_CREATORS`, `AUDIT_NAMED_CREATORS` and
+# `AUDIT_DESTROYER_NAMES` — live in the generated src/audit_names.jl, so that a
+# rename cannot blind the auditor by moving the API out from under its patterns.
 
 """
     audit_creator(name::Symbol) -> Union{Nothing, String}
@@ -54,16 +37,16 @@ end
 """
     audit_destroyer(name::Symbol) -> Bool
 
-Whether `name` releases a PETSc object. Covers the high-level `destroy`/`destroy!`
-and the low-level `VecDestroy`, `MatDestroy`, `DMDestroy` and friends, which the
-previous text-matching version treated as leaks.
+Whether `name` releases a PETSc object. Covers the names in
+[`AUDIT_DESTROYER_NAMES`](@ref) and the low-level `VecDestroy`, `MatDestroy`,
+`DMDestroy` and friends, which the previous text-matching version treated as leaks.
 
-`finalizer` counts too. `finalizer(destroy, v)` hands the release to the garbage
+`finalizer` counts too. `finalizer(destroy!, v)` hands the release to the garbage
 collector rather than performing it, but the object is accounted for and must not
 read as a leak. The package uses that idiom for sequential objects.
 """
 function audit_destroyer(name::Symbol)
-    name in (:destroy, :destroy!, :finalizer) && return true
+    name in AUDIT_DESTROYER_NAMES && return true
     s = String(name)
     return endswith(s, "Destroy") && length(s) > length("Destroy")
 end
@@ -191,15 +174,15 @@ end
 # ————————————————————————————————————————————————————————————————————————————
 
 """
-    audit_petsc_file(path::AbstractString; verbose::Bool = true)
+    audit_file(path::AbstractString; verbose::Bool = true)
 
 Scan a Julia source file for PETSc objects that are created but never destroyed.
 
 Creations are calls to a type constructor (`KSP`, `SNES`, `DMDA`, `DMStag`,
 `DMPlex`), to a `Vec`/`Mat` creation routine (`VecCreateSeq`, `MatDuplicate`,
-`MatSeqAIJWithArrays`, …), or to one of the DM allocators (`DMGlobalVec`,
-`DMLocalVec`, `DMCreateMatrix`, …), through either `PETSc` or `LibPETSc`.
-Releases are `destroy`/`destroy!` and the low-level `VecDestroy`-style routines.
+`MatSeqAIJWithArrays`, …), or to one of the DM allocators (`global_vec`,
+`local_vec`, `DMCreateMatrix`, …), through either `PETSc` or `LibPETSc`.
+Releases are `destroy!` and the low-level `VecDestroy`-style routines.
 
 Returns a `NamedTuple`:
 
@@ -219,13 +202,13 @@ whose result is not assigned cannot be matched against a release.
 # Examples
 
 ```julia
-julia> report = audit_petsc_file("examples/ex1.jl");
+julia> report = audit_file("examples/ex1.jl");
 
 julia> isempty(report.leaked)
 true
 ```
 """
-function audit_petsc_file(path::AbstractString; verbose::Bool = true)
+function audit_file(path::AbstractString; verbose::Bool = true)
     ast = Meta.parseall(read(path, String); filename = path)
 
     # A file that does not parse yields no creations, which would otherwise be
@@ -300,7 +283,7 @@ end
 """
     audit_report(created, destroyed, finalized, leaked)
 
-Print the human-readable form of an [`audit_petsc_file`](@ref) result.
+Print the human-readable form of an [`audit_file`](@ref) result.
 """
 function audit_report(created, destroyed, finalized, leaked)
     println("CREATION statements:")
@@ -314,7 +297,7 @@ function audit_report(created, destroyed, finalized, leaked)
 
     println("DESTROY calls:")
     for (line, var) in destroyed
-        println("  line $(line): destroy($(var))")
+        println("  line $(line): destroy!($(var))")
     end
 
     if isempty(leaked)

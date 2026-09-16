@@ -28,7 +28,13 @@ sweeps over `src/*.jl`, tests, examples and docs). Nothing implemented yet beyon
   computes unused ghost corners; `ownershiprange` indexes plain integers with `[]`;
   `Base.size(dm)` has a wrong error message; `HostBackend` is exported but never defined.
 
-## Decisions the document leaves open (settle before step 1)
+## Decisions the document leaves open (settled by Boris, 2026-09-16)
+
+Decided: 1) export the nine types plus `petsclibs`, keep `export LibPETSc`; 2) `public`
+unconditionally; 3) the names missing from the table are kept (renamed as proposed below);
+4) `set_type!(obj, ::Symbol)` is added for Vec, Mat, KSP, SNES; 5) `MatAT` is deleted.
+The original questions follow for reference.
+
 
 1. Export list: §13 includes `petsclibs`, §13.1 does not. Whether `LibPETSc` stays exported is
    not stated. Proposal: export the nine types plus `petsclibs` and keep `export LibPETSc`.

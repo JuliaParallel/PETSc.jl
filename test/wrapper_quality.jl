@@ -81,8 +81,14 @@ end
         end
     end
     # hand-written overrides (wrapping/generator/overrides/) that return a Union by design
-    ovdir = joinpath(@__DIR__, "..", "wrapping", "generator", "overrides")
-    allowed = Set(f[1:end-3] for f in readdir(ovdir) if endswith(f, ".jl"))
+    # hand-written overrides carry a "# override for NAME;" header in the generated files
+    allowed = Set{String}()
+    for f in readdir(joinpath(dirname(pathof(PETSc)), "autowrapped"); join = true)
+        endswith(f, ".jl") || continue
+        for m in eachmatch(r"(?m)^# override for (\w+);", read(f, String))
+            push!(allowed, m.captures[1])
+        end
+    end
     offenders = filter(u -> !(first(split(u, "Tuple{")) in allowed), unstable)
     @info "static inference sweep" checked unstable = length(unstable) not_allowed = length(offenders)
     if !isempty(offenders)

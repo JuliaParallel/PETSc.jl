@@ -1,6 +1,6 @@
 # Regenerate src/autowrapped from a PETSc source tree.
 #
-#   julia --project=wrapping/generator wrapping/generator/generate.jl --petsc-dir PATH [--api wrapping/api/petsc-X.Y.Z.json] [--out DIR]
+#   julia --project=wrapping/generator wrapping/generator/generate.jl --petsc-dir PATH [--api wrapping/generator/api/petsc-X.Y.Z.json.gz] [--out DIR]
 #
 # Without --api the snapshot is (re)created with getapi_dump.py from PETSC_DIR.
 include(joinpath(@__DIR__, "src", "PetscWrapGen.jl"))
@@ -20,7 +20,7 @@ function main(args)
     isempty(petsc_dir) && error("--petsc-dir is required")
     if isempty(api)
         v = match(r"PETSC_VERSION_(MAJOR|MINOR|SUBMINOR)\s+(\d+)", read(joinpath(petsc_dir, "include", "petscversion.h"), String))
-        api = joinpath(@__DIR__, "api", "petsc-snapshot.json")
+        api = joinpath(@__DIR__, "api", "petsc-snapshot.json.gz")
         run(`python3 $(joinpath(@__DIR__, "getapi_dump.py")) $petsc_dir $api`)
     end
     generate(; api_json = api, petsc_dir = petsc_dir, outdir = out, wrapping_dir = @__DIR__)

@@ -42,7 +42,8 @@ end
 _fn(f, class) = Fn(_str(f[:name]), _str(f[:mansec]), class, Arg[_arg(a) for a in f[:arguments]])
 
 function load_api(path::AbstractString)
-    js = JSON3.read(read(path, String))
+    text = endswith(path, ".gz") ? read(pipeline(`gzip -dc $path`), String) : read(path, String)
+    js = JSON3.read(text)
     functions = Dict{String,Fn}()
     classes = Dict{String,Vector{String}}()
     for (cname, c) in pairs(js[:classes])

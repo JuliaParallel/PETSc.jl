@@ -35,9 +35,9 @@ jobs:
       - name: Regenerate
         run: |
           julia --project=wrapping/generator -e 'using Pkg; Pkg.instantiate()'
-          python3 wrapping/generator/getapi_dump.py petsc-${{ steps.ver.outputs.version }} /tmp/api.json
+          python3 wrapping/generator/getapi_dump.py petsc-${{ steps.ver.outputs.version }} /tmp/api.json.gz
           julia --project=wrapping/generator wrapping/generator/generate.jl \
-                --petsc-dir petsc-${{ steps.ver.outputs.version }} --api /tmp/api.json --out /tmp/autowrapped
+                --petsc-dir petsc-${{ steps.ver.outputs.version }} --api /tmp/api.json.gz --out /tmp/autowrapped
       - name: Compare with the committed files
         run: |
           if ! diff -r src/autowrapped /tmp/autowrapped > /tmp/wrappers.diff; then
@@ -48,7 +48,7 @@ jobs:
           echo "src/autowrapped is up to date"
       - name: Snapshot matches the committed one
         run: |
-          diff -q /tmp/api.json wrapping/generator/api/petsc-${{ steps.ver.outputs.version }}.json
+          diff -q /tmp/api.json.gz wrapping/generator/api/petsc-${{ steps.ver.outputs.version }}.json.gz
       - name: Known-bad patterns
         run: |
           ! grep -rn "isa Ref ?" src/autowrapped/

@@ -4,6 +4,13 @@ Read this before touching anything under `src/autowrapped/` or `wrapping/generat
 It is written for the next person (or agent) who has to regenerate the low-level wrappers
 for a new PETSc release, or fix a wrapper that is wrong.
 
+## Who runs this
+
+Only a maintainer, once per PETSc release. Users of PETSc.jl never run the generator: the
+package ships the generated `src/autowrapped/` files and needs neither Python, nor a PETSc source
+tree, nor anything under `wrapping/` at run time. The `.github/workflows/wrappers.yml` job exists
+to catch hand edits of generated files, not to generate anything for users.
+
 ## The one rule
 
 **Never edit files in `src/autowrapped/` by hand.** They are generated, and the next
@@ -23,7 +30,7 @@ wrapping/
   generator/             the generator (a Julia project, deps: JSON3, TOML)
     generate.jl            entry point
     getapi_dump.py         runs PETSc's getAPI.py and writes an API snapshot (JSON)
-    api/petsc-X.Y.Z.json   API snapshots (one per PETSc version wrapped)
+    api/petsc-X.Y.Z.json.gz  API snapshots (gzipped, reproducible; one per PETSc version wrapped)
     rules/                 declarative rules (TOML), the place for fixes
       files.toml             class -> output file, exclusions, include order
       types.toml             type maps, handle types, keyword renames, string-enum overrides
@@ -51,9 +58,9 @@ snapshot + index + rules + overrides ──generate.jl──▶ src/autowrapped/
 Run it:
 
 ```sh
-python3 wrapping/generator/getapi_dump.py /path/to/petsc-X.Y.Z wrapping/generator/api/petsc-X.Y.Z.json
+python3 wrapping/generator/getapi_dump.py /path/to/petsc-X.Y.Z wrapping/generator/api/petsc-X.Y.Z.json.gz
 julia --project=wrapping/generator wrapping/generator/generate.jl \
-      --petsc-dir /path/to/petsc-X.Y.Z --api wrapping/generator/api/petsc-X.Y.Z.json
+      --petsc-dir /path/to/petsc-X.Y.Z --api wrapping/generator/api/petsc-X.Y.Z.json.gz
 ```
 
 Only the *source* tree is needed (no `configure`, no build): the 16 MB release tarball from

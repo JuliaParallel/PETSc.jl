@@ -11,7 +11,7 @@ include(joinpath(@__DIR__, "src", "blocks.jl"))
 golden = ARGS[1]
 names = ARGS[2:end]
 blocks = load_blocks(golden)
-api = load_api(joinpath(@__DIR__, "api", "petsc-3.24.0.json"))
+api = load_api(joinpath(@__DIR__, "api", "petsc-3.25.4.json.gz"))
 mkpath(joinpath(@__DIR__, "overrides"))
 for n in names
     key = "fn:$n"

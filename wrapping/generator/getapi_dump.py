@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Dump the PETSc API description produced by PETSc's own getAPI.py as JSON.
 
-Usage:  python3 getapi_dump.py PETSC_DIR OUTPUT.json
+Usage:  python3 getapi_dump.py PETSC_DIR OUTPUT.json[.gz]
 
 Works with both layouts of getAPI.py:
   - PETSc <= 3.24: config/utils/getAPI.py, getAPI() run with cwd = PETSC_DIR, 9-tuple
@@ -11,6 +11,7 @@ Only the Python standard library is needed. The JSON is deterministic (sorted ke
 sets sorted) so two dumps of the same source tree are byte-identical and dumps of two
 releases can be diffed.
 """
+import gzip
 import json
 import os
 import re
@@ -102,9 +103,14 @@ def main():
         "getapi_layout": layout,
     }
     data.update(to_json(api))
-    with open(out, "w") as f:
-        json.dump(data, f, indent=1, sort_keys=True)
-        f.write("\n")
+    text = json.dumps(data, indent=1, sort_keys=True) + "\n"
+    if out.endswith(".gz"):
+        # mtime=0 so the archive is reproducible byte for byte
+        with open(out, "wb") as raw, gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as f:
+            f.write(text.encode())    # no file name or mtime in the header
+    else:
+        with open(out, "w") as f:
+            f.write(text)
     nfun = len(data["funcs"]) + sum(len(c["functions"]) for c in data["classes"].values())
     print("PETSc %s (%s): %d classes, %d functions, %d enums, %d structs -> %s" % (
         data["petsc_version"], layout, len(data["classes"]), nfun,

@@ -8,9 +8,7 @@ using PETSc
 using PETSc: LibPETSc
 using MPI
 
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 # ── PETSc library and scalar types ───────────────────────────────────────────
 # @petsc_simple_fn / @petsc_residual_fn / @petsc_jacobian_fn resolve
@@ -26,7 +24,7 @@ const PetscScalar = Float64
 const PetscReal   = Float64
 
 # Serial-safe communicator (shared across all lib loops)
-const _TC = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+const _TC = MPI.COMM_SELF
 
 # PetscFE is a bare Ptr, so no finalizer is attached and every FE created here
 # has to be released with LibPETSc.PetscFEDestroy or it lives until

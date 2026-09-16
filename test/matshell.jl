@@ -8,8 +8,7 @@ using MPI
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
-        # Windows PETSc binaries are built without MPI support
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        test_comm = MPI.COMM_SELF
 
         local_rows = 10
         local_cols = 5

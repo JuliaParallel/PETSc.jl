@@ -6,8 +6,7 @@ using MPI
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
     PetscInt = PETSc.LibPETSc.PetscInt
-    # Windows PETSc binaries are built without MPI support
-    test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+    test_comm = MPI.COMM_SELF
     
     @testset "ISCreateGeneral" begin
         indices = PetscInt[0, 2, 4, 6, 8]

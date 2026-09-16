@@ -21,7 +21,7 @@ end
     PETSc.initialize(petsclib)
     PetscScalar = petsclib.PetscScalar
     PetscInt = petsclib.PetscInt
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+    comm = MPI.COMM_SELF
 
     @testset "van der Pol: same answer as the low-level ex16" begin
         # `examples/ex16.jl` is PETSc's TS tutorial ex16 written against the

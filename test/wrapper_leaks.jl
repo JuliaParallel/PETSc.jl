@@ -2,9 +2,7 @@ using Test
 using PETSc, MPI
 using PETSc: LibPETSc
 
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 # ============================================================================
 #   Leak check for the generated wrappers

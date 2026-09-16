@@ -8,7 +8,7 @@ else
 @testset "Documentation examples for Tao" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        test_comm = MPI.COMM_SELF
     PetscInt = PETSc.LibPETSc.PetscInt
     
     @testset "Basic Usage" begin

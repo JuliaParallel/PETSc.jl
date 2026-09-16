@@ -8,7 +8,7 @@ else
 @testset "Low-level Tao (optimization) functions" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        test_comm = MPI.COMM_SELF
     
     @testset "Tao object creation and destruction" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)

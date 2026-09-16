@@ -2,11 +2,7 @@ using Test
 using PETSc, MPI
 using LinearAlgebra: norm
 
-# Windows PETSc binaries are built without MPI support, skip MPI initialization
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
-# Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF
+MPI.Initialized() || MPI.Init()
 comm = LibPETSc.PETSC_COMM_SELF
 # Intel Mac has sporadic issues with complex numbers
 isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
@@ -147,8 +143,7 @@ end
         PetscScalar = petsclib.PetscScalar
         PetscInt    = petsclib.PetscInt
         N           = PetscInt(10)
-        # Windows PETSc binaries are built without MPI support
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        test_comm = MPI.COMM_SELF
         petsc_x = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
         @test LibPETSc.VecGetSize(petsclib, petsc_x) == N
 
@@ -240,8 +235,7 @@ end
         PetscScalar = petsclib.PetscScalar
         PetscInt    = petsclib.PetscInt
         N           = PetscInt(10)
-        # Windows PETSc binaries are built without MPI support
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        test_comm = MPI.COMM_SELF
         petsc_x     = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
         petsc_y     = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
 
@@ -308,7 +302,7 @@ end
         PetscScalar = petsclib.PetscScalar
         PetscInt    = petsclib.PetscInt
         N           = PetscInt(10)
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        test_comm = MPI.COMM_SELF
         petsc_x = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
         petsc_y = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
 

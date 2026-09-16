@@ -5,7 +5,7 @@ using MPI
 # Initialize PETSc
 petsclib = PETSc.getlib()
 PETSc.initialize(petsclib)
-test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+test_comm = MPI.COMM_SELF
 
 # Julia 1.13 parses a dot expression in the library slot of a ccall as a
 # module-qualified global, so the handle has to reach ccall as a plain local.

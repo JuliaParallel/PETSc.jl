@@ -1,14 +1,12 @@
 using Test
 using PETSc, MPI, OffsetArrays
 #using SparseArrays
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 
 @testset "DMStag All" begin
 
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs[1:4]
@@ -316,7 +314,7 @@ end
 
 @testset "DMStagCreate1d" begin
 
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -431,7 +429,7 @@ end
 
 @testset "DMStagCreate2d" begin
 
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -468,7 +466,7 @@ end
 
 
 @testset "DMStag Vectors and Coordinates" begin
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs[1:4]
@@ -603,7 +601,7 @@ end
 end
 
 @testset "DMStag create matrixes" begin
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs[1:2]
@@ -735,7 +733,7 @@ end
 end
 
 @testset "DMStagVecGetArray/RestoreArray" begin
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     for petsclib in PETSc.petsclibs[1:4]
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)

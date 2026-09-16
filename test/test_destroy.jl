@@ -15,9 +15,7 @@ using Test
 using PETSc
 using MPI
 
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 @testset "destroy" begin
 

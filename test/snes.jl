@@ -1,12 +1,10 @@
 using Test
 using PETSc
 using MPI
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 @testset "SNES" begin
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
 

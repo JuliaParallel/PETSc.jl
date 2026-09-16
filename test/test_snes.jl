@@ -1,13 +1,11 @@
 using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
 
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 @testset "test_snes" begin
 
-  comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+  comm = MPI.COMM_WORLD
   mpirank = MPI.Comm_rank(comm)
   mpisize = MPI.Comm_size(comm)
 

@@ -2,9 +2,7 @@ using Test
 using PETSc, MPI
 using PETSc: LibPETSc
 
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 # ============================================================================
 #   Wrapper input arguments take the abstract type

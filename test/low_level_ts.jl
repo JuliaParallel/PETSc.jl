@@ -5,8 +5,7 @@ using MPI
 @testset "Low-level TS (Time Stepping) functions" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
-    # Windows PETSc binaries are built without MPI support
-    test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+    test_comm = MPI.COMM_SELF
     
     @testset "TS object creation and destruction" begin
         ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)

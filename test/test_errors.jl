@@ -1,9 +1,7 @@
 using Test
 using PETSc, MPI
 
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 @testset "argument validation" begin
     @testset "PetscNotInitialized" begin

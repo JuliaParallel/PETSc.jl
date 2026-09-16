@@ -5,7 +5,7 @@ using MPI
 @testset "Documentation examples for PetscViewer" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        test_comm = MPI.COMM_SELF
     
     @testset "Basic Usage - Create viewer" begin
         # Create a viewer for ASCII output to stdout

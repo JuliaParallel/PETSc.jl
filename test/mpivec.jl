@@ -1,14 +1,12 @@
 using Test
 using MPI
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 using PETSc
 using LinearAlgebra: norm
 
 
 @testset "VecMPI" begin
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpisize = MPI.Comm_size(comm)
     mpirank = MPI.Comm_rank(comm)
 
@@ -82,7 +80,7 @@ end
 
 
 @testset "VecGhost" begin
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    comm = MPI.COMM_WORLD
     mpisize = MPI.Comm_size(comm)
     mpirank = MPI.Comm_rank(comm)
 

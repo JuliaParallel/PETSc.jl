@@ -4,9 +4,7 @@ using MPI
 using LinearAlgebra: I, inv
 using Logging: Logging, NullLogger, with_logger
 
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
+MPI.Initialized() || MPI.Init()
 
 # High-level TS interface.
 #
@@ -15,7 +13,7 @@ end
 # still shows up immediately.
 
 @testset "TS" begin
-    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+    comm = MPI.COMM_SELF
 
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)

@@ -4,11 +4,7 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
 using SparseArrays: sprand, spdiagm
 using Random
 
-# Windows PETSc binaries are built without MPI support, skip MPI initialization
-if !Sys.iswindows()
-    MPI.Initialized() || MPI.Init()
-end
-# Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF
+MPI.Initialized() || MPI.Init()
 comm = LibPETSc.PETSC_COMM_SELF
 # Intel Mac has sporadic issues with complex numbers
 isintelmac = Sys.isapple() && Sys.ARCH == :x86_64

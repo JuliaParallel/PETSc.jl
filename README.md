@@ -45,8 +45,8 @@ julia>using PETSc
 julia>[PETSc.petsclibs...]
 ```
 
-## Windows users 
-The package currently does not work on windows, mainly because `MicrosoftMPI_jll` does not function when used along with the precompiled version used in `PETSc_jll`. Windows users are therefore advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc through there. 
+## Windows users
+Since PETSc_jll 3.25.4 the Windows binaries are built with MPI (MicrosoftMPI), and the package and its test suite, including the MPI tests, run natively on Windows. One limitation of PETSc 3.25.x on Windows: `Tao` objects can only be created before the first `PETSc.finalize`, see `PETSc.tao_usable_after_reinitialize()`.
 
 ## Getting started
 Have a look at the [documentation](https://juliaparallel.org/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 

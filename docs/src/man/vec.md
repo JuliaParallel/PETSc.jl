@@ -16,11 +16,11 @@ PETSc vectors support:
 
 ```julia
 # Create a sequential vector of length n
-v = VecSeq(petsclib, n)
+v = PetscVec(petsclib, n)
 
 # Wrap an existing Julia array (no copy)
 julia_array = zeros(100)
-v = VecSeq(petsclib, julia_array)
+v = PetscVec(petsclib, julia_array)
 ```
 
 ### From DM Objects

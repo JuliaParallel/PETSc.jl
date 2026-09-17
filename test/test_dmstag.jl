@@ -60,7 +60,10 @@ MPI.Initialized() || MPI.Init()
         @test size(dm_3D) == (20, 21, 22)
         
         # copy struct - using new interface
-        dmnew = LibPETSc.DMStagCreateCompatibleDMStag(petsclib,dm_3D,PetscInt(1),PetscInt(1),PetscInt(2),PetscInt(2))
+        dmnew = PETSc.narrow(
+            LibPETSc.DMStagCreateCompatibleDMStag(petsclib,dm_3D,PetscInt(1),PetscInt(1),PetscInt(2),PetscInt(2));
+            own = true,
+        )
         @test size(dmnew) == (20, 21, 22)
 
 

@@ -1008,7 +1008,9 @@ user_ctx.dm = PETSc.DMStag(petsclib, comm,
 PETSc.set_uniform_coordinates!( user_ctx.dm, (xlim[1],zlim[1]), (xlim[2],zlim[2]))
 
 # create coefficient DM (for rho and eta)
-user_ctx.dmCoeff      =   LibPETSc.DMStagCreateCompatibleDMStag(petsclib, user_ctx.dm,1,1,1,0);   # rho and eta on VERTEX, eta on ELEMENT
+# rho and eta on VERTEX, eta on ELEMENT. The compatible-DM constructor returns a
+# DMStag, so `corners`, `ghost_corners` and `dof_slot` dispatch on it.
+user_ctx.dmCoeff      =   PETSc.DMStag(user_ctx.dm, (1,1,1,0); setfromoptions = false, dmsetup = false);
 PETSc.set_uniform_coordinates!(user_ctx.dmCoeff, (xlim[1],zlim[1]), (xlim[2],zlim[2]))
 
 # Populate phases

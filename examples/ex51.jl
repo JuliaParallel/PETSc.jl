@@ -133,7 +133,7 @@ function solve_ex51(;
 
     # Keep these variables concretely typed across the whole function, even
     # though the actual PETSc objects are created later inside the `try` block.
-    # The null-pointer placeholders are overwritten by `TSCreate`/`VecSeq`,
+    # The null-pointer placeholders are overwritten by `TSCreate`/`PetscVec`,
     # and the `finally` block checks `ptr != C_NULL` before destroying them.
     ts = PETSc.LibPETSc.TS(petsclib)
     u = PETSc.LibPETSc.PetscVec(petsclib)
@@ -142,7 +142,7 @@ function solve_ex51(;
     error_norm = petsclib.PetscReal(NaN)
     solution = PetscScalar[]
     ctx = Ex51Context(petsclib)
-    petsc_options = PETSc.Options(petsclib; parsed_options...)
+    petsc_options = PETSc.PetscOptions(petsclib; parsed_options...)
     pushed_options = false
 
     try
@@ -152,7 +152,7 @@ function solve_ex51(;
         PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
 
         # Set initial conditions.
-        u = PETSc.VecSeq(petsclib, 2)
+        u = PETSc.PetscVec(petsclib, 2)
         set_initial_condition!(u)
         PETSc.LibPETSc.TSSetSolution(petsclib, ts, u)
 

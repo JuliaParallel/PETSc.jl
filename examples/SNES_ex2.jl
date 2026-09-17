@@ -100,7 +100,7 @@ FormInitialGuess!(x);
 Jstruct  = zeros(n,n);
 FormJacobian!(Jstruct, nothing, x);                                              # jacobian in julia form
 Jsp      =   sparse(Float64.(abs.(Jstruct) .> 0))                       # sparse julia, with 1.0 in nonzero spots
-PJ       =   PETSc.MatSeqAIJWithArrays(petsclib, comm, Jsp);  # transfer to PETSc format
+PJ       =   PETSc.PetscMat(petsclib, comm, Jsp; with_arrays = true);  # transfer to PETSc format
 
 # Setup snes
 x_s = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, length(x), x)    # solution vector

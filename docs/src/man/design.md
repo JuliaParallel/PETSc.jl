@@ -26,7 +26,7 @@
   - Objects which wrap Julia objects will also need a reference to those objects to prevent GC.
 
 
-- For convenience, attach finalizers to call `destroy!` for single-process ("sequential") objects (`VecSeq`, `MatSeqXXX`, or any others where `comm = MPI.COMM_SELF`).
+- For convenience, attach finalizers to call `destroy!` for single-process ("sequential") objects (a `PetscVec` or `PetscMat` built on `MPI.COMM_SELF`, or any other object where `comm = MPI.COMM_SELF`).
   - We can't attach finalizers for distributed objects (i.e. `VecMPI`), as `destroy!` needs to be called collectively on all MPI ranks.
   - Safe for users to call `destroy!` manually if finalizer already defined
     * TODO: check this with PETSc devs
@@ -36,9 +36,9 @@
       `PetscObjectReference` / `PetscObjectDereference`
       - just need to manually increment reference counter for these.
 
-- For PETSc objects which are equivalent to Julia objects (e.g. `VecSeq` : `Vector{PetscScalar}`, `MatSeqDense` : `Matrix{PetscScalar}`), use `XXXCreateSeqWithArray` methods so that they can share same memory.
+- For PETSc objects which are equivalent to Julia objects (e.g. `PetscVec(petsclib, ::Vector)`, `PetscMat(petsclib, ::Matrix)`), use `XXXCreateSeqWithArray` methods so that they can share same memory.
     * TODO: check PETSc guarantees on accessing the Julia objects directly.
-  - For other objects (`MatSeqAIJ`), for now we let PETSc manage memory (may want to re-evaluate this later)
+  - For other objects (`PetscMat(petsclib, m, n, nnz)`), for now we let PETSc manage memory (may want to re-evaluate this later)
   - Define conversion routines to wrap with `Seq` objects where possible.
   - Define convenience versions of functions which take/return Julia `Vector`s, e.g. `y = KSP(M) \ x` where `y` and `x` are `Vector`s.
 

@@ -10,7 +10,7 @@ comm = LibPETSc.PETSC_COMM_SELF
 isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
 
 
-@testset "MatSeqAIJ" begin
+@testset "PetscMat seqaij" begin
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
@@ -131,7 +131,7 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
 
         Random.seed!(777)
         A1 = sprand(PetscScalar, 10, 11, 0.2)
-        B1 = PETSc.MatSeqAIJWithArrays(petsclib, comm, A1)
+        B1 = PETSc.PetscMat(petsclib, comm, A1; with_arrays = true)
         sleep(0.1)
         @test sum(B1[:,:] - Matrix(A1)) == 0.0
 
@@ -145,7 +145,7 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
 end
 
 
-@testset "MatSeqDense" begin
+@testset "PetscMat dense" begin
     for petsclib in PETSc.petsclibs
     #    petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
@@ -186,7 +186,7 @@ end
             1 => ones(PetscScalar, n - 1),
         )
 
-        A = PETSc.MatCreateSeqAIJ(petsclib, comm, A_sp)
+        A = PETSc.PetscMat(petsclib, comm, A_sp)
        
         @test sum(A[1:10,1:10] - Matrix(A_sp)) == 0.0 == 0.0
         PETSc.destroy!(A)
@@ -194,7 +194,7 @@ end
     end
 end
 
-@testset "MatSeqAIJ constructor" begin
+@testset "PetscMat seqaij constructor" begin
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
@@ -203,7 +203,7 @@ end
         # Test with integer nonzeros (same for all rows)
         num_rows, num_cols = 5, 7
         nonzeros = 3
-        A = PETSc.MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
+        A = PETSc.PetscMat(petsclib, num_rows, num_cols, nonzeros)
         @test size(A) == (num_rows, num_cols)
         
         # Set some values
@@ -220,7 +220,7 @@ end
         
         # Test with vector of nonzeros (one per row)
         nz_vec = PetscInt.([2, 3, 1, 4, 2])
-        B = PETSc.MatSeqAIJ(petsclib, num_rows, num_cols, nz_vec)
+        B = PETSc.PetscMat(petsclib, num_rows, num_cols, nz_vec)
         @test size(B) == (num_rows, num_cols)
         
         # Set values matching the nonzero pattern
@@ -241,7 +241,7 @@ end
     end
 end
 
-@testset "MatSeqDense constructor" begin
+@testset "PetscMat dense constructor" begin
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
@@ -263,7 +263,7 @@ end
         end
 
         # Create PETSc dense matrix from Julia matrix
-        A = PETSc.MatSeqDense(petsclib, Ajl)
+        A = PETSc.PetscMat(petsclib, Ajl)
         
         # Test that the matrix was created successfully
         @test A !== nothing
@@ -317,7 +317,7 @@ end
         n, m = 5, 3
         # 1. Create a Dense Matrix
         Ajl = zeros(PetscScalar, n, m)
-        A = PETSc.MatSeqDense(petsclib, Ajl)
+        A = PETSc.PetscMat(petsclib, Ajl)
 
         # 2. Test GetArray
         # This should return a Julia Matrix view pointing to PETSc's memory
@@ -362,7 +362,7 @@ end
         PetscScalar = petsclib.PetscScalar
         n, m = 4, 3
         Ajl = reshape(PetscScalar.(1:(n*m)), n, m)
-        A = PETSc.MatSeqDense(petsclib, Ajl)
+        A = PETSc.PetscMat(petsclib, Ajl)
 
         # MatDenseGetArray
         arr = LibPETSc.MatDenseGetArray(petsclib, A)
@@ -422,7 +422,7 @@ end
         # Use a small matrix for ghost/row tests
         n, m = 4, 4
         Ajl = PetscScalar.([1 2 0 0; 0 3 4 0; 0 0 5 6; 7 0 0 8])
-        A = PETSc.MatSeqAIJ(petsclib, n, m, 2)
+        A = PETSc.PetscMat(petsclib, n, m, 2)
         for i in 1:n, j in 1:m
             if Ajl[i,j] != 0
                 A[i,j] = Ajl[i,j]
@@ -472,7 +472,7 @@ end
 
         # 1. Create a simple Sparse AIJ matrix (Diagonal)
         n = 5
-        A = PETSc.MatSeqAIJ(petsclib, n, n, 1)
+        A = PETSc.PetscMat(petsclib, n, n, 1)
         for i in 1:n
             A[i, i] = PetscScalar(i)
         end
@@ -512,7 +512,7 @@ end
 
         # tridiagonal 5x5 seqaij
         n = 5
-        A = PETSc.MatSeqAIJ(petsclib, n, n, 3)
+        A = PETSc.PetscMat(petsclib, n, n, 3)
         for i in 1:n
             A[i, i] = PetscScalar(2i)
             i > 1 && (A[i, i - 1] = PetscScalar(-1))

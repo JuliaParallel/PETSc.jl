@@ -28,7 +28,7 @@ julia> Δx  =  1. / (n - 1)
 Let's first define the matrix with coefficients:
 ```julia
 julia> nnz =  ones(Int64,n); nnz[2:n-1] .= 3;
-julia> A   =  PETSc.MatSeqAIJ(petsclib,n,n,nnz);
+julia> A   =  PETSc.PetscMat(petsclib,n,n,nnz);
 julia> for i=2:n-1
             A[i,i-1] =  1/Δx^2
             A[i,i  ] = -2/Δx^2
@@ -215,17 +215,17 @@ julia> function updateJ!(J, snes, x)
 In order to solve this using the PETSc nonlinear equation solvers, you first define the `SNES` solver together with the jacobian and residual functions as 
 ```julia
 julia> snes = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
-julia> r = PETSc.VecSeq(petsclib, zeros(PetscScalar, 2))
+julia> r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
 julia> PETSc.set_function!(snes, Residual!, r)
 julia> J = zeros(2,2)
-julia> PJ = PETSc.MatSeqDense(petsclib,J)
+julia> PJ = PETSc.PetscMat(petsclib,J)
 julia> PETSc.set_snes_jacobian!(updateJ!, snes, PJ)
 ```
 
 You can solve this as:
 ```julia
-julia> x = PETSc.VecSeq(petsclib, [2.0, 3.0])
-julia> b = PETSc.VecSeq(petsclib, [0.0, 0.0])
+julia> x = PETSc.PetscVec(petsclib, [2.0, 3.0])
+julia> b = PETSc.PetscVec(petsclib, [0.0, 0.0])
 julia> PETSc.solve!(x, snes, b)
 julia> x[:]
 2-element Vector{Float64}:

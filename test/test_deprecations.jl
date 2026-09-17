@@ -104,6 +104,12 @@ const SHIMS = [
     :setfunction! => :set_function!,
     :setjacobian! => :set_snes_jacobian!,
     :setconvergencetest! => :set_convergence_test!,
+    :VecSeq => :PetscVec,
+    :MatSeqAIJ => :PetscMat,
+    :MatSeqDense => :PetscMat,
+    :MatCreateSeqAIJ => :PetscMat,
+    :MatSeqAIJWithArrays => :PetscMat,
+    :MatAIJ => :PetscMat,
     :unsafe_localarray => :unsafe_local_array,
     :wrap_localarray => :wrap_local_array,
     :acquire_petsc_local_array => :acquire_local_array,
@@ -118,6 +124,8 @@ const SHIMS = [
     :setvalues! => :set_values!,
     :addindex! => :add_index!,
     :determine_memtype => :memtype,
+    :Options => :PetscOptions,
+    :set_petsclib => :PetscLibType,
     :initialized => :isinitialized,
     :finalized => :isfinalized,
     :check_petsc_wrappers_version => :check_wrappers_version,
@@ -162,7 +170,7 @@ const SHIMS = [
     @testset "a shim really does forward" begin
         petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
-        v = PETSc.VecSeq(petsclib, 5)
+        v = PETSc.PetscVec(petsclib, 5)
         # `destroy` is the busiest shim in the rename; check it actually destroys.
         warns() do
             PETSc.destroy(v)

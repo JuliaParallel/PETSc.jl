@@ -22,6 +22,37 @@ PETSc provides several DM implementations for different mesh types:
 | **DMStag** | Staggered grids for finite volume/difference methods | ✅ Full support |
 | **DMPlex** | Unstructured meshes + full FEM workflow (Gmsh, FE spaces, callbacks, VTK) | ✅ Full support |
 
+### Flavour is a type
+
+`DMDA`, `DMStag` and `DMPlex` are Julia types, and constructing one returns that
+type:
+
+```julia
+da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), 1, 1)
+da isa PETSc.DMDA{typeof(petsclib), 1}     # true: flavour and dimension
+```
+
+All three are subtypes of `LibPETSc.AbstractPetscDM`, which is what a function
+working on any DM takes. `corners`, `ghost_corners`, `local_indices`,
+`set_uniform_coordinates!` and `Base.size` differ by flavour, so they are
+ordinary methods on `DMDA` and `DMStag` rather than one function comparing the
+string `DMGetType` returns.
+
+`LibPETSc.PetscDM` remains the low-level handle: `LibPETSc.DMCreate` and friends
+have to return something before the flavour is known. Turn one into a typed
+handle with [`PETSc.narrow`](@ref):
+
+```julia
+d = PETSc.narrow(dm)          # DMDA{L,N}, DMStag{L,N}, DMPlex{L}, or dm unchanged
+```
+
+`narrow` queries PETSc, so its return type is a wide `Union` and the call is a
+dynamic dispatch. One dispatch is cheap; propagating an abstractly-typed DM
+through a hot loop is not, so narrow once behind a function barrier. The
+accessors that hand back a DM PETSc owns — `dm(ksp)`, `dm(snes)`, `dm(ts)`,
+`coarse_dm` — narrow for you, and what they return is a **borrowed** handle: it
+belongs to the object it was asked of, and `destroy!` on it is a no-op.
+
 ### Low-Level Interface Only (via LibPETSc)
 
 The following DM types are available through the low-level `LibPETSc` wrapper but do not yet have a convenient high-level Julia interface:

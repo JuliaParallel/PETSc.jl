@@ -19,9 +19,9 @@ To revert to the bundled `PETSc_jll` binaries:
 PETSc.unset_library!()
 ```
 
-For a one-off session without changing the persistent preference, use `set_petsclib` directly:
+For a one-off session without changing the persistent preference, use the `PetscLibType` constructor directly:
 ```julia
-petsclib = PETSc.set_petsclib("/path/to/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
+petsclib = PETSc.LibPETSc.PetscLibType("/path/to/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
 ```
 
 ## 2. Help, my code crashes?

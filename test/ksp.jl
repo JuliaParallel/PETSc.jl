@@ -56,7 +56,7 @@ using SparseArrays: spdiagm
 
         # Create KSP solver manually ---
         ksp = LibPETSc.KSPCreate(petsclib,comm)
-        opts = PETSc.Options(petsclib; 
+        opts = PETSc.PetscOptions(petsclib; 
                                 ksp_rtol = 1e-16, pc_type = "jacobi", 
                                 ksp_monitor = false, ksp_view = false);
 

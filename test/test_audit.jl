@@ -52,7 +52,7 @@ const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
                 v = LibPETSc.VecCreateSeq(petsclib, comm, 10)
                 finalizer(destroy!, v)
 
-                mat = PETSc.MatSeqAIJ(petsclib, 10, 10, 3)
+                mat = PETSc.PetscMat(petsclib, 10, 10, 3)
                 finalizer(m -> (destroy!(m); data), mat)
 
                 dm = PETSc.DMStag(petsclib, comm, bt, sz, 1, 1)

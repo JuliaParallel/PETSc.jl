@@ -16,7 +16,7 @@ using PETSc
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
 
-        opts = PETSc.Options(petsclib; kw_opts...)
+        opts = PETSc.PetscOptions(petsclib; kw_opts...)
         
         # Check that all the keys got added
         for (key, val) in pairs(kw_opts)

@@ -65,7 +65,7 @@ function ex16_runtime_options(
     monitor::Bool,
 )
     PetscReal = petsclib.PetscReal
-    query_options = PETSc.Options(petsclib; parsed_options...)
+    query_options = PETSc.PetscOptions(petsclib; parsed_options...)
 
     try
         mu_value, mu_set =
@@ -314,7 +314,7 @@ function ex16_monitor!(
     while ctx.next_output <= t && ctx.next_output <= tfinal
         # `x` is a borrowed `VecPtr` from PETSc's callback interface, so create
         # an owning work vector explicitly instead of calling `similar(x)`.
-        interpolated_x = PETSc.VecSeq(petsclib, length(x))
+        interpolated_x = PETSc.PetscVec(petsclib, length(x))
         try
             PETSc.LibPETSc.TSInterpolate(
                 petsclib,
@@ -357,7 +357,7 @@ const EX16_MONITOR_PTR = @cfunction(
 
 function ex16_create_jacobian_template(petsclib)
     PetscScalar = petsclib.PetscScalar
-    jac = PETSc.MatSeqAIJ(petsclib, 2, 2, petsclib.PetscInt(2))
+    jac = PETSc.PetscMat(petsclib, 2, 2, petsclib.PetscInt(2))
     jac[1, [1, 2]] = PetscScalar.([1.0, 1.0])
     jac[2, [1, 2]] = PetscScalar.([1.0, 1.0])
     PETSc.assemble!(jac)
@@ -441,7 +441,7 @@ function solve_ex16(;
         runtime_options.imex,
         petsclib.PetscReal(0),
     )
-    petsc_options = PETSc.Options(petsclib; solver_options...)
+    petsc_options = PETSc.PetscOptions(petsclib; solver_options...)
     pushed_options = false
 
     try
@@ -451,7 +451,7 @@ function solve_ex16(;
         PETSc.LibPETSc.TSSetType(petsclib, ts, "beuler")
         PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
 
-        u = PETSc.VecSeq(petsclib, 2)
+        u = PETSc.PetscVec(petsclib, 2)
         ex16_initial_condition!(u, runtime_options.mu)
         PETSc.LibPETSc.TSSetSolution(petsclib, ts, u)
 

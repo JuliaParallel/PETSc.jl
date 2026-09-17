@@ -84,7 +84,7 @@ MPI.Initialized() || MPI.Init()
             @test tol.vatol.ptr == C_NULL
             @test tol.vrtol.ptr == C_NULL
 
-            vatol = PETSc.VecSeq(petsclib, 2)
+            vatol = PETSc.PetscVec(petsclib, 2)
             PETSc.set_tolerances!(ts; vatol = vatol)
             tol = PETSc.tolerances(ts)
             @test tol.vatol.ptr != C_NULL
@@ -109,7 +109,7 @@ MPI.Initialized() || MPI.Init()
             ts = PETSc.TS(petsclib, comm)
             PETSc.set_type!(ts, :rk)
             PETSc.set_adapt_type!(ts, :none)
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
 
@@ -147,7 +147,7 @@ MPI.Initialized() || MPI.Init()
             ts2 = PETSc.TS(petsclib, comm)
             PETSc.set_type!(ts2, :rk)
             PETSc.set_adapt_type!(ts2, :none)
-            u2 = PETSc.VecSeq(petsclib, 1)
+            u2 = PETSc.PetscVec(petsclib, 1)
             u2[1] = PetscScalar(1)
             PETSc.assemble!(u2)
             PETSc.set_rhs_function!(ts2, (F, _ts, _t, x) -> (F[1] = -x[1]; 0))
@@ -168,11 +168,11 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_type!(ts, :beuler)
             PETSc.set_adapt_type!(ts, :none)
 
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
 
-            J = PETSc.MatSeqAIJ(petsclib, 1, 1, PetscInt(1))
+            J = PETSc.PetscMat(petsclib, 1, 1, PetscInt(1))
             J[1, 1] = PetscScalar(1)
             PETSc.assemble!(J)
 
@@ -217,11 +217,11 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_type!(ts, :beuler)
             PETSc.set_adapt_type!(ts, :none)
 
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
 
-            J = PETSc.MatSeqAIJ(petsclib, 1, 1, PetscInt(1))
+            J = PETSc.PetscMat(petsclib, 1, 1, PetscInt(1))
             J[1, 1] = PetscScalar(1)
             PETSc.assemble!(J)
 
@@ -259,12 +259,12 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_type!(ts, :beuler)
             PETSc.set_adapt_type!(ts, :none)
 
-            u = PETSc.VecSeq(petsclib, 2)
+            u = PETSc.PetscVec(petsclib, 2)
             u[1] = PetscScalar(1)
             u[2] = PetscScalar(0)
             PETSc.assemble!(u)
 
-            J = PETSc.MatSeqAIJ(petsclib, 2, 2, PetscInt(2))
+            J = PETSc.PetscMat(petsclib, 2, 2, PetscInt(2))
             for i in 1:2, j in 1:2
                 J[i, j] = PetscScalar(0)
             end
@@ -314,7 +314,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_user_ctx!(ts, (rate = PetscReal(2),))
             @test PETSc.user_ctx(ts).rate == 2
 
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
 
@@ -345,7 +345,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_type!(ts, :beuler)
             PETSc.set_adapt_type!(ts, :none)
 
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
             PETSc.set_rhs_function!(ts, (F, _ts, _t, x) -> (F[1] = -x[1]; 0))
@@ -378,7 +378,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_type!(ts, :beuler)
             PETSc.set_adapt_type!(ts, :none)
 
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
             PETSc.set_solution!(ts, u)
@@ -406,7 +406,7 @@ MPI.Initialized() || MPI.Init()
                 ts_type = "beuler",
                 ts_adapt_type = "none",
             )
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
             PETSc.set_rhs_function!(ts, (F, _ts, _t, x) -> (F[1] = -x[1]; 0))
@@ -428,7 +428,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_type!(ts, :beuler)
             PETSc.set_adapt_type!(ts, :none)
 
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
             PETSc.set_solution!(ts, u)
@@ -443,7 +443,7 @@ MPI.Initialized() || MPI.Init()
             @test PETSc.current_time(ts) ≈ dt
             @test u[1] ≈ decay(dt, 1) rtol = rtol
 
-            w = PETSc.VecSeq(petsclib, 1)
+            w = PETSc.PetscVec(petsclib, 1)
             PETSc.interpolate!(w, ts, dt / 2)
             @test w.ptr != C_NULL
             @test isfinite(abs(w[1]))
@@ -496,7 +496,7 @@ MPI.Initialized() || MPI.Init()
             ts = PETSc.TS(petsclib, comm)
             PETSc.set_type!(ts, :rk)
             PETSc.set_adapt_type!(ts, :none)
-            u = PETSc.VecSeq(petsclib, 1)
+            u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
             PETSc.set_rhs_function!(ts) do _F, _ts, _t, _x

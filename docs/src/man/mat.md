@@ -16,16 +16,16 @@ PETSc matrices support:
 
 ```julia
 # Create sparse matrix with estimated non-zeros per row
-A = MatSeqAIJ(petsclib, num_rows, num_cols, nnz_per_row)
+A = PetscMat(petsclib, num_rows, num_cols, nnz_per_row)
 
 # From Julia SparseMatrixCSC
 using SparseArrays
 S = sprand(100, 100, 0.1)
-A = MatCreateSeqAIJ(petsclib, MPI.COMM_SELF, S)
+A = PetscMat(petsclib, MPI.COMM_SELF, S)
 
 # With varying non-zeros per row
 nnz = PetscInt[5, 3, 4, ...]  # One value per row
-A = MatSeqAIJ(petsclib, num_rows, num_cols, nnz)
+A = PetscMat(petsclib, num_rows, num_cols, nnz)
 ```
 
 ### Dense Matrices
@@ -33,7 +33,7 @@ A = MatSeqAIJ(petsclib, num_rows, num_cols, nnz)
 ```julia
 # Wrap a Julia matrix (no copy)
 julia_mat = rand(10, 10)
-A = MatSeqDense(petsclib, julia_mat)
+A = PetscMat(petsclib, julia_mat)
 ```
 
 ### From DM Objects

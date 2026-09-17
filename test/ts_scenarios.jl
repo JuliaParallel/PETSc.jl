@@ -44,14 +44,14 @@ end
         PETSc.set_problem_type!(ts, PETSc.LibPETSc.TS_NONLINEAR)
         PETSc.set_user_ctx!(ts, (; mu, imex))
 
-        u = PETSc.VecSeq(petsclib, 2)
+        u = PETSc.PetscVec(petsclib, 2)
         PETSc.with_local_array!(u; read = false, write = true) do ua
             ua[1] = 2.0
             ua[2] = -2.0 / 3.0 + 10.0 / (81.0 * mu) - 292.0 / (2187.0 * mu * mu)
         end
         PETSc.set_solution!(ts, u)
 
-        jac = PETSc.MatSeqAIJ(petsclib, 2, 2, PetscInt(2))
+        jac = PETSc.PetscMat(petsclib, 2, 2, PetscInt(2))
         jac[1, [1, 2]] = PetscScalar.([1.0, 1.0])
         jac[2, [1, 2]] = PetscScalar.([1.0, 1.0])
         PETSc.assemble!(jac)
@@ -159,12 +159,12 @@ end
             PETSc.set_type!(ts, :cn)
             PETSc.set_adapt_type!(ts, :none)
 
-            u = PETSc.VecSeq(petsclib, 2)
+            u = PETSc.PetscVec(petsclib, 2)
             u[1] = PetscScalar(1)
             u[2] = PetscScalar(0)
             PETSc.assemble!(u)
 
-            J = PETSc.MatSeqAIJ(petsclib, 2, 2, PetscInt(2))
+            J = PETSc.PetscMat(petsclib, 2, 2, PetscInt(2))
             for i in 1:2, j in 1:2
                 J[i, j] = PetscScalar(0)
             end

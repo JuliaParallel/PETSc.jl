@@ -28,8 +28,8 @@ for petsclib in PETSc.petsclibs
         # ── objects that outlive their initialize/finalize cycle ─────────────
         @testset "stale cycle" begin
             PETSc.initialize(petsclib)
-            v = PETSc.VecSeq(petsclib, PetscScalar[1, 2, 3, 4])
-            m = PETSc.MatSeqAIJ(petsclib, 4, 4, 1)
+            v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
+            m = PETSc.PetscMat(petsclib, 4, 4, 1)
             age_created = v.age
             PETSc.finalize(petsclib)
 
@@ -53,7 +53,7 @@ for petsclib in PETSc.petsclibs
         @testset "double destroy" begin
             PETSc.initialize(petsclib)
 
-            v = PETSc.VecSeq(petsclib, PetscScalar[1, 2, 3, 4])
+            v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
             @test PETSc.isdestroyable(v, typeof(petsclib))
             PETSc.destroy!(v)
             @test v.ptr == C_NULL
@@ -62,7 +62,7 @@ for petsclib in PETSc.petsclibs
             # destroy!, so a repeat call has to stay harmless.
             @test PETSc.destroy!(v) === nothing
 
-            m = PETSc.MatSeqAIJ(petsclib, 4, 4, 1)
+            m = PETSc.PetscMat(petsclib, 4, 4, 1)
             PETSc.destroy!(m)
             @test m.ptr == C_NULL
             @test PETSc.destroy!(m) === nothing
@@ -96,7 +96,7 @@ for petsclib in PETSc.petsclibs
         @testset "borrowed handles" begin
             PETSc.initialize(petsclib)
 
-            v = PETSc.VecSeq(petsclib, PetscScalar[1, 2, 3, 4])
+            v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
             borrowed_v = PETSc.VecPtr(petsclib, v.ptr, false)
             @test PETSc.owns(v)
             @test !PETSc.owns(borrowed_v)
@@ -104,7 +104,7 @@ for petsclib in PETSc.petsclibs
             @test borrowed_v.ptr == v.ptr
             @test PETSc.LibPETSc.VecGetSize(petsclib, v) == 4
 
-            m = PETSc.MatSeqAIJ(petsclib, 4, 4, 1)
+            m = PETSc.PetscMat(petsclib, 4, 4, 1)
             borrowed_m = PETSc.MatPtr(petsclib, m.ptr, false)
             @test !PETSc.owns(borrowed_m)
             @test PETSc.destroy!(borrowed_m) === nothing
@@ -112,6 +112,50 @@ for petsclib in PETSc.petsclibs
 
             PETSc.destroy!(v)
             PETSc.destroy!(m)
+            PETSc.finalize(petsclib)
+        end
+
+        # ── borrowed DM handles ──────────────────────────────────────────────
+        # `narrow` and every reader returning a DM hand back a second handle
+        # onto one PETSc object (docs/src/man/naming.md §3.3, §5.4). Destroying
+        # it would invalidate the owner's copy, so `destroy!` consults `own`.
+        # A constructor result owns its handle and really is destroyed.
+        @testset "borrowed DM handles" begin
+            PETSc.initialize(petsclib)
+            comm = MPI.COMM_SELF
+
+            da = PETSc.DMDA(
+                petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1, 1,
+            )
+            @test da isa PETSc.DMDA{typeof(petsclib), 1}
+            @test PETSc.owns(da)
+
+            borrowed = PETSc.narrow(da)
+            @test borrowed isa PETSc.DMDA{typeof(petsclib), 1}
+            @test !PETSc.owns(borrowed)
+            @test PETSc.destroy!(borrowed) === nothing
+            # The no-op leaves both the wrapper and the owner's object usable.
+            @test borrowed.ptr == da.ptr
+            @test PETSc.ndims(da) == 1
+
+            # A reader hands back a borrowed handle too.
+            ksp = PETSc.KSP(da)
+            d = PETSc.dm(ksp)
+            @test d isa PETSc.DMDA{typeof(petsclib), 1}
+            @test !PETSc.owns(d)
+            @test PETSc.destroy!(d) === nothing
+            @test PETSc.ndims(da) == 1
+
+            # `clone` is the other side: a new object the caller owns.
+            c = PETSc.clone(da)
+            @test PETSc.owns(c)
+            @test c.ptr != da.ptr
+            PETSc.destroy!(c)
+            @test c.ptr == C_NULL
+
+            PETSc.destroy!(ksp)
+            PETSc.destroy!(da)
+            @test da.ptr == C_NULL
             PETSc.finalize(petsclib)
         end
 
@@ -141,7 +185,7 @@ for petsclib in PETSc.petsclibs
         # ── after the library is finalized ───────────────────────────────────
         @testset "after finalize" begin
             PETSc.initialize(petsclib)
-            v = PETSc.VecSeq(petsclib, PetscScalar[1, 2, 3, 4])
+            v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
             PETSc.finalize(petsclib)
 
             @test !PETSc.isdestroyable(v, typeof(petsclib))

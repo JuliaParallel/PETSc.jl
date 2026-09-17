@@ -64,7 +64,7 @@ fe_vel = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim, simplex;
                                   degree = 2, prefix = "vel_")
 
 # Discontinuous P1 pressure (1 component, degree 1)
-let opts = PETSc.Options(petsclib; pres_petscdualspace_lagrange_continuity = 0)
+let opts = PETSc.PetscOptions(petsclib; pres_petscdualspace_lagrange_continuity = 0)
     push!(opts)
     global fe_pres = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
                                               degree = 1, prefix = "pres_")

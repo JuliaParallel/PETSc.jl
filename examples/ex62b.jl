@@ -910,7 +910,7 @@ function save_vtk!(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
                      dim, dim, simplex; degree = vel_degree, prefix = "vel_")
     LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_vel), "velocity")
 
-    fe_out_pres = let opts = PETSc.Options(petsclib; pres_petscdualspace_lagrange_continuity = 0)
+    fe_out_pres = let opts = PETSc.PetscOptions(petsclib; pres_petscdualspace_lagrange_continuity = 0)
         push!(opts)
         fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
                   dim, 1, simplex; degree = pres_degree, prefix = "pres_")
@@ -927,7 +927,7 @@ function save_vtk!(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
                      dim, 9, simplex; prefix = "sig_")
     LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_tau), "tau")
 
-    make_dg0 = (prefix, name) -> let opts = PETSc.Options(petsclib;
+    make_dg0 = (prefix, name) -> let opts = PETSc.PetscOptions(petsclib;
                 Symbol(prefix * "petscdualspace_lagrange_continuity") => 0)
         push!(opts)
         fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
@@ -1179,7 +1179,7 @@ LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_vel), "velocity")
 
 # Pressure: discontinuous P_k (P-1 by default) — inject the continuity=false
 # option before creating the FE so PetscFECreateDefault picks it up.
-let opts_disc = PETSc.Options(petsclib; pres_petscdualspace_lagrange_continuity = 0)
+let opts_disc = PETSc.PetscOptions(petsclib; pres_petscdualspace_lagrange_continuity = 0)
     push!(opts_disc)
     global fe_pres = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
                                              degree = pres_degree, prefix = "pres_")
@@ -1238,7 +1238,7 @@ PETSc.set_exact_solution!(ds, 1, exact_pres_ptr)
 # Kernels read phase from a[1] and the old deviatoric stress from a[2..dim²+1].
 # update_tau! advances field 1 each timestep via project_field!.
 dm_aux = PETSc.clone(dm)
-make_dg0_aux = (prefix, ncomp) -> let opts = PETSc.Options(petsclib;
+make_dg0_aux = (prefix, ncomp) -> let opts = PETSc.PetscOptions(petsclib;
         Symbol(prefix * "petscdualspace_lagrange_continuity") => 0)
     push!(opts)
     fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, ncomp, simplex;
@@ -1270,7 +1270,7 @@ LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
 # tau_vec is initialized to zero (purely viscous at t=0).
 # Call update_tau! after each SNES solve to advance to the next timestep.
 dm_tau = PETSc.clone(dm)
-fe_tau = let opts = PETSc.Options(petsclib; tau_petscdualspace_lagrange_continuity = 0)
+fe_tau = let opts = PETSc.PetscOptions(petsclib; tau_petscdualspace_lagrange_continuity = 0)
     push!(opts)
     fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim*dim, simplex;
                                   degree = 0, prefix = "tau_")
@@ -1336,7 +1336,7 @@ end
 # called once.
 let make_dg0 = (prefix) -> begin
         dm_i = PETSc.clone(dm)
-        let opts = PETSc.Options(petsclib;
+        let opts = PETSc.PetscOptions(petsclib;
                 Symbol(prefix * "petscdualspace_lagrange_continuity") => 0)
             push!(opts)
             fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;

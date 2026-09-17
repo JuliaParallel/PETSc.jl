@@ -4,7 +4,7 @@ MPI.Initialized() || MPI.Init()
 using PETSc
 using LinearAlgebra: mul!, norm
 
-@testset "MatAIJ" begin
+@testset "PetscMat" begin
     comm = MPI.COMM_WORLD
     mpisize = MPI.Comm_size(comm)
     mpirank = MPI.Comm_rank(comm)

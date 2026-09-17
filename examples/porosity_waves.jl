@@ -355,7 +355,7 @@ jac = Float64.(sparsity_pattern)
 colors = matrix_colors(jac)
 
 # Compute the Jacobian, using automatic differentiation
-PJ = PETSc.MatAIJ(da)        # initialize space for the matrix from the dmda
+PJ = PETSc.PetscMat(da)        # initialize space for the matrix from the dmda
 function FormJacobian!(J, snes, g_x)
 
     # Get the DMDA associated with the snes

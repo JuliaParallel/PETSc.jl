@@ -92,7 +92,7 @@ using MPI
 
         # With per-component tolerances the vectors come back, and the handle
         # passed to the setter stays valid.
-        v = PETSc.VecSeq(petsclib, PetscScalar[1e-9, 1e-9, 1e-9])
+        v = PETSc.PetscVec(petsclib, PetscScalar[1e-9, 1e-9, 1e-9])
         PETSc.LibPETSc.TSSetTolerances(petsclib, ts, 1e-8, v, 1e-6, v)
         _, vatol2, _, _ = PETSc.LibPETSc.TSGetTolerances(petsclib, ts)
         @test v.ptr != C_NULL

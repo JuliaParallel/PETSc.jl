@@ -34,13 +34,13 @@ MPI.Initialized() || MPI.Init()
         @testset "element type mismatch ($PetscScalar)" begin
             # a Julia array whose element type differs from the library's
             wrong = PetscScalar === Float64 ? Float32 : Float64
-            @test_throws ArgumentError PETSc.VecSeq(petsclib, wrong[1, 2, 3])
-            @test_throws ArgumentError PETSc.MatSeqDense(petsclib, wrong[1 2; 3 4])
+            @test_throws ArgumentError PETSc.PetscVec(petsclib, wrong[1, 2, 3])
+            @test_throws ArgumentError PETSc.PetscMat(petsclib, wrong[1 2; 3 4])
         end
 
         @testset "size mismatch ($PetscScalar)" begin
             # nonzeros shorter than the number of rows
-            @test_throws DimensionMismatch PETSc.MatSeqAIJ(
+            @test_throws DimensionMismatch PETSc.PetscMat(
                 petsclib,
                 PetscInt(4),
                 PetscInt(4),

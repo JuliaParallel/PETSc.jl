@@ -136,7 +136,7 @@ end
     end
 end
 
-@testset "VecSeq" begin
+@testset "PetscVec" begin
     for petsclib in PETSc.petsclibs
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
@@ -158,7 +158,7 @@ end
         @test LibPETSc.VecGetType(petsclib, petsc_x) == "seq"
 
         # The length can be a plain Julia Int whatever width the library uses
-        v = PETSc.VecSeq(petsclib, 10)
+        v = PETSc.PetscVec(petsclib, 10)
         @test v !== nothing
         @test LibPETSc.VecGetSize(petsclib, v) == 10
         PETSc.destroy!(v)
@@ -168,7 +168,7 @@ end
     end
 end
 
-@testset "VecSeq constructor with array" begin
+@testset "PetscVec constructor with array" begin
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
@@ -176,9 +176,9 @@ end
         
         # Test with simple array
         x = ones(PetscScalar, 3)
-        # Use GC.@preserve since VecSeq wraps the Julia array
+        # Use GC.@preserve since PetscVec wraps the Julia array
         GC.@preserve x begin
-            v = PETSc.VecSeq(petsclib, x)
+            v = PETSc.PetscVec(petsclib, x)
             
             # Verify the vector was created successfully
             @test v !== nothing
@@ -190,7 +190,7 @@ end
             @test LibPETSc.VecSum(petsclib, v) == PetscScalar(3.0)
             
             # Test that modifications to the vector affect the underlying array
-            # (since VecSeq uses VecCreateSeqWithArray)
+            # (since PetscVec uses VecCreateSeqWithArray)
             v[1] = PetscScalar(42.0)
             @test x[1] == PetscScalar(42.0)
             
@@ -204,7 +204,7 @@ end
             x2 = PetscScalar.([1.0, 2.0+im, 3.0, 4.0-im, 5.0])
         end
         GC.@preserve x2 begin
-            v2 = PETSc.VecSeq(petsclib, x2)
+            v2 = PETSc.PetscVec(petsclib, x2)
             
             @test LibPETSc.VecGetSize(petsclib, v2) == 5
             @test v2[1:5] == x2
@@ -216,7 +216,7 @@ end
         # Test with blocksize parameter
         x3 = PetscScalar.([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
         GC.@preserve x3 begin
-            v3 = PETSc.VecSeq(petsclib, x3; blocksize=2)
+            v3 = PETSc.PetscVec(petsclib, x3; blocksize=2)
             @test LibPETSc.VecGetSize(petsclib, v3) == 6
             @test LibPETSc.VecGetBlockSize(petsclib, v3) == 2
             

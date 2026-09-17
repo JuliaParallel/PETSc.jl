@@ -126,7 +126,7 @@ LibPETSc.KSPSetDMActive(petsclib, ksp, LibPETSc.KSP_DMACTIVE_ALL, LibPETSc.PETSC
 # Re-apply options so that command-line overrides (e.g. -pc_type mg) take effect
 # after KSPSetOperators / KSPSetDMActive
 if !isempty(opts)
-    popts = PETSc.Options(petsclib; opts...)
+    popts = PETSc.PetscOptions(petsclib; opts...)
     push!(popts)
     LibPETSc.KSPSetFromOptions(petsclib, ksp)
     pop!(popts)

@@ -81,10 +81,10 @@ PETSc.set_library!("/path/to/your/libpetsc.so"; PetscScalar=Float64, PetscInt=In
 
 To revert: `PETSc.unset_library!()`. To inspect the current config: `PETSc.library_info()`.
 
-For a one-off session without changing persistent settings:
+For a one-off session without changing persistent settings, use the `PetscLibType` constructor:
 
 ```julia
-petsclib = PETSc.set_petsclib("/path/to/your/libpetsc.so";
+petsclib = PETSc.LibPETSc.PetscLibType("/path/to/your/libpetsc.so";
                               PetscScalar=Float64, PetscInt=Int64)
 PETSc.initialize(petsclib)
 # ... your code using petsclib ...
@@ -257,7 +257,7 @@ You can mix both interfaces. High-level objects provide `.ptr` field to access t
 
 ```julia
 # Create with high-level interface
-vec_high = VecSeq(petsclib, 10)
+vec_high = PetscVec(petsclib, 10)
 
 # Use with low-level interface
 LibPETSc.VecSet(petsclib, vec_high.ptr, 5.0)

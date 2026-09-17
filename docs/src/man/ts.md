@@ -37,7 +37,7 @@ Solving ``du/dt = -u`` from ``u(0) = 1``:
 ts = PETSc.TS(petsclib, MPI.COMM_SELF)
 PETSc.set_type!(ts, :rk)
 
-u = PETSc.VecSeq(petsclib, 1)
+u = PETSc.PetscVec(petsclib, 1)
 u[1] = 1.0
 PETSc.assemble!(u)
 
@@ -65,7 +65,7 @@ The same equation written as ``F(t, u, u_t) = u_t + u = 0``, stepped with backwa
 ts = PETSc.TS(petsclib, MPI.COMM_SELF)
 PETSc.set_type!(ts, :beuler)
 
-J = PETSc.MatSeqAIJ(petsclib, 1, 1, petsclib.PetscInt(1))
+J = PETSc.PetscMat(petsclib, 1, 1, petsclib.PetscInt(1))
 
 PETSc.set_ifunction!(ts) do F, ts, t, u, u_t
     PETSc.with_local_array!(

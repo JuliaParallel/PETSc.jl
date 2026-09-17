@@ -61,7 +61,7 @@ MPI.Initialized() || MPI.Init()
       data        = Data(PetscScalar.([100;2]), 1)
       S.user_ctx  = data;      # we can pack anything we need in this struct
 
-      #PJ = PETSc.MatSeqDense(zeros(PetscScalar,(2,2)))
+      #PJ = PETSc.PetscMat(zeros(PetscScalar,(2,2)))
       PJ = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
 
       r = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))

@@ -34,10 +34,10 @@ To revert to the bundled binaries: `PETSc.unset_library!()`.
 
 To check what is currently configured: `PETSc.library_info()`.
 
-For a one-off session without changing persistent settings, use `set_petsclib` directly:
+For a one-off session without changing persistent settings, use the `PetscLibType` constructor directly:
 
 ```julia
-petsclib = PETSc.set_petsclib("/path/to/custom/libpetsc.so";
+petsclib = PETSc.LibPETSc.PetscLibType("/path/to/custom/libpetsc.so";
                               PetscScalar=Float64, PetscInt=Int64)
 PETSc.initialize(petsclib, log_view=true)
 # ... your code ...

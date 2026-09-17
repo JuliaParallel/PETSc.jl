@@ -472,7 +472,7 @@ end
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
-J = PETSc.MatAIJ(dm)
+J = PETSc.PetscMat(dm)
 PETSc.set_snes_local_fem!(petsclib, dm)
 LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 

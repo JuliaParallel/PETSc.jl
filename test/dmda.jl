@@ -42,6 +42,10 @@ MPI.Initialized() || MPI.Init()
                 da = LibPETSc.DMDACreate1d(petsclib,comm, boundary_type, global_size, dof_per_node, stencil_width, points_per_proc)
                 PETSc.set_from_options!(da)   # set options (if any)
                 PETSc.setup!(da)            # we need to call this to finalize the DMDA
+                # The low-level creator hands back the untyped handle; `narrow`
+                # turns it into the DMDA the high-level methods dispatch on.
+                da = PETSc.narrow(da; own = true)
+                @test da isa PETSc.DMDA{typeof(petsclib), 1}
           
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
                 @test LibPETSc.DMGetDimension(petsclib, da) == 1
@@ -338,7 +342,7 @@ end
 end
 
 
-@testset "DM MatAIJ" begin
+@testset "DM PetscMat" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
@@ -367,7 +371,7 @@ end
                 # Stencil to Linear easily
                 processors = (ntuple(i -> 1, dim - 1)..., mpisize),
             )
-            #mat = PETSc.MatAIJ(da)
+            #mat = PETSc.PetscMat(da)
             mat = LibPETSc.DMCreateMatrix(petsclib, da)
 
             # Build the dim-dimensional Laplacian FD matrix

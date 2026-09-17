@@ -22,8 +22,8 @@ comm = MPI.COMM_WORLD
   @test norm(x) ≈ norm(V) rtol=10eps()
 
   S = sprand(m,n,0.1) + I
-  #M = PETSc.MatSeqAIJ(petsclib,S)
-  M = PETSc.MatCreateSeqAIJ(petsclib, comm, S)
+  #M = PETSc.PetscMat(petsclib,S)
+  M = PETSc.PetscMat(petsclib, comm, S)
        
 
   @test norm(S) ≈ norm(M) rtol=10eps()

@@ -233,7 +233,7 @@ function ex51_implicit_create_jacobian_template(petsclib)
     # `TSIRK/Gauss` needs an AIJ Jacobian matrix. We use a tiny full 2x2 AIJ
     # pattern so PETSc can later compute the values with finite differences and
     # coloring, without the caller having to provide sparse Jacobian entries.
-    jac = PETSc.MatSeqAIJ(petsclib, 2, 2, petsclib.PetscInt(2))
+    jac = PETSc.PetscMat(petsclib, 2, 2, petsclib.PetscInt(2))
     jac[1, [1, 2]] = PetscScalar.([1, 1])
     jac[2, [1, 2]] = PetscScalar.([1, 1])
     PETSc.assemble!(jac)
@@ -298,8 +298,8 @@ function solve_ex51_implicit(;
 
     # Keep these variables concretely typed across the whole function, even
     # though the actual PETSc objects are created later inside the `try` block.
-    # The null-pointer placeholders are overwritten by `TSCreate`/`VecSeq`/
-    # `MatSeqAIJ`, and the `finally` block checks `ptr != C_NULL` before
+    # The null-pointer placeholders are overwritten by `TSCreate`/`PetscVec`/
+    # `PetscMat`, and the `finally` block checks `ptr != C_NULL` before
     # destroying them.
     ts = PETSc.LibPETSc.TS(petsclib)
     u = PETSc.LibPETSc.PetscVec(petsclib)
@@ -309,7 +309,7 @@ function solve_ex51_implicit(;
     error_norm = petsclib.PetscReal(NaN)
     solution = PetscScalar[]
     ctx = Ex51ImplicitContext(petsclib)
-    petsc_options = PETSc.Options(petsclib; parsed_options...)
+    petsc_options = PETSc.PetscOptions(petsclib; parsed_options...)
     pushed_options = false
 
     try
@@ -322,7 +322,7 @@ function solve_ex51_implicit(;
         PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
 
         # Set initial conditions.
-        u = PETSc.VecSeq(petsclib, 2)
+        u = PETSc.PetscVec(petsclib, 2)
         ex51_initial_condition!(u)
         PETSc.LibPETSc.TSSetSolution(petsclib, ts, u)
 

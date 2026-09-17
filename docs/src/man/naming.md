@@ -926,7 +926,7 @@ They are listed because the rename table is the register of what is public, not 
 | `array_type`, `memtype_backend` | unchanged |
 | `make_local_array` | unchanged (internal) |
 | `assemble!`, `setup!` | unchanged |
-| `owns` | unchanged: it answers whether the wrapper owns its handle ([§3.3](#3.3-What-an-accessor-hands-back)) |
+| — | `owns`, new: it answers whether the wrapper owns its handle, which is what `destroy!` consults ([§3.3](#3.3-What-an-accessor-hands-back)) |
 | `destroy` | `destroy!` |
 
 #### `init.jl`

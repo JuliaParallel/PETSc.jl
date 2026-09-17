@@ -7,7 +7,7 @@ Status: implemented, 2026-09-17, on `v0.5` in four steps:
 | 1 — register and shims, pure renames | `925a4cc..82a0148` |
 | 2 — constructors and types | `f14f17e..6f41ba6` |
 | 3 — semantic breaks without shims (§16) | `8ff9bb5..d27ef13` |
-| 4 — exports, docs, tooling | `24a5251..` (this step) |
+| 4 — exports, docs, tooling | `24a5251..012da81`, and this commit |
 
 The plan below is kept as written, as the record of what was decided and why; where the
 implementation settled a question differently, `docs/src/man/naming.md` is the corrected

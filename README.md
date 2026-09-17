@@ -51,4 +51,4 @@ Since PETSc_jll 3.25.4 the Windows binaries are built with MPI (MicrosoftMPI), a
 ## Getting started
 Have a look at the [documentation](https://juliaparallel.org/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
 
-cause Note that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`, `DMStag`, `DMPlex`, `KSP`, `SNES`, `Vec`, and `Mat`. Other DM types (DMForest, DMNetwork, DMSwarm) do not yet have a high-level interface; users will have to rely on the low-level `LibPETSc` interface for those.
+Note that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`, `DMStag`, `DMPlex`, `KSP`, `SNES`, `Vec`, and `Mat`. Other DM types (DMForest, DMNetwork, DMSwarm) do not yet have a high-level interface; users will have to rely on the low-level `LibPETSc` interface for those.

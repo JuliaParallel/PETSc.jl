@@ -9,10 +9,13 @@ julia> ]
 ```
 which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
 
-!!! warning "Windows Users"
-    The prebuild binaries currently do not work on Windows as we had to build `PETSc_jll` without MPI due to compatibility issues with `MicrosoftMPI_jll`.
-
-    **Windows users are therefore advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc.jl from within WSL.** This will provide full functionality with both serial and parallel (MPI) support.
+!!! note "Windows Users"
+    Since `PETSc_jll` 3.25.4 the Windows binaries are built with MPI (`MicrosoftMPI_jll`), and
+    PETSc.jl runs natively on Windows in serial and in parallel; the test suite, including the
+    MPI tests, runs there in CI. One limitation of PETSc 3.25.x on Windows: `Tao` objects can
+    only be created before the first `PETSc.finalize`, see `PETSc.tao_usable_after_reinitialize()`.
+    The [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)
+    remains an alternative if you need a custom PETSc build.
 
 ## Using a custom PETSc build
 

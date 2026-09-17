@@ -316,7 +316,7 @@ Each of these is a rule change plus a reviewable diff, no hand editing:
 - Promote `PC` to a custom handle type and re-include `PC_wrappers.jl`; the docs already reference PC
   functions.
 - Remove `src/startup.jl`, `src/deprecated/`, orphaned wrapper files; bump `PETSc_jll` compat to match the
-  wrapper version and make `check_petsc_wrappers_version` an error rather than a warning on a major mismatch.
+  wrapper version and make `check_wrappers_version` an error rather than a warning on a major mismatch.
 
 ## 5. Release workflow (the stated long-term goal)
 

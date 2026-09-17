@@ -1,7 +1,7 @@
 # PetscOptions (Options Database) - Low-level Interface
 
 The options database holds the `-ksp_type gmres`-style settings PETSc objects read in their
-`SetFromOptions` calls. The high-level `PETSc.Options` type (see [Utilities](utilities.md))
+`SetFromOptions` calls. The high-level `PETSc.PetscOptions` type (see [Utilities](utilities.md))
 covers the common cases; the functions here give full control.
 
 A `PetscOptions` handle with a NULL pointer denotes the global options database.

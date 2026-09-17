@@ -42,13 +42,13 @@ When CUDA.jl is loaded, it automatically returns a `CuArray` for device-resident
 using PETSc, CUDA, KernelAbstractions
 
 # single Vec
-with_local_array!(my_vec; write=true) do arr
+PETSc.with_local_array!(my_vec; write=true) do arr
     # arr is CuArray on GPU, Vector on CPU
     fill!(arr, 42)
 end
 
 # two Vecs — backend selected from the array type at runtime
-with_local_array!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
+PETSc.with_local_array!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
     kern = KernelAbstractions.get_backend(fx)
     my_kernel!(kern, 256)(fx, lx; ndrange = length(fx))
     KernelAbstractions.synchronize(kern)
@@ -73,7 +73,7 @@ using PETSc, CUDA, KernelAbstractions
     out[i] = inp[i] * 2
 end
 
-with_local_array!(out_vec, inp_vec; read=(true, true), write=(true, false)) do out, inp
+PETSc.with_local_array!(out_vec, inp_vec; read=(true, true), write=(true, false)) do out, inp
     kern = KernelAbstractions.get_backend(out)
     my_kernel!(kern, 256)(out, inp; ndrange = length(out))
     KernelAbstractions.synchronize(kern)

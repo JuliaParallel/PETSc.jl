@@ -68,7 +68,7 @@ Other differences from the baseline that are not per-function:
 
 Tests adapted: `test/dmplex.jl`, `test/mat.jl`, `test/snes.jl`, `test/test_dmstag.jl`; example
 `examples/ex62b.jl`. Also `src/mat.jl` (`MatShellGetContext`), `src/ksp.jl`/`src/ts.jl`/`src/dm.jl`
-(solution and coordinate accessors return borrowed `VecPtr` handles, `destroy` is a no-op on them),
+(solution and coordinate accessors return borrowed `VecPtr` handles, `destroy!` is a no-op on them),
 `src/options.jl` (NULL viewer for `PetscOptionsView`).
 
 High-level code adapted for the return convention: `dm.jl` (`DMGetCoordinatesLocal`),

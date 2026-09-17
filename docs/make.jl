@@ -4,6 +4,9 @@ using Documenter, PETSc
 # mirror it into the manual so it is published with the docs (docs/src/man/wrapping.md is ignored by git).
 cp(joinpath(@__DIR__, "..", "wrapping", "WRAPPING.md"), joinpath(@__DIR__, "src", "man", "wrapping.md"); force = true)
 
+include(joinpath(@__DIR__, "api_index.jl"))
+write_api_index(joinpath(@__DIR__, "src", "man", "api_index.md"))
+
 makedocs(;
     modules=[PETSc],
     sitename="PETSc.jl",
@@ -61,6 +64,7 @@ makedocs(;
             "Utilities (Random, Layout, ...)" =>  "man/utilities_lowlevel.md",
             "PF, Partitioner, Regressor, ..." =>  "man/otherclasses_lowlevel.md",
         ],
+        "C to Julia name index" => "man/api_index.md",
         "Utilities" => "man/utilities.md",
         "Running on HPC Systems" => "man/hpc.md",
         "GPU Support (CUDA)" => "man/gpu.md",

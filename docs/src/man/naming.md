@@ -9,7 +9,7 @@
     Much of what it names does not exist on `main` yet, and is described in the tense it will have:
 
     - `scripts/api_surface.jl` and `scripts/renames.jl` with its `--sweeps`
-      checks ([§1.1](#1.1-What-these-rules-cover)), the `_doc_borrowed` helper
+      checks ([§1.1](#1.1-What-these-rules-cover)), the `doc_borrowed` helper
       ([§3.3](#3.3-What-an-accessor-hands-back)) and `src/deprecations.jl`
       ([§17](#17.-Migration)) all arrive with the rename
     - the `ts.jl` section of the rename table registers the high-level `TS`
@@ -55,7 +55,7 @@ The register is data rather than prose because five things have to agree with it
 
 `scripts/api_surface.jl --sweeps` covers the other half: every count this document states is derived rather than remembered.
 
-It derives four lists: functions taking `petsclib` first alongside a dispatchable object ([§8](#8.-Argument-order)), functions returning a `NamedTuple` ([§12](#12.-Return-values)), exported names against §13's list, and readers returning a PETSc object without a `_doc_borrowed` entry ([§3.3](#3.3-What-an-accessor-hands-back)). Done by hand the first three were all wrong, by one, by six, and by nine respectively, and each miscount survived a full draft.
+It derives four lists: functions taking `petsclib` first alongside a dispatchable object ([§8](#8.-Argument-order)), functions returning a `NamedTuple` ([§12](#12.-Return-values)), exported names against §13's list, and readers returning a PETSc object without a `doc_borrowed` entry ([§3.3](#3.3-What-an-accessor-hands-back)). Done by hand the first three were all wrong, by one, by six, and by nine respectively, and each miscount survived a full draft.
 
 **Macros** follow the same rules as functions: snake_case, and no prefix that repeats the module name. `PETSc.@petsc_residual_fn` says "petsc" twice.
 
@@ -188,7 +188,7 @@ Constructors ([§6](#6.-Constructors)) return owned objects, with a finalizer.
 
 Part of that is a bug fix. v0.4's `destroy(m::AbstractPetscVec)` consults only `isdestroyable`, which tests the finalize state, the null pointer and the object's age, never `own`, so the no-op `VecPtr`'s docstring promises does not happen. `PETScDiffEq.jl` builds `VecPtr(pl, x_ptr, false)` in every callback on the strength of that sentence.
 
-The docstring says so too, through a helper beside `_doc_external`, so CI greps for a `_doc_borrowed` call rather than for prose. A reader returning a PETSc object with no such entry fails, unless it is listed as owning its result: the constructors, and `narrow`.
+The docstring says so too, through a helper beside `doc_external`, so CI greps for a `doc_borrowed` call rather than for prose. A reader returning a PETSc object with no such entry fails, unless it is listed as owning its result: the constructors, and `narrow`.
 
 `narrow` ([§5.4](#5.4-DMs-of-unknown-provenance)) is the same rule from the other side: it returns a second handle onto one PETSc object, and destroying either invalidates the other.
 
@@ -360,10 +360,9 @@ SNESSetJacobianFn      # was Fn_SNESSetJacobian
 
 ```julia
 MatShell  MatOp  MatPtr  VecPtr        # unchanged
-MatOrTranspose                          # was MatAT
 ```
 
-`MatAT` is a `Union{PetscMat, Transpose, Adjoint}` alias whose name does not say so.
+`MatAT` was a `Union{PetscMat, Transpose, Adjoint}` alias whose name did not say so. It had no uses, so v0.5 deletes it rather than renaming it to `MatOrTranspose`: an alias nothing refers to is not worth a shim.
 
 ## 6. Constructors
 
@@ -604,11 +603,14 @@ So nothing here is a semantic break, and `setvalues!` to `set_values!` is a plai
 Only types and construction entry points are exported. Verbs and accessors stay qualified:
 
 ```julia
+export LibPETSc
 export DMDA, DMStag, DMPlex
 export PetscVec, PetscMat, PetscOptions
 export KSP, SNES, TS
 export petsclibs
 ```
+
+`petsclibs` is exported because every entry point takes one, and `LibPETSc` because the low-level layer is reached through it. Neither is a verb.
 
 ```julia
 using PETSc
@@ -627,17 +629,13 @@ And adding an export later is non-breaking while removing one is not, so a narro
 Julia 1.11 added `public`, which marks a name as API without exporting it.
 That is the distinction this package needs, because exporting only types ([§13](#13.-Exports)) leaves "unexported" unable to separate the API from internals.
 
-v0.5 adopts it, **without** dropping the 1.10 LTS. `Project.toml` keeps `julia = "^1.10"` and the declaration is version-gated:
+v0.5 adopts it unconditionally: `Project.toml` requires Julia 1.12, so a version gate would be dead code.
 
 ```julia
-export DMDA, DMStag, DMPlex, PetscVec, PetscMat, KSP, SNES, TS, PetscOptions
-
-@static if VERSION >= v"1.11"
-    eval(Meta.parse("public " * join(PUBLIC_NAMES, ", ")))
-end
+public @bd_fn, @jacobian_fn, …, with_local_array!, wrap_local_array
 ```
 
-`PUBLIC_NAMES` is generated from `scripts/renames.jl` ([§1.1](#1.1-What-these-rules-cover)), so the declaration cannot drift from the register. On 1.11 and later `names(PETSc)` reports the API directly and `scripts/api_surface.jl --check` compares against it; on 1.10 the check compares against the same list read from the register file, so both paths check the same set and neither depends on searching this document for a substring.
+The declaration is `src/public_names.jl`, generated from `scripts/renames.jl` ([§1.1](#1.1-What-these-rules-cover)), so it cannot drift from the register. A name cannot be both exported and `public`, so the generator subtracts §13's list. `names(PETSc)` then reports the API directly and `scripts/api_surface.jl --check` compares against it, rather than depending on searching this document for a substring.
 
 This matters more than it looks, because [§3](#3.-Accessors-and-setters) creates short accessors (`dm`, `comm`, `info`, `ds`, `label`, `solution`) that a substring search cannot verify at all.
 
@@ -662,24 +660,24 @@ T === petsclib.PetscScalar ||
 isinitialized(lib) || throw(PetscNotInitialized(lib))
 ```
 
-This rule was written against the 43 `@assert` the high-level layer carried before #250, which converted three of the four kinds. Eleven remain:
+This rule was written against the 43 `@assert` the high-level layer carried before #250, which converted three of the four kinds. Ten remained after it, and one after v0.5:
 
 | Kind | Was | Now | Becomes |
 |---|---|---|---|
 | Size or length mismatch | 14 | 0 | `DimensionMismatch`, done in #250 |
 | Library not initialized | 11 | 0 | `PetscNotInitialized`, done in #250 |
 | Scalar or integer type mismatch | 8 | 0 | `ArgumentError`, done in #250 |
-| DM flavour check (`gettype(dm) == "da"`) | 9 | 9 | deleted; dispatch enforces it ([§5.3](#5.3-DM-flavour-is-a-type,-not-a-string)) |
-| Startup invariant (`found_ref[] == PETSC_TRUE`) | 2 | 2 | unchanged, and correct: it cannot fail unless the package is wrong |
+| DM flavour check (`gettype(dm) == "da"`) | 9 | 0 | deleted in v0.5; dispatch enforces it ([§5.3](#5.3-DM-flavour-is-a-type,-not-a-string)) |
+| Startup invariant (`found_ref[] == PETSC_TRUE`) | 1 | 1 | unchanged, and correct: it cannot fail unless the package is wrong |
 
-The fourth row is the point, and it is the only one left for v0.5. Those nine checks exist only because one DM type had to police itself at runtime: seven in `dmstag.jl`, one in `dmda.jl`, one in `dm.jl`. Giving DM flavour a type deletes them rather than converting them, which is why they survived #250.
+The fourth row was the point, and the only one left for v0.5. Those nine checks existed only because one DM type had to police itself at runtime: seven in `dmstag.jl`, one in `dmda.jl`, one in `dm.jl`. Giving DM flavour a type deleted them rather than converting them, which is why they survived #250.
 
 The fifth row is what the rule is for. `@assert` stays where it guards a package invariant and never where it validates user input.
 
 ## 15. Docstrings and discoverability
 
 Renaming thin wrappers costs discoverability: a user who knows `PetscFECopyQuadrature` cannot grep for it once it is `copy_quadrature!`.
-Every high-level docstring must therefore carry an external link to the C function it wraps, using the existing `_doc_external` helper:
+Every high-level docstring must therefore carry an external link to the C function it wraps, using the existing `doc_external` helper:
 
 ```julia
 """
@@ -688,11 +686,11 @@ Every high-level docstring must therefore carry an external link to the C functi
 …
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetCorners"))
+$(doc_external("DMSTAG/DMStagGetCorners"))
 """
 ```
 
-CI fails on a high-level docstring with no `_doc_external` entry.
+CI fails on a high-level docstring with no `doc_external` entry.
 The C-name-to-Julia-name index page is generated from those entries, so the lookup table maintains itself.
 
 ### 15.1 Say what goes wrong
@@ -726,12 +724,12 @@ A shim translates names, not semantics. These changes have no shim and must be r
 | `@assert` replaced by typed exceptions ([§14](#14.-Errors)) | Code catching `AssertionError` must catch `ArgumentError`, `DimensionMismatch` or `PetscNotInitialized` |
 | Arguments reordered ([§8](#8.-Argument-order)) | `dm_project_function!` and `dm_project_field!` took the written vector **last**; it moves to first. `dm_global_to_local!`/`dm_local_to_global!` took the DM last; it moves after the written vector. A shim can forward these, but any call written positionally against the old order and passed through `invoke` or a function reference will not be caught |
 | Subject-first callback setters removed ([§8.1](#8.1-Callbacks-come-first)) | v0.4 accepts both `setfunction!(snes, f!, v)` and `setfunction!(f!, snes, v)`, and the same for `setjacobian!`. Only the callback-first order survives |
-| Nine exported functions lose their export ([§13](#13.-Exports)) | v0.4 exports `audit_petsc_file`, `determine_memtype`, `dmda_star_fd_coloring`, `get_petsc_arrays`, `library_info`, `restore_petsc_arrays`, `set_library!`, `set_petsclib`, `unset_library!` and no types at all. §13 replaces that list wholesale. A shim cannot help: the replacement is not exported either, so `using PETSc` code must qualify the call or import the name |
+| Twelve exported names lose their export ([§13](#13.-Exports)) | v0.4 exports nine functions — `audit_petsc_file`, `determine_memtype`, `dmda_star_fd_coloring`, `get_petsc_arrays`, `library_info`, `restore_petsc_arrays`, `set_library!`, `set_petsclib`, `unset_library!` — and three memory-backend types, `AbstractPetscMemBackend`, `AbstractPETScMemBackend` and `HostBackend`, the last of which is exported but never defined. It exports no other type, and in particular none of the ones a user constructs. §13 replaces that list wholesale, keeping only `LibPETSc`. A shim cannot help: the replacement is not exported either, so `using PETSc` code must qualify the call or import the name |
 | Borrowed handles ([§3.3](#3.3-What-an-accessor-hands-back)) | No behaviour changed, but `destroy!` on the result of a reader was never correct and is now documented as an error. Code doing it was corrupting the owner's handle already |
 
 ## 17. Migration
 
-Shims live in `src/deprecations.jl`, generated from `scripts/renames.jl` ([§1.1](#1.1-What-these-rules-cover)) and separate from the existing `src/deprecated/` tree, which holds an older and unrelated API.
+Shims live in `src/deprecations.jl`, generated from `scripts/renames.jl` ([§1.1](#1.1-What-these-rules-cover)).
 They are removed in v0.6.
 
 ### 17.1 The shims have to warn, and `@deprecate` does not
@@ -775,7 +773,7 @@ The main test suite is converted to the new names, so CI exercises the API that 
 | v0.4 | v0.5 |
 |---|---|
 | `destroy` | `destroy!` |
-| `getinfo` | `info` (drops the duplicate `s` field, `dof` becomes `ndofs`, see [§12](#12.-Return-values)) |
+| `getinfo` | `info` (drops the duplicate `s` field, `dof` becomes `ndofs` and `mpi_proc_size` becomes `procs`, see [§12](#12.-Return-values)) |
 | `getcorners`, `getcorners_dmda` | `corners` |
 | `getghostcorners`, `getghostcorners_dmda` | `ghost_corners` |
 | `dm_local_to_global`, `dm_local_to_global!` | `local_to_global`, `local_to_global!` |
@@ -797,7 +795,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 | v0.4 | v0.5 |
 |---|---|
 | `getcorners_dmstag` | `corners` (method on `DMStag`) |
-| `getghostcorners_dmstag` | `ghost_corners` (method on `DMStag`) |
+| `getghostcorners_dmstag` | `ghost_corners` (method on `DMStag`; it has no `nextra` field, which `DMStagGetGhostCorners` never reported although the v0.4 docstring promised it) |
 | `local_indices_dmstag` | `local_indices` |
 | `global_indices_dmstag` | `global_indices` |
 | `setuniformcoordinates_stag!` | `set_uniform_coordinates!` |
@@ -810,7 +808,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 |---|---|
 | `reshapelocalarray` | `reshape_local_array` |
 | `localinteriorlinearindex` | `local_interior_linear_index` |
-| `dmda_star_fd_coloring` | `star_fd_coloring` (drops `petsclib` per [§8](#8.-Argument-order), loses its export per [§13](#13.-Exports), and every index field gains a `_0b` or `_1b` suffix per [§12.1](#12.1-Index-base)) |
+| `dmda_star_fd_coloring` | `star_fd_coloring(da::DMDA{L,2})` (drops `petsclib` per [§8](#8.-Argument-order), loses its export per [§13](#13.-Exports), and every index field gains a `_0b` or `_1b` suffix per [§12.1](#12.1-Index-base)) |
 | `ndofs` | unchanged (closed list) |
 
 #### `dmplex.jl`
@@ -866,6 +864,10 @@ Each pair collapses to one name, so two shims point at each replacement.
 | `setcomputerhs!` | `set_compute_rhs!` |
 | `setfunction!` | `set_function!` |
 | `setjacobian!` | `set_snes_jacobian!` (see note) |
+| `setconvergencetest!` | `set_convergence_test!` (callback first, [§8.1](#8.1-Callbacks-come-first)) |
+| `Fn_SNESSetConvergenceTest` | `SNESSetConvergenceTestFn` ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)) |
+| — | `narrow`, new ([§5.4](#5.4-DMs-of-unknown-provenance)) |
+| — | `set_type!(obj, ::Symbol)` for Vec, Mat, KSP, SNES and DM, new: v0.4 had it on TS only ([§3.1](#3.1-What-accessors-return-and-setters-take)) |
 
 `setjacobian!` and `dmplex.jl`'s `set_jacobian!` share an English word and nothing else. They stay separate names under [§4.1](#4.1-When-the-subject-is-not-the-first-argument), because [§8.1](#8.1-Callbacks-come-first) puts the callback in argument 1 and so leaves `snes` unable to carry the name.
 
@@ -887,7 +889,7 @@ They are listed because the rename table is the register of what is public, not 
 | `set_time!`, `set_timestep!`, `set_max_time!`, `set_max_steps!` | writers |
 | `current_time`, `timestep`, `max_time`, `max_steps` | noun readers per [§3](#3.-Accessors-and-setters) |
 | `set_tolerances!`, `tolerances` | writer and reader. `tolerances` returns `(; atol, rtol, vatol, vrtol)`, PETSc parameter names per [§12](#12.-Return-values), and its two vectors are **borrowed** ([§3.3](#3.3-What-an-accessor-hands-back)) |
-| `set_type!`, `type_name` | shared with `ksp.jl` and `snes.jl`, `Symbol` per [§3.1](#3.1-What-accessors-return-and-setters-take) |
+| `set_type!`, `type_name` | shared with `ksp.jl` and `snes.jl`, `Symbol` per [§3.1](#3.1-What-accessors-return-and-setters-take). `type_name` replaces `ts.jl`'s v0.4 spelling `type`, the one name in this file the document did change |
 | `set_adapt_type!` | writer, `Symbol`. Prefixed per [§4.1](#4.1-When-the-subject-is-not-the-first-argument): the target is the `TSAdapt` fetched inside, not the `TS` |
 | `set_problem_type!`, `set_exact_final_time!` | writers taking PETSc **enums** (`TSProblemType`, `TSExactFinalTimeOption`), per [§3.1](#3.1-What-accessors-return-and-setters-take)'s enum rule, not `Symbol` |
 | `solve!`, `step!`, `interpolate!`, `reset!` | mutation per [§7](#7.-Mutation) |
@@ -905,8 +907,9 @@ They are listed because the rename table is the register of what is public, not 
 
 | v0.4 | v0.5 |
 |---|---|
-| `VecSeq`, `VecPtr` | `PetscVec` constructor |
-| `MatCreateSeqAIJ`, `MatSeqAIJ`, `MatSeqDense`, `MatSeqAIJWithArrays` | `PetscMat` constructor |
+| `VecSeq` | `PetscVec` constructor |
+| `MatCreateSeqAIJ`, `MatSeqAIJ`, `MatSeqDense`, `MatSeqAIJWithArrays`, `MatAIJ` | `PetscMat` constructor |
+| `VecPtr`, `MatPtr` | unchanged: they are the wrapper **types** for a handle PETSc owns ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)), not spellings of a constructor |
 | `unsafe_localarray`, `wrap_localarray` | `unsafe_local_array`, `wrap_local_array` |
 | `acquire_petsc_local_array` | `acquire_local_array` |
 | `release_petsc_local_array` | `release_local_array` |
@@ -923,6 +926,7 @@ They are listed because the rename table is the register of what is public, not 
 | `array_type`, `memtype_backend` | unchanged |
 | `make_local_array` | unchanged (internal) |
 | `assemble!`, `setup!` | unchanged |
+| `owns` | unchanged: it answers whether the wrapper owns its handle ([§3.3](#3.3-What-an-accessor-hands-back)) |
 | `destroy` | `destroy!` |
 
 #### `init.jl`
@@ -935,6 +939,7 @@ They are listed because the rename table is the register of what is public, not 
 | `scalartype`, `inttype` | unchanged (closed list) |
 | `initialize`, `finalize` | unchanged, not exported ([§13](#13.-Exports)) |
 | `check_initialized` | unchanged (internal, see [§14](#14.-Errors)) |
+| `tao_usable_after_reinitialize` | unchanged (a platform predicate, not a PETSc accessor) |
 | `isdestroyable` | unchanged (internal) |
 
 #### Internals
@@ -953,7 +958,7 @@ They drop the `_` prefix, which was standing in for "internal" and is not how Ju
 | `_library_ptr` | `library_ptr` |
 | `_post_initialize` | `post_initialize` |
 | `_release_library_handle` | `release_library_handle` |
-| `_doc_external`, `_lib_handles`, `_petsc_program_name` | prefix dropped likewise |
+| `_doc_external`, `_lib_handles`, `_petsc_program_name` | prefix dropped likewise. `_doc_external` also stays as a `const` alias, because `src/autowrapped/` interpolates that spelling into several thousand docstrings |
 | `_errorcode`, `_run_callback`, `_with_options` (`ts.jl`) | prefix dropped likewise |
 
 The exceptions keep their underscore, because there it separates an inner worker from the wrapper of the same name rather than marking visibility:
@@ -974,7 +979,7 @@ The exceptions keep their underscore, because there it separates an inner worker
 | `Fn_KSPComputeRHS`, `Fn_KSPComputeOperators` | `KSPComputeRHSFn`, `KSPComputeOperatorsFn` |
 | `Fn_SNESSetFunction`, `Fn_SNESSetJacobian` | `SNESSetFunctionFn`, `SNESSetJacobianFn` |
 | `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn` | unchanged (new, already §5.5) |
-| `MatAT` | `MatOrTranspose` |
+| `MatAT` | deleted (no uses; it would have been `MatOrTranspose`) |
 | `MatShell`, `MatOp`, `MatPtr`, `VecPtr` | unchanged |
 | `AbstractPetscDS`, `PetscDS` | unchanged |
 | `DMStagGetIndices` | removed (already deprecated in v0.4) |

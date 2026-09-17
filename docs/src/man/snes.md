@@ -27,7 +27,10 @@ snes = SNES(petsclib, MPI.COMM_WORLD;
 
 ## Setting the Nonlinear Function
 
-Define the residual function `F(x)`:
+Define the residual function `F(x)`. The callback comes first in the argument
+list, so `do` block syntax works; v0.4's subject-first order
+(`setfunction!(snes, f!, v)`) is gone and has no shim
+([naming conventions](naming.md), §8.1):
 
 ```julia
 function residual!(fx, snes, x)
@@ -37,12 +40,14 @@ function residual!(fx, snes, x)
     return 0
 end
 
-set_function!(residual!, snes, f_vec)
+PETSc.set_function!(residual!, snes, f_vec)
 ```
 
 ## Setting the Jacobian
 
-Define the Jacobian `J = dF/dx`:
+Define the Jacobian `J = dF/dx`. `set_snes_jacobian!` rather than
+`set_jacobian!`, because `set_jacobian!` belongs to `PetscDS` and the callback
+occupies argument 1 here ([naming conventions](naming.md), §4.1):
 
 ```julia
 function jacobian!(J, snes, x)
@@ -51,11 +56,11 @@ function jacobian!(J, snes, x)
     J[1, 2] = 1.0
     J[2, 1] = 1.0
     J[2, 2] = 2*x[2]
-    assemble!(J)
+    PETSc.assemble!(J)
     return 0
 end
 
-set_snes_jacobian!(jacobian!, snes, J, J)  # (J, P) where P is preconditioner matrix
+PETSc.set_snes_jacobian!(jacobian!, snes, J, J)  # (J, P), P the preconditioner matrix
 ```
 
 ## Using a DM
@@ -74,10 +79,13 @@ d = PETSc.dm(snes)
 
 ```julia
 # Solve with initial guess x
-solve!(x, snes)
+PETSc.solve!(x, snes)
 
-# Get solution vector
-sol = solution(snes)
+# Get the solution vector. It is a **borrowed** handle: it belongs to `snes`,
+# and `destroy!` on it is a no-op (naming conventions, §3.3)
+sol = PETSc.solution(snes)
+
+PETSc.destroy!(snes)
 ```
 
 ## Common Solver Options
@@ -111,11 +119,12 @@ snes = SNES(petsclib, MPI.COMM_WORLD;
     pc_type = "ilu"
 )
 
-set_function!(residual!, snes, f)
-set_snes_jacobian!(jacobian!, snes, J, J)
-set_from_options!(snes)
+PETSc.set_function!(residual!, snes, f)
+PETSc.set_snes_jacobian!(jacobian!, snes, J, J)
+PETSc.set_from_options!(snes)
 
-solve!(x, snes)
+PETSc.solve!(x, snes)
+PETSc.destroy!(snes)
 ```
 
 ## Functions

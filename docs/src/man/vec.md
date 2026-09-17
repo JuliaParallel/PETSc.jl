@@ -21,6 +21,9 @@ v = PetscVec(petsclib, n)
 # Wrap an existing Julia array (no copy)
 julia_array = zeros(100)
 v = PetscVec(petsclib, julia_array)
+
+# `destroy!` releases it; a vector on MPI.COMM_SELF also gets a finalizer
+PETSc.destroy!(v)
 ```
 
 ### From DM Objects
@@ -30,6 +33,10 @@ v = PetscVec(petsclib, julia_array)
 gvec = PETSc.global_vec(dm)
 lvec = PETSc.local_vec(dm)
 ```
+
+`PetscVec` replaces v0.4's `VecSeq` and `as_petsc_vec`: construction goes
+through the type ([naming conventions](naming.md), §6). The old spellings still
+work in v0.5 and warn once.
 
 ## Julia Array Interface
 
@@ -50,7 +57,7 @@ After setting values, vectors must be assembled:
 ```julia
 v[1] = 1.0
 v[2] = 2.0
-assemble!(v)  # Finalize vector assembly
+PETSc.assemble!(v)  # Finalize vector assembly
 ```
 
 ## Ghost Point Updates
@@ -59,12 +66,12 @@ For vectors with ghost points (from DMDA/DMStag):
 
 ```julia
 # Update ghost values from neighboring processes
-ghost_update!(vec, INSERT_VALUES, SCATTER_FORWARD)
+PETSc.ghost_update!(vec, PETSc.INSERT_VALUES, PETSc.SCATTER_FORWARD)
 
 # Or use begin/end for non-blocking:
-ghost_update_begin!(vec, INSERT_VALUES, SCATTER_FORWARD)
+PETSc.ghost_update_begin!(vec, PETSc.INSERT_VALUES, PETSc.SCATTER_FORWARD)
 # ... do other work ...
-ghost_update_end!(vec, INSERT_VALUES, SCATTER_FORWARD)
+PETSc.ghost_update_end!(vec, PETSc.INSERT_VALUES, PETSc.SCATTER_FORWARD)
 ```
 
 ## Functions

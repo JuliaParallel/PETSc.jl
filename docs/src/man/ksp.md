@@ -15,10 +15,10 @@ KSP provides:
 ### From a Matrix
 
 ```julia
-# Basic creation with default options
+# Basic creation with default options. The communicator comes from `A`
 ksp = KSP(A)
 
-# With preconditioner matrix P (for different preconditioning)
+# With the preconditioner construction matrix P
 ksp = KSP(A, P)
 
 # With options
@@ -51,12 +51,28 @@ ksp = KSP(petsclib, MPI.COMM_SELF, S)
 ## Solving
 
 ```julia
-# Solve Ax = b
-solve!(x, ksp, b)
+# Solve Ax = b, writing into x. The written vector comes first
+PETSc.solve!(x, ksp, b)
 
-# Or allocate solution vector
-x = solve(ksp, b)
+# `ldiv!` and `\` are the LinearAlgebra spellings of the same call
+using LinearAlgebra
+ldiv!(x, ksp, b)
+x = ksp \ b
+
+# What PETSc did
+PETSc.type_name(ksp)         # :gmres, a Symbol
+PETSc.converged_reason(ksp)
+
+PETSc.destroy!(ksp)
 ```
+
+`KSP` is the type, not a factory function: `ksp isa PETSc.KSP` holds, and
+`PETSc.dm(ksp)` hands back the DM it was built on as a **borrowed** handle —
+`destroy!` on it is a no-op ([naming conventions](naming.md), §3.3).
+
+Type names are `Symbol` at the Julia API: `PETSc.set_type!(ksp, :cg)` and
+`PETSc.type_name(ksp) === :cg`. The `String` spelling warns in v0.5 and is a
+`MethodError` in v0.6 (§3.1).
 
 ## Common Solver/Preconditioner Options
 

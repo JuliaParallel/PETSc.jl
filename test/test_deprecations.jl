@@ -196,7 +196,9 @@ const SHIMS = [
     @testset "set_type!(obj, ::AbstractString)" begin
         petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
-        ksp = PETSc.KSP(petsclib, PETSc.MPI.COMM_SELF)
+        # The low-level creator, because the `KSP` constructor wants the
+        # operators and this test only needs an object with a type.
+        ksp = PETSc.LibPETSc.KSPCreate(petsclib, PETSc.MPI.COMM_SELF)
         warns() do
             PETSc.set_type!(ksp, "cg")
         end

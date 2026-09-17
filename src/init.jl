@@ -218,14 +218,15 @@ function _warn_windows_without_mpi(petsclib)
     return nothing
 end
 
-# PETSc 3.25.x: `TaoFinalizePackage` destroys the `TaoTerm` type list but never
-# resets `TaoTermRegisterAllCalled`, so after a finalize/initialize cycle
-# `TaoCreate` fails with "Unable to find requested TaoTerm type callbacks".
-# Reset the flag so the list is rebuilt. The symbol is absent on 3.22, 
-# where `dlsym_e` returns null and this does nothing.
+# PETSc 3.25.x: `TaoFinalizePackage` and `TSTrajectoryFinalizePackage` destroy their
+# type lists but never reset the `*RegisterAllCalled` flags, so after a
+# finalize/initialize cycle `TaoCreate`/`TaoSetType` fail with "Unable to find
+# requested Tao type" / "... TaoTerm type callbacks", and TSTrajectory likewise.
+# Reset the flags so the lists are rebuilt. The symbols are absent on 3.22 and not
+# exported by the Windows DLL, where `dlsym_e` returns null and this does nothing.
 function _reset_stale_register_flags(petsclib)
     handle, _ = _ensure_library_handle(petsclib)
-    for sym in (:TaoTermRegisterAllCalled,)
+    for sym in (:TaoRegisterAllCalled, :TaoTermRegisterAllCalled, :TSTrajectoryRegisterAllCalled)
         p = Libdl.dlsym_e(_library_ptr(handle), sym)
         p == C_NULL || unsafe_store!(Ptr{Int32}(p), Int32(0))
     end

@@ -464,6 +464,26 @@ differs branch on [`LibPETSc.petsc_version`](@ref).
 const SUPPORTED_PETSC_VERSIONS = (v"3.22", v"3.25")
 
 """
+    set_petscint!(::Type{T}) where {T<:Union{Int32,Int64}}
+
+Persistently select which `PetscInt` width of the `PETSc_jll` libraries is
+loaded (default: `Int64`).  Only one width is registered per process: the
+Int64 and Int32 library variants link external packages (hypre,
+SuperLU_DIST) that export identical symbols with different integer ABIs,
+so mixing both widths in one process is unsafe on platforms with a flat
+dynamic-linker namespace.
+
+Takes effect on the next Julia session (standard Preferences.jl
+recompilation).  Has no effect when a custom library is configured via
+[`set_library!`](@ref).
+"""
+function set_petscint!(::Type{T}) where {T<:Union{Int32,Int64}}
+    @set_preferences!("PetscInt" => string(T))
+    @info "PETSc_jll PetscInt width set — restart Julia to use it." PetscInt = T
+end
+
+
+"""
     check_petsc_wrappers_version(petsclib=nothing)
 
 Load the generated `petsc_wrappers_version.jl` (if present) and compare the

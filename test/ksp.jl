@@ -114,10 +114,13 @@ using SparseArrays: spdiagm
         
         if petsclib== PETSc.petsclibs[1]
             it = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
-            @test (it == 34) || (it == 33) || (it == 36)   # depending on PETSc version
+            # the exact Krylov iteration count depends on the PETSc version, BLAS and platform
+            # (34 on x86_64 Linux, other values on Apple Silicon), so only check its plausibility
+            @test 20 <= it <= 60
 
             it1 = LibPETSc.KSPGetTotalIterations(petsclib, ksp)
-            @test (it1 == 68) || (it1 == 66) || (it1 == 72)   # depending on PETSc version
+            # two solves of the same system were performed with this ksp
+            @test it1 == 2 * it
 
         end
 

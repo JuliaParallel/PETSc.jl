@@ -42953,12 +42953,23 @@ function DMPlexFilter(petsclib::PetscLibType, dm::PetscDM, cellLabel::DMLabel, v
 @for_petsc function DMPlexFilter(petsclib::$UnionPetscLib, dm::PetscDM, cellLabel::DMLabel, value::$PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, ownershipTransferSF::PetscSF, subdm::PetscDM )
 	subdm_ = Ref(subdm.ptr)
 
-    @chk ccall(
-               (:DMPlexFilter, $petsc_library),
-               PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, PetscBool, PetscBool, Ptr{PetscSF}, Ptr{CDM}),
-               dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, ownershipTransferSF, subdm_,
-              )
+    # PETSc 3.25 takes the communicator of the submesh before the transfer SF.
+    # The source mesh's own communicator keeps the earlier behaviour.
+    if petsc_version(petsclib) >= PETSC_SIGNATURE_BREAK
+        @chk ccall(
+                   (:DMPlexFilter, $petsc_library),
+                   PetscErrorCode,
+                   (CDM, DMLabel, $PetscInt, PetscBool, PetscBool, MPI_Comm, Ptr{PetscSF}, Ptr{CDM}),
+                   dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, PetscObjectGetComm(petsclib, dm), ownershipTransferSF, subdm_,
+                  )
+    else
+        @chk ccall(
+                   (:DMPlexFilter, $petsc_library),
+                   PetscErrorCode,
+                   (CDM, DMLabel, $PetscInt, PetscBool, PetscBool, Ptr{PetscSF}, Ptr{CDM}),
+                   dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, ownershipTransferSF, subdm_,
+                  )
+    end
 
 	subdm.ptr = subdm_[]
 

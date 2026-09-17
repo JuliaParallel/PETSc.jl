@@ -56,6 +56,7 @@ export PetscLibType,
 include("LibPETSc_const.jl")
 include("LibPETSc_startup.jl")
 include("LibPETSc_lib.jl")
+include("LibPETSc_compat.jl")
 
 include(petsc_library_file)
 

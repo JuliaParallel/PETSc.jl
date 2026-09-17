@@ -2,6 +2,10 @@ using Test
 using PETSc
 using MPI
 
+if !PETSc.tao_usable_after_reinitialize()
+    @info "Skipping Tao tests: PETSc 3.25.x loses the Tao types at PetscFinalize and the workaround is not possible with these binaries (Windows)"
+else
+
 @testset "Documentation examples for Tao" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
@@ -120,4 +124,5 @@ using MPI
     end
     
     PETSc.finalize(petsclib)
+end
 end

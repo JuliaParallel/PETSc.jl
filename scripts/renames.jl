@@ -157,8 +157,8 @@ const TYPE_RENAMES_INSOURCE = Set{Symbol}([:AbstractPETScMemBackend])
 const BASE_TARGETS = Set{Symbol}([:ndims])
 
 # Shims the generated `old(args...; kwargs...) = new(args...; kwargs...)` gets wrong,
-# because the argument list changed. Written out in full instead. Empty for step 1:
-# every rename so far keeps its argument list, and the four reorders land in step 3.
+# because the argument list changed. Written out in full instead: the reorders and
+# the calls that dropped `petsclib` (§8, §17.2).
 const CUSTOM_SHIMS = Dict{Symbol, String}(
     # `MatSeqAIJWithArrays(petsclib, comm, A::SparseMatrixCSC)` and
     # `MatCreateSeqAIJ(petsclib, comm, S)` had the same argument list and
@@ -170,7 +170,197 @@ const CUSTOM_SHIMS = Dict{Symbol, String}(
         return mat_seqaij_with_arrays(args...; kwargs...)
     end
     """,
+
+    # ── Step 3: the reorders and the dropped `petsclib` (§8, §17.2) ──────────
+    #
+    # Each shim warns first and then forwards in the new order, so the warning
+    # is emitted even when the forwarded call cannot succeed. The old argument
+    # lists are spelled out rather than slurped so that a call written against
+    # the v0.4 order lands on the right parameters.
+
+    :dm_project_function! => """
+    function dm_project_function!(args...; kwargs...)
+        @warn "dm_project_function! is deprecated, use project_function!" maxlog = 1
+        petsclib, dm, time, funcs, ctxs, mode, X = args
+        return project_function!(X, dm, time, funcs, ctxs, mode; kwargs...)
+    end
+    """,
+
+    :dm_project_field! => """
+    function dm_project_field!(args...; kwargs...)
+        @warn "dm_project_field! is deprecated, use project_field!" maxlog = 1
+        petsclib, dm, time, U, funcs, mode, X = args
+        return project_field!(X, dm, time, U, funcs, mode; kwargs...)
+    end
+    """,
+
+    :dm_compute_l2diff => """
+    function dm_compute_l2diff(args...; kwargs...)
+        @warn "dm_compute_l2diff is deprecated, use l2diff" maxlog = 1
+        petsclib, dm, time, funcs, ctxs, X = args
+        return l2diff(dm, time, funcs, ctxs, X; kwargs...)
+    end
+    """,
+
+    # v0.4 spelled this one `dm_global_to_local!(gvec, lvec, dm, mode)`.
+    :dm_global_to_local! => """
+    function dm_global_to_local!(args...; kwargs...)
+        @warn "dm_global_to_local! is deprecated, use global_to_local!" maxlog = 1
+        gvec, lvec, dm, rest... = args
+        return global_to_local!(lvec, dm, gvec, rest...; kwargs...)
+    end
+    """,
+
+    # v0.4 spelled this one `dm_local_to_global!(lvec, gvec, dm, mode)`.
+    :dm_local_to_global! => """
+    function dm_local_to_global!(args...; kwargs...)
+        @warn "dm_local_to_global! is deprecated, use local_to_global!" maxlog = 1
+        lvec, gvec, dm, rest... = args
+        return local_to_global!(gvec, dm, lvec, rest...; kwargs...)
+    end
+    """,
+
+    :plex_set_snes_local_fem! => """
+    function plex_set_snes_local_fem!(args...; kwargs...)
+        @warn "plex_set_snes_local_fem! is deprecated, use set_snes_local_fem!" maxlog = 1
+        petsclib, dm = args
+        return set_snes_local_fem!(dm; kwargs...)
+    end
+    """,
+
+    :dmda_star_fd_coloring => """
+    function dmda_star_fd_coloring(args...; kwargs...)
+        @warn "dmda_star_fd_coloring is deprecated, use star_fd_coloring" maxlog = 1
+        petsclib, da = args
+        return star_fd_coloring(da; kwargs...)
+    end
+    """,
+
+    # `vtk_save!(petsclib, comm, filename, vec)` loses both `petsclib` and
+    # `comm`: the vector carries the library and PETSc answers for the
+    # communicator (§8).
+    :vtk_save! => """
+    function vtk_save!(args...; kwargs...)
+        @warn "vtk_save! is deprecated, use save_vtk!" maxlog = 1
+        petsclib, comm, filename, vec = args
+        return save_vtk!(vec, filename; kwargs...)
+    end
+    """,
+
+    :vtk_save_fields! => """
+    function vtk_save_fields!(args...; kwargs...)
+        @warn "vtk_save_fields! is deprecated, use save_vtk!" maxlog = 1
+        petsclib, comm, filename, vecs = args
+        return save_vtk!(vecs, filename; kwargs...)
+    end
+    """,
+
+    # `dm_coarsen_hook_add!(dm, hook, restrict)` puts the callback first (§8.1).
+    :dm_coarsen_hook_add! => """
+    function dm_coarsen_hook_add!(args...; kwargs...)
+        @warn "dm_coarsen_hook_add! is deprecated, use add_coarsen_hook!" maxlog = 1
+        dm, hook, rest... = args
+        return add_coarsen_hook!(hook, dm, rest...; kwargs...)
+    end
+    """,
 )
+
+# ---------------------------------------------------------------------------
+# Deprecated methods of names that did not change (§17.2, "argument dropped").
+#
+# These keep an argument the v0.5 signature no longer takes and warn when it is
+# passed, so they cannot be expressed as `old => new`. They are emitted verbatim
+# into src/deprecations.jl and removed with it in v0.6. `test` is a test body
+# appended to test/test_deprecations.jl.
+# ---------------------------------------------------------------------------
+
+const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, String}}[
+    (
+        name = "ownership_range(A, base_one)",
+        code = """
+        # §12.1: `ownership_range` is 1-based only. The positional form is kept for
+        # one release because that is the form v0.4 has; a keyword shim would compile
+        # and never fire.
+        function ownership_range(
+            obj::Union{LibPETSc.AbstractPetscVec, LibPETSc.AbstractPetscMat},
+            base_one::Bool,
+        )
+            @warn "ownership_range(A, base_one) is deprecated, use ownership_range(A), " *
+                  "which is 1-based" maxlog = 1
+            r = ownership_range(obj)
+            return base_one ? r : ((first(r) - 1):(last(r) - 1))
+        end
+        """,
+        test = """
+        @testset "ownership_range(A, base_one)" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            v = PETSc.PetscVec(petsclib, 5)
+            one_based = PETSc.ownership_range(v)
+            zero_based = warns() do
+                PETSc.ownership_range(v, false)
+            end
+            @test zero_based == ((first(one_based) - 1):(last(one_based) - 1))
+            PETSc.destroy!(v)
+        end
+        """,
+    ),
+    (
+        name = "set_type!(obj, ::AbstractString)",
+        code = """
+        # §3.1: type names are `Symbol` at the Julia API. The `String` spelling is
+        # accepted for one release and warns (§17.2, "argument dropped").
+        function set_type!(obj, type::AbstractString)
+            @warn "set_type!(obj, \\"\$type\\") is deprecated, use set_type!(obj, :\$type)" maxlog = 1
+            return set_type!(obj, Symbol(type))
+        end
+        """,
+        test = """
+        @testset "set_type!(obj, ::AbstractString)" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            ksp = PETSc.KSP(petsclib, PETSc.MPI.COMM_SELF)
+            warns() do
+                PETSc.set_type!(ksp, "cg")
+            end
+            @test PETSc.type_name(ksp) === :cg
+            PETSc.destroy!(ksp)
+        end
+        """,
+    ),
+    (
+        name = "add_boundary!(petsclib, dm, ...)",
+        code = """
+        # §8: `petsclib` never leads a high-level call. `add_boundary!` and
+        # `add_natural_boundary!` keep their names, so the dropped argument is a
+        # deprecated method rather than a rename.
+        function add_boundary!(petsclib::LibPETSc.PetscLibType, dm, args...; kwargs...)
+            @warn "add_boundary!(petsclib, dm, ...) is deprecated, use add_boundary!(dm, ...)" maxlog = 1
+            return add_boundary!(dm, args...; kwargs...)
+        end
+
+        function add_natural_boundary!(petsclib::LibPETSc.PetscLibType, dm, args...; kwargs...)
+            @warn "add_natural_boundary!(petsclib, dm, ...) is deprecated, use " *
+                  "add_natural_boundary!(dm, ...)" maxlog = 1
+            return add_natural_boundary!(dm, args...; kwargs...)
+        end
+        """,
+        test = """
+        @testset "add_boundary! and add_natural_boundary! without petsclib" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            for f in (PETSc.add_boundary!, PETSc.add_natural_boundary!)
+                warns() do
+                    try
+                        f(petsclib, DeprecationProbe())
+                    catch
+                    end
+                end
+            end
+        end
+        """,
+    ),
+]
 
 # ---------------------------------------------------------------------------
 # Internal helpers: renamed freely, no shim, not part of the API (§1.1).
@@ -211,6 +401,11 @@ const INTERNAL = Set{Symbol}([
     :csr_from_csc,
     :mat_seqaij_with_arrays,
     :own_dm!,
+    :axis_names,
+    :axis_ranges,
+    :type_name_symbol,
+    :stencil_type_enum,
+    :petsclib_of,
     :make_local_array,
     :to_petscint_tuple,
     :audit_walk,

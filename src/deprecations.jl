@@ -35,8 +35,18 @@ end
 @renamed getcorners_dmda corners
 @renamed getghostcorners ghost_corners
 @renamed getghostcorners_dmda ghost_corners
-@renamed dm_local_to_global! local_to_global!
-@renamed dm_global_to_local! global_to_local!
+function dm_local_to_global!(args...; kwargs...)
+    @warn "dm_local_to_global! is deprecated, use local_to_global!" maxlog = 1
+    lvec, gvec, dm, rest... = args
+    return local_to_global!(gvec, dm, lvec, rest...; kwargs...)
+end
+
+function dm_global_to_local!(args...; kwargs...)
+    @warn "dm_global_to_local! is deprecated, use global_to_local!" maxlog = 1
+    gvec, lvec, dm, rest... = args
+    return global_to_local!(lvec, dm, gvec, rest...; kwargs...)
+end
+
 @renamed setuniformcoordinates_dmda! set_uniform_coordinates!
 @renamed coordinatesDMLocalVec local_coordinates
 @renamed getlocalcoordinatearray local_coordinate_array
@@ -52,31 +62,71 @@ end
 @renamed DMStagDOF_Slot dof_slot
 @renamed reshapelocalarray reshape_local_array
 @renamed localinteriorlinearindex local_interior_linear_index
-@renamed dmda_star_fd_coloring star_fd_coloring
+function dmda_star_fd_coloring(args...; kwargs...)
+    @warn "dmda_star_fd_coloring is deprecated, use star_fd_coloring" maxlog = 1
+    petsclib, da = args
+    return star_fd_coloring(da; kwargs...)
+end
+
 @renamed isplexsimplex issimplex
 @renamed plexdistribute! distribute!
 @renamed petsc_setname! set_name!
 @renamed getds ds
 @renamed createds! create_ds!
 @renamed getlabel label
-@renamed dm_project_function! project_function!
-@renamed dm_project_field! project_field!
-@renamed dm_compute_l2diff l2diff
+function dm_project_function!(args...; kwargs...)
+    @warn "dm_project_function! is deprecated, use project_function!" maxlog = 1
+    petsclib, dm, time, funcs, ctxs, mode, X = args
+    return project_function!(X, dm, time, funcs, ctxs, mode; kwargs...)
+end
+
+function dm_project_field!(args...; kwargs...)
+    @warn "dm_project_field! is deprecated, use project_field!" maxlog = 1
+    petsclib, dm, time, U, funcs, mode, X = args
+    return project_field!(X, dm, time, U, funcs, mode; kwargs...)
+end
+
+function dm_compute_l2diff(args...; kwargs...)
+    @warn "dm_compute_l2diff is deprecated, use l2diff" maxlog = 1
+    petsclib, dm, time, funcs, ctxs, X = args
+    return l2diff(dm, time, funcs, ctxs, X; kwargs...)
+end
+
 @renamed dm_create_global_vec global_vec
 @renamed dm_create_local_vec local_vec
 @renamed dm_set_auxiliary_vec! set_auxiliary_vec!
-@renamed dm_coarsen_hook_add! add_coarsen_hook!
+function dm_coarsen_hook_add!(args...; kwargs...)
+    @warn "dm_coarsen_hook_add! is deprecated, use add_coarsen_hook!" maxlog = 1
+    dm, hook, rest... = args
+    return add_coarsen_hook!(hook, dm, rest...; kwargs...)
+end
+
 @renamed dm_copy_disc! copy_disc!
 @renamed dm_get_coarse coarse_dm
 @renamed fe_copy_quadrature! copy_quadrature!
 @renamed mat_null_space_create mat_nullspace_create
 @renamed mat_set_null_space! set_nullspace!
 @renamed mat_null_space_destroy! destroy!
-@renamed vtk_save! save_vtk!
-@renamed vtk_save_fields! save_vtk!
+function vtk_save!(args...; kwargs...)
+    @warn "vtk_save! is deprecated, use save_vtk!" maxlog = 1
+    petsclib, comm, filename, vec = args
+    return save_vtk!(vec, filename; kwargs...)
+end
+
+function vtk_save_fields!(args...; kwargs...)
+    @warn "vtk_save_fields! is deprecated, use save_vtk!" maxlog = 1
+    petsclib, comm, filename, vecs = args
+    return save_vtk!(vecs, filename; kwargs...)
+end
+
 @renamed setfield! set_field!
 @renamed dmclone clone
-@renamed plex_set_snes_local_fem! set_snes_local_fem!
+function plex_set_snes_local_fem!(args...; kwargs...)
+    @warn "plex_set_snes_local_fem! is deprecated, use set_snes_local_fem!" maxlog = 1
+    petsclib, dm = args
+    return set_snes_local_fem!(dm; kwargs...)
+end
+
 @renamed snes_set_jacobian_null_space! set_jacobian_nullspace!
 @renamed fe_compose_constant_null_space! compose_constant_nullspace!
 @renamed getDM dm
@@ -142,6 +192,48 @@ end
 macro petsc_simple_fn(args...)
     @warn "@petsc_simple_fn is deprecated, use @simple_fn" maxlog = 1
     return Expr(:macrocall, GlobalRef(@__MODULE__, Symbol("@simple_fn")), __source__, args...)
+end
+
+
+# Deprecated methods of names that did not change: an argument the v0.5
+# signature no longer takes, kept for one release and warning when passed
+# (§17.2).
+
+# ownership_range(A, base_one)
+# §12.1: `ownership_range` is 1-based only. The positional form is kept for
+# one release because that is the form v0.4 has; a keyword shim would compile
+# and never fire.
+function ownership_range(
+    obj::Union{LibPETSc.AbstractPetscVec, LibPETSc.AbstractPetscMat},
+    base_one::Bool,
+)
+    @warn "ownership_range(A, base_one) is deprecated, use ownership_range(A), " *
+          "which is 1-based" maxlog = 1
+    r = ownership_range(obj)
+    return base_one ? r : ((first(r) - 1):(last(r) - 1))
+end
+
+# set_type!(obj, ::AbstractString)
+# §3.1: type names are `Symbol` at the Julia API. The `String` spelling is
+# accepted for one release and warns (§17.2, "argument dropped").
+function set_type!(obj, type::AbstractString)
+    @warn "set_type!(obj, \"$type\") is deprecated, use set_type!(obj, :$type)" maxlog = 1
+    return set_type!(obj, Symbol(type))
+end
+
+# add_boundary!(petsclib, dm, ...)
+# §8: `petsclib` never leads a high-level call. `add_boundary!` and
+# `add_natural_boundary!` keep their names, so the dropped argument is a
+# deprecated method rather than a rename.
+function add_boundary!(petsclib::LibPETSc.PetscLibType, dm, args...; kwargs...)
+    @warn "add_boundary!(petsclib, dm, ...) is deprecated, use add_boundary!(dm, ...)" maxlog = 1
+    return add_boundary!(dm, args...; kwargs...)
+end
+
+function add_natural_boundary!(petsclib::LibPETSc.PetscLibType, dm, args...; kwargs...)
+    @warn "add_natural_boundary!(petsclib, dm, ...) is deprecated, use " *
+          "add_natural_boundary!(dm, ...)" maxlog = 1
+    return add_natural_boundary!(dm, args...; kwargs...)
 end
 
 

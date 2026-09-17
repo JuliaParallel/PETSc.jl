@@ -180,4 +180,41 @@ const SHIMS = [
             PETSc.initialized(petsclib)
         end) == PETSc.isinitialized(petsclib)
     end
+
+    @testset "ownership_range(A, base_one)" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        v = PETSc.PetscVec(petsclib, 5)
+        one_based = PETSc.ownership_range(v)
+        zero_based = warns() do
+            PETSc.ownership_range(v, false)
+        end
+        @test zero_based == ((first(one_based) - 1):(last(one_based) - 1))
+        PETSc.destroy!(v)
+    end
+
+    @testset "set_type!(obj, ::AbstractString)" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        ksp = PETSc.KSP(petsclib, PETSc.MPI.COMM_SELF)
+        warns() do
+            PETSc.set_type!(ksp, "cg")
+        end
+        @test PETSc.type_name(ksp) === :cg
+        PETSc.destroy!(ksp)
+    end
+
+    @testset "add_boundary! and add_natural_boundary! without petsclib" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        for f in (PETSc.add_boundary!, PETSc.add_natural_boundary!)
+            warns() do
+                try
+                    f(petsclib, DeprecationProbe())
+                catch
+                end
+            end
+        end
+    end
+
 end

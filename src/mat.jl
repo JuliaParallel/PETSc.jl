@@ -9,7 +9,7 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
     end
     
     mat_type = type_name(v)
-    if mat_type == "(not set)"
+    if isnothing(mat_type)
         print(io, "PETSc Mat (type not set)")
     else
         print(io, "PETSc $(mat_type) Mat of size $(size(v))")
@@ -53,7 +53,32 @@ owns(m::MatPtr) = m.own
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
 Base.ndims(m::AbstractPetscMat{PetscLib}) where {PetscLib} = length(LibPETSc.MatGetSize(PetscLib,m))
-type_name(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetType(PetscLib, m)
+"""
+    type_name(A::AbstractPetscMat)
+
+The name PETSc knows this matrix's implementation by, as a `Symbol`
+(`:seqaij`, `:mpiaij`, …), or `nothing` when the matrix has no type yet
+(docs/src/man/naming.md §3.1). v0.4 answered with a `String`, using the
+sentinel `"(not set)"`; that is a break with no shim (§16).
+
+# External Links
+$(doc_external("Mat/MatGetType"))
+"""
+type_name(m::AbstractPetscMat{PetscLib}) where {PetscLib} =
+    type_name_symbol(LibPETSc.MatGetType(PetscLib, m))
+
+"""
+    set_type!(A::AbstractPetscMat, type::Symbol)
+
+Set the matrix implementation, for example `:seqaij` or `:dense`.
+
+# External Links
+$(doc_external("Mat/MatSetType"))
+"""
+function set_type!(m::AbstractPetscMat{PetscLib}, type::Symbol) where {PetscLib}
+    LibPETSc.MatSetType(getlib(PetscLib), m, String(type))
+    return nothing
+end
 Base.axes(m::PetscMat{PetscLib}, i::Integer) where {PetscLib} = Base.OneTo(Base.size(m)[i])
 
 """
@@ -672,16 +697,20 @@ end
 """
     set_values!(
         M::AbstractPetscMat{PetscLib},
-        row0idxs::Vector{MatStencil},
-        col0idxs::Vector{MatStencil},
+        rows_0b::Vector{MatStencil},
+        cols_0b::Vector{MatStencil},
         rowvals::Array{PetscScalar},
         insertmode::InsertMode = INSERT_VALUES;
-        num_rows = length(row0idxs),
-        num_cols = length(col0idxs)
+        num_rows = length(rows_0b),
+        num_cols = length(cols_0b)
     )
 
-Set values of the matrix `M` with base-0  row and column indices `row0idxs` and
-`col0idxs` inserting the values `rowvals`.
+Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
+`cols_0b`, inserting the values `rowvals`.
+
+The `_0b` suffix says what the base is: a bulk index array handed to C keeps
+PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
+§12.1). `A[i, j] = v` is the 1-based route.
 
 If the keyword arguments `num_rows` or `num_cols` is specified then only the
 first `num_rows * num_cols` values of `rowvals` will be used.
@@ -691,12 +720,12 @@ $(doc_external("Mat/MatSetValuesStencil"))
 """
 function set_values!(
     M::AbstractPetscMat{PetscLib},
-    row0idxs::Vector{MatStencil},
-    col0idxs::Vector{MatStencil},
+    rows_0b::Vector{MatStencil},
+    cols_0b::Vector{MatStencil},
     rowvals::Array{PetscScalar},
     insertmode::InsertMode = INSERT_VALUES;
-    num_rows = length(row0idxs),
-    num_cols = length(col0idxs),
+    num_rows = length(rows_0b),
+    num_cols = length(cols_0b),
 ) where {PetscLib, PetscScalar}
     PetscScalar === PetscLib.PetscScalar || throw(
         ArgumentError(
@@ -714,9 +743,9 @@ function set_values!(
         PetscLib,
         M,
         num_rows,
-        row0idxs,
+        rows_0b,
         num_cols,
-        col0idxs,
+        cols_0b,
         rowvals,
         insertmode,
     )
@@ -959,14 +988,16 @@ function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
 end
 
 """
-    ownership_range(mat::AbstractMat, [base_one = true])
+    ownership_range(mat::AbstractPetscMat)
 
 The range of row indices owned by this processor, assuming that the `mat` is
 laid out with the first `n1` rows on the first processor, next `n2` rows on the
 second, etc. For certain parallel layouts this range may not be well defined.
 
-If the optional argument `base_one == true` then base-1 indexing is used,
-otherwise base-0 index is used.
+The range is **1-based**, always: an index into Julia data is 1-based
+(docs/src/man/naming.md §12.1). v0.4 took `base_one::Bool` positionally and
+made the convention a runtime choice; `ownership_range(A, false)` warns in
+v0.5 and is a `MethodError` in v0.6.
 
 !!! note
 
@@ -975,29 +1006,30 @@ otherwise base-0 index is used.
 # External Links
 $(doc_external("Mat/MatGetOwnershipRange"))
 """
-function ownership_range(
-    mat::AbstractPetscMat{PetscLib},
-    base_one::Bool = true,
-) where {PetscLib}
+function ownership_range(mat::AbstractPetscMat{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
-    r_lo, r_hi = LibPETSc.MatGetOwnershipRange(PetscLib, mat)
     # The wrapper returns two plain integers, not `Ref`s.
-    return base_one ? ((r_lo + PetscInt(1)):r_hi) : (r_lo:(r_hi - PetscInt(1)))
+    r_lo, r_hi = LibPETSc.MatGetOwnershipRange(PetscLib, mat)
+    return (r_lo + PetscInt(1)):r_hi
 end
 
 """
     set_values!(
         M::AbstractMat{PetscLib},
-        row0idxs::Vector{PetscInt},
-        col0idxs::Vector{PetscInt},
+        rows_0b::Vector{PetscInt},
+        cols_0b::Vector{PetscInt},
         rowvals::Array{PetscScalar},
         insertmode::InsertMode = INSERT_VALUES;
-        num_rows = length(row0idxs),
-        num_cols = length(col0idxs)
+        num_rows = length(rows_0b),
+        num_cols = length(cols_0b)
     )
 
-Set values of the matrix `M` with base-0  row and column indices `row0idxs` and
-`col0idxs` inserting the values `rowvals`.
+Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
+`cols_0b`, inserting the values `rowvals`.
+
+The `_0b` suffix says what the base is: a bulk index array handed to C keeps
+PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
+§12.1). `A[i, j] = v` is the 1-based route.
 
 If the keyword arguments `num_rows` or `num_cols` is specified then only the
 first `num_rows * num_cols` values of `rowvals` will be used.
@@ -1007,12 +1039,12 @@ $(doc_external("Mat/MatSetValues"))
 """
 function set_values!(
     M::AbstractPetscMat{PetscLib},
-    row0idxs::Vector{PetscInt},
-    col0idxs::Vector{PetscInt},
+    rows_0b::Vector{PetscInt},
+    cols_0b::Vector{PetscInt},
     rowvals::Array{PetscScalar},
     insertmode::InsertMode = INSERT_VALUES;
-    num_rows = length(row0idxs),
-    num_cols = length(col0idxs),
+    num_rows = length(rows_0b),
+    num_cols = length(cols_0b),
 ) where {PetscLib, PetscScalar, PetscInt}
     PetscScalar === PetscLib.PetscScalar || throw(
         ArgumentError(
@@ -1036,9 +1068,9 @@ function set_values!(
         PetscLib,
         M,
         PetscInt(num_rows),
-        PetscInt.(row0idxs),
+        PetscInt.(rows_0b),
         PetscInt(num_cols),
-        PetscInt.(col0idxs),
+        PetscInt.(cols_0b),
         rowvals,
         insertmode,
     )

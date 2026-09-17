@@ -156,12 +156,41 @@ Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
 Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
 Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = Broadcast.DefaultArrayStyle{1}()
 
+# The library a wrapper carries in its type parameter, as a value. Used where a
+# call has to recover `petsclib` from an object rather than take it as an
+# argument (§8), for instance `save_vtk!(vecs, filename)`.
+petsclib_of(::AbstractPetscVec{PetscLib}) where {PetscLib} = getlib(PetscLib)
+
 # Array interface - size and length
 Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(PetscLib,v)
 Base.length(v::AbstractPetscVec{PetscLib}) where {PetscLib} = prod(size(v))
 Base.lastindex(v::AbstractPetscVec{PetscLib}) where {PetscLib} = length(v)
 Base.similar(v::AbstractPetscVec{PetscLib}) where {PetscLib} =  LibPETSc.VecDuplicate(getlib(PetscLib), v)
-type_name(m::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetType(PetscLib, m)
+"""
+    type_name(v::AbstractPetscVec)
+
+The name PETSc knows this vector's implementation by, as a `Symbol` (`:seq`,
+`:mpi`, …), or `nothing` when no type has been set yet (docs/src/man/naming.md
+§3.1). v0.4 answered with a `String`; that is a break with no shim (§16).
+
+# External Links
+$(doc_external("Vec/VecGetType"))
+"""
+type_name(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    type_name_symbol(LibPETSc.VecGetType(PetscLib, v))
+
+"""
+    set_type!(v::AbstractPetscVec, type::Symbol)
+
+Set the vector implementation, for example `:seq` or `:mpi`.
+
+# External Links
+$(doc_external("Vec/VecSetType"))
+"""
+function set_type!(v::AbstractPetscVec{PetscLib}, type::Symbol) where {PetscLib}
+    LibPETSc.VecSetType(getlib(PetscLib), v, String(type))
+    return nothing
+end
 
 function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib} 
     PetscInt = inttype(PetscLib)
@@ -655,15 +684,17 @@ end
 
 
 """
-    ownership_range(vec::AbstractVec, [base_one = true])
+    ownership_range(vec::AbstractPetscVec)
 
 The range of indices owned by this processor, assuming that the `vec` is laid
 out with the first `n1` elements on the first processor, next `n2` elements on
 the second, etc. For certain parallel layouts this range may not be well
 defined.
 
-If the optional argument `base_one == true` then base-1 indexing is used,
-otherwise base-0 index is used.
+The range is **1-based**, always: an index into Julia data is 1-based
+(docs/src/man/naming.md §12.1). v0.4 took `base_one::Bool` positionally and
+made the convention a runtime choice; `ownership_range(v, false)` warns in
+v0.5 and is a `MethodError` in v0.6.
 
 !!! note
 
@@ -672,14 +703,11 @@ otherwise base-0 index is used.
 # External Links
 $(doc_external("Vec/VecGetOwnershipRange"))
 """
-function ownership_range(
-    vec::AbstractPetscVec{PetscLib},
-    base_one::Bool = true,
-) where {PetscLib}
+function ownership_range(vec::AbstractPetscVec{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     # The wrapper returns two plain integers, not `Ref`s.
     r_lo, r_hi = LibPETSc.VecGetOwnershipRange(PetscLib, vec)
-    return base_one ? ((r_lo + PetscInt(1)):r_hi) : (r_lo:(r_hi - PetscInt(1)))
+    return (r_lo + PetscInt(1)):r_hi
 end
 
 # Overload norm function

@@ -516,3 +516,32 @@ function check_wrappers_version(petsclib=nothing)
 
     return (wrappers_version = wrappers_version, installed_version = installed_version, match = match)
 end
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Type names (docs/src/man/naming.md §3.1)
+#
+# PETSc registers type names at runtime as strings, so they cannot become enums.
+# They are `Symbol` at the Julia API and `String` at the C boundary, and the
+# conversion happens here, once, where the call meets C.
+#
+# The generated `*GetType` wrappers answer `""` (and `MatGetType` answers
+# `"(not set)"`) when PETSc has no type for the object yet. A reader that can
+# decline to answer is documented rather than papered over with a default
+# (§15.1), so both spellings come back as `nothing`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+type_name_symbol(s::AbstractString) =
+    (isempty(s) || s == "(not set)") ? nothing : Symbol(s)
+
+"""
+    set_type!(obj, type::Symbol)
+
+Set the PETSc implementation `obj` uses, for example `set_type!(ksp, :gmres)`.
+
+Defined for `PetscVec`, `PetscMat`, `KSP`, `SNES`, `TS` and `AbstractPetscDM`.
+The `Symbol` is converted to a `String` at the C boundary (§3.1).
+
+`set_type!(obj, "gmres")` still works in v0.5 and warns; it is a `MethodError`
+in v0.6.
+"""
+function set_type! end

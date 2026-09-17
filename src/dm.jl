@@ -76,6 +76,26 @@ end
 const TypedPetscDM{PetscLib} =
     Union{DMDA{PetscLib}, DMStag{PetscLib}, DMPlex{PetscLib}}
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Dimension-correct returns (docs/src/man/naming.md §12)
+#
+# Every index-shaped return is built from the DM's type parameter `N` with
+# `ntuple(..., Val(N))`, never by splatting a `Vector`: splatting hides the
+# length from the compiler, so `lower` and `upper` used to infer as `Any` and
+# cost three allocations per call.
+#
+# `axis_names` is three methods rather than `(:x, :y, :z)[1:N]` so the tuple is
+# a compile-time constant and `local_indices(dm2d).center` infers concretely as
+# `@NamedTuple{x::UnitRange{Int}, y::UnitRange{Int}}`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+axis_names(::Val{1}) = (:x,)
+axis_names(::Val{2}) = (:x, :y)
+axis_names(::Val{3}) = (:x, :y, :z)
+
+@inline axis_ranges(f::F, ::Val{N}) where {F, N} =
+    NamedTuple{axis_names(Val(N))}(ntuple(f, Val(N)))
+
 owns(dm::TypedPetscDM) = dm.own
 
 # Wrap a handle a LibPETSc creator returned, taking ownership of it. The
@@ -182,78 +202,86 @@ Get information about a DMDA.
 
 # Returns
 
-A `NamedTuple` with the following fields:
+A `NamedTuple` with the following fields, all of them `N`-dimensional for an
+`N`-dimensional `DMDA` (docs/src/man/naming.md §12):
 - `dim`: Dimension of the `DMDA` (1, 2, or 3)
-- `global_size`: Tuple with global dimensions in each direction of the array
-- `mpi_proc_size`: Tuple with number of MPI processes in each direction
-- `dof`: Degrees of freedom per node
+- `global_size`: `NTuple{N,Int}` with the global dimensions in each direction
+- `procs`: `NTuple{N,Int}` with the number of MPI processes in each direction
+- `ndofs`: Degrees of freedom per node
 - `stencil_width`: Width of the stencil
-- `boundary_type`: Tuple with boundary types in each direction
+- `boundary_type`: `NTuple{N,DMBoundaryType}` with the boundary type per direction
 - `stencil_type`: Stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
+
+v0.4 reported the stencil width twice, as `s` and as `stencil_width`, spelled
+the dof count `dof` and the process grid `mpi_proc_size`, and padded every
+tuple to three entries. All four are gone; this is a break with no shim (§16).
 
 # External Links
 $(doc_external("DMDA/DMDAGetInfo"))
 """
-function info(dm::DMDA{PetscLib}) where {PetscLib}
+function info(dm::DMDA{PetscLib, N}) where {PetscLib, N}
+    dim, M, Ny, P, m, n, p, dof, s, bx, by, bz, st =
+        LibPETSc.DMDAGetInfo(PetscLib, dm)
+    gsize = (Int(M), Int(Ny), Int(P))
+    nproc = (Int(m), Int(n), Int(p))
+    btype = (bx, by, bz)
 
-    dim, M, N, P, m, n, p, dof, s, bx, by, bz, st = LibPETSc.DMDAGetInfo(PetscLib, dm)
-    global_size   = (M,N,P)
-    mpi_proc_size = (m,n,p)
-    boundary_type = (bx,by,bz)
-    stencil_width = s
-    stencil_type  = st
-               
-
-	return (;dim,global_size,mpi_proc_size,dof,s,boundary_type,stencil_width,stencil_type)
-end
-
-"""
-    lower, upper, size = corners(da::DMDA)
-
-Returns a `NamedTuple` with the global indices (excluding ghost points) of the
-`lower` and `upper` corners as well as the `size`.
-
-# External Links
-$(doc_external("DMDA/DMDAGetCorners"))
-"""
-function corners(dm::DMDA{PetscLib}) where {PetscLib}
-    PetscInt = inttype(PetscLib)
-    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetCorners(PetscLib, dm)
-    lo = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
-    local_size = [PetscInt(xm), PetscInt(ym), PetscInt(zm)]
-
-    lo .+= 1
-    upper = lo .+ local_size .- PetscInt(1)
-
-    return (
-        lower = CartesianIndex(lo...),
-        upper = CartesianIndex(upper...),
-        size = (local_size...,),
+    return (;
+        dim = Int(dim),
+        global_size = ntuple(i -> gsize[i], Val(N)),
+        procs = ntuple(i -> nproc[i], Val(N)),
+        ndofs = Int(dof),
+        stencil_width = Int(s),
+        boundary_type = ntuple(i -> btype[i], Val(N)),
+        stencil_type = st,
     )
 end
 
 """
-    lower, upper, size = ghost_corners(da::DMDA)
+    lower, upper, size = corners(da::DMDA{PetscLib, N})
+
+Returns a `NamedTuple` with the global indices (excluding ghost points) of the
+`lower` and `upper` corners as well as the `size`.
+
+The result is dimension-correct (§12): `lower` and `upper` are
+`CartesianIndex{N}` and `size` is an `NTuple{N,Int}`, with no padding to three
+entries. This is a break with no shim (§16).
+
+# External Links
+$(doc_external("DMDA/DMDAGetCorners"))
+"""
+function corners(dm::DMDA{PetscLib, N}) where {PetscLib, N}
+    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetCorners(PetscLib, dm)
+    lo = (Int(xs), Int(ys), Int(zs))
+    sz = (Int(xm), Int(ym), Int(zm))
+
+    return (
+        lower = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
+        upper = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
+        size = ntuple(i -> sz[i], Val(N)),
+    )
+end
+
+"""
+    lower, upper, size = ghost_corners(da::DMDA{PetscLib, N})
 
 Returns a `NamedTuple` with the global indices (including ghost points) of the
 `lower` and `upper` corners as well as the `size` of the local part of the domain.
 
+Dimension-correct like [`corners`](@ref): `CartesianIndex{N}` and `NTuple{N,Int}`.
+
 # External Links
 $(doc_external("DMDA/DMDAGetGhostCorners"))
 """
-function ghost_corners(dm::DMDA{PetscLib}) where {PetscLib}
-    PetscInt = inttype(PetscLib)
+function ghost_corners(dm::DMDA{PetscLib, N}) where {PetscLib, N}
     xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetGhostCorners(PetscLib, dm)
-    lo = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
-    local_size = [PetscInt(xm), PetscInt(ym), PetscInt(zm)]
-
-    lo .+= 1
-    upper = lo .+ local_size .- PetscInt(1)
+    lo = (Int(xs), Int(ys), Int(zs))
+    sz = (Int(xm), Int(ym), Int(zm))
 
     return (
-        lower = CartesianIndex(lo...),
-        upper = CartesianIndex(upper...),
-        size = (local_size...,),
+        lower = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
+        upper = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
+        size = ntuple(i -> sz[i], Val(N)),
     )
 end
 
@@ -314,53 +342,65 @@ Returns a global vector `v` from the `dm` object.
 global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
 
 """
-    local_to_global!(local_vec, global_vec, dm, mode = INSERT_VALUES)
+    local_to_global!(gvec, dm, lvec, mode = INSERT_VALUES)
 
-Transfer values from the `local_vec` to the `global_vec` associated with the `dm` object.
+Transfer values from the local vector `lvec` to the global vector `gvec`
+associated with the `dm` object.
+
+The written vector comes first and the `dm` follows it (§8); v0.4 took the DM
+last. A shim forwards the v0.4 name `dm_local_to_global!` from the old order
+(§17.2); the new name only accepts the new one (§16).
 
 # Arguments
-- `local_vec::AbstractPetscVec`: Local vector (source)
-- `global_vec::AbstractPetscVec`: Global vector (destination)
+- `gvec::AbstractPetscVec`: Global vector (destination, written)
 - `dm::AbstractPetscDM`: DM object
+- `lvec::AbstractPetscVec`: Local vector (source)
 - `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
 
 # External Links
 $(doc_external("DM/DMLocalToGlobal"))
-
 """
-function local_to_global!(   local_vec::AbstractPetscVec{PetscLib},
-                                global_vec::AbstractPetscVec{PetscLib},
-                                   dm::AbstractPetscDM{PetscLib},
-                                   mode::InsertMode = INSERT_VALUES) where {PetscLib}
-
-    LibPETSc.DMLocalToGlobalBegin(PetscLib, dm, local_vec, mode, global_vec)
-    LibPETSc.DMLocalToGlobalEnd(PetscLib, dm, local_vec,  mode, global_vec)
+function local_to_global!(
+    gvec::AbstractPetscVec{PetscLib},
+    dm::AbstractPetscDM{PetscLib},
+    lvec::AbstractPetscVec{PetscLib},
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
+    LibPETSc.DMLocalToGlobalBegin(PetscLib, dm, lvec, mode, gvec)
+    LibPETSc.DMLocalToGlobalEnd(PetscLib, dm, lvec, mode, gvec)
     return nothing
 end
 
 
 """
-    global_to_local!(global_vec, local_vec, dm, mode = INSERT_VALUES)
+    global_to_local!(lvec, dm, gvec, mode = INSERT_VALUES)
 
-Transfer values from the `global_vec` to the `local_vec` associated with the `dm` object,
-including ghost point values from neighboring processes.
+Transfer values from the global vector `gvec` to the local vector `lvec`
+associated with the `dm` object, including ghost point values from neighboring
+processes.
+
+The written vector comes first and the `dm` follows it (§8); v0.4 had two
+spellings of this call, one taking the DM last and one taking it first, and
+they collapse onto this one. A shim forwards the v0.4 name
+`dm_global_to_local!` from the old order (§17.2).
 
 # Arguments
-- `global_vec::AbstractPetscVec`: Global vector (source)
-- `local_vec::AbstractPetscVec`: Local vector (destination)
+- `lvec::AbstractPetscVec`: Local vector (destination, written)
 - `dm::AbstractPetscDM`: DM object
+- `gvec::AbstractPetscVec`: Global vector (source)
 - `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
 
 # External Links
-$(doc_external("DM/DMLocalToGlobal"))
+$(doc_external("DM/DMGlobalToLocal"))
 """
-function global_to_local!(global_vec::AbstractPetscVec{PetscLib},
-                              local_vec::AbstractPetscVec{PetscLib},
-                                     dm::AbstractPetscDM{PetscLib},
-                                   mode::InsertMode = INSERT_VALUES) where {PetscLib}
-
-    LibPETSc.DMGlobalToLocalBegin(getlib(PetscLib), dm, global_vec, mode, local_vec)
-    LibPETSc.DMGlobalToLocalEnd(getlib(PetscLib), dm, global_vec,  mode, local_vec)
+function global_to_local!(
+    lvec::AbstractPetscVec{PetscLib},
+    dm::AbstractPetscDM{PetscLib},
+    gvec::AbstractPetscVec{PetscLib},
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
+    LibPETSc.DMGlobalToLocalBegin(getlib(PetscLib), dm, gvec, mode, lvec)
+    LibPETSc.DMGlobalToLocalEnd(getlib(PetscLib), dm, gvec, mode, lvec)
     return nothing
 end
 
@@ -467,13 +507,35 @@ end
 """
     type_name(dm::AbstractPetscDM)
 
-The name PETSc knows this DM's flavour by, as a `String` (`"da"`, `"stag"`, `"plex"`, …).
+The name PETSc knows this DM's flavour by, as a `Symbol` (`:da`, `:stag`,
+`:plex`, …), or `nothing` when no type has been set yet
+(docs/src/man/naming.md §3.1). v0.4 answered with a `String`; that is a break
+with no shim (§16).
+
+The flavour is a type parameter in v0.5 ([`DMDA`](@ref), [`DMStag`](@ref),
+[`DMPlex`](@ref)), so dispatch, not this reader, is the way to branch on it.
 
 # External Links
 $(doc_external("DM/DMGetType"))
 """
 type_name(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
-    LibPETSc.DMGetType(PetscLib, dm)
+    type_name_symbol(LibPETSc.DMGetType(PetscLib, dm))
+
+"""
+    set_type!(dm::AbstractPetscDM, type::Symbol)
+
+Set the DM flavour, for example `:da`, `:stag` or `:plex`.
+
+This configures a raw `PetscDM` handle; the high-level constructors set the
+flavour themselves, and [`narrow`](@ref) is what puts it into the Julia type.
+
+# External Links
+$(doc_external("DM/DMSetType"))
+"""
+function set_type!(dm::AbstractPetscDM{PetscLib}, type::Symbol) where {PetscLib}
+    LibPETSc.DMSetType(getlib(PetscLib), dm, String(type))
+    return nothing
+end
 
 """
     ndims(dm::AbstractPetscDM)
@@ -488,24 +550,29 @@ Base.ndims(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
 
 
 """
-    size(dm::DMDA)
-    size(dm::DMStag)
+    size(dm::DMDA{PetscLib, N})
+    size(dm::DMStag{PetscLib, N})
 
-Return the global size of the DM as a tuple.
+Return the global size of the DM as an `NTuple{N,Int}`.
 
-Returns `(M, N, P)`, with unused dimensions set to `1`.
+v0.4 returned `(M, N, P)` with the unused dimensions padded to `1`; the result
+is now dimension-correct (§12), which is a break with no shim (§16).
 
 # External Links
 $(doc_external("DMDA/DMDAGetInfo"))
 $(doc_external("DMSTAG/DMStagGetGlobalSizes"))
 """
-function Base.size(dm::DMDA{PetscLib}) where {PetscLib}
-    _, M, N, P, _ = LibPETSc.DMDAGetInfo(PetscLib, dm)
-    return (M, N, P)
+function Base.size(dm::DMDA{PetscLib, N}) where {PetscLib, N}
+    _, M, Ny, P, _ = LibPETSc.DMDAGetInfo(PetscLib, dm)
+    gsize = (Int(M), Int(Ny), Int(P))
+    return ntuple(i -> gsize[i], Val(N))
 end
 
-Base.size(dm::DMStag{PetscLib}) where {PetscLib} =
-    LibPETSc.DMStagGetGlobalSizes(PetscLib, dm)
+function Base.size(dm::DMStag{PetscLib, N}) where {PetscLib, N}
+    M, Ny, P = LibPETSc.DMStagGetGlobalSizes(PetscLib, dm)
+    gsize = (Int(M), Int(Ny), Int(P))
+    return ntuple(i -> gsize[i], Val(N))
+end
 
 #=
 """

@@ -22,6 +22,16 @@ const HEADER = """
 
 ismacro(s::Symbol) = startswith(String(s), "@")
 
+# Strip the common leading indentation from a block written inside the register,
+# so that the emitted code is indented by its own structure and not by where it
+# was quoted.
+function dedent(block::AbstractString)
+    lines = collect(eachline(IOBuffer(strip(block, ['\n']))))
+    body = filter(!isempty ∘ strip, lines)
+    pad = isempty(body) ? 0 : minimum(length(l) - length(lstrip(l)) for l in body)
+    return [isempty(strip(l)) ? "" : l[(pad + 1):end] for l in lines]
+end
+
 # ---------------------------------------------------------------------------
 # Consistency checks
 # ---------------------------------------------------------------------------
@@ -124,6 +134,20 @@ end
             end
             """,
         )
+    end
+
+    print(
+        io,
+        "\n# Deprecated methods of names that did not change: an argument the v0.5\n" *
+        "# signature no longer takes, kept for one release and warning when passed\n" *
+        "# (\u00a717.2).\n\n",
+    )
+    for shim in EXTRA_SHIMS
+        println(io, "# ", shim.name)
+        for line in dedent(shim.code)
+            println(io, line)
+        end
+        println(io)
     end
 
     print(io, "\n# Renamed types: a `const` alias, so `isa` and dispatch keep working\n\n")
@@ -359,9 +383,16 @@ const SHIMS = [
             PETSc.initialized(petsclib)
         end) == PETSc.isinitialized(petsclib)
     end
-end
+
 """,
     )
+    for shim in EXTRA_SHIMS
+        for line in dedent(shim.test)
+            println(io, isempty(line) ? "" : "    " * line)
+        end
+        println(io)
+    end
+    print(io, "end\n")
     write(path, String(take!(io)))
     return nothing
 end

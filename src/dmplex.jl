@@ -600,12 +600,18 @@ LibPETSc.@for_petsc function label(
 end
 
 """
-    add_boundary!(petsclib, dm, bctype, name, label, values, field, comps,
+    add_boundary!(dm, bctype, name, label, values, field, comps,
                   bcfunc_ptr, bcfunc_t_ptr = C_NULL, ctx = C_NULL) -> bd::PetscInt
 
 Attach a boundary condition to `dm`.  `label` is a `Ptr{Cvoid}` from
 [`label`](@ref).  `bcfunc_ptr` / `bcfunc_t_ptr` are `@cfunction(...)` results
 matching PETSc's boundary callback signature.
+
+`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+The v0.4 form with `petsclib` first still works in v0.5 and warns.
+
+The `values` are label values PETSc issued and `field` is the number
+[`set_field!`](@ref) gave the field, so both keep PETSc's numbering (§12.1).
 
 # External Links
 $(doc_external("DM/DMAddBoundary"))
@@ -613,7 +619,6 @@ $(doc_external("DM/DMAddBoundary"))
 function add_boundary! end
 
 LibPETSc.@for_petsc function add_boundary!(
-    petsclib::$UnionPetscLib,
     dm::AbstractPetscDM{$PetscLib},
     bctype::LibPETSc.DMBoundaryConditionType,
     name::AbstractString,
@@ -625,6 +630,7 @@ LibPETSc.@for_petsc function add_boundary!(
     bcfunc_t_ptr::Ptr{Cvoid} = C_NULL,
     ctx::Ptr{Cvoid}          = C_NULL,
 )
+    petsclib = getlib($PetscLib)
     values_v = collect($PetscInt.(values))
     comps_v  = collect($PetscInt.(comps))
     return LibPETSc.DMAddBoundary(
@@ -640,9 +646,12 @@ end
 # ── Wire DMPlex FEM residual/Jacobian assembly into SNES ─────────────────────
 
 """
-    set_snes_local_fem!(petsclib, dm; use_obj = false, ctx = C_NULL)
+    set_snes_local_fem!(dm; use_obj = false, ctx = C_NULL)
 
 Tell SNES to use `DMPlex`'s built-in FEM residual / Jacobian assembly on `dm`.
+
+`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+The v0.4 name `plex_set_snes_local_fem!` shims the old form.
 
 # External Links
 $(doc_external("DMPlex/DMPlexSetSNESLocalFEM"))
@@ -650,11 +659,11 @@ $(doc_external("DMPlex/DMPlexSetSNESLocalFEM"))
 function set_snes_local_fem! end
 
 LibPETSc.@for_petsc function set_snes_local_fem!(
-    petsclib::$UnionPetscLib,
     dm::AbstractPetscDM{$PetscLib};
     use_obj::Bool = false,
     ctx::Ptr{Cvoid} = C_NULL,
 )
+    petsclib = getlib($PetscLib)
     LibPETSc.DMPlexSetSNESLocalFEM(petsclib, dm, LibPETSc.PetscBool(use_obj), ctx)
     return nothing
 end
@@ -758,9 +767,13 @@ end
 # ── DMProjectFunction / DMComputeL2Diff ─────────────────────────────────────
 
 """
-    project_function!(petsclib, dm, time, funcs, ctxs, mode, X)
+    project_function!(X, dm, time, funcs, ctxs, mode)
 
 Project a collection of pointwise functions into the global vector `X`.
+
+The written vector comes first and `petsclib` is gone (§8); v0.4 took `X` last
+and `petsclib` first. A shim forwards the v0.4 name `dm_project_function!`
+from the old order (§17.2).
 `funcs` is a vector of `@cfunction` pointers (one per field) matching
 PETSc's `PetscSimplePointFn` signature.  `ctxs` is a matching vector of
 context pointers, or `nothing` to use `C_NULL` for every field.
@@ -774,14 +787,14 @@ $(doc_external("DM/DMProjectFunction"))
 function project_function! end
 
 LibPETSc.@for_petsc function project_function!(
-    petsclib::$UnionPetscLib,
+    X::AbstractPetscVec{$PetscLib},
     dm::AbstractPetscDM{$PetscLib},
     time::Real,
     funcs::AbstractVector{Ptr{Cvoid}},
     ctxs::AbstractVector{Ptr{Cvoid}},
     mode::LibPETSc.InsertMode,
-    X::AbstractPetscVec{$PetscLib},
 )
+    petsclib = getlib($PetscLib)
     n = length(funcs)
     length(ctxs) == n || throw(
         DimensionMismatch("got $n funcs but $(length(ctxs)) ctxs"),
@@ -793,27 +806,30 @@ LibPETSc.@for_petsc function project_function!(
 end
 
 function project_function!(
-    petsclib, dm::AbstractPetscDM,
+    X::AbstractPetscVec,
+    dm::AbstractPetscDM,
     time::Real,
     funcs::AbstractVector,
     ctxs::Union{AbstractVector, Nothing},
     mode::LibPETSc.InsertMode,
-    X,
 )
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
     cptrs = ctxs === nothing ?
         fill(C_NULL, length(fptrs)) :
         Ptr{Cvoid}[Ptr{Cvoid}(c) for c in ctxs]
-    project_function!(petsclib, dm, time, fptrs, cptrs, mode, X)
+    project_function!(X, dm, time, fptrs, cptrs, mode)
 end
 
 """
-    l2diff(petsclib, dm, time, funcs, ctxs, X) -> PetscReal
+    l2diff(dm, time, funcs, ctxs, X) -> PetscReal
 
 Compute the L² error between the global vector `X` and the pointwise exact
 functions `funcs` (one per field, matching `PetscSimplePointFn` signature).
 `ctxs` is a matching vector of context pointers, or `nothing` to use `C_NULL`
 for every field.  Requires that [`set_exact_solution!`](@ref) has been called.
+
+`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+The v0.4 name `dm_compute_l2diff` shims the old form.
 
 # External Links
 $(doc_external("DM/DMComputeL2Diff"))
@@ -821,13 +837,13 @@ $(doc_external("DM/DMComputeL2Diff"))
 function l2diff end
 
 LibPETSc.@for_petsc function l2diff(
-    petsclib::$UnionPetscLib,
     dm::AbstractPetscDM{$PetscLib},
     time::Real,
     funcs::AbstractVector{Ptr{Cvoid}},
     ctxs::AbstractVector{Ptr{Cvoid}},
     X::AbstractPetscVec{$PetscLib},
 )
+    petsclib = getlib($PetscLib)
     n = length(funcs)
     length(ctxs) == n || throw(
         DimensionMismatch("got $n funcs but $(length(ctxs)) ctxs"),
@@ -838,17 +854,17 @@ LibPETSc.@for_petsc function l2diff(
 end
 
 function l2diff(
-    petsclib, dm::AbstractPetscDM,
+    dm::AbstractPetscDM,
     time::Real,
     funcs::AbstractVector,
     ctxs::Union{AbstractVector, Nothing},
-    X,
+    X::AbstractPetscVec,
 )
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
     cptrs = ctxs === nothing ?
         fill(C_NULL, length(fptrs)) :
         Ptr{Cvoid}[Ptr{Cvoid}(c) for c in ctxs]
-    l2diff(petsclib, dm, time, fptrs, cptrs, X)
+    return l2diff(dm, time, fptrs, cptrs, X)
 end
 
 # ── Auxiliary-field helpers ───────────────────────────────────────────────────
@@ -872,20 +888,9 @@ end
 # dm.jl were the same two calls under two names. Both pairs collapse onto
 # `global_vec`/`local_vec`, defined once in src/dm.jl.
 
-"""
-    global_to_local!(dm, global_vec, local_vec; mode = INSERT_VALUES)
-
-Scatter `global_vec` into `local_vec` (including ghost values).
-"""
-function global_to_local!(
-    dm::AbstractPetscDM{PetscLib},
-    gvec,
-    lvec;
-    mode::LibPETSc.InsertMode = LibPETSc.INSERT_VALUES,
-) where {PetscLib}
-    LibPETSc.DMGlobalToLocal(getlib(PetscLib), dm, gvec, mode, lvec)
-    return nothing
-end
+# `global_to_local!(dm, gvec, lvec; mode)` lived here as a second shape of the
+# same call. §8 collapses both onto `global_to_local!(lvec, dm, gvec, mode)`,
+# defined once in src/dm.jl.
 
 """
     set_auxiliary_vec!(dm, aux_local)
@@ -903,10 +908,10 @@ function set_auxiliary_vec!(dm::AbstractPetscDM{PetscLib}, aux_local) where {Pet
 end
 
 """
-    add_coarsen_hook!(dm, coarsenhook, restricthook = C_NULL)
+    add_coarsen_hook!(coarsenhook, dm, restricthook = C_NULL)
 
 Register a C callback invoked each time `dm` is coarsened (e.g. during FAS
-hierarchy setup).  The coarsenhook signature is:
+hierarchy setup).  The callback comes first (§8.1), so `dm` is argument 2.  The coarsenhook signature is:
 ```
 hook(fine::Ptr{Cvoid}, coarse::Ptr{Cvoid}, ctx::Ptr{Cvoid}) → Cint
 ```
@@ -918,8 +923,8 @@ function add_coarsen_hook! end
 
 # Convenience: infer petsclib from the DM type parameter
 function add_coarsen_hook!(
-    dm::AbstractPetscDM{PL},
     coarsenhook::Ptr{Cvoid},
+    dm::AbstractPetscDM{PL},
     restricthook::Ptr{Cvoid} = C_NULL,
 ) where {PL}
     LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook, C_NULL)
@@ -1062,8 +1067,8 @@ LibPETSc.@for_petsc function set_jacobian_nullspace!(
 end
 
 """
-    save_vtk!(petsclib, comm, filename, vec::AbstractPetscVec)
-    save_vtk!(petsclib, comm, filename, vecs)
+    save_vtk!(vec::AbstractPetscVec, filename)
+    save_vtk!(vecs, filename)
 
 Write the global vector `vec` to a VTK unstructured-grid file (`.vtu`),
 readable by ParaView and VisIt.  Works for both serial and MPI runs; PETSc
@@ -1074,16 +1079,23 @@ The second form takes any iterable of `AbstractPetscVec` and writes each as a
 separate point-data array in one file.  The field name shown in ParaView/VisIt
 comes from the name set on the vector via [`set_name!`](@ref).
 
-`vtk_save!` and `vtk_save_fields!` were the two v0.4 names for these two methods.
+Neither `petsclib` nor `comm` is an argument: the vector carries the library as
+a type parameter and PETSc is asked for its communicator (§8).
+
+`vtk_save!` and `vtk_save_fields!` were the two v0.4 names for these two
+methods, and both shim the old argument list.
+
+# External Links
+$(doc_external("Viewer/PetscViewerVTKOpen"))
 """
 function save_vtk! end
 
 LibPETSc.@for_petsc function save_vtk!(
-    petsclib::$UnionPetscLib,
-    comm::MPI.Comm,
-    filename::AbstractString,
     vec::AbstractPetscVec{$PetscLib},
+    filename::AbstractString,
 )
+    petsclib = getlib($PetscLib)
+    comm = LibPETSc.PetscObjectGetComm(petsclib, vec)
     vtk = LibPETSc.PetscViewerVTKOpen(petsclib, comm, String(filename), LibPETSc.FILE_MODE_WRITE)
     LibPETSc.VecView(petsclib, vec, vtk)
     vtk_ref = Ref{LibPETSc.PetscViewer}(vtk)
@@ -1092,10 +1104,14 @@ LibPETSc.@for_petsc function save_vtk!(
 end
 
 """
-    project_field!(petsclib, dm, time, U, funcs, mode, X)
+    project_field!(X, dm, time, U, funcs, mode)
 
 Project a function of the fields in the input vector `U` into the FE space of `dm`,
-writing the result into `X`.  `funcs` is a vector of `Ptr{Cvoid}` function pointers
+writing the result into `X`.
+
+The written vector comes first and `petsclib` is gone (§8); v0.4 took `X` last
+and `petsclib` first. A shim forwards the v0.4 name `dm_project_field!` from
+the old order (§17.2).  `funcs` is a vector of `Ptr{Cvoid}` function pointers
 (one per field in `dm`), each with the `PetscPointFn` / `@residual_fn` signature.
 `U` must be associated with a DM that shares the same mesh as `dm` (e.g. obtained via
 [`clone`](@ref)).
@@ -1109,34 +1125,44 @@ $(doc_external("DM/DMProjectField"))
 function project_field! end
 
 LibPETSc.@for_petsc function project_field!(
-    petsclib::$UnionPetscLib,
+    X::AbstractPetscVec{$PetscLib},
     dm::AbstractPetscDM{$PetscLib},
     time::Real,
     U::AbstractPetscVec{$PetscLib},
     funcs::AbstractVector{Ptr{Cvoid}},
     mode::LibPETSc.InsertMode,
-    X::AbstractPetscVec{$PetscLib},
 )
+    petsclib = getlib($PetscLib)
     funcs_v = collect(Ptr{Cvoid}, funcs)
     GC.@preserve funcs_v LibPETSc.DMProjectField(petsclib, dm, $PetscReal(time), U, pointer(funcs_v), mode, X)
     return nothing
 end
 
 function project_field!(
-    petsclib, dm::AbstractPetscDM,
-    time::Real, U, funcs, mode, X,
+    X::AbstractPetscVec,
+    dm::AbstractPetscDM,
+    time::Real,
+    U::AbstractPetscVec,
+    funcs,
+    mode,
 )
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
-    project_field!(petsclib, dm, time, U, fptrs, mode, X)
+    project_field!(X, dm, time, U, fptrs, mode)
 end
 
-# The multi-field method of `save_vtk!`, documented with the single-vector one above.
-LibPETSc.@for_petsc function save_vtk!(
-    petsclib::$UnionPetscLib,
-    comm::MPI.Comm,
-    filename::AbstractString,
+# The multi-field method of `save_vtk!`, documented with the single-vector one
+# above. The communicator comes from the first vector, so the iterable must not
+# be empty.
+function save_vtk!(
     vecs,   # iterable of AbstractPetscVec
+    filename::AbstractString,
 )
+    isempty(vecs) && throw(
+        ArgumentError("save_vtk! needs at least one vector to take the communicator from"),
+    )
+    v1 = first(vecs)
+    petsclib = petsclib_of(v1)
+    comm = LibPETSc.PetscObjectGetComm(petsclib, v1)
     vtk = LibPETSc.PetscViewerVTKOpen(petsclib, comm, String(filename), LibPETSc.FILE_MODE_WRITE)
     for vec in vecs
         LibPETSc.VecView(petsclib, vec, vtk)
@@ -1164,7 +1190,7 @@ function set_constants!(ds::PetscDS{PetscLib}, constants::AbstractVector) where 
 end
 
 """
-    add_natural_boundary!(petsclib, dm, ds, name, label, label_value, field, f0_ptr, f1_ptr = C_NULL) -> bd::PetscInt
+    add_natural_boundary!(dm, ds, name, label, label_value, field, f0_ptr, f1_ptr = C_NULL) -> bd::PetscInt
 
 Register a natural (Neumann) boundary condition on `dm` following the PETSc 3.22+
 pattern used in the C tutorials.  Equivalent to:
@@ -1178,6 +1204,9 @@ PetscWeakFormSetIndexBdResidual(wf, label, val, field, 0, 0, f0, 0, NULL);
 the boundary integrand (`PetscBdPointFn` signature, with the outward normal `n[]`
 between `x[]` and `numConstants`).
 
+`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+The v0.4 form with `petsclib` first still works in v0.5 and warns.
+
 # External Links
 $(doc_external("DM/DMAddBoundary"))
 $(doc_external("Dm/PetscWeakFormSetIndexBdResidual"))
@@ -1185,7 +1214,6 @@ $(doc_external("Dm/PetscWeakFormSetIndexBdResidual"))
 function add_natural_boundary! end
 
 LibPETSc.@for_petsc function add_natural_boundary!(
-    petsclib::$UnionPetscLib,
     dm::AbstractPetscDM{$PetscLib},
     ds::PetscDS{$PetscLib},
     name::AbstractString,
@@ -1195,6 +1223,7 @@ LibPETSc.@for_petsc function add_natural_boundary!(
     f0_ptr::Ptr{Cvoid},
     f1_ptr::Ptr{Cvoid} = C_NULL,
 )
+    petsclib = getlib($PetscLib)
     # Step 1: register the boundary (NULL function — function set via weak form below)
     bd = LibPETSc.DMAddBoundary(petsclib, dm, LibPETSc.DM_BC_NATURAL, String(name),
         label, $PetscInt(1), $PetscInt[label_value],

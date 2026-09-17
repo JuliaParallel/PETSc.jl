@@ -1,5 +1,26 @@
 import .LibPETSc: AbstractPetscDM, PetscDM, CDM
 
+# `stencil_type` is a PETSc enum (§3.1's enum rule), and naming.md also spells
+# it as a `Symbol` in the constructor examples. Both work: the Symbol is mapped
+# here, the enum passes through.
+stencil_type_enum(::Type{DMDAStencilType}, t::DMDAStencilType) = t
+stencil_type_enum(::Type{DMDAStencilType}, ::Nothing) = nothing
+function stencil_type_enum(::Type{DMDAStencilType}, t::Symbol)
+    t === :star && return DMDA_STENCIL_STAR
+    t === :box && return DMDA_STENCIL_BOX
+    throw(ArgumentError("unknown DMDA stencil type :$t, expected :star or :box"))
+end
+
+stencil_type_enum(::Type{DMStagStencilType}, t::DMStagStencilType) = t
+function stencil_type_enum(::Type{DMStagStencilType}, t::Symbol)
+    t === :none && return DMSTAG_STENCIL_NONE
+    t === :star && return DMSTAG_STENCIL_STAR
+    t === :box && return DMSTAG_STENCIL_BOX
+    throw(ArgumentError(
+        "unknown DMStag stencil type :$t, expected :none, :star or :box",
+    ))
+end
+
 
 """
     DMDA(
@@ -54,6 +75,7 @@ function DMDA(
     options...,
 ) where {PetscLib, N}
     PetscInt = inttype(PetscLib)
+    stencil_type = stencil_type_enum(DMDAStencilType, stencil_type)
 
     if isnothing(points_per_proc)
         points_per_proc = ntuple(_ -> nothing, N)
@@ -170,16 +192,13 @@ be addressed with global indexing.
 """
 function reshape_local_array(
     Arr,
-    da::Union{DMDA{PetscLib}, DMStag{PetscLib}},
+    da::Union{DMDA{PetscLib, N}, DMStag{PetscLib, N}},
     ndof::Integer = ndofs(da),
-) where {PetscLib}
+) where {PetscLib, N}
 
     # First we try to use a ghosted size
-    c = ghost_corners(da)
-    # If this is two big for the array use non-ghosted
-    if length(Arr) < prod(c.size) * ndof
-        c = corners(da)
-    end
+    gc = ghost_corners(da)
+    c = length(Arr) < prod(gc.size) * ndof ? corners(da) : gc
     length(Arr) == prod(c.size) * ndof || throw(
         DimensionMismatch(
             "array has $(length(Arr)) entries, but the local domain needs " *
@@ -187,15 +206,14 @@ function reshape_local_array(
         ),
     )
 
-    oArr = OffsetArray(
-        reshape(Arr, Int64(ndof), Int64.(c.size)...),
-        1:ndof,
-        (c.lower[1]):(c.upper[1]),
-        (c.lower[2]):(c.upper[2]),
-        (c.lower[3]):(c.upper[3]),
+    # `N + 1` axes: the dof axis, then one axis per dimension of the DM. v0.4
+    # always built four axes, which only worked because everything was padded
+    # to three dimensions (§12).
+    return OffsetArray(
+        reshape(Arr, Int64(ndof), ntuple(i -> Int64(c.size[i]), Val(N))...),
+        1:Int64(ndof),
+        ntuple(i -> (c.lower[i]):(c.upper[i]), Val(N))...,
     )
-
-    return oArr
 end
 
 """
@@ -203,14 +221,14 @@ end
 
 Returns the linear indices associated with the degrees of freedom own by this MPI rank embedded in the ghost index space for the `dmda`
 """
-function local_interior_linear_index(da::DMDA{PetscLib}) where PetscLib
+function local_interior_linear_index(da::DMDA{PetscLib, N}) where {PetscLib, N}
     # Determine the indices of the linear indices of the local part of the
     # matrix we own
-    gc = PETSc.ghost_corners(da)
-    c = PETSc.corners(da)
+    gc = ghost_corners(da)
+    c = corners(da)
 
     # First compute the Cartesian indices for the local portion we own
-    offset = gc.lower - CartesianIndex(1, 1, 1)
+    offset = gc.lower - oneunit(CartesianIndex{N})
     l_inds = ((c.lower):(c.upper)) .- offset
 
     # Create a grid of indices with ghost then extract only the local part
@@ -221,30 +239,37 @@ function local_interior_linear_index(da::DMDA{PetscLib}) where PetscLib
 end
 
 """
-    star_fd_coloring(petsclib, da::DMDA)
+    star_fd_coloring(da::DMDA{PetscLib, 2})
 
 Build all data needed for manual FD coloring of a **2-D** DMDA with a STAR
 stencil, using `IS_COLORING_LOCAL` and ghost-local COO indexing.
+
+`petsclib` is not an argument: the `DMDA` carries it as a type parameter
+(docs/src/man/naming.md §8). The dimension is a type parameter too, so a DMDA
+of any other dimension is a `MethodError` rather than a silently wrong answer.
 
 Specifically, this function:
 1. Creates an `IS_COLORING_LOCAL` `ISColoring` via `DMCreateColoring` and
    extracts the per-DOF color vector (ghost-local layout).
 2. Enumerates all STAR-stencil (row, col) pairs for every owned node and
    records their ghost-local 0-based indices and colors.
-3. Builds per-color index arrays (`perturb_cols`, `coo_idxs`, `local_rows`)
+3. Builds per-color index arrays (`perturb_cols_1b`, `coo_idxs_1b`, `local_rows_1b`)
    ready for use in an FD coloring Newton loop.
 
-Returns a `NamedTuple`:
-- `n_colors`      — number of colors
-- `n_local_dofs`  — number of locally owned DOFs (owned nodes × dof/node)
-- `nnz_coo`       — total number of COO entries
-- `row_coo_local` — ghost-local 0-based row indices (`Vector{PetscInt}`)
-- `col_coo_local` — ghost-local 0-based column indices (`Vector{PetscInt}`)
-- `perturb_cols`  — `perturb_cols[c]`: 1-based owned-local column indices
-                    with color `c-1`; used to scatter `+h` perturbations.
-- `coo_idxs`      — `coo_idxs[c]`: 1-based COO entry indices for color `c-1`
-- `local_rows`    — `local_rows[c]`: corresponding 1-based owned-local
-                    residual-row indices; used to read `(f1-f0)/h`.
+Returns a `NamedTuple`. The index vectors carry the base they use in their name
+(§12.1), because this function returns both: the COO arrays go straight to
+`LibPETSc.MatSetPreallocationCOOLocal` and keep PETSc's base, while the rest
+index Julia arrays and are 1-based.
+- `n_colors`         — number of colors
+- `n_local_dofs`     — number of locally owned DOFs (owned nodes × dof/node)
+- `nnz_coo`          — total number of COO entries
+- `row_coo_local_0b` — ghost-local 0-based row indices (`Vector{PetscInt}`)
+- `col_coo_local_0b` — ghost-local 0-based column indices (`Vector{PetscInt}`)
+- `perturb_cols_1b`  — `perturb_cols_1b[c]`: 1-based owned-local column indices
+                       with color `c-1`; used to scatter `+h` perturbations.
+- `coo_idxs_1b`      — `coo_idxs_1b[c]`: 1-based COO entry indices for color `c-1`
+- `local_rows_1b`    — `local_rows_1b[c]`: corresponding 1-based owned-local
+                       residual-row indices; used to read `(f1-f0)/h`.
 
 !!! note "2-D DMDA STAR stencil only"
     Neighbor enumeration covers only `±x` and `±y` directions.  The ghost-local
@@ -252,9 +277,10 @@ Returns a `NamedTuple`:
     - add `±z` neighbors guarded by `kk > 1` / `kk < mz`,
     - extend the flat-index formula with `+ iz*dof*nx_g*ny_g`,
     - reshape `col_colors_mat` to `(dof, nx_g, ny_g, nz_g)`,
-    - decode `z_owned` in the `perturb_cols` loop.
+    - decode `z_owned` in the `perturb_cols_1b` loop.
 """
-function star_fd_coloring(petsclib::PetscLib, da::DMDA{PetscLib}) where PetscLib
+function star_fd_coloring(da::DMDA{PetscLib, 2}) where {PetscLib}
+    petsclib = getlib(PetscLib)
     CPetscInt = petsclib.PetscInt
 
     # ── ISColoring ────────────────────────────────────────────────────────────
@@ -269,7 +295,7 @@ function star_fd_coloring(petsclib::PetscLib, da::DMDA{PetscLib}) where PetscLib
     da_info = info(da)
     mx            = Int(da_info.global_size[1])
     my            = Int(da_info.global_size[2])
-    dof_per_node  = Int(da_info.dof)
+    dof_per_node  = Int(da_info.ndofs)
     c             = corners(da)
     gc            = ghost_corners(da)
     xs_da  = c.lower[1];       ys_da  = c.lower[2]
@@ -306,8 +332,8 @@ function star_fd_coloring(petsclib::PetscLib, da::DMDA{PetscLib}) where PetscLib
                       nbr_top    * nx_own
     nnz_coo = total_nbr_pairs * dof_per_node^2
 
-    row_coo_local     = Vector{CPetscInt}(undef, nnz_coo)
-    col_coo_local     = Vector{CPetscInt}(undef, nnz_coo)
+    row_coo_local_0b     = Vector{CPetscInt}(undef, nnz_coo)
+    col_coo_local_0b     = Vector{CPetscInt}(undef, nnz_coo)
     local_row_per_coo = Vector{CPetscInt}(undef, nnz_coo)  # 0-based owned-local row
     color_per_coo     = Vector{CPetscInt}(undef, nnz_coo)  # 0-based color of column
 
@@ -322,8 +348,8 @@ function star_fd_coloring(petsclib::PetscLib, da::DMDA{PetscLib}) where PetscLib
             p_owned = CPetscInt(d_row + p_base)
             for d_col in 0:dof_per_node-1
                 @inbounds begin
-                    row_coo_local[k]     = r_local
-                    col_coo_local[k]     = CPetscInt(d_col + c_base)
+                    row_coo_local_0b[k]     = r_local
+                    col_coo_local_0b[k]     = CPetscInt(d_col + c_base)
                     color_per_coo[k]     = CPetscInt(col_colors_mat[d_col+1, nix_gh+1, njy_gh+1])
                     local_row_per_coo[k] = p_owned
                 end
@@ -353,12 +379,12 @@ function star_fd_coloring(petsclib::PetscLib, da::DMDA{PetscLib}) where PetscLib
     end
 
     # ── Per-color index arrays ────────────────────────────────────────────────
-    # perturb_cols[c]: 1-based owned-local column indices with color c-1.
+    # perturb_cols_1b[c]: 1-based owned-local column indices with color c-1.
     # col_colors_local uses the ghost-local layout, but VecGetArray returns only
     # owned DOFs re-indexed 1..n_local_dofs.  We convert owned-local → ghost-local
     # before looking up the color.
     hint_cols = max(1, n_local_dofs ÷ n_colors)
-    perturb_cols = [sizehint!(Int32[], hint_cols) for _ in 1:n_colors]
+    perturb_cols_1b = [sizehint!(Int32[], hint_cols) for _ in 1:n_colors]
     for p_local in 1:n_local_dofs
         p0      = p_local - 1
         d       = p0 % dof_per_node
@@ -367,26 +393,26 @@ function star_fd_coloring(petsclib::PetscLib, da::DMDA{PetscLib}) where PetscLib
         k_ghost = d + (x_owned + ox_coo) * dof_per_node +
                       (y_owned + oy_coo) * dof_per_node * nx_g_da + 1
         c = Int(col_colors_local[k_ghost]) + 1
-        push!(perturb_cols[c], Int32(p_local))
+        push!(perturb_cols_1b[c], Int32(p_local))
     end
 
     hint_coo = max(1, nnz_coo ÷ n_colors)
-    coo_idxs   = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
-    local_rows = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
+    coo_idxs_1b   = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
+    local_rows_1b = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
     for k in 1:nnz_coo
         c = Int(color_per_coo[k]) + 1
-        push!(coo_idxs[c],   Int32(k))
-        push!(local_rows[c], Int32(local_row_per_coo[k] + 1))
+        push!(coo_idxs_1b[c],   Int32(k))
+        push!(local_rows_1b[c], Int32(local_row_per_coo[k] + 1))
     end
 
     return (;
         n_colors,
         n_local_dofs,
         nnz_coo,
-        row_coo_local,
-        col_coo_local,
-        perturb_cols,
-        coo_idxs,
-        local_rows,
+        row_coo_local_0b,
+        col_coo_local_0b,
+        perturb_cols_1b,
+        coo_idxs_1b,
+        local_rows_1b,
     )
 end

@@ -226,7 +226,6 @@ function (w::KSPComputeRHSFn{PetscLib, PetscInt})(
 end
 
 """
-    set_compute_rhs!(ksp::AbstractKSP, rhs!::Function)
     set_compute_rhs!(rhs!::Function, ksp::AbstractKSP)
 
 Define `rhs!` to be the right-hand side function of the `ksp`. A call to
@@ -240,8 +239,12 @@ Define `rhs!` to be the right-hand side function of the `ksp`. A call to
 
 # External Links
 $(doc_external("KSP/KSPSetComputeRHS"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_compute_rhs!(ksp::AbstractKSP, rhs!) = set_compute_rhs!(rhs!, ksp)
+function set_compute_rhs! end
 # We have to use the macro here because of the @cfunction
 LibPETSc.@for_petsc function set_compute_rhs!(rhs!, ksp::AbstractKSP{$PetscLib})
     # We must wrap the user function in our own object
@@ -275,7 +278,6 @@ function (w::KSPComputeOperatorsFn{PetscLib, PetscInt})(
 end
 
 """
-    set_compute_operators!(ksp::KSP, ops!::Function)
     set_compute_operators!(ops!::Function, ksp::KSP)
 
 Define `ops!` to be the compute operators function for the `ksp`. A call to
@@ -289,8 +291,12 @@ operator `A` and preconditioning matrix `P` based on the `new_ksp`.
 
 # External Links
 $(doc_external("KSP/KSPSetComputeOperators"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_compute_operators!(ksp::AbstractKSP, ops!) = set_compute_operators!(ops!, ksp)
+function set_compute_operators! end
 # We have to use the macro here because of the @cfunction
 LibPETSc.@for_petsc function set_compute_operators!(ops!, ksp::AbstractKSP{$PetscLib})
     # We must wrap the user function in our own object
@@ -322,4 +328,28 @@ function solution(ksp::AbstractKSP{PetscLib}) where PetscLib
 end
 
 
-type_name(ksp::AbstractKSP{PetscLib}) where PetscLib = LibPETSc.KSPGetType(getlib(PetscLib), ksp)
+"""
+    type_name(ksp::AbstractKSP)
+
+The name PETSc knows this solver by, as a `Symbol` (`:gmres`, `:cg`, …), or
+`nothing` when no type has been set yet (docs/src/man/naming.md §3.1). v0.4
+answered with a `String`; that is a break with no shim (§16).
+
+# External Links
+$(doc_external("KSP/KSPGetType"))
+"""
+type_name(ksp::AbstractKSP{PetscLib}) where {PetscLib} =
+    type_name_symbol(LibPETSc.KSPGetType(getlib(PetscLib), ksp))
+
+"""
+    set_type!(ksp::AbstractKSP, type::Symbol)
+
+Set the Krylov method, for example `:gmres`, `:cg` or `:preonly`.
+
+# External Links
+$(doc_external("KSP/KSPSetType"))
+"""
+function set_type!(ksp::AbstractKSP{PetscLib}, type::Symbol) where {PetscLib}
+    LibPETSc.KSPSetType(getlib(PetscLib), ksp, String(type))
+    return nothing
+end

@@ -62,15 +62,40 @@ function SNES(
 end
 
 
-function type_name(snes::AbstractSNES{PetscLib}) where {PetscLib}
-    return LibPETSc.SNESGetType(PetscLib, snes)
+"""
+    type_name(snes::AbstractSNES)
+
+The name PETSc knows this solver by, as a `Symbol` (`:newtonls`, `:fas`, …), or
+`nothing` when no type has been set yet (docs/src/man/naming.md §3.1). v0.4
+answered with a `String`; that is a break with no shim (§16).
+
+# External Links
+$(doc_external("SNES/SNESGetType"))
+"""
+type_name(snes::AbstractSNES{PetscLib}) where {PetscLib} =
+    type_name_symbol(LibPETSc.SNESGetType(PetscLib, snes))
+
+"""
+    set_type!(snes::AbstractSNES, type::Symbol)
+
+Set the nonlinear method, for example `:newtonls`, `:newtontr` or `:fas`.
+
+# External Links
+$(doc_external("SNES/SNESSetType"))
+"""
+function set_type!(snes::AbstractSNES{PetscLib}, type::Symbol) where {PetscLib}
+    LibPETSc.SNESSetType(getlib(PetscLib), snes, String(type))
+    return nothing
 end
 
 """
-    set_function!(snes, f!, vec)
     set_function!(f!, snes, vec)
 
 Set the residual function `f!` for the nonlinear solver `snes`.
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 
 The function `f!` will be called as `f!(fx, snes, x)` where:
 - `fx`: Output vector to store the residual F(x)
@@ -82,7 +107,7 @@ The `vec` argument is a template vector used for the residual.
 # External Links
 $(doc_external("SNES/SNESSetFunction"))
 """
-set_function!(snes::AbstractSNES, rhs!, vec) = set_function!(rhs!, snes, vec)
+function set_function! end
 
 # Wrapper for calls to set_function!
 mutable struct SNESSetFunctionFn{PetscLib} end
@@ -129,12 +154,6 @@ end
 
 """
     set_snes_jacobian!(
-        snes::AbstractSNES,
-        updateJ!::Function,
-        J::AbstractMat,
-        P::AbstractMat = J
-    )
-    set_snes_jacobian!(
         updateJ!::Function,
         snes::AbstractSNES,
         J::AbstractMat,
@@ -157,9 +176,12 @@ additional last argument:
 
 # External Links
 $(doc_external("SNES/SNESSetJacobian"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_snes_jacobian!(snes::AbstractSNES, updateJ!, J, PJ = J) =
-    set_snes_jacobian!(updateJ!, snes, J, PJ)
+function set_snes_jacobian! end
 
 # Wrapper for calls to set_snes_jacobian!
 mutable struct SNESSetJacobianFn{PetscLib} end
@@ -213,7 +235,6 @@ LibPETSc.@for_petsc function set_snes_jacobian!(
 end
 
 """
-    set_convergence_test!(snes::AbstractSNES, test!::Function)
     set_convergence_test!(test!::Function, snes::AbstractSNES)
 
 Install a Julia closure as the `SNES` convergence test (`SNESSetConvergenceTest`).
@@ -235,8 +256,12 @@ or a new test is installed.
 
 # External Links
 $(doc_external("SNES/SNESSetConvergenceTest"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_convergence_test!(snes::AbstractSNES, test!) = set_convergence_test!(test!, snes)
+function set_convergence_test! end
 
 # Context box holding the user's closure; its address is passed as `cctx` and recovered
 # with `unsafe_pointer_to_objref` inside the callback, following the same pattern as

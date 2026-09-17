@@ -69,6 +69,7 @@ function DMStag(
         ),
     )
     PetscInt = inttype(PetscLib)
+    stencil_type = stencil_type_enum(DMStagStencilType, stencil_type)
 
     if isnothing(points_per_proc)
         points_per_proc = ntuple(_ -> nothing, N)
@@ -267,42 +268,56 @@ function set_uniform_coordinates!(
 end
 
 """
-    corners = corners(dm::DMStag)
+    corners(dm::DMStag{PetscLib, N})
 
 Returns a `NamedTuple` with the global indices (excluding ghost points) of the
-`lower` and `upper` corners as well as the `size`. Also included is `nextra` of
+`lower` and `upper` corners as well as the `size`. Also included is `nextra`,
 the number of extra partial elements in each direction.
 
+The result is dimension-correct (§12): `lower` and `upper` are
+`CartesianIndex{N}`, `size` and `nextra` are `NTuple{N,Int}`, with no padding
+to three entries. This is a break with no shim (§16).
+
 # External Links
-$(doc_external("DMDA/DMStagGetCorners"))
+$(doc_external("DMSTAG/DMStagGetCorners"))
 """
-function corners(dm::DMStag{PetscLib}) where {PetscLib}
-    x, y, z, m, n, p, nExtrax, nExtray, nExtraz = LibPETSc.DMStagGetCorners(PetscLib, dm)
+function corners(dm::DMStag{PetscLib, N}) where {PetscLib, N}
+    x, y, z, m, n, p, nex, ney, nez = LibPETSc.DMStagGetCorners(PetscLib, dm)
+    lo = (Int(x), Int(y), Int(z))
+    sz = (Int(m), Int(n), Int(p))
+    ne = (Int(nex), Int(ney), Int(nez))
     return (
-        lower  = CartesianIndex(x + 1, y + 1, z + 1),
-        upper  = CartesianIndex(x + m, y + n, z + p),
-        size   = (m, n, p),
-        nextra = (nExtrax, nExtray, nExtraz),
+        lower  = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
+        upper  = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
+        size   = ntuple(i -> sz[i], Val(N)),
+        nextra = ntuple(i -> ne[i], Val(N)),
     )
 end
 
 
 """
-    corners = ghost_corners(dm::DMStag)
+    ghost_corners(dm::DMStag{PetscLib, N})
 
 Returns a `NamedTuple` with the global indices (including ghost points) of the
-`lower` and `upper` corners as well as the `size`. Also included is `nextra` of
-the number of extra partial elements in each direction.
+`lower` and `upper` corners as well as the `size`.
+
+There is no `nextra` field: `DMStagGetGhostCorners` does not report the extra
+partial elements, and v0.4's docstring promised a field the function never
+returned. Ask [`corners`](@ref) for `nextra`.
+
+Dimension-correct like [`corners`](@ref): `CartesianIndex{N}` and `NTuple{N,Int}`.
 
 # External Links
-$(doc_external("DMDA/DMStagGetCorners"))
+$(doc_external("DMSTAG/DMStagGetGhostCorners"))
 """
-function ghost_corners(dm::DMStag{PetscLib}) where {PetscLib}
+function ghost_corners(dm::DMStag{PetscLib, N}) where {PetscLib, N}
     x, y, z, m, n, p = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
+    lo = (Int(x), Int(y), Int(z))
+    sz = (Int(m), Int(n), Int(p))
     return (
-        lower = CartesianIndex(x + 1, y + 1, z + 1),
-        upper = CartesianIndex(x + m, y + n, z + p),
-        size  = (m, n, p),
+        lower = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
+        upper = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
+        size  = ntuple(i -> sz[i], Val(N)),
     )
 end
 
@@ -318,8 +333,11 @@ correctly skips the ghost region on the low side.
 # Returns
 
 A `NamedTuple` with:
-- `center`: Tuple of ranges `(x, y, z)` for cell-centered indices
-- `vertex`: Tuple of ranges `(x, y, z)` for vertex indices
+- `center`: `NamedTuple` of ranges keyed `x`, `y`, `z` for cell-centered indices
+- `vertex`: `NamedTuple` of ranges keyed `x`, `y`, `z` for vertex indices
+
+Both are dimension-correct (§12): a 2D `DMStag` yields `(x = …, y = …)` with no
+`z`. This is a break with no shim (§16).
 
 # Note
 
@@ -330,30 +348,25 @@ possibly negative ghost indices. This function handles the conversion automatica
 
 [`global_indices`](@ref) for the equivalent indices into a non-ghosted, global array.
 """
-function local_indices(dm::DMStag{PetscLib}) where {PetscLib}
+function local_indices(dm::DMStag{PetscLib, N}) where {PetscLib, N}
     # In Julia, indices in arrays start @ 1, whereas they can go negative in C
-    x, y, z, m, n, p, nx, ny, nz = LibPETSc.DMStagGetCorners(PetscLib, dm)
+    x, y, z, m, n, p, nex, ney, nez = LibPETSc.DMStagGetCorners(PetscLib, dm)
     gx, gy, gz, _, _, _ = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
 
-    c  = CartesianIndex(x + 1, y + 1, z + 1)
-    gc = CartesianIndex(gx + 1, gy + 1, gz + 1)
+    c  = (Int(x) + 1, Int(y) + 1, Int(z) + 1)
+    gc = (Int(gx) + 1, Int(gy) + 1, Int(gz) + 1)
+    sz = (Int(m), Int(n), Int(p))
+    ne = (Int(nex), Int(ney), Int(nez))
 
-    lo = c + (c - gc)
-    hi = lo + CartesianIndex(m - 1, n - 1, p - 1)
+    # The low-side ghost band is skipped by shifting the owned range by the
+    # distance between the owned and the ghosted lower corner.
+    lo = ntuple(i -> 2c[i] - gc[i], Val(N))
+    hi = ntuple(i -> lo[i] + sz[i] - 1, Val(N))
 
     return (
-        center = (
-            x = lo[1]:hi[1],
-            y = lo[2]:hi[2],
-            z = lo[3]:hi[3],
-        ),
-        vertex = (
-            x = lo[1]:(hi[1] + nx),
-            y = lo[2]:(hi[2] + ny),
-            z = lo[3]:(hi[3] + nz),
-        ),
+        center = axis_ranges(i -> lo[i]:hi[i], Val(N)),
+        vertex = axis_ranges(i -> lo[i]:(hi[i] + ne[i]), Val(N)),
     )
-
 end
 
 """
@@ -366,8 +379,11 @@ points.
 # Returns
 
 A `NamedTuple` with:
-- `center`: Tuple of ranges `(x, y, z)` for cell-centered indices
-- `vertex`: Tuple of ranges `(x, y, z)` for vertex indices
+- `center`: `NamedTuple` of ranges keyed `x`, `y`, `z` for cell-centered indices
+- `vertex`: `NamedTuple` of ranges keyed `x`, `y`, `z` for vertex indices
+
+Both are dimension-correct (§12): a 2D `DMStag` yields `(x = …, y = …)` with no
+`z`. This is a break with no shim (§16).
 
 # Note
 
@@ -378,22 +394,16 @@ handles the conversion automatically.
 
 [`local_indices`](@ref) for the equivalent indices into a ghosted, local array.
 """
-function global_indices(dm::DMStag{PetscLib}) where {PetscLib}
-    x, y, z, m, n, p, nx, ny, nz = LibPETSc.DMStagGetCorners(PetscLib, dm)
+function global_indices(dm::DMStag{PetscLib, N}) where {PetscLib, N}
+    x, y, z, m, n, p, nex, ney, nez = LibPETSc.DMStagGetCorners(PetscLib, dm)
+    lo = (Int(x), Int(y), Int(z))
+    sz = (Int(m), Int(n), Int(p))
+    ne = (Int(nex), Int(ney), Int(nez))
 
     return (
-        center = (
-            x = (x + 1):(x + m),
-            y = (y + 1):(y + n),
-            z = (z + 1):(z + p),
-        ),
-        vertex = (
-            x = (x + 1):(x + m + nx),
-            y = (y + 1):(y + n + ny),
-            z = (z + 1):(z + p + nz),
-        ),
+        center = axis_ranges(i -> (lo[i] + 1):(lo[i] + sz[i]), Val(N)),
+        vertex = axis_ranges(i -> (lo[i] + 1):(lo[i] + sz[i] + ne[i]), Val(N)),
     )
-
 end
 
 """

@@ -912,7 +912,6 @@ end
 
 """
     set_rhs_function!(f!, ts::AbstractTS, r = nothing)
-    set_rhs_function!(ts::AbstractTS, f!, r = nothing)
 
 Set the right-hand side ``G`` of an explicit problem ``du/dt = G(t, u)``.
 
@@ -923,9 +922,12 @@ is set, `f!(F, ts, t, u, user_ctx)` is used instead when that method exists.
 
 # External Links
 $(doc_external("TS/TSSetRHSFunction"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_rhs_function!(ts::AbstractTS, f!, r = nothing) =
-    set_rhs_function!(f!, ts, r)
+function set_rhs_function! end
 
 mutable struct TSSetRHSFunctionFn{PetscLib, PetscReal} end
 function (::TSSetRHSFunctionFn{PetscLib, PetscReal})(
@@ -966,7 +968,6 @@ end
 
 """
     set_rhs_jacobian!(updateJ!, ts::AbstractTS, A, P = A)
-    set_rhs_jacobian!(ts::AbstractTS, updateJ!, A, P = A)
 
 Set the Jacobian of the right-hand side ``G``.
 
@@ -976,9 +977,12 @@ and the preconditioning matrix `P`. If `ts.user_ctx` is set,
 
 # External Links
 $(doc_external("TS/TSSetRHSJacobian"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_rhs_jacobian!(ts::AbstractTS, updateJ!, A, P = A) =
-    set_rhs_jacobian!(updateJ!, ts, A, P)
+function set_rhs_jacobian! end
 
 mutable struct TSSetRHSJacobianFn{PetscLib, PetscReal} end
 function (::TSSetRHSJacobianFn{PetscLib, PetscReal})(
@@ -1029,7 +1033,6 @@ end
 
 """
     set_ifunction!(f!, ts::AbstractTS, r = nothing)
-    set_ifunction!(ts::AbstractTS, f!, r = nothing)
 
 Set the residual ``F`` of an implicit problem ``F(t, u, du/dt) = 0``.
 
@@ -1039,8 +1042,12 @@ when that method exists.
 
 # External Links
 $(doc_external("TS/TSSetIFunction"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_ifunction!(ts::AbstractTS, f!, r = nothing) = set_ifunction!(f!, ts, r)
+function set_ifunction! end
 
 mutable struct TSSetIFunctionFn{PetscLib, PetscReal} end
 function (::TSSetIFunctionFn{PetscLib, PetscReal})(
@@ -1083,7 +1090,6 @@ end
 
 """
     set_ijacobian!(updateJ!, ts::AbstractTS, A, P = A)
-    set_ijacobian!(ts::AbstractTS, updateJ!, A, P = A)
 
 Set the Jacobian of the implicit residual ``F``.
 
@@ -1093,9 +1099,12 @@ taking a trailing `user_ctx` is used instead when it exists.
 
 # External Links
 $(doc_external("TS/TSSetIJacobian"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_ijacobian!(ts::AbstractTS, updateJ!, A, P = A) =
-    set_ijacobian!(updateJ!, ts, A, P)
+function set_ijacobian! end
 
 mutable struct TSSetIJacobianFn{PetscLib, PetscReal} end
 function (::TSSetIJacobianFn{PetscLib, PetscReal})(
@@ -1159,7 +1168,6 @@ end
 
 """
     set_monitor!(f, ts::AbstractTS)
-    set_monitor!(ts::AbstractTS, f)
 
 Call `f` once after every accepted step.
 
@@ -1174,8 +1182,12 @@ are unaffected.
 
 # External Links
 $(doc_external("TS/TSMonitorSet"))
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
+works. v0.4 also accepted the subject-first order; that method is gone in
+v0.5, and there is no shim for it (§16).
 """
-set_monitor!(ts::AbstractTS, f) = set_monitor!(f, ts)
+function set_monitor! end
 
 mutable struct TSMonitorSetFn{PetscLib, PetscInt, PetscReal} end
 function (::TSMonitorSetFn{PetscLib, PetscInt, PetscReal})(

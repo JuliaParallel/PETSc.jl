@@ -45,18 +45,16 @@ const _doc_external = doc_external
 include("LibPETSc.jl")
 using .LibPETSc
 
-# The export list is the v0.4 one (§13 replaces it in a later step), minus
-# `HostBackend`, which was exported but never defined: host memory is `nothing`,
-# not a backend type. The exported names that were renamed stay exported through
-# their shims in src/deprecations.jl.
+# Only types, construction entry points and `petsclibs` are exported (§13); every
+# verb and accessor stays qualified. The v0.4 list exported twelve functions and
+# no types at all; those names are still reachable qualified (`PETSc.set_library!`)
+# and, where they were renamed, through the shims in src/deprecations.jl. The rest
+# of the API is marked with `public` in src/public_names.jl (§13.1).
 export LibPETSc
-export audit_petsc_file
-export set_petsclib
-export set_library!, unset_library!, library_info
-export AbstractPetscMemBackend, AbstractPETScMemBackend
-export determine_memtype
-export get_petsc_arrays, restore_petsc_arrays
-export dmda_star_fd_coloring
+export DMDA, DMStag, DMPlex
+export PetscVec, PetscMat, PetscOptions
+export KSP, SNES, TS
+export petsclibs
 
 using Libdl
 

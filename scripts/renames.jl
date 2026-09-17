@@ -512,29 +512,30 @@ const UNCHANGED_PUBLIC = Symbol[
     :scalartype,
     :inttype,
     :library_info,
+    :petsclibs,
     :set_library!,
     :unset_library!,
     :tao_usable_after_reinitialize,
     :parse_options,
 ]
 
-# Names `PETSc` exports. Step 1 leaves the export list alone (§13 lands in step 4), so
-# these are the v0.4 exports minus `HostBackend`, which was never defined.
+# Names `PETSc` exports (§13, and decision 1 of RENAME_PLAN.md): the nine types
+# and construction entry points, `petsclibs`, and the `LibPETSc` submodule.
 # A name cannot be both exported and `public`, so these are subtracted from the
-# generated `public` declaration.
+# generated `public` declaration. The twelve v0.4 exports are gone; the ones that
+# were renamed stay reachable through their shims, qualified.
 const EXPORTED = Symbol[
     :LibPETSc,
-    :audit_petsc_file,
-    :set_petsclib,
-    :set_library!,
-    :unset_library!,
-    :library_info,
-    :AbstractPetscMemBackend,
-    :AbstractPETScMemBackend,
-    :determine_memtype,
-    :get_petsc_arrays,
-    :restore_petsc_arrays,
-    :dmda_star_fd_coloring,
+    :DMDA,
+    :DMStag,
+    :DMPlex,
+    :PetscVec,
+    :PetscMat,
+    :PetscOptions,
+    :KSP,
+    :SNES,
+    :TS,
+    :petsclibs,
 ]
 
 # ---------------------------------------------------------------------------

@@ -380,6 +380,11 @@ const INTERNAL = Set{Symbol}([
     :post_initialize,
     :release_library_handle,
     :doc_external,
+    # the alias src/autowrapped/ interpolates, and the docstring helpers
+    :_doc_external,
+    :doc_borrowed,
+    Symbol("@renamed"),
+    :library_path_string,
     :lib_handles,
     :petsc_program_name,
     :errorcode,

@@ -66,6 +66,7 @@ include("low_level_petscsf.jl")      # Low-level PetscSF graph and communication
 include("low_level_tao.jl")     # Low-level Tao functions
 include("test_destroy.jl")      # destroy! guards: stale cycle, double destroy
 include("test_deprecations.jl") # the v0.4 names still work and warn (the only file calling them)
+include("test_api_surface.jl")  # scripts/api_surface.jl --check: the register covers the surface
 
 include("testutils.jl")
 

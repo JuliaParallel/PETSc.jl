@@ -241,7 +241,10 @@ function _reset_stale_register_flags(petsclib)
     handle, _ = ensure_library_handle(petsclib)
     lib = library_ptr(handle)
     # PETSc 3.25.x: these packages destroy their type lists at PetscFinalize without resetting
-    # the RegisterAll flag (TaoFinalizePackage for Tao and TaoTerm; TSTrajectory likewise)
+    # the RegisterAll flag (TaoFinalizePackage for Tao and TaoTerm; TSTrajectory likewise).
+    # KSPMatRegisterAllCalled (the LMVM matrix types, src/ksp/ksp/utils/kspmatregi.c) has the
+    # same bug but is `static`, so it cannot be reset from here: `lmvm` Tao types work only in
+    # the first initialize/finalize cycle of a process. All four belong in an upstream fix.
     ok = true
     for sym in (:TaoRegisterAllCalled, :TaoTermRegisterAllCalled, :TSTrajectoryRegisterAllCalled)
         p = Libdl.dlsym_e(lib, sym)

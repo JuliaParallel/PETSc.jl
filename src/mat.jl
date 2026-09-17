@@ -57,12 +57,36 @@ type_name(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetType(
 Base.axes(m::PetscMat{PetscLib}, i::Integer) where {PetscLib} = Base.OneTo(Base.size(m)[i])
 
 """
-    M::PetscMat = MatCreateSeqAIJ(petsclib, comm, S)
+    M::PetscMat = PetscMat(petsclib, S::SparseMatrixCSC; with_arrays = false)
+    M::PetscMat = PetscMat(petsclib, comm, S::SparseMatrixCSC; with_arrays = false)
 
-Creates a PetscMat object from a Julia SparseMatrixCSC `S` in sequential AIJ format.
+Creates a PetscMat object from a Julia SparseMatrixCSC `S` in sequential AIJ
+format. `comm` defaults to `MPI.COMM_SELF`.
 
+By default the entries are copied into storage PETSc allocates. With
+`with_arrays = true` the CSR arrays converted from `S` are handed to PETSc and
+borrowed rather than copied, which is what v0.4's `MatSeqAIJWithArrays` did; the
+arrays are kept alive for as long as the matrix.
+
+Replaces v0.4's `MatCreateSeqAIJ`: construction goes through the type
+(docs/src/man/naming.md §5.1). The unrelated `MatSeqAIJ`, which allocated from
+sizes, is now `PetscMat(petsclib, m, n, nnz)`.
+
+# External Links
+$(doc_external("Mat/MatCreateSeqAIJ"))
+$(doc_external("Mat/MatCreateSeqAIJWithArrays"))
 """
-function MatCreateSeqAIJ(petsclib, comm, S::SparseMatrixCSC{PetscScalar})   where {PetscScalar}
+LibPETSc.PetscMat(petsclib::PetscLibType, S::SparseMatrixCSC; kwargs...) =
+    LibPETSc.PetscMat(petsclib, MPI.COMM_SELF, S; kwargs...)
+
+function LibPETSc.PetscMat(
+    petsclib::PetscLibType,
+    comm::MPI.Comm,
+    S::SparseMatrixCSC{PetscScalar};
+    with_arrays::Bool = false,
+) where {PetscScalar}
+
+    with_arrays && return mat_seqaij_with_arrays(petsclib, comm, S)
 
     PetscInt = petsclib.PetscInt
 
@@ -91,7 +115,7 @@ function MatCreateSeqAIJ(petsclib, comm, S::SparseMatrixCSC{PetscScalar})   wher
 end
 
 """
-    mat = MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
+    mat = PetscMat(petsclib, num_rows, num_cols, nonzeros)
 
 Create a PETSc serial sparse array using AIJ format (also known as a compressed
 sparse row or CSR format) of size `num_rows X num_cols` with `nonzeros` per row
@@ -105,7 +129,7 @@ Memory allocation is handled by PETSc and garbage collection can be used.
 # External Links
 $(doc_external("Mat/MatCreateSeqAIJ"))
 """
-function MatSeqAIJ(
+function LibPETSc.PetscMat(
     petsclib::PetscLib,
     num_rows::Integer,
     num_cols::Integer,
@@ -144,14 +168,17 @@ function MatSeqAIJ(
 end
 
 """
-    mat = MatSeqDense(petsclib, A::Matrix{PetscScalar})
+    mat = PetscMat(petsclib, A::Matrix{PetscScalar})
 
 PETSc dense array. This wraps a Julia `Matrix{PetscScalar}` object.
+
+Replaces v0.4's `MatSeqDense`: construction goes through the type
+(docs/src/man/naming.md §5.1).
 
 # External Links
 $(doc_external("Mat/MatCreateSeqDense"))
 """
-function MatSeqDense(
+function LibPETSc.PetscMat(
     petsclib::PetscLib,
     A::Matrix{PetscScalar},
 ) where {PetscLib <: PetscLibType, PetscScalar}
@@ -174,6 +201,53 @@ function MatSeqDense(
 
     finalizer(m -> (destroy!(m); data), mat)
     return mat
+end
+
+"""
+    mat = PetscMat(petsclib, num_rows, num_cols; type = :seqaij)
+
+An empty PETSc matrix of the given size.
+
+`type` is the PETSc implementation name as a `Symbol`
+(docs/src/man/naming.md §3.1): `:seqaij` (the default) preallocates nothing,
+`:seqdense` (spelled `:dense` as well) allocates the dense storage. Flavour is a
+keyword rather than a type parameter because it only affects construction, and
+every variant returns a `PetscMat` (§9).
+
+# External Links
+$(doc_external("Mat/MatCreateSeqAIJ"))
+$(doc_external("Mat/MatCreateSeqDense"))
+"""
+function LibPETSc.PetscMat(
+    petsclib::PetscLib,
+    num_rows::Integer,
+    num_cols::Integer;
+    type::Symbol = :seqaij,
+) where {PetscLib <: PetscLibType}
+    comm = MPI.COMM_SELF
+    check_initialized(petsclib)
+    PetscInt = petsclib.PetscInt
+    PetscScalar = petsclib.PetscScalar
+    if type === :dense || type === :seqdense
+        data = zeros(PetscScalar, Int(num_rows) * Int(num_cols))
+        mat = LibPETSc.MatCreateSeqDense(
+            petsclib,
+            comm,
+            PetscInt(num_rows),
+            PetscInt(num_cols),
+            data,
+        )
+        finalizer(m -> (destroy!(m); data), mat)
+        return mat
+    elseif type === :seqaij || type === :aij
+        return LibPETSc.PetscMat(petsclib, num_rows, num_cols, 0)
+    else
+        throw(
+            ArgumentError(
+                "unknown matrix type :$type, expected :seqaij or :dense",
+            ),
+        )
+    end
 end
 
 
@@ -428,20 +502,12 @@ end
 const _MATSEQAIJ_WITHARRAYS_STORAGE = IdDict{Ptr{Cvoid}, Any}()
 
 """
-    B = MatSeqAIJWithArrays(petsclib, comm, A::SparseMatrixCSC)
+    rowptr, colval, nzval = csr_from_csc(petsclib, A::SparseMatrixCSC)
 
-Create a PETSc SeqAIJ matrix from a Julia SparseMatrixCSC.
-Since Julia uses CSC and PETSc AIJ uses CSR, we convert the format properly.
-
-# Arguments
-- `petsclib`: PETSc library instance  
-- `comm`: MPI communicator
-- `A`: Julia sparse matrix in CSC format
-
-# Returns
-- `B`: PETSc matrix in AIJ (CSR) format
+The CSR triple PETSc wants, built from Julia's CSC storage. `rowptr` and
+`colval` are 0-based, as `MatCreateSeqAIJWithArrays` expects.
 """
-function MatSeqAIJWithArrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC{T}) where {T}
+function csr_from_csc(petsclib::PetscLibType, A::SparseMatrixCSC)
     PetscInt = PETSc.inttype(petsclib)
     PetscScalar = PETSc.scalartype(petsclib)
     
@@ -481,12 +547,50 @@ function MatSeqAIJWithArrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC{T}
         end
     end
     
+    return row_ptr, col_idx, values
+end
+
+"""
+    B = PetscMat(petsclib, rowptr, colval, nzval; comm = MPI.COMM_SELF, ncols = …)
+
+Create a PETSc SeqAIJ matrix directly on the CSR arrays `rowptr`, `colval` and
+`nzval`, which PETSc borrows rather than copies.
+
+`rowptr` and `colval` are 0-based, PETSc's own base for bulk index arrays
+(docs/src/man/naming.md §12.1). The number of rows is `length(rowptr) - 1`;
+`ncols` defaults to one past the largest column index.
+
+The arrays must stay alive for as long as the matrix does: this constructor
+keeps a reference to them and drops it in `destroy!`.
+
+Replaces v0.4's `MatSeqAIJWithArrays`, which took a `SparseMatrixCSC` and so
+could not be told apart from `MatCreateSeqAIJ` (docs/src/man/naming.md §6).
+
+# External Links
+$(doc_external("Mat/MatCreateSeqAIJWithArrays"))
+"""
+function LibPETSc.PetscMat(
+    petsclib::PetscLibType,
+    rowptr::Vector{<:Integer},
+    colval::Vector{<:Integer},
+    nzval::Vector;
+    comm = MPI.COMM_SELF,
+    ncols::Integer = isempty(colval) ? 0 : (maximum(colval) + 1),
+)
+    check_initialized(petsclib)
+    PetscInt = inttype(petsclib)
+    PetscScalar = scalartype(petsclib)
+
+    row_ptr = convert(Vector{PetscInt}, rowptr)
+    col_idx = convert(Vector{PetscInt}, colval)
+    values = convert(Vector{PetscScalar}, nzval)
+
     # Create the PETSc matrix (PETSc borrows the arrays; keep them alive).
     mat = LibPETSc.MatCreateSeqAIJWithArrays(
         petsclib,
         comm,
-        PetscInt(m),
-        PetscInt(n),
+        PetscInt(length(row_ptr) - 1),
+        PetscInt(ncols),
         row_ptr,
         col_idx,
         values,
@@ -494,6 +598,24 @@ function MatSeqAIJWithArrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC{T}
 
     _MATSEQAIJ_WITHARRAYS_STORAGE[mat.ptr] = (row_ptr, col_idx, values)
     return mat
+end
+
+"""
+    mat_seqaij_with_arrays(petsclib, comm, A::SparseMatrixCSC)
+
+The v0.4 `MatSeqAIJWithArrays` body, kept for its deprecation shim: converts
+`A` to CSR and hands the arrays to the `PetscMat` constructor.
+"""
+function mat_seqaij_with_arrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC)
+    rowptr, colval, nzval = csr_from_csc(petsclib, A)
+    return LibPETSc.PetscMat(
+        petsclib,
+        rowptr,
+        colval,
+        nzval;
+        comm = comm,
+        ncols = size(A, 2),
+    )
 end
 
 """

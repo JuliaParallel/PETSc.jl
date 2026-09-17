@@ -349,7 +349,7 @@ const SHIMS = [
     @testset "a shim really does forward" begin
         petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
-        v = PETSc.VecSeq(petsclib, 5)
+        v = PETSc.PetscVec(petsclib, 5)
         # `destroy` is the busiest shim in the rename; check it actually destroys.
         warns() do
             PETSc.destroy(v)

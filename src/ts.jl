@@ -217,7 +217,7 @@ function TS(
     LibPETSc.TSSetExactFinalTime(petsclib, ts, exact_final_time)
 
     if !isempty(options)
-        ts.opts = Options(petsclib; options...)
+        ts.opts = PetscOptions(petsclib; options...)
     end
 
     if MPI.Comm_size(comm) == 1
@@ -365,13 +365,15 @@ end
 """
     dm(ts::AbstractTS)
 
-The DM attached to `ts`. The DM is owned by `ts`.
+The DM attached to `ts`, [`narrow`](@ref)ed to its flavour.
+
+$(doc_borrowed())
 
 # External Links
 $(doc_external("TS/TSGetDM"))
 """
 dm(ts::AbstractTS{PetscLib}) where {PetscLib} =
-    LibPETSc.TSGetDM(getlib(PetscLib), ts)
+    narrow(LibPETSc.TSGetDM(getlib(PetscLib), ts))
 
 """
     set_dm!(ts::AbstractTS, dm::AbstractPetscDM)
@@ -392,7 +394,9 @@ end
 """
     solution(ts::AbstractTS)
 
-The solution vector held by `ts`. It is owned by `ts`, so do not destroy it.
+The solution vector held by `ts`.
+
+$(doc_borrowed())
 
 # External Links
 $(doc_external("TS/TSGetSolution"))
@@ -537,11 +541,20 @@ Local truncation error tolerances, as `(; atol, rtol, vatol, vrtol)`.
 `vatol` and `vrtol` hold per-component tolerances and carry a null pointer when
 only the scalar tolerances are set. Both are owned by `ts`.
 
+`vatol` and `vrtol` are the per-component tolerance vectors, or null handles
+when only the scalar tolerances were set.
+
+$(doc_borrowed())
+
 # External Links
 $(doc_external("TS/TSGetTolerances"))
 """
 function tolerances(ts::AbstractTS{PetscLib}) where {PetscLib}
-    atol, vatol, rtol, vrtol = LibPETSc.TSGetTolerances(getlib(PetscLib), ts)
+    petsclib = getlib(PetscLib)
+    atol, vatol, rtol, vrtol = LibPETSc.TSGetTolerances(petsclib, ts)
+    # The two vectors belong to `ts`: hand them back as borrowed handles.
+    vatol = VecPtr(petsclib, vatol.ptr, false)
+    vrtol = VecPtr(petsclib, vrtol.ptr, false)
     return (; atol, rtol, vatol, vrtol)
 end
 
@@ -651,7 +664,9 @@ snes_failures(ts::AbstractTS{PetscLib}) where {PetscLib} =
 """
     snes(ts::AbstractTS)
 
-The nonlinear solver `ts` steps with. It is owned by `ts`, so do not destroy it.
+The nonlinear solver `ts` steps with.
+
+$(doc_borrowed())
 
 Only the implicit methods build one. Asking an explicit method for its `SNES`
 creates an unused solver rather than reporting an error.
@@ -665,7 +680,9 @@ snes(ts::AbstractTS{PetscLib}) where {PetscLib} =
 """
     ksp(ts::AbstractTS)
 
-The linear solver `ts` steps with. It is owned by `ts`, so do not destroy it.
+The linear solver `ts` steps with.
+
+$(doc_borrowed())
 
 PETSc only offers this for a problem declared `TS_LINEAR` with [`set_problem_type!`](@ref), 
 and raises `PETSC_ERR_ARG_WRONG` otherwise. The linear solver of a nonlinear problem 

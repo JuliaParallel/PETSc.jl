@@ -184,6 +184,19 @@ Whether `obj` is responsible for destroying the handle it holds.
 Wrappers that borrow a handle from PETSc carry an `own` field and override this;
 every other wrapper owns what it holds. `destroy!` returns without doing anything
 when this is `false`, so a borrowed wrapper stays usable after the call.
+
+The wrappers carrying the field are [`VecPtr`](@ref), [`MatPtr`](@ref) and the
+three DM types, [`DMDA`](@ref), [`DMStag`](@ref) and [`DMPlex`](@ref). They are
+the ones a reader can hand back: `solution`, `local_coordinates` and
+`tolerances` wrap their result in a `VecPtr`, and `dm`, `coarse_dm` and
+[`narrow`](@ref) in one of the DM types.
+
+`PetscVec`, `PetscMat`, `PetscOptions`, `KSP`, `SNES` and `TS` are declared in
+the generated layer (`wrapping/generator/prologue.jl`) and have no `own` field,
+so they answer `true` here. Nothing hands one of them back borrowed: the readers
+that could — `snes(ts)` and `ksp(ts)` — say so in their docstrings instead, and
+giving the generated structs the field would mean regenerating the whole wrapped
+layer for two functions.
 """
 owns(obj) = true
 
@@ -301,9 +314,13 @@ inttype(
 ) where {PetscLib <: PetscLibType{ST, IT}} where {ST, IT} = IT
 
 """
-    set_petsclib(library_path::String; PetscScalar=Float64, PetscInt=Int64)
+    PetscLibType(library_path::String; PetscScalar=Float64, PetscInt=Int64)
 
 Create a custom PETSc library instance from a user-specified shared library path.
+
+Replaces v0.4's `set_petsclib`, which mutated nothing despite its name and so
+was never a `set_*!` (docs/src/man/naming.md §7): it builds and returns a
+library handle, which is what a constructor does.
 
 This function allows you to use a custom-compiled PETSc library instead of the
 pre-built libraries provided by `PETSc_jll`. The custom library must be compiled as a
@@ -325,7 +342,7 @@ cluster MPI). Then call this function in your script to load the cluster library
 A `PetscLibType` instance for use with `initialize`, `finalize`, and all PETSc.jl functions.
 
 # Environment-variable alternative
-Instead of calling `set_petsclib`, you can configure everything before Julia starts:
+Instead of calling this constructor, you can configure everything before Julia starts:
 ```
 JULIA_PETSC_LIBRARY=/path/to/libpetsc.so   # also suppresses PETSc_jll
 JULIA_PETSC_SCALAR=Float64                  # Float32 | ComplexFloat64 | ComplexFloat32
@@ -337,22 +354,22 @@ custom library directly.
 # Examples
 ```julia
 # Double-precision real, 64-bit indices (typical HPC build)
-petsclib = PETSc.set_petsclib("/path/to/libpetsc.so";
-                              PetscScalar=Float64, PetscInt=Int64)
+petsclib = PETSc.LibPETSc.PetscLibType("/path/to/libpetsc.so";
+                                       PetscScalar=Float64, PetscInt=Int64)
 PETSc.initialize(petsclib)
 # ... your code ...
 PETSc.finalize(petsclib)
 
 # Single-precision complex, 32-bit indices
-petsclib = PETSc.set_petsclib("/opt/petsc/lib/libpetsc.so";
-                              PetscScalar=Complex{Float32}, PetscInt=Int32)
+petsclib = PETSc.LibPETSc.PetscLibType("/opt/petsc/lib/libpetsc.so";
+                                       PetscScalar=Complex{Float32}, PetscInt=Int32)
 ```
 
 # See Also
 - [`initialize`](@ref): Initialize a PETSc library
 - [`finalize`](@ref): Finalize a PETSc library
 """
-function set_petsclib(library_path::String; PetscScalar::Type=Float64, PetscInt::Type=Int64)
+function LibPETSc.PetscLibType(library_path::String; PetscScalar::Type=Float64, PetscInt::Type=Int64)
     petsclib = LibPETSc.PetscLibType{PetscScalar, PetscInt}(library_path)
     try
         check_wrappers_version(petsclib)
@@ -420,7 +437,7 @@ PETSc.set_library!(
 
 # See Also
 - [`unset_library!`](@ref): remove the preference and revert to `PETSc_jll`
-- [`set_petsclib`](@ref): load a custom library for the current session only
+- `PetscLibType(path)`: load a custom library for the current session only
 """
 function set_library!(path; PetscScalar::Type=Float64, PetscInt::Type=Int64)
     ispath(path) || error("PETSc library not found: $path")
@@ -481,7 +498,7 @@ function check_wrappers_version(petsclib=nothing)
     end
 
     if isa(petsclib, String)
-        petsclib = set_petsclib(petsclib)
+        petsclib = LibPETSc.PetscLibType(petsclib)
     end
 
     installed_version = nothing

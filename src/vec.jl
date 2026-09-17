@@ -60,15 +60,41 @@ owns(v::VecPtr) = v.own
 
 
 """
-    VecSeq(petsclib, n::Integer)
+    PetscVec(petsclib, ptr::CVec, own::Bool)
+
+Wrap a raw PETSc `Vec` handle.
+
+`own = false` is the borrowed case of docs/src/man/naming.md §3.3: no finalizer
+is attached and `destroy!` is a no-op. The result is a [`VecPtr`](@ref), the
+wrapper type that carries the ownership flag.
+"""
+LibPETSc.PetscVec(petsclib::PetscLibType, ptr::CVec, own::Bool) =
+    VecPtr(petsclib, ptr, own)
+
+"""
+    PetscVec(v::AbstractPetscVec)
+
+The plain `PetscVec` handle behind any high-level vector wrapper.
+
+The autowrapped `*AndMemType` routines are typed `x::PetscVec`, while
+`AbstractPetscVec` also covers [`VecPtr`](@ref); this converts transparently.
+"""
+LibPETSc.PetscVec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    LibPETSc.PetscVec{PetscLib}(v.ptr)
+
+"""
+    PetscVec(petsclib, n::Integer)
 
 A standard, sequentially-stored serial PETSc vector for `petsclib.PetscScalar`
 of length `n`.
 
+Replaces v0.4's `VecSeq`: construction goes through the type
+(docs/src/man/naming.md §5.1).
+
 # External Links
 $(doc_external("Vec/VecCreateSeq"))
 """
-function VecSeq(petsclib::PetscLib, n::Integer) where {PetscLib <: PetscLibType}
+function LibPETSc.PetscVec(petsclib::PetscLib, n::Integer) where {PetscLib <: PetscLibType}
     comm = MPI.COMM_SELF
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
@@ -79,7 +105,7 @@ end
 
 
 """
-    VecSeq(petsclib, v::Vector)
+    PetscVec(petsclib, v::Vector)
 
 A standard, sequentially-stored serial PETSc vector, wrapping the Julia vector
 `v`.
@@ -94,7 +120,7 @@ performed automatically
 # External Links
 $(doc_external("Vec/VecCreateSeqWithArray"))
 """
-function VecSeq(
+function LibPETSc.PetscVec(
     petsclib::PetscLib,
     array::Vector{PetscScalar};
     blocksize = 1,
@@ -443,8 +469,7 @@ release_local_array(cpu_arr, b::AbstractPetscMemBackend, vec; kw...) =
 # The auto-generated *AndMemType wrappers are typed `x::PetscVec`, but
 # `AbstractPetscVec` also includes `VecPtr`.  Convert transparently.
 as_petsc_vec(v::LibPETSc.PetscVec) = v
-as_petsc_vec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
-    LibPETSc.PetscVec{PetscLib}(v.ptr)
+as_petsc_vec(v::AbstractPetscVec) = LibPETSc.PetscVec(v)
 
 """
 
@@ -609,10 +634,15 @@ function ghost_update!(
 end
 
 """
-    v = VecSeq(petsclib, comm, array)
-Creates a sequential PETSc vector of length `n` given a julia array `array`` 
+    v = PetscVec(petsclib, comm, array)
+
+Creates a sequential PETSc vector of length `n` given a julia array `array`,
+on the communicator `comm`.
+
+# External Links
+$(doc_external("Vec/VecCreateSeqWithArray"))
 """
-function VecSeq(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLibType}
+function LibPETSc.PetscVec(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLibType}
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
 

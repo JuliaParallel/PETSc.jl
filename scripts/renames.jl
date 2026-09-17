@@ -98,7 +98,13 @@ const RENAMES = Pair{Symbol, Symbol}[
     :setjacobian! => :set_snes_jacobian!,
     :setconvergencetest! => :set_convergence_test!,
 
-    # vec.jl, mat.jl
+    # vec.jl, mat.jl: construction goes through the type (§5.1, §6)
+    :VecSeq => :PetscVec,
+    :MatSeqAIJ => :PetscMat,
+    :MatSeqDense => :PetscMat,
+    :MatCreateSeqAIJ => :PetscMat,
+    :MatSeqAIJWithArrays => :PetscMat,
+    :MatAIJ => :PetscMat,
     :unsafe_localarray => :unsafe_local_array,
     :wrap_localarray => :wrap_local_array,
     :acquire_petsc_local_array => :acquire_local_array,
@@ -115,6 +121,8 @@ const RENAMES = Pair{Symbol, Symbol}[
     :determine_memtype => :memtype,
 
     # init.jl, options.jl, sys.jl, audit.jl
+    :Options => :PetscOptions,
+    :set_petsclib => :PetscLibType,
     :initialized => :isinitialized,
     :finalized => :isfinalized,
     :check_petsc_wrappers_version => :check_wrappers_version,
@@ -151,7 +159,18 @@ const BASE_TARGETS = Set{Symbol}([:ndims])
 # Shims the generated `old(args...; kwargs...) = new(args...; kwargs...)` gets wrong,
 # because the argument list changed. Written out in full instead. Empty for step 1:
 # every rename so far keeps its argument list, and the four reorders land in step 3.
-const CUSTOM_SHIMS = Dict{Symbol, String}()
+const CUSTOM_SHIMS = Dict{Symbol, String}(
+    # `MatSeqAIJWithArrays(petsclib, comm, A::SparseMatrixCSC)` and
+    # `MatCreateSeqAIJ(petsclib, comm, S)` had the same argument list and
+    # different meanings, so only one of them can keep it. §6 gives the CSR
+    # arrays to `PetscMat(petsclib, rowptr, colval, nzval)`; the shim converts.
+    :MatSeqAIJWithArrays => """
+    function MatSeqAIJWithArrays(args...; kwargs...)
+        @warn "MatSeqAIJWithArrays is deprecated, use PetscMat" maxlog = 1
+        return mat_seqaij_with_arrays(args...; kwargs...)
+    end
+    """,
+)
 
 # ---------------------------------------------------------------------------
 # Internal helpers: renamed freely, no shim, not part of the API (§1.1).
@@ -185,17 +204,13 @@ const INTERNAL = Set{Symbol}([
     :SNESConvergenceTestBox,
     :_MATSEQAIJ_WITHARRAYS_STORAGE,
     :_PETSC_ERR_LIB,
-    # flavour workers behind the runtime string dispatch (typed DM is step 2)
-    :corners_dmda,
-    :corners_dmstag,
-    :ghost_corners_dmda,
-    :ghost_corners_dmstag,
-    :set_uniform_coordinates_dmda!,
-    :set_uniform_coordinates_stag!,
     # other internals
     :check_initialized,
     :isdestroyable,
     :as_petsc_vec,
+    :csr_from_csc,
+    :mat_seqaij_with_arrays,
+    :own_dm!,
     :make_local_array,
     :to_petscint_tuple,
     :audit_walk,
@@ -218,11 +233,11 @@ const INTERNAL = Set{Symbol}([
 
 const UNCHANGED_PUBLIC = Symbol[
     # dm.jl / dmda.jl / dmstag.jl / dmplex.jl
-    :MatAIJ,
     :setup!,
     :DMDA,
     :DMStag,
     :DMPlex,
+    :narrow,
     :ndofs,
     :PetscDS,
     :AbstractPetscDS,
@@ -239,12 +254,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :vtk_merge_tensor!,
     # vec.jl / mat.jl
     :VecPtr,
-    :VecSeq,
     :MatPtr,
-    :MatSeqAIJ,
-    :MatSeqDense,
-    :MatCreateSeqAIJ,
-    :MatSeqAIJWithArrays,
     :MatShell,
     :MatOp,
     :assemble!,
@@ -304,12 +314,10 @@ const UNCHANGED_PUBLIC = Symbol[
     :finalize,
     :scalartype,
     :inttype,
-    :set_petsclib,
     :library_info,
     :set_library!,
     :unset_library!,
     :tao_usable_after_reinitialize,
-    :Options,
     :parse_options,
 ]
 
@@ -340,9 +348,13 @@ const EXPORTED = Symbol[
 const AUDIT_TYPE_CREATORS = Dict{Symbol, String}(
     :KSP => "KSP",
     :SNES => "SNES",
+    :TS => "TS",
     :DMDA => "DM",
     :DMStag => "DM",
     :DMPlex => "DM",
+    :PetscVec => "Vec",
+    :PetscMat => "Mat",
+    :PetscOptions => "Options",
 )
 
 # Creators whose name carries no `Create`/`Duplicate` marker.
@@ -353,13 +365,13 @@ const AUDIT_NAMED_CREATORS = Dict{Symbol, String}(
     :DMStagCreateCompatibleDMStag => "DM",
     :DMCreateMatrix => "Mat",
     :MatCreateVecs => "Vec",
-    :VecSeq => "Vec",
-    :MatAIJ => "Mat",
     :MatShell => "Mat",
-    :MatSeqAIJ => "Mat",
-    :MatSeqDense => "Mat",
     :clone => "DM",
     # v0.4 spellings, still reachable through the shims
+    :VecSeq => "Vec",
+    :MatAIJ => "Mat",
+    :MatSeqAIJ => "Mat",
+    :MatSeqDense => "Mat",
     :DMGlobalVec => "Vec",
     :DMLocalVec => "Vec",
     :dm_create_global_vec => "Vec",

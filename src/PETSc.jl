@@ -18,6 +18,25 @@ function doc_external(fname)
 """
 end
 
+"""
+    doc_borrowed()
+
+One sentence for the docstring of a reader that hands back a PETSc object.
+
+The handle is borrowed: it belongs to the object it was asked of, carries no
+finalizer, and `destroy!` on it is a no-op (see `owns`). `scripts/api_surface.jl
+--sweeps` greps for a call to this helper, so a reader returning a PETSc object
+without one is reported.
+"""
+function doc_borrowed()
+"""
+!!! note "Borrowed handle"
+    The returned object is owned by the object it was asked of, not by the
+    caller: it carries no finalizer and must not be destroyed. `destroy!` on it
+    is a no-op ([`owns`](@ref)).
+"""
+end
+
 # `_doc_external` is interpolated into several thousand docstrings in
 # src/autowrapped/, which the generator in wrapping/ emits verbatim. Keeping the
 # old spelling as an alias leaves those files untouched by the rename.

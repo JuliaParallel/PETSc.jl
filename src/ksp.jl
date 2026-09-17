@@ -47,7 +47,7 @@ function KSP(
     
     # Push options to PETSc options database
     if !isempty(options)
-        opts = PETSc.Options(petsclib; options...);
+        opts = PetscOptions(petsclib; options...);
         push!(opts)
         LibPETSc.KSPSetFromOptions(petsclib, ksp)
         pop!(opts)
@@ -92,7 +92,7 @@ function KSP(dm::AbstractPetscDM{PetscLib};
 
     # Push options to PETSc options database
     if !isempty(options)
-        opts = PETSc.Options(petsclib; options...);
+        opts = PetscOptions(petsclib; options...);
         push!(opts)
         LibPETSc.KSPSetFromOptions(petsclib, ksp)
         pop!(opts)
@@ -113,7 +113,7 @@ Create a [`KSP`](@ref) with the sparse matrix `A` using the `petsclib`. If
 KSP(petsclib, comm, S::SparseMatrixCSC; kwargs...) 
 
 function KSP(petsclib, comm, S::SparseMatrixCSC; kwargs...) 
-    M = PETSc.MatCreateSeqAIJ(petsclib, comm, S)
+    M = LibPETSc.PetscMat(petsclib, comm, S)
     return KSP(M; kwargs...)
 end
 
@@ -196,16 +196,15 @@ end
 """
     dm(ksp::AbstractKSP)
 
-Get `dmda` for `ksp`
+The DM attached to `ksp`, [`narrow`](@ref)ed to its flavour.
 
-The returned `dmda` is owned by the `ksp`
+$(doc_borrowed())
 
 # External Links
 $(doc_external("KSP/KSPGetDM"))
 """
 function dm(ksp::AbstractKSP{PetscLib}) where PetscLib
-    dmda = LibPETSc.KSPGetDM(getlib(PetscLib),ksp)
-    return dmda
+    return narrow(LibPETSc.KSPGetDM(getlib(PetscLib), ksp))
 end
 
 #
@@ -308,7 +307,13 @@ end
 
 """
     sol = solution(ksp::AbstractKSP)
-Returns the soluteion vector associated with the KSP object.
+
+Returns the solution vector associated with the KSP object.
+
+$(doc_borrowed())
+
+# External Links
+$(doc_external("KSP/KSPGetSolution"))
 """
 function solution(ksp::AbstractKSP{PetscLib}) where PetscLib
     petsclib = getlib(PetscLib)

@@ -289,13 +289,14 @@ function DMPlex(
 
     dm = LibPETSc.DMCreate(petsclib, comm)
     LibPETSc.DMSetType(petsclib, dm, "plex")
+    dm = DMPlex{PetscLib}(dm.ptr, getlib(PetscLib).age, true)
 
     if !isempty(prefix)
         LibPETSc.DMSetOptionsPrefix(petsclib, dm, prefix)
     end
 
     if setfromoptions
-        opts = Options(petsclib; options...)
+        opts = PetscOptions(petsclib; options...)
         push!(opts)
         LibPETSc.DMSetFromOptions(petsclib, dm)
         pop!(opts)
@@ -305,10 +306,7 @@ function DMPlex(
         setup!(dm)
     end
 
-    if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, dm)
-    end
-    return dm
+    return own_dm!(dm, comm)
 end
 
 """
@@ -380,13 +378,14 @@ function DMPlex(
         PetscInt(localize_height),
         LibPETSc.PetscBool(sparse_localize),
     )
+    dm = DMPlex{PetscLib}(dm.ptr, getlib(PetscLib).age, true)
 
     if !isempty(prefix)
         LibPETSc.DMSetOptionsPrefix(petsclib, dm, prefix)
     end
 
     if setfromoptions
-        opts = Options(petsclib; options...)
+        opts = PetscOptions(petsclib; options...)
         push!(opts)
         LibPETSc.DMSetFromOptions(petsclib, dm)
         pop!(opts)
@@ -396,29 +395,26 @@ function DMPlex(
         setup!(dm)
     end
 
-    if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, dm)
-    end
-    return dm
+    return own_dm!(dm, comm)
 end
 
 
 # ── Convenience helpers ──────────────────────────────────────────────────────
 
 """
-    issimplex(dm::AbstractPetscDM) -> Bool
+    issimplex(dm::DMPlex) -> Bool
 
 Return `true` when the cells of `dm` (assumed to be a `DMPLEX`) are simplices.
 
 # External Links
 $(doc_external("DMPlex/DMPlexIsSimplex"))
 """
-function issimplex(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function issimplex(dm::DMPlex{PetscLib}) where {PetscLib}
     return Bool(LibPETSc.DMPlexIsSimplex(getlib(PetscLib), dm))
 end
 
 """
-    distribute!(dm::AbstractPetscDM; overlap = 0) -> Union{Nothing, AbstractPetscDM}
+    distribute!(dm::DMPlex; overlap = 0) -> Union{Nothing, DMPlex}
 
 Distribute the (serial) `DMPLEX` `dm` across the communicator with the given
 point-overlap.  Returns the new distributed `DM` on the owning communicator, or
@@ -430,13 +426,15 @@ The original `dm` is *not* destroyed — the caller is responsible for that.
 $(doc_external("DMPlex/DMPlexDistribute"))
 """
 function distribute!(
-    dm::AbstractPetscDM{PetscLib};
+    dm::DMPlex{PetscLib};
     overlap::Integer = 0,
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
     PetscInt = inttype(PetscLib)
     _, dm_par = LibPETSc.DMPlexDistribute(petsclib, dm, PetscInt(overlap))
-    return dm_par
+    # The distributed DM is a new object handed to the caller, not a borrowed
+    # handle, so it is narrowed as owned.
+    return narrow(dm_par; own = true)
 end
 
 
@@ -463,6 +461,8 @@ end
     ds(dm::AbstractPetscDM) -> PetscDS
 
 Return the `PetscDS` (discrete system) attached to `dm`.
+
+$(doc_borrowed())
 
 # External Links
 $(doc_external("DM/DMGetDS"))
@@ -535,7 +535,7 @@ function fe_create_default(
     # Push the polynomial degree into the options DB so PetscFECreateDefault
     # picks up the correct space even when no command-line option is given.
     opt_key = isempty(prefix) ? "petscspace_degree" : "$(prefix)petscspace_degree"
-    opts = Options(petsclib; Symbol(opt_key) => degree)
+    opts = PetscOptions(petsclib; Symbol(opt_key) => degree)
     push!(opts)
     fe = LibPETSc.PetscFECreateDefault(
         petsclib, comm,
@@ -857,9 +857,15 @@ end
     clone(dm::AbstractPetscDM) -> AbstractPetscDM
 
 Return a new DM that is a clone of `dm` (same topology, no fields or DS).
+
+The clone is a new object the caller owns, and comes back [`narrow`](@ref)ed to
+its flavour.
+
+# External Links
+$(doc_external("DM/DMClone"))
 """
 function clone(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
-    return LibPETSc.DMClone(getlib(PetscLib), dm)
+    return narrow(LibPETSc.DMClone(getlib(PetscLib), dm); own = true)
 end
 
 # `dm_create_global_vec`/`dm_create_local_vec` here and `DMGlobalVec`/`DMLocalVec` in
@@ -1226,9 +1232,10 @@ end
     coarse_dm(dm::AbstractPetscDM) -> AbstractPetscDM
 
 Return the coarse `DM` from which `dm` was obtained by refinement (e.g. via
-`-dm_refine_hierarchy`).  The returned DM is a borrowed reference owned by PETSc;
-do **not** call `destroy!` on it.  Check `convert(Ptr{Cvoid}, cdm) == C_NULL` to
+`-dm_refine_hierarchy`).  Check `convert(Ptr{Cvoid}, cdm) == C_NULL` to
 detect when there is no coarser level.
+
+$(doc_borrowed())
 
 # External Links
 $(doc_external("DM/DMGetCoarseDM"))
@@ -1237,7 +1244,7 @@ function coarse_dm end
 
 LibPETSc.@for_petsc function coarse_dm(dm::AbstractPetscDM{$PetscLib})
     petsclib = getlib($PetscLib)
-    return LibPETSc.DMGetCoarseDM(petsclib, dm)
+    return narrow(LibPETSc.DMGetCoarseDM(petsclib, dm))
 end
 
 """

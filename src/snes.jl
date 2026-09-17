@@ -49,7 +49,7 @@ function SNES(
     # set after construction (via set_dm!), and PCs like MG need the
     # DM hierarchy to be available during SetFromOptions/SetUp.
     if !isempty(options)
-        snes.opts = PETSc.Options(petsclib; options...)
+        snes.opts = PetscOptions(petsclib; options...)
     end
 
     # We can only let the garbage collect finalize when we do not need to
@@ -330,11 +330,11 @@ end
 
 
 """
-    dm = dm(snes::AbstractSNES)
+    d = dm(snes::AbstractSNES)
 
-Get `dmda` for `snes`
+The DM attached to `snes`, [`narrow`](@ref)ed to its flavour.
 
-The returned `dmda` is owned by the `snes`
+$(doc_borrowed())
 
 # External Links
 $(doc_external("SNES/SNESGetDM"))
@@ -342,8 +342,7 @@ $(doc_external("SNES/SNESGetDM"))
 function dm(
     snes::AbstractSNES{PetscLib},
 ) where {PetscLib}
-    dmda = LibPETSc.SNESGetDM(getlib(PetscLib), snes)
-    return dmda
+    return narrow(LibPETSc.SNESGetDM(getlib(PetscLib), snes))
 end
 
 

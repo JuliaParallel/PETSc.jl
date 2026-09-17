@@ -15,7 +15,11 @@ const AUDIT_TYPE_CREATORS = Dict{Symbol, String}(
     :DMPlex => "DM",
     :DMStag => "DM",
     :KSP => "KSP",
+    :PetscMat => "Mat",
+    :PetscOptions => "Options",
+    :PetscVec => "Vec",
     :SNES => "SNES",
+    :TS => "TS",
 )
 
 """

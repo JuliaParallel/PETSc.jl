@@ -21,9 +21,12 @@ end
 
 
 """
-    Options(petsclib; kwargs...)
+    PetscOptions(petsclib; kwargs...)
 
 Create a PETSc options database for the given `petsclib`.
+
+Replaces v0.4's `Options` factory: construction goes through the type
+(docs/src/man/naming.md §5.1).
 
 Keyword arguments are converted to PETSc options:
 - Options with value `nothing` or `true` are set without a value (flags)
@@ -38,7 +41,7 @@ julia> petsclib = PETSc.petsclibs[1];
 
 julia> PETSc.initialize(petsclib)
 
-julia> opt = PETSc.Options(
+julia> opt = PETSc.PetscOptions(
                          petsclib,
                          ksp_monitor = nothing,
                          ksp_view = true,
@@ -76,7 +79,7 @@ ERROR: KeyError: key "bad_key" not found
 # External Links
 $(doc_external("Sys/PetscOptionsCreate"))
 """
-function Options(petsclib::PetscLibType; kwargs...)
+function LibPETSc.PetscOptions(petsclib::PetscLibType; kwargs...)
     opts = LibPETSc.PetscOptionsCreate(petsclib)
     finalizer(destroy!, opts)
     for (k, v) in kwargs

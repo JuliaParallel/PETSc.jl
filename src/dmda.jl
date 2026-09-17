@@ -54,7 +54,6 @@ function DMDA(
     options...,
 ) where {PetscLib, N}
     PetscInt = inttype(PetscLib)
-    opts = Options(petsclib; options...)
 
     if isnothing(points_per_proc)
         points_per_proc = ntuple(_ -> nothing, N)
@@ -118,6 +117,10 @@ function DMDA(
                                 )                    
     end
 
+    # Take ownership of the handle the creator returned: from here on `da` is a
+    # `DMDA{PetscLib, N}` and every DMDA method dispatches on it.
+    da = DMDA{PetscLib, N}(da.ptr, petsclib.age, true)
+
     if !isempty(prefix)
         # options prefix
         LibPETSc.DMSetOptionsPrefix(petsclib, da, prefix)
@@ -125,7 +128,7 @@ function DMDA(
 
     if setfromoptions
         # set options (if any)
-        opts = PETSc.Options(petsclib; options...);
+        opts = PetscOptions(petsclib; options...)
         push!(opts)
         LibPETSc.DMSetFromOptions(PetscLib, da)
         pop!(opts)
@@ -138,21 +141,18 @@ function DMDA(
 
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
-    if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, da)
-    end
-    return da
+    return own_dm!(da, comm)
 end
 
 """
-    ndofs(da::AbstractPetscDM)
+    ndofs(da::DMDA)
 
 Return the number of dofs in for `da`
 
 # External Links
 $(doc_external("DMDA/DMDAGetDof"))
 """
-function ndofs(da::AbstractPetscDM{PetscLib}) where PetscLib
+function ndofs(da::DMDA{PetscLib}) where PetscLib
     PetscInt = PetscLib.PetscInt
     ndof = [PetscInt(0)]
 
@@ -163,14 +163,14 @@ end
 
 
 """
-    reshape_local_array(Arr, da::AbstractPetscDM{PetscLib}, ndof = ndofs(da))
+    reshape_local_array(Arr, da::Union{DMDA, DMStag}, ndof = ndofs(da))
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
 be addressed with global indexing.
 """
 function reshape_local_array(
     Arr,
-    da::AbstractPetscDM{PetscLib},
+    da::Union{DMDA{PetscLib}, DMStag{PetscLib}},
     ndof::Integer = ndofs(da),
 ) where {PetscLib}
 
@@ -199,14 +199,13 @@ function reshape_local_array(
 end
 
 """
-    ind = local_interior_linear_index(dmda::AbstractPetscDM)
+    ind = local_interior_linear_index(dmda::DMDA)
 
 Returns the linear indices associated with the degrees of freedom own by this MPI rank embedded in the ghost index space for the `dmda`
 """
-function local_interior_linear_index(da::AbstractPetscDM{PetscLib}) where PetscLib
+function local_interior_linear_index(da::DMDA{PetscLib}) where PetscLib
     # Determine the indices of the linear indices of the local part of the
     # matrix we own
-    @assert type_name(da) == "da" 
     gc = PETSc.ghost_corners(da)
     c = PETSc.corners(da)
 
@@ -222,7 +221,7 @@ function local_interior_linear_index(da::AbstractPetscDM{PetscLib}) where PetscL
 end
 
 """
-    star_fd_coloring(petsclib, da)
+    star_fd_coloring(petsclib, da::DMDA)
 
 Build all data needed for manual FD coloring of a **2-D** DMDA with a STAR
 stencil, using `IS_COLORING_LOCAL` and ghost-local COO indexing.
@@ -255,7 +254,7 @@ Returns a `NamedTuple`:
     - reshape `col_colors_mat` to `(dof, nx_g, ny_g, nz_g)`,
     - decode `z_owned` in the `perturb_cols` loop.
 """
-function star_fd_coloring(petsclib::PetscLib, da::AbstractPetscDM{PetscLib}) where PetscLib
+function star_fd_coloring(petsclib::PetscLib, da::DMDA{PetscLib}) where PetscLib
     CPetscInt = petsclib.PetscInt
 
     # ── ISColoring ────────────────────────────────────────────────────────────

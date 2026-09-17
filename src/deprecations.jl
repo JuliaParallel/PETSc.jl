@@ -89,6 +89,16 @@ end
 @renamed setfunction! set_function!
 @renamed setjacobian! set_snes_jacobian!
 @renamed setconvergencetest! set_convergence_test!
+@renamed VecSeq PetscVec
+@renamed MatSeqAIJ PetscMat
+@renamed MatSeqDense PetscMat
+@renamed MatCreateSeqAIJ PetscMat
+function MatSeqAIJWithArrays(args...; kwargs...)
+    @warn "MatSeqAIJWithArrays is deprecated, use PetscMat" maxlog = 1
+    return mat_seqaij_with_arrays(args...; kwargs...)
+end
+
+@renamed MatAIJ PetscMat
 @renamed unsafe_localarray unsafe_local_array
 @renamed wrap_localarray wrap_local_array
 @renamed acquire_petsc_local_array acquire_local_array
@@ -103,6 +113,8 @@ end
 @renamed setvalues! set_values!
 @renamed addindex! add_index!
 @renamed determine_memtype memtype
+@renamed Options PetscOptions
+@renamed set_petsclib PetscLibType
 @renamed initialized isinitialized
 @renamed finalized isfinalized
 @renamed check_petsc_wrappers_version check_wrappers_version

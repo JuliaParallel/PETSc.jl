@@ -379,31 +379,91 @@ function LibPETSc.PetscLibType(library_path::String; PetscScalar::Type=Float64, 
     return petsclib
 end
 
+# The resolved path of a loaded library, whether it was configured as a path or
+# as a JLL handle.
+function library_path_string(lib)
+    return lib.petsc_library isa AbstractString ? lib.petsc_library :
+           try
+               Libdl.dlpath(Libdl.dlopen(lib.petsc_library))
+           catch
+               string(lib.petsc_library)
+           end
+end
+
+"""
+    LibraryInfo
+
+The shape of the `NamedTuple` [`library_info`](@ref) returns, and the type its
+`show` method is written for.
+"""
+const LibraryInfo = NamedTuple{(:source, :path, :scalar, :int, :real)}
+
 """
     library_info()
 
-Print the current PETSc library configuration: which library is in use, how it
-was configured (preference or default JLL), and the scalar/integer types.
+Report the PETSc library configuration as a `NamedTuple` (§12).
+
+| Field | Meaning |
+|---|---|
+| `source` | `:preferences` if `LocalPreferences.toml` names a library, `:jll` for the bundled `PETSc_jll` binaries |
+| `path` | the library path in use |
+| `scalar` | `PetscScalar` of the preferred library |
+| `int` | `PetscInt` of the preferred library |
+| `real` | `PetscReal` of the preferred library |
+
+The preferred library is `petsclibs[1]`: the configured one when a preference is
+set, and the first of the bundled builds otherwise.
+
+v0.4 printed a report and returned `nothing`, so the name promised data it never
+handed back. The report is unchanged — it is now the `show` method — and the
+values are reachable from code.
+
+```julia
+info = library_info()
+info.scalar          # Float64
+```
+
+# See Also
+- [`set_library!`](@ref): configure a custom library persistently
+- [`unset_library!`](@ref): revert to `PETSc_jll`
 """
 function library_info()
-    pref_path   = @load_preference("library_path", nothing)
-    pref_scalar = @load_preference("PetscScalar", nothing)
-    pref_int    = @load_preference("PetscInt", nothing)
+    pref_path = @load_preference("library_path", nothing)
+    lib = isempty(petsclibs) ? nothing : petsclibs[1]
 
-    if pref_path !== nothing
-        println("Source  : LocalPreferences.toml")
-        println("Path    : ", pref_path)
-        println("Scalar  : ", something(pref_scalar, "Float64"))
-        println("Int     : ", something(pref_int,    "Int64"))
+    source = pref_path === nothing ? :jll : :preferences
+    path = pref_path !== nothing ? pref_path :
+           lib === nothing ? nothing : library_path_string(lib)
+
+    return (
+        source = source,
+        path   = path,
+        scalar = lib === nothing ? nothing : lib.PetscScalar,
+        int    = lib === nothing ? nothing : lib.PetscInt,
+        real   = lib === nothing ? nothing : lib.PetscReal,
+    )
+end
+
+# The report v0.4's `library_info` printed. It is written for the exact field
+# names `library_info` returns, so it cannot claim a `NamedTuple` this package
+# does not own.
+function Base.show(io::IO, ::MIME"text/plain", info::LibraryInfo)
+    if info.source === :preferences
+        println(io, "Source  : LocalPreferences.toml")
+        println(io, "Path    : ", info.path)
+        println(io, "Scalar  : ", info.scalar)
+        println(io, "Int     : ", info.int)
     else
-        println("Source  : PETSc_jll (default precompiled binaries)")
+        println(io, "Source  : PETSc_jll (default precompiled binaries)")
     end
 
-    println("\nLoaded libraries (this session):")
+    println(io, "\nLoaded libraries (this session):")
     for lib in petsclibs
-        path = lib.petsc_library isa AbstractString ? lib.petsc_library :
-               try Libdl.dlpath(Libdl.dlopen(lib.petsc_library)) catch; string(lib.petsc_library) end
-        println("  [$(lib.PetscScalar), $(lib.PetscInt)]: ", path)
+        println(
+            io,
+            "  [$(lib.PetscScalar), $(lib.PetscInt)]: ",
+            library_path_string(lib),
+        )
     end
 end
 
@@ -440,7 +500,7 @@ PETSc.set_library!(
 - `PetscLibType(path)`: load a custom library for the current session only
 """
 function set_library!(path; PetscScalar::Type=Float64, PetscInt::Type=Int64)
-    ispath(path) || error("PETSc library not found: $path")
+    ispath(path) || throw(ArgumentError("PETSc library not found: $path"))
     @set_preferences!(
         "library_path" => realpath(path),
         "PetscScalar"  => string(PetscScalar),
@@ -493,7 +553,11 @@ function check_wrappers_version(petsclib=nothing)
         if isdefined(@__MODULE__, :petsclibs) && !isempty(petsclibs)
             petsclib = petsclibs[1]
         else
-            error("No PETSc library available to check installed version")
+            throw(
+                ArgumentError(
+                    "no PETSc library available to check the installed version",
+                ),
+            )
         end
     end
 

@@ -151,7 +151,7 @@ function parse_options(args::Vector{String})
             elseif length(token) == 2
                 opts[Symbol(token[1])] = token[2]
             else
-                error("invalid argument: $(args[i])")
+                throw(ArgumentError("invalid argument: $(repr(args[i]))"))
             end
             i = i + 1
         else

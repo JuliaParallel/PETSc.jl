@@ -192,5 +192,34 @@ using PETSc
         @test PETSc.scalartype(custom_lib_f32) == Float32
         @test PETSc.inttype(custom_lib_f32) == Int64
     end
+
+    # naming.md §12: `library_info` returns the values it used to print, and the
+    # report is its `show` method.
+    @testset "library_info" begin
+        info = PETSc.library_info()
+        @test info isa NamedTuple
+        @test keys(info) === (:source, :path, :scalar, :int, :real)
+        @test info.source in (:preferences, :jll)
+        @test info.scalar === PETSc.petsclibs[1].PetscScalar
+        @test info.int === PETSc.petsclibs[1].PetscInt
+        @test info.real === real(PETSc.petsclibs[1].PetscScalar)
+        @test info.path isa AbstractString
+
+        report = sprint(show, MIME"text/plain"(), info)
+        @test occursin("Source  : ", report)
+        @test occursin("Loaded libraries (this session):", report)
+        if info.source === :preferences
+            @test occursin("Path    : $(info.path)", report)
+        else
+            @test occursin("PETSc_jll", report)
+        end
+    end
+
+    # naming.md §14: user input raises `ArgumentError`, not a bare `error`.
+    @testset "ArgumentError on user input" begin
+        @test_throws ArgumentError PETSc.set_library!(
+            joinpath(mktempdir(), "no-such-libpetsc.so"),
+        )
+    end
 end
 

@@ -33,26 +33,17 @@ jobs:
         os:
           - macOS-15-intel        # with intel processors
           - ubuntu-latest
-        arch:
-          - x64
+          - windows-latest
+          - macOS-latest
         include:
-          - os: macOS-latest
-            arch: aarch64
-            version: 1
           - os: ubuntu-latest
-            arch: x64
-            version: 'lts'
-          # PETSc_jll 3.25.4 is the first Windows build with MS-MPI, needs Julia 1.12
-          - os: windows-latest
-            arch: x64
-            version: '1'
+            version: 'min'
             
     steps:
       - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.version }}
-          arch: ${{ matrix.arch }}
       - run: julia -e 'using InteractiveUtils; versioninfo(verbose=true)'
       - uses: julia-actions/cache@v3
       - uses: julia-actions/julia-buildpkg@latest

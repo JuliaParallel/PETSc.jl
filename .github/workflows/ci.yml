@@ -31,7 +31,6 @@ jobs:
         version:
           - '1'
         os:
-          - macOS-15-intel        # with intel processors
           - ubuntu-latest
           - windows-latest
           - macOS-latest

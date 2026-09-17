@@ -65,8 +65,8 @@ MPI.Initialized() || MPI.Init()
       PJ = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
 
       r = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
-      PETSc.set_function!(S, fn!, r)
-      PETSc.set_snes_jacobian!(S, update_jac!, PJ, PJ)
+      PETSc.set_function!(fn!, S, r)
+      PETSc.set_snes_jacobian!(update_jac!, S, PJ, PJ)
  
       x = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
       b = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), PetscScalar.([0, 0]))

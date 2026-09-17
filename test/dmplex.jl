@@ -543,7 +543,7 @@ for petsclib in PETSc.petsclibs
 
         gvec = PETSc.global_vec(dm)
         lvec = PETSc.local_vec(dm)
-        @test_nowarn PETSc.global_to_local!(dm, gvec, lvec)
+        @test_nowarn PETSc.global_to_local!(lvec, dm, gvec)
 
         PETSc.destroy!(gvec)
         PETSc.destroy!(lvec)
@@ -635,7 +635,7 @@ for petsclib in PETSc.petsclibs
         @test label != C_NULL
 
         bd = PETSc.add_boundary!(
-            petsclib, dm,
+            dm,
             LibPETSc.DM_BC_ESSENTIAL, "dirichlet", label,
             PetscInt_t[1], 0, PetscInt_t[], _dm_zero_ptr,
         )
@@ -659,12 +659,11 @@ for petsclib in PETSc.petsclibs
         PETSc.create_ds!(dm)
 
         u = PETSc.global_vec(dm)
-        PETSc.project_function!(petsclib, dm, 0.0,
-                                    [_dm_exact_ptr], nothing,
-                                    LibPETSc.INSERT_ALL_VALUES, u)
+        PETSc.project_function!(u, dm, 0.0,
+                                [_dm_exact_ptr], nothing,
+                                LibPETSc.INSERT_ALL_VALUES)
 
-        l2err = PETSc.l2diff(petsclib, dm, 0.0,
-                                         [_dm_exact_ptr], nothing, u)
+        l2err = PETSc.l2diff(dm, 0.0, [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
 
         PETSc.destroy!(u)
@@ -681,12 +680,11 @@ for petsclib in PETSc.petsclibs
         PETSc.create_ds!(dm)
 
         u = PETSc.global_vec(dm)
-        PETSc.project_function!(petsclib, dm, 0.0,
-                                    [_dm_exact_ptr], nothing,
-                                    LibPETSc.INSERT_ALL_VALUES, u)
+        PETSc.project_function!(u, dm, 0.0,
+                                [_dm_exact_ptr], nothing,
+                                LibPETSc.INSERT_ALL_VALUES)
 
-        l2err = PETSc.l2diff(petsclib, dm, 0.0,
-                                         [_dm_exact_ptr], nothing, u)
+        l2err = PETSc.l2diff(dm, 0.0, [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
 
         PETSc.destroy!(u)
@@ -704,11 +702,10 @@ for petsclib in PETSc.petsclibs
 
         # _dm_exact sums all coordinate components, works in any dimension.
         u = PETSc.global_vec(dm)
-        PETSc.project_function!(petsclib, dm, 0.0,
-                                    [_dm_exact_ptr], nothing,
-                                    LibPETSc.INSERT_ALL_VALUES, u)
-        l2err = PETSc.l2diff(petsclib, dm, 0.0,
-                                         [_dm_exact_ptr], nothing, u)
+        PETSc.project_function!(u, dm, 0.0,
+                                [_dm_exact_ptr], nothing,
+                                LibPETSc.INSERT_ALL_VALUES)
+        l2err = PETSc.l2diff(dm, 0.0, [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
 
         PETSc.destroy!(u)

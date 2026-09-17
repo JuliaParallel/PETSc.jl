@@ -26,7 +26,9 @@ using LinearAlgebra: mul!, norm
         right,left = LibPETSc.MatCreateVecs(petsclib,mat)
 
         # Fill the matrix and right vector
-        row_rng = PETSc.ownership_range(mat, false)
+        # `ownership_range` is 1-based only (naming.md §12.1); the loop below
+        # works in PETSc's numbering.
+        row_rng = PETSc.ownership_range(mat) .- 1
         for i in row_rng
             if i == 0
                 vals = [-2, 1]

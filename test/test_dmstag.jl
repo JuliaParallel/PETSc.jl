@@ -72,6 +72,7 @@ MPI.Initialized() || MPI.Init()
         @test corners.nextra == (1, 1, 1)
         @test corners.lower  == CartesianIndex(1, 1, 1)
         @test corners.upper  == CartesianIndex(20,21,22)
+        @test corners.lower isa CartesianIndex{3}
 
 
         bound = LibPETSc.DMStagGetBoundaryTypes(petsclib, dm_3D) 
@@ -355,7 +356,7 @@ end
         @test LibPETSc.DMStagGetLocalSizes(petsclib, dm) == (20,0,0)
 
         # Test
-        @test PETSc.type_name(dm) == "stag"
+        @test PETSc.type_name(dm) === :stag
         @test PETSc.ndims(dm) == 1
 
         # Info about ranks  
@@ -373,6 +374,8 @@ end
         @test corners.upper[1] == 20
         @test corners.size[1]  == 20
         @test corners.nextra[1] == 1
+        # A 1D DMStag answers with 1-tuples (naming.md §12).
+        @test corners.size isa NTuple{1, Int}
 
         @test ghost_corners.lower[1] == 1
         @test ghost_corners.upper[1] == 21
@@ -415,6 +418,8 @@ end
 
         ind = PETSc.local_indices(dm_ghosted);
         @test ind.center.x[3] == 5
+        # A 1D DMStag keys `center`/`vertex` by `x` only (naming.md §12).
+        @test keys(ind.center) === (:x,)
 
     
         # simple test to retrieve the KSP object
@@ -455,10 +460,10 @@ end
 
         @test LibPETSc.DMStagGetGlobalSizes(petsclib, dm_2D) == (20,21,0)
         corners = PETSc.corners(dm_2D)
-        @test corners.size   == (20,21,0)
-        @test corners.nextra == (1, 1, 0)
-        @test corners.lower  == CartesianIndex(1, 1, 1)
-        @test corners.upper  == CartesianIndex(20,21,0)
+        @test corners.size   == (20,21)
+        @test corners.nextra == (1, 1)
+        @test corners.lower  == CartesianIndex(1, 1)
+        @test corners.upper  == CartesianIndex(20,21)
 
         PETSc.destroy!(dm_2D)
 
@@ -500,7 +505,7 @@ end
 
 
         DMcoord = LibPETSc.DMGetCoordinateDM(petsclib,dm_1D)
-        @test PETSc.type_name(DMcoord)=="product"
+        @test PETSc.type_name(PETSc.narrow(DMcoord)) === :product
 
         # Retrieve array with staggered coordinates
         X_coord,_,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, dm_1D)
@@ -773,7 +778,7 @@ end
         x_g[5] = PetscScalar(99.0)
         
         x_l = PETSc.local_vec(dm_2D_ghost)
-        PETSc.global_to_local!(x_g, x_l, dm_2D_ghost)
+        PETSc.global_to_local!(x_l, dm_2D_ghost, x_g)
         
         # Get array with correct (m,n,q) layout
         local_array = LibPETSc.DMStagVecGetArray(petsclib, dm_2D_ghost, x_l)

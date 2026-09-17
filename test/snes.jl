@@ -41,7 +41,7 @@ MPI.Initialized() || MPI.Init()
             
             return PetscInt(0)
         end
-        PETSc.set_function!(snes, fn!, r)
+        PETSc.set_function!(fn!, snes, r)
         
        function jacobian!(J, snes, x)
             PETSc.with_local_array!(x; write = false) do x
@@ -88,7 +88,7 @@ MPI.Initialized() || MPI.Init()
   
             return PetscInt(0)
         end
-        PETSc.set_function!(snes2, fn2!, r2)
+        PETSc.set_function!(fn2!, snes2, r2)
 
         function jacobian2!(J, snes2, x)
             J[1, 1] = 2x[1] + x[2]

@@ -48,23 +48,27 @@ MPI.Initialized() || MPI.Init()
                     dof_per_nodec,
                 )
 
-                @test PETSc.type_name(dm) == "stag"
-                @test PETSc.type_name(dmnew) == "stag"
+                @test PETSc.type_name(dm) === :stag
+                @test PETSc.type_name(dmnew) === :stag
                 @test PETSc.ndims(dm) == 1
                 @test LibPETSc.DMStagGetDOF(petsclib,dm) == (3, 4,0,0)
                 @test LibPETSc.DMStagGetDOF(petsclib,dmnew) == (4, 3,0,0)
                 @test LibPETSc.DMStagGetGlobalSizes(petsclib,dm) ===
                       (global_size, PetscInt(0), PetscInt(0))
-                @test size(dm) === (global_size, PetscInt(0), PetscInt(0))
+                @test size(dm) === (Int(global_size),)
                 @test LibPETSc.DMStagGetLocalSizes(petsclib,dm) ===
                       (points_per_proc[mpirank + 1], PetscInt(0), PetscInt(0))
 
+                # Dimension-correct returns (naming.md §12): a 1D DMStag answers
+                # with `CartesianIndex{1}` and 1-tuples, not the v0.4 padding.
                 corners = PETSc.corners(dm)
                 @test corners.lower ==
-                      CartesianIndex(proc_global_offsets[mpirank + 1] + 1, 1, 1)
+                      CartesianIndex(proc_global_offsets[mpirank + 1] + 1)
                 @test corners.upper ==
-                      CartesianIndex(proc_global_offsets[mpirank + 2], 0, 0)
-                @test corners.size == (points_per_proc[mpirank + 1], 0, 0)
+                      CartesianIndex(proc_global_offsets[mpirank + 2])
+                @test corners.size == (points_per_proc[mpirank + 1],)
+                @test corners.lower isa CartesianIndex{1}
+                @test corners.nextra isa NTuple{1, Int}
 
                 # Check the extra and first / last rank
                 #map(LibPETSc.DMStagGetIsLastRank(petsclib,dm), corners.nextra) do b, n
@@ -80,18 +84,15 @@ MPI.Initialized() || MPI.Init()
                     mpirank == mpisize - 1 ? 1 : stencil_width
                 ghost_corners = PETSc.ghost_corners(dm)
 
-                @test ghost_corners.lower == CartesianIndex(
-                    proc_global_offsets[mpirank + 1] + 1 - gl,
-                    1,
-                    1,
-                )
-                @test ghost_corners.upper == CartesianIndex(
-                    proc_global_offsets[mpirank + 2] + gr,
-                    0,
-                    0,
-                )
+                @test ghost_corners.lower ==
+                      CartesianIndex(proc_global_offsets[mpirank + 1] + 1 - gl)
+                @test ghost_corners.upper ==
+                      CartesianIndex(proc_global_offsets[mpirank + 2] + gr)
                 @test ghost_corners.size ==
-                      (points_per_proc[mpirank + 1] + gl + gr, 0, 0)
+                      (points_per_proc[mpirank + 1] + gl + gr,)
+                # `DMStagGetGhostCorners` reports no extra partial elements, so
+                # `ghost_corners` has no `nextra` field (naming.md §12).
+                @test !hasproperty(ghost_corners, :nextra)
 
                 #@test LibPETSc.DMStagGetBoundaryTypes(petsclib,dm) === (
                 #    boundary_type,
@@ -149,16 +150,12 @@ end
                     dof_per_nodec,
                 )
 
-                @test PETSc.type_name(dm) == "stag"
-                @test PETSc.type_name(dmnew) == "stag"
+                @test PETSc.type_name(dm) === :stag
+                @test PETSc.type_name(dmnew) === :stag
                 @test PETSc.ndims(dm) == 2
                 @test LibPETSc.DMStagGetDOF(petsclib, dm) == (3, 4, 5,0)
                 @test LibPETSc.DMStagGetDOF(petsclib, dmnew) == (4, 3, 0,0)
-                @test size(dm) === (
-                    PetscInt(global_size_x),
-                    PetscInt(global_size_y),
-                    PetscInt(0),
-                )
+                @test size(dm) === (Int(global_size_x), Int(global_size_y))
                 
                 corners = PETSc.corners(dm)
                 ghost_corners = PETSc.ghost_corners(dm)
@@ -166,8 +163,8 @@ end
                 isfirst = LibPETSc.DMStagGetIsFirstRank(petsclib,dm)
                 islast = LibPETSc.DMStagGetIsLastRank(petsclib,dm)
                 
-                bt = (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
-                for d in 1:3
+                bt = (boundary_type_x, boundary_type_y)
+                for d in 1:2
                     # Check left side ghost_corners and corner
                     #if d == 3
                     #    @test corners.lower[d] == ghost_corners.lower[d]
@@ -257,16 +254,13 @@ end
                     dof_per_nodec
                 )
 
-                @test PETSc.type_name(dm) == "stag"
-                @test PETSc.type_name(dmnew) == "stag"
+                @test PETSc.type_name(dm) === :stag
+                @test PETSc.type_name(dmnew) === :stag
                 @test PETSc.ndims(dm) == 3
                 @test LibPETSc.DMStagGetDOF(petsclib,dm) == (2, 3, 4, 5)
                 @test LibPETSc.DMStagGetDOF(petsclib,dmnew) == (4, 3, 0, 0)
-                @test size(dm) === (
-                    PetscInt(global_size_x),
-                    PetscInt(global_size_y),
-                    PetscInt(global_size_z),
-                )
+                @test size(dm) ===
+                      (Int(global_size_x), Int(global_size_y), Int(global_size_z))
 
                 corners = PETSc.corners(dm)
                 ghost_corners = PETSc.ghost_corners(dm)

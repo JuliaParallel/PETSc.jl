@@ -32,7 +32,9 @@ using LinearAlgebra: norm
 
                 # check the data ownership
                 rng = n0:n1
-                @test rng == PETSc.ownership_range(petsc_x, false)
+                # `ownership_range` is 1-based only (naming.md §12.1); this
+                # test wants PETSc's own numbering.
+                @test rng == PETSc.ownership_range(petsc_x) .- 1
             else
                 # Create using global size
                 petsc_x = LibPETSc.VecCreateMPI(
@@ -43,7 +45,7 @@ using LinearAlgebra: norm
                 )
 
                 # get the data ownership
-                rng = PETSc.ownership_range(petsc_x, false)
+                rng = PETSc.ownership_range(petsc_x) .- 1
             end
 
             # insert some values
@@ -70,7 +72,7 @@ using LinearAlgebra: norm
                 @test x == julia_x
             end
 
-            @test "mpi" == PETSc.type_name(petsc_x)
+            @test :mpi === PETSc.type_name(petsc_x)
             PETSc.destroy!(petsc_x)
 
         end

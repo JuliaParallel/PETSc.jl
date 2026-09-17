@@ -35,7 +35,7 @@ comm = MPI.COMM_WORLD
   ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=false)
   #PETSc.settolerances!(ksp; rtol=1e-8)
 
-  @test PETSc.type_name(ksp) == "gmres" # default
+  @test PETSc.type_name(ksp) === :gmres # default
 
   y = ksp \ w
   @test S*y[:] ≈ w[:]  rtol=1e-6

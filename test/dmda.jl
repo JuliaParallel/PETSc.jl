@@ -59,36 +59,32 @@ MPI.Initialized() || MPI.Init()
                 da_info = PETSc.info(da)
 
                 @test da_info.dim == 1
-                @test da_info.global_size == (global_size, 1, 1)
-                @test da_info.mpi_proc_size == (1, 1, 1)
-                @test da_info.boundary_type == (
-                    boundary_type,
-                    PETSc.DM_BOUNDARY_NONE,
-                    PETSc.DM_BOUNDARY_NONE,
-                )
+                @test da_info.global_size == (global_size,)
+                @test da_info.procs == (1,)
+                @test da_info.boundary_type == (boundary_type,)
                 @test da_info.stencil_type == PETSc.DMDA_STENCIL_BOX
                 @test da_info.stencil_width == stencil_width
 
+                # Dimension-correct returns (naming.md §12): a 1D DMDA answers
+                # with `CartesianIndex{1}` and 1-tuples, not the v0.4 padding.
                 corners = PETSc.corners(da)
                 @test corners.lower ==
-                      CartesianIndex(proc_global_offsets[mpirank + 1] + 1, 1, 1)
+                      CartesianIndex(proc_global_offsets[mpirank + 1] + 1)
                 @test corners.upper ==
-                      CartesianIndex(proc_global_offsets[mpirank + 2], 1, 1)
-                @test corners.size == (points_per_proc[mpirank + 1], 1, 1)
+                      CartesianIndex(proc_global_offsets[mpirank + 2])
+                @test corners.size == (points_per_proc[mpirank + 1],)
+                @test corners.lower isa CartesianIndex{1}
+                @test corners.size isa NTuple{1, Int}
 
                 ghost_corners = PETSc.ghost_corners(da)
-                @test ghost_corners.lower == CartesianIndex(
-                    proc_global_offsets[mpirank + 1] + 1 - gl,
-                    1,
-                    1,
-                )
-                @test ghost_corners.upper == CartesianIndex(
-                    proc_global_offsets[mpirank + 2] + gr,
-                    1,
-                    1,
-                )
+                @test ghost_corners.lower ==
+                      CartesianIndex(proc_global_offsets[mpirank + 1] + 1 - gl)
+                @test ghost_corners.upper ==
+                      CartesianIndex(proc_global_offsets[mpirank + 2] + gr)
                 @test ghost_corners.size ==
-                      (points_per_proc[mpirank + 1] + gl + gr, 1, 1)
+                      (points_per_proc[mpirank + 1] + gl + gr,)
+
+                @test Base.size(da) == (global_size,)
 
                 PETSc.destroy!(da)
 
@@ -108,18 +104,12 @@ MPI.Initialized() || MPI.Init()
 
                 @test da_info.dim == 1
                 if boundary_type == PETSc.DM_BOUNDARY_PERIODIC
-                    @test da_info.global_size ==
-                          ( global_size, 1, 1)
+                    @test da_info.global_size == (global_size,)
                 else
-                    @test da_info.global_size ==
-                          ( (global_size - 1) + 1, 1, 1)
+                    @test da_info.global_size == ((global_size - 1) + 1,)
                 end
-                @test da_info.mpi_proc_size == (mpisize, 1, 1)
-                @test da_info.boundary_type == (
-                    boundary_type,
-                    PETSc.DM_BOUNDARY_NONE,
-                    PETSc.DM_BOUNDARY_NONE,
-                )
+                @test da_info.procs == (mpisize,)
+                @test da_info.boundary_type == (boundary_type,)
                 @test da_info.stencil_type == PETSc.DMDA_STENCIL_BOX
                 @test da_info.stencil_width == stencil_width
                 PETSc.destroy!(da)
@@ -176,11 +166,10 @@ end
 
                 da_info = PETSc.info(da)
 
-                @test da_info.global_size == (global_size_x, global_size_y, 1)
+                @test da_info.global_size == (global_size_x, global_size_y)
                 @test da_info.dim == 2
-                @test prod(da_info.mpi_proc_size) == mpisize
-                @test da_info.boundary_type ==
-                      (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
+                @test prod(da_info.procs) == mpisize
+                @test da_info.boundary_type == (boundary_type_x, boundary_type_y)
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
@@ -215,10 +204,9 @@ end
                     2^da_refine * (global_size_y - 1) + 1
 
                 @test da_info.global_size ==
-                      (ref_global_size_x, ref_global_size_y, 1)
-                @test prod(da_info.mpi_proc_size) == mpisize
-                @test da_info.boundary_type ==
-                      (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
+                      (ref_global_size_x, ref_global_size_y)
+                @test prod(da_info.procs) == mpisize
+                @test da_info.boundary_type == (boundary_type_x, boundary_type_y)
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
@@ -279,7 +267,7 @@ end
                 @test da_info.global_size ==
                       (global_size_x, global_size_y, global_size_z)
                 @test da_info.dim == 3
-                @test prod(da_info.mpi_proc_size) == mpisize
+                @test prod(da_info.procs) == mpisize
                 @test da_info.boundary_type ==
                       (boundary_type_x, boundary_type_y, boundary_type_z)
                 @test da_info.stencil_type == stencil_type
@@ -319,7 +307,7 @@ end
 
                 @test da_info.global_size ==
                       (ref_global_size_x, ref_global_size_y, ref_global_size_z)
-                @test prod(da_info.mpi_proc_size) == mpisize
+                @test prod(da_info.procs) == mpisize
                 @test da_info.boundary_type ==
                       (boundary_type_x, boundary_type_y, boundary_type_z)
                 @test da_info.stencil_type == stencil_type
@@ -331,7 +319,7 @@ end
                 # TODO: Need a better test?
                 #=
                 ksp = PETSc.KSP(da)
-                @test PETSc.type_name(ksp) == "gmres"
+                @test PETSc.type_name(ksp) === :gmres
                 =#
             end
         end
@@ -385,15 +373,18 @@ end
             #j = i + CartesianIndex(d == 1, d == 2, d == 3)
             #mat[i, j] = 1
 
-            
+                        # `corners` is dimension-correct (naming.md §12), so the unit
+            # offset has to be `dim`-dimensional too.
+            unit(d) = CartesianIndex(ntuple(k -> k == d ? 1 : 0, dim))
+
             for i in (corners.lower):(corners.upper)
                 for d in 1:dim
                     if i[d] - 1 > 1
-                        j = i - CartesianIndex(d == 1, d == 2, d == 3)
+                        j = i - unit(d)
                         mat[i, j] = 1
                     end
                     if i[d] + 1 < global_size[d]
-                        j = i + CartesianIndex(d == 1, d == 2, d == 3)
+                        j = i + unit(d)
                         mat[i, j] = 1
                     end
                 end
@@ -403,17 +394,17 @@ end
             PETSc.assemble!(mat)
 
             # check
-            ind = LinearIndices(ntuple(i -> 1:global_size[i], 3))
+            ind = LinearIndices(ntuple(i -> 1:global_size[i], dim))
             for ci in (corners.lower):(corners.upper)
                 i = ind[ci]
                 @test mat[i, i] == -2dim
                 for d in 1:dim
                     if ci[d] - 1 > 1
-                        j = ind[ci - CartesianIndex(d == 1, d == 2, d == 3)]
+                        j = ind[ci - unit(d)]
                         @test mat[i, j] == 1
                     end
                     if ci[d] + 1 < global_size[d]
-                        j = ind[ci + CartesianIndex(d == 1, d == 2, d == 3)]
+                        j = ind[ci + unit(d)]
                         @test mat[i, j] == 1
                     end
                 end
@@ -471,7 +462,7 @@ end
 
         # add the local values to the global values
         #PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
-        PETSc.local_to_global!(local_vec, global_vec, da, PETSc.ADD_VALUES)
+        PETSc.local_to_global!(global_vec, da, local_vec, PETSc.ADD_VALUES)
 
         # end points added with neighbor due to ghost of size 1
         bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
@@ -486,8 +477,7 @@ end
 
         # reset the local values with the global values
         #PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
-        #PETSc.global_to_local!(local_vec, global_vec, da, PETSc.INSERT_VALUES)
-        PETSc.global_to_local!(global_vec, local_vec, da, PETSc.INSERT_VALUES)
+        PETSc.global_to_local!(local_vec, da, global_vec, PETSc.INSERT_VALUES)
 
         # My first value and my ghost should be the bot/top values
         @test local_vec[1] == bot_val
@@ -560,14 +550,17 @@ end
             x = PETSc.reshape_local_array(l_x, da_2D)
             @test 2 == size(x, 1)
 
-            Array_1 = @view x[1, :, :, :]
+            # A 2D DMDA reshapes to `(dof, nx, ny)`: three axes, not four
+            # (naming.md §12).
+            @test ndims(x) == 3
+
+            Array_1 = @view x[1, :, :]
             Array_1 .= 11.1
 
-            Array_2 = @view x[2, :, :, :]
+            Array_2 = @view x[2, :, :]
             Array_2 .= 22.2
         end
-        #PETSc.local_to_global!(x_g, x_l, da_2D, PETSc.INSERT_VALUES)
-        PETSc.local_to_global!(x_l,x_g, da_2D, PETSc.INSERT_VALUES)
+        PETSc.local_to_global!(x_g, da_2D, x_l, PETSc.INSERT_VALUES)
 
         sum_val = PETSc.LibPETSc.VecSum(petsclib, x_g)
         @test sum_val ≈ PetscScalar(3996)            # check sum of global vector

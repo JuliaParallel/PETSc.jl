@@ -266,7 +266,7 @@ let cdm = dm
 end
 
 # Cleanup
-PETSc.mat_null_space_destroy!(petsclib, nullspace)
+PETSc.destroy!(petsclib, nullspace)
 ```
 
 ---

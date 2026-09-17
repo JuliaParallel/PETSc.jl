@@ -471,7 +471,7 @@ end
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 GC.gc(true)
 MPI.Barrier(comm)
-PETSc.mat_null_space_destroy!(petsclib, nullspace)
+PETSc.destroy!(petsclib, nullspace)
 PETSc.destroy!(snes)
 PETSc.destroy!(u)
 PETSc.destroy!(null_vec)

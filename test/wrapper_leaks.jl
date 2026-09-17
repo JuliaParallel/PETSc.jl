@@ -22,7 +22,7 @@ end
     comm = LibPETSc.PETSC_COMM_SELF
     iters = 2000
     n = 4000                       # 32 KB per Float64 vector: a leak would show as 64 MB per block
-    for petsclib in PETSc.petsclibs[1:2]
+    for petsclib in PETSc.petsclibs[1:min(2, length(PETSc.petsclibs))]
         PETSc.initialize(petsclib)
         PetscInt = petsclib.PetscInt
         PetscScalar = petsclib.PetscScalar

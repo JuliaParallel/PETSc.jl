@@ -32,22 +32,18 @@ jobs:
         version:
           - '1'
         os:
-          - macOS-15-intel        # with intel processors 
           - ubuntu-latest
           - windows-latest        # PETSc_jll >= 3.25.4 ships MPI-enabled (MicrosoftMPI) Windows binaries
-        arch:
-          - x64 
+          - macOS-latest          # Apple Silicon; the default architecture of each runner is used
         include:
-          - os: macOS-latest
-            arch: aarch64
-            version: 1
-          # PETSc_jll >= 3.25 requires Julia 1.12, so there is no LTS (1.10) job
+          # PETSc_jll >= 3.25 requires Julia 1.12, so 'min' resolves to the oldest supported 1.12.x
+          - os: ubuntu-latest
+            version: 'min'
     steps:
       - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.version }}
-          arch: ${{ matrix.arch }}
       - run: julia -e 'using InteractiveUtils; versioninfo(verbose=true)'
       - uses: julia-actions/cache@v3
       - uses: julia-actions/julia-buildpkg@latest

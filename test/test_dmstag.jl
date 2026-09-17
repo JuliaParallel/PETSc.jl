@@ -9,7 +9,7 @@ MPI.Initialized() || MPI.Init()
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
-    for petsclib in PETSc.petsclibs[1:4]
+    for petsclib in PETSc.petsclibs[1:min(4, length(PETSc.petsclibs))]
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
@@ -477,7 +477,7 @@ end
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
-    for petsclib in PETSc.petsclibs[1:4]
+    for petsclib in PETSc.petsclibs[1:min(4, length(PETSc.petsclibs))]
         #@show petsclib
         #petsclib = PETSc.petsclibs[1]
     
@@ -612,7 +612,7 @@ end
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
-    for petsclib in PETSc.petsclibs[1:2]
+    for petsclib in PETSc.petsclibs[1:min(2, length(PETSc.petsclibs))]
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib, log_view=false)
         PetscScalar = PETSc.scalartype(petsclib)
@@ -742,7 +742,7 @@ end
 
 @testset "DMStagVecGetArray/RestoreArray" begin
     comm = MPI.COMM_WORLD
-    for petsclib in PETSc.petsclibs[1:4]
+    for petsclib in PETSc.petsclibs[1:min(4, length(PETSc.petsclibs))]
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt    = PETSc.inttype(petsclib)

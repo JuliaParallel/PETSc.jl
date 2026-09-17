@@ -135,6 +135,14 @@ The rename table, and the reasoning behind each rule, are in
 [`docs/src/man/naming.md`](docs/src/man/naming.md); the C-function-to-Julia-name lookup is
 the generated "C to Julia name index" page in the manual.
 
+### Changed
+
+- Only one `PetscInt` width of `PETSc_jll` is loaded per process (#241): `PETSc.petsclibs`
+  holds the four scalar variants of `Int64` by default, `PETSc.set_petscint!(Int32)` switches
+  to the `Int32` libraries on the next session. Loading both widths cross-binds the identically
+  named HYPRE/SuperLU_DIST symbols of the two integer ABIs. Code indexing `petsclibs[5:8]`
+  breaks.
+
 ### Added
 
 - PetscSF communication: `PetscSFBcastBegin/End`, `PetscSFReduceBegin/End`,

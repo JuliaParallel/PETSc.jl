@@ -523,6 +523,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :petsclibs,
     :set_library!,
     :unset_library!,
+    :set_petscint!,          # new in v0.5 (#241): one PetscInt width per process
     :tao_usable_after_reinitialize,
     :parse_options,
 ]

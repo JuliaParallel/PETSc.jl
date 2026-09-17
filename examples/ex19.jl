@@ -258,7 +258,13 @@ end
 opts     = isinteractive() ? NamedTuple() : PETSc.parse_options(filter(a -> a != "-log_view", ARGS))
 log_view = "-log_view" in ARGS
 
-petsclib = PETSc.getlib(; PetscScalar = Float64, PetscInt = Int32)
+petsclib = try
+    PETSc.getlib(; PetscScalar = Float64, PetscInt = Int32)
+catch
+    # only one PetscInt width is registered per process (default Int64, see
+    # `PETSc.set_petscint!`): fall back to any Float64 library
+    first(filter(l -> PETSc.scalartype(l) == Float64, collect(PETSc.petsclibs)))
+end
 PETSc.initialize(petsclib; log_view)
 
 _T        = Float64

@@ -17,6 +17,19 @@ which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` o
     The [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)
     remains an alternative if you need a custom PETSc build.
 
+### One `PetscInt` width per process
+
+`PETSc.petsclibs` holds the four scalar variants (`Float64`, `Float32`, `ComplexF64`,
+`ComplexF32`) of one integer width, `Int64` by default. The Int64 and Int32 builds of
+`PETSc_jll` link external packages (HYPRE, SuperLU_DIST) that export identical symbols with
+different integer ABIs, so both widths cannot be loaded into one process safely. To use the
+`Int32` libraries instead:
+
+```julia
+using PETSc
+PETSc.set_petscint!(Int32)   # stored in LocalPreferences.toml; restart Julia
+```
+
 ## Using a custom PETSc build
 
 Sometimes, you may be interested in a PETSc installation that comes with additional external packages, or that you compiled yourself. Ensure the library is compiled as a **dynamic** (not static) library.

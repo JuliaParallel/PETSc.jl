@@ -270,7 +270,8 @@ point and matches the `DMCreate` + `DMSetType(DMPLEX)` + `DMSetFromOptions` flow
 used in PETSc's tutorials (e.g. `snes/ex12.c`).
 
 For an explicit box mesh, use the
-[`DMPlex(petsclib, comm, dim, simplex, faces; ...)`](@ref) method below.
+[`DMPlex`](@ref) method taking `(petsclib, comm, dim, simplex, faces; ...)`,
+below.
 
 # External Links
 $(doc_external("DMPlex/DMPlexCreate"))

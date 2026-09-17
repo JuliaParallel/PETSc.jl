@@ -401,6 +401,9 @@ const INTERNAL = Set{Symbol}([
     :SNESConvergenceTestBox,
     :_MATSEQAIJ_WITHARRAYS_STORAGE,
     :_PETSC_ERR_LIB,
+    # defined into `PETSc` at runtime, the first time `check_wrappers_version`
+    # includes src/autowrapped/petsc_wrappers_version.jl
+    :PETSC_WRAPPERS_VERSION,
     # other internals
     :check_initialized,
     :isdestroyable,

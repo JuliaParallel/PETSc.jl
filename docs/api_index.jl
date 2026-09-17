@@ -123,7 +123,7 @@ function write_api_index(
             io,
             """
             The high-level interface renames PETSc's C functions to Julia
-            conventions (see [Naming Conventions](@ref)), which costs
+            conventions (see [the naming conventions](naming.md)), which costs
             discoverability: someone who knows `PetscFECopyQuadrature` cannot
             grep for it once it is `copy_quadrature!`. This page is the lookup
             table in the other direction.

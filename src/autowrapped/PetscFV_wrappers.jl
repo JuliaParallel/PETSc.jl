@@ -676,7 +676,7 @@ $(_doc_external("DM/PetscFVGetComputeGradients"))
 function PetscFVGetComputeGradients(petsclib::PetscLibType, fvm::PetscFV) end
 
 @for_petsc function PetscFVGetComputeGradients(petsclib::$UnionPetscLib, fvm::PetscFV )
-	computeGradients_ = Ref{PetscBool}()
+	computeGradients_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscFVGetComputeGradients, $petsc_library),

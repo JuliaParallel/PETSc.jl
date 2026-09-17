@@ -52,7 +52,7 @@ $(_doc_external("Sys/PetscIntStackEmpty"))
 function PetscIntStackEmpty(petsclib::PetscLibType, stack::PetscIntStack) end
 
 @for_petsc function PetscIntStackEmpty(petsclib::$UnionPetscLib, stack::$PetscIntStack )
-	empty_ = Ref{PetscBool}()
+	empty_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscIntStackEmpty, $petsc_library),

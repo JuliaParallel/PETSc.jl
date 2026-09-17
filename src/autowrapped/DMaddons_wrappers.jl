@@ -1233,7 +1233,7 @@ $(_doc_external("DM/DMSwarmDataBucketQueryDMSwarmDataFieldByName"))
 function DMSwarmDataBucketQueryDMSwarmDataFieldByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String) end
 
 @for_petsc function DMSwarmDataBucketQueryDMSwarmDataFieldByName(petsclib::$UnionPetscLib, db::DMSwarmDataBucket, name::String )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMSwarmDataBucketQueryDMSwarmDataFieldByName, $petsc_library),
@@ -1458,7 +1458,7 @@ $(_doc_external("DM/DMSwarmSortGetIsValid"))
 function DMSwarmSortGetIsValid(petsclib::PetscLibType, sw::PetscDM) end
 
 @for_petsc function DMSwarmSortGetIsValid(petsclib::$UnionPetscLib, sw::PetscDM )
-	isvalid_ = Ref{PetscBool}()
+	isvalid_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMSwarmSortGetIsValid, $petsc_library),
@@ -2030,7 +2030,7 @@ $(_doc_external("DM/DMPlexPointQueueEmptyCollective"))
 function DMPlexPointQueueEmptyCollective(petsclib::PetscLibType, obj::PetscObject, queue::DMPlexPoCintQueue) end
 
 @for_petsc function DMPlexPointQueueEmptyCollective(petsclib::$UnionPetscLib, obj::PetscObject, queue::DMPlexPoCintQueue )
-	empty_ = Ref{PetscBool}()
+	empty_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexPointQueueEmptyCollective, $petsc_library),
@@ -3573,7 +3573,7 @@ $(_doc_external("DM/DMPlexTransformGetMatchStrata"))
 function DMPlexTransformGetMatchStrata(petsclib::PetscLibType, tr::DMPlexTransform) end
 
 @for_petsc function DMPlexTransformGetMatchStrata(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	match_ = Ref{PetscBool}()
+	match_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexTransformGetMatchStrata, $petsc_library),
@@ -4174,7 +4174,7 @@ $(_doc_external("DM/DMPlexTransformCohesiveExtrudeGetTensor"))
 function DMPlexTransformCohesiveExtrudeGetTensor(petsclib::PetscLibType, tr::DMPlexTransform) end
 
 @for_petsc function DMPlexTransformCohesiveExtrudeGetTensor(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	useTensor_ = Ref{PetscBool}()
+	useTensor_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexTransformCohesiveExtrudeGetTensor, $petsc_library),
@@ -4476,7 +4476,7 @@ $(_doc_external("DM/DMPlexTransformExtrudeGetTensor"))
 function DMPlexTransformExtrudeGetTensor(petsclib::PetscLibType, tr::DMPlexTransform) end
 
 @for_petsc function DMPlexTransformExtrudeGetTensor(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	useTensor_ = Ref{PetscBool}()
+	useTensor_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexTransformExtrudeGetTensor, $petsc_library),
@@ -4542,7 +4542,7 @@ $(_doc_external("DM/DMPlexTransformExtrudeGetSymmetric"))
 function DMPlexTransformExtrudeGetSymmetric(petsclib::PetscLibType, tr::DMPlexTransform) end
 
 @for_petsc function DMPlexTransformExtrudeGetSymmetric(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	symmetric_ = Ref{PetscBool}()
+	symmetric_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexTransformExtrudeGetSymmetric, $petsc_library),
@@ -4610,7 +4610,7 @@ $(_doc_external("DM/DMPlexTransformExtrudeGetPeriodic"))
 function DMPlexTransformExtrudeGetPeriodic(petsclib::PetscLibType, tr::DMPlexTransform) end
 
 @for_petsc function DMPlexTransformExtrudeGetPeriodic(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	periodic_ = Ref{PetscBool}()
+	periodic_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexTransformExtrudeGetPeriodic, $petsc_library),
@@ -5277,7 +5277,7 @@ $(_doc_external("DM/DMLabelCompare"))
 function DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::DMLabel, l1::DMLabel, message::Cchar) end
 
 @for_petsc function DMLabelCompare(petsclib::$UnionPetscLib, comm::MPI_Comm, l0::DMLabel, l1::DMLabel, message::Cchar )
-	equal_ = Ref{PetscBool}()
+	equal_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMLabelCompare, $petsc_library),
@@ -5448,7 +5448,7 @@ $(_doc_external("DM/DMLabelHasValue"))
 function DMLabelHasValue(petsclib::PetscLibType, label::DMLabel, value::PetscInt) end
 
 @for_petsc function DMLabelHasValue(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
-	contains_ = Ref{PetscBool}()
+	contains_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMLabelHasValue, $petsc_library),
@@ -5485,7 +5485,7 @@ $(_doc_external("DM/DMLabelHasPoint"))
 function DMLabelHasPoint(petsclib::PetscLibType, label::DMLabel, point::PetscInt) end
 
 @for_petsc function DMLabelHasPoint(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt )
-	contains_ = Ref{PetscBool}()
+	contains_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMLabelHasPoint, $petsc_library),
@@ -5523,7 +5523,7 @@ $(_doc_external("DM/DMLabelStratumHasPoint"))
 function DMLabelStratumHasPoint(petsclib::PetscLibType, label::DMLabel, value::PetscInt, point::PetscInt) end
 
 @for_petsc function DMLabelStratumHasPoint(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, point::$PetscInt )
-	contains_ = Ref{PetscBool}()
+	contains_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMLabelStratumHasPoint, $petsc_library),
@@ -5956,7 +5956,7 @@ $(_doc_external("DM/DMLabelHasStratum"))
 function DMLabelHasStratum(petsclib::PetscLibType, label::DMLabel, value::PetscInt) end
 
 @for_petsc function DMLabelHasStratum(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
-	exists_ = Ref{PetscBool}()
+	exists_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMLabelHasStratum, $petsc_library),

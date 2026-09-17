@@ -603,7 +603,7 @@ $(_doc_external("Vec/PetscLayoutCompare"))
 function PetscLayoutCompare(petsclib::PetscLibType, mapa::PetscLayout, mapb::PetscLayout) end
 
 @for_petsc function PetscLayoutCompare(petsclib::$UnionPetscLib, mapa::PetscLayout, mapb::PetscLayout )
-	congruent_ = Ref{PetscBool}()
+	congruent_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLayoutCompare, $petsc_library),

@@ -597,7 +597,7 @@ Level: intermediate
 $(_doc_external("DM/KSPGetReusePreconditioner"))
 """
 function KSPGetReusePreconditioner(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	flag = Ref{PetscBool}()
+	flag = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetReusePreconditioner(
 		PetscLib,
@@ -938,7 +938,7 @@ Level: intermediate
 $(_doc_external("DM/KSPGetInitialGuessNonzero"))
 """
 function KSPGetInitialGuessNonzero(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	flag = Ref{PetscBool}()
+	flag = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetInitialGuessNonzero(
 		PetscLib,
@@ -1016,7 +1016,7 @@ Level: intermediate
 $(_doc_external("DM/KSPGetErrorIfNotConverged"))
 """
 function KSPGetErrorIfNotConverged(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	flag = Ref{PetscBool}()
+	flag = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetErrorIfNotConverged(
 		PetscLib,
@@ -1131,7 +1131,7 @@ Currently this option is not valid for all iterative methods.
 $(_doc_external("DM/KSPGetComputeEigenvalues"))
 """
 function KSPGetComputeEigenvalues(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetComputeEigenvalues(
 		PetscLib,
@@ -1225,7 +1225,7 @@ to print the singular values at each iteration of the linear solve.
 $(_doc_external("DM/KSPGetComputeSingularValues"))
 """
 function KSPGetComputeSingularValues(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetComputeSingularValues(
 		PetscLib,
@@ -3530,8 +3530,8 @@ automatically created in the call.
 $(_doc_external("DM/KSPGetOperatorsSet"))
 """
 function KSPGetOperatorsSet(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	mat = Ref{PetscBool}()
-	pmat = Ref{PetscBool}()
+	mat = Ref{PetscBool}(PETSC_FALSE)
+	pmat = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetOperatorsSet(
 		PetscLib,
@@ -3704,7 +3704,7 @@ Level: intermediate
 $(_doc_external("DM/KSPGetDiagonalScale"))
 """
 function KSPGetDiagonalScale(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	scale = Ref{PetscBool}()
+	scale = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetDiagonalScale(
 		PetscLib,
@@ -3782,7 +3782,7 @@ Level: intermediate
 $(_doc_external("DM/KSPGetDiagonalScaleFix"))
 """
 function KSPGetDiagonalScaleFix(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	fix = Ref{PetscBool}()
+	fix = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetDiagonalScaleFix(
 		PetscLib,
@@ -4726,7 +4726,7 @@ Level: advanced
 $(_doc_external("DM/KSPGetConvergedNegativeCurvature"))
 """
 function KSPGetConvergedNegativeCurvature(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetConvergedNegativeCurvature(
 		PetscLib,
@@ -4987,7 +4987,7 @@ Level: advanced
 $(_doc_external("DM/KSPGetInitialGuessKnoll"))
 """
 function KSPGetInitialGuessKnoll(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-	flag = Ref{PetscBool}()
+	flag = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.KSPGetInitialGuessKnoll(
 		PetscLib,

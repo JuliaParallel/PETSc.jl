@@ -833,7 +833,7 @@ $(_doc_external("Ts/TSTrajectoryGetSolutionOnly"))
 function TSTrajectoryGetSolutionOnly(petsclib::PetscLibType, tj::TSTrajectory) end
 
 @for_petsc function TSTrajectoryGetSolutionOnly(petsclib::$UnionPetscLib, tj::TSTrajectory )
-	solution_only_ = Ref{PetscBool}()
+	solution_only_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSTrajectoryGetSolutionOnly, $petsc_library),
@@ -2653,7 +2653,7 @@ function TSAdaptChoose(petsclib::PetscLibType, adapt::TSAdapt, ts::TS, h::PetscR
 @for_petsc function TSAdaptChoose(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::TS, h::$PetscReal )
 	next_sc_ = Ref{$PetscInt}()
 	next_h_ = Ref{$PetscReal}()
-	accept_ = Ref{PetscBool}()
+	accept_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSAdaptChoose, $petsc_library),
@@ -2730,7 +2730,7 @@ $(_doc_external("Ts/TSAdaptCheckStage"))
 function TSAdaptCheckStage(petsclib::PetscLibType, adapt::TSAdapt, ts::TS, t::PetscReal, Y::PetscVec) end
 
 @for_petsc function TSAdaptCheckStage(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::TS, t::$PetscReal, Y::PetscVec )
-	accept_ = Ref{PetscBool}()
+	accept_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSAdaptCheckStage, $petsc_library),
@@ -3166,7 +3166,7 @@ function TSGLLEAdaptChoose(petsclib::PetscLibType, adapt::TSGLLEAdapt, n::PetscI
 @for_petsc function TSGLLEAdaptChoose(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, n::$PetscInt, orders::Vector{$PetscInt}, errors::Vector{$PetscReal}, cost::Vector{$PetscReal}, cur::$PetscInt, h::$PetscReal, tleft::$PetscReal )
 	next_sc_ = Ref{$PetscInt}()
 	next_h_ = Ref{$PetscReal}()
-	finish_ = Ref{PetscBool}()
+	finish_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSGLLEAdaptChoose, $petsc_library),

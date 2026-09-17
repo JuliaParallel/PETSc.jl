@@ -708,7 +708,7 @@ $(_doc_external("Sys/PetscObjectHasFunction"))
 function PetscObjectHasFunction(petsclib::PetscLibType, obj::PetscObject, name::String) end
 
 @for_petsc function PetscObjectHasFunction(petsclib::$UnionPetscLib, obj::PetscObject, name::String )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscObjectHasFunction, $petsc_library),
@@ -1015,7 +1015,7 @@ $(_doc_external("Sys/PetscObjectTypeCompare"))
 function PetscObjectTypeCompare(petsclib::PetscLibType, obj::PetscObject, type_name::String) end
 
 @for_petsc function PetscObjectTypeCompare(petsclib::$UnionPetscLib, obj::PetscObject, type_name::String )
-	same_ = Ref{PetscBool}()
+	same_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscObjectTypeCompare, $petsc_library),
@@ -1053,7 +1053,7 @@ $(_doc_external("Sys/PetscObjectObjectTypeCompare"))
 function PetscObjectObjectTypeCompare(petsclib::PetscLibType, obj1::PetscObject, obj2::PetscObject) end
 
 @for_petsc function PetscObjectObjectTypeCompare(petsclib::$UnionPetscLib, obj1::PetscObject, obj2::PetscObject )
-	same_ = Ref{PetscBool}()
+	same_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscObjectObjectTypeCompare, $petsc_library),
@@ -1090,7 +1090,7 @@ $(_doc_external("Sys/PetscObjectBaseTypeCompare"))
 function PetscObjectBaseTypeCompare(petsclib::PetscLibType, obj::PetscObject, type_name::String) end
 
 @for_petsc function PetscObjectBaseTypeCompare(petsclib::$UnionPetscLib, obj::PetscObject, type_name::String )
-	same_ = Ref{PetscBool}()
+	same_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscObjectBaseTypeCompare, $petsc_library),
@@ -1222,7 +1222,7 @@ $(_doc_external("Sys/PetscObjectCompareId"))
 function PetscObjectCompareId(petsclib::PetscLibType, obj::PetscObject, id::PetscObjectId) end
 
 @for_petsc function PetscObjectCompareId(petsclib::$UnionPetscLib, obj::PetscObject, id::PetscObjectId )
-	eq_ = Ref{PetscBool}()
+	eq_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscObjectCompareId, $petsc_library),

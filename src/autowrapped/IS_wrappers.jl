@@ -326,7 +326,7 @@ $(_doc_external("Vec/ISGetInfo"))
 function ISGetInfo(petsclib::PetscLibType, is::IS, info::ISInfo, type::ISInfoType, compute::PetscBool) end
 
 @for_petsc function ISGetInfo(petsclib::$UnionPetscLib, is::IS, info::ISInfo, type::ISInfoType, compute::PetscBool )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISGetInfo, $petsc_library),
@@ -362,7 +362,7 @@ $(_doc_external("Vec/ISIdentity"))
 function ISIdentity(petsclib::PetscLibType, is::IS) end
 
 @for_petsc function ISIdentity(petsclib::$UnionPetscLib, is::IS )
-	ident_ = Ref{PetscBool}()
+	ident_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISIdentity, $petsc_library),
@@ -433,7 +433,7 @@ function ISContiguousLocal(petsclib::PetscLibType, is::IS, gstart::PetscInt, gen
 
 @for_petsc function ISContiguousLocal(petsclib::$UnionPetscLib, is::IS, gstart::$PetscInt, gend::$PetscInt )
 	start_ = Ref{$PetscInt}()
-	contig_ = Ref{PetscBool}()
+	contig_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISContiguousLocal, $petsc_library),
@@ -471,7 +471,7 @@ $(_doc_external("Vec/ISPermutation"))
 function ISPermutation(petsclib::PetscLibType, is::IS) end
 
 @for_petsc function ISPermutation(petsclib::$UnionPetscLib, is::IS )
-	perm_ = Ref{PetscBool}()
+	perm_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISPermutation, $petsc_library),
@@ -1297,7 +1297,7 @@ $(_doc_external("Vec/ISSorted"))
 function ISSorted(petsclib::PetscLibType, is::IS) end
 
 @for_petsc function ISSorted(petsclib::$UnionPetscLib, is::IS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISSorted, $petsc_library),
@@ -1576,7 +1576,7 @@ $(_doc_external("Vec/ISGetCompressOutput"))
 function ISGetCompressOutput(petsclib::PetscLibType, is::IS) end
 
 @for_petsc function ISGetCompressOutput(petsclib::$UnionPetscLib, is::IS )
-	compress_ = Ref{PetscBool}()
+	compress_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISGetCompressOutput, $petsc_library),
@@ -2765,7 +2765,7 @@ $(_doc_external("Vec/ISEqual"))
 function ISEqual(petsclib::PetscLibType, is1::IS, is2::IS) end
 
 @for_petsc function ISEqual(petsclib::$UnionPetscLib, is1::IS, is2::IS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISEqual, $petsc_library),
@@ -2804,7 +2804,7 @@ $(_doc_external("Vec/ISEqualUnsorted"))
 function ISEqualUnsorted(petsclib::PetscLibType, is1::IS, is2::IS) end
 
 @for_petsc function ISEqualUnsorted(petsclib::$UnionPetscLib, is1::IS, is2::IS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:ISEqualUnsorted, $petsc_library),

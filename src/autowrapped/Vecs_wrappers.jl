@@ -1875,7 +1875,7 @@ $(_doc_external("Vec/VecScatterGetMerged"))
 function VecScatterGetMerged(petsclib::PetscLibType, sf::VecScatter) end
 
 @for_petsc function VecScatterGetMerged(petsclib::$UnionPetscLib, sf::VecScatter )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecScatterGetMerged, $petsc_library),

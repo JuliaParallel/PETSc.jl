@@ -492,7 +492,7 @@ $(_doc_external("Sys/PetscPullJSONValue"))
 function PetscPullJSONValue(petsclib::PetscLibType, buff::Vector{Cchar}, key::Vector{Cchar}, value::Vector{Cchar}, valuelen::Csize_t) end
 
 @for_petsc function PetscPullJSONValue(petsclib::$UnionPetscLib, buff::Vector{Cchar}, key::Vector{Cchar}, value::Vector{Cchar}, valuelen::Csize_t )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscPullJSONValue, $petsc_library),
@@ -1084,7 +1084,7 @@ $(_doc_external("Sys/PetscMallocViewGet"))
 function PetscMallocViewGet(petsclib::PetscLibType) end
 
 @for_petsc function PetscMallocViewGet(petsclib::$UnionPetscLib)
-	logging_ = Ref{PetscBool}()
+	logging_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscMallocViewGet, $petsc_library),
@@ -1155,7 +1155,7 @@ $(_doc_external("Sys/PetscMallocTraceGet"))
 function PetscMallocTraceGet(petsclib::PetscLibType) end
 
 @for_petsc function PetscMallocTraceGet(petsclib::$UnionPetscLib)
-	logging_ = Ref{PetscBool}()
+	logging_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscMallocTraceGet, $petsc_library),
@@ -1262,9 +1262,9 @@ $(_doc_external("Sys/PetscMallocGetDebug"))
 function PetscMallocGetDebug(petsclib::PetscLibType) end
 
 @for_petsc function PetscMallocGetDebug(petsclib::$UnionPetscLib)
-	basic_ = Ref{PetscBool}()
-	eachcall_ = Ref{PetscBool}()
-	initializenan_ = Ref{PetscBool}()
+	basic_ = Ref{PetscBool}(PETSC_FALSE)
+	eachcall_ = Ref{PetscBool}(PETSC_FALSE)
+	initializenan_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscMallocGetDebug, $petsc_library),
@@ -1333,7 +1333,7 @@ $(_doc_external("Sys/PetscMallocLogRequestedSizeGet"))
 function PetscMallocLogRequestedSizeGet(petsclib::PetscLibType) end
 
 @for_petsc function PetscMallocLogRequestedSizeGet(petsclib::$UnionPetscLib)
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscMallocLogRequestedSizeGet, $petsc_library),
@@ -1542,7 +1542,7 @@ $(_doc_external("Sys/PetscTestFile"))
 function PetscTestFile(petsclib::PetscLibType, fname::Vector{Cchar}, mode::Cchar) end
 
 @for_petsc function PetscTestFile(petsclib::$UnionPetscLib, fname::Vector{Cchar}, mode::Cchar )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscTestFile, $petsc_library),
@@ -1579,7 +1579,7 @@ $(_doc_external("Sys/PetscTestDirectory"))
 function PetscTestDirectory(petsclib::PetscLibType, dirname::Vector{Cchar}, mode::Cchar) end
 
 @for_petsc function PetscTestDirectory(petsclib::$UnionPetscLib, dirname::Vector{Cchar}, mode::Cchar )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscTestDirectory, $petsc_library),
@@ -1618,7 +1618,7 @@ $(_doc_external("Sys/PetscLs"))
 function PetscLs(petsclib::PetscLibType, comm::MPI_Comm, dirname::Vector{Cchar}, found::Vector{Cchar}, tlen::Csize_t) end
 
 @for_petsc function PetscLs(petsclib::$UnionPetscLib, comm::MPI_Comm, dirname::Vector{Cchar}, found::Vector{Cchar}, tlen::Csize_t )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLs, $petsc_library),
@@ -1744,7 +1744,7 @@ $(_doc_external("Sys/PetscSharedTmp"))
 function PetscSharedTmp(petsclib::PetscLibType, comm::MPI_Comm) end
 
 @for_petsc function PetscSharedTmp(petsclib::$UnionPetscLib, comm::MPI_Comm )
-	shared_ = Ref{PetscBool}()
+	shared_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSharedTmp, $petsc_library),
@@ -1788,7 +1788,7 @@ $(_doc_external("Sys/PetscSharedWorkingDirectory"))
 function PetscSharedWorkingDirectory(petsclib::PetscLibType, comm::MPI_Comm) end
 
 @for_petsc function PetscSharedWorkingDirectory(petsclib::$UnionPetscLib, comm::MPI_Comm )
-	shared_ = Ref{PetscBool}()
+	shared_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSharedWorkingDirectory, $petsc_library),
@@ -1828,7 +1828,7 @@ $(_doc_external("Sys/PetscFileRetrieve"))
 function PetscFileRetrieve(petsclib::PetscLibType, comm::MPI_Comm, url::Vector{Cchar}, locname::Vector{Cchar}, llen::Csize_t) end
 
 @for_petsc function PetscFileRetrieve(petsclib::$UnionPetscLib, comm::MPI_Comm, url::Vector{Cchar}, locname::Vector{Cchar}, llen::Csize_t )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscFileRetrieve, $petsc_library),
@@ -2935,7 +2935,7 @@ $(_doc_external("Sys/PetscMonitorCompare"))
 function PetscMonitorCompare(petsclib::PetscLibType, nmon::external, nmctx::Cvoid, nmdestroy::PetscCtxDestroyFn, mon::external, mctx::Cvoid, mdestroy::PetscCtxDestroyFn) end
 
 @for_petsc function PetscMonitorCompare(petsclib::$UnionPetscLib, nmon::external, nmctx::Cvoid, nmdestroy::PetscCtxDestroyFn, mon::external, mctx::Cvoid, mdestroy::PetscCtxDestroyFn )
-	identical_ = Ref{PetscBool}()
+	identical_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscMonitorCompare, $petsc_library),
@@ -3153,7 +3153,7 @@ $(_doc_external("Sys/PetscHasExternalPackage"))
 function PetscHasExternalPackage(petsclib::PetscLibType, pkg::Vector{Cchar}) end
 
 @for_petsc function PetscHasExternalPackage(petsclib::$UnionPetscLib, pkg::Vector{Cchar} )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscHasExternalPackage, $petsc_library),
@@ -3268,7 +3268,7 @@ $(_doc_external("Sys/PetscInitialized"))
 function PetscInitialized(petsclib::PetscLibType) end
 
 @for_petsc function PetscInitialized(petsclib::$UnionPetscLib)
-	isInitialized_ = Ref{PetscBool}()
+	isInitialized_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscInitialized, $petsc_library),
@@ -3299,7 +3299,7 @@ $(_doc_external("Sys/PetscFinalized"))
 function PetscFinalized(petsclib::PetscLibType) end
 
 @for_petsc function PetscFinalized(petsclib::$UnionPetscLib)
-	isFinalized_ = Ref{PetscBool}()
+	isFinalized_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscFinalized, $petsc_library),
@@ -4113,7 +4113,7 @@ function PetscDataTypeFromString(petsclib::PetscLibType, name::Vector{Cchar}) en
 
 @for_petsc function PetscDataTypeFromString(petsclib::$UnionPetscLib, name::Vector{Cchar} )
 	ptype_ = Ref{PetscDataType}()
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDataTypeFromString, $petsc_library),
@@ -4177,7 +4177,7 @@ $(_doc_external("Sys/PetscElementalInitialized"))
 function PetscElementalInitialized(petsclib::PetscLibType) end
 
 @for_petsc function PetscElementalInitialized(petsclib::$UnionPetscLib)
-	isInitialized_ = Ref{PetscBool}()
+	isInitialized_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscElementalInitialized, $petsc_library),
@@ -4599,7 +4599,7 @@ $(_doc_external("Sys/PetscSortedInt"))
 function PetscSortedInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) end
 
 @for_petsc function PetscSortedInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt} )
-	sorted_ = Ref{PetscBool}()
+	sorted_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSortedInt, $petsc_library),
@@ -4636,7 +4636,7 @@ $(_doc_external("Sys/PetscSortedInt64"))
 function PetscSortedInt64(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt64}) end
 
 @for_petsc function PetscSortedInt64(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt64} )
-	sorted_ = Ref{PetscBool}()
+	sorted_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSortedInt64, $petsc_library),
@@ -4830,7 +4830,7 @@ $(_doc_external("Sys/PetscSortedCheckDupsInt"))
 function PetscSortedCheckDupsInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscInt}) end
 
 @for_petsc function PetscSortedCheckDupsInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscInt} )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSortedCheckDupsInt, $petsc_library),
@@ -4867,7 +4867,7 @@ $(_doc_external("Sys/PetscSortedCheckDupsCount"))
 function PetscSortedCheckDupsCount(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscCount}) end
 
 @for_petsc function PetscSortedCheckDupsCount(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscCount} )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSortedCheckDupsCount, $petsc_library),
@@ -5013,7 +5013,7 @@ $(_doc_external("Sys/PetscCheckDupsInt"))
 function PetscCheckDupsInt(petsclib::PetscLibType, n::PetscInt, X::Vector{PetscInt}) end
 
 @for_petsc function PetscCheckDupsInt(petsclib::$UnionPetscLib, n::$PetscInt, X::Vector{$PetscInt} )
-	dups_ = Ref{PetscBool}()
+	dups_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscCheckDupsInt, $petsc_library),
@@ -5260,7 +5260,7 @@ $(_doc_external("Sys/PetscSortedMPIInt"))
 function PetscSortedMPIInt(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscMPIInt}) end
 
 @for_petsc function PetscSortedMPIInt(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{PetscMPIInt} )
-	sorted_ = Ref{PetscBool}()
+	sorted_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSortedMPIInt, $petsc_library),
@@ -5683,7 +5683,7 @@ $(_doc_external("Sys/PetscParallelSortedInt"))
 function PetscParallelSortedInt(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, keys::Vector{PetscInt}) end
 
 @for_petsc function PetscParallelSortedInt(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, keys::Vector{$PetscInt} )
-	is_sorted_ = Ref{PetscBool}()
+	is_sorted_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscParallelSortedInt, $petsc_library),
@@ -6095,7 +6095,7 @@ $(_doc_external("Sys/PetscStrcasecmp"))
 function PetscStrcasecmp(petsclib::PetscLibType, a::Vector{Cchar}, b::Vector{Cchar}) end
 
 @for_petsc function PetscStrcasecmp(petsclib::$UnionPetscLib, a::Vector{Cchar}, b::Vector{Cchar} )
-	t_ = Ref{PetscBool}()
+	t_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscStrcasecmp, $petsc_library),
@@ -6171,7 +6171,7 @@ $(_doc_external("Sys/PetscStrInList"))
 function PetscStrInList(petsclib::PetscLibType, str::Vector{Cchar}, list::Vector{Cchar}, sep::Cchar) end
 
 @for_petsc function PetscStrInList(petsclib::$UnionPetscLib, str::Vector{Cchar}, list::Vector{Cchar}, sep::Cchar )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscStrInList, $petsc_library),
@@ -6277,7 +6277,7 @@ function PetscEListFind(petsclib::PetscLibType, n::PetscInt, list::Cchar, str::V
 
 @for_petsc function PetscEListFind(petsclib::$UnionPetscLib, n::$PetscInt, list::Cchar, str::Vector{Cchar} )
 	value_ = Ref{$PetscInt}()
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscEListFind, $petsc_library),
@@ -6316,7 +6316,7 @@ $(_doc_external("Sys/PetscEnumFind"))
 function PetscEnumFind(petsclib::PetscLibType, enumlist::Cchar, str::Vector{Cchar}, value::PetscEnum) end
 
 @for_petsc function PetscEnumFind(petsclib::$UnionPetscLib, enumlist::Cchar, str::Vector{Cchar}, value::PetscEnum )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscEnumFind, $petsc_library),
@@ -6548,7 +6548,7 @@ $(_doc_external("Sys/PetscSortedReal"))
 function PetscSortedReal(petsclib::PetscLibType, n::PetscCount, X::Vector{PetscReal}) end
 
 @for_petsc function PetscSortedReal(petsclib::$UnionPetscLib, n::PetscCount, X::Vector{$PetscReal} )
-	sorted_ = Ref{PetscBool}()
+	sorted_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSortedReal, $petsc_library),
@@ -7456,7 +7456,7 @@ $(_doc_external("Sys/PetscMemcmp"))
 function PetscMemcmp(petsclib::PetscLibType, str1::Cvoid, str2::Cvoid, len::Csize_t) end
 
 @for_petsc function PetscMemcmp(petsclib::$UnionPetscLib, str1::Cvoid, str2::Cvoid, len::Csize_t )
-	e_ = Ref{PetscBool}()
+	e_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscMemcmp, $petsc_library),
@@ -7619,7 +7619,7 @@ $(_doc_external("Sys/PetscInfoEnabled"))
 function PetscInfoEnabled(petsclib::PetscLibType, classid::PetscClassId) end
 
 @for_petsc function PetscInfoEnabled(petsclib::$UnionPetscLib, classid::PetscClassId )
-	enabled_ = Ref{PetscBool}()
+	enabled_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscInfoEnabled, $petsc_library),
@@ -7785,7 +7785,7 @@ $(_doc_external("Sys/PetscInfoGetClass"))
 function PetscInfoGetClass(petsclib::PetscLibType, classname::Vector{Cchar}) end
 
 @for_petsc function PetscInfoGetClass(petsclib::$UnionPetscLib, classname::Vector{Cchar} )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscInfoGetClass, $petsc_library),
@@ -7823,10 +7823,10 @@ $(_doc_external("Sys/PetscInfoGetInfo"))
 function PetscInfoGetInfo(petsclib::PetscLibType, commSelfFlag::PetscInfoCommFlag) end
 
 @for_petsc function PetscInfoGetInfo(petsclib::$UnionPetscLib, commSelfFlag::PetscInfoCommFlag )
-	infoEnabled_ = Ref{PetscBool}()
-	classesSet_ = Ref{PetscBool}()
-	exclude_ = Ref{PetscBool}()
-	locked_ = Ref{PetscBool}()
+	infoEnabled_ = Ref{PetscBool}(PETSC_FALSE)
+	classesSet_ = Ref{PetscBool}(PETSC_FALSE)
+	exclude_ = Ref{PetscBool}(PETSC_FALSE)
+	locked_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscInfoGetInfo, $petsc_library),
@@ -9094,7 +9094,7 @@ $(_doc_external("Sys/PetscLogIsActive"))
 function PetscLogIsActive(petsclib::PetscLibType) end
 
 @for_petsc function PetscLogIsActive(petsclib::$UnionPetscLib)
-	isActive_ = Ref{PetscBool}()
+	isActive_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLogIsActive, $petsc_library),
@@ -9535,7 +9535,7 @@ $(_doc_external("Sys/PetscLogStageGetActive"))
 function PetscLogStageGetActive(petsclib::PetscLibType, stage::PetscLogStage) end
 
 @for_petsc function PetscLogStageGetActive(petsclib::$UnionPetscLib, stage::PetscLogStage )
-	isActive_ = Ref{PetscBool}()
+	isActive_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLogStageGetActive, $petsc_library),
@@ -9603,7 +9603,7 @@ $(_doc_external("Sys/PetscLogStageGetVisible"))
 function PetscLogStageGetVisible(petsclib::PetscLibType, stage::PetscLogStage) end
 
 @for_petsc function PetscLogStageGetVisible(petsclib::$UnionPetscLib, stage::PetscLogStage )
-	isVisible_ = Ref{PetscBool}()
+	isVisible_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLogStageGetVisible, $petsc_library),
@@ -12707,7 +12707,7 @@ $(_doc_external("Sys/PetscStrcmp"))
 function PetscStrcmp(petsclib::PetscLibType, a::Vector{Cchar}, b::Vector{Cchar}) end
 
 @for_petsc function PetscStrcmp(petsclib::$UnionPetscLib, a::Vector{Cchar}, b::Vector{Cchar} )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscStrcmp, $petsc_library),
@@ -12772,7 +12772,7 @@ $(_doc_external("Sys/PetscStrncmp"))
 function PetscStrncmp(petsclib::PetscLibType, a::Vector{Cchar}, b::Vector{Cchar}, n::Csize_t) end
 
 @for_petsc function PetscStrncmp(petsclib::$UnionPetscLib, a::Vector{Cchar}, b::Vector{Cchar}, n::Csize_t )
-	t_ = Ref{PetscBool}()
+	t_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscStrncmp, $petsc_library),
@@ -12839,7 +12839,7 @@ $(_doc_external("Sys/PetscStrgrt"))
 function PetscStrgrt(petsclib::PetscLibType, a::Vector{Cchar}, b::Vector{Cchar}) end
 
 @for_petsc function PetscStrgrt(petsclib::$UnionPetscLib, a::Vector{Cchar}, b::Vector{Cchar} )
-	t_ = Ref{PetscBool}()
+	t_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscStrgrt, $petsc_library),
@@ -12906,7 +12906,7 @@ $(_doc_external("Sys/PetscStrendswith"))
 function PetscStrendswith(petsclib::PetscLibType, a::Vector{Cchar}, b::Vector{Cchar}) end
 
 @for_petsc function PetscStrendswith(petsclib::$UnionPetscLib, a::Vector{Cchar}, b::Vector{Cchar} )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscStrendswith, $petsc_library),
@@ -12929,7 +12929,7 @@ $(_doc_external("Sys/PetscStrbeginswith"))
 function PetscStrbeginswith(petsclib::PetscLibType, a::Vector{Cchar}, b::Vector{Cchar}) end
 
 @for_petsc function PetscStrbeginswith(petsclib::$UnionPetscLib, a::Vector{Cchar}, b::Vector{Cchar} )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscStrbeginswith, $petsc_library),
@@ -13465,7 +13465,7 @@ $(_doc_external("Sys/PetscCitationsRegister"))
 function PetscCitationsRegister(petsclib::PetscLibType, cit::Vector{Cchar}) end
 
 @for_petsc function PetscCitationsRegister(petsclib::$UnionPetscLib, cit::Vector{Cchar} )
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscCitationsRegister, $petsc_library),
@@ -13581,7 +13581,7 @@ function PetscDTEnumPerm(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
 
 @for_petsc function PetscDTEnumPerm(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt )
 	perm_ = Ref{$PetscInt}()
-	isOdd_ = Ref{PetscBool}()
+	isOdd_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDTEnumPerm, $petsc_library),
@@ -13607,7 +13607,7 @@ function PetscDTPermIndex(petsclib::PetscLibType, n::PetscInt) end
 @for_petsc function PetscDTPermIndex(petsclib::$UnionPetscLib, n::$PetscInt )
 	perm_ = Ref{$PetscInt}()
 	k_ = Ref{$PetscInt}()
-	isOdd_ = Ref{PetscBool}()
+	isOdd_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDTPermIndex, $petsc_library),
@@ -13681,7 +13681,7 @@ function PetscDTEnumSplit(petsclib::PetscLibType, n::PetscInt, k::PetscInt, j::P
 
 @for_petsc function PetscDTEnumSplit(petsclib::$UnionPetscLib, n::$PetscInt, k::$PetscInt, j::$PetscInt )
 	perm_ = Ref{$PetscInt}()
-	isOdd_ = Ref{PetscBool}()
+	isOdd_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDTEnumSplit, $petsc_library),
@@ -13809,8 +13809,8 @@ $(_doc_external("Sys/PetscOptionsBool"))
 function PetscOptionsBool(petsclib::PetscLibType, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, currentvalue::PetscBool) end
 
 @for_petsc function PetscOptionsBool(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, currentvalue::PetscBool )
-	value_ = Ref{PetscBool}()
-	set_ = Ref{PetscBool}()
+	value_ = Ref{PetscBool}(PETSC_FALSE)
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsBool, $petsc_library),
@@ -13856,7 +13856,7 @@ function PetscOptionsInt(petsclib::PetscLibType, opt::Vector{Cchar}, text::Vecto
 
 @for_petsc function PetscOptionsInt(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, currentvalue::$PetscInt )
 	value_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsInt, $petsc_library),
@@ -13881,7 +13881,7 @@ function PetscOptionsReal(petsclib::PetscLibType, opt::Vector{Cchar}, text::Vect
 
 @for_petsc function PetscOptionsReal(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, currentvalue::$PetscReal )
 	value_ = Ref{$PetscReal}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsReal, $petsc_library),
@@ -13906,7 +13906,7 @@ function PetscOptionsScalar(petsclib::PetscLibType, opt::Vector{Cchar}, text::Ve
 
 @for_petsc function PetscOptionsScalar(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, currentvalue::$PetscScalar )
 	value_ = Ref{$PetscScalar}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsScalar, $petsc_library),
@@ -13931,7 +13931,7 @@ function PetscOptionsScalarArray(petsclib::PetscLibType, opt::Vector{Cchar}, tex
 
 @for_petsc function PetscOptionsScalarArray(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, value::Vector{$PetscScalar} )
 	n_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsScalarArray, $petsc_library),
@@ -13956,7 +13956,7 @@ function PetscOptionsIntArray(petsclib::PetscLibType, opt::Vector{Cchar}, text::
 
 @for_petsc function PetscOptionsIntArray(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, value::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsIntArray, $petsc_library),
@@ -13981,7 +13981,7 @@ function PetscOptionsRealArray(petsclib::PetscLibType, opt::Vector{Cchar}, text:
 
 @for_petsc function PetscOptionsRealArray(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, value::Vector{$PetscReal} )
 	n_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsRealArray, $petsc_library),
@@ -14006,7 +14006,7 @@ function PetscOptionsBoolArray(petsclib::PetscLibType, opt::Vector{Cchar}, text:
 
 @for_petsc function PetscOptionsBoolArray(petsclib::$UnionPetscLib, opt::Vector{Cchar}, text::Vector{Cchar}, man::Vector{Cchar}, value::Vector{PetscBool} )
 	n_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsBoolArray, $petsc_library),

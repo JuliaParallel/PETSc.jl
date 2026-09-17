@@ -540,7 +540,7 @@ $(_doc_external("Dm/PetscDSGetForceQuad"))
 function PetscDSGetForceQuad(petsclib::PetscLibType, ds::PetscDS) end
 
 @for_petsc function PetscDSGetForceQuad(petsclib::$UnionPetscLib, ds::PetscDS )
-	forceQuad_ = Ref{PetscBool}()
+	forceQuad_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSGetForceQuad, $petsc_library),
@@ -608,7 +608,7 @@ $(_doc_external("Dm/PetscDSIsCohesive"))
 function PetscDSIsCohesive(petsclib::PetscLibType, ds::PetscDS) end
 
 @for_petsc function PetscDSIsCohesive(petsclib::$UnionPetscLib, ds::PetscDS )
-	isCohesive_ = Ref{PetscBool}()
+	isCohesive_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSIsCohesive, $petsc_library),
@@ -681,7 +681,7 @@ $(_doc_external("Dm/PetscDSGetCohesive"))
 function PetscDSGetCohesive(petsclib::PetscLibType, ds::PetscDS, f::PetscInt) end
 
 @for_petsc function PetscDSGetCohesive(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
-	isCohesive_ = Ref{PetscBool}()
+	isCohesive_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSGetCohesive, $petsc_library),
@@ -1023,7 +1023,7 @@ $(_doc_external("Dm/PetscDSGetImplicit"))
 function PetscDSGetImplicit(petsclib::PetscLibType, prob::PetscDS, f::PetscInt) end
 
 @for_petsc function PetscDSGetImplicit(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
-	implicit_ = Ref{PetscBool}()
+	implicit_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSGetImplicit, $petsc_library),
@@ -1370,7 +1370,7 @@ $(_doc_external("Dm/PetscDSHasJacobian"))
 function PetscDSHasJacobian(petsclib::PetscLibType, ds::PetscDS) end
 
 @for_petsc function PetscDSHasJacobian(petsclib::$UnionPetscLib, ds::PetscDS )
-	hasJac_ = Ref{PetscBool}()
+	hasJac_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSHasJacobian, $petsc_library),
@@ -1514,7 +1514,7 @@ $(_doc_external("Dm/PetscDSHasJacobianPreconditioner"))
 function PetscDSHasJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS) end
 
 @for_petsc function PetscDSHasJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS )
-	hasJacPre_ = Ref{PetscBool}()
+	hasJacPre_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSHasJacobianPreconditioner, $petsc_library),
@@ -1628,7 +1628,7 @@ $(_doc_external("Dm/PetscDSHasDynamicJacobian"))
 function PetscDSHasDynamicJacobian(petsclib::PetscLibType, ds::PetscDS) end
 
 @for_petsc function PetscDSHasDynamicJacobian(petsclib::$UnionPetscLib, ds::PetscDS )
-	hasDynJac_ = Ref{PetscBool}()
+	hasDynJac_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSHasDynamicJacobian, $petsc_library),
@@ -2012,7 +2012,7 @@ $(_doc_external("Dm/PetscDSHasBdJacobian"))
 function PetscDSHasBdJacobian(petsclib::PetscLibType, ds::PetscDS) end
 
 @for_petsc function PetscDSHasBdJacobian(petsclib::$UnionPetscLib, ds::PetscDS )
-	hasBdJac_ = Ref{PetscBool}()
+	hasBdJac_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSHasBdJacobian, $petsc_library),
@@ -2124,7 +2124,7 @@ $(_doc_external("Dm/PetscDSHasBdJacobianPreconditioner"))
 function PetscDSHasBdJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS) end
 
 @for_petsc function PetscDSHasBdJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS )
-	hasBdJacPre_ = Ref{PetscBool}()
+	hasBdJacPre_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDSHasBdJacobianPreconditioner, $petsc_library),

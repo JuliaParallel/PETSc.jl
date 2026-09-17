@@ -317,7 +317,7 @@ function Base.:(==)(
     A::AbstractMat{PetscLib},
     B::AbstractMat{PetscLib},
 ) where {PetscLib}
-    fr = Ref{PetscBool}()
+    fr = Ref{PetscBool}(PETSC_FALSE)
     LibPETSc.MatEqual(PetscLib, A, B, fr)
     return fr[] == PETSC_TRUE
 end
@@ -602,7 +602,7 @@ function LinearAlgebra.issymmetric(
     A::AbstractMat{PetscLib};
     tol = 0,
 ) where {PetscLib}
-    fr = Ref{PetscBool}()
+    fr = Ref{PetscBool}(PETSC_FALSE)
     LibPETSc.MatIsSymmetric(PetscLib, A, tol, fr)
     return fr[] == PETSC_TRUE
 end
@@ -611,7 +611,7 @@ function LinearAlgebra.ishermitian(
     A::AbstractMat{PetscLib};
     tol = 0,
 ) where {PetscLib}
-    fr = Ref{PetscBool}()
+    fr = Ref{PetscBool}(PETSC_FALSE)
     LibPETSc.MatIsHermitian(PetscLib, A, tol, fr)
     return fr[] == PETSC_TRUE
 end

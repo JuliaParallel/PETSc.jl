@@ -88,7 +88,7 @@ $(_doc_external("Sys/PetscOmpCtrlGetOmpComms"))
 function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl, omp_comm::MPI_Comm, omp_master_comm::MPI_Comm) end
 
 @for_petsc function PetscOmpCtrlGetOmpComms(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl, omp_comm::MPI_Comm, omp_master_comm::MPI_Comm )
-	is_omp_master_ = Ref{PetscBool}()
+	is_omp_master_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOmpCtrlGetOmpComms, $petsc_library),

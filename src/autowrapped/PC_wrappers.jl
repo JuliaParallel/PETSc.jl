@@ -332,7 +332,7 @@ $(_doc_external("Ksp/PCGetDiagonalScale"))
 function PCGetDiagonalScale(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCGetDiagonalScale(petsclib::$UnionPetscLib, pc::PC )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCGetDiagonalScale, $petsc_library),
@@ -539,7 +539,7 @@ $(_doc_external("Ksp/PCGetUseAmat"))
 function PCGetUseAmat(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCGetUseAmat(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCGetUseAmat, $petsc_library),
@@ -889,7 +889,7 @@ $(_doc_external("Ksp/PCApplyTransposeExists"))
 function PCApplyTransposeExists(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCApplyTransposeExists(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCApplyTransposeExists, $petsc_library),
@@ -1002,7 +1002,7 @@ $(_doc_external("Ksp/PCApplyRichardsonExists"))
 function PCApplyRichardsonExists(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCApplyRichardsonExists(petsclib::$UnionPetscLib, pc::PC )
-	exists_ = Ref{PetscBool}()
+	exists_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCApplyRichardsonExists, $petsc_library),
@@ -1390,7 +1390,7 @@ $(_doc_external("Ksp/PCGetReusePreconditioner"))
 function PCGetReusePreconditioner(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCGetReusePreconditioner(petsclib::$UnionPetscLib, pc::PC )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCGetReusePreconditioner, $petsc_library),
@@ -1468,8 +1468,8 @@ $(_doc_external("Ksp/PCGetOperatorsSet"))
 function PCGetOperatorsSet(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCGetOperatorsSet(petsclib::$UnionPetscLib, pc::PC )
-	mat_ = Ref{PetscBool}()
-	pmat_ = Ref{PetscBool}()
+	mat_ = Ref{PetscBool}(PETSC_FALSE)
+	pmat_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCGetOperatorsSet, $petsc_library),
@@ -2648,7 +2648,7 @@ $(_doc_external("Ksp/PCASMGetDMSubdomains"))
 function PCASMGetDMSubdomains(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCASMGetDMSubdomains(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCASMGetDMSubdomains, $petsc_library),
@@ -4242,7 +4242,7 @@ $(_doc_external("Ksp/PCMGGetAdaptInterpolation"))
 function PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCMGGetAdaptInterpolation(petsclib::$UnionPetscLib, pc::PC )
-	adapt_ = Ref{PetscBool}()
+	adapt_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCMGGetAdaptInterpolation, $petsc_library),
@@ -4313,7 +4313,7 @@ $(_doc_external("Ksp/PCMGGetAdaptCR"))
 function PCMGGetAdaptCR(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCMGGetAdaptCR(petsclib::$UnionPetscLib, pc::PC )
-	cr_ = Ref{PetscBool}()
+	cr_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCMGGetAdaptCR, $petsc_library),
@@ -4774,7 +4774,7 @@ $(_doc_external("Ksp/PCTelescopeGetIgnoreDM"))
 function PCTelescopeGetIgnoreDM(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCTelescopeGetIgnoreDM(petsclib::$UnionPetscLib, pc::PC )
-	v_ = Ref{PetscBool}()
+	v_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCTelescopeGetIgnoreDM, $petsc_library),
@@ -4811,7 +4811,7 @@ $(_doc_external("Ksp/PCTelescopeSetIgnoreDM"))
 function PCTelescopeSetIgnoreDM(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCTelescopeSetIgnoreDM(petsclib::$UnionPetscLib, pc::PC )
-	v_ = Ref{PetscBool}()
+	v_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCTelescopeSetIgnoreDM, $petsc_library),
@@ -4848,7 +4848,7 @@ $(_doc_external("Ksp/PCTelescopeGetUseCoarseDM"))
 function PCTelescopeGetUseCoarseDM(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCTelescopeGetUseCoarseDM(petsclib::$UnionPetscLib, pc::PC )
-	v_ = Ref{PetscBool}()
+	v_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCTelescopeGetUseCoarseDM, $petsc_library),
@@ -4885,7 +4885,7 @@ $(_doc_external("Ksp/PCTelescopeSetUseCoarseDM"))
 function PCTelescopeSetUseCoarseDM(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCTelescopeSetUseCoarseDM(petsclib::$UnionPetscLib, pc::PC )
-	v_ = Ref{PetscBool}()
+	v_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCTelescopeSetUseCoarseDM, $petsc_library),
@@ -4922,7 +4922,7 @@ $(_doc_external("Ksp/PCTelescopeGetIgnoreKSPComputeOperators"))
 function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::PC )
-	v_ = Ref{PetscBool}()
+	v_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCTelescopeGetIgnoreKSPComputeOperators, $petsc_library),
@@ -4959,7 +4959,7 @@ $(_doc_external("Ksp/PCTelescopeSetIgnoreKSPComputeOperators"))
 function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::PC )
-	v_ = Ref{PetscBool}()
+	v_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCTelescopeSetIgnoreKSPComputeOperators, $petsc_library),
@@ -6138,7 +6138,7 @@ $(_doc_external("Ksp/PCEisenstatGetNoDiagonalScaling"))
 function PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCEisenstatGetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCEisenstatGetNoDiagonalScaling, $petsc_library),
@@ -6209,7 +6209,7 @@ $(_doc_external("Ksp/PCJacobiGetUseAbs"))
 function PCJacobiGetUseAbs(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCJacobiGetUseAbs(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCJacobiGetUseAbs, $petsc_library),
@@ -6353,7 +6353,7 @@ $(_doc_external("Ksp/PCJacobiGetFixDiagonal"))
 function PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCJacobiGetFixDiagonal(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCJacobiGetFixDiagonal, $petsc_library),
@@ -7270,7 +7270,7 @@ $(_doc_external("Ksp/PCFactorGetAllowDiagonalFill"))
 function PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCFactorGetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCFactorGetAllowDiagonalFill, $petsc_library),
@@ -7483,7 +7483,7 @@ $(_doc_external("Ksp/PCFactorGetUseInPlace"))
 function PCFactorGetUseInPlace(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCFactorGetUseInPlace(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCFactorGetUseInPlace, $petsc_library),
@@ -8938,7 +8938,7 @@ $(_doc_external("Ksp/PCHPDDMGetSTShareSubKSP"))
 function PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCHPDDMGetSTShareSubKSP(petsclib::$UnionPetscLib, pc::PC )
-	share_ = Ref{PetscBool}()
+	share_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCHPDDMGetSTShareSubKSP, $petsc_library),
@@ -9043,7 +9043,7 @@ $(_doc_external("Ksp/PCPatchGetSaveOperators"))
 function PCPatchGetSaveOperators(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCPatchGetSaveOperators(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCPatchGetSaveOperators, $petsc_library),
@@ -9087,7 +9087,7 @@ $(_doc_external("Ksp/PCPatchGetPrecomputeElementTensors"))
 function PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCPatchGetPrecomputeElementTensors(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCPatchGetPrecomputeElementTensors, $petsc_library),
@@ -9131,7 +9131,7 @@ $(_doc_external("Ksp/PCPatchGetPartitionOfUnity"))
 function PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCPatchGetPartitionOfUnity(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCPatchGetPartitionOfUnity, $petsc_library),
@@ -10421,7 +10421,7 @@ $(_doc_external("Ksp/PCFieldSplitGetDiagUseAmat"))
 function PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCFieldSplitGetDiagUseAmat(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCFieldSplitGetDiagUseAmat, $petsc_library),
@@ -10494,7 +10494,7 @@ $(_doc_external("Ksp/PCFieldSplitGetOffDiagUseAmat"))
 function PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCFieldSplitGetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCFieldSplitGetOffDiagUseAmat, $petsc_library),
@@ -11260,7 +11260,7 @@ $(_doc_external("Ksp/PCFieldSplitGetDMSplits"))
 function PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCFieldSplitGetDMSplits(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCFieldSplitGetDMSplits, $petsc_library),
@@ -11296,7 +11296,7 @@ $(_doc_external("Ksp/PCFieldSplitGetDetectSaddlePoint"))
 function PCFieldSplitGetDetectSaddlePoint(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCFieldSplitGetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCFieldSplitGetDetectSaddlePoint, $petsc_library),
@@ -11335,7 +11335,7 @@ $(_doc_external("Ksp/PCFieldSplitSetDetectSaddlePoint"))
 function PCFieldSplitSetDetectSaddlePoint(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCFieldSplitSetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCFieldSplitSetDetectSaddlePoint, $petsc_library),
@@ -11835,7 +11835,7 @@ $(_doc_external("Ksp/PCGASMGetUseDMSubdomains"))
 function PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCGASMGetUseDMSubdomains(petsclib::$UnionPetscLib, pc::PC )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PCGASMGetUseDMSubdomains, $petsc_library),

@@ -1097,7 +1097,7 @@ $(_doc_external("Ts/TSHasTransientVariable"))
 function TSHasTransientVariable(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSHasTransientVariable(petsclib::$UnionPetscLib, ts::TS )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSHasTransientVariable, $petsc_library),
@@ -4432,7 +4432,7 @@ $(_doc_external("Ts/TSGetStepRollBack"))
 function TSGetStepRollBack(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSGetStepRollBack(petsclib::$UnionPetscLib, ts::TS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSGetStepRollBack, $petsc_library),
@@ -4468,7 +4468,7 @@ $(_doc_external("Ts/TSGetStepResize"))
 function TSGetStepResize(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSGetStepResize(petsclib::$UnionPetscLib, ts::TS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSGetStepResize, $petsc_library),
@@ -4619,7 +4619,7 @@ $(_doc_external("Ts/TSFunctionDomainError"))
 function TSFunctionDomainError(petsclib::PetscLibType, ts::TS, stagetime::PetscReal, Y::PetscVec) end
 
 @for_petsc function TSFunctionDomainError(petsclib::$UnionPetscLib, ts::TS, stagetime::$PetscReal, Y::PetscVec )
-	accept_ = Ref{PetscBool}()
+	accept_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSFunctionDomainError, $petsc_library),
@@ -4694,7 +4694,7 @@ $(_doc_external("Ts/TSRHSJacobianTest"))
 function TSRHSJacobianTest(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSRHSJacobianTest(petsclib::$UnionPetscLib, ts::TS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSRHSJacobianTest, $petsc_library),
@@ -4733,7 +4733,7 @@ $(_doc_external("Ts/TSRHSJacobianTestTranspose"))
 function TSRHSJacobianTestTranspose(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSRHSJacobianTestTranspose(petsclib::$UnionPetscLib, ts::TS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSRHSJacobianTestTranspose, $petsc_library),
@@ -4804,7 +4804,7 @@ $(_doc_external("Ts/TSGetUseSplitRHSFunction"))
 function TSGetUseSplitRHSFunction(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSGetUseSplitRHSFunction(petsclib::$UnionPetscLib, ts::TS )
-	use_splitrhsfnc_ = Ref{PetscBool}()
+	use_splitrhsfnc_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSGetUseSplitRHSFunction, $petsc_library),
@@ -8370,7 +8370,7 @@ $(_doc_external("Ts/TSGetQuadratureTS"))
 function TSGetQuadratureTS(petsclib::PetscLibType, ts::TS, quadts::TS) end
 
 @for_petsc function TSGetQuadratureTS(petsclib::$UnionPetscLib, ts::TS, quadts::TS )
-	fwd_ = Ref{PetscBool}()
+	fwd_ = Ref{PetscBool}(PETSC_FALSE)
 	quadts_ = Ref(quadts.ptr)
 
     @chk ccall(
@@ -8710,7 +8710,7 @@ $(_doc_external("Ts/TSARKIMEXGetFullyImplicit"))
 function TSARKIMEXGetFullyImplicit(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSARKIMEXGetFullyImplicit(petsclib::$UnionPetscLib, ts::TS )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSARKIMEXGetFullyImplicit, $petsc_library),
@@ -8852,7 +8852,7 @@ $(_doc_external("Ts/TSARKIMEXGetFastSlowSplit"))
 function TSARKIMEXGetFastSlowSplit(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSARKIMEXGetFastSlowSplit(petsclib::$UnionPetscLib, ts::TS )
-	fastslow_ = Ref{PetscBool}()
+	fastslow_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSARKIMEXGetFastSlowSplit, $petsc_library),
@@ -9288,7 +9288,7 @@ function TSRKGetTableau(petsclib::PetscLibType, ts::TS) end
 	bembed_ = Ref{$PetscReal}()
 	p_ = Ref{$PetscInt}()
 	binterp_ = Ref{$PetscReal}()
-	FSAL_ = Ref{PetscBool}()
+	FSAL_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSRKGetTableau, $petsc_library),
@@ -9473,7 +9473,7 @@ $(_doc_external("Ts/TSRKGetMultirate"))
 function TSRKGetMultirate(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSRKGetMultirate(petsclib::$UnionPetscLib, ts::TS )
-	use_multirate_ = Ref{PetscBool}()
+	use_multirate_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSRKGetMultirate, $petsc_library),
@@ -9829,7 +9829,7 @@ function TSPseudoVerifyTimeStepDefault(petsclib::PetscLibType, ts::TS, update::P
 
 @for_petsc function TSPseudoVerifyTimeStepDefault(petsclib::$UnionPetscLib, ts::TS, update::PetscVec, dtctx::Cvoid )
 	newdt_ = Ref{$PetscReal}()
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSPseudoVerifyTimeStepDefault, $petsc_library),
@@ -9869,7 +9869,7 @@ function TSPseudoVerifyTimeStep(petsclib::PetscLibType, ts::TS, update::PetscVec
 
 @for_petsc function TSPseudoVerifyTimeStep(petsclib::$UnionPetscLib, ts::TS, update::PetscVec )
 	dt_ = Ref{$PetscReal}()
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSPseudoVerifyTimeStep, $petsc_library),
@@ -11477,7 +11477,7 @@ $(_doc_external("Ts/TSThetaGetEndpoint"))
 function TSThetaGetEndpoint(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSThetaGetEndpoint(petsclib::$UnionPetscLib, ts::TS )
-	endpoint_ = Ref{PetscBool}()
+	endpoint_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TSThetaGetEndpoint, $petsc_library),

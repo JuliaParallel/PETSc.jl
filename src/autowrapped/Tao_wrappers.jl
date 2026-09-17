@@ -484,7 +484,7 @@ $(_doc_external("Tao/TaoIsObjectiveDefined"))
 function TaoIsObjectiveDefined(petsclib::PetscLibType, tao::Tao) end
 
 @for_petsc function TaoIsObjectiveDefined(petsclib::$UnionPetscLib, tao::Tao )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TaoIsObjectiveDefined, $petsc_library),
@@ -523,7 +523,7 @@ $(_doc_external("Tao/TaoIsGradientDefined"))
 function TaoIsGradientDefined(petsclib::PetscLibType, tao::Tao) end
 
 @for_petsc function TaoIsGradientDefined(petsclib::$UnionPetscLib, tao::Tao )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TaoIsGradientDefined, $petsc_library),
@@ -562,7 +562,7 @@ $(_doc_external("Tao/TaoIsObjectiveAndGradientDefined"))
 function TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType, tao::Tao) end
 
 @for_petsc function TaoIsObjectiveAndGradientDefined(petsclib::$UnionPetscLib, tao::Tao )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TaoIsObjectiveAndGradientDefined, $petsc_library),
@@ -2250,7 +2250,7 @@ $(_doc_external("Tao/TaoGetRecycleHistory"))
 function TaoGetRecycleHistory(petsclib::PetscLibType, tao::Tao) end
 
 @for_petsc function TaoGetRecycleHistory(petsclib::$UnionPetscLib, tao::Tao )
-	recycle_ = Ref{PetscBool}()
+	recycle_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TaoGetRecycleHistory, $petsc_library),

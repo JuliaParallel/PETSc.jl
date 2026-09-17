@@ -2730,7 +2730,7 @@ $(_doc_external("Sys/PetscDrawIsNull"))
 function PetscDrawIsNull(petsclib::PetscLibType, draw::PetscDraw) end
 
 @for_petsc function PetscDrawIsNull(petsclib::$UnionPetscLib, draw::PetscDraw )
-	yes_ = Ref{PetscBool}()
+	yes_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDrawIsNull, $petsc_library),

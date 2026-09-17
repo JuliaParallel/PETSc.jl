@@ -216,7 +216,7 @@ In order to solve this using the PETSc nonlinear equation solvers, you first def
 ```julia
 julia> snes = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
 julia> r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
-julia> PETSc.set_function!(snes, Residual!, r)
+julia> PETSc.set_function!(Residual!, snes, r)
 julia> J = zeros(2,2)
 julia> PJ = PETSc.PetscMat(petsclib,J)
 julia> PETSc.set_snes_jacobian!(updateJ!, snes, PJ)

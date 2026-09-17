@@ -81,7 +81,7 @@ assemble!(A)
 
 ```julia
 size(A)              # Get (rows, cols)
-ownership_range(A)    # Get rows owned by this process
+ownership_range(A)   # Get the 1-based rows owned by this process
 setup!(A)            # Complete matrix setup
 ```
 

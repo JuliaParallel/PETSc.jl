@@ -75,8 +75,9 @@ gvec = PETSc.global_vec(dm)
 lvec = PETSc.local_vec(dm)
 
 # Transfer data between global and local
-PETSc.global_to_local!(gvec, lvec, dm, PETSc.INSERT_VALUES)
-PETSc.local_to_global!(lvec, gvec, dm, PETSc.ADD_VALUES)
+# The written vector comes first, the DM follows it (naming.md §8)
+PETSc.global_to_local!(lvec, dm, gvec, PETSc.INSERT_VALUES)
+PETSc.local_to_global!(gvec, dm, lvec, PETSc.ADD_VALUES)
 ```
 
 ### Getting Location Indices

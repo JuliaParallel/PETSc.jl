@@ -45,6 +45,42 @@ convention of many `LibPETSc` functions.
   return borrowed `VecPtr` handles; `destroy` is a no-op on them.
 - `destroy` respects the ownership flag on `VecPtr` and `MatPtr` (#261).
 
+#### Breaking without a deprecation shim
+
+A shim translates names, not semantics, so these five have none
+(`docs/src/man/naming.md` §16). Read them before upgrading.
+
+- **Dimension-correct returns.** `corners`, `ghost_corners`, `local_indices`,
+  `global_indices`, `info` and `size` answer with the DM's own dimension: `lower`/`upper`
+  are `CartesianIndex{N}`, `size`/`nextra` are `NTuple{N,Int}`, and `center`/`vertex` are
+  keyed `x`, `y` (, `z`) by dimension. v0.4 padded everything to three, so
+  `corners(dm2d).size[3]` returned `1` and now throws a `BoundsError`. `info` also drops
+  the duplicate `s` field, renames `dof` to `ndofs` and `mpi_proc_size` to `procs`, and
+  `ghost_corners(::DMStag)` has no `nextra` field: `DMStagGetGhostCorners` never reported
+  one, though the v0.4 docstring promised it.
+- **Type names are `Symbol`.** `type_name` on a Vec, Mat, KSP, SNES, TS or DM returns a
+  `Symbol`, or `nothing` when PETSc has no type for the object yet, so
+  `type_name(ksp) == "gmres"` is now false; compare against `:gmres`. The new
+  `set_type!(obj, :gmres)` covers Vec, Mat, KSP, SNES and DM as well as TS, and
+  `set_type!(obj, "gmres")` warns until v0.6.
+- **Arguments reordered and `petsclib` dropped.** The written vector leads and the library
+  is recovered from the object: `project_function!(X, dm, time, funcs, ctxs, mode)`,
+  `project_field!(X, dm, time, U, funcs, mode)`, `global_to_local!(lvec, dm, gvec, mode)`,
+  `local_to_global!(gvec, dm, lvec, mode)`, `l2diff(dm, time, funcs, ctxs, X)`,
+  `add_boundary!(dm, ...)`, `add_natural_boundary!(dm, ...)`, `set_snes_local_fem!(dm)`,
+  `save_vtk!(vec, filename)`, `star_fd_coloring(da)`. The v0.4 spellings forward and warn,
+  but a call passed through `invoke` or a function reference is not caught.
+- **Callback setters take the callback first, only.** `set_function!`, `set_snes_jacobian!`,
+  `set_convergence_test!`, `set_compute_rhs!`, `set_compute_operators!`,
+  `set_rhs_function!`, `set_rhs_jacobian!`, `set_ifunction!`, `set_ijacobian!`,
+  `set_monitor!` and `add_coarsen_hook!` no longer accept the subject-first order, so `do`
+  syntax is always available.
+- **`ownership_range(A)` is 1-based.** That was already the default; the positional
+  `ownership_range(A, false)` still returns PETSc's numbering, warns, and is a
+  `MethodError` in v0.6. `set_values!` spells its index parameters `rows_0b`/`cols_0b` and
+  `star_fd_coloring` returns `row_coo_local_0b`, `col_coo_local_0b`, `perturb_cols_1b`,
+  `coo_idxs_1b` and `local_rows_1b`, so every bulk index vector says which base it uses.
+
 ### Added
 
 - PetscSF communication: `PetscSFBcastBegin/End`, `PetscSFReduceBegin/End`,

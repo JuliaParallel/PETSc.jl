@@ -55,7 +55,7 @@ PETSc.set_max_time!(ts, 1.0)
 PETSc.solve!(u, ts)
 ```
 
-The callback comes first in the argument list, so `do` block syntax works. Pass it in the other order, `set_rhs_function!(ts, f!)`, when it is already a value.
+The callback comes first in the argument list, so `do` block syntax works. Pass it as a plain argument, `set_rhs_function!(f!, ts)`, when it is already a value: the subject-first order v0.4 also accepted is gone, and has no shim.
 
 ## An implicit problem
 

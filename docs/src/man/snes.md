@@ -37,7 +37,7 @@ function residual!(fx, snes, x)
     return 0
 end
 
-set_function!(snes, residual!, f_vec)
+set_function!(residual!, snes, f_vec)
 ```
 
 ## Setting the Jacobian
@@ -55,7 +55,7 @@ function jacobian!(J, snes, x)
     return 0
 end
 
-set_snes_jacobian!(snes, jacobian!, J, J)  # (J, P) where P is preconditioner matrix
+set_snes_jacobian!(jacobian!, snes, J, J)  # (J, P) where P is preconditioner matrix
 ```
 
 ## Using a DM
@@ -111,8 +111,8 @@ snes = SNES(petsclib, MPI.COMM_WORLD;
     pc_type = "ilu"
 )
 
-set_function!(snes, residual!, f)
-set_snes_jacobian!(snes, jacobian!, J, J)
+set_function!(residual!, snes, f)
+set_snes_jacobian!(jacobian!, snes, J, J)
 set_from_options!(snes)
 
 solve!(x, snes)

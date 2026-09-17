@@ -1,8 +1,17 @@
 # Plan: high-level API rename (docs/src/man/naming.md) for v0.5
 
-Status: planning, 2026-09-16. Inventory of the code against `naming.md` done (three read-only
-sweeps over `src/*.jl`, tests, examples and docs). Nothing implemented yet beyond §5.2/§5.5 (the
-`KSP`/`SNES` type names and constructors) and the `AbstractPetscDM` widening of the generated layer.
+Status: implemented, 2026-09-17, on `v0.5` in four steps:
+
+| Step | Commits |
+|---|---|
+| 1 — register and shims, pure renames | `925a4cc..82a0148` |
+| 2 — constructors and types | `f14f17e..6f41ba6` |
+| 3 — semantic breaks without shims (§16) | `8ff9bb5..d27ef13` |
+| 4 — exports, docs, tooling | `24a5251..` (this step) |
+
+The plan below is kept as written, as the record of what was decided and why; where the
+implementation settled a question differently, `docs/src/man/naming.md` is the corrected
+specification and `CHANGELOG.md` the user-facing summary.
 
 ## What the inventory found
 

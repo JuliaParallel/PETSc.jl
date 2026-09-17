@@ -38,48 +38,102 @@ convention of many `LibPETSc` functions.
 - Deprecated enum values are not emitted. `KSPSetDMActive` takes the `KSPDMActive` flag
   (PETSc 3.25).
 
-### Breaking changes (high-level)
+### High-level API renamed (naming conventions)
 
-- `PETSc.KSP(...)` / `PETSc.SNES(...)` construct the `LibPETSc.KSP` / `LibPETSc.SNES` types.
-- Solution and coordinate accessors (`get_solution`, `solution`, `coordinatesDMLocalVec`)
-  return borrowed `VecPtr` handles; `destroy` is a no-op on them.
-- `destroy` respects the ownership flag on `VecPtr` and `MatPtr` (#261).
+The high-level interface follows `docs/src/man/naming.md` from v0.5 on. Roughly a hundred
+names change, and the full rename table is at the end of that page — what follows is what
+the changes are and how to move.
 
-#### Breaking without a deprecation shim
+**The register and the shims.** `scripts/renames.jl` is the register: a plain list of
+`old => new` pairs plus the internal and unchanged-public sets. `src/deprecations.jl`,
+`src/public_names.jl`, `src/audit_names.jl` and `test/test_deprecations.jl` are generated
+from it by `scripts/generate_renames.jl`, so they cannot drift apart, and
+`scripts/api_surface.jl --check` (run by the test suite) fails if a binding is in none of
+its sets. Every renamed name keeps a forwarding shim that **warns once per call site** —
+through `@warn`, not `Base.depwarn`, so it prints whatever `--depwarn` is set to — and the
+shims are **removed in v0.6**.
 
-A shim translates names, not semantics, so these five have none
-(`docs/src/man/naming.md` §16). Read them before upgrading.
+**Exports.** `PETSc` now exports only types and construction entry points:
 
-- **Dimension-correct returns.** `corners`, `ghost_corners`, `local_indices`,
-  `global_indices`, `info` and `size` answer with the DM's own dimension: `lower`/`upper`
-  are `CartesianIndex{N}`, `size`/`nextra` are `NTuple{N,Int}`, and `center`/`vertex` are
-  keyed `x`, `y` (, `z`) by dimension. v0.4 padded everything to three, so
-  `corners(dm2d).size[3]` returned `1` and now throws a `BoundsError`. `info` also drops
-  the duplicate `s` field, renames `dof` to `ndofs` and `mpi_proc_size` to `procs`, and
-  `ghost_corners(::DMStag)` has no `nextra` field: `DMStagGetGhostCorners` never reported
-  one, though the v0.4 docstring promised it.
-- **Type names are `Symbol`.** `type_name` on a Vec, Mat, KSP, SNES, TS or DM returns a
-  `Symbol`, or `nothing` when PETSc has no type for the object yet, so
-  `type_name(ksp) == "gmres"` is now false; compare against `:gmres`. The new
-  `set_type!(obj, :gmres)` covers Vec, Mat, KSP, SNES and DM as well as TS, and
-  `set_type!(obj, "gmres")` warns until v0.6.
-- **Arguments reordered and `petsclib` dropped.** The written vector leads and the library
-  is recovered from the object: `project_function!(X, dm, time, funcs, ctxs, mode)`,
-  `project_field!(X, dm, time, U, funcs, mode)`, `global_to_local!(lvec, dm, gvec, mode)`,
-  `local_to_global!(gvec, dm, lvec, mode)`, `l2diff(dm, time, funcs, ctxs, X)`,
-  `add_boundary!(dm, ...)`, `add_natural_boundary!(dm, ...)`, `set_snes_local_fem!(dm)`,
-  `save_vtk!(vec, filename)`, `star_fd_coloring(da)`. The v0.4 spellings forward and warn,
-  but a call passed through `invoke` or a function reference is not caught.
-- **Callback setters take the callback first, only.** `set_function!`, `set_snes_jacobian!`,
-  `set_convergence_test!`, `set_compute_rhs!`, `set_compute_operators!`,
-  `set_rhs_function!`, `set_rhs_jacobian!`, `set_ifunction!`, `set_ijacobian!`,
-  `set_monitor!` and `add_coarsen_hook!` no longer accept the subject-first order, so `do`
-  syntax is always available.
-- **`ownership_range(A)` is 1-based.** That was already the default; the positional
-  `ownership_range(A, false)` still returns PETSc's numbering, warns, and is a
-  `MethodError` in v0.6. `set_values!` spells its index parameters `rows_0b`/`cols_0b` and
-  `star_fd_coloring` returns `row_coo_local_0b`, `col_coo_local_0b`, `perturb_cols_1b`,
-  `coo_idxs_1b` and `local_rows_1b`, so every bulk index vector says which base it uses.
+```julia
+export LibPETSc
+export DMDA, DMStag, DMPlex
+export PetscVec, PetscMat, PetscOptions
+export KSP, SNES, TS
+export petsclibs
+```
+
+v0.4 exported twelve functions and no types at all. `audit_petsc_file`, `set_petsclib`,
+`set_library!`, `unset_library!`, `library_info`, `AbstractPetscMemBackend`,
+`AbstractPETScMemBackend`, `determine_memtype`, `get_petsc_arrays`, `restore_petsc_arrays`
+and `dmda_star_fd_coloring` lose their export (`HostBackend` was exported but never
+defined). No shim can help here: the replacements are not exported either, so `using PETSc`
+code qualifies the call (`PETSc.set_library!`) or imports the name. The rest of the API is
+marked `public`, so `names(PETSc)` reports it without exporting it.
+
+**Construction goes through the type.** `PetscVec(petsclib, …)` replaces `VecSeq` and
+`as_petsc_vec`; `PetscMat(petsclib, …)` replaces `MatSeqAIJ`, `MatSeqDense`,
+`MatCreateSeqAIJ`, `MatSeqAIJWithArrays` and `MatAIJ`; `PetscOptions` replaces `Options`;
+`PetscLibType(path; …)` replaces `set_petsclib`. `KSP`, `SNES` and `TS` are types rather
+than factory functions, so `ksp isa PETSc.KSP` holds.
+
+**A typed DM hierarchy.** `DMDA{L,N}`, `DMStag{L,N}` and `DMPlex{L}` are concrete types
+under `LibPETSc.AbstractPetscDM`, not one type with a runtime string flavour. Code
+annotated `::PetscDM` no longer matches — use `AbstractPetscDM`. `PETSc.narrow(dm)` turns a
+low-level handle into the typed one; it queries PETSc, so its return type is a wide `Union`
+and hot code should narrow once behind a function barrier. The nine DM-flavour `@assert`s
+are gone: dispatch enforces what they checked.
+
+**Borrowed handles.** A reader that hands back a PETSc object owned by another object —
+`dm(ksp)`, `solution(snes)`, `local_coordinates(dm)`, `tolerances(ts)`'s vectors — returns a
+borrowed handle: no finalizer, and `destroy!` on it is a no-op (`PETSc.owns` tells the two
+apart). Nothing changed at runtime; destroying such a handle was corrupting the owner's
+already. `destroy` is now `destroy!`, per the mutation convention.
+
+**Type names are `Symbol`.** `type_name` on a Vec, Mat, KSP, SNES, TS or DM returns a
+`Symbol`, or `nothing` when PETSc has no type for the object yet, so
+`type_name(ksp) == "gmres"` is now false; compare against `:gmres`. The new
+`set_type!(obj, :gmres)` covers Vec, Mat, KSP, SNES and DM as well as TS, and
+`set_type!(obj, "gmres")` warns until v0.6. This break has no shim on the reader side.
+
+**Argument order, and `petsclib` dropped.** The written vector leads, the DM follows it, and
+the library is recovered from the object: `project_function!(X, dm, time, funcs, ctxs, mode)`,
+`project_field!(X, dm, time, U, funcs, mode)`, `global_to_local!(lvec, dm, gvec, mode)`,
+`local_to_global!(gvec, dm, lvec, mode)`, `l2diff(dm, time, funcs, ctxs, X)`,
+`add_boundary!(dm, …)`, `add_natural_boundary!(dm, …)`, `set_snes_local_fem!(dm)`,
+`save_vtk!(vec, filename)`, `star_fd_coloring(da)`. The v0.4 spellings forward and warn, but
+a call passed through `invoke` or a function reference is not caught.
+
+**Callback setters take the callback first, only.** `set_function!`, `set_snes_jacobian!`,
+`set_convergence_test!`, `set_compute_rhs!`, `set_compute_operators!`, `set_rhs_function!`,
+`set_rhs_jacobian!`, `set_ifunction!`, `set_ijacobian!`, `set_monitor!` and
+`add_coarsen_hook!` no longer accept the subject-first order v0.4 also offered, so `do`
+syntax is always available. No shim: dispatch cannot tell the two orders apart.
+
+**Dimension-correct returns.** `corners`, `ghost_corners`, `local_indices`,
+`global_indices`, `info` and `size` answer with the DM's own dimension: `lower`/`upper` are
+`CartesianIndex{N}`, `size`/`nextra` are `NTuple{N,Int}`, and `center`/`vertex` are keyed
+`x`, `y` (, `z`) by dimension. v0.4 padded everything to three, so `corners(dm2d).size[3]`
+returned `1` and now throws a `BoundsError`. This is also a performance fix: the tuples are
+built with `ntuple(…, Val(N))` and infer concretely instead of allocating. `info` drops the
+duplicate `s` field, renames `dof` to `ndofs` and `mpi_proc_size` to `procs`, and
+`ghost_corners(::DMStag)` has no `nextra` field: `DMStagGetGhostCorners` never reported one,
+though the v0.4 docstring promised it.
+
+**`ownership_range(A)` is 1-based.** That was already the default; the positional
+`ownership_range(A, false)` still returns PETSc's numbering, warns, and is a `MethodError`
+in v0.6. `set_values!` spells its index parameters `rows_0b`/`cols_0b` and
+`star_fd_coloring` returns `row_coo_local_0b`, `col_coo_local_0b`, `perturb_cols_1b`,
+`coo_idxs_1b` and `local_rows_1b`, so every bulk index vector says which base it uses.
+
+**Smaller changes.** `library_info()` returns `(; source, path, scalar, int, real)` and
+prints its old report from a `show` method. Argument problems raise `ArgumentError`,
+`DimensionMismatch` or `PetscNotInitialized` rather than `AssertionError` or a bare `error`.
+`PETSc.KSP(…)` / `PETSc.SNES(…)` construct the `LibPETSc.KSP` / `LibPETSc.SNES` types.
+
+The rename table, and the reasoning behind each rule, are in
+[`docs/src/man/naming.md`](docs/src/man/naming.md); the C-function-to-Julia-name lookup is
+the generated "C to Julia name index" page in the manual.
 
 ### Added
 

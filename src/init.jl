@@ -222,14 +222,39 @@ end
 # type lists but never reset the `*RegisterAllCalled` flags, so after a
 # finalize/initialize cycle `TaoCreate`/`TaoSetType` fail with "Unable to find
 # requested Tao type" / "... TaoTerm type callbacks", and TSTrajectory likewise.
-# Reset the flags so the lists are rebuilt. The symbols are absent on 3.22 and not
-# exported by the Windows DLL, where `dlsym_e` returns null and this does nothing.
+# Reset the flags so the lists are rebuilt. They are internal symbols: reachable on
+# Linux/macOS (ELF/Mach-O export everything), absent on 3.22, and not exported by the
+# Windows DLL, where Tao therefore only works in the first initialize/finalize cycle.
+const _taoterm_resettable = Ref{Union{Nothing,Bool}}(nothing)
+
+"""
+    tao_usable_after_reinitialize()
+
+Whether `Tao` objects can be created after `finalize` followed by `initialize` with the
+current PETSc binaries (false on Windows with PETSc 3.25.x, see
+`_reset_stale_register_flags`).
+"""
+tao_usable_after_reinitialize() = _taoterm_resettable[] !== false
+
 function _reset_stale_register_flags(petsclib)
     handle, _ = _ensure_library_handle(petsclib)
-    for sym in (:TaoRegisterAllCalled, :TaoTermRegisterAllCalled, :TSTrajectoryRegisterAllCalled)
-        p = Libdl.dlsym_e(_library_ptr(handle), sym)
-        p == C_NULL || unsafe_store!(Ptr{Int32}(p), Int32(0))
+    lib = _library_ptr(handle)
+    version = try
+        LibPETSc.petsc_version(petsclib)
+    catch
+        return nothing
     end
+    version < v"3.25" && return nothing      # 3.22 resets its flags itself
+    ok = true
+    for sym in (:TaoRegisterAllCalled, :TaoTermRegisterAllCalled, :TSTrajectoryRegisterAllCalled)
+        p = Libdl.dlsym_e(lib, sym)
+        if p == C_NULL
+            ok = false
+        else
+            unsafe_store!(Ptr{Int32}(p), Int32(0))
+        end
+    end
+    _taoterm_resettable[] = ok
     return nothing
 end
 

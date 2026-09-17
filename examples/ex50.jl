@@ -140,7 +140,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     ksp = PETSc.KSP(da; opts...)
 
     # Print the final grid size after any refinement (only on rank 0)
-    final_grid_size = PETSc.info(da).global_size[1:2]
+    final_grid_size = PETSc.info(da).global_size
     if MPI.Comm_rank(comm) == 0
         @printf("Solving on %d × %d grid\n", final_grid_size[1], final_grid_size[2])
     end
@@ -149,7 +149,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     PETSc.set_compute_operators!(ksp) do J, jac, ksp
         dm = PETSc.dm(ksp)
         corners = PETSc.corners(dm)
-        global_size = PETSc.info(dm).global_size[1:2]
+        global_size = PETSc.info(dm).global_size
 
         # Grid spacing in each direction
         h = PetscScalar(1) ./ global_size
@@ -158,7 +158,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         
         for j in corners.lower[2]:corners.upper[2]
             for i in corners.lower[1]:corners.upper[1]
-                idx = CartesianIndex(i, j, 1)
+                idx = CartesianIndex(i, j)
                 
                 # Check if we're on boundary
                 is_boundary = (i == 1 || j == 1 || i == global_size[1] || j == global_size[2])
@@ -176,19 +176,19 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
                         numj = 0  # count of j-direction neighbors
                         
                         if j > 1  # not on bottom boundary
-                            jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
+                            jac[idx, idx + CartesianIndex(0, -1)] = -HxdHy
                             numj += 1
                         end
                         if i > 1  # not on left boundary
-                            jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
+                            jac[idx, idx + CartesianIndex(-1, 0)] = -HydHx
                             numi += 1
                         end
                         if i < global_size[1]  # not on right boundary
-                            jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
+                            jac[idx, idx + CartesianIndex(1, 0)] = -HydHx
                             numi += 1
                         end
                         if j < global_size[2]  # not on top boundary
-                            jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
+                            jac[idx, idx + CartesianIndex(0, 1)] = -HxdHy
                             numj += 1
                         end
                         
@@ -197,11 +197,11 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
                         jac[idx, idx] = diag_val
                     else
                         # Interior point - full 5-point stencil
-                        jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
-                        jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
+                        jac[idx, idx + CartesianIndex(0, -1)] = -HxdHy
+                        jac[idx, idx + CartesianIndex(-1, 0)] = -HydHx
                         jac[idx, idx] = 2.0 * (HxdHy + HydHx)
-                        jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
-                        jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
+                        jac[idx, idx + CartesianIndex(1, 0)] = -HydHx
+                        jac[idx, idx + CartesianIndex(0, 1)] = -HxdHy
                     end
                 end
             end
@@ -222,7 +222,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         dm = PETSc.dm(ksp)
         comm = PETSc.comm(ksp)
         corners = PETSc.corners(dm)
-        global_size = PETSc.info(dm).global_size[1:2]
+        global_size = PETSc.info(dm).global_size
         
         # Grid spacing in each direction
         h = PetscScalar(1) ./ global_size
@@ -283,7 +283,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     # Compute L2 norm of the error and extrema
     dm = PETSc.dm(ksp)
     corners = PETSc.corners(dm)
-    global_size = PETSc.info(dm).global_size[1:2]
+    global_size = PETSc.info(dm).global_size
     h = PetscScalar(1) ./ global_size
 
     sol = PETSc.solution(ksp)
@@ -299,7 +299,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     l2_error = 0.0
     global_max = 0.0
     PETSc.with_local_array!(sol; read=true) do s
-        nx, ny = corners.size[1:2]
+        nx, ny = corners.size
         s2D = reshape(s, Int64(corners.size[1]), Int64(corners.size[2]))
         
         x_coords = range(-0.5, 0.5, length=global_size[1])

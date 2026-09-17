@@ -811,8 +811,7 @@ Copy τ^{n+1} from `tau_vec` (field 0 of `dm_tau`, dim×dim DOFs/cell) into the
 unchanged. Call after `update_tau!` so the next solve sees the updated τ^n.
 """
 function advance_tau!(petsclib, dm_aux, aux_vec, tau_vec)
-    PETSc.project_field!(petsclib, dm_aux, 0.0, tau_vec,
-        [C_NULL, identity_tau_ptr], LibPETSc.INSERT_VALUES, aux_vec)
+    PETSc.project_field!(aux_vec, dm_aux, 0.0, tau_vec, [C_NULL, identity_tau_ptr], LibPETSc.INSERT_VALUES)
 end
 
 """
@@ -823,10 +822,8 @@ averages, print them, and return both values.  `dm_eII`, `v_eII`, `dm_tII`, `v_t
 must be created once before the time loop (see setup section) and reused each step.
 """
 function print_invariants!(petsclib, comm, u, t, dm_eII, v_eII, dm_tII, v_tII)
-    PETSc.project_field!(petsclib, dm_eII, t, u,
-        [compute_eps_II_ptr], LibPETSc.INSERT_ALL_VALUES, v_eII)
-    PETSc.project_field!(petsclib, dm_tII, t, u,
-        [compute_tau_II_ptr], LibPETSc.INSERT_ALL_VALUES, v_tII)
+    PETSc.project_field!(v_eII, dm_eII, t, u, [compute_eps_II_ptr], LibPETSc.INSERT_ALL_VALUES)
+    PETSc.project_field!(v_tII, dm_tII, t, u, [compute_tau_II_ptr], LibPETSc.INSERT_ALL_VALUES)
 
     # Unweighted average: NORM_1 (sum of |values|) / ncells
     # ε_II and τ_II are non-negative, so NORM_1 = sum.
@@ -849,8 +846,7 @@ Stokes velocity `u` projected onto the pre-created P1 DM `dm_p1` / vector
 """
 function advect_mesh!(petsclib, dm, u, dt, dm_p1, vel_p1)
     PL = typeof(petsclib)
-    PETSc.project_field!(petsclib, dm_p1, 0.0, u,
-        [copy_vel_ptr], LibPETSc.INSERT_ALL_VALUES, vel_p1)
+    PETSc.project_field!(vel_p1, dm_p1, 0.0, u, [copy_vel_ptr], LibPETSc.INSERT_ALL_VALUES)
 
     # DMGetCoordinates fills an existing PetscVec wrapper's ptr with the DM's
     # internal coordinate vector — modifying it via VecAXPY updates the coords
@@ -956,13 +952,11 @@ function save_vtk!(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
     out_vec = PETSc.global_vec(dm_out)
     PETSc.set_name!(petsclib, out_vec, "")
 
-    PETSc.project_field!(petsclib, dm_out, 0.0, u,
-        [copy_vel_ptr, copy_pres_ptr, compute_strainrate_3x3_ptr,
+    PETSc.project_field!(out_vec, dm_out, 0.0, u, [copy_vel_ptr, copy_pres_ptr, compute_strainrate_3x3_ptr,
          compute_tau_3x3_ptr, compute_eps_II_ptr, compute_tau_II_ptr,
-         copy_mu_ptr, copy_phase_ptr],
-        LibPETSc.INSERT_ALL_VALUES, out_vec)
+         copy_mu_ptr, copy_phase_ptr], LibPETSc.INSERT_ALL_VALUES)
 
-    PETSc.save_vtk!(petsclib, comm, fname, out_vec)
+    PETSc.save_vtk!(out_vec, fname)
 
     PETSc.destroy!(out_vec)
     PETSc.destroy!(dm_out)
@@ -1049,8 +1043,7 @@ where  η_eff = η·G·dt/(η + G·dt)  and  relax = η/(η + G·dt).
 The τ^n term is constant w.r.t. u^{n+1} so it enters f1 but not g3.
 """
 function update_tau!(petsclib, dm_tau_, u_vec, sv, t = 0.0)
-    PETSc.project_field!(petsclib, dm_tau_, t, u_vec,
-        [compute_tau_ptr], LibPETSc.INSERT_ALL_VALUES, sv)
+    PETSc.project_field!(sv, dm_tau_, t, u_vec, [compute_tau_ptr], LibPETSc.INSERT_ALL_VALUES)
 end
 
 # ── Select exact solution functions based on sol_type ─────────────────────────
@@ -1074,8 +1067,7 @@ function pressure_nsp_constructor(
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     nvec = PETSc.global_vec(dm_w)
-    PETSc.project_function!(petsclib, dm_w, 0.0,
-        [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, nvec)
+    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
     LibPETSc.VecNormalize(petsclib, nvec)
     GC.@preserve nvec begin
         nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))
@@ -1260,8 +1252,7 @@ aux_vec = PETSc.global_vec(dm_aux)   # tau_old field is zero-initialised
 # project_function! needs one callback per field — use C_NULL for tau_old
 # since zero-init from global_vec is correct and we cannot write a simple-fn
 # that outputs dim×dim zeros easily via the scalar interface.
-PETSc.project_function!(petsclib, dm_aux, 0.0,
-    [phase_fn_ptr, C_NULL], nothing, LibPETSc.INSERT_VALUES, aux_vec)
+PETSc.project_function!(aux_vec, dm_aux, 0.0, [phase_fn_ptr, C_NULL], nothing, LibPETSc.INSERT_VALUES)
 LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
     LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
 
@@ -1291,8 +1282,7 @@ LibPETSc.DMSetAuxiliaryVec(petsclib, dm_tau,
 # Gmsh physical group 3 ("boundary") → PETSc "Face Sets" label, value 3.
 # All velocity components are constrained; pressure is free.
 label = PETSc.label(dm, "Face Sets")
-PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label,
-                    PetscInt[3], 0, PetscInt[], exact_vel_ptr)
+PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label, PetscInt[3], 0, PetscInt[], exact_vel_ptr)
 
 # ── Propagate discretisation and null space constructor to coarser levels ─────
 let cdm = dm
@@ -1308,8 +1298,7 @@ PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ───────────────────
 null_vec = PETSc.global_vec(dm)
-PETSc.project_function!(petsclib, dm, 0.0,
-    [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, null_vec)
+PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
 LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 
@@ -1317,7 +1306,7 @@ nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (nu
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
-PETSc.set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(dm)
 
 has_opts = !isnothing(snes.opts)
 has_opts && push!(snes.opts)
@@ -1396,8 +1385,7 @@ for step in 1:nsteps
 
     # ── L² error (MMS solutions only — not meaningful for bg/grav) ───────────
     if sol_type != "bg" && sol_type != "grav"
-        l2err = PETSc.l2diff(petsclib, dm, t,
-            [exact_vel_ptr, exact_pres_ptr], nothing, u)
+        l2err = PETSc.l2diff(dm, t, [exact_vel_ptr, exact_pres_ptr], nothing, u)
         MPI.Comm_rank(comm) == 0 && println("  L2 error: $l2err")
     end
 

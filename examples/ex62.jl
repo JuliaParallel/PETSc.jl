@@ -279,8 +279,7 @@ function pressure_nsp_constructor(
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     nvec = PETSc.global_vec(dm_w)
-    PETSc.project_function!(petsclib, dm_w, 0.0,
-        [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, nvec)
+    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
     LibPETSc.VecNormalize(petsclib, nvec)
     GC.@preserve nvec begin
         nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))
@@ -338,8 +337,7 @@ PETSc.set_exact_solution!(ds, 1, exact_pres_ptr)
 # ── Boundary condition: Dirichlet on all walls (marker label, id=1) ───────────
 # All velocity components are constrained; pressure is free.
 label = PETSc.label(dm, "marker")
-PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label,
-                    PetscInt[1], 0, PetscInt[], exact_vel_ptr)
+PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label, PetscInt[1], 0, PetscInt[], exact_vel_ptr)
 
 # ── Propagate discretisation and null space constructor to coarser levels ─────
 let cdm = dm
@@ -355,8 +353,7 @@ PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ───────────────────
 null_vec = PETSc.global_vec(dm)
-PETSc.project_function!(petsclib, dm, 0.0,
-    [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, null_vec)
+PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
 LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 
@@ -364,7 +361,7 @@ nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (nu
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
-PETSc.set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(dm)
 
 push!(snes.opts)
 try
@@ -382,8 +379,7 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── L² errors ────────────────────────────────────────────────────────────────
-l2err = PETSc.l2diff(petsclib, dm, 0.0,
-    [exact_vel_ptr, exact_pres_ptr], nothing, u)
+l2err = PETSc.l2diff(dm, 0.0, [exact_vel_ptr, exact_pres_ptr], nothing, u)
 
 if MPI.Comm_rank(comm) == 0
     println("L2 error: $l2err")

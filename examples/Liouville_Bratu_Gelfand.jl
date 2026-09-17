@@ -50,6 +50,20 @@ bcs = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, dim)
 # Set parameter
 λ = PetscScalar(6)
 
+# `corners`, `info` and `reshape_local_array` are dimension-correct
+# (docs/src/man/naming.md §12): on a `dim`-dimensional DMDA they answer with
+# `dim`-tuples and `CartesianIndex{dim}`, and the reshaped local array has
+# `1 + dim` axes. These three helpers are what the example needs as a result.
+
+# The single-dof slice of a reshaped local array.
+dof_slice(A) = view(A, 1, ntuple(_ -> Colon(), dim)...)
+
+# The unit offset along each axis, for the finite-difference stencil.
+const units = ntuple(
+    j -> CartesianIndex(ntuple(k -> k == j ? 1 : 0, dim)),
+    dim,
+)
+
 # Create the PETSC dmda object
 da = PETSc.DMDA(
     petsclib,
@@ -77,13 +91,8 @@ PETSc.with_local_array!(xl; read = false) do l_x
     # Get the global grid dimensions
     Nq = PETSc.info(da).global_size
 
-    # Figure out the interior points 
-    int_min = min(CartesianIndex(corners.size), CartesianIndex(2, 2, 2))
-    int_max = max(CartesianIndex(corners.size .- 1), CartesianIndex(1, 1, 1))
-    interior = (int_min):(int_max)
-
     # Allows us to adress the local array with global indexing
-    ox = @view PETSc.reshape_local_array(l_x, da)[1, :, :, :]
+    ox = dof_slice(PETSc.reshape_local_array(l_x, da))
 
     # Set up the global coordinates in each direction
     # -1 to 1 when Nq > 1 and 0 otherwise
@@ -100,16 +109,11 @@ PETSc.with_local_array!(xl; read = false) do l_x
     # be a hat function
     for i in ((corners.lower):(corners.upper))
         ox[i] =
-            scaling * sqrt(
-                min(
-                    (1 - abs(coords[1][i[1]])),
-                    (1 - abs(coords[2][i[2]])),
-                    (1 - abs(coords[3][i[3]])),
-                ),
-            )
+            scaling *
+            sqrt(minimum(ntuple(j -> 1 - abs(coords[j][i[j]]), dim)))
     end
 end
-PETSc.local_to_global!(xl, x, da, PETSc.INSERT_VALUES)
+PETSc.local_to_global!(x, da, xl, PETSc.INSERT_VALUES)
 
 # Set up the nonlinear function
 r = similar(x)
@@ -119,7 +123,7 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
 
     # Get a local vector and transfer the data from the global vector into it
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
 
     ghostcorners = PETSc.ghost_corners(da)
     corners = PETSc.corners(da)
@@ -128,7 +132,7 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
     Nq = PETSc.info(da).global_size
 
     # grid spacing in each dimension
-    Δx, Δy, Δz = PetscScalar(1) ./ Nq
+    Δ = PetscScalar(1) ./ Nq
 
     # Get local arrays
     PETSc.with_local_array!(
@@ -138,29 +142,11 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
     ) do fx, x
 
         # reshape the array and allow for global indexing
-        x = @view PETSc.reshape_local_array(x, da)[1, :, :, :]
-        fx = @view PETSc.reshape_local_array(fx, da)[1, :, :, :]
+        x = dof_slice(PETSc.reshape_local_array(x, da))
+        fx = dof_slice(PETSc.reshape_local_array(fx, da))
 
-        # Store a tuple of stencils in each direction
-        stencils = (
-            (
-                CartesianIndex(-1, 0, 0),
-                CartesianIndex(0, 0, 0),
-                CartesianIndex(1, 0, 0),
-            ),
-            (
-                CartesianIndex(0, -1, 0),
-                CartesianIndex(0, 0, 0),
-                CartesianIndex(0, 1, 0),
-            ),
-            (
-                CartesianIndex(0, 0, -1),
-                CartesianIndex(0, 0, 0),
-                CartesianIndex(0, 0, 1),
-            ),
-        )
         # Weights for each direction
-        weights = (Δy * Δz / Δx, Δx * Δz / Δy, Δx * Δy / Δz)
+        weights = ntuple(j -> prod(Δ) / Δ[j]^2, dim)
 
         # loop over indices and set the function value
         for ind in ((corners.lower):(corners.upper))
@@ -170,12 +156,11 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
                 fx[ind] = x[ind]
             else
                 # Apply the source
-                u = -Δx * Δy * Δz * λ * exp(x[ind])
+                u = -prod(Δ) * λ * exp(x[ind])
 
                 # Apply the finite diffference stencil
-                for (s, w) in zip(stencils[1:dim], weights[1:dim])
-                    u +=
-                        w * (-x[ind + s[1]] + 2 * x[ind + s[2]] - x[ind + s[3]])
+                for (e, w) in zip(units, weights)
+                    u += w * (-x[ind - e] + 2 * x[ind] - x[ind + e])
                 end
                 fx[ind] = u
             end
@@ -199,33 +184,15 @@ PETSc.set_snes_jacobian!(snes, J) do J, snes, g_x
     Nq = PETSc.info(da).global_size
 
     # grid spacing in each dimension
-    Δx, Δy, Δz = PetscScalar(1) ./ Nq
+    Δ = PetscScalar(1) ./ Nq
 
-    # Store a tuple of stencils in each direction
-    stencils = (
-        (
-            CartesianIndex(-1, 0, 0),
-            CartesianIndex(0, 0, 0),
-            CartesianIndex(1, 0, 0),
-        ),
-        (
-            CartesianIndex(0, -1, 0),
-            CartesianIndex(0, 0, 0),
-            CartesianIndex(0, 1, 0),
-        ),
-        (
-            CartesianIndex(0, 0, -1),
-            CartesianIndex(0, 0, 0),
-            CartesianIndex(0, 0, 1),
-        ),
-    )
     # Weights for each direction
-    weights = (Δy * Δz / Δx, Δx * Δz / Δy, Δx * Δy / Δz)
+    weights = ntuple(j -> prod(Δ) / Δ[j]^2, dim)
 
     # Get a local array of the solution vector
     PETSc.with_local_array!(g_x; write = false) do l_x
         # reshape so we can use multi-D indexing
-        x = @view PETSc.reshape_local_array(l_x, da)[1, :, :, :]
+        x = dof_slice(PETSc.reshape_local_array(l_x, da))
 
         # loop over indices and set the function value
         for ind in ((corners.lower):(corners.upper))
@@ -235,13 +202,13 @@ PETSc.set_snes_jacobian!(snes, J) do J, snes, g_x
                 J[ind, ind] = 1
             else
                 # We accumulate the diagonal and add it at the end
-                Jii = -Δx * Δy * Δz * λ * exp(x[ind]) # Apply the source
+                Jii = -prod(Δ) * λ * exp(x[ind]) # Apply the source
 
                 # Apply the finite diffference stencil
-                for (s, w) in zip(stencils[1:dim], weights[1:dim])
+                for (e, w) in zip(units, weights)
                     Jii += w * 2
-                    J[ind, ind + s[1]] = -w
-                    J[ind, ind + s[3]] = -w
+                    J[ind, ind - e] = -w
+                    J[ind, ind + e] = -w
                 end
                 J[ind, ind] = Jii
             end

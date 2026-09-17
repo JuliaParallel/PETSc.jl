@@ -130,19 +130,19 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
     function assemble_operator!(A, _, ksp)
         da = PETSc.dm(ksp)
         corners = PETSc.corners(da)
-        Nq = PETSc.info(da).global_size[1:2]
+        Nq = PETSc.info(da).global_size
         
         Δx = PetscScalar(1 / (Nq[1] - 1))
         Δy = PetscScalar(1 / (Nq[2] - 1))
         
-        interior = (CartesianIndex(2, 2, 1)):(CartesianIndex(Nq[1] - 1, Nq[2] - 1, 1))
+        interior = (CartesianIndex(2, 2)):(CartesianIndex(Nq[1] - 1, Nq[2] - 1))
         
         sten = (
-            CartesianIndex(-1, 0, 0),
-            CartesianIndex(1, 0, 0),
-            CartesianIndex(0, -1, 0),
-            CartesianIndex(0, 1, 0),
-            CartesianIndex(0, 0, 0),
+            CartesianIndex(-1, 0),
+            CartesianIndex(1, 0),
+            CartesianIndex(0, -1),
+            CartesianIndex(0, 1),
+            CartesianIndex(0, 0),
         )
         vals = (-1 / Δx^2, -1 / Δx^2, -1 / Δy^2, -1 / Δy^2, 2 / Δx^2 + 2 / Δy^2)
         
@@ -160,13 +160,13 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
         return 0
     end
     
-    PETSc.set_compute_operators!(ksp, assemble_operator!)
+    PETSc.set_compute_operators!(assemble_operator!, ksp)
     
     # Set the right-hand side
     PETSc.set_compute_rhs!(ksp) do petsc_b, ksp
         da = PETSc.dm(ksp)
         corners = PETSc.corners(da)
-        Nq = PETSc.info(da).global_size[1:2]
+        Nq = PETSc.info(da).global_size
         
         g_x = range(PetscScalar(0), length = Nq[1], stop = 1)
         g_y = range(PetscScalar(0), length = Nq[2], stop = 1)
@@ -210,7 +210,7 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
     # Get the solution and compute error
     sol = PETSc.solution(ksp)
     corners = PETSc.corners(da)
-    Nq = PETSc.info(da).global_size[1:2]
+    Nq = PETSc.info(da).global_size
     
     g_x = range(PetscScalar(0), length = Nq[1], stop = 1)
     g_y = range(PetscScalar(0), length = Nq[2], stop = 1)

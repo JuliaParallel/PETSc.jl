@@ -287,11 +287,10 @@ PETSc.set_exact_solution!(ds, 0, quadratic_u_ptr)
 label = PETSc.label(dm, "marker")
 
 if bc == "dirichlet"
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label,
-                        PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label, PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
 else  # neumann
     bd_ptr = coeff == "field" ? f0_bd_field_ptr : f0_bd_nl_ptr
-    PETSc.add_natural_boundary!(petsclib, dm, ds, "flux", label, 1, 0, bd_ptr)
+    PETSc.add_natural_boundary!(dm, ds, "flux", label, 1, 0, bd_ptr)
 end
 
 # ── FAS coarsen hook ─────────────────────────────────────────────────────────
@@ -317,25 +316,24 @@ function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cv
     c_label = PETSc.label(cdm, "marker")
     if c_label != Ptr{Cvoid}(C_NULL)
         if bc == "dirichlet"
-            PETSc.add_boundary!(petsclib, cdm, LibPETSc.DM_BC_ESSENTIAL, "wall",
-                                c_label, PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
+            PETSc.add_boundary!(cdm, LibPETSc.DM_BC_ESSENTIAL, "wall", c_label, PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
         else
             bd_ptr = coeff == "field" ? f0_bd_field_ptr : f0_bd_nl_ptr
-            PETSc.add_natural_boundary!(petsclib, cdm, cds, "flux", c_label, 1, 0, bd_ptr)
+            PETSc.add_natural_boundary!(cdm, cds, "flux", c_label, 1, 0, bd_ptr)
         end
     end
     return Cint(0)
 end
 const fas_coarsen_hook_ptr = Base.@cfunction(fas_coarsen_hook, Cint,
     (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))
-PETSc.add_coarsen_hook!(dm, fas_coarsen_hook_ptr)
+PETSc.add_coarsen_hook!(fas_coarsen_hook_ptr, dm)
 
 # ── SNES + matrix + vectors ───────────────────────────────────────────────────
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
 J = PETSc.PetscMat(dm)
-PETSc.set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(dm)
 LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 
 # For pure Neumann: the assembled matrix is singular (null space = constants).
@@ -354,11 +352,9 @@ end
 # Neumann:   no constrained DOFs exist, so start directly from the L²-projected
 # exact solution.  The solution is unique only up to a constant; starting near
 # the answer avoids the singular-system pitfall of a pure-zero initial guess.
-PETSc.project_function!(petsclib, dm, 0.0, [quadratic_u_ptr], nothing,
-                            LibPETSc.INSERT_ALL_VALUES, u)
+PETSc.project_function!(u, dm, 0.0, [quadratic_u_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
 if bc == "dirichlet"
-    PETSc.project_function!(petsclib, dm, 0.0, [zero_u_ptr], nothing,
-                                LibPETSc.INSERT_VALUES, u)
+    PETSc.project_function!(u, dm, 0.0, [zero_u_ptr], nothing, LibPETSc.INSERT_VALUES)
 end
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
@@ -370,7 +366,7 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── L² error ──────────────────────────────────────────────────────────────────
-l2err = PETSc.l2diff(petsclib, dm, 0.0, [quadratic_u_ptr], nothing, u)
+l2err = PETSc.l2diff(dm, 0.0, [quadratic_u_ptr], nothing, u)
 if MPI.Comm_rank(comm) == 0
     println("L2 error: $l2err")
 end
@@ -382,7 +378,7 @@ end
 let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
     if _vtk !== nothing
         fname = string(_vtk)
-        PETSc.save_vtk!(petsclib, comm, fname, u)
+        PETSc.save_vtk!(u, fname)
         MPI.Comm_rank(comm) == 0 && println("Solution written to $fname")
     end
 end

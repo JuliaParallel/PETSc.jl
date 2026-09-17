@@ -332,7 +332,7 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
     da = PETSc.dm(snes)
 
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
 
     corners       = PETSc.corners(da)
     ghost_corners = PETSc.ghost_corners(da)
@@ -398,24 +398,27 @@ end
 # Builds the IS_COLORING_LOCAL coloring for da's STAR stencil, ghost-local COO
 # (row, col) pairs, and per-color owned-column / COO-entry index arrays.
 # 2-D DMDA STAR stencil only; see PETSc.star_fd_coloring for 3-D notes.
-coloring      = PETSc.star_fd_coloring(petsclib, da)
-n_colors      = coloring.n_colors
-n_local_dofs  = coloring.n_local_dofs
-nnz_coo       = coloring.nnz_coo
-row_coo_local = coloring.row_coo_local
-col_coo_local = coloring.col_coo_local
+# `star_fd_coloring` takes no `petsclib` (naming.md §8) and names the base of
+# every index vector it returns (§12.1), so the hand renaming this example used
+# to do on receipt is gone.
+coloring         = PETSc.star_fd_coloring(da)
+n_colors         = coloring.n_colors
+n_local_dofs     = coloring.n_local_dofs
+nnz_coo          = coloring.nnz_coo
+row_coo_local_0b = coloring.row_coo_local_0b
+col_coo_local_0b = coloring.col_coo_local_0b
 
 # ── Create J ─────────────────────────────────────────────────────────────────
 J = LibPETSc.DMCreateMatrix(petsclib, da)
 # Register the COO pattern on both CPU and GPU.  This allows MatSetValuesCOO
 # to be used for assembly in both cases, avoiding per-entry hash-table lookups
 # that MatSetValuesLocal incurs.  On GPU it also enables device-side scatter.
-LibPETSc.MatSetPreallocationCOOLocal(petsclib, J, LibPETSc.PetscCount(nnz_coo), row_coo_local, col_coo_local)
+LibPETSc.MatSetPreallocationCOOLocal(petsclib, J, LibPETSc.PetscCount(nnz_coo), row_coo_local_0b, col_coo_local_0b)
 
 # ── Per-color index arrays for the FD loop ───────────────────────────────────
-perturb_cols_1b = coloring.perturb_cols
-coo_idxs_1b     = coloring.coo_idxs
-local_rows_1b   = coloring.local_rows
+perturb_cols_1b = coloring.perturb_cols_1b
+coo_idxs_1b     = coloring.coo_idxs_1b
+local_rows_1b   = coloring.local_rows_1b
 
 if useCUDA
     perturb_cols_dev = [CuArray(v) for v in perturb_cols_1b]

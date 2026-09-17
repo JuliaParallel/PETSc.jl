@@ -278,7 +278,7 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     LibPETSc.VecSet(petsclib, r_g, 0.0) # set residual to zero before accumulating contributions
     
     LibPETSc.VecSet(petsclib, user_ctx.x_l, 0.0) # set solution to zero before accumulating contributions
-    PETSc.global_to_local!(x_g, user_ctx.x_l, dm)
+    PETSc.global_to_local!(user_ctx.x_l, dm, x_g)
 
     # ghost point values
     set_ghostpoint_values!(user_ctx.x_l, dm, petsclib, user_ctx.BC )
@@ -428,7 +428,7 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dm, X_coord,Z_coord,nothing)
 
     # Copy local into global residual vector
-    PETSc.local_to_global!(user_ctx.r_l, r_g, dm)
+    PETSc.local_to_global!(r_g, dm, user_ctx.r_l)
     
     return 0
 end
@@ -438,7 +438,7 @@ function FormJacobian!(J, snes, x_g, user_ctx)
     dm = PETSc.dm(snes)
 
     # Extract the local vector
-    PETSc.global_to_local!(x_g, user_ctx.x_l, dm, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(user_ctx.x_l, dm, x_g, PETSc.INSERT_VALUES)
 
     # get coordinates
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
@@ -804,7 +804,7 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     # set ghost point values
     set_ghostpoint_values!(user_ctx.x_l, user_ctx.dm, petsclib, user_ctx.BC )
 
-    PETSc.local_to_global!(user_ctx.x_l,x_g, user_ctx.dm)
+    PETSc.local_to_global!(x_g, user_ctx.dm, user_ctx.x_l)
 
     return nothing
 end
@@ -868,7 +868,7 @@ function extract_solution_julia(x_g::LibPETSc.PetscVec{PetscsLib}, user_ctx) whe
     corners = PETSc.corners(dm)
 
     # ----- Solution extraction via global-to-local + owned-cell copy -----
-    PETSc.global_to_local!(x_g, user_ctx.x_l, dm)
+    PETSc.global_to_local!(user_ctx.x_l, dm, x_g)
     Xlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
 
     P_view  = @view(Xlocal[:,:,PETSc.dof_slot(dm, LibPETSc.DMSTAG_ELEMENT, 0)])
@@ -1079,8 +1079,8 @@ PETSc.set_dm!(snes, user_ctx.dm)
 # Set first guess values for solution vector
 set_initial_solution!(x_g, user_ctx, petsclib)
 
-PETSc.set_function!(snes, FormRes!, r_g)
-PETSc.set_snes_jacobian!(snes, FormJacobian!, J, Pmat)
+PETSc.set_function!(FormRes!, snes, r_g)
+PETSc.set_snes_jacobian!(FormJacobian!, snes, J, Pmat)
 
 PETSc.solve!(x_g, snes);
 

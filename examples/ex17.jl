@@ -423,33 +423,25 @@ left_id  = dim == 3 ? PetscInt(6) : PetscInt(4)
 
 if sol_type in ("vlap_quad", "elas_quad", "vlap_trig", "elas_trig")
     # Dirichlet on entire boundary (marker 1 covers all faces without separate markers).
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label,
-                        PetscInt[1], 0, PetscInt[], exact_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label, PetscInt[1], 0, PetscInt[], exact_ptr)
 
 elseif sol_type == "elas_axial_disp"
     # Neumann traction on right wall; zero Dirichlet on left/bottom (some components).
     # Requires -dm_plex_separate_marker.
-    PETSc.add_natural_boundary!(petsclib, dm, ds, "right", label, right_id, 0,
-                                f0_elas_axial_disp_bd_ptr)
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "left", label,
-                        PetscInt[left_id], 0, PetscInt[0], zero_u_ptr)
+    PETSc.add_natural_boundary!(dm, ds, "right", label, right_id, 0, f0_elas_axial_disp_bd_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "left", label, PetscInt[left_id], 0, PetscInt[0], zero_u_ptr)
     bottom_cmp = dim == 3 ? PetscInt[2] : PetscInt[1]
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "bottom", label,
-                        PetscInt[1], 0, bottom_cmp, zero_u_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "bottom", label, PetscInt[1], 0, bottom_cmp, zero_u_ptr)
     if dim == 3
-        PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "front", label,
-                            PetscInt[3], 0, PetscInt[1], zero_u_ptr)
+        PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "front", label, PetscInt[3], 0, PetscInt[1], zero_u_ptr)
     end
 
 elseif sol_type == "elas_uniform_strain"
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label,
-                        PetscInt[1], 0, PetscInt[], exact_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label, PetscInt[1], 0, PetscInt[], exact_ptr)
 
 else  # elas_ge — requires -dm_plex_separate_marker
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "left", label,
-                        PetscInt[left_id], 0, PetscInt[], zero_u_ptr)
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, "right", label,
-                        PetscInt[right_id], 0, PetscInt[0], ge_shift_u_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "left", label, PetscInt[left_id], 0, PetscInt[], zero_u_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "right", label, PetscInt[right_id], 0, PetscInt[0], ge_shift_u_ptr)
 end
 
 # ── Propagate disc + near-null space to coarser DMs (for GMG / GAMG hierarchy) ──
@@ -473,16 +465,14 @@ snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
 J = PETSc.PetscMat(dm)
-PETSc.set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(dm)
 LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 
 # ── Initial guess ───────────────────────────────────────────────────────────────
 # Seed constrained DOFs with the exact solution (or zero for elas_ge).
-PETSc.project_function!(petsclib, dm, 0.0, [exact_ptr], nothing,
-                            LibPETSc.INSERT_ALL_VALUES, u)
+PETSc.project_function!(u, dm, 0.0, [exact_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
 # Reset free DOFs to zero so SNES has a well-posed starting point.
-PETSc.project_function!(petsclib, dm, 0.0, [zero_u_ptr], nothing,
-                            LibPETSc.INSERT_VALUES, u)
+PETSc.project_function!(u, dm, 0.0, [zero_u_ptr], nothing, LibPETSc.INSERT_VALUES)
 
 # ── Solve ───────────────────────────────────────────────────────────────────────
 PETSc.solve!(u, snes)
@@ -493,7 +483,7 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── L² error ────────────────────────────────────────────────────────────────────
-l2err = PETSc.l2diff(petsclib, dm, 0.0, [exact_ptr], nothing, u)
+l2err = PETSc.l2diff(dm, 0.0, [exact_ptr], nothing, u)
 if MPI.Comm_rank(comm) == 0
     if sol_type == "elas_ge"
         println("(elas_ge has no exact solution; L² comparison is against zero.)")
@@ -533,11 +523,9 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         # DMProjectField projects functions of the displacement solution (u, 1 field)
         # into both output fields simultaneously.
-        PETSc.project_field!(petsclib, dm_out, 0.0, u,
-                                [copy_displacement_3_ptr, compute_stress_3x3_ptr],
-                                LibPETSc.INSERT_ALL_VALUES, out_vec)
+        PETSc.project_field!(out_vec, dm_out, 0.0, u, [copy_displacement_3_ptr, compute_stress_3x3_ptr], LibPETSc.INSERT_ALL_VALUES)
 
-        PETSc.save_vtk!(petsclib, comm, fname, out_vec)
+        PETSc.save_vtk!(out_vec, fname)
 
         MPI.Comm_rank(comm) == 0 && PETSc.vtk_merge_tensor!(fname, "stress")
 

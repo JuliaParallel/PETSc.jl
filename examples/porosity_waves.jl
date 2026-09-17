@@ -99,6 +99,16 @@ bcs = (
     PETSc.DM_BOUNDARY_GHOSTED,
    )[1:dim]
 
+# `corners`, `info`, `local_coordinate_array` and `reshape_local_array` are
+# dimension-correct (docs/src/man/naming.md §12): on a `dim`-dimensional DMDA
+# they answer with `dim`-tuples, `CartesianIndex{dim}` and `1 + dim` axes.
+
+# The slice of one dof out of a reshaped local array.
+dof_slice(A, d) = view(A, d, ntuple(_ -> Colon(), dim)...)
+
+# The unit offset along axis `j`.
+unit(j) = CartesianIndex(ntuple(k -> k == j ? 1 : 0, dim))
+
 # Set parameters
 n = 3
 m = 2
@@ -136,8 +146,8 @@ PETSc.with_local_array!(g_x; read = false) do l_x
     corners = PETSc.corners(da)
 
     x = PETSc.reshape_local_array(l_x, da)
-    Phi = @view x[1, :, :, :]
-    Pe = @view x[2, :, :, :]
+    Phi = dof_slice(x, 1)
+    Pe = dof_slice(x, 2)
 
     # local coordinates (cached as a plain Julia array)
     coord = coord_cache
@@ -168,7 +178,7 @@ end
 LibPETSc.VecCopy(petsclib,g_x,g_xold)       # initialize Pe and Phi of last timestep
 
 l_xold = PETSc.local_vec(da)
-PETSc.global_to_local!(g_xold, l_xold, da, PETSc.INSERT_VALUES)
+PETSc.global_to_local!(l_xold, da, g_xold, PETSc.INSERT_VALUES)
 
 # Keep `x_old` as a plain Julia vector (avoid `unsafe_local_array` finalizers
 # interacting with PETSc object lifetimes).
@@ -184,16 +194,16 @@ function ComputeLocalResidual!(l_fx, l_x, snes)
     da = PETSc.dm(snes)
     # The local vectors of l_x/x_old include ghost points
     x = PETSc.reshape_local_array(l_x[:], da)
-    Phi = @view x[1, :, :, :]
-    Pe = @view x[2, :, :, :]
+    Phi = dof_slice(x, 1)
+    Pe = dof_slice(x, 2)
     x_old_reshaped = PETSc.reshape_local_array(x_old[:], da)
-    Phi_old = @view x_old_reshaped[1, :, :, :]
-    Pe_old = @view x_old_reshaped[2, :, :, :]
+    Phi_old = dof_slice(x_old_reshaped, 1)
+    Pe_old = dof_slice(x_old_reshaped, 2)
 
     # The local residual vectors do not include ghost points
     fx = PETSc.reshape_local_array(l_fx[:], da)
-    res_Phi = @view fx[1, :, :, :]
-    res_Pe = @view fx[2, :, :, :]
+    res_Phi = dof_slice(fx, 1)
+    res_Pe = dof_slice(fx, 2)
 
     # Global grid size
     Nq = PETSc.info(da).global_size
@@ -201,35 +211,31 @@ function ComputeLocalResidual!(l_fx, l_x, snes)
     # Local sizes
     corners = PETSc.corners(da)
 
-    # set ghost boundaries (flux free conditions)
-    if Nq[2] > 1
-        if corners.lower[2] == 1
-            Phi[:, 0, :] = Phi[:, 1, :]
-            Pe[:, 0, :] = Pe[:, 1, :]
+    # set ghost boundaries (flux free conditions). `selectdim` rather than a
+    # literal `[:, 0, :]`, because the array has as many axes as the DMDA has
+    # dimensions (naming.md §12).
+    for d in 2:dim
+        if corners.lower[d] == 1
+            selectdim(Phi, d, 0) .= selectdim(Phi, d, 1)
+            selectdim(Pe, d, 0) .= selectdim(Pe, d, 1)
         end
-        if corners.upper[2] == Nq[2]
-            Phi[:, Nq[2] + 1, :] = Phi[:, Nq[2], :]
-            Pe[:, Nq[2] + 1, :] = Pe[:, Nq[2], :]
-        end
-    end
-    if Nq[3] > 1
-        if corners.lower[3] == 1
-            Phi[:, :, 0] = Phi[:, :, 1]
-            Pe[:, :, 0] = Pe[:, :, 1]
-        end
-        if corners.upper[3] == Nq[3]
-            Phi[:, :, Nq[3] + 1] = Phi[:, :, Nq[3]]
-            Pe[:, :, Nq[3] + 1] = Pe[:, :, Nq[3]]
+        if corners.upper[d] == Nq[d]
+            selectdim(Phi, d, Nq[d] + 1) .= selectdim(Phi, d, Nq[d])
+            selectdim(Pe, d, Nq[d] + 1) .= selectdim(Pe, d, Nq[d])
         end
     end
 
     # Stencil
-    ix_p1 = CartesianIndex(1, 0, 0)   # ix + 1
-    ix_m1 = CartesianIndex(-1, 0, 0)  # ix - 1
-    iy_p1 = CartesianIndex(0, 1, 0)   # iy + 1
-    iy_m1 = CartesianIndex(0, -1, 0)  # iy - 1
-    iz_p1 = CartesianIndex(0, 0, 1)   # iz + 1
-    iz_m1 = CartesianIndex(0, 0, -1)  # iz - 1
+    ix_p1 = unit(1)                   # ix + 1
+    ix_m1 = -ix_p1                    # ix - 1
+    if dim > 1
+        iy_p1 = unit(2)               # iy + 1
+        iy_m1 = -iy_p1                # iy - 1
+    end
+    if dim == 3
+        iz_p1 = unit(3)               # iz + 1
+        iz_m1 = -iz_p1                # iz - 1
+    end
 
     # Coordinates and spacing (assumed constant)
     coord = coord_cache
@@ -318,7 +324,7 @@ function FormResidual!(f,snes, g_x)
 
     # Get a local vector and transfer the data from the global->local vector
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
 
     # Get local arrays
     PETSc.with_local_array!(
@@ -363,7 +369,7 @@ function FormJacobian!(J, snes, g_x)
 
     # Get a local vector and transfer the data from the global->local vector
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
 
     # Get a local array of the solution vector and form a Jacobian for the
     # interior (non-ghost) unknowns.
@@ -394,8 +400,8 @@ function FormJacobian!(J, snes, g_x)
     return 0
 end
 
-PETSc.set_function!(snes, FormResidual!, r)
-PETSc.set_snes_jacobian!(snes, FormJacobian!, PJ)
+PETSc.set_function!(FormResidual!, snes, r)
+PETSc.set_snes_jacobian!(FormJacobian!, snes, PJ)
 
 # Timestep loop
 time, it = PetscScalar(0), 1;
@@ -418,7 +424,7 @@ while (it < max_it && time < max_time)
     it += 1
 
     # Update the x_old values (Phi_old, Pe_old) on every processor
-    PETSc.global_to_local!(g_x, l_xold, da, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_xold, da, g_x, PETSc.INSERT_VALUES)
     PETSc.with_local_array!(l_xold; read = true, write = false) do x_arr
         copyto!(x_old, x_arr)
     end
@@ -427,8 +433,7 @@ while (it < max_it && time < max_time)
     if (mod(it, 40) == 0 && CreatePlots == true)
         coord = PETSc.local_coordinate_array(da)
         if dim==1
-            x = coord[1, :, :, :]
-            x = x[:,1,1]
+            x = collect(dof_slice(coord, 1))
             time_vec = ones(size(x)) * time
             
             Pe = g_x[2:2:end]

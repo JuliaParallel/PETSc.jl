@@ -123,8 +123,8 @@ snes = PETSc.SNES(petsclib,comm;
         snes_rtol=1e-12, 
         snes_monitor=nothing,
         snes_converged_reason=nothing);
-PETSc.set_function!(snes, FormResidual1!, res)
-PETSc.set_snes_jacobian!(snes, FormJacobian1!, PJ)
+PETSc.set_function!(FormResidual1!, snes, res)
+PETSc.set_snes_jacobian!(FormJacobian1!, snes, PJ)
 
 # solve
 PETSc.solve!(x_s, snes);

@@ -326,8 +326,7 @@ function pressure_nsp_constructor(
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     # Project constant pressure = 1 onto the DM's global vector
     nvec = PETSc.global_vec(dm_w)
-    PETSc.project_function!(petsclib, dm_w, 0.0,
-        [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, nvec)
+    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
     LibPETSc.VecNormalize(petsclib, nvec)
     # Build MatNullSpace from the normalized vector
     GC.@preserve nvec begin
@@ -404,8 +403,7 @@ end
 for (wall, comp) in (("markerBottom", 1), ("markerRight", 0),
                      ("markerTop",    1), ("markerLeft",  0))
     label = PETSc.label(dm, wall)
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_ESSENTIAL, wall, label,
-                        PetscInt[1], 0, PetscInt[comp], exact_vel_ptr)
+    PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, wall, label, PetscInt[1], 0, PetscInt[comp], exact_vel_ptr)
 end
 
 # Propagate discretisation and pressure null space constructor to coarser levels
@@ -424,8 +422,7 @@ PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ──────────────────
 null_vec = PETSc.global_vec(dm)
-PETSc.project_function!(petsclib, dm, 0.0,
-    [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, null_vec)
+PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
 LibPETSc.VecNormalize(petsclib, null_vec)
 
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
@@ -438,11 +435,10 @@ nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (nu
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
-PETSc.set_snes_local_fem!(petsclib, dm)
+PETSc.set_snes_local_fem!(dm)
 
 # ── Initial guess: zero ───────────────────────────────────────────────────────
-PETSc.project_function!(petsclib, dm, 0.0,
-    [zero_vel_ptr, zero_vel_ptr], nothing, LibPETSc.INSERT_VALUES, u)
+PETSc.project_function!(u, dm, 0.0, [zero_vel_ptr, zero_vel_ptr], nothing, LibPETSc.INSERT_VALUES)
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
 # The Stokes system has a constant-pressure null space.  We must attach it to
@@ -466,8 +462,7 @@ end
 
 # ── L² errors ────────────────────────────────────────────────────────────────
 # Combined L²-norm of the error across both velocity and pressure fields.
-l2err = PETSc.l2diff(petsclib, dm, 0.0,
-    [exact_vel_ptr, exact_pres_ptr], nothing, u)
+l2err = PETSc.l2diff(dm, 0.0, [exact_vel_ptr, exact_pres_ptr], nothing, u)
 
 if MPI.Comm_rank(comm) == 0
     println("L2 error: $l2err")

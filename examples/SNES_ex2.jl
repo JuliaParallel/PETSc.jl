@@ -113,8 +113,8 @@ S = PETSc.SNES(petsclib,comm;
         snes_converged_reason=false);
 
 # Set functions for residual and jacobian computations
-PETSc.set_function!(S, FormResidual!, res)
-PETSc.set_snes_jacobian!(S, FormJacobian!, PJ)
+PETSc.set_function!(FormResidual!, S, res)
+PETSc.set_snes_jacobian!(FormJacobian!, S, PJ)
 
 # solve
 PETSc.solve!(x_s, S);

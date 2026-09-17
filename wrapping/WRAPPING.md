@@ -243,6 +243,9 @@ julia --project=. -e 'using Pkg; Pkg.test()'             # includes test/wrapper
   substring replacement (`dispatch_types`), exactly like the old generator.
 - `struct_wrappers.jl` is hand-maintained (`generator/structs.jl`): field order must match the
   C struct. Check `api/petsc-X.Y.Z.json` (`structs`) when moving to a new release.
+- `PetscBool` (`generator/petscbool.jl`) is an 8-bit primitive because PETSc >= 3.24 defines
+  `typedef bool PetscBool`; it was a 4-byte enum before. Check `typedefs.PetscBool` in the
+  snapshot when moving to a new release: the width decides outputs, arrays and struct layouts.
 - The prologue (`generator/prologue.jl`) is the only copy of the handle structs. Never declare a
   PETSc handle there as an empty `mutable struct X end`: `Ref{X}()` is then an undefined reference
   and a ccall passes a Julia object pointer. Leave it to `opaque_types.jl` (`const X = Ptr{_n_X}`).

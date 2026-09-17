@@ -52,6 +52,8 @@ Other differences from the baseline that are not per-function:
 - `PCMGSetLevels` takes the optional `comms` (`C_NULL`) instead of returning garbage;
 - `PetscSFBcastBegin/End`, `PetscSFReduceBegin/End`, `PetscSFFetchAndOpBegin/End` exist as
   hand-written extras (they are absent from the API snapshot);
+- `PetscBool` is 8 bits (`typedef bool` since PETSc 3.24); the baseline's 32-bit type read
+  unwritten bytes in every boolean output and broke `PetscBool` arrays and struct fields;
 - `PetscDraw` and `TSMonitorLGCtx` are opaque pointer handles; the baseline's
   `mutable struct PetscDraw end` placeholder made every `PetscDraw*` call fail (`Ref{PetscDraw}()`
   is an undefined reference and the handle was passed as a Julia object pointer);

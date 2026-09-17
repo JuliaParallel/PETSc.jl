@@ -157,6 +157,11 @@ the generated "C to Julia name index" page in the manual.
 
 ### Fixed
 
+- `PetscBool` is one byte, matching PETSc's `typedef bool PetscBool` (since 3.24). The
+  previous 32-bit type read three bytes PETSc never wrote, so a `PETSC_FALSE` output could
+  come back as true (#268), `Vector{PetscBool}` arguments had the wrong stride and the
+  `MatFactorInfo`, `PetscFEGeom` and `PetscEventPerfInfo` struct layouts were off.
+
 - Re-initialising PETSc after `finalize` works with Tao, TaoTerm and TSTrajectory (PETSc 3.25.x
   does not reset their `RegisterAllCalled` flags; on Windows the internal symbols are not
   exported, see `PETSc.tao_usable_after_reinitialize()`).

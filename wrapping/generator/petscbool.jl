@@ -1,9 +1,13 @@
-primitive type PetscBool 32 end
+# PetscBool is `typedef bool PetscBool` since PETSc 3.24 (an enum, 4 bytes, before), so it is
+# one byte: outputs are read through `Ref{PetscBool}`, arrays have stride 1 and struct fields
+# (MatFactorInfo, PetscFEGeom, PetscEventPerfInfo) keep the C layout. A wider type reads
+# the three bytes PETSc never wrote.
+primitive type PetscBool 8 end
 
-const PETSC_FALSE = Base.bitcast(PetscBool, Int32(0))
-const PETSC_TRUE = Base.bitcast(PetscBool, Int32(1))
+const PETSC_FALSE = Base.bitcast(PetscBool, UInt8(0))
+const PETSC_TRUE = Base.bitcast(PetscBool, UInt8(1))
 
-@inline _petscbool_bits(x::PetscBool) = Base.bitcast(Int32, x)
+@inline _petscbool_bits(x::PetscBool) = Base.bitcast(UInt8, x)
 
 PetscBool(x::Bool) = convert(PetscBool, x)
 
@@ -12,7 +16,8 @@ Base.convert(::Type{PetscBool}, x::PetscBool) = x
 Base.convert(::Type{PetscBool}, x::Integer) = x == 0 ? PETSC_FALSE : PETSC_TRUE
 Base.Bool(x::PetscBool) = _petscbool_bits(x) != 0
 Base.convert(::Type{Bool}, x::PetscBool) = Base.Bool(x)
-Base.convert(::Type{Int32}, x::PetscBool) = _petscbool_bits(x)
+Base.convert(::Type{Int32}, x::PetscBool) = Int32(_petscbool_bits(x))
+Base.convert(::Type{UInt8}, x::PetscBool) = _petscbool_bits(x)
 Base.cconvert(::Type{PetscBool}, x::Bool) = convert(PetscBool, x)
 Base.cconvert(::Type{PetscBool}, x::PetscBool) = x
 Base.unsafe_convert(::Type{PetscBool}, x::PetscBool) = x

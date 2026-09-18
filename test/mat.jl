@@ -234,9 +234,50 @@ end
         @test B[1, 1] == PetscScalar(10.0)
         @test B[1, 2] == PetscScalar(11.0)
         @test B[2, 1] == PetscScalar(20.0)
-        
+
         PETSc.destroy!(B)
-        
+
+        PETSc.finalize(petsclib)
+    end
+end
+
+# Writing a whole block at once (JuliaParallel/PETSc.jl#248). The block is
+# asymmetric so a transposed write shows up, which is the failure mode to watch:
+# MatSetValues reads its value array row by row and Julia stores a matrix column
+# by column.
+@testset "PetscMat block setindex!" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+
+        A = PETSc.PetscMat(petsclib, 4, 4, 4)
+        block = PetscScalar[1 2 3; 4 5 6]
+        A[1:2, 1:3] = block
+        PETSc.assemble!(A)
+        @test [A[i, j] for i in 1:2, j in 1:3] == block
+
+        # Rows and columns need not be contiguous or ordered.
+        B = PETSc.PetscMat(petsclib, 5, 5, 5)
+        scattered = PetscScalar[10 20; 30 40; 50 60]
+        B[[1, 3, 5], [2, 4]] = scattered
+        PETSc.assemble!(B)
+        @test [B[i, j] for i in [1, 3, 5], j in [2, 4]] == scattered
+
+        # A block whose shape disagrees with the indices would otherwise read
+        # past the end of the array inside PETSc.
+        @test_throws DimensionMismatch B[1:2, 1:2] = PetscScalar[1 2 3; 4 5 6]
+
+        # Single row and single column go through their own methods.
+        C = PETSc.PetscMat(petsclib, 4, 4, 4)
+        C[2, [1, 3]] = PetscScalar[7, 8]
+        C[[1, 4], 3] = PetscScalar[9, 11]
+        PETSc.assemble!(C)
+        @test C[2, 1] == PetscScalar(7) && C[2, 3] == PetscScalar(8)
+        @test C[1, 3] == PetscScalar(9) && C[4, 3] == PetscScalar(11)
+
+        PETSc.destroy!(A)
+        PETSc.destroy!(B)
+        PETSc.destroy!(C)
         PETSc.finalize(petsclib)
     end
 end

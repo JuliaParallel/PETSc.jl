@@ -301,14 +301,23 @@ function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractMatrix, row
     # Convert to 0-based indexing for PETSc
     petsc_rows = PetscInt[r - 1 for r in rows]
     petsc_cols = PetscInt[c - 1 for c in cols]
-    petsc_vals = PetscScalar.(vals)
-    
-    # Use MatSetValues for block of entries
-    nrows = PetscInt.(length(petsc_rows))
-    ncols = PetscInt.(length(petsc_cols))
-    
+
+    size(vals) == (length(rows), length(cols)) || throw(
+        DimensionMismatch(
+            "block is $(size(vals)) but the index ranges are " *
+            "$(length(rows))x$(length(cols))",
+        ),
+    )
+
+    # MatSetValues reads its value array row by row, so the block is transposed
+    # before it is flattened: Julia lays a matrix out column by column.
+    petsc_vals = vec(permutedims(PetscScalar.(vals)))
+
+    nrows = PetscInt(length(petsc_rows))
+    ncols = PetscInt(length(petsc_cols))
+
     LibPETSc.MatSetValues(PetscLib, m, nrows, petsc_rows, ncols, petsc_cols, petsc_vals, LibPETSc.INSERT_VALUES)
-    
+
     return m
 end
 

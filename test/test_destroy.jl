@@ -30,6 +30,7 @@ for petsclib in PETSc.petsclibs
             PETSc.initialize(petsclib)
             v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
             m = PETSc.PetscMat(petsclib, 4, 4, 1)
+            o = PETSc.PetscOptions(petsclib; ksp_monitor = "")
             age_created = v.age
             PETSc.finalize(petsclib)
 
@@ -39,12 +40,15 @@ for petsclib in PETSc.petsclibs
             @test PETSc.LibPETSc.getlib(typeof(petsclib)).age > age_created
             @test !PETSc.isdestroyable(v, typeof(petsclib))
             @test !PETSc.isdestroyable(m, typeof(petsclib))
+            @test !PETSc.isdestroyable(o, typeof(petsclib))
 
             # Must be a no-op rather than a call into the dead communicator.
             @test PETSc.destroy!(v) === nothing
             @test PETSc.destroy!(m) === nothing
+            @test PETSc.destroy!(o) === nothing
             @test v.ptr == C_NULL
             @test m.ptr == C_NULL
+            @test o.ptr == C_NULL
 
             PETSc.finalize(petsclib)
         end
@@ -66,6 +70,12 @@ for petsclib in PETSc.petsclibs
             PETSc.destroy!(m)
             @test m.ptr == C_NULL
             @test PETSc.destroy!(m) === nothing
+
+            o = PETSc.PetscOptions(petsclib; ksp_monitor = "")
+            @test PETSc.isdestroyable(o, typeof(petsclib))
+            PETSc.destroy!(o)
+            @test o.ptr == C_NULL
+            @test PETSc.destroy!(o) === nothing
 
             PETSc.finalize(petsclib)
         end

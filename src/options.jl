@@ -89,10 +89,16 @@ function LibPETSc.PetscOptions(petsclib::PetscLibType; kwargs...)
     return opts
 end
 
+"""
+    destroy!(opts::AbstractPetscOptions)
+
+Free the options database `opts` holds, if this process is still allowed to.
+
+Does nothing when the library has been finalized or re-initialized, or when
+`opts` was already destroyed: see [`isdestroyable`](@ref).
+"""
 function destroy!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
-    # PetscOptions carries no `age`, so this cannot use `isdestroyable`. 
-    # TODO: Adding the field would make it consistent with Vec, Mat, KSP, SNES and DM.
-    if !(isfinalized(PetscLib)) && opts.ptr != C_NULL
+    if isdestroyable(opts, PetscLib)
         LibPETSc.PetscOptionsDestroy(PetscLib, opts)
     end
     opts.ptr = C_NULL

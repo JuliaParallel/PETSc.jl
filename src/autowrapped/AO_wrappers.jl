@@ -712,7 +712,7 @@ $(_doc_external("Vec/AOMappingHasApplicationIndex"))
 function AOMappingHasApplicationIndex(petsclib::PetscLibType, ao::AO, idex::PetscInt) end
 
 @for_petsc function AOMappingHasApplicationIndex(petsclib::$UnionPetscLib, ao::AO, idex::$PetscInt )
-	hasIndex_ = Ref{PetscBool}()
+	hasIndex_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:AOMappingHasApplicationIndex, $petsc_library),
@@ -749,7 +749,7 @@ $(_doc_external("Vec/AOMappingHasPetscIndex"))
 function AOMappingHasPetscIndex(petsclib::PetscLibType, ao::AO, idex::PetscInt) end
 
 @for_petsc function AOMappingHasPetscIndex(petsclib::$UnionPetscLib, ao::AO, idex::$PetscInt )
-	hasIndex_ = Ref{PetscBool}()
+	hasIndex_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:AOMappingHasPetscIndex, $petsc_library),

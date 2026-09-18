@@ -60,7 +60,7 @@ const petsc_library_file =
 function DataTypeFromString(libhdl::Ptr{Cvoid}, name::AbstractString)
     PetscDataTypeFromString_ptr = dlsym(libhdl, :PetscDataTypeFromString)
     dtype_ref = Ref{PetscDataType}()
-    found_ref = Ref{PetscBool}()
+    found_ref = Ref{PetscBool}(PETSC_FALSE)
     @chk ccall(
         PetscDataTypeFromString_ptr,
         PetscErrorCode,

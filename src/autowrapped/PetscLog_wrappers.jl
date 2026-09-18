@@ -950,7 +950,7 @@ $(_doc_external("Sys/PetscLogHandlerStageGetVisible"))
 function PetscLogHandlerStageGetVisible(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage) end
 
 @for_petsc function PetscLogHandlerStageGetVisible(petsclib::$UnionPetscLib, handler::PetscLogHandler, stage::PetscLogStage )
-	isVisible_ = Ref{PetscBool}()
+	isVisible_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLogHandlerStageGetVisible, $petsc_library),
@@ -1385,7 +1385,7 @@ $(_doc_external("Sys/PetscLogStateStageGetActive"))
 function PetscLogStateStageGetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage) end
 
 @for_petsc function PetscLogStateStageGetActive(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage )
-	isActive_ = Ref{PetscBool}()
+	isActive_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLogStateStageGetActive, $petsc_library),
@@ -1562,7 +1562,7 @@ $(_doc_external("Sys/PetscLogStateEventGetActive"))
 function PetscLogStateEventGetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent) end
 
 @for_petsc function PetscLogStateEventGetActive(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent )
-	isActive_ = Ref{PetscBool}()
+	isActive_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscLogStateEventGetActive, $petsc_library),

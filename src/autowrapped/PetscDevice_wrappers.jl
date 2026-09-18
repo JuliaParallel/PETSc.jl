@@ -524,7 +524,7 @@ $(_doc_external("Sys/PetscDeviceContextQueryIdle"))
 function PetscDeviceContextQueryIdle(petsclib::PetscLibType, dctx::PetscDeviceContext) end
 
 @for_petsc function PetscDeviceContextQueryIdle(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
-	idle_ = Ref{PetscBool}()
+	idle_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDeviceContextQueryIdle, $petsc_library),

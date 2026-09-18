@@ -173,7 +173,7 @@ $(_doc_external("Vec/PetscSectionCompare"))
 function PetscSectionCompare(petsclib::PetscLibType, s1::PetscSection, s2::PetscSection) end
 
 @for_petsc function PetscSectionCompare(petsclib::$UnionPetscLib, s1::PetscSection, s2::PetscSection )
-	congruent_ = Ref{PetscBool}()
+	congruent_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSectionCompare, $petsc_library),
@@ -695,7 +695,7 @@ $(_doc_external("Vec/PetscSectionGetPointMajor"))
 function PetscSectionGetPointMajor(petsclib::PetscLibType, s::PetscSection) end
 
 @for_petsc function PetscSectionGetPointMajor(petsclib::$UnionPetscLib, s::PetscSection )
-	pm_ = Ref{PetscBool}()
+	pm_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSectionGetPointMajor, $petsc_library),
@@ -764,7 +764,7 @@ $(_doc_external("Vec/PetscSectionGetIncludesConstraints"))
 function PetscSectionGetIncludesConstraints(petsclib::PetscLibType, s::PetscSection) end
 
 @for_petsc function PetscSectionGetIncludesConstraints(petsclib::$UnionPetscLib, s::PetscSection )
-	includesConstraints_ = Ref{PetscBool}()
+	includesConstraints_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSectionGetIncludesConstraints, $petsc_library),
@@ -2212,7 +2212,7 @@ $(_doc_external("Vec/PetscSectionHasConstraints"))
 function PetscSectionHasConstraints(petsclib::PetscLibType, s::PetscSection) end
 
 @for_petsc function PetscSectionHasConstraints(petsclib::$UnionPetscLib, s::PetscSection )
-	hasConstraints_ = Ref{PetscBool}()
+	hasConstraints_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSectionHasConstraints, $petsc_library),
@@ -2935,7 +2935,7 @@ $(_doc_external("Vec/PetscSectionGetUseFieldOffsets"))
 function PetscSectionGetUseFieldOffsets(petsclib::PetscLibType, s::PetscSection) end
 
 @for_petsc function PetscSectionGetUseFieldOffsets(petsclib::$UnionPetscLib, s::PetscSection )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSectionGetUseFieldOffsets, $petsc_library),

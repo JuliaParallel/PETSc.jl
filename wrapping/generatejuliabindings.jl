@@ -302,7 +302,11 @@ function init_extract_parameters(typename::String, name::String, function_name::
     elseif !isarray && isoutput
         #scalar
         name_ccall  = "$(name)_"
-        init_arg    = "$name_ccall = Ref{$typename}()"  
+        # A PetscBool output is one byte in PETSc 3.25 and four in 3.22, so its slot is
+        # zeroed before the call. The low byte is then correct for either library.
+        init_arg    = typename == "PetscBool" ?
+            "$name_ccall = Ref{$typename}(PETSC_FALSE)" :
+            "$name_ccall = Ref{$typename}()"
         extract_arg = "$name = $(name_ccall)[]" 
 
     end

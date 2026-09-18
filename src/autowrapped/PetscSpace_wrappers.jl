@@ -801,7 +801,7 @@ $(_doc_external("DM/PetscSpaceSumGetConcatenate"))
 function PetscSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscSpace) end
 
 @for_petsc function PetscSpaceSumGetConcatenate(petsclib::$UnionPetscLib, sp::PetscSpace )
-	concatenate_ = Ref{PetscBool}()
+	concatenate_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSpaceSumGetConcatenate, $petsc_library),
@@ -967,8 +967,8 @@ $(_doc_external("DM/PetscSpaceSumGetInterleave"))
 function PetscSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscSpace) end
 
 @for_petsc function PetscSpaceSumGetInterleave(petsclib::$UnionPetscLib, sp::PetscSpace )
-	interleave_basis_ = Ref{PetscBool}()
-	interleave_components_ = Ref{PetscBool}()
+	interleave_basis_ = Ref{PetscBool}(PETSC_FALSE)
+	interleave_components_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSpaceSumGetInterleave, $petsc_library),
@@ -1232,7 +1232,7 @@ $(_doc_external("DM/PetscSpacePolynomialGetTensor"))
 function PetscSpacePolynomialGetTensor(petsclib::PetscLibType, sp::PetscSpace) end
 
 @for_petsc function PetscSpacePolynomialGetTensor(petsclib::$UnionPetscLib, sp::PetscSpace )
-	tensor_ = Ref{PetscBool}()
+	tensor_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscSpacePolynomialGetTensor, $petsc_library),

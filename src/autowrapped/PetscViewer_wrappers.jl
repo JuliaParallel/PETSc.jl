@@ -779,7 +779,7 @@ $(_doc_external("Sys/PetscViewerReadable"))
 function PetscViewerReadable(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerReadable(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerReadable, $petsc_library),
@@ -815,7 +815,7 @@ $(_doc_external("Sys/PetscViewerWritable"))
 function PetscViewerWritable(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerWritable(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerWritable, $petsc_library),
@@ -1737,7 +1737,7 @@ $(_doc_external("Sys/PetscViewerVUGetVecSeen"))
 function PetscViewerVUGetVecSeen(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerVUGetVecSeen(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	vecSeen_ = Ref{PetscBool}()
+	vecSeen_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerVUGetVecSeen, $petsc_library),
@@ -2017,7 +2017,7 @@ $(_doc_external("Sys/PetscViewerHDF5GetBaseDimension2"))
 function PetscViewerHDF5GetBaseDimension2(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerHDF5GetBaseDimension2(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5GetBaseDimension2, $petsc_library),
@@ -2092,7 +2092,7 @@ $(_doc_external("Sys/PetscViewerHDF5GetSPOutput"))
 function PetscViewerHDF5GetSPOutput(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerHDF5GetSPOutput(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5GetSPOutput, $petsc_library),
@@ -2163,7 +2163,7 @@ $(_doc_external("Sys/PetscViewerHDF5GetCollective"))
 function PetscViewerHDF5GetCollective(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerHDF5GetCollective(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5GetCollective, $petsc_library),
@@ -2234,7 +2234,7 @@ $(_doc_external("Sys/PetscViewerHDF5GetDefaultTimestepping"))
 function PetscViewerHDF5GetDefaultTimestepping(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerHDF5GetDefaultTimestepping(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5GetDefaultTimestepping, $petsc_library),
@@ -2305,7 +2305,7 @@ $(_doc_external("Sys/PetscViewerHDF5GetCompress"))
 function PetscViewerHDF5GetCompress(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerHDF5GetCompress(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5GetCompress, $petsc_library),
@@ -2612,7 +2612,7 @@ $(_doc_external("Sys/PetscViewerHDF5IsTimestepping"))
 function PetscViewerHDF5IsTimestepping(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerHDF5IsTimestepping(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5IsTimestepping, $petsc_library),
@@ -2896,7 +2896,7 @@ $(_doc_external("Sys/PetscViewerHDF5HasGroup"))
 function PetscViewerHDF5HasGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String) end
 
 @for_petsc function PetscViewerHDF5HasGroup(petsclib::$UnionPetscLib, viewer::PetscViewer, path::String )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5HasGroup, $petsc_library),
@@ -2933,7 +2933,7 @@ $(_doc_external("Sys/PetscViewerHDF5HasDataset"))
 function PetscViewerHDF5HasDataset(petsclib::PetscLibType, viewer::PetscViewer, path::String) end
 
 @for_petsc function PetscViewerHDF5HasDataset(petsclib::$UnionPetscLib, viewer::PetscViewer, path::String )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5HasDataset, $petsc_library),
@@ -2970,7 +2970,7 @@ $(_doc_external("Sys/PetscViewerHDF5HasObject"))
 function PetscViewerHDF5HasObject(petsclib::PetscLibType, viewer::PetscViewer, obj::PetscObject) end
 
 @for_petsc function PetscViewerHDF5HasObject(petsclib::$UnionPetscLib, viewer::PetscViewer, obj::PetscObject )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5HasObject, $petsc_library),
@@ -3008,7 +3008,7 @@ $(_doc_external("Sys/PetscViewerHDF5HasAttribute"))
 function PetscViewerHDF5HasAttribute(petsclib::PetscLibType, viewer::PetscViewer, parent::String, name::String) end
 
 @for_petsc function PetscViewerHDF5HasAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, parent::String, name::String )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5HasAttribute, $petsc_library),
@@ -3046,7 +3046,7 @@ $(_doc_external("Sys/PetscViewerHDF5HasObjectAttribute"))
 function PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj::PetscObject, name::String) end
 
 @for_petsc function PetscViewerHDF5HasObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj::PetscObject, name::String )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5HasObjectAttribute, $petsc_library),
@@ -3185,7 +3185,7 @@ function PetscViewerCGNSGetSolutionTime(petsclib::PetscLibType, viewer::PetscVie
 
 @for_petsc function PetscViewerCGNSGetSolutionTime(petsclib::$UnionPetscLib, viewer::PetscViewer )
 	time_ = Ref{$PetscReal}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerCGNSGetSolutionTime, $petsc_library),
@@ -3224,7 +3224,7 @@ function PetscViewerCGNSGetSolutionIteration(petsclib::PetscLibType, viewer::Pet
 
 @for_petsc function PetscViewerCGNSGetSolutionIteration(petsclib::$UnionPetscLib, viewer::PetscViewer )
 	iteration_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerCGNSGetSolutionIteration, $petsc_library),
@@ -4066,7 +4066,7 @@ $(_doc_external("Sys/PetscViewerBinaryGetUseMPIIO"))
 function PetscViewerBinaryGetUseMPIIO(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerBinaryGetUseMPIIO(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	use_ = Ref{PetscBool}()
+	use_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerBinaryGetUseMPIIO, $petsc_library),
@@ -4276,7 +4276,7 @@ $(_doc_external("Sys/PetscViewerBinaryGetSkipInfo"))
 function PetscViewerBinaryGetSkipInfo(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerBinaryGetSkipInfo(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	skip_ = Ref{PetscBool}()
+	skip_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerBinaryGetSkipInfo, $petsc_library),
@@ -4349,7 +4349,7 @@ $(_doc_external("Sys/PetscViewerBinaryGetSkipOptions"))
 function PetscViewerBinaryGetSkipOptions(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerBinaryGetSkipOptions(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	skip_ = Ref{PetscBool}()
+	skip_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerBinaryGetSkipOptions, $petsc_library),
@@ -4422,7 +4422,7 @@ $(_doc_external("Sys/PetscViewerBinaryGetSkipHeader"))
 function PetscViewerBinaryGetSkipHeader(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerBinaryGetSkipHeader(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	skip_ = Ref{PetscBool}()
+	skip_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerBinaryGetSkipHeader, $petsc_library),
@@ -5140,7 +5140,7 @@ $(_doc_external("Sys/PetscViewerDrawGetHold"))
 function PetscViewerDrawGetHold(petsclib::PetscLibType, viewer::PetscViewer) end
 
 @for_petsc function PetscViewerDrawGetHold(petsclib::$UnionPetscLib, viewer::PetscViewer )
-	hold_ = Ref{PetscBool}()
+	hold_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerDrawGetHold, $petsc_library),
@@ -6309,7 +6309,7 @@ $(_doc_external("Viewer/PetscViewerHDF5PathIsRelative"))
 function PetscViewerHDF5PathIsRelative(petsclib::PetscLibType, path::String, emptyIsRelative::PetscBool) end
 
 @for_petsc function PetscViewerHDF5PathIsRelative(petsclib::$UnionPetscLib, path::String, emptyIsRelative::PetscBool )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscViewerHDF5PathIsRelative, $petsc_library),

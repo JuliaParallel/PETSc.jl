@@ -349,7 +349,7 @@ $(_doc_external("KSP/KSPGetReusePreconditioner"))
 function KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetReusePreconditioner(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetReusePreconditioner, $petsc_library),
@@ -1197,7 +1197,7 @@ $(_doc_external("KSP/KSPGetInitialGuessNonzero"))
 function KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetInitialGuessNonzero, $petsc_library),
@@ -1268,7 +1268,7 @@ $(_doc_external("KSP/KSPGetErrorIfNotConverged"))
 function KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetErrorIfNotConverged, $petsc_library),
@@ -1337,7 +1337,7 @@ $(_doc_external("KSP/KSPGetInitialGuessKnoll"))
 function KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetInitialGuessKnoll, $petsc_library),
@@ -1378,7 +1378,7 @@ $(_doc_external("KSP/KSPGetComputeSingularValues"))
 function KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetComputeSingularValues(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetComputeSingularValues, $petsc_library),
@@ -1453,7 +1453,7 @@ $(_doc_external("KSP/KSPGetComputeEigenvalues"))
 function KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetComputeEigenvalues, $petsc_library),
@@ -2290,7 +2290,7 @@ $(_doc_external("KSP/KSPGetDiagonalScale"))
 function KSPGetDiagonalScale(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetDiagonalScale(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	scale_ = Ref{PetscBool}()
+	scale_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetDiagonalScale, $petsc_library),
@@ -2360,7 +2360,7 @@ $(_doc_external("KSP/KSPGetDiagonalScaleFix"))
 function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	fix_ = Ref{PetscBool}()
+	fix_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetDiagonalScaleFix, $petsc_library),
@@ -2497,7 +2497,7 @@ $(_doc_external("KSP/KSPSetUseExplicitTranspose"))
 function KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPSetUseExplicitTranspose(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPSetUseExplicitTranspose, $petsc_library),
@@ -3631,7 +3631,7 @@ $(_doc_external("KSP/KSPGetConvergedNegativeCurvature"))
 function KSPGetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetConvergedNegativeCurvature, $petsc_library),
@@ -4769,8 +4769,8 @@ $(_doc_external("KSP/KSPGetOperatorsSet"))
 function KSPGetOperatorsSet(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPGetOperatorsSet(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	mat_ = Ref{PetscBool}()
-	pmat_ = Ref{PetscBool}()
+	mat_ = Ref{PetscBool}(PETSC_FALSE)
+	pmat_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPGetOperatorsSet, $petsc_library),
@@ -7915,7 +7915,7 @@ $(_doc_external("KSP/KSPPIPEGCRGetUnrollW"))
 function KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPPIPEGCRGetUnrollW(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	unroll_w_ = Ref{PetscBool}()
+	unroll_w_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPPIPEGCRGetUnrollW, $petsc_library),
@@ -8256,7 +8256,7 @@ $(_doc_external("KSP/KSPMINRESGetUseQLP"))
 function KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::PetscKSP) end
 
 @for_petsc function KSPMINRESGetUseQLP(petsclib::$UnionPetscLib, ksp::PetscKSP )
-	qlp_ = Ref{PetscBool}()
+	qlp_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:KSPMINRESGetUseQLP, $petsc_library),

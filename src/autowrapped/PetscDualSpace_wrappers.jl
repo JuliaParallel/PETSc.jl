@@ -674,7 +674,7 @@ $(_doc_external("DM/PetscDualSpaceGetUniform"))
 function PetscDualSpaceGetUniform(petsclib::PetscLibType, sp::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceGetUniform(petsclib::$UnionPetscLib, sp::PetscDualSpace )
-	uniform_ = Ref{PetscBool}()
+	uniform_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceGetUniform, $petsc_library),
@@ -1184,7 +1184,7 @@ $(_doc_external("DM/PetscDualSpaceEqual"))
 function PetscDualSpaceEqual(petsclib::PetscLibType, A::PetscDualSpace, B::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceEqual(petsclib::$UnionPetscLib, A::PetscDualSpace, B::PetscDualSpace )
-	equal_ = Ref{PetscBool}()
+	equal_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceEqual, $petsc_library),
@@ -1803,7 +1803,7 @@ $(_doc_external("DM/PetscDualSpaceLagrangeGetContinuity"))
 function PetscDualSpaceLagrangeGetContinuity(petsclib::PetscLibType, sp::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceLagrangeGetContinuity(petsclib::$UnionPetscLib, sp::PetscDualSpace )
-	continuous_ = Ref{PetscBool}()
+	continuous_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceLagrangeGetContinuity, $petsc_library),
@@ -1874,7 +1874,7 @@ $(_doc_external("DM/PetscDualSpaceLagrangeGetTensor"))
 function PetscDualSpaceLagrangeGetTensor(petsclib::PetscLibType, sp::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceLagrangeGetTensor(petsclib::$UnionPetscLib, sp::PetscDualSpace )
-	tensor_ = Ref{PetscBool}()
+	tensor_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceLagrangeGetTensor, $petsc_library),
@@ -1942,7 +1942,7 @@ $(_doc_external("DM/PetscDualSpaceLagrangeGetTrimmed"))
 function PetscDualSpaceLagrangeGetTrimmed(petsclib::PetscLibType, sp::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceLagrangeGetTrimmed(petsclib::$UnionPetscLib, sp::PetscDualSpace )
-	trimmed_ = Ref{PetscBool}()
+	trimmed_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceLagrangeGetTrimmed, $petsc_library),
@@ -2016,7 +2016,7 @@ function PetscDualSpaceLagrangeGetNodeType(petsclib::PetscLibType, sp::PetscDual
 
 @for_petsc function PetscDualSpaceLagrangeGetNodeType(petsclib::$UnionPetscLib, sp::PetscDualSpace )
 	nodeType_ = Ref{PetscDTNodeType}()
-	boundary_ = Ref{PetscBool}()
+	boundary_ = Ref{PetscBool}(PETSC_FALSE)
 	exponent_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2092,7 +2092,7 @@ $(_doc_external("DM/PetscDualSpaceLagrangeGetUseMoments"))
 function PetscDualSpaceLagrangeGetUseMoments(petsclib::PetscLibType, sp::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceLagrangeGetUseMoments(petsclib::$UnionPetscLib, sp::PetscDualSpace )
-	useMoments_ = Ref{PetscBool}()
+	useMoments_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceLagrangeGetUseMoments, $petsc_library),
@@ -2290,7 +2290,7 @@ $(_doc_external("DM/PetscDualSpaceSumGetConcatenate"))
 function PetscDualSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceSumGetConcatenate(petsclib::$UnionPetscLib, sp::PetscDualSpace )
-	concatenate_ = Ref{PetscBool}()
+	concatenate_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceSumGetConcatenate, $petsc_library),
@@ -2456,8 +2456,8 @@ $(_doc_external("DM/PetscDualSpaceSumGetInterleave"))
 function PetscDualSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscDualSpace) end
 
 @for_petsc function PetscDualSpaceSumGetInterleave(petsclib::$UnionPetscLib, sp::PetscDualSpace )
-	interleave_basis_ = Ref{PetscBool}()
-	interleave_components_ = Ref{PetscBool}()
+	interleave_basis_ = Ref{PetscBool}(PETSC_FALSE)
+	interleave_components_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDualSpaceSumGetInterleave, $petsc_library),

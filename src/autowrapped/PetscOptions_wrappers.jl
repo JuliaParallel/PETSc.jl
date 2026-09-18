@@ -78,7 +78,7 @@ $(_doc_external("Sys/PetscOptionsGetCreateViewerOff"))
 function PetscOptionsGetCreateViewerOff(petsclib::PetscLibType) end
 
 @for_petsc function PetscOptionsGetCreateViewerOff(petsclib::$UnionPetscLib)
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetCreateViewerOff, $petsc_library),
@@ -128,7 +128,7 @@ function PetscOptionsCreateViewer(petsclib::PetscLibType, comm::MPI_Comm, option
 @for_petsc function PetscOptionsCreateViewer(petsclib::$UnionPetscLib, comm::MPI_Comm, options::Union{Ptr,PetscOptions}, pre::String, name::String)
 	viewer_ = Ref{PetscViewer}()
 	format_ = Ref{PetscViewerFormat}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsCreateViewer, $petsc_library),
@@ -175,7 +175,7 @@ function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, optio
 @for_petsc function PetscOptionsCreateViewers(petsclib::$UnionPetscLib, comm::MPI_Comm, options::PetscOptions, pre::String, name::String, n_max::$PetscInt )
 	viewers = Vector{PetscViewer}(undef, ni);  # CHECK SIZE!!
 	formats = Vector{PetscViewerFormat}(undef, ni);  # CHECK SIZE!!
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsCreateViewers, $petsc_library),
@@ -452,7 +452,7 @@ $(_doc_external("Sys/PetscOptionsValidKey"))
 function PetscOptionsValidKey(petsclib::PetscLibType, key::String) end
 
 @for_petsc function PetscOptionsValidKey(petsclib::$UnionPetscLib, key::String )
-	valid_ = Ref{PetscBool}()
+	valid_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsValidKey, $petsc_library),
@@ -913,7 +913,7 @@ function PetscOptionsFindPair(petsclib::PetscLibType, options::PetscOptions, pre
 
 @for_petsc function PetscOptionsFindPair(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, value::String )
 	value_ = Ref(pointer(value))
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsFindPair, $petsc_library),
@@ -988,7 +988,7 @@ $(_doc_external("Sys/PetscOptionsHasHelp"))
 function PetscOptionsHasHelp(petsclib::PetscLibType, options::PetscOptions) end
 
 @for_petsc function PetscOptionsHasHelp(petsclib::$UnionPetscLib, options::PetscOptions )
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsHasHelp, $petsc_library),
@@ -1032,7 +1032,7 @@ $(_doc_external("Sys/PetscOptionsHasName"))
 function PetscOptionsHasName(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
 
 @for_petsc function PetscOptionsHasName(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsHasName, $petsc_library),
@@ -1104,7 +1104,7 @@ $(_doc_external("Sys/PetscOptionsUsed"))
 function PetscOptionsUsed(petsclib::PetscLibType, options::PetscOptions, name::String) end
 
 @for_petsc function PetscOptionsUsed(petsclib::$UnionPetscLib, options::PetscOptions, name::String )
-	used_ = Ref{PetscBool}()
+	used_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsUsed, $petsc_library),
@@ -1350,7 +1350,7 @@ $(_doc_external("Sys/PetscOptionsStringToBool"))
 function PetscOptionsStringToBool(petsclib::PetscLibType, value::String) end
 
 @for_petsc function PetscOptionsStringToBool(petsclib::$UnionPetscLib, value::String )
-	a_ = Ref{PetscBool}()
+	a_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsStringToBool, $petsc_library),
@@ -1464,8 +1464,8 @@ $(_doc_external("Sys/PetscOptionsGetBool"))
 function PetscOptionsGetBool(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
 
 @for_petsc function PetscOptionsGetBool(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
-	ivalue_ = Ref{PetscBool}()
-	set_ = Ref{PetscBool}()
+	ivalue_ = Ref{PetscBool}(PETSC_FALSE)
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetBool, $petsc_library),
@@ -1511,7 +1511,7 @@ $(_doc_external("Sys/PetscOptionsGetBool3"))
 function PetscOptionsGetBool3(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, ivalue::PetscBool3) end
 
 @for_petsc function PetscOptionsGetBool3(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, ivalue::PetscBool3 )
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetBool3, $petsc_library),
@@ -1559,7 +1559,7 @@ function PetscOptionsGetEList(petsclib::PetscLibType, options::PetscOptions, pre
 @for_petsc function PetscOptionsGetEList(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, opt::String, list::String, ntext::$PetscInt )
 	list_ = Ref(pointer(list))
 	value_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetEList, $petsc_library),
@@ -1607,7 +1607,7 @@ function PetscOptionsGetEnum(petsclib::PetscLibType, options::PetscOptions, pre:
 
 @for_petsc function PetscOptionsGetEnum(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, opt::String, list::String, value::PetscEnum )
 	list_ = Ref(pointer(list))
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetEnum, $petsc_library),
@@ -1653,7 +1653,7 @@ function PetscOptionsGetInt(petsclib::PetscLibType, options::PetscOptions, pre::
 
 @for_petsc function PetscOptionsGetInt(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
 	ivalue_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetInt, $petsc_library),
@@ -1699,7 +1699,7 @@ $(_doc_external("Sys/PetscOptionsGetMPIInt"))
 function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, ivalue::PetscMPIInt) end
 
 @for_petsc function PetscOptionsGetMPIInt(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, ivalue::PetscMPIInt )
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetMPIInt, $petsc_library),
@@ -1745,7 +1745,7 @@ function PetscOptionsGetReal(petsclib::PetscLibType, options::PetscOptions, pre:
 
 @for_petsc function PetscOptionsGetReal(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
 	dvalue_ = Ref{$PetscReal}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetReal, $petsc_library),
@@ -1792,7 +1792,7 @@ function PetscOptionsGetScalar(petsclib::PetscLibType, options::PetscOptions, pr
 
 @for_petsc function PetscOptionsGetScalar(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
 	dvalue_ = Ref{$PetscScalar}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetScalar, $petsc_library),
@@ -1838,7 +1838,7 @@ $(_doc_external("Sys/PetscOptionsGetString"))
 function PetscOptionsGetString(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
 
 @for_petsc function PetscOptionsGetString(petsclib::$UnionPetscLib, options::PetscOptions, pre::Union{Ptr,String}, name::String)
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
     val = Vector{UInt8}(undef, 256)
 
     @chk ccall(
@@ -1893,7 +1893,7 @@ function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::PetscOptions,
 @for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
 	dvalue = Vector{PetscBool}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetBoolArray, $petsc_library),
@@ -1942,7 +1942,7 @@ function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::PetscOptions,
 @for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
 	list_ = Ref(pointer(list))
 	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetEnumArray, $petsc_library),
@@ -1990,7 +1990,7 @@ function PetscOptionsGetIntArray(petsclib::PetscLibType, options::PetscOptions, 
 @for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
 	ivalue = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetIntArray, $petsc_library),
@@ -2039,7 +2039,7 @@ function PetscOptionsGetRealArray(petsclib::PetscLibType, options::PetscOptions,
 @for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
 	dvalue = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetRealArray, $petsc_library),
@@ -2088,7 +2088,7 @@ function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::PetscOption
 @for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
 	dvalue = Vector{$PetscScalar}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetScalarArray, $petsc_library),
@@ -2137,7 +2137,7 @@ function PetscOptionsGetStringArray(petsclib::PetscLibType, options::PetscOption
 @for_petsc function PetscOptionsGetStringArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, strings::String )
 	strings_ = Ref(pointer(strings))
 	nmax_ = Ref{$PetscInt}()
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetStringArray, $petsc_library),
@@ -2178,7 +2178,7 @@ $(_doc_external("Sys/PetscOptionsGetenv"))
 function PetscOptionsGetenv(petsclib::PetscLibType, comm::MPI_Comm, name::String, env::String, len::Csize_t) end
 
 @for_petsc function PetscOptionsGetenv(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, env::String, len::Csize_t )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetenv, $petsc_library),
@@ -2201,7 +2201,7 @@ $(_doc_external("Vec/PetscOptionsGetVec"))
 function PetscOptionsGetVec(petsclib::PetscLibType, options::PetscOptions, prefix::String, key::String, v::PetscVec) end
 
 @for_petsc function PetscOptionsGetVec(petsclib::$UnionPetscLib, options::PetscOptions, prefix::String, key::String, v::PetscVec )
-	set_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsGetVec, $petsc_library),

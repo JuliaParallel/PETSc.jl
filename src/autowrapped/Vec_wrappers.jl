@@ -195,7 +195,7 @@ $(_doc_external("Vec/VecNormAvailable"))
 function VecNormAvailable(petsclib::PetscLibType, x::PetscVec, type::NormType) end
 
 @for_petsc function VecNormAvailable(petsclib::$UnionPetscLib, x::PetscVec, type::NormType )
-	available_ = Ref{PetscBool}()
+	available_ = Ref{PetscBool}(PETSC_FALSE)
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3983,7 +3983,7 @@ $(_doc_external("Vec/VecBoundToCPU"))
 function VecBoundToCPU(petsclib::PetscLibType, v::PetscVec) end
 
 @for_petsc function VecBoundToCPU(petsclib::$UnionPetscLib, v::PetscVec )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecBoundToCPU, $petsc_library),
@@ -4017,7 +4017,7 @@ $(_doc_external("Vec/VecGetBindingPropagates"))
 function VecGetBindingPropagates(petsclib::PetscLibType, v::PetscVec) end
 
 @for_petsc function VecGetBindingPropagates(petsclib::$UnionPetscLib, v::PetscVec )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecGetBindingPropagates, $petsc_library),
@@ -4487,7 +4487,7 @@ $(_doc_external("Vec/VecGhostIsLocalForm"))
 function VecGhostIsLocalForm(petsclib::PetscLibType, g::PetscVec, l::PetscVec) end
 
 @for_petsc function VecGhostIsLocalForm(petsclib::$UnionPetscLib, g::PetscVec, l::PetscVec )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecGhostIsLocalForm, $petsc_library),
@@ -6093,7 +6093,7 @@ $(_doc_external("Vec/VecEqual"))
 function VecEqual(petsclib::PetscLibType, vec1::PetscVec, vec2::PetscVec) end
 
 @for_petsc function VecEqual(petsclib::$UnionPetscLib, vec1::PetscVec, vec2::PetscVec )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecEqual, $petsc_library),

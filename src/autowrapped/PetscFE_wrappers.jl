@@ -2781,7 +2781,7 @@ $(_doc_external("DM/PetscQuadratureEqual"))
 function PetscQuadratureEqual(petsclib::PetscLibType, A::PetscQuadrature, B::PetscQuadrature) end
 
 @for_petsc function PetscQuadratureEqual(petsclib::$UnionPetscLib, A::PetscQuadrature, B::PetscQuadrature )
-	equal_ = Ref{PetscBool}()
+	equal_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscQuadratureEqual, $petsc_library),
@@ -3458,7 +3458,7 @@ $(_doc_external("DM/PetscWeakFormHasJacobian"))
 function PetscWeakFormHasJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
 
 @for_petsc function PetscWeakFormHasJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm )
-	hasJac_ = Ref{PetscBool}()
+	hasJac_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscWeakFormHasJacobian, $petsc_library),
@@ -3571,7 +3571,7 @@ $(_doc_external("DM/PetscWeakFormHasJacobianPreconditioner"))
 function PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) end
 
 @for_petsc function PetscWeakFormHasJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm )
-	hasJacPre_ = Ref{PetscBool}()
+	hasJacPre_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscWeakFormHasJacobianPreconditioner, $petsc_library),
@@ -3684,7 +3684,7 @@ $(_doc_external("DM/PetscWeakFormHasBdJacobian"))
 function PetscWeakFormHasBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
 
 @for_petsc function PetscWeakFormHasBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm )
-	hasJac_ = Ref{PetscBool}()
+	hasJac_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscWeakFormHasBdJacobian, $petsc_library),
@@ -3793,7 +3793,7 @@ $(_doc_external("DM/PetscWeakFormHasBdJacobianPreconditioner"))
 function PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) end
 
 @for_petsc function PetscWeakFormHasBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm )
-	hasJacPre_ = Ref{PetscBool}()
+	hasJacPre_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscWeakFormHasBdJacobianPreconditioner, $petsc_library),
@@ -3902,7 +3902,7 @@ $(_doc_external("DM/PetscWeakFormHasDynamicJacobian"))
 function PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
 
 @for_petsc function PetscWeakFormHasDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm )
-	hasDynJac_ = Ref{PetscBool}()
+	hasDynJac_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscWeakFormHasDynamicJacobian, $petsc_library),

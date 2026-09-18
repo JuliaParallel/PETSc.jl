@@ -1196,7 +1196,7 @@ $(_doc_external("Mat/MatMissingDiagonal"))
 function MatMissingDiagonal(petsclib::PetscLibType, mat::PetscMat) end
 
 @for_petsc function MatMissingDiagonal(petsclib::$UnionPetscLib, mat::PetscMat )
-	missing_ = Ref{PetscBool}()
+	missing_ = Ref{PetscBool}(PETSC_FALSE)
 	dd_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3712,7 +3712,7 @@ $(_doc_external("Mat/MatFactorGetCanUseOrdering"))
 function MatFactorGetCanUseOrdering(petsclib::PetscLibType, mat::PetscMat) end
 
 @for_petsc function MatFactorGetCanUseOrdering(petsclib::$UnionPetscLib, mat::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatFactorGetCanUseOrdering, $petsc_library),
@@ -3832,7 +3832,7 @@ $(_doc_external("Mat/MatGetFactorAvailable"))
 function MatGetFactorAvailable(petsclib::PetscLibType, mat::PetscMat, type::MatSolverType, ftype::MatFactorType) end
 
 @for_petsc function MatGetFactorAvailable(petsclib::$UnionPetscLib, mat::PetscMat, type::MatSolverType, ftype::MatFactorType )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatGetFactorAvailable, $petsc_library),
@@ -4268,7 +4268,7 @@ $(_doc_external("Mat/MatIsTranspose"))
 function MatIsTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMat, tol::PetscReal) end
 
 @for_petsc function MatIsTranspose(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, tol::$PetscReal )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsTranspose, $petsc_library),
@@ -4343,7 +4343,7 @@ $(_doc_external("Mat/MatIsHermitianTranspose"))
 function MatIsHermitianTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMat, tol::PetscReal) end
 
 @for_petsc function MatIsHermitianTranspose(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, tol::$PetscReal )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsHermitianTranspose, $petsc_library),
@@ -4419,7 +4419,7 @@ $(_doc_external("Mat/MatEqual"))
 function MatEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
 
 @for_petsc function MatEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatEqual, $petsc_library),
@@ -4593,7 +4593,7 @@ $(_doc_external("Mat/MatAssembled"))
 function MatAssembled(petsclib::PetscLibType, mat::PetscMat) end
 
 @for_petsc function MatAssembled(petsclib::$UnionPetscLib, mat::PetscMat )
-	assembled_ = Ref{PetscBool}()
+	assembled_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatAssembled, $petsc_library),
@@ -4748,7 +4748,7 @@ $(_doc_external("Mat/MatGetOption"))
 function MatGetOption(petsclib::PetscLibType, mat::PetscMat, op::MatOption) end
 
 @for_petsc function MatGetOption(petsclib::$UnionPetscLib, mat::PetscMat, op::MatOption )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatGetOption, $petsc_library),
@@ -6244,7 +6244,7 @@ function MatGetRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, sym
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(C_NULL)
 	ja_ = Ref{Ptr{$PetscInt}}(C_NULL)
-	done_ = Ref{PetscBool}()
+	done_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatGetRowIJ, $petsc_library),
@@ -6304,7 +6304,7 @@ function MatGetColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, 
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(C_NULL)
 	ja_ = Ref{Ptr{$PetscInt}}(C_NULL)
-	done_ = Ref{PetscBool}()
+	done_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatGetColumnIJ, $petsc_library),
@@ -6364,7 +6364,7 @@ function MatRestoreRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt,
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(isempty(ia) ? C_NULL : pointer(ia))
 	ja_ = Ref{Ptr{$PetscInt}}(isempty(ja) ? C_NULL : pointer(ja))
-	done_ = Ref{PetscBool}()
+	done_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatRestoreRowIJ, $petsc_library),
@@ -6410,7 +6410,7 @@ function MatRestoreColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscI
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(isempty(ia) ? C_NULL : pointer(ia))
 	ja_ = Ref{Ptr{$PetscInt}}(isempty(ja) ? C_NULL : pointer(ja))
-	done_ = Ref{PetscBool}()
+	done_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatRestoreColumnIJ, $petsc_library),
@@ -7219,7 +7219,7 @@ $(_doc_external("Mat/MatIsSymmetric"))
 function MatIsSymmetric(petsclib::PetscLibType, A::PetscMat, tol::PetscReal) end
 
 @for_petsc function MatIsSymmetric(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscReal )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsSymmetric, $petsc_library),
@@ -7257,7 +7257,7 @@ $(_doc_external("Mat/MatIsHermitian"))
 function MatIsHermitian(petsclib::PetscLibType, A::PetscMat, tol::PetscReal) end
 
 @for_petsc function MatIsHermitian(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscScalar )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsHermitian, $petsc_library),
@@ -7294,8 +7294,8 @@ $(_doc_external("Mat/MatIsSymmetricKnown"))
 function MatIsSymmetricKnown(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatIsSymmetricKnown(petsclib::$UnionPetscLib, A::PetscMat )
-	set_ = Ref{PetscBool}()
-	flg_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsSymmetricKnown, $petsc_library),
@@ -7333,8 +7333,8 @@ $(_doc_external("Mat/MatIsSPDKnown"))
 function MatIsSPDKnown(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatIsSPDKnown(petsclib::$UnionPetscLib, A::PetscMat )
-	set_ = Ref{PetscBool}()
-	flg_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsSPDKnown, $petsc_library),
@@ -7372,8 +7372,8 @@ $(_doc_external("Mat/MatIsHermitianKnown"))
 function MatIsHermitianKnown(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatIsHermitianKnown(petsclib::$UnionPetscLib, A::PetscMat )
-	set_ = Ref{PetscBool}()
-	flg_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsHermitianKnown, $petsc_library),
@@ -7410,7 +7410,7 @@ $(_doc_external("Mat/MatIsStructurallySymmetric"))
 function MatIsStructurallySymmetric(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatIsStructurallySymmetric(petsclib::$UnionPetscLib, A::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsStructurallySymmetric, $petsc_library),
@@ -7447,8 +7447,8 @@ $(_doc_external("Mat/MatIsStructurallySymmetricKnown"))
 function MatIsStructurallySymmetricKnown(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatIsStructurallySymmetricKnown(petsclib::$UnionPetscLib, A::PetscMat )
-	set_ = Ref{PetscBool}()
-	flg_ = Ref{PetscBool}()
+	set_ = Ref{PetscBool}(PETSC_FALSE)
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsStructurallySymmetricKnown, $petsc_library),
@@ -8676,7 +8676,7 @@ $(_doc_external("Mat/MatHasOperation"))
 function MatHasOperation(petsclib::PetscLibType, mat::PetscMat, op::MatOperation) end
 
 @for_petsc function MatHasOperation(petsclib::$UnionPetscLib, mat::PetscMat, op::MatOperation )
-	has_ = Ref{PetscBool}()
+	has_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatHasOperation, $petsc_library),
@@ -8712,7 +8712,7 @@ $(_doc_external("Mat/MatHasCongruentLayouts"))
 function MatHasCongruentLayouts(petsclib::PetscLibType, mat::PetscMat) end
 
 @for_petsc function MatHasCongruentLayouts(petsclib::$UnionPetscLib, mat::PetscMat )
-	cong_ = Ref{PetscBool}()
+	cong_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatHasCongruentLayouts, $petsc_library),
@@ -10554,7 +10554,7 @@ $(_doc_external("Mat/MatShellTestMult"))
 function MatShellTestMult(petsclib::PetscLibType, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid) end
 
 @for_petsc function MatShellTestMult(petsclib::$UnionPetscLib, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatShellTestMult, $petsc_library),
@@ -10596,7 +10596,7 @@ $(_doc_external("Mat/MatShellTestMultTranspose"))
 function MatShellTestMultTranspose(petsclib::PetscLibType, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid) end
 
 @for_petsc function MatShellTestMultTranspose(petsclib::$UnionPetscLib, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatShellTestMultTranspose, $petsc_library),
@@ -10630,7 +10630,7 @@ $(_doc_external("Mat/MatIsShell"))
 function MatIsShell(petsclib::PetscLibType, mat::PetscMat) end
 
 @for_petsc function MatIsShell(petsclib::$UnionPetscLib, mat::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsShell, $petsc_library),
@@ -10779,7 +10779,7 @@ $(_doc_external("Mat/MatISGetAllowRepeated"))
 function MatISGetAllowRepeated(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatISGetAllowRepeated(petsclib::$UnionPetscLib, A::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatISGetAllowRepeated, $petsc_library),
@@ -13948,7 +13948,7 @@ $(_doc_external("Mat/MatKAIJGetScaledIdentity"))
 function MatKAIJGetScaledIdentity(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatKAIJGetScaledIdentity(petsclib::$UnionPetscLib, A::PetscMat )
-	identity_ = Ref{PetscBool}()
+	identity_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatKAIJGetScaledIdentity, $petsc_library),
@@ -16474,7 +16474,7 @@ $(_doc_external("Mat/MatSTRUMPACKGetColPerm"))
 function MatSTRUMPACKGetColPerm(petsclib::PetscLibType, F::PetscMat) end
 
 @for_petsc function MatSTRUMPACKGetColPerm(petsclib::$UnionPetscLib, F::PetscMat )
-	cperm_ = Ref{PetscBool}()
+	cperm_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatSTRUMPACKGetColPerm, $petsc_library),
@@ -16547,7 +16547,7 @@ $(_doc_external("Mat/MatSTRUMPACKGetGPU"))
 function MatSTRUMPACKGetGPU(petsclib::PetscLibType, F::PetscMat) end
 
 @for_petsc function MatSTRUMPACKGetGPU(petsclib::$UnionPetscLib, F::PetscMat )
-	gpu_ = Ref{PetscBool}()
+	gpu_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatSTRUMPACKGetGPU, $petsc_library),
@@ -19612,7 +19612,7 @@ $(_doc_external("Mat/MatBoundToCPU"))
 function MatBoundToCPU(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatBoundToCPU(petsclib::$UnionPetscLib, A::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatBoundToCPU, $petsc_library),
@@ -19795,7 +19795,7 @@ $(_doc_external("Mat/MatGetBindingPropagates"))
 function MatGetBindingPropagates(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatGetBindingPropagates(petsclib::$UnionPetscLib, A::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatGetBindingPropagates, $petsc_library),
@@ -20112,7 +20112,7 @@ $(_doc_external("Mat/MatMultEqual"))
 function MatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMultEqual, $petsc_library),
@@ -20150,7 +20150,7 @@ $(_doc_external("Mat/MatMultAddEqual"))
 function MatMultAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMultAddEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMultAddEqual, $petsc_library),
@@ -20188,7 +20188,7 @@ $(_doc_external("Mat/MatMultTransposeEqual"))
 function MatMultTransposeEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMultTransposeEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMultTransposeEqual, $petsc_library),
@@ -20226,7 +20226,7 @@ $(_doc_external("Mat/MatMultTransposeAddEqual"))
 function MatMultTransposeAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMultTransposeAddEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMultTransposeAddEqual, $petsc_library),
@@ -20264,7 +20264,7 @@ $(_doc_external("Mat/MatMultHermitianTransposeEqual"))
 function MatMultHermitianTransposeEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMultHermitianTransposeEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMultHermitianTransposeEqual, $petsc_library),
@@ -20302,7 +20302,7 @@ $(_doc_external("Mat/MatMultHermitianTransposeAddEqual"))
 function MatMultHermitianTransposeAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMultHermitianTransposeAddEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMultHermitianTransposeAddEqual, $petsc_library),
@@ -20341,7 +20341,7 @@ $(_doc_external("Mat/MatMatMultEqual"))
 function MatMatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMatMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMatMultEqual, $petsc_library),
@@ -20380,7 +20380,7 @@ $(_doc_external("Mat/MatTransposeMatMultEqual"))
 function MatTransposeMatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
 
 @for_petsc function MatTransposeMatMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatTransposeMatMultEqual, $petsc_library),
@@ -20419,7 +20419,7 @@ $(_doc_external("Mat/MatMatTransposeMultEqual"))
 function MatMatTransposeMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
 
 @for_petsc function MatMatTransposeMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatMatTransposeMultEqual, $petsc_library),
@@ -20458,7 +20458,7 @@ $(_doc_external("Mat/MatPtAPMultEqual"))
 function MatPtAPMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
 
 @for_petsc function MatPtAPMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatPtAPMultEqual, $petsc_library),
@@ -20497,7 +20497,7 @@ $(_doc_external("Mat/MatRARtMultEqual"))
 function MatRARtMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
 
 @for_petsc function MatRARtMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatRARtMultEqual, $petsc_library),
@@ -20534,7 +20534,7 @@ $(_doc_external("Mat/MatIsLinear"))
 function MatIsLinear(petsclib::PetscLibType, A::PetscMat, n::PetscInt) end
 
 @for_petsc function MatIsLinear(petsclib::$UnionPetscLib, A::PetscMat, n::$PetscInt )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatIsLinear, $petsc_library),
@@ -21250,7 +21250,7 @@ $(_doc_external("Ksp/MatLMVMIsAllocated"))
 function MatLMVMIsAllocated(petsclib::PetscLibType, B::PetscMat) end
 
 @for_petsc function MatLMVMIsAllocated(petsclib::$UnionPetscLib, B::PetscMat )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatLMVMIsAllocated, $petsc_library),
@@ -22922,7 +22922,7 @@ $(_doc_external("Snes/MatSNESMFGetReuseBase"))
 function MatSNESMFGetReuseBase(petsclib::PetscLibType, J::PetscMat) end
 
 @for_petsc function MatSNESMFGetReuseBase(petsclib::$UnionPetscLib, J::PetscMat )
-	use_ = Ref{PetscBool}()
+	use_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatSNESMFGetReuseBase, $petsc_library),

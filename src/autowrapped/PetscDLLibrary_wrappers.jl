@@ -50,7 +50,7 @@ $(_doc_external("Sys/PetscDLLibraryRetrieve"))
 function PetscDLLibraryRetrieve(petsclib::PetscLibType, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t) end
 
 @for_petsc function PetscDLLibraryRetrieve(petsclib::$UnionPetscLib, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscDLLibraryRetrieve, $petsc_library),

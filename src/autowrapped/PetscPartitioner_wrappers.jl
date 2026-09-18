@@ -518,7 +518,7 @@ $(_doc_external("Mat/PetscPartitionerShellGetRandom"))
 function PetscPartitionerShellGetRandom(petsclib::PetscLibType, part::PetscPartitioner) end
 
 @for_petsc function PetscPartitionerShellGetRandom(petsclib::$UnionPetscLib, part::PetscPartitioner )
-	random_ = Ref{PetscBool}()
+	random_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscPartitionerShellGetRandom, $petsc_library),

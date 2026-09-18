@@ -669,7 +669,7 @@ function DMHasNamedGlobalVector(dm::AbstractDM{PetscLib},name::Vector{Char}) whe
 	# TODO: you have vectors as input; make sure to test that the size of the vectors fits with something like: 
 	# @assert length() == n 
 	# You can likely also write a multiple dispatch version of this function where vector length is determined automatically 
-	exists = Ref{PetscBool}()
+	exists = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasNamedGlobalVector(
 		PetscLib,
@@ -795,7 +795,7 @@ function DMHasNamedLocalVector(dm::AbstractDM{PetscLib},name::Vector{Char}) wher
 	# TODO: you have vectors as input; make sure to test that the size of the vectors fits with something like: 
 	# @assert length() == n 
 	# You can likely also write a multiple dispatch version of this function where vector length is determined automatically 
-	exists = Ref{PetscBool}()
+	exists = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasNamedLocalVector(
 		PetscLib,
@@ -2771,7 +2771,7 @@ See also:
 $(_doc_external("DM/DMGetUseNatural"))
 """
 function DMGetUseNatural(dm::AbstractDM{PetscLib}) where {PetscLib}
-	useNatural = Ref{PetscBool}()
+	useNatural = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetUseNatural(
 		PetscLib,
@@ -4162,7 +4162,7 @@ Level: developer
 $(_doc_external("DM/DMGetCoordinatesLocalized"))
 """
 function DMGetCoordinatesLocalized(dm::AbstractDM{PetscLib}) where {PetscLib}
-	areLocalized = Ref{PetscBool}()
+	areLocalized = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetCoordinatesLocalized(
 		PetscLib,
@@ -4198,7 +4198,7 @@ Level: developer
 $(_doc_external("DM/DMGetCoordinatesLocalizedLocal"))
 """
 function DMGetCoordinatesLocalizedLocal(dm::AbstractDM{PetscLib}) where {PetscLib}
-	areLocalized = Ref{PetscBool}()
+	areLocalized = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetCoordinatesLocalizedLocal(
 		PetscLib,
@@ -4691,7 +4691,7 @@ See also:
 $(_doc_external("DM/DMHasVariableBounds"))
 """
 function DMHasVariableBounds(dm::AbstractDM{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasVariableBounds(
 		PetscLib,
@@ -4729,7 +4729,7 @@ See also:
 $(_doc_external("DM/DMHasColoring"))
 """
 function DMHasColoring(dm::AbstractDM{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasColoring(
 		PetscLib,
@@ -4767,7 +4767,7 @@ See also:
 $(_doc_external("DM/DMHasCreateRestriction"))
 """
 function DMHasCreateRestriction(dm::AbstractDM{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasCreateRestriction(
 		PetscLib,
@@ -4805,7 +4805,7 @@ See also:
 $(_doc_external("DM/DMHasCreateInjection"))
 """
 function DMHasCreateInjection(dm::AbstractDM{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasCreateInjection(
 		PetscLib,
@@ -6537,7 +6537,7 @@ See also:
 $(_doc_external("DM/DMGetFieldAvoidTensor"))
 """
 function DMGetFieldAvoidTensor(dm::AbstractDM{PetscLib},f::Int) where {PetscLib}
-	avoidTensor = Ref{PetscBool}()
+	avoidTensor = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetFieldAvoidTensor(
 		PetscLib,
@@ -6659,8 +6659,8 @@ See also:
 $(_doc_external("DM/DMGetAdjacency"))
 """
 function DMGetAdjacency(dm::AbstractDM{PetscLib},f::Int) where {PetscLib}
-	useCone = Ref{PetscBool}()
-	useClosure = Ref{PetscBool}()
+	useCone = Ref{PetscBool}(PETSC_FALSE)
+	useClosure = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetAdjacency(
 		PetscLib,
@@ -6754,8 +6754,8 @@ See also:
 $(_doc_external("DM/DMGetBasicAdjacency"))
 """
 function DMGetBasicAdjacency(dm::AbstractDM{PetscLib}) where {PetscLib}
-	useCone = Ref{PetscBool}()
-	useClosure = Ref{PetscBool}()
+	useCone = Ref{PetscBool}(PETSC_FALSE)
+	useClosure = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetBasicAdjacency(
 		PetscLib,
@@ -8103,7 +8103,7 @@ function DMGetLabelOutput(dm::AbstractDM{PetscLib},name::Vector{Char}) where {Pe
 	# TODO: you have vectors as input; make sure to test that the size of the vectors fits with something like: 
 	# @assert length() == n 
 	# You can likely also write a multiple dispatch version of this function where vector length is determined automatically 
-	output = Ref{PetscBool}()
+	output = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetLabelOutput(
 		PetscLib,
@@ -8269,7 +8269,7 @@ function DMHasLabel(dm::AbstractDM{PetscLib},name::Vector{Char}) where {PetscLib
 	# TODO: you have vectors as input; make sure to test that the size of the vectors fits with something like: 
 	# @assert length() == n 
 	# You can likely also write a multiple dispatch version of this function where vector length is determined automatically 
-	hasLabel = Ref{PetscBool}()
+	hasLabel = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasLabel(
 		PetscLib,
@@ -8587,7 +8587,7 @@ end
 $(_doc_external("DM/DMIsBoundaryPoint"))
 """
 function DMIsBoundaryPoint(dm::AbstractDM{PetscLib},point::Int) where {PetscLib}
-	isBd = Ref{PetscBool}()
+	isBd = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMIsBoundaryPoint(
 		PetscLib,
@@ -8675,7 +8675,7 @@ See also:
 $(_doc_external("DM/DMHasBasisTransform"))
 """
 function DMHasBasisTransform(dm::AbstractDM{PetscLib}) where {PetscLib}
-	flg = Ref{PetscBool}()
+	flg = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMHasBasisTransform(
 		PetscLib,
@@ -8796,8 +8796,8 @@ See also:
 $(_doc_external("DM/DMGetCompatibility"))
 """
 function DMGetCompatibility(dm1::AbstractDM{PetscLib},dm2::AbstractDM{PetscLib}) where {PetscLib}
-	compatible = Ref{PetscBool}()
-	set = Ref{PetscBool}()
+	compatible = Ref{PetscBool}(PETSC_FALSE)
+	set = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMGetCompatibility(
 		PetscLib,
@@ -8894,7 +8894,7 @@ function DMPolytopeMatchOrientation(PetscLib, ct::DMPolytopeType,sourceCone::Vec
 	# You can likely also write a multiple dispatch version of this function where vector length is determined automatically 
 	PetscInt = PetscLib.PetscInt
 	ornt = [PetscInt(1)]
-	found = Ref{PetscBool}()
+	found = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMPolytopeMatchOrientation(
 		PetscLib,
@@ -8951,7 +8951,7 @@ function DMPolytopeMatchVertexOrientation(PetscLib, ct::DMPolytopeType,sourceVer
 	# You can likely also write a multiple dispatch version of this function where vector length is determined automatically 
 	PetscInt = PetscLib.PetscInt
 	ornt = [PetscInt(1)]
-	found = Ref{PetscBool}()
+	found = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMPolytopeMatchVertexOrientation(
 		PetscLib,
@@ -9100,7 +9100,7 @@ function DMPolytopeInCellTest(PetscLib, ct::DMPolytopeType,point::Vector{Float64
 	# TODO: you have vectors as input; make sure to test that the size of the vectors fits with something like: 
 	# @assert length() == n 
 	# You can likely also write a multiple dispatch version of this function where vector length is determined automatically 
-	inside = Ref{PetscBool}()
+	inside = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMPolytopeInCellTest(
 		PetscLib,

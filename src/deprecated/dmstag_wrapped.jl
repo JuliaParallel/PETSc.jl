@@ -743,9 +743,9 @@ See also:
 $(_doc_external("DMStag/DMStagGetIsFirstRank"))
 """
 function DMStagGetIsFirstRank(dm::AbstractDMStag{PetscLib}) where {PetscLib}
-	isFirstRank0 = Ref{PetscBool}()
-	isFirstRank1 = Ref{PetscBool}()
-	isFirstRank2 = Ref{PetscBool}()
+	isFirstRank0 = Ref{PetscBool}(PETSC_FALSE)
+	isFirstRank1 = Ref{PetscBool}(PETSC_FALSE)
+	isFirstRank2 = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMStagGetIsFirstRank(
 		PetscLib,
@@ -789,9 +789,9 @@ See also:
 $(_doc_external("DMStag/DMStagGetIsLastRank"))
 """
 function DMStagGetIsLastRank(dm::AbstractDMStag{PetscLib}) where {PetscLib}
-	isLastRank0 = Ref{PetscBool}()
-	isLastRank1 = Ref{PetscBool}()
-	isLastRank2 = Ref{PetscBool}()
+	isLastRank0 = Ref{PetscBool}(PETSC_FALSE)
+	isLastRank1 = Ref{PetscBool}(PETSC_FALSE)
+	isLastRank2 = Ref{PetscBool}(PETSC_FALSE)
 
 	LibPETSc.DMStagGetIsLastRank(
 		PetscLib,

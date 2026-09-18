@@ -403,7 +403,7 @@ $(_doc_external("SNES/SNESLineSearchPreCheck"))
 function SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec) end
 
 @for_petsc function SNESLineSearchPreCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec )
-	changed_ = Ref{PetscBool}()
+	changed_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESLineSearchPreCheck, $petsc_library),
@@ -443,8 +443,8 @@ $(_doc_external("SNES/SNESLineSearchPostCheck"))
 function SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, W::PetscVec) end
 
 @for_petsc function SNESLineSearchPostCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, W::PetscVec )
-	changed_Y_ = Ref{PetscBool}()
-	changed_W_ = Ref{PetscBool}()
+	changed_Y_ = Ref{PetscBool}(PETSC_FALSE)
+	changed_W_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESLineSearchPostCheck, $petsc_library),
@@ -490,7 +490,7 @@ $(_doc_external("SNES/SNESLineSearchPreCheckPicard"))
 function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, ctx::Cvoid) end
 
 @for_petsc function SNESLineSearchPreCheckPicard(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, ctx::Cvoid )
-	changed_ = Ref{PetscBool}()
+	changed_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESLineSearchPreCheckPicard, $petsc_library),

@@ -140,7 +140,7 @@ end
 
 function Base.getindex(opts::AbstractOptions{PetscLib}, key) where {PetscLib}
     val = Vector{UInt8}(undef, 256)
-    set_ref = Ref{PetscBool}()
+    set_ref = Ref{PetscBool}(PETSC_FALSE)
     LibPETSc.PetscOptionsGetString(
         PetscLib,
         opts,

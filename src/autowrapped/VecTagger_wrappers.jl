@@ -335,7 +335,7 @@ $(_doc_external("Vec/VecTaggerGetInvert"))
 function VecTaggerGetInvert(petsclib::PetscLibType, tagger::VecTagger) end
 
 @for_petsc function VecTaggerGetInvert(petsclib::$UnionPetscLib, tagger::VecTagger )
-	invert_ = Ref{PetscBool}()
+	invert_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecTaggerGetInvert, $petsc_library),
@@ -409,7 +409,7 @@ function VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::P
 @for_petsc function VecTaggerComputeBoxes(petsclib::$UnionPetscLib, tagger::VecTagger, vec::PetscVec, boxes::Vector{VecTaggerBox} )
 	numBoxes_ = Ref{$PetscInt}()
 	boxes_ = Ref(pointer(boxes))
-	listed_ = Ref{PetscBool}()
+	listed_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecTaggerComputeBoxes, $petsc_library),
@@ -448,7 +448,7 @@ $(_doc_external("Vec/VecTaggerComputeIS"))
 function VecTaggerComputeIS(petsclib::PetscLibType, tagger::VecTagger, vec::PetscVec, is::Vector{IS}) end
 
 @for_petsc function VecTaggerComputeIS(petsclib::$UnionPetscLib, tagger::VecTagger, vec::PetscVec, is::Vector{IS} )
-	listed_ = Ref{PetscBool}()
+	listed_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:VecTaggerComputeIS, $petsc_library),

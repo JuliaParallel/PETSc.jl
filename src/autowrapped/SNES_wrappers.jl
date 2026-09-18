@@ -658,7 +658,7 @@ $(_doc_external("SNES/SNESGetErrorIfNotConverged"))
 function SNESGetErrorIfNotConverged(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESGetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::PetscSNES )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESGetErrorIfNotConverged, $petsc_library),
@@ -726,7 +726,7 @@ $(_doc_external("SNES/SNESGetAlwaysComputesFinalResidual"))
 function SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESGetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::PetscSNES )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESGetAlwaysComputesFinalResidual, $petsc_library),
@@ -861,7 +861,7 @@ $(_doc_external("SNES/SNESGetCheckJacobianDomainError"))
 function SNESGetCheckJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESGetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESGetCheckJacobianDomainError, $petsc_library),
@@ -897,7 +897,7 @@ $(_doc_external("SNES/SNESGetFunctionDomainError"))
 function SNESGetFunctionDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESGetFunctionDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
-	domainerror_ = Ref{PetscBool}()
+	domainerror_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESGetFunctionDomainError, $petsc_library),
@@ -933,7 +933,7 @@ $(_doc_external("SNES/SNESGetJacobianDomainError"))
 function SNESGetJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESGetJacobianDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
-	domainerror_ = Ref{PetscBool}()
+	domainerror_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESGetJacobianDomainError, $petsc_library),
@@ -1439,8 +1439,8 @@ $(_doc_external("SNES/SNESGetUseMatrixFree"))
 function SNESGetUseMatrixFree(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESGetUseMatrixFree(petsclib::$UnionPetscLib, snes::PetscSNES )
-	mf_operator_ = Ref{PetscBool}()
-	mf_ = Ref{PetscBool}()
+	mf_operator_ = Ref{PetscBool}(PETSC_FALSE)
+	mf_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESGetUseMatrixFree, $petsc_library),
@@ -3416,7 +3416,7 @@ $(_doc_external("SNES/SNESGetForceIteration"))
 function SNESGetForceIteration(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESGetForceIteration(petsclib::$UnionPetscLib, snes::PetscSNES )
-	force_ = Ref{PetscBool}()
+	force_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESGetForceIteration, $petsc_library),
@@ -4646,7 +4646,7 @@ $(_doc_external("SNES/SNESKSPGetUseEW"))
 function SNESKSPGetUseEW(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESKSPGetUseEW(petsclib::$UnionPetscLib, snes::PetscSNES )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESKSPGetUseEW, $petsc_library),
@@ -4957,7 +4957,7 @@ $(_doc_external("SNES/SNESHasNPC"))
 function SNESHasNPC(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESHasNPC(petsclib::$UnionPetscLib, snes::PetscSNES )
-	has_npc_ = Ref{PetscBool}()
+	has_npc_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESHasNPC, $petsc_library),
@@ -5605,7 +5605,7 @@ $(_doc_external("SNES/SNESNGMRESGetRestartFmRise"))
 function SNESNGMRESGetRestartFmRise(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESNGMRESGetRestartFmRise(petsclib::$UnionPetscLib, snes::PetscSNES )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESNGMRESGetRestartFmRise, $petsc_library),
@@ -7524,7 +7524,7 @@ $(_doc_external("SNES/SNESNewtonTRDCGetRhoFlag"))
 function SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESNewtonTRDCGetRhoFlag(petsclib::$UnionPetscLib, snes::PetscSNES )
-	rho_flag_ = Ref{PetscBool}()
+	rho_flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESNewtonTRDCGetRhoFlag, $petsc_library),
@@ -8027,7 +8027,7 @@ $(_doc_external("SNES/SNESFASGetGalerkin"))
 function SNESFASGetGalerkin(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESFASGetGalerkin(petsclib::$UnionPetscLib, snes::PetscSNES )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESFASGetGalerkin, $petsc_library),
@@ -8829,7 +8829,7 @@ $(_doc_external("SNES/SNESFASCycleIsFine"))
 function SNESFASCycleIsFine(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESFASCycleIsFine(petsclib::$UnionPetscLib, snes::PetscSNES )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESFASCycleIsFine, $petsc_library),
@@ -9310,7 +9310,7 @@ $(_doc_external("SNES/SNESFASFullGetTotal"))
 function SNESFASFullGetTotal(petsclib::PetscLibType, snes::PetscSNES) end
 
 @for_petsc function SNESFASFullGetTotal(petsclib::$UnionPetscLib, snes::PetscSNES )
-	total_ = Ref{PetscBool}()
+	total_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESFASFullGetTotal, $petsc_library),
@@ -9507,7 +9507,7 @@ $(_doc_external("SNES/SNESNewtonTRPreCheck"))
 function SNESNewtonTRPreCheck(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Y::PetscVec) end
 
 @for_petsc function SNESNewtonTRPreCheck(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, Y::PetscVec )
-	changed_Y_ = Ref{PetscBool}()
+	changed_Y_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESNewtonTRPreCheck, $petsc_library),
@@ -9545,8 +9545,8 @@ $(_doc_external("SNES/SNESNewtonTRPostCheck"))
 function SNESNewtonTRPostCheck(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Y::PetscVec, W::PetscVec) end
 
 @for_petsc function SNESNewtonTRPostCheck(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, Y::PetscVec, W::PetscVec )
-	changed_Y_ = Ref{PetscBool}()
-	changed_W_ = Ref{PetscBool}()
+	changed_Y_ = Ref{PetscBool}(PETSC_FALSE)
+	changed_W_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:SNESNewtonTRPostCheck, $petsc_library),

@@ -87,7 +87,7 @@ $(_doc_external("Sys/PetscOptionsHelpPrintedCheck"))
 function PetscOptionsHelpPrintedCheck(petsclib::PetscLibType, hp::PetscOptionsHelpPrCinted, pre::String, name::String) end
 
 @for_petsc function PetscOptionsHelpPrintedCheck(petsclib::$UnionPetscLib, hp::PetscOptionsHelpPrCinted, pre::String, name::String )
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:PetscOptionsHelpPrintedCheck, $petsc_library),

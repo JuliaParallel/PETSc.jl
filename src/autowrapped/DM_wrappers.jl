@@ -1870,7 +1870,7 @@ $(_doc_external("Snes/DMSNESCheckJacobian"))
 function DMSNESCheckJacobian(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM, u::PetscVec, tol::PetscReal) end
 
 @for_petsc function DMSNESCheckJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, dm::PetscDM, u::PetscVec, tol::$PetscReal )
-	isLinear_ = Ref{PetscBool}()
+	isLinear_ = Ref{PetscBool}(PETSC_FALSE)
 	convRate_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4800,7 +4800,7 @@ $(_doc_external("DM/DMHasBasisTransform"))
 function DMHasBasisTransform(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMHasBasisTransform(petsclib::$UnionPetscLib, dm::PetscDM )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasBasisTransform, $petsc_library),
@@ -5944,7 +5944,7 @@ $(_doc_external("DM/DMHasVariableBounds"))
 function DMHasVariableBounds(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMHasVariableBounds(petsclib::$UnionPetscLib, dm::PetscDM )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasVariableBounds, $petsc_library),
@@ -6022,7 +6022,7 @@ $(_doc_external("DM/DMHasColoring"))
 function DMHasColoring(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMHasColoring(petsclib::$UnionPetscLib, dm::PetscDM )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasColoring, $petsc_library),
@@ -6060,7 +6060,7 @@ $(_doc_external("DM/DMHasCreateRestriction"))
 function DMHasCreateRestriction(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMHasCreateRestriction(petsclib::$UnionPetscLib, dm::PetscDM )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasCreateRestriction, $petsc_library),
@@ -6098,7 +6098,7 @@ $(_doc_external("DM/DMHasCreateInjection"))
 function DMHasCreateInjection(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMHasCreateInjection(petsclib::$UnionPetscLib, dm::PetscDM )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasCreateInjection, $petsc_library),
@@ -7259,7 +7259,7 @@ $(_doc_external("DM/DMGetFieldAvoidTensor"))
 function DMGetFieldAvoidTensor(petsclib::PetscLibType, dm::PetscDM, f::PetscInt) end
 
 @for_petsc function DMGetFieldAvoidTensor(petsclib::$UnionPetscLib, dm::PetscDM, f::$PetscInt )
-	avoidTensor_ = Ref{PetscBool}()
+	avoidTensor_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetFieldAvoidTensor, $petsc_library),
@@ -7345,8 +7345,8 @@ $(_doc_external("DM/DMGetAdjacency"))
 function DMGetAdjacency(petsclib::PetscLibType, dm::PetscDM, f::PetscInt) end
 
 @for_petsc function DMGetAdjacency(petsclib::$UnionPetscLib, dm::PetscDM, f::$PetscInt )
-	useCone_ = Ref{PetscBool}()
-	useClosure_ = Ref{PetscBool}()
+	useCone_ = Ref{PetscBool}(PETSC_FALSE)
+	useClosure_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetAdjacency, $petsc_library),
@@ -7429,8 +7429,8 @@ $(_doc_external("DM/DMGetBasicAdjacency"))
 function DMGetBasicAdjacency(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMGetBasicAdjacency(petsclib::$UnionPetscLib, dm::PetscDM )
-	useCone_ = Ref{PetscBool}()
-	useClosure_ = Ref{PetscBool}()
+	useCone_ = Ref{PetscBool}(PETSC_FALSE)
+	useClosure_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetBasicAdjacency, $petsc_library),
@@ -8429,7 +8429,7 @@ $(_doc_external("DM/DMGetUseNatural"))
 function DMGetUseNatural(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMGetUseNatural(petsclib::$UnionPetscLib, dm::PetscDM )
-	useNatural_ = Ref{PetscBool}()
+	useNatural_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetUseNatural, $petsc_library),
@@ -8997,7 +8997,7 @@ $(_doc_external("DM/DMHasLabel"))
 function DMHasLabel(petsclib::PetscLibType, dm::PetscDM, name::String) end
 
 @for_petsc function DMHasLabel(petsclib::$UnionPetscLib, dm::PetscDM, name::String )
-	hasLabel_ = Ref{PetscBool}()
+	hasLabel_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasLabel, $petsc_library),
@@ -9272,7 +9272,7 @@ $(_doc_external("DM/DMGetLabelOutput"))
 function DMGetLabelOutput(petsclib::PetscLibType, dm::PetscDM, name::String) end
 
 @for_petsc function DMGetLabelOutput(petsclib::$UnionPetscLib, dm::PetscDM, name::String )
-	output_ = Ref{PetscBool}()
+	output_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetLabelOutput, $petsc_library),
@@ -9408,7 +9408,7 @@ $(_doc_external("DM/DMCompareLabels"))
 function DMCompareLabels(petsclib::PetscLibType, dm0::PetscDM, dm1::PetscDM, message::String) end
 
 @for_petsc function DMCompareLabels(petsclib::$UnionPetscLib, dm0::PetscDM, dm1::PetscDM, message::String )
-	equal_ = Ref{PetscBool}()
+	equal_ = Ref{PetscBool}(PETSC_FALSE)
 	message_ = Ref(pointer(message))
 
     @chk ccall(
@@ -9663,7 +9663,7 @@ $(_doc_external("DM/DMIsBoundaryPoint"))
 function DMIsBoundaryPoint(petsclib::PetscLibType, dm::PetscDM, point::PetscInt) end
 
 @for_petsc function DMIsBoundaryPoint(petsclib::$UnionPetscLib, dm::PetscDM, point::$PetscInt )
-	isBd_ = Ref{PetscBool}()
+	isBd_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMIsBoundaryPoint, $petsc_library),
@@ -9701,7 +9701,7 @@ $(_doc_external("DM/DMHasBound"))
 function DMHasBound(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMHasBound(petsclib::$UnionPetscLib, dm::PetscDM )
-	hasBound_ = Ref{PetscBool}()
+	hasBound_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasBound, $petsc_library),
@@ -10149,8 +10149,8 @@ $(_doc_external("DM/DMGetCompatibility"))
 function DMGetCompatibility(petsclib::PetscLibType, dm1::PetscDM, dm2::PetscDM) end
 
 @for_petsc function DMGetCompatibility(petsclib::$UnionPetscLib, dm1::PetscDM, dm2::PetscDM )
-	compatible_ = Ref{PetscBool}()
-	set_ = Ref{PetscBool}()
+	compatible_ = Ref{PetscBool}(PETSC_FALSE)
+	set_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetCompatibility, $petsc_library),
@@ -10292,7 +10292,7 @@ $(_doc_external("DM/DMMonitorSetFromOptions"))
 function DMMonitorSetFromOptions(petsclib::PetscLibType, dm::PetscDM, name::String, help::String, manual::String, monitor::external, monitorsetup::external) end
 
 @for_petsc function DMMonitorSetFromOptions(petsclib::$UnionPetscLib, dm::PetscDM, name::String, help::String, manual::String, monitor::external, monitorsetup::external )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMMonitorSetFromOptions, $petsc_library),
@@ -10660,7 +10660,7 @@ function DMPolytopeMatchOrientation(petsclib::PetscLibType, ct::DMPolytopeType, 
 
 @for_petsc function DMPolytopeMatchOrientation(petsclib::$UnionPetscLib, ct::DMPolytopeType, sourceCone::Vector{$PetscInt}, targetCone::Vector{$PetscInt} )
 	ornt_ = Ref{$PetscInt}()
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPolytopeMatchOrientation, $petsc_library),
@@ -10757,7 +10757,7 @@ function DMPolytopeMatchVertexOrientation(petsclib::PetscLibType, ct::DMPolytope
 
 @for_petsc function DMPolytopeMatchVertexOrientation(petsclib::$UnionPetscLib, ct::DMPolytopeType, sourceVert::Vector{$PetscInt}, targetVert::Vector{$PetscInt} )
 	ornt_ = Ref{$PetscInt}()
-	found_ = Ref{PetscBool}()
+	found_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPolytopeMatchVertexOrientation, $petsc_library),
@@ -10843,7 +10843,7 @@ $(_doc_external("DM/DMPolytopeInCellTest"))
 function DMPolytopeInCellTest(petsclib::PetscLibType, ct::DMPolytopeType, point::Vector{PetscReal}) end
 
 @for_petsc function DMPolytopeInCellTest(petsclib::$UnionPetscLib, ct::DMPolytopeType, point::Vector{$PetscReal} )
-	inside_ = Ref{PetscBool}()
+	inside_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPolytopeInCellTest, $petsc_library),
@@ -11307,7 +11307,7 @@ $(_doc_external("DM/DMHasNamedGlobalVector"))
 function DMHasNamedGlobalVector(petsclib::PetscLibType, dm::PetscDM, name::String) end
 
 @for_petsc function DMHasNamedGlobalVector(petsclib::$UnionPetscLib, dm::PetscDM, name::String )
-	exists_ = Ref{PetscBool}()
+	exists_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasNamedGlobalVector, $petsc_library),
@@ -11416,7 +11416,7 @@ $(_doc_external("DM/DMHasNamedLocalVector"))
 function DMHasNamedLocalVector(petsclib::PetscLibType, dm::PetscDM, name::String) end
 
 @for_petsc function DMHasNamedLocalVector(petsclib::$UnionPetscLib, dm::PetscDM, name::String )
-	exists_ = Ref{PetscBool}()
+	exists_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMHasNamedLocalVector, $petsc_library),
@@ -12983,7 +12983,7 @@ $(_doc_external("DM/DMGetCoordinatesLocalizedLocal"))
 function DMGetCoordinatesLocalizedLocal(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMGetCoordinatesLocalizedLocal(petsclib::$UnionPetscLib, dm::PetscDM )
-	areLocalized_ = Ref{PetscBool}()
+	areLocalized_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetCoordinatesLocalizedLocal, $petsc_library),
@@ -13019,7 +13019,7 @@ $(_doc_external("DM/DMGetCoordinatesLocalized"))
 function DMGetCoordinatesLocalized(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMGetCoordinatesLocalized(petsclib::$UnionPetscLib, dm::PetscDM )
-	areLocalized_ = Ref{PetscBool}()
+	areLocalized_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetCoordinatesLocalized, $petsc_library),
@@ -13055,7 +13055,7 @@ $(_doc_external("DM/DMGetSparseLocalize"))
 function DMGetSparseLocalize(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMGetSparseLocalize(petsclib::$UnionPetscLib, dm::PetscDM )
-	sparse_ = Ref{PetscBool}()
+	sparse_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMGetSparseLocalize, $petsc_library),
@@ -13185,7 +13185,7 @@ $(_doc_external("DM/DMIsForest"))
 function DMIsForest(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMIsForest(petsclib::$UnionPetscLib, dm::PetscDM )
-	isForest_ = Ref{PetscBool}()
+	isForest_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMIsForest, $petsc_library),
@@ -14050,7 +14050,7 @@ $(_doc_external("DMForest/DMForestGetAdaptivitySuccess"))
 function DMForestGetAdaptivitySuccess(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMForestGetAdaptivitySuccess(petsclib::$UnionPetscLib, dm::PetscDM )
-	success_ = Ref{PetscBool}()
+	success_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMForestGetAdaptivitySuccess, $petsc_library),
@@ -14163,7 +14163,7 @@ $(_doc_external("DMForest/DMForestGetComputeAdaptivitySF"))
 function DMForestGetComputeAdaptivitySF(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMForestGetComputeAdaptivitySF(petsclib::$UnionPetscLib, dm::PetscDM )
-	computeSF_ = Ref{PetscBool}()
+	computeSF_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMForestGetComputeAdaptivitySF, $petsc_library),
@@ -22727,7 +22727,7 @@ $(_doc_external("DMNetwork/DMNetworkIsSharedVertex"))
 function DMNetworkIsSharedVertex(petsclib::PetscLibType, dm::PetscDM, p::PetscInt) end
 
 @for_petsc function DMNetworkIsSharedVertex(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt )
-	flag_ = Ref{PetscBool}()
+	flag_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMNetworkIsSharedVertex, $petsc_library),
@@ -22764,7 +22764,7 @@ $(_doc_external("DMNetwork/DMNetworkIsGhostVertex"))
 function DMNetworkIsGhostVertex(petsclib::PetscLibType, dm::PetscDM, p::PetscInt) end
 
 @for_petsc function DMNetworkIsGhostVertex(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt )
-	isghost_ = Ref{PetscBool}()
+	isghost_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMNetworkIsGhostVertex, $petsc_library),
@@ -23125,7 +23125,7 @@ $(_doc_external("DMNetwork/DMNetworkViewSetShowRanks"))
 function DMNetworkViewSetShowRanks(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMNetworkViewSetShowRanks(petsclib::$UnionPetscLib, dm::PetscDM )
-	showranks_ = Ref{PetscBool}()
+	showranks_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMNetworkViewSetShowRanks, $petsc_library),
@@ -23161,7 +23161,7 @@ $(_doc_external("DMNetwork/DMNetworkViewSetShowGlobal"))
 function DMNetworkViewSetShowGlobal(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMNetworkViewSetShowGlobal(petsclib::$UnionPetscLib, dm::PetscDM )
-	showglobal_ = Ref{PetscBool}()
+	showglobal_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMNetworkViewSetShowGlobal, $petsc_library),
@@ -23197,7 +23197,7 @@ $(_doc_external("DMNetwork/DMNetworkViewSetShowVertices"))
 function DMNetworkViewSetShowVertices(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMNetworkViewSetShowVertices(petsclib::$UnionPetscLib, dm::PetscDM )
-	showvertices_ = Ref{PetscBool}()
+	showvertices_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMNetworkViewSetShowVertices, $petsc_library),
@@ -23233,7 +23233,7 @@ $(_doc_external("DMNetwork/DMNetworkViewSetShowNumbering"))
 function DMNetworkViewSetShowNumbering(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMNetworkViewSetShowNumbering(petsclib::$UnionPetscLib, dm::PetscDM )
-	shownumbering_ = Ref{PetscBool}()
+	shownumbering_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMNetworkViewSetShowNumbering, $petsc_library),
@@ -24899,9 +24899,9 @@ $(_doc_external("DMStag/DMStagGetIsFirstRank"))
 function DMStagGetIsFirstRank(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMStagGetIsFirstRank(petsclib::$UnionPetscLib, dm::PetscDM )
-	isFirstRank0_ = Ref{PetscBool}()
-	isFirstRank1_ = Ref{PetscBool}()
-	isFirstRank2_ = Ref{PetscBool}()
+	isFirstRank0_ = Ref{PetscBool}(PETSC_FALSE)
+	isFirstRank1_ = Ref{PetscBool}(PETSC_FALSE)
+	isFirstRank2_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMStagGetIsFirstRank, $petsc_library),
@@ -24946,9 +24946,9 @@ $(_doc_external("DMStag/DMStagGetIsLastRank"))
 function DMStagGetIsLastRank(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMStagGetIsLastRank(petsclib::$UnionPetscLib, dm::PetscDM )
-	isLastRank0_ = Ref{PetscBool}()
-	isLastRank1_ = Ref{PetscBool}()
-	isLastRank2_ = Ref{PetscBool}()
+	isLastRank0_ = Ref{PetscBool}(PETSC_FALSE)
+	isLastRank1_ = Ref{PetscBool}(PETSC_FALSE)
+	isLastRank2_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMStagGetIsLastRank, $petsc_library),
@@ -27962,7 +27962,7 @@ $(_doc_external("DMMoab/DMMoabIsEntityOnBoundary"))
 function DMMoabIsEntityOnBoundary(petsclib::PetscLibType, dm::PetscDM, ent::moab_EntityHandle) end
 
 @for_petsc function DMMoabIsEntityOnBoundary(petsclib::$UnionPetscLib, dm::PetscDM, ent::moab_EntityHandle )
-	ent_on_boundary_ = Ref{PetscBool}()
+	ent_on_boundary_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMMoabIsEntityOnBoundary, $petsc_library),
@@ -27985,7 +27985,7 @@ $(_doc_external("DMMoab/DMMoabCheckBoundaryVertices"))
 function DMMoabCheckBoundaryVertices(petsclib::PetscLibType, dm::PetscDM, nconn::PetscInt, cnt::moab_EntityHandle) end
 
 @for_petsc function DMMoabCheckBoundaryVertices(petsclib::$UnionPetscLib, dm::PetscDM, nconn::$PetscInt, cnt::moab_EntityHandle )
-	isbdvtx_ = Ref{PetscBool}()
+	isbdvtx_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMMoabCheckBoundaryVertices, $petsc_library),
@@ -28751,7 +28751,7 @@ $(_doc_external("DMPlex/DMPlexGetSaveTransform"))
 function DMPlexGetSaveTransform(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexGetSaveTransform(petsclib::$UnionPetscLib, dm::PetscDM )
-	save_ = Ref{PetscBool}()
+	save_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetSaveTransform, $petsc_library),
@@ -28815,7 +28815,7 @@ $(_doc_external("DMPlex/DMPlexGetRefinementUniform"))
 function DMPlexGetRefinementUniform(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexGetRefinementUniform(petsclib::$UnionPetscLib, dm::PetscDM )
-	refinementUniform_ = Ref{PetscBool}()
+	refinementUniform_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetRefinementUniform, $petsc_library),
@@ -29274,7 +29274,7 @@ $(_doc_external("DMPlex/DMPlexRebalanceSharedPoints"))
 function DMPlexRebalanceSharedPoints(petsclib::PetscLibType, dm::PetscDM, entityDepth::PetscInt, useInitialGuess::PetscBool, parallel::PetscBool) end
 
 @for_petsc function DMPlexRebalanceSharedPoints(petsclib::$UnionPetscLib, dm::PetscDM, entityDepth::$PetscInt, useInitialGuess::PetscBool, parallel::PetscBool )
-	success_ = Ref{PetscBool}()
+	success_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexRebalanceSharedPoints, $petsc_library),
@@ -29516,7 +29516,7 @@ $(_doc_external("DMPlex/DMPlexGetInterpolatePreferTensor"))
 function DMPlexGetInterpolatePreferTensor(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexGetInterpolatePreferTensor(petsclib::$UnionPetscLib, dm::PetscDM )
-	preferTensor_ = Ref{PetscBool}()
+	preferTensor_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetInterpolatePreferTensor, $petsc_library),
@@ -29633,7 +29633,7 @@ $(_doc_external("DMPlex/DMPlexMetricIsIsotropic"))
 function DMPlexMetricIsIsotropic(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexMetricIsIsotropic(petsclib::$UnionPetscLib, dm::PetscDM )
-	isotropic_ = Ref{PetscBool}()
+	isotropic_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexMetricIsIsotropic, $petsc_library),
@@ -29697,7 +29697,7 @@ $(_doc_external("DMPlex/DMPlexMetricIsUniform"))
 function DMPlexMetricIsUniform(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexMetricIsUniform(petsclib::$UnionPetscLib, dm::PetscDM )
-	uniform_ = Ref{PetscBool}()
+	uniform_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexMetricIsUniform, $petsc_library),
@@ -29761,7 +29761,7 @@ $(_doc_external("DMPlex/DMPlexMetricRestrictAnisotropyFirst"))
 function DMPlexMetricRestrictAnisotropyFirst(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexMetricRestrictAnisotropyFirst(petsclib::$UnionPetscLib, dm::PetscDM )
-	restrictAnisotropyFirst_ = Ref{PetscBool}()
+	restrictAnisotropyFirst_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexMetricRestrictAnisotropyFirst, $petsc_library),
@@ -29825,7 +29825,7 @@ $(_doc_external("DMPlex/DMPlexMetricNoInsertion"))
 function DMPlexMetricNoInsertion(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexMetricNoInsertion(petsclib::$UnionPetscLib, dm::PetscDM )
-	noInsert_ = Ref{PetscBool}()
+	noInsert_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexMetricNoInsertion, $petsc_library),
@@ -29889,7 +29889,7 @@ $(_doc_external("DMPlex/DMPlexMetricNoSwapping"))
 function DMPlexMetricNoSwapping(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexMetricNoSwapping(petsclib::$UnionPetscLib, dm::PetscDM )
-	noSwap_ = Ref{PetscBool}()
+	noSwap_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexMetricNoSwapping, $petsc_library),
@@ -29953,7 +29953,7 @@ $(_doc_external("DMPlex/DMPlexMetricNoMovement"))
 function DMPlexMetricNoMovement(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexMetricNoMovement(petsclib::$UnionPetscLib, dm::PetscDM )
-	noMove_ = Ref{PetscBool}()
+	noMove_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexMetricNoMovement, $petsc_library),
@@ -30017,7 +30017,7 @@ $(_doc_external("DMPlex/DMPlexMetricNoSurf"))
 function DMPlexMetricNoSurf(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexMetricNoSurf(petsclib::$UnionPetscLib, dm::PetscDM )
-	noSurf_ = Ref{PetscBool}()
+	noSurf_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexMetricNoSurf, $petsc_library),
@@ -31359,7 +31359,7 @@ $(_doc_external("DMPlex/DMPlexIsSimplex"))
 function DMPlexIsSimplex(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexIsSimplex(petsclib::$UnionPetscLib, dm::PetscDM )
-	simplex_ = Ref{PetscBool}()
+	simplex_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexIsSimplex, $petsc_library),
@@ -33100,7 +33100,7 @@ $(_doc_external("DMPlex/DMPlexEqual"))
 function DMPlexEqual(petsclib::PetscLibType, dmA::PetscDM, dmB::PetscDM) end
 
 @for_petsc function DMPlexEqual(petsclib::$UnionPetscLib, dmA::PetscDM, dmB::PetscDM )
-	equal_ = Ref{PetscBool}()
+	equal_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexEqual, $petsc_library),
@@ -34756,7 +34756,7 @@ $(_doc_external("DMPlex/DMPlexGetRegularRefinement"))
 function DMPlexGetRegularRefinement(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexGetRegularRefinement(petsclib::$UnionPetscLib, dm::PetscDM )
-	regular_ = Ref{PetscBool}()
+	regular_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetRegularRefinement, $petsc_library),
@@ -34984,7 +34984,7 @@ $(_doc_external("DMPlex/DMPlexGetAdjacencyUseAnchors"))
 function DMPlexGetAdjacencyUseAnchors(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexGetAdjacencyUseAnchors(petsclib::$UnionPetscLib, dm::PetscDM )
-	useAnchors_ = Ref{PetscBool}()
+	useAnchors_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetAdjacencyUseAnchors, $petsc_library),
@@ -35402,7 +35402,7 @@ $(_doc_external("DMPlex/DMPlexGetPartitionBalance"))
 function DMPlexGetPartitionBalance(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexGetPartitionBalance(petsclib::$UnionPetscLib, dm::PetscDM )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetPartitionBalance, $petsc_library),
@@ -35728,7 +35728,7 @@ $(_doc_external("DMPlex/DMPlexDistributeGetDefault"))
 function DMPlexDistributeGetDefault(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexDistributeGetDefault(petsclib::$UnionPetscLib, dm::PetscDM )
-	dist_ = Ref{PetscBool}()
+	dist_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexDistributeGetDefault, $petsc_library),
@@ -35839,7 +35839,7 @@ $(_doc_external("DMPlex/DMPlexIsDistributed"))
 function DMPlexIsDistributed(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexIsDistributed(petsclib::$UnionPetscLib, dm::PetscDM )
-	distributed_ = Ref{PetscBool}()
+	distributed_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexIsDistributed, $petsc_library),
@@ -36713,7 +36713,7 @@ $(_doc_external("DMPlex/DMPlexGetUseMatClosurePermutation"))
 function DMPlexGetUseMatClosurePermutation(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMPlexGetUseMatClosurePermutation(petsclib::$UnionPetscLib, dm::PetscDM )
-	useClPerm_ = Ref{PetscBool}()
+	useClPerm_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetUseMatClosurePermutation, $petsc_library),
@@ -39236,7 +39236,7 @@ $(_doc_external("DMPlex/DMPlexGetCellCoordinates"))
 function DMPlexGetCellCoordinates(petsclib::PetscLibType, dm::PetscDM, cell::PetscInt) end
 
 @for_petsc function DMPlexGetCellCoordinates(petsclib::$UnionPetscLib, dm::PetscDM, cell::$PetscInt )
-	isDG_ = Ref{PetscBool}()
+	isDG_ = Ref{PetscBool}(PETSC_FALSE)
 	Nc_ = Ref{$PetscInt}()
 	array_ = Ref{Ptr{$PetscScalar}}(C_NULL)
 	coords_ = Ref{Ptr{$PetscScalar}}(C_NULL)
@@ -42807,7 +42807,7 @@ function DMPlexGetOrientedFace(petsclib::PetscLibType, dm::PetscDM, cell::PetscI
 
 @for_petsc function DMPlexGetOrientedFace(petsclib::$UnionPetscLib, dm::PetscDM, cell::$PetscInt, faceSize::$PetscInt, face::Vector{$PetscInt}, numCorners::$PetscInt, indices::Vector{$PetscInt}, origVertices::Vector{$PetscInt} )
 	faceVertices = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
-	posOriented_ = Ref{PetscBool}()
+	posOriented_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:DMPlexGetOrientedFace, $petsc_library),
@@ -44791,7 +44791,7 @@ $(_doc_external("Ts/DMTSCheckJacobian"))
 function DMTSCheckJacobian(petsclib::PetscLibType, ts::TS, dm::PetscDM, t::PetscReal, u::PetscVec, u_t::PetscVec, tol::PetscReal) end
 
 @for_petsc function DMTSCheckJacobian(petsclib::$UnionPetscLib, ts::TS, dm::PetscDM, t::$PetscReal, u::PetscVec, u_t::PetscVec, tol::$PetscReal )
-	isLinear_ = Ref{PetscBool}()
+	isLinear_ = Ref{PetscBool}(PETSC_FALSE)
 	convRate_ = Ref{$PetscReal}()
 
     @chk ccall(

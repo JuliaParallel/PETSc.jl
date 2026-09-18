@@ -551,7 +551,7 @@ $(_doc_external("Tao/TaoLineSearchIsUsingTaoRoutines"))
 function TaoLineSearchIsUsingTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch) end
 
 @for_petsc function TaoLineSearchIsUsingTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch )
-	flg_ = Ref{PetscBool}()
+	flg_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:TaoLineSearchIsUsingTaoRoutines, $petsc_library),

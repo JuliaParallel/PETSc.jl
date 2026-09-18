@@ -1589,7 +1589,7 @@ $(_doc_external("Mat/MatPartitioningGetUseEdgeWeights"))
 function MatPartitioningGetUseEdgeWeights(petsclib::PetscLibType, part::MatPartitioning) end
 
 @for_petsc function MatPartitioningGetUseEdgeWeights(petsclib::$UnionPetscLib, part::MatPartitioning )
-	use_edge_weights_ = Ref{PetscBool}()
+	use_edge_weights_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatPartitioningGetUseEdgeWeights, $petsc_library),
@@ -2750,7 +2750,7 @@ $(_doc_external("Mat/MatNullSpaceGetVecs"))
 function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace, vecs::Vector{PetscVec}) end
 
 @for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::MatNullSpace, vecs::Vector{PetscVec} )
-	has_const_ = Ref{PetscBool}()
+	has_const_ = Ref{PetscBool}(PETSC_FALSE)
 	n_ = Ref{$PetscInt}()
 	vecs_ = Ref(pointer(vecs))
 
@@ -2963,7 +2963,7 @@ $(_doc_external("Mat/MatNullSpaceTest"))
 function MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::PetscMat) end
 
 @for_petsc function MatNullSpaceTest(petsclib::$UnionPetscLib, sp::MatNullSpace, mat::PetscMat )
-	isNull_ = Ref{PetscBool}()
+	isNull_ = Ref{PetscBool}(PETSC_FALSE)
 
     @chk ccall(
                (:MatNullSpaceTest, $petsc_library),

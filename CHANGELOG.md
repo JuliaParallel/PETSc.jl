@@ -137,6 +137,8 @@ the generated "C to Julia name index" page in the manual.
 
 ### Changed
 
+- `ForwardDiff`, `UnicodePlots`, `Statistics` and `Pkg` are no longer dependencies of the package: nothing in `src/` used them, and the tests and examples that do now pull them through `[extras]` and `examples/Project.toml`. Installing PETSc.jl resolves 86 packages instead of 121, which cuts cold precompilation by roughly a factor of five.
+
 - Only one `PetscInt` width of `PETSc_jll` is loaded per process (#241): `PETSc.petsclibs`
   holds the four scalar variants of `Int64` by default, `PETSc.set_petscint!(Int32)` switches
   to the `Int32` libraries on the next session. Loading both widths cross-binds the identically

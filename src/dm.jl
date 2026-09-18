@@ -574,62 +574,6 @@ function Base.size(dm::DMStag{PetscLib, N}) where {PetscLib, N}
     return ntuple(i -> gsize[i], Val(N))
 end
 
-#=
-"""
-    dm_local_to_global(dm, x_L, x_G, mode = INSERT_VALUES)
-
-Transfer values from the local vector `x_L` to the global vector `x_G`.
-
-# Arguments
-- `dm`: The DM object
-- `x_L`: Local vector (source)
-- `x_G`: Global vector (destination)
-- `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
-
-# External Links
-$(doc_external("DM/DMLocalToGlobal"))
-"""
-function dm_local_to_global(dm::PetscDM{PetscLib},
-                             x_L::AbstractPetscVec{PetscLib},
-                             x_G::AbstractPetscVec{PetscLib}, 
-                             mode=LibPETSc.INSERT_VALUES) where {PetscLib}
-    
-    petsclib = getlib(PetscLib)
-    LibPETSc.DMLocalToGlobalBegin(petsclib, dm, x_L, mode, x_G)
-    LibPETSc.DMLocalToGlobalEnd(petsclib, dm, x_L, mode, x_G)
-    
-    return nothing
-end
-=#
-#=
-"""
-    dm_global_to_local(dm, x_G, x_L, mode = INSERT_VALUES)
-
-Transfer values from the global vector `x_G` to the local vector `x_L`,
-including ghost point values from neighboring processes.
-
-# Arguments
-- `dm`: The DM object
-- `x_G`: Global vector (source)
-- `x_L`: Local vector (destination)
-- `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
-
-# External Links
-$(doc_external("DM/DMGlobalToLocal"))
-"""
-function dm_global_to_local(dm::PetscDM{PetscLib},
-                             x_G::AbstractPetscVec{PetscLib},
-                             x_L::AbstractPetscVec{PetscLib}, 
-                             mode=LibPETSc.INSERT_VALUES) where {PetscLib}
-    
-    petsclib = getlib(PetscLib)
-    LibPETSc.DMGlobalToLocalBegin(petsclib, dm, x_G, mode, x_L)
-    LibPETSc.DMGlobalToLocalEnd(petsclib, dm, x_G, mode, x_L)
-
-    return nothing
-end
-=#
-
 """
     PetscMat(da::AbstractPetscDM)
 

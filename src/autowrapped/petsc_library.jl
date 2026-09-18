@@ -174,13 +174,15 @@ abstract type AbstractPetscOptions{T} end
 
 mutable struct PetscOptions{PetscLib} <: AbstractPetscOptions{PetscLib}
     ptr::Ptr{Cvoid}
-    
-    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+    age::Int
+
+    # Constructor from pointer and age
+    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
 end
 
 # Convenience constructors
-PetscOptions(lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}()
-PetscOptions(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}(ptr)
+PetscOptions(lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}(C_NULL, lib.age)
+PetscOptions(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscOptions{PetscLib}(ptr, age)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr

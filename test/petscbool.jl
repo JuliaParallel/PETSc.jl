@@ -31,3 +31,25 @@ MPI.Initialized() || MPI.Init()
     @test n == 3 && buf[1:3] == [LibPETSc.PETSC_FALSE, LibPETSc.PETSC_TRUE, LibPETSc.PETSC_FALSE]
     PETSc.finalize(petsclib)
 end
+
+# The RegisterAllCalled reset after PetscInitialize writes the flag and nothing past it. 
+# A sentinel goes into the byte after each flag, and is restored afterwards. 
+# The flags are not exported on Windows, so there is nothing to check there.
+@testset "RegisterAllCalled reset writes one byte" begin
+    petsclib = PETSc.getlib()
+    PETSc.initialize(petsclib)
+    handle, _ = PETSc.ensure_library_handle(petsclib)
+    lib = PETSc.library_ptr(handle)
+    for sym in (:TaoRegisterAllCalled, :TaoTermRegisterAllCalled, :TSTrajectoryRegisterAllCalled)
+        p = PETSc.Libdl.dlsym_e(lib, sym)
+        p == C_NULL && continue
+        flag = Ptr{UInt8}(p)
+        saved = unsafe_load(flag + 1)
+        unsafe_store!(flag + 1, 0xa5)
+        PETSc._reset_stale_register_flags(petsclib)
+        @test unsafe_load(flag) == 0x00
+        @test unsafe_load(flag + 1) == 0xa5
+        unsafe_store!(flag + 1, saved)
+    end
+    PETSc.finalize(petsclib)
+end

@@ -79,7 +79,8 @@ The rename table, and the reasoning behind each rule, are in [`docs/src/man/nami
 - `PetscBool` is one byte, matching PETSc's `typedef bool PetscBool` (since 3.24). The previous 32-bit type read three bytes PETSc never wrote, so a `PETSC_FALSE` output could come back as true (#268), `Vector{PetscBool}` arguments had the wrong stride and the `MatFactorInfo`, `PetscFEGeom` and `PetscEventPerfInfo` struct layouts were off.
 
 - Re-initialising PETSc after `finalize` works with Tao, TaoTerm and TSTrajectory (PETSc 3.25.x does not reset their `RegisterAllCalled` flags; on Windows the internal symbols are not exported, see `PETSc.tao_usable_after_reinitialize()`).
-- `unsafe_localarray` no longer touches a destroyed vector or a finalized library.
+- Re-initialising PETSc no longer overwrites three bytes of PETSc's memory: the `TaoRegisterAllCalled`, `TaoTermRegisterAllCalled` and `TSTrajectoryRegisterAllCalled` flags were reset with a 4-byte store, while `PetscBool` is 1 byte.
+- `unsafe_local_array` no longer touches a destroyed vector or a finalized library.
 - Double free of DMDA coordinate vectors; `PCMGSetLevels` reading uninitialised communicators.
 - Block assignment `A[rows, cols] = block` on a `PetscMat` works (#248, #271). It threw a `MethodError`, and the values were laid out column by column where `MatSetValues` reads them row by row. A block whose size does not match the index ranges raises a `DimensionMismatch`.
 - `PetscOptions` records the initialize/finalize cycle it was created in, like `PetscVec`, `PetscMat`, `KSP`, `SNES`, `TS` and the DMs, so `destroy!` and its finalizer no longer call `PetscOptionsDestroy` on an object from an earlier cycle (#270).

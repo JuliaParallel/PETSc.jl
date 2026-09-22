@@ -528,7 +528,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :parse_options,
 ]
 
-# Names `PETSc` exports (§13, and decision 1 of RENAME_PLAN.md): the nine types
+# Names `PETSc` exports (§13): the nine types
 # and construction entry points, `petsclibs`, and the `LibPETSc` submodule.
 # A name cannot be both exported and `public`, so these are subtracted from the
 # generated `public` declaration. The twelve v0.4 exports are gone; the ones that

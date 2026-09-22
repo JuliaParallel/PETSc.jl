@@ -167,6 +167,9 @@ the generated "C to Julia name index" page in the manual.
 - Re-initialising PETSc after `finalize` works with Tao, TaoTerm and TSTrajectory (PETSc 3.25.x
   does not reset their `RegisterAllCalled` flags; on Windows the internal symbols are not
   exported, see `PETSc.tao_usable_after_reinitialize()`).
+- Re-initialising PETSc no longer overwrites three bytes of PETSc's memory: the
+  `TaoRegisterAllCalled`, `TaoTermRegisterAllCalled` and `TSTrajectoryRegisterAllCalled` flags
+  were reset with a 4-byte store, while `PetscBool` is 1 byte.
 - `unsafe_localarray` no longer touches a destroyed vector or a finalized library.
 - Double free of DMDA coordinate vectors; `PCMGSetLevels` reading uninitialised communicators.
 

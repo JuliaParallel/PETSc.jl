@@ -5,7 +5,7 @@
 [![doc dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaparallel.github.io/PETSc.jl/dev/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18274809.svg)](https://doi.org/10.5281/zenodo.18274809)
 
-
+> **PETSc.jl 0.5 is a breaking release.** Code written for 0.4 needs changes: see [Upgrading from 0.4](https://juliaparallel.github.io/PETSc.jl/stable/man/upgrading/) and the [release notes](CHANGELOG.md).
 
 `PETSc.jl` provides an interface to the Portable, Extensible Toolkit for Scientific Computation ([PETSc](https://petsc.org)) library, allowing the combination of Julia features (such as automatic differentiation) with the PETSc's infrastructure, including linear, nonlinear, and optimization solvers, timesteppers, domain management (DM), and more, in a distributed-memory (MPI) environment. 
 

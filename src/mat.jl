@@ -110,6 +110,7 @@ function LibPETSc.PetscMat(
     S::SparseMatrixCSC{PetscScalar};
     with_arrays::Bool = false,
 ) where {PetscScalar}
+    check_initialized(petsclib)
 
     with_arrays && return mat_seqaij_with_arrays(petsclib, comm, S)
 

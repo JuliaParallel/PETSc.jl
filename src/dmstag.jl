@@ -62,6 +62,7 @@ function DMStag(
     prefix = "",
     options...,
 ) where {PetscLib, N, N1}
+    check_initialized(getlib(PetscLib))
     N1 == N + 1 || throw(
         DimensionMismatch(
             "dof_per_node has length $N1, " *
@@ -190,6 +191,7 @@ function DMStag(
     options...,
 ) where {PetscLib, N}
     petsclib = getlib(PetscLib)
+    check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
 
     dof_per_node_C = ntuple(i -> i <= length(dof_per_node) ? PetscInt(dof_per_node[i]) : PetscInt(0), 4)

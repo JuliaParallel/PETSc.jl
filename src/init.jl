@@ -251,7 +251,8 @@ function _reset_stale_register_flags(petsclib)
         if p == C_NULL
             ok = false
         else
-            unsafe_store!(Ptr{Int32}(p), Int32(0))
+            # the flags are PetscBool (one byte): a wider store overwrites the neighbouring globals
+            unsafe_store!(Ptr{LibPETSc.PetscBool}(p), LibPETSc.PETSC_FALSE)
         end
     end
     if !ok && _taoterm_resettable[] === nothing

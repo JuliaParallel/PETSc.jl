@@ -63,7 +63,7 @@ PETSc.type_name(snes) === :newtonls
 
 **DMs have their own types.** `DMDA`, `DMStag` and `DMPlex` are concrete types below `LibPETSc.AbstractPetscDM`. A method annotated `::PetscDM` no longer matches them; annotate with `LibPETSc.AbstractPetscDM` or with the concrete type. A DM that comes back from PETSc without a known type (for example `PETSc.dm(ksp)`) can be turned into the typed one with `PETSc.narrow(dm)`.
 
-**Errors have specific types.** Invalid arguments raise `ArgumentError` or `DimensionMismatch` where 0.4 failed an `@assert`, and creating a `PetscVec`, `PetscMat` or `KSP` on a library that is not initialized raises `PETSc.PetscNotInitialized`. Code that caught `AssertionError` must catch these instead.
+**Errors have specific types.** Invalid arguments raise `ArgumentError` or `DimensionMismatch` where 0.4 failed an `@assert`, and creating a PETSc object with `PetscVec`, `PetscMat`, `KSP`, `SNES`, `TS` or a DM constructor on a library that is not initialized raises `PETSc.PetscNotInitialized`. Code that caught `AssertionError` must catch these instead.
 
 **Handles you do not own.** Readers such as `PETSc.dm(ksp)`, `PETSc.solution(snes)` and `PETSc.local_coordinates(dm)` return a handle that belongs to the object they were called on. `destroy!` on such a handle does nothing (`PETSc.owns` tells you which is which). Destroying it was never correct, and code that did so should stop.
 

@@ -1,20 +1,5 @@
 # Naming and API conventions
 
-!!! warning "Status: proposal, not yet implemented"
-
-    This document describes the API that v0.5 will ship. None of it is in the released package, and the v0.4 names are still the ones that work.
-
-    It is here to be argued with before the rename is applied rather than after. Comments on the pull request that adds it are the place for that.
-
-    Much of what it names does not exist on `main` yet, and is described in the tense it will have:
-
-    - `scripts/api_surface.jl` and `scripts/renames.jl` with its `--sweeps`
-      checks ([§1.1](#1.1-What-these-rules-cover)), the `doc_borrowed` helper
-      ([§3.3](#3.3-What-an-accessor-hands-back)) and `src/deprecations.jl`
-      ([§17](#17.-Migration)) all arrive with the rename
-    - the `ts.jl` section of the rename table registers the high-level `TS`
-      from #256, which is still in review
-
 These rules govern the **high-level interface**: everything reachable as `PETSc.foo`.
 The low-level layer (`LibPETSc.*`) mirrors the PETSc C API name for name and is out of scope; it keeps its C names so that PETSc's own documentation stays usable.
 
@@ -45,7 +30,7 @@ Three subsets are treated differently:
 
 **Internal helpers** are exempt: they may be renamed freely, with no shim.
 
-A leading underscore stays legitimate for one thing: distinguishing an inner worker from the wrapper that shares its name, as `Base` does with `_growend!`. As of now, `_mul!` and `_unsafe_localarray` are the two cases in this package.
+A leading underscore stays legitimate for one thing: distinguishing an inner worker from the wrapper that shares its name, as `Base` does with `_growend!`. As of now, `_mul!`, `_unsafe_local_array`, `_local_arrays` and `_restore_local_arrays!` are the cases in this package.
 That is disambiguation, not a visibility marker.
 
 Because [§13](#13.-Exports) exports only types, "unexported" cannot by itself separate the public API from internals.
@@ -298,7 +283,7 @@ corners(dm::DMDA{L,N})   where {L,N} = …   # (lower, upper, size)
 corners(dm::DMStag{L,N}) where {L,N} = …   # (lower, upper, size, nextra)
 ```
 
-Dimension earns a parameter on the same test as flavour: only where a method dispatches on it or a return type is shaped by it. That holds for DMDA and DMStag, whose corners and creation paths are written per dimension. It does not hold for DMPlex, where nothing in `dmplex.jl` dispatches on dimension and neither constructor could supply one honestly, since `dim` arrives as a runtime argument and `DMPlex(petsclib, comm)` leaves it unset until setup. A plex reports its dimension through `getdimension`, which is what it is: a runtime property of the mesh.
+Dimension earns a parameter on the same test as flavour: only where a method dispatches on it or a return type is shaped by it. That holds for DMDA and DMStag, whose corners and creation paths are written per dimension. It does not hold for DMPlex, where nothing in `dmplex.jl` dispatches on dimension and neither constructor could supply one honestly, since `dim` arrives as a runtime argument and `DMPlex(petsclib, comm)` leaves it unset until setup. A plex reports its dimension through `ndims(dm)`, which is what it is: a runtime property of the mesh.
 
 There are therefore **no type suffixes** on function names. `getcorners_dmstag` becomes a method of `corners`, not a separate function.
 

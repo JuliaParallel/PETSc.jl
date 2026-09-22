@@ -189,7 +189,7 @@ $JULIA --project=/users/kausbori/PETSc_jl_scalability \
 This section summarises weak scalability results for a 3D Laplacian benchmark ([`ex45.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex45.jl)) using a CG solver with geometric multigrid preconditioning (`-pc_type mg`). The problem size is scaled proportionally with the number of MPI ranks so that the work per rank stays constant.
 
 We have performed these simulations on LUMI-C (Finnland) and provide job submission scripts (`submit_scaling.sh`, `job.sh`), along with a parsing file that collects and summarizes the results (`parse_scaling.jl`). 
-All files are uploaded under [PETSc.jl/examples/scalability_tests](PETSc.jl/examples/scalability_tests), and can be started with
+All files are uploaded under [PETSc.jl/examples/scalability_tests](https://github.com/JuliaParallel/PETSc.jl/tree/main/examples/scalability_tests), and can be started with
 ```bash
 $ ./submit_scaling.sh 512 1025 1025 1025 6 16
 ```

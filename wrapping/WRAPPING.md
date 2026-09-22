@@ -23,7 +23,6 @@ otherwise: four PRs of hand fixes were silently lost the moment someone reran th
 ```
 wrapping/
   WRAPPING.md            this file
-  REWRITE_PLAN.md        analysis and plan of the 2026 rewrite (background, milestones)
   generator/             the generator (a Julia project, deps: JSON3, TOML)
     generate.jl            entry point
     getapi_dump.py         runs PETSc's getAPI.py and writes an API snapshot (JSON)
@@ -158,8 +157,8 @@ replacement), `[[handles]]` (C name, Julia struct, abstract type, C alias), `[re
 | `nullinit = true` | initialise the output `Ref` with `C_NULL` |
 | `len = "expr"` | length of a caller-allocated output `Vector` |
 
-Rules that name a function or argument absent from the snapshot are reported when generating
-(TODO: `apidiff.jl`, see REWRITE_PLAN.md).
+Rules and overrides that name a function or argument absent from a new snapshot are reported
+by `generator/apidiff.jl`.
 
 ### Overrides (`generator/overrides/NAME.jl`)
 
@@ -263,7 +262,7 @@ julia --project=. -e 'using Pkg; Pkg.test()'             # includes test/wrapper
 The wrappers were first produced (PETSc 3.23/3.24) by a PythonCall-based script,
 `wrapping/generatejuliabindings.jl`, whose output was then fixed by hand in `src/autowrapped/`
 over several PRs (#254, #257, #258, #259, #261, #263). Those fixes were lost on every rerun, which
-is why the generator was rewritten in September 2026 (see `REWRITE_PLAN.md` for the analysis and
-`DEVIATIONS.md` for what changed in the output). The old script, its helper files and the
+is why the generator was rewritten in September 2026 (see `DEVIATIONS.md` for what changed in
+the output; the analysis and plan of the rewrite are in the git history as `REWRITE_PLAN.md`). The old script, its helper files and the
 `REGENERATING.md` notes that accompanied PR #263 were removed afterwards; they remain in the git
 history before commit `0d58b5f`.

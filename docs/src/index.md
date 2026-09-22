@@ -1,5 +1,8 @@
 # PETSc.jl
 
+!!! note "PETSc.jl 0.5 is a breaking release"
+    Code written for 0.4 needs changes. [Upgrading from 0.4](man/upgrading.md) goes through them in order, and the [Release notes](man/release_notes.md) list everything that changed.
+
 [PETSc.jl](https://github.com/JuliaParallel/PETSc.jl) is a Julia wrapper for the Portable, Extensible Toolkit for Scientific Computation [PETSc](https://petsc.org/) package, which allows solving ordinary and partial differential equations in parallel on laptops or massively parallel high-performance systems.
 
 The use of Julia greatly simplifies the code that developers have to write, while allowing them to employ Julia features such as automatic differentiation. The Julia wrapper also comes with a pre-built library, which greatly simplifies the process of getting your first code working in parallel on different operating systems. In many cases, the Julia code is significantly shorter than its C counterpart.

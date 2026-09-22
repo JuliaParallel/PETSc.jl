@@ -4,6 +4,19 @@ using Documenter, PETSc
 # mirror it into the manual so it is published with the docs (docs/src/man/wrapping.md is ignored by git).
 cp(joinpath(@__DIR__, "..", "wrapping", "WRAPPING.md"), joinpath(@__DIR__, "src", "man", "wrapping.md"); force = true)
 
+# The release notes are CHANGELOG.md, published as a manual page (docs/src/man/release_notes.md
+# is ignored by git). Links relative to the repository root are rewritten for the page's location,
+# and issue and PR numbers link to GitHub.
+function write_release_notes(changelog, out)
+    text = read(changelog, String)
+    text = replace(text, r"^# Changelog"m => "```@meta\nEditURL = \"../../../CHANGELOG.md\"\n```\n\n# Release notes")
+    text = replace(text, "](docs/src/man/" => "](")
+    text = replace(text, r"(?<![\w/#\[])#(\d+)\b" => s"[#\1](https://github.com/JuliaParallel/PETSc.jl/issues/\1)")
+    write(out, text)
+    return nothing
+end
+write_release_notes(joinpath(@__DIR__, "..", "CHANGELOG.md"), joinpath(@__DIR__, "src", "man", "release_notes.md"))
+
 include(joinpath(@__DIR__, "api_index.jl"))
 write_api_index(joinpath(@__DIR__, "src", "man", "api_index.md"))
 
@@ -21,6 +34,8 @@ makedocs(;
         "Home" => "index.md",
         "Installation" => "man/installation.md",
         "Getting Started" => "man/getting_started.md",
+        "Upgrading from 0.4" => "man/upgrading.md",
+        "Release notes" => "man/release_notes.md",
         "High-level interface" => Any[
             "Vec" =>  "man/vec.md",
             "Mat" =>  "man/mat.md",

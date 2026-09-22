@@ -74,6 +74,7 @@ function DMDA(
     prefix = "",
     options...,
 ) where {PetscLib, N}
+    check_initialized(getlib(PetscLib))
     PetscInt = inttype(PetscLib)
     stencil_type = stencil_type_enum(DMDAStencilType, stencil_type)
 

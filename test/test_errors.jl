@@ -1,5 +1,6 @@
 using Test
 using PETSc, MPI
+using SparseArrays: sparse
 
 MPI.Initialized() || MPI.Init()
 
@@ -13,6 +14,34 @@ MPI.Initialized() || MPI.Init()
         @test occursin("initialize", msg)
         # a handle that answers neither accessor still produces a message
         @test occursin("not initialized", sprint(showerror, PETSc.PetscNotInitialized("x")))
+    end
+
+    # every high-level constructor that creates a PETSc object checks the library first,
+    # instead of failing inside PETSc with a bare PetscError
+    @testset "constructors on an uninitialized library" begin
+        petsclib = PETSc.petsclibs[1]
+        PetscScalar = petsclib.PetscScalar
+        comm = MPI.COMM_SELF
+        B = PETSc.DM_BOUNDARY_NONE
+
+        # a DMStag to derive from, created before the library goes down
+        PETSc.initialize(petsclib)
+        stag = PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1), 1)
+        PETSc.finalize(petsclib)
+
+        S = sparse(PetscScalar[1 0; 0 1])
+        @test_throws PETSc.PetscNotInitialized PETSc.PetscVec(petsclib, 3)
+        @test_throws PETSc.PetscNotInitialized PETSc.PetscVec(petsclib, comm, PetscScalar[1, 2])
+        @test_throws PETSc.PetscNotInitialized PETSc.PetscMat(petsclib, S)
+        @test_throws PETSc.PetscNotInitialized PETSc.PetscMat(petsclib, comm, S; with_arrays = true)
+        @test_throws PETSc.PetscNotInitialized PETSc.PetscMat(petsclib, [0, 1, 2], [0, 1], PetscScalar[1, 1])
+        @test_throws PETSc.PetscNotInitialized PETSc.KSP(petsclib, comm, S)
+        @test_throws PETSc.PetscNotInitialized PETSc.SNES(petsclib, comm)
+        @test_throws PETSc.PetscNotInitialized PETSc.TS(petsclib, comm)
+        @test_throws PETSc.PetscNotInitialized PETSc.DMDA(petsclib, comm, (B,), (5,), 1, 1)
+        @test_throws PETSc.PetscNotInitialized PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1), 1)
+        @test_throws PETSc.PetscNotInitialized PETSc.DMStag(stag, (1, 1))
+        @test_throws PETSc.PetscNotInitialized PETSc.DMPlex(petsclib, comm)
     end
 
     @testset "parse_options" begin

@@ -635,7 +635,7 @@ Argument problems raise standard Julia exceptions. `@assert` is reserved for inv
 | Library not initialized | `PetscNotInitialized` |
 | Error returned by PETSc itself | `PetscError` (existing) |
 
-Every high-level constructor that creates a PETSc object (`PetscVec`, `PetscMat`, `KSP`, `SNES`, `TS` and the DM types) checks that its library is initialized before calling PETSc, so a missing `initialize` is reported as `PetscNotInitialized` and not as the `PetscError` PETSc would raise. `test/test_errors.jl` checks each of them.
+Every high-level constructor that creates a PETSc object (`PetscVec`, `PetscMat`, `PetscOptions`, `KSP`, `SNES`, `TS` and the DM types) checks that its library is initialized before calling PETSc, so a missing `initialize` is reported as `PetscNotInitialized` and not as the `PetscError` PETSc would raise. `test/test_errors.jl` checks each of them. `PetscOptions` is included although PETSc's `PetscOptionsCreate` works before `PetscInitialize`: the object records the library's current `age`, `initialize` advances it, so an options database created first would already be stale and `destroy!` would skip it.
 
 ```julia
 length(A) == prod(sz) ||

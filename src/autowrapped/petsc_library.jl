@@ -123,9 +123,10 @@ mutable struct SNES{PetscLib} <: AbstractSNES{PetscLib}
     updateJ!::Function
     user_ctx::Any
     opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
+    convergence_test!::Any  # closure from set_convergence_test!, rooted here while PETSc holds it
 
     # Constructor from pointer and age (with defaults for callbacks and context)
-    SNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts)
+    SNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing, convergence_test!::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts, convergence_test!)
     
     # Constructor for empty SNES (null pointer)
     SNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
@@ -133,6 +134,7 @@ mutable struct SNES{PetscLib} <: AbstractSNES{PetscLib}
                         age,
                         x -> error("function not defined"),
                         x -> error("function not defined"),
+                        nothing,
                         nothing,
                         nothing,
                         )                  

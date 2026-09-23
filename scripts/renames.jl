@@ -398,7 +398,6 @@ const INTERNAL = Set{Symbol}([
     # kept as they are
     :_taoterm_resettable,
     :_reset_stale_register_flags,
-    :SNESConvergenceTestBox,
     :_MATSEQAIJ_WITHARRAYS_STORAGE,
     :_PETSC_ERR_LIB,
     # defined into `PETSc` at runtime, the first time `check_wrappers_version`

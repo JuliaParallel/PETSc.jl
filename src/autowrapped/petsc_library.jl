@@ -113,6 +113,24 @@ Base.unsafe_convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
 
 # ------------------------------------------------------
 
+# ----- Custom Julia struct for PETSc PC -----
+# Usually borrowed from a KSP (KSPGetPC), so it carries no callbacks: anything a PC
+# callback needs to keep alive cannot live on a wrapper that is rebuilt on every read.
+const CPC = Ptr{Cvoid}
+abstract type AbstractPC{T} end
+mutable struct PC{PetscLib} <: AbstractPC{PetscLib}
+    ptr::CPC
+    age::Int
+
+    PC{PetscLib}(ptr::CPC = C_NULL, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+end
+
+PC(lib::PetscLib) where {PetscLib} = PC{PetscLib}(C_NULL, lib.age)
+PC(ptr::CPC, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PC{PetscLib}(ptr, age)
+Base.convert(::Type{CPC}, v::AbstractPC) = v.ptr
+Base.unsafe_convert(::Type{CPC}, v::AbstractPC) = v.ptr
+# ------------------------------------------------------
+
 # ----- Custom Julia struct for PETSc SNES -----
 const CSNES = Ptr{Cvoid}
 abstract type AbstractSNES{T} end
@@ -328,7 +346,7 @@ Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
 # ------------------------------------------------------
 # Constructors taking the library *type* (wrappers are called with either the petsclib instance
 # or its type, see @for_petsc): look the instance up to get the current age.
-for T in (:PetscVec, :PetscMat, :KSP, :SNES, :PetscDM, :TS)
+for T in (:PetscVec, :PetscMat, :KSP, :PC, :SNES, :PetscDM, :TS)
     @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}) where {PetscLib} = $T(ptr, getlib(PetscLib))
 end
 for T in (:PetscOptions, :IS, :PF, :Tao, :AO)
@@ -358,10 +376,6 @@ const char = Cchar
 const DMLabel = Ptr{Cvoid}  # C typedef struct _n_DMLabel *DMLabel (pointer type)
 mutable struct PetscCtxDestroyFn end
 mutable struct PetscErrorCodeFn end
-
-# stuff I need to define to get PETSc.jl to load with "using". We need to find a real solution
-mutable struct _n_PC end
-const PC = Ptr{_n_PC}
 
 const PetscObject = Ptr{Cvoid}
 const external = Ptr{Cvoid}

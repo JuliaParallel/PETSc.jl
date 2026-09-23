@@ -191,6 +191,9 @@ the ones a reader can hand back: `solution`, `local_coordinates` and
 `tolerances` wrap their result in a `VecPtr`, and `dm`, `coarse_dm` and
 [`narrow`](@ref) in one of the DM types.
 
+A `PC` answers `false` without a field: the high-level layer only hands one out
+borrowed, through [`pc`](@ref).
+
 `PetscVec`, `PetscMat`, `PetscOptions`, `KSP`, `SNES` and `TS` are declared in
 the generated layer (`wrapping/generator/prologue.jl`) and have no `own` field,
 so they answer `true` here. Nothing hands one of them back borrowed: the readers
@@ -628,7 +631,7 @@ type_name_symbol(s::AbstractString) =
 
 Set the PETSc implementation `obj` uses, for example `set_type!(ksp, :gmres)`.
 
-Defined for `PetscVec`, `PetscMat`, `KSP`, `SNES`, `TS` and `AbstractPetscDM`.
+Defined for `PetscVec`, `PetscMat`, `KSP`, `PC`, `SNES`, `TS` and `AbstractPetscDM`.
 The `Symbol` is converted to a `String` at the C boundary (§3.1).
 
 `set_type!(obj, "gmres")` still works in v0.5 and warns; it is a `MethodError`

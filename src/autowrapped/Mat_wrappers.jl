@@ -14365,16 +14365,16 @@ function MatLMVMGetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat )
-	J0pc_ = Ref{PC}()
+	J0pc_ = Ref{CPC}()
 
     @chk ccall(
                (:MatLMVMGetJ0PC, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{PC}),
+               (CMat, Ptr{CPC}),
                B, J0pc_,
               )
 
-	J0pc = J0pc_[]
+	J0pc = PC(J0pc_[], petsclib)
 
 	return J0pc
 end 
@@ -14768,7 +14768,7 @@ end
 end 
 
 """
-	MatLMVMSetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::PC) 
+	MatLMVMSetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::AbstractPC) 
 Allows the user to define a `PC` object that acts as the initial inverse-Jacobian matrix.
 
 Input Parameters:
@@ -14782,16 +14782,16 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetJ0PC()`
 # External Links
 $(_doc_external("KSP/MatLMVMSetJ0PC"))
 """
-function MatLMVMSetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::PC)
+function MatLMVMSetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::AbstractPC)
     error("MatLMVMSetJ0PC: no generated method for these argument types")
 end
 
-@for_petsc function MatLMVMSetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0pc::PC )
+@for_petsc function MatLMVMSetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0pc::AbstractPC )
 
     @chk ccall(
                (:MatLMVMSetJ0PC, $petsc_library),
                PetscErrorCode,
-               (CMat, PC),
+               (CMat, CPC),
                B, J0pc,
               )
 

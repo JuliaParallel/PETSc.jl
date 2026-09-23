@@ -12981,16 +12981,16 @@ function TSSundialsGetPC(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSSundialsGetPC(petsclib::$UnionPetscLib, ts::AbstractTS )
-	pc_ = Ref{PC}()
+	pc_ = Ref{CPC}()
 
     @chk ccall(
                (:TSSundialsGetPC, $petsc_library),
                PetscErrorCode,
-               (CTS, Ptr{PC}),
+               (CTS, Ptr{CPC}),
                ts, pc_,
               )
 
-	pc = pc_[]
+	pc = PC(pc_[], petsclib)
 
 	return pc
 end 

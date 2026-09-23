@@ -111,9 +111,23 @@ ksp = KSP(dm;
 )
 ```
 
+## The preconditioner
+
+`PETSc.pc(ksp)` hands back the preconditioner as a borrowed `LibPETSc.PC`. It takes the same `set_type!`/`type_name` pair as the solver, and is how a split preconditioner gets its index sets, which options alone cannot supply:
+
+```julia
+p = PETSc.pc(ksp)                         # not pc = pc(ksp), see naming.md §3.2
+PETSc.set_type!(p, :fieldsplit)
+PETSc.set_fieldsplit_is!(p, "u", is_u)    # rows of the first split, 0-based
+PETSc.set_fieldsplit_is!(p, "p", is_p)    # options prefix -fieldsplit_p_
+PETSc.type_name(p)                        # :fieldsplit
+```
+
+A `LibPETSc.PC` is also what every low-level `PC*` function takes, so anything without a high-level verb is one call away: `LibPETSc.PCFieldSplitSetType(petsclib, p, LibPETSc.PC_COMPOSITE_SCHUR)`.
+
 ## Functions
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["ksp.jl"]
+Pages   = ["ksp.jl", "pc.jl"]
 ```

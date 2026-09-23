@@ -128,7 +128,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCASMGetDMSubdomains(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCASMGetDMSubdomains(petsclib::PetscLibType, pc::AbstractPC) 
 Returns flag indicating whether to use `DMCreateDomainDecomposition()` to define the subdomains, whenever possible.
 
 Not Collective
@@ -147,17 +147,17 @@ See also: `PCASM`, `PCASMSetDMSubdomains()`, `PCASMSetTotalSubdomains()`, `PCASM
 # External Links
 $(_doc_external("PC/PCASMGetDMSubdomains"))
 """
-function PCASMGetDMSubdomains(petsclib::PetscLibType, pc::PC)
+function PCASMGetDMSubdomains(petsclib::PetscLibType, pc::AbstractPC)
     error("PCASMGetDMSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCASMGetDMSubdomains(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCASMGetDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCASMGetDMSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -167,7 +167,7 @@ end
 end 
 
 """
-	n::PetscInt,is::Vector{IS},is_local::Vector{IS} = PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,is::Vector{IS},is_local::Vector{IS} = PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the local subdomains (for this processor
 only) for the additive Schwarz preconditioner, `PCASM`.
 
@@ -189,11 +189,11 @@ See also: `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`, `PCASMGetSu
 # External Links
 $(_doc_external("PC/PCASMGetLocalSubdomains"))
 """
-function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC)
+function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::AbstractPC)
     error("PCASMGetLocalSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCASMGetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCASMGetLocalSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_ = Ref{$PetscInt}()
 	is_ = Ref{Ptr{CIS}}()
 	is_local_ = Ref{Ptr{CIS}}()
@@ -201,7 +201,7 @@ end
     @chk ccall(
                (:PCASMGetLocalSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
                pc, n_, is_, is_local_,
               )
 
@@ -213,7 +213,7 @@ end
 end 
 
 """
-	n::PetscInt,mat::Vector{PetscMat} = PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,mat::Vector{PetscMat} = PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the local submatrices (for this processor
 only) for the additive Schwarz preconditioner, `PCASM`.
 
@@ -234,18 +234,18 @@ See also: `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`, `PCASMGetSu
 # External Links
 $(_doc_external("PC/PCASMGetLocalSubmatrices"))
 """
-function PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC)
+function PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::AbstractPC)
     error("PCASMGetLocalSubmatrices: no generated method for these argument types")
 end
 
-@for_petsc function PCASMGetLocalSubmatrices(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCASMGetLocalSubmatrices(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_ = Ref{$PetscInt}()
 	mat_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCASMGetLocalSubmatrices, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
                pc, n_, mat_,
               )
 
@@ -256,7 +256,7 @@ end
 end 
 
 """
-	type::PCCompositeType = PCASMGetLocalType(petsclib::PetscLibType, pc::PC) 
+	type::PCCompositeType = PCASMGetLocalType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the type of composition used for local problems in the additive Schwarz method, `PCASM`.
 
 Logically Collective
@@ -281,17 +281,17 @@ See also: `PCASM`, `PCASMSetType()`, `PCASMGetType()`, `PCASMSetLocalType()`, `P
 # External Links
 $(_doc_external("PC/PCASMGetLocalType"))
 """
-function PCASMGetLocalType(petsclib::PetscLibType, pc::PC)
+function PCASMGetLocalType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCASMGetLocalType: no generated method for these argument types")
 end
 
-@for_petsc function PCASMGetLocalType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCASMGetLocalType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCCompositeType}()
 
     @chk ccall(
                (:PCASMGetLocalType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCCompositeType}),
+               (CPC, Ptr{PCCompositeType}),
                pc, type_,
               )
 
@@ -301,7 +301,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCASMGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCASMGetSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -323,11 +323,11 @@ See also: `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`,
 # External Links
 $(_doc_external("PC/PCASMGetSubKSP"))
 """
-function PCASMGetSubKSP(petsclib::PetscLibType, pc::PC)
+function PCASMGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCASMGetSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
 	ksp_ = Ref{Ptr{CKSP}}()
@@ -335,7 +335,7 @@ end
     @chk ccall(
                (:PCASMGetSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
+               (CPC, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
                pc, n_local_, first_local_, ksp_,
               )
 
@@ -347,7 +347,7 @@ end
 end 
 
 """
-	sub_mat_type::String = PCASMGetSubMatType(petsclib::PetscLibType, pc::PC) 
+	sub_mat_type::String = PCASMGetSubMatType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the matrix type used for `PCASM` subsolves, as a string.
 
 Not Collective
@@ -365,17 +365,17 @@ See also: `PCASM`, `PCASMSetSubMatType()`, `PCSetType()`, `VecSetType()`, `MatTy
 # External Links
 $(_doc_external("PC/PCASMGetSubMatType"))
 """
-function PCASMGetSubMatType(petsclib::PetscLibType, pc::PC)
+function PCASMGetSubMatType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCASMGetSubMatType: no generated method for these argument types")
 end
 
-@for_petsc function PCASMGetSubMatType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCASMGetSubMatType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	sub_mat_type_ = Ref{MatType}()
 
     @chk ccall(
                (:PCASMGetSubMatType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{MatType}),
+               (CPC, Ptr{MatType}),
                pc, sub_mat_type_,
               )
 
@@ -385,7 +385,7 @@ end
 end 
 
 """
-	type::PCASMType = PCASMGetType(petsclib::PetscLibType, pc::PC) 
+	type::PCASMType = PCASMGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the type of restriction and interpolation used
 for local problems in the additive Schwarz method, `PCASM`.
 
@@ -414,17 +414,17 @@ See also: `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMGetSubKSP()`, `PCGASM`,
 # External Links
 $(_doc_external("PC/PCASMGetType"))
 """
-function PCASMGetType(petsclib::PetscLibType, pc::PC)
+function PCASMGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCASMGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCASMGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCASMGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCASMType}()
 
     @chk ccall(
                (:PCASMGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCASMType}),
+               (CPC, Ptr{PCASMType}),
                pc, type_,
               )
 
@@ -434,7 +434,7 @@ end
 end 
 
 """
-	PCASMSetDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCASMSetDMSubdomains(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Indicates whether to use `DMCreateDomainDecomposition()` to define the subdomains, whenever possible.
 
 Logically Collective
@@ -454,16 +454,16 @@ See also: `PCASM`, `PCASMGetDMSubdomains()`, `PCASMSetTotalSubdomains()`, `PCASM
 # External Links
 $(_doc_external("PC/PCASMSetDMSubdomains"))
 """
-function PCASMSetDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCASMSetDMSubdomains(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCASMSetDMSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetDMSubdomains(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCASMSetDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCASMSetDMSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -472,7 +472,7 @@ end
 end 
 
 """
-	PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) 
+	PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) 
 Sets the local subdomains (for this processor only) for the additive Schwarz preconditioner `PCASM`.
 
 Collective
@@ -497,16 +497,16 @@ See also: `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMSetOverlap()`, `PCASMGetSu
 # External Links
 $(_doc_external("PC/PCASMSetLocalSubdomains"))
 """
-function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::PC, n::Integer, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS})
+function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::AbstractPC, n::Integer, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS})
     error("PCASMSetLocalSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
+@for_petsc function PCASMSetLocalSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCASMSetLocalSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CIS}, Ptr{CIS}),
+               (CPC, $PetscInt, Ptr{CIS}, Ptr{CIS}),
                pc, n, is, is_local,
               )
 
@@ -515,7 +515,7 @@ end
 end 
 
 """
-	PCASMSetLocalType(petsclib::PetscLibType, pc::PC, type::PCCompositeType) 
+	PCASMSetLocalType(petsclib::PetscLibType, pc::AbstractPC, type::PCCompositeType) 
 Sets the type of composition used for local problems in the additive Schwarz method, `PCASM`.
 
 Logically Collective
@@ -538,16 +538,16 @@ See also: `PCASM`, `PCASMSetType()`, `PCASMGetType()`, `PCASMGetLocalType()`, `P
 # External Links
 $(_doc_external("PC/PCASMSetLocalType"))
 """
-function PCASMSetLocalType(petsclib::PetscLibType, pc::PC, type::PCCompositeType)
+function PCASMSetLocalType(petsclib::PetscLibType, pc::AbstractPC, type::PCCompositeType)
     error("PCASMSetLocalType: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetLocalType(petsclib::$UnionPetscLib, pc::PC, type::PCCompositeType )
+@for_petsc function PCASMSetLocalType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCCompositeType )
 
     @chk ccall(
                (:PCASMSetLocalType, $petsc_library),
                PetscErrorCode,
-               (PC, PCCompositeType),
+               (CPC, PCCompositeType),
                pc, type,
               )
 
@@ -556,7 +556,7 @@ end
 end 
 
 """
-	PCASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::PetscInt) 
+	PCASMSetOverlap(petsclib::PetscLibType, pc::AbstractPC, ovl::PetscInt) 
 Sets the overlap between a pair of subdomains for the
 additive Schwarz preconditioner, `PCASM`.
 
@@ -577,16 +577,16 @@ See also: `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMSetLocalSubdomains()`, `PC
 # External Links
 $(_doc_external("PC/PCASMSetOverlap"))
 """
-function PCASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::Integer)
+function PCASMSetOverlap(petsclib::PetscLibType, pc::AbstractPC, ovl::Integer)
     error("PCASMSetOverlap: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetOverlap(petsclib::$UnionPetscLib, pc::PC, ovl::$PetscInt )
+@for_petsc function PCASMSetOverlap(petsclib::$UnionPetscLib, pc::AbstractPC, ovl::$PetscInt )
 
     @chk ccall(
                (:PCASMSetOverlap, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, ovl,
               )
 
@@ -595,7 +595,7 @@ end
 end 
 
 """
-	PCASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool) 
+	PCASMSetSortIndices(petsclib::PetscLibType, pc::AbstractPC, doSort::PetscBool) 
 Determines whether subdomain indices are sorted.
 
 Logically Collective
@@ -612,16 +612,16 @@ See also: `PCASM`, `PCASMSetLocalSubdomains()`, `PCASMSetTotalSubdomains()`, `PC
 # External Links
 $(_doc_external("PC/PCASMSetSortIndices"))
 """
-function PCASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool)
+function PCASMSetSortIndices(petsclib::PetscLibType, pc::AbstractPC, doSort::PetscBool)
     error("PCASMSetSortIndices: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetSortIndices(petsclib::$UnionPetscLib, pc::PC, doSort::PetscBool )
+@for_petsc function PCASMSetSortIndices(petsclib::$UnionPetscLib, pc::AbstractPC, doSort::PetscBool )
 
     @chk ccall(
                (:PCASMSetSortIndices, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, doSort,
               )
 
@@ -630,7 +630,7 @@ end
 end 
 
 """
-	PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String) 
+	PCASMSetSubMatType(petsclib::PetscLibType, pc::AbstractPC, sub_mat_type::String) 
 Set the type of matrix used for `PCASM` subsolves
 
 Collective
@@ -648,16 +648,16 @@ See also: `PCASM`, `PCASMGetSubMatType()`, `PCSetType()`, `VecSetType()`, `MatTy
 # External Links
 $(_doc_external("PC/PCASMSetSubMatType"))
 """
-function PCASMSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String)
+function PCASMSetSubMatType(petsclib::PetscLibType, pc::AbstractPC, sub_mat_type::String)
     error("PCASMSetSubMatType: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::String )
+@for_petsc function PCASMSetSubMatType(petsclib::$UnionPetscLib, pc::AbstractPC, sub_mat_type::String )
 
     @chk ccall(
                (:PCASMSetSubMatType, $petsc_library),
                PetscErrorCode,
-               (PC, MatType),
+               (CPC, MatType),
                pc, sub_mat_type,
               )
 
@@ -666,7 +666,7 @@ end
 end 
 
 """
-	PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) 
+	PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::AbstractPC, N::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) 
 Sets the subdomains for all processors for the
 additive Schwarz preconditioner, `PCASM`.
 
@@ -691,16 +691,16 @@ See also: `PCASM`, `PCASMSetLocalSubdomains()`, `PCASMSetOverlap()`, `PCASMGetSu
 # External Links
 $(_doc_external("PC/PCASMSetTotalSubdomains"))
 """
-function PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::Integer, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS})
+function PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::AbstractPC, N::Integer, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS})
     error("PCASMSetTotalSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::PC, N::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
+@for_petsc function PCASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, N::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCASMSetTotalSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CIS}, Ptr{CIS}),
+               (CPC, $PetscInt, Ptr{CIS}, Ptr{CIS}),
                pc, N, is, is_local,
               )
 
@@ -709,7 +709,7 @@ end
 end 
 
 """
-	PCASMSetType(petsclib::PetscLibType, pc::PC, type::PCASMType) 
+	PCASMSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCASMType) 
 Sets the type of restriction and interpolation used
 for local problems in the additive Schwarz method, `PCASM`.
 
@@ -736,16 +736,16 @@ See also: `PCASM`, `PCASMSetTotalSubdomains()`, `PCASMGetSubKSP()`,
 # External Links
 $(_doc_external("PC/PCASMSetType"))
 """
-function PCASMSetType(petsclib::PetscLibType, pc::PC, type::PCASMType)
+function PCASMSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCASMType)
     error("PCASMSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCASMSetType(petsclib::$UnionPetscLib, pc::PC, type::PCASMType )
+@for_petsc function PCASMSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCASMType )
 
     @chk ccall(
                (:PCASMSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCASMType),
+               (CPC, PCASMType),
                pc, type,
               )
 
@@ -754,7 +754,7 @@ end
 end 
 
 """
-	PCAppendOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String) 
+	PCAppendOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC, prefix::String) 
 Appends to the prefix used for searching for all
 `PC` options in the database.
 
@@ -771,16 +771,16 @@ See also: `PC`, `PCSetFromOptions()`, `PCSetOptionsPrefix()`, `PCGetOptionsPrefi
 # External Links
 $(_doc_external("PC/PCAppendOptionsPrefix"))
 """
-function PCAppendOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String)
+function PCAppendOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC, prefix::String)
     error("PCAppendOptionsPrefix: no generated method for these argument types")
 end
 
-@for_petsc function PCAppendOptionsPrefix(petsclib::$UnionPetscLib, pc::PC, prefix::String )
+@for_petsc function PCAppendOptionsPrefix(petsclib::$UnionPetscLib, pc::AbstractPC, prefix::String )
 
     @chk ccall(
                (:PCAppendOptionsPrefix, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}),
+               (CPC, Ptr{Cchar}),
                pc, prefix,
               )
 
@@ -789,7 +789,7 @@ end
 end 
 
 """
-	PCApply(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
+	PCApply(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the preconditioner to a vector.
 
 Collective
@@ -808,16 +808,16 @@ See also: `PC`, `PCApplyTranspose()`, `PCApplyBAorAB()`
 # External Links
 $(_doc_external("PC/PCApply"))
 """
-function PCApply(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+function PCApply(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec)
     error("PCApply: no generated method for these argument types")
 end
 
-@for_petsc function PCApply(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
+@for_petsc function PCApply(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApply, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec),
+               (CPC, CVec, CVec),
                pc, x, y,
               )
 
@@ -826,7 +826,7 @@ end
 end 
 
 """
-	PCApplyBAorAB(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) 
+	PCApplyBAorAB(petsclib::PetscLibType, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) 
 Applies the preconditioner and operator to a vector. y = B*A*x  or  y = A*B*x.
 
 Collective
@@ -847,16 +847,16 @@ See also: `PC`, `PCApply()`, `PCApplyTranspose()`, `PCApplyBAorABTranspose()`
 # External Links
 $(_doc_external("PC/PCApplyBAorAB"))
 """
-function PCApplyBAorAB(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec)
+function PCApplyBAorAB(petsclib::PetscLibType, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec)
     error("PCApplyBAorAB: no generated method for these argument types")
 end
 
-@for_petsc function PCApplyBAorAB(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
+@for_petsc function PCApplyBAorAB(petsclib::$UnionPetscLib, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplyBAorAB, $petsc_library),
                PetscErrorCode,
-               (PC, PCSide, CVec, CVec, CVec),
+               (CPC, PCSide, CVec, CVec, CVec),
                pc, side, x, y, work,
               )
 
@@ -865,7 +865,7 @@ end
 end 
 
 """
-	PCApplyBAorABTranspose(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) 
+	PCApplyBAorABTranspose(petsclib::PetscLibType, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) 
 Applies the transpose of the preconditioner
 and operator to a vector. That is, applies B^T * A^T with left preconditioning,
 NOT (B*A)^T = A^T*B^T.
@@ -888,16 +888,16 @@ See also: `PC`, `PCApply()`, `PCApplyTranspose()`, `PCApplyBAorAB()`
 # External Links
 $(_doc_external("PC/PCApplyBAorABTranspose"))
 """
-function PCApplyBAorABTranspose(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec)
+function PCApplyBAorABTranspose(petsclib::PetscLibType, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec)
     error("PCApplyBAorABTranspose: no generated method for these argument types")
 end
 
-@for_petsc function PCApplyBAorABTranspose(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
+@for_petsc function PCApplyBAorABTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplyBAorABTranspose, $petsc_library),
                PetscErrorCode,
-               (PC, PCSide, CVec, CVec, CVec),
+               (CPC, PCSide, CVec, CVec, CVec),
                pc, side, x, y, work,
               )
 
@@ -906,7 +906,7 @@ end
 end 
 
 """
-	outits::PetscInt,reason::PCRiCchardsonConvergedReason = PCApplyRichardson(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, its::PetscInt, guesszero::PetscBool) 
+	outits::PetscInt,reason::PCRiCchardsonConvergedReason = PCApplyRichardson(petsclib::PetscLibType, pc::AbstractPC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, its::PetscInt, guesszero::PetscBool) 
 Applies several steps of Richardson iteration with
 the particular preconditioner. This routine is usually used by the
 Krylov solvers and not the application code directly.
@@ -935,18 +935,18 @@ See also: `PC`, `PCApplyRichardsonExists()`
 # External Links
 $(_doc_external("PC/PCApplyRichardson"))
 """
-function PCApplyRichardson(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::Real, abstol::Real, dtol::Real, its::Integer, guesszero::PetscBool)
+function PCApplyRichardson(petsclib::PetscLibType, pc::AbstractPC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::Real, abstol::Real, dtol::Real, its::Integer, guesszero::PetscBool)
     error("PCApplyRichardson: no generated method for these argument types")
 end
 
-@for_petsc function PCApplyRichardson(petsclib::$UnionPetscLib, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, its::$PetscInt, guesszero::PetscBool )
+@for_petsc function PCApplyRichardson(petsclib::$UnionPetscLib, pc::AbstractPC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, its::$PetscInt, guesszero::PetscBool )
 	outits_ = Ref{$PetscInt}()
 	reason_ = Ref{PCRiCchardsonConvergedReason}()
 
     @chk ccall(
                (:PCApplyRichardson, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec, CVec, $PetscReal, $PetscReal, $PetscReal, $PetscInt, PetscBool, Ptr{$PetscInt}, Ptr{PCRiCchardsonConvergedReason}),
+               (CPC, CVec, CVec, CVec, $PetscReal, $PetscReal, $PetscReal, $PetscInt, PetscBool, Ptr{$PetscInt}, Ptr{PCRiCchardsonConvergedReason}),
                pc, b, y, w, rtol, abstol, dtol, its, guesszero, outits_, reason_,
               )
 
@@ -957,7 +957,7 @@ end
 end 
 
 """
-	exists::PetscBool = PCApplyRichardsonExists(petsclib::PetscLibType, pc::PC) 
+	exists::PetscBool = PCApplyRichardsonExists(petsclib::PetscLibType, pc::AbstractPC) 
 Determines whether a particular preconditioner has a
 built-in fast application of Richardson's method.
 
@@ -976,17 +976,17 @@ See also: `PC`, `KSPRICHARDSON`, `PCApplyRichardson()`
 # External Links
 $(_doc_external("PC/PCApplyRichardsonExists"))
 """
-function PCApplyRichardsonExists(petsclib::PetscLibType, pc::PC)
+function PCApplyRichardsonExists(petsclib::PetscLibType, pc::AbstractPC)
     error("PCApplyRichardsonExists: no generated method for these argument types")
 end
 
-@for_petsc function PCApplyRichardsonExists(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCApplyRichardsonExists(petsclib::$UnionPetscLib, pc::AbstractPC )
 	exists_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCApplyRichardsonExists, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, exists_,
               )
 
@@ -996,7 +996,7 @@ end
 end 
 
 """
-	PCApplySymmetricLeft(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
+	PCApplySymmetricLeft(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the left part of a symmetric preconditioner to a vector.
 
 Collective
@@ -1015,16 +1015,16 @@ See also: `PC`, `PCApply()`, `PCApplySymmetricRight()`
 # External Links
 $(_doc_external("PC/PCApplySymmetricLeft"))
 """
-function PCApplySymmetricLeft(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+function PCApplySymmetricLeft(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec)
     error("PCApplySymmetricLeft: no generated method for these argument types")
 end
 
-@for_petsc function PCApplySymmetricLeft(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
+@for_petsc function PCApplySymmetricLeft(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplySymmetricLeft, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec),
+               (CPC, CVec, CVec),
                pc, x, y,
               )
 
@@ -1033,7 +1033,7 @@ end
 end 
 
 """
-	PCApplySymmetricRight(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
+	PCApplySymmetricRight(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the right part of a symmetric preconditioner to a vector.
 
 Collective
@@ -1052,16 +1052,16 @@ See also: `PC`, `PCApply()`, `PCApplySymmetricLeft()`
 # External Links
 $(_doc_external("PC/PCApplySymmetricRight"))
 """
-function PCApplySymmetricRight(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+function PCApplySymmetricRight(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec)
     error("PCApplySymmetricRight: no generated method for these argument types")
 end
 
-@for_petsc function PCApplySymmetricRight(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
+@for_petsc function PCApplySymmetricRight(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplySymmetricRight, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec),
+               (CPC, CVec, CVec),
                pc, x, y,
               )
 
@@ -1070,7 +1070,7 @@ end
 end 
 
 """
-	PCApplyTranspose(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
+	PCApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the transpose of preconditioner to a vector.
 
 Collective
@@ -1089,16 +1089,16 @@ See also: `PC`, `PCApply()`, `PCApplyBAorAB()`, `PCApplyBAorABTranspose()`, `PCA
 # External Links
 $(_doc_external("PC/PCApplyTranspose"))
 """
-function PCApplyTranspose(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec)
+function PCApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec)
     error("PCApplyTranspose: no generated method for these argument types")
 end
 
-@for_petsc function PCApplyTranspose(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
+@for_petsc function PCApplyTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplyTranspose, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec),
+               (CPC, CVec, CVec),
                pc, x, y,
               )
 
@@ -1107,7 +1107,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCApplyTransposeExists(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCApplyTransposeExists(petsclib::PetscLibType, pc::AbstractPC) 
 Test whether the preconditioner has a transpose apply operation
 
 Collective
@@ -1125,17 +1125,17 @@ See also: `PC`, `PCApplyTranspose()`
 # External Links
 $(_doc_external("PC/PCApplyTransposeExists"))
 """
-function PCApplyTransposeExists(petsclib::PetscLibType, pc::PC)
+function PCApplyTransposeExists(petsclib::PetscLibType, pc::AbstractPC)
     error("PCApplyTransposeExists: no generated method for these argument types")
 end
 
-@for_petsc function PCApplyTransposeExists(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCApplyTransposeExists(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCApplyTransposeExists, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -1145,7 +1145,7 @@ end
 end 
 
 """
-	fetidp_mat::PetscMat,fetidp_pc::PC = PCBDDCCreateFETIDPOperators(petsclib::PetscLibType, pc::PC, fully_redundant::PetscBool, prefix::String) 
+	fetidp_mat::PetscMat,fetidp_pc::PC = PCBDDCCreateFETIDPOperators(petsclib::PetscLibType, pc::AbstractPC, fully_redundant::PetscBool, prefix::String) 
 Create FETI-DP operators
 
 Collective
@@ -1166,23 +1166,23 @@ See also: `KSPFETIDP`, `PCBDDC`, `PCBDDCMatFETIDPGetRHS()`, `PCBDDCMatFETIDPGetS
 # External Links
 $(_doc_external("PC/PCBDDCCreateFETIDPOperators"))
 """
-function PCBDDCCreateFETIDPOperators(petsclib::PetscLibType, pc::PC, fully_redundant::PetscBool, prefix::String)
+function PCBDDCCreateFETIDPOperators(petsclib::PetscLibType, pc::AbstractPC, fully_redundant::PetscBool, prefix::String)
     error("PCBDDCCreateFETIDPOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCCreateFETIDPOperators(petsclib::$UnionPetscLib, pc::PC, fully_redundant::PetscBool, prefix::String )
+@for_petsc function PCBDDCCreateFETIDPOperators(petsclib::$UnionPetscLib, pc::AbstractPC, fully_redundant::PetscBool, prefix::String )
 	fetidp_mat_ = Ref{CMat}()
-	fetidp_pc_ = Ref{PC}()
+	fetidp_pc_ = Ref{CPC}()
 
     @chk ccall(
                (:PCBDDCCreateFETIDPOperators, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool, Ptr{Cchar}, Ptr{CMat}, Ptr{PC}),
+               (CPC, PetscBool, Ptr{Cchar}, Ptr{CMat}, Ptr{CPC}),
                pc, fully_redundant, prefix, fetidp_mat_, fetidp_pc_,
               )
 
 	fetidp_mat = PetscMat(fetidp_mat_[], petsclib)
-	fetidp_pc = fetidp_pc_[]
+	fetidp_pc = PC(fetidp_pc_[], petsclib)
 
 	return fetidp_mat,fetidp_pc
 end 
@@ -1216,7 +1216,7 @@ end
 end 
 
 """
-	DirichletBoundaries::IS = PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::PC) 
+	DirichletBoundaries::IS = PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::AbstractPC) 
 Get parallel `IS` for Dirichlet boundaries
 
 Collective
@@ -1234,17 +1234,17 @@ See also: `PCBDDC`, `PCBDDCSetDirichletBoundaries()`
 # External Links
 $(_doc_external("PC/PCBDDCGetDirichletBoundaries"))
 """
-function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::PC)
+function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBDDCGetDirichletBoundaries: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCGetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBDDCGetDirichletBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC )
 	DirichletBoundaries_ = Ref{CIS}()
 
     @chk ccall(
                (:PCBDDCGetDirichletBoundaries, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CIS}),
+               (CPC, Ptr{CIS}),
                pc, DirichletBoundaries_,
               )
 
@@ -1254,7 +1254,7 @@ end
 end 
 
 """
-	DirichletBoundaries::IS = PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC) 
+	DirichletBoundaries::IS = PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC) 
 Get parallel `IS` for Dirichlet boundaries (in local ordering)
 
 Collective
@@ -1272,17 +1272,17 @@ See also: `PCBDDC`, `PCBDDCGetDirichletBoundaries()`, `PCBDDCSetDirichletBoundar
 # External Links
 $(_doc_external("PC/PCBDDCGetDirichletBoundariesLocal"))
 """
-function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC)
+function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBDDCGetDirichletBoundariesLocal: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCGetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBDDCGetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC )
 	DirichletBoundaries_ = Ref{CIS}()
 
     @chk ccall(
                (:PCBDDCGetDirichletBoundariesLocal, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CIS}),
+               (CPC, Ptr{CIS}),
                pc, DirichletBoundaries_,
               )
 
@@ -1292,7 +1292,7 @@ end
 end 
 
 """
-	NeumannBoundaries::IS = PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::PC) 
+	NeumannBoundaries::IS = PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::AbstractPC) 
 Get parallel `IS` for Neumann boundaries
 
 Not Collective
@@ -1310,17 +1310,17 @@ See also: `PCBDDC`, `PCBDDCSetNeumannBoundaries()`, `PCBDDCGetDirichletBoundarie
 # External Links
 $(_doc_external("PC/PCBDDCGetNeumannBoundaries"))
 """
-function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::PC)
+function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBDDCGetNeumannBoundaries: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCGetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBDDCGetNeumannBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC )
 	NeumannBoundaries_ = Ref{CIS}()
 
     @chk ccall(
                (:PCBDDCGetNeumannBoundaries, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CIS}),
+               (CPC, Ptr{CIS}),
                pc, NeumannBoundaries_,
               )
 
@@ -1330,7 +1330,7 @@ end
 end 
 
 """
-	NeumannBoundaries::IS = PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC) 
+	NeumannBoundaries::IS = PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC) 
 Get parallel `IS` for Neumann boundaries (in local ordering)
 
 Not Collective
@@ -1348,17 +1348,17 @@ See also: `PCBDDC`, `PCBDDCSetNeumannBoundaries()`, `PCBDDCSetNeumannBoundariesL
 # External Links
 $(_doc_external("PC/PCBDDCGetNeumannBoundariesLocal"))
 """
-function PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC)
+function PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBDDCGetNeumannBoundariesLocal: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCGetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBDDCGetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC )
 	NeumannBoundaries_ = Ref{CIS}()
 
     @chk ccall(
                (:PCBDDCGetNeumannBoundariesLocal, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CIS}),
+               (CPC, Ptr{CIS}),
                pc, NeumannBoundaries_,
               )
 
@@ -1368,7 +1368,7 @@ end
 end 
 
 """
-	is::IS = PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::PC) 
+	is::IS = PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::AbstractPC) 
 Get user defined primal vertices set with `PCBDDCSetPrimalVerticesIS()`
 
 Collective
@@ -1386,17 +1386,17 @@ See also: `PCBDDC`, `PCBDDCSetPrimalVerticesIS()`, `PCBDDCSetPrimalVerticesLocal
 # External Links
 $(_doc_external("PC/PCBDDCGetPrimalVerticesIS"))
 """
-function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::PC)
+function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBDDCGetPrimalVerticesIS: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCGetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBDDCGetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::AbstractPC )
 	is_ = Ref{CIS}()
 
     @chk ccall(
                (:PCBDDCGetPrimalVerticesIS, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CIS}),
+               (CPC, Ptr{CIS}),
                pc, is_,
               )
 
@@ -1406,7 +1406,7 @@ end
 end 
 
 """
-	is::IS = PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC) 
+	is::IS = PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::AbstractPC) 
 Get user defined primal vertices set with `PCBDDCSetPrimalVerticesLocalIS()`
 
 Collective
@@ -1424,17 +1424,17 @@ See also: `PCBDDC`, `PCBDDCSetPrimalVerticesIS()`, `PCBDDCGetPrimalVerticesIS()`
 # External Links
 $(_doc_external("PC/PCBDDCGetPrimalVerticesLocalIS"))
 """
-function PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC)
+function PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBDDCGetPrimalVerticesLocalIS: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCGetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBDDCGetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::AbstractPC )
 	is_ = Ref{CIS}()
 
     @chk ccall(
                (:PCBDDCGetPrimalVerticesLocalIS, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CIS}),
+               (CPC, Ptr{CIS}),
                pc, is_,
               )
 
@@ -1546,7 +1546,7 @@ end
 end 
 
 """
-	PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::PC, change::AbstractPetscMat, interior::PetscBool) 
+	PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::AbstractPC, change::AbstractPetscMat, interior::PetscBool) 
 Set user defined change of basis for dofs
 
 Collective
@@ -1563,16 +1563,16 @@ See also: `PCBDDC`
 # External Links
 $(_doc_external("PC/PCBDDCSetChangeOfBasisMat"))
 """
-function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::PC, change::AbstractPetscMat, interior::PetscBool)
+function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::AbstractPC, change::AbstractPetscMat, interior::PetscBool)
     error("PCBDDCSetChangeOfBasisMat: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetChangeOfBasisMat(petsclib::$UnionPetscLib, pc::PC, change::AbstractPetscMat, interior::PetscBool )
+@for_petsc function PCBDDCSetChangeOfBasisMat(petsclib::$UnionPetscLib, pc::AbstractPC, change::AbstractPetscMat, interior::PetscBool )
 
     @chk ccall(
                (:PCBDDCSetChangeOfBasisMat, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, PetscBool),
+               (CPC, CMat, PetscBool),
                pc, change, interior,
               )
 
@@ -1581,7 +1581,7 @@ end
 end 
 
 """
-	PCBDDCSetCoarseningRatio(petsclib::PetscLibType, pc::PC, k::PetscInt) 
+	PCBDDCSetCoarseningRatio(petsclib::PetscLibType, pc::AbstractPC, k::PetscInt) 
 Set coarsening ratio used in the multi-level version of `PCBDDC`
 
 Logically Collective
@@ -1600,16 +1600,16 @@ See also: `PCBDDC`, `PCBDDCSetLevels()`
 # External Links
 $(_doc_external("PC/PCBDDCSetCoarseningRatio"))
 """
-function PCBDDCSetCoarseningRatio(petsclib::PetscLibType, pc::PC, k::Integer)
+function PCBDDCSetCoarseningRatio(petsclib::PetscLibType, pc::AbstractPC, k::Integer)
     error("PCBDDCSetCoarseningRatio: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetCoarseningRatio(petsclib::$UnionPetscLib, pc::PC, k::$PetscInt )
+@for_petsc function PCBDDCSetCoarseningRatio(petsclib::$UnionPetscLib, pc::AbstractPC, k::$PetscInt )
 
     @chk ccall(
                (:PCBDDCSetCoarseningRatio, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, k,
               )
 
@@ -1618,7 +1618,7 @@ end
 end 
 
 """
-	PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) 
+	PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::AbstractPC, DirichletBoundaries::AbstractIS) 
 Set the `IS` defining Dirichlet boundaries for the global problem.
 
 Collective
@@ -1634,16 +1634,16 @@ See also: `PCBDDC`, `PCBDDCSetDirichletBoundariesLocal()`, `MatZeroRows()`, `Mat
 # External Links
 $(_doc_external("PC/PCBDDCSetDirichletBoundaries"))
 """
-function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS)
+function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::AbstractPC, DirichletBoundaries::AbstractIS)
     error("PCBDDCSetDirichletBoundaries: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
+@for_petsc function PCBDDCSetDirichletBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC, DirichletBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetDirichletBoundaries, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, DirichletBoundaries,
               )
 
@@ -1652,7 +1652,7 @@ end
 end 
 
 """
-	PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) 
+	PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC, DirichletBoundaries::AbstractIS) 
 Set the `IS` defining Dirichlet boundaries for the global problem in local ordering.
 
 Collective
@@ -1668,16 +1668,16 @@ See also: `PCBDDC`, `PCBDDCSetDirichletBoundaries()`, `MatZeroRows()`, `MatZeroR
 # External Links
 $(_doc_external("PC/PCBDDCSetDirichletBoundariesLocal"))
 """
-function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS)
+function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC, DirichletBoundaries::AbstractIS)
     error("PCBDDCSetDirichletBoundariesLocal: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
+@for_petsc function PCBDDCSetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC, DirichletBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetDirichletBoundariesLocal, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, DirichletBoundaries,
               )
 
@@ -1686,7 +1686,7 @@ end
 end 
 
 """
-	PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat, order::PetscInt, field::PetscInt, glob::PetscBool, conforming::PetscBool) 
+	PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::AbstractPC, G::AbstractPetscMat, order::PetscInt, field::PetscInt, glob::PetscBool, conforming::PetscBool) 
 Sets the discrete gradient to be used by the `PCBDDC` preconditioner
 
 Collective
@@ -1706,16 +1706,16 @@ See also: `PCBDDC`, `PCBDDCSetDofsSplitting()`, `PCBDDCSetDofsSplittingLocal()`,
 # External Links
 $(_doc_external("PC/PCBDDCSetDiscreteGradient"))
 """
-function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat, order::Integer, field::Integer, glob::PetscBool, conforming::PetscBool)
+function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::AbstractPC, G::AbstractPetscMat, order::Integer, field::Integer, glob::PetscBool, conforming::PetscBool)
     error("PCBDDCSetDiscreteGradient: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::AbstractPetscMat, order::$PetscInt, field::$PetscInt, glob::PetscBool, conforming::PetscBool )
+@for_petsc function PCBDDCSetDiscreteGradient(petsclib::$UnionPetscLib, pc::AbstractPC, G::AbstractPetscMat, order::$PetscInt, field::$PetscInt, glob::PetscBool, conforming::PetscBool )
 
     @chk ccall(
                (:PCBDDCSetDiscreteGradient, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, $PetscInt, $PetscInt, PetscBool, PetscBool),
+               (CPC, CMat, $PetscInt, $PetscInt, PetscBool, PetscBool),
                pc, G, order, field, glob, conforming,
               )
 
@@ -1724,7 +1724,7 @@ end
 end 
 
 """
-	PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS) 
+	PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::AbstractPC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS) 
 Sets the linear operator representing \\int_\\Omega \\div {\\bf u} \\cdot p dx for the `PCBDDC` preconditioner
 
 Collective
@@ -1743,16 +1743,16 @@ See also: `PCBDDC`, `PCBDDCSetDiscreteGradient()`
 # External Links
 $(_doc_external("PC/PCBDDCSetDivergenceMat"))
 """
-function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS)
+function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::AbstractPC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS)
     error("PCBDDCSetDivergenceMat: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetDivergenceMat(petsclib::$UnionPetscLib, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS )
+@for_petsc function PCBDDCSetDivergenceMat(petsclib::$UnionPetscLib, pc::AbstractPC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetDivergenceMat, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, PetscBool, CIS),
+               (CPC, CMat, PetscBool, CIS),
                pc, divudotp, trans, vl2l,
               )
 
@@ -1761,7 +1761,7 @@ end
 end 
 
 """
-	PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) 
+	PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::AbstractPC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) 
 Set the `IS` defining fields of the global matrix
 
 Collective
@@ -1778,16 +1778,16 @@ See also: `PCBDDC`, `PCBDDCSetDofsSplittingLocal()`
 # External Links
 $(_doc_external("PC/PCBDDCSetDofsSplitting"))
 """
-function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::PC, n_is::Integer, ISForDofs::Vector{<:AbstractIS})
+function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::AbstractPC, n_is::Integer, ISForDofs::Vector{<:AbstractIS})
     error("PCBDDCSetDofsSplitting: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetDofsSplitting(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
+@for_petsc function PCBDDCSetDofsSplitting(petsclib::$UnionPetscLib, pc::AbstractPC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCBDDCSetDofsSplitting, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CIS}),
+               (CPC, $PetscInt, Ptr{CIS}),
                pc, n_is, ISForDofs,
               )
 
@@ -1796,7 +1796,7 @@ end
 end 
 
 """
-	PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) 
+	PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::AbstractPC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) 
 Set the `IS` defining fields of the local subdomain matrix
 
 Collective
@@ -1813,16 +1813,16 @@ See also: `PCBDDC`, `PCBDDCSetDofsSplitting()`
 # External Links
 $(_doc_external("PC/PCBDDCSetDofsSplittingLocal"))
 """
-function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::PC, n_is::Integer, ISForDofs::Vector{<:AbstractIS})
+function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::AbstractPC, n_is::Integer, ISForDofs::Vector{<:AbstractIS})
     error("PCBDDCSetDofsSplittingLocal: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetDofsSplittingLocal(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
+@for_petsc function PCBDDCSetDofsSplittingLocal(petsclib::$UnionPetscLib, pc::AbstractPC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCBDDCSetDofsSplittingLocal, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CIS}),
+               (CPC, $PetscInt, Ptr{CIS}),
                pc, n_is, ISForDofs,
               )
 
@@ -1831,7 +1831,7 @@ end
 end 
 
 """
-	PCBDDCSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) 
+	PCBDDCSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::PetscInt) 
 Sets the maximum number of additional levels allowed for multilevel `PCBDDC`
 
 Logically Collective
@@ -1850,16 +1850,16 @@ See also: `PCBDDC`, `PCBDDCSetCoarseningRatio()`
 # External Links
 $(_doc_external("PC/PCBDDCSetLevels"))
 """
-function PCBDDCSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer)
+function PCBDDCSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::Integer)
     error("PCBDDCSetLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt )
+@for_petsc function PCBDDCSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, levels::$PetscInt )
 
     @chk ccall(
                (:PCBDDCSetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, levels,
               )
 
@@ -1868,7 +1868,7 @@ end
 end 
 
 """
-	PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::PC, nvtxs::PetscInt, xadj::Vector{PetscInt}, adjncy::Vector{PetscInt}, copymode::PetscCopyMode) 
+	PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::AbstractPC, nvtxs::PetscInt, xadj::Vector{PetscInt}, adjncy::Vector{PetscInt}, copymode::PetscCopyMode) 
 Set adjacency structure (CSR graph) of the local degrees of freedom.
 
 Not collective
@@ -1887,16 +1887,16 @@ See also: `PCBDDC`, `PetscCopyMode`
 # External Links
 $(_doc_external("PC/PCBDDCSetLocalAdjacencyGraph"))
 """
-function PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::PC, nvtxs::Integer, xadj::AbstractVector{<:Number}, adjncy::AbstractVector{<:Number}, copymode::PetscCopyMode)
+function PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::AbstractPC, nvtxs::Integer, xadj::AbstractVector{<:Number}, adjncy::AbstractVector{<:Number}, copymode::PetscCopyMode)
     error("PCBDDCSetLocalAdjacencyGraph: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetLocalAdjacencyGraph(petsclib::$UnionPetscLib, pc::PC, nvtxs::$PetscInt, xadj::Vector{$PetscInt}, adjncy::Vector{$PetscInt}, copymode::PetscCopyMode )
+@for_petsc function PCBDDCSetLocalAdjacencyGraph(petsclib::$UnionPetscLib, pc::AbstractPC, nvtxs::$PetscInt, xadj::Vector{$PetscInt}, adjncy::Vector{$PetscInt}, copymode::PetscCopyMode )
 
     @chk ccall(
                (:PCBDDCSetLocalAdjacencyGraph, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, PetscCopyMode),
+               (CPC, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, PetscCopyMode),
                pc, nvtxs, xadj, adjncy, copymode,
               )
 
@@ -1905,7 +1905,7 @@ end
 end 
 
 """
-	PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) 
+	PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::AbstractPC, NeumannBoundaries::AbstractIS) 
 Set the `IS` defining Neumann boundaries for the global problem.
 
 Collective
@@ -1921,16 +1921,16 @@ See also: `PCBDDC`, `PCBDDCSetNeumannBoundariesLocal()`
 # External Links
 $(_doc_external("PC/PCBDDCSetNeumannBoundaries"))
 """
-function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS)
+function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::AbstractPC, NeumannBoundaries::AbstractIS)
     error("PCBDDCSetNeumannBoundaries: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
+@for_petsc function PCBDDCSetNeumannBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC, NeumannBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetNeumannBoundaries, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, NeumannBoundaries,
               )
 
@@ -1939,7 +1939,7 @@ end
 end 
 
 """
-	PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) 
+	PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC, NeumannBoundaries::AbstractIS) 
 Set the `IS` defining Neumann boundaries for the global problem in local ordering.
 
 Collective
@@ -1955,16 +1955,16 @@ See also: `PCBDDC`, `PCBDDCSetNeumannBoundaries()`, `PCBDDCGetDirichletBoundarie
 # External Links
 $(_doc_external("PC/PCBDDCSetNeumannBoundariesLocal"))
 """
-function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS)
+function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC, NeumannBoundaries::AbstractIS)
     error("PCBDDCSetNeumannBoundariesLocal: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
+@for_petsc function PCBDDCSetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC, NeumannBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetNeumannBoundariesLocal, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, NeumannBoundaries,
               )
 
@@ -1973,7 +1973,7 @@ end
 end 
 
 """
-	PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS) 
+	PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::AbstractPC, PrimalVertices::AbstractIS) 
 Set additional user defined primal vertices in `PCBDDC`
 
 Collective
@@ -1989,16 +1989,16 @@ See also: `PCBDDC`, `PCBDDCGetPrimalVerticesIS()`, `PCBDDCSetPrimalVerticesLocal
 # External Links
 $(_doc_external("PC/PCBDDCSetPrimalVerticesIS"))
 """
-function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS)
+function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::AbstractPC, PrimalVertices::AbstractIS)
     error("PCBDDCSetPrimalVerticesIS: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::AbstractIS )
+@for_petsc function PCBDDCSetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::AbstractPC, PrimalVertices::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetPrimalVerticesIS, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, PrimalVertices,
               )
 
@@ -2007,7 +2007,7 @@ end
 end 
 
 """
-	PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS) 
+	PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::AbstractPC, PrimalVertices::AbstractIS) 
 Set additional user defined primal vertices in `PCBDDC`
 
 Collective
@@ -2023,16 +2023,16 @@ See also: `PCBDDC`, `PCBDDCSetPrimalVerticesIS()`, `PCBDDCGetPrimalVerticesIS()`
 # External Links
 $(_doc_external("PC/PCBDDCSetPrimalVerticesLocalIS"))
 """
-function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS)
+function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::AbstractPC, PrimalVertices::AbstractIS)
     error("PCBDDCSetPrimalVerticesLocalIS: no generated method for these argument types")
 end
 
-@for_petsc function PCBDDCSetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::AbstractIS )
+@for_petsc function PCBDDCSetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::AbstractPC, PrimalVertices::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetPrimalVerticesLocalIS, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, PrimalVertices,
               )
 
@@ -2041,22 +2041,22 @@ end
 end 
 
 """
-	PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP) 
+	PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP) 
 
 # External Links
 $(_doc_external("KSP/PCBJKOKKOSGetKSP"))
 """
-function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
+function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
     error("PCBJKOKKOSGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCBJKOKKOSGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
+@for_petsc function PCBJKOKKOSGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
                (:PCBJKOKKOSGetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, ksp_,
               )
 
@@ -2066,21 +2066,21 @@ end
 end 
 
 """
-	PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP) 
+	PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP) 
 
 # External Links
 $(_doc_external("KSP/PCBJKOKKOSSetKSP"))
 """
-function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
+function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
     error("PCBJKOKKOSSetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCBJKOKKOSSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
+@for_petsc function PCBJKOKKOSSetKSP(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCBJKOKKOSSetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, CKSP),
+               (CPC, CKSP),
                pc, ksp,
               )
 
@@ -2089,7 +2089,7 @@ end
 end 
 
 """
-	blocks::PetscInt = PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::Union{Ptr, AbstractArray{PetscInt}}) 
+	blocks::PetscInt = PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::AbstractPC, lens::Union{Ptr, AbstractArray{PetscInt}}) 
 Gets the local number of blocks for the block
 Jacobi, `PCBJACOBI`, preconditioner.
 
@@ -2107,18 +2107,18 @@ See also: `PCBJACOBI`, `PCSetUseAmat()`, `PCBJacobiGetTotalBlocks()`
 # External Links
 $(_doc_external("PC/PCBJacobiGetLocalBlocks"))
 """
-function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::Union{Ptr, AbstractArray{<:Number}})
+function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::AbstractPC, lens::Union{Ptr, AbstractArray{<:Number}})
     error("PCBJacobiGetLocalBlocks: no generated method for these argument types")
 end
 
-@for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, lens::Union{Ptr, AbstractArray{$PetscInt}} )
+@for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, lens::Union{Ptr, AbstractArray{$PetscInt}} )
 	blocks_ = Ref{$PetscInt}()
 	lens_ = Ref{Ptr{$PetscInt}}(lens isa Ptr ? lens : pointer(lens))
 
     @chk ccall(
                (:PCBJacobiGetLocalBlocks, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                pc, blocks_, lens_,
               )
 
@@ -2128,7 +2128,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -2149,11 +2149,11 @@ See also: `PCBJACOBI`, `PCASM`, `PCASMGetSubKSP()`
 # External Links
 $(_doc_external("PC/PCBJacobiGetSubKSP"))
 """
-function PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC)
+function PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBJacobiGetSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
 	ksp_ = Ref{Ptr{CKSP}}()
@@ -2161,7 +2161,7 @@ end
     @chk ccall(
                (:PCBJacobiGetSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
+               (CPC, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
                pc, n_local_, first_local_, ksp_,
               )
 
@@ -2173,7 +2173,7 @@ end
 end 
 
 """
-	blocks::PetscInt,lens::Vector{PetscInt} = PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::PC) 
+	blocks::PetscInt,lens::Vector{PetscInt} = PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the global number of blocks for the block
 Jacobi, `PCBJACOBI`, preconditioner.
 
@@ -2193,18 +2193,18 @@ See also: `PCBJACOBI`, `PCSetUseAmat()`, `PCBJacobiGetLocalBlocks()`
 # External Links
 $(_doc_external("PC/PCBJacobiGetTotalBlocks"))
 """
-function PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::PC)
+function PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::AbstractPC)
     error("PCBJacobiGetTotalBlocks: no generated method for these argument types")
 end
 
-@for_petsc function PCBJacobiGetTotalBlocks(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCBJacobiGetTotalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC )
 	blocks_ = Ref{$PetscInt}()
 	lens_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
                (:PCBJacobiGetTotalBlocks, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                pc, blocks_, lens_,
               )
 
@@ -2215,7 +2215,7 @@ end
 end 
 
 """
-	PCBJacobiSetLocalBlocks(petsclib::PetscLibType, pc::PC, blocks::PetscInt, lens::Vector{PetscInt}) 
+	PCBJacobiSetLocalBlocks(petsclib::PetscLibType, pc::AbstractPC, blocks::PetscInt, lens::Vector{PetscInt}) 
 Sets the local number of blocks for the block
 Jacobi, `PCBJACOBI`,  preconditioner.
 
@@ -2236,16 +2236,16 @@ See also: `PCBJACOBI`, `PCSetUseAmat()`, `PCBJacobiSetTotalBlocks()`
 # External Links
 $(_doc_external("PC/PCBJacobiSetLocalBlocks"))
 """
-function PCBJacobiSetLocalBlocks(petsclib::PetscLibType, pc::PC, blocks::Integer, lens::AbstractVector{<:Number})
+function PCBJacobiSetLocalBlocks(petsclib::PetscLibType, pc::AbstractPC, blocks::Integer, lens::AbstractVector{<:Number})
     error("PCBJacobiSetLocalBlocks: no generated method for these argument types")
 end
 
-@for_petsc function PCBJacobiSetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, blocks::$PetscInt, lens::Vector{$PetscInt} )
+@for_petsc function PCBJacobiSetLocalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, blocks::$PetscInt, lens::Vector{$PetscInt} )
 
     @chk ccall(
                (:PCBJacobiSetLocalBlocks, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{$PetscInt}),
+               (CPC, $PetscInt, Ptr{$PetscInt}),
                pc, blocks, lens,
               )
 
@@ -2254,7 +2254,7 @@ end
 end 
 
 """
-	PCBJacobiSetTotalBlocks(petsclib::PetscLibType, pc::PC, blocks::PetscInt, lens::Vector{PetscInt}) 
+	PCBJacobiSetTotalBlocks(petsclib::PetscLibType, pc::AbstractPC, blocks::PetscInt, lens::Vector{PetscInt}) 
 Sets the global number of blocks for the block
 Jacobi preconditioner.
 
@@ -2275,16 +2275,16 @@ See also: `PCBJACOBI`, `PCSetUseAmat()`, `PCBJacobiSetLocalBlocks()`
 # External Links
 $(_doc_external("PC/PCBJacobiSetTotalBlocks"))
 """
-function PCBJacobiSetTotalBlocks(petsclib::PetscLibType, pc::PC, blocks::Integer, lens::AbstractVector{<:Number})
+function PCBJacobiSetTotalBlocks(petsclib::PetscLibType, pc::AbstractPC, blocks::Integer, lens::AbstractVector{<:Number})
     error("PCBJacobiSetTotalBlocks: no generated method for these argument types")
 end
 
-@for_petsc function PCBJacobiSetTotalBlocks(petsclib::$UnionPetscLib, pc::PC, blocks::$PetscInt, lens::Vector{$PetscInt} )
+@for_petsc function PCBJacobiSetTotalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, blocks::$PetscInt, lens::Vector{$PetscInt} )
 
     @chk ccall(
                (:PCBJacobiSetTotalBlocks, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{$PetscInt}),
+               (CPC, $PetscInt, Ptr{$PetscInt}),
                pc, blocks, lens,
               )
 
@@ -2293,7 +2293,7 @@ end
 end 
 
 """
-	PCCompositeAddPC(petsclib::PetscLibType, pc::PC, subpc::PC) 
+	PCCompositeAddPC(petsclib::PetscLibType, pc::AbstractPC, subpc::AbstractPC) 
 Adds another `PC` to the composite `PC`.
 
 Collective
@@ -2309,16 +2309,16 @@ See also: `PCCOMPOSITE`, `PCCompositeAddPCType()`, `PCCompositeGetNumberPC()`
 # External Links
 $(_doc_external("PC/PCCompositeAddPC"))
 """
-function PCCompositeAddPC(petsclib::PetscLibType, pc::PC, subpc::PC)
+function PCCompositeAddPC(petsclib::PetscLibType, pc::AbstractPC, subpc::AbstractPC)
     error("PCCompositeAddPC: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeAddPC(petsclib::$UnionPetscLib, pc::PC, subpc::PC )
+@for_petsc function PCCompositeAddPC(petsclib::$UnionPetscLib, pc::AbstractPC, subpc::AbstractPC )
 
     @chk ccall(
                (:PCCompositeAddPC, $petsc_library),
                PetscErrorCode,
-               (PC, PC),
+               (CPC, CPC),
                pc, subpc,
               )
 
@@ -2327,7 +2327,7 @@ end
 end 
 
 """
-	PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::String) 
+	PCCompositeAddPCType(petsclib::PetscLibType, pc::AbstractPC, type::String) 
 Adds another `PC` of the given type to the composite `PC`.
 
 Collective
@@ -2343,16 +2343,16 @@ See also: `PCCOMPOSITE`, `PCCompositeAddPC()`, `PCCompositeGetNumberPC()`
 # External Links
 $(_doc_external("PC/PCCompositeAddPCType"))
 """
-function PCCompositeAddPCType(petsclib::PetscLibType, pc::PC, type::String)
+function PCCompositeAddPCType(petsclib::PetscLibType, pc::AbstractPC, type::String)
     error("PCCompositeAddPCType: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeAddPCType(petsclib::$UnionPetscLib, pc::PC, type::String )
+@for_petsc function PCCompositeAddPCType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
 
     @chk ccall(
                (:PCCompositeAddPCType, $petsc_library),
                PetscErrorCode,
-               (PC, PCType),
+               (CPC, PCType),
                pc, type,
               )
 
@@ -2361,7 +2361,7 @@ end
 end 
 
 """
-	num::PetscInt = PCCompositeGetNumberPC(petsclib::PetscLibType, pc::PC) 
+	num::PetscInt = PCCompositeGetNumberPC(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the number of `PC` objects in the composite `PC`.
 
 Not Collective
@@ -2379,17 +2379,17 @@ See also: `PCCOMPOSITE`, `PCCompositeGetPC()`, `PCCompositeAddPC()`, `PCComposit
 # External Links
 $(_doc_external("PC/PCCompositeGetNumberPC"))
 """
-function PCCompositeGetNumberPC(petsclib::PetscLibType, pc::PC)
+function PCCompositeGetNumberPC(petsclib::PetscLibType, pc::AbstractPC)
     error("PCCompositeGetNumberPC: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeGetNumberPC(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCCompositeGetNumberPC(petsclib::$UnionPetscLib, pc::AbstractPC )
 	num_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PCCompositeGetNumberPC, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}),
+               (CPC, Ptr{$PetscInt}),
                pc, num_,
               )
 
@@ -2399,7 +2399,7 @@ end
 end 
 
 """
-	subpc::PC = PCCompositeGetPC(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	subpc::PC = PCCompositeGetPC(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Gets one of the `PC` objects in the composite `PC`.
 
 Not Collective
@@ -2418,27 +2418,27 @@ See also: `PCCOMPOSITE`, `PCCompositeAddPCType()`, `PCCompositeGetNumberPC()`, `
 # External Links
 $(_doc_external("PC/PCCompositeGetPC"))
 """
-function PCCompositeGetPC(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCCompositeGetPC(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCCompositeGetPC: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeGetPC(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
-	subpc_ = Ref{PC}()
+@for_petsc function PCCompositeGetPC(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	subpc_ = Ref{CPC}()
 
     @chk ccall(
                (:PCCompositeGetPC, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{PC}),
+               (CPC, $PetscInt, Ptr{CPC}),
                pc, n, subpc_,
               )
 
-	subpc = subpc_[]
+	subpc = PC(subpc_[], petsclib)
 
 	return subpc
 end 
 
 """
-	type::PCCompositeType = PCCompositeGetType(petsclib::PetscLibType, pc::PC) 
+	type::PCCompositeType = PCCompositeGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the type of composite preconditioner.
 
 Logically Collective
@@ -2457,17 +2457,17 @@ See also: `PCCOMPOSITE`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
 # External Links
 $(_doc_external("PC/PCCompositeGetType"))
 """
-function PCCompositeGetType(petsclib::PetscLibType, pc::PC)
+function PCCompositeGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCCompositeGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCCompositeGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCCompositeType}()
 
     @chk ccall(
                (:PCCompositeGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCCompositeType}),
+               (CPC, Ptr{PCCompositeType}),
                pc, type_,
               )
 
@@ -2477,7 +2477,7 @@ end
 end 
 
 """
-	PCCompositeSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType) 
+	PCCompositeSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCCompositeType) 
 Sets the type of composite preconditioner.
 
 Logically Collective
@@ -2497,16 +2497,16 @@ See also: `PCCOMPOSITE`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
 # External Links
 $(_doc_external("PC/PCCompositeSetType"))
 """
-function PCCompositeSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType)
+function PCCompositeSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCCompositeType)
     error("PCCompositeSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeSetType(petsclib::$UnionPetscLib, pc::PC, type::PCCompositeType )
+@for_petsc function PCCompositeSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCCompositeType )
 
     @chk ccall(
                (:PCCompositeSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCCompositeType),
+               (CPC, PCCompositeType),
                pc, type,
               )
 
@@ -2515,7 +2515,7 @@ end
 end 
 
 """
-	PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::PC, alpha::PetscScalar) 
+	PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::AbstractPC, alpha::PetscScalar) 
 Sets alpha for the special composite preconditioner, `PC_COMPOSITE_SPECIAL`,
 for \\alpha I + R + S
 
@@ -2533,16 +2533,16 @@ See also: `PCCOMPOSITE`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
 # External Links
 $(_doc_external("PC/PCCompositeSpecialSetAlpha"))
 """
-function PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::PC, alpha::Number)
+function PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::AbstractPC, alpha::Number)
     error("PCCompositeSpecialSetAlpha: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeSpecialSetAlpha(petsclib::$UnionPetscLib, pc::PC, alpha::$PetscScalar )
+@for_petsc function PCCompositeSpecialSetAlpha(petsclib::$UnionPetscLib, pc::AbstractPC, alpha::$PetscScalar )
 
     @chk ccall(
                (:PCCompositeSpecialSetAlpha, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscScalar),
+               (CPC, $PetscScalar),
                pc, alpha,
               )
 
@@ -2551,7 +2551,7 @@ end
 end 
 
 """
-	PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::PC, alpha_mat::AbstractPetscMat) 
+	PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::AbstractPC, alpha_mat::AbstractPetscMat) 
 Sets the matrix `alpha_mat` used in place of a scalar \\alpha I term for the special composite preconditioner, `PC_COMPOSITE_SPECIAL`, for M + R + S
 
 Logically Collective
@@ -2568,16 +2568,16 @@ See also: `PCCOMPOSITE`, `PC_COMPOSITE_ADDITIVE`, `PC_COMPOSITE_MULTIPLICATIVE`,
 # External Links
 $(_doc_external("PC/PCCompositeSpecialSetAlphaMat"))
 """
-function PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::PC, alpha_mat::AbstractPetscMat)
+function PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::AbstractPC, alpha_mat::AbstractPetscMat)
     error("PCCompositeSpecialSetAlphaMat: no generated method for these argument types")
 end
 
-@for_petsc function PCCompositeSpecialSetAlphaMat(petsclib::$UnionPetscLib, pc::PC, alpha_mat::AbstractPetscMat )
+@for_petsc function PCCompositeSpecialSetAlphaMat(petsclib::$UnionPetscLib, pc::AbstractPC, alpha_mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCCompositeSpecialSetAlphaMat, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, alpha_mat,
               )
 
@@ -2586,7 +2586,7 @@ end
 end 
 
 """
-	mat::PetscMat = PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::String) 
+	mat::PetscMat = PCComputeOperator(petsclib::PetscLibType, pc::AbstractPC, mattype::String) 
 Computes the explicit preconditioned operator as a matrix `Mat`.
 
 Collective
@@ -2605,17 +2605,17 @@ See also: `PC`, `KSPComputeOperator()`, `MatType`
 # External Links
 $(_doc_external("PC/PCComputeOperator"))
 """
-function PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::String)
+function PCComputeOperator(petsclib::PetscLibType, pc::AbstractPC, mattype::String)
     error("PCComputeOperator: no generated method for these argument types")
 end
 
-@for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::PC, mattype::String )
+@for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::AbstractPC, mattype::String )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:PCComputeOperator, $petsc_library),
                PetscErrorCode,
-               (PC, MatType, Ptr{CMat}),
+               (CPC, MatType, Ptr{CMat}),
                pc, mattype, mat_,
               )
 
@@ -2648,22 +2648,22 @@ function PCCreate(petsclib::PetscLibType, comm::MPI_Comm)
 end
 
 @for_petsc function PCCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
-	newpc_ = Ref{PC}()
+	newpc_ = Ref{CPC}()
 
     @chk ccall(
                (:PCCreate, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{PC}),
+               (MPI_Comm, Ptr{CPC}),
                comm, newpc_,
               )
 
-	newpc = newpc_[]
+	newpc = PC(newpc_[], petsclib)
 
 	return newpc
 end 
 
 """
-	ksp::KSP = PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::PC) 
+	ksp::KSP = PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Returns the coarse problem `KSP`.
 
 Not Collective
@@ -2681,17 +2681,17 @@ See also: `PCDEFLATION`, `PCDeflationSetCoarseMat()`
 # External Links
 $(_doc_external("PC/PCDeflationGetCoarseKSP"))
 """
-function PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::PC)
+function PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCDeflationGetCoarseKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationGetCoarseKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCDeflationGetCoarseKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCDeflationGetCoarseKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, ksp_,
               )
 
@@ -2701,7 +2701,7 @@ end
 end 
 
 """
-	apc::PC = PCDeflationGetPC(petsclib::PetscLibType, pc::PC) 
+	apc::PC = PCDeflationGetPC(petsclib::PetscLibType, pc::AbstractPC) 
 Returns the additional preconditioner M^{-1}.
 
 Not Collective
@@ -2719,27 +2719,27 @@ See also: `PCDEFLATION`, `PCDeflationGetCoarseKSP()`
 # External Links
 $(_doc_external("PC/PCDeflationGetPC"))
 """
-function PCDeflationGetPC(petsclib::PetscLibType, pc::PC)
+function PCDeflationGetPC(petsclib::PetscLibType, pc::AbstractPC)
     error("PCDeflationGetPC: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationGetPC(petsclib::$UnionPetscLib, pc::PC )
-	apc_ = Ref{PC}()
+@for_petsc function PCDeflationGetPC(petsclib::$UnionPetscLib, pc::AbstractPC )
+	apc_ = Ref{CPC}()
 
     @chk ccall(
                (:PCDeflationGetPC, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PC}),
+               (CPC, Ptr{CPC}),
                pc, apc_,
               )
 
-	apc = apc_[]
+	apc = PC(apc_[], petsclib)
 
 	return apc
 end 
 
 """
-	PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat) 
+	PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::AbstractPC, mat::AbstractPetscMat) 
 Set the coarse problem `Mat`.
 
 Collective
@@ -2755,16 +2755,16 @@ See also: `PCDEFLATION`, `PCDeflationGetCoarseKSP()`
 # External Links
 $(_doc_external("PC/PCDeflationSetCoarseMat"))
 """
-function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat)
+function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::AbstractPC, mat::AbstractPetscMat)
     error("PCDeflationSetCoarseMat: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetCoarseMat(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat )
+@for_petsc function PCDeflationSetCoarseMat(petsclib::$UnionPetscLib, pc::AbstractPC, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCDeflationSetCoarseMat, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, mat,
               )
 
@@ -2773,7 +2773,7 @@ end
 end 
 
 """
-	PCDeflationSetCorrectionFactor(petsclib::PetscLibType, pc::PC, fact::PetscScalar) 
+	PCDeflationSetCorrectionFactor(petsclib::PetscLibType, pc::AbstractPC, fact::PetscScalar) 
 Set coarse problem correction factor.
 The preconditioner becomes P*M^{-1} + fact*Q.
 
@@ -2792,16 +2792,16 @@ See also: `PCDEFLATION`, `PCDeflationSetLevels()`, `PCDeflationSetReductionFacto
 # External Links
 $(_doc_external("PC/PCDeflationSetCorrectionFactor"))
 """
-function PCDeflationSetCorrectionFactor(petsclib::PetscLibType, pc::PC, fact::Number)
+function PCDeflationSetCorrectionFactor(petsclib::PetscLibType, pc::AbstractPC, fact::Number)
     error("PCDeflationSetCorrectionFactor: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetCorrectionFactor(petsclib::$UnionPetscLib, pc::PC, fact::$PetscScalar )
+@for_petsc function PCDeflationSetCorrectionFactor(petsclib::$UnionPetscLib, pc::AbstractPC, fact::$PetscScalar )
 
     @chk ccall(
                (:PCDeflationSetCorrectionFactor, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscScalar),
+               (CPC, $PetscScalar),
                pc, fact,
               )
 
@@ -2810,7 +2810,7 @@ end
 end 
 
 """
-	PCDeflationSetInitOnly(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCDeflationSetInitOnly(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Do only initialization step.
 Sets initial guess to the solution on the deflation space but does not apply
 the deflation preconditioner. The additional preconditioner is still applied.
@@ -2831,16 +2831,16 @@ See also: `PCDEFLATION`
 # External Links
 $(_doc_external("PC/PCDeflationSetInitOnly"))
 """
-function PCDeflationSetInitOnly(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCDeflationSetInitOnly(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCDeflationSetInitOnly: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetInitOnly(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCDeflationSetInitOnly(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCDeflationSetInitOnly, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -2849,7 +2849,7 @@ end
 end 
 
 """
-	PCDeflationSetLevels(petsclib::PetscLibType, pc::PC, max::PetscInt) 
+	PCDeflationSetLevels(petsclib::PetscLibType, pc::AbstractPC, max::PetscInt) 
 Set the maximum level of deflation nesting.
 
 Logically Collective
@@ -2868,16 +2868,16 @@ See also: `PCDeflationSetSpaceToCompute()`, `PCDeflationSetSpace()`, `PCDEFLATIO
 # External Links
 $(_doc_external("PC/PCDeflationSetLevels"))
 """
-function PCDeflationSetLevels(petsclib::PetscLibType, pc::PC, max::Integer)
+function PCDeflationSetLevels(petsclib::PetscLibType, pc::AbstractPC, max::Integer)
     error("PCDeflationSetLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetLevels(petsclib::$UnionPetscLib, pc::PC, max::$PetscInt )
+@for_petsc function PCDeflationSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, max::$PetscInt )
 
     @chk ccall(
                (:PCDeflationSetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, max,
               )
 
@@ -2886,7 +2886,7 @@ end
 end 
 
 """
-	PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat) 
+	PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::AbstractPC, mat::AbstractPetscMat) 
 Set the projection null space matrix (W'*A).
 
 Collective
@@ -2902,16 +2902,16 @@ See also: `PCDEFLATION`, `PCDeflationSetSpace()`
 # External Links
 $(_doc_external("PC/PCDeflationSetProjectionNullSpaceMat"))
 """
-function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat)
+function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::AbstractPC, mat::AbstractPetscMat)
     error("PCDeflationSetProjectionNullSpaceMat: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetProjectionNullSpaceMat(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat )
+@for_petsc function PCDeflationSetProjectionNullSpaceMat(petsclib::$UnionPetscLib, pc::AbstractPC, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCDeflationSetProjectionNullSpaceMat, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, mat,
               )
 
@@ -2920,7 +2920,7 @@ end
 end 
 
 """
-	PCDeflationSetReductionFactor(petsclib::PetscLibType, pc::PC, red::PetscInt) 
+	PCDeflationSetReductionFactor(petsclib::PetscLibType, pc::AbstractPC, red::PetscInt) 
 Set reduction factor for the `PCDEFLATION`
 
 Logically Collective
@@ -2937,16 +2937,16 @@ See also: `PCTELESCOPE`, `PCDEFLATION`, `PCDeflationSetLevels()`
 # External Links
 $(_doc_external("PC/PCDeflationSetReductionFactor"))
 """
-function PCDeflationSetReductionFactor(petsclib::PetscLibType, pc::PC, red::Integer)
+function PCDeflationSetReductionFactor(petsclib::PetscLibType, pc::AbstractPC, red::Integer)
     error("PCDeflationSetReductionFactor: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetReductionFactor(petsclib::$UnionPetscLib, pc::PC, red::$PetscInt )
+@for_petsc function PCDeflationSetReductionFactor(petsclib::$UnionPetscLib, pc::AbstractPC, red::$PetscInt )
 
     @chk ccall(
                (:PCDeflationSetReductionFactor, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, red,
               )
 
@@ -2955,7 +2955,7 @@ end
 end 
 
 """
-	PCDeflationSetSpace(petsclib::PetscLibType, pc::PC, W::AbstractPetscMat, transpose::PetscBool) 
+	PCDeflationSetSpace(petsclib::PetscLibType, pc::AbstractPC, W::AbstractPetscMat, transpose::PetscBool) 
 Set the deflation space matrix (or its (Hermitian) transpose).
 
 Logically Collective
@@ -2972,16 +2972,16 @@ See also: `PCDeflationSetLevels()`, `PCDEFLATION`, `PCDeflationSetProjectionNull
 # External Links
 $(_doc_external("PC/PCDeflationSetSpace"))
 """
-function PCDeflationSetSpace(petsclib::PetscLibType, pc::PC, W::AbstractPetscMat, transpose::PetscBool)
+function PCDeflationSetSpace(petsclib::PetscLibType, pc::AbstractPC, W::AbstractPetscMat, transpose::PetscBool)
     error("PCDeflationSetSpace: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetSpace(petsclib::$UnionPetscLib, pc::PC, W::AbstractPetscMat, transpose::PetscBool )
+@for_petsc function PCDeflationSetSpace(petsclib::$UnionPetscLib, pc::AbstractPC, W::AbstractPetscMat, transpose::PetscBool )
 
     @chk ccall(
                (:PCDeflationSetSpace, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, PetscBool),
+               (CPC, CMat, PetscBool),
                pc, W, transpose,
               )
 
@@ -2990,7 +2990,7 @@ end
 end 
 
 """
-	PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::PC, type::PCDeflationSpaceType, size::PetscInt) 
+	PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::AbstractPC, type::PCDeflationSpaceType, size::PetscInt) 
 Set deflation space type and size to compute.
 
 Logically Collective
@@ -3009,16 +3009,16 @@ See also: `PCDeflationSetLevels()`, `PCDEFLATION`
 # External Links
 $(_doc_external("PC/PCDeflationSetSpaceToCompute"))
 """
-function PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::PC, type::PCDeflationSpaceType, size::Integer)
+function PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::AbstractPC, type::PCDeflationSpaceType, size::Integer)
     error("PCDeflationSetSpaceToCompute: no generated method for these argument types")
 end
 
-@for_petsc function PCDeflationSetSpaceToCompute(petsclib::$UnionPetscLib, pc::PC, type::PCDeflationSpaceType, size::$PetscInt )
+@for_petsc function PCDeflationSetSpaceToCompute(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCDeflationSpaceType, size::$PetscInt )
 
     @chk ccall(
                (:PCDeflationSetSpaceToCompute, $petsc_library),
                PetscErrorCode,
-               (PC, PCDeflationSpaceType, $PetscInt),
+               (CPC, PCDeflationSpaceType, $PetscInt),
                pc, type, size,
               )
 
@@ -3027,7 +3027,7 @@ end
 end 
 
 """
-	PCDestroy(petsclib::PetscLibType, pc::Union{PC, Ref{PC}}) 
+	PCDestroy(petsclib::PetscLibType, pc::AbstractPC) 
 Destroys `PC` context that was created with `PCCreate()`.
 
 Collective
@@ -3042,26 +3042,27 @@ See also: `PC`, `PCCreate()`, `PCSetUp()`
 # External Links
 $(_doc_external("PC/PCDestroy"))
 """
-function PCDestroy(petsclib::PetscLibType, pc::Union{PC, Ref{PC}})
+function PCDestroy(petsclib::PetscLibType, pc::AbstractPC)
     error("PCDestroy: no generated method for these argument types")
 end
 
-@for_petsc function PCDestroy(petsclib::$UnionPetscLib, pc::Union{PC, Ref{PC}} )
-	pc_ = pc isa Base.RefValue ? pc : Ref{PC}(pc)
+@for_petsc function PCDestroy(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc_ = Ref(pc.ptr)
 
     @chk ccall(
                (:PCDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{PC},),
+               (Ptr{CPC},),
                pc_,
               )
 
+	pc.ptr = C_NULL
 
 	return nothing
 end 
 
 """
-	PCDiagonalScaleLeft(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) 
+	PCDiagonalScaleLeft(petsclib::PetscLibType, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec) 
 Scales a vector by the left scaling as needed by certain time-stepping codes.
 
 Logically Collective
@@ -3078,16 +3079,16 @@ See also: `PCCreate()`, `PCSetUp()`, `PCSetDiagonalScale()`, `PCDiagonalScaleRig
 # External Links
 $(_doc_external("PC/PCDiagonalScaleLeft"))
 """
-function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec)
+function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec)
     error("PCDiagonalScaleLeft: no generated method for these argument types")
 end
 
-@for_petsc function PCDiagonalScaleLeft(petsclib::$UnionPetscLib, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec )
+@for_petsc function PCDiagonalScaleLeft(petsclib::$UnionPetscLib, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec )
 
     @chk ccall(
                (:PCDiagonalScaleLeft, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec),
+               (CPC, CVec, CVec),
                pc, in, out,
               )
 
@@ -3096,7 +3097,7 @@ end
 end 
 
 """
-	PCDiagonalScaleRight(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) 
+	PCDiagonalScaleRight(petsclib::PetscLibType, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec) 
 Scales a vector by the right scaling as needed by certain time-stepping codes.
 
 Logically Collective
@@ -3113,16 +3114,16 @@ See also: `PCCreate()`, `PCSetUp()`, `PCDiagonalScaleLeft()`, `PCSetDiagonalScal
 # External Links
 $(_doc_external("PC/PCDiagonalScaleRight"))
 """
-function PCDiagonalScaleRight(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec)
+function PCDiagonalScaleRight(petsclib::PetscLibType, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec)
     error("PCDiagonalScaleRight: no generated method for these argument types")
 end
 
-@for_petsc function PCDiagonalScaleRight(petsclib::$UnionPetscLib, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec )
+@for_petsc function PCDiagonalScaleRight(petsclib::$UnionPetscLib, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec )
 
     @chk ccall(
                (:PCDiagonalScaleRight, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec),
+               (CPC, CVec, CVec),
                pc, in, out,
               )
 
@@ -3131,7 +3132,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC) 
 Tells if the Eisenstat preconditioner
 not to do additional diagonal preconditioning. For matrices with a constant
 along the diagonal, this may save a small amount of work.
@@ -3154,17 +3155,17 @@ See also: `PCEISENSTAT`, `PCEisenstatGetOmega()`
 # External Links
 $(_doc_external("PC/PCEisenstatGetNoDiagonalScaling"))
 """
-function PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::PC)
+function PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC)
     error("PCEisenstatGetNoDiagonalScaling: no generated method for these argument types")
 end
 
-@for_petsc function PCEisenstatGetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCEisenstatGetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCEisenstatGetNoDiagonalScaling, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -3174,7 +3175,7 @@ end
 end 
 
 """
-	omega::PetscReal = PCEisenstatGetOmega(petsclib::PetscLibType, pc::PC) 
+	omega::PetscReal = PCEisenstatGetOmega(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the SSOR relaxation coefficient, omega,
 to use with Eisenstat's trick (where omega = 1.0 by default).
 
@@ -3194,17 +3195,17 @@ See also: `PCEISENSTAT`, `PCSORGetOmega()`, `PCEisenstatSetOmega()`
 # External Links
 $(_doc_external("PC/PCEisenstatGetOmega"))
 """
-function PCEisenstatGetOmega(petsclib::PetscLibType, pc::PC)
+function PCEisenstatGetOmega(petsclib::PetscLibType, pc::AbstractPC)
     error("PCEisenstatGetOmega: no generated method for these argument types")
 end
 
-@for_petsc function PCEisenstatGetOmega(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCEisenstatGetOmega(petsclib::$UnionPetscLib, pc::AbstractPC )
 	omega_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:PCEisenstatGetOmega, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}),
+               (CPC, Ptr{$PetscReal}),
                pc, omega_,
               )
 
@@ -3214,7 +3215,7 @@ end
 end 
 
 """
-	PCEisenstatSetNoDiagonalScaling(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCEisenstatSetNoDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Causes the Eisenstat preconditioner, `PCEISENSTAT`
 not to do additional diagonal preconditioning. For matrices with a constant
 along the diagonal, this may save a small amount of work.
@@ -3235,16 +3236,16 @@ See also: `PCEisenstatSetOmega()`, `PCEISENSTAT`
 # External Links
 $(_doc_external("PC/PCEisenstatSetNoDiagonalScaling"))
 """
-function PCEisenstatSetNoDiagonalScaling(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCEisenstatSetNoDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCEisenstatSetNoDiagonalScaling: no generated method for these argument types")
 end
 
-@for_petsc function PCEisenstatSetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCEisenstatSetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCEisenstatSetNoDiagonalScaling, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -3253,7 +3254,7 @@ end
 end 
 
 """
-	PCEisenstatSetOmega(petsclib::PetscLibType, pc::PC, omega::PetscReal) 
+	PCEisenstatSetOmega(petsclib::PetscLibType, pc::AbstractPC, omega::PetscReal) 
 Sets the SSOR relaxation coefficient, omega,
 to use with Eisenstat's trick (where omega = 1.0 by default)
 
@@ -3273,16 +3274,16 @@ See also: `PCSORSetOmega()`, `PCEISENSTAT`
 # External Links
 $(_doc_external("PC/PCEisenstatSetOmega"))
 """
-function PCEisenstatSetOmega(petsclib::PetscLibType, pc::PC, omega::Real)
+function PCEisenstatSetOmega(petsclib::PetscLibType, pc::AbstractPC, omega::Real)
     error("PCEisenstatSetOmega: no generated method for these argument types")
 end
 
-@for_petsc function PCEisenstatSetOmega(petsclib::$UnionPetscLib, pc::PC, omega::$PetscReal )
+@for_petsc function PCEisenstatSetOmega(petsclib::$UnionPetscLib, pc::AbstractPC, omega::$PetscReal )
 
     @chk ccall(
                (:PCEisenstatSetOmega, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, omega,
               )
 
@@ -3291,7 +3292,7 @@ end
 end 
 
 """
-	PCExoticSetType(petsclib::PetscLibType, pc::PC, type::PCExoticType) 
+	PCExoticSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCExoticType) 
 Sets the type of coarse grid interpolation to use
 
 Logically Collective
@@ -3308,16 +3309,16 @@ See also: `PCEXOTIC`, `PCExoticType()`
 # External Links
 $(_doc_external("PC/PCExoticSetType"))
 """
-function PCExoticSetType(petsclib::PetscLibType, pc::PC, type::PCExoticType)
+function PCExoticSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCExoticType)
     error("PCExoticSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCExoticSetType(petsclib::$UnionPetscLib, pc::PC, type::PCExoticType )
+@for_petsc function PCExoticSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCExoticType )
 
     @chk ccall(
                (:PCExoticSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCExoticType),
+               (CPC, PCExoticType),
                pc, type,
               )
 
@@ -3326,7 +3327,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::AbstractPC) 
 Determines if all diagonal matrix entries are
 treated as level 0 fill even if there is no non-zero location.
 
@@ -3343,17 +3344,17 @@ See also: `PCILU`, `PCICC`, `PCFactorSetAllowDiagonalFill()`
 # External Links
 $(_doc_external("PC/PCFactorGetAllowDiagonalFill"))
 """
-function PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::PC)
+function PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetAllowDiagonalFill: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCFactorGetAllowDiagonalFill, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -3363,7 +3364,7 @@ end
 end 
 
 """
-	levels::PetscInt = PCFactorGetLevels(petsclib::PetscLibType, pc::PC) 
+	levels::PetscInt = PCFactorGetLevels(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the number of levels of fill to use.
 
 Logically Collective
@@ -3381,17 +3382,17 @@ See also: `PCILU`, `PCICC`, `PCFactorSetLevels()`
 # External Links
 $(_doc_external("PC/PCFactorGetLevels"))
 """
-function PCFactorGetLevels(petsclib::PetscLibType, pc::PC)
+function PCFactorGetLevels(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetLevels(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetLevels(petsclib::$UnionPetscLib, pc::AbstractPC )
 	levels_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PCFactorGetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}),
+               (CPC, Ptr{$PetscInt}),
                pc, levels_,
               )
 
@@ -3401,7 +3402,7 @@ end
 end 
 
 """
-	stype::String = PCFactorGetMatSolverType(petsclib::PetscLibType, pc::PC) 
+	stype::String = PCFactorGetMatSolverType(petsclib::PetscLibType, pc::AbstractPC) 
 gets the solver package that is used to perform the factorization
 
 Not Collective
@@ -3420,17 +3421,17 @@ See also: `PCLU`, `PCCHOLESKY`, `MatGetFactor()`, `MatSolverType`, `MATSOLVERSUP
 # External Links
 $(_doc_external("PC/PCFactorGetMatSolverType"))
 """
-function PCFactorGetMatSolverType(petsclib::PetscLibType, pc::PC)
+function PCFactorGetMatSolverType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetMatSolverType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetMatSolverType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetMatSolverType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	stype_ = Ref{MatSolverType}()
 
     @chk ccall(
                (:PCFactorGetMatSolverType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{MatSolverType}),
+               (CPC, Ptr{MatSolverType}),
                pc, stype_,
               )
 
@@ -3440,7 +3441,7 @@ end
 end 
 
 """
-	mat::PetscMat = PCFactorGetMatrix(petsclib::PetscLibType, pc::PC) 
+	mat::PetscMat = PCFactorGetMatrix(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the factored matrix from the
 preconditioner context.  This routine is valid only for the `PCLU`,
 `PCILU`, `PCCHOLESKY`, and `PCICC` methods.
@@ -3460,17 +3461,17 @@ See also: `PC`, `PCLU`, `PCILU`, `PCCHOLESKY`, `PCICC`
 # External Links
 $(_doc_external("PC/PCFactorGetMatrix"))
 """
-function PCFactorGetMatrix(petsclib::PetscLibType, pc::PC)
+function PCFactorGetMatrix(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetMatrix: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetMatrix(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetMatrix(petsclib::$UnionPetscLib, pc::AbstractPC )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:PCFactorGetMatrix, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CMat}),
+               (CPC, Ptr{CMat}),
                pc, mat_,
               )
 
@@ -3480,7 +3481,7 @@ end
 end 
 
 """
-	shift::PetscReal = PCFactorGetShiftAmount(petsclib::PetscLibType, pc::PC) 
+	shift::PetscReal = PCFactorGetShiftAmount(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the tolerance used to define a zero privot
 
 Not Collective
@@ -3498,17 +3499,17 @@ See also: `PCLU`, `PCCHOLESKY`, `PCFactorSetShiftAmount()`, `PCFactorSetShiftTyp
 # External Links
 $(_doc_external("PC/PCFactorGetShiftAmount"))
 """
-function PCFactorGetShiftAmount(petsclib::PetscLibType, pc::PC)
+function PCFactorGetShiftAmount(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetShiftAmount: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetShiftAmount(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetShiftAmount(petsclib::$UnionPetscLib, pc::AbstractPC )
 	shift_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:PCFactorGetShiftAmount, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}),
+               (CPC, Ptr{$PetscReal}),
                pc, shift_,
               )
 
@@ -3518,7 +3519,7 @@ end
 end 
 
 """
-	type::MatFactorShiftType = PCFactorGetShiftType(petsclib::PetscLibType, pc::PC) 
+	type::MatFactorShiftType = PCFactorGetShiftType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the type of shift, if any, done when a zero pivot is detected
 
 Not Collective
@@ -3536,17 +3537,17 @@ See also: `PCLU`, `PCCHOLESKY`, `PCFactorSetShiftType()`, `MatFactorShiftType`, 
 # External Links
 $(_doc_external("PC/PCFactorGetShiftType"))
 """
-function PCFactorGetShiftType(petsclib::PetscLibType, pc::PC)
+function PCFactorGetShiftType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetShiftType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetShiftType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetShiftType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{MatFactorShiftType}()
 
     @chk ccall(
                (:PCFactorGetShiftType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{MatFactorShiftType}),
+               (CPC, Ptr{MatFactorShiftType}),
                pc, type_,
               )
 
@@ -3556,7 +3557,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCFactorGetUseInPlace(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCFactorGetUseInPlace(petsclib::PetscLibType, pc::AbstractPC) 
 Determines if an in-place factorization is being used.
 
 Logically Collective
@@ -3574,17 +3575,17 @@ See also: `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `PCFactorSetUseInPlace()`
 # External Links
 $(_doc_external("PC/PCFactorGetUseInPlace"))
 """
-function PCFactorGetUseInPlace(petsclib::PetscLibType, pc::PC)
+function PCFactorGetUseInPlace(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetUseInPlace: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetUseInPlace(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetUseInPlace(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCFactorGetUseInPlace, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -3594,7 +3595,7 @@ end
 end 
 
 """
-	pivot::PetscReal = PCFactorGetZeroPivot(petsclib::PetscLibType, pc::PC) 
+	pivot::PetscReal = PCFactorGetZeroPivot(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the tolerance used to define a zero privot
 
 Not Collective
@@ -3612,17 +3613,17 @@ See also: `PCLU`, `PCCHOLESKY`, `PCFactorSetZeroPivot()`
 # External Links
 $(_doc_external("PC/PCFactorGetZeroPivot"))
 """
-function PCFactorGetZeroPivot(petsclib::PetscLibType, pc::PC)
+function PCFactorGetZeroPivot(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorGetZeroPivot: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorGetZeroPivot(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorGetZeroPivot(petsclib::$UnionPetscLib, pc::AbstractPC )
 	pivot_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:PCFactorGetZeroPivot, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}),
+               (CPC, Ptr{$PetscReal}),
                pc, pivot_,
               )
 
@@ -3632,7 +3633,7 @@ end
 end 
 
 """
-	PCFactorReorderForNonzeroDiagonal(petsclib::PetscLibType, pc::PC, rtol::PetscReal) 
+	PCFactorReorderForNonzeroDiagonal(petsclib::PetscLibType, pc::AbstractPC, rtol::PetscReal) 
 reorders rows/columns of matrix to remove zeros from diagonal
 
 Logically Collective
@@ -3651,16 +3652,16 @@ See also: `PCILU`, `PCICC`, `PCFactorSetFill()`, `PCFactorSetShiftAmount()`, `PC
 # External Links
 $(_doc_external("PC/PCFactorReorderForNonzeroDiagonal"))
 """
-function PCFactorReorderForNonzeroDiagonal(petsclib::PetscLibType, pc::PC, rtol::Real)
+function PCFactorReorderForNonzeroDiagonal(petsclib::PetscLibType, pc::AbstractPC, rtol::Real)
     error("PCFactorReorderForNonzeroDiagonal: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorReorderForNonzeroDiagonal(petsclib::$UnionPetscLib, pc::PC, rtol::$PetscReal )
+@for_petsc function PCFactorReorderForNonzeroDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC, rtol::$PetscReal )
 
     @chk ccall(
                (:PCFactorReorderForNonzeroDiagonal, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, rtol,
               )
 
@@ -3669,7 +3670,7 @@ end
 end 
 
 """
-	PCFactorSetAllowDiagonalFill(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCFactorSetAllowDiagonalFill(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Causes all diagonal matrix entries to be
 treated as level 0 fill even if there is no non-zero location.
 
@@ -3687,16 +3688,16 @@ See also: `PCILU`, `PCICC`, `PCFactorGetAllowDiagonalFill()`
 # External Links
 $(_doc_external("PC/PCFactorSetAllowDiagonalFill"))
 """
-function PCFactorSetAllowDiagonalFill(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCFactorSetAllowDiagonalFill(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCFactorSetAllowDiagonalFill: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCFactorSetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCFactorSetAllowDiagonalFill, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -3705,7 +3706,7 @@ end
 end 
 
 """
-	PCFactorSetColumnPivot(petsclib::PetscLibType, pc::PC, dtcol::PetscReal) 
+	PCFactorSetColumnPivot(petsclib::PetscLibType, pc::AbstractPC, dtcol::PetscReal) 
 Determines when column pivoting is done during matrix factorization.
 For PETSc dense matrices column pivoting is always done, for PETSc sparse matrices
 it is never done. For the MATLAB and `MATSOLVERSUPERLU` factorization this is used.
@@ -3726,16 +3727,16 @@ See also: `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `PCILUSetMatOrdering()`, `PCFa
 # External Links
 $(_doc_external("PC/PCFactorSetColumnPivot"))
 """
-function PCFactorSetColumnPivot(petsclib::PetscLibType, pc::PC, dtcol::Real)
+function PCFactorSetColumnPivot(petsclib::PetscLibType, pc::AbstractPC, dtcol::Real)
     error("PCFactorSetColumnPivot: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetColumnPivot(petsclib::$UnionPetscLib, pc::PC, dtcol::$PetscReal )
+@for_petsc function PCFactorSetColumnPivot(petsclib::$UnionPetscLib, pc::AbstractPC, dtcol::$PetscReal )
 
     @chk ccall(
                (:PCFactorSetColumnPivot, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, dtcol,
               )
 
@@ -3744,7 +3745,7 @@ end
 end 
 
 """
-	PCFactorSetDropTolerance(petsclib::PetscLibType, pc::PC, dt::PetscReal, dtcol::PetscReal, maxrowcount::PetscInt) 
+	PCFactorSetDropTolerance(petsclib::PetscLibType, pc::AbstractPC, dt::PetscReal, dtcol::PetscReal, maxrowcount::PetscInt) 
 The preconditioner will use an `PCILU`
 based on a drop tolerance.
 
@@ -3767,16 +3768,16 @@ See also: `PCILU`
 # External Links
 $(_doc_external("PC/PCFactorSetDropTolerance"))
 """
-function PCFactorSetDropTolerance(petsclib::PetscLibType, pc::PC, dt::Real, dtcol::Real, maxrowcount::Integer)
+function PCFactorSetDropTolerance(petsclib::PetscLibType, pc::AbstractPC, dt::Real, dtcol::Real, maxrowcount::Integer)
     error("PCFactorSetDropTolerance: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetDropTolerance(petsclib::$UnionPetscLib, pc::PC, dt::$PetscReal, dtcol::$PetscReal, maxrowcount::$PetscInt )
+@for_petsc function PCFactorSetDropTolerance(petsclib::$UnionPetscLib, pc::AbstractPC, dt::$PetscReal, dtcol::$PetscReal, maxrowcount::$PetscInt )
 
     @chk ccall(
                (:PCFactorSetDropTolerance, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal, $PetscReal, $PetscInt),
+               (CPC, $PetscReal, $PetscReal, $PetscInt),
                pc, dt, dtcol, maxrowcount,
               )
 
@@ -3785,7 +3786,7 @@ end
 end 
 
 """
-	PCFactorSetFill(petsclib::PetscLibType, pc::PC, fill::PetscReal) 
+	PCFactorSetFill(petsclib::PetscLibType, pc::AbstractPC, fill::PetscReal) 
 Indicate the amount of fill you expect in the factored matrix,
 fill = number nonzeros in factor/number nonzeros in original matrix.
 
@@ -3805,16 +3806,16 @@ See also: `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `PCFactorSetReuseFill()`
 # External Links
 $(_doc_external("PC/PCFactorSetFill"))
 """
-function PCFactorSetFill(petsclib::PetscLibType, pc::PC, fill::Real)
+function PCFactorSetFill(petsclib::PetscLibType, pc::AbstractPC, fill::Real)
     error("PCFactorSetFill: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetFill(petsclib::$UnionPetscLib, pc::PC, fill::$PetscReal )
+@for_petsc function PCFactorSetFill(petsclib::$UnionPetscLib, pc::AbstractPC, fill::$PetscReal )
 
     @chk ccall(
                (:PCFactorSetFill, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, fill,
               )
 
@@ -3823,7 +3824,7 @@ end
 end 
 
 """
-	PCFactorSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) 
+	PCFactorSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::PetscInt) 
 Sets the number of levels of fill to use.
 
 Logically Collective
@@ -3842,16 +3843,16 @@ See also: `PCILU`, `PCICC`, `PCFactorGetLevels()`
 # External Links
 $(_doc_external("PC/PCFactorSetLevels"))
 """
-function PCFactorSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer)
+function PCFactorSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::Integer)
     error("PCFactorSetLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt )
+@for_petsc function PCFactorSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, levels::$PetscInt )
 
     @chk ccall(
                (:PCFactorSetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, levels,
               )
 
@@ -3860,7 +3861,7 @@ end
 end 
 
 """
-	PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::String) 
+	PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::AbstractPC, ordering::String) 
 Sets the ordering routine (to reduce fill) to
 be used in the `PCLU`, `PCCHOLESKY`, `PCILU`,  or `PCICC` preconditioners
 
@@ -3880,16 +3881,16 @@ See also: `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `MatOrderingType`, `MATORDERIN
 # External Links
 $(_doc_external("PC/PCFactorSetMatOrderingType"))
 """
-function PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::PC, ordering::String)
+function PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::AbstractPC, ordering::String)
     error("PCFactorSetMatOrderingType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetMatOrderingType(petsclib::$UnionPetscLib, pc::PC, ordering::String )
+@for_petsc function PCFactorSetMatOrderingType(petsclib::$UnionPetscLib, pc::AbstractPC, ordering::String )
 
     @chk ccall(
                (:PCFactorSetMatOrderingType, $petsc_library),
                PetscErrorCode,
-               (PC, MatOrderingType),
+               (CPC, MatOrderingType),
                pc, ordering,
               )
 
@@ -3898,7 +3899,7 @@ end
 end 
 
 """
-	PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::String) 
+	PCFactorSetMatSolverType(petsclib::PetscLibType, pc::AbstractPC, stype::String) 
 sets the solver package that is used to perform the factorization
 
 Logically Collective
@@ -3918,16 +3919,16 @@ See also: `PCLU`, `PCCHOLESKY`, `MatGetFactor()`, `MatSolverType`, `PCFactorGetM
 # External Links
 $(_doc_external("PC/PCFactorSetMatSolverType"))
 """
-function PCFactorSetMatSolverType(petsclib::PetscLibType, pc::PC, stype::String)
+function PCFactorSetMatSolverType(petsclib::PetscLibType, pc::AbstractPC, stype::String)
     error("PCFactorSetMatSolverType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetMatSolverType(petsclib::$UnionPetscLib, pc::PC, stype::String )
+@for_petsc function PCFactorSetMatSolverType(petsclib::$UnionPetscLib, pc::AbstractPC, stype::String )
 
     @chk ccall(
                (:PCFactorSetMatSolverType, $petsc_library),
                PetscErrorCode,
-               (PC, MatSolverType),
+               (CPC, MatSolverType),
                pc, stype,
               )
 
@@ -3936,7 +3937,7 @@ end
 end 
 
 """
-	PCFactorSetPivotInBlocks(petsclib::PetscLibType, pc::PC, pivot::PetscBool) 
+	PCFactorSetPivotInBlocks(petsclib::PetscLibType, pc::AbstractPC, pivot::PetscBool) 
 Determines if pivoting is done while factoring each block
 with `MATBAIJ` or `MATSBAIJ` matrices
 
@@ -3956,16 +3957,16 @@ See also: `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `PCILUSetMatOrdering()`, `PCFa
 # External Links
 $(_doc_external("PC/PCFactorSetPivotInBlocks"))
 """
-function PCFactorSetPivotInBlocks(petsclib::PetscLibType, pc::PC, pivot::PetscBool)
+function PCFactorSetPivotInBlocks(petsclib::PetscLibType, pc::AbstractPC, pivot::PetscBool)
     error("PCFactorSetPivotInBlocks: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetPivotInBlocks(petsclib::$UnionPetscLib, pc::PC, pivot::PetscBool )
+@for_petsc function PCFactorSetPivotInBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, pivot::PetscBool )
 
     @chk ccall(
                (:PCFactorSetPivotInBlocks, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, pivot,
               )
 
@@ -3974,7 +3975,7 @@ end
 end 
 
 """
-	PCFactorSetReuseFill(petsclib::PetscLibType, pc::PC, flag::PetscBool) 
+	PCFactorSetReuseFill(petsclib::PetscLibType, pc::AbstractPC, flag::PetscBool) 
 When matrices with different nonzero structure are factored,
 this causes later ones to use the fill ratio computed in the initial factorization.
 
@@ -3994,16 +3995,16 @@ See also: `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `PCFactorSetReuseOrdering()`, 
 # External Links
 $(_doc_external("PC/PCFactorSetReuseFill"))
 """
-function PCFactorSetReuseFill(petsclib::PetscLibType, pc::PC, flag::PetscBool)
+function PCFactorSetReuseFill(petsclib::PetscLibType, pc::AbstractPC, flag::PetscBool)
     error("PCFactorSetReuseFill: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetReuseFill(petsclib::$UnionPetscLib, pc::PC, flag::PetscBool )
+@for_petsc function PCFactorSetReuseFill(petsclib::$UnionPetscLib, pc::AbstractPC, flag::PetscBool )
 
     @chk ccall(
                (:PCFactorSetReuseFill, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flag,
               )
 
@@ -4012,7 +4013,7 @@ end
 end 
 
 """
-	PCFactorSetReuseOrdering(petsclib::PetscLibType, pc::PC, flag::PetscBool) 
+	PCFactorSetReuseOrdering(petsclib::PetscLibType, pc::AbstractPC, flag::PetscBool) 
 When similar matrices are factored, this
 causes the ordering computed in the first factor to be used for all
 following factors.
@@ -4033,16 +4034,16 @@ See also: `PCLU`, `PCCHOLESKY`, `PCFactorSetReuseFill()`
 # External Links
 $(_doc_external("PC/PCFactorSetReuseOrdering"))
 """
-function PCFactorSetReuseOrdering(petsclib::PetscLibType, pc::PC, flag::PetscBool)
+function PCFactorSetReuseOrdering(petsclib::PetscLibType, pc::AbstractPC, flag::PetscBool)
     error("PCFactorSetReuseOrdering: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetReuseOrdering(petsclib::$UnionPetscLib, pc::PC, flag::PetscBool )
+@for_petsc function PCFactorSetReuseOrdering(petsclib::$UnionPetscLib, pc::AbstractPC, flag::PetscBool )
 
     @chk ccall(
                (:PCFactorSetReuseOrdering, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flag,
               )
 
@@ -4051,7 +4052,7 @@ end
 end 
 
 """
-	PCFactorSetShiftAmount(petsclib::PetscLibType, pc::PC, shiftamount::PetscReal) 
+	PCFactorSetShiftAmount(petsclib::PetscLibType, pc::AbstractPC, shiftamount::PetscReal) 
 adds a quantity to the diagonal of the matrix during
 numerical factorization, thus the matrix has nonzero pivots
 
@@ -4071,16 +4072,16 @@ See also: `PCCHOLESKY`, `PCLU`, `PCFactorSetZeroPivot()`, `PCFactorSetShiftType(
 # External Links
 $(_doc_external("PC/PCFactorSetShiftAmount"))
 """
-function PCFactorSetShiftAmount(petsclib::PetscLibType, pc::PC, shiftamount::Real)
+function PCFactorSetShiftAmount(petsclib::PetscLibType, pc::AbstractPC, shiftamount::Real)
     error("PCFactorSetShiftAmount: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetShiftAmount(petsclib::$UnionPetscLib, pc::PC, shiftamount::$PetscReal )
+@for_petsc function PCFactorSetShiftAmount(petsclib::$UnionPetscLib, pc::AbstractPC, shiftamount::$PetscReal )
 
     @chk ccall(
                (:PCFactorSetShiftAmount, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, shiftamount,
               )
 
@@ -4089,7 +4090,7 @@ end
 end 
 
 """
-	PCFactorSetShiftType(petsclib::PetscLibType, pc::PC, shifttype::MatFactorShiftType) 
+	PCFactorSetShiftType(petsclib::PetscLibType, pc::AbstractPC, shifttype::MatFactorShiftType) 
 adds a particular type of quantity to the diagonal of the matrix during
 numerical factorization, thus the matrix has nonzero pivots
 
@@ -4109,16 +4110,16 @@ See also: `PCCHOLESKY`, `PCLU`, `PCFactorSetZeroPivot()`, `PCFactorSetShiftAmoun
 # External Links
 $(_doc_external("PC/PCFactorSetShiftType"))
 """
-function PCFactorSetShiftType(petsclib::PetscLibType, pc::PC, shifttype::MatFactorShiftType)
+function PCFactorSetShiftType(petsclib::PetscLibType, pc::AbstractPC, shifttype::MatFactorShiftType)
     error("PCFactorSetShiftType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetShiftType(petsclib::$UnionPetscLib, pc::PC, shifttype::MatFactorShiftType )
+@for_petsc function PCFactorSetShiftType(petsclib::$UnionPetscLib, pc::AbstractPC, shifttype::MatFactorShiftType )
 
     @chk ccall(
                (:PCFactorSetShiftType, $petsc_library),
                PetscErrorCode,
-               (PC, MatFactorShiftType),
+               (CPC, MatFactorShiftType),
                pc, shifttype,
               )
 
@@ -4127,7 +4128,7 @@ end
 end 
 
 """
-	PCFactorSetUpMatSolverType(petsclib::PetscLibType, pc::PC) 
+	PCFactorSetUpMatSolverType(petsclib::PetscLibType, pc::AbstractPC) 
 Can be called after `KSPSetOperators()` or `PCSetOperators()`, causes `MatGetFactor()` to be called so then one may
 set the options for that particular factorization object.
 
@@ -4141,16 +4142,16 @@ See also: `PCCHOLESKY`, `PCLU`, `PCFactorSetMatSolverType()`, `PCFactorGetMatrix
 # External Links
 $(_doc_external("PC/PCFactorSetUpMatSolverType"))
 """
-function PCFactorSetUpMatSolverType(petsclib::PetscLibType, pc::PC)
+function PCFactorSetUpMatSolverType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFactorSetUpMatSolverType: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetUpMatSolverType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFactorSetUpMatSolverType(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCFactorSetUpMatSolverType, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -4159,7 +4160,7 @@ end
 end 
 
 """
-	PCFactorSetUseInPlace(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCFactorSetUseInPlace(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Tells the preconditioner to do an in-place factorization.
 
 Logically Collective
@@ -4176,16 +4177,16 @@ See also: `PC`, `Mat`, `PCLU`, `PCCHOLESKY`, `PCILU`, `PCICC`, `PCFactorGetUseIn
 # External Links
 $(_doc_external("PC/PCFactorSetUseInPlace"))
 """
-function PCFactorSetUseInPlace(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCFactorSetUseInPlace(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCFactorSetUseInPlace: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetUseInPlace(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCFactorSetUseInPlace(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCFactorSetUseInPlace, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -4194,7 +4195,7 @@ end
 end 
 
 """
-	PCFactorSetZeroPivot(petsclib::PetscLibType, pc::PC, zero::PetscReal) 
+	PCFactorSetZeroPivot(petsclib::PetscLibType, pc::AbstractPC, zero::PetscReal) 
 Sets the size at which smaller pivots are declared to be zero
 
 Logically Collective
@@ -4213,16 +4214,16 @@ See also: `PCCHOLESKY`, `PCLU`, `PCFactorSetShiftType()`, `PCFactorSetShiftAmoun
 # External Links
 $(_doc_external("PC/PCFactorSetZeroPivot"))
 """
-function PCFactorSetZeroPivot(petsclib::PetscLibType, pc::PC, zero::Real)
+function PCFactorSetZeroPivot(petsclib::PetscLibType, pc::AbstractPC, zero::Real)
     error("PCFactorSetZeroPivot: no generated method for these argument types")
 end
 
-@for_petsc function PCFactorSetZeroPivot(petsclib::$UnionPetscLib, pc::PC, zero::$PetscReal )
+@for_petsc function PCFactorSetZeroPivot(petsclib::$UnionPetscLib, pc::AbstractPC, zero::$PetscReal )
 
     @chk ccall(
                (:PCFactorSetZeroPivot, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, zero,
               )
 
@@ -4231,7 +4232,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::AbstractPC) 
 Returns flag indicating whether `DMCreateFieldDecomposition()` should be used to define the splits in a `PCFIELDSPLIT`, whenever possible.
 
 Logically Collective
@@ -4249,17 +4250,17 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetDMSplits()`, `DMCreateFieldDecom
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDMSplits"))
 """
-function PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetDMSplits: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetDMSplits(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetDMSplits(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCFieldSplitGetDMSplits, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -4269,7 +4270,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCFieldSplitGetDetectSaddlePoint(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCFieldSplitGetDetectSaddlePoint(petsclib::PetscLibType, pc::AbstractPC) 
 Returns flag indicating whether `PCFIELDSPLIT` will attempt to automatically determine fields based on zero diagonal entries.
 
 Logically Collective
@@ -4287,17 +4288,17 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetDetectSaddlePoint()`
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDetectSaddlePoint"))
 """
-function PCFieldSplitGetDetectSaddlePoint(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetDetectSaddlePoint(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetDetectSaddlePoint: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCFieldSplitGetDetectSaddlePoint, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -4307,7 +4308,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC) 
 get the flag indicating whether to extract diagonal blocks from Amat (rather than Pmat) to build
 the sub-matrices associated with each split.  Where `KSPSetOperators`(ksp,Amat,Pmat) was used to supply the operators.
 
@@ -4326,17 +4327,17 @@ See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitSetDiagUse
 # External Links
 $(_doc_external("PC/PCFieldSplitGetDiagUseAmat"))
 """
-function PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetDiagUseAmat: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetDiagUseAmat(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCFieldSplitGetDiagUseAmat, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -4346,7 +4347,7 @@ end
 end 
 
 """
-	is::IS = PCFieldSplitGetIS(petsclib::PetscLibType, pc::PC, splitname::String) 
+	is::IS = PCFieldSplitGetIS(petsclib::PetscLibType, pc::AbstractPC, splitname::String) 
 Retrieves the elements for a split as an `IS`
 
 Logically Collective
@@ -4365,17 +4366,17 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetIS()`
 # External Links
 $(_doc_external("PC/PCFieldSplitGetIS"))
 """
-function PCFieldSplitGetIS(petsclib::PetscLibType, pc::PC, splitname::String)
+function PCFieldSplitGetIS(petsclib::PetscLibType, pc::AbstractPC, splitname::String)
     error("PCFieldSplitGetIS: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String )
+@for_petsc function PCFieldSplitGetIS(petsclib::$UnionPetscLib, pc::AbstractPC, splitname::String )
 	is_ = Ref{CIS}()
 
     @chk ccall(
                (:PCFieldSplitGetIS, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}, Ptr{CIS}),
+               (CPC, Ptr{Cchar}, Ptr{CIS}),
                pc, splitname, is_,
               )
 
@@ -4385,7 +4386,7 @@ end
 end 
 
 """
-	is::IS = PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::PC, index::PetscInt) 
+	is::IS = PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::AbstractPC, index::PetscInt) 
 Retrieves the elements for a given split as an `IS`
 
 Logically Collective
@@ -4404,17 +4405,17 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitGetIS()`
 # External Links
 $(_doc_external("PC/PCFieldSplitGetISByIndex"))
 """
-function PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::PC, index::Integer)
+function PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::AbstractPC, index::Integer)
     error("PCFieldSplitGetISByIndex: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetISByIndex(petsclib::$UnionPetscLib, pc::PC, index::$PetscInt )
+@for_petsc function PCFieldSplitGetISByIndex(petsclib::$UnionPetscLib, pc::AbstractPC, index::$PetscInt )
 	is_ = Ref{CIS}()
 
     @chk ccall(
                (:PCFieldSplitGetISByIndex, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CIS}),
+               (CPC, $PetscInt, Ptr{CIS}),
                pc, index, is_,
               )
 
@@ -4424,7 +4425,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC) 
 get the flag indicating whether to extract off-diagonal blocks from Amat (rather than Pmat) to build
 the sub-matrices associated with each split.  Where `KSPSetOperators`(ksp,Amat,Pmat) was used to supply the operators.
 
@@ -4443,17 +4444,17 @@ See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitSetOffDiag
 # External Links
 $(_doc_external("PC/PCFieldSplitGetOffDiagUseAmat"))
 """
-function PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetOffDiagUseAmat: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCFieldSplitGetOffDiagUseAmat, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -4463,7 +4464,7 @@ end
 end 
 
 """
-	A00::PetscMat,A01::PetscMat,A10::PetscMat,A11::PetscMat = PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::PC) 
+	A00::PetscMat,A01::PetscMat,A10::PetscMat,A11::PetscMat = PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::AbstractPC) 
 Gets all matrix blocks for the Schur complement
 
 Collective
@@ -4484,11 +4485,11 @@ See also: `PC`, `PCFIELDSPLIT`, `MatSchurComplementGetSubMatrices()`, `MatSchurC
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSchurBlocks"))
 """
-function PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetSchurBlocks: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetSchurBlocks(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetSchurBlocks(petsclib::$UnionPetscLib, pc::AbstractPC )
 	A00_ = Ref{CMat}()
 	A01_ = Ref{CMat}()
 	A10_ = Ref{CMat}()
@@ -4497,7 +4498,7 @@ end
     @chk ccall(
                (:PCFieldSplitGetSchurBlocks, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CMat}, Ptr{CMat}, Ptr{CMat}, Ptr{CMat}),
+               (CPC, Ptr{CMat}, Ptr{CMat}, Ptr{CMat}, Ptr{CMat}),
                pc, A00_, A01_, A10_, A11_,
               )
 
@@ -4510,7 +4511,7 @@ end
 end 
 
 """
-	ptype::PCFieldSplitSchurPreType,pre::PetscMat = PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::PC) 
+	ptype::PCFieldSplitSchurPreType,pre::PetscMat = PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::AbstractPC) 
 For Schur complement fieldsplit, determine how the Schur complement will be
 preconditioned.  See `PCFieldSplitSetSchurPre()` for details.
 
@@ -4530,18 +4531,18 @@ See also: `PC`, `PCFieldSplitSetSchurPre()`, `PCFieldSplitGetSubKSP()`, `PCFIELD
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSchurPre"))
 """
-function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetSchurPre: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetSchurPre(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetSchurPre(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ptype_ = Ref{PCFieldSplitSchurPreType}()
 	pre_ = Ref{CMat}()
 
     @chk ccall(
                (:PCFieldSplitGetSchurPre, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCFieldSplitSchurPreType}, Ptr{CMat}),
+               (CPC, Ptr{PCFieldSplitSchurPreType}, Ptr{CMat}),
                pc, ptype_, pre_,
               )
 
@@ -4552,7 +4553,7 @@ end
 end 
 
 """
-	n::PetscInt,subksp::Vector{KSP} = PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,subksp::Vector{KSP} = PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `KSP` contexts for all splits
 
 Collective
@@ -4571,18 +4572,18 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
 # External Links
 $(_doc_external("PC/PCFieldSplitGetSubKSP"))
 """
-function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_ = Ref{$PetscInt}()
 	subksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCFieldSplitGetSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
                pc, n_, subksp_,
               )
 
@@ -4593,7 +4594,7 @@ end
 end 
 
 """
-	type::PCCompositeType = PCFieldSplitGetType(petsclib::PetscLibType, pc::PC) 
+	type::PCCompositeType = PCFieldSplitGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the type, `PCCompositeType`, of a `PCFIELDSPLIT`
 
 Not collective
@@ -4612,17 +4613,17 @@ See also: `PC`, `PCCompositeSetType()`, `PCFIELDSPLIT`, `PCCompositeType`, `PC_C
 # External Links
 $(_doc_external("PC/PCFieldSplitGetType"))
 """
-function PCFieldSplitGetType(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCCompositeType}()
 
     @chk ccall(
                (:PCFieldSplitGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCCompositeType}),
+               (CPC, Ptr{PCCompositeType}),
                pc, type_,
               )
 
@@ -4632,7 +4633,7 @@ end
 end 
 
 """
-	PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::PC, isy::AbstractIS) 
+	PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::AbstractPC, isy::AbstractIS) 
 Restricts the fieldsplit `IS`s to be within a given `IS`.
 
 Input Parameters:
@@ -4646,16 +4647,16 @@ See also: `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
 # External Links
 $(_doc_external("PC/PCFieldSplitRestrictIS"))
 """
-function PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::PC, isy::AbstractIS)
+function PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::AbstractPC, isy::AbstractIS)
     error("PCFieldSplitRestrictIS: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitRestrictIS(petsclib::$UnionPetscLib, pc::PC, isy::AbstractIS )
+@for_petsc function PCFieldSplitRestrictIS(petsclib::$UnionPetscLib, pc::AbstractPC, isy::AbstractIS )
 
     @chk ccall(
                (:PCFieldSplitRestrictIS, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, isy,
               )
 
@@ -4664,7 +4665,7 @@ end
 end 
 
 """
-	S::PetscMat = PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::PC) 
+	S::PetscMat = PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::AbstractPC) 
 extract the `MATSCHURCOMPLEMENT` object used by this `PCFIELDSPLIT` in case it needs to be configured separately
 
 Not Collective
@@ -4683,17 +4684,17 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSchurPre
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurGetS"))
 """
-function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitSchurGetS: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSchurGetS(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitSchurGetS(petsclib::$UnionPetscLib, pc::AbstractPC )
 	S_ = Ref{CMat}()
 
     @chk ccall(
                (:PCFieldSplitSchurGetS, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CMat}),
+               (CPC, Ptr{CMat}),
                pc, S_,
               )
 
@@ -4703,7 +4704,7 @@ end
 end 
 
 """
-	n::PetscInt,subksp::Vector{KSP} = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,subksp::Vector{KSP} = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `KSP` contexts used inside the Schur complement based `PCFIELDSPLIT`
 
 Collective
@@ -4722,18 +4723,18 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSetIS()`
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurGetSubKSP"))
 """
-function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC)
+function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCFieldSplitSchurGetSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_ = Ref{$PetscInt}()
 	subksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCFieldSplitSchurGetSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
                pc, n_, subksp_,
               )
 
@@ -4744,7 +4745,7 @@ end
 end 
 
 """
-	PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::PC, S::AbstractPetscMat) 
+	PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::AbstractPC, S::AbstractPetscMat) 
 returns the `MATSCHURCOMPLEMENT` matrix used by this `PC`
 
 Not Collective
@@ -4760,17 +4761,17 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSchurPre
 # External Links
 $(_doc_external("PC/PCFieldSplitSchurRestoreS"))
 """
-function PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::PC, S::AbstractPetscMat)
+function PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::AbstractPC, S::AbstractPetscMat)
     error("PCFieldSplitSchurRestoreS: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSchurRestoreS(petsclib::$UnionPetscLib, pc::PC, S::AbstractPetscMat )
+@for_petsc function PCFieldSplitSchurRestoreS(petsclib::$UnionPetscLib, pc::AbstractPC, S::AbstractPetscMat )
 	S_ = Ref(S.ptr)
 
     @chk ccall(
                (:PCFieldSplitSchurRestoreS, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CMat}),
+               (CPC, Ptr{CMat}),
                pc, S_,
               )
 
@@ -4780,7 +4781,7 @@ end
 end 
 
 """
-	PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::PC, bs::PetscInt) 
+	PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::AbstractPC, bs::PetscInt) 
 Sets the block size for defining where fields start in the
 fieldsplit preconditioner when calling `PCFieldSplitSetFields()`. If not set the matrix block size is used.
 
@@ -4797,16 +4798,16 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetField
 # External Links
 $(_doc_external("PC/PCFieldSplitSetBlockSize"))
 """
-function PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::PC, bs::Integer)
+function PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::AbstractPC, bs::Integer)
     error("PCFieldSplitSetBlockSize: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetBlockSize(petsclib::$UnionPetscLib, pc::PC, bs::$PetscInt )
+@for_petsc function PCFieldSplitSetBlockSize(petsclib::$UnionPetscLib, pc::AbstractPC, bs::$PetscInt )
 
     @chk ccall(
                (:PCFieldSplitSetBlockSize, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, bs,
               )
 
@@ -4815,7 +4816,7 @@ end
 end 
 
 """
-	PCFieldSplitSetDMSplits(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCFieldSplitSetDMSplits(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Flags whether `DMCreateFieldDecomposition()` should be used to define the splits in a `PCFIELDSPLIT`, whenever possible.
 
 Logically Collective
@@ -4834,16 +4835,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitGetDMSplits()`, `DMCreateFieldDecom
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDMSplits"))
 """
-function PCFieldSplitSetDMSplits(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCFieldSplitSetDMSplits(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCFieldSplitSetDMSplits: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetDMSplits(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCFieldSplitSetDMSplits(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCFieldSplitSetDMSplits, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -4852,7 +4853,7 @@ end
 end 
 
 """
-	PCFieldSplitSetDetectSaddlePoint(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCFieldSplitSetDetectSaddlePoint(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Sets flag indicating whether `PCFIELDSPLIT` will attempt to automatically determine fields based on zero diagonal entries.
 
 Logically Collective
@@ -4873,16 +4874,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitGetDetectSaddlePoint()`, `PCFieldSp
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDetectSaddlePoint"))
 """
-function PCFieldSplitSetDetectSaddlePoint(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCFieldSplitSetDetectSaddlePoint(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCFieldSplitSetDetectSaddlePoint: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCFieldSplitSetDetectSaddlePoint(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCFieldSplitSetDetectSaddlePoint, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -4891,7 +4892,7 @@ end
 end 
 
 """
-	PCFieldSplitSetDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCFieldSplitSetDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 set flag indicating whether to extract diagonal blocks from Amat (rather than Pmat) to build
 the sub-matrices associated with each split. Where `KSPSetOperators`(ksp,Amat,Pmat) was used to supply the operators.
 
@@ -4911,16 +4912,16 @@ See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitGetDiagUse
 # External Links
 $(_doc_external("PC/PCFieldSplitSetDiagUseAmat"))
 """
-function PCFieldSplitSetDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCFieldSplitSetDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCFieldSplitSetDiagUseAmat: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetDiagUseAmat(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCFieldSplitSetDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCFieldSplitSetDiagUseAmat, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -4929,7 +4930,7 @@ end
 end 
 
 """
-	PCFieldSplitSetFields(petsclib::PetscLibType, pc::PC, splitname::String, n::PetscInt, fields::Vector{PetscInt}, fields_col::Vector{PetscInt}) 
+	PCFieldSplitSetFields(petsclib::PetscLibType, pc::AbstractPC, splitname::String, n::PetscInt, fields::Vector{PetscInt}, fields_col::Vector{PetscInt}) 
 Sets the fields that define one particular split in `PCFIELDSPLIT`
 
 Logically Collective
@@ -4953,16 +4954,16 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetBlock
 # External Links
 $(_doc_external("PC/PCFieldSplitSetFields"))
 """
-function PCFieldSplitSetFields(petsclib::PetscLibType, pc::PC, splitname::String, n::Integer, fields::AbstractVector{<:Number}, fields_col::AbstractVector{<:Number})
+function PCFieldSplitSetFields(petsclib::PetscLibType, pc::AbstractPC, splitname::String, n::Integer, fields::AbstractVector{<:Number}, fields_col::AbstractVector{<:Number})
     error("PCFieldSplitSetFields: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetFields(petsclib::$UnionPetscLib, pc::PC, splitname::String, n::$PetscInt, fields::Vector{$PetscInt}, fields_col::Vector{$PetscInt} )
+@for_petsc function PCFieldSplitSetFields(petsclib::$UnionPetscLib, pc::AbstractPC, splitname::String, n::$PetscInt, fields::Vector{$PetscInt}, fields_col::Vector{$PetscInt} )
 
     @chk ccall(
                (:PCFieldSplitSetFields, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               (CPC, Ptr{Cchar}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}),
                pc, splitname, n, fields, fields_col,
               )
 
@@ -4971,7 +4972,7 @@ end
 end 
 
 """
-	PCFieldSplitSetGKBDelay(petsclib::PetscLibType, pc::PC, delay::PetscInt) 
+	PCFieldSplitSetGKBDelay(petsclib::PetscLibType, pc::AbstractPC, delay::PetscInt) 
 Sets the delay in the lower bound error estimate in the generalized Golub-Kahan bidiagonalization {cite}`arioli2013` in `PCFIELDSPLIT`
 preconditioner.
 
@@ -4991,16 +4992,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBNu()`, `PCFieldSplitSetGKBTol
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBDelay"))
 """
-function PCFieldSplitSetGKBDelay(petsclib::PetscLibType, pc::PC, delay::Integer)
+function PCFieldSplitSetGKBDelay(petsclib::PetscLibType, pc::AbstractPC, delay::Integer)
     error("PCFieldSplitSetGKBDelay: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetGKBDelay(petsclib::$UnionPetscLib, pc::PC, delay::$PetscInt )
+@for_petsc function PCFieldSplitSetGKBDelay(petsclib::$UnionPetscLib, pc::AbstractPC, delay::$PetscInt )
 
     @chk ccall(
                (:PCFieldSplitSetGKBDelay, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, delay,
               )
 
@@ -5009,7 +5010,7 @@ end
 end 
 
 """
-	PCFieldSplitSetGKBMaxit(petsclib::PetscLibType, pc::PC, maxit::PetscInt) 
+	PCFieldSplitSetGKBMaxit(petsclib::PetscLibType, pc::AbstractPC, maxit::PetscInt) 
 Sets the maximum number of iterations for the generalized Golub-Kahan bidiagonalization preconditioner {cite}`arioli2013` in `PCFIELDSPLIT`
 
 Collective
@@ -5028,16 +5029,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKB
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBMaxit"))
 """
-function PCFieldSplitSetGKBMaxit(petsclib::PetscLibType, pc::PC, maxit::Integer)
+function PCFieldSplitSetGKBMaxit(petsclib::PetscLibType, pc::AbstractPC, maxit::Integer)
     error("PCFieldSplitSetGKBMaxit: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetGKBMaxit(petsclib::$UnionPetscLib, pc::PC, maxit::$PetscInt )
+@for_petsc function PCFieldSplitSetGKBMaxit(petsclib::$UnionPetscLib, pc::AbstractPC, maxit::$PetscInt )
 
     @chk ccall(
                (:PCFieldSplitSetGKBMaxit, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, maxit,
               )
 
@@ -5046,7 +5047,7 @@ end
 end 
 
 """
-	PCFieldSplitSetGKBNu(petsclib::PetscLibType, pc::PC, nu::PetscReal) 
+	PCFieldSplitSetGKBNu(petsclib::PetscLibType, pc::AbstractPC, nu::PetscReal) 
 Sets the scalar value nu >= 0 in the transformation H = A00 + nu*A01*A01' of the (1,1) block in the
 Golub-Kahan bidiagonalization preconditioner {cite}`arioli2013` in `PCFIELDSPLIT`
 
@@ -5066,16 +5067,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKB
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBNu"))
 """
-function PCFieldSplitSetGKBNu(petsclib::PetscLibType, pc::PC, nu::Real)
+function PCFieldSplitSetGKBNu(petsclib::PetscLibType, pc::AbstractPC, nu::Real)
     error("PCFieldSplitSetGKBNu: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetGKBNu(petsclib::$UnionPetscLib, pc::PC, nu::$PetscReal )
+@for_petsc function PCFieldSplitSetGKBNu(petsclib::$UnionPetscLib, pc::AbstractPC, nu::$PetscReal )
 
     @chk ccall(
                (:PCFieldSplitSetGKBNu, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, nu,
               )
 
@@ -5084,7 +5085,7 @@ end
 end 
 
 """
-	PCFieldSplitSetGKBTol(petsclib::PetscLibType, pc::PC, tolerance::PetscReal) 
+	PCFieldSplitSetGKBTol(petsclib::PetscLibType, pc::AbstractPC, tolerance::PetscReal) 
 Sets the solver tolerance for the generalized Golub-Kahan bidiagonalization preconditioner {cite}`arioli2013` in `PCFIELDSPLIT`
 
 Collective
@@ -5103,16 +5104,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetGKBDelay()`, `PCFieldSplitSetGKB
 # External Links
 $(_doc_external("PC/PCFieldSplitSetGKBTol"))
 """
-function PCFieldSplitSetGKBTol(petsclib::PetscLibType, pc::PC, tolerance::Real)
+function PCFieldSplitSetGKBTol(petsclib::PetscLibType, pc::AbstractPC, tolerance::Real)
     error("PCFieldSplitSetGKBTol: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetGKBTol(petsclib::$UnionPetscLib, pc::PC, tolerance::$PetscReal )
+@for_petsc function PCFieldSplitSetGKBTol(petsclib::$UnionPetscLib, pc::AbstractPC, tolerance::$PetscReal )
 
     @chk ccall(
                (:PCFieldSplitSetGKBTol, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, tolerance,
               )
 
@@ -5121,7 +5122,7 @@ end
 end 
 
 """
-	PCFieldSplitSetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::AbstractIS) 
+	PCFieldSplitSetIS(petsclib::PetscLibType, pc::AbstractPC, splitname::String, is::AbstractIS) 
 Sets the exact elements for a split in a `PCFIELDSPLIT`
 
 Logically Collective
@@ -5138,16 +5139,16 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetBlock
 # External Links
 $(_doc_external("PC/PCFieldSplitSetIS"))
 """
-function PCFieldSplitSetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::AbstractIS)
+function PCFieldSplitSetIS(petsclib::PetscLibType, pc::AbstractPC, splitname::String, is::AbstractIS)
     error("PCFieldSplitSetIS: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String, is::AbstractIS )
+@for_petsc function PCFieldSplitSetIS(petsclib::$UnionPetscLib, pc::AbstractPC, splitname::String, is::AbstractIS )
 
     @chk ccall(
                (:PCFieldSplitSetIS, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}, CIS),
+               (CPC, Ptr{Cchar}, CIS),
                pc, splitname, is,
               )
 
@@ -5156,7 +5157,7 @@ end
 end 
 
 """
-	PCFieldSplitSetOffDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCFieldSplitSetOffDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 set flag indicating whether to extract off-diagonal blocks from Amat (rather than Pmat) to build
 the sub-matrices associated with each split.  Where `KSPSetOperators`(ksp,Amat,Pmat) was used to supply the operators.
 
@@ -5176,16 +5177,16 @@ See also: `PC`, `PCSetOperators()`, `KSPSetOperators()`, `PCFieldSplitGetOffDiag
 # External Links
 $(_doc_external("PC/PCFieldSplitSetOffDiagUseAmat"))
 """
-function PCFieldSplitSetOffDiagUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCFieldSplitSetOffDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCFieldSplitSetOffDiagUseAmat: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCFieldSplitSetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCFieldSplitSetOffDiagUseAmat, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -5194,7 +5195,7 @@ end
 end 
 
 """
-	PCFieldSplitSetSchurFactType(petsclib::PetscLibType, pc::PC, ftype::PCFieldSplitSchurFactType) 
+	PCFieldSplitSetSchurFactType(petsclib::PetscLibType, pc::AbstractPC, ftype::PCFieldSplitSchurFactType) 
 sets which blocks of the approximate block factorization to retain in the preconditioner {cite}`murphy2000note` and {cite}`ipsen2001note`
 
 Collective
@@ -5214,16 +5215,16 @@ See also: `PC`, `PCFieldSplitGetSubKSP()`, `PCFIELDSPLIT`, `PCFieldSplitSetField
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurFactType"))
 """
-function PCFieldSplitSetSchurFactType(petsclib::PetscLibType, pc::PC, ftype::PCFieldSplitSchurFactType)
+function PCFieldSplitSetSchurFactType(petsclib::PetscLibType, pc::AbstractPC, ftype::PCFieldSplitSchurFactType)
     error("PCFieldSplitSetSchurFactType: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetSchurFactType(petsclib::$UnionPetscLib, pc::PC, ftype::PCFieldSplitSchurFactType )
+@for_petsc function PCFieldSplitSetSchurFactType(petsclib::$UnionPetscLib, pc::AbstractPC, ftype::PCFieldSplitSchurFactType )
 
     @chk ccall(
                (:PCFieldSplitSetSchurFactType, $petsc_library),
                PetscErrorCode,
-               (PC, PCFieldSplitSchurFactType),
+               (CPC, PCFieldSplitSchurFactType),
                pc, ftype,
               )
 
@@ -5232,7 +5233,7 @@ end
 end 
 
 """
-	PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat) 
+	PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::AbstractPC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat) 
 Indicates from what operator the preconditioner is constructed for the Schur complement.
 The default is the A11 matrix.
 
@@ -5257,16 +5258,16 @@ See also: `PC`, `PCFieldSplitGetSchurPre()`, `PCFieldSplitGetSubKSP()`, `PCFIELD
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurPre"))
 """
-function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat)
+function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::AbstractPC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat)
     error("PCFieldSplitSetSchurPre: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetSchurPre(petsclib::$UnionPetscLib, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat )
+@for_petsc function PCFieldSplitSetSchurPre(petsclib::$UnionPetscLib, pc::AbstractPC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat )
 
     @chk ccall(
                (:PCFieldSplitSetSchurPre, $petsc_library),
                PetscErrorCode,
-               (PC, PCFieldSplitSchurPreType, CMat),
+               (CPC, PCFieldSplitSchurPreType, CMat),
                pc, ptype, pre,
               )
 
@@ -5275,7 +5276,7 @@ end
 end 
 
 """
-	PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::PC, scale::PetscScalar) 
+	PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::AbstractPC, scale::PetscScalar) 
 Controls the sign flip of S for `PC_FIELDSPLIT_SCHUR_FACT_DIAG`.
 
 Collective
@@ -5294,16 +5295,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCFieldSplitSetFields()`, `PCFieldSplitSchurFac
 # External Links
 $(_doc_external("PC/PCFieldSplitSetSchurScale"))
 """
-function PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::PC, scale::Number)
+function PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::AbstractPC, scale::Number)
     error("PCFieldSplitSetSchurScale: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetSchurScale(petsclib::$UnionPetscLib, pc::PC, scale::$PetscScalar )
+@for_petsc function PCFieldSplitSetSchurScale(petsclib::$UnionPetscLib, pc::AbstractPC, scale::$PetscScalar )
 
     @chk ccall(
                (:PCFieldSplitSetSchurScale, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscScalar),
+               (CPC, $PetscScalar),
                pc, scale,
               )
 
@@ -5312,7 +5313,7 @@ end
 end 
 
 """
-	PCFieldSplitSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType) 
+	PCFieldSplitSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCCompositeType) 
 Sets the type, `PCCompositeType`, of a `PCFIELDSPLIT`
 
 Collective
@@ -5333,16 +5334,16 @@ See also: `PC`, `PCFIELDSPLIT`, `PCCompositeType`, `PCCompositeGetType()`, `PC_C
 # External Links
 $(_doc_external("PC/PCFieldSplitSetType"))
 """
-function PCFieldSplitSetType(petsclib::PetscLibType, pc::PC, type::PCCompositeType)
+function PCFieldSplitSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCCompositeType)
     error("PCFieldSplitSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCFieldSplitSetType(petsclib::$UnionPetscLib, pc::PC, type::PCCompositeType )
+@for_petsc function PCFieldSplitSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCCompositeType )
 
     @chk ccall(
                (:PCFieldSplitSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCCompositeType),
+               (CPC, PCCompositeType),
                pc, type,
               )
 
@@ -5379,7 +5380,7 @@ end
 end 
 
 """
-	PCGAMGASMSetHEM(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCGAMGASMSetHEM(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Sets the number of HEM matching passed
 
 Collective
@@ -5398,16 +5399,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGASMSetHEM"))
 """
-function PCGAMGASMSetHEM(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCGAMGASMSetHEM(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCGAMGASMSetHEM: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGASMSetHEM(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCGAMGASMSetHEM(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGASMSetHEM, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -5416,7 +5417,7 @@ end
 end 
 
 """
-	PCGAMGASMSetUseAggs(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCGAMGASMSetUseAggs(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Have the `PCGAMG` smoother on each level use `PCASM` where the aggregates defined by the coarsening process are
 used as the subdomains for the additive Schwarz preconditioner smoother
 
@@ -5436,16 +5437,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGASMSetUseAggs"))
 """
-function PCGAMGASMSetUseAggs(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCGAMGASMSetUseAggs(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCGAMGASMSetUseAggs: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGASMSetUseAggs(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCGAMGASMSetUseAggs(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCGAMGASMSetUseAggs, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -5454,7 +5455,7 @@ end
 end 
 
 """
-	type::String = PCGAMGClassicalGetType(petsclib::PetscLibType, pc::PC) 
+	type::String = PCGAMGClassicalGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the type of classical interpolation to use with `PCGAMG`
 
 Collective
@@ -5472,17 +5473,17 @@ See also: `PCGAMG`, `PCGAMGClassicalType`, `PCGAMGClassicalSetType()`
 # External Links
 $(_doc_external("PC/PCGAMGClassicalGetType"))
 """
-function PCGAMGClassicalGetType(petsclib::PetscLibType, pc::PC)
+function PCGAMGClassicalGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGAMGClassicalGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGClassicalGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGAMGClassicalGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCGAMGClassicalType}()
 
     @chk ccall(
                (:PCGAMGClassicalGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCGAMGClassicalType}),
+               (CPC, Ptr{PCGAMGClassicalType}),
                pc, type_,
               )
 
@@ -5492,7 +5493,7 @@ end
 end 
 
 """
-	PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::String) 
+	PCGAMGClassicalSetType(petsclib::PetscLibType, pc::AbstractPC, type::String) 
 Sets the type of classical interpolation to use with `PCGAMG`
 
 Collective
@@ -5511,16 +5512,16 @@ See also: `PCGAMG`, `PCGAMGClassicalType`, `PCGAMGClassicalGetType()`
 # External Links
 $(_doc_external("PC/PCGAMGClassicalSetType"))
 """
-function PCGAMGClassicalSetType(petsclib::PetscLibType, pc::PC, type::String)
+function PCGAMGClassicalSetType(petsclib::PetscLibType, pc::AbstractPC, type::String)
     error("PCGAMGClassicalSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGClassicalSetType(petsclib::$UnionPetscLib, pc::PC, type::String )
+@for_petsc function PCGAMGClassicalSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
 
     @chk ccall(
                (:PCGAMGClassicalSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCGAMGClassicalType),
+               (CPC, PCGAMGClassicalType),
                pc, type,
               )
 
@@ -5529,7 +5530,7 @@ end
 end 
 
 """
-	G::PetscMat = PCGAMGCreateGraph(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) 
+	G::PetscMat = PCGAMGCreateGraph(petsclib::PetscLibType, pc::AbstractPC, A::AbstractPetscMat) 
 Creates a graph that is used by the `PCGAMGType` in the coarsening process
 
 Input Parameters:
@@ -5546,17 +5547,17 @@ See also: `PCGAMGType`, `PCGAMG`, `PCGAMGSetType()`
 # External Links
 $(_doc_external("PC/PCGAMGCreateGraph"))
 """
-function PCGAMGCreateGraph(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat)
+function PCGAMGCreateGraph(petsclib::PetscLibType, pc::AbstractPC, A::AbstractPetscMat)
     error("PCGAMGCreateGraph: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGCreateGraph(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
+@for_petsc function PCGAMGCreateGraph(petsclib::$UnionPetscLib, pc::AbstractPC, A::AbstractPetscMat )
 	G_ = Ref{CMat}()
 
     @chk ccall(
                (:PCGAMGCreateGraph, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, Ptr{CMat}),
+               (CPC, CMat, Ptr{CMat}),
                pc, A, G_,
               )
 
@@ -5594,7 +5595,7 @@ end
 end 
 
 """
-	type::String = PCGAMGGetType(petsclib::PetscLibType, pc::PC) 
+	type::String = PCGAMGGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Get the type of algorithm `PCGAMG` will use
 
 Collective
@@ -5612,17 +5613,17 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGGetType"))
 """
-function PCGAMGGetType(petsclib::PetscLibType, pc::PC)
+function PCGAMGGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGAMGGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGAMGGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCGAMGType}()
 
     @chk ccall(
                (:PCGAMGGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCGAMGType}),
+               (CPC, Ptr{PCGAMGType}),
                pc, type_,
               )
 
@@ -5660,7 +5661,7 @@ end
 end 
 
 """
-	PCGAMGMISkSetAggressive(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCGAMGMISkSetAggressive(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Number (k) distance in MIS coarsening (> 2 is aggressive)
 
 Logically Collective
@@ -5680,16 +5681,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGMISkSetAggressive"))
 """
-function PCGAMGMISkSetAggressive(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCGAMGMISkSetAggressive(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCGAMGMISkSetAggressive: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGMISkSetAggressive(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCGAMGMISkSetAggressive(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGMISkSetAggressive, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -5698,7 +5699,7 @@ end
 end 
 
 """
-	PCGAMGMISkSetMinDegreeOrdering(petsclib::PetscLibType, pc::PC, b::PetscBool) 
+	PCGAMGMISkSetMinDegreeOrdering(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool) 
 Use minimum degree ordering in greedy MIS algorithm
 
 Logically Collective
@@ -5718,16 +5719,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGMISkSetMinDegreeOrdering"))
 """
-function PCGAMGMISkSetMinDegreeOrdering(petsclib::PetscLibType, pc::PC, b::PetscBool)
+function PCGAMGMISkSetMinDegreeOrdering(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool)
     error("PCGAMGMISkSetMinDegreeOrdering: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGMISkSetMinDegreeOrdering(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
+@for_petsc function PCGAMGMISkSetMinDegreeOrdering(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
 
     @chk ccall(
                (:PCGAMGMISkSetMinDegreeOrdering, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, b,
               )
 
@@ -5768,7 +5769,7 @@ end
 end 
 
 """
-	PCGAMGSetAggressiveLevels(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCGAMGSetAggressiveLevels(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Use aggressive coarsening on first n levels
 
 Logically Collective
@@ -5788,16 +5789,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetAggressiveLevels"))
 """
-function PCGAMGSetAggressiveLevels(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCGAMGSetAggressiveLevels(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCGAMGSetAggressiveLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetAggressiveLevels(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCGAMGSetAggressiveLevels(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGSetAggressiveLevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -5806,7 +5807,7 @@ end
 end 
 
 """
-	PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType, pc::PC, b::PetscBool) 
+	PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool) 
 Use graph square (A^T A) for aggressive coarsening. Coarsening is slower than the alternative (MIS-2), which is faster and uses less memory
 
 Logically Collective
@@ -5825,16 +5826,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetAggressiveSquareGraph"))
 """
-function PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType, pc::PC, b::PetscBool)
+function PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool)
     error("PCGAMGSetAggressiveSquareGraph: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetAggressiveSquareGraph(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
+@for_petsc function PCGAMGSetAggressiveSquareGraph(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetAggressiveSquareGraph, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, b,
               )
 
@@ -5843,7 +5844,7 @@ end
 end 
 
 """
-	PCGAMGSetCoarseEqLim(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCGAMGSetCoarseEqLim(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Set maximum number of equations on the coarsest grid of `PCGAMG`
 
 Collective
@@ -5863,16 +5864,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetCoarseEqLim"))
 """
-function PCGAMGSetCoarseEqLim(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCGAMGSetCoarseEqLim(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCGAMGSetCoarseEqLim: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetCoarseEqLim(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCGAMGSetCoarseEqLim(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGSetCoarseEqLim, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -5881,7 +5882,7 @@ end
 end 
 
 """
-	PCGAMGSetCoarseGridLayoutType(petsclib::PetscLibType, pc::PC, flg::PCGAMGLayoutType) 
+	PCGAMGSetCoarseGridLayoutType(petsclib::PetscLibType, pc::AbstractPC, flg::PCGAMGLayoutType) 
 place coarse grids on processors with natural order (compact type)
 
 Collective
@@ -5900,16 +5901,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetCoarseGridLayoutType"))
 """
-function PCGAMGSetCoarseGridLayoutType(petsclib::PetscLibType, pc::PC, flg::PCGAMGLayoutType)
+function PCGAMGSetCoarseGridLayoutType(petsclib::PetscLibType, pc::AbstractPC, flg::PCGAMGLayoutType)
     error("PCGAMGSetCoarseGridLayoutType: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetCoarseGridLayoutType(petsclib::$UnionPetscLib, pc::PC, flg::PCGAMGLayoutType )
+@for_petsc function PCGAMGSetCoarseGridLayoutType(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PCGAMGLayoutType )
 
     @chk ccall(
                (:PCGAMGSetCoarseGridLayoutType, $petsc_library),
                PetscErrorCode,
-               (PC, PCGAMGLayoutType),
+               (CPC, PCGAMGLayoutType),
                pc, flg,
               )
 
@@ -5918,7 +5919,7 @@ end
 end 
 
 """
-	PCGAMGSetCpuPinCoarseGrids(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCGAMGSetCpuPinCoarseGrids(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 pin the coarse grids created in `PCGAMG` to run only on the CPU since the problems may be too small to run efficiently on the GPUs
 
 Collective
@@ -5937,16 +5938,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetCpuPinCoarseGrids"))
 """
-function PCGAMGSetCpuPinCoarseGrids(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCGAMGSetCpuPinCoarseGrids(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCGAMGSetCpuPinCoarseGrids: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetCpuPinCoarseGrids(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCGAMGSetCpuPinCoarseGrids(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetCpuPinCoarseGrids, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -5955,7 +5956,7 @@ end
 end 
 
 """
-	PCGAMGSetEigenvalues(petsclib::PetscLibType, pc::PC, emax::PetscReal, emin::PetscReal) 
+	PCGAMGSetEigenvalues(petsclib::PetscLibType, pc::AbstractPC, emax::PetscReal, emin::PetscReal) 
 Set WHAT eigenvalues WHY?
 
 Collective
@@ -5975,16 +5976,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetEigenvalues"))
 """
-function PCGAMGSetEigenvalues(petsclib::PetscLibType, pc::PC, emax::Real, emin::Real)
+function PCGAMGSetEigenvalues(petsclib::PetscLibType, pc::AbstractPC, emax::Real, emin::Real)
     error("PCGAMGSetEigenvalues: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetEigenvalues(petsclib::$UnionPetscLib, pc::PC, emax::$PetscReal, emin::$PetscReal )
+@for_petsc function PCGAMGSetEigenvalues(petsclib::$UnionPetscLib, pc::AbstractPC, emax::$PetscReal, emin::$PetscReal )
 
     @chk ccall(
                (:PCGAMGSetEigenvalues, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal, $PetscReal),
+               (CPC, $PetscReal, $PetscReal),
                pc, emax, emin,
               )
 
@@ -5993,7 +5994,7 @@ end
 end 
 
 """
-	PCGAMGSetGraphSymmetrize(petsclib::PetscLibType, pc::PC, b::PetscBool) 
+	PCGAMGSetGraphSymmetrize(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool) 
 Symmetrize graph used for coarsening. Defaults to true, but if matrix has symmetric attribute, then not needed since the graph is already known to be symmetric
 
 Logically Collective
@@ -6013,16 +6014,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetGraphSymmetrize"))
 """
-function PCGAMGSetGraphSymmetrize(petsclib::PetscLibType, pc::PC, b::PetscBool)
+function PCGAMGSetGraphSymmetrize(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool)
     error("PCGAMGSetGraphSymmetrize: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetGraphSymmetrize(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
+@for_petsc function PCGAMGSetGraphSymmetrize(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetGraphSymmetrize, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, b,
               )
 
@@ -6031,7 +6032,7 @@ end
 end 
 
 """
-	PCGAMGSetInjectionIndex(petsclib::PetscLibType, pc::PC, n::PetscInt, idx::Vector{PetscInt}) 
+	PCGAMGSetInjectionIndex(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt, idx::Vector{PetscInt}) 
 Array of subset of variables per vertex to inject into coarse grid space
 
 Logically Collective
@@ -6051,16 +6052,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetInjectionIndex"))
 """
-function PCGAMGSetInjectionIndex(petsclib::PetscLibType, pc::PC, n::Integer, idx::AbstractVector{<:Number})
+function PCGAMGSetInjectionIndex(petsclib::PetscLibType, pc::AbstractPC, n::Integer, idx::AbstractVector{<:Number})
     error("PCGAMGSetInjectionIndex: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetInjectionIndex(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, idx::Vector{$PetscInt} )
+@for_petsc function PCGAMGSetInjectionIndex(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt, idx::Vector{$PetscInt} )
 
     @chk ccall(
                (:PCGAMGSetInjectionIndex, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{$PetscInt}),
+               (CPC, $PetscInt, Ptr{$PetscInt}),
                pc, n, idx,
               )
 
@@ -6069,7 +6070,7 @@ end
 end 
 
 """
-	PCGAMGSetLowMemoryFilter(petsclib::PetscLibType, pc::PC, b::PetscBool) 
+	PCGAMGSetLowMemoryFilter(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool) 
 Use low memory graph/matrix filter
 
 Logically Collective
@@ -6089,16 +6090,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetLowMemoryFilter"))
 """
-function PCGAMGSetLowMemoryFilter(petsclib::PetscLibType, pc::PC, b::PetscBool)
+function PCGAMGSetLowMemoryFilter(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool)
     error("PCGAMGSetLowMemoryFilter: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetLowMemoryFilter(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
+@for_petsc function PCGAMGSetLowMemoryFilter(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetLowMemoryFilter, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, b,
               )
 
@@ -6107,7 +6108,7 @@ end
 end 
 
 """
-	PCGAMGSetNSmooths(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCGAMGSetNSmooths(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Set number of smoothing steps (1 is typical) used to construct the prolongation operator
 
 Logically Collective
@@ -6126,16 +6127,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetNSmooths"))
 """
-function PCGAMGSetNSmooths(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCGAMGSetNSmooths(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCGAMGSetNSmooths: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetNSmooths(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCGAMGSetNSmooths(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGSetNSmooths, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -6144,7 +6145,7 @@ end
 end 
 
 """
-	PCGAMGSetNlevels(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCGAMGSetNlevels(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Sets the maximum number of levels `PCGAMG` will use
 
 Collective
@@ -6163,16 +6164,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetNlevels"))
 """
-function PCGAMGSetNlevels(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCGAMGSetNlevels(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCGAMGSetNlevels: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetNlevels(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCGAMGSetNlevels(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGSetNlevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -6181,7 +6182,7 @@ end
 end 
 
 """
-	PCGAMGSetParallelCoarseGridSolve(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCGAMGSetParallelCoarseGridSolve(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 allow a parallel coarse grid solver
 
 Collective
@@ -6200,16 +6201,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetParallelCoarseGridSolve"))
 """
-function PCGAMGSetParallelCoarseGridSolve(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCGAMGSetParallelCoarseGridSolve(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCGAMGSetParallelCoarseGridSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetParallelCoarseGridSolve(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCGAMGSetParallelCoarseGridSolve(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetParallelCoarseGridSolve, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -6218,7 +6219,7 @@ end
 end 
 
 """
-	PCGAMGSetProcEqLim(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCGAMGSetProcEqLim(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Set number of equations to aim for per process on the coarse grids via processor reduction in `PCGAMG`
 
 Logically Collective
@@ -6237,16 +6238,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetProcEqLim"))
 """
-function PCGAMGSetProcEqLim(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCGAMGSetProcEqLim(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCGAMGSetProcEqLim: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetProcEqLim(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCGAMGSetProcEqLim(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGSetProcEqLim, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -6255,7 +6256,7 @@ end
 end 
 
 """
-	PCGAMGSetRankReductionFactors(petsclib::PetscLibType, pc::PC, v::Vector{PetscInt}, n::PetscInt) 
+	PCGAMGSetRankReductionFactors(petsclib::PetscLibType, pc::AbstractPC, v::Vector{PetscInt}, n::PetscInt) 
 Set a manual schedule for MPI process reduction on coarse grids
 
 Collective
@@ -6275,16 +6276,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetRankReductionFactors"))
 """
-function PCGAMGSetRankReductionFactors(petsclib::PetscLibType, pc::PC, v::AbstractVector{<:Number}, n::Integer)
+function PCGAMGSetRankReductionFactors(petsclib::PetscLibType, pc::AbstractPC, v::AbstractVector{<:Number}, n::Integer)
     error("PCGAMGSetRankReductionFactors: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetRankReductionFactors(petsclib::$UnionPetscLib, pc::PC, v::Vector{$PetscInt}, n::$PetscInt )
+@for_petsc function PCGAMGSetRankReductionFactors(petsclib::$UnionPetscLib, pc::AbstractPC, v::Vector{$PetscInt}, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGSetRankReductionFactors, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, $PetscInt),
+               (CPC, Ptr{$PetscInt}, $PetscInt),
                pc, v, n,
               )
 
@@ -6293,7 +6294,7 @@ end
 end 
 
 """
-	PCGAMGSetRecomputeEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool) 
+	PCGAMGSetRecomputeEstEig(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool) 
 Set flag for Chebyshev smoothers to recompute the eigenvalue estimates when a new matrix is used
 
 Collective
@@ -6312,16 +6313,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetRecomputeEstEig"))
 """
-function PCGAMGSetRecomputeEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool)
+function PCGAMGSetRecomputeEstEig(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool)
     error("PCGAMGSetRecomputeEstEig: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetRecomputeEstEig(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
+@for_petsc function PCGAMGSetRecomputeEstEig(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetRecomputeEstEig, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, b,
               )
 
@@ -6330,7 +6331,7 @@ end
 end 
 
 """
-	PCGAMGSetRepartition(petsclib::PetscLibType, pc::PC, n::PetscBool) 
+	PCGAMGSetRepartition(petsclib::PetscLibType, pc::AbstractPC, n::PetscBool) 
 Repartition the degrees of freedom across the processors on the coarser grids when reducing the number of MPI processes used
 
 Collective
@@ -6349,16 +6350,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetRepartition"))
 """
-function PCGAMGSetRepartition(petsclib::PetscLibType, pc::PC, n::PetscBool)
+function PCGAMGSetRepartition(petsclib::PetscLibType, pc::AbstractPC, n::PetscBool)
     error("PCGAMGSetRepartition: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetRepartition(petsclib::$UnionPetscLib, pc::PC, n::PetscBool )
+@for_petsc function PCGAMGSetRepartition(petsclib::$UnionPetscLib, pc::AbstractPC, n::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetRepartition, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, n,
               )
 
@@ -6367,7 +6368,7 @@ end
 end 
 
 """
-	PCGAMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, n::PetscBool) 
+	PCGAMGSetReuseInterpolation(petsclib::PetscLibType, pc::AbstractPC, n::PetscBool) 
 Reuse prolongation when rebuilding a `PCGAMG` algebraic multigrid preconditioner when the matrix has changed
 
 Collective
@@ -6386,16 +6387,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetReuseInterpolation"))
 """
-function PCGAMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, n::PetscBool)
+function PCGAMGSetReuseInterpolation(petsclib::PetscLibType, pc::AbstractPC, n::PetscBool)
     error("PCGAMGSetReuseInterpolation: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::PC, n::PetscBool )
+@for_petsc function PCGAMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, n::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetReuseInterpolation, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, n,
               )
 
@@ -6404,7 +6405,7 @@ end
 end 
 
 """
-	PCGAMGSetThreshold(petsclib::PetscLibType, pc::PC, v::Vector{PetscReal}, n::PetscInt) 
+	PCGAMGSetThreshold(petsclib::PetscLibType, pc::AbstractPC, v::Vector{PetscReal}, n::PetscInt) 
 Relative threshold to use for dropping edges in aggregation graph
 
 Not Collective
@@ -6425,16 +6426,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetThreshold"))
 """
-function PCGAMGSetThreshold(petsclib::PetscLibType, pc::PC, v::AbstractVector{<:Number}, n::Integer)
+function PCGAMGSetThreshold(petsclib::PetscLibType, pc::AbstractPC, v::AbstractVector{<:Number}, n::Integer)
     error("PCGAMGSetThreshold: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetThreshold(petsclib::$UnionPetscLib, pc::PC, v::Vector{$PetscReal}, n::$PetscInt )
+@for_petsc function PCGAMGSetThreshold(petsclib::$UnionPetscLib, pc::AbstractPC, v::Vector{$PetscReal}, n::$PetscInt )
 
     @chk ccall(
                (:PCGAMGSetThreshold, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}, $PetscInt),
+               (CPC, Ptr{$PetscReal}, $PetscInt),
                pc, v, n,
               )
 
@@ -6443,7 +6444,7 @@ end
 end 
 
 """
-	PCGAMGSetThresholdScale(petsclib::PetscLibType, pc::PC, v::PetscReal) 
+	PCGAMGSetThresholdScale(petsclib::PetscLibType, pc::AbstractPC, v::PetscReal) 
 Relative threshold reduction at each level
 
 Not Collective
@@ -6462,16 +6463,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetThresholdScale"))
 """
-function PCGAMGSetThresholdScale(petsclib::PetscLibType, pc::PC, v::Real)
+function PCGAMGSetThresholdScale(petsclib::PetscLibType, pc::AbstractPC, v::Real)
     error("PCGAMGSetThresholdScale: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetThresholdScale(petsclib::$UnionPetscLib, pc::PC, v::$PetscReal )
+@for_petsc function PCGAMGSetThresholdScale(petsclib::$UnionPetscLib, pc::AbstractPC, v::$PetscReal )
 
     @chk ccall(
                (:PCGAMGSetThresholdScale, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, v,
               )
 
@@ -6480,7 +6481,7 @@ end
 end 
 
 """
-	PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::String) 
+	PCGAMGSetType(petsclib::PetscLibType, pc::AbstractPC, type::String) 
 Set the type of algorithm `PCGAMG` should use
 
 Collective
@@ -6499,16 +6500,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetType"))
 """
-function PCGAMGSetType(petsclib::PetscLibType, pc::PC, type::String)
+function PCGAMGSetType(petsclib::PetscLibType, pc::AbstractPC, type::String)
     error("PCGAMGSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetType(petsclib::$UnionPetscLib, pc::PC, type::String )
+@for_petsc function PCGAMGSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
 
     @chk ccall(
                (:PCGAMGSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCGAMGType),
+               (CPC, PCGAMGType),
                pc, type,
               )
 
@@ -6517,7 +6518,7 @@ end
 end 
 
 """
-	PCGAMGSetUseSAEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool) 
+	PCGAMGSetUseSAEstEig(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool) 
 Use the eigenvalue estimate from smoothed aggregation for the Chebyshev smoother during the solution process
 
 Collective
@@ -6536,16 +6537,16 @@ See also: the Users Manual section on PCGAMG, the Users Manual section on PCMG, 
 # External Links
 $(_doc_external("PC/PCGAMGSetUseSAEstEig"))
 """
-function PCGAMGSetUseSAEstEig(petsclib::PetscLibType, pc::PC, b::PetscBool)
+function PCGAMGSetUseSAEstEig(petsclib::PetscLibType, pc::AbstractPC, b::PetscBool)
     error("PCGAMGSetUseSAEstEig: no generated method for these argument types")
 end
 
-@for_petsc function PCGAMGSetUseSAEstEig(petsclib::$UnionPetscLib, pc::PC, b::PetscBool )
+@for_petsc function PCGAMGSetUseSAEstEig(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
 
     @chk ccall(
                (:PCGAMGSetUseSAEstEig, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, b,
               )
 
@@ -6597,7 +6598,7 @@ end
 end 
 
 """
-	nsub::PetscInt,iis::Vector{IS},ois::Vector{IS} = PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::PetscInt, N::PetscInt, Mdomains::PetscInt, Ndomains::PetscInt, dof::PetscInt, overlap::PetscInt) 
+	nsub::PetscInt,iis::Vector{IS},ois::Vector{IS} = PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::AbstractPC, M::PetscInt, N::PetscInt, Mdomains::PetscInt, Ndomains::PetscInt, dof::PetscInt, overlap::PetscInt) 
 Creates the index sets for the `PCGASM` overlapping Schwarz
 preconditioner for a two-dimensional problem on a regular grid.
 
@@ -6625,11 +6626,11 @@ See also: `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMGetSubKSP()`, `PCGASMSetOver
 # External Links
 $(_doc_external("PC/PCGASMCreateSubdomains2D"))
 """
-function PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::Integer, N::Integer, Mdomains::Integer, Ndomains::Integer, dof::Integer, overlap::Integer)
+function PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::AbstractPC, M::Integer, N::Integer, Mdomains::Integer, Ndomains::Integer, dof::Integer, overlap::Integer)
     error("PCGASMCreateSubdomains2D: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMCreateSubdomains2D(petsclib::$UnionPetscLib, pc::PC, M::$PetscInt, N::$PetscInt, Mdomains::$PetscInt, Ndomains::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
+@for_petsc function PCGASMCreateSubdomains2D(petsclib::$UnionPetscLib, pc::AbstractPC, M::$PetscInt, N::$PetscInt, Mdomains::$PetscInt, Ndomains::$PetscInt, dof::$PetscInt, overlap::$PetscInt )
 	nsub_ = Ref{$PetscInt}()
 	iis_ = Ref{Ptr{CIS}}()
 	ois_ = Ref{Ptr{CIS}}()
@@ -6637,7 +6638,7 @@ end
     @chk ccall(
                (:PCGASMCreateSubdomains2D, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
+               (CPC, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
                pc, M, N, Mdomains, Ndomains, dof, overlap, nsub_, iis_, ois_,
               )
 
@@ -6688,7 +6689,7 @@ end
 end 
 
 """
-	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCGASMGetSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the local `KSP` contexts for all subdomains on this MPI process.
 
 Collective iff first_local is requested
@@ -6709,11 +6710,11 @@ See also: `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMSetOverlap()`,
 # External Links
 $(_doc_external("PC/PCGASMGetSubKSP"))
 """
-function PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC)
+function PCGASMGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGASMGetSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
 	ksp_ = Ref{Ptr{CKSP}}()
@@ -6721,7 +6722,7 @@ end
     @chk ccall(
                (:PCGASMGetSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
+               (CPC, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
                pc, n_local_, first_local_, ksp_,
               )
 
@@ -6733,7 +6734,7 @@ end
 end 
 
 """
-	n::PetscInt,iis::Vector{IS},ois::Vector{IS} = PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,iis::Vector{IS},ois::Vector{IS} = PCGASMGetSubdomains(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the subdomains supported on this MPI process
 for the `PCGASM` additive Schwarz preconditioner.
 
@@ -6755,11 +6756,11 @@ See also: `PCGASM`, `PCGASMSetOverlap()`, `PCGASMGetSubKSP()`, `PCGASMCreateSubd
 # External Links
 $(_doc_external("PC/PCGASMGetSubdomains"))
 """
-function PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC)
+function PCGASMGetSubdomains(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGASMGetSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMGetSubdomains(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGASMGetSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_ = Ref{$PetscInt}()
 	iis_ = Ref{Ptr{CIS}}()
 	ois_ = Ref{Ptr{CIS}}()
@@ -6767,7 +6768,7 @@ end
     @chk ccall(
                (:PCGASMGetSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
                pc, n_, iis_, ois_,
               )
 
@@ -6779,7 +6780,7 @@ end
 end 
 
 """
-	n::PetscInt,mat::Vector{PetscMat} = PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC) 
+	n::PetscInt,mat::Vector{PetscMat} = PCGASMGetSubmatrices(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the local submatrices (for this MPI process
 only) for the `PCGASM` additive Schwarz preconditioner.
 
@@ -6800,18 +6801,18 @@ See also: `PCGASM`, `PCGASMSetOverlap()`, `PCGASMGetSubKSP()`,
 # External Links
 $(_doc_external("PC/PCGASMGetSubmatrices"))
 """
-function PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC)
+function PCGASMGetSubmatrices(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGASMGetSubmatrices: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMGetSubmatrices(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGASMGetSubmatrices(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_ = Ref{$PetscInt}()
 	mat_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCGASMGetSubmatrices, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
                pc, n_, mat_,
               )
 
@@ -6822,7 +6823,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::AbstractPC) 
 Returns flag indicating whether to use `DMCreateDomainDecomposition()` to define the subdomains, whenever possible with `PCGASM`
 
 Not Collective
@@ -6841,17 +6842,17 @@ See also: `PCGASM`, `PCGASMSetUseDMSubdomains()`, `PCGASMSetOverlap()`,
 # External Links
 $(_doc_external("PC/PCGASMGetUseDMSubdomains"))
 """
-function PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::PC)
+function PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGASMGetUseDMSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMGetUseDMSubdomains(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGASMGetUseDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCGASMGetUseDMSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -6861,7 +6862,7 @@ end
 end 
 
 """
-	PCGASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::PetscInt) 
+	PCGASMSetOverlap(petsclib::PetscLibType, pc::AbstractPC, ovl::PetscInt) 
 Sets the overlap between a pair of subdomains for the
 additive Schwarz preconditioner `PCGASM`.  Either all or no MPI processes in the
 pc communicator must call this routine.
@@ -6883,16 +6884,16 @@ See also: `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMGetSubKSP()`,
 # External Links
 $(_doc_external("PC/PCGASMSetOverlap"))
 """
-function PCGASMSetOverlap(petsclib::PetscLibType, pc::PC, ovl::Integer)
+function PCGASMSetOverlap(petsclib::PetscLibType, pc::AbstractPC, ovl::Integer)
     error("PCGASMSetOverlap: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMSetOverlap(petsclib::$UnionPetscLib, pc::PC, ovl::$PetscInt )
+@for_petsc function PCGASMSetOverlap(petsclib::$UnionPetscLib, pc::AbstractPC, ovl::$PetscInt )
 
     @chk ccall(
                (:PCGASMSetOverlap, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, ovl,
               )
 
@@ -6901,7 +6902,7 @@ end
 end 
 
 """
-	PCGASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool) 
+	PCGASMSetSortIndices(petsclib::PetscLibType, pc::AbstractPC, doSort::PetscBool) 
 Determines whether subdomain indices are sorted.
 
 Logically Collective
@@ -6918,16 +6919,16 @@ See also: `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMGetSubKSP()`,
 # External Links
 $(_doc_external("PC/PCGASMSetSortIndices"))
 """
-function PCGASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool)
+function PCGASMSetSortIndices(petsclib::PetscLibType, pc::AbstractPC, doSort::PetscBool)
     error("PCGASMSetSortIndices: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMSetSortIndices(petsclib::$UnionPetscLib, pc::PC, doSort::PetscBool )
+@for_petsc function PCGASMSetSortIndices(petsclib::$UnionPetscLib, pc::AbstractPC, doSort::PetscBool )
 
     @chk ccall(
                (:PCGASMSetSortIndices, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, doSort,
               )
 
@@ -6936,7 +6937,7 @@ end
 end 
 
 """
-	PCGASMSetSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) 
+	PCGASMSetSubdomains(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) 
 Sets the subdomains for this MPI process
 for the additive Schwarz preconditioner with multiple MPI processes per subdomain, `PCGASM`
 
@@ -6958,16 +6959,16 @@ See also: `PCGASM`, `PCGASMSetOverlap()`, `PCGASMGetSubKSP()`, `PCGASMDestroySub
 # External Links
 $(_doc_external("PC/PCGASMSetSubdomains"))
 """
-function PCGASMSetSubdomains(petsclib::PetscLibType, pc::PC, n::Integer, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS})
+function PCGASMSetSubdomains(petsclib::PetscLibType, pc::AbstractPC, n::Integer, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS})
     error("PCGASMSetSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMSetSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
+@for_petsc function PCGASMSetSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCGASMSetSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CIS}, Ptr{CIS}),
+               (CPC, $PetscInt, Ptr{CIS}, Ptr{CIS}),
                pc, n, iis, ois,
               )
 
@@ -6976,7 +6977,7 @@ end
 end 
 
 """
-	PCGASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::PetscInt) 
+	PCGASMSetTotalSubdomains(petsclib::PetscLibType, pc::AbstractPC, N::PetscInt) 
 sets the total number of subdomains to use across the communicator for `PCGASM`
 
 Logically Collective
@@ -6993,16 +6994,16 @@ See also: `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMSetOverlap()`,
 # External Links
 $(_doc_external("PC/PCGASMSetTotalSubdomains"))
 """
-function PCGASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::Integer)
+function PCGASMSetTotalSubdomains(petsclib::PetscLibType, pc::AbstractPC, N::Integer)
     error("PCGASMSetTotalSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::PC, N::$PetscInt )
+@for_petsc function PCGASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, N::$PetscInt )
 
     @chk ccall(
                (:PCGASMSetTotalSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, N,
               )
 
@@ -7011,7 +7012,7 @@ end
 end 
 
 """
-	PCGASMSetType(petsclib::PetscLibType, pc::PC, type::PCGASMType) 
+	PCGASMSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCGASMType) 
 Sets the type of restriction and interpolation used
 for local problems in the `PCGASM` additive Schwarz method.
 
@@ -7038,16 +7039,16 @@ See also: `PCGASM`, `PCGASMSetSubdomains()`, `PCGASMGetSubKSP()`,
 # External Links
 $(_doc_external("PC/PCGASMSetType"))
 """
-function PCGASMSetType(petsclib::PetscLibType, pc::PC, type::PCGASMType)
+function PCGASMSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCGASMType)
     error("PCGASMSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMSetType(petsclib::$UnionPetscLib, pc::PC, type::PCGASMType )
+@for_petsc function PCGASMSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCGASMType )
 
     @chk ccall(
                (:PCGASMSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCGASMType),
+               (CPC, PCGASMType),
                pc, type,
               )
 
@@ -7056,7 +7057,7 @@ end
 end 
 
 """
-	PCGASMSetUseDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCGASMSetUseDMSubdomains(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Indicates whether to use `DMCreateDomainDecomposition()` to define the subdomains, whenever possible for `PCGASM`
 
 Logically Collective
@@ -7078,16 +7079,16 @@ See also: `PCGASM`, `PCGASMGetUseDMSubdomains()`, `PCGASMSetSubdomains()`, `PCGA
 # External Links
 $(_doc_external("PC/PCGASMSetUseDMSubdomains"))
 """
-function PCGASMSetUseDMSubdomains(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCGASMSetUseDMSubdomains(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCGASMSetUseDMSubdomains: no generated method for these argument types")
 end
 
-@for_petsc function PCGASMSetUseDMSubdomains(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCGASMSetUseDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCGASMSetUseDMSubdomains, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -7096,7 +7097,7 @@ end
 end 
 
 """
-	ksp::KSP = PCGalerkinGetKSP(petsclib::PetscLibType, pc::PC) 
+	ksp::KSP = PCGalerkinGetKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `KSP` object in the `PCGALERKIN`
 
 Not Collective
@@ -7115,17 +7116,17 @@ See also: `PC`, `PCCreate()`, `PCSetType()`, `PCType`, `PCGALERKIN`,
 # External Links
 $(_doc_external("PC/PCGalerkinGetKSP"))
 """
-function PCGalerkinGetKSP(petsclib::PetscLibType, pc::PC)
+function PCGalerkinGetKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGalerkinGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCGalerkinGetKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGalerkinGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCGalerkinGetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, ksp_,
               )
 
@@ -7135,7 +7136,7 @@ end
 end 
 
 """
-	PCGalerkinSetComputeSubmatrix(petsclib::PetscLibType, pc::PC, computeAsub::external, ctx::Ptr{Cvoid}) 
+	PCGalerkinSetComputeSubmatrix(petsclib::PetscLibType, pc::AbstractPC, computeAsub::external, ctx::Ptr{Cvoid}) 
 Provide a routine that will be called to compute the Galerkin submatrix
 
 Logically Collective
@@ -7160,16 +7161,16 @@ See also: `PC`, `PCCreate()`, `PCSetType()`, `PCType`, `PCGALERKIN`,
 # External Links
 $(_doc_external("PC/PCGalerkinSetComputeSubmatrix"))
 """
-function PCGalerkinSetComputeSubmatrix(petsclib::PetscLibType, pc::PC, computeAsub::external, ctx::Ptr{Cvoid})
+function PCGalerkinSetComputeSubmatrix(petsclib::PetscLibType, pc::AbstractPC, computeAsub::external, ctx::Ptr{Cvoid})
     error("PCGalerkinSetComputeSubmatrix: no generated method for these argument types")
 end
 
-@for_petsc function PCGalerkinSetComputeSubmatrix(petsclib::$UnionPetscLib, pc::PC, computeAsub::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCGalerkinSetComputeSubmatrix(petsclib::$UnionPetscLib, pc::AbstractPC, computeAsub::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCGalerkinSetComputeSubmatrix, $petsc_library),
                PetscErrorCode,
-               (PC, external, Ptr{Cvoid}),
+               (CPC, external, Ptr{Cvoid}),
                pc, computeAsub, ctx,
               )
 
@@ -7178,7 +7179,7 @@ end
 end 
 
 """
-	PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::PC, P::AbstractPetscMat) 
+	PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::AbstractPC, P::AbstractPetscMat) 
 Sets the interpolation operator for the `PCGALERKIN` preconditioner
 
 Logically Collective
@@ -7195,16 +7196,16 @@ See also: `PC`, `PCCreate()`, `PCSetType()`, `PCType`, `PCGALERKIN`,
 # External Links
 $(_doc_external("PC/PCGalerkinSetInterpolation"))
 """
-function PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::PC, P::AbstractPetscMat)
+function PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::AbstractPC, P::AbstractPetscMat)
     error("PCGalerkinSetInterpolation: no generated method for these argument types")
 end
 
-@for_petsc function PCGalerkinSetInterpolation(petsclib::$UnionPetscLib, pc::PC, P::AbstractPetscMat )
+@for_petsc function PCGalerkinSetInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, P::AbstractPetscMat )
 
     @chk ccall(
                (:PCGalerkinSetInterpolation, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, P,
               )
 
@@ -7213,7 +7214,7 @@ end
 end 
 
 """
-	PCGalerkinSetRestriction(petsclib::PetscLibType, pc::PC, R::AbstractPetscMat) 
+	PCGalerkinSetRestriction(petsclib::PetscLibType, pc::AbstractPC, R::AbstractPetscMat) 
 Sets the restriction operator for the `PCGALERKIN` preconditioner
 
 Logically Collective
@@ -7230,16 +7231,16 @@ See also: `PC`, `PCCreate()`, `PCSetType()`, `PCType`, `PCGALERKIN`,
 # External Links
 $(_doc_external("PC/PCGalerkinSetRestriction"))
 """
-function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::PC, R::AbstractPetscMat)
+function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::AbstractPC, R::AbstractPetscMat)
     error("PCGalerkinSetRestriction: no generated method for these argument types")
 end
 
-@for_petsc function PCGalerkinSetRestriction(petsclib::$UnionPetscLib, pc::PC, R::AbstractPetscMat )
+@for_petsc function PCGalerkinSetRestriction(petsclib::$UnionPetscLib, pc::AbstractPC, R::AbstractPetscMat )
 
     @chk ccall(
                (:PCGalerkinSetRestriction, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, R,
               )
 
@@ -7248,7 +7249,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = PCGetApplicationContext(petsclib::PetscLibType, pc::PC) 
+	ctx::Ptr{Cvoid} = PCGetApplicationContext(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the user-defined context for the preconditioner set with `PCSetApplicationContext()`
 
 Not Collective
@@ -7266,17 +7267,17 @@ See also: `PC`, `PCSetApplicationContext()`, `KSPSetApplicationContext()`, `KSPG
 # External Links
 $(_doc_external("PC/PCGetApplicationContext"))
 """
-function PCGetApplicationContext(petsclib::PetscLibType, pc::PC)
+function PCGetApplicationContext(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function PCGetApplicationContext(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetApplicationContext(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PCGetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cvoid}),
+               (CPC, Ptr{Cvoid}),
                pc, ctx_,
               )
 
@@ -7286,7 +7287,7 @@ end
 end 
 
 """
-	num_levels::PetscInt,coarseOperators::Vector{PetscMat} = PCGetCoarseOperators(petsclib::PetscLibType, pc::PC) 
+	num_levels::PetscInt,coarseOperators::Vector{PetscMat} = PCGetCoarseOperators(petsclib::PetscLibType, pc::AbstractPC) 
 Gets coarse operator matrices for all levels (except the finest level)
 
 Logically Collective
@@ -7305,18 +7306,18 @@ See also: `PC`, `PCMG`, `PCMGGetRestriction()`, `PCMGSetInterpolation()`, `PCMGG
 # External Links
 $(_doc_external("PC/PCGetCoarseOperators"))
 """
-function PCGetCoarseOperators(petsclib::PetscLibType, pc::PC)
+function PCGetCoarseOperators(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetCoarseOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCGetCoarseOperators(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetCoarseOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
 	num_levels_ = Ref{$PetscInt}()
 	coarseOperators_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCGetCoarseOperators, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
                pc, num_levels_, coarseOperators_,
               )
 
@@ -7327,7 +7328,7 @@ end
 end 
 
 """
-	dm::PetscDM = PCGetDM(petsclib::PetscLibType, pc::PC) 
+	dm::PetscDM = PCGetDM(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `DM` that may be used by some preconditioners
 
 Not Collective
@@ -7345,17 +7346,17 @@ See also: `PC`, `DM`, `PCSetDM()`, `KSPSetDM()`, `KSPGetDM()`
 # External Links
 $(_doc_external("PC/PCGetDM"))
 """
-function PCGetDM(petsclib::PetscLibType, pc::PC)
+function PCGetDM(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetDM: no generated method for these argument types")
 end
 
-@for_petsc function PCGetDM(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetDM(petsclib::$UnionPetscLib, pc::AbstractPC )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:PCGetDM, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CDM}),
+               (CPC, Ptr{CDM}),
                pc, dm_,
               )
 
@@ -7365,7 +7366,7 @@ end
 end 
 
 """
-	flag::PetscBool = PCGetDiagonalScale(petsclib::PetscLibType, pc::PC) 
+	flag::PetscBool = PCGetDiagonalScale(petsclib::PetscLibType, pc::AbstractPC) 
 Indicates if the preconditioner applies an additional left and right
 scaling as needed by certain time-stepping codes.
 
@@ -7384,17 +7385,17 @@ See also: `PC`, `PCCreate()`, `PCSetUp()`, `PCDiagonalScaleLeft()`, `PCDiagonalS
 # External Links
 $(_doc_external("PC/PCGetDiagonalScale"))
 """
-function PCGetDiagonalScale(petsclib::PetscLibType, pc::PC)
+function PCGetDiagonalScale(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetDiagonalScale: no generated method for these argument types")
 end
 
-@for_petsc function PCGetDiagonalScale(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetDiagonalScale(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCGetDiagonalScale, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flag_,
               )
 
@@ -7404,7 +7405,7 @@ end
 end 
 
 """
-	reason::PCFailedReason = PCGetFailedReason(petsclib::PetscLibType, pc::PC) 
+	reason::PCFailedReason = PCGetFailedReason(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the reason a `PCSetUp()` failed or `PC_NOERROR` if it did not fail
 
 Not Collective
@@ -7422,17 +7423,17 @@ See also: `PC`, `PCCreate()`, `PCApply()`, `PCDestroy()`, `PCSetFailedReason()`,
 # External Links
 $(_doc_external("PC/PCGetFailedReason"))
 """
-function PCGetFailedReason(petsclib::PetscLibType, pc::PC)
+function PCGetFailedReason(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetFailedReason: no generated method for these argument types")
 end
 
-@for_petsc function PCGetFailedReason(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetFailedReason(petsclib::$UnionPetscLib, pc::AbstractPC )
 	reason_ = Ref{PCFailedReason}()
 
     @chk ccall(
                (:PCGetFailedReason, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCFailedReason}),
+               (CPC, Ptr{PCFailedReason}),
                pc, reason_,
               )
 
@@ -7442,7 +7443,7 @@ end
 end 
 
 """
-	num_levels::PetscInt,interpolations::Vector{PetscMat} = PCGetInterpolations(petsclib::PetscLibType, pc::PC) 
+	num_levels::PetscInt,interpolations::Vector{PetscMat} = PCGetInterpolations(petsclib::PetscLibType, pc::AbstractPC) 
 Gets interpolation matrices for all levels (except level 0)
 
 Logically Collective
@@ -7461,18 +7462,18 @@ See also: `PC`, `PCMG`, `PCMGGetRestriction()`, `PCMGSetInterpolation()`, `PCMGG
 # External Links
 $(_doc_external("PC/PCGetInterpolations"))
 """
-function PCGetInterpolations(petsclib::PetscLibType, pc::PC)
+function PCGetInterpolations(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetInterpolations: no generated method for these argument types")
 end
 
-@for_petsc function PCGetInterpolations(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetInterpolations(petsclib::$UnionPetscLib, pc::AbstractPC )
 	num_levels_ = Ref{$PetscInt}()
 	interpolations_ = Ref{Ptr{CMat}}()
 
     @chk ccall(
                (:PCGetInterpolations, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CMat}}),
                pc, num_levels_, interpolations_,
               )
 
@@ -7483,7 +7484,7 @@ end
 end 
 
 """
-	level::PetscInt = PCGetKSPNestLevel(petsclib::PetscLibType, pc::PC) 
+	level::PetscInt = PCGetKSPNestLevel(petsclib::PetscLibType, pc::AbstractPC) 
 gets the amount of nesting the `KSP` that contains this `PC` has
 
 Not Collective
@@ -7501,17 +7502,17 @@ See also: `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPTyp
 # External Links
 $(_doc_external("PC/PCGetKSPNestLevel"))
 """
-function PCGetKSPNestLevel(petsclib::PetscLibType, pc::PC)
+function PCGetKSPNestLevel(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetKSPNestLevel: no generated method for these argument types")
 end
 
-@for_petsc function PCGetKSPNestLevel(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetKSPNestLevel(petsclib::$UnionPetscLib, pc::AbstractPC )
 	level_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PCGetKSPNestLevel, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}),
+               (CPC, Ptr{$PetscInt}),
                pc, level_,
               )
 
@@ -7521,7 +7522,7 @@ end
 end 
 
 """
-	Amat::PetscMat,Pmat::PetscMat = PCGetOperators(petsclib::PetscLibType, pc::PC) 
+	Amat::PetscMat,Pmat::PetscMat = PCGetOperators(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the matrix associated with the linear system and
 possibly a different one which is used to construct the preconditioner.
 
@@ -7541,18 +7542,18 @@ See also: `PC`, `PCSetOperators()`, `KSPGetOperators()`, `KSPSetOperators()`, `P
 # External Links
 $(_doc_external("PC/PCGetOperators"))
 """
-function PCGetOperators(petsclib::PetscLibType, pc::PC)
+function PCGetOperators(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCGetOperators(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
 	Amat_ = Ref{CMat}()
 	Pmat_ = Ref{CMat}()
 
     @chk ccall(
                (:PCGetOperators, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CMat}, Ptr{CMat}),
+               (CPC, Ptr{CMat}, Ptr{CMat}),
                pc, Amat_, Pmat_,
               )
 
@@ -7563,7 +7564,7 @@ end
 end 
 
 """
-	mat::PetscBool,pmat::PetscBool = PCGetOperatorsSet(petsclib::PetscLibType, pc::PC) 
+	mat::PetscBool,pmat::PetscBool = PCGetOperatorsSet(petsclib::PetscLibType, pc::AbstractPC) 
 Determines if the matrix associated with the linear system and
 possibly a different one associated with the preconditioner have been set in the `PC`.
 
@@ -7583,18 +7584,18 @@ See also: `PC`, `PCSetOperators()`, `KSPGetOperators()`, `KSPSetOperators()`, `P
 # External Links
 $(_doc_external("PC/PCGetOperatorsSet"))
 """
-function PCGetOperatorsSet(petsclib::PetscLibType, pc::PC)
+function PCGetOperatorsSet(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetOperatorsSet: no generated method for these argument types")
 end
 
-@for_petsc function PCGetOperatorsSet(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetOperatorsSet(petsclib::$UnionPetscLib, pc::AbstractPC )
 	mat_ = Ref{PetscBool}()
 	pmat_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCGetOperatorsSet, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}, Ptr{PetscBool}),
                pc, mat_, pmat_,
               )
 
@@ -7605,7 +7606,7 @@ end
 end 
 
 """
-	prefix::String = PCGetOptionsPrefix(petsclib::PetscLibType, pc::PC) 
+	prefix::String = PCGetOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the prefix used for searching for all
 `PC` options in the database.
 
@@ -7624,17 +7625,17 @@ See also: `PC`, `PCSetFromOptions()`, `PCSetOptionsPrefix()`, `PCAppendOptionsPr
 # External Links
 $(_doc_external("PC/PCGetOptionsPrefix"))
 """
-function PCGetOptionsPrefix(petsclib::PetscLibType, pc::PC)
+function PCGetOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetOptionsPrefix: no generated method for these argument types")
 end
 
-@for_petsc function PCGetOptionsPrefix(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetOptionsPrefix(petsclib::$UnionPetscLib, pc::AbstractPC )
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PCGetOptionsPrefix, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Ptr{Cchar}}),
+               (CPC, Ptr{Ptr{Cchar}}),
                pc, prefix_,
               )
 
@@ -7644,7 +7645,7 @@ end
 end 
 
 """
-	flag::PetscBool = PCGetReusePreconditioner(petsclib::PetscLibType, pc::PC) 
+	flag::PetscBool = PCGetReusePreconditioner(petsclib::PetscLibType, pc::AbstractPC) 
 Determines if the `PC` reuses the current preconditioner even if the operator in the preconditioner has changed.
 
 Not Collective
@@ -7662,17 +7663,17 @@ See also: `PC`, `PCGetOperators()`, `MatZeroEntries()`, `PCSetReusePreconditione
 # External Links
 $(_doc_external("PC/PCGetReusePreconditioner"))
 """
-function PCGetReusePreconditioner(petsclib::PetscLibType, pc::PC)
+function PCGetReusePreconditioner(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetReusePreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function PCGetReusePreconditioner(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetReusePreconditioner(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCGetReusePreconditioner, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flag_,
               )
 
@@ -7682,7 +7683,7 @@ end
 end 
 
 """
-	type::String = PCGetType(petsclib::PetscLibType, pc::PC) 
+	type::String = PCGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `PCType` (as a string) from the `PC`
 context.
 
@@ -7701,17 +7702,17 @@ See also: `PC`, `PCType`, `PCSetType()`, `PetscObjectTypeCompare()`, `PetscObjec
 # External Links
 $(_doc_external("PC/PCGetType"))
 """
-function PCGetType(petsclib::PetscLibType, pc::PC)
+function PCGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCType}()
 
     @chk ccall(
                (:PCGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCType}),
+               (CPC, Ptr{PCType}),
                pc, type_,
               )
 
@@ -7721,7 +7722,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCGetUseAmat(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCGetUseAmat(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the flag that indicates that when the preconditioner needs to apply (part of) the
 operator during the preconditioning process it applies the `Amat` provided to `TSSetRHSJacobian()`,
 `TSSetIJacobian()`, `SNESSetJacobian()`, `KSPSetOperators()` or `PCSetOperators()` not the `Pmat`.
@@ -7741,17 +7742,17 @@ See also: `PC`, `PCSetUseAmat()`, `PCBJACOBI`, `PCMG`, `PCFIELDSPLIT`, `PCCOMPOS
 # External Links
 $(_doc_external("PC/PCGetUseAmat"))
 """
-function PCGetUseAmat(petsclib::PetscLibType, pc::PC)
+function PCGetUseAmat(petsclib::PetscLibType, pc::AbstractPC)
     error("PCGetUseAmat: no generated method for these argument types")
 end
 
-@for_petsc function PCGetUseAmat(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCGetUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCGetUseAmat, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -7761,7 +7762,7 @@ end
 end 
 
 """
-	PCHMGSetCoarseningComponent(petsclib::PetscLibType, pc::PC, component::PetscInt) 
+	PCHMGSetCoarseningComponent(petsclib::PetscLibType, pc::AbstractPC, component::PetscInt) 
 Set which component of the PDE is used for the subspace-based coarsening algorithm in the preconditioner `PCHMG`
 
 Logically Collective
@@ -7780,16 +7781,16 @@ See also: `PCHMG`, `PCType`, `PCGAMG`, `PCHMGSetReuseInterpolation()`, `PCHMGSet
 # External Links
 $(_doc_external("PC/PCHMGSetCoarseningComponent"))
 """
-function PCHMGSetCoarseningComponent(petsclib::PetscLibType, pc::PC, component::Integer)
+function PCHMGSetCoarseningComponent(petsclib::PetscLibType, pc::AbstractPC, component::Integer)
     error("PCHMGSetCoarseningComponent: no generated method for these argument types")
 end
 
-@for_petsc function PCHMGSetCoarseningComponent(petsclib::$UnionPetscLib, pc::PC, component::$PetscInt )
+@for_petsc function PCHMGSetCoarseningComponent(petsclib::$UnionPetscLib, pc::AbstractPC, component::$PetscInt )
 
     @chk ccall(
                (:PCHMGSetCoarseningComponent, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, component,
               )
 
@@ -7798,7 +7799,7 @@ end
 end 
 
 """
-	PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::String) 
+	PCHMGSetInnerPCType(petsclib::PetscLibType, pc::AbstractPC, type::String) 
 Set an inner `PC` type to be used in the `PCHMG` preconditioner. That is the method used to compute
 the hierarchy of restriction operators.
 
@@ -7818,16 +7819,16 @@ See also: `PCHMG`, `PCType`, `PCHMGSetReuseInterpolation()`, `PCHMGSetUseSubspac
 # External Links
 $(_doc_external("PC/PCHMGSetInnerPCType"))
 """
-function PCHMGSetInnerPCType(petsclib::PetscLibType, pc::PC, type::String)
+function PCHMGSetInnerPCType(petsclib::PetscLibType, pc::AbstractPC, type::String)
     error("PCHMGSetInnerPCType: no generated method for these argument types")
 end
 
-@for_petsc function PCHMGSetInnerPCType(petsclib::$UnionPetscLib, pc::PC, type::String )
+@for_petsc function PCHMGSetInnerPCType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
 
     @chk ccall(
                (:PCHMGSetInnerPCType, $petsc_library),
                PetscErrorCode,
-               (PC, PCType),
+               (CPC, PCType),
                pc, type,
               )
 
@@ -7836,7 +7837,7 @@ end
 end 
 
 """
-	PCHMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, reuse::PetscBool) 
+	PCHMGSetReuseInterpolation(petsclib::PetscLibType, pc::AbstractPC, reuse::PetscBool) 
 Reuse the interpolation matrices in `PCHMG` after changing the matrices numerical values
 
 Logically Collective
@@ -7855,16 +7856,16 @@ See also: `PCHMG`, `PCGAMG`, `PCHMGSetUseSubspaceCoarsening()`, `PCHMGSetCoarsen
 # External Links
 $(_doc_external("PC/PCHMGSetReuseInterpolation"))
 """
-function PCHMGSetReuseInterpolation(petsclib::PetscLibType, pc::PC, reuse::PetscBool)
+function PCHMGSetReuseInterpolation(petsclib::PetscLibType, pc::AbstractPC, reuse::PetscBool)
     error("PCHMGSetReuseInterpolation: no generated method for these argument types")
 end
 
-@for_petsc function PCHMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::PC, reuse::PetscBool )
+@for_petsc function PCHMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, reuse::PetscBool )
 
     @chk ccall(
                (:PCHMGSetReuseInterpolation, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, reuse,
               )
 
@@ -7873,7 +7874,7 @@ end
 end 
 
 """
-	PCHMGSetUseSubspaceCoarsening(petsclib::PetscLibType, pc::PC, subspace::PetscBool) 
+	PCHMGSetUseSubspaceCoarsening(petsclib::PetscLibType, pc::AbstractPC, subspace::PetscBool) 
 Use subspace coarsening in `PCHMG`
 
 Logically Collective
@@ -7892,16 +7893,16 @@ See also: `PCHMG`, `PCHMGSetReuseInterpolation()`, `PCHMGSetCoarseningComponent(
 # External Links
 $(_doc_external("PC/PCHMGSetUseSubspaceCoarsening"))
 """
-function PCHMGSetUseSubspaceCoarsening(petsclib::PetscLibType, pc::PC, subspace::PetscBool)
+function PCHMGSetUseSubspaceCoarsening(petsclib::PetscLibType, pc::AbstractPC, subspace::PetscBool)
     error("PCHMGSetUseSubspaceCoarsening: no generated method for these argument types")
 end
 
-@for_petsc function PCHMGSetUseSubspaceCoarsening(petsclib::$UnionPetscLib, pc::PC, subspace::PetscBool )
+@for_petsc function PCHMGSetUseSubspaceCoarsening(petsclib::$UnionPetscLib, pc::AbstractPC, subspace::PetscBool )
 
     @chk ccall(
                (:PCHMGSetUseSubspaceCoarsening, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, subspace,
               )
 
@@ -7910,7 +7911,7 @@ end
 end 
 
 """
-	PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::PC, usematmaij::PetscBool) 
+	PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::AbstractPC, usematmaij::PetscBool) 
 Set a flag that indicates if or not to use `MATMAIJ` for the interpolation matrices to save memory
 
 Logically Collective
@@ -7929,16 +7930,16 @@ See also: `PCHMG`, `PCType`, `PCGAMG`
 # External Links
 $(_doc_external("PC/PCHMGUseMatMAIJ"))
 """
-function PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::PC, usematmaij::PetscBool)
+function PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::AbstractPC, usematmaij::PetscBool)
     error("PCHMGUseMatMAIJ: no generated method for these argument types")
 end
 
-@for_petsc function PCHMGUseMatMAIJ(petsclib::$UnionPetscLib, pc::PC, usematmaij::PetscBool )
+@for_petsc function PCHMGUseMatMAIJ(petsclib::$UnionPetscLib, pc::AbstractPC, usematmaij::PetscBool )
 
     @chk ccall(
                (:PCHMGUseMatMAIJ, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, usematmaij,
               )
 
@@ -7969,22 +7970,22 @@ end
 end 
 
 """
-	type::PCHPDDMCoarseCorrectionType = PCHPDDMGetCoarseCorrectionType(petsclib::PetscLibType, pc::PC) 
+	type::PCHPDDMCoarseCorrectionType = PCHPDDMGetCoarseCorrectionType(petsclib::PetscLibType, pc::AbstractPC) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMGetCoarseCorrectionType"))
 """
-function PCHPDDMGetCoarseCorrectionType(petsclib::PetscLibType, pc::PC)
+function PCHPDDMGetCoarseCorrectionType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCHPDDMGetCoarseCorrectionType: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMGetCoarseCorrectionType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCHPDDMGetCoarseCorrectionType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCHPDDMCoarseCorrectionType}()
 
     @chk ccall(
                (:PCHPDDMGetCoarseCorrectionType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCHPDDMCoarseCorrectionType}),
+               (CPC, Ptr{PCHPDDMCoarseCorrectionType}),
                pc, type_,
               )
 
@@ -7994,23 +7995,23 @@ end
 end 
 
 """
-	gc::PetscReal,oc::PetscReal = PCHPDDMGetComplexities(petsclib::PetscLibType, pc::PC) 
+	gc::PetscReal,oc::PetscReal = PCHPDDMGetComplexities(petsclib::PetscLibType, pc::AbstractPC) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMGetComplexities"))
 """
-function PCHPDDMGetComplexities(petsclib::PetscLibType, pc::PC)
+function PCHPDDMGetComplexities(petsclib::PetscLibType, pc::AbstractPC)
     error("PCHPDDMGetComplexities: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMGetComplexities(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCHPDDMGetComplexities(petsclib::$UnionPetscLib, pc::AbstractPC )
 	gc_ = Ref{$PetscReal}()
 	oc_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:PCHPDDMGetComplexities, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}, Ptr{$PetscReal}),
+               (CPC, Ptr{$PetscReal}, Ptr{$PetscReal}),
                pc, gc_, oc_,
               )
 
@@ -8021,22 +8022,22 @@ end
 end 
 
 """
-	share::PetscBool = PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::PC) 
+	share::PetscBool = PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMGetSTShareSubKSP"))
 """
-function PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::PC)
+function PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCHPDDMGetSTShareSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMGetSTShareSubKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCHPDDMGetSTShareSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	share_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCHPDDMGetSTShareSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, share_,
               )
 
@@ -8046,21 +8047,21 @@ end
 end 
 
 """
-	PCHPDDMHasNeumannMat(petsclib::PetscLibType, pc::PC, has::PetscBool) 
+	PCHPDDMHasNeumannMat(petsclib::PetscLibType, pc::AbstractPC, has::PetscBool) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMHasNeumannMat"))
 """
-function PCHPDDMHasNeumannMat(petsclib::PetscLibType, pc::PC, has::PetscBool)
+function PCHPDDMHasNeumannMat(petsclib::PetscLibType, pc::AbstractPC, has::PetscBool)
     error("PCHPDDMHasNeumannMat: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMHasNeumannMat(petsclib::$UnionPetscLib, pc::PC, has::PetscBool )
+@for_petsc function PCHPDDMHasNeumannMat(petsclib::$UnionPetscLib, pc::AbstractPC, has::PetscBool )
 
     @chk ccall(
                (:PCHPDDMHasNeumannMat, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, has,
               )
 
@@ -8091,21 +8092,21 @@ end
 end 
 
 """
-	PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid}) 
+	PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::AbstractPC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid}) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMSetAuxiliaryMat"))
 """
-function PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid})
+function PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::AbstractPC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid})
     error("PCHPDDMSetAuxiliaryMat: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMSetAuxiliaryMat(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCHPDDMSetAuxiliaryMat(petsclib::$UnionPetscLib, pc::AbstractPC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCHPDDMSetAuxiliaryMat, $petsc_library),
                PetscErrorCode,
-               (PC, CIS, CMat, external, Ptr{Cvoid}),
+               (CPC, CIS, CMat, external, Ptr{Cvoid}),
                pc, is, A, setup, ctx,
               )
 
@@ -8114,21 +8115,21 @@ end
 end 
 
 """
-	PCHPDDMSetCoarseCorrectionType(petsclib::PetscLibType, pc::PC, type::PCHPDDMCoarseCorrectionType) 
+	PCHPDDMSetCoarseCorrectionType(petsclib::PetscLibType, pc::AbstractPC, type::PCHPDDMCoarseCorrectionType) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMSetCoarseCorrectionType"))
 """
-function PCHPDDMSetCoarseCorrectionType(petsclib::PetscLibType, pc::PC, type::PCHPDDMCoarseCorrectionType)
+function PCHPDDMSetCoarseCorrectionType(petsclib::PetscLibType, pc::AbstractPC, type::PCHPDDMCoarseCorrectionType)
     error("PCHPDDMSetCoarseCorrectionType: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMSetCoarseCorrectionType(petsclib::$UnionPetscLib, pc::PC, type::PCHPDDMCoarseCorrectionType )
+@for_petsc function PCHPDDMSetCoarseCorrectionType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCHPDDMCoarseCorrectionType )
 
     @chk ccall(
                (:PCHPDDMSetCoarseCorrectionType, $petsc_library),
                PetscErrorCode,
-               (PC, PCHPDDMCoarseCorrectionType),
+               (CPC, PCHPDDMCoarseCorrectionType),
                pc, type,
               )
 
@@ -8137,21 +8138,21 @@ end
 end 
 
 """
-	PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, U::AbstractPetscMat) 
+	PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::AbstractPC, is::AbstractIS, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMSetDeflationMat"))
 """
-function PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, U::AbstractPetscMat)
+function PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::AbstractPC, is::AbstractIS, U::AbstractPetscMat)
     error("PCHPDDMSetDeflationMat: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMSetDeflationMat(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS, U::AbstractPetscMat )
+@for_petsc function PCHPDDMSetDeflationMat(petsclib::$UnionPetscLib, pc::AbstractPC, is::AbstractIS, U::AbstractPetscMat )
 
     @chk ccall(
                (:PCHPDDMSetDeflationMat, $petsc_library),
                PetscErrorCode,
-               (PC, CIS, CMat),
+               (CPC, CIS, CMat),
                pc, is, U,
               )
 
@@ -8160,21 +8161,21 @@ end
 end 
 
 """
-	PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat) 
+	PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::AbstractPC, B::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMSetRHSMat"))
 """
-function PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat)
+function PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::AbstractPC, B::AbstractPetscMat)
     error("PCHPDDMSetRHSMat: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMSetRHSMat(petsclib::$UnionPetscLib, pc::PC, B::AbstractPetscMat )
+@for_petsc function PCHPDDMSetRHSMat(petsclib::$UnionPetscLib, pc::AbstractPC, B::AbstractPetscMat )
 
     @chk ccall(
                (:PCHPDDMSetRHSMat, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, B,
               )
 
@@ -8183,21 +8184,21 @@ end
 end 
 
 """
-	PCHPDDMSetSTShareSubKSP(petsclib::PetscLibType, pc::PC, share::PetscBool) 
+	PCHPDDMSetSTShareSubKSP(petsclib::PetscLibType, pc::AbstractPC, share::PetscBool) 
 
 # External Links
 $(_doc_external("KSP/PCHPDDMSetSTShareSubKSP"))
 """
-function PCHPDDMSetSTShareSubKSP(petsclib::PetscLibType, pc::PC, share::PetscBool)
+function PCHPDDMSetSTShareSubKSP(petsclib::PetscLibType, pc::AbstractPC, share::PetscBool)
     error("PCHPDDMSetSTShareSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCHPDDMSetSTShareSubKSP(petsclib::$UnionPetscLib, pc::PC, share::PetscBool )
+@for_petsc function PCHPDDMSetSTShareSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC, share::PetscBool )
 
     @chk ccall(
                (:PCHPDDMSetSTShareSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, share,
               )
 
@@ -8206,7 +8207,7 @@ end
 end 
 
 """
-	PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::PC, interior::AbstractPetscVec) 
+	PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::AbstractPC, interior::AbstractPetscVec) 
 Set the list of interior nodes to a zero-conductivity region for `PCHYPRE` of type AMS
 
 Collective
@@ -8222,16 +8223,16 @@ See also: `PCHYPRE`, `PCHYPRESetDiscreteGradient()`, `PCHYPRESetDiscreteCurl()`,
 # External Links
 $(_doc_external("PC/PCHYPREAMSSetInteriorNodes"))
 """
-function PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::PC, interior::AbstractPetscVec)
+function PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::AbstractPC, interior::AbstractPetscVec)
     error("PCHYPREAMSSetInteriorNodes: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPREAMSSetInteriorNodes(petsclib::$UnionPetscLib, pc::PC, interior::AbstractPetscVec )
+@for_petsc function PCHYPREAMSSetInteriorNodes(petsclib::$UnionPetscLib, pc::AbstractPC, interior::AbstractPetscVec )
 
     @chk ccall(
                (:PCHYPREAMSSetInteriorNodes, $petsc_library),
                PetscErrorCode,
-               (PC, CVec),
+               (CPC, CVec),
                pc, interior,
               )
 
@@ -8240,7 +8241,7 @@ end
 end 
 
 """
-	n_per_level::Ptr{PetscInt},CFMarkers::Ptr{PetscBT} = PCHYPREGetCFMarkers(petsclib::PetscLibType, pc::PC) 
+	n_per_level::Ptr{PetscInt},CFMarkers::Ptr{PetscBT} = PCHYPREGetCFMarkers(petsclib::PetscLibType, pc::AbstractPC) 
 Gets CF marker arrays for all levels (except the finest level)
 
 Logically Collective
@@ -8259,18 +8260,18 @@ See also: `PC`, `PCMG`, `PCMGGetRestriction()`, `PCMGSetInterpolation()`, `PCMGG
 # External Links
 $(_doc_external("PC/PCHYPREGetCFMarkers"))
 """
-function PCHYPREGetCFMarkers(petsclib::PetscLibType, pc::PC)
+function PCHYPREGetCFMarkers(petsclib::PetscLibType, pc::AbstractPC)
     error("PCHYPREGetCFMarkers: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPREGetCFMarkers(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCHYPREGetCFMarkers(petsclib::$UnionPetscLib, pc::AbstractPC )
 	n_per_level_ = Ref{Ptr{$PetscInt}}()
 	CFMarkers_ = Ref{Ptr{PetscBT}}()
 
     @chk ccall(
                (:PCHYPREGetCFMarkers, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{PetscBT}}),
+               (CPC, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{PetscBT}}),
                pc, n_per_level_, CFMarkers_,
               )
 
@@ -8281,7 +8282,7 @@ end
 end 
 
 """
-	name::String = PCHYPREGetType(petsclib::PetscLibType, pc::PC) 
+	name::String = PCHYPREGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets which hypre preconditioner you are using
 
 Input Parameter:
@@ -8297,17 +8298,17 @@ See also: `PCCreate()`, `PCHYPRESetType()`, `PCType`, `PC`, `PCHYPRE`
 # External Links
 $(_doc_external("PC/PCHYPREGetType"))
 """
-function PCHYPREGetType(petsclib::PetscLibType, pc::PC)
+function PCHYPREGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCHYPREGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPREGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCHYPREGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PCHYPREGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Ptr{Cchar}}),
+               (CPC, Ptr{Ptr{Cchar}}),
                pc, name_,
               )
 
@@ -8317,7 +8318,7 @@ end
 end 
 
 """
-	PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) 
+	PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::AbstractPC, A::AbstractPetscMat) 
 Set the vector Poisson matrix for `PCHYPRE` of type AMS
 
 Collective
@@ -8333,16 +8334,16 @@ See also: `PCHYPRE`, `PCHYPRESetDiscreteGradient()`, `PCHYPRESetDiscreteCurl()`,
 # External Links
 $(_doc_external("PC/PCHYPRESetAlphaPoissonMatrix"))
 """
-function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat)
+function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::AbstractPC, A::AbstractPetscMat)
     error("PCHYPRESetAlphaPoissonMatrix: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPRESetAlphaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
+@for_petsc function PCHYPRESetAlphaPoissonMatrix(petsclib::$UnionPetscLib, pc::AbstractPC, A::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetAlphaPoissonMatrix, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, A,
               )
 
@@ -8351,7 +8352,7 @@ end
 end 
 
 """
-	PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) 
+	PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::AbstractPC, A::AbstractPetscMat) 
 Set the Poisson matrix for `PCHYPRE` of type AMS
 
 Collective
@@ -8367,16 +8368,16 @@ See also: `PCHYPRE`, `PCHYPRESetDiscreteGradient()`, `PCHYPRESetDiscreteCurl()`,
 # External Links
 $(_doc_external("PC/PCHYPRESetBetaPoissonMatrix"))
 """
-function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat)
+function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::AbstractPC, A::AbstractPetscMat)
     error("PCHYPRESetBetaPoissonMatrix: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPRESetBetaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
+@for_petsc function PCHYPRESetBetaPoissonMatrix(petsclib::$UnionPetscLib, pc::AbstractPC, A::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetBetaPoissonMatrix, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, A,
               )
 
@@ -8385,7 +8386,7 @@ end
 end 
 
 """
-	PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::PC, C::AbstractPetscMat) 
+	PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::AbstractPC, C::AbstractPetscMat) 
 Set the discrete curl matrix for `PCHYPRE` type of ADS
 
 Collective
@@ -8401,16 +8402,16 @@ See also: `PCHYPRE`, `PCHYPRESetDiscreteGradient()`
 # External Links
 $(_doc_external("PC/PCHYPRESetDiscreteCurl"))
 """
-function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::PC, C::AbstractPetscMat)
+function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::AbstractPC, C::AbstractPetscMat)
     error("PCHYPRESetDiscreteCurl: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPRESetDiscreteCurl(petsclib::$UnionPetscLib, pc::PC, C::AbstractPetscMat )
+@for_petsc function PCHYPRESetDiscreteCurl(petsclib::$UnionPetscLib, pc::AbstractPC, C::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetDiscreteCurl, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, C,
               )
 
@@ -8419,7 +8420,7 @@ end
 end 
 
 """
-	PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat) 
+	PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::AbstractPC, G::AbstractPetscMat) 
 Set the discrete gradient matrix for `PCHYPRE` type of AMS or ADS
 
 Collective
@@ -8435,16 +8436,16 @@ See also: `PCHYPRE`, `PCHYPRESetDiscreteCurl()`
 # External Links
 $(_doc_external("PC/PCHYPRESetDiscreteGradient"))
 """
-function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat)
+function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::AbstractPC, G::AbstractPetscMat)
     error("PCHYPRESetDiscreteGradient: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPRESetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::AbstractPetscMat )
+@for_petsc function PCHYPRESetDiscreteGradient(petsclib::$UnionPetscLib, pc::AbstractPC, G::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetDiscreteGradient, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, G,
               )
 
@@ -8453,7 +8454,7 @@ end
 end 
 
 """
-	PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec) 
+	PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::AbstractPC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec) 
 Set the representation of the constant vector fields in the edge element basis for `PCHYPRE` of type AMS
 
 Collective
@@ -8471,16 +8472,16 @@ See also: `PCHYPRE`, `PCHYPRESetDiscreteGradient()`, `PCHYPRESetDiscreteCurl()`,
 # External Links
 $(_doc_external("PC/PCHYPRESetEdgeConstantVectors"))
 """
-function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec)
+function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::AbstractPC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec)
     error("PCHYPRESetEdgeConstantVectors: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPRESetEdgeConstantVectors(petsclib::$UnionPetscLib, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec )
+@for_petsc function PCHYPRESetEdgeConstantVectors(petsclib::$UnionPetscLib, pc::AbstractPC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec )
 
     @chk ccall(
                (:PCHYPRESetEdgeConstantVectors, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec, CVec),
+               (CPC, CVec, CVec, CVec),
                pc, ozz, zoz, zzo,
               )
 
@@ -8489,7 +8490,7 @@ end
 end 
 
 """
-	PCHYPRESetInterpolations(petsclib::PetscLibType, pc::PC, dim::PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat}) 
+	PCHYPRESetInterpolations(petsclib::PetscLibType, pc::AbstractPC, dim::PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat}) 
 Set the interpolation matrices for `PCHYPRE` type of AMS or ADS
 
 Collective
@@ -8509,16 +8510,16 @@ See also: `PCHYPRE`
 # External Links
 $(_doc_external("PC/PCHYPRESetInterpolations"))
 """
-function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::PC, dim::Integer, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat})
+function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::AbstractPC, dim::Integer, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat})
     error("PCHYPRESetInterpolations: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPRESetInterpolations(petsclib::$UnionPetscLib, pc::PC, dim::$PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat} )
+@for_petsc function PCHYPRESetInterpolations(petsclib::$UnionPetscLib, pc::AbstractPC, dim::$PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat} )
 
     @chk ccall(
                (:PCHYPRESetInterpolations, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CMat, Ptr{CMat}, CMat, Ptr{CMat}),
+               (CPC, $PetscInt, CMat, Ptr{CMat}, CMat, Ptr{CMat}),
                pc, dim, RT_PiFull, RT_Pi, ND_PiFull, ND_Pi,
               )
 
@@ -8527,7 +8528,7 @@ end
 end 
 
 """
-	PCHYPRESetType(petsclib::PetscLibType, pc::PC, name::String) 
+	PCHYPRESetType(petsclib::PetscLibType, pc::AbstractPC, name::String) 
 Sets which hypre preconditioner you wish to use
 
 Input Parameters:
@@ -8544,16 +8545,16 @@ See also: `PCCreate()`, `PCSetType()`, `PCType`, `PC`, `PCHYPRE`
 # External Links
 $(_doc_external("PC/PCHYPRESetType"))
 """
-function PCHYPRESetType(petsclib::PetscLibType, pc::PC, name::String)
+function PCHYPRESetType(petsclib::PetscLibType, pc::AbstractPC, name::String)
     error("PCHYPRESetType: no generated method for these argument types")
 end
 
-@for_petsc function PCHYPRESetType(petsclib::$UnionPetscLib, pc::PC, name::String )
+@for_petsc function PCHYPRESetType(petsclib::$UnionPetscLib, pc::AbstractPC, name::String )
 
     @chk ccall(
                (:PCHYPRESetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}),
+               (CPC, Ptr{Cchar}),
                pc, name,
               )
 
@@ -8562,7 +8563,7 @@ end
 end 
 
 """
-	PCISApplyInvSchur(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec) 
+	PCISApplyInvSchur(petsclib::PetscLibType, pc::AbstractPC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec) 
 Solves the Neumann problem related to applying the inverse of the Schur complement.
 
 Input Parameters:
@@ -8581,16 +8582,16 @@ See also: `PCBDDC`, `PCNN`, `PCISSetUseStiffnessScaling()`, `PCISSetSubdomainDia
 # External Links
 $(_doc_external("PC/PCISApplyInvSchur"))
 """
-function PCISApplyInvSchur(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec)
+function PCISApplyInvSchur(petsclib::PetscLibType, pc::AbstractPC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec)
     error("PCISApplyInvSchur: no generated method for these argument types")
 end
 
-@for_petsc function PCISApplyInvSchur(petsclib::$UnionPetscLib, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec )
+@for_petsc function PCISApplyInvSchur(petsclib::$UnionPetscLib, pc::AbstractPC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec )
 
     @chk ccall(
                (:PCISApplyInvSchur, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec, CVec, CVec),
+               (CPC, CVec, CVec, CVec, CVec),
                pc, b, x, vec1_N, vec2_N,
               )
 
@@ -8599,7 +8600,7 @@ end
 end 
 
 """
-	PCISApplySchur(petsclib::PetscLibType, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec) 
+	PCISApplySchur(petsclib::PetscLibType, pc::AbstractPC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec) 
 applies the Schur complement arising from the `MATIS` inside the `PCNN` preconditioner
 
 Input Parameters:
@@ -8619,16 +8620,16 @@ See also: `PCBDDC`, `PCNN`, `PCISSetUseStiffnessScaling()`, `PCISSetSubdomainDia
 # External Links
 $(_doc_external("PC/PCISApplySchur"))
 """
-function PCISApplySchur(petsclib::PetscLibType, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec)
+function PCISApplySchur(petsclib::PetscLibType, pc::AbstractPC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec)
     error("PCISApplySchur: no generated method for these argument types")
 end
 
-@for_petsc function PCISApplySchur(petsclib::$UnionPetscLib, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec )
+@for_petsc function PCISApplySchur(petsclib::$UnionPetscLib, pc::AbstractPC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec )
 
     @chk ccall(
                (:PCISApplySchur, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec, CVec, CVec, CVec),
+               (CPC, CVec, CVec, CVec, CVec, CVec),
                pc, v, vec1_B, vec2_B, vec1_D, vec2_D,
               )
 
@@ -8637,7 +8638,7 @@ end
 end 
 
 """
-	PCISInitialize(petsclib::PetscLibType, pc::PC) 
+	PCISInitialize(petsclib::PetscLibType, pc::AbstractPC) 
 initializes the `PC_IS` portion of `PCNN` and `PCBDDC` preconditioner context
 
 Input Parameter:
@@ -8652,16 +8653,16 @@ See also: `PCBDDC`, `PCNN`, `PCISSetUseStiffnessScaling()`, `PCISSetSubdomainDia
 # External Links
 $(_doc_external("PC/PCISInitialize"))
 """
-function PCISInitialize(petsclib::PetscLibType, pc::PC)
+function PCISInitialize(petsclib::PetscLibType, pc::AbstractPC)
     error("PCISInitialize: no generated method for these argument types")
 end
 
-@for_petsc function PCISInitialize(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCISInitialize(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCISInitialize, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -8670,7 +8671,7 @@ end
 end 
 
 """
-	PCISReset(petsclib::PetscLibType, pc::PC) 
+	PCISReset(petsclib::PetscLibType, pc::AbstractPC) 
 Removes all the `PC_IS` parts of the `PC` implementation data structure
 
 Input Parameter:
@@ -8684,16 +8685,16 @@ See also: `PCISSetUseStiffnessScaling()`, `PCISSetSubdomainDiagonalScaling()`, `
 # External Links
 $(_doc_external("PC/PCISReset"))
 """
-function PCISReset(petsclib::PetscLibType, pc::PC)
+function PCISReset(petsclib::PetscLibType, pc::AbstractPC)
     error("PCISReset: no generated method for these argument types")
 end
 
-@for_petsc function PCISReset(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCISReset(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCISReset, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -8702,7 +8703,7 @@ end
 end 
 
 """
-	array_N::PetscScalar = PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::PC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode) 
+	array_N::PetscScalar = PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::AbstractPC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode) 
 Scatters interface node values from a big array (of all local nodes, interior or interface,
 including ghosts) into an interface vector, when in `SCATTER_FORWARD` mode, or vice-versa, when in `SCATTER_REVERSE`
 mode.
@@ -8723,17 +8724,17 @@ See also: `PCBDDC`, `PCNN`, `PCISSetUseStiffnessScaling()`, `PCISSetSubdomainDia
 # External Links
 $(_doc_external("PC/PCISScatterArrayNToVecB"))
 """
-function PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::PC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode)
+function PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::AbstractPC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode)
     error("PCISScatterArrayNToVecB: no generated method for these argument types")
 end
 
-@for_petsc function PCISScatterArrayNToVecB(petsclib::$UnionPetscLib, pc::PC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode )
+@for_petsc function PCISScatterArrayNToVecB(petsclib::$UnionPetscLib, pc::AbstractPC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode )
 	array_N_ = Ref{$PetscScalar}()
 
     @chk ccall(
                (:PCISScatterArrayNToVecB, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscScalar}, CVec, InsertMode, ScatterMode),
+               (CPC, Ptr{$PetscScalar}, CVec, InsertMode, ScatterMode),
                pc, array_N_, v_B, imode, smode,
               )
 
@@ -8743,7 +8744,7 @@ end
 end 
 
 """
-	PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::PC, scaling_factors::AbstractPetscVec) 
+	PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC, scaling_factors::AbstractPetscVec) 
 Set diagonal scaling for `PCIS`.
 
 Logically Collective
@@ -8761,16 +8762,16 @@ See also: `PCBDDC`, `PCNN`, `PCISScatterArrayNToVecB()`,
 # External Links
 $(_doc_external("PC/PCISSetSubdomainDiagonalScaling"))
 """
-function PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::PC, scaling_factors::AbstractPetscVec)
+function PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC, scaling_factors::AbstractPetscVec)
     error("PCISSetSubdomainDiagonalScaling: no generated method for these argument types")
 end
 
-@for_petsc function PCISSetSubdomainDiagonalScaling(petsclib::$UnionPetscLib, pc::PC, scaling_factors::AbstractPetscVec )
+@for_petsc function PCISSetSubdomainDiagonalScaling(petsclib::$UnionPetscLib, pc::AbstractPC, scaling_factors::AbstractPetscVec )
 
     @chk ccall(
                (:PCISSetSubdomainDiagonalScaling, $petsc_library),
                PetscErrorCode,
-               (PC, CVec),
+               (CPC, CVec),
                pc, scaling_factors,
               )
 
@@ -8779,7 +8780,7 @@ end
 end 
 
 """
-	PCISSetSubdomainScalingFactor(petsclib::PetscLibType, pc::PC, scal::PetscScalar) 
+	PCISSetSubdomainScalingFactor(petsclib::PetscLibType, pc::AbstractPC, scal::PetscScalar) 
 Set scaling factor for `PCIS`.
 
 Not Collective
@@ -8797,16 +8798,16 @@ See also: `PCBDDC`, `PCNN`, `PCISScatterArrayNToVecB()`,
 # External Links
 $(_doc_external("PC/PCISSetSubdomainScalingFactor"))
 """
-function PCISSetSubdomainScalingFactor(petsclib::PetscLibType, pc::PC, scal::Number)
+function PCISSetSubdomainScalingFactor(petsclib::PetscLibType, pc::AbstractPC, scal::Number)
     error("PCISSetSubdomainScalingFactor: no generated method for these argument types")
 end
 
-@for_petsc function PCISSetSubdomainScalingFactor(petsclib::$UnionPetscLib, pc::PC, scal::$PetscScalar )
+@for_petsc function PCISSetSubdomainScalingFactor(petsclib::$UnionPetscLib, pc::AbstractPC, scal::$PetscScalar )
 
     @chk ccall(
                (:PCISSetSubdomainScalingFactor, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscScalar),
+               (CPC, $PetscScalar),
                pc, scal,
               )
 
@@ -8815,7 +8816,7 @@ end
 end 
 
 """
-	PCISSetUp(petsclib::PetscLibType, pc::PC, computematrices::PetscBool, computesolvers::PetscBool) 
+	PCISSetUp(petsclib::PetscLibType, pc::AbstractPC, computematrices::PetscBool, computesolvers::PetscBool) 
 sets up the `PC_IS` portion of `PCNN` and `PCBDDC` preconditioner context as part of their setup process
 
 Input Parameters:
@@ -8832,16 +8833,16 @@ See also: `PCBDDC`, `PCNN`, `PCISSetUseStiffnessScaling()`, `PCISSetSubdomainDia
 # External Links
 $(_doc_external("PC/PCISSetUp"))
 """
-function PCISSetUp(petsclib::PetscLibType, pc::PC, computematrices::PetscBool, computesolvers::PetscBool)
+function PCISSetUp(petsclib::PetscLibType, pc::AbstractPC, computematrices::PetscBool, computesolvers::PetscBool)
     error("PCISSetUp: no generated method for these argument types")
 end
 
-@for_petsc function PCISSetUp(petsclib::$UnionPetscLib, pc::PC, computematrices::PetscBool, computesolvers::PetscBool )
+@for_petsc function PCISSetUp(petsclib::$UnionPetscLib, pc::AbstractPC, computematrices::PetscBool, computesolvers::PetscBool )
 
     @chk ccall(
                (:PCISSetUp, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool, PetscBool),
+               (CPC, PetscBool, PetscBool),
                pc, computematrices, computesolvers,
               )
 
@@ -8850,7 +8851,7 @@ end
 end 
 
 """
-	PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::PC, use::PetscBool) 
+	PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::AbstractPC, use::PetscBool) 
 Tells `PCIS` to construct partition of unity using
 the local matrices' diagonal entries
 
@@ -8869,16 +8870,16 @@ See also: `PCBDDC`, `PCNN`, `PCISSetSubdomainDiagonalScaling()`, `PCISScatterArr
 # External Links
 $(_doc_external("PC/PCISSetUseStiffnessScaling"))
 """
-function PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::PC, use::PetscBool)
+function PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::AbstractPC, use::PetscBool)
     error("PCISSetUseStiffnessScaling: no generated method for these argument types")
 end
 
-@for_petsc function PCISSetUseStiffnessScaling(petsclib::$UnionPetscLib, pc::PC, use::PetscBool )
+@for_petsc function PCISSetUseStiffnessScaling(petsclib::$UnionPetscLib, pc::AbstractPC, use::PetscBool )
 
     @chk ccall(
                (:PCISSetUseStiffnessScaling, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, use,
               )
 
@@ -8916,7 +8917,7 @@ end
 end 
 
 """
-	PCJacobiGetDiagonal(petsclib::PetscLibType, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec) 
+	PCJacobiGetDiagonal(petsclib::PetscLibType, pc::AbstractPC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec) 
 Returns copy of the diagonal and/or diagonal squareroot `Vec`
 
 Logically Collective
@@ -8935,16 +8936,16 @@ See also: `PCJACOBI`, `PCJacobiSetType()`
 # External Links
 $(_doc_external("PC/PCJacobiGetDiagonal"))
 """
-function PCJacobiGetDiagonal(petsclib::PetscLibType, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec)
+function PCJacobiGetDiagonal(petsclib::PetscLibType, pc::AbstractPC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec)
     error("PCJacobiGetDiagonal: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiGetDiagonal(petsclib::$UnionPetscLib, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec )
+@for_petsc function PCJacobiGetDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec )
 
     @chk ccall(
                (:PCJacobiGetDiagonal, $petsc_library),
                PetscErrorCode,
-               (PC, CVec, CVec),
+               (CPC, CVec, CVec),
                pc, diagonal, diagonal_sqrt,
               )
 
@@ -8953,7 +8954,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::AbstractPC) 
 Determines if the Jacobi preconditioner `PCJACOBI` checks for zero diagonal terms
 
 Logically Collective
@@ -8974,17 +8975,17 @@ See also: `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiSetFixDiagonal()`
 # External Links
 $(_doc_external("PC/PCJacobiGetFixDiagonal"))
 """
-function PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::PC)
+function PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::AbstractPC)
     error("PCJacobiGetFixDiagonal: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiGetFixDiagonal(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCJacobiGetFixDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCJacobiGetFixDiagonal, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -8994,7 +8995,7 @@ end
 end 
 
 """
-	scale::PetscReal = PCJacobiGetRowl1Scale(petsclib::PetscLibType, pc::PC) 
+	scale::PetscReal = PCJacobiGetRowl1Scale(petsclib::PetscLibType, pc::AbstractPC) 
 Get scaling of off-diagonal elements summed into l1-norm diagonal
 
 Logically Collective
@@ -9012,17 +9013,17 @@ See also: `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiSetRowl1Scale()`, `PCJacobiG
 # External Links
 $(_doc_external("PC/PCJacobiGetRowl1Scale"))
 """
-function PCJacobiGetRowl1Scale(petsclib::PetscLibType, pc::PC)
+function PCJacobiGetRowl1Scale(petsclib::PetscLibType, pc::AbstractPC)
     error("PCJacobiGetRowl1Scale: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiGetRowl1Scale(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCJacobiGetRowl1Scale(petsclib::$UnionPetscLib, pc::AbstractPC )
 	scale_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:PCJacobiGetRowl1Scale, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}),
+               (CPC, Ptr{$PetscReal}),
                pc, scale_,
               )
 
@@ -9032,7 +9033,7 @@ end
 end 
 
 """
-	type::PCJacobiType = PCJacobiGetType(petsclib::PetscLibType, pc::PC) 
+	type::PCJacobiType = PCJacobiGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Gets how the diagonal matrix is produced for the preconditioner
 
 Not Collective
@@ -9050,17 +9051,17 @@ See also: `PCJACOBI`, `PCJacobiSetUseAbs()`, `PCJacobiSetType()`
 # External Links
 $(_doc_external("PC/PCJacobiGetType"))
 """
-function PCJacobiGetType(petsclib::PetscLibType, pc::PC)
+function PCJacobiGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCJacobiGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCJacobiGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCJacobiType}()
 
     @chk ccall(
                (:PCJacobiGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCJacobiType}),
+               (CPC, Ptr{PCJacobiType}),
                pc, type_,
               )
 
@@ -9070,7 +9071,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCJacobiGetUseAbs(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCJacobiGetUseAbs(petsclib::PetscLibType, pc::AbstractPC) 
 Determines if the Jacobi preconditioner `PCJACOBI` uses the
 absolute values of the diagonal divisors in the preconditioner
 
@@ -9089,17 +9090,17 @@ See also: `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiSetUseAbs()`, `PCJacobiGetTy
 # External Links
 $(_doc_external("PC/PCJacobiGetUseAbs"))
 """
-function PCJacobiGetUseAbs(petsclib::PetscLibType, pc::PC)
+function PCJacobiGetUseAbs(petsclib::PetscLibType, pc::AbstractPC)
     error("PCJacobiGetUseAbs: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiGetUseAbs(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCJacobiGetUseAbs(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCJacobiGetUseAbs, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -9109,7 +9110,7 @@ end
 end 
 
 """
-	PCJacobiSetFixDiagonal(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCJacobiSetFixDiagonal(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Check for zero values on the diagonal and replace them with 1.0
 
 Logically Collective
@@ -9126,16 +9127,16 @@ See also: `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiGetFixDiagonal()`, `PCJacobi
 # External Links
 $(_doc_external("PC/PCJacobiSetFixDiagonal"))
 """
-function PCJacobiSetFixDiagonal(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCJacobiSetFixDiagonal(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCJacobiSetFixDiagonal: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiSetFixDiagonal(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCJacobiSetFixDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCJacobiSetFixDiagonal, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -9144,7 +9145,7 @@ end
 end 
 
 """
-	PCJacobiSetRowl1Scale(petsclib::PetscLibType, pc::PC, scale::PetscReal) 
+	PCJacobiSetRowl1Scale(petsclib::PetscLibType, pc::AbstractPC, scale::PetscReal) 
 Set scaling of off-diagonal of operator when computing l1 row norms, eg,
 Remark 6.1 in "Multigrid Smoothers for Ultraparallel Computing", Baker et al, with 0.5 scaling
 
@@ -9164,16 +9165,16 @@ See also: `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiGetRowl1Scale()`
 # External Links
 $(_doc_external("PC/PCJacobiSetRowl1Scale"))
 """
-function PCJacobiSetRowl1Scale(petsclib::PetscLibType, pc::PC, scale::Real)
+function PCJacobiSetRowl1Scale(petsclib::PetscLibType, pc::AbstractPC, scale::Real)
     error("PCJacobiSetRowl1Scale: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiSetRowl1Scale(petsclib::$UnionPetscLib, pc::PC, scale::$PetscReal )
+@for_petsc function PCJacobiSetRowl1Scale(petsclib::$UnionPetscLib, pc::AbstractPC, scale::$PetscReal )
 
     @chk ccall(
                (:PCJacobiSetRowl1Scale, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, scale,
               )
 
@@ -9182,7 +9183,7 @@ end
 end 
 
 """
-	PCJacobiSetType(petsclib::PetscLibType, pc::PC, type::PCJacobiType) 
+	PCJacobiSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCJacobiType) 
 Causes the Jacobi preconditioner to use either the diagonal, the maximum entry in each row,
 of the sum of rows entries for the diagonal preconditioner
 
@@ -9202,16 +9203,16 @@ See also: `PCJACOBI`, `PCJacobiSetUseAbs()`, `PCJacobiGetType()`
 # External Links
 $(_doc_external("PC/PCJacobiSetType"))
 """
-function PCJacobiSetType(petsclib::PetscLibType, pc::PC, type::PCJacobiType)
+function PCJacobiSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCJacobiType)
     error("PCJacobiSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiSetType(petsclib::$UnionPetscLib, pc::PC, type::PCJacobiType )
+@for_petsc function PCJacobiSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCJacobiType )
 
     @chk ccall(
                (:PCJacobiSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCJacobiType),
+               (CPC, PCJacobiType),
                pc, type,
               )
 
@@ -9220,7 +9221,7 @@ end
 end 
 
 """
-	PCJacobiSetUseAbs(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCJacobiSetUseAbs(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Causes the Jacobi preconditioner `PCJACOBI` to use the
 absolute values of the diagonal divisors in the preconditioner
 
@@ -9238,16 +9239,16 @@ See also: `PCJACOBI`, `PCJacobiSetType()`, `PCJacobiGetUseAbs()`
 # External Links
 $(_doc_external("PC/PCJacobiSetUseAbs"))
 """
-function PCJacobiSetUseAbs(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCJacobiSetUseAbs(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCJacobiSetUseAbs: no generated method for these argument types")
 end
 
-@for_petsc function PCJacobiSetUseAbs(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCJacobiSetUseAbs(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCJacobiSetUseAbs, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -9256,7 +9257,7 @@ end
 end 
 
 """
-	ksp::KSP = PCKSPGetKSP(petsclib::PetscLibType, pc::PC) 
+	ksp::KSP = PCKSPGetKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `KSP` context for a `PCKSP`.
 
 Not Collective but ksp returned is parallel if pc was parallel
@@ -9272,17 +9273,17 @@ See also: `PCKSP`, `PCKSPSetKSP()`
 # External Links
 $(_doc_external("PC/PCKSPGetKSP"))
 """
-function PCKSPGetKSP(petsclib::PetscLibType, pc::PC)
+function PCKSPGetKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCKSPGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCKSPGetKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCKSPGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCKSPGetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, ksp_,
               )
 
@@ -9292,7 +9293,7 @@ end
 end 
 
 """
-	PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP) 
+	PCKSPSetKSP(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP) 
 Sets the `KSP` context for a `PCKSP`.
 
 Collective
@@ -9308,16 +9309,16 @@ See also: `PCKSP`, `PCKSPGetKSP()`
 # External Links
 $(_doc_external("PC/PCKSPSetKSP"))
 """
-function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
+function PCKSPSetKSP(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
     error("PCKSPSetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
+@for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCKSPSetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, CKSP),
+               (CPC, CKSP),
                pc, ksp,
               )
 
@@ -9326,7 +9327,7 @@ end
 end 
 
 """
-	PCLMVMClearIS(petsclib::PetscLibType, pc::PC) 
+	PCLMVMClearIS(petsclib::PetscLibType, pc::AbstractPC) 
 Removes the inactive variable index set from a `PCLMVM`
 
 Input Parameter:
@@ -9339,16 +9340,16 @@ See also: `PCLMVMSetIS()`
 # External Links
 $(_doc_external("PC/PCLMVMClearIS"))
 """
-function PCLMVMClearIS(petsclib::PetscLibType, pc::PC)
+function PCLMVMClearIS(petsclib::PetscLibType, pc::AbstractPC)
     error("PCLMVMClearIS: no generated method for these argument types")
 end
 
-@for_petsc function PCLMVMClearIS(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCLMVMClearIS(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCLMVMClearIS, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -9357,7 +9358,7 @@ end
 end 
 
 """
-	B::PetscMat = PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::PC) 
+	B::PetscMat = PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::AbstractPC) 
 Returns a pointer to the underlying `MATLMVM` matrix.
 
 Input Parameter:
@@ -9373,17 +9374,17 @@ See also: `PCLMVMSetMatLMVM()`
 # External Links
 $(_doc_external("PC/PCLMVMGetMatLMVM"))
 """
-function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::PC)
+function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::AbstractPC)
     error("PCLMVMGetMatLMVM: no generated method for these argument types")
 end
 
-@for_petsc function PCLMVMGetMatLMVM(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCLMVMGetMatLMVM(petsclib::$UnionPetscLib, pc::AbstractPC )
 	B_ = Ref{CMat}()
 
     @chk ccall(
                (:PCLMVMGetMatLMVM, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CMat}),
+               (CPC, Ptr{CMat}),
                pc, B_,
               )
 
@@ -9393,7 +9394,7 @@ end
 end 
 
 """
-	PCLMVMSetIS(petsclib::PetscLibType, pc::PC, inactive::AbstractIS) 
+	PCLMVMSetIS(petsclib::PetscLibType, pc::AbstractPC, inactive::AbstractIS) 
 Sets the index sets that reduce the `PC` application.
 
 Input Parameters:
@@ -9407,16 +9408,16 @@ See also: `PCLMVMClearIS()`
 # External Links
 $(_doc_external("PC/PCLMVMSetIS"))
 """
-function PCLMVMSetIS(petsclib::PetscLibType, pc::PC, inactive::AbstractIS)
+function PCLMVMSetIS(petsclib::PetscLibType, pc::AbstractPC, inactive::AbstractIS)
     error("PCLMVMSetIS: no generated method for these argument types")
 end
 
-@for_petsc function PCLMVMSetIS(petsclib::$UnionPetscLib, pc::PC, inactive::AbstractIS )
+@for_petsc function PCLMVMSetIS(petsclib::$UnionPetscLib, pc::AbstractPC, inactive::AbstractIS )
 
     @chk ccall(
                (:PCLMVMSetIS, $petsc_library),
                PetscErrorCode,
-               (PC, CIS),
+               (CPC, CIS),
                pc, inactive,
               )
 
@@ -9425,7 +9426,7 @@ end
 end 
 
 """
-	PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat) 
+	PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::AbstractPC, B::AbstractPetscMat) 
 Replaces the `MATLMVM` matrix inside the preconditioner with the one provided by the user.
 
 Input Parameters:
@@ -9439,16 +9440,16 @@ See also: `PCLMVMGetMatLMVM()`
 # External Links
 $(_doc_external("PC/PCLMVMSetMatLMVM"))
 """
-function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat)
+function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::AbstractPC, B::AbstractPetscMat)
     error("PCLMVMSetMatLMVM: no generated method for these argument types")
 end
 
-@for_petsc function PCLMVMSetMatLMVM(petsclib::$UnionPetscLib, pc::PC, B::AbstractPetscMat )
+@for_petsc function PCLMVMSetMatLMVM(petsclib::$UnionPetscLib, pc::AbstractPC, B::AbstractPetscMat )
 
     @chk ccall(
                (:PCLMVMSetMatLMVM, $petsc_library),
                PetscErrorCode,
-               (PC, CMat),
+               (CPC, CMat),
                pc, B,
               )
 
@@ -9457,7 +9458,7 @@ end
 end 
 
 """
-	PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::PC, X::AbstractPetscVec) 
+	PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::AbstractPC, X::AbstractPetscVec) 
 Set the vector to be used as solution update for the internal LMVM matrix.
 
 Input Parameters:
@@ -9471,16 +9472,16 @@ See also: `MatLMVMUpdate()`, `PCLMVMSetMatLMVM()`
 # External Links
 $(_doc_external("PC/PCLMVMSetUpdateVec"))
 """
-function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::PC, X::AbstractPetscVec)
+function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::AbstractPC, X::AbstractPetscVec)
     error("PCLMVMSetUpdateVec: no generated method for these argument types")
 end
 
-@for_petsc function PCLMVMSetUpdateVec(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscVec )
+@for_petsc function PCLMVMSetUpdateVec(petsclib::$UnionPetscLib, pc::AbstractPC, X::AbstractPetscVec )
 
     @chk ccall(
                (:PCLMVMSetUpdateVec, $petsc_library),
                PetscErrorCode,
-               (PC, CVec),
+               (CPC, CVec),
                pc, X,
               )
 
@@ -9489,7 +9490,7 @@ end
 end 
 
 """
-	PCLoad(petsclib::PetscLibType, newdm::PC, viewer::PetscViewer) 
+	PCLoad(petsclib::PetscLibType, newdm::AbstractPC, viewer::PetscViewer) 
 Loads a `PC` that has been stored in binary  with `PCView()`.
 
 Collective
@@ -9506,16 +9507,16 @@ See also: `PC`, `PetscViewerBinaryOpen()`, `PCView()`, `MatLoad()`, `VecLoad()`,
 # External Links
 $(_doc_external("PC/PCLoad"))
 """
-function PCLoad(petsclib::PetscLibType, newdm::PC, viewer::PetscViewer)
+function PCLoad(petsclib::PetscLibType, newdm::AbstractPC, viewer::PetscViewer)
     error("PCLoad: no generated method for these argument types")
 end
 
-@for_petsc function PCLoad(petsclib::$UnionPetscLib, newdm::PC, viewer::PetscViewer )
+@for_petsc function PCLoad(petsclib::$UnionPetscLib, newdm::AbstractPC, viewer::PetscViewer )
 
     @chk ccall(
                (:PCLoad, $petsc_library),
                PetscErrorCode,
-               (PC, PetscViewer),
+               (CPC, PetscViewer),
                newdm, viewer,
               )
 
@@ -9524,7 +9525,7 @@ end
 end 
 
 """
-	name::String = PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::PC) 
+	name::String = PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::AbstractPC) 
 Get type of sparse matrix-matrix product for hypre's BoomerAMG to use on GPUs
 
 Not Collective
@@ -9542,17 +9543,17 @@ See also: `PCHYPRE`, `PCMGGalerkinSetMatProductAlgorithm()`
 # External Links
 $(_doc_external("PC/PCMGGalerkinGetMatProductAlgorithm"))
 """
-function PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::PC)
+function PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGalerkinGetMatProductAlgorithm: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGalerkinGetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGalerkinGetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::AbstractPC )
 	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PCMGGalerkinGetMatProductAlgorithm, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Ptr{Cchar}}),
+               (CPC, Ptr{Ptr{Cchar}}),
                pc, name_,
               )
 
@@ -9562,7 +9563,7 @@ end
 end 
 
 """
-	PCMGGalerkinSetMatProductAlgorithm(petsclib::PetscLibType, pc::PC, name::String) 
+	PCMGGalerkinSetMatProductAlgorithm(petsclib::PetscLibType, pc::AbstractPC, name::String) 
 Set type of sparse matrix-matrix product for hypre's BoomerAMG to use on GPUs
 
 Logically Collective
@@ -9581,16 +9582,16 @@ See also: `PCHYPRE`, `PCMGGalerkinGetMatProductAlgorithm()`
 # External Links
 $(_doc_external("PC/PCMGGalerkinSetMatProductAlgorithm"))
 """
-function PCMGGalerkinSetMatProductAlgorithm(petsclib::PetscLibType, pc::PC, name::String)
+function PCMGGalerkinSetMatProductAlgorithm(petsclib::PetscLibType, pc::AbstractPC, name::String)
     error("PCMGGalerkinSetMatProductAlgorithm: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGalerkinSetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::PC, name::String )
+@for_petsc function PCMGGalerkinSetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::AbstractPC, name::String )
 
     @chk ccall(
                (:PCMGGalerkinSetMatProductAlgorithm, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}),
+               (CPC, Ptr{Cchar}),
                pc, name,
               )
 
@@ -9599,7 +9600,7 @@ end
 end 
 
 """
-	cr::PetscBool = PCMGGetAdaptCR(petsclib::PetscLibType, pc::PC) 
+	cr::PetscBool = PCMGGetAdaptCR(petsclib::PetscLibType, pc::AbstractPC) 
 Get the flag to monitor coarse space quality using an auxiliary solve with compatible relaxation.
 
 Not Collective
@@ -9617,17 +9618,17 @@ See also: `PCMGSetAdaptCR()`, `PCMGGetAdaptInterpolation()`, `PCMGSetGalerkin()`
 # External Links
 $(_doc_external("PC/PCMGGetAdaptCR"))
 """
-function PCMGGetAdaptCR(petsclib::PetscLibType, pc::PC)
+function PCMGGetAdaptCR(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetAdaptCR: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetAdaptCR(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetAdaptCR(petsclib::$UnionPetscLib, pc::AbstractPC )
 	cr_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCMGGetAdaptCR, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, cr_,
               )
 
@@ -9637,7 +9638,7 @@ end
 end 
 
 """
-	ctype::PCMGCoarseSpaceType = PCMGGetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC) 
+	ctype::PCMGCoarseSpaceType = PCMGGetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::AbstractPC) 
 Get the type of adaptive coarse space.
 
 Not Collective
@@ -9655,17 +9656,17 @@ See also: `PCMG`, `PCMGCoarseSpaceType`, `PCMGSetAdaptCoarseSpaceType()`, `PCMGS
 # External Links
 $(_doc_external("PC/PCMGGetAdaptCoarseSpaceType"))
 """
-function PCMGGetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC)
+function PCMGGetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetAdaptCoarseSpaceType: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ctype_ = Ref{PCMGCoarseSpaceType}()
 
     @chk ccall(
                (:PCMGGetAdaptCoarseSpaceType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCMGCoarseSpaceType}),
+               (CPC, Ptr{PCMGCoarseSpaceType}),
                pc, ctype_,
               )
 
@@ -9675,7 +9676,7 @@ end
 end 
 
 """
-	adapt::PetscBool = PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::PC) 
+	adapt::PetscBool = PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::AbstractPC) 
 Get the flag to adapt the interpolator based upon a vector space which should be accurately captured by the next coarser mesh,
 and thus accurately interpolated.
 
@@ -9694,17 +9695,17 @@ See also: `PCMG`, `PCMGSetAdaptInterpolation()`, `PCMGSetGalerkin()`, `PCMGGetAd
 # External Links
 $(_doc_external("PC/PCMGGetAdaptInterpolation"))
 """
-function PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::PC)
+function PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetAdaptInterpolation: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetAdaptInterpolation(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetAdaptInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC )
 	adapt_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCMGGetAdaptInterpolation, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, adapt_,
               )
 
@@ -9714,7 +9715,7 @@ end
 end 
 
 """
-	ksp::KSP = PCMGGetCoarseSolve(petsclib::PetscLibType, pc::PC) 
+	ksp::KSP = PCMGGetCoarseSolve(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the solver context to be used on the coarse grid.
 
 Not Collective
@@ -9732,17 +9733,17 @@ See also: `PCMG`, `PCMGGetSmootherUp()`, `PCMGGetSmootherDown()`, `PCMGGetSmooth
 # External Links
 $(_doc_external("PC/PCMGGetCoarseSolve"))
 """
-function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::PC)
+function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetCoarseSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetCoarseSolve(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetCoarseSolve(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCMGGetCoarseSolve, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, ksp_,
               )
 
@@ -9790,7 +9791,7 @@ end
 end 
 
 """
-	galerkin::PCMGGalerkinType = PCMGGetGalerkin(petsclib::PetscLibType, pc::PC) 
+	galerkin::PCMGGalerkinType = PCMGGetGalerkin(petsclib::PetscLibType, pc::AbstractPC) 
 Checks if Galerkin multigrid is being used, i.e. A_{i-1} = r_i * A_i * p_i.
 
 Not Collective
@@ -9808,17 +9809,17 @@ See also: `PCMG`, `PCMGSetGalerkin()`, `PCMGGalerkinType`, `PC_MG_GALERKIN_BOTH`
 # External Links
 $(_doc_external("PC/PCMGGetGalerkin"))
 """
-function PCMGGetGalerkin(petsclib::PetscLibType, pc::PC)
+function PCMGGetGalerkin(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetGalerkin: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetGalerkin(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetGalerkin(petsclib::$UnionPetscLib, pc::AbstractPC )
 	galerkin_ = Ref{PCMGGalerkinType}()
 
     @chk ccall(
                (:PCMGGetGalerkin, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCMGGalerkinType}),
+               (CPC, Ptr{PCMGGalerkinType}),
                pc, galerkin_,
               )
 
@@ -9828,7 +9829,7 @@ end
 end 
 
 """
-	gc::PetscReal,oc::PetscReal = PCMGGetGridComplexity(petsclib::PetscLibType, pc::PC) 
+	gc::PetscReal,oc::PetscReal = PCMGGetGridComplexity(petsclib::PetscLibType, pc::AbstractPC) 
 compute operator and grid complexity of the `PCMG` hierarchy
 
 Input Parameter:
@@ -9845,18 +9846,18 @@ See also: `PCMG`, `PCMGGetLevels()`, `PCMGSetLevels()`
 # External Links
 $(_doc_external("PC/PCMGGetGridComplexity"))
 """
-function PCMGGetGridComplexity(petsclib::PetscLibType, pc::PC)
+function PCMGGetGridComplexity(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetGridComplexity: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetGridComplexity(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetGridComplexity(petsclib::$UnionPetscLib, pc::AbstractPC )
 	gc_ = Ref{$PetscReal}()
 	oc_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:PCMGGetGridComplexity, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}, Ptr{$PetscReal}),
+               (CPC, Ptr{$PetscReal}, Ptr{$PetscReal}),
                pc, gc_, oc_,
               )
 
@@ -9867,7 +9868,7 @@ end
 end 
 
 """
-	mat::PetscMat = PCMGGetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt) 
+	mat::PetscMat = PCMGGetInjection(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt) 
 Gets the function to be used to inject primal vectors (i.e. solutions)
 from level l to l-1.
 
@@ -9887,17 +9888,17 @@ See also: `PCMG`, `PCMGSetInjection()`, `PCMGetGetRestriction()`
 # External Links
 $(_doc_external("PC/PCMGGetInjection"))
 """
-function PCMGGetInjection(petsclib::PetscLibType, pc::PC, l::Integer)
+function PCMGGetInjection(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
     error("PCMGGetInjection: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
+@for_petsc function PCMGGetInjection(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:PCMGGetInjection, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CMat}),
+               (CPC, $PetscInt, Ptr{CMat}),
                pc, l, mat_,
               )
 
@@ -9907,7 +9908,7 @@ end
 end 
 
 """
-	mat::PetscMat = PCMGGetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt) 
+	mat::PetscMat = PCMGGetInterpolation(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt) 
 Gets the function to be used to calculate the
 interpolation from l-1 to the lth level
 
@@ -9927,17 +9928,17 @@ See also: `PCMG`, `PCMGGetRestriction()`, `PCMGSetInterpolation()`, `PCMGGetRSca
 # External Links
 $(_doc_external("PC/PCMGGetInterpolation"))
 """
-function PCMGGetInterpolation(petsclib::PetscLibType, pc::PC, l::Integer)
+function PCMGGetInterpolation(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
     error("PCMGGetInterpolation: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
+@for_petsc function PCMGGetInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:PCMGGetInterpolation, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CMat}),
+               (CPC, $PetscInt, Ptr{CMat}),
                pc, l, mat_,
               )
 
@@ -9947,7 +9948,7 @@ end
 end 
 
 """
-	levels::PetscInt = PCMGGetLevels(petsclib::PetscLibType, pc::PC) 
+	levels::PetscInt = PCMGGetLevels(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the number of levels to use with `PCMG`.
 
 Not Collective
@@ -9965,17 +9966,17 @@ See also: `PCMG`, `PCMGSetLevels()`
 # External Links
 $(_doc_external("PC/PCMGGetLevels"))
 """
-function PCMGGetLevels(petsclib::PetscLibType, pc::PC)
+function PCMGGetLevels(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetLevels(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetLevels(petsclib::$UnionPetscLib, pc::AbstractPC )
 	levels_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PCMGGetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}),
+               (CPC, Ptr{$PetscInt}),
                pc, levels_,
               )
 
@@ -9985,7 +9986,7 @@ end
 end 
 
 """
-	PCMGGetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::AbstractPetscVec) 
+	PCMGGetRScale(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, rscale::AbstractPetscVec) 
 Gets the pointwise scaling for the restriction operator from level l to l-1.
 
 Collective
@@ -10002,17 +10003,17 @@ See also: `PCMG`, `PCMGSetInterpolation()`, `PCMGGetRestriction()`, `PCMGGetInje
 # External Links
 $(_doc_external("PC/PCMGGetRScale"))
 """
-function PCMGGetRScale(petsclib::PetscLibType, pc::PC, l::Integer, rscale::AbstractPetscVec)
+function PCMGGetRScale(petsclib::PetscLibType, pc::AbstractPC, l::Integer, rscale::AbstractPetscVec)
     error("PCMGGetRScale: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::AbstractPetscVec )
+@for_petsc function PCMGGetRScale(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, rscale::AbstractPetscVec )
 	rscale_ = Ref(rscale.ptr)
 
     @chk ccall(
                (:PCMGGetRScale, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CVec}),
+               (CPC, $PetscInt, Ptr{CVec}),
                pc, l, rscale_,
               )
 
@@ -10022,7 +10023,7 @@ end
 end 
 
 """
-	mat::PetscMat = PCMGGetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt) 
+	mat::PetscMat = PCMGGetRestriction(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt) 
 Gets the function to be used to restrict dual (i.e. residual) vectors
 from level l to l-1.
 
@@ -10042,17 +10043,17 @@ See also: `PCMG`, `PCMGGetInterpolation()`, `PCMGSetRestriction()`, `PCMGGetRSca
 # External Links
 $(_doc_external("PC/PCMGGetRestriction"))
 """
-function PCMGGetRestriction(petsclib::PetscLibType, pc::PC, l::Integer)
+function PCMGGetRestriction(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
     error("PCMGGetRestriction: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
+@for_petsc function PCMGGetRestriction(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
 	mat_ = Ref{CMat}()
 
     @chk ccall(
                (:PCMGGetRestriction, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CMat}),
+               (CPC, $PetscInt, Ptr{CMat}),
                pc, l, mat_,
               )
 
@@ -10062,7 +10063,7 @@ end
 end 
 
 """
-	ksp::KSP = PCMGGetSmoother(petsclib::PetscLibType, pc::PC, l::PetscInt) 
+	ksp::KSP = PCMGGetSmoother(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt) 
 Gets the `KSP` context to be used as smoother for
 both pre- and post-smoothing.  Call both `PCMGGetSmootherUp()` and
 `PCMGGetSmootherDown()` to use different functions for pre- and
@@ -10082,17 +10083,17 @@ See also: `PCMG`, `PCMGGetSmootherUp()`, `PCMGGetSmootherDown()`, `PCMGGetCoarse
 # External Links
 $(_doc_external("PC/PCMGGetSmoother"))
 """
-function PCMGGetSmoother(petsclib::PetscLibType, pc::PC, l::Integer)
+function PCMGGetSmoother(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
     error("PCMGGetSmoother: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetSmoother(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
+@for_petsc function PCMGGetSmoother(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCMGGetSmoother, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CKSP}),
+               (CPC, $PetscInt, Ptr{CKSP}),
                pc, l, ksp_,
               )
 
@@ -10102,7 +10103,7 @@ end
 end 
 
 """
-	ksp::KSP = PCMGGetSmootherDown(petsclib::PetscLibType, pc::PC, l::PetscInt) 
+	ksp::KSP = PCMGGetSmootherDown(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt) 
 Gets the `KSP` context to be used as smoother before
 coarse grid correction (pre-smoother).
 
@@ -10122,17 +10123,17 @@ See also: `PCMG`, `PCMGGetSmootherUp()`, `PCMGGetSmoother()`
 # External Links
 $(_doc_external("PC/PCMGGetSmootherDown"))
 """
-function PCMGGetSmootherDown(petsclib::PetscLibType, pc::PC, l::Integer)
+function PCMGGetSmootherDown(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
     error("PCMGGetSmootherDown: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetSmootherDown(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
+@for_petsc function PCMGGetSmootherDown(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCMGGetSmootherDown, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CKSP}),
+               (CPC, $PetscInt, Ptr{CKSP}),
                pc, l, ksp_,
               )
 
@@ -10142,7 +10143,7 @@ end
 end 
 
 """
-	ksp::KSP = PCMGGetSmootherUp(petsclib::PetscLibType, pc::PC, l::PetscInt) 
+	ksp::KSP = PCMGGetSmootherUp(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt) 
 Gets the KSP context to be used as smoother after
 coarse grid correction (post-smoother).
 
@@ -10162,17 +10163,17 @@ See also: `PCMG`, `PCMGGetSmootherDown()`
 # External Links
 $(_doc_external("PC/PCMGGetSmootherUp"))
 """
-function PCMGGetSmootherUp(petsclib::PetscLibType, pc::PC, l::Integer)
+function PCMGGetSmootherUp(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
     error("PCMGGetSmootherUp: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetSmootherUp(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt )
+@for_petsc function PCMGGetSmootherUp(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCMGGetSmootherUp, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CKSP}),
+               (CPC, $PetscInt, Ptr{CKSP}),
                pc, l, ksp_,
               )
 
@@ -10182,7 +10183,7 @@ end
 end 
 
 """
-	type::PCMGType = PCMGGetType(petsclib::PetscLibType, pc::PC) 
+	type::PCMGType = PCMGGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Finds the form of multigrid the `PCMG` is using  multiplicative, additive, full, or the Kaskade algorithm.
 
 Logically Collective
@@ -10201,17 +10202,17 @@ See also: `PCMGType`, `PCMG`, `PCMGGetLevels()`, `PCMGSetLevels()`, `PCMGSetType
 # External Links
 $(_doc_external("PC/PCMGGetType"))
 """
-function PCMGGetType(petsclib::PetscLibType, pc::PC)
+function PCMGGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCMGGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	type_ = Ref{PCMGType}()
 
     @chk ccall(
                (:PCMGGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCMGType}),
+               (CPC, Ptr{PCMGType}),
                pc, type_,
               )
 
@@ -10297,7 +10298,7 @@ end
 end 
 
 """
-	PCMGMultiplicativeSetCycles(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCMGMultiplicativeSetCycles(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Sets the number of cycles to use for each preconditioner step
 of multigrid when `PCMGType` is `PC_MG_MULTIPLICATIVE`
 
@@ -10317,16 +10318,16 @@ See also: `PCMGSetCycleTypeOnLevel()`, `PCMGSetCycleType()`, `PCMGCycleType`, `P
 # External Links
 $(_doc_external("PC/PCMGMultiplicativeSetCycles"))
 """
-function PCMGMultiplicativeSetCycles(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCMGMultiplicativeSetCycles(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCMGMultiplicativeSetCycles: no generated method for these argument types")
 end
 
-@for_petsc function PCMGMultiplicativeSetCycles(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCMGMultiplicativeSetCycles(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCMGMultiplicativeSetCycles, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -10446,7 +10447,7 @@ end
 end 
 
 """
-	PCMGSetAdaptCR(petsclib::PetscLibType, pc::PC, cr::PetscBool) 
+	PCMGSetAdaptCR(petsclib::PetscLibType, pc::AbstractPC, cr::PetscBool) 
 Monitor the coarse space quality using an auxiliary solve with compatible relaxation.
 
 Logically Collective
@@ -10465,16 +10466,16 @@ See also: `PCMG`, `PCMGGetAdaptCR()`, `PCMGSetAdaptInterpolation()`, `PCMGSetGal
 # External Links
 $(_doc_external("PC/PCMGSetAdaptCR"))
 """
-function PCMGSetAdaptCR(petsclib::PetscLibType, pc::PC, cr::PetscBool)
+function PCMGSetAdaptCR(petsclib::PetscLibType, pc::AbstractPC, cr::PetscBool)
     error("PCMGSetAdaptCR: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetAdaptCR(petsclib::$UnionPetscLib, pc::PC, cr::PetscBool )
+@for_petsc function PCMGSetAdaptCR(petsclib::$UnionPetscLib, pc::AbstractPC, cr::PetscBool )
 
     @chk ccall(
                (:PCMGSetAdaptCR, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, cr,
               )
 
@@ -10483,7 +10484,7 @@ end
 end 
 
 """
-	PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC, ctype::PCMGCoarseSpaceType) 
+	PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::AbstractPC, ctype::PCMGCoarseSpaceType) 
 Set the type of adaptive coarse space. Adapts or creates the interpolator based upon a vector space which should be accurately
 captured by the next coarser mesh, and thus accurately interpolated.
 
@@ -10506,16 +10507,16 @@ See also: `PCMG`, `PCMGCoarseSpaceType`, `PCMGGetAdaptCoarseSpaceType()`, `PCMGS
 # External Links
 $(_doc_external("PC/PCMGSetAdaptCoarseSpaceType"))
 """
-function PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::PC, ctype::PCMGCoarseSpaceType)
+function PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::AbstractPC, ctype::PCMGCoarseSpaceType)
     error("PCMGSetAdaptCoarseSpaceType: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::PC, ctype::PCMGCoarseSpaceType )
+@for_petsc function PCMGSetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::AbstractPC, ctype::PCMGCoarseSpaceType )
 
     @chk ccall(
                (:PCMGSetAdaptCoarseSpaceType, $petsc_library),
                PetscErrorCode,
-               (PC, PCMGCoarseSpaceType),
+               (CPC, PCMGCoarseSpaceType),
                pc, ctype,
               )
 
@@ -10524,7 +10525,7 @@ end
 end 
 
 """
-	PCMGSetAdaptInterpolation(petsclib::PetscLibType, pc::PC, adapt::PetscBool) 
+	PCMGSetAdaptInterpolation(petsclib::PetscLibType, pc::AbstractPC, adapt::PetscBool) 
 Adapt the interpolator based upon a vector space which should be accurately captured by the next coarser mesh, and thus accurately interpolated.
 
 Logically Collective
@@ -10540,16 +10541,16 @@ See also: `PCMG`, `PCMGGetAdaptInterpolation()`, `PCMGSetGalerkin()`, `PCMGGetAd
 # External Links
 $(_doc_external("PC/PCMGSetAdaptInterpolation"))
 """
-function PCMGSetAdaptInterpolation(petsclib::PetscLibType, pc::PC, adapt::PetscBool)
+function PCMGSetAdaptInterpolation(petsclib::PetscLibType, pc::AbstractPC, adapt::PetscBool)
     error("PCMGSetAdaptInterpolation: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetAdaptInterpolation(petsclib::$UnionPetscLib, pc::PC, adapt::PetscBool )
+@for_petsc function PCMGSetAdaptInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, adapt::PetscBool )
 
     @chk ccall(
                (:PCMGSetAdaptInterpolation, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, adapt,
               )
 
@@ -10558,7 +10559,7 @@ end
 end 
 
 """
-	PCMGSetCycleType(petsclib::PetscLibType, pc::PC, n::PCMGCycleType) 
+	PCMGSetCycleType(petsclib::PetscLibType, pc::AbstractPC, n::PCMGCycleType) 
 Sets the type of cycles to use.  Use `PCMGSetCycleTypeOnLevel()` for more
 complicated cycling.
 
@@ -10578,16 +10579,16 @@ See also: `PCMG`, `PCMGSetCycleTypeOnLevel()`, `PCMGType`, `PCMGCycleType`, `PC_
 # External Links
 $(_doc_external("PC/PCMGSetCycleType"))
 """
-function PCMGSetCycleType(petsclib::PetscLibType, pc::PC, n::PCMGCycleType)
+function PCMGSetCycleType(petsclib::PetscLibType, pc::AbstractPC, n::PCMGCycleType)
     error("PCMGSetCycleType: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetCycleType(petsclib::$UnionPetscLib, pc::PC, n::PCMGCycleType )
+@for_petsc function PCMGSetCycleType(petsclib::$UnionPetscLib, pc::AbstractPC, n::PCMGCycleType )
 
     @chk ccall(
                (:PCMGSetCycleType, $petsc_library),
                PetscErrorCode,
-               (PC, PCMGCycleType),
+               (CPC, PCMGCycleType),
                pc, n,
               )
 
@@ -10596,7 +10597,7 @@ end
 end 
 
 """
-	PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::PC, l::PetscInt, c::PCMGCycleType) 
+	PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, c::PCMGCycleType) 
 Sets the type of cycle (aka cycle index) to run on the specified level.
 
 Logically Collective
@@ -10613,16 +10614,16 @@ See also: `PCMG`, `PCMGCycleType`, `PCMGSetCycleType()`
 # External Links
 $(_doc_external("PC/PCMGSetCycleTypeOnLevel"))
 """
-function PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::PC, l::Integer, c::PCMGCycleType)
+function PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::AbstractPC, l::Integer, c::PCMGCycleType)
     error("PCMGSetCycleTypeOnLevel: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetCycleTypeOnLevel(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::PCMGCycleType )
+@for_petsc function PCMGSetCycleTypeOnLevel(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::PCMGCycleType )
 
     @chk ccall(
                (:PCMGSetCycleTypeOnLevel, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, PCMGCycleType),
+               (CPC, $PetscInt, PCMGCycleType),
                pc, l, c,
               )
 
@@ -10631,7 +10632,7 @@ end
 end 
 
 """
-	PCMGSetDistinctSmoothUp(petsclib::PetscLibType, pc::PC) 
+	PCMGSetDistinctSmoothUp(petsclib::PetscLibType, pc::AbstractPC) 
 sets the up (post) smoother to be a separate `KSP` from the down (pre) smoother on all levels
 and adds the suffix _up to the options name
 
@@ -10650,16 +10651,16 @@ See also: `PCMG`, `PCMGSetNumberSmooth()`
 # External Links
 $(_doc_external("PC/PCMGSetDistinctSmoothUp"))
 """
-function PCMGSetDistinctSmoothUp(petsclib::PetscLibType, pc::PC)
+function PCMGSetDistinctSmoothUp(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMGSetDistinctSmoothUp: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetDistinctSmoothUp(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMGSetDistinctSmoothUp(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCMGSetDistinctSmoothUp, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -10668,7 +10669,7 @@ end
 end 
 
 """
-	PCMGSetGalerkin(petsclib::PetscLibType, pc::PC, use::PCMGGalerkinType) 
+	PCMGSetGalerkin(petsclib::PetscLibType, pc::AbstractPC, use::PCMGGalerkinType) 
 Causes the coarser grid matrices to be computed from the
 finest grid via the Galerkin process: A_{i-1} = r_i * A_i * p_i.
 
@@ -10688,16 +10689,16 @@ See also: `PCMG`, `PCMGGetGalerkin()`, `PCMGGalerkinType`, `PC_MG_GALERKIN_BOTH`
 # External Links
 $(_doc_external("PC/PCMGSetGalerkin"))
 """
-function PCMGSetGalerkin(petsclib::PetscLibType, pc::PC, use::PCMGGalerkinType)
+function PCMGSetGalerkin(petsclib::PetscLibType, pc::AbstractPC, use::PCMGGalerkinType)
     error("PCMGSetGalerkin: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetGalerkin(petsclib::$UnionPetscLib, pc::PC, use::PCMGGalerkinType )
+@for_petsc function PCMGSetGalerkin(petsclib::$UnionPetscLib, pc::AbstractPC, use::PCMGGalerkinType )
 
     @chk ccall(
                (:PCMGSetGalerkin, $petsc_library),
                PetscErrorCode,
-               (PC, PCMGGalerkinType),
+               (CPC, PCMGGalerkinType),
                pc, use,
               )
 
@@ -10706,7 +10707,7 @@ end
 end 
 
 """
-	PCMGSetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) 
+	PCMGSetInjection(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, mat::AbstractPetscMat) 
 Sets the function to be used to inject primal (i.e. solution) vectors
 from level l to l-1.
 
@@ -10724,16 +10725,16 @@ See also: `PCMG`, `PCMGSetRestriction()`
 # External Links
 $(_doc_external("PC/PCMGSetInjection"))
 """
-function PCMGSetInjection(petsclib::PetscLibType, pc::PC, l::Integer, mat::AbstractPetscMat)
+function PCMGSetInjection(petsclib::PetscLibType, pc::AbstractPC, l::Integer, mat::AbstractPetscMat)
     error("PCMGSetInjection: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
+@for_petsc function PCMGSetInjection(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetInjection, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CMat),
+               (CPC, $PetscInt, CMat),
                pc, l, mat,
               )
 
@@ -10742,7 +10743,7 @@ end
 end 
 
 """
-	PCMGSetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) 
+	PCMGSetInterpolation(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, mat::AbstractPetscMat) 
 Sets the function to be used to calculate the
 interpolation from l-1 to the lth level
 
@@ -10760,16 +10761,16 @@ See also: `PCMG`, `PCMGSetRestriction()`
 # External Links
 $(_doc_external("PC/PCMGSetInterpolation"))
 """
-function PCMGSetInterpolation(petsclib::PetscLibType, pc::PC, l::Integer, mat::AbstractPetscMat)
+function PCMGSetInterpolation(petsclib::PetscLibType, pc::AbstractPC, l::Integer, mat::AbstractPetscMat)
     error("PCMGSetInterpolation: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
+@for_petsc function PCMGSetInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetInterpolation, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CMat),
+               (CPC, $PetscInt, CMat),
                pc, l, mat,
               )
 
@@ -10778,7 +10779,7 @@ end
 end 
 
 """
-	PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt, comms::Union{Ptr, Vector{MPI_Comm}}) 
+	PCMGSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::PetscInt, comms::Union{Ptr, Vector{MPI_Comm}}) 
 Sets the number of levels to use with `PCMG`.
 Must be called before any other `PCMG` routine.
 
@@ -10802,16 +10803,16 @@ See also: `PCMGSetType()`, `PCMGGetLevels()`
 # External Links
 $(_doc_external("PC/PCMGSetLevels"))
 """
-function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::Integer, comms::Union{Ptr, Vector{MPI_Comm}})
+function PCMGSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::Integer, comms::Union{Ptr, Vector{MPI_Comm}})
     error("PCMGSetLevels: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt, comms::Union{Ptr, Vector{MPI_Comm}} )
+@for_petsc function PCMGSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, levels::$PetscInt, comms::Union{Ptr, Vector{MPI_Comm}} )
 
     @chk ccall(
                (:PCMGSetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{MPI_Comm}),
+               (CPC, $PetscInt, Ptr{MPI_Comm}),
                pc, levels, comms,
               )
 
@@ -10820,7 +10821,7 @@ end
 end 
 
 """
-	PCMGSetNumberSmooth(petsclib::PetscLibType, pc::PC, n::PetscInt) 
+	PCMGSetNumberSmooth(petsclib::PetscLibType, pc::AbstractPC, n::PetscInt) 
 Sets the number of pre and post-smoothing steps to use
 on all levels.  Use `PCMGDistinctSmoothUp()` to create separate up and down smoothers if you want different numbers of
 pre- and post-smoothing steps.
@@ -10841,16 +10842,16 @@ See also: `PCMG`, `PCMGSetDistinctSmoothUp()`
 # External Links
 $(_doc_external("PC/PCMGSetNumberSmooth"))
 """
-function PCMGSetNumberSmooth(petsclib::PetscLibType, pc::PC, n::Integer)
+function PCMGSetNumberSmooth(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
     error("PCMGSetNumberSmooth: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetNumberSmooth(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt )
+@for_petsc function PCMGSetNumberSmooth(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
 
     @chk ccall(
                (:PCMGSetNumberSmooth, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, n,
               )
 
@@ -10859,7 +10860,7 @@ end
 end 
 
 """
-	PCMGSetOperators(petsclib::PetscLibType, pc::PC, l::PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
+	PCMGSetOperators(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets operator and matrix from which to construct a preconditioner for lth level
 
 Logically Collective
@@ -10877,16 +10878,16 @@ See also: `PCMG`, `PCMGSetGalerkin()`, `PCMGSetRestriction()`, `PCMGSetInterpola
 # External Links
 $(_doc_external("PC/PCMGSetOperators"))
 """
-function PCMGSetOperators(petsclib::PetscLibType, pc::PC, l::Integer, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
+function PCMGSetOperators(petsclib::PetscLibType, pc::AbstractPC, l::Integer, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
     error("PCMGSetOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetOperators(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
+@for_petsc function PCMGSetOperators(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetOperators, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CMat, CMat),
+               (CPC, $PetscInt, CMat, CMat),
                pc, l, Amat, Pmat,
               )
 
@@ -10895,7 +10896,7 @@ end
 end 
 
 """
-	PCMGSetR(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) 
+	PCMGSetR(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, c::AbstractPetscVec) 
 Sets the vector to be used to store the residual on a particular level.
 
 Logically Collective
@@ -10912,16 +10913,16 @@ See also: `PCMG`, `PCMGSetRhs()`, `PCMGSetX()`
 # External Links
 $(_doc_external("PC/PCMGSetR"))
 """
-function PCMGSetR(petsclib::PetscLibType, pc::PC, l::Integer, c::AbstractPetscVec)
+function PCMGSetR(petsclib::PetscLibType, pc::AbstractPC, l::Integer, c::AbstractPetscVec)
     error("PCMGSetR: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetR(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
+@for_petsc function PCMGSetR(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetR, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CVec),
+               (CPC, $PetscInt, CVec),
                pc, l, c,
               )
 
@@ -10930,7 +10931,7 @@ end
 end 
 
 """
-	PCMGSetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::AbstractPetscVec) 
+	PCMGSetRScale(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, rscale::AbstractPetscVec) 
 Sets the pointwise scaling for the restriction operator from level l to l-1.
 
 Logically Collective
@@ -10947,16 +10948,16 @@ See also: `PCMG`, `PCMGSetInterpolation()`, `PCMGSetRestriction()`, `PCMGGetRSca
 # External Links
 $(_doc_external("PC/PCMGSetRScale"))
 """
-function PCMGSetRScale(petsclib::PetscLibType, pc::PC, l::Integer, rscale::AbstractPetscVec)
+function PCMGSetRScale(petsclib::PetscLibType, pc::AbstractPC, l::Integer, rscale::AbstractPetscVec)
     error("PCMGSetRScale: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::AbstractPetscVec )
+@for_petsc function PCMGSetRScale(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, rscale::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetRScale, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CVec),
+               (CPC, $PetscInt, CVec),
                pc, l, rscale,
               )
 
@@ -10965,7 +10966,7 @@ end
 end 
 
 """
-	PCMGSetResidual(petsclib::PetscLibType, pc::PC, l::PetscInt, residual::external, mat::AbstractPetscMat) 
+	PCMGSetResidual(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, residual::external, mat::AbstractPetscMat) 
 Sets the function to be used to calculate the residual on the lth level.
 
 Logically Collective
@@ -10984,16 +10985,16 @@ See also: `PCMG`, `PCMGResidualDefault()`
 # External Links
 $(_doc_external("PC/PCMGSetResidual"))
 """
-function PCMGSetResidual(petsclib::PetscLibType, pc::PC, l::Integer, residual::external, mat::AbstractPetscMat)
+function PCMGSetResidual(petsclib::PetscLibType, pc::AbstractPC, l::Integer, residual::external, mat::AbstractPetscMat)
     error("PCMGSetResidual: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetResidual(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residual::external, mat::AbstractPetscMat )
+@for_petsc function PCMGSetResidual(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, residual::external, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetResidual, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, external, CMat),
+               (CPC, $PetscInt, external, CMat),
                pc, l, residual, mat,
               )
 
@@ -11002,7 +11003,7 @@ end
 end 
 
 """
-	PCMGSetResidualTranspose(petsclib::PetscLibType, pc::PC, l::PetscInt, residualt::external, mat::AbstractPetscMat) 
+	PCMGSetResidualTranspose(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, residualt::external, mat::AbstractPetscMat) 
 Sets the function to be used to calculate the residual of the transposed linear system
 on the lth level.
 
@@ -11022,16 +11023,16 @@ See also: `PCMG`, `PCMGResidualTransposeDefault()`
 # External Links
 $(_doc_external("PC/PCMGSetResidualTranspose"))
 """
-function PCMGSetResidualTranspose(petsclib::PetscLibType, pc::PC, l::Integer, residualt::external, mat::AbstractPetscMat)
+function PCMGSetResidualTranspose(petsclib::PetscLibType, pc::AbstractPC, l::Integer, residualt::external, mat::AbstractPetscMat)
     error("PCMGSetResidualTranspose: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetResidualTranspose(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residualt::external, mat::AbstractPetscMat )
+@for_petsc function PCMGSetResidualTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, residualt::external, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetResidualTranspose, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, external, CMat),
+               (CPC, $PetscInt, external, CMat),
                pc, l, residualt, mat,
               )
 
@@ -11040,7 +11041,7 @@ end
 end 
 
 """
-	PCMGSetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) 
+	PCMGSetRestriction(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, mat::AbstractPetscMat) 
 Sets the function to be used to restrict dual vectors
 from level l to l-1.
 
@@ -11058,16 +11059,16 @@ See also: `PCMG`, `PCMGSetInterpolation()`
 # External Links
 $(_doc_external("PC/PCMGSetRestriction"))
 """
-function PCMGSetRestriction(petsclib::PetscLibType, pc::PC, l::Integer, mat::AbstractPetscMat)
+function PCMGSetRestriction(petsclib::PetscLibType, pc::AbstractPC, l::Integer, mat::AbstractPetscMat)
     error("PCMGSetRestriction: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
+@for_petsc function PCMGSetRestriction(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetRestriction, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CMat),
+               (CPC, $PetscInt, CMat),
                pc, l, mat,
               )
 
@@ -11076,7 +11077,7 @@ end
 end 
 
 """
-	PCMGSetRhs(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) 
+	PCMGSetRhs(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, c::AbstractPetscVec) 
 Sets the vector to be used to store the right-hand side on a particular level.
 
 Logically Collective
@@ -11093,16 +11094,16 @@ See also: `PCMG`, `PCMGSetX()`, `PCMGSetR()`
 # External Links
 $(_doc_external("PC/PCMGSetRhs"))
 """
-function PCMGSetRhs(petsclib::PetscLibType, pc::PC, l::Integer, c::AbstractPetscVec)
+function PCMGSetRhs(petsclib::PetscLibType, pc::AbstractPC, l::Integer, c::AbstractPetscVec)
     error("PCMGSetRhs: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetRhs(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
+@for_petsc function PCMGSetRhs(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetRhs, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CVec),
+               (CPC, $PetscInt, CVec),
                pc, l, c,
               )
 
@@ -11111,7 +11112,7 @@ end
 end 
 
 """
-	PCMGSetType(petsclib::PetscLibType, pc::PC, form::PCMGType) 
+	PCMGSetType(petsclib::PetscLibType, pc::AbstractPC, form::PCMGType) 
 Determines the type of multigrid to use, either
 multiplicative, additive, full, or the Kaskade algorithm.
 
@@ -11132,16 +11133,16 @@ See also: `PCMGType`, `PCMG`, `PCMGGetLevels()`, `PCMGSetLevels()`, `PCMGGetType
 # External Links
 $(_doc_external("PC/PCMGSetType"))
 """
-function PCMGSetType(petsclib::PetscLibType, pc::PC, form::PCMGType)
+function PCMGSetType(petsclib::PetscLibType, pc::AbstractPC, form::PCMGType)
     error("PCMGSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetType(petsclib::$UnionPetscLib, pc::PC, form::PCMGType )
+@for_petsc function PCMGSetType(petsclib::$UnionPetscLib, pc::AbstractPC, form::PCMGType )
 
     @chk ccall(
                (:PCMGSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCMGType),
+               (CPC, PCMGType),
                pc, form,
               )
 
@@ -11150,7 +11151,7 @@ end
 end 
 
 """
-	PCMGSetX(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) 
+	PCMGSetX(petsclib::PetscLibType, pc::AbstractPC, l::PetscInt, c::AbstractPetscVec) 
 Sets the vector to be used to store the solution on a particular level.
 
 Logically Collective
@@ -11167,16 +11168,16 @@ See also: `PCMG`, `PCMGSetRhs()`, `PCMGSetR()`
 # External Links
 $(_doc_external("PC/PCMGSetX"))
 """
-function PCMGSetX(petsclib::PetscLibType, pc::PC, l::Integer, c::AbstractPetscVec)
+function PCMGSetX(petsclib::PetscLibType, pc::AbstractPC, l::Integer, c::AbstractPetscVec)
     error("PCMGSetX: no generated method for these argument types")
 end
 
-@for_petsc function PCMGSetX(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
+@for_petsc function PCMGSetX(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetX, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, CVec),
+               (CPC, $PetscInt, CVec),
                pc, l, c,
               )
 
@@ -11185,7 +11186,7 @@ end
 end 
 
 """
-	innerksp::KSP = PCMPIGetKSP(petsclib::PetscLibType, pc::PC) 
+	innerksp::KSP = PCMPIGetKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `KSP` created by the `PCMPI`
 
 Not Collective
@@ -11203,17 +11204,17 @@ See also: `KSP`, `PCMPI`, `PCREDISTRIBUTE`
 # External Links
 $(_doc_external("PC/PCMPIGetKSP"))
 """
-function PCMPIGetKSP(petsclib::PetscLibType, pc::PC)
+function PCMPIGetKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMPIGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCMPIGetKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMPIGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCMPIGetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, innerksp_,
               )
 
@@ -11321,7 +11322,7 @@ end
 end 
 
 """
-	PCMatApply(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) 
+	PCMatApply(petsclib::PetscLibType, pc::AbstractPC, X::AbstractPetscMat, Y::AbstractPetscMat) 
 Applies the preconditioner to multiple vectors stored as a `MATDENSE`. Like `PCApply()`, `Y` and `X` must be different matrices.
 
 Collective
@@ -11340,16 +11341,16 @@ See also: `PC`, `PCApply()`, `KSPMatSolve()`
 # External Links
 $(_doc_external("PC/PCMatApply"))
 """
-function PCMatApply(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat)
+function PCMatApply(petsclib::PetscLibType, pc::AbstractPC, X::AbstractPetscMat, Y::AbstractPetscMat)
     error("PCMatApply: no generated method for these argument types")
 end
 
-@for_petsc function PCMatApply(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat )
+@for_petsc function PCMatApply(petsclib::$UnionPetscLib, pc::AbstractPC, X::AbstractPetscMat, Y::AbstractPetscMat )
 
     @chk ccall(
                (:PCMatApply, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, CMat),
+               (CPC, CMat, CMat),
                pc, X, Y,
               )
 
@@ -11358,7 +11359,7 @@ end
 end 
 
 """
-	PCMatApplyTranspose(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) 
+	PCMatApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, X::AbstractPetscMat, Y::AbstractPetscMat) 
 Applies the transpose of preconditioner to multiple vectors stored as a `MATDENSE`. Like `PCApplyTranspose()`, `Y` and `X` must be different matrices.
 
 Collective
@@ -11377,16 +11378,16 @@ See also: `PC`, `PCApplyTranspose()`, `KSPMatSolveTranspose()`
 # External Links
 $(_doc_external("PC/PCMatApplyTranspose"))
 """
-function PCMatApplyTranspose(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat)
+function PCMatApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, X::AbstractPetscMat, Y::AbstractPetscMat)
     error("PCMatApplyTranspose: no generated method for these argument types")
 end
 
-@for_petsc function PCMatApplyTranspose(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat )
+@for_petsc function PCMatApplyTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, X::AbstractPetscMat, Y::AbstractPetscMat )
 
     @chk ccall(
                (:PCMatApplyTranspose, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, CMat),
+               (CPC, CMat, CMat),
                pc, X, Y,
               )
 
@@ -11395,7 +11396,7 @@ end
 end 
 
 """
-	matop::MatOperation = PCMatGetApplyOperation(petsclib::PetscLibType, pc::PC) 
+	matop::MatOperation = PCMatGetApplyOperation(petsclib::PetscLibType, pc::AbstractPC) 
 Get which matrix operation of the matrix implements `PCApply()` for `PCMAT`.
 
 Logically collective
@@ -11413,17 +11414,17 @@ See also: `PCMAT`, `PCMatSetApplyOperation()`, `PCApply()`, `MatOperation`
 # External Links
 $(_doc_external("PC/PCMatGetApplyOperation"))
 """
-function PCMatGetApplyOperation(petsclib::PetscLibType, pc::PC)
+function PCMatGetApplyOperation(petsclib::PetscLibType, pc::AbstractPC)
     error("PCMatGetApplyOperation: no generated method for these argument types")
 end
 
-@for_petsc function PCMatGetApplyOperation(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCMatGetApplyOperation(petsclib::$UnionPetscLib, pc::AbstractPC )
 	matop_ = Ref{MatOperation}()
 
     @chk ccall(
                (:PCMatGetApplyOperation, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{MatOperation}),
+               (CPC, Ptr{MatOperation}),
                pc, matop_,
               )
 
@@ -11433,7 +11434,7 @@ end
 end 
 
 """
-	PCMatSetApplyOperation(petsclib::PetscLibType, pc::PC, matop::MatOperation) 
+	PCMatSetApplyOperation(petsclib::PetscLibType, pc::AbstractPC, matop::MatOperation) 
 Set which matrix operation of the matrix implements `PCApply()` for `PCMAT`.
 
 Logically collective
@@ -11449,16 +11450,16 @@ See also: `PCMAT`, `PCMatGetApplyOperation()`, `PCApply()`, `MatOperation`
 # External Links
 $(_doc_external("PC/PCMatSetApplyOperation"))
 """
-function PCMatSetApplyOperation(petsclib::PetscLibType, pc::PC, matop::MatOperation)
+function PCMatSetApplyOperation(petsclib::PetscLibType, pc::AbstractPC, matop::MatOperation)
     error("PCMatSetApplyOperation: no generated method for these argument types")
 end
 
-@for_petsc function PCMatSetApplyOperation(petsclib::$UnionPetscLib, pc::PC, matop::MatOperation )
+@for_petsc function PCMatSetApplyOperation(petsclib::$UnionPetscLib, pc::AbstractPC, matop::MatOperation )
 
     @chk ccall(
                (:PCMatSetApplyOperation, $petsc_library),
                PetscErrorCode,
-               (PC, MatOperation),
+               (CPC, MatOperation),
                pc, matop,
               )
 
@@ -11467,7 +11468,7 @@ end
 end 
 
 """
-	PCModifySubMatrices(petsclib::PetscLibType, pc::PC, nsub::PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid}) 
+	PCModifySubMatrices(petsclib::PetscLibType, pc::AbstractPC, nsub::PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid}) 
 Calls an optional user-defined routine within
 certain preconditioners if one has been set with `PCSetModifySubMatrices()`.
 
@@ -11495,16 +11496,16 @@ See also: `PC`, `PCModifySubMatricesFn`, `PCSetModifySubMatrices()`
 # External Links
 $(_doc_external("PC/PCModifySubMatrices"))
 """
-function PCModifySubMatrices(petsclib::PetscLibType, pc::PC, nsub::Integer, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid})
+function PCModifySubMatrices(petsclib::PetscLibType, pc::AbstractPC, nsub::Integer, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid})
     error("PCModifySubMatrices: no generated method for these argument types")
 end
 
-@for_petsc function PCModifySubMatrices(petsclib::$UnionPetscLib, pc::PC, nsub::$PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid} )
+@for_petsc function PCModifySubMatrices(petsclib::$UnionPetscLib, pc::AbstractPC, nsub::$PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCModifySubMatrices, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CIS}, Ptr{CIS}, Ptr{CMat}, Ptr{Cvoid}),
+               (CPC, $PetscInt, Ptr{CIS}, Ptr{CIS}, Ptr{CMat}, Ptr{Cvoid}),
                pc, nsub, row, col, submat, ctx,
               )
 
@@ -11513,7 +11514,7 @@ end
 end 
 
 """
-	PCPARMSSetFill(petsclib::PetscLibType, pc::PC, lfil0::PetscInt, lfil1::PetscInt, lfil2::PetscInt) 
+	PCPARMSSetFill(petsclib::PetscLibType, pc::AbstractPC, lfil0::PetscInt, lfil1::PetscInt, lfil2::PetscInt) 
 Sets the fill-in parameters for ILUT, ILUK and ARMS preconditioners.
 Consider the original matrix A = [B F; E C] and the approximate version
 M = [LB 0; E/UB I]*[UB LB\\F; 0 S].
@@ -11538,16 +11539,16 @@ See also: `PCPARMS`
 # External Links
 $(_doc_external("PC/PCPARMSSetFill"))
 """
-function PCPARMSSetFill(petsclib::PetscLibType, pc::PC, lfil0::Integer, lfil1::Integer, lfil2::Integer)
+function PCPARMSSetFill(petsclib::PetscLibType, pc::AbstractPC, lfil0::Integer, lfil1::Integer, lfil2::Integer)
     error("PCPARMSSetFill: no generated method for these argument types")
 end
 
-@for_petsc function PCPARMSSetFill(petsclib::$UnionPetscLib, pc::PC, lfil0::$PetscInt, lfil1::$PetscInt, lfil2::$PetscInt )
+@for_petsc function PCPARMSSetFill(petsclib::$UnionPetscLib, pc::AbstractPC, lfil0::$PetscInt, lfil1::$PetscInt, lfil2::$PetscInt )
 
     @chk ccall(
                (:PCPARMSSetFill, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, $PetscInt, $PetscInt),
+               (CPC, $PetscInt, $PetscInt, $PetscInt),
                pc, lfil0, lfil1, lfil2,
               )
 
@@ -11556,7 +11557,7 @@ end
 end 
 
 """
-	PCPARMSSetGlobal(petsclib::PetscLibType, pc::PC, type::PCPARMSGlobalType) 
+	PCPARMSSetGlobal(petsclib::PetscLibType, pc::AbstractPC, type::PCPARMSGlobalType) 
 Sets the global preconditioner to be used in `PCPARMS`.
 
 Collective
@@ -11580,16 +11581,16 @@ See also: `PCPARMS`, `PCPARMSSetLocal()`
 # External Links
 $(_doc_external("PC/PCPARMSSetGlobal"))
 """
-function PCPARMSSetGlobal(petsclib::PetscLibType, pc::PC, type::PCPARMSGlobalType)
+function PCPARMSSetGlobal(petsclib::PetscLibType, pc::AbstractPC, type::PCPARMSGlobalType)
     error("PCPARMSSetGlobal: no generated method for these argument types")
 end
 
-@for_petsc function PCPARMSSetGlobal(petsclib::$UnionPetscLib, pc::PC, type::PCPARMSGlobalType )
+@for_petsc function PCPARMSSetGlobal(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCPARMSGlobalType )
 
     @chk ccall(
                (:PCPARMSSetGlobal, $petsc_library),
                PetscErrorCode,
-               (PC, PCPARMSGlobalType),
+               (CPC, PCPARMSGlobalType),
                pc, type,
               )
 
@@ -11598,7 +11599,7 @@ end
 end 
 
 """
-	PCPARMSSetLocal(petsclib::PetscLibType, pc::PC, type::PCPARMSLocalType) 
+	PCPARMSSetLocal(petsclib::PetscLibType, pc::AbstractPC, type::PCPARMSLocalType) 
 Sets the local preconditioner to be used in `PCPARMS`.
 
 Collective
@@ -11623,16 +11624,16 @@ See also: `PCPARMS`, `PCPARMSSetGlobal()`, `PCPARMSSetNonsymPerm()`
 # External Links
 $(_doc_external("PC/PCPARMSSetLocal"))
 """
-function PCPARMSSetLocal(petsclib::PetscLibType, pc::PC, type::PCPARMSLocalType)
+function PCPARMSSetLocal(petsclib::PetscLibType, pc::AbstractPC, type::PCPARMSLocalType)
     error("PCPARMSSetLocal: no generated method for these argument types")
 end
 
-@for_petsc function PCPARMSSetLocal(petsclib::$UnionPetscLib, pc::PC, type::PCPARMSLocalType )
+@for_petsc function PCPARMSSetLocal(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCPARMSLocalType )
 
     @chk ccall(
                (:PCPARMSSetLocal, $petsc_library),
                PetscErrorCode,
-               (PC, PCPARMSLocalType),
+               (CPC, PCPARMSLocalType),
                pc, type,
               )
 
@@ -11641,7 +11642,7 @@ end
 end 
 
 """
-	PCPARMSSetNonsymPerm(petsclib::PetscLibType, pc::PC, nonsym::PetscBool) 
+	PCPARMSSetNonsymPerm(petsclib::PetscLibType, pc::AbstractPC, nonsym::PetscBool) 
 Sets the type of permutation for the ARMS preconditioner: the standard
 symmetric ARMS or the non-symmetric ARMS (ARMS-ddPQ).
 
@@ -11662,16 +11663,16 @@ See also: `PCPARMS`
 # External Links
 $(_doc_external("PC/PCPARMSSetNonsymPerm"))
 """
-function PCPARMSSetNonsymPerm(petsclib::PetscLibType, pc::PC, nonsym::PetscBool)
+function PCPARMSSetNonsymPerm(petsclib::PetscLibType, pc::AbstractPC, nonsym::PetscBool)
     error("PCPARMSSetNonsymPerm: no generated method for these argument types")
 end
 
-@for_petsc function PCPARMSSetNonsymPerm(petsclib::$UnionPetscLib, pc::PC, nonsym::PetscBool )
+@for_petsc function PCPARMSSetNonsymPerm(petsclib::$UnionPetscLib, pc::AbstractPC, nonsym::PetscBool )
 
     @chk ccall(
                (:PCPARMSSetNonsymPerm, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, nonsym,
               )
 
@@ -11680,7 +11681,7 @@ end
 end 
 
 """
-	PCPARMSSetSolveRestart(petsclib::PetscLibType, pc::PC, restart::PetscInt) 
+	PCPARMSSetSolveRestart(petsclib::PetscLibType, pc::AbstractPC, restart::PetscInt) 
 Sets the number of iterations at which the
 inner GMRES solver restarts.
 
@@ -11700,16 +11701,16 @@ See also: `PCPARMS`, `PCPARMSSetSolveTolerances()`
 # External Links
 $(_doc_external("PC/PCPARMSSetSolveRestart"))
 """
-function PCPARMSSetSolveRestart(petsclib::PetscLibType, pc::PC, restart::Integer)
+function PCPARMSSetSolveRestart(petsclib::PetscLibType, pc::AbstractPC, restart::Integer)
     error("PCPARMSSetSolveRestart: no generated method for these argument types")
 end
 
-@for_petsc function PCPARMSSetSolveRestart(petsclib::$UnionPetscLib, pc::PC, restart::$PetscInt )
+@for_petsc function PCPARMSSetSolveRestart(petsclib::$UnionPetscLib, pc::AbstractPC, restart::$PetscInt )
 
     @chk ccall(
                (:PCPARMSSetSolveRestart, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, restart,
               )
 
@@ -11718,7 +11719,7 @@ end
 end 
 
 """
-	PCPARMSSetSolveTolerances(petsclib::PetscLibType, pc::PC, tol::PetscReal, maxits::PetscInt) 
+	PCPARMSSetSolveTolerances(petsclib::PetscLibType, pc::AbstractPC, tol::PetscReal, maxits::PetscInt) 
 Sets the convergence tolerance and the maximum iterations for the
 inner GMRES solver, when the Schur global preconditioner is used.
 
@@ -11740,16 +11741,16 @@ See also: `PCPARMS`, `PCPARMSSetSolveRestart()`
 # External Links
 $(_doc_external("PC/PCPARMSSetSolveTolerances"))
 """
-function PCPARMSSetSolveTolerances(petsclib::PetscLibType, pc::PC, tol::Real, maxits::Integer)
+function PCPARMSSetSolveTolerances(petsclib::PetscLibType, pc::AbstractPC, tol::Real, maxits::Integer)
     error("PCPARMSSetSolveTolerances: no generated method for these argument types")
 end
 
-@for_petsc function PCPARMSSetSolveTolerances(petsclib::$UnionPetscLib, pc::PC, tol::$PetscReal, maxits::$PetscInt )
+@for_petsc function PCPARMSSetSolveTolerances(petsclib::$UnionPetscLib, pc::AbstractPC, tol::$PetscReal, maxits::$PetscInt )
 
     @chk ccall(
                (:PCPARMSSetSolveTolerances, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal, $PetscInt),
+               (CPC, $PetscReal, $PetscInt),
                pc, tol, maxits,
               )
 
@@ -11758,7 +11759,7 @@ end
 end 
 
 """
-	cellNumbering::PetscSection = PCPatchGetCellNumbering(petsclib::PetscLibType, pc::PC) 
+	cellNumbering::PetscSection = PCPatchGetCellNumbering(petsclib::PetscLibType, pc::AbstractPC) 
 Get the `PetscSection` that provides the numbering of the cells used to define patches in a `PCPATCH` preconditioner
 
 Not Collective
@@ -11776,17 +11777,17 @@ See also: `PCPATCH`, `PCPatchSetCellNumbering()`, `PetscSection`
 # External Links
 $(_doc_external("PC/PCPatchGetCellNumbering"))
 """
-function PCPatchGetCellNumbering(petsclib::PetscLibType, pc::PC)
+function PCPatchGetCellNumbering(petsclib::PetscLibType, pc::AbstractPC)
     error("PCPatchGetCellNumbering: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetCellNumbering(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCPatchGetCellNumbering(petsclib::$UnionPetscLib, pc::AbstractPC )
 	cellNumbering_ = Ref{PetscSection}()
 
     @chk ccall(
                (:PCPatchGetCellNumbering, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscSection}),
+               (CPC, Ptr{PetscSection}),
                pc, cellNumbering_,
               )
 
@@ -11796,7 +11797,7 @@ end
 end 
 
 """
-	ctype::PCPatchConstructType = PCPatchGetConstructType(petsclib::PetscLibType, pc::PC, noname::Ptr{Cvoid}) 
+	ctype::PCPatchConstructType = PCPatchGetConstructType(petsclib::PetscLibType, pc::AbstractPC, noname::Ptr{Cvoid}) 
 Get the strategy currently used to construct patches for a `PCPATCH` preconditioner
 
 Not Collective
@@ -11823,17 +11824,17 @@ See also: `PCPATCH`, `PCPatchSetConstructType()`, `PCPatchConstructType`
 # External Links
 $(_doc_external("PC/PCPatchGetConstructType"))
 """
-function PCPatchGetConstructType(petsclib::PetscLibType, pc::PC, noname::Ptr{Cvoid})
+function PCPatchGetConstructType(petsclib::PetscLibType, pc::AbstractPC, noname::Ptr{Cvoid})
     error("PCPatchGetConstructType: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetConstructType(petsclib::$UnionPetscLib, pc::PC, noname::Ptr{Cvoid} )
+@for_petsc function PCPatchGetConstructType(petsclib::$UnionPetscLib, pc::AbstractPC, noname::Ptr{Cvoid} )
 	ctype_ = Ref{PCPatchConstructType}()
 
     @chk ccall(
                (:PCPatchGetConstructType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PCPatchConstructType}, Ptr{Cvoid}),
+               (CPC, Ptr{PCPatchConstructType}, Ptr{Cvoid}),
                pc, ctype_, noname,
               )
 
@@ -11843,7 +11844,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::AbstractPC) 
 Get whether the patch contributions are weighted by a partition of unity when combining local solves
 
 Not Collective
@@ -11861,17 +11862,17 @@ See also: `PCPATCH`, `PCPatchSetPartitionOfUnity()`
 # External Links
 $(_doc_external("PC/PCPatchGetPartitionOfUnity"))
 """
-function PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::PC)
+function PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::AbstractPC)
     error("PCPatchGetPartitionOfUnity: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetPartitionOfUnity(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCPatchGetPartitionOfUnity(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCPatchGetPartitionOfUnity, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -11881,7 +11882,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType, pc::AbstractPC) 
 Get whether element tensors are precomputed once and reused when assembling each patch matrix
 
 Not Collective
@@ -11899,17 +11900,17 @@ See also: `PCPATCH`, `PCPatchSetPrecomputeElementTensors()`, `PCPatchSetSaveOper
 # External Links
 $(_doc_external("PC/PCPatchGetPrecomputeElementTensors"))
 """
-function PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC)
+function PCPatchGetPrecomputeElementTensors(petsclib::PetscLibType, pc::AbstractPC)
     error("PCPatchGetPrecomputeElementTensors: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetPrecomputeElementTensors(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCPatchGetPrecomputeElementTensors(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCPatchGetPrecomputeElementTensors, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -11919,7 +11920,7 @@ end
 end 
 
 """
-	flg::PetscBool = PCPatchGetSaveOperators(petsclib::PetscLibType, pc::PC) 
+	flg::PetscBool = PCPatchGetSaveOperators(petsclib::PetscLibType, pc::AbstractPC) 
 Get whether the per-patch sub-matrices are built and kept between applications of the `PCPATCH` preconditioner
 
 Not Collective
@@ -11937,17 +11938,17 @@ See also: `PCPATCH`, `PCPatchSetSaveOperators()`, `PCPatchSetPrecomputeElementTe
 # External Links
 $(_doc_external("PC/PCPatchGetSaveOperators"))
 """
-function PCPatchGetSaveOperators(petsclib::PetscLibType, pc::PC)
+function PCPatchGetSaveOperators(petsclib::PetscLibType, pc::AbstractPC)
     error("PCPatchGetSaveOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetSaveOperators(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCPatchGetSaveOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCPatchGetSaveOperators, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, flg_,
               )
 
@@ -11957,7 +11958,7 @@ end
 end 
 
 """
-	npatch::PetscInt,ksp::Vector{KSP} = PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC) 
+	npatch::PetscInt,ksp::Vector{KSP} = PCPatchGetSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Get the per-patch `KSP` objects used to solve each local patch problem in a `PCPATCH` preconditioner
 
 Not Collective
@@ -11976,18 +11977,18 @@ See also: `PCPATCH`, `KSP`, `PCASMGetSubKSP()`
 # External Links
 $(_doc_external("PC/PCPatchGetSubKSP"))
 """
-function PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC)
+function PCPatchGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCPatchGetSubKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	npatch_ = Ref{$PetscInt}()
 	ksp_ = Ref{Ptr{CKSP}}()
 
     @chk ccall(
                (:PCPatchGetSubKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
+               (CPC, Ptr{$PetscInt}, Ptr{Ptr{CKSP}}),
                pc, npatch_, ksp_,
               )
 
@@ -11998,7 +11999,7 @@ end
 end 
 
 """
-	sub_mat_type::String = PCPatchGetSubMatType(petsclib::PetscLibType, pc::PC) 
+	sub_mat_type::String = PCPatchGetSubMatType(petsclib::PetscLibType, pc::AbstractPC) 
 Get the `MatType` used to store the per-patch sub-matrices in a `PCPATCH` preconditioner
 
 Not Collective
@@ -12016,17 +12017,17 @@ See also: `PCPATCH`, `PCPatchSetSubMatType()`, `MatType`
 # External Links
 $(_doc_external("PC/PCPatchGetSubMatType"))
 """
-function PCPatchGetSubMatType(petsclib::PetscLibType, pc::PC)
+function PCPatchGetSubMatType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCPatchGetSubMatType: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchGetSubMatType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCPatchGetSubMatType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	sub_mat_type_ = Ref{MatType}()
 
     @chk ccall(
                (:PCPatchGetSubMatType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{MatType}),
+               (CPC, Ptr{MatType}),
                pc, sub_mat_type_,
               )
 
@@ -12036,7 +12037,7 @@ end
 end 
 
 """
-	PCPatchSetCellNumbering(petsclib::PetscLibType, pc::PC, cellNumbering::PetscSection) 
+	PCPatchSetCellNumbering(petsclib::PetscLibType, pc::AbstractPC, cellNumbering::PetscSection) 
 Set the `PetscSection` that provides a numbering of the cells used to define patches in a `PCPATCH` preconditioner
 
 Logically Collective
@@ -12052,16 +12053,16 @@ See also: `PCPATCH`, `PCPatchGetCellNumbering()`, `PetscSection`
 # External Links
 $(_doc_external("PC/PCPatchSetCellNumbering"))
 """
-function PCPatchSetCellNumbering(petsclib::PetscLibType, pc::PC, cellNumbering::PetscSection)
+function PCPatchSetCellNumbering(petsclib::PetscLibType, pc::AbstractPC, cellNumbering::PetscSection)
     error("PCPatchSetCellNumbering: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetCellNumbering(petsclib::$UnionPetscLib, pc::PC, cellNumbering::PetscSection )
+@for_petsc function PCPatchSetCellNumbering(petsclib::$UnionPetscLib, pc::AbstractPC, cellNumbering::PetscSection )
 
     @chk ccall(
                (:PCPatchSetCellNumbering, $petsc_library),
                PetscErrorCode,
-               (PC, PetscSection),
+               (CPC, PetscSection),
                pc, cellNumbering,
               )
 
@@ -12070,7 +12071,7 @@ end
 end 
 
 """
-	PCPatchSetComputeFunction(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) 
+	PCPatchSetComputeFunction(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid}) 
 Set the callback function used to compute patch residuals
 
 Logically Collective
@@ -12098,16 +12099,16 @@ See also: `PCPatchSetComputeOperator()`, `PCPatchGetComputeOperator()`, `PCPatch
 # External Links
 $(_doc_external("PC/PCPatchSetComputeFunction"))
 """
-function PCPatchSetComputeFunction(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+function PCPatchSetComputeFunction(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid})
     error("PCPatchSetComputeFunction: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetComputeFunction(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCPatchSetComputeFunction(petsclib::$UnionPetscLib, pc::AbstractPC, func::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCPatchSetComputeFunction, $petsc_library),
                PetscErrorCode,
-               (PC, external, Ptr{Cvoid}),
+               (CPC, external, Ptr{Cvoid}),
                pc, func, ctx,
               )
 
@@ -12116,7 +12117,7 @@ end
 end 
 
 """
-	PCPatchSetComputeFunctionExteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) 
+	PCPatchSetComputeFunctionExteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid}) 
 Set the callback function used to compute exterior facet integrals for patch residuals
 
 Logically Collective
@@ -12144,16 +12145,16 @@ See also: `PCPatchSetComputeFunction()`, `PCPatchSetComputeFunctionInteriorFacet
 # External Links
 $(_doc_external("PC/PCPatchSetComputeFunctionExteriorFacets"))
 """
-function PCPatchSetComputeFunctionExteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+function PCPatchSetComputeFunctionExteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid})
     error("PCPatchSetComputeFunctionExteriorFacets: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetComputeFunctionExteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCPatchSetComputeFunctionExteriorFacets(petsclib::$UnionPetscLib, pc::AbstractPC, func::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCPatchSetComputeFunctionExteriorFacets, $petsc_library),
                PetscErrorCode,
-               (PC, external, Ptr{Cvoid}),
+               (CPC, external, Ptr{Cvoid}),
                pc, func, ctx,
               )
 
@@ -12162,7 +12163,7 @@ end
 end 
 
 """
-	PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) 
+	PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid}) 
 Set the callback function used to compute facet integrals for patch residuals
 
 Logically Collective
@@ -12190,16 +12191,16 @@ See also: `PCPatchSetComputeOperator()`, `PCPatchGetComputeOperator()`, `PCPatch
 # External Links
 $(_doc_external("PC/PCPatchSetComputeFunctionInteriorFacets"))
 """
-function PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+function PCPatchSetComputeFunctionInteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid})
     error("PCPatchSetComputeFunctionInteriorFacets: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetComputeFunctionInteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCPatchSetComputeFunctionInteriorFacets(petsclib::$UnionPetscLib, pc::AbstractPC, func::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCPatchSetComputeFunctionInteriorFacets, $petsc_library),
                PetscErrorCode,
-               (PC, external, Ptr{Cvoid}),
+               (CPC, external, Ptr{Cvoid}),
                pc, func, ctx,
               )
 
@@ -12208,7 +12209,7 @@ end
 end 
 
 """
-	PCPatchSetComputeOperator(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) 
+	PCPatchSetComputeOperator(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid}) 
 Set the callback function used to compute patch matrices
 
 Logically Collective
@@ -12236,16 +12237,16 @@ See also: `PCPatchGetComputeOperator()`, `PCPatchSetComputeFunction()`, `PCPatch
 # External Links
 $(_doc_external("PC/PCPatchSetComputeOperator"))
 """
-function PCPatchSetComputeOperator(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+function PCPatchSetComputeOperator(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid})
     error("PCPatchSetComputeOperator: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetComputeOperator(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCPatchSetComputeOperator(petsclib::$UnionPetscLib, pc::AbstractPC, func::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCPatchSetComputeOperator, $petsc_library),
                PetscErrorCode,
-               (PC, external, Ptr{Cvoid}),
+               (CPC, external, Ptr{Cvoid}),
                pc, func, ctx,
               )
 
@@ -12254,7 +12255,7 @@ end
 end 
 
 """
-	PCPatchSetComputeOperatorExteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) 
+	PCPatchSetComputeOperatorExteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid}) 
 Set the callback function used to compute exterior facet integrals for patch matrices
 
 Logically Collective
@@ -12282,16 +12283,16 @@ See also: `PCPatchSetComputeOperator()`, `PCPatchSetComputeOperatorInteriorFacet
 # External Links
 $(_doc_external("PC/PCPatchSetComputeOperatorExteriorFacets"))
 """
-function PCPatchSetComputeOperatorExteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+function PCPatchSetComputeOperatorExteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid})
     error("PCPatchSetComputeOperatorExteriorFacets: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetComputeOperatorExteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCPatchSetComputeOperatorExteriorFacets(petsclib::$UnionPetscLib, pc::AbstractPC, func::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCPatchSetComputeOperatorExteriorFacets, $petsc_library),
                PetscErrorCode,
-               (PC, external, Ptr{Cvoid}),
+               (CPC, external, Ptr{Cvoid}),
                pc, func, ctx,
               )
 
@@ -12300,7 +12301,7 @@ end
 end 
 
 """
-	PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid}) 
+	PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid}) 
 Set the callback function used to compute facet integrals for patch matrices
 
 Logically Collective
@@ -12328,16 +12329,16 @@ See also: `PCPatchGetComputeOperator()`, `PCPatchSetComputeFunction()`, `PCPatch
 # External Links
 $(_doc_external("PC/PCPatchSetComputeOperatorInteriorFacets"))
 """
-function PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType, pc::PC, func::external, ctx::Ptr{Cvoid})
+function PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType, pc::AbstractPC, func::external, ctx::Ptr{Cvoid})
     error("PCPatchSetComputeOperatorInteriorFacets: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetComputeOperatorInteriorFacets(petsclib::$UnionPetscLib, pc::PC, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCPatchSetComputeOperatorInteriorFacets(petsclib::$UnionPetscLib, pc::AbstractPC, func::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCPatchSetComputeOperatorInteriorFacets, $petsc_library),
                PetscErrorCode,
-               (PC, external, Ptr{Cvoid}),
+               (CPC, external, Ptr{Cvoid}),
                pc, func, ctx,
               )
 
@@ -12346,7 +12347,7 @@ end
 end 
 
 """
-	PCPatchSetConstructType(petsclib::PetscLibType, pc::PC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid}) 
+	PCPatchSetConstructType(petsclib::PetscLibType, pc::AbstractPC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid}) 
 Set the way patches are constructed for a `PCPATCH` preconditioner
 
 Logically Collective
@@ -12371,16 +12372,16 @@ See also: `PCPATCH`, `PCPatchGetConstructType()`, `PCPatchConstructType`
 # External Links
 $(_doc_external("PC/PCPatchSetConstructType"))
 """
-function PCPatchSetConstructType(petsclib::PetscLibType, pc::PC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid})
+function PCPatchSetConstructType(petsclib::PetscLibType, pc::AbstractPC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid})
     error("PCPatchSetConstructType: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetConstructType(petsclib::$UnionPetscLib, pc::PC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid} )
+@for_petsc function PCPatchSetConstructType(petsclib::$UnionPetscLib, pc::AbstractPC, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCPatchSetConstructType, $petsc_library),
                PetscErrorCode,
-               (PC, PCPatchConstructType, external, Ptr{Cvoid}),
+               (CPC, PCPatchConstructType, external, Ptr{Cvoid}),
                pc, ctype, func, ctx,
               )
 
@@ -12389,7 +12390,7 @@ end
 end 
 
 """
-	PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{PetscInt}, nodesPerCell::Vector{PetscInt}, cellNodeMap::PetscInt, subspaceOffsets::Vector{PetscInt}, numGhostBcs::PetscInt, ghostBcNodes::Vector{PetscInt}, numGlobalBcs::PetscInt, globalBcNodes::Vector{PetscInt}) 
+	PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::AbstractPC, nsubspaces::PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{PetscInt}, nodesPerCell::Vector{PetscInt}, cellNodeMap::PetscInt, subspaceOffsets::Vector{PetscInt}, numGhostBcs::PetscInt, ghostBcNodes::Vector{PetscInt}, numGlobalBcs::PetscInt, globalBcNodes::Vector{PetscInt}) 
 Provide the per-subspace discretisation information required by a `PCPATCH` preconditioner to build patch problems
 
 Logically Collective
@@ -12414,16 +12415,16 @@ See also: `PCPATCH`, `PCPatchSetComputeOperator()`, `PCPatchSetComputeFunction()
 # External Links
 $(_doc_external("PC/PCPatchSetDiscretisationInfo"))
 """
-function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::Integer, dms::Vector{<:AbstractPetscDM}, bs::AbstractVector{<:Number}, nodesPerCell::AbstractVector{<:Number}, cellNodeMap::Integer, subspaceOffsets::AbstractVector{<:Number}, numGhostBcs::Integer, ghostBcNodes::AbstractVector{<:Number}, numGlobalBcs::Integer, globalBcNodes::AbstractVector{<:Number})
+function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::AbstractPC, nsubspaces::Integer, dms::Vector{<:AbstractPetscDM}, bs::AbstractVector{<:Number}, nodesPerCell::AbstractVector{<:Number}, cellNodeMap::Integer, subspaceOffsets::AbstractVector{<:Number}, numGhostBcs::Integer, ghostBcNodes::AbstractVector{<:Number}, numGlobalBcs::Integer, globalBcNodes::AbstractVector{<:Number})
     error("PCPatchSetDiscretisationInfo: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::PC, nsubspaces::$PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{$PetscInt}, nodesPerCell::Vector{$PetscInt}, cellNodeMap::$PetscInt, subspaceOffsets::Vector{$PetscInt}, numGhostBcs::$PetscInt, ghostBcNodes::Vector{$PetscInt}, numGlobalBcs::$PetscInt, globalBcNodes::Vector{$PetscInt} )
+@for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::AbstractPC, nsubspaces::$PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{$PetscInt}, nodesPerCell::Vector{$PetscInt}, cellNodeMap::$PetscInt, subspaceOffsets::Vector{$PetscInt}, numGhostBcs::$PetscInt, ghostBcNodes::Vector{$PetscInt}, numGlobalBcs::$PetscInt, globalBcNodes::Vector{$PetscInt} )
 
     @chk ccall(
                (:PCPatchSetDiscretisationInfo, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{CDM}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}),
+               (CPC, $PetscInt, Ptr{CDM}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}),
                pc, nsubspaces, dms, bs, nodesPerCell, cellNodeMap, subspaceOffsets, numGhostBcs, ghostBcNodes, numGlobalBcs, globalBcNodes,
               )
 
@@ -12432,7 +12433,7 @@ end
 end 
 
 """
-	PCPatchSetPartitionOfUnity(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCPatchSetPartitionOfUnity(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Set whether the patch contributions should be weighted by a partition of unity when combining local solves
 
 Logically Collective
@@ -12448,16 +12449,16 @@ See also: `PCPATCH`, `PCPatchGetPartitionOfUnity()`
 # External Links
 $(_doc_external("PC/PCPatchSetPartitionOfUnity"))
 """
-function PCPatchSetPartitionOfUnity(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCPatchSetPartitionOfUnity(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCPatchSetPartitionOfUnity: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetPartitionOfUnity(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCPatchSetPartitionOfUnity(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCPatchSetPartitionOfUnity, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -12466,7 +12467,7 @@ end
 end 
 
 """
-	PCPatchSetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCPatchSetPrecomputeElementTensors(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Set whether element tensors should be precomputed once and reused when assembling each patch matrix
 
 Logically Collective
@@ -12482,16 +12483,16 @@ See also: `PCPATCH`, `PCPatchGetPrecomputeElementTensors()`, `PCPatchSetSaveOper
 # External Links
 $(_doc_external("PC/PCPatchSetPrecomputeElementTensors"))
 """
-function PCPatchSetPrecomputeElementTensors(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCPatchSetPrecomputeElementTensors(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCPatchSetPrecomputeElementTensors: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetPrecomputeElementTensors(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCPatchSetPrecomputeElementTensors(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCPatchSetPrecomputeElementTensors, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -12500,7 +12501,7 @@ end
 end 
 
 """
-	PCPatchSetSaveOperators(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCPatchSetSaveOperators(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Set whether the per-patch sub-matrices should be built and kept, instead of being reassembled at each application
 
 Logically Collective
@@ -12516,16 +12517,16 @@ See also: `PCPATCH`, `PCPatchGetSaveOperators()`, `PCPatchSetPrecomputeElementTe
 # External Links
 $(_doc_external("PC/PCPatchSetSaveOperators"))
 """
-function PCPatchSetSaveOperators(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCPatchSetSaveOperators(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCPatchSetSaveOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetSaveOperators(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCPatchSetSaveOperators(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCPatchSetSaveOperators, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -12534,7 +12535,7 @@ end
 end 
 
 """
-	PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String) 
+	PCPatchSetSubMatType(petsclib::PetscLibType, pc::AbstractPC, sub_mat_type::String) 
 Set the `MatType` used to store the per-patch sub-matrices in a `PCPATCH` preconditioner
 
 Logically Collective
@@ -12550,16 +12551,16 @@ See also: `PCPATCH`, `PCPatchGetSubMatType()`, `MatType`
 # External Links
 $(_doc_external("PC/PCPatchSetSubMatType"))
 """
-function PCPatchSetSubMatType(petsclib::PetscLibType, pc::PC, sub_mat_type::String)
+function PCPatchSetSubMatType(petsclib::PetscLibType, pc::AbstractPC, sub_mat_type::String)
     error("PCPatchSetSubMatType: no generated method for these argument types")
 end
 
-@for_petsc function PCPatchSetSubMatType(petsclib::$UnionPetscLib, pc::PC, sub_mat_type::String )
+@for_petsc function PCPatchSetSubMatType(petsclib::$UnionPetscLib, pc::AbstractPC, sub_mat_type::String )
 
     @chk ccall(
                (:PCPatchSetSubMatType, $petsc_library),
                PetscErrorCode,
-               (PC, MatType),
+               (CPC, MatType),
                pc, sub_mat_type,
               )
 
@@ -12568,7 +12569,7 @@ end
 end 
 
 """
-	PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP) 
+	PCPostSolve(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP) 
 Optional post-solve phase, intended for any
 preconditioner-specific actions that must be performed after
 the iterative solve itself.
@@ -12584,16 +12585,16 @@ See also: `PC`, `KSPSetPostSolve()`, `KSPSetPreSolve()`, `PCPreSolve()`, `KSPSol
 # External Links
 $(_doc_external("PC/PCPostSolve"))
 """
-function PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
+function PCPostSolve(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
     error("PCPostSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
+@for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCPostSolve, $petsc_library),
                PetscErrorCode,
-               (PC, CKSP),
+               (CPC, CKSP),
                pc, ksp,
               )
 
@@ -12602,7 +12603,7 @@ end
 end 
 
 """
-	PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP) 
+	PCPreSolve(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP) 
 Optional pre-solve phase, intended for any preconditioner-specific actions that must be performed before
 the iterative solve itself. Used in conjunction with `PCPostSolve()`
 
@@ -12619,16 +12620,16 @@ See also: `PC`, `PCPostSolve()`, `KSP`, `PCSetPostSetUp()`, `KSPSetPreSolve()`, 
 # External Links
 $(_doc_external("PC/PCPreSolve"))
 """
-function PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractKSP)
+function PCPreSolve(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
     error("PCPreSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractKSP )
+@for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
 
     @chk ccall(
                (:PCPreSolve, $petsc_library),
                PetscErrorCode,
-               (PC, CKSP),
+               (CPC, CKSP),
                pc, ksp,
               )
 
@@ -12637,7 +12638,7 @@ end
 end 
 
 """
-	pyname::String = PCPythonGetType(petsclib::PetscLibType, pc::PC) 
+	pyname::String = PCPythonGetType(petsclib::PetscLibType, pc::AbstractPC) 
 Get the type of a `PC` object implemented in Python, a `PCPYTHON`.
 
 Not Collective
@@ -12655,17 +12656,17 @@ See also: `PC`, `PCSHELL`, `PCCreate()`, `PCSetType()`, `PCPYTHON`, `PetscPython
 # External Links
 $(_doc_external("PC/PCPythonGetType"))
 """
-function PCPythonGetType(petsclib::PetscLibType, pc::PC)
+function PCPythonGetType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCPythonGetType: no generated method for these argument types")
 end
 
-@for_petsc function PCPythonGetType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCPythonGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PCPythonGetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Ptr{Cchar}}),
+               (CPC, Ptr{Ptr{Cchar}}),
                pc, pyname_,
               )
 
@@ -12675,7 +12676,7 @@ end
 end 
 
 """
-	PCPythonSetType(petsclib::PetscLibType, pc::PC, pyname::String) 
+	PCPythonSetType(petsclib::PetscLibType, pc::AbstractPC, pyname::String) 
 Initialize a `PC` object implemented in Python, a `PCPYTHON`.
 
 Collective
@@ -12694,16 +12695,16 @@ See also: `PC`, `PCSHELL`, `PCCreate()`, `PCSetType()`, `PCPYTHON`, `PetscPython
 # External Links
 $(_doc_external("PC/PCPythonSetType"))
 """
-function PCPythonSetType(petsclib::PetscLibType, pc::PC, pyname::String)
+function PCPythonSetType(petsclib::PetscLibType, pc::AbstractPC, pyname::String)
     error("PCPythonSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCPythonSetType(petsclib::$UnionPetscLib, pc::PC, pyname::String )
+@for_petsc function PCPythonSetType(petsclib::$UnionPetscLib, pc::AbstractPC, pyname::String )
 
     @chk ccall(
                (:PCPythonSetType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}),
+               (CPC, Ptr{Cchar}),
                pc, pyname,
               )
 
@@ -12712,7 +12713,7 @@ end
 end 
 
 """
-	innerksp::KSP = PCRedistributeGetKSP(petsclib::PetscLibType, pc::PC) 
+	innerksp::KSP = PCRedistributeGetKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `KSP` created by the `PCREDISTRIBUTE`
 
 Not Collective
@@ -12730,17 +12731,17 @@ See also: `KSP`, `PCREDISTRIBUTE`
 # External Links
 $(_doc_external("PC/PCRedistributeGetKSP"))
 """
-function PCRedistributeGetKSP(petsclib::PetscLibType, pc::PC)
+function PCRedistributeGetKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCRedistributeGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCRedistributeGetKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCRedistributeGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCRedistributeGetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, innerksp_,
               )
 
@@ -12750,7 +12751,7 @@ end
 end 
 
 """
-	PCReduceFailedReason(petsclib::PetscLibType, pc::PC) 
+	PCReduceFailedReason(petsclib::PetscLibType, pc::AbstractPC) 
 Reduce the failed reason among the MPI processes that share the `PC`
 
 Collective
@@ -12765,16 +12766,16 @@ See also: `PC`, `PCCreate()`, `PCApply()`, `PCDestroy()`, `PCGetFailedReason()`,
 # External Links
 $(_doc_external("PC/PCReduceFailedReason"))
 """
-function PCReduceFailedReason(petsclib::PetscLibType, pc::PC)
+function PCReduceFailedReason(petsclib::PetscLibType, pc::AbstractPC)
     error("PCReduceFailedReason: no generated method for these argument types")
 end
 
-@for_petsc function PCReduceFailedReason(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCReduceFailedReason(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCReduceFailedReason, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -12783,7 +12784,7 @@ end
 end 
 
 """
-	innerksp::KSP = PCRedundantGetKSP(petsclib::PetscLibType, pc::PC) 
+	innerksp::KSP = PCRedundantGetKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the less parallel `KSP` created by the redundant `PC`.
 
 Not Collective
@@ -12801,17 +12802,17 @@ See also: `PCREDUNDANT`
 # External Links
 $(_doc_external("PC/PCRedundantGetKSP"))
 """
-function PCRedundantGetKSP(petsclib::PetscLibType, pc::PC)
+function PCRedundantGetKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCRedundantGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCRedundantGetKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCRedundantGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCRedundantGetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, innerksp_,
               )
 
@@ -12821,7 +12822,7 @@ end
 end 
 
 """
-	mat::PetscMat,pmat::PetscMat = PCRedundantGetOperators(petsclib::PetscLibType, pc::PC) 
+	mat::PetscMat,pmat::PetscMat = PCRedundantGetOperators(petsclib::PetscLibType, pc::AbstractPC) 
 gets the sequential linear system matrix and matrix used to construct the preconditioner
 
 Not Collective
@@ -12840,18 +12841,18 @@ See also: `PCREDUNDANT`
 # External Links
 $(_doc_external("PC/PCRedundantGetOperators"))
 """
-function PCRedundantGetOperators(petsclib::PetscLibType, pc::PC)
+function PCRedundantGetOperators(petsclib::PetscLibType, pc::AbstractPC)
     error("PCRedundantGetOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCRedundantGetOperators(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCRedundantGetOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
 	mat_ = Ref{CMat}()
 	pmat_ = Ref{CMat}()
 
     @chk ccall(
                (:PCRedundantGetOperators, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CMat}, Ptr{CMat}),
+               (CPC, Ptr{CMat}, Ptr{CMat}),
                pc, mat_, pmat_,
               )
 
@@ -12862,7 +12863,7 @@ end
 end 
 
 """
-	PCRedundantSetNumber(petsclib::PetscLibType, pc::PC, nredundant::PetscInt) 
+	PCRedundantSetNumber(petsclib::PetscLibType, pc::AbstractPC, nredundant::PetscInt) 
 Sets the number of redundant preconditioner contexts.
 
 Logically Collective
@@ -12879,16 +12880,16 @@ See also: `PCREDUNDANT`
 # External Links
 $(_doc_external("PC/PCRedundantSetNumber"))
 """
-function PCRedundantSetNumber(petsclib::PetscLibType, pc::PC, nredundant::Integer)
+function PCRedundantSetNumber(petsclib::PetscLibType, pc::AbstractPC, nredundant::Integer)
     error("PCRedundantSetNumber: no generated method for these argument types")
 end
 
-@for_petsc function PCRedundantSetNumber(petsclib::$UnionPetscLib, pc::PC, nredundant::$PetscInt )
+@for_petsc function PCRedundantSetNumber(petsclib::$UnionPetscLib, pc::AbstractPC, nredundant::$PetscInt )
 
     @chk ccall(
                (:PCRedundantSetNumber, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, nredundant,
               )
 
@@ -12897,7 +12898,7 @@ end
 end 
 
 """
-	PCRedundantSetScatter(petsclib::PetscLibType, pc::PC, in::VecScatter, out::VecScatter) 
+	PCRedundantSetScatter(petsclib::PetscLibType, pc::AbstractPC, in::VecScatter, out::VecScatter) 
 Sets the scatter used to copy values into the
 redundant local solve and the scatter to move them back into the global
 vector.
@@ -12916,16 +12917,16 @@ See also: `PCREDUNDANT`
 # External Links
 $(_doc_external("PC/PCRedundantSetScatter"))
 """
-function PCRedundantSetScatter(petsclib::PetscLibType, pc::PC, in::VecScatter, out::VecScatter)
+function PCRedundantSetScatter(petsclib::PetscLibType, pc::AbstractPC, in::VecScatter, out::VecScatter)
     error("PCRedundantSetScatter: no generated method for these argument types")
 end
 
-@for_petsc function PCRedundantSetScatter(petsclib::$UnionPetscLib, pc::PC, in::VecScatter, out::VecScatter )
+@for_petsc function PCRedundantSetScatter(petsclib::$UnionPetscLib, pc::AbstractPC, in::VecScatter, out::VecScatter )
 
     @chk ccall(
                (:PCRedundantSetScatter, $petsc_library),
                PetscErrorCode,
-               (PC, VecScatter, VecScatter),
+               (CPC, VecScatter, VecScatter),
                pc, in, out,
               )
 
@@ -12966,7 +12967,7 @@ end
 end 
 
 """
-	PCReset(petsclib::PetscLibType, pc::PC) 
+	PCReset(petsclib::PetscLibType, pc::AbstractPC) 
 Resets a `PC` context to the state it was in before `PCSetUp()` was called, and removes any allocated `Vec` and `Mat` from its data structure
 
 Collective
@@ -12981,16 +12982,16 @@ See also: `PC`, `PCCreate()`, `PCSetUp()`
 # External Links
 $(_doc_external("PC/PCReset"))
 """
-function PCReset(petsclib::PetscLibType, pc::PC)
+function PCReset(petsclib::PetscLibType, pc::AbstractPC)
     error("PCReset: no generated method for these argument types")
 end
 
-@for_petsc function PCReset(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCReset(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCReset, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -12999,7 +13000,7 @@ end
 end 
 
 """
-	its::PetscInt,lits::PetscInt = PCSORGetIterations(petsclib::PetscLibType, pc::PC) 
+	its::PetscInt,lits::PetscInt = PCSORGetIterations(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the number of inner iterations to
 be used by the SOR preconditioner. The default is 1.
 
@@ -13023,18 +13024,18 @@ See also: `PCSOR`, `PCSORSetOmega()`, `PCSORSetSymmetric()`, `PCSORSetIterations
 # External Links
 $(_doc_external("PC/PCSORGetIterations"))
 """
-function PCSORGetIterations(petsclib::PetscLibType, pc::PC)
+function PCSORGetIterations(petsclib::PetscLibType, pc::AbstractPC)
     error("PCSORGetIterations: no generated method for these argument types")
 end
 
-@for_petsc function PCSORGetIterations(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCSORGetIterations(petsclib::$UnionPetscLib, pc::AbstractPC )
 	its_ = Ref{$PetscInt}()
 	lits_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PCSORGetIterations, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               (CPC, Ptr{$PetscInt}, Ptr{$PetscInt}),
                pc, its_, lits_,
               )
 
@@ -13045,7 +13046,7 @@ end
 end 
 
 """
-	omega::PetscReal = PCSORGetOmega(petsclib::PetscLibType, pc::PC) 
+	omega::PetscReal = PCSORGetOmega(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the SOR relaxation coefficient, omega
 (where omega = 1.0 by default).
 
@@ -13067,17 +13068,17 @@ See also: `PCSOR`, `PCSORSetSymmetric()`, `PCSORSetIterations()`, `PCEisenstatSe
 # External Links
 $(_doc_external("PC/PCSORGetOmega"))
 """
-function PCSORGetOmega(petsclib::PetscLibType, pc::PC)
+function PCSORGetOmega(petsclib::PetscLibType, pc::AbstractPC)
     error("PCSORGetOmega: no generated method for these argument types")
 end
 
-@for_petsc function PCSORGetOmega(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCSORGetOmega(petsclib::$UnionPetscLib, pc::AbstractPC )
 	omega_ = Ref{$PetscReal}()
 
     @chk ccall(
                (:PCSORGetOmega, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscReal}),
+               (CPC, Ptr{$PetscReal}),
                pc, omega_,
               )
 
@@ -13087,7 +13088,7 @@ end
 end 
 
 """
-	flag::MatSORType = PCSORGetSymmetric(petsclib::PetscLibType, pc::PC) 
+	flag::MatSORType = PCSORGetSymmetric(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the form the SOR preconditioner is using;   backward, or forward relaxation.  The local variants perform SOR on
 each processor.  By default forward relaxation is used.
 
@@ -13119,17 +13120,17 @@ See also: `PCSOR`, `PCEisenstatSetOmega()`, `PCSORSetIterations()`, `PCSORSetOme
 # External Links
 $(_doc_external("PC/PCSORGetSymmetric"))
 """
-function PCSORGetSymmetric(petsclib::PetscLibType, pc::PC)
+function PCSORGetSymmetric(petsclib::PetscLibType, pc::AbstractPC)
     error("PCSORGetSymmetric: no generated method for these argument types")
 end
 
-@for_petsc function PCSORGetSymmetric(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCSORGetSymmetric(petsclib::$UnionPetscLib, pc::AbstractPC )
 	flag_ = Ref{MatSORType}()
 
     @chk ccall(
                (:PCSORGetSymmetric, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{MatSORType}),
+               (CPC, Ptr{MatSORType}),
                pc, flag_,
               )
 
@@ -13139,7 +13140,7 @@ end
 end 
 
 """
-	PCSORSetIterations(petsclib::PetscLibType, pc::PC, its::PetscInt, lits::PetscInt) 
+	PCSORSetIterations(petsclib::PetscLibType, pc::AbstractPC, its::PetscInt, lits::PetscInt) 
 Sets the number of inner iterations to
 be used by the SOR preconditioner. The default is 1.
 
@@ -13161,16 +13162,16 @@ See also: `PCSOR`, `PCSORSetOmega()`, `PCSORSetSymmetric()`
 # External Links
 $(_doc_external("PC/PCSORSetIterations"))
 """
-function PCSORSetIterations(petsclib::PetscLibType, pc::PC, its::Integer, lits::Integer)
+function PCSORSetIterations(petsclib::PetscLibType, pc::AbstractPC, its::Integer, lits::Integer)
     error("PCSORSetIterations: no generated method for these argument types")
 end
 
-@for_petsc function PCSORSetIterations(petsclib::$UnionPetscLib, pc::PC, its::$PetscInt, lits::$PetscInt )
+@for_petsc function PCSORSetIterations(petsclib::$UnionPetscLib, pc::AbstractPC, its::$PetscInt, lits::$PetscInt )
 
     @chk ccall(
                (:PCSORSetIterations, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, $PetscInt),
+               (CPC, $PetscInt, $PetscInt),
                pc, its, lits,
               )
 
@@ -13179,7 +13180,7 @@ end
 end 
 
 """
-	PCSORSetOmega(petsclib::PetscLibType, pc::PC, omega::PetscReal) 
+	PCSORSetOmega(petsclib::PetscLibType, pc::AbstractPC, omega::PetscReal) 
 Sets the SOR relaxation coefficient, omega
 (where omega = 1.0 by default).
 
@@ -13199,16 +13200,16 @@ See also: `PCSOR`, `PCSORSetSymmetric()`, `PCSORSetIterations()`, `PCEisenstatSe
 # External Links
 $(_doc_external("PC/PCSORSetOmega"))
 """
-function PCSORSetOmega(petsclib::PetscLibType, pc::PC, omega::Real)
+function PCSORSetOmega(petsclib::PetscLibType, pc::AbstractPC, omega::Real)
     error("PCSORSetOmega: no generated method for these argument types")
 end
 
-@for_petsc function PCSORSetOmega(petsclib::$UnionPetscLib, pc::PC, omega::$PetscReal )
+@for_petsc function PCSORSetOmega(petsclib::$UnionPetscLib, pc::AbstractPC, omega::$PetscReal )
 
     @chk ccall(
                (:PCSORSetOmega, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, omega,
               )
 
@@ -13217,7 +13218,7 @@ end
 end 
 
 """
-	PCSORSetSymmetric(petsclib::PetscLibType, pc::PC, flag::MatSORType) 
+	PCSORSetSymmetric(petsclib::PetscLibType, pc::AbstractPC, flag::MatSORType) 
 Sets the SOR preconditioner to use symmetric (SSOR),
 backward, or forward relaxation.  The local variants perform SOR on
 each processor.  By default forward relaxation is used.
@@ -13248,16 +13249,16 @@ See also: `PCSOR`, `PCEisenstatSetOmega()`, `PCSORSetIterations()`, `PCSORSetOme
 # External Links
 $(_doc_external("PC/PCSORSetSymmetric"))
 """
-function PCSORSetSymmetric(petsclib::PetscLibType, pc::PC, flag::MatSORType)
+function PCSORSetSymmetric(petsclib::PetscLibType, pc::AbstractPC, flag::MatSORType)
     error("PCSORSetSymmetric: no generated method for these argument types")
 end
 
-@for_petsc function PCSORSetSymmetric(petsclib::$UnionPetscLib, pc::PC, flag::MatSORType )
+@for_petsc function PCSORSetSymmetric(petsclib::$UnionPetscLib, pc::AbstractPC, flag::MatSORType )
 
     @chk ccall(
                (:PCSORSetSymmetric, $petsc_library),
                PetscErrorCode,
-               (PC, MatSORType),
+               (CPC, MatSORType),
                pc, flag,
               )
 
@@ -13266,7 +13267,7 @@ end
 end 
 
 """
-	PCSPAISetBlockSize(petsclib::PetscLibType, pc::PC, block_size1::PetscInt) 
+	PCSPAISetBlockSize(petsclib::PetscLibType, pc::AbstractPC, block_size1::PetscInt) 
 set the block size for the `PCSPAI` preconditioner
 
 Input Parameters:
@@ -13280,16 +13281,16 @@ See also: `PCSPAI`, `PCSetType()`
 # External Links
 $(_doc_external("PC/PCSPAISetBlockSize"))
 """
-function PCSPAISetBlockSize(petsclib::PetscLibType, pc::PC, block_size1::Integer)
+function PCSPAISetBlockSize(petsclib::PetscLibType, pc::AbstractPC, block_size1::Integer)
     error("PCSPAISetBlockSize: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetBlockSize(petsclib::$UnionPetscLib, pc::PC, block_size1::$PetscInt )
+@for_petsc function PCSPAISetBlockSize(petsclib::$UnionPetscLib, pc::AbstractPC, block_size1::$PetscInt )
 
     @chk ccall(
                (:PCSPAISetBlockSize, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, block_size1,
               )
 
@@ -13298,7 +13299,7 @@ end
 end 
 
 """
-	PCSPAISetCacheSize(petsclib::PetscLibType, pc::PC, cache_size::PetscInt) 
+	PCSPAISetCacheSize(petsclib::PetscLibType, pc::AbstractPC, cache_size::PetscInt) 
 specify cache size in the `PCSPAI` preconditioner
 
 Input Parameters:
@@ -13312,16 +13313,16 @@ See also: `PCSPAI`, `PCSetType()`
 # External Links
 $(_doc_external("PC/PCSPAISetCacheSize"))
 """
-function PCSPAISetCacheSize(petsclib::PetscLibType, pc::PC, cache_size::Integer)
+function PCSPAISetCacheSize(petsclib::PetscLibType, pc::AbstractPC, cache_size::Integer)
     error("PCSPAISetCacheSize: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetCacheSize(petsclib::$UnionPetscLib, pc::PC, cache_size::$PetscInt )
+@for_petsc function PCSPAISetCacheSize(petsclib::$UnionPetscLib, pc::AbstractPC, cache_size::$PetscInt )
 
     @chk ccall(
                (:PCSPAISetCacheSize, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, cache_size,
               )
 
@@ -13330,7 +13331,7 @@ end
 end 
 
 """
-	PCSPAISetEpsilon(petsclib::PetscLibType, pc::PC, epsilon1::PetscReal) 
+	PCSPAISetEpsilon(petsclib::PetscLibType, pc::AbstractPC, epsilon1::PetscReal) 
 - Set the tolerance for the `PCSPAI` preconditioner
 
 Input Parameters:
@@ -13344,16 +13345,16 @@ See also: `PCSPAI`, `PCSetType()`
 # External Links
 $(_doc_external("PC/PCSPAISetEpsilon"))
 """
-function PCSPAISetEpsilon(petsclib::PetscLibType, pc::PC, epsilon1::Real)
+function PCSPAISetEpsilon(petsclib::PetscLibType, pc::AbstractPC, epsilon1::Real)
     error("PCSPAISetEpsilon: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetEpsilon(petsclib::$UnionPetscLib, pc::PC, epsilon1::$PetscReal )
+@for_petsc function PCSPAISetEpsilon(petsclib::$UnionPetscLib, pc::AbstractPC, epsilon1::$PetscReal )
 
     @chk ccall(
                (:PCSPAISetEpsilon, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscReal),
+               (CPC, $PetscReal),
                pc, epsilon1,
               )
 
@@ -13362,7 +13363,7 @@ end
 end 
 
 """
-	PCSPAISetMax(petsclib::PetscLibType, pc::PC, max1::PetscInt) 
+	PCSPAISetMax(petsclib::PetscLibType, pc::AbstractPC, max1::PetscInt) 
 set the size of various working buffers in the `PCSPAI` preconditioner
 
 Input Parameters:
@@ -13376,16 +13377,16 @@ See also: `PCSPAI`, `PCSetType()`
 # External Links
 $(_doc_external("PC/PCSPAISetMax"))
 """
-function PCSPAISetMax(petsclib::PetscLibType, pc::PC, max1::Integer)
+function PCSPAISetMax(petsclib::PetscLibType, pc::AbstractPC, max1::Integer)
     error("PCSPAISetMax: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetMax(petsclib::$UnionPetscLib, pc::PC, max1::$PetscInt )
+@for_petsc function PCSPAISetMax(petsclib::$UnionPetscLib, pc::AbstractPC, max1::$PetscInt )
 
     @chk ccall(
                (:PCSPAISetMax, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, max1,
               )
 
@@ -13394,7 +13395,7 @@ end
 end 
 
 """
-	PCSPAISetMaxNew(petsclib::PetscLibType, pc::PC, maxnew1::PetscInt) 
+	PCSPAISetMaxNew(petsclib::PetscLibType, pc::AbstractPC, maxnew1::PetscInt) 
 set maximum number of new nonzero candidates per step in the `PCSPAI` preconditioner
 
 Input Parameters:
@@ -13408,16 +13409,16 @@ See also: `PCSPAI`, `PCSetType()`, `PCSPAISetNBSteps()`
 # External Links
 $(_doc_external("PC/PCSPAISetMaxNew"))
 """
-function PCSPAISetMaxNew(petsclib::PetscLibType, pc::PC, maxnew1::Integer)
+function PCSPAISetMaxNew(petsclib::PetscLibType, pc::AbstractPC, maxnew1::Integer)
     error("PCSPAISetMaxNew: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetMaxNew(petsclib::$UnionPetscLib, pc::PC, maxnew1::$PetscInt )
+@for_petsc function PCSPAISetMaxNew(petsclib::$UnionPetscLib, pc::AbstractPC, maxnew1::$PetscInt )
 
     @chk ccall(
                (:PCSPAISetMaxNew, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, maxnew1,
               )
 
@@ -13426,7 +13427,7 @@ end
 end 
 
 """
-	PCSPAISetNBSteps(petsclib::PetscLibType, pc::PC, nbsteps1::PetscInt) 
+	PCSPAISetNBSteps(petsclib::PetscLibType, pc::AbstractPC, nbsteps1::PetscInt) 
 set maximum number of improvement steps per row in
 the `PCSPAI` preconditioner
 
@@ -13439,16 +13440,16 @@ See also: `PCSPAI`, `PCSetType()`, `PCSPAISetMaxNew()`
 # External Links
 $(_doc_external("PC/PCSPAISetNBSteps"))
 """
-function PCSPAISetNBSteps(petsclib::PetscLibType, pc::PC, nbsteps1::Integer)
+function PCSPAISetNBSteps(petsclib::PetscLibType, pc::AbstractPC, nbsteps1::Integer)
     error("PCSPAISetNBSteps: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetNBSteps(petsclib::$UnionPetscLib, pc::PC, nbsteps1::$PetscInt )
+@for_petsc function PCSPAISetNBSteps(petsclib::$UnionPetscLib, pc::AbstractPC, nbsteps1::$PetscInt )
 
     @chk ccall(
                (:PCSPAISetNBSteps, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, nbsteps1,
               )
 
@@ -13457,7 +13458,7 @@ end
 end 
 
 """
-	PCSPAISetSp(petsclib::PetscLibType, pc::PC, sp::PetscInt) 
+	PCSPAISetSp(petsclib::PetscLibType, pc::AbstractPC, sp::PetscInt) 
 specify a symmetric matrix sparsity pattern in the `PCSPAI` preconditioner
 
 Input Parameters:
@@ -13471,16 +13472,16 @@ See also: `PCSPAI`, `PCSetType()`
 # External Links
 $(_doc_external("PC/PCSPAISetSp"))
 """
-function PCSPAISetSp(petsclib::PetscLibType, pc::PC, sp::Integer)
+function PCSPAISetSp(petsclib::PetscLibType, pc::AbstractPC, sp::Integer)
     error("PCSPAISetSp: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetSp(petsclib::$UnionPetscLib, pc::PC, sp::$PetscInt )
+@for_petsc function PCSPAISetSp(petsclib::$UnionPetscLib, pc::AbstractPC, sp::$PetscInt )
 
     @chk ccall(
                (:PCSPAISetSp, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, sp,
               )
 
@@ -13489,7 +13490,7 @@ end
 end 
 
 """
-	PCSPAISetVerbose(petsclib::PetscLibType, pc::PC, verbose::PetscInt) 
+	PCSPAISetVerbose(petsclib::PetscLibType, pc::AbstractPC, verbose::PetscInt) 
 verbosity level for the `PCSPAI` preconditioner
 
 Input Parameters:
@@ -13503,16 +13504,16 @@ See also: `PCSPAI`, `PCSetType()`
 # External Links
 $(_doc_external("PC/PCSPAISetVerbose"))
 """
-function PCSPAISetVerbose(petsclib::PetscLibType, pc::PC, verbose::Integer)
+function PCSPAISetVerbose(petsclib::PetscLibType, pc::AbstractPC, verbose::Integer)
     error("PCSPAISetVerbose: no generated method for these argument types")
 end
 
-@for_petsc function PCSPAISetVerbose(petsclib::$UnionPetscLib, pc::PC, verbose::$PetscInt )
+@for_petsc function PCSPAISetVerbose(petsclib::$UnionPetscLib, pc::AbstractPC, verbose::$PetscInt )
 
     @chk ccall(
                (:PCSPAISetVerbose, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, verbose,
               )
 
@@ -13521,7 +13522,7 @@ end
 end 
 
 """
-	PCSetApplicationContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid}) 
+	PCSetApplicationContext(petsclib::PetscLibType, pc::AbstractPC, ctx::Ptr{Cvoid}) 
 Sets the optional user-defined context for the preconditioner
 
 Logically Collective
@@ -13537,16 +13538,16 @@ See also: `PC`, `PCGetApplicationContext()`, `KSPSetApplicationContext()`, `KSPG
 # External Links
 $(_doc_external("PC/PCSetApplicationContext"))
 """
-function PCSetApplicationContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid})
+function PCSetApplicationContext(petsclib::PetscLibType, pc::AbstractPC, ctx::Ptr{Cvoid})
     error("PCSetApplicationContext: no generated method for these argument types")
 end
 
-@for_petsc function PCSetApplicationContext(petsclib::$UnionPetscLib, pc::PC, ctx::Ptr{Cvoid} )
+@for_petsc function PCSetApplicationContext(petsclib::$UnionPetscLib, pc::AbstractPC, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCSetApplicationContext, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cvoid}),
+               (CPC, Ptr{Cvoid}),
                pc, ctx,
               )
 
@@ -13555,7 +13556,7 @@ end
 end 
 
 """
-	PCSetCoordinates(petsclib::PetscLibType, pc::PC, dim::PetscInt, nloc::PetscInt, coords::Vector{PetscReal}) 
+	PCSetCoordinates(petsclib::PetscLibType, pc::AbstractPC, dim::PetscInt, nloc::PetscInt, coords::Vector{PetscReal}) 
 sets the coordinates of all the nodes (degrees of freedom in the vector) on the local process
 
 Collective
@@ -13573,16 +13574,16 @@ See also: `PC`, `MatSetNearNullSpace()`
 # External Links
 $(_doc_external("PC/PCSetCoordinates"))
 """
-function PCSetCoordinates(petsclib::PetscLibType, pc::PC, dim::Integer, nloc::Integer, coords::AbstractVector{<:Number})
+function PCSetCoordinates(petsclib::PetscLibType, pc::AbstractPC, dim::Integer, nloc::Integer, coords::AbstractVector{<:Number})
     error("PCSetCoordinates: no generated method for these argument types")
 end
 
-@for_petsc function PCSetCoordinates(petsclib::$UnionPetscLib, pc::PC, dim::$PetscInt, nloc::$PetscInt, coords::Vector{$PetscReal} )
+@for_petsc function PCSetCoordinates(petsclib::$UnionPetscLib, pc::AbstractPC, dim::$PetscInt, nloc::$PetscInt, coords::Vector{$PetscReal} )
 
     @chk ccall(
                (:PCSetCoordinates, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, $PetscInt, Ptr{$PetscReal}),
+               (CPC, $PetscInt, $PetscInt, Ptr{$PetscReal}),
                pc, dim, nloc, coords,
               )
 
@@ -13591,7 +13592,7 @@ end
 end 
 
 """
-	PCSetDM(petsclib::PetscLibType, pc::PC, dm::AbstractPetscDM) 
+	PCSetDM(petsclib::PetscLibType, pc::AbstractPC, dm::AbstractPetscDM) 
 Sets the `DM` that may be used by some preconditioners
 
 Logically Collective
@@ -13607,16 +13608,16 @@ See also: `PC`, `DM`, `PCGetDM()`, `KSPSetDM()`, `KSPGetDM()`, `SNESSetDM()`, `T
 # External Links
 $(_doc_external("PC/PCSetDM"))
 """
-function PCSetDM(petsclib::PetscLibType, pc::PC, dm::AbstractPetscDM)
+function PCSetDM(petsclib::PetscLibType, pc::AbstractPC, dm::AbstractPetscDM)
     error("PCSetDM: no generated method for these argument types")
 end
 
-@for_petsc function PCSetDM(petsclib::$UnionPetscLib, pc::PC, dm::AbstractPetscDM )
+@for_petsc function PCSetDM(petsclib::$UnionPetscLib, pc::AbstractPC, dm::AbstractPetscDM )
 
     @chk ccall(
                (:PCSetDM, $petsc_library),
                PetscErrorCode,
-               (PC, CDM),
+               (CPC, CDM),
                pc, dm,
               )
 
@@ -13625,7 +13626,7 @@ end
 end 
 
 """
-	PCSetDiagonalScale(petsclib::PetscLibType, pc::PC, s::AbstractPetscVec) 
+	PCSetDiagonalScale(petsclib::PetscLibType, pc::AbstractPC, s::AbstractPetscVec) 
 Indicates the left scaling to use to apply an additional left and right
 scaling as needed by certain time-stepping codes.
 
@@ -13642,16 +13643,16 @@ See also: `PCCreate()`, `PCSetUp()`, `PCDiagonalScaleLeft()`, `PCDiagonalScaleRi
 # External Links
 $(_doc_external("PC/PCSetDiagonalScale"))
 """
-function PCSetDiagonalScale(petsclib::PetscLibType, pc::PC, s::AbstractPetscVec)
+function PCSetDiagonalScale(petsclib::PetscLibType, pc::AbstractPC, s::AbstractPetscVec)
     error("PCSetDiagonalScale: no generated method for these argument types")
 end
 
-@for_petsc function PCSetDiagonalScale(petsclib::$UnionPetscLib, pc::PC, s::AbstractPetscVec )
+@for_petsc function PCSetDiagonalScale(petsclib::$UnionPetscLib, pc::AbstractPC, s::AbstractPetscVec )
 
     @chk ccall(
                (:PCSetDiagonalScale, $petsc_library),
                PetscErrorCode,
-               (PC, CVec),
+               (CPC, CVec),
                pc, s,
               )
 
@@ -13660,7 +13661,7 @@ end
 end 
 
 """
-	PCSetErrorIfFailure(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCSetErrorIfFailure(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Causes `PC` to generate an error if a floating point exception, for example a zero pivot, is detected.
 
 Logically Collective
@@ -13676,16 +13677,16 @@ See also: `PC`, `KSPSetErrorIfNotConverged()`, `PCGetInitialGuessNonzero()`, `PC
 # External Links
 $(_doc_external("PC/PCSetErrorIfFailure"))
 """
-function PCSetErrorIfFailure(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCSetErrorIfFailure(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCSetErrorIfFailure: no generated method for these argument types")
 end
 
-@for_petsc function PCSetErrorIfFailure(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCSetErrorIfFailure(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCSetErrorIfFailure, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -13694,7 +13695,7 @@ end
 end 
 
 """
-	PCSetFailedReason(petsclib::PetscLibType, pc::PC, reason::PCFailedReason) 
+	PCSetFailedReason(petsclib::PetscLibType, pc::AbstractPC, reason::PCFailedReason) 
 Sets the reason a `PCSetUp()` failed or `PC_NOERROR` if it did not fail
 
 Logically Collective
@@ -13710,16 +13711,16 @@ See also: `PC`, `PCCreate()`, `PCApply()`, `PCDestroy()`, `PCFailedReason`
 # External Links
 $(_doc_external("PC/PCSetFailedReason"))
 """
-function PCSetFailedReason(petsclib::PetscLibType, pc::PC, reason::PCFailedReason)
+function PCSetFailedReason(petsclib::PetscLibType, pc::AbstractPC, reason::PCFailedReason)
     error("PCSetFailedReason: no generated method for these argument types")
 end
 
-@for_petsc function PCSetFailedReason(petsclib::$UnionPetscLib, pc::PC, reason::PCFailedReason )
+@for_petsc function PCSetFailedReason(petsclib::$UnionPetscLib, pc::AbstractPC, reason::PCFailedReason )
 
     @chk ccall(
                (:PCSetFailedReason, $petsc_library),
                PetscErrorCode,
-               (PC, PCFailedReason),
+               (CPC, PCFailedReason),
                pc, reason,
               )
 
@@ -13728,7 +13729,7 @@ end
 end 
 
 """
-	PCSetFromOptions(petsclib::PetscLibType, pc::PC) 
+	PCSetFromOptions(petsclib::PetscLibType, pc::AbstractPC) 
 Sets `PC` options from the options database.
 
 Collective
@@ -13746,16 +13747,16 @@ See also: `PC`, `PCSetType()`, `PCType`, `KSPSetFromOptions()`
 # External Links
 $(_doc_external("PC/PCSetFromOptions"))
 """
-function PCSetFromOptions(petsclib::PetscLibType, pc::PC)
+function PCSetFromOptions(petsclib::PetscLibType, pc::AbstractPC)
     error("PCSetFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function PCSetFromOptions(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCSetFromOptions(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCSetFromOptions, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -13764,7 +13765,7 @@ end
 end 
 
 """
-	PCSetKSPNestLevel(petsclib::PetscLibType, pc::PC, level::PetscInt) 
+	PCSetKSPNestLevel(petsclib::PetscLibType, pc::AbstractPC, level::PetscInt) 
 sets the amount of nesting the `KSP` that contains this `PC` has
 
 Collective
@@ -13780,16 +13781,16 @@ See also: `KSPSetUp()`, `KSPSolve()`, `KSPDestroy()`, `KSP`, `KSPGMRES`, `KSPTyp
 # External Links
 $(_doc_external("PC/PCSetKSPNestLevel"))
 """
-function PCSetKSPNestLevel(petsclib::PetscLibType, pc::PC, level::Integer)
+function PCSetKSPNestLevel(petsclib::PetscLibType, pc::AbstractPC, level::Integer)
     error("PCSetKSPNestLevel: no generated method for these argument types")
 end
 
-@for_petsc function PCSetKSPNestLevel(petsclib::$UnionPetscLib, pc::PC, level::$PetscInt )
+@for_petsc function PCSetKSPNestLevel(petsclib::$UnionPetscLib, pc::AbstractPC, level::$PetscInt )
 
     @chk ccall(
                (:PCSetKSPNestLevel, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, level,
               )
 
@@ -13798,7 +13799,7 @@ end
 end 
 
 """
-	PCSetModifySubMatrices(petsclib::PetscLibType, pc::PC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	PCSetModifySubMatrices(petsclib::PetscLibType, pc::AbstractPC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Sets a user-defined routine for modifying the
 submatrices that arise within certain subdomain-based preconditioners such as `PCASM`
 
@@ -13816,16 +13817,16 @@ See also: `PC`, `PCModifySubMatricesFn`, `PCBJACOBI`, `PCASM`, `PCModifySubMatri
 # External Links
 $(_doc_external("PC/PCSetModifySubMatrices"))
 """
-function PCSetModifySubMatrices(petsclib::PetscLibType, pc::PC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function PCSetModifySubMatrices(petsclib::PetscLibType, pc::AbstractPC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     error("PCSetModifySubMatrices: no generated method for these argument types")
 end
 
-@for_petsc function PCSetModifySubMatrices(petsclib::$UnionPetscLib, pc::PC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function PCSetModifySubMatrices(petsclib::$UnionPetscLib, pc::AbstractPC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCSetModifySubMatrices, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cvoid}, Ptr{Cvoid}),
+               (CPC, Ptr{Cvoid}, Ptr{Cvoid}),
                pc, func, ctx,
               )
 
@@ -13834,7 +13835,7 @@ end
 end 
 
 """
-	PCSetOperators(petsclib::PetscLibType, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
+	PCSetOperators(petsclib::PetscLibType, pc::AbstractPC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets the matrix associated with the linear system and
 a (possibly) different one from which the preconditioner will be constructed.
 
@@ -13852,16 +13853,16 @@ See also: `PC`, `PCGetOperators()`, `MatZeroEntries()`
 # External Links
 $(_doc_external("PC/PCSetOperators"))
 """
-function PCSetOperators(petsclib::PetscLibType, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
+function PCSetOperators(petsclib::PetscLibType, pc::AbstractPC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat)
     error("PCSetOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCSetOperators(petsclib::$UnionPetscLib, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
+@for_petsc function PCSetOperators(petsclib::$UnionPetscLib, pc::AbstractPC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
     @chk ccall(
                (:PCSetOperators, $petsc_library),
                PetscErrorCode,
-               (PC, CMat, CMat),
+               (CPC, CMat, CMat),
                pc, Amat, Pmat,
               )
 
@@ -13870,7 +13871,7 @@ end
 end 
 
 """
-	PCSetOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String) 
+	PCSetOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC, prefix::String) 
 Sets the prefix used for searching for all
 `PC` options in the database.
 
@@ -13887,16 +13888,16 @@ See also: `PC`, `PCSetFromOptions()`, `PCAppendOptionsPrefix()`, `PCGetOptionsPr
 # External Links
 $(_doc_external("PC/PCSetOptionsPrefix"))
 """
-function PCSetOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String)
+function PCSetOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC, prefix::String)
     error("PCSetOptionsPrefix: no generated method for these argument types")
 end
 
-@for_petsc function PCSetOptionsPrefix(petsclib::$UnionPetscLib, pc::PC, prefix::String )
+@for_petsc function PCSetOptionsPrefix(petsclib::$UnionPetscLib, pc::AbstractPC, prefix::String )
 
     @chk ccall(
                (:PCSetOptionsPrefix, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}),
+               (CPC, Ptr{Cchar}),
                pc, prefix,
               )
 
@@ -13905,7 +13906,7 @@ end
 end 
 
 """
-	PCSetPostSetUp(petsclib::PetscLibType, pc::PC, postsetup::external) 
+	PCSetPostSetUp(petsclib::PetscLibType, pc::AbstractPC, postsetup::external) 
 Sets function called at the end of `PCSetUp()` to adjust the computed preconditioner
 
 Logically Collective
@@ -13924,16 +13925,16 @@ See also: `PC`, `PCSetUp()`
 # External Links
 $(_doc_external("PC/PCSetPostSetUp"))
 """
-function PCSetPostSetUp(petsclib::PetscLibType, pc::PC, postsetup::external)
+function PCSetPostSetUp(petsclib::PetscLibType, pc::AbstractPC, postsetup::external)
     error("PCSetPostSetUp: no generated method for these argument types")
 end
 
-@for_petsc function PCSetPostSetUp(petsclib::$UnionPetscLib, pc::PC, postsetup::external )
+@for_petsc function PCSetPostSetUp(petsclib::$UnionPetscLib, pc::AbstractPC, postsetup::external )
 
     @chk ccall(
                (:PCSetPostSetUp, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, postsetup,
               )
 
@@ -13942,7 +13943,7 @@ end
 end 
 
 """
-	PCSetReusePreconditioner(petsclib::PetscLibType, pc::PC, flag::PetscBool) 
+	PCSetReusePreconditioner(petsclib::PetscLibType, pc::AbstractPC, flag::PetscBool) 
 reuse the current preconditioner even if the operator in the preconditioner `PC` has changed.
 
 Logically Collective
@@ -13958,16 +13959,16 @@ See also: `PC`, `PCGetOperators()`, `MatZeroEntries()`, `PCGetReusePreconditione
 # External Links
 $(_doc_external("PC/PCSetReusePreconditioner"))
 """
-function PCSetReusePreconditioner(petsclib::PetscLibType, pc::PC, flag::PetscBool)
+function PCSetReusePreconditioner(petsclib::PetscLibType, pc::AbstractPC, flag::PetscBool)
     error("PCSetReusePreconditioner: no generated method for these argument types")
 end
 
-@for_petsc function PCSetReusePreconditioner(petsclib::$UnionPetscLib, pc::PC, flag::PetscBool )
+@for_petsc function PCSetReusePreconditioner(petsclib::$UnionPetscLib, pc::AbstractPC, flag::PetscBool )
 
     @chk ccall(
                (:PCSetReusePreconditioner, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flag,
               )
 
@@ -13976,7 +13977,7 @@ end
 end 
 
 """
-	PCSetType(petsclib::PetscLibType, pc::PC, type::String) 
+	PCSetType(petsclib::PetscLibType, pc::AbstractPC, type::String) 
 Builds `PC` for a particular preconditioner type
 
 Collective
@@ -13993,16 +13994,16 @@ See also: `KSPSetType()`, `PCType`, `PCRegister()`, `PCCreate()`, `KSPGetPC()`
 # External Links
 $(_doc_external("PC/PCSetType"))
 """
-function PCSetType(petsclib::PetscLibType, pc::PC, type::String)
+function PCSetType(petsclib::PetscLibType, pc::AbstractPC, type::String)
     error("PCSetType: no generated method for these argument types")
 end
 
-@for_petsc function PCSetType(petsclib::$UnionPetscLib, pc::PC, type::String )
+@for_petsc function PCSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
 
     @chk ccall(
                (:PCSetType, $petsc_library),
                PetscErrorCode,
-               (PC, PCType),
+               (CPC, PCType),
                pc, type,
               )
 
@@ -14011,7 +14012,7 @@ end
 end 
 
 """
-	PCSetUp(petsclib::PetscLibType, pc::PC) 
+	PCSetUp(petsclib::PetscLibType, pc::AbstractPC) 
 Prepares for the use of a preconditioner. Performs all the one-time operations needed before the preconditioner
 can be used with `PCApply()`
 
@@ -14027,16 +14028,16 @@ See also: `PC`, `PCCreate()`, `PCApply()`, `PCDestroy()`, `KSPSetUp()`, `PCSetUp
 # External Links
 $(_doc_external("PC/PCSetUp"))
 """
-function PCSetUp(petsclib::PetscLibType, pc::PC)
+function PCSetUp(petsclib::PetscLibType, pc::AbstractPC)
     error("PCSetUp: no generated method for these argument types")
 end
 
-@for_petsc function PCSetUp(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCSetUp(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCSetUp, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -14045,7 +14046,7 @@ end
 end 
 
 """
-	PCSetUpOnBlocks(petsclib::PetscLibType, pc::PC) 
+	PCSetUpOnBlocks(petsclib::PetscLibType, pc::AbstractPC) 
 Sets up the preconditioner for each block in
 the block Jacobi, overlapping Schwarz, and fieldsplit methods.
 
@@ -14061,16 +14062,16 @@ See also: `PC`, `PCSetUp()`, `PCCreate()`, `PCApply()`, `PCDestroy()`
 # External Links
 $(_doc_external("PC/PCSetUpOnBlocks"))
 """
-function PCSetUpOnBlocks(petsclib::PetscLibType, pc::PC)
+function PCSetUpOnBlocks(petsclib::PetscLibType, pc::AbstractPC)
     error("PCSetUpOnBlocks: no generated method for these argument types")
 end
 
-@for_petsc function PCSetUpOnBlocks(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCSetUpOnBlocks(petsclib::$UnionPetscLib, pc::AbstractPC )
 
     @chk ccall(
                (:PCSetUpOnBlocks, $petsc_library),
                PetscErrorCode,
-               (PC,),
+               (CPC,),
                pc,
               )
 
@@ -14079,7 +14080,7 @@ end
 end 
 
 """
-	PCSetUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool) 
+	PCSetUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool) 
 Sets a flag to indicate that when the preconditioner needs to apply (part of) the
 operator during the preconditioning process it applies the `Amat` provided to `TSSetRHSJacobian()`,
 `TSSetIJacobian()`, `SNESSetJacobian()`, `KSPSetOperators()` or `PCSetOperators()` not the `Pmat`.
@@ -14101,16 +14102,16 @@ See also: `PC`, `PCGetUseAmat()`, `PCBJACOBI`, `PCMG`, `PCFIELDSPLIT`, `PCCOMPOS
 # External Links
 $(_doc_external("PC/PCSetUseAmat"))
 """
-function PCSetUseAmat(petsclib::PetscLibType, pc::PC, flg::PetscBool)
+function PCSetUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
     error("PCSetUseAmat: no generated method for these argument types")
 end
 
-@for_petsc function PCSetUseAmat(petsclib::$UnionPetscLib, pc::PC, flg::PetscBool )
+@for_petsc function PCSetUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
 
     @chk ccall(
                (:PCSetUseAmat, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, flg,
               )
 
@@ -14119,7 +14120,7 @@ end
 end 
 
 """
-	ctx::Ptr{Cvoid} = PCShellGetContext(petsclib::PetscLibType, pc::PC) 
+	ctx::Ptr{Cvoid} = PCShellGetContext(petsclib::PetscLibType, pc::AbstractPC) 
 Returns the user-provided context associated with a shell `PC` that was provided with `PCShellSetContext()`
 
 Not Collective
@@ -14137,17 +14138,17 @@ See also: `PC`, `PCSHELL`, `PCShellSetContext()`, `PCShellSetApply()`, `PCShellS
 # External Links
 $(_doc_external("PC/PCShellGetContext"))
 """
-function PCShellGetContext(petsclib::PetscLibType, pc::PC)
+function PCShellGetContext(petsclib::PetscLibType, pc::AbstractPC)
     error("PCShellGetContext: no generated method for these argument types")
 end
 
-@for_petsc function PCShellGetContext(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCShellGetContext(petsclib::$UnionPetscLib, pc::AbstractPC )
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
                (:PCShellGetContext, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cvoid}),
+               (CPC, Ptr{Cvoid}),
                pc, ctx_,
               )
 
@@ -14157,7 +14158,7 @@ end
 end 
 
 """
-	name::String = PCShellGetName(petsclib::PetscLibType, pc::PC) 
+	name::String = PCShellGetName(petsclib::PetscLibType, pc::AbstractPC) 
 Gets an optional name that the user has set for a `PCSHELL` with `PCShellSetName()`
 preconditioner.
 
@@ -14176,17 +14177,17 @@ See also: `PCSHELL`, `PCShellSetName()`, `PetscObjectSetName()`, `PetscObjectGet
 # External Links
 $(_doc_external("PC/PCShellGetName"))
 """
-function PCShellGetName(petsclib::PetscLibType, pc::PC)
+function PCShellGetName(petsclib::PetscLibType, pc::AbstractPC)
     error("PCShellGetName: no generated method for these argument types")
 end
 
-@for_petsc function PCShellGetName(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCShellGetName(petsclib::$UnionPetscLib, pc::AbstractPC )
 	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:PCShellGetName, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Ptr{Cchar}}),
+               (CPC, Ptr{Ptr{Cchar}}),
                pc, name_,
               )
 
@@ -14196,7 +14197,7 @@ end
 end 
 
 """
-	PCShellSetApply(petsclib::PetscLibType, pc::PC, apply::external) 
+	PCShellSetApply(petsclib::PetscLibType, pc::AbstractPC, apply::external) 
 Sets routine to use as preconditioner.
 
 Logically Collective
@@ -14217,16 +14218,16 @@ See also: `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetSetUp()`, `PCShel
 # External Links
 $(_doc_external("PC/PCShellSetApply"))
 """
-function PCShellSetApply(petsclib::PetscLibType, pc::PC, apply::external)
+function PCShellSetApply(petsclib::PetscLibType, pc::AbstractPC, apply::external)
     error("PCShellSetApply: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetApply(petsclib::$UnionPetscLib, pc::PC, apply::external )
+@for_petsc function PCShellSetApply(petsclib::$UnionPetscLib, pc::AbstractPC, apply::external )
 
     @chk ccall(
                (:PCShellSetApply, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, apply,
               )
 
@@ -14235,7 +14236,7 @@ end
 end 
 
 """
-	PCShellSetApplyBA(petsclib::PetscLibType, pc::PC, applyBA::external) 
+	PCShellSetApplyBA(petsclib::PetscLibType, pc::AbstractPC, applyBA::external) 
 Sets routine to use as the preconditioner times the operator.
 
 Logically Collective
@@ -14258,16 +14259,16 @@ See also: `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetSetUp()`, `PCShel
 # External Links
 $(_doc_external("PC/PCShellSetApplyBA"))
 """
-function PCShellSetApplyBA(petsclib::PetscLibType, pc::PC, applyBA::external)
+function PCShellSetApplyBA(petsclib::PetscLibType, pc::AbstractPC, applyBA::external)
     error("PCShellSetApplyBA: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetApplyBA(petsclib::$UnionPetscLib, pc::PC, applyBA::external )
+@for_petsc function PCShellSetApplyBA(petsclib::$UnionPetscLib, pc::AbstractPC, applyBA::external )
 
     @chk ccall(
                (:PCShellSetApplyBA, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, applyBA,
               )
 
@@ -14276,7 +14277,7 @@ end
 end 
 
 """
-	PCShellSetApplyRichardson(petsclib::PetscLibType, pc::PC, apply::external) 
+	PCShellSetApplyRichardson(petsclib::PetscLibType, pc::AbstractPC, apply::external) 
 Sets routine to use as preconditioner
 in Richardson iteration.
 
@@ -14306,16 +14307,16 @@ See also: `PCSHELL`, `PCShellSetApply()`, `PCShellSetContext()`, `PCRichardsonCo
 # External Links
 $(_doc_external("PC/PCShellSetApplyRichardson"))
 """
-function PCShellSetApplyRichardson(petsclib::PetscLibType, pc::PC, apply::external)
+function PCShellSetApplyRichardson(petsclib::PetscLibType, pc::AbstractPC, apply::external)
     error("PCShellSetApplyRichardson: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetApplyRichardson(petsclib::$UnionPetscLib, pc::PC, apply::external )
+@for_petsc function PCShellSetApplyRichardson(petsclib::$UnionPetscLib, pc::AbstractPC, apply::external )
 
     @chk ccall(
                (:PCShellSetApplyRichardson, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, apply,
               )
 
@@ -14324,7 +14325,7 @@ end
 end 
 
 """
-	PCShellSetApplySymmetricLeft(petsclib::PetscLibType, pc::PC, apply::external) 
+	PCShellSetApplySymmetricLeft(petsclib::PetscLibType, pc::AbstractPC, apply::external) 
 Sets routine to use as left preconditioner (when the `PC_SYMMETRIC` is used).
 
 Logically Collective
@@ -14345,16 +14346,16 @@ See also: `PCSHELL`, `PCShellSetApply()`, `PCShellSetSetUp()`, `PCShellSetApplyT
 # External Links
 $(_doc_external("PC/PCShellSetApplySymmetricLeft"))
 """
-function PCShellSetApplySymmetricLeft(petsclib::PetscLibType, pc::PC, apply::external)
+function PCShellSetApplySymmetricLeft(petsclib::PetscLibType, pc::AbstractPC, apply::external)
     error("PCShellSetApplySymmetricLeft: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetApplySymmetricLeft(petsclib::$UnionPetscLib, pc::PC, apply::external )
+@for_petsc function PCShellSetApplySymmetricLeft(petsclib::$UnionPetscLib, pc::AbstractPC, apply::external )
 
     @chk ccall(
                (:PCShellSetApplySymmetricLeft, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, apply,
               )
 
@@ -14363,7 +14364,7 @@ end
 end 
 
 """
-	PCShellSetApplySymmetricRight(petsclib::PetscLibType, pc::PC, apply::external) 
+	PCShellSetApplySymmetricRight(petsclib::PetscLibType, pc::AbstractPC, apply::external) 
 Sets routine to use as right preconditioner (when the `PC_SYMMETRIC` is used).
 
 Logically Collective
@@ -14384,16 +14385,16 @@ See also: `PCSHELL`, `PCShellSetApply()`, `PCShellSetApplySymmetricLeft()`, `PCS
 # External Links
 $(_doc_external("PC/PCShellSetApplySymmetricRight"))
 """
-function PCShellSetApplySymmetricRight(petsclib::PetscLibType, pc::PC, apply::external)
+function PCShellSetApplySymmetricRight(petsclib::PetscLibType, pc::AbstractPC, apply::external)
     error("PCShellSetApplySymmetricRight: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetApplySymmetricRight(petsclib::$UnionPetscLib, pc::PC, apply::external )
+@for_petsc function PCShellSetApplySymmetricRight(petsclib::$UnionPetscLib, pc::AbstractPC, apply::external )
 
     @chk ccall(
                (:PCShellSetApplySymmetricRight, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, apply,
               )
 
@@ -14402,7 +14403,7 @@ end
 end 
 
 """
-	PCShellSetApplyTranspose(petsclib::PetscLibType, pc::PC, applytranspose::external) 
+	PCShellSetApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, applytranspose::external) 
 Sets routine to use as preconditioner transpose.
 
 Logically Collective
@@ -14423,16 +14424,16 @@ See also: `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetSetUp()`, `PCShel
 # External Links
 $(_doc_external("PC/PCShellSetApplyTranspose"))
 """
-function PCShellSetApplyTranspose(petsclib::PetscLibType, pc::PC, applytranspose::external)
+function PCShellSetApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, applytranspose::external)
     error("PCShellSetApplyTranspose: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetApplyTranspose(petsclib::$UnionPetscLib, pc::PC, applytranspose::external )
+@for_petsc function PCShellSetApplyTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, applytranspose::external )
 
     @chk ccall(
                (:PCShellSetApplyTranspose, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, applytranspose,
               )
 
@@ -14441,7 +14442,7 @@ end
 end 
 
 """
-	PCShellSetContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid}) 
+	PCShellSetContext(petsclib::PetscLibType, pc::AbstractPC, ctx::Ptr{Cvoid}) 
 sets the context for a shell `PC` that can be accessed with `PCShellGetContext()`
 
 Logically Collective
@@ -14457,16 +14458,16 @@ See also: `PC`, `PCShellGetContext()`, `PCSHELL`, `PCShellSetApply()`, `PCShellS
 # External Links
 $(_doc_external("PC/PCShellSetContext"))
 """
-function PCShellSetContext(petsclib::PetscLibType, pc::PC, ctx::Ptr{Cvoid})
+function PCShellSetContext(petsclib::PetscLibType, pc::AbstractPC, ctx::Ptr{Cvoid})
     error("PCShellSetContext: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetContext(petsclib::$UnionPetscLib, pc::PC, ctx::Ptr{Cvoid} )
+@for_petsc function PCShellSetContext(petsclib::$UnionPetscLib, pc::AbstractPC, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCShellSetContext, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cvoid}),
+               (CPC, Ptr{Cvoid}),
                pc, ctx,
               )
 
@@ -14475,7 +14476,7 @@ end
 end 
 
 """
-	PCShellSetDestroy(petsclib::PetscLibType, pc::PC, destroy::external) 
+	PCShellSetDestroy(petsclib::PetscLibType, pc::AbstractPC, destroy::external) 
 Sets routine to use to destroy the user-provided application context that was provided with `PCShellSetContext()`
 
 Logically Collective
@@ -14494,16 +14495,16 @@ See also: `PCSHELL`, `PCShellSetApply()`, `PCShellSetContext()`, `PCShellGetCont
 # External Links
 $(_doc_external("PC/PCShellSetDestroy"))
 """
-function PCShellSetDestroy(petsclib::PetscLibType, pc::PC, destroy::external)
+function PCShellSetDestroy(petsclib::PetscLibType, pc::AbstractPC, destroy::external)
     error("PCShellSetDestroy: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetDestroy(petsclib::$UnionPetscLib, pc::PC, destroy::external )
+@for_petsc function PCShellSetDestroy(petsclib::$UnionPetscLib, pc::AbstractPC, destroy::external )
 
     @chk ccall(
                (:PCShellSetDestroy, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, destroy,
               )
 
@@ -14512,7 +14513,7 @@ end
 end 
 
 """
-	PCShellSetMatApply(petsclib::PetscLibType, pc::PC, matapply::external) 
+	PCShellSetMatApply(petsclib::PetscLibType, pc::AbstractPC, matapply::external) 
 Sets routine to use as preconditioner on a block of vectors.
 
 Logically Collective
@@ -14533,16 +14534,16 @@ See also: `PCSHELL`, `PCShellSetApply()`, `PCShellSetContext()`, `PCShellGetCont
 # External Links
 $(_doc_external("PC/PCShellSetMatApply"))
 """
-function PCShellSetMatApply(petsclib::PetscLibType, pc::PC, matapply::external)
+function PCShellSetMatApply(petsclib::PetscLibType, pc::AbstractPC, matapply::external)
     error("PCShellSetMatApply: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetMatApply(petsclib::$UnionPetscLib, pc::PC, matapply::external )
+@for_petsc function PCShellSetMatApply(petsclib::$UnionPetscLib, pc::AbstractPC, matapply::external )
 
     @chk ccall(
                (:PCShellSetMatApply, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, matapply,
               )
 
@@ -14551,7 +14552,7 @@ end
 end 
 
 """
-	PCShellSetMatApplyTranspose(petsclib::PetscLibType, pc::PC, matapplytranspose::external) 
+	PCShellSetMatApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, matapplytranspose::external) 
 Sets routine to use as preconditioner transpose.
 
 Logically Collective
@@ -14572,16 +14573,16 @@ See also: `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetSetUp()`, `PCShel
 # External Links
 $(_doc_external("PC/PCShellSetMatApplyTranspose"))
 """
-function PCShellSetMatApplyTranspose(petsclib::PetscLibType, pc::PC, matapplytranspose::external)
+function PCShellSetMatApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, matapplytranspose::external)
     error("PCShellSetMatApplyTranspose: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetMatApplyTranspose(petsclib::$UnionPetscLib, pc::PC, matapplytranspose::external )
+@for_petsc function PCShellSetMatApplyTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, matapplytranspose::external )
 
     @chk ccall(
                (:PCShellSetMatApplyTranspose, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, matapplytranspose,
               )
 
@@ -14590,7 +14591,7 @@ end
 end 
 
 """
-	PCShellSetName(petsclib::PetscLibType, pc::PC, name::String) 
+	PCShellSetName(petsclib::PetscLibType, pc::AbstractPC, name::String) 
 Sets an optional name to associate with a `PCSHELL`
 preconditioner.
 
@@ -14607,16 +14608,16 @@ See also: `PCSHELL`, `PCShellGetName()`, `PetscObjectSetName()`, `PetscObjectGet
 # External Links
 $(_doc_external("PC/PCShellSetName"))
 """
-function PCShellSetName(petsclib::PetscLibType, pc::PC, name::String)
+function PCShellSetName(petsclib::PetscLibType, pc::AbstractPC, name::String)
     error("PCShellSetName: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetName(petsclib::$UnionPetscLib, pc::PC, name::String )
+@for_petsc function PCShellSetName(petsclib::$UnionPetscLib, pc::AbstractPC, name::String )
 
     @chk ccall(
                (:PCShellSetName, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cchar}),
+               (CPC, Ptr{Cchar}),
                pc, name,
               )
 
@@ -14625,7 +14626,7 @@ end
 end 
 
 """
-	PCShellSetPostSolve(petsclib::PetscLibType, pc::PC, postsolve::Ptr{Cvoid}) 
+	PCShellSetPostSolve(petsclib::PetscLibType, pc::AbstractPC, postsolve::Ptr{Cvoid}) 
 Sets routine to apply to the operators/vectors after a `KSPSolve()` is
 applied. This usually does something like scale the linear system in some application
 specific way.
@@ -14643,16 +14644,16 @@ See also: `PCSHELL`, `PCShellPSolveFn`, `PCShellSetApplyRichardson()`, `PCShellS
 # External Links
 $(_doc_external("PC/PCShellSetPostSolve"))
 """
-function PCShellSetPostSolve(petsclib::PetscLibType, pc::PC, postsolve::Ptr{Cvoid})
+function PCShellSetPostSolve(petsclib::PetscLibType, pc::AbstractPC, postsolve::Ptr{Cvoid})
     error("PCShellSetPostSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetPostSolve(petsclib::$UnionPetscLib, pc::PC, postsolve::Ptr{Cvoid} )
+@for_petsc function PCShellSetPostSolve(petsclib::$UnionPetscLib, pc::AbstractPC, postsolve::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCShellSetPostSolve, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cvoid}),
+               (CPC, Ptr{Cvoid}),
                pc, postsolve,
               )
 
@@ -14661,7 +14662,7 @@ end
 end 
 
 """
-	PCShellSetPreSolve(petsclib::PetscLibType, pc::PC, presolve::Ptr{Cvoid}) 
+	PCShellSetPreSolve(petsclib::PetscLibType, pc::AbstractPC, presolve::Ptr{Cvoid}) 
 Sets routine to apply to the operators/vectors before a `KSPSolve()` is
 applied. This usually does something like scale the linear system in some application
 specific way.
@@ -14679,16 +14680,16 @@ See also: `PCSHELL`, `PCShellPSolveFn`, `PCShellSetApplyRichardson()`, `PCShellS
 # External Links
 $(_doc_external("PC/PCShellSetPreSolve"))
 """
-function PCShellSetPreSolve(petsclib::PetscLibType, pc::PC, presolve::Ptr{Cvoid})
+function PCShellSetPreSolve(petsclib::PetscLibType, pc::AbstractPC, presolve::Ptr{Cvoid})
     error("PCShellSetPreSolve: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetPreSolve(petsclib::$UnionPetscLib, pc::PC, presolve::Ptr{Cvoid} )
+@for_petsc function PCShellSetPreSolve(petsclib::$UnionPetscLib, pc::AbstractPC, presolve::Ptr{Cvoid} )
 
     @chk ccall(
                (:PCShellSetPreSolve, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{Cvoid}),
+               (CPC, Ptr{Cvoid}),
                pc, presolve,
               )
 
@@ -14697,7 +14698,7 @@ end
 end 
 
 """
-	PCShellSetSetUp(petsclib::PetscLibType, pc::PC, setup::external) 
+	PCShellSetSetUp(petsclib::PetscLibType, pc::AbstractPC, setup::external) 
 Sets routine to use to "setup" the preconditioner whenever the
 matrix operator is changed.
 
@@ -14717,16 +14718,16 @@ See also: `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetApply()`, `PCShel
 # External Links
 $(_doc_external("PC/PCShellSetSetUp"))
 """
-function PCShellSetSetUp(petsclib::PetscLibType, pc::PC, setup::external)
+function PCShellSetSetUp(petsclib::PetscLibType, pc::AbstractPC, setup::external)
     error("PCShellSetSetUp: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetSetUp(petsclib::$UnionPetscLib, pc::PC, setup::external )
+@for_petsc function PCShellSetSetUp(petsclib::$UnionPetscLib, pc::AbstractPC, setup::external )
 
     @chk ccall(
                (:PCShellSetSetUp, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, setup,
               )
 
@@ -14735,7 +14736,7 @@ end
 end 
 
 """
-	PCShellSetView(petsclib::PetscLibType, pc::PC, view::external) 
+	PCShellSetView(petsclib::PetscLibType, pc::AbstractPC, view::external) 
 Sets routine to use as viewer of a `PCSHELL` shell preconditioner
 
 Logically Collective
@@ -14755,16 +14756,16 @@ See also: `PC`, `PCSHELL`, `PCShellSetApplyRichardson()`, `PCShellSetSetUp()`, `
 # External Links
 $(_doc_external("PC/PCShellSetView"))
 """
-function PCShellSetView(petsclib::PetscLibType, pc::PC, view::external)
+function PCShellSetView(petsclib::PetscLibType, pc::AbstractPC, view::external)
     error("PCShellSetView: no generated method for these argument types")
 end
 
-@for_petsc function PCShellSetView(petsclib::$UnionPetscLib, pc::PC, view::external )
+@for_petsc function PCShellSetView(petsclib::$UnionPetscLib, pc::AbstractPC, view::external )
 
     @chk ccall(
                (:PCShellSetView, $petsc_library),
                PetscErrorCode,
-               (PC, external),
+               (CPC, external),
                pc, view,
               )
 
@@ -14773,7 +14774,7 @@ end
 end 
 
 """
-	subdm::PetscDM = PCTelescopeGetDM(petsclib::PetscLibType, pc::PC) 
+	subdm::PetscDM = PCTelescopeGetDM(petsclib::PetscLibType, pc::AbstractPC) 
 Get the re-partitioned `DM` attached to the sub-`KSP`.
 
 Not Collective
@@ -14791,17 +14792,17 @@ See also: `DM`, `PCTELESCOPE`, `PCTelescopeSetIgnoreDM()`, `PCTelescopeSetUseCoa
 # External Links
 $(_doc_external("PC/PCTelescopeGetDM"))
 """
-function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC)
+function PCTelescopeGetDM(petsclib::PetscLibType, pc::AbstractPC)
     error("PCTelescopeGetDM: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeGetDM(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCTelescopeGetDM(petsclib::$UnionPetscLib, pc::AbstractPC )
 	subdm_ = Ref{CDM}()
 
     @chk ccall(
                (:PCTelescopeGetDM, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CDM}),
+               (CPC, Ptr{CDM}),
                pc, subdm_,
               )
 
@@ -14811,7 +14812,7 @@ end
 end 
 
 """
-	v::PetscBool = PCTelescopeGetIgnoreDM(petsclib::PetscLibType, pc::PC) 
+	v::PetscBool = PCTelescopeGetIgnoreDM(petsclib::PetscLibType, pc::AbstractPC) 
 Get the flag indicating if any `DM` attached to the `PC` will be used in constructing the `PC` on the
 reduced number of MPI processes
 
@@ -14830,17 +14831,17 @@ See also: `DM`, `PCTELESCOPE`, `PCTelescopeSetIgnoreDM()`
 # External Links
 $(_doc_external("PC/PCTelescopeGetIgnoreDM"))
 """
-function PCTelescopeGetIgnoreDM(petsclib::PetscLibType, pc::PC)
+function PCTelescopeGetIgnoreDM(petsclib::PetscLibType, pc::AbstractPC)
     error("PCTelescopeGetIgnoreDM: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeGetIgnoreDM(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCTelescopeGetIgnoreDM(petsclib::$UnionPetscLib, pc::AbstractPC )
 	v_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCTelescopeGetIgnoreDM, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, v_,
               )
 
@@ -14850,7 +14851,7 @@ end
 end 
 
 """
-	v::PetscBool = PCTelescopeGetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC) 
+	v::PetscBool = PCTelescopeGetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::AbstractPC) 
 Get the flag indicating if `KSPComputeOperators()` will be used to construct
 the matrix on the reduced number of MPI processes
 
@@ -14869,17 +14870,17 @@ See also: `PCTELESCOPE`, `PCTelescopeSetIgnoreDM()`, `PCTelescopeSetUseCoarseDM(
 # External Links
 $(_doc_external("PC/PCTelescopeGetIgnoreKSPComputeOperators"))
 """
-function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC)
+function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::AbstractPC)
     error("PCTelescopeGetIgnoreKSPComputeOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCTelescopeGetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
 	v_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCTelescopeGetIgnoreKSPComputeOperators, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, v_,
               )
 
@@ -14889,7 +14890,7 @@ end
 end 
 
 """
-	subksp::KSP = PCTelescopeGetKSP(petsclib::PetscLibType, pc::PC) 
+	subksp::KSP = PCTelescopeGetKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the `KSP` created by the telescoping `PC`.
 
 Not Collective
@@ -14907,17 +14908,17 @@ See also: `PC`, `KSP`, `PCTELESCOPE`
 # External Links
 $(_doc_external("PC/PCTelescopeGetKSP"))
 """
-function PCTelescopeGetKSP(petsclib::PetscLibType, pc::PC)
+function PCTelescopeGetKSP(petsclib::PetscLibType, pc::AbstractPC)
     error("PCTelescopeGetKSP: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeGetKSP(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCTelescopeGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
 	subksp_ = Ref{CKSP}()
 
     @chk ccall(
                (:PCTelescopeGetKSP, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{CKSP}),
+               (CPC, Ptr{CKSP}),
                pc, subksp_,
               )
 
@@ -14927,7 +14928,7 @@ end
 end 
 
 """
-	fact::PetscInt = PCTelescopeGetReductionFactor(petsclib::PetscLibType, pc::PC) 
+	fact::PetscInt = PCTelescopeGetReductionFactor(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the factor by which the original number of MPI processes has been reduced by that was set by
 `PCTelescopeSetReductionFactor()`
 
@@ -14946,17 +14947,17 @@ See also: `PC`, `PCTELESCOPE`, `PCTelescopeSetReductionFactor()`
 # External Links
 $(_doc_external("PC/PCTelescopeGetReductionFactor"))
 """
-function PCTelescopeGetReductionFactor(petsclib::PetscLibType, pc::PC)
+function PCTelescopeGetReductionFactor(petsclib::PetscLibType, pc::AbstractPC)
     error("PCTelescopeGetReductionFactor: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeGetReductionFactor(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCTelescopeGetReductionFactor(petsclib::$UnionPetscLib, pc::AbstractPC )
 	fact_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PCTelescopeGetReductionFactor, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{$PetscInt}),
+               (CPC, Ptr{$PetscInt}),
                pc, fact_,
               )
 
@@ -14966,7 +14967,7 @@ end
 end 
 
 """
-	subcommtype::PetscSubcommType = PCTelescopeGetSubcommType(petsclib::PetscLibType, pc::PC) 
+	subcommtype::PetscSubcommType = PCTelescopeGetSubcommType(petsclib::PetscLibType, pc::AbstractPC) 
 Get the subcommunicator type `PetscSubcommType` (interlaced or contiguous) set with `PCTelescopeSetSubcommType()`
 
 Not Collective
@@ -14984,17 +14985,17 @@ See also: `PetscSubcomm`, `PetscSubcommType`, `PCTELESCOPE`, `PCTelescopeSetSubc
 # External Links
 $(_doc_external("PC/PCTelescopeGetSubcommType"))
 """
-function PCTelescopeGetSubcommType(petsclib::PetscLibType, pc::PC)
+function PCTelescopeGetSubcommType(petsclib::PetscLibType, pc::AbstractPC)
     error("PCTelescopeGetSubcommType: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeGetSubcommType(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCTelescopeGetSubcommType(petsclib::$UnionPetscLib, pc::AbstractPC )
 	subcommtype_ = Ref{PetscSubcommType}()
 
     @chk ccall(
                (:PCTelescopeGetSubcommType, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscSubcommType}),
+               (CPC, Ptr{PetscSubcommType}),
                pc, subcommtype_,
               )
 
@@ -15004,7 +15005,7 @@ end
 end 
 
 """
-	v::PetscBool = PCTelescopeGetUseCoarseDM(petsclib::PetscLibType, pc::PC) 
+	v::PetscBool = PCTelescopeGetUseCoarseDM(petsclib::PetscLibType, pc::AbstractPC) 
 Get the flag indicating if the coarse `DM` attached to `DM` associated with the `PC` will be used in constructing
 the `PC` on the reduced number of MPI processes
 
@@ -15023,17 +15024,17 @@ See also: `DM`, `PCTELESCOPE`, `PCTelescopeSetIgnoreDM()`, `PCTelescopeSetUseCoa
 # External Links
 $(_doc_external("PC/PCTelescopeGetUseCoarseDM"))
 """
-function PCTelescopeGetUseCoarseDM(petsclib::PetscLibType, pc::PC)
+function PCTelescopeGetUseCoarseDM(petsclib::PetscLibType, pc::AbstractPC)
     error("PCTelescopeGetUseCoarseDM: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeGetUseCoarseDM(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCTelescopeGetUseCoarseDM(petsclib::$UnionPetscLib, pc::AbstractPC )
 	v_ = Ref{PetscBool}()
 
     @chk ccall(
                (:PCTelescopeGetUseCoarseDM, $petsc_library),
                PetscErrorCode,
-               (PC, Ptr{PetscBool}),
+               (CPC, Ptr{PetscBool}),
                pc, v_,
               )
 
@@ -15043,7 +15044,7 @@ end
 end 
 
 """
-	PCTelescopeSetIgnoreDM(petsclib::PetscLibType, pc::PC, v::PetscBool) 
+	PCTelescopeSetIgnoreDM(petsclib::PetscLibType, pc::AbstractPC, v::PetscBool) 
 Set a flag to ignore any `DM` attached to the `PC` when constructing the `PC` on the
 reduced number of MPI processes
 
@@ -15062,16 +15063,16 @@ See also: `DM`, `PCTELESCOPE`, `PCTelescopeGetIgnoreDM()`
 # External Links
 $(_doc_external("PC/PCTelescopeSetIgnoreDM"))
 """
-function PCTelescopeSetIgnoreDM(petsclib::PetscLibType, pc::PC, v::PetscBool)
+function PCTelescopeSetIgnoreDM(petsclib::PetscLibType, pc::AbstractPC, v::PetscBool)
     error("PCTelescopeSetIgnoreDM: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeSetIgnoreDM(petsclib::$UnionPetscLib, pc::PC, v::PetscBool )
+@for_petsc function PCTelescopeSetIgnoreDM(petsclib::$UnionPetscLib, pc::AbstractPC, v::PetscBool )
 
     @chk ccall(
                (:PCTelescopeSetIgnoreDM, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, v,
               )
 
@@ -15080,7 +15081,7 @@ end
 end 
 
 """
-	PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC, v::PetscBool) 
+	PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::AbstractPC, v::PetscBool) 
 Set a flag to have `PCTELESCOPE` ignore the function provided to `KSPComputeOperators()` in
 constructint the matrix on the reduced number of MPI processes
 
@@ -15099,16 +15100,16 @@ See also: `PCTELESCOPE`, `PCTelescopeSetIgnoreDM()`, `PCTelescopeSetUseCoarseDM(
 # External Links
 $(_doc_external("PC/PCTelescopeSetIgnoreKSPComputeOperators"))
 """
-function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC, v::PetscBool)
+function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::AbstractPC, v::PetscBool)
     error("PCTelescopeSetIgnoreKSPComputeOperators: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::PC, v::PetscBool )
+@for_petsc function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::$UnionPetscLib, pc::AbstractPC, v::PetscBool )
 
     @chk ccall(
                (:PCTelescopeSetIgnoreKSPComputeOperators, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, v,
               )
 
@@ -15117,7 +15118,7 @@ end
 end 
 
 """
-	PCTelescopeSetReductionFactor(petsclib::PetscLibType, pc::PC, fact::PetscInt) 
+	PCTelescopeSetReductionFactor(petsclib::PetscLibType, pc::AbstractPC, fact::PetscInt) 
 Sets the factor by which the original number of MPI processes will been reduced by when
 constructing the subcommunicator to be used with the `PCTELESCOPE`.
 
@@ -15136,16 +15137,16 @@ See also: `PCTELESCOPE`, `PCTelescopeGetReductionFactor()`
 # External Links
 $(_doc_external("PC/PCTelescopeSetReductionFactor"))
 """
-function PCTelescopeSetReductionFactor(petsclib::PetscLibType, pc::PC, fact::Integer)
+function PCTelescopeSetReductionFactor(petsclib::PetscLibType, pc::AbstractPC, fact::Integer)
     error("PCTelescopeSetReductionFactor: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeSetReductionFactor(petsclib::$UnionPetscLib, pc::PC, fact::$PetscInt )
+@for_petsc function PCTelescopeSetReductionFactor(petsclib::$UnionPetscLib, pc::AbstractPC, fact::$PetscInt )
 
     @chk ccall(
                (:PCTelescopeSetReductionFactor, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt),
+               (CPC, $PetscInt),
                pc, fact,
               )
 
@@ -15154,7 +15155,7 @@ end
 end 
 
 """
-	PCTelescopeSetSubcommType(petsclib::PetscLibType, pc::PC, subcommtype::PetscSubcommType) 
+	PCTelescopeSetSubcommType(petsclib::PetscLibType, pc::AbstractPC, subcommtype::PetscSubcommType) 
 set subcommunicator type `PetscSubcommType` (interlaced or contiguous) to be used when
 the subcommunicator is generated from the given `PC`
 
@@ -15171,16 +15172,16 @@ See also: `PetscSubcommType`, `PetscSubcomm`, `PCTELESCOPE`, `PCTelescopeGetSubc
 # External Links
 $(_doc_external("PC/PCTelescopeSetSubcommType"))
 """
-function PCTelescopeSetSubcommType(petsclib::PetscLibType, pc::PC, subcommtype::PetscSubcommType)
+function PCTelescopeSetSubcommType(petsclib::PetscLibType, pc::AbstractPC, subcommtype::PetscSubcommType)
     error("PCTelescopeSetSubcommType: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeSetSubcommType(petsclib::$UnionPetscLib, pc::PC, subcommtype::PetscSubcommType )
+@for_petsc function PCTelescopeSetSubcommType(petsclib::$UnionPetscLib, pc::AbstractPC, subcommtype::PetscSubcommType )
 
     @chk ccall(
                (:PCTelescopeSetSubcommType, $petsc_library),
                PetscErrorCode,
-               (PC, PetscSubcommType),
+               (CPC, PetscSubcommType),
                pc, subcommtype,
               )
 
@@ -15189,7 +15190,7 @@ end
 end 
 
 """
-	PCTelescopeSetUseCoarseDM(petsclib::PetscLibType, pc::PC, v::PetscBool) 
+	PCTelescopeSetUseCoarseDM(petsclib::PetscLibType, pc::AbstractPC, v::PetscBool) 
 Set a flag to query the `DM` attached to the `PC` if it also has a coarse `DM` and utilize that `DM`
 in constructing the `PC` on the reduced number of MPI processes
 
@@ -15208,16 +15209,16 @@ See also: `DM`, `PCTELESCOPE`, `PCTelescopeSetIgnoreDM()`
 # External Links
 $(_doc_external("PC/PCTelescopeSetUseCoarseDM"))
 """
-function PCTelescopeSetUseCoarseDM(petsclib::PetscLibType, pc::PC, v::PetscBool)
+function PCTelescopeSetUseCoarseDM(petsclib::PetscLibType, pc::AbstractPC, v::PetscBool)
     error("PCTelescopeSetUseCoarseDM: no generated method for these argument types")
 end
 
-@for_petsc function PCTelescopeSetUseCoarseDM(petsclib::$UnionPetscLib, pc::PC, v::PetscBool )
+@for_petsc function PCTelescopeSetUseCoarseDM(petsclib::$UnionPetscLib, pc::AbstractPC, v::PetscBool )
 
     @chk ccall(
                (:PCTelescopeSetUseCoarseDM, $petsc_library),
                PetscErrorCode,
-               (PC, PetscBool),
+               (CPC, PetscBool),
                pc, v,
               )
 
@@ -15226,7 +15227,7 @@ end
 end 
 
 """
-	PCView(petsclib::PetscLibType, pc::PC, viewer::PetscViewer) 
+	PCView(petsclib::PetscLibType, pc::AbstractPC, viewer::PetscViewer) 
 Prints information about the `PC`
 
 Collective
@@ -15242,16 +15243,16 @@ See also: `PC`, `PetscViewer`, `PetscViewerType`, `KSPView()`, `PetscViewerASCII
 # External Links
 $(_doc_external("PC/PCView"))
 """
-function PCView(petsclib::PetscLibType, pc::PC, viewer::PetscViewer)
+function PCView(petsclib::PetscLibType, pc::AbstractPC, viewer::PetscViewer)
     error("PCView: no generated method for these argument types")
 end
 
-@for_petsc function PCView(petsclib::$UnionPetscLib, pc::PC, viewer::PetscViewer )
+@for_petsc function PCView(petsclib::$UnionPetscLib, pc::AbstractPC, viewer::PetscViewer )
 
     @chk ccall(
                (:PCView, $petsc_library),
                PetscErrorCode,
-               (PC, PetscViewer),
+               (CPC, PetscViewer),
                pc, viewer,
               )
 
@@ -15260,7 +15261,7 @@ end
 end 
 
 """
-	PCViewFromOptions(petsclib::PetscLibType, A::PC, obj, name::String) 
+	PCViewFromOptions(petsclib::PetscLibType, A::AbstractPC, obj, name::String) 
 View (print or provide information about) the `PC`, based on options in the options database
 
 Collective
@@ -15280,16 +15281,16 @@ See also: `PC`, `PCView`, `PetscObjectViewFromOptions()`, `PCCreate()`
 # External Links
 $(_doc_external("PC/PCViewFromOptions"))
 """
-function PCViewFromOptions(petsclib::PetscLibType, A::PC, obj, name::String)
+function PCViewFromOptions(petsclib::PetscLibType, A::AbstractPC, obj, name::String)
     error("PCViewFromOptions: no generated method for these argument types")
 end
 
-@for_petsc function PCViewFromOptions(petsclib::$UnionPetscLib, A::PC, obj, name::String )
+@for_petsc function PCViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPC, obj, name::String )
 
     @chk ccall(
                (:PCViewFromOptions, $petsc_library),
                PetscErrorCode,
-               (PC, PetscObject, Ptr{Cchar}),
+               (CPC, PetscObject, Ptr{Cchar}),
                A, obj, name,
               )
 

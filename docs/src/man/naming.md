@@ -213,7 +213,7 @@ ksp_iterations(ts)
 snes_failures(ts)
 ```
 
-For the sub-object cases the alternative is a reader and no prefix, `set_type!(adapt(ts), :basic)`. That is rejected for now because it makes a public `TSAdapt` for one setter, and revisited when `PC` lands, since `pc(ksp)` is the first sub-object that earns a type of its own.
+For the sub-object cases the alternative is a reader and no prefix, `set_type!(adapt(ts), :basic)`. That is rejected for now because it makes a public `TSAdapt` for one setter. `PC` is the first sub-object that earned a type of its own, and it takes the reader form: `set_type!(pc(ksp), :jacobi)`, not `set_pc_type!(ksp, :jacobi)`. `set_adapt_type!` keeps its prefix until `TSAdapt` has a type.
 
 One clarification, because this rule was previously justified on a collision that does not exist. `set_snes_jacobian!(updateJ!, snes, J, PJ)` and `set_jacobian!(ds, fieldI, fieldJ, g0, g1, g2, g3)` do not collide: one takes 3 or 4 arguments with an untyped first slot, the other 7 with a `PetscDS` first, and Julia tells them apart unaided. The prefix is there because `snes` sits in argument 2 and cannot carry the name, and because merging a callback registration with seven function pointers behind one generic is the error this document exists to prevent.
 
@@ -325,7 +325,7 @@ end
 
 ```julia
 AbstractPetscVec  AbstractPetscMat  AbstractPetscDM      # concrete is prefixed
-AbstractKSP  AbstractSNES  AbstractTS  AbstractIS  AbstractAO
+AbstractKSP  AbstractPC  AbstractSNES  AbstractTS  AbstractIS  AbstractAO
 ```
 
 This renames `AbstractPetscKSP` and `AbstractPetscSNES`, matching `PetscKSP` becoming `KSP`.

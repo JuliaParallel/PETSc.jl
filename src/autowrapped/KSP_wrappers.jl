@@ -787,7 +787,7 @@ end
 end 
 
 """
-	KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec) 
+	KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC, vec::AbstractPetscVec) 
 Checks if the `PCSetUp()` or `KSPSolve()` failed and set the error flag for the outer `PC`. A `KSP_DIVERGED_ITS` is
 not considered a failure in this context
 
@@ -805,16 +805,16 @@ See also: `KSP`, `KSPCreate()`, `KSPSetType()`, `KSPCheckNorm()`, `KSPCheckDot()
 # External Links
 $(_doc_external("KSP/KSPCheckSolve"))
 """
-function KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec)
+function KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC, vec::AbstractPetscVec)
     error("KSPCheckSolve: no generated method for these argument types")
 end
 
-@for_petsc function KSPCheckSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::PC, vec::AbstractPetscVec )
+@for_petsc function KSPCheckSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::AbstractPC, vec::AbstractPetscVec )
 
     @chk ccall(
                (:KSPCheckSolve, $petsc_library),
                PetscErrorCode,
-               (CKSP, PC, CVec),
+               (CKSP, CPC, CVec),
                ksp, pc, vec,
               )
 
@@ -1965,16 +1965,16 @@ function KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPFETIDPGetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractKSP )
-	pc_ = Ref{PC}()
+	pc_ = Ref{CPC}()
 
     @chk ccall(
                (:KSPFETIDPGetInnerBDDC, $petsc_library),
                PetscErrorCode,
-               (CKSP, Ptr{PC}),
+               (CKSP, Ptr{CPC}),
                ksp, pc_,
               )
 
-	pc = pc_[]
+	pc = PC(pc_[], petsclib)
 
 	return pc
 end 
@@ -2016,7 +2016,7 @@ end
 end 
 
 """
-	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC) 
+	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC) 
 Provides the `PCBDDC` preconditioner used to set up the `KSPFETIDP` matrix for the Lagrange multipliers
 
 Collective
@@ -2032,16 +2032,16 @@ See also: `MATIS`, `PCBDDC`, `KSPFETIDPGetInnerBDDC()`, `KSPFETIDPGetInnerKSP()`
 # External Links
 $(_doc_external("KSP/KSPFETIDPSetInnerBDDC"))
 """
-function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC)
+function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC)
     error("KSPFETIDPSetInnerBDDC: no generated method for these argument types")
 end
 
-@for_petsc function KSPFETIDPSetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::PC )
+@for_petsc function KSPFETIDPSetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::AbstractPC )
 
     @chk ccall(
                (:KSPFETIDPSetInnerBDDC, $petsc_library),
                PetscErrorCode,
-               (CKSP, PC),
+               (CKSP, CPC),
                ksp, pc,
               )
 
@@ -3895,16 +3895,16 @@ function KSPGetPC(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetPC(petsclib::$UnionPetscLib, ksp::AbstractKSP )
-	pc_ = Ref{PC}()
+	pc_ = Ref{CPC}()
 
     @chk ccall(
                (:KSPGetPC, $petsc_library),
                PetscErrorCode,
-               (CKSP, Ptr{PC}),
+               (CKSP, Ptr{CPC}),
                ksp, pc_,
               )
 
-	pc = pc_[]
+	pc = PC(pc_[], petsclib)
 
 	return pc
 end 
@@ -8451,7 +8451,7 @@ end
 end 
 
 """
-	KSPSetPC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC) 
+	KSPSetPC(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC) 
 Sets the preconditioner to be used to calculate the
 application of the preconditioner on a vector into a `KSP`.
 
@@ -8468,16 +8468,16 @@ See also: `KSPGetPC()`, `KSP`
 # External Links
 $(_doc_external("KSP/KSPSetPC"))
 """
-function KSPSetPC(petsclib::PetscLibType, ksp::AbstractKSP, pc::PC)
+function KSPSetPC(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC)
     error("KSPSetPC: no generated method for these argument types")
 end
 
-@for_petsc function KSPSetPC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::PC )
+@for_petsc function KSPSetPC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::AbstractPC )
 
     @chk ccall(
                (:KSPSetPC, $petsc_library),
                PetscErrorCode,
-               (CKSP, PC),
+               (CKSP, CPC),
                ksp, pc,
               )
 

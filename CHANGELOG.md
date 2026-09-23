@@ -4,6 +4,8 @@
 
 - `TSIRK` types (`-ts_irk_type gauss` and the rest) are found again after `finalize` followed by `initialize`. PETSc 3.25 leaves their registration flag set at finalize; `initialize` now resets it.
 - `PetscOptions(petsclib)` throws `PetscNotInitialized` on a library that is not initialized, like every other high-level constructor. It used to succeed and return an options database that `destroy!` skipped once `initialize` ran.
+- `LibPETSc.PC` is a Julia type, `PC{PetscLib}`, like `KSP` and `IS`, instead of a raw pointer alias. `KSPGetPC`, `PCCreate` and the other functions that hand out a PC return it, and every `PC*` function takes an `AbstractPC`. Code that passes a PC from one call to the next is unaffected; code that annotates a variable as `LibPETSc.PC` expecting a `Ptr`, or passes raw pointers, needs `pc.ptr`.
+- `PETSc.pc(ksp)` returns the preconditioner, borrowed from `ksp`: `destroy!` on it does nothing. `set_type!`, `type_name` and `set_fieldsplit_is!` work on it.
 - `MPIPreferences` is a test-only dependency. `src/` never loaded it; install it yourself to select an MPI binary, as the HPC guide describes.
 - `set_convergence_test!` no longer overwrites `snes.user_ctx`. The closure is kept on a field of its own, so residual and Jacobian callbacks that take `user_ctx` keep receiving it.
 

@@ -90,6 +90,12 @@ abstract = "AbstractKSP"
 c = "CKSP"
 
 [[handles]]
+c_name = "PC"
+julia = "PC"
+abstract = "AbstractPC"
+c = "CPC"
+
+[[handles]]
 c_name = "SNES"
 julia = "SNES"
 abstract = "AbstractSNES"

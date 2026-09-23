@@ -30,6 +30,7 @@ include("vec.jl")           # autowrapped
 include("mat.jl")           # autowrapped
 include("options.jl")       # autowrapped
 include("ksp.jl")           # autowrapped
+include("pc.jl")            # high-level PC
 include("snes.jl")          # autowrapped
 include("snes_helpers.jl")  # small helper tests for SNES return-style wrappers
 include("ts.jl")            # high-level TS interface

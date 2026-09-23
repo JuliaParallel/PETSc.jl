@@ -507,6 +507,8 @@ const UNCHANGED_PUBLIC = Symbol[
     :snes_failures,
     :snes,
     :ksp,
+    :pc,                     # new in v0.5.1
+    :set_fieldsplit_is!,     # new in v0.5.1
     :TSSetRHSFunctionFn,
     :TSSetRHSJacobianFn,
     :TSSetIFunctionFn,

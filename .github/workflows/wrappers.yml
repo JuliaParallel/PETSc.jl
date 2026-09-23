@@ -4,7 +4,7 @@ name: Wrappers
 # so hand edits of generated files (or an uncommitted regeneration) are caught.
 on:
   push:
-    branches: [main, v0.5]
+    branches: [main]
     paths: ['src/autowrapped/**', 'wrapping/generator/**', '.github/workflows/wrappers.yml']
   pull_request:
     paths: ['src/autowrapped/**', 'wrapping/generator/**', '.github/workflows/wrappers.yml']

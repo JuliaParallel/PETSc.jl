@@ -12,12 +12,14 @@ using PETSc, MPI, Printf
 # is rewritten in implicit form as
 #                 F(t, u, u_t) = u_t - f(t, u) = 0.
 #
-# PETSc 3.22 can solve this with `TSIRK` and `-ts_irk_type gauss`, but the
-# internal IRK setup currently requires an AIJ-style sparse Jacobian matrix so
-# it can form a `MATKAIJ` stage operator. In practice this means:
+# PETSc 3.25 can solve this with `TSIRK` and `-ts_irk_type gauss`. The IRK setup
+# builds a `MATKAIJ` stage operator on top of the Jacobian matrix, so that
+# matrix must be AIJ. In practice this means:
 #
 # - `seqdense` Jacobians do not work with Gauss/IRK here
-# - `-snes_mf` / `-snes_mf_operator` do not work here
+# - `-snes_mf_operator` does not work here, since PETSc still expects the stage
+#   operator to be `MATKAIJ`
+# - `-snes_mf` works: the whole stage operator becomes matrix-free
 # - a sparse AIJ matrix is required even if PETSc computes the Jacobian values
 #   for us via finite differences and coloring
 #
@@ -193,14 +195,14 @@ function ex51_exact_solution!(u::PETSc.LibPETSc.PetscVec, t::Real)
 end
 
 function ex51_implicit_default_options(parsed_options::NamedTuple, jacobian_mode::Symbol)
-    # PETSc 3.22 currently rejects matrix-free operators inside the `TSIRK`
-    # Gauss setup path for this problem, so fail early with a clear message
-    # instead of letting PETSc error out later inside `TSSetUp_IRK`.
-    if haskey(parsed_options, :snes_mf) || haskey(parsed_options, :snes_mf_operator)
+    # PETSc 3.25 rejects `-snes_mf_operator` inside the `TSIRK` Gauss setup
+    # path for this problem, so fail early with a clear message instead of
+    # letting PETSc error out later inside `TSSetUp_IRK`.
+    if haskey(parsed_options, :snes_mf_operator)
         throw(
             ArgumentError(
-                "PETSc 3.22 TSIRK/Gauss does not support matrix-free Jacobians here. " *
-                "Use the AIJ-backed default path or `jacobian_mode = :analytic` instead.",
+                "PETSc 3.25 TSIRK/Gauss does not support `-snes_mf_operator` here. " *
+                "Use `-snes_mf` for a matrix-free solve, or the AIJ-backed default path.",
             ),
         )
     end
@@ -219,6 +221,7 @@ function ex51_implicit_default_options(parsed_options::NamedTuple, jacobian_mode
     )
 
     if jacobian_mode == :finite_difference_color &&
+       !haskey(effective, :snes_mf) &&
        !haskey(effective, :snes_fd) &&
        !haskey(effective, :snes_fd_color)
         effective = merge(effective, (snes_fd_color = nothing,))
@@ -266,9 +269,9 @@ Keyword arguments:
 
 Notes:
 
-- The default path is not matrix-free. PETSc 3.22 `TSIRK/Gauss` requires an
-  AIJ sparse Jacobian matrix and currently rejects `seqdense` and `MATMFFD`
-  operators in this setup.
+- The default path is not matrix-free. PETSc 3.25 `TSIRK/Gauss` requires an
+  AIJ sparse Jacobian matrix and rejects `seqdense` and `-snes_mf_operator` in
+  this setup. `-snes_mf` makes the whole solve matrix-free and works.
 - The default `:finite_difference_color` mode avoids requiring callers to
   provide Jacobian values manually.
 """

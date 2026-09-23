@@ -59,10 +59,18 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51_implicit.jl"))
         @test length(result_analytic.solution) == 2
         @test result_analytic.error < 5.0e-5
 
+        result_mf = solve_ex51_implicit(;
+            petsclib,
+            options = ["-snes_mf", "-ts_irk_nstages", "2"],
+            save_trajectory = false,
+            verbose = false,
+        )
+        @test result_mf.error ≈ result_stage_2.error rtol = 1.0e-3
+
         err = try
             solve_ex51_implicit(;
                 petsclib,
-                options = ["-snes_mf"],
+                options = ["-snes_mf_operator"],
                 save_trajectory = false,
                 verbose = false,
             )
@@ -72,6 +80,18 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51_implicit.jl"))
         end
         @test err isa ArgumentError
         @test occursin("TSIRK/Gauss", sprint(showerror, err))
+
+        # PETSc 3.25 keeps TSIRKRegisterAllCalled set after PetscFinalize, so without the
+        # reset in `initialize` the Gauss type is unknown in every cycle after the first
+        PETSc.finalize(petsclib)
+        PETSc.initialize(petsclib)
+        result_reinit = solve_ex51_implicit(;
+            petsclib,
+            options = ["-ts_irk_nstages", "2"],
+            save_trajectory = false,
+            verbose = false,
+        )
+        @test result_reinit.error ≈ result_stage_2.error
     finally
         if PETSc.isinitialized(petsclib) && !PETSc.isfinalized(petsclib)
             PETSc.finalize(petsclib)

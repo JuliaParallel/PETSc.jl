@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- `TSIRK` types (`-ts_irk_type gauss` and the rest) are found again after `finalize` followed by `initialize`. PETSc 3.25 leaves their registration flag set at finalize; `initialize` now resets it.
 - `PetscOptions(petsclib)` throws `PetscNotInitialized` on a library that is not initialized, like every other high-level constructor. It used to succeed and return an options database that `destroy!` skipped once `initialize` ran.
 - `MPIPreferences` is a test-only dependency. `src/` never loaded it; install it yourself to select an MPI binary, as the HPC guide describes.
 

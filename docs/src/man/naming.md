@@ -177,6 +177,8 @@ The docstring says so too, through a helper beside `doc_external`, so CI greps f
 
 `narrow` ([§5.4](#5.4-DMs-of-unknown-provenance)) is the same rule from the other side: it returns a second handle onto one PETSc object, and destroying either invalidates the other.
 
+How ownership is stored, for every handle, is in [§18.2](#18.2-Ownership).
+
 ## 4. Object prefixes
 
 Drop `dm_`, `mat_`, `vec_`, `plex_` when the first argument already carries the type.
@@ -393,6 +395,8 @@ It does not apply to `set_petsclib`, which despite its name mutates nothing: it 
 
 `destroy` becomes `destroy!`, and finalizer registrations change with it (`finalizer(destroy!, v)`).
 
+A `!` function returns the object it mutates, as `push!`, `fill!`, `mul!` and `copyto!` do: `solve!(x, ksp, b)` returns `x`, `set_type!(ksp, :gmres)` returns `ksp`, and `set_function!(f!, snes, r)` returns `snes`, the object being configured even when a callback precedes it ([§8.1](#8.1-Callbacks-come-first)). Two kinds return `nothing`: `destroy!`, like `close`, and the functions that mutate package state only, such as `set_library!`. From 0.5.1; before it, most setters returned `nothing`.
+
 ## 8. Argument order
 
 Subject first, and mutated arguments before read-only ones, matching `mul!(C, A, B)` and `copyto!(dest, src)`:
@@ -439,6 +443,8 @@ end
 ```
 
 PETSc callbacks are where `do` earns its keep, and `setfunction!`, `setjacobian!` and `withlocalarray!` already take the callback first in v0.4.
+
+The order of a callback's own arguments, what it returns, and how its closure is kept alive are in [§18](#18.-Handles,-callbacks-and-their-state).
 
 ## 9. Keyword versus positional
 
@@ -1010,3 +1016,82 @@ Path    : /usr/lib/libpetsc.so
 `audit_file` (formerly `audit_petsc_file`) regex-matches the API's own names to pair object creations against `destroy` calls, so the rename blinds it: `destroy` becomes `destroy!` and `MatSeqAIJ` becomes `PetscMat`, the patterns stop matching, and it reports no leaks on leaking code. It is rewritten in the same PR to walk the parsed AST against creator and destroyer name sets generated from `scripts/renames.jl` ([§1.1](#1.1-What-these-rules-cover)), which is what stops the next rename blinding it again.
 
 The typed DM hierarchy ([§5.3](#5.3-DM-flavour-is-a-type,-not-a-string)) widens autowrapped signatures from `PetscDM{PetscLib}` to `AbstractPetscDM{PetscLib}`, roughly 3500 occurrences in `src/autowrapped/DM_wrappers.jl` alone. Mechanical over generated files, but the generator in `wrapping/` has to emit the wider type too, or the next regeneration undoes it.
+
+## 18. Handles, callbacks and their state
+
+§1 to §17 decide what things are called. This section decides how a wrapper relates to the PETSc object behind it, and what happens when PETSc calls back into Julia. It applies from 0.5.1 to `KSP`, `SNES`, `TS`, `PC` and `MatShell`, and to every handle and callback added after them.
+
+The tiebreak mirrors §1's:
+
+> **Behaviour follows what a Julia user expects of a Julia package. PETSc decides what is possible.**
+
+An object is freed by the garbage collector, an exception thrown in a callback comes out of the call that ran it, and every object of a kind behaves like every other. Where PETSc's model rules that out, PETSc wins and the docstring says why: destruction on more than one process is collective, so there it stays explicit.
+
+### 18.1 A wrapper is a view of the PETSc object
+
+Several wrappers can point at one PETSc object: `pc(ksp)` builds a new `PC` on every read, and `snes(ts)` a new `SNES`. Anything stored on a wrapper is therefore lost as soon as that wrapper is, while the object lives on. A wrapper holds only what identifies the object and who may destroy it:
+
+| Field | Meaning |
+|---|---|
+| `ptr` | the PETSc object |
+| `age` | the initialize/finalize cycle it was created in (`isdestroyable`) |
+| `own` | whether `destroy!` on this wrapper destroys the object |
+
+Everything else Julia keeps about an object (its callbacks, the user context, the options applied at `solve!`) lives with the PETSc object, as [§18.3](#18.3-Callback-state-lives-with-the-PETSc-object) describes.
+
+### 18.2 Ownership
+
+Every constructor returns `own = true` and, on a one-process communicator, attaches a finalizer, so the object is freed when it is collected. On more than one process `XDestroy` is collective and a finalizer runs at a different moment on each rank, so there the caller calls `destroy!`. Readers return `own = false` and attach nothing, and `destroy!` on what they return does nothing. `owns(obj)` answers the field.
+
+This is [§3.3](#3.3-What-an-accessor-hands-back) enforced by the value for every handle. 0.5.0 enforced it for `VecPtr`, `MatPtr` and the DM types; `snes(ts)` and `ksp(ts)` were borrowed in their docstrings only, and `destroy!` on them destroyed the solver the `TS` still used.
+
+`LibPETSc` does not track ownership, just as C does not. A handle returned by a `LibPETSc` function has `own = true`, including one from an `XGet*` function, and passing it to `destroy!` destroys it exactly as `XDestroy` would. The generated `XDestroy` sets the wrapper's `ptr` to `C_NULL`, so freeing a high-level object through `LibPETSc` and letting its finalizer run afterwards is safe.
+
+Objects passed to a callback are borrowed, and valid only for the duration of the call.
+
+### 18.3 Callback state lives with the PETSc object
+
+Each PETSc object that Julia calls back from has one state box, held by a `PetscContainer` composed onto the object. PETSc destroys the container together with the object, and that is what ends the box. It follows that:
+
+- A callback set through any wrapper lives as long as the PETSc object, whichever wrapper was used and whether it is still reachable. `set_function!(f!, snes(ts), r)` is safe.
+- Setting a callback again replaces the previous one, and the old closure can be collected.
+- `finalize` drops the boxes of its library, since none of its objects can call back afterwards.
+- The context pointer PETSc passes to a trampoline is the box, never a wrapper.
+
+The box is internal. The user context has accessors, `user_ctx(obj)` and `set_user_ctx!(obj, ctx)`, on every object whose callbacks can receive it, `SNES` and `TS`. Assigning `obj.user_ctx` keeps working in 0.5 and forwards to the setter.
+
+### 18.4 Exceptions in callbacks
+
+A Julia exception must not unwind through PETSc's C frames. Every trampoline runs the user's function under a guard that catches the exception, stores it, and returns an error code, so that PETSc unwinds its own stack. The high-level call that started the work (`solve!`, `step!`, `setup!`) then rethrows the original exception rather than a `PetscError`: a `DomainError` thrown in a residual comes out of `solve!` as that `DomainError`, as it would from a solver written in Julia. The backtrace shown starts at the rethrow; the frames inside the callback are logged at debug level (`JULIA_DEBUG=PETSc`).
+
+When the work was started through `LibPETSc` directly, no high-level call is there to rethrow. The exception is logged with its backtrace, and the `LibPETSc` call throws `PetscError`.
+
+The DMPlex pointwise functions (`@residual_fn` and the other macros) are exempt. They are plain C-callable functions, called once per quadrature point, with no Julia state, and they must not throw.
+
+### 18.5 Callback signatures
+
+- The callback is the setter's first argument ([§8.1](#8.1-Callbacks-come-first)).
+- A callback that fills an argument takes that argument first, then the object, then what it reads: `f!(F, snes, x)`, `updateJ!(J, P, snes, x)`, `apply!(y, pc, x)`, `f!(F, ts, t, u)`. A callback that only observes takes the object first: `monitor(ts, step, t, u)`, `test!(snes, it, xnorm, gnorm, fnorm)`.
+- A callback succeeds by returning and fails by throwing. Its return value is ignored, unless it carries a meaning its setter's docstring states, such as the convergence reason `test!` returns. In 0.5 a nonzero `Integer` return still fails the call, as the PETSc error code 0.5.0 read it as, and warns once; from v0.6 it is ignored like any other value. `return PetscInt(0)`, which 0.5.0 callbacks end in, keeps working throughout.
+- New callbacks take no trailing `user_ctx`: a closure captures what it needs. `SNES` and `TS` callbacks keep the optional trailing argument they have in 0.5.0.
+
+### 18.6 Public surface
+
+A name is public when users write it. Trampoline types (the `…Fn` callables handed to `@cfunction`), state boxes and their helpers are internal, and registered as such in `scripts/renames.jl`. The `Fn` types that are public in 0.5.0 (`SNESSetFunctionFn`, `KSPComputeRHSFn`, the `TS…Fn` family and the rest) stay public in 0.5; whether v0.6 makes them internal is decided with its other removals.
+
+### 18.7 What 0.5.1 changes
+
+Two rows change what working code observes, and the release notes list them as behaviour changes: a `TS` callback that throws no longer surfaces as `PetscError`, and `LibPETSc.PC` is a `PC{PetscLib}` struct rather than a pointer ([§5.2](#5.2-Prefixes)). The rest fix behaviour 0.5.0 already documented differently, or add a return value where there was `nothing`. The struct fields that held callback state stay readable and writable through forwarding for all of 0.5.
+
+| | 0.5.0 | 0.5.1 |
+|---|---|---|
+| `snes(ts)`, `ksp(ts)` | borrowed in the docstring only | `own = false`, `destroy!` does nothing |
+| `KSP` constructor | no finalizer | a finalizer on one process, like `SNES` and `TS` |
+| Callbacks set through a reader's wrapper | rooted on the wrapper, lost when it is collected | rooted on the PETSc object |
+| `snes.user_ctx`, `ts.user_ctx` | struct fields | forwarded to `user_ctx` and `set_user_ctx!` |
+| Exception in a `SNES`, `KSP` or `MatShell` callback | unwinds through C, which is undefined behaviour | rethrown by `solve!`, `step!` or `setup!`, or logged |
+| Exception in a `TS` callback | logged, and `PetscError` | the original exception, rethrown by `solve!` or `step!` |
+| `LibPETSc.PC` | `Ptr{_n_PC}` | `PC{PetscLib}`, a handle like `KSP` |
+| `SNES`, `KSP` and `MatShell` trampolines | return a `PetscInt` | return a `PetscErrorCode` |
+| A callback's return value | an `Integer` is a PETSc error code | ignored; a nonzero `Integer` still fails and warns, until v0.6 |
+| `set_*!`, `add_*!` and the other `!` functions | `nothing`, `0` (`set_function!`) or the `ksp` | the object they mutate ([§7](#7.-Mutation)) |

@@ -270,6 +270,51 @@ MPI.Initialized() || MPI.Init()
         b5 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([0, 0]))
         PETSc.solve!(x5, snes5, b5)
         @test LibPETSc.SNESGetConvergedReason(petsclib, snes5) == LibPETSc.SNES_DIVERGED_LOCAL_MIN
+
+        # set_convergence_test! leaves user_ctx alone, so the residual and Jacobian
+        # still receive it, and the test survives a GC between install and solve
+        snes6 = PETSc.SNES(petsclib, comm; ksp_rtol = 1e-4, pc_type = "none")
+        ctx6 = (rhs = PetscScalar.([3, 6]),)
+        snes6.user_ctx = ctx6
+        r6 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
+        PETSc.set_function!(snes6, r6) do fx, snes, x, ctx::NamedTuple
+            PETSc.with_local_array!(fx, x; read = (false, true), write = (true, false)) do fx, x
+                fx[1] = x[1]^2 + x[1] * x[2] - ctx.rhs[1]
+                fx[2] = x[1] * x[2] + x[2]^2 - ctx.rhs[2]
+            end
+            return PetscInt(0)
+        end
+        J6 = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+        PETSc.set_snes_jacobian!(snes6, J6) do J, snes, x, ctx::NamedTuple
+            PETSc.with_local_array!(x; write = false) do x
+                J[1, 1] = 2x[1] + x[2]
+                J[1, 2] = x[1]
+                J[2, 1] = x[2]
+                J[2, 2] = x[1] + 2x[2]
+            end
+            PETSc.assemble!(J)
+            return PetscInt(0)
+        end
+        # the first test is replaced by the second, which is the one that must run
+        replaced_calls = Ref(0)
+        PETSc.set_convergence_test!(snes6) do snes, it, xnorm, gnorm, fnorm
+            replaced_calls[] += 1
+            return LibPETSc.SNES_DIVERGED_LOCAL_MIN
+        end
+        ntest6 = Ref(0)
+        PETSc.set_convergence_test!(snes6) do snes, it, xnorm, gnorm, fnorm
+            ntest6[] += 1
+            return fnorm < 1e-6 ? LibPETSc.SNES_CONVERGED_FNORM_ABS : LibPETSc.SNES_CONVERGED_ITERATING
+        end
+        @test snes6.user_ctx === ctx6
+        GC.gc()
+        x6 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
+        PETSc.solve!(x6, snes6)
+        @test x6[:] ≈ [1, 2] rtol = 1e-4
+        @test ntest6[] > 0
+        @test replaced_calls[] == 0
+        @test snes6.user_ctx === ctx6
+        @test LibPETSc.SNESGetConvergedReason(petsclib, snes6) == LibPETSc.SNES_CONVERGED_FNORM_ABS
         # ----------------------------------------------------------------
 
         # cleanup
@@ -297,6 +342,10 @@ MPI.Initialized() || MPI.Init()
         PETSc.destroy!(b5)
         PETSc.destroy!(r5)
         PETSc.destroy!(J5)
+
+        PETSc.destroy!(x6)
+        PETSc.destroy!(r6)
+        PETSc.destroy!(J6)
 
         PETSc.destroy!(snes)
         PETSc.destroy!(snes2)

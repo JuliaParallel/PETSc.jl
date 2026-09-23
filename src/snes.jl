@@ -249,10 +249,9 @@ that instead needs its own residual (e.g. a normalised force residual computed
 during `FormFunction`, not `‖F‖₂`) should ignore these and read whatever state it
 cached during the residual evaluation via its own closure captures.
 
-The closure is kept alive by a reference stored on `snes` (as `user_ctx`, unless
-already in use — pass distinct context through the closure's own captures if
-`user_ctx` is needed for something else) so it survives until `snes` is destroyed
-or a new test is installed.
+The closure is kept alive by `snes` until `snes` is destroyed or a new test is
+installed. `snes.user_ctx` is left alone, so the residual and Jacobian callbacks
+keep receiving it.
 
 # External Links
 $(doc_external("SNES/SNESSetConvergenceTest"))
@@ -263,15 +262,8 @@ v0.5, and there is no shim for it (§16).
 """
 function set_convergence_test! end
 
-# Context box holding the user's closure; its address is passed as `cctx` and recovered
-# with `unsafe_pointer_to_objref` inside the callback, following the same pattern as
-# SNESSetFunctionFn/SNESSetJacobianFn recover `snes` itself from their `ctx` pointer
-# (there, `ctx = pointer_from_objref(snes)`; here the SNES is otherwise gettable from its
-# own first argument, but the closure needs a place to live, so it gets its own box).
-mutable struct SNESConvergenceTestBox
-    test!::Any
-end
-
+# Wrapper for calls to set_convergence_test!. As in SNESSetFunctionFn, the context
+# pointer is `snes` itself, which holds the closure in `snes.convergence_test!`.
 mutable struct SNESSetConvergenceTestFn{PetscLib} end
 function (w::SNESSetConvergenceTestFn{PetscLib})(
     actual_snes_ptr::CSNES,
@@ -280,11 +272,11 @@ function (w::SNESSetConvergenceTestFn{PetscLib})(
     gnorm,
     fnorm,
     reason_ptr::Ptr{<:Integer},
-    cctx::Ptr{Cvoid},
+    snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
-    box = unsafe_pointer_to_objref(cctx)::SNESConvergenceTestBox
+    snes = unsafe_pointer_to_objref(snes_ptr)
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age)
-    reason = box.test!(actual_snes, Int(it), Float64(xnorm), Float64(gnorm), Float64(fnorm))
+    reason = snes.convergence_test!(actual_snes, Int(it), Float64(xnorm), Float64(gnorm), Float64(fnorm))
     unsafe_store!(reason_ptr, eltype(reason_ptr)(Int(reason)))
     return Cint(0)
 end
@@ -293,8 +285,8 @@ LibPETSc.@for_petsc function set_convergence_test!(
     test!,
     snes::AbstractSNES{$PetscLib},
 )
-    box = SNESConvergenceTestBox(test!)
-    ctx = pointer_from_objref(box)
+    snes.convergence_test! = test!
+    ctx = pointer_from_objref(snes)
     # PetscErrorCode is always Cint (see LibPETSc_const.jl), regardless of PetscInt's width;
     # SNESConvergedReason is a plain C enum, i.e. also Cint-sized.
     fptr = @cfunction(
@@ -303,7 +295,6 @@ LibPETSc.@for_petsc function set_convergence_test!(
         (CSNES, $PetscInt, $PetscReal, $PetscReal, $PetscReal, Ptr{Cint}, Ptr{Cvoid})
     )
     LibPETSc.SNESSetConvergenceTest($PetscLib, snes, fptr, ctx, C_NULL)
-    snes.user_ctx = box   # keep the closure box (and hence `test!`) alive with `snes`
     return nothing
 end
 

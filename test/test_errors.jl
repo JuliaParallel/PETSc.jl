@@ -42,6 +42,7 @@ MPI.Initialized() || MPI.Init()
         @test_throws PETSc.PetscNotInitialized PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1), 1)
         @test_throws PETSc.PetscNotInitialized PETSc.DMStag(stag, (1, 1))
         @test_throws PETSc.PetscNotInitialized PETSc.DMPlex(petsclib, comm)
+        @test_throws PETSc.PetscNotInitialized PETSc.PetscOptions(petsclib; ksp_monitor = "")
     end
 
     @testset "parse_options" begin

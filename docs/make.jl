@@ -24,7 +24,8 @@ makedocs(;
     modules=[PETSc],
     sitename="PETSc.jl",
     checkdocs=:exports,  # Only check exported functions, skip LibPETSc internals
-    warnonly=true,  # Warn but don't error for any documentation issues
+    # Fail on a docstring missing from the manual, only warn on every other issue
+    warnonly=setdiff(Documenter.ERROR_NAMES, [:missing_docs]),
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         size_threshold_warn = nothing,  # Disable size warnings for large low-level API pages

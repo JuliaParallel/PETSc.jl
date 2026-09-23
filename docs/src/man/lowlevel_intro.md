@@ -97,6 +97,10 @@ PETSc.finalize(petsclib)
 - Your PETSc must be linked against the same MPI that `MPI.jl` uses
 - You can check available precompiled libraries with `[PETSc.petsclibs...]`
 
+```@docs
+PETSc.LibPETSc.getlib
+```
+
 ### 2. Zero-Based Indexing
 
 **Important**: The low-level interface uses 0-based indexing (C convention), while Julia uses 1-based indexing:
@@ -158,6 +162,12 @@ LibPETSc.MatDestroy(petsclib, mat)
 ```
 
 For serial (single-process) objects, the high-level interface handles this automatically via finalizers.
+
+The `Get...Array` functions return a `PetscArray` that points into PETSc's storage. Pass it back to the matching `Restore...Array` function when you are done with it.
+
+```@docs
+PETSc.LibPETSc.PetscArray
+```
 
 ### 5. Assembly
 

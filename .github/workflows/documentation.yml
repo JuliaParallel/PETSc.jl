@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-      - v0.5
-      - staging
-      - trying
     tags: '*'
   pull_request:
 

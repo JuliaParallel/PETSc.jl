@@ -9,9 +9,9 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51.jl"))
     try
         # `examples.jl` covers the default `save_trajectory = true` path in a
         # fresh Julia subprocess. Here we disable trajectory saving because
-        # PETSc 3.22 does not reliably re-register the built-in `basic`
-        # trajectory type after earlier TS usage and reinitialization in the
-        # same process.
+        # PETSc 3.25 loses the built-in `basic` trajectory type at finalize, and
+        # the reset in `initialize` needs an internal symbol that Windows builds
+        # do not export (see `_reset_stale_register_flags`).
         result_default_1 = solve_ex51(;
             petsclib,
             options = String[],

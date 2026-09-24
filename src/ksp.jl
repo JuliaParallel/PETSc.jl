@@ -425,3 +425,76 @@ function set_type!(ksp::AbstractKSP{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.KSPSetType(getlib(PetscLib), ksp, String(type))
     return ksp
 end
+
+"""
+    iteration_number(ksp::AbstractKSP)
+
+The number of iterations the last [`solve!`](@ref) took.
+
+# External Links
+$(doc_external("KSP/KSPGetIterationNumber"))
+"""
+iteration_number(ksp::AbstractKSP{PetscLib}) where {PetscLib} =
+    LibPETSc.KSPGetIterationNumber(getlib(PetscLib), ksp)
+
+"""
+    converged_reason(ksp::AbstractKSP)
+
+Why the last [`solve!`](@ref) stopped, as a `LibPETSc.KSPConvergedReason`: positive
+when it converged, negative when it diverged.
+
+# External Links
+$(doc_external("KSP/KSPGetConvergedReason"))
+"""
+converged_reason(ksp::AbstractKSP{PetscLib}) where {PetscLib} =
+    LibPETSc.KSPGetConvergedReason(getlib(PetscLib), ksp)
+
+"""
+    set_operators!(ksp::AbstractKSP, A::AbstractPetscMat, P::AbstractPetscMat = A)
+
+Solve with the operator `A`, building the preconditioner from `P`. Returns `ksp`.
+
+`ksp` takes a reference to both matrices, so they stay valid inside it after the
+caller destroys its own handles.
+
+# External Links
+$(doc_external("KSP/KSPSetOperators"))
+"""
+function set_operators!(
+    ksp::AbstractKSP{PetscLib},
+    A::AbstractPetscMat{PetscLib},
+    P::AbstractPetscMat{PetscLib} = A,
+) where {PetscLib}
+    LibPETSc.KSPSetOperators(getlib(PetscLib), ksp, A, P)
+    return ksp
+end
+
+const DM_ACTIVE_PARTS = (
+    operator = LibPETSc.KSP_DMACTIVE_OPERATOR,
+    rhs = LibPETSc.KSP_DMACTIVE_RHS,
+    initial_guess = LibPETSc.KSP_DMACTIVE_INITIAL_GUESS,
+    all = LibPETSc.KSP_DMACTIVE_ALL,
+)
+
+"""
+    set_dm_active!(ksp::AbstractKSP, flag::Bool)
+    set_dm_active!(ksp::AbstractKSP, part::Symbol, flag::Bool)
+
+Whether the DM attached to `ksp` computes its operator, right-hand side and
+initial guess. The first form sets all three; the second sets one, `part` being
+`:operator`, `:rhs` or `:initial_guess` (`:all` is the first form). With `false`,
+`ksp` keeps the DM for its geometry, for example for multigrid, while
+[`set_operators!`](@ref) and [`solve!`](@ref) supply the rest. Returns `ksp`.
+
+# External Links
+$(doc_external("KSP/KSPSetDMActive"))
+"""
+function set_dm_active!(ksp::AbstractKSP{PetscLib}, part::Symbol, flag::Bool) where {PetscLib}
+    haskey(DM_ACTIVE_PARTS, part) || throw(ArgumentError(
+        "part must be one of $(join(repr.(keys(DM_ACTIVE_PARTS)), ", ")), got $(repr(part))",
+    ))
+    LibPETSc.KSPSetDMActive(getlib(PetscLib), ksp, DM_ACTIVE_PARTS[part], LibPETSc.PetscBool(flag))
+    return ksp
+end
+
+set_dm_active!(ksp::AbstractKSP, flag::Bool) = set_dm_active!(ksp, :all, flag)

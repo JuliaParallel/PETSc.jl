@@ -247,3 +247,87 @@ function parse_option(opt::NamedTuple, key::Symbol, default::T) where {T}
     return v
 end
 
+
+# ============================================================================
+#   Options on solvers and preconditioners
+# ============================================================================
+
+"""
+    set_from_options!(obj)
+
+Apply PETSc's options to the `KSP`, `SNES` or `TS` `obj`: those given to its
+constructor, then the global database, so a command-line option given for the
+object's prefix (see [`set_options_prefix!`](@ref)) is read too. Returns `obj`.
+
+`solve!` does this itself; call it to configure `obj` earlier, for example a
+nested solver before its first use.
+
+# External Links
+$(doc_external("KSP/KSPSetFromOptions"))
+$(doc_external("SNES/SNESSetFromOptions"))
+$(doc_external("TS/TSSetFromOptions"))
+"""
+function set_from_options! end
+
+for (T, setfromoptions) in (
+    (:AbstractKSP, :KSPSetFromOptions),
+    (:AbstractSNES, :SNESSetFromOptions),
+    (:AbstractTS, :TSSetFromOptions),
+)
+    @eval function set_from_options!(obj::LibPETSc.$T{PetscLib}) where {PetscLib}
+        opts = obj.opts
+        isnothing(opts) || push!(opts)
+        try
+            LibPETSc.$setfromoptions(getlib(PetscLib), obj)
+        finally
+            isnothing(opts) || pop!(opts)
+        end
+        return obj
+    end
+end
+
+"""
+    set_options_prefix!(obj, prefix::AbstractString)
+
+Make `obj`, a `KSP`, `SNES`, `TS` or `PC`, read its options under `prefix`:
+with `"inner_"`, a `KSP` reads `-inner_ksp_type`. This is how two solvers in one
+program are configured apart. Returns `obj`.
+
+# External Links
+$(doc_external("KSP/KSPSetOptionsPrefix"))
+$(doc_external("SNES/SNESSetOptionsPrefix"))
+$(doc_external("TS/TSSetOptionsPrefix"))
+$(doc_external("PC/PCSetOptionsPrefix"))
+"""
+function set_options_prefix! end
+
+"""
+    options_prefix(obj)
+
+The prefix `obj`, a `KSP`, `SNES`, `TS` or `PC`, reads its options under, or
+`""` when it has none. A solver PETSc builds inside another inherits the outer
+prefix: the `KSP` of a `SNES` prefixed `"outer_"` reads `-outer_ksp_type`.
+
+# External Links
+$(doc_external("KSP/KSPGetOptionsPrefix"))
+$(doc_external("SNES/SNESGetOptionsPrefix"))
+$(doc_external("TS/TSGetOptionsPrefix"))
+$(doc_external("PC/PCGetOptionsPrefix"))
+"""
+function options_prefix end
+
+for (T, setprefix, getprefix) in (
+    (:AbstractKSP, :KSPSetOptionsPrefix, :KSPGetOptionsPrefix),
+    (:AbstractSNES, :SNESSetOptionsPrefix, :SNESGetOptionsPrefix),
+    (:AbstractTS, :TSSetOptionsPrefix, :TSGetOptionsPrefix),
+    (:AbstractPC, :PCSetOptionsPrefix, :PCGetOptionsPrefix),
+)
+    @eval begin
+        function set_options_prefix!(obj::LibPETSc.$T{PetscLib}, prefix::AbstractString) where {PetscLib}
+            LibPETSc.$setprefix(getlib(PetscLib), obj, String(prefix))
+            return obj
+        end
+        options_prefix(obj::LibPETSc.$T{PetscLib}) where {PetscLib} =
+            LibPETSc.$getprefix(getlib(PetscLib), obj)
+    end
+end

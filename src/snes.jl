@@ -463,3 +463,94 @@ function set_dm!(
     LibPETSc.SNESSetDM(getlib(PetscLib), snes, dm)
     return snes
 end
+
+"""
+    ksp(snes::AbstractSNES)
+
+The linear solver `snes` uses for its Newton steps.
+
+$(doc_borrowed())
+
+# External Links
+$(doc_external("SNES/SNESGetKSP"))
+"""
+ksp(snes::AbstractSNES{PetscLib}) where {PetscLib} =
+    LibPETSc.SNESGetKSP(getlib(PetscLib), snes)
+
+"""
+    solution(snes::AbstractSNES)
+
+The vector `snes` solves for.
+
+$(doc_borrowed())
+
+# External Links
+$(doc_external("SNES/SNESGetSolution"))
+"""
+solution(snes::AbstractSNES{PetscLib}) where {PetscLib} =
+    LibPETSc.SNESGetSolution(getlib(PetscLib), snes)
+
+"""
+    iteration_number(snes::AbstractSNES)
+
+The number of nonlinear iterations the last [`solve!`](@ref) took.
+
+# External Links
+$(doc_external("SNES/SNESGetIterationNumber"))
+"""
+iteration_number(snes::AbstractSNES{PetscLib}) where {PetscLib} =
+    LibPETSc.SNESGetIterationNumber(getlib(PetscLib), snes)
+
+"""
+    ksp_iterations(snes::AbstractSNES)
+
+The number of linear iterations the last [`solve!`](@ref) took, summed over its
+nonlinear iterations.
+
+# External Links
+$(doc_external("SNES/SNESGetLinearSolveIterations"))
+"""
+ksp_iterations(snes::AbstractSNES{PetscLib}) where {PetscLib} =
+    LibPETSc.SNESGetLinearSolveIterations(getlib(PetscLib), snes)
+
+"""
+    function_norm(snes::AbstractSNES)
+
+The norm of the residual at the current iterate.
+
+# External Links
+$(doc_external("SNES/SNESGetFunctionNorm"))
+"""
+function_norm(snes::AbstractSNES{PetscLib}) where {PetscLib} =
+    LibPETSc.SNESGetFunctionNorm(getlib(PetscLib), snes)
+
+"""
+    converged_reason(snes::AbstractSNES)
+
+Why the last [`solve!`](@ref) stopped, as a `LibPETSc.SNESConvergedReason`:
+positive when it converged, negative when it diverged.
+
+# External Links
+$(doc_external("SNES/SNESGetConvergedReason"))
+"""
+converged_reason(snes::AbstractSNES{PetscLib}) where {PetscLib} =
+    LibPETSc.SNESGetConvergedReason(getlib(PetscLib), snes)
+
+"""
+    set_function_domain_error!(snes::AbstractSNES)
+
+Tell `snes`, from inside the residual callback, that the iterate it was given
+lies outside the function's domain (a negative pressure, say). A few solvers
+then cut the step; the others stop, and [`converged_reason`](@ref) reports
+`SNES_DIVERGED_FUNCTION_DOMAIN`. Returns `snes`.
+
+Either way `solve!` returns normally. Throwing from the callback instead stops
+the solve, and `solve!` rethrows the exception.
+
+# External Links
+$(doc_external("SNES/SNESSetFunctionDomainError"))
+"""
+function set_function_domain_error!(snes::AbstractSNES{PetscLib}) where {PetscLib}
+    LibPETSc.SNESSetFunctionDomainError(getlib(PetscLib), snes)
+    return snes
+end

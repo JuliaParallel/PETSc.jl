@@ -499,6 +499,17 @@ current_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetTime(getlib(PetscLib), ts)
 
 """
+    prev_time(ts::AbstractTS)
+
+The time at the start of the last step `ts` took.
+
+# External Links
+$(doc_external("TS/TSGetPrevTime"))
+"""
+prev_time(ts::AbstractTS{PetscLib}) where {PetscLib} =
+    LibPETSc.TSGetPrevTime(getlib(PetscLib), ts)
+
+"""
     set_time!(ts::AbstractTS, t)
 
 Set the current time of `ts`.
@@ -766,19 +777,6 @@ $(doc_external("TS/TSSetUp"))
 """
 function setup!(ts::AbstractTS{PetscLib}) where {PetscLib}
     capture_callback_errors(() -> LibPETSc.TSSetUp(getlib(PetscLib), ts))
-    return ts
-end
-
-"""
-    set_from_options!(ts::AbstractTS)
-
-Apply the PETSc options database to `ts`.
-
-# External Links
-$(doc_external("TS/TSSetFromOptions"))
-"""
-function set_from_options!(ts::AbstractTS{PetscLib}) where {PetscLib}
-    LibPETSc.TSSetFromOptions(getlib(PetscLib), ts)
     return ts
 end
 

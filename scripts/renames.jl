@@ -423,6 +423,7 @@ const INTERNAL = Set{Symbol}([
     :PCState,
     :MatShellState,
     :shell_state,
+    :DM_ACTIVE_PARTS,
     :PCShellSetApplyFn,      # a trampoline type (§18.6)
     :PCShellSetSetUpFn,
     :_taoterm_resettable,
@@ -539,6 +540,14 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_fieldsplit_is!,     # new in v0.5.1
     :set_shell_apply!,       # new in v0.5.1
     :set_shell_setup!,       # new in v0.5.1
+    :iteration_number,       # new in v0.5.1
+    :function_norm,          # new in v0.5.1
+    :set_function_domain_error!,  # new in v0.5.1
+    :prev_time,              # new in v0.5.1
+    :set_operators!,         # new in v0.5.1
+    :set_dm_active!,         # new in v0.5.1
+    :set_options_prefix!,    # new in v0.5.1
+    :options_prefix,         # new in v0.5.1
     :TSSetRHSFunctionFn,
     :TSSetRHSJacobianFn,
     :TSSetIFunctionFn,

@@ -61,7 +61,8 @@ x = ksp \ b
 
 # What PETSc did
 PETSc.type_name(ksp)         # :gmres, a Symbol
-PETSc.converged_reason(ksp)
+PETSc.converged_reason(ksp)  # positive when it converged
+PETSc.iteration_number(ksp)
 
 PETSc.destroy!(ksp)
 ```
@@ -73,6 +74,21 @@ PETSc.destroy!(ksp)
 Type names are `Symbol` at the Julia API: `PETSc.set_type!(ksp, :cg)` and
 `PETSc.type_name(ksp) === :cg`. The `String` spelling warns in v0.5 and is a
 `MethodError` in v0.6 (§3.1).
+
+## A nested solver
+
+An inner solve, such as the Schur complement solve inside a preconditioner, starts from a bare `KSP` and an assembled operator. An options prefix keeps its options apart from the outer solver's:
+
+```julia
+inner = LibPETSc.KSPCreate(petsclib, comm)
+PETSc.set_operators!(inner, S)              # S also builds the preconditioner; pass P to differ
+PETSc.set_options_prefix!(inner, "schur_")  # reads -schur_ksp_type, -schur_pc_type, ...
+PETSc.set_from_options!(inner)              # apply them now rather than at the first solve!
+PETSc.solve!(y, inner, r)
+PETSc.options_prefix(inner)                 # "schur_"
+```
+
+A `KSP` built on a DM computes its operator, right-hand side and initial guess from it. `PETSc.set_dm_active!(ksp, false)` keeps the DM for its geometry (multigrid needs it) and takes the rest from `set_operators!` and `solve!`; `PETSc.set_dm_active!(ksp, :rhs, false)` switches off one part.
 
 ## Common Solver/Preconditioner Options
 

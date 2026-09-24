@@ -85,8 +85,17 @@ PETSc.solve!(x, snes)
 # and `destroy!` on it is a no-op (naming conventions, §3.3)
 sol = PETSc.solution(snes)
 
+# What PETSc did
+PETSc.converged_reason(snes)     # positive when it converged
+PETSc.iteration_number(snes)     # Newton iterations
+PETSc.ksp_iterations(snes)       # linear iterations, summed over them
+PETSc.function_norm(snes)        # residual norm at the last iterate
+PETSc.ksp(snes)                  # the linear solver, borrowed
+
 PETSc.destroy!(snes)
 ```
+
+An iterate the residual cannot be evaluated at (a negative density, say) is reported from inside the residual with `PETSc.set_function_domain_error!(snes)`. A few solvers then cut the step; the others stop and `converged_reason` says `SNES_DIVERGED_FUNCTION_DOMAIN`. Throwing instead stops the solve, and `solve!` rethrows the exception.
 
 ## Common Solver Options
 

@@ -148,6 +148,7 @@ PETSc.solve!(ts)             # or from the vector already set on ts
 
 PETSc.converged_reason(ts)   # why it stopped
 PETSc.solve_time(ts)         # the time actually reached
+PETSc.prev_time(ts)          # the time at the start of the last step
 PETSc.step_number(ts)        # steps taken
 PETSc.snes_iterations(ts)    # nonlinear iterations, summed over the steps
 ```

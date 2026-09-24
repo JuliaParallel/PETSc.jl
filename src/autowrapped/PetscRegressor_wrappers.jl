@@ -238,7 +238,7 @@ end
                regressor, tao_,
               )
 
-	tao = Tao(tao_[], petsclib)
+	tao = Tao(tao_[], petsclib; own = false)
 
 	return tao
 end 
@@ -343,7 +343,7 @@ end
                regressor, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 

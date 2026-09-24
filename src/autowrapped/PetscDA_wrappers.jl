@@ -427,7 +427,7 @@ end
                da, member_idx, member_,
               )
 
-	member = PetscVec(member_[], petsclib)
+	member = PetscVec(member_[], petsclib; own = false)
 
 	return member
 end 
@@ -855,7 +855,7 @@ end
                da, obs_error_var_,
               )
 
-	obs_error_var = PetscVec(obs_error_var_[], petsclib)
+	obs_error_var = PetscVec(obs_error_var_[], petsclib; own = false)
 
 	return obs_error_var
 end 

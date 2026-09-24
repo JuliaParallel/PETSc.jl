@@ -264,7 +264,7 @@ end
                adaptor, snes_,
               )
 
-	snes = SNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib; own = false)
 
 	return snes
 end 
@@ -1822,7 +1822,7 @@ end
                field, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -6339,7 +6339,7 @@ end
                tr, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -7466,7 +7466,7 @@ end
                celldm, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 

@@ -795,7 +795,7 @@ end
               )
 
 	clSection = clSection_[]
-	clPoints = IS(clPoints_[], petsclib)
+	clPoints = IS(clPoints_[], petsclib; own = false)
 
 	return clSection,clPoints
 end 
@@ -1711,7 +1711,7 @@ end
                s, perm_,
               )
 
-	perm = IS(perm_[], petsclib)
+	perm = IS(perm_[], petsclib; own = false)
 
 	return perm
 end 

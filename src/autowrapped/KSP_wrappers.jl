@@ -595,7 +595,7 @@ end
                ksp, kspest_,
               )
 
-	kspest = KSP(kspest_[], petsclib)
+	kspest = KSP(kspest_[], petsclib; own = false)
 
 	return kspest
 end 
@@ -1974,7 +1974,7 @@ end
                ksp, pc_,
               )
 
-	pc = PC(pc_[], petsclib)
+	pc = PC(pc_[], petsclib; own = false)
 
 	return pc
 end 
@@ -2010,7 +2010,7 @@ end
                ksp, innerksp_,
               )
 
-	innerksp = KSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib; own = false)
 
 	return innerksp
 end 
@@ -3245,7 +3245,7 @@ end
                ksp, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -3784,8 +3784,8 @@ end
                ksp, Amat_, Pmat_,
               )
 
-	Amat = PetscMat(Amat_[], petsclib)
-	Pmat = PetscMat(Pmat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
+	Pmat = PetscMat(Pmat_[], petsclib; own = false)
 
 	return Amat,Pmat
 end 
@@ -3904,7 +3904,7 @@ end
                ksp, pc_,
               )
 
-	pc = PC(pc_[], petsclib)
+	pc = PC(pc_[], petsclib; own = false)
 
 	return pc
 end 
@@ -4103,7 +4103,7 @@ end
                ksp, r_,
               )
 
-	r = PetscVec(r_[], petsclib)
+	r = PetscVec(r_[], petsclib; own = false)
 
 	return r
 end 
@@ -4142,7 +4142,7 @@ end
                ksp, v_,
               )
 
-	v = PetscVec(v_[], petsclib)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -4631,7 +4631,7 @@ end
                ksp, se_,
               )
 
-	se = PetscVec(se_[], petsclib)
+	se = PetscVec(se_[], petsclib; own = false)
 
 	return se
 end 

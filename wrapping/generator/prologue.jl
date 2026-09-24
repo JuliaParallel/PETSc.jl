@@ -51,17 +51,14 @@ abstract type AbstractPetscVec{T} end
 mutable struct PetscVec{PetscLib} <: AbstractPetscVec{PetscLib}
     ptr::CVec
     age::Int
-    
-    # Constructor from pointer and age
-    PetscVec{PetscLib}(ptr::CVec, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
-    
-    # Constructor for empty Vec (null pointer)
-    PetscVec{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    own::Bool
+
+    PetscVec{PetscLib}(ptr::CVec = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
 PetscVec(lib::PetscLib) where {PetscLib} = PetscVec{PetscLib}(C_NULL, lib.age)
-PetscVec(ptr::CVec, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscVec{PetscLib}(ptr, age)
+PetscVec(ptr::CVec, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscVec{PetscLib}(ptr, age; own)
 Base.convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
 Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
 # ------------------------------------------------------
@@ -72,17 +69,14 @@ abstract type AbstractPetscMat{T} end
 mutable struct PetscMat{PetscLib} <: AbstractPetscMat{PetscLib}
     ptr::CMat
     age::Int
-    
-    # Constructor from pointer and age
-    PetscMat{PetscLib}(ptr::CMat, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
-    
-    # Constructor for empty Mat (null pointer)
-    PetscMat{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    own::Bool
+
+    PetscMat{PetscLib}(ptr::CMat = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
 PetscMat(lib::PetscLib) where {PetscLib} = PetscMat{PetscLib}(C_NULL, lib.age)
-PetscMat(ptr::CMat, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscMat{PetscLib}(ptr, age)
+PetscMat(ptr::CMat, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscMat{PetscLib}(ptr, age; own)
 Base.convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
 Base.unsafe_convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
 # ------------------------------------------------------
@@ -96,17 +90,18 @@ mutable struct KSP{PetscLib} <: AbstractKSP{PetscLib}
     computerhs!::Function
     computeops!::Function
     opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
-    
+    own::Bool
+
     # Constructor from pointer and age (with default callback placeholders)
-    KSP{PetscLib}(ptr::CKSP, age::Int = 0, computerhs!::Function = x -> error("computerhs! not defined"), computeops!::Function = x -> error("computeops! not defined"), opts::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, computerhs!, computeops!, opts)
+    KSP{PetscLib}(ptr::CKSP, age::Int = 0, computerhs!::Function = x -> error("computerhs! not defined"), computeops!::Function = x -> error("computeops! not defined"), opts::Any = nothing; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, computerhs!, computeops!, opts, own)
 
     # Constructor for empty KSP (null pointer)
-    KSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0, x -> error("computerhs! not defined"), x -> error("computeops! not defined"), nothing)
+    KSP{PetscLib}() where {PetscLib} = KSP{PetscLib}(Ptr{Cvoid}(C_NULL))
 end
 
 # Convenience constructor from petsclib instance
 KSP(lib::PetscLib) where {PetscLib} = KSP{PetscLib}(C_NULL, lib.age)
-KSP(ptr::CKSP, lib::PetscLib, age::Int = lib.age) where {PetscLib} = KSP{PetscLib}(ptr, age)
+KSP(ptr::CKSP, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = KSP{PetscLib}(ptr, age; own)
 Base.convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
 Base.unsafe_convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
 
@@ -121,12 +116,13 @@ abstract type AbstractPC{T} end
 mutable struct PC{PetscLib} <: AbstractPC{PetscLib}
     ptr::CPC
     age::Int
+    own::Bool
 
-    PC{PetscLib}(ptr::CPC = C_NULL, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    PC{PetscLib}(ptr::CPC = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 PC(lib::PetscLib) where {PetscLib} = PC{PetscLib}(C_NULL, lib.age)
-PC(ptr::CPC, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PC{PetscLib}(ptr, age)
+PC(ptr::CPC, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PC{PetscLib}(ptr, age; own)
 Base.convert(::Type{CPC}, v::AbstractPC) = v.ptr
 Base.unsafe_convert(::Type{CPC}, v::AbstractPC) = v.ptr
 # ------------------------------------------------------
@@ -142,26 +138,16 @@ mutable struct SNES{PetscLib} <: AbstractSNES{PetscLib}
     user_ctx::Any
     opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
     convergence_test!::Any  # closure from set_convergence_test!, rooted here while PETSc holds it
+    own::Bool
 
     # Constructor from pointer and age (with defaults for callbacks and context)
-    SNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing, convergence_test!::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts, convergence_test!)
-    
-    # Constructor for empty SNES (null pointer)
-    SNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
-                        ptr,
-                        age,
-                        x -> error("function not defined"),
-                        x -> error("function not defined"),
-                        nothing,
-                        nothing,
-                        nothing,
-                        )                  
+    SNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing, convergence_test!::Any = nothing; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts, convergence_test!, own)
 end
 
 # Convenience constructor from petsclib instance
 SNES(lib::PetscLib) where {PetscLib} = SNES{PetscLib}(C_NULL, lib.age)
 SNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx::Any=nothing, age::Int = lib.age) where {PetscLib} = SNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
-SNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age) where {PetscLib} = SNES{PetscLib}(ptr, age)
+SNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = SNES{PetscLib}(ptr, age; own)
 Base.convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
 # ------------------------------------------------------
@@ -172,17 +158,14 @@ abstract type AbstractPetscDM{T} end
 mutable struct PetscDM{PetscLib} <: AbstractPetscDM{PetscLib}
     ptr::CDM
     age::Int
-    
-    # Constructor from pointer and age
-    PetscDM{PetscLib}(ptr::CDM, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
-    
-    # Constructor for empty DM (null pointer)
-    PetscDM{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    own::Bool
+
+    PetscDM{PetscLib}(ptr::CDM = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
 PetscDM(lib::PetscLib) where {PetscLib} = PetscDM{PetscLib}(C_NULL, lib.age)
-PetscDM(ptr::CDM, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscDM{PetscLib}(ptr, age)
+PetscDM(ptr::CDM, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscDM{PetscLib}(ptr, age; own)
 Base.convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
 Base.unsafe_convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
 # ------------------------------------------------------
@@ -195,14 +178,14 @@ abstract type AbstractPetscOptions{T} end
 mutable struct PetscOptions{PetscLib} <: AbstractPetscOptions{PetscLib}
     ptr::Ptr{Cvoid}
     age::Int
+    own::Bool
 
-    # Constructor from pointer and age
-    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
 PetscOptions(lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}(C_NULL, lib.age)
-PetscOptions(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscOptions{PetscLib}(ptr, age)
+PetscOptions(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscOptions{PetscLib}(ptr, age; own)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
@@ -216,13 +199,15 @@ abstract type AbstractIS{T} end
 
 mutable struct IS{PetscLib} <: AbstractIS{PetscLib}
     ptr::Ptr{Cvoid}
-    
-    IS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+    age::Int
+    own::Bool
+
+    IS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
-IS(lib::PetscLib) where {PetscLib} = IS{PetscLib}()
-IS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = IS{PetscLib}(ptr)
+IS(lib::PetscLib) where {PetscLib} = IS{PetscLib}(C_NULL, lib.age)
+IS(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = IS{PetscLib}(ptr, age; own)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
@@ -230,7 +215,7 @@ Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
 # Allows a mutable IS to be passed as Ptr{CIS} (= Ptr{Ptr{Cvoid}}) to C
 # functions that write the IS handle into the pointed-to slot, e.g.
 # DMGetStratumIS. Julia passes pointer_from_objref(v), which is the address of
-# v.ptr (the first and only field), so PETSc writes directly into v.ptr.
+# v.ptr (the first field), so PETSc writes directly into v.ptr.
 Base.unsafe_convert(::Type{Ptr{CIS}}, v::AbstractIS) = Ptr{CIS}(Base.pointer_from_objref(v))
 # ------------------------------------------------------
 
@@ -241,13 +226,15 @@ abstract type AbstractPF{T} end
 
 mutable struct PF{PetscLib} <: AbstractPF{PetscLib}
     ptr::Ptr{Cvoid}
-    
-    PF{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+    age::Int
+    own::Bool
+
+    PF{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
-PF(lib::PetscLib) where {PetscLib} = PF{PetscLib}()
-PF(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = PF{PetscLib}(ptr)
+PF(lib::PetscLib) where {PetscLib} = PF{PetscLib}(C_NULL, lib.age)
+PF(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PF{PetscLib}(ptr, age; own)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = v.ptr
@@ -269,6 +256,7 @@ mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
     monitor::Function
     user_ctx::Any
     opts::Any
+    own::Bool
 
     TS{PetscLib}(
         ptr::CTS = C_NULL,
@@ -279,7 +267,8 @@ mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
         ijacobian!::Function = _ -> error("ijacobian! not defined"),
         monitor::Function = _ -> error("monitor not defined"),
         user_ctx::Any = nothing,
-        opts::Any = nothing,
+        opts::Any = nothing;
+        own::Bool = true,
     ) where {PetscLib} = new{PetscLib}(
         ptr,
         age,
@@ -290,13 +279,14 @@ mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
         monitor,
         user_ctx,
         opts,
+        own,
     )
 end
 
 # Convenience constructors
 TS(lib::PetscLib) where {PetscLib} = TS{PetscLib}(C_NULL, lib.age)
-TS(ptr::CTS, lib::PetscLib, age::Int = lib.age) where {PetscLib} =
-    TS{PetscLib}(ptr, age)
+TS(ptr::CTS, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} =
+    TS{PetscLib}(ptr, age; own)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr
@@ -310,13 +300,15 @@ abstract type AbstractTao{T} end
 
 mutable struct Tao{PetscLib} <: AbstractTao{PetscLib}
     ptr::Ptr{Cvoid}
-    
-    Tao{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+    age::Int
+    own::Bool
+
+    Tao{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
-Tao(lib::PetscLib) where {PetscLib} = Tao{PetscLib}()
-Tao(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = Tao{PetscLib}(ptr)
+Tao(lib::PetscLib) where {PetscLib} = Tao{PetscLib}(C_NULL, lib.age)
+Tao(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = Tao{PetscLib}(ptr, age; own)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = v.ptr
@@ -330,13 +322,15 @@ abstract type AbstractAO{T} end
 
 mutable struct AO{PetscLib} <: AbstractAO{PetscLib}
     ptr::Ptr{Cvoid}
-    
-    AO{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+    age::Int
+    own::Bool
+
+    AO{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
-AO(lib::PetscLib) where {PetscLib} = AO{PetscLib}()
-AO(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = AO{PetscLib}(ptr)
+AO(lib::PetscLib) where {PetscLib} = AO{PetscLib}(C_NULL, lib.age)
+AO(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = AO{PetscLib}(ptr, age; own)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
@@ -346,11 +340,8 @@ Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
 # ------------------------------------------------------
 # Constructors taking the library *type* (wrappers are called with either the petsclib instance
 # or its type, see @for_petsc): look the instance up to get the current age.
-for T in (:PetscVec, :PetscMat, :KSP, :PC, :SNES, :PetscDM, :TS)
-    @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}) where {PetscLib} = $T(ptr, getlib(PetscLib))
-end
-for T in (:PetscOptions, :IS, :PF, :Tao, :AO)
-    @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}) where {PetscLib} = $T{PetscLib}(ptr)
+for T in (:PetscVec, :PetscMat, :KSP, :PC, :SNES, :PetscDM, :TS, :PetscOptions, :IS, :PF, :Tao, :AO)
+    @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}; own::Bool = true) where {PetscLib} = $T(ptr, getlib(PetscLib); own)
 end
 # ------------------------------------------------------
 

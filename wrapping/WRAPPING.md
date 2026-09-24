@@ -32,6 +32,7 @@ wrapping/
       types.toml             type maps, handle types, keyword renames, string-enum overrides
       args.toml              per-function, per-argument overrides (hand-maintained)
       args_mined.toml        the same, mined once from the old hand-edited wrappers (do not edit)
+      ownership.toml         the `Get` functions whose returned handles the caller owns
     overrides/NAME.jl      verbatim replacement for one wrapper (last resort)
     prologue.jl            hand-written head of petsc_library.jl (handle structs, MPI, ...)
     petscarray.jl          hand-written PetscArray type (copied verbatim)
@@ -143,6 +144,11 @@ substring replacement, which turned `PetscPointFn` into `PetscPoCintFn`, to word
 replacement), `[[handles]]` (C name, Julia struct, abstract type, C alias), `[rename_args]`
 (Julia keywords used as C argument names), `[senum_overrides]` (`VecType = "Cstring"`), and
 `[predeclared]` names the generator must not declare as opaque types.
+
+`ownership.toml`: `owned` lists the `Get` functions that hand the caller a new reference. A handle
+returned by any other function with `Get` in its name is built with `own = false`, so `destroy!` on
+it does nothing (naming.md §18.2); every other returned handle has `own = true`. A function goes on
+the list only when its manual page or source is clear, since a wrong entry destroys an object twice.
 
 `args.toml` (hand-maintained) and `args_mined.toml` (written by `bootstrap_rules.jl`, never edited;
 `args.toml` wins on conflicts): per argument, keyed `[FunctionName.argname]`:

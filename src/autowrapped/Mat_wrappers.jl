@@ -753,7 +753,7 @@ end
                mat, i, Ai_,
               )
 
-	Ai = PetscMat(Ai_[], petsclib)
+	Ai = PetscMat(Ai_[], petsclib; own = false)
 
 	return Ai
 end 
@@ -6532,7 +6532,7 @@ end
                A, col, v_,
               )
 
-	v = PetscVec(v_[], petsclib)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -6571,7 +6571,7 @@ end
                A, col, v_,
               )
 
-	v = PetscVec(v_[], petsclib)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -6610,7 +6610,7 @@ end
                A, col, v_,
               )
 
-	v = PetscVec(v_[], petsclib)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -6685,7 +6685,7 @@ end
                A, B_,
               )
 
-	B = PetscMat(B_[], petsclib)
+	B = PetscMat(B_[], petsclib; own = false)
 
 	return B
 end 
@@ -6727,7 +6727,7 @@ end
                A, rbegin, rend, cbegin, cend, v_,
               )
 
-	v = PetscMat(v_[], petsclib)
+	v = PetscMat(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -7707,7 +7707,7 @@ end
                A, diag_,
               )
 
-	diag = PetscVec(diag_[], petsclib)
+	diag = PetscVec(diag_[], petsclib; own = false)
 
 	return diag
 end 
@@ -7743,7 +7743,7 @@ end
                A, inv_diag_,
               )
 
-	inv_diag = PetscVec(inv_diag_[], petsclib)
+	inv_diag = PetscVec(inv_diag_[], petsclib; own = false)
 
 	return inv_diag
 end 
@@ -9528,7 +9528,7 @@ end
                A, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -9985,7 +9985,7 @@ end
                mat, isrow, iscol, submat_,
               )
 
-	submat = PetscMat(submat_[], petsclib)
+	submat = PetscMat(submat_[], petsclib; own = false)
 
 	return submat
 end 
@@ -11995,7 +11995,7 @@ end
                A, M_,
               )
 
-	M = PetscMat(M_[], petsclib)
+	M = PetscMat(M_[], petsclib; own = false)
 
 	return M
 end 
@@ -13584,7 +13584,7 @@ end
                A, B_,
               )
 
-	B = PetscMat(B_[], petsclib)
+	B = PetscMat(B_[], petsclib; own = false)
 
 	return B
 end 
@@ -14300,7 +14300,7 @@ end
                B, J0_,
               )
 
-	J0 = PetscMat(J0_[], petsclib)
+	J0 = PetscMat(J0_[], petsclib; own = false)
 
 	return J0
 end 
@@ -14337,7 +14337,7 @@ end
                B, J0ksp_,
               )
 
-	J0ksp = KSP(J0ksp_[], petsclib)
+	J0ksp = KSP(J0ksp_[], petsclib; own = false)
 
 	return J0ksp
 end 
@@ -14374,7 +14374,7 @@ end
                B, J0pc_,
               )
 
-	J0pc = PC(J0pc_[], petsclib)
+	J0pc = PC(J0pc_[], petsclib; own = false)
 
 	return J0pc
 end 
@@ -14414,8 +14414,8 @@ end
                B, x_prev_, f_prev_,
               )
 
-	x_prev = PetscVec(x_prev_[], petsclib)
-	f_prev = PetscVec(f_prev_[], petsclib)
+	x_prev = PetscVec(x_prev_[], petsclib; own = false)
+	f_prev = PetscVec(f_prev_[], petsclib; own = false)
 
 	return x_prev,f_prev
 end 
@@ -15186,10 +15186,10 @@ end
                N, A_, U_, c_, V_,
               )
 
-	A = PetscMat(A_[], petsclib)
-	U = PetscMat(U_[], petsclib)
-	c = PetscVec(c_[], petsclib)
-	V = PetscMat(V_[], petsclib)
+	A = PetscMat(A_[], petsclib; own = false)
+	U = PetscMat(U_[], petsclib; own = false)
+	c = PetscVec(c_[], petsclib; own = false)
+	V = PetscMat(V_[], petsclib; own = false)
 
 	return A,U,c,V
 end 
@@ -15425,7 +15425,7 @@ end
                A, B_,
               )
 
-	B = PetscMat(B_[], petsclib)
+	B = PetscMat(B_[], petsclib; own = false)
 
 	return B
 end 
@@ -15672,8 +15672,8 @@ function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::AbstractPetscMat) end
                A, Ad_, Ao_, colmap_,
               )
 
-	Ad = PetscMat(Ad_[], petsclib)
-	Ao = PetscMat(Ao_[], petsclib)
+	Ad = PetscMat(Ad_[], petsclib; own = false)
+	Ao = PetscMat(Ao_[], petsclib; own = false)
 	_, ncols_o = MatGetLocalSize(petsclib, Ao)
 	colmap = colmap_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, colmap_[], Int(ncols_o); own = false)
 
@@ -15997,8 +15997,8 @@ end
                A, Ad_, Ao_, colmap_,
               )
 
-	Ad = PetscMat(Ad_[], petsclib)
-	Ao = PetscMat(Ao_[], petsclib)
+	Ad = PetscMat(Ad_[], petsclib; own = false)
+	Ao = PetscMat(Ao_[], petsclib; own = false)
 	colmap = colmap_[]
 
 	return Ad,Ao,colmap
@@ -16341,8 +16341,8 @@ end
                A, Ad_, Ao_, colmap_,
               )
 
-	Ad = PetscMat(Ad_[], petsclib)
-	Ao = PetscMat(Ao_[], petsclib)
+	Ad = PetscMat(Ad_[], petsclib; own = false)
+	Ao = PetscMat(Ao_[], petsclib; own = false)
 	colmap = colmap_[]
 
 	return Ad,Ao,colmap
@@ -18135,7 +18135,7 @@ end
                A, idxm, jdxm, sub_,
               )
 
-	sub = PetscMat(sub_[], petsclib)
+	sub = PetscMat(sub_[], petsclib; own = false)
 
 	return sub
 end 
@@ -18180,7 +18180,7 @@ end
 
 	M = M_[]
 	N = N_[]
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return M,N,mat
 end 
@@ -18366,7 +18366,7 @@ end
                A, M_,
               )
 
-	M = PetscMat(M_[], petsclib)
+	M = PetscMat(M_[], petsclib; own = false)
 
 	return M
 end 
@@ -18404,7 +18404,7 @@ end
                A, M_,
               )
 
-	M = PetscMat(M_[], petsclib)
+	M = PetscMat(M_[], petsclib; own = false)
 
 	return M
 end 
@@ -18717,9 +18717,9 @@ end
                mat, A_, B_, C_,
               )
 
-	A = PetscMat(A_[], petsclib)
-	B = PetscMat(B_[], petsclib)
-	C = PetscMat(C_[], petsclib)
+	A = PetscMat(A_[], petsclib; own = false)
+	B = PetscMat(B_[], petsclib; own = false)
+	C = PetscMat(C_[], petsclib; own = false)
 
 	return A,B,C
 end 
@@ -20148,7 +20148,7 @@ end
                J, snes_,
               )
 
-	snes = SNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib; own = false)
 
 	return snes
 end 
@@ -21442,7 +21442,7 @@ end
                S, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -21481,7 +21481,7 @@ end
                S, preuse, Sp_,
               )
 
-	Sp = PetscMat(Sp_[], petsclib)
+	Sp = PetscMat(Sp_[], petsclib; own = false)
 
 	return Sp
 end 
@@ -21527,11 +21527,11 @@ end
                S, A00_, Ap00_, A01_, A10_, A11_,
               )
 
-	A00 = PetscMat(A00_[], petsclib)
-	Ap00 = PetscMat(Ap00_[], petsclib)
-	A01 = PetscMat(A01_[], petsclib)
-	A10 = PetscMat(A10_[], petsclib)
-	A11 = PetscMat(A11_[], petsclib)
+	A00 = PetscMat(A00_[], petsclib; own = false)
+	Ap00 = PetscMat(Ap00_[], petsclib; own = false)
+	A01 = PetscMat(A01_[], petsclib; own = false)
+	A10 = PetscMat(A10_[], petsclib; own = false)
+	A11 = PetscMat(A11_[], petsclib; own = false)
 
 	return A00,Ap00,A01,A10,A11
 end 
@@ -26011,7 +26011,7 @@ end
                A, M_,
               )
 
-	M = PetscMat(M_[], petsclib)
+	M = PetscMat(M_[], petsclib; own = false)
 
 	return M
 end 

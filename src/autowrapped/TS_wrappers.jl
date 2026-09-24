@@ -34,8 +34,8 @@ end
                ts, u_, v_,
               )
 
-	u = PetscVec(u_[], petsclib)
-	v = PetscVec(v_[], petsclib)
+	u = PetscVec(u_[], petsclib; own = false)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return u,v
 end 
@@ -3646,7 +3646,7 @@ end
               )
 
 	nump = nump_[]
-	Smat = PetscMat(Smat_[], petsclib)
+	Smat = PetscMat(Smat_[], petsclib; own = false)
 
 	return nump,Smat
 end 
@@ -3685,7 +3685,7 @@ end
               )
 
 	ns = ns_[]
-	S = PetscMat(S_[], petsclib)
+	S = PetscMat(S_[], petsclib; own = false)
 
 	return ns,S
 end 
@@ -4681,8 +4681,8 @@ end
               )
 
 	numcost = numcost_[]
-	lambda = lambda_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, lambda_[], numcost; own = false)]
-	mu = mu_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, mu_[], numcost; own = false)]
+	lambda = lambda_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, lambda_[], numcost; own = false)]
+	mu = mu_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, mu_[], numcost; own = false)]
 
 	return numcost,lambda,mu
 end 
@@ -4727,9 +4727,9 @@ end
               )
 
 	numcost = numcost_[]
-	dir = PetscVec(dir_[], petsclib)
-	lambda2 = lambda2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, lambda2_[], numcost; own = false)]
-	mu2 = mu2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, mu2_[], numcost; own = false)]
+	dir = PetscVec(dir_[], petsclib; own = false)
+	lambda2 = lambda2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, lambda2_[], numcost; own = false)]
+	mu2 = mu2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, mu2_[], numcost; own = false)]
 
 	return numcost,lambda2,mu2,dir
 end 
@@ -4768,7 +4768,7 @@ end
                ts, v_,
               )
 
-	v = PetscVec(v_[], petsclib)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -4806,7 +4806,7 @@ end
                ts, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -4886,7 +4886,7 @@ end
 
 	nsol = nsol_[]
 	sol_times = sol_times_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, sol_times_[], nsol; own = false)
-	Sols = Sols_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, Sols_[], nsol; own = false)]
+	Sols = Sols_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, Sols_[], nsol; own = false)]
 
 	return nsol,sol_times,Sols
 end 
@@ -5007,7 +5007,7 @@ end
                ts, r_, fun_, ctx_,
               )
 
-	r = PetscVec(r_[], petsclib)
+	r = PetscVec(r_[], petsclib; own = false)
 	fun = fun_[]
 	ctx = ctx_[]
 
@@ -5053,8 +5053,8 @@ end
                ts, J_, P_, jac_, ctx_,
               )
 
-	J = PetscMat(J_[], petsclib)
-	P = PetscMat(P_[], petsclib)
+	J = PetscMat(J_[], petsclib; own = false)
+	P = PetscMat(P_[], petsclib; own = false)
 	jac = jac_[]
 	ctx = ctx_[]
 
@@ -5098,7 +5098,7 @@ end
                ts, r_, func_, ctx_,
               )
 
-	r = PetscVec(r_[], petsclib)
+	r = PetscVec(r_[], petsclib; own = false)
 	func = func_[]
 	ctx = ctx_[]
 
@@ -5144,8 +5144,8 @@ end
                ts, Amat_, Pmat_, f_, ctx_,
               )
 
-	Amat = PetscMat(Amat_[], petsclib)
-	Pmat = PetscMat(Pmat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
+	Pmat = PetscMat(Pmat_[], petsclib; own = false)
 	f = f_[]
 	ctx = ctx_[]
 
@@ -5196,7 +5196,7 @@ end
                ts, Amat_, noname,
               )
 
-	Amat = PetscMat(Amat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
 
 	return Amat
 end 
@@ -5235,7 +5235,7 @@ end
                ts, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -5547,7 +5547,7 @@ end
               )
 
 	fwd = fwd_[]
-	quadts = TS(quadts_[], petsclib)
+	quadts = TS(quadts_[], petsclib; own = false)
 
 	return fwd,quadts
 end 
@@ -5589,7 +5589,7 @@ end
                ts, r_, func_, ctx_,
               )
 
-	r = PetscVec(r_[], petsclib)
+	r = PetscVec(r_[], petsclib; own = false)
 	func = func_[]
 	ctx = ctx_[]
 
@@ -5635,8 +5635,8 @@ end
                ts, Amat_, Pmat_, func_, ctx_,
               )
 
-	Amat = PetscMat(Amat_[], petsclib)
-	Pmat = PetscMat(Pmat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
+	Pmat = PetscMat(Pmat_[], petsclib; own = false)
 	func = func_[]
 	ctx = ctx_[]
 
@@ -5680,7 +5680,7 @@ end
                ts, Amat_, func_, ctx_,
               )
 
-	Amat = PetscMat(Amat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
 	func = func_[]
 	ctx = ctx_[]
 
@@ -5759,7 +5759,7 @@ end
                ts, snes_,
               )
 
-	snes = SNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib; own = false)
 
 	return snes
 end 
@@ -5877,7 +5877,7 @@ end
                ts, v_,
               )
 
-	v = PetscVec(v_[], petsclib)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -6000,7 +6000,7 @@ end
               )
 
 	ns = ns_[]
-	Y = PetscVec(Y_[], petsclib)
+	Y = PetscVec(Y_[], petsclib; own = false)
 
 	return ns,Y
 end 
@@ -6311,8 +6311,8 @@ function TSGetTolerances(petsclib::PetscLibType, ts::AbstractTS) end
 
 	# The per-component vectors belong to the TS, so they get no finalizer.
 	# They come back NULL when only scalar tolerances are set.
-	vatol = PetscVec(vatol_[], petsclib)
-	vrtol = PetscVec(vrtol_[], petsclib)
+	vatol = PetscVec(vatol_[], petsclib; own = false)
+	vrtol = PetscVec(vrtol_[], petsclib; own = false)
 
 	return atol_[],vatol,rtol_[],vrtol
 end
@@ -7502,8 +7502,8 @@ end
                ts, max_, min_,
               )
 
-	max = PetscVec(max_[], petsclib)
-	min = PetscVec(min_[], petsclib)
+	max = PetscVec(max_[], petsclib; own = false)
+	min = PetscVec(min_[], petsclib; own = false)
 
 	return max,min
 end 
@@ -9145,7 +9145,7 @@ end
                ts, splitname, is_,
               )
 
-	is = IS(is_[], petsclib)
+	is = IS(is_[], petsclib; own = false)
 
 	return is
 end 
@@ -9184,7 +9184,7 @@ end
                ts, snes_,
               )
 
-	snes = SNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib; own = false)
 
 	return snes
 end 
@@ -9223,7 +9223,7 @@ end
                ts, splitname, subts_,
               )
 
-	subts = TS(subts_[], petsclib)
+	subts = TS(subts_[], petsclib; own = false)
 
 	return subts
 end 
@@ -9264,7 +9264,7 @@ end
               )
 
 	n = n_[]
-	subts = subts_[] == C_NULL ? TS{$PetscLib}[] : [TS(p, petsclib) for p in unsafe_wrap(Array, subts_[], n; own = false)]
+	subts = subts_[] == C_NULL ? TS{$PetscLib}[] : [TS(p, petsclib; own = false) for p in unsafe_wrap(Array, subts_[], n; own = false)]
 
 	return n,subts
 end 
@@ -12990,7 +12990,7 @@ end
                ts, pc_,
               )
 
-	pc = PC(pc_[], petsclib)
+	pc = PC(pc_[], petsclib; own = false)
 
 	return pc
 end 

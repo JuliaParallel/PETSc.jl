@@ -1,0 +1,56 @@
+# Who owns a handle a generated function returns (docs/src/man/naming.md §18.2).
+#
+# A handle returned by a function whose name contains `Get` is borrowed: PETSc's
+# convention is that `XGetY` hands out a reference the caller must not destroy,
+# while `Create`, `Duplicate`, `Clone`, `Convert` and the rest hand out a new one.
+# The wrapper is built with `own = false`, and `destroy!` on it does nothing.
+#
+# The functions below are the exceptions: their name says `Get` but the caller
+# receives a new reference and destroys it, as their manual page or source shows.
+# Every output handle of a listed function is owned. A function left off this list
+# by mistake only leaks, while a borrowed handle listed here by mistake would be
+# destroyed twice, so a function goes on the list only when PETSc is clear.
+#
+# ISColoringGetIS is left off: whether the caller owns the index sets depends on
+# its `mode` argument.
+
+owned = [
+    # the manual page says the caller destroys the result
+    "DMGetCoordinatesLocalTuple",
+    "DMLabelGetNonEmptyStratumValuesIS",
+    "DMLabelGetStratumIS",
+    "DMLabelGetValueIS",
+    "DMLabelGetValueISGlobal",
+    "DMPlexGetConeRecursiveVertices",
+    "MatAIJGetLocalMat",
+    "MatGetFactor",
+    "MatGetOwnershipIS",
+    "MatMPIAIJGetLocalMat",
+    "MatPartitioningHierarchicalGetCoarseparts",
+    "MatPartitioningHierarchicalGetFineparts",
+    "PetscSectionGetClosureInversePermutation",
+    "PetscSectionGetClosurePermutation",
+    # the source creates the result or takes a reference on it, and PETSc's own callers destroy it
+    "DMDAGetRay",
+    "DMGetLabelIdIS",
+    "DMGetStratumIS",
+    "DMPlexGetConeTuple",
+    "DMPlexGetGatherDM",
+    "DMPlexGetOrdering",
+    "DMPlexGetOrdering1D",
+    "DMPlexGetRedundantDM",
+    "MatGetBrowsOfAcols",
+    "MatGetMultiProcBlock",
+    "MatGetOrdering",
+    "MatGetSchurComplement",
+    "MatGetSeqNonzeroStructure",
+    "MatMPIAIJGetLocalMatCondensed",
+    "MatMPIAIJGetLocalMatMerge",
+    "MatMPISELLGetLocalMatCondensed",
+    "PCGASMGetSubdomains",
+    "PCGetCoarseOperators",
+    "PCGetInterpolations",
+    "SNESVIGetActiveSetIS",
+    "TaoMatGetSubMat",
+    "TaoVecGetSubVec",
+]

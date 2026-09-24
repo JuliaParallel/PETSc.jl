@@ -162,7 +162,7 @@ end
               )
 
 	nn = nn_[]
-	isis = isis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, isis_[], nn; own = false)]
+	isis = isis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib; own = false) for p in unsafe_wrap(Array, isis_[], nn; own = false)]
 
 	return nn,isis
 end 

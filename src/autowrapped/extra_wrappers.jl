@@ -295,6 +295,6 @@ function SNESGetJacobianMat(petsclib::PetscLibType, snes::AbstractSNES) end
         (:SNESGetJacobian, $petsc_library), PetscErrorCode,
         (CSNES, Ptr{CMat}, Ptr{CMat}, Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
         snes, J_ref, C_NULL, C_NULL, C_NULL)
-    return PetscMat{$PetscLib}(J_ref[])
+    return PetscMat(J_ref[], petsclib; own = false)
 end
 

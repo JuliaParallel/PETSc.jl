@@ -40,7 +40,7 @@ The register is data rather than prose because five things have to agree with it
 
 `scripts/api_surface.jl --sweeps` covers the other half: every count this document states is derived rather than remembered.
 
-It derives four lists: functions taking `petsclib` first alongside a dispatchable object ([§8](#8.-Argument-order)), functions returning a `NamedTuple` ([§12](#12.-Return-values)), exported names against §13's list, and readers returning a PETSc object without a `doc_borrowed` entry ([§3.3](#3.3-What-an-accessor-hands-back)). Done by hand the first three were all wrong, by one, by six, and by nine respectively, and each miscount survived a full draft.
+It derives five lists: functions taking `petsclib` first alongside a dispatchable object ([§8](#8.-Argument-order)), functions returning a `NamedTuple` ([§12](#12.-Return-values)), exported names against §13's list, readers returning a PETSc object without a `doc_borrowed` entry ([§3.3](#3.3-What-an-accessor-hands-back)), and `!` functions that can return `nothing` instead of the object they mutate ([§7](#7.-Mutation)). Done by hand the first three were all wrong, by one, by six, and by nine respectively, and each miscount survived a full draft.
 
 **Macros** follow the same rules as functions: snake_case, and no prefix that repeats the module name. `PETSc.@petsc_residual_fn` says "petsc" twice.
 
@@ -395,7 +395,15 @@ It does not apply to `set_petsclib`, which despite its name mutates nothing: it 
 
 `destroy` becomes `destroy!`, and finalizer registrations change with it (`finalizer(destroy!, v)`).
 
-A `!` function returns the object it mutates, as `push!`, `fill!`, `mul!` and `copyto!` do: `solve!(x, ksp, b)` returns `x`, `set_type!(ksp, :gmres)` returns `ksp`, and `set_function!(f!, snes, r)` returns `snes`, the object being configured even when a callback precedes it ([§8.1](#8.1-Callbacks-come-first)). Two kinds return `nothing`: `destroy!`, like `close`, and the functions that mutate package state only, such as `set_library!`. From 0.5.1; before it, most setters returned `nothing`.
+A `!` function returns the object it mutates, as `push!`, `fill!`, `mul!` and `copyto!` do: `solve!(x, ksp, b)` returns `x`, `set_type!(ksp, :gmres)` returns `ksp`, and `set_function!(f!, snes, r)` returns `snes`, the object being configured even when a callback precedes it ([§8.1](#8.1-Callbacks-come-first)). Adding to an object returns the object too, as Ferrite's `add!` does: `add_boundary!(dm, …)` returns `dm`, and the number PETSc gives the boundary comes from `LibPETSc.DMAddBoundary`.
+
+The exceptions:
+
+- A function that releases what it is given returns `nothing`, like `close`: `destroy!`, `restore_local_arrays!`.
+- A function that mutates package state only returns `nothing`: `set_library!`, and `push!`/`pop!` on a `PetscOptions`, which change PETSc's global options stack.
+- A function whose first argument is a `do` block returns the block's result, like `open(f, file)` and `lock(f, l)`: `with_local_array!`.
+
+A function that writes a file and mutates no argument takes no `!`, like `write`, `serialize` and FileIO's `save`: `save_vtk`, `vtk_merge_tensor`. From 0.5.1; before it, most setters returned `nothing`.
 
 ## 8. Argument order
 
@@ -424,8 +432,8 @@ vtk_save!           dmda_star_fd_coloring
 This list, and the two others this document states as counts ([§12](#12.-Return-values)'s `NamedTuple` returns and [§13](#13.-Exports)'s export diff), are produced by `scripts/api_surface.jl --sweeps` rather than by reading the source. The first version of this section said seven and missed `dmda_star_fd_coloring`, which is what a sweep asserted by hand is worth.
 
 `vtk_save!` is in that list, which corrects [§4](#4.-Object-prefixes): it takes a `PetscVec`, so it is not a free function and does not keep its prefix.
-It becomes `save_vtk!(vec, filename)`, with `comm` recovered from the vector.
-`vtk_save_fields!` takes an iterable of vectors and becomes `save_vtk!(vecs, filename)` on the same name.
+It becomes `save_vtk(vec, filename)`, with `comm` recovered from the vector. 0.5.0 spelled it `save_vtk!`; it writes a file and mutates no argument, so 0.5.1 drops the `!` ([§7](#7.-Mutation)) and the old spelling warns until v0.6.
+`vtk_save_fields!` takes an iterable of vectors and becomes `save_vtk(vecs, filename)` on the same name.
 
 ### 8.1 Callbacks come first
 
@@ -828,8 +836,8 @@ Each pair collapses to one name, so two shims point at each replacement.
 | `mat_set_null_space!` | `set_nullspace!` |
 | `mat_null_space_destroy!` | `destroy!` |
 | `fe_create_default`, `fe_create_lagrange` | unchanged (free functions) |
-| `vtk_save!`, `vtk_save_fields!` | `save_vtk!` (drops `petsclib`, see [§8](#8.-Argument-order)) |
-| `vtk_merge_tensor!` | unchanged (free function, no PETSc object) |
+| `vtk_save!`, `vtk_save_fields!` | `save_vtk!` (drops `petsclib`, see [§8](#8.-Argument-order)); `save_vtk` from 0.5.1 ([§7](#7.-Mutation)) |
+| `vtk_merge_tensor!` | unchanged (free function, no PETSc object); `vtk_merge_tensor` from 0.5.1 ([§7](#7.-Mutation)) |
 | `setfield!` | `set_field!` (resolves the `Base.setfield!` shadow) |
 | `dmclone` | `clone` |
 | `plex_set_snes_local_fem!` | `set_snes_local_fem!` |
@@ -944,7 +952,7 @@ They drop the `_` prefix, which was standing in for "internal" and is not how Ju
 |---|---|
 | `_petsc_link` | `petsc_link` |
 | `_petsc_subst` | `petsc_subst` |
-| `_vtk_merge_one_tensor!` | `vtk_merge_one_tensor!` |
+| `_vtk_merge_one_tensor!` | `vtk_merge_one_tensor` |
 | `_build_petsc_options` | `build_petsc_options` |
 | `_ensure_library_handle` | `ensure_library_handle` |
 | `_ensure_mpi_initialized` | `ensure_mpi_initialized` |

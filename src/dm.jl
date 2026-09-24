@@ -311,7 +311,10 @@ function ghost_corners end
 # External Links
 $(doc_external("DM/DMSetUp"))
 """
-setup!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSetUp(PetscLib, dm)
+function setup!(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    LibPETSc.DMSetUp(PetscLib, dm)
+    return dm
+end
 
 
 """
@@ -321,7 +324,10 @@ Sets the global options to the `dm`
 # External Links
 $(doc_external("DM/DMSetFromOptions"))
 """
-set_from_options!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSetFromOptions(PetscLib, dm)
+function set_from_options!(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    LibPETSc.DMSetFromOptions(PetscLib, dm)
+    return dm
+end
 
 
 
@@ -366,7 +372,7 @@ function local_to_global!(
 ) where {PetscLib}
     LibPETSc.DMLocalToGlobalBegin(PetscLib, dm, lvec, mode, gvec)
     LibPETSc.DMLocalToGlobalEnd(PetscLib, dm, lvec, mode, gvec)
-    return nothing
+    return gvec
 end
 
 
@@ -399,7 +405,7 @@ function global_to_local!(
 ) where {PetscLib}
     LibPETSc.DMGlobalToLocalBegin(getlib(PetscLib), dm, gvec, mode, lvec)
     LibPETSc.DMGlobalToLocalEnd(getlib(PetscLib), dm, gvec, mode, lvec)
-    return nothing
+    return lvec
 end
 
 
@@ -532,7 +538,7 @@ $(doc_external("DM/DMSetType"))
 """
 function set_type!(dm::AbstractPetscDM{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.DMSetType(getlib(PetscLib), dm, String(type))
-    return nothing
+    return dm
 end
 
 """

@@ -158,7 +158,7 @@ Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = Broadcast.DefaultArrayStyle{1}
 
 # The library a wrapper carries in its type parameter, as a value. Used where a
 # call has to recover `petsclib` from an object rather than take it as an
-# argument (§8), for instance `save_vtk!(vecs, filename)`.
+# argument (§8), for instance `save_vtk(vecs, filename)`.
 petsclib_of(::AbstractPetscVec{PetscLib}) where {PetscLib} = getlib(PetscLib)
 
 # Array interface - size and length
@@ -189,7 +189,7 @@ $(doc_external("Vec/VecSetType"))
 """
 function set_type!(v::AbstractPetscVec{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.VecSetType(getlib(PetscLib), v, String(type))
-    return nothing
+    return v
 end
 
 function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib} 
@@ -217,16 +217,19 @@ function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {P
      PetscInt = inttype(PetscLib)
      PetscScalar = PETSc.scalartype(PetscLib)
      LibPETSc.VecSetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]), [PetscScalar(val)], PETSc.INSERT_VALUES)
-     return nothing
+     return v
 end
 
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib} 
     PetscInt = inttype(PetscLib)
     LibPETSc.VecSetValues(PetscLib,v, PetscInt(length(r)), PetscInt.(Vector(r) .- 1), vals, PETSc.INSERT_VALUES)
-    return nothing
+    return v
 end
 
-Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib} = LibPETSc.VecSet(PetscLib,v, PetscLib.PetscScalar(val))
+function Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib}
+    LibPETSc.VecSet(PetscLib, v, PetscLib.PetscScalar(val))
+    return v
+end
 
 # Broadcasting assignment support (dest is not an AbstractArray)
 function Base.copyto!(dest::AbstractPetscVec{PetscLib}, bc::Base.Broadcast.Broadcasted) where {PetscLib}
@@ -264,6 +267,7 @@ Assembles a PETSc vector after setting values.
 function assemble!(A::AbstractPetscVec{PetscLib}) where {PetscLib}
     LibPETSc.VecAssemblyBegin(PetscLib, A)
     LibPETSc.VecAssemblyEnd(PetscLib, A)
+    return A
 end
 
 
@@ -616,7 +620,7 @@ function ghost_update_begin!(
     scattermode = SCATTER_FORWARD,
 ) where {PetscLib}
     LibPETSc.VecGhostUpdateBegin(PetscLib, vec, insertmode, scattermode)
-    return nothing
+    return vec
 end
 
 """
@@ -637,7 +641,7 @@ function ghost_update_end!(
     scattermode = SCATTER_FORWARD,
 ) where {PetscLib}
     LibPETSc.VecGhostUpdateEnd(PetscLib, vec, insertmode, scattermode)
-    return nothing
+    return vec
 end
 
 """
@@ -659,7 +663,7 @@ function ghost_update!(
 ) where {PetscLib}
     ghost_update_begin!(vec,insertmode,scattermode)
     ghost_update_end!(vec,insertmode,scattermode)
-    return nothing
+    return vec
 end
 
 """

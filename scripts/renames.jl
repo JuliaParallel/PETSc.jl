@@ -74,8 +74,10 @@ const RENAMES = Pair{Symbol, Symbol}[
     :mat_null_space_create => :mat_nullspace_create,
     :mat_set_null_space! => :set_nullspace!,
     :mat_null_space_destroy! => :destroy!,
-    :vtk_save! => :save_vtk!,
-    :vtk_save_fields! => :save_vtk!,
+    :vtk_save! => :save_vtk,
+    :vtk_save_fields! => :save_vtk,
+    :save_vtk! => :save_vtk,       # v0.5.1: it writes a file and mutates no argument (§7)
+    :vtk_merge_tensor! => :vtk_merge_tensor,   # v0.5.1: likewise
     :setfield! => :set_field!,
     :dmclone => :clone,
     :plex_set_snes_local_fem! => :set_snes_local_fem!,
@@ -241,17 +243,17 @@ const CUSTOM_SHIMS = Dict{Symbol, String}(
     # communicator (§8).
     :vtk_save! => """
     function vtk_save!(args...; kwargs...)
-        @warn "vtk_save! is deprecated, use save_vtk!" maxlog = 1
+        @warn "vtk_save! is deprecated, use save_vtk" maxlog = 1
         petsclib, comm, filename, vec = args
-        return save_vtk!(vec, filename; kwargs...)
+        return save_vtk(vec, filename; kwargs...)
     end
     """,
 
     :vtk_save_fields! => """
     function vtk_save_fields!(args...; kwargs...)
-        @warn "vtk_save_fields! is deprecated, use save_vtk!" maxlog = 1
+        @warn "vtk_save_fields! is deprecated, use save_vtk" maxlog = 1
         petsclib, comm, filename, vecs = args
-        return save_vtk!(vecs, filename; kwargs...)
+        return save_vtk(vecs, filename; kwargs...)
     end
     """,
 
@@ -372,7 +374,7 @@ const INTERNAL = Set{Symbol}([
     # leading underscore dropped (naming.md "Internals")
     :petsc_link,
     :petsc_subst,
-    :vtk_merge_one_tensor!,
+    :vtk_merge_one_tensor,
     :build_petsc_options,
     :ensure_library_handle,
     :ensure_mpi_initialized,
@@ -482,7 +484,6 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_residual!,
     :set_jacobian!,
     :set_jacobian_preconditioner!,
-    :vtk_merge_tensor!,
     # vec.jl / mat.jl
     :VecPtr,
     :MatPtr,

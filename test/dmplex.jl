@@ -33,7 +33,7 @@ const _TC = MPI.COMM_SELF
 
 # Intel Mac (x86_64) crashes inside DMPlex + PetscFE operations with the
 # current PETSc_jll binary.  Guard the PETSc-dependent testset; the pure-Julia
-# vtk_merge_tensor! tests below are unaffected and still run.
+# vtk_merge_tensor tests below are unaffected and still run.
 # No `const` here — vec.jl and mat.jl assign the same name without const in the
 # shared Main scope; redeclaring it as const would raise an error in Julia LTS.
 isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
@@ -634,13 +634,14 @@ for petsclib in PETSc.petsclibs
         label = PETSc.label(dm, "marker")
         @test label != C_NULL
 
-        bd = PETSc.add_boundary!(
+        ret = PETSc.add_boundary!(
             dm,
             LibPETSc.DM_BC_ESSENTIAL, "dirichlet", label,
             PetscInt_t[1], 0, PetscInt_t[], _dm_zero_ptr,
         )
-        @test bd isa PetscInt_t
-        @test bd >= 0
+        @test ret === dm
+        ds = LibPETSc.DMGetDS(petsclib, dm)
+        @test LibPETSc.PetscDSGetNumBoundary(petsclib, ds) == 1
 
         PETSc.destroy!(dm)
     end
@@ -720,9 +721,9 @@ end # if !isintelmac
 
 end # @testset "DMPlex"
 
-# ── vtk_merge_tensor! ────────────────────────────────────────────────────────
+# ── vtk_merge_tensor ────────────────────────────────────────────────────────
 # These tests are pure Julia string/binary manipulation — no PETSc lib needed.
-@testset "vtk_merge_tensor!" begin
+@testset "vtk_merge_tensor" begin
 
     # Build a minimal appended-binary VTK file with two sets of 9 scalar arrays
     # (simulating what PETSc writes before the tensor merge step).
@@ -760,7 +761,7 @@ _"""
     @testset "single tensor" begin
         f = tempname() * ".vtu"
         _make_vtu(f, ["strainrate"])
-        PETSc.vtk_merge_tensor!(f, "strainrate")
+        PETSc.vtk_merge_tensor(f, "strainrate")
         xml = read(f, String)
         @test contains(xml, "Tensors=\"strainrate\"")
         @test contains(xml, "Name=\"strainrate\" NumberOfComponents=\"9\"")
@@ -770,7 +771,7 @@ _"""
     @testset "two tensors — Tensors attribute has both names" begin
         f = tempname() * ".vtu"
         _make_vtu(f, ["strainrate", "stress_dev"])
-        PETSc.vtk_merge_tensor!(f, "strainrate", "stress_dev")
+        PETSc.vtk_merge_tensor(f, "strainrate", "stress_dev")
         xml = read(f, String)
         @test contains(xml, "Tensors=\"strainrate stress_dev\"")
         @test contains(xml, "Name=\"strainrate\" NumberOfComponents=\"9\"")
@@ -786,7 +787,7 @@ _"""
         # capture group.
         f = tempname() * ".vtu"
         _make_vtu(f, ["strainrate", "stress_dev"])
-        PETSc.vtk_merge_tensor!(f, "strainrate", "stress_dev")
+        PETSc.vtk_merge_tensor(f, "strainrate", "stress_dev")
         xml = read(f, String)
         @test !contains(xml, "\"T stress_dev\"")
         @test !contains(xml, "\"T strainrate\"")

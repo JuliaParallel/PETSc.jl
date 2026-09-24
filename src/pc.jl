@@ -64,7 +64,7 @@ $(doc_external("PC/PCSetType"))
 """
 function set_type!(p::AbstractPC{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.PCSetType(getlib(PetscLib), p, String(type))
-    return nothing
+    return p
 end
 
 """
@@ -92,7 +92,7 @@ function set_fieldsplit_is!(
         "call set_type!(p, :fieldsplit) first",
     ))
     LibPETSc.PCFieldSplitSetIS(getlib(PetscLib), p, String(name), is)
-    return nothing
+    return p
 end
 
 # ============================================================================

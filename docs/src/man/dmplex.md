@@ -275,14 +275,14 @@ PETSc.destroy!(petsclib, nullspace)
 
 ```julia
 # Write a named vector to a VTU file (merges parallel pieces automatically)
-PETSc.save_vtk!(out_vec, "solution.vtu")
+PETSc.save_vtk(out_vec, "solution.vtu")
 
 # Mark tensor fields so ParaView shows them as tensors
-PETSc.vtk_merge_tensor!(fname, "strainrate", "tau")
+PETSc.vtk_merge_tensor(fname, "strainrate", "tau")
 ```
 
-`save_vtk!` calls `PetscViewerVTKOpen` + `DMView` / `VecView` internally and works in parallel (each rank writes its own piece; PETSc merges the XML).
-`vtk_merge_tensor!` post-processes the XML header to annotate multiple tensor fields so ParaView's tensor glyph filter recognises them.
+`save_vtk` calls `PetscViewerVTKOpen` + `DMView` / `VecView` internally and works in parallel (each rank writes its own piece; PETSc merges the XML).
+`vtk_merge_tensor` post-processes the XML header to annotate multiple tensor fields so ParaView's tensor glyph filter recognises them.
 
 ### Writing a ParaView PVD animation file
 
@@ -291,7 +291,7 @@ pvd_entries = Tuple{Float64,String}[]
 for step in 1:nsteps
     # ... solve ...
     fname = "out_$(lpad(step, 4, '0')).vtu"
-    PETSc.save_vtk!(out_vec, fname)
+    PETSc.save_vtk(out_vec, fname)
     push!(pvd_entries, (t, abspath(fname)))
     # rewrite PVD after every step so it is always playable
     open("sim.pvd", "w") do io
@@ -619,7 +619,7 @@ mpiexec -n 4 julia --project=examples examples/ex62b.jl \
 The mesh is partitioned automatically by PETSc's DMPlex.  The direct solver
 (`-fieldsplit_velocity_pc_type lu`) works in serial only; use GAMG or GMG for
 parallel runs.  VTK output is written per-rank and merged into a single XML
-collection automatically by `save_vtk!`.
+collection automatically by `save_vtk`.
 
 For large HPC runs, see [Running on HPC Systems](@ref) for MPI launch syntax
 on different cluster schedulers.

@@ -300,7 +300,7 @@ function set_exact_final_time!(
     option::LibPETSc.TSExactFinalTimeOption,
 ) where {PetscLib}
     LibPETSc.TSSetExactFinalTime(getlib(PetscLib), ts, option)
-    return nothing
+    return ts
 end
 
 """
@@ -319,7 +319,7 @@ function set_adapt_type!(ts::AbstractTS{PetscLib}, type::Symbol) where {PetscLib
         LibPETSc.TSGetAdapt(petsclib, ts),
         String(type),
     )
-    return nothing
+    return ts
 end
 
 """
@@ -404,7 +404,7 @@ $(doc_external("TS/TSSetType"))
 """
 function set_type!(ts::AbstractTS{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.TSSetType(getlib(PetscLib), ts, String(type))
-    return nothing
+    return ts
 end
 
 """
@@ -420,7 +420,7 @@ function set_problem_type!(
     type::LibPETSc.TSProblemType,
 ) where {PetscLib}
     LibPETSc.TSSetProblemType(getlib(PetscLib), ts, type)
-    return nothing
+    return ts
 end
 
 """
@@ -449,7 +449,7 @@ function set_dm!(
     dm::AbstractPetscDM{PetscLib},
 ) where {PetscLib}
     LibPETSc.TSSetDM(getlib(PetscLib), ts, dm)
-    return nothing
+    return ts
 end
 
 """
@@ -481,7 +481,7 @@ function set_solution!(
     u::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
     LibPETSc.TSSetSolution(getlib(PetscLib), ts, u)
-    return nothing
+    return ts
 end
 
 # Time and step controls
@@ -508,7 +508,7 @@ $(doc_external("TS/TSSetTime"))
 """
 function set_time!(ts::AbstractTS{PetscLib}, t) where {PetscLib}
     LibPETSc.TSSetTime(getlib(PetscLib), ts, PetscLib.PetscReal(t))
-    return nothing
+    return ts
 end
 
 """
@@ -532,7 +532,7 @@ $(doc_external("TS/TSSetTimeStep"))
 """
 function set_timestep!(ts::AbstractTS{PetscLib}, dt) where {PetscLib}
     LibPETSc.TSSetTimeStep(getlib(PetscLib), ts, PetscLib.PetscReal(dt))
-    return nothing
+    return ts
 end
 
 """
@@ -556,7 +556,7 @@ $(doc_external("TS/TSSetMaxTime"))
 """
 function set_max_time!(ts::AbstractTS{PetscLib}, t) where {PetscLib}
     LibPETSc.TSSetMaxTime(getlib(PetscLib), ts, PetscLib.PetscReal(t))
-    return nothing
+    return ts
 end
 
 """
@@ -580,7 +580,7 @@ $(doc_external("TS/TSSetMaxSteps"))
 """
 function set_max_steps!(ts::AbstractTS{PetscLib}, n) where {PetscLib}
     LibPETSc.TSSetMaxSteps(getlib(PetscLib), ts, PetscLib.PetscInt(n))
-    return nothing
+    return ts
 end
 
 """
@@ -649,7 +649,7 @@ function set_tolerances!(
         isnothing(rtol) ? cur_rtol : PetscReal(rtol),
         isnothing(vrtol) ? null_vec : vrtol,
     )
-    return nothing
+    return ts
 end
 
 """
@@ -766,7 +766,7 @@ $(doc_external("TS/TSSetUp"))
 """
 function setup!(ts::AbstractTS{PetscLib}) where {PetscLib}
     capture_callback_errors(() -> LibPETSc.TSSetUp(getlib(PetscLib), ts))
-    return nothing
+    return ts
 end
 
 """
@@ -779,7 +779,7 @@ $(doc_external("TS/TSSetFromOptions"))
 """
 function set_from_options!(ts::AbstractTS{PetscLib}) where {PetscLib}
     LibPETSc.TSSetFromOptions(getlib(PetscLib), ts)
-    return nothing
+    return ts
 end
 
 """
@@ -874,7 +874,7 @@ $(doc_external("TS/TSStep"))
 """
 function step!(ts::AbstractTS{PetscLib}) where {PetscLib}
     capture_callback_errors(() -> LibPETSc.TSStep(getlib(PetscLib), ts))
-    return nothing
+    return ts
 end
 
 """
@@ -891,7 +891,7 @@ $(doc_external("TS/TSReset"))
 """
 function reset!(ts::AbstractTS{PetscLib}) where {PetscLib}
     LibPETSc.TSReset(getlib(PetscLib), ts)
-    return nothing
+    return ts
 end
 
 """
@@ -996,7 +996,7 @@ LibPETSc.@for_petsc function set_rhs_function!(
     )
     ts.rhs_function! = f!
     LibPETSc.TSSetRHSFunction($PetscLib, ts, r, fptr, state_pointer(ts))
-    return nothing
+    return ts
 end
 
 """
@@ -1063,7 +1063,7 @@ LibPETSc.@for_petsc function set_rhs_jacobian!(
         fptr,
         state_pointer(ts),
     )
-    return nothing
+    return ts
 end
 
 """
@@ -1122,7 +1122,7 @@ LibPETSc.@for_petsc function set_ifunction!(
     )
     ts.ifunction! = f!
     LibPETSc.TSSetIFunction($PetscLib, ts, r, fptr, state_pointer(ts))
-    return nothing
+    return ts
 end
 
 """
@@ -1202,7 +1202,7 @@ LibPETSc.@for_petsc function set_ijacobian!(
         fptr,
         state_pointer(ts),
     )
-    return nothing
+    return ts
 end
 
 """
@@ -1259,5 +1259,5 @@ LibPETSc.@for_petsc function set_monitor!(f, ts::AbstractTS{$PetscLib})
     )
     ts.monitor = f
     LibPETSc.TSMonitorSet($PetscLib, ts, fptr, state_pointer(ts))
-    return nothing
+    return ts
 end

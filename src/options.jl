@@ -114,7 +114,7 @@ function Base.setindex!(
     key,
 ) where {PetscLib}
     val === true && (val = nothing)
-    val === false && (return val)
+    val === false && (return opts)
 
     LibPETSc.PetscOptionsSetValue(
         PetscLib,
@@ -123,7 +123,7 @@ function Base.setindex!(
         isnothing(val) ? C_NULL : string(val),
     )
 
-    return val
+    return opts
 end
 
 function Base.getindex(opts::AbstractPetscOptions{PetscLib}, key) where {PetscLib}

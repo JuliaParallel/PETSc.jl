@@ -76,7 +76,7 @@ $(doc_external("Mat/MatSetType"))
 """
 function set_type!(m::AbstractPetscMat{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.MatSetType(getlib(PetscLib), m, String(type))
-    return nothing
+    return m
 end
 Base.axes(m::PetscMat{PetscLib}, i::Integer) where {PetscLib} = Base.OneTo(Base.size(m)[i])
 
@@ -463,6 +463,7 @@ Assembles a PETSc matrix after setting values.
 function assemble!(A::AbstractPetscMat{PetscLib}) where {PetscLib}
     LibPETSc.MatAssemblyBegin(PetscLib, A, PETSc.MAT_FINAL_ASSEMBLY)
     LibPETSc.MatAssemblyEnd(PetscLib, A, PETSc.MAT_FINAL_ASSEMBLY)
+    return A
 end
 
 
@@ -477,7 +478,7 @@ Computes
 """
 function LinearAlgebra.mul!(y::PetscVec{PetscLib},M::AbstractPetscMat{PetscLib},x::PetscVec{PetscLib}) where {PetscLib} 
     capture_callback_errors(() -> LibPETSc.MatMult(PetscLib, M, x, y))
-    return nothing
+    return y
 end
 
 function Base.:*(
@@ -495,7 +496,7 @@ function LinearAlgebra.mul!(
     x::PetscVec{PetscLib},
 ) where {PetscLib, AM <: PetscMat{PetscLib}}
     LibPETSc.MatMultHermitianTranspose(PetscLib, parent(M), x, y)
-    return nothing
+    return y
 end
 
 function LinearAlgebra.mul!(
@@ -504,7 +505,7 @@ function LinearAlgebra.mul!(
     x::PetscVec{PetscLib},
 ) where {PetscLib, AM <: PetscMat{PetscLib}}
     LibPETSc.MatMultTranspose(PetscLib, parent(M), x, y)
-    return nothing
+    return y
 end
 
 function LinearAlgebra.issymmetric(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib} 
@@ -700,7 +701,7 @@ function Base.copyto!(
             M[PetscInt(i + row_start), PetscInt(j + row_start)] = PetscScalar(S.nzval[ii])
         end
     end
-    return nothing
+    return M
 end
 
 """
@@ -758,7 +759,7 @@ function set_values!(
         rowvals,
         insertmode,
     )
-    return nothing
+    return M
 end
 
 
@@ -783,7 +784,7 @@ function Base.setindex!(
         N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
     )
     set_values!(M, [ms_i], [ms_j], [PetscScalar(val)], INSERT_VALUES)
-    return val
+    return M
 end
 
 function add_index!(
@@ -807,7 +808,7 @@ function add_index!(
         N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
     )
     set_values!(M, [ms_i], [ms_j], [PetscScalar(val)], ADD_VALUES)
-    return val
+    return M
 end
 
 
@@ -1084,7 +1085,7 @@ function set_values!(
         rowvals,
         insertmode,
     )
-    return nothing
+    return M
 end
 
 function LinearAlgebra.norm(

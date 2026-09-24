@@ -136,7 +136,7 @@ $(doc_external("SNES/SNESSetType"))
 """
 function set_type!(snes::AbstractSNES{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.SNESSetType(getlib(PetscLib), snes, String(type))
-    return nothing
+    return snes
 end
 
 """
@@ -204,7 +204,7 @@ LibPETSc.@for_petsc function set_function!(
     LibPETSc.SNESSetFunction($PetscLib, snes, vec, fptr, ctx)
     #end
     snes.f! = f!
-    return 0
+    return snes
 end
 
 """
@@ -290,7 +290,7 @@ LibPETSc.@for_petsc function set_snes_jacobian!(
         LibPETSc.SNESSetJacobian($PetscLib, snes, J, PJ, fptr, ctx)
     #end
     snes.updateJ! = updateJ!
-    return nothing
+    return snes
 end
 
 """
@@ -358,7 +358,7 @@ LibPETSc.@for_petsc function set_convergence_test!(
         (CSNES, $PetscInt, $PetscReal, $PetscReal, $PetscReal, Ptr{Cint}, Ptr{Cvoid})
     )
     LibPETSc.SNESSetConvergenceTest($PetscLib, snes, fptr, ctx, C_NULL)
-    return nothing
+    return snes
 end
 
 """
@@ -461,5 +461,5 @@ function set_dm!(
     dm::AbstractPetscDM{PetscLib},
 ) where {PetscLib}
     LibPETSc.SNESSetDM(getlib(PetscLib), snes, dm)
-    return nothing
+    return snes
 end

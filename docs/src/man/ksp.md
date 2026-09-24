@@ -123,6 +123,23 @@ PETSc.set_fieldsplit_is!(p, "p", is_p)    # options prefix -fieldsplit_p_
 PETSc.type_name(p)                        # :fieldsplit
 ```
 
+A `:shell` preconditioner is written in Julia. The action writes into its first argument, like every other callback here:
+
+```julia
+p = PETSc.pc(ksp)
+PETSc.set_type!(p, :shell)
+PETSc.set_shell_setup!(p) do p
+    # rebuild whatever apply! needs, e.g. after the operator changed
+end
+PETSc.set_shell_apply!(p) do y, p, x
+    PETSc.with_local_array!(y, x; read = (false, true), write = (true, false)) do ya, xa
+        ya .= xa ./ diagonal                 # Jacobi, by hand
+    end
+end
+```
+
+The closures are kept with the PETSc preconditioner, not with the wrapper `p`, so `p` can be dropped. An exception thrown inside either one comes out of the solve that ran it, as itself: a `DomainError` in `apply!` makes `ksp \ b` throw that `DomainError` ([naming conventions](naming.md), §18.4).
+
 A `LibPETSc.PC` is also what every low-level `PC*` function takes, so anything without a high-level verb is one call away: `LibPETSc.PCFieldSplitSetType(petsclib, p, LibPETSc.PC_COMPOSITE_SCHUR)`.
 
 ## Functions

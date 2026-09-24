@@ -97,16 +97,19 @@ using SparseArrays: spdiagm
         b1 = LibPETSc.KSPGetRhs(petsclib, ksp) 
         @test b1 ≈ b
 
-        # this segfaults:
-        x3 = LibPETSc.KSPGetSolution(petsclib, ksp) 
+        x3 = LibPETSc.KSPGetSolution(petsclib, ksp)
         @test x3 ≈ x2
         PETSc.destroy!(x2)
-        PETSc.destroy!(x3)
-        
 
-        A1, P1 = LibPETSc.KSPGetOperators(petsclib, ksp) 
+        A1, P1 = LibPETSc.KSPGetOperators(petsclib, ksp)
         @test A1[1:3,1:3] ≈ A[1:3,1:3]
         @test P1[1:end,1:end] ≈ A[1:end,1:end]
+
+        # Get results are borrowed from ksp (naming.md §18.2): destroy! leaves them alone
+        @test !any(PETSc.owns, (b1, x3, A1, P1))
+        foreach(PETSc.destroy!, (b1, x3, A1, P1))
+        @test x3.ptr != C_NULL
+        @test LibPETSc.KSPGetSolution(petsclib, ksp) ≈ x3
 
         
         if petsclib== PETSc.petsclibs[1]

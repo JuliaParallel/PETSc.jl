@@ -48,7 +48,6 @@ function MatPtr(
 end
 MatPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} =
     MatPtr(getlib(PetscLib), x...)
-owns(m::MatPtr) = m.own
 
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
@@ -826,8 +825,8 @@ function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
     mat = unsafe_pointer_to_objref(ptr)
 
     PetscScalar = PetscLib.PetscScalar
-    x = PetscVec(cx, getlib(PetscLib))
-    y = PetscVec(cy, getlib(PetscLib))
+    x = PetscVec(cx, getlib(PetscLib); own = false)
+    y = PetscVec(cy, getlib(PetscLib); own = false)
 
     _mul!(y, mat, x)
 
@@ -871,6 +870,7 @@ mutable struct MatShell{PetscLib, OType} <: AbstractPetscMat{PetscLib}
     ptr::CMat
     obj::OType
     age
+    own::Bool
 end
 
 LibPETSc.@for_petsc function MatShell(
@@ -882,7 +882,7 @@ LibPETSc.@for_petsc function MatShell(
     global_rows = LibPETSc.PETSC_DECIDE,
     global_cols = LibPETSc.PETSC_DECIDE,
 ) where {OType}
-    mat = MatShell{$PetscLib, OType}(C_NULL, obj, 0)
+    mat = MatShell{$PetscLib, OType}(C_NULL, obj, 0, true)
 
     # we use the MatShell object itself
     ctx = pointer_from_objref(mat)

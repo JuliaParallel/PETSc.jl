@@ -96,8 +96,6 @@ axis_names(::Val{3}) = (:x, :y, :z)
 @inline axis_ranges(f::F, ::Val{N}) where {F, N} =
     NamedTuple{axis_names(Val(N))}(ntuple(f, Val(N)))
 
-owns(dm::TypedPetscDM) = dm.own
-
 # Wrap a handle a LibPETSc creator returned, taking ownership of it. The
 # finalizer is only attached on a serial communicator: `DMDestroy` is
 # collective and a GC finalizer runs at an arbitrary point.

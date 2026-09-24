@@ -97,8 +97,10 @@ Free the options database `opts` holds, if this process is still allowed to.
 
 Does nothing when the library has been finalized or re-initialized, or when
 `opts` was already destroyed: see [`isdestroyable`](@ref).
+Does nothing on a borrowed handle either: see [`owns`](@ref).
 """
 function destroy!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
+    owns(opts) || return nothing
     if isdestroyable(opts, PetscLib)
         LibPETSc.PetscOptionsDestroy(PetscLib, opts)
     end

@@ -13,14 +13,20 @@ end
 """
     destroy!(p::AbstractPC)
 
-Does nothing. The high-level layer only hands out a `PC` borrowed from its
-`KSP` (see [`pc`](@ref)), and the `KSP` destroys it. A PC made with
-`LibPETSc.PCCreate` is destroyed with `LibPETSc.PCDestroy`.
-"""
-destroy!(::AbstractPC) = nothing
+Destroy the preconditioner `p` holds. Does nothing on the borrowed handle
+[`pc`](@ref) hands back, which its `KSP` destroys: see [`owns`](@ref).
 
-# Borrowed from its KSP, see `destroy!` above
-owns(::AbstractPC) = false
+# External Links
+$(doc_external("PC/PCDestroy"))
+"""
+function destroy!(p::AbstractPC{PetscLib}) where {PetscLib}
+    owns(p) || return nothing
+    if isdestroyable(p, PetscLib)
+        LibPETSc.PCDestroy(PetscLib, p)
+    end
+    p.ptr = C_NULL
+    return nothing
+end
 
 """
     pc(ksp::AbstractKSP)

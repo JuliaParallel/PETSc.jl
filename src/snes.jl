@@ -120,9 +120,9 @@ function (w::SNESSetFunctionFn{PetscLib})(
     snes = unsafe_pointer_to_objref(snes_ptr)
     # Wrap the actual C SNES for the current MG level so that dm() inside
     # the callback returns the correct DM (matches the pattern in KSPComputeRHSFn).
-    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age)
-    x  = PetscVec{PetscLib}(r_x)
-    fx = PetscVec{PetscLib}(r_fx)
+    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
+    x  = PetscVec{PetscLib}(r_x; own = false)
+    fx = PetscVec{PetscLib}(r_fx; own = false)
 
     if Base.applicable(snes.f!, fx, actual_snes, x, snes.user_ctx)
         return snes.f!(fx, actual_snes, x, snes.user_ctx)
@@ -193,10 +193,10 @@ function (w::SNESSetJacobianFn{PetscLib})(
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)
-    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age)
-    x = PetscVec{PetscLib}(r_x)
-    A = PetscMat{PetscLib}(r_A)
-    P = PetscMat{PetscLib}(r_P)
+    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
+    x = PetscVec{PetscLib}(r_x; own = false)
+    A = PetscMat{PetscLib}(r_A; own = false)
+    P = PetscMat{PetscLib}(r_P; own = false)
 
     same_mat = (P.ptr == A.ptr)
 
@@ -275,7 +275,7 @@ function (w::SNESSetConvergenceTestFn{PetscLib})(
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)
-    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age)
+    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
     reason = snes.convergence_test!(actual_snes, Int(it), Float64(xnorm), Float64(gnorm), Float64(fnorm))
     unsafe_store!(reason_ptr, eltype(reason_ptr)(Int(reason)))
     return Cint(0)
@@ -328,11 +328,13 @@ Destroy a SNES (nonlinear solver) object and release associated resources.
 
 This function is typically called automatically via finalizers when the object
 is garbage collected, but can be called explicitly to free resources immediately.
+Does nothing on a borrowed handle, such as the one [`snes(ts)`](@ref) hands back.
 
 # External Links
 $(doc_external("SNES/SNESDestroy"))
 """
 function destroy!(snes::AbstractSNES{PetscLib}) where {PetscLib}
+    owns(snes) || return nothing
     if !isnothing(snes.opts)
         destroy!(snes.opts)
         snes.opts = nothing

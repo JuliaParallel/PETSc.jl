@@ -167,7 +167,9 @@ KSP(petsclib, comm, S::SparseMatrixCSC; kwargs...)
 
 function KSP(petsclib, comm, S::SparseMatrixCSC; kwargs...) 
     M = LibPETSc.PetscMat(petsclib, comm, S)
-    return KSP(M; kwargs...)
+    ksp = KSP(M; kwargs...)
+    destroy!(M)   # the KSP holds its own reference
+    return ksp
 end
 
 
@@ -230,11 +232,16 @@ function Base.:\(
     )
     PetscInt = PetscLib.PetscInt
 
-    petsc_b = LibPETSc.VecCreateSeqWithArray(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), PetscScalar.(b))
-    petsc_x = ksp \ petsc_b
-    x = petsc_x[:]
-    destroy!(petsc_b)
-    destroy!(petsc_x)
+    # PETSc works on this copy of `b` in place, so it must outlive the solve
+    b_copy = PetscScalar.(b)
+    x = GC.@preserve b_copy begin
+        petsc_b = LibPETSc.VecCreateSeqWithArray(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), b_copy)
+        petsc_x = ksp \ petsc_b
+        x = petsc_x[:]
+        destroy!(petsc_b)
+        destroy!(petsc_x)
+        x
+    end
 
     return x
 end

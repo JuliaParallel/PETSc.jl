@@ -90,6 +90,24 @@ library_type(::Type{<:LibPETSc.AbstractSNES{PetscLib}})     where {PetscLib} = P
 library_type(::Type{<:LibPETSc.AbstractTS{PetscLib}})       where {PetscLib} = PetscLib
 library_type(::Type{<:LibPETSc.AbstractPC{PetscLib}})       where {PetscLib} = PetscLib
 library_type(::Type{<:LibPETSc.AbstractPetscMat{PetscLib}}) where {PetscLib} = PetscLib
+library_type(::Type{<:LibPETSc.AbstractPetscVec{PetscLib}}) where {PetscLib} = PetscLib
+
+# Julia arrays a Vec or Mat uses as its storage without copying them
+# (`VecCreateSeqWithArray`, `MatCreateSeqAIJWithArrays`). Kept with the PETSc
+# object, so they live exactly as long as it does, whoever destroys it.
+mutable struct WrappedArrays <: ObjectState
+    arrays::Any
+    alive::Bool
+end
+WrappedArrays() = WrappedArrays(nothing, true)
+state_type(::Type{<:LibPETSc.AbstractPetscVec}) = WrappedArrays
+state_type(::Type{<:LibPETSc.AbstractPetscMat}) = WrappedArrays
+
+# Keep `arrays` alive for as long as the PETSc object `obj` holds exists
+function keep_alive!(obj, arrays)
+    object_state!(obj).arrays = arrays
+    return obj
+end
 
 # The wrapper fields that moved into the state stay readable and
 # writable as properties of the wrapper

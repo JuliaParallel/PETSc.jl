@@ -422,13 +422,14 @@ const INTERNAL = Set{Symbol}([
     :TSState,
     :PCState,
     :MatShellState,
+    :WrappedArrays,
+    :keep_alive!,
     :shell_state,
     :DM_ACTIVE_PARTS,
     :PCShellSetApplyFn,      # a trampoline type (§18.6)
     :PCShellSetSetUpFn,
     :_taoterm_resettable,
     :_reset_stale_register_flags,
-    :_MATSEQAIJ_WITHARRAYS_STORAGE,
     :_PETSC_ERR_LIB,
     # defined into `PETSc` at runtime, the first time `check_wrappers_version`
     # includes src/autowrapped/petsc_wrappers_version.jl

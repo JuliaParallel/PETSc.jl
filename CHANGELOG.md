@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Fixed a use-after-free.** A vector built on a Julia array, `PetscVec(petsclib, array)` or `PetscVec(petsclib, comm, array)`, used the array's memory without keeping the array alive, so after a garbage collection it could read and write memory Julia had reused: `PetscVec(petsclib, [1.0, 2.0])` was unsafe. `ksp \ b` for a Julia vector and `M * x` for a `MatShell` had the same problem with their temporary copies. The vector now keeps its array alive for as long as the PETSc object exists.
+- A matrix built on CSR arrays, `PetscMat(petsclib, rowptr, colval, nzval)` or `PetscMat(…; with_arrays = true)`, released its arrays in `destroy!` even when a solver still held the matrix. They now live as long as the matrix. Both constructors attach the one-process finalizer the other constructors have.
+- `KSP(petsclib, comm, S::SparseMatrixCSC)` no longer leaks its matrix, and `PetscMat(petsclib, comm, S)` attaches the one-process finalizer.
 - `TSIRK` types (`-ts_irk_type gauss` and the rest) are found again after `finalize` followed by `initialize`. PETSc 3.25 leaves their registration flag set at finalize; `initialize` now resets it.
 - `PetscOptions(petsclib)` throws `PetscNotInitialized` on a library that is not initialized, like every other high-level constructor. It used to succeed and return an options database that `destroy!` skipped once `initialize` ran.
 - `LibPETSc.PC` is a Julia type, `PC{PetscLib}`, like `KSP` and `IS`, instead of a raw pointer alias. `KSPGetPC`, `PCCreate` and the other functions that hand out a PC return it, and every `PC*` function takes an `AbstractPC`. Code that passes a PC from one call to the next is unaffected; code that annotates a variable as `LibPETSc.PC` expecting a `Ptr`, or passes raw pointers, needs `pc.ptr`.

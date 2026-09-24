@@ -10,13 +10,14 @@
 # `scripts/renames.jl`; a name missing from it is added there rather than
 # excused here, because five generated files are derived from the same data.
 #
-# `--sweeps` derives the four lists §1.1 asks for, so that no count in
+# `--sweeps` derives the lists §1.1 asks for, so that no count in
 # `naming.md` has to be remembered:
 #
 #   1. functions taking `petsclib` first alongside a dispatchable PETSc object (§8)
 #   2. functions returning a `NamedTuple` (§12)
 #   3. exported names against §13's list
 #   4. readers returning a PETSc object without a `doc_borrowed` entry (§3.3)
+#   5. `!` functions that can return `nothing` instead of the object they mutate (§7)
 #
 # The module is loaded rather than parsed, because §13's short accessors (`dm`,
 # `comm`, `info`, `ds`, `label`, `solution`) cannot be found by a text search.
@@ -313,6 +314,31 @@ function borrowed_sweep()
     return hits
 end
 
+# The `!` functions §7 lets return `nothing`: releases and package-state setters.
+const RETURNS_NOTHING = Set([
+    :destroy!, :restore_local_arrays!, :set_library!, :unset_library!, :set_petscint!,
+])
+
+"""
+    bang_returns_sweep() -> Vector{Symbol}
+
+Sweep 5 (§7): `!` functions whose inferred return type includes `Nothing`, other
+than the releases and package-state setters §7 exempts. A method inference
+cannot see through (arguments typed `Any`) is not reported.
+"""
+function bang_returns_sweep()
+    deprecated = Set(first.(RENAMES))
+    hits = Symbol[]
+    for name in surface()
+        endswith(String(name), "!") || continue
+        (name in deprecated || name in INTERNAL || name in RETURNS_NOTHING) && continue
+        f = getproperty(PETSc, name)
+        f isa Function || continue
+        any(T -> mentions(T, ==(Nothing)), return_types_of(f)) && push!(hits, name)
+    end
+    return hits
+end
+
 function sweeps(io::IO = stdout)
     println(io, "1. petsclib first alongside a dispatchable PETSc object (§8)")
     hits = petsclib_first()
@@ -346,6 +372,13 @@ function sweeps(io::IO = stdout)
     bs = borrowed_sweep()
     isempty(bs) && println(io, "   (none)")
     for name in bs
+        println(io, "   ", name)
+    end
+
+    println(io, "\n5. ! functions that can return nothing (§7)")
+    rs = bang_returns_sweep()
+    isempty(rs) && println(io, "   (none)")
+    for name in rs
         println(io, "   ", name)
     end
     return nothing

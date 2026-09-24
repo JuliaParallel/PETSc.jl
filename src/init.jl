@@ -507,6 +507,7 @@ function set_library!(path; PetscScalar::Type=Float64, PetscInt::Type=Int64)
         "PetscInt"     => string(PetscInt),
     )
     @info "PETSc library configured — restart Julia to use the new library." path PetscScalar PetscInt
+    return nothing
 end
 
 """
@@ -518,6 +519,7 @@ reverting to the default `PETSc_jll` binaries on the next Julia session.
 function unset_library!()
     @delete_preferences!("library_path", "PetscScalar", "PetscInt")
     @info "PETSc library preference removed — restart Julia to revert to PETSc_jll."
+    return nothing
 end
 
 """

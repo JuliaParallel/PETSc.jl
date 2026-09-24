@@ -455,7 +455,7 @@ $(doc_external("Sys/PetscObjectSetName"))
 """
 function set_name!(petsclib::LibPETSc.PetscLibType, obj, name::AbstractString)
     LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, obj), String(name))
-    return nothing
+    return obj
 end
 
 """
@@ -484,7 +484,7 @@ $(doc_external("DM/DMCreateDS"))
 """
 function create_ds!(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     LibPETSc.DMCreateDS(getlib(PetscLib), dm)
-    return nothing
+    return dm
 end
 
 """
@@ -505,7 +505,7 @@ LibPETSc.@for_petsc function set_field!(
     label::Ptr{Cvoid} = C_NULL,
 )
     LibPETSc.DMSetField(getlib($PetscLib), dm, $PetscInt(field), label, Ptr{Cvoid}(fe))
-    return nothing
+    return dm
 end
 
 """
@@ -602,9 +602,10 @@ end
 
 """
     add_boundary!(dm, bctype, name, label, values, field, comps,
-                  bcfunc_ptr, bcfunc_t_ptr = C_NULL, ctx = C_NULL) -> bd::PetscInt
+                  bcfunc_ptr, bcfunc_t_ptr = C_NULL, ctx = C_NULL)
 
-Attach a boundary condition to `dm`.  `label` is a `Ptr{Cvoid}` from
+Attach a boundary condition to `dm`, and return `dm`. `LibPETSc.DMAddBoundary`
+also returns the number PETSc gives the boundary.  `label` is a `Ptr{Cvoid}` from
 [`label`](@ref).  `bcfunc_ptr` / `bcfunc_t_ptr` are `@cfunction(...)` results
 matching PETSc's boundary callback signature.
 
@@ -634,13 +635,14 @@ LibPETSc.@for_petsc function add_boundary!(
     petsclib = getlib($PetscLib)
     values_v = collect($PetscInt.(values))
     comps_v  = collect($PetscInt.(comps))
-    return LibPETSc.DMAddBoundary(
+    LibPETSc.DMAddBoundary(
         petsclib, dm, bctype, String(name), label,
         $PetscInt(length(values_v)), values_v,
         $PetscInt(field),
         $PetscInt(length(comps_v)), comps_v,
         bcfunc_ptr, bcfunc_t_ptr, ctx,
     )
+    return dm
 end
 
 
@@ -666,7 +668,7 @@ LibPETSc.@for_petsc function set_snes_local_fem!(
 )
     petsclib = getlib($PetscLib)
     LibPETSc.DMPlexSetSNESLocalFEM(petsclib, dm, LibPETSc.PetscBool(use_obj), ctx)
-    return nothing
+    return dm
 end
 
 
@@ -690,7 +692,7 @@ function set_residual!(
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
     LibPETSc.PetscDSSetResidual(petsclib, ds.ptr, PetscLib.PetscInt(field), f0_ptr, f1_ptr)
-    return nothing
+    return ds
 end
 
 """
@@ -714,7 +716,7 @@ function set_jacobian!(
     petsclib = getlib(PetscLib)
     LibPETSc.PetscDSSetJacobian(petsclib, ds.ptr, PetscLib.PetscInt(fieldI), PetscLib.PetscInt(fieldJ),
                                 g0_ptr, g1_ptr, g2_ptr, g3_ptr)
-    return nothing
+    return ds
 end
 
 """
@@ -738,7 +740,7 @@ function set_jacobian_preconditioner!(
         PetscLib.PetscInt(field_i), PetscLib.PetscInt(field_j),
         g0, g1, g2, g3,
     )
-    return nothing
+    return ds
 end
 
 """
@@ -761,7 +763,7 @@ function set_exact_solution!(
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
     LibPETSc.PetscDSSetExactSolution(petsclib, ds.ptr, PetscLib.PetscInt(field), sol_ptr, ctx)
-    return nothing
+    return ds
 end
 
 
@@ -803,7 +805,7 @@ LibPETSc.@for_petsc function project_function!(
     funcs_v = collect(funcs)
     ctxs_v  = collect(ctxs)
     LibPETSc.DMProjectFunction(petsclib, dm, time, funcs_v, ctxs_v, mode, X)
-    return nothing
+    return X
 end
 
 function project_function!(
@@ -905,7 +907,7 @@ function set_auxiliary_vec!(dm::AbstractPetscDM{PetscLib}, aux_local) where {Pet
         Ptr{Cvoid}(C_NULL),
         PetscLib.PetscInt(0), PetscLib.PetscInt(0),
         aux_local)
-    return nothing
+    return dm
 end
 
 """
@@ -929,6 +931,7 @@ function add_coarsen_hook!(
     restricthook::Ptr{Cvoid} = C_NULL,
 ) where {PL}
     LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook, C_NULL)
+    return dm
 end
 
 """
@@ -939,7 +942,7 @@ the same integration points.
 """
 function copy_quadrature!(petsclib, src_fe, dst_fe)
     LibPETSc.PetscFECopyQuadrature(petsclib, src_fe, dst_fe)
-    return nothing
+    return dst_fe
 end
 
 """
@@ -964,7 +967,7 @@ LibPETSc.@for_petsc function create_split_boundary_labels!(
         LibPETSc.DMLabelInsertIS(petsclib, label, is, $PetscInt(1))
         LibPETSc.ISDestroy(petsclib, is)
     end
-    return nothing
+    return dm
 end
 
 """
@@ -1025,7 +1028,7 @@ Attach `nullsp` to `mat` so the linear solver removes it each iteration.
 """
 function set_nullspace!(mat, nullsp)
     LibPETSc.MatSetNullSpace(LibPETSc.getlib(typeof(mat).parameters[1]), mat, nullsp)
-    return nothing
+    return mat
 end
 
 """
@@ -1046,7 +1049,7 @@ LibPETSc.@for_petsc function compose_constant_nullspace!(
     LibPETSc.PetscObjectCompose(petsclib,
         convert(Ptr{Cvoid}, fe), "nullspace", convert(Ptr{Cvoid}, nsp))
     destroy!(petsclib, nsp)
-    return nothing
+    return fe
 end
 
 """
@@ -1064,12 +1067,12 @@ LibPETSc.@for_petsc function set_jacobian_nullspace!(
     petsclib = getlib($PetscLib)
     J = LibPETSc.SNESGetJacobianMat(petsclib, snes)
     LibPETSc.MatSetNullSpace(petsclib, J, nullsp)
-    return nothing
+    return snes
 end
 
 """
-    save_vtk!(vec::AbstractPetscVec, filename)
-    save_vtk!(vecs, filename)
+    save_vtk(vec::AbstractPetscVec, filename)
+    save_vtk(vecs, filename)
 
 Write the global vector `vec` to a VTK unstructured-grid file (`.vtu`),
 readable by ParaView and VisIt.  Works for both serial and MPI runs; PETSc
@@ -1089,9 +1092,9 @@ methods, and both shim the old argument list.
 # External Links
 $(doc_external("Viewer/PetscViewerVTKOpen"))
 """
-function save_vtk! end
+function save_vtk end
 
-LibPETSc.@for_petsc function save_vtk!(
+LibPETSc.@for_petsc function save_vtk(
     vec::AbstractPetscVec{$PetscLib},
     filename::AbstractString,
 )
@@ -1136,7 +1139,7 @@ LibPETSc.@for_petsc function project_field!(
     petsclib = getlib($PetscLib)
     funcs_v = collect(Ptr{Cvoid}, funcs)
     GC.@preserve funcs_v LibPETSc.DMProjectField(petsclib, dm, $PetscReal(time), U, pointer(funcs_v), mode, X)
-    return nothing
+    return X
 end
 
 function project_field!(
@@ -1151,15 +1154,15 @@ function project_field!(
     project_field!(X, dm, time, U, fptrs, mode)
 end
 
-# The multi-field method of `save_vtk!`, documented with the single-vector one
+# The multi-field method of `save_vtk`, documented with the single-vector one
 # above. The communicator comes from the first vector, so the iterable must not
 # be empty.
-function save_vtk!(
+function save_vtk(
     vecs,   # iterable of AbstractPetscVec
     filename::AbstractString,
 )
     isempty(vecs) && throw(
-        ArgumentError("save_vtk! needs at least one vector to take the communicator from"),
+        ArgumentError("save_vtk needs at least one vector to take the communicator from"),
     )
     v1 = first(vecs)
     petsclib = petsclib_of(v1)
@@ -1187,14 +1190,14 @@ function set_constants!(ds::PetscDS{PetscLib}, constants::AbstractVector) where 
     petsclib = getlib(PetscLib)
     cst_v = collect(PetscLib.PetscScalar, constants)
     LibPETSc.PetscDSSetConstants(petsclib, ds.ptr, PetscLib.PetscInt(length(cst_v)), cst_v)
-    return nothing
+    return ds
 end
 
 """
-    add_natural_boundary!(dm, ds, name, label, label_value, field, f0_ptr, f1_ptr = C_NULL) -> bd::PetscInt
+    add_natural_boundary!(dm, ds, name, label, label_value, field, f0_ptr, f1_ptr = C_NULL)
 
 Register a natural (Neumann) boundary condition on `dm` following the PETSc 3.22+
-pattern used in the C tutorials.  Equivalent to:
+pattern used in the C tutorials, and return `dm`.  Equivalent to:
 ```c
 DMAddBoundary(dm, DM_BC_NATURAL, name, label, 1, &val, field, 0, NULL, NULL, NULL, NULL, &bd);
 PetscDSGetBoundary(ds, bd, &wf, NULL, ...);
@@ -1236,7 +1239,7 @@ LibPETSc.@for_petsc function add_natural_boundary!(
     LibPETSc.PetscWeakFormSetIndexBdResidual(petsclib, wf, label,
         $PetscInt(label_value), $PetscInt(field),
         $PetscInt(0), $PetscInt(0), f0_ptr, $PetscInt(0), f1_ptr)
-    return bd
+    return dm
 end
 
 """
@@ -1255,7 +1258,7 @@ LibPETSc.@for_petsc function copy_disc!(
     dst::AbstractPetscDM{$PetscLib},
 )
     LibPETSc.DMCopyDisc(getlib($PetscLib), src, dst)
-    return nothing
+    return dst
 end
 
 """
@@ -1278,7 +1281,7 @@ LibPETSc.@for_petsc function coarse_dm(dm::AbstractPetscDM{$PetscLib})
 end
 
 """
-    vtk_merge_tensor!(fname, names...)
+    vtk_merge_tensor(fname, names...)
 
 Post-process a VTK `.vtu` file written by PETSc's VTK viewer to merge 9 separate
 scalar `DataArray`s named `name.0`…`name.8` (produced when a field has more than 3
@@ -1289,14 +1292,14 @@ arrays as 3×3 tensors.  The file is rewritten in-place.
 PETSc's VTK writer always splits fields with more than 3 components into separate
 scalar arrays; this function reassembles them for proper tensor visualisation.
 """
-function vtk_merge_tensor!(fname::AbstractString, names::AbstractString...)
+function vtk_merge_tensor(fname::AbstractString, names::AbstractString...)
     for name in names
-        vtk_merge_one_tensor!(fname, name)
+        vtk_merge_one_tensor(fname, name)
     end
     return nothing
 end
 
-function vtk_merge_one_tensor!(fname::AbstractString, name::AbstractString)
+function vtk_merge_one_tensor(fname::AbstractString, name::AbstractString)
     isfile(fname) || return
     raw = read(fname)
 

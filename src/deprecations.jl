@@ -108,17 +108,19 @@ end
 @renamed mat_set_null_space! set_nullspace!
 @renamed mat_null_space_destroy! destroy!
 function vtk_save!(args...; kwargs...)
-    @warn "vtk_save! is deprecated, use save_vtk!" maxlog = 1
+    @warn "vtk_save! is deprecated, use save_vtk" maxlog = 1
     petsclib, comm, filename, vec = args
-    return save_vtk!(vec, filename; kwargs...)
+    return save_vtk(vec, filename; kwargs...)
 end
 
 function vtk_save_fields!(args...; kwargs...)
-    @warn "vtk_save_fields! is deprecated, use save_vtk!" maxlog = 1
+    @warn "vtk_save_fields! is deprecated, use save_vtk" maxlog = 1
     petsclib, comm, filename, vecs = args
-    return save_vtk!(vecs, filename; kwargs...)
+    return save_vtk(vecs, filename; kwargs...)
 end
 
+@renamed save_vtk! save_vtk
+@renamed vtk_merge_tensor! vtk_merge_tensor
 @renamed setfield! set_field!
 @renamed dmclone clone
 function plex_set_snes_local_fem!(args...; kwargs...)

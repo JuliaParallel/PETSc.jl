@@ -266,7 +266,7 @@ function set_uniform_coordinates!(
     petsclib=getlib(PetscLib)
     LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm, xmin, xmax, ymin, ymax, zmin, zmax)
 
-    return nothing
+    return dm
 end
 
 """

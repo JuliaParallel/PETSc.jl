@@ -883,7 +883,7 @@ function write_pvd(pvd_fname::AbstractString, entries)
 end
 
 """
-    save_vtk!(petsclib, comm, fname, dm, u, aux_vec; vel_degree=2, pres_degree=1)
+    save_solution_vtk(petsclib, comm, fname, dm, u, aux_vec; vel_degree=2, pres_degree=1)
 
 Write the Stokes solution to `fname` (VTK unstructured grid).
 
@@ -895,7 +895,7 @@ Fields written:
 `u`       — global solution vector on `dm`
 `aux_vec` — auxiliary global vector on dm_aux (field 0: phase, field 1: τ_old)
 """
-function save_vtk!(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
+function save_solution_vtk(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
                    vel_degree::Int = 2, pres_degree::Int = 1)
     dim     = LibPETSc.DMGetDimension(petsclib, dm)
     simplex = PETSc.issimplex(dm)
@@ -956,13 +956,13 @@ function save_vtk!(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
          compute_tau_3x3_ptr, compute_eps_II_ptr, compute_tau_II_ptr,
          copy_mu_ptr, copy_phase_ptr], LibPETSc.INSERT_ALL_VALUES)
 
-    PETSc.save_vtk!(out_vec, fname)
+    PETSc.save_vtk(out_vec, fname)
 
     PETSc.destroy!(out_vec)
     PETSc.destroy!(dm_out)
 
     if MPI.Comm_rank(comm) == 0
-        PETSc.vtk_merge_tensor!(fname, "strainrate", "tau")
+        PETSc.vtk_merge_tensor(fname, "strainrate", "tau")
         println("VTK written to $fname (velocity, pressure, strainrate, tau, eps_II, tau_II, viscosity, phase)")
     end
     return nothing
@@ -1409,7 +1409,7 @@ for step in 1:nsteps
         if vtk !== nothing
             base, ext = splitext(string(vtk))
             fname = nsteps > 1 ? "$(base)_$(lpad(step, 4, '0'))$(ext)" : string(vtk)
-            save_vtk!(petsclib, comm, fname, dm, u, aux_vec; vel_degree, pres_degree)
+            save_solution_vtk(petsclib, comm, fname, dm, u, aux_vec; vel_degree, pres_degree)
             # Accumulate entry and rewrite the PVD so it is always up-to-date
             if MPI.Comm_rank(comm) == 0
                 push!(pvd_entries, (t + dt_val, abspath(fname)))

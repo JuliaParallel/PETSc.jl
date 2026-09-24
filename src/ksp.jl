@@ -185,7 +185,7 @@ function solve!(
     finally
         has_opts && pop!(ksp.opts)
     end
-    return nothing
+    return x
 end
 
 function solve!(
@@ -423,5 +423,5 @@ $(doc_external("KSP/KSPSetType"))
 """
 function set_type!(ksp::AbstractKSP{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.KSPSetType(getlib(PetscLib), ksp, String(type))
-    return nothing
+    return ksp
 end

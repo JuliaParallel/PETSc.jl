@@ -378,7 +378,7 @@ end
 let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
     if _vtk !== nothing
         fname = string(_vtk)
-        PETSc.save_vtk!(u, fname)
+        PETSc.save_vtk(u, fname)
         MPI.Comm_rank(comm) == 0 && println("Solution written to $fname")
     end
 end

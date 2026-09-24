@@ -136,6 +136,10 @@ function LibPETSc.PetscMat(
         end
     end
     assemble!(M)
+    # The garbage collector can only destroy it when no other rank takes part
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy!, M)
+    end
     return M
 end
 
@@ -532,10 +536,6 @@ function setup!(mat::PetscMat{PetscLib}) where {PetscLib}
     return mat
 end
 
-# MatCreateSeqAIJWithArrays requires the caller to keep the backing CSR arrays
-# alive for as long as the Mat exists. We store them here and release on destroy!().
-const _MATSEQAIJ_WITHARRAYS_STORAGE = IdDict{Ptr{Cvoid}, Any}()
-
 """
     rowptr, colval, nzval = csr_from_csc(petsclib, A::SparseMatrixCSC)
 
@@ -595,8 +595,8 @@ Create a PETSc SeqAIJ matrix directly on the CSR arrays `rowptr`, `colval` and
 (docs/src/man/naming.md §12.1). The number of rows is `length(rowptr) - 1`;
 `ncols` defaults to one past the largest column index.
 
-The arrays must stay alive for as long as the matrix does: this constructor
-keeps a reference to them and drops it in `destroy!`.
+The matrix keeps the arrays alive for as long as it exists, including when a
+solver still holds it after `destroy!` on this handle.
 
 Replaces v0.4's `MatSeqAIJWithArrays`, which took a `SparseMatrixCSC` and so
 could not be told apart from `MatCreateSeqAIJ` (docs/src/man/naming.md §6).
@@ -620,7 +620,6 @@ function LibPETSc.PetscMat(
     col_idx = convert(Vector{PetscInt}, colval)
     values = convert(Vector{PetscScalar}, nzval)
 
-    # Create the PETSc matrix (PETSc borrows the arrays; keep them alive).
     mat = LibPETSc.MatCreateSeqAIJWithArrays(
         petsclib,
         comm,
@@ -631,7 +630,11 @@ function LibPETSc.PetscMat(
         values,
     )
 
-    _MATSEQAIJ_WITHARRAYS_STORAGE[mat.ptr] = (row_ptr, col_idx, values)
+    keep_alive!(mat, (row_ptr, col_idx, values))
+    # The garbage collector can only destroy it when no other rank takes part
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy!, mat)
+    end
     return mat
 end
 
@@ -667,9 +670,6 @@ $(doc_external("Mat/MatDestroy"))
 """
 function destroy!(m::AbstractPetscMat{PetscLib}) where {PetscLib}
     owns(m) || return nothing
-    # Drop the backing arrays: Julia-side bookkeeping
-    # that has to go when PETSc no longer owns the matrix.
-    pop!(_MATSEQAIJ_WITHARRAYS_STORAGE, m.ptr, nothing)
     if isdestroyable(m, PetscLib)
         LibPETSc.MatDestroy(PetscLib, m)
     end
@@ -831,8 +831,7 @@ end
 
 
 
-# NOTE: MatShell remains work in progress - doesn't function yet
-# We have to use the macro here because of the @cfunction
+# The macro is needed because of the @cfunction
 
 
 """
@@ -982,20 +981,17 @@ function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
     
     # Create PETSc vectors wrapping the Julia arrays
     petsclib = getlib(PetscLib)
-    petsc_x = LibPETSc.VecCreateSeqWithArray(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), PetscScalar.(x))
-    petsc_y = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m))
-    
-    # Perform matrix-vector multiplication
-    LibPETSc.MatMult(petsclib, M, petsc_x, petsc_y)
-    
-    # Extract result to Julia array
-    result = PetscScalar.(petsc_y[:])
-    
-    # Clean up
-    PETSc.destroy!(petsc_x)
-    PETSc.destroy!(petsc_y)
-    
-    return result
+    # PETSc works on this copy of `x` in place, so it must outlive the product
+    x_copy = PetscScalar.(x)
+    return GC.@preserve x_copy begin
+        petsc_x = LibPETSc.VecCreateSeqWithArray(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy)
+        petsc_y = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m))
+        mul!(petsc_y, M, petsc_x)
+        result = petsc_y[:]
+        destroy!(petsc_x)
+        destroy!(petsc_y)
+        result
+    end
 end
 
 """

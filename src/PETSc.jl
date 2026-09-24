@@ -100,22 +100,4 @@ include("audit.jl")
 include("deprecations.jl")  # generated from scripts/renames.jl
 include("public_names.jl")  # generated from scripts/renames.jl
 
-
-
-#=
-include("utils.jl")
-include("viewer.jl")
-
-include("matshell.jl")      # not yet wrapped!
-include("dm.jl")            # partly wrapped, no tests yet
-include("dmda.jl")          # not yet wrapped!
-include("pc.jl")            # to be fixed/wrapped
-include("ksp.jl")           # part is wrapped
-include("sys.jl")
-
-##include("lib.jl")      # can be removed (later)
-##include("ref.jl")      # can be removed (later)
-
-=#
-
 end

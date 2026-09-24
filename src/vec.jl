@@ -112,6 +112,7 @@ A standard, sequentially-stored serial PETSc vector, wrapping the Julia vector
 
 This reuses the array `v` as storage, and so `v` should not be `resize!`-ed or
 otherwise have its length modified while the PETSc object exists.
+The vector keeps `v` alive, so `PetscVec(petsclib, [1.0, 2.0])` is safe.
 
 This should only be need to be called for more advanced uses, for most simple
 usecases, users should be able to pass `Vector`s directly and have the wrapping
@@ -141,6 +142,7 @@ function LibPETSc.PetscVec(
         PetscInt(length(array)),
         array,
     )
+    keep_alive!(v, array)
     finalizer(destroy!, v)
     return v
 end
@@ -671,6 +673,7 @@ end
 
 Creates a sequential PETSc vector of length `n` given a julia array `array`,
 on the communicator `comm`.
+The vector uses `array` as its storage and keeps it alive.
 
 # External Links
 $(doc_external("Vec/VecCreateSeqWithArray"))
@@ -679,7 +682,8 @@ function LibPETSc.PetscVec(petsclib::PetscLib, comm, x::Vector) where {PetscLib 
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
 
-    v = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)    # solution vector
+    v = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)
+    keep_alive!(v, x)
     finalizer(destroy!, v)
 
     return v

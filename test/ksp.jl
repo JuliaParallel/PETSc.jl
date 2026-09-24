@@ -149,9 +149,9 @@ using SparseArrays: spdiagm
 
         PETSc.destroy!(y)
         PETSc.destroy!(b)
-        PETSc.destroy!(b1)
+        # b1 is borrowed from ksp
         PETSc.destroy!(A)
-        PETSc.destroy!(A1)
+        # A1 is borrowed from ksp
         PETSc.destroy!(ksp)
         PETSc.finalize(petsclib)
         

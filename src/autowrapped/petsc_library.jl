@@ -82,21 +82,16 @@ Base.unsafe_convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc KSP -----
+# `ptr`, `age` and `own` only; the Julia state of the solver (callbacks, options)
+# lives with the PETSc object
 const CKSP = Ptr{Cvoid}
 abstract type AbstractKSP{T} end
 mutable struct KSP{PetscLib} <: AbstractKSP{PetscLib}
     ptr::CKSP
     age::Int
-    computerhs!::Function
-    computeops!::Function
-    opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
     own::Bool
 
-    # Constructor from pointer and age (with default callback placeholders)
-    KSP{PetscLib}(ptr::CKSP, age::Int = 0, computerhs!::Function = x -> error("computerhs! not defined"), computeops!::Function = x -> error("computeops! not defined"), opts::Any = nothing; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, computerhs!, computeops!, opts, own)
-
-    # Constructor for empty KSP (null pointer)
-    KSP{PetscLib}() where {PetscLib} = KSP{PetscLib}(Ptr{Cvoid}(C_NULL))
+    KSP{PetscLib}(ptr::CKSP = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
@@ -104,13 +99,9 @@ KSP(lib::PetscLib) where {PetscLib} = KSP{PetscLib}(C_NULL, lib.age)
 KSP(ptr::CKSP, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = KSP{PetscLib}(ptr, age; own)
 Base.convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
 Base.unsafe_convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
-
-
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc PC -----
-# Usually borrowed from a KSP (KSPGetPC), so it carries no callbacks: anything a PC
-# callback needs to keep alive cannot live on a wrapper that is rebuilt on every read.
 const CPC = Ptr{Cvoid}
 abstract type AbstractPC{T} end
 mutable struct PC{PetscLib} <: AbstractPC{PetscLib}
@@ -133,20 +124,13 @@ abstract type AbstractSNES{T} end
 mutable struct SNES{PetscLib} <: AbstractSNES{PetscLib}
     ptr::CSNES
     age::Int
-    f!::Function
-    updateJ!::Function
-    user_ctx::Any
-    opts::Any  # Options database for deferred sub-solver setup (e.g. FieldSplit)
-    convergence_test!::Any  # closure from set_convergence_test!, rooted here while PETSc holds it
     own::Bool
 
-    # Constructor from pointer and age (with defaults for callbacks and context)
-    SNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing, opts::Any = nothing, convergence_test!::Any = nothing; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx, opts, convergence_test!, own)
+    SNES{PetscLib}(ptr::CSNES = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
 SNES(lib::PetscLib) where {PetscLib} = SNES{PetscLib}(C_NULL, lib.age)
-SNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx::Any=nothing, age::Int = lib.age) where {PetscLib} = SNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
 SNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = SNES{PetscLib}(ptr, age; own)
 Base.convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
@@ -249,38 +233,9 @@ abstract type AbstractTS{T} end
 mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
     ptr::CTS
     age::Int
-    rhs_function!::Function
-    rhs_jacobian!::Function
-    ifunction!::Function
-    ijacobian!::Function
-    monitor::Function
-    user_ctx::Any
-    opts::Any
     own::Bool
 
-    TS{PetscLib}(
-        ptr::CTS = C_NULL,
-        age::Int = 0,
-        rhs_function!::Function = _ -> error("rhs_function! not defined"),
-        rhs_jacobian!::Function = _ -> error("rhs_jacobian! not defined"),
-        ifunction!::Function = _ -> error("ifunction! not defined"),
-        ijacobian!::Function = _ -> error("ijacobian! not defined"),
-        monitor::Function = _ -> error("monitor not defined"),
-        user_ctx::Any = nothing,
-        opts::Any = nothing;
-        own::Bool = true,
-    ) where {PetscLib} = new{PetscLib}(
-        ptr,
-        age,
-        rhs_function!,
-        rhs_jacobian!,
-        ifunction!,
-        ijacobian!,
-        monitor,
-        user_ctx,
-        opts,
-        own,
-    )
+    TS{PetscLib}(ptr::CTS = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors

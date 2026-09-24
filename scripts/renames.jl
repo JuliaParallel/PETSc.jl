@@ -396,6 +396,33 @@ const INTERNAL = Set{Symbol}([
     :_local_arrays,
     :_restore_local_arrays!,
     # kept as they are
+    # state kept with the PETSc object, and running callbacks (naming.md §18.3, §18.4)
+    :ObjectState,
+    :state_type,
+    :object_states,
+    :object_states_lock,
+    :object_state_destroy,
+    :object_state,
+    :object_state!,
+    :state_pointer,
+    :drop_object_states!,
+    :library_type,
+    :wrapper_fields,
+    :forward_getproperty,
+    :forward_setproperty!,
+    :forward_propertynames,
+    :CALLBACK_ERROR,
+    :capture_callback_errors,
+    :rethrow_callback_error,
+    :doc_callback,
+    :SNESState,
+    :KSPState,
+    :TSState,
+    :PCState,
+    :MatShellState,
+    :shell_state,
+    :PCShellSetApplyFn,      # a trampoline type (§18.6)
+    :PCShellSetSetUpFn,
     :_taoterm_resettable,
     :_reset_stale_register_flags,
     :_MATSEQAIJ_WITHARRAYS_STORAGE,
@@ -509,6 +536,8 @@ const UNCHANGED_PUBLIC = Symbol[
     :ksp,
     :pc,                     # new in v0.5.1
     :set_fieldsplit_is!,     # new in v0.5.1
+    :set_shell_apply!,       # new in v0.5.1
+    :set_shell_setup!,       # new in v0.5.1
     :TSSetRHSFunctionFn,
     :TSSetRHSJacobianFn,
     :TSSetIFunctionFn,

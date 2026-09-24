@@ -315,6 +315,30 @@ MPI.Initialized() || MPI.Init()
         @test replaced_calls[] == 0
         @test snes6.user_ctx === ctx6
         @test LibPETSc.SNESGetConvergedReason(petsclib, snes6) == LibPETSc.SNES_CONVERGED_FNORM_ABS
+
+        # an exception in a callback comes out of solve! as itself
+        snes7 = PETSc.SNES(petsclib, comm; pc_type = "none")
+        r7 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
+        PETSc.set_function!(snes7, r7) do fx, snes, x
+            throw(DomainError(-1.0, "residual failed on purpose"))
+        end
+        x7 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
+        @test_throws DomainError PETSc.solve!(x7, snes7)
+
+        # a nonzero Integer return still fails the call, and warns
+        PETSc.set_function!(snes7, r7) do fx, snes, x
+            return 3
+        end
+        @test_logs (:warn, r"returned 3") match_mode = :any begin
+            @test_throws LibPETSc.PetscError PETSc.solve!(x7, snes7)
+        end
+
+        # user_ctx is kept with the PETSc object, and snes.user_ctx forwards to its
+        @test PETSc.set_user_ctx!(snes7, (rhs = 1,)) === snes7
+        @test PETSc.user_ctx(snes7) == (rhs = 1,)
+        @test snes7.user_ctx == (rhs = 1,)
+        snes7.user_ctx = :forwarded
+        @test PETSc.user_ctx(snes7) === :forwarded
         # ----------------------------------------------------------------
 
         # cleanup
@@ -346,6 +370,9 @@ MPI.Initialized() || MPI.Init()
         PETSc.destroy!(x6)
         PETSc.destroy!(r6)
         PETSc.destroy!(J6)
+
+        PETSc.destroy!(x7)
+        PETSc.destroy!(r7)
 
         PETSc.destroy!(snes)
         PETSc.destroy!(snes2)

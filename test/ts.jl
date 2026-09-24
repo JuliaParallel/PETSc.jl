@@ -311,7 +311,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_adapt_type!(ts, :none)
 
             @test PETSc.user_ctx(ts) === nothing
-            PETSc.set_user_ctx!(ts, (rate = PetscReal(2),))
+            @test PETSc.set_user_ctx!(ts, (rate = PetscReal(2),)) === ts
             @test PETSc.user_ctx(ts).rate == 2
 
             u = PETSc.PetscVec(petsclib, 1)
@@ -499,7 +499,7 @@ MPI.Initialized() || MPI.Init()
             @test ts2.ptr == C_NULL
         end
 
-        @testset "a callback that throws is reported, not fatal" begin
+        @testset "a callback that throws: solve! rethrows it" begin
             ts = PETSc.TS(petsclib, comm)
             PETSc.set_type!(ts, :rk)
             PETSc.set_adapt_type!(ts, :none)
@@ -507,18 +507,23 @@ MPI.Initialized() || MPI.Init()
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
             PETSc.set_rhs_function!(ts) do _F, _ts, _t, _x
-                error("deliberate failure from a user callback")
+                throw(DomainError(-1.0, "deliberate failure from a user callback"))
             end
             PETSc.set_time!(ts, 0.0)
             PETSc.set_timestep!(ts, 0.1)
             PETSc.set_max_time!(ts, 1.0)
 
-            # The trampoline logs the Julia error and reports failure to PETSc,
-            # which unwinds and leaves `@chk` to raise. Both it and PETSc's own
-            # traceback are silenced here to keep the test output readable.
+            # The trampoline stores the exception and reports failure to PETSc,
+            # which unwinds; solve! then rethrows the original (naming.md §18.4).
+            # PETSc's own traceback is silenced to keep the test output readable.
+            @test_throws DomainError redirect_stderr(devnull) do
+                PETSc.solve!(u, ts)
+            end
+
+            # Started through LibPETSc, nothing rethrows: logged, then PetscError
             @test_throws PETSc.LibPETSc.PetscError with_logger(NullLogger()) do
                 redirect_stderr(devnull) do
-                    PETSc.solve!(u, ts)
+                    PETSc.LibPETSc.TSSolve(petsclib, ts, u)
                 end
             end
 

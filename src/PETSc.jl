@@ -37,6 +37,26 @@ function doc_borrowed()
 """
 end
 
+"""
+    doc_callback(returns = "")
+
+The paragraph every callback setter's docstring carries: how long the closure
+lives, what its return value means and where an exception comes out. 
+`returns` describes a return value that carries a meaning; by default it is ignored.
+"""
+function doc_callback(returns::AbstractString = "")
+    ret = isempty(returns) ?
+        "its return value is ignored, except that a nonzero `Integer` still fails the call and warns until v0.6" :
+        returns
+"""
+!!! note "Callback"
+    The closure is kept with the PETSc object, not with the wrapper passed
+    here, so a borrowed handle is fine to pass. It succeeds by returning and
+    fails by throwing; $ret. An exception it throws comes out of the `solve!`,
+    `step!` or `setup!` that ran it.
+"""
+end
+
 # `_doc_external` is interpolated into several thousand docstrings in
 # src/autowrapped/, which the generator in wrapping/ emits verbatim. Keeping the
 # old spelling as an alias leaves those files untouched by the rename.
@@ -60,6 +80,7 @@ using Libdl
 
 
 include("init.jl")
+include("callbacks.jl")
 include("vec.jl")       
 include("mat.jl")          
 include("options.jl")

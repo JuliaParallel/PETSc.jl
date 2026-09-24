@@ -1,5 +1,48 @@
 import .LibPETSc: AbstractKSP, CKSP, KSP, AbstractPetscDM   # KSP methods below are constructors of LibPETSc.KSP
 
+# The Julia side of a KSP, kept with the PETSc object
+mutable struct KSPState <: ObjectState
+    computerhs!::Any
+    computeops!::Any
+    opts::Any
+    alive::Bool
+end
+KSPState() = KSPState(
+    x -> error("computerhs! not defined"),
+    x -> error("computeops! not defined"),
+    nothing,
+    true,
+)
+state_type(::Type{<:KSP}) = KSPState
+
+# `ksp.opts` and the callbacks reach the state
+@inline Base.getproperty(ksp::KSP, name::Symbol) =
+    (name === :ptr || name === :age || name === :own) ? getfield(ksp, name) :
+    forward_getproperty(ksp, name)
+@inline function Base.setproperty!(ksp::KSP, name::Symbol, value)
+    (name === :ptr || name === :age || name === :own) &&
+        return Base.setfield!(ksp, name, convert(fieldtype(typeof(ksp), name), value))
+    return forward_setproperty!(ksp, name, value)
+end
+Base.propertynames(ksp::KSP, private::Bool = false) = forward_propertynames(typeof(ksp))
+
+
+# positional constructor taking callbacks: the callbacks go to the state
+function LibPETSc.KSP{PetscLib}(
+    ptr::CKSP,
+    age::Int,
+    computerhs!::Function,
+    computeops!::Function = x -> error("computeops! not defined"),
+    opts = nothing,
+) where {PetscLib}
+    ptr == C_NULL && throw(ArgumentError("callbacks need a PETSc object; got a null pointer"))
+    ksp = KSP{PetscLib}(ptr, age)
+    ksp.computerhs! = computerhs!
+    ksp.computeops! = computeops!
+    ksp.opts = opts
+    return ksp
+end
+
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractKSP{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
@@ -54,6 +97,11 @@ function KSP(
         ksp.opts = opts
     end
 
+    # The garbage collector can only destroy it when no other rank takes part
+    if MPI.Comm_size(c) == 1
+        finalizer(destroy!, ksp)
+    end
+
     return ksp
 end
 
@@ -99,6 +147,11 @@ function KSP(dm::AbstractPetscDM{PetscLib};
         ksp.opts = opts
     end
 
+    # The garbage collector can only destroy it when no other rank takes part
+    if MPI.Comm_size(c) == 1
+        finalizer(destroy!, ksp)
+    end
+
     return ksp
 end
 
@@ -126,7 +179,9 @@ function solve!(
     has_opts = !isnothing(ksp.opts)
     has_opts && push!(ksp.opts)
     try
-        LibPETSc.KSPSolve(PetscLib, ksp, b, x)
+        capture_callback_errors() do
+            LibPETSc.KSPSolve(PetscLib, ksp, b, x)
+        end
     finally
         has_opts && pop!(ksp.opts)
     end
@@ -139,7 +194,9 @@ function solve!(
     has_opts = hasproperty(ksp, :opts) && !isnothing(ksp.opts)
     has_opts && push!(ksp.opts)
     try
-        LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
+        capture_callback_errors() do
+            LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
+        end
     finally
         has_opts && pop!(ksp.opts)
     end
@@ -194,6 +251,10 @@ $(doc_external("KSP/KSPDestroy"))
 """
 function destroy!(ksp::KSP{PetscLib}) where {PetscLib}
     owns(ksp) || return nothing
+    if !isnothing(ksp.opts)
+        destroy!(ksp.opts)
+        ksp.opts = nothing
+    end
     if isdestroyable(ksp, PetscLib)
         LibPETSc.KSPDestroy(PetscLib, ksp)
     end
@@ -224,15 +285,13 @@ function (w::KSPComputeRHSFn{PetscLib, PetscInt})(
     new_ksp_ptr::CKSP,
     cb::CVec,
     ksp_ptr::Ptr{Cvoid},
-)::PetscInt where {PetscLib, PetscInt}
-    PetscScalar = PetscLib.PetscScalar
-    #new_ksp = KSPPtr{PetscLib, PetscScalar}(new_ksp_ptr, getlib(PetscLib).age)\
-    #b = VecPtr(PetscLib, cb, false)
-    new_ksp = KSP{PetscLib}(new_ksp_ptr, 0; own = false)
-    b = PetscVec{PetscLib}(cb, 0; own = false)
-    ksp = unsafe_pointer_to_objref(ksp_ptr)
-    ierr = ksp.computerhs!(b, new_ksp)
-    return PetscLib.PetscInt(ierr)
+) where {PetscLib, PetscInt}
+    new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
+    b = PetscVec{PetscLib}(cb, getlib(PetscLib).age; own = false)
+    ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
+    return run_callback("right-hand side rhs!") do
+        ksp.computerhs!(b, new_ksp)
+    end
 end
 
 """
@@ -247,6 +306,8 @@ Define `rhs!` to be the right-hand side function of the `ksp`. A call to
     The `new_ksp` passed to `rhs!` may not be the same as the `ksp` passed to
     `set_compute_rhs!`.
 
+$(doc_callback())
+
 # External Links
 $(doc_external("KSP/KSPSetComputeRHS"))
 
@@ -260,12 +321,12 @@ LibPETSc.@for_petsc function set_compute_rhs!(rhs!, ksp::AbstractKSP{$PetscLib})
     # We must wrap the user function in our own object
     fptr = @cfunction(
         KSPComputeRHSFn{$PetscLib, $PetscInt}(),
-        $PetscInt,
+        LibPETSc.PetscErrorCode,
         (CKSP, CVec, Ptr{Cvoid})
     )
     # set the computerhs! in the ksp
     ksp.computerhs! = rhs!
-    LibPETSc.KSPSetComputeRHS($PetscLib, ksp, fptr, pointer_from_objref(ksp))
+    LibPETSc.KSPSetComputeRHS($PetscLib, ksp, fptr, state_pointer(ksp))
     return ksp
 end
 
@@ -276,15 +337,14 @@ function (w::KSPComputeOperatorsFn{PetscLib, PetscInt})(
     cA::CMat,
     cP::CMat,
     ksp_ptr::Ptr{Cvoid},
-)::PetscInt where {PetscLib, PetscInt}
-    PetscScalar = PetscLib.PetscScalar
-    #new_ksp = KSPPtr{PetscLib, PetscScalar}(new_ksp_ptr, getlib(PetscLib).age)
+) where {PetscLib, PetscInt}
     new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
     A = PetscMat{PetscLib}(cA, getlib(PetscLib).age; own = false)
     P = PetscMat{PetscLib}(cP, getlib(PetscLib).age; own = false)
-    ksp = unsafe_pointer_to_objref(ksp_ptr)
-    ierr = ksp.computeops!(A, P, new_ksp)
-    return PetscLib.PetscInt(ierr)
+    ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
+    return run_callback("operators ops!") do
+        ksp.computeops!(A, P, new_ksp)
+    end
 end
 
 """
@@ -299,6 +359,8 @@ operator `A` and preconditioning matrix `P` based on the `new_ksp`.
     The `new_ksp` passed to `ops!` may not be the same as the `ksp` passed to
     `set_compute_operators!`.
 
+$(doc_callback())
+
 # External Links
 $(doc_external("KSP/KSPSetComputeOperators"))
 
@@ -312,12 +374,12 @@ LibPETSc.@for_petsc function set_compute_operators!(ops!, ksp::AbstractKSP{$Pets
     # We must wrap the user function in our own object
     fptr = @cfunction(
         KSPComputeOperatorsFn{$PetscLib, $PetscInt}(),
-        $PetscInt,
+        LibPETSc.PetscErrorCode,
         (CKSP, CMat, CMat, Ptr{Cvoid})
     )
     # set the computerhs! in the ksp
     ksp.computeops! = ops!
-    LibPETSc.KSPSetComputeOperators($PetscLib, ksp, fptr, pointer_from_objref(ksp))
+    LibPETSc.KSPSetComputeOperators($PetscLib, ksp, fptr, state_pointer(ksp))
     return ksp
 end
 

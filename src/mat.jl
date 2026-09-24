@@ -476,7 +476,7 @@ Computes
 
 """
 function LinearAlgebra.mul!(y::PetscVec{PetscLib},M::AbstractPetscMat{PetscLib},x::PetscVec{PetscLib}) where {PetscLib} 
-    LibPETSc.MatMult(PetscLib, M, x, y)
+    capture_callback_errors(() -> LibPETSc.MatMult(PetscLib, M, x, y))
     return nothing
 end
 
@@ -820,17 +820,11 @@ function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
             cx::CVec,
             cy::CVec,
         ) where {PetscLib}
-    ptr = LibPETSc.MatShellGetContext(PetscLib, M)
-
-    mat = unsafe_pointer_to_objref(ptr)
-
-    PetscScalar = PetscLib.PetscScalar
-    x = PetscVec(cx, getlib(PetscLib); own = false)
-    y = PetscVec(cy, getlib(PetscLib); own = false)
-
-    _mul!(y, mat, x)
-
-    return 0
+    return run_callback("MatShell multiply") do
+        state = unsafe_pointer_to_objref(LibPETSc.MatShellGetContext(PetscLib, M))::MatShellState
+        petsclib = getlib(PetscLib)
+        _mul!(PetscVec(cy, petsclib; own = false), state.obj, PetscVec(cx, petsclib; own = false))
+    end
 end
 
 
@@ -861,6 +855,8 @@ obj, x)`.
 if `comm == MPI.COMM_SELF` then the garbage connector can finalize the object,
 otherwise the user is responsible for calling [`destroy!`](@ref).
 
+$(doc_callback())
+
 # External Links
 $(doc_external("Mat/MatCreateShell"))
 $(doc_external("Mat/MatShellSetOperation"))
@@ -873,6 +869,16 @@ mutable struct MatShell{PetscLib, OType} <: AbstractPetscMat{PetscLib}
     own::Bool
 end
 
+# The Julia side of a MatShell, kept with the PETSc object.
+# It holds the operator, not the wrapper, so the wrapper can still be collected
+# and its finalizer run.
+mutable struct MatShellState <: ObjectState
+    obj::Any
+    alive::Bool
+end
+MatShellState() = MatShellState(nothing, true)
+state_type(::Type{<:MatShell}) = MatShellState
+
 LibPETSc.@for_petsc function MatShell(
     petsclib::$PetscLib,
     obj::OType,
@@ -882,10 +888,7 @@ LibPETSc.@for_petsc function MatShell(
     global_rows = LibPETSc.PETSC_DECIDE,
     global_cols = LibPETSc.PETSC_DECIDE,
 ) where {OType}
-    mat = MatShell{$PetscLib, OType}(C_NULL, obj, 0, true)
-
-    # we use the MatShell object itself
-    ctx = pointer_from_objref(mat)
+    mat = MatShell{$PetscLib, OType}(C_NULL, obj, petsclib.age, true)
 
 #=
     ccall(
@@ -914,10 +917,13 @@ LibPETSc.@for_petsc function MatShell(
                (:MatCreateShell, $petsc_library),
                LibPETSc.PetscErrorCode,
                (LibPETSc.MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{CMat}),
-               comm, local_rows, local_cols, global_rows, global_cols, ctx, A_,
+               comm, local_rows, local_cols, global_rows, global_cols, C_NULL, A_,
               )
 
-    mat.ptr = A_[]  
+    mat.ptr = A_[]
+    state = object_state!(mat)
+    state.obj = obj
+    LibPETSc.MatShellSetContext(petsclib, mat, pointer_from_objref(state))
 
     #=
      LibPETSc.MatCreateShell(
@@ -945,30 +951,24 @@ LibPETSc.@for_petsc function MatShell(
   
     mulptr = @cfunction(
         MatOp{$PetscLib, LibPETSc.MATOP_MULT}(),
-        $PetscInt,
+        LibPETSc.PetscErrorCode,
         (CMat, CVec, CVec)
     )
 
     LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT, mulptr)
 
-    #if MPI.Comm_size(comm) == 1
-    #    finalizer(destroy!, mat)
-    #end
-    
+    # The garbage collector can only destroy it when no other rank takes part
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy!, mat)
+    end
+
     return mat
 end
 
-function _mul!(
-    y,
-    mat::MatShell{PetscLib, F},
-    x,
-) where {PetscLib, F <: Function}
-    mat.obj(y, x)
-end
-
-function _mul!(y, mat::MatShell, x)
-    LinearAlgebra.mul!(y, mat.obj, x)
-end
+# The operator of a MatShell applied to `x`: a function is called as `obj(y, x)`,
+# anything else goes through `mul!(y, obj, x)`
+_mul!(y, obj::Function, x) = obj(y, x)
+_mul!(y, obj, x) = LinearAlgebra.mul!(y, obj, x)
 
 
 # Matrix-vector multiplication for MatShell with Julia arrays

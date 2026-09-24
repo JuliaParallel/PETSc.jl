@@ -66,6 +66,80 @@ MPI.Initialized() || MPI.Init()
             PETSc.destroy!(ksp)
         end
 
+        @testset "shell ($PetscScalar)" begin
+            ksp = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-4)
+            @test_throws ArgumentError PETSc.set_shell_apply!((y, p, x) -> nothing, PETSc.pc(ksp))
+            @test_throws ArgumentError PETSc.set_shell_setup!(p -> nothing, PETSc.pc(ksp))
+            PETSc.set_type!(PETSc.pc(ksp), :shell)
+
+            # Jacobi by hand: the diagonal of S is 2. Registered through handles
+            # that are dropped at once, so only the PETSc object keeps the closures.
+            napply = Ref(0)
+            nsetup = Ref(0)
+            PETSc.set_shell_apply!(PETSc.pc(ksp)) do y, p, x
+                @test p isa LibPETSc.PC
+                napply[] += 1
+                PETSc.with_local_array!(y, x; read = (false, true), write = (true, false)) do ya, xa
+                    ya .= xa ./ 2
+                end
+                return nothing
+            end
+            q = PETSc.set_shell_setup!(PETSc.pc(ksp)) do p
+                nsetup[] += 1
+                return nothing
+            end
+            @test q isa LibPETSc.PC && q.ptr == PETSc.pc(ksp).ptr
+            GC.gc()
+            @test ksp \ b ≈ Matrix(S) \ b rtol = 1e-3
+            @test napply[] > 0
+            @test nsetup[] == 1
+
+            # a second apply! replaces the first, and the setup! stays
+            nreplaced = Ref(0)
+            PETSc.set_shell_apply!(PETSc.pc(ksp)) do y, p, x
+                nreplaced[] += 1
+                PETSc.with_local_array!(y, x; read = (false, true), write = (true, false)) do ya, xa
+                    ya .= xa ./ 2
+                end
+                return nothing
+            end
+            napply_before = napply[]
+            @test ksp \ b ≈ Matrix(S) \ b rtol = 1e-3
+            @test nreplaced[] > 0
+            @test napply[] == napply_before
+
+            # an exception in the callback comes out of the solve as itself (naming.md §18.4)
+            PETSc.set_shell_apply!(PETSc.pc(ksp)) do y, p, x
+                throw(DomainError(-1.0, "shell apply! failed on purpose"))
+            end
+            @test_throws DomainError ksp \ b
+            # started through LibPETSc there is no high-level call to rethrow it
+            petsc_b = LibPETSc.VecCreateSeqWithArray(petsclib, comm, 1, n, b)
+            petsc_x = similar(petsc_b)
+            @test_logs (:error, r"shell apply!") match_mode = :any begin
+                @test_throws LibPETSc.PetscError LibPETSc.KSPSolve(petsclib, ksp, petsc_b, petsc_x)
+            end
+            PETSc.destroy!(petsc_b)
+            PETSc.destroy!(petsc_x)
+
+            # the closures die with the PETSc object, not with a wrapper
+            state = PETSc.object_state(PETSc.pc(ksp))
+            @test state isa PETSc.PCState && state.alive
+            PETSc.destroy!(ksp)
+            @test !state.alive
+            PETSc.finalize(petsclib)
+            @test !haskey(PETSc.object_states, typeof(petsclib))
+            PETSc.initialize(petsclib)
+        end
+
+        @testset "ownership ($PetscScalar)" begin
+            # made through LibPETSc, the PC is owned and destroy! frees it
+            p = LibPETSc.PCCreate(petsclib, comm)
+            @test PETSc.owns(p)
+            PETSc.destroy!(p)
+            @test p.ptr == C_NULL
+        end
+
         PETSc.finalize(petsclib)
     end
 end

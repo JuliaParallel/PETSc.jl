@@ -1,5 +1,56 @@
 import .LibPETSc: AbstractSNES, CSNES, SNES
 
+# The Julia side of a SNES, kept with the PETSc object (naming.md §18.3)
+mutable struct SNESState <: ObjectState
+    f!::Any
+    updateJ!::Any
+    convergence_test!::Any
+    user_ctx::Any
+    opts::Any
+    alive::Bool
+end
+SNESState() = SNESState(
+    x -> error("function not defined"),
+    x -> error("function not defined"),
+    nothing,
+    nothing,
+    nothing,
+    true,
+)
+state_type(::Type{<:SNES}) = SNESState
+
+# `snes.f!`, `snes.user_ctx`, `snes.opts` and the rest reach the state
+@inline Base.getproperty(snes::SNES, name::Symbol) =
+    (name === :ptr || name === :age || name === :own) ? getfield(snes, name) :
+    forward_getproperty(snes, name)
+@inline function Base.setproperty!(snes::SNES, name::Symbol, value)
+    (name === :ptr || name === :age || name === :own) &&
+        return Base.setfield!(snes, name, convert(fieldtype(typeof(snes), name), value))
+    return forward_setproperty!(snes, name, value)
+end
+Base.propertynames(snes::SNES, private::Bool = false) = forward_propertynames(typeof(snes))
+
+
+# positional constructors taking callbacks: the callbacks go to the state
+function LibPETSc.SNES{PetscLib}(
+    ptr::CSNES,
+    age::Int,
+    f!::Function,
+    updateJ!::Function = x -> error("function not defined"),
+    user_ctx = nothing,
+    opts = nothing,
+) where {PetscLib}
+    ptr == C_NULL && throw(ArgumentError("callbacks need a PETSc object; got a null pointer"))
+    snes = SNES{PetscLib}(ptr, age)
+    snes.f! = f!
+    snes.updateJ! = updateJ!
+    snes.user_ctx = user_ctx
+    snes.opts = opts
+    return snes
+end
+LibPETSc.SNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx = nothing, age::Int = lib.age) where {PetscLib} =
+    SNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
+
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractSNES{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
@@ -104,6 +155,8 @@ The function `f!` will be called as `f!(fx, snes, x)` where:
 
 The `vec` argument is a template vector used for the residual.
 
+$(doc_callback())
+
 # External Links
 $(doc_external("SNES/SNESSetFunction"))
 """
@@ -117,17 +170,19 @@ function (w::SNESSetFunctionFn{PetscLib})(
     r_fx::CVec,
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
-    snes = unsafe_pointer_to_objref(snes_ptr)
+    snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
     # Wrap the actual C SNES for the current MG level so that dm() inside
     # the callback returns the correct DM (matches the pattern in KSPComputeRHSFn).
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
     x  = PetscVec{PetscLib}(r_x; own = false)
     fx = PetscVec{PetscLib}(r_fx; own = false)
 
-    if Base.applicable(snes.f!, fx, actual_snes, x, snes.user_ctx)
-        return snes.f!(fx, actual_snes, x, snes.user_ctx)
-    else
-        return snes.f!(fx, actual_snes, x)
+    return run_callback("residual f!") do
+        if Base.applicable(snes.f!, fx, actual_snes, x, snes.user_ctx)
+            snes.f!(fx, actual_snes, x, snes.user_ctx)
+        else
+            snes.f!(fx, actual_snes, x)
+        end
     end
 end
 
@@ -137,11 +192,11 @@ LibPETSc.@for_petsc function set_function!(
     vec::AbstractPetscVec{$PetscLib},
     ) 
 
-    ctx = pointer_from_objref(snes)
+    ctx = state_pointer(snes)
     PetscInt = $PetscLib.PetscInt
     fptr = @cfunction(
         SNESSetFunctionFn{$PetscLib}(),
-        $PetscInt,
+        LibPETSc.PetscErrorCode,
         (CSNES, CVec, CVec, Ptr{Cvoid})
     )
   
@@ -168,11 +223,13 @@ PETSc Jacobian (approximation).
 If `J ≠ P` then a call to `updateJ!(J, P, snes, x)` should set the elements of
 the PETSc Jacobian (approximation) and preconditioning matrix `P`.
 
-If you set `snes.user_ctx`, then `updateJ!` may optionally accept that as an
+If a user context is set with [`set_user_ctx!`](@ref), then `updateJ!` may optionally accept that as an
 additional last argument:
 
 - `updateJ!(J, snes, x, user_ctx)` when `J == P`
 - `updateJ!(J, P, snes, x, user_ctx)` when `J ≠ P`
+
+$(doc_callback())
 
 # External Links
 $(doc_external("SNES/SNESSetJacobian"))
@@ -192,7 +249,7 @@ function (w::SNESSetJacobianFn{PetscLib})(
     r_P::CMat,
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
-    snes = unsafe_pointer_to_objref(snes_ptr)
+    snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
     x = PetscVec{PetscLib}(r_x; own = false)
     A = PetscMat{PetscLib}(r_A; own = false)
@@ -200,17 +257,19 @@ function (w::SNESSetJacobianFn{PetscLib})(
 
     same_mat = (P.ptr == A.ptr)
 
-    if same_mat
-        if Base.applicable(snes.updateJ!, A, actual_snes, x, snes.user_ctx)
-            return snes.updateJ!(A, actual_snes, x, snes.user_ctx)
+    return run_callback("Jacobian updateJ!") do
+        if same_mat
+            if Base.applicable(snes.updateJ!, A, actual_snes, x, snes.user_ctx)
+                snes.updateJ!(A, actual_snes, x, snes.user_ctx)
+            else
+                snes.updateJ!(A, actual_snes, x)
+            end
         else
-            return snes.updateJ!(A, actual_snes, x)
-        end
-    else
-        if Base.applicable(snes.updateJ!, A, P, actual_snes, x, snes.user_ctx)
-            return snes.updateJ!(A, P, actual_snes, x, snes.user_ctx)
-        else
-            return snes.updateJ!(A, P, actual_snes, x)
+            if Base.applicable(snes.updateJ!, A, P, actual_snes, x, snes.user_ctx)
+                snes.updateJ!(A, P, actual_snes, x, snes.user_ctx)
+            else
+                snes.updateJ!(A, P, actual_snes, x)
+            end
         end
     end
 end
@@ -221,10 +280,10 @@ LibPETSc.@for_petsc function set_snes_jacobian!(
     J::AbstractPetscMat{$PetscLib},
     PJ::AbstractPetscMat{$PetscLib} = J,
 )
-    ctx = pointer_from_objref(snes)
+    ctx = state_pointer(snes)
     fptr = @cfunction(
         SNESSetJacobianFn{$PetscLib}(),
-        $PetscInt,
+        LibPETSc.PetscErrorCode,
         (CSNES, CVec, CMat, CMat, Ptr{Cvoid})
     )
     #with(snes.opts) do
@@ -253,6 +312,8 @@ The closure is kept alive by `snes` until `snes` is destroyed or a new test is
 installed. `snes.user_ctx` is left alone, so the residual and Jacobian callbacks
 keep receiving it.
 
+$(doc_callback("its return value is the `SNESConvergedReason` it decides"))
+
 # External Links
 $(doc_external("SNES/SNESSetConvergenceTest"))
 
@@ -262,8 +323,8 @@ v0.5, and there is no shim for it (§16).
 """
 function set_convergence_test! end
 
-# Wrapper for calls to set_convergence_test!. As in SNESSetFunctionFn, the context
-# pointer is `snes` itself, which holds the closure in `snes.convergence_test!`.
+# Wrapper for calls to set_convergence_test!. As for every SNES callback, the
+# context pointer is the SNES's state, which holds the closure.
 mutable struct SNESSetConvergenceTestFn{PetscLib} end
 function (w::SNESSetConvergenceTestFn{PetscLib})(
     actual_snes_ptr::CSNES,
@@ -274,11 +335,13 @@ function (w::SNESSetConvergenceTestFn{PetscLib})(
     reason_ptr::Ptr{<:Integer},
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
-    snes = unsafe_pointer_to_objref(snes_ptr)
+    snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
-    reason = snes.convergence_test!(actual_snes, Int(it), Float64(xnorm), Float64(gnorm), Float64(fnorm))
-    unsafe_store!(reason_ptr, eltype(reason_ptr)(Int(reason)))
-    return Cint(0)
+    return run_callback("convergence test") do
+        reason = snes.convergence_test!(actual_snes, Int(it), Float64(xnorm), Float64(gnorm), Float64(fnorm))
+        unsafe_store!(reason_ptr, eltype(reason_ptr)(Int(reason)))
+        return nothing
+    end
 end
 
 LibPETSc.@for_petsc function set_convergence_test!(
@@ -286,7 +349,7 @@ LibPETSc.@for_petsc function set_convergence_test!(
     snes::AbstractSNES{$PetscLib},
 )
     snes.convergence_test! = test!
-    ctx = pointer_from_objref(snes)
+    ctx = state_pointer(snes)
     # PetscErrorCode is always Cint (see LibPETSc_const.jl), regardless of PetscInt's width;
     # SNESConvergedReason is a plain C enum, i.e. also Cint-sized.
     fptr = @cfunction(
@@ -296,6 +359,25 @@ LibPETSc.@for_petsc function set_convergence_test!(
     )
     LibPETSc.SNESSetConvergenceTest($PetscLib, snes, fptr, ctx, C_NULL)
     return nothing
+end
+
+"""
+    user_ctx(snes::AbstractSNES)
+
+Whatever was stored with [`set_user_ctx!`](@ref), or `nothing`.
+"""
+user_ctx(snes::AbstractSNES) = snes.user_ctx
+
+"""
+    set_user_ctx!(snes::AbstractSNES, ctx)
+
+Attach `ctx` to `snes`, to be handed back as the last argument of the residual
+and Jacobian callbacks that have a method accepting it. It is kept with the
+PETSc object, so a borrowed handle such as `snes(ts)` sees it too. Returns `snes`.
+"""
+function set_user_ctx!(snes::AbstractSNES, ctx)
+    snes.user_ctx = ctx
+    return snes
 end
 
 function solve!(
@@ -313,7 +395,9 @@ function solve!(
         LibPETSc.SNESSetFromOptions(PetscLib, snes)
     end
     try
-        LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
+        capture_callback_errors() do
+            LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
+        end
     finally
         has_opts && pop!(snes.opts)
     end

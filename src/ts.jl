@@ -169,6 +169,65 @@ end
 import .LibPETSc:
     AbstractTS, CTS, TS, AbstractPetscDM, AbstractPetscVec, PetscVec, CVec
 
+# The Julia side of a TS, kept with the PETSc object
+mutable struct TSState <: ObjectState
+    rhs_function!::Any
+    rhs_jacobian!::Any
+    ifunction!::Any
+    ijacobian!::Any
+    monitor::Any
+    user_ctx::Any
+    opts::Any
+    alive::Bool
+end
+TSState() = TSState(
+    _ -> error("rhs_function! not defined"),
+    _ -> error("rhs_jacobian! not defined"),
+    _ -> error("ifunction! not defined"),
+    _ -> error("ijacobian! not defined"),
+    _ -> error("monitor not defined"),
+    nothing,
+    nothing,
+    true,
+)
+state_type(::Type{<:TS}) = TSState
+
+# `ts.user_ctx`, `ts.opts` and the callbacks reach the state
+@inline Base.getproperty(ts::TS, name::Symbol) =
+    (name === :ptr || name === :age || name === :own) ? getfield(ts, name) :
+    forward_getproperty(ts, name)
+@inline function Base.setproperty!(ts::TS, name::Symbol, value)
+    (name === :ptr || name === :age || name === :own) &&
+        return Base.setfield!(ts, name, convert(fieldtype(typeof(ts), name), value))
+    return forward_setproperty!(ts, name, value)
+end
+Base.propertynames(ts::TS, private::Bool = false) = forward_propertynames(typeof(ts))
+
+
+# positional constructor taking callbacks: the callbacks go to the state
+function LibPETSc.TS{PetscLib}(
+    ptr::CTS,
+    age::Int,
+    rhs_function!::Function,
+    rhs_jacobian!::Function = _ -> error("rhs_jacobian! not defined"),
+    ifunction!::Function = _ -> error("ifunction! not defined"),
+    ijacobian!::Function = _ -> error("ijacobian! not defined"),
+    monitor::Function = _ -> error("monitor not defined"),
+    user_ctx = nothing,
+    opts = nothing,
+) where {PetscLib}
+    ptr == C_NULL && throw(ArgumentError("callbacks need a PETSc object; got a null pointer"))
+    ts = TS{PetscLib}(ptr, age)
+    ts.rhs_function! = rhs_function!
+    ts.rhs_jacobian! = rhs_jacobian!
+    ts.ifunction! = ifunction!
+    ts.ijacobian! = ijacobian!
+    ts.monitor = monitor
+    ts.user_ctx = user_ctx
+    ts.opts = opts
+    return ts
+end
+
 function Base.show(io::IO, ts::AbstractTS{PetscLib}) where {PetscLib}
     if ts.ptr == C_NULL
         print(io, "PETSc TS (null pointer)")
@@ -706,7 +765,7 @@ when the setup must happen at a controlled point.
 $(doc_external("TS/TSSetUp"))
 """
 function setup!(ts::AbstractTS{PetscLib}) where {PetscLib}
-    LibPETSc.TSSetUp(getlib(PetscLib), ts)
+    capture_callback_errors(() -> LibPETSc.TSSetUp(getlib(PetscLib), ts))
     return nothing
 end
 
@@ -792,14 +851,14 @@ function solve!(
 ) where {PetscLib}
     LibPETSc.TSSetSolution(PetscLib, ts, u)
     with_options(ts) do
-        LibPETSc.TSSolve(PetscLib, ts, u)
+        capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, u))
     end
     return u
 end
 
 function solve!(ts::AbstractTS{PetscLib}) where {PetscLib}
     with_options(ts) do
-        LibPETSc.TSSolve(PetscLib, ts, nothing)
+        capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, nothing))
     end
     return ts
 end
@@ -814,7 +873,7 @@ given to the constructor, and it ignores the time set by [`set_max_time!`](@ref)
 $(doc_external("TS/TSStep"))
 """
 function step!(ts::AbstractTS{PetscLib}) where {PetscLib}
-    LibPETSc.TSStep(getlib(PetscLib), ts)
+    capture_callback_errors(() -> LibPETSc.TSStep(getlib(PetscLib), ts))
     return nothing
 end
 
@@ -866,51 +925,21 @@ user_ctx(ts::AbstractTS) = ts.user_ctx
     set_user_ctx!(ts::AbstractTS, ctx)
 
 Attach `ctx` to `ts`, to be handed back as the last argument of every callback
-that has a method accepting it.
-
-The object is held by `ts` on the Julia side, so it is kept alive and needs no pinning.
+that has a method accepting it. It is kept with the PETSc object, so every
+handle onto it sees it too. Returns `ts`.
 """
 function set_user_ctx!(ts::AbstractTS, ctx)
     ts.user_ctx = ctx
-    return nothing
+    return ts
 end
 
 # Callbacks
 # ----------------------------------------------------------------------------
 #
-# Each setter stores the Julia function on the `ts` and hands PETSc a
-# `@cfunction` trampoline plus a pointer to the `ts` itself as the context, 
-# so the closure stays rooted for as long as the object lives. 
-
-# A callback may return an error code; anything else is treated as success.
-
-# A callback may return a PETSc error code; anything else counts as success.
-errorcode(r) =
-    r isa Integer ? LibPETSc.PetscErrorCode(r) : LibPETSc.PetscErrorCode(0)
-
-# "error in library called by PETSc", from `petscsystypes.h`.
-const _PETSC_ERR_LIB = LibPETSc.PetscErrorCode(76)
-
-# Call `f` and turn its result into a PETSc error code.
-#
-# A Julia exception must not cross the `@cfunction` boundary: PETSc is C and
-# cannot unwind a Julia frame, so an escaping error takes the process down. 
-# Log it here instead and report failure to PETSc, which unwinds its own stack 
-# and leaves `@chk` to raise a `PetscError` from the enclosing `solve!`.
-function run_callback(f, name)
-    try
-        return errorcode(f())
-    catch e
-        bt = catch_backtrace()
-        # Reporting is itself Julia code, and nothing here may throw either.
-        try
-            @error "PETSc.jl: the $name callback failed" exception = (e, bt)
-        catch
-            Core.println("PETSc.jl: the ", name, " callback failed")
-        end
-        return _PETSC_ERR_LIB
-    end
-end
+# Each setter stores the Julia function in the TS's state and hands PETSc a
+# `@cfunction` trampoline plus a pointer to that state as the context, so the
+# closure lives as long as the PETSc object (src/callbacks.jl). Every
+# trampoline runs the user's function through `run_callback`.
 
 """
     set_rhs_function!(f!, ts::AbstractTS, r = nothing)
@@ -921,6 +950,8 @@ Set the right-hand side ``G`` of an explicit problem ``du/dt = G(t, u)``.
 is set, `f!(F, ts, t, u, user_ctx)` is used instead when that method exists.
 
 `r` is an optional template vector for the residual.
+
+$(doc_callback())
 
 # External Links
 $(doc_external("TS/TSSetRHSFunction"))
@@ -939,7 +970,7 @@ function (::TSSetRHSFunctionFn{PetscLib, PetscReal})(
     F_ptr::CVec,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)
+    ts = unsafe_pointer_to_objref(ctx)::TSState
     actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
     u = PetscVec{PetscLib}(u_ptr; own = false)
     F = PetscVec{PetscLib}(F_ptr; own = false)
@@ -964,7 +995,7 @@ LibPETSc.@for_petsc function set_rhs_function!(
         (CTS, $PetscReal, CVec, CVec, Ptr{Cvoid})
     )
     ts.rhs_function! = f!
-    LibPETSc.TSSetRHSFunction($PetscLib, ts, r, fptr, pointer_from_objref(ts))
+    LibPETSc.TSSetRHSFunction($PetscLib, ts, r, fptr, state_pointer(ts))
     return nothing
 end
 
@@ -976,6 +1007,8 @@ Set the Jacobian of the right-hand side ``G``.
 `updateJ!` is called as `updateJ!(A, P, ts, t, u)`, filling the Jacobian `A`
 and the preconditioning matrix `P`. If `ts.user_ctx` is set,
 `updateJ!(A, P, ts, t, u, user_ctx)` is used instead when that method exists.
+
+$(doc_callback())
 
 # External Links
 $(doc_external("TS/TSSetRHSJacobian"))
@@ -995,7 +1028,7 @@ function (::TSSetRHSJacobianFn{PetscLib, PetscReal})(
     P_ptr::CMat,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)
+    ts = unsafe_pointer_to_objref(ctx)::TSState
     actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
     u = PetscVec{PetscLib}(u_ptr; own = false)
     A = PetscMat{PetscLib}(A_ptr; own = false)
@@ -1028,7 +1061,7 @@ LibPETSc.@for_petsc function set_rhs_jacobian!(
         A,
         P,
         fptr,
-        pointer_from_objref(ts),
+        state_pointer(ts),
     )
     return nothing
 end
@@ -1041,6 +1074,8 @@ Set the residual ``F`` of an implicit problem ``F(t, u, du/dt) = 0``.
 `f!` is called as `f!(F, ts, t, u, u_t)`, filling the vector `F`. 
 If `ts.user_ctx` is set, `f!(F, ts, t, u, u_t, user_ctx)` is used instead 
 when that method exists.
+
+$(doc_callback())
 
 # External Links
 $(doc_external("TS/TSSetIFunction"))
@@ -1060,7 +1095,7 @@ function (::TSSetIFunctionFn{PetscLib, PetscReal})(
     F_ptr::CVec,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)
+    ts = unsafe_pointer_to_objref(ctx)::TSState
     actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
     u = PetscVec{PetscLib}(u_ptr; own = false)
     u_t = PetscVec{PetscLib}(udot_ptr; own = false)
@@ -1086,7 +1121,7 @@ LibPETSc.@for_petsc function set_ifunction!(
         (CTS, $PetscReal, CVec, CVec, CVec, Ptr{Cvoid})
     )
     ts.ifunction! = f!
-    LibPETSc.TSSetIFunction($PetscLib, ts, r, fptr, pointer_from_objref(ts))
+    LibPETSc.TSSetIFunction($PetscLib, ts, r, fptr, state_pointer(ts))
     return nothing
 end
 
@@ -1098,6 +1133,8 @@ Set the Jacobian of the implicit residual ``F``.
 `updateJ!` is called as `updateJ!(A, P, ts, t, u, u_t, shift)` and should fill
 `A` with ``dF/du + shift * dF/du_t``. If `ts.user_ctx` is set, the method
 taking a trailing `user_ctx` is used instead when it exists.
+
+$(doc_callback())
 
 # External Links
 $(doc_external("TS/TSSetIJacobian"))
@@ -1119,7 +1156,7 @@ function (::TSSetIJacobianFn{PetscLib, PetscReal})(
     P_ptr::CMat,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)
+    ts = unsafe_pointer_to_objref(ctx)::TSState
     actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
     u = PetscVec{PetscLib}(u_ptr; own = false)
     u_t = PetscVec{PetscLib}(udot_ptr; own = false)
@@ -1163,7 +1200,7 @@ LibPETSc.@for_petsc function set_ijacobian!(
         A,
         P,
         fptr,
-        pointer_from_objref(ts),
+        state_pointer(ts),
     )
     return nothing
 end
@@ -1182,6 +1219,8 @@ Only one monitor can be set this way; a second call replaces the first.
 The monitors PETSc installs from the options database, such as `-ts_monitor`, 
 are unaffected.
 
+$(doc_callback())
+
 # External Links
 $(doc_external("TS/TSMonitorSet"))
 
@@ -1199,7 +1238,7 @@ function (::TSMonitorSetFn{PetscLib, PetscInt, PetscReal})(
     u_ptr::CVec,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscInt, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)
+    ts = unsafe_pointer_to_objref(ctx)::TSState
     actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
     u = PetscVec{PetscLib}(u_ptr; own = false)
 
@@ -1219,6 +1258,6 @@ LibPETSc.@for_petsc function set_monitor!(f, ts::AbstractTS{$PetscLib})
         (CTS, $PetscInt, $PetscReal, CVec, Ptr{Cvoid})
     )
     ts.monitor = f
-    LibPETSc.TSMonitorSet($PetscLib, ts, fptr, pointer_from_objref(ts))
+    LibPETSc.TSMonitorSet($PetscLib, ts, fptr, state_pointer(ts))
     return nothing
 end

@@ -142,6 +142,7 @@ function finalize(petsclib)
     if !isfinalized(petsclib)
         petsclib.age += 1
         LibPETSc.PetscFinalize(petsclib)
+        drop_object_states!(typeof(petsclib))
     end
     return nothing
 end

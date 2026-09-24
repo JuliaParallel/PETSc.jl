@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- `LibPETSc.ISColoringGetIS` with `PETSC_OWN_POINTER` returned the index sets as borrowed, so they and the C array holding them leaked. The index sets are now owned by the caller and the array is freed. `ISColoringRestoreIS` accepts the vector `ISColoringGetIS` returns.
+- `LibPETSc.DMCreateFieldIS` leaked the field names and both C arrays.
+
+### Added
+
+- `copyto!(dst, src)` between two `PetscVec`s.
+- Matrix methods: `fill!(A, 0)`, `zero_rows!` and `zero_rows_local!` for Dirichlet rows, `set_option!`, `diagonal!(d, A)` and `isassembled`.
+- `destroy!` on `IS`, `AO`, `PF` and `Tao` handles.
+- `LibPETSc.PetscFree`, for memory PETSc hands to the caller.
+
+### Changed
+
+- `solution(ksp)`, `solution(ts)`, `local_coordinates(dm)` and the `vatol`/`vrtol` of `tolerances(ts)` return a borrowed `PetscVec`, as `solution(snes)` already did, instead of a `VecPtr`. Both are `AbstractPetscVec`s with the same ownership, so only code that checks for `VecPtr` by type notices.
+
 ## v0.5.1
 
 0.5.1 settles how a wrapper relates to its PETSc object and what happens when PETSc calls back into Julia (docs/src/man/naming.md §18), fixes a use-after-free, and adds what a nested or logged solve needs. Working code is most likely to notice the four behaviour changes below; each replaces behaviour that was unsafe or contradicted the docs.

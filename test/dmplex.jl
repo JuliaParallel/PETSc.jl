@@ -267,7 +267,7 @@ for petsclib in PETSc.petsclibs
         idx = LibPETSc.ISGetIndices(petsclib, fields[2])
         @test length(idx) == npr
         LibPETSc.ISRestoreIndices(petsclib, fields[2], idx)
-        foreach(f -> LibPETSc.ISDestroy(petsclib, f), fields)
+        foreach(PETSc.destroy!, fields)
 
         # local-to-global mapping indices
         ltog = LibPETSc.DMGetLocalToGlobalMapping(petsclib, dm)

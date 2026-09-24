@@ -192,6 +192,50 @@ for petsclib in PETSc.petsclibs
             PETSc.finalize(petsclib)
         end
 
+        # ── what a LibPETSc Get hands back ───────────────────────────────────
+        # A `Get` returns a reference its owner keeps (docs/src/man/naming.md
+        # §18.2), so the wrapper is borrowed and `destroy!` leaves the object
+        # alone. The `Get` functions listed in wrapping/generator/rules/
+        # ownership.toml hand out a new reference and return an owner.
+        @testset "Get results" begin
+            PETSc.initialize(petsclib)
+            comm = MPI.COMM_SELF
+            LibPETSc = PETSc.LibPETSc
+
+            A = PETSc.PetscMat(petsclib, PetscScalar[2 -1 0; -1 2 -1; 0 -1 2])
+            b = PETSc.PetscVec(petsclib, PetscScalar[1, 0, 1])
+            ksp = PETSc.KSP(A)
+
+            p = LibPETSc.KSPGetPC(petsclib, ksp)
+            Amat, Pmat = LibPETSc.KSPGetOperators(petsclib, ksp)
+            @test !any(PETSc.owns, (p, Amat, Pmat))
+            foreach(PETSc.destroy!, (p, Amat, Pmat))
+            @test p.ptr != C_NULL && Amat.ptr == A.ptr
+            x = ksp \ b
+            @test x[:] ≈ PetscScalar[1, 1, 1]
+            PETSc.destroy!(x)
+
+            # the plain handle behind a wrapper is a view of it
+            @test !PETSc.owns(LibPETSc.PetscVec(b))
+
+            # MatGetOwnershipIS creates its index sets for the caller
+            rows, cols = LibPETSc.MatGetOwnershipIS(petsclib, A)
+            @test PETSc.owns(rows) && PETSc.owns(cols)
+            LibPETSc.ISDestroy(petsclib, rows)
+            LibPETSc.ISDestroy(petsclib, cols)
+
+            # a PC the caller creates is the caller's to destroy
+            q = LibPETSc.PCCreate(petsclib, comm)
+            @test PETSc.owns(q)
+            PETSc.destroy!(q)
+            @test q.ptr == C_NULL
+
+            PETSc.destroy!(ksp)
+            PETSc.destroy!(b)
+            PETSc.destroy!(A)
+            PETSc.finalize(petsclib)
+        end
+
         # ── after the library is finalized ───────────────────────────────────
         @testset "after finalize" begin
             PETSc.initialize(petsclib)

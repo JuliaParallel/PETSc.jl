@@ -36,8 +36,8 @@ function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::AbstractPetscMat) end
                A, Ad_, Ao_, colmap_,
               )
 
-	Ad = PetscMat(Ad_[], petsclib)
-	Ao = PetscMat(Ao_[], petsclib)
+	Ad = PetscMat(Ad_[], petsclib; own = false)
+	Ao = PetscMat(Ao_[], petsclib; own = false)
 	_, ncols_o = MatGetLocalSize(petsclib, Ao)
 	colmap = colmap_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, colmap_[], Int(ncols_o); own = false)
 

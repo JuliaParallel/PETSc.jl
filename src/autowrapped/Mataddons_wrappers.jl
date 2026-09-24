@@ -2679,7 +2679,7 @@ end
 
 	has_const = has_const_[]
 	n = n_[]
-	vecs = vecs_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, vecs_[], n; own = false)]
+	vecs = vecs_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, vecs_[], n; own = false)]
 
 	return has_const,n,vecs
 end 

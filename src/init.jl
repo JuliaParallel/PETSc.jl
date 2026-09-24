@@ -179,29 +179,18 @@ end
 """
     owns(obj)
 
-Whether `obj` is responsible for destroying the handle it holds.
+Whether `destroy!` on `obj` destroys the PETSc object it holds, which is the
+wrapper's `own` field.
 
-Wrappers that borrow a handle from PETSc carry an `own` field and override this;
-every other wrapper owns what it holds. `destroy!` returns without doing anything
-when this is `false`, so a borrowed wrapper stays usable after the call.
-
-The wrappers carrying the field are [`VecPtr`](@ref), [`MatPtr`](@ref) and the
-three DM types, [`DMDA`](@ref), [`DMStag`](@ref) and [`DMPlex`](@ref). They are
-the ones a reader can hand back: `solution`, `local_coordinates` and
-`tolerances` wrap their result in a `VecPtr`, and `dm`, `coarse_dm` and
-[`narrow`](@ref) in one of the DM types.
-
-A `PC` answers `false` without a field: the high-level layer only hands one out
-borrowed, through [`pc`](@ref).
-
-`PetscVec`, `PetscMat`, `PetscOptions`, `KSP`, `SNES` and `TS` are declared in
-the generated layer (`wrapping/generator/prologue.jl`) and have no `own` field,
-so they answer `true` here. Nothing hands one of them back borrowed: the readers
-that could — `snes(ts)` and `ksp(ts)` — say so in their docstrings instead, and
-giving the generated structs the field would mean regenerating the whole wrapped
-layer for two functions.
+A constructor returns an owning wrapper. A reader returns a borrowed one: the
+object belongs to whatever it was read from, and `destroy!` on the borrowed
+wrapper does nothing and leaves it usable. That covers the high-level readers
+(`pc(ksp)`, `snes(ts)`, `dm(ksp)`, `solution(ksp)` and the rest), every
+`LibPETSc` function with `Get` in its name except the few that hand out a new
+reference (`MatGetFactor`, `DMLabelGetStratumIS`, ...: their manual pages say
+the caller destroys the result), and the objects a callback receives.
 """
-owns(obj) = true
+owns(obj) = obj.own
 
 function build_petsc_options(log_view::Bool, options)
     opts = String[]

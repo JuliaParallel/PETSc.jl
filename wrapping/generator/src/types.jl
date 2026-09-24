@@ -23,6 +23,7 @@ struct Rules
     enum_types::Set{String}       # C enums (filled from the API snapshot)
     string_types::Set{String}     # PETSc string enums such as KSPType (filled from the API snapshot)
     struct_types::Set{String}     # C structs passed by value/pointer (filled from the API snapshot)
+    owned_gets::Set{String}       # `Get` functions whose returned handles the caller owns
 end
 
 function load_rules(dir::AbstractString)
@@ -49,6 +50,7 @@ function load_rules(dir::AbstractString)
         handles[H.julia] = H
         hc[H.c_name] = H
     end
+    o = TOML.parsefile(joinpath(dir, "ownership.toml"))
     args = Dict{String,Dict{String,Dict{String,Any}}}()
     for (fn, tab) in a
         args[fn] = Dict(String(an) => Dict{String,Any}(ov) for (an, ov) in tab)
@@ -59,8 +61,18 @@ function load_rules(dir::AbstractString)
         String.(t["dispatch_types"]),
         Dict(String(k) => String(v) for (k, v) in get(t, "senum_overrides", Dict())),
         Dict(String(k) => String(v) for (k, v) in get(f, "exclude", Dict())),
-        Vector{Dict{String,Any}}(f["file"]), args, Set{String}(), Set{String}(), Set{String}())
+        Vector{Dict{String,Any}}(f["file"]), args, Set{String}(), Set{String}(), Set{String}(),
+        Set(String.(o["owned"])))
 end
+
+"""
+Is a handle `fn` returns borrowed? A `Get` function hands out a reference the caller
+must not destroy, unless `rules/ownership.toml` lists it.
+"""
+borrows(r::Rules, fn::AbstractString) = occursin("Get", fn) && !(fn in r.owned_gets)
+
+"""The keyword a handle constructor gets for an output of `fn`."""
+own_kwarg(r::Rules, fn::AbstractString) = borrows(r, fn) ? "; own = false" : ""
 
 """C type name -> Julia type name (the original generator's `replace_types`)."""
 function map_type(r::Rules, typename::AbstractString)

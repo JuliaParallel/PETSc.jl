@@ -627,7 +627,7 @@ end
                linesearch, snes_,
               )
 
-	snes = SNES(snes_[], petsclib)
+	snes = SNES(snes_[], petsclib; own = false)
 
 	return snes
 end 
@@ -810,11 +810,11 @@ end
                linesearch, X_, F_, Y_, W_, G_,
               )
 
-	X = PetscVec(X_[], petsclib)
-	F = PetscVec(F_[], petsclib)
-	Y = PetscVec(Y_[], petsclib)
-	W = PetscVec(W_[], petsclib)
-	G = PetscVec(G_[], petsclib)
+	X = PetscVec(X_[], petsclib; own = false)
+	F = PetscVec(F_[], petsclib; own = false)
+	Y = PetscVec(Y_[], petsclib; own = false)
+	W = PetscVec(W_[], petsclib; own = false)
+	G = PetscVec(G_[], petsclib; own = false)
 
 	return X,F,Y,W,G
 end 

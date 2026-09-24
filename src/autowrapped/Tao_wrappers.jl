@@ -31,7 +31,7 @@ end
                tao, Y_,
               )
 
-	Y = PetscVec(Y_[], petsclib)
+	Y = PetscVec(Y_[], petsclib; own = false)
 
 	return Y
 end 
@@ -69,7 +69,7 @@ end
                tao, misfit_,
               )
 
-	misfit = Tao(misfit_[], petsclib)
+	misfit = Tao(misfit_[], petsclib; own = false)
 
 	return misfit
 end 
@@ -107,7 +107,7 @@ end
                tao, reg_,
               )
 
-	reg = Tao(reg_[], petsclib)
+	reg = Tao(reg_[], petsclib; own = false)
 
 	return reg
 end 
@@ -836,8 +836,8 @@ end
                tao, eq_is_, ineq_is_,
               )
 
-	eq_is = IS(eq_is_[], petsclib)
-	ineq_is = IS(ineq_is_[], petsclib)
+	eq_is = IS(eq_is_[], petsclib; own = false)
+	ineq_is = IS(ineq_is_[], petsclib; own = false)
 
 	return eq_is,ineq_is
 end 
@@ -873,7 +873,7 @@ end
                tao, Y_,
               )
 
-	Y = PetscVec(Y_[], petsclib)
+	Y = PetscVec(Y_[], petsclib; own = false)
 
 	return Y
 end 
@@ -912,8 +912,8 @@ end
                tao, opt_is_, slack_is_,
               )
 
-	opt_is = IS(opt_is_[], petsclib)
-	slack_is = IS(slack_is_[], petsclib)
+	opt_is = IS(opt_is_[], petsclib; own = false)
+	slack_is = IS(slack_is_[], petsclib; own = false)
 
 	return opt_is,slack_is
 end 
@@ -949,7 +949,7 @@ end
                tao, subsolver_,
               )
 
-	subsolver = Tao(subsolver_[], petsclib)
+	subsolver = Tao(subsolver_[], petsclib; own = false)
 
 	return subsolver
 end 
@@ -1292,7 +1292,7 @@ end
                tao, d_,
               )
 
-	d = PetscVec(d_[], petsclib)
+	d = PetscVec(d_[], petsclib; own = false)
 
 	return d
 end 
@@ -2683,7 +2683,7 @@ end
                tao, admm_tao_,
               )
 
-	admm_tao = Tao(admm_tao_[], petsclib)
+	admm_tao = Tao(admm_tao_[], petsclib; own = false)
 
 	return admm_tao
 end 
@@ -2966,8 +2966,8 @@ end
                tao, DE_, DI_,
               )
 
-	DE = PetscVec(DE_[], petsclib)
-	DI = PetscVec(DI_[], petsclib)
+	DE = PetscVec(DE_[], petsclib; own = false)
+	DI = PetscVec(DI_[], petsclib; own = false)
 
 	return DE,DI
 end 
@@ -3013,7 +3013,7 @@ end
                tao, ci_, noname,
               )
 
-	ci = PetscVec(ci_[], petsclib)
+	ci = PetscVec(ci_[], petsclib; own = false)
 
 	return ci
 end 
@@ -3099,7 +3099,7 @@ end
                tao, g_, noname,
               )
 
-	g = PetscVec(g_[], petsclib)
+	g = PetscVec(g_[], petsclib; own = false)
 
 	return g
 end 
@@ -3137,7 +3137,7 @@ end
                tao, M_,
               )
 
-	M = PetscMat(M_[], petsclib)
+	M = PetscMat(M_[], petsclib; own = false)
 
 	return M
 end 
@@ -3186,8 +3186,8 @@ end
                tao, H_, Hpre_, noname,
               )
 
-	H = PetscMat(H_[], petsclib)
-	Hpre = PetscMat(Hpre_[], petsclib)
+	H = PetscMat(H_[], petsclib; own = false)
+	Hpre = PetscMat(Hpre_[], petsclib; own = false)
 
 	return H,Hpre
 end 
@@ -3227,8 +3227,8 @@ end
                tao, H_, Hpre_,
               )
 
-	H = PetscMat(H_[], petsclib)
-	Hpre = PetscMat(Hpre_[], petsclib)
+	H = PetscMat(H_[], petsclib; own = false)
+	Hpre = PetscMat(Hpre_[], petsclib; own = false)
 
 	return H,Hpre
 end 
@@ -3268,8 +3268,8 @@ end
                tao, IL_, IU_,
               )
 
-	IL = PetscVec(IL_[], petsclib)
-	IU = PetscVec(IU_[], petsclib)
+	IL = PetscVec(IL_[], petsclib; own = false)
+	IU = PetscVec(IU_[], petsclib; own = false)
 
 	return IL,IU
 end 
@@ -3315,7 +3315,7 @@ end
                tao, ci_, noname,
               )
 
-	ci = PetscVec(ci_[], petsclib)
+	ci = PetscVec(ci_[], petsclib; own = false)
 
 	return ci
 end 
@@ -3439,8 +3439,8 @@ end
                tao, J_, Jpre_, noname,
               )
 
-	J = PetscMat(J_[], petsclib)
-	Jpre = PetscMat(Jpre_[], petsclib)
+	J = PetscMat(J_[], petsclib; own = false)
+	Jpre = PetscMat(Jpre_[], petsclib; own = false)
 
 	return J,Jpre
 end 
@@ -3489,8 +3489,8 @@ end
                tao, J_, Jpre_, noname,
               )
 
-	J = PetscMat(J_[], petsclib)
-	Jpre = PetscMat(Jpre_[], petsclib)
+	J = PetscMat(J_[], petsclib; own = false)
+	Jpre = PetscMat(Jpre_[], petsclib; own = false)
 
 	return J,Jpre
 end 
@@ -3528,7 +3528,7 @@ end
                tao, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -3565,7 +3565,7 @@ end
                tao, B_,
               )
 
-	B = PetscMat(B_[], petsclib)
+	B = PetscMat(B_[], petsclib; own = false)
 
 	return B
 end 
@@ -3808,7 +3808,7 @@ end
                tao, g_, noname,
               )
 
-	g = PetscVec(g_[], petsclib)
+	g = PetscVec(g_[], petsclib; own = false)
 
 	return g
 end 
@@ -3963,7 +3963,7 @@ end
                tao, X_,
               )
 
-	X = PetscVec(X_[], petsclib)
+	X = PetscVec(X_[], petsclib; own = false)
 
 	return X
 end 
@@ -4065,8 +4065,8 @@ end
 
 	scale = scale_[]
 	term = term_[]
-	params = PetscVec(params_[], petsclib)
-	map = PetscMat(map_[], petsclib)
+	params = PetscVec(params_[], petsclib; own = false)
+	map = PetscMat(map_[], petsclib; own = false)
 
 	return scale,term,params,map
 end 
@@ -4228,8 +4228,8 @@ end
                tao, XL_, XU_,
               )
 
-	XL = PetscVec(XL_[], petsclib)
-	XU = PetscVec(XU_[], petsclib)
+	XL = PetscVec(XL_[], petsclib; own = false)
+	XU = PetscVec(XU_[], petsclib; own = false)
 
 	return XL,XU
 end 
@@ -4491,7 +4491,7 @@ end
                tao, H0_,
               )
 
-	H0 = PetscMat(H0_[], petsclib)
+	H0 = PetscMat(H0_[], petsclib; own = false)
 
 	return H0
 end 
@@ -4527,7 +4527,7 @@ end
                tao, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 

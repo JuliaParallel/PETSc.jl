@@ -1551,7 +1551,7 @@ end
                is, complement_,
               )
 
-	complement = IS(complement_[], petsclib)
+	complement = IS(complement_[], petsclib; own = false)
 
 	return complement
 end 

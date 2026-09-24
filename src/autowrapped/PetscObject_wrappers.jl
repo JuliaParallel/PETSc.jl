@@ -677,7 +677,7 @@ end
                obj, options_,
               )
 
-	options = PetscOptions(options_[], petsclib)
+	options = PetscOptions(options_[], petsclib; own = false)
 
 	return options
 end 

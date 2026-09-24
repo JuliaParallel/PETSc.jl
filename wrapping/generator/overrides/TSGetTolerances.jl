@@ -38,8 +38,8 @@ function TSGetTolerances(petsclib::PetscLibType, ts::AbstractTS) end
 
 	# The per-component vectors belong to the TS, so they get no finalizer.
 	# They come back NULL when only scalar tolerances are set.
-	vatol = PetscVec(vatol_[], petsclib)
-	vrtol = PetscVec(vrtol_[], petsclib)
+	vatol = PetscVec(vatol_[], petsclib; own = false)
+	vrtol = PetscVec(vrtol_[], petsclib; own = false)
 
 	return atol_[],vatol,rtol_[],vrtol
 end

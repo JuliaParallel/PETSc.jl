@@ -206,8 +206,8 @@ end
               )
 
 	n = n_[]
-	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], n; own = false)]
-	is_local = is_local_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_local_[], n; own = false)]
+	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib; own = false) for p in unsafe_wrap(Array, is_[], n; own = false)]
+	is_local = is_local_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib; own = false) for p in unsafe_wrap(Array, is_local_[], n; own = false)]
 
 	return n,is,is_local
 end 
@@ -250,7 +250,7 @@ end
               )
 
 	n = n_[]
-	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, mat_[], n; own = false)]
+	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib; own = false) for p in unsafe_wrap(Array, mat_[], n; own = false)]
 
 	return n,mat
 end 
@@ -341,7 +341,7 @@ end
 
 	n_local = n_local_[]
 	first_local = first_local_[]
-	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib; own = false) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
 
 	return n_local,first_local,ksp
 end 
@@ -1248,7 +1248,7 @@ end
                pc, DirichletBoundaries_,
               )
 
-	DirichletBoundaries = IS(DirichletBoundaries_[], petsclib)
+	DirichletBoundaries = IS(DirichletBoundaries_[], petsclib; own = false)
 
 	return DirichletBoundaries
 end 
@@ -1286,7 +1286,7 @@ end
                pc, DirichletBoundaries_,
               )
 
-	DirichletBoundaries = IS(DirichletBoundaries_[], petsclib)
+	DirichletBoundaries = IS(DirichletBoundaries_[], petsclib; own = false)
 
 	return DirichletBoundaries
 end 
@@ -1324,7 +1324,7 @@ end
                pc, NeumannBoundaries_,
               )
 
-	NeumannBoundaries = IS(NeumannBoundaries_[], petsclib)
+	NeumannBoundaries = IS(NeumannBoundaries_[], petsclib; own = false)
 
 	return NeumannBoundaries
 end 
@@ -1362,7 +1362,7 @@ end
                pc, NeumannBoundaries_,
               )
 
-	NeumannBoundaries = IS(NeumannBoundaries_[], petsclib)
+	NeumannBoundaries = IS(NeumannBoundaries_[], petsclib; own = false)
 
 	return NeumannBoundaries
 end 
@@ -1400,7 +1400,7 @@ end
                pc, is_,
               )
 
-	is = IS(is_[], petsclib)
+	is = IS(is_[], petsclib; own = false)
 
 	return is
 end 
@@ -1438,7 +1438,7 @@ end
                pc, is_,
               )
 
-	is = IS(is_[], petsclib)
+	is = IS(is_[], petsclib; own = false)
 
 	return is
 end 
@@ -2167,7 +2167,7 @@ end
 
 	n_local = n_local_[]
 	first_local = first_local_[]
-	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib; own = false) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
 
 	return n_local,first_local,ksp
 end 
@@ -2432,7 +2432,7 @@ end
                pc, n, subpc_,
               )
 
-	subpc = PC(subpc_[], petsclib)
+	subpc = PC(subpc_[], petsclib; own = false)
 
 	return subpc
 end 
@@ -2695,7 +2695,7 @@ end
                pc, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -2733,7 +2733,7 @@ end
                pc, apc_,
               )
 
-	apc = PC(apc_[], petsclib)
+	apc = PC(apc_[], petsclib; own = false)
 
 	return apc
 end 
@@ -3475,7 +3475,7 @@ end
                pc, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -4380,7 +4380,7 @@ end
                pc, splitname, is_,
               )
 
-	is = IS(is_[], petsclib)
+	is = IS(is_[], petsclib; own = false)
 
 	return is
 end 
@@ -4419,7 +4419,7 @@ end
                pc, index, is_,
               )
 
-	is = IS(is_[], petsclib)
+	is = IS(is_[], petsclib; own = false)
 
 	return is
 end 
@@ -4502,10 +4502,10 @@ end
                pc, A00_, A01_, A10_, A11_,
               )
 
-	A00 = PetscMat(A00_[], petsclib)
-	A01 = PetscMat(A01_[], petsclib)
-	A10 = PetscMat(A10_[], petsclib)
-	A11 = PetscMat(A11_[], petsclib)
+	A00 = PetscMat(A00_[], petsclib; own = false)
+	A01 = PetscMat(A01_[], petsclib; own = false)
+	A10 = PetscMat(A10_[], petsclib; own = false)
+	A11 = PetscMat(A11_[], petsclib; own = false)
 
 	return A00,A01,A10,A11
 end 
@@ -4547,7 +4547,7 @@ end
               )
 
 	ptype = ptype_[]
-	pre = PetscMat(pre_[], petsclib)
+	pre = PetscMat(pre_[], petsclib; own = false)
 
 	return ptype,pre
 end 
@@ -4588,7 +4588,7 @@ end
               )
 
 	n = n_[]
-	subksp = subksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, subksp_[], n; own = false)]
+	subksp = subksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib; own = false) for p in unsafe_wrap(Array, subksp_[], n; own = false)]
 
 	return n,subksp
 end 
@@ -4698,7 +4698,7 @@ end
                pc, S_,
               )
 
-	S = PetscMat(S_[], petsclib)
+	S = PetscMat(S_[], petsclib; own = false)
 
 	return S
 end 
@@ -4739,7 +4739,7 @@ end
               )
 
 	n = n_[]
-	subksp = subksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, subksp_[], n; own = false)]
+	subksp = subksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib; own = false) for p in unsafe_wrap(Array, subksp_[], n; own = false)]
 
 	return n,subksp
 end 
@@ -6728,7 +6728,7 @@ end
 
 	n_local = n_local_[]
 	first_local = first_local_[]
-	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib; own = false) for p in unsafe_wrap(Array, ksp_[], n_local; own = false)]
 
 	return n_local,first_local,ksp
 end 
@@ -6817,7 +6817,7 @@ end
               )
 
 	n = n_[]
-	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, mat_[], n; own = false)]
+	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib; own = false) for p in unsafe_wrap(Array, mat_[], n; own = false)]
 
 	return n,mat
 end 
@@ -7130,7 +7130,7 @@ end
                pc, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -7360,7 +7360,7 @@ end
                pc, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -7557,8 +7557,8 @@ end
                pc, Amat_, Pmat_,
               )
 
-	Amat = PetscMat(Amat_[], petsclib)
-	Pmat = PetscMat(Pmat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
+	Pmat = PetscMat(Pmat_[], petsclib; own = false)
 
 	return Amat,Pmat
 end 
@@ -9287,7 +9287,7 @@ end
                pc, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -9388,7 +9388,7 @@ end
                pc, B_,
               )
 
-	B = PetscMat(B_[], petsclib)
+	B = PetscMat(B_[], petsclib; own = false)
 
 	return B
 end 
@@ -9747,7 +9747,7 @@ end
                pc, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -9902,7 +9902,7 @@ end
                pc, l, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -9942,7 +9942,7 @@ end
                pc, l, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -10057,7 +10057,7 @@ end
                pc, l, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -10097,7 +10097,7 @@ end
                pc, l, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -10137,7 +10137,7 @@ end
                pc, l, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -10177,7 +10177,7 @@ end
                pc, l, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -11218,7 +11218,7 @@ end
                pc, innerksp_,
               )
 
-	innerksp = KSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib; own = false)
 
 	return innerksp
 end 
@@ -11993,7 +11993,7 @@ end
               )
 
 	npatch = npatch_[]
-	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib) for p in unsafe_wrap(Array, ksp_[], npatch; own = false)]
+	ksp = ksp_[] == C_NULL ? KSP{$PetscLib}[] : [KSP(p, petsclib; own = false) for p in unsafe_wrap(Array, ksp_[], npatch; own = false)]
 
 	return npatch,ksp
 end 
@@ -12745,7 +12745,7 @@ end
                pc, innerksp_,
               )
 
-	innerksp = KSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib; own = false)
 
 	return innerksp
 end 
@@ -12816,7 +12816,7 @@ end
                pc, innerksp_,
               )
 
-	innerksp = KSP(innerksp_[], petsclib)
+	innerksp = KSP(innerksp_[], petsclib; own = false)
 
 	return innerksp
 end 
@@ -12856,8 +12856,8 @@ end
                pc, mat_, pmat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
-	pmat = PetscMat(pmat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
+	pmat = PetscMat(pmat_[], petsclib; own = false)
 
 	return mat,pmat
 end 
@@ -14806,7 +14806,7 @@ end
                pc, subdm_,
               )
 
-	subdm = PetscDM(subdm_[], petsclib)
+	subdm = PetscDM(subdm_[], petsclib; own = false)
 
 	return subdm
 end 
@@ -14922,7 +14922,7 @@ end
                pc, subksp_,
               )
 
-	subksp = KSP(subksp_[], petsclib)
+	subksp = KSP(subksp_[], petsclib; own = false)
 
 	return subksp
 end 

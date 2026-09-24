@@ -56,7 +56,6 @@ function VecPtr(
     return v
 end
 VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(PetscLib), x...)
-owns(v::VecPtr) = v.own
 
 
 """
@@ -74,13 +73,14 @@ LibPETSc.PetscVec(petsclib::PetscLibType, ptr::CVec, own::Bool) =
 """
     PetscVec(v::AbstractPetscVec)
 
-The plain `PetscVec` handle behind any high-level vector wrapper.
+The plain `PetscVec` handle behind any high-level vector wrapper, borrowed from
+`v`: `destroy!` on it does nothing (see [`owns`](@ref)).
 
 The autowrapped `*AndMemType` routines are typed `x::PetscVec`, while
 `AbstractPetscVec` also covers [`VecPtr`](@ref); this converts transparently.
 """
 LibPETSc.PetscVec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
-    LibPETSc.PetscVec{PetscLib}(v.ptr)
+    LibPETSc.PetscVec{PetscLib}(v.ptr, v.age; own = false)
 
 """
     PetscVec(petsclib, n::Integer)

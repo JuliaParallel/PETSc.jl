@@ -7,6 +7,9 @@
 - `LibPETSc.PC` is a Julia type, `PC{PetscLib}`, like `KSP` and `IS`, instead of a raw pointer alias. `KSPGetPC`, `PCCreate` and the other functions that hand out a PC return it, and every `PC*` function takes an `AbstractPC`. Code that passes a PC from one call to the next is unaffected; code that annotates a variable as `LibPETSc.PC` expecting a `Ptr`, or passes raw pointers, needs `pc.ptr`.
 - `PETSc.pc(ksp)` returns the preconditioner, borrowed from `ksp`: `destroy!` on it does nothing. `set_type!`, `type_name` and `set_fieldsplit_is!` work on it.
 - `MPIPreferences` is a test-only dependency. `src/` never loaded it; install it yourself to select an MPI binary, as the HPC guide describes.
+- Every handle knows whether it owns its PETSc object. `PetscVec`, `PetscMat`, `PetscDM`, `KSP`, `PC`, `SNES`, `TS`, `PetscOptions`, `IS`, `PF`, `Tao` and `AO` carry `ptr`, `age` and `own`, and `PETSc.owns(obj)` reads the field. Constructors take `own` as a keyword, `true` by default.
+- **Behaviour change:** a handle returned by a `LibPETSc` function with `Get` in its name is borrowed, following PETSc's convention, and `destroy!` on it does nothing. That covers `snes(ts)`, `ksp(ts)`, `pc(ksp)` and the objects a callback receives, which could previously be destroyed from under the solver still using them. The `Get` functions that hand the caller a new reference (`MatGetFactor`, `DMLabelGetStratumIS`, `DMGetStratumIS`, `MatGetOrdering`, `MatGetOwnershipIS` and 31 more, listed in `wrapping/generator/rules/ownership.toml`) return an owner as before. `LibPETSc.XDestroy` still frees any handle it is given.
+- `destroy!(pc)` destroys a `PC` the caller created with `LibPETSc.PCCreate`; on the borrowed one from `pc(ksp)` it still does nothing.
 - `set_convergence_test!` no longer overwrites `snes.user_ctx`. The closure is kept on a field of its own, so residual and Jacobian callbacks that take `user_ctx` keep receiving it.
 
 ## v0.5.0

@@ -472,6 +472,13 @@ MPI.Initialized() || MPI.Init()
             @test k isa PETSc.LibPETSc.KSP
             @test k.ptr != C_NULL
 
+            # Both are borrowed from ts: destroy! leaves them, and ts, usable
+            @test !PETSc.owns(s) && !PETSc.owns(k)
+            PETSc.destroy!(s)
+            PETSc.destroy!(k)
+            @test s.ptr != C_NULL && k.ptr != C_NULL
+            @test PETSc.snes(ts).ptr == s.ptr
+
             PETSc.destroy!(ts)
         end
 

@@ -213,7 +213,7 @@ end
                snes, n, subsnes_,
               )
 
-	subsnes = SNES(subsnes_[], petsclib)
+	subsnes = SNES(subsnes_[], petsclib; own = false)
 
 	return subsnes
 end 
@@ -1124,7 +1124,7 @@ end
                snes, correction_,
               )
 
-	correction = SNES(correction_[], petsclib)
+	correction = SNES(correction_[], petsclib; own = false)
 
 	return correction
 end 
@@ -1162,7 +1162,7 @@ end
                snes, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -1200,7 +1200,7 @@ end
                snes, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -1238,7 +1238,7 @@ end
                snes, vec_,
               )
 
-	vec = PetscVec(vec_[], petsclib)
+	vec = PetscVec(vec_[], petsclib; own = false)
 
 	return vec
 end 
@@ -1276,7 +1276,7 @@ end
                snes, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -1314,7 +1314,7 @@ end
                snes, smooth_,
               )
 
-	smooth = SNES(smooth_[], petsclib)
+	smooth = SNES(smooth_[], petsclib; own = false)
 
 	return smooth
 end 
@@ -1352,7 +1352,7 @@ end
                snes, smoothd_,
               )
 
-	smoothd = SNES(smoothd_[], petsclib)
+	smoothd = SNES(smoothd_[], petsclib; own = false)
 
 	return smoothd
 end 
@@ -1390,7 +1390,7 @@ end
                snes, smoothu_,
               )
 
-	smoothu = SNES(smoothu_[], petsclib)
+	smoothu = SNES(smoothu_[], petsclib; own = false)
 
 	return smoothu
 end 
@@ -1648,7 +1648,7 @@ end
                snes, coarse_,
               )
 
-	coarse = SNES(coarse_[], petsclib)
+	coarse = SNES(coarse_[], petsclib; own = false)
 
 	return coarse
 end 
@@ -1685,7 +1685,7 @@ end
                snes, level, lsnes_,
               )
 
-	lsnes = SNES(lsnes_[], petsclib)
+	lsnes = SNES(lsnes_[], petsclib; own = false)
 
 	return lsnes
 end 
@@ -1761,7 +1761,7 @@ end
                snes, level, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -1799,7 +1799,7 @@ end
                snes, level, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -1873,7 +1873,7 @@ end
                snes, level, mat_,
               )
 
-	mat = PetscMat(mat_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
 
 	return mat
 end 
@@ -1910,7 +1910,7 @@ end
                snes, level, smooth_,
               )
 
-	smooth = SNES(smooth_[], petsclib)
+	smooth = SNES(smooth_[], petsclib; own = false)
 
 	return smooth
 end 
@@ -1947,7 +1947,7 @@ end
                snes, level, smooth_,
               )
 
-	smooth = SNES(smooth_[], petsclib)
+	smooth = SNES(smooth_[], petsclib; own = false)
 
 	return smooth
 end 
@@ -1984,7 +1984,7 @@ end
                snes, level, smooth_,
               )
 
-	smooth = SNES(smooth_[], petsclib)
+	smooth = SNES(smooth_[], petsclib; own = false)
 
 	return smooth
 end 
@@ -2825,7 +2825,7 @@ end
                snes, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -2979,7 +2979,7 @@ end
                snes, r_, f_, ctx_,
               )
 
-	r = PetscVec(r_[], petsclib)
+	r = PetscVec(r_[], petsclib; own = false)
 	f = f_[]
 	ctx = ctx_[]
 
@@ -3177,8 +3177,8 @@ end
                snes, Amat_, Pmat_, J_, ctx_,
               )
 
-	Amat = PetscMat(Amat_[], petsclib)
-	Pmat = PetscMat(Pmat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
+	Pmat = PetscMat(Pmat_[], petsclib; own = false)
 	J = J_[]
 	ctx = ctx_[]
 
@@ -3218,7 +3218,7 @@ end
                snes, ksp_,
               )
 
-	ksp = KSP(ksp_[], petsclib)
+	ksp = KSP(ksp_[], petsclib; own = false)
 
 	return ksp
 end 
@@ -3574,7 +3574,7 @@ end
                snes, pc_,
               )
 
-	pc = SNES(pc_[], petsclib)
+	pc = SNES(pc_[], petsclib; own = false)
 
 	return pc
 end 
@@ -3900,10 +3900,10 @@ end
                snes, r_, f_, Amat_, Pmat_, J_, ctx_,
               )
 
-	r = PetscVec(r_[], petsclib)
+	r = PetscVec(r_[], petsclib; own = false)
 	f = f_[]
-	Amat = PetscMat(Amat_[], petsclib)
-	Pmat = PetscMat(Pmat_[], petsclib)
+	Amat = PetscMat(Amat_[], petsclib; own = false)
+	Pmat = PetscMat(Pmat_[], petsclib; own = false)
 	J = J_[]
 	ctx = ctx_[]
 
@@ -3944,7 +3944,7 @@ end
                snes, rhs_,
               )
 
-	rhs = PetscVec(rhs_[], petsclib)
+	rhs = PetscVec(rhs_[], petsclib; own = false)
 
 	return rhs
 end 
@@ -3983,7 +3983,7 @@ end
                snes, x_,
               )
 
-	x = PetscVec(x_[], petsclib)
+	x = PetscVec(x_[], petsclib; own = false)
 
 	return x
 end 
@@ -4060,7 +4060,7 @@ end
                snes, x_,
               )
 
-	x = PetscVec(x_[], petsclib)
+	x = PetscVec(x_[], petsclib; own = false)
 
 	return x
 end 
@@ -5658,7 +5658,7 @@ end
               )
 
 	n = n_[]
-	subsnes = subsnes_[] == C_NULL ? SNES{$PetscLib}[] : [SNES(p, petsclib) for p in unsafe_wrap(Array, subsnes_[], n; own = false)]
+	subsnes = subsnes_[] == C_NULL ? SNES{$PetscLib}[] : [SNES(p, petsclib; own = false) for p in unsafe_wrap(Array, subsnes_[], n; own = false)]
 
 	return n,subsnes
 end 
@@ -5916,7 +5916,7 @@ end
                snes, i, subsnes_,
               )
 
-	subsnes = SNES(subsnes_[], petsclib)
+	subsnes = SNES(subsnes_[], petsclib; own = false)
 
 	return subsnes
 end 
@@ -5963,10 +5963,10 @@ end
               )
 
 	n = n_[]
-	x = x_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, x_[], n; own = false)]
-	y = y_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, y_[], n; own = false)]
-	b = b_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, b_[], n; own = false)]
-	xl = xl_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, xl_[], n; own = false)]
+	x = x_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, x_[], n; own = false)]
+	y = y_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, y_[], n; own = false)]
+	b = b_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, b_[], n; own = false)]
+	xl = xl_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, xl_[], n; own = false)]
 
 	return n,x,y,b,xl
 end 
@@ -6013,7 +6013,7 @@ end
               )
 
 	n = n_[]
-	subsnes = subsnes_[] == C_NULL ? SNES{$PetscLib}[] : [SNES(p, petsclib) for p in unsafe_wrap(Array, subsnes_[], n; own = false)]
+	subsnes = subsnes_[] == C_NULL ? SNES{$PetscLib}[] : [SNES(p, petsclib; own = false) for p in unsafe_wrap(Array, subsnes_[], n; own = false)]
 	iscatter = iscatter_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, iscatter_[], n; own = false)
 	oscatter = oscatter_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, oscatter_[], n; own = false)
 	gscatter = gscatter_[] == C_NULL ? VecScatter[] : unsafe_wrap(Array, gscatter_[], n; own = false)
@@ -10666,7 +10666,7 @@ end
                snes, inact_,
               )
 
-	inact = IS(inact_[], petsclib)
+	inact = IS(inact_[], petsclib; own = false)
 
 	return inact
 end 

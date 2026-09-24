@@ -3581,7 +3581,7 @@ end
                da, ao_,
               )
 
-	ao = AO(ao_[], petsclib)
+	ao = AO(ao_[], petsclib; own = false)
 
 	return ao
 end 
@@ -4419,7 +4419,7 @@ end
                da_, info_,
               )
 
-	da = PetscDM(da_[], petsclib)
+	da = PetscDM(da_[], petsclib; own = false)
 	info = info_[]
 
 	return da,info
@@ -5257,7 +5257,7 @@ end
                dm, is_,
               )
 
-	is = IS(is_[], petsclib)
+	is = IS(is_[], petsclib; own = false)
 
 	return is
 end 
@@ -7737,7 +7737,7 @@ end
                dm, adapt_,
               )
 
-	adapt = PetscDM(adapt_[], petsclib)
+	adapt = PetscDM(adapt_[], petsclib; own = false)
 
 	return adapt
 end 
@@ -8096,7 +8096,7 @@ end
                dm, base_,
               )
 
-	base = PetscDM(base_[], petsclib)
+	base = PetscDM(base_[], petsclib; own = false)
 
 	return base
 end 
@@ -9704,7 +9704,7 @@ end
                dm, label, value, part, aux_,
               )
 
-	aux = PetscVec(aux_[], petsclib)
+	aux = PetscVec(aux_[], petsclib; own = false)
 
 	return aux
 end 
@@ -9897,7 +9897,7 @@ end
                dm, cdm_,
               )
 
-	cdm = PetscDM(cdm_[], petsclib)
+	cdm = PetscDM(cdm_[], petsclib; own = false)
 
 	return cdm
 end 
@@ -9973,7 +9973,7 @@ end
                dm, c_,
               )
 
-	c = PetscVec(c_[], petsclib)
+	c = PetscVec(c_[], petsclib; own = false)
 
 	return c
 end 
@@ -10011,7 +10011,7 @@ end
                dm, c_,
               )
 
-	c = PetscVec(c_[], petsclib)
+	c = PetscVec(c_[], petsclib; own = false)
 
 	return c
 end 
@@ -10049,7 +10049,7 @@ end
                dm, c_,
               )
 
-	c = PetscVec(c_[], petsclib)
+	c = PetscVec(c_[], petsclib; own = false)
 
 	return c
 end 
@@ -10162,7 +10162,7 @@ end
                dm, cdm_,
               )
 
-	cdm = PetscDM(cdm_[], petsclib)
+	cdm = PetscDM(cdm_[], petsclib; own = false)
 
 	return cdm
 end 
@@ -10280,7 +10280,7 @@ end
                dm, cdm_,
               )
 
-	cdm = PetscDM(cdm_[], petsclib)
+	cdm = PetscDM(cdm_[], petsclib; own = false)
 
 	return cdm
 end 
@@ -10432,7 +10432,7 @@ end
                dm, c_,
               )
 
-	c = PetscVec(c_[], petsclib)
+	c = PetscVec(c_[], petsclib; own = false)
 
 	return c
 end 
@@ -10470,7 +10470,7 @@ end
                dm, c_,
               )
 
-	c = PetscVec(c_[], petsclib)
+	c = PetscVec(c_[], petsclib; own = false)
 
 	return c
 end 
@@ -10508,7 +10508,7 @@ end
                dm, c_,
               )
 
-	c = PetscVec(c_[], petsclib)
+	c = PetscVec(c_[], petsclib; own = false)
 
 	return c
 end 
@@ -10740,8 +10740,8 @@ end
               )
 
 	section = section_[]
-	mat = PetscMat(mat_[], petsclib)
-	bias = PetscVec(bias_[], petsclib)
+	mat = PetscMat(mat_[], petsclib; own = false)
+	bias = PetscVec(bias_[], petsclib; own = false)
 
 	return section,mat,bias
 end 
@@ -11014,7 +11014,7 @@ end
                dm, fdm_,
               )
 
-	fdm = PetscDM(fdm_[], petsclib)
+	fdm = PetscDM(fdm_[], petsclib; own = false)
 
 	return fdm
 end 
@@ -11137,7 +11137,7 @@ end
                dm, g_,
               )
 
-	g = PetscVec(g_[], petsclib)
+	g = PetscVec(g_[], petsclib; own = false)
 
 	return g
 end 
@@ -11614,7 +11614,7 @@ end
                dm, g_,
               )
 
-	g = PetscVec(g_[], petsclib)
+	g = PetscVec(g_[], petsclib; own = false)
 
 	return g
 end 
@@ -11691,7 +11691,7 @@ end
                dm, name, X_,
               )
 
-	X = PetscVec(X_[], petsclib)
+	X = PetscVec(X_[], petsclib; own = false)
 
 	return X
 end 
@@ -11730,7 +11730,7 @@ end
                dm, name, X_,
               )
 
-	X = PetscVec(X_[], petsclib)
+	X = PetscVec(X_[], petsclib; own = false)
 
 	return X
 end 
@@ -12123,7 +12123,7 @@ end
                dm, odm_,
               )
 
-	odm = PetscDM(odm_[], petsclib)
+	odm = PetscDM(odm_[], petsclib; own = false)
 
 	return odm
 end 
@@ -12363,7 +12363,7 @@ end
                dm, label, fields_, ds_, dsIn_,
               )
 
-	fields = IS(fields_[], petsclib)
+	fields = IS(fields_[], petsclib; own = false)
 	ds = ds_[]
 	dsIn = dsIn_[]
 
@@ -12411,7 +12411,7 @@ end
               )
 
 	label = label_[]
-	fields = IS(fields_[], petsclib)
+	fields = IS(fields_[], petsclib; own = false)
 	ds = ds_[]
 	dsIn = dsIn_[]
 
@@ -13581,7 +13581,7 @@ end
                ctx, coordinates_,
               )
 
-	coordinates = PetscVec(coordinates_[], petsclib)
+	coordinates = PetscVec(coordinates_[], petsclib; own = false)
 
 	return coordinates
 end 
@@ -13695,7 +13695,7 @@ end
                ctx, v_,
               )
 
-	v = PetscVec(v_[], petsclib)
+	v = PetscVec(v_[], petsclib; own = false)
 
 	return v
 end 
@@ -17232,7 +17232,7 @@ end
                dm, plexdm_,
               )
 
-	plexdm = PetscDM(plexdm_[], petsclib)
+	plexdm = PetscDM(plexdm_[], petsclib; own = false)
 
 	return plexdm
 end 
@@ -18155,7 +18155,7 @@ end
                dm, dmCoarse_,
               )
 
-	dmCoarse = PetscDM(dmCoarse_[], petsclib)
+	dmCoarse = PetscDM(dmCoarse_[], petsclib; own = false)
 
 	return dmCoarse
 end 
@@ -23686,7 +23686,7 @@ end
               )
 
 	anchorSection = anchorSection_[]
-	anchorIS = IS(anchorIS_[], petsclib)
+	anchorIS = IS(anchorIS_[], petsclib; own = false)
 
 	return anchorSection,anchorIS
 end 
@@ -23819,7 +23819,7 @@ end
                dm, globalCellNumbers_,
               )
 
-	globalCellNumbers = IS(globalCellNumbers_[], petsclib)
+	globalCellNumbers = IS(globalCellNumbers_[], petsclib; own = false)
 
 	return globalCellNumbers
 end 
@@ -24080,7 +24080,7 @@ end
 	numPoints = numPoints_[]
 	points = points_[]
 	clSec = clSec_[]
-	clPoints = IS(clPoints_[], petsclib)
+	clPoints = IS(clPoints_[], petsclib; own = false)
 	clp = clp_[]
 
 	return numPoints,points,clSec,clPoints,clp
@@ -24526,9 +24526,9 @@ end
                dm, fv, cellgeom_, facegeom_, gradDM_,
               )
 
-	cellgeom = PetscVec(cellgeom_[], petsclib)
-	facegeom = PetscVec(facegeom_[], petsclib)
-	gradDM = PetscDM(gradDM_[], petsclib)
+	cellgeom = PetscVec(cellgeom_[], petsclib; own = false)
+	facegeom = PetscVec(facegeom_[], petsclib; own = false)
+	gradDM = PetscDM(gradDM_[], petsclib; own = false)
 
 	return cellgeom,facegeom,gradDM
 end 
@@ -25011,7 +25011,7 @@ end
 	cpCoordDataLength = cpCoordDataLength_[]
 	cpCoordData = cpCoordData_[]
 	maxNumEquiv = maxNumEquiv_[]
-	cpEquiv = PetscMat(cpEquiv_[], petsclib)
+	cpEquiv = PetscMat(cpEquiv_[], petsclib; own = false)
 	wHashTable = wHashTable_[]
 	wDataLength = wDataLength_[]
 	wData = wData_[]
@@ -25160,7 +25160,7 @@ end
               )
 
 	cpSurfGradHashTable = cpSurfGradHashTable_[]
-	cpSurfGrad = PetscMat(cpSurfGrad_[], petsclib)
+	cpSurfGrad = PetscMat(cpSurfGrad_[], petsclib; own = false)
 	cpArraySize = cpArraySize_[]
 	gradSACP = gradSACP_[]
 	gradVolCP = gradVolCP_[]
@@ -25745,8 +25745,8 @@ end
                dm, facegeom_, cellgeom_, minRadius_,
               )
 
-	facegeom = PetscVec(facegeom_[], petsclib)
-	cellgeom = PetscVec(cellgeom_[], petsclib)
+	facegeom = PetscVec(facegeom_[], petsclib; own = false)
+	cellgeom = PetscVec(cellgeom_[], petsclib; own = false)
 	minRadius = minRadius_[]
 
 	return facegeom,cellgeom,minRadius
@@ -25786,7 +25786,7 @@ end
                dm, fv, dmGrad_,
               )
 
-	dmGrad = PetscDM(dmGrad_[], petsclib)
+	dmGrad = PetscDM(dmGrad_[], petsclib; own = false)
 
 	return dmGrad
 end 
@@ -26903,7 +26903,7 @@ end
                dm, ref_,
               )
 
-	ref = PetscDM(ref_[], petsclib)
+	ref = PetscDM(ref_[], petsclib; own = false)
 
 	return ref
 end 
@@ -27240,7 +27240,7 @@ end
                dm, subpointIS_,
               )
 
-	subpointIS = IS(subpointIS_[], petsclib)
+	subpointIS = IS(subpointIS_[], petsclib; own = false)
 
 	return subpointIS
 end 
@@ -27757,7 +27757,7 @@ end
                dm, globalVertexNumbers_,
               )
 
-	globalVertexNumbers = IS(globalVertexNumbers_[], petsclib)
+	globalVertexNumbers = IS(globalVertexNumbers_[], petsclib; own = false)
 
 	return globalVertexNumbers
 end 
@@ -36324,7 +36324,7 @@ end
                dm, slot, subdm_,
               )
 
-	subdm = PetscDM(subdm_[], petsclib)
+	subdm = PetscDM(subdm_[], petsclib; own = false)
 
 	return subdm
 end 
@@ -45494,7 +45494,7 @@ end
                sw, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 

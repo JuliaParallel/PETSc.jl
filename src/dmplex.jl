@@ -994,7 +994,7 @@ LibPETSc.@for_petsc function mat_nullspace_create(
     vecs,
 )
     # the wrapper converts the handles itself; accept anything with a `.ptr`
-    pvecs = [LibPETSc.PetscVec{$PetscLib}(v.ptr) for v in vecs]
+    pvecs = [LibPETSc.PetscVec{$PetscLib}(v.ptr; own = false) for v in vecs]
     return LibPETSc.MatNullSpaceCreate(petsclib, comm,
         LibPETSc.PETSC_FALSE, $PetscInt(length(pvecs)), pvecs)
 end

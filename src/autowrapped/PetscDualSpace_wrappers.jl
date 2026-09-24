@@ -588,7 +588,7 @@ end
               )
 
 	allNodes = allNodes_[]
-	allMat = PetscMat(allMat_[], petsclib)
+	allMat = PetscMat(allMat_[], petsclib; own = false)
 
 	return allNodes,allMat
 end 
@@ -626,7 +626,7 @@ end
                sp, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -867,7 +867,7 @@ end
               )
 
 	intNodes = intNodes_[]
-	intMat = PetscMat(intMat_[], petsclib)
+	intMat = PetscMat(intMat_[], petsclib; own = false)
 
 	return intNodes,intMat
 end 

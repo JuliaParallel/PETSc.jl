@@ -2818,7 +2818,7 @@ end
                v, dm_,
               )
 
-	dm = PetscDM(dm_[], petsclib)
+	dm = PetscDM(dm_[], petsclib; own = false)
 
 	return dm
 end 
@@ -3327,7 +3327,7 @@ end
                X, is, Y_,
               )
 
-	Y = PetscVec(Y_[], petsclib)
+	Y = PetscVec(Y_[], petsclib; own = false)
 
 	return Y
 end 
@@ -3481,7 +3481,7 @@ end
                X, ghost_,
               )
 
-	ghost = IS(ghost_[], petsclib)
+	ghost = IS(ghost_[], petsclib; own = false)
 
 	return ghost
 end 
@@ -3520,7 +3520,7 @@ end
                g, l_,
               )
 
-	l = PetscVec(l_[], petsclib)
+	l = PetscVec(l_[], petsclib; own = false)
 
 	return l
 end 
@@ -4820,7 +4820,7 @@ end
                X, idxm, sx_,
               )
 
-	sx = PetscVec(sx_[], petsclib)
+	sx = PetscVec(sx_[], petsclib; own = false)
 
 	return sx
 end 
@@ -4861,7 +4861,7 @@ end
               )
 
 	N = N_[]
-	sx = sx_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, sx_[], N; own = false)]
+	sx = sx_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, sx_[], N; own = false)]
 
 	return N,sx
 end 
@@ -4902,7 +4902,7 @@ end
               )
 
 	N = N_[]
-	sx = sx_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib) for p in unsafe_wrap(Array, sx_[], N; own = false)]
+	sx = sx_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, sx_[], N; own = false)]
 
 	return N,sx
 end 
@@ -4951,7 +4951,7 @@ end
                params, index, subparams_,
               )
 
-	subparams = PetscVec(subparams_[], petsclib)
+	subparams = PetscVec(subparams_[], petsclib; own = false)
 
 	return subparams
 end 

@@ -270,11 +270,13 @@ Destroy `ts` and release the options database attached to it.
 
 The call is a no-op when the library has been finalized or when `ts` predates
 the current initialize/finalize cycle, so a stale handle never reaches `TSDestroy`.
+Does nothing on a borrowed handle: see [`owns`](@ref).
 
 # External Links
 $(doc_external("TS/TSDestroy"))
 """
 function destroy!(ts::AbstractTS{PetscLib}) where {PetscLib}
+    owns(ts) || return nothing
     if !isnothing(ts.opts)
         destroy!(ts.opts)
         ts.opts = nothing
@@ -938,9 +940,9 @@ function (::TSSetRHSFunctionFn{PetscLib, PetscReal})(
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
     ts = unsafe_pointer_to_objref(ctx)
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age)
-    u = PetscVec{PetscLib}(u_ptr)
-    F = PetscVec{PetscLib}(F_ptr)
+    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+    u = PetscVec{PetscLib}(u_ptr; own = false)
+    F = PetscVec{PetscLib}(F_ptr; own = false)
 
     run_callback("rhs_function!") do
         if Base.applicable(ts.rhs_function!, F, actual_ts, t, u, ts.user_ctx)
@@ -994,10 +996,10 @@ function (::TSSetRHSJacobianFn{PetscLib, PetscReal})(
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
     ts = unsafe_pointer_to_objref(ctx)
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age)
-    u = PetscVec{PetscLib}(u_ptr)
-    A = PetscMat{PetscLib}(A_ptr)
-    P = PetscMat{PetscLib}(P_ptr)
+    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+    u = PetscVec{PetscLib}(u_ptr; own = false)
+    A = PetscMat{PetscLib}(A_ptr; own = false)
+    P = PetscMat{PetscLib}(P_ptr; own = false)
 
     run_callback("rhs_jacobian!") do
         if Base.applicable(ts.rhs_jacobian!, A, P, actual_ts, t, u, ts.user_ctx)
@@ -1059,10 +1061,10 @@ function (::TSSetIFunctionFn{PetscLib, PetscReal})(
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
     ts = unsafe_pointer_to_objref(ctx)
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age)
-    u = PetscVec{PetscLib}(u_ptr)
-    u_t = PetscVec{PetscLib}(udot_ptr)
-    F = PetscVec{PetscLib}(F_ptr)
+    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+    u = PetscVec{PetscLib}(u_ptr; own = false)
+    u_t = PetscVec{PetscLib}(udot_ptr; own = false)
+    F = PetscVec{PetscLib}(F_ptr; own = false)
 
     run_callback("ifunction!") do
         if Base.applicable(ts.ifunction!, F, actual_ts, t, u, u_t, ts.user_ctx)
@@ -1118,11 +1120,11 @@ function (::TSSetIJacobianFn{PetscLib, PetscReal})(
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
     ts = unsafe_pointer_to_objref(ctx)
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age)
-    u = PetscVec{PetscLib}(u_ptr)
-    u_t = PetscVec{PetscLib}(udot_ptr)
-    A = PetscMat{PetscLib}(A_ptr)
-    P = PetscMat{PetscLib}(P_ptr)
+    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+    u = PetscVec{PetscLib}(u_ptr; own = false)
+    u_t = PetscVec{PetscLib}(udot_ptr; own = false)
+    A = PetscMat{PetscLib}(A_ptr; own = false)
+    P = PetscMat{PetscLib}(P_ptr; own = false)
 
     run_callback("ijacobian!") do
         if Base.applicable(
@@ -1198,8 +1200,8 @@ function (::TSMonitorSetFn{PetscLib, PetscInt, PetscReal})(
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscInt, PetscReal}
     ts = unsafe_pointer_to_objref(ctx)
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age)
-    u = PetscVec{PetscLib}(u_ptr)
+    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+    u = PetscVec{PetscLib}(u_ptr; own = false)
 
     run_callback("monitor") do
         if Base.applicable(ts.monitor, actual_ts, step, t, u, ts.user_ctx)

@@ -1045,9 +1045,13 @@ Every constructor returns `own = true` and, on a one-process communicator, attac
 
 This is [§3.3](#3.3-What-an-accessor-hands-back) enforced by the value for every handle. 0.5.0 enforced it for `VecPtr`, `MatPtr` and the DM types; `snes(ts)` and `ksp(ts)` were borrowed in their docstrings only, and `destroy!` on them destroyed the solver the `TS` still used.
 
-`LibPETSc` does not track ownership, just as C does not. A handle returned by a `LibPETSc` function has `own = true`, including one from an `XGet*` function, and passing it to `destroy!` destroys it exactly as `XDestroy` would. The generated `XDestroy` sets the wrapper's `ptr` to `C_NULL`, so freeing a high-level object through `LibPETSc` and letting its finalizer run afterwards is safe.
+`LibPETSc` follows PETSc's own convention, which the function name carries. A handle returned by a function with `Get` in its name is a reference its owner keeps, so the wrapper has `own = false`: `KSPGetPC`, `TSGetSNES`, `DMGetCoordinates`, `KSPGetOperators`. Every other function that returns a handle (`Create`, `Duplicate`, `Clone`, `Convert`, `DMPlexDistribute`, ...) hands out a new reference, and the wrapper has `own = true`. The exceptions are the few `Get` functions that also hand out a new reference, such as `MatGetFactor`, `DMLabelGetStratumIS` and `MatGetOrdering`. Their manual pages or sources say the caller destroys the result, and `wrapping/generator/rules/ownership.toml` lists them. A function whose ownership is unclear stays off that list: a borrowed handle the caller should have destroyed only leaks, while an owned one that was not the caller's would be destroyed twice.
+
+`own` governs `destroy!` only. The generated `XDestroy` frees whatever it is given, as it does in C, and sets the wrapper's `ptr` to `C_NULL`, so freeing a high-level object through `LibPETSc` and letting its finalizer run afterwards is safe.
 
 Objects passed to a callback are borrowed, and valid only for the duration of the call.
+
+`VecPtr` and `MatPtr` predate the field. They carried the ownership flag that `PetscVec` and `PetscMat` now carry themselves, and they stay for 0.5.
 
 ### 18.3 Callback state lives with the PETSc object
 
@@ -1081,11 +1085,13 @@ A name is public when users write it. Trampoline types (the `…Fn` callables ha
 
 ### 18.7 What 0.5.1 changes
 
-Two rows change what working code observes, and the release notes list them as behaviour changes: a `TS` callback that throws no longer surfaces as `PetscError`, and `LibPETSc.PC` is a `PC{PetscLib}` struct rather than a pointer ([§5.2](#5.2-Prefixes)). The rest fix behaviour 0.5.0 already documented differently, or add a return value where there was `nothing`. The struct fields that held callback state stay readable and writable through forwarding for all of 0.5.
+Three rows change what working code observes, and the release notes list them as behaviour changes: a `TS` callback that throws no longer surfaces as `PetscError`, `LibPETSc.PC` is a `PC{PetscLib}` struct rather than a pointer ([§5.2](#5.2-Prefixes)), and `destroy!` on a handle from a `LibPETSc` `Get` function does nothing. Code that relied on the last one was destroying an object its owner still used, unless the function is one that hands out a new reference, and those keep `own = true`. The rest fix behaviour 0.5.0 already documented differently, or add a return value where there was `nothing`. The struct fields that held callback state stay readable and writable through forwarding for all of 0.5.
 
 | | 0.5.0 | 0.5.1 |
 |---|---|---|
 | `snes(ts)`, `ksp(ts)` | borrowed in the docstring only | `own = false`, `destroy!` does nothing |
+| Handles from a `LibPETSc` `Get` function | owned by every wrapper that held them | `own = false`, apart from the listed functions that hand out a new reference |
+| `IS`, `PF`, `Tao`, `AO` | hold `ptr` only | hold `ptr`, `age` and `own` like every other handle |
 | `KSP` constructor | no finalizer | a finalizer on one process, like `SNES` and `TS` |
 | Callbacks set through a reader's wrapper | rooted on the wrapper, lost when it is collected | rooted on the PETSc object |
 | `snes.user_ctx`, `ts.user_ctx` | struct fields | forwarded to `user_ctx` and `set_user_ctx!` |

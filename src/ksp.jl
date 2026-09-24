@@ -183,7 +183,17 @@ function Base.:\(
 end
 
 
+"""
+    destroy!(ksp::KSP)
+
+Destroy the solver `ksp` holds. Does nothing on a borrowed handle, such as the
+one `ksp(ts)` hands back: see [`owns`](@ref).
+
+# External Links
+$(doc_external("KSP/KSPDestroy"))
+"""
 function destroy!(ksp::KSP{PetscLib}) where {PetscLib}
+    owns(ksp) || return nothing
     if isdestroyable(ksp, PetscLib)
         LibPETSc.KSPDestroy(PetscLib, ksp)
     end
@@ -218,8 +228,8 @@ function (w::KSPComputeRHSFn{PetscLib, PetscInt})(
     PetscScalar = PetscLib.PetscScalar
     #new_ksp = KSPPtr{PetscLib, PetscScalar}(new_ksp_ptr, getlib(PetscLib).age)\
     #b = VecPtr(PetscLib, cb, false)
-    new_ksp = KSP{PetscLib}(new_ksp_ptr, 0)
-    b = PetscVec{PetscLib}(cb, 0)
+    new_ksp = KSP{PetscLib}(new_ksp_ptr, 0; own = false)
+    b = PetscVec{PetscLib}(cb, 0; own = false)
     ksp = unsafe_pointer_to_objref(ksp_ptr)
     ierr = ksp.computerhs!(b, new_ksp)
     return PetscLib.PetscInt(ierr)
@@ -269,9 +279,9 @@ function (w::KSPComputeOperatorsFn{PetscLib, PetscInt})(
 )::PetscInt where {PetscLib, PetscInt}
     PetscScalar = PetscLib.PetscScalar
     #new_ksp = KSPPtr{PetscLib, PetscScalar}(new_ksp_ptr, getlib(PetscLib).age)
-    new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age)
-    A = PetscMat{PetscLib}(cA, getlib(PetscLib).age)
-    P = PetscMat{PetscLib}(cP, getlib(PetscLib).age)
+    new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
+    A = PetscMat{PetscLib}(cA, getlib(PetscLib).age; own = false)
+    P = PetscMat{PetscLib}(cP, getlib(PetscLib).age; own = false)
     ksp = unsafe_pointer_to_objref(ksp_ptr)
     ierr = ksp.computeops!(A, P, new_ksp)
     return PetscLib.PetscInt(ierr)

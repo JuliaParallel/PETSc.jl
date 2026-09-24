@@ -2709,8 +2709,8 @@ end
                tj, ts, time, U_, Udot_,
               )
 
-	U = PetscVec(U_[], petsclib)
-	Udot = PetscVec(Udot_[], petsclib)
+	U = PetscVec(U_[], petsclib; own = false)
+	Udot = PetscVec(Udot_[], petsclib; own = false)
 
 	return U,Udot
 end 

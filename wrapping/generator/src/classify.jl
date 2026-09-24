@@ -51,13 +51,13 @@ end
 
 is_simple(r::Rules, t) = t in SIMPLE_TYPES || t in r.enum_types || t == "MPI_Comm" || t in ("Cint", "Csize_t", "Cdouble", "Cfloat", "Bool", "Cchar", "Int32", "PetscInt64", "PetscInt32", "PetscMPIInt", "PetscCount", "PetscLogDouble", "PetscObjectId", "PetscObjectState", "PetscClassId")
 
-function init_extract(r::Rules, typename::String, name::String, isarray::Bool, isoutput::Bool, stars::Int)
+function init_extract(r::Rules, fn::String, typename::String, name::String, isarray::Bool, isoutput::Bool, stars::Int)
     init, extract, name_ccall = "", "", name
     if !isarray && isoutput && is_handle(r, typename)
         h = r.handles[typename]
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{$(h.c)}()"
-        extract = "$name = $(h.julia)($(name_ccall)[], petsclib)"
+        extract = "$name = $(h.julia)($(name_ccall)[], petsclib$(own_kwarg(r, fn)))"
     elseif !isarray && !isoutput && stars == 1 && is_handle(r, typename)
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref($(name).ptr)"
@@ -165,7 +165,7 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
         return FArg(name, name, "", "PetscObject", false, "", "", false, 0, false)   # any handle converts to Ptr{Cvoid}
     end
     typename_ccall = is_handle(r, typename) ? r.handles[typename].c : typename
-    init, extract, name_ccall = init_extract(r, typename, name, isarray, isoutput, stars)
+    init, extract, name_ccall = init_extract(r, fn.name, typename, name, isarray, isoutput, stars)
     ccall_str = "Ptr{"^stars * typename_ccall * "}"^stars
     typename == "MPI_Comm" && isoutput && !isarray && (ccall_str = "Ptr{MPI.MPI_Comm}")
     # a PETSc string enum (`typedef const char *PCType`): a Julia `String` converts in the ccall
@@ -223,7 +223,7 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
             wrap = "unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"
             if ishandle                     # array of PETSc handles -> Vector of Julia handles
                 h = r.handles[elt0]
-                body = "$name = $name_ccall[] == C_NULL ? $(h.julia){\$PetscLib}[] : [$(h.julia)(p, petsclib) for p in $wrap]"
+                body = "$name = $name_ccall[] == C_NULL ? $(h.julia){\$PetscLib}[] : [$(h.julia)(p, petsclib$(own_kwarg(r, fn.name))) for p in $wrap]"
                 typename = "Vector{$(h.julia)}"
             elseif elt0 == "Ptr{Cchar}" || (stars == 2 && elt0 == "Cchar")   # char** -> strings
                 wrap = "unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"

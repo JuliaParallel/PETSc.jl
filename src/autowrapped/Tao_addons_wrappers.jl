@@ -547,7 +547,7 @@ end
                ls, x_,
               )
 
-	x = PetscVec(x_[], petsclib)
+	x = PetscVec(x_[], petsclib; own = false)
 
 	return x
 end 
@@ -586,7 +586,7 @@ end
                ls, s_,
               )
 
-	s = PetscVec(s_[], petsclib)
+	s = PetscVec(s_[], petsclib; own = false)
 
 	return s
 end 
@@ -3389,7 +3389,7 @@ end
                term, A_,
               )
 
-	A = PetscMat(A_[], petsclib)
+	A = PetscMat(A_[], petsclib; own = false)
 
 	return A
 end 
@@ -4756,7 +4756,7 @@ end
 	prefix = prefix_[] == C_NULL ? "" : unsafe_string(prefix_[])
 	scale = scale_[]
 	term = term_[]
-	map = PetscMat(map_[], petsclib)
+	map = PetscMat(map_[], petsclib; own = false)
 
 	return prefix,scale,term,map
 end 
@@ -4804,10 +4804,10 @@ end
                term, index, unmapped_H_, unmapped_Hpre_, mapped_H_, mapped_Hpre_,
               )
 
-	unmapped_H = PetscMat(unmapped_H_[], petsclib)
-	unmapped_Hpre = PetscMat(unmapped_Hpre_[], petsclib)
-	mapped_H = PetscMat(mapped_H_[], petsclib)
-	mapped_Hpre = PetscMat(mapped_Hpre_[], petsclib)
+	unmapped_H = PetscMat(unmapped_H_[], petsclib; own = false)
+	unmapped_Hpre = PetscMat(unmapped_Hpre_[], petsclib; own = false)
+	mapped_H = PetscMat(mapped_H_[], petsclib; own = false)
+	mapped_Hpre = PetscMat(mapped_Hpre_[], petsclib; own = false)
 
 	return unmapped_H,unmapped_Hpre,mapped_H,mapped_Hpre
 end 

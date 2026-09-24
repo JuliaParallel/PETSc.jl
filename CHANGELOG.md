@@ -1,32 +1,43 @@
 # Changelog
 
-## Unreleased
+## v0.5.1
 
-- **Fixed a use-after-free.** A vector built on a Julia array, `PetscVec(petsclib, array)` or `PetscVec(petsclib, comm, array)`, used the array's memory without keeping the array alive, so after a garbage collection it could read and write memory Julia had reused: `PetscVec(petsclib, [1.0, 2.0])` was unsafe. `ksp \ b` for a Julia vector and `M * x` for a `MatShell` had the same problem with their temporary copies. The vector now keeps its array alive for as long as the PETSc object exists.
-- A matrix built on CSR arrays, `PetscMat(petsclib, rowptr, colval, nzval)` or `PetscMat(…; with_arrays = true)`, released its arrays in `destroy!` even when a solver still held the matrix. They now live as long as the matrix. Both constructors attach the one-process finalizer the other constructors have.
-- `KSP(petsclib, comm, S::SparseMatrixCSC)` no longer leaks its matrix, and `PetscMat(petsclib, comm, S)` attaches the one-process finalizer.
-- `TSIRK` types (`-ts_irk_type gauss` and the rest) are found again after `finalize` followed by `initialize`. PETSc 3.25 leaves their registration flag set at finalize; `initialize` now resets it.
-- `PetscOptions(petsclib)` throws `PetscNotInitialized` on a library that is not initialized, like every other high-level constructor. It used to succeed and return an options database that `destroy!` skipped once `initialize` ran.
-- `LibPETSc.PC` is a Julia type, `PC{PetscLib}`, like `KSP` and `IS`, instead of a raw pointer alias. `KSPGetPC`, `PCCreate` and the other functions that hand out a PC return it, and every `PC*` function takes an `AbstractPC`. Code that passes a PC from one call to the next is unaffected; code that annotates a variable as `LibPETSc.PC` expecting a `Ptr`, or passes raw pointers, needs `pc.ptr`.
-- `PETSc.pc(ksp)` returns the preconditioner, borrowed from `ksp`: `destroy!` on it does nothing. `set_type!`, `type_name` and `set_fieldsplit_is!` work on it.
-- `set_shell_apply!(apply!, p)` and `set_shell_setup!(setup!, p)` write a `:shell` preconditioner in Julia. `apply!(y, p, x)` writes into `y`.
-- Callback closures, the user context and the options applied at `solve!` are kept with the PETSc object rather than on the wrapper (docs/src/man/naming.md §18.3). A callback set through a borrowed handle, such as `set_function!(f!, snes(ts), r)`, lives as long as the solver. `snes.f!`, `snes.user_ctx`, `ts.opts` and the other former fields stay readable and writable. `user_ctx(obj)` and `set_user_ctx!(obj, ctx)` read and set the context of a `SNES` or `TS`.
-- An exception thrown in a callback (SNES residual, Jacobian or convergence test, KSP right-hand side or operators, TS right-hand side, implicit function, Jacobians or monitor, `MatShell` multiply, shell preconditioner) comes out of the `solve!`, `step!` or `setup!` that ran it as the original exception. SNES, KSP and `MatShell` callbacks used to unwind through PETSc's C code, which is undefined behaviour. When the work was started through `LibPETSc` directly, the exception is logged and the `LibPETSc` call throws `PetscError`.
-- **Behaviour change:** an exception in a `TS` callback comes out of `solve!` or `step!` as itself. It used to be logged and surface as a `PetscError`.
-- A callback's return value is ignored. A nonzero `Integer` still fails the call, as the PETSc error code 0.5.0 read it as, and warns once; from v0.6 it is ignored. `return 0` keeps working.
-- `KSP` and `MatShell` attach a finalizer on a one-process communicator, like `SNES` and `TS`.
-- Every `!` function returns the object it mutates (docs/src/man/naming.md §7): `set_type!(ksp, :cg)` returns `ksp`, `solve!(x, ksp, b)` returns `x`, `assemble!(A)` returns `A`, `set_function!(f!, snes, r)` returns `snes`, and so on for about 60 functions that returned `nothing`. `set_function!` returned `0`. `setindex!`, `fill!`, `mul!` and `copyto!` on PETSc objects return the object, as their Base contracts say. `destroy!`, `restore_local_arrays!`, `set_library!` and `push!`/`pop!` on `PetscOptions` still return `nothing`; `with_local_array!` returns what its block returns.
-- **Behaviour change:** `add_boundary!` and `add_natural_boundary!` return `dm` instead of PETSc's boundary number; `LibPETSc.DMAddBoundary` still returns it.
-- Readers on `SNES` and `KSP`, as `TS` has: `ksp(snes)` and `solution(snes)` (borrowed), `iteration_number`, `converged_reason`, `ksp_iterations(snes)`, `function_norm(snes)`. `prev_time(ts)`. `ksp.md` and `snes.md` already showed `converged_reason(ksp)` and `solution(snes)`; both now exist.
-- `set_function_domain_error!(snes)` reports, from inside the residual, an iterate outside the function's domain.
-- A nested solver can be set up without `LibPETSc`: `set_operators!(ksp, A, P = A)`, `set_dm_active!(ksp, flag)` and `set_dm_active!(ksp, part, flag)`, `set_options_prefix!` and `options_prefix` on `KSP`, `SNES`, `TS` and `PC`, and `set_from_options!` on `KSP` and `SNES`.
-- `set_from_options!(ts)` applies the options given to the `TS` constructor, as `solve!` does, before the global database. It read only the global database.
-- `save_vtk!` and `vtk_merge_tensor!` are renamed `save_vtk` and `vtk_merge_tensor`: they write a file and mutate no argument. The old names warn until v0.6.
-- `MPIPreferences` is a test-only dependency. `src/` never loaded it; install it yourself to select an MPI binary, as the HPC guide describes.
-- Every handle knows whether it owns its PETSc object. `PetscVec`, `PetscMat`, `PetscDM`, `KSP`, `PC`, `SNES`, `TS`, `PetscOptions`, `IS`, `PF`, `Tao` and `AO` carry `ptr`, `age` and `own`, and `PETSc.owns(obj)` reads the field. Constructors take `own` as a keyword, `true` by default.
-- **Behaviour change:** a handle returned by a `LibPETSc` function with `Get` in its name is borrowed, following PETSc's convention, and `destroy!` on it does nothing. That covers `snes(ts)`, `ksp(ts)`, `pc(ksp)` and the objects a callback receives, which could previously be destroyed from under the solver still using them. The `Get` functions that hand the caller a new reference (`MatGetFactor`, `DMLabelGetStratumIS`, `DMGetStratumIS`, `MatGetOrdering`, `MatGetOwnershipIS` and 31 more, listed in `wrapping/generator/rules/ownership.toml`) return an owner as before. `LibPETSc.XDestroy` still frees any handle it is given.
-- `destroy!(pc)` destroys a `PC` the caller created with `LibPETSc.PCCreate`; on the borrowed one from `pc(ksp)` it still does nothing.
-- `set_convergence_test!` no longer overwrites `snes.user_ctx`. The closure is kept on a field of its own, so residual and Jacobian callbacks that take `user_ctx` keep receiving it.
+0.5.1 settles how a wrapper relates to its PETSc object and what happens when PETSc calls back into Julia (docs/src/man/naming.md §18), fixes a use-after-free, and adds what a nested or logged solve needs. Working code is most likely to notice the four behaviour changes below; each replaces behaviour that was unsafe or contradicted the docs.
+
+### Behaviour changes
+
+- Handles returned by a `LibPETSc` `Get` function are borrowed, as in PETSc: `destroy!` on them does nothing. This covers `snes(ts)`, `ksp(ts)`, `pc(ksp)` and callback arguments, which could be destroyed from under a running solver. The 36 `Get` functions that return a new reference (`MatGetFactor`, `DMLabelGetStratumIS`, …; see `wrapping/generator/rules/ownership.toml`) still return an owner.
+- An exception in a `TS` callback comes out of `solve!` or `step!` as itself, not as a `PetscError`.
+- `LibPETSc.PC` is a handle type, `PC{PetscLib}`, instead of a raw pointer. Code that passes a PC between calls is unaffected; code that expects a `Ptr` needs `pc.ptr`.
+- `add_boundary!` and `add_natural_boundary!` return `dm` instead of the boundary number, which `LibPETSc.DMAddBoundary` still returns.
+
+### Fixed
+
+- **Use-after-free:** `PetscVec(petsclib, array)` and `PetscVec(petsclib, comm, array)` did not keep `array` alive, so after a garbage collection the vector could use reclaimed memory. `ksp \ b` with a Julia vector and `M * x` with a `MatShell` had the same bug. The same applied to matrices built on CSR arrays once a solver outlived the handle.
+- An exception in a SNES, KSP or `MatShell` callback unwound through PETSc's C code, which is undefined behaviour. `solve!`, `step!` and `setup!` now rethrow the original exception; a solve started through `LibPETSc` logs it and throws `PetscError`.
+- A callback set through a borrowed handle, such as `set_function!(f!, snes(ts), r)`, could be garbage-collected while the solver still used it. Callbacks, the user context and constructor options now live with the PETSc object (naming.md §18.3); the old fields such as `snes.user_ctx` still work.
+- `set_convergence_test!` overwrote `snes.user_ctx`.
+- `KSP(petsclib, comm, S::SparseMatrixCSC)` leaked its matrix.
+- `TSIRK` types (`-ts_irk_type gauss`, …) were lost after `finalize` and `initialize`.
+- `PetscOptions(petsclib)` succeeded on an uninitialized library; it now throws `PetscNotInitialized` like every other constructor.
+- `set_from_options!(ts)` ignored the options given to the `TS` constructor.
+- `converged_reason(ksp)`, `solution(snes)` and `set_from_options!(snes)`, shown in the manual, did not exist.
+
+### Added
+
+- `pc(ksp)`, with `set_type!`, `type_name` and `set_fieldsplit_is!`, and a Julia `:shell` preconditioner through `set_shell_apply!(apply!, p)` and `set_shell_setup!(setup!, p)`.
+- Solver readers: `ksp(snes)`, `solution(snes)`, `iteration_number`, `converged_reason`, `ksp_iterations(snes)`, `function_norm(snes)` and `prev_time(ts)`.
+- Nested solvers without `LibPETSc`: `set_operators!(ksp, A, P = A)`, `set_dm_active!`, `set_options_prefix!` and `options_prefix`, and `set_from_options!` on `KSP` and `SNES`.
+- `set_function_domain_error!(snes)`, and `user_ctx`/`set_user_ctx!` on `SNES` and `TS`.
+- Every handle carries an `own` field, read by `owns(obj)`; constructors take `own` as a keyword. `destroy!(pc)` destroys a `PC` created with `LibPETSc.PCCreate`.
+
+### Changed
+
+- Every `!` function returns the object it mutates (naming.md §7), for example `set_type!(ksp, :cg)` returns `ksp` and `solve!(x, ksp, b)` returns `x`; about 60 returned `nothing`. The exceptions are `destroy!` and other releases, which return `nothing`, and `with_local_array!`, which returns its block's result.
+- A callback's return value is ignored: it fails by throwing. Until v0.6, a nonzero `Integer` still fails the call and warns.
+- `KSP`, `MatShell` and the CSR and `SparseMatrixCSC` `PetscMat` constructors attach a finalizer on one process, like `SNES` and `TS`.
+- `save_vtk!` and `vtk_merge_tensor!` are now `save_vtk` and `vtk_merge_tensor`, since they mutate no argument; the old names warn until v0.6.
+- `MPIPreferences` is a test-only dependency.
 
 ## v0.5.0
 

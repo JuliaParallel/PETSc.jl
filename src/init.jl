@@ -89,7 +89,8 @@ PETSc.initialize(petsclib)
 # Enable performance logging to stdout
 PETSc.initialize(petsclib; log_view = true)
 
-# Write log to a file
+# Write log to a file. PETSc reads `:file:format`, so on Windows give a path
+# without a drive letter, such as a relative one
 PETSc.initialize(petsclib; log_view = true, options = [":logfile.txt"])
 
 # Enable memory logging

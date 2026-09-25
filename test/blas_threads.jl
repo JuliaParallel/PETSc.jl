@@ -15,6 +15,7 @@ MPI.Initialized() || MPI.Init()
     n0 = BLAS.get_num_threads()
 
     @testset "-blas_num_threads sizes Julia's pool" begin
+        BLAS.set_num_threads(1)     # so that reaching 2 shows the option arrived
         options = ["-blas_num_threads", "2"]
         PETSc.initialize(petsclib; options)
         @test BLAS.get_num_threads() == 2

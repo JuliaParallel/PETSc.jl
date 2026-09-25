@@ -72,6 +72,7 @@ include("petscbool.jl")              # PetscBool is one byte (PETSc >= 3.24)
 include("low_level_tao.jl")     # Low-level Tao functions
 include("test_destroy.jl")      # destroy! guards: stale cycle, double destroy
 include("handles.jl")           # destroy! on IS, AO, PF, Tao; ISColoringGetIS ownership
+include("handle_arrays.jl")     # C arrays of handles go back to their release function
 include("lifetimes.jl")         # arrays a Vec or Mat wraps live as long as it does
 include("test_deprecations.jl") # the v0.4 names still work and warn (the only file calling them)
 include("test_api_surface.jl")  # scripts/api_surface.jl --check: the register covers the surface

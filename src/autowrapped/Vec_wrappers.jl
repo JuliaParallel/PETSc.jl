@@ -446,6 +446,7 @@ end
 
 	Y = PetscVec(Y_[], petsclib)
 	x_is = x_is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, x_is_[], nx; own = false)]
+	x_is_[] == C_NULL || PetscFree(petsclib, x_is_[])
 
 	return Y,x_is
 end 
@@ -1295,7 +1296,7 @@ end
 end 
 
 """
-	VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::Union{Ptr, AbstractArray{PetscVec}}) 
+	VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::Ptr) 
 Frees a block of vectors obtained with `VecDuplicateVecs()`.
 
 Collective
@@ -1311,12 +1312,12 @@ See also: `Vec`, `VecDuplicateVecs()`, `VecDestroyVecsf90()`
 # External Links
 $(_doc_external("Vec/VecDestroyVecs"))
 """
-function VecDestroyVecs(petsclib::PetscLibType, m::Integer, vv::Union{Ptr, AbstractArray{PetscVec}})
+function VecDestroyVecs(petsclib::PetscLibType, m::Integer, vv::Ptr)
     error("VecDestroyVecs: no generated method for these argument types")
 end
 
-@for_petsc function VecDestroyVecs(petsclib::$UnionPetscLib, m::$PetscInt, vv::Union{Ptr, AbstractArray{PetscVec}} )
-	vv_ = Ref{Ptr{CVec}}(vv isa Ptr ? vv : pointer(vv))
+@for_petsc function VecDestroyVecs(petsclib::$UnionPetscLib, m::$PetscInt, vv::Ptr )
+	vv_ = Ref{Ptr{CVec}}(vv)
 
     @chk ccall(
                (:VecDestroyVecs, $petsc_library),
@@ -4866,8 +4867,9 @@ end
 	return N,sx
 end 
 
+# override for VecNestGetSubVecsRead; C signature: VecNestGetSubVecsRead(Vec X, PetscInt* N, const Vec* sx[])
 """
-	N::PetscInt,sx::Vector{PetscVec} = VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec) 
+	N::PetscInt,sx::Vector{PetscVec} = VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec)
 Access the subvecs of a `VECNEST` vector for read-only access
 
 Logically collective
@@ -4877,7 +4879,9 @@ Input Parameter:
 
 Output Parameters:
 - `N`  - number of nested vecs
-- `sx` - array of read-locked vectors
+- `sx` - array of read-locked vectors, borrowed from `X`
+
+`VecNestRestoreSubVecsRead()` checks that it gets back the array PETSc handed out, so pass it the returned vector.
 
 Level: advanced
 
@@ -4886,27 +4890,24 @@ See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`,
 # External Links
 $(_doc_external("Vec/VecNestGetSubVecsRead"))
 """
-function VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec)
-    error("VecNestGetSubVecsRead: no generated method for these argument types")
-end
+function VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec) end
 
-@for_petsc function VecNestGetSubVecsRead(petsclib::$UnionPetscLib, X::AbstractPetscVec )
+@for_petsc function VecNestGetSubVecsRead(petsclib::$UnionPetscLib, X::AbstractPetscVec)
 	N_ = Ref{$PetscInt}()
 	sx_ = Ref{Ptr{CVec}}()
 
-    @chk ccall(
-               (:VecNestGetSubVecsRead, $petsc_library),
-               PetscErrorCode,
-               (CVec, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
-               X, N_, sx_,
-              )
+	@chk ccall(
+		(:VecNestGetSubVecsRead, $petsc_library),
+		PetscErrorCode,
+		(CVec, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
+		X, N_, sx_,
+	)
 
 	N = N_[]
-	sx = sx_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, sx_[], N; own = false)]
-
-	return N,sx
-end 
-
+	sx_[] == C_NULL && return N, PetscVec{$PetscLib}[]
+	sx = [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, sx_[], N; own = false)]
+	return N, record_handle_array!(sx, sx_[])
+end
 """
 	subparams::PetscVec = VecNestGetTaoTermSumParameters(petsclib::PetscLibType, params::AbstractPetscVec, index::PetscInt) 
 A wrapper around `VecNestGetSubVec()` for `TAOTERMSUM`.
@@ -4956,8 +4957,9 @@ end
 	return subparams
 end 
 
+# override for VecNestRestoreSubVecsRead; C signature: VecNestRestoreSubVecsRead(Vec X, PetscInt* N, const Vec* sx[])
 """
-	VecNestRestoreSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec, N::PetscInt, sx::Union{Ptr, AbstractArray{PetscVec}}) 
+	VecNestRestoreSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec, N::PetscInt, sx::Union{Ptr, AbstractVector{<:AbstractPetscVec}})
 Restore access the subvecs of a `VECNEST` vector obtained with `VecNestGetSubVecsRead()`
 
 Logically collective
@@ -4965,7 +4967,10 @@ Logically collective
 Input Parameters:
 - `X`  - nest vector
 - `N`  - number of nested vecs
-- `sx` - array of read-locked vectors
+- `sx` - the vector `VecNestGetSubVecsRead()` returned, or the raw pointer to PETSc's array
+
+PETSc checks that it gets back its own array, so only a vector `VecNestGetSubVecsRead()` returned is accepted: any
+other vector throws an `ArgumentError`. The vectors in it are left with a null pointer.
 
 Level: advanced
 
@@ -4974,25 +4979,27 @@ See also: `VECNEST`, `Vec`, `VecType`, `VecNestGetSize()`, `VecNestGetSubVec()`,
 # External Links
 $(_doc_external("Vec/VecNestRestoreSubVecsRead"))
 """
-function VecNestRestoreSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec, N::Integer, sx::Union{Ptr, AbstractArray{PetscVec}})
-    error("VecNestRestoreSubVecsRead: no generated method for these argument types")
-end
+function VecNestRestoreSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec, N::Integer, sx::Union{Ptr, AbstractVector{<:AbstractPetscVec}}) end
 
-@for_petsc function VecNestRestoreSubVecsRead(petsclib::$UnionPetscLib, X::AbstractPetscVec, N::$PetscInt, sx::Union{Ptr, AbstractArray{PetscVec}} )
+@for_petsc function VecNestRestoreSubVecsRead(petsclib::$UnionPetscLib, X::AbstractPetscVec, N::$PetscInt, sx::Union{Ptr, AbstractVector{<:AbstractPetscVec}})
+	if sx isa AbstractVector
+		N == length(sx) || throw(DimensionMismatch("N = $N, but the vector holds $(length(sx)) vectors"))
+		sx_ = Ref{Ptr{CVec}}(Ptr{CVec}(handle_array(sx, "VecNestRestoreSubVecsRead"; take = true)))
+	else
+		sx_ = Ref{Ptr{CVec}}(sx)
+	end
 	N_ = Ref{$PetscInt}(N)
-	sx_ = Ref{Ptr{CVec}}(sx isa Ptr ? sx : pointer(sx))
 
-    @chk ccall(
-               (:VecNestRestoreSubVecsRead, $petsc_library),
-               PetscErrorCode,
-               (CVec, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
-               X, N_, sx_,
-              )
+	@chk ccall(
+		(:VecNestRestoreSubVecsRead, $petsc_library),
+		PetscErrorCode,
+		(CVec, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
+		X, N_, sx_,
+	)
 
-
+	sx isa AbstractVector && foreach(v -> v.ptr = C_NULL, sx)
 	return nothing
-end 
-
+end
 """
 	VecNestSetSubVec(petsclib::PetscLibType, X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) 
 Set a single component vector in a nest vector at specified index.

@@ -5546,23 +5546,26 @@ end
 	return A
 end 
 
+# override for MatCreateSubMatrices; C signature: MatCreateSubMatrices(Mat mat, PetscInt n, const IS irow[], const IS icol[], MatReuse scall, Mat* submat[])
 """
-	submat::Vector{PetscMat} = MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
-Extracts several submatrices from a matrix. If submat
-points to an array of valid matrices, they may be reused to store the new
-submatrices.
+	submat::Vector{PetscMat} = MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse, submat = nothing)
+Extracts several submatrices from a matrix.
 
 Collective
 
 Input Parameters:
-- `mat`   - the matrix
-- `n`     - the number of submatrixes to be extracted (on this processor, may be zero)
-- `irow`  - index set of rows to extract
-- `icol`  - index set of columns to extract
-- `scall` - either `MAT_INITIAL_MATRIX` or `MAT_REUSE_MATRIX`
+- `mat`    - the matrix
+- `n`      - the number of submatrixes to be extracted (on this processor, may be zero)
+- `irow`   - index set of rows to extract
+- `icol`   - index set of columns to extract
+- `scall`  - either `MAT_INITIAL_MATRIX` or `MAT_REUSE_MATRIX`
+- `submat` - with `MAT_REUSE_MATRIX`, the vector an earlier call returned, which is refilled and returned
 
 Output Parameter:
-- `submat` - the array of submatrices
+- `submat` - the submatrices, owned by the caller
+
+PETSc keeps the submatrices in an array it allocated, and `MatDestroySubMatrices()` needs that array back. Release the
+submatrices by passing the returned vector to `MatDestroySubMatrices()`, not by destroying them one at a time.
 
 Level: advanced
 
@@ -5571,67 +5574,72 @@ See also: `Mat`, `MatDestroySubMatrices()`, `MatCreateSubMatrix()`, `MatGetRow()
 # External Links
 $(_doc_external("Mat/MatCreateSubMatrices"))
 """
-function MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::Integer, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse)
-    error("MatCreateSubMatrices: no generated method for these argument types")
+function MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::Integer, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse, submat = nothing) end
+
+@for_petsc function MatCreateSubMatrices(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse, submat = nothing)
+	reuse = scall == MAT_REUSE_MATRIX
+	reuse && submat === nothing && throw(ArgumentError("MAT_REUSE_MATRIX needs the submatrices an earlier call returned"))
+	submat_ = Ref{Ptr{CMat}}(reuse ? Ptr{CMat}(handle_array(submat, "MatCreateSubMatrices")) : C_NULL)
+
+	@chk ccall(
+		(:MatCreateSubMatrices, $petsc_library),
+		PetscErrorCode,
+		(CMat, $PetscInt, Ptr{CIS}, Ptr{CIS}, MatReuse, Ptr{Ptr{CMat}}),
+		mat, n, irow, icol, scall, submat_,
+	)
+
+	reuse && return submat
+	submat_[] == C_NULL && return PetscMat{$PetscLib}[]
+	submat = [PetscMat(p, petsclib) for p in unsafe_wrap(Array, submat_[], n; own = false)]
+	return record_handle_array!(submat, submat_[])
 end
-
-@for_petsc function MatCreateSubMatrices(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse )
-	submat_ = Ref{Ptr{CMat}}()
-
-    @chk ccall(
-               (:MatCreateSubMatrices, $petsc_library),
-               PetscErrorCode,
-               (CMat, $PetscInt, Ptr{CIS}, Ptr{CIS}, MatReuse, Ptr{Ptr{CMat}}),
-               mat, n, irow, icol, scall, submat_,
-              )
-
-	submat = submat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, submat_[], n; own = false)]
-
-	return submat
-end 
-
+# override for MatCreateSubMatricesMPI; C signature: MatCreateSubMatricesMPI(Mat mat, PetscInt n, const IS irow[], const IS icol[], MatReuse scall, Mat* submat[])
 """
-	submat::Vector{PetscMat} = MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
+	submat::Vector{PetscMat} = MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse, submat = nothing)
 Extracts MPI submatrices across a sub communicator of `mat` (by pairs of `IS` that may live on subcomms).
 
 Collective
 
 Input Parameters:
-- `mat`   - the matrix
-- `n`     - the number of submatrixes to be extracted
-- `irow`  - index set of rows to extract
-- `icol`  - index set of columns to extract
-- `scall` - either `MAT_INITIAL_MATRIX` or `MAT_REUSE_MATRIX`
+- `mat`    - the matrix
+- `n`      - the number of submatrixes to be extracted
+- `irow`   - index set of rows to extract
+- `icol`   - index set of columns to extract
+- `scall`  - either `MAT_INITIAL_MATRIX` or `MAT_REUSE_MATRIX`
+- `submat` - with `MAT_REUSE_MATRIX`, the vector an earlier call returned, which is refilled and returned
 
 Output Parameter:
-- `submat` - the array of submatrices
+- `submat` - the submatrices, owned by the caller
+
+PETSc keeps the submatrices in an array it allocated, and `MatDestroySubMatrices()` needs that array back. Release the
+submatrices by passing the returned vector to `MatDestroySubMatrices()`, not by destroying them one at a time.
 
 Level: advanced
 
-See also: `Mat`, `PCGASM`, `MatCreateSubMatrices()`, `MatCreateSubMatrix()`, `MatGetRow()`, `MatGetDiagonal()`, `MatReuse`
+See also: `Mat`, `PCGASM`, `MatCreateSubMatrices()`, `MatDestroySubMatrices()`, `MatCreateSubMatrix()`, `MatReuse`
 
 # External Links
 $(_doc_external("Mat/MatCreateSubMatricesMPI"))
 """
-function MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, n::Integer, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse)
-    error("MatCreateSubMatricesMPI: no generated method for these argument types")
+function MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, n::Integer, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse, submat = nothing) end
+
+@for_petsc function MatCreateSubMatricesMPI(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse, submat = nothing)
+	reuse = scall == MAT_REUSE_MATRIX
+	reuse && submat === nothing && throw(ArgumentError("MAT_REUSE_MATRIX needs the submatrices an earlier call returned"))
+	submat_ = Ref{Ptr{CMat}}(reuse ? Ptr{CMat}(handle_array(submat, "MatCreateSubMatricesMPI")) : C_NULL)
+
+	@chk ccall(
+		(:MatCreateSubMatricesMPI, $petsc_library),
+		PetscErrorCode,
+		(CMat, $PetscInt, Ptr{CIS}, Ptr{CIS}, MatReuse, Ptr{Ptr{CMat}}),
+		mat, n, irow, icol, scall, submat_,
+	)
+
+	reuse && return submat
+	submat_[] == C_NULL && return PetscMat{$PetscLib}[]
+	submat = [PetscMat(p, petsclib) for p in unsafe_wrap(Array, submat_[], n; own = false)]
+	return record_handle_array!(submat, submat_[])
 end
-
-@for_petsc function MatCreateSubMatricesMPI(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse )
-	submat_ = Ref{Ptr{CMat}}()
-
-    @chk ccall(
-               (:MatCreateSubMatricesMPI, $petsc_library),
-               PetscErrorCode,
-               (CMat, $PetscInt, Ptr{CIS}, Ptr{CIS}, MatReuse, Ptr{Ptr{CMat}}),
-               mat, n, irow, icol, scall, submat_,
-              )
-
-	submat = submat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, submat_[], n; own = false)]
-
-	return submat
-end 
-
 """
 	newmat::PetscMat = MatCreateSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, cll::MatReuse) 
 Gets a single submatrix on the same number of processors
@@ -7571,15 +7579,20 @@ end
 	return nothing
 end 
 
+# override for MatDestroyMatrices; C signature: MatDestroyMatrices(PetscInt n, Mat* mat[])
 """
-	MatDestroyMatrices(petsclib::PetscLibType, n::PetscInt, mat::Union{Ptr, AbstractArray{PetscMat}}) 
-Destroys an array of matrices
+	MatDestroyMatrices(petsclib::PetscLibType, n::PetscInt, mat::Union{Ptr, AbstractVector{<:AbstractPetscMat}})
+Destroys an array of matrices, and frees the array PETSc allocated for them.
 
 Collective
 
 Input Parameters:
 - `n`   - the number of local matrices
-- `mat` - the matrices (this is a pointer to the array of matrices)
+- `mat` - the vector of matrices `MatCreateSubMatrices()` or `MatCreateSubMatricesMPI()` returned, or the raw pointer to
+  PETSc's array of them
+
+PETSc frees its own array of the matrices, so only a vector a PETSc function returned is accepted: any other vector
+throws an `ArgumentError`. The matrices in the vector are left with a null pointer.
 
 Level: advanced
 
@@ -7588,24 +7601,26 @@ See also: `Mat`, `MatCreateSubMatrices()`, `MatDestroySubMatrices()`
 # External Links
 $(_doc_external("Mat/MatDestroyMatrices"))
 """
-function MatDestroyMatrices(petsclib::PetscLibType, n::Integer, mat::Union{Ptr, AbstractArray{PetscMat}})
-    error("MatDestroyMatrices: no generated method for these argument types")
-end
+function MatDestroyMatrices(petsclib::PetscLibType, n::Integer, mat::Union{Ptr, AbstractVector{<:AbstractPetscMat}}) end
 
-@for_petsc function MatDestroyMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Union{Ptr, AbstractArray{PetscMat}} )
-	mat_ = Ref{Ptr{CMat}}(mat isa Ptr ? mat : pointer(mat))
+@for_petsc function MatDestroyMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Union{Ptr, AbstractVector{<:AbstractPetscMat}})
+	if mat isa AbstractVector
+		n == length(mat) || throw(DimensionMismatch("n = $n, but the vector holds $(length(mat)) matrices"))
+		mat_ = Ref{Ptr{CMat}}(Ptr{CMat}(handle_array(mat, "MatDestroyMatrices"; take = true)))
+	else
+		mat_ = Ref{Ptr{CMat}}(mat)
+	end
 
-    @chk ccall(
-               (:MatDestroyMatrices, $petsc_library),
-               PetscErrorCode,
-               ($PetscInt, Ptr{Ptr{CMat}}),
-               n, mat_,
-              )
+	@chk ccall(
+		(:MatDestroyMatrices, $petsc_library),
+		PetscErrorCode,
+		($PetscInt, Ptr{Ptr{CMat}}),
+		n, mat_,
+	)
 
-
+	mat isa AbstractVector && foreach(m -> m.ptr = C_NULL, mat)
 	return nothing
-end 
-
+end
 """
 	MatDestroySeqNonzeroStructure(petsclib::PetscLibType, mat::AbstractPetscMat) 
 Destroys matrix obtained with `MatGetSeqNonzeroStructure()`.
@@ -7641,15 +7656,20 @@ end
 	return nothing
 end 
 
+# override for MatDestroySubMatrices; C signature: MatDestroySubMatrices(PetscInt n, Mat* mat[])
 """
-	MatDestroySubMatrices(petsclib::PetscLibType, n::PetscInt, mat::Union{Ptr, AbstractArray{PetscMat}}) 
+	MatDestroySubMatrices(petsclib::PetscLibType, n::PetscInt, mat::Union{Ptr, AbstractVector{<:AbstractPetscMat}})
 Destroys a set of matrices obtained with `MatCreateSubMatrices()`.
 
 Collective
 
 Input Parameters:
 - `n`   - the number of local matrices
-- `mat` - the matrices (this is a pointer to the array of matrices, to match the calling sequence of `MatCreateSubMatrices()`)
+- `mat` - the vector of matrices `MatCreateSubMatrices()` or `MatCreateSubMatricesMPI()` returned, or the raw pointer to
+  PETSc's array of them
+
+PETSc frees its own array of the matrices, so only a vector a PETSc function returned is accepted: any other vector
+throws an `ArgumentError`. The matrices in the vector are left with a null pointer.
 
 Level: advanced
 
@@ -7658,24 +7678,26 @@ See also: `Mat`, `MatCreateSubMatrices()`, `MatDestroyMatrices()`
 # External Links
 $(_doc_external("Mat/MatDestroySubMatrices"))
 """
-function MatDestroySubMatrices(petsclib::PetscLibType, n::Integer, mat::Union{Ptr, AbstractArray{PetscMat}})
-    error("MatDestroySubMatrices: no generated method for these argument types")
-end
+function MatDestroySubMatrices(petsclib::PetscLibType, n::Integer, mat::Union{Ptr, AbstractVector{<:AbstractPetscMat}}) end
 
-@for_petsc function MatDestroySubMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Union{Ptr, AbstractArray{PetscMat}} )
-	mat_ = Ref{Ptr{CMat}}(mat isa Ptr ? mat : pointer(mat))
+@for_petsc function MatDestroySubMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Union{Ptr, AbstractVector{<:AbstractPetscMat}})
+	if mat isa AbstractVector
+		n == length(mat) || throw(DimensionMismatch("n = $n, but the vector holds $(length(mat)) matrices"))
+		mat_ = Ref{Ptr{CMat}}(Ptr{CMat}(handle_array(mat, "MatDestroySubMatrices"; take = true)))
+	else
+		mat_ = Ref{Ptr{CMat}}(mat)
+	end
 
-    @chk ccall(
-               (:MatDestroySubMatrices, $petsc_library),
-               PetscErrorCode,
-               ($PetscInt, Ptr{Ptr{CMat}}),
-               n, mat_,
-              )
+	@chk ccall(
+		(:MatDestroySubMatrices, $petsc_library),
+		PetscErrorCode,
+		($PetscInt, Ptr{Ptr{CMat}}),
+		n, mat_,
+	)
 
-
+	mat isa AbstractVector && foreach(m -> m.ptr = C_NULL, mat)
 	return nothing
-end 
-
+end
 """
 	diag::PetscVec = MatDiagonalGetDiagonal(petsclib::PetscLibType, A::AbstractPetscMat) 
 Get the diagonal of a `MATDIAGONAL`
@@ -25780,6 +25802,7 @@ end
 
 	M_n = M_n_[]
 	iss = iss_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iss_[], M_n; own = false)]
+	iss_[] == C_NULL || PetscFree(petsclib, iss_[])
 
 	return M_n,iss
 end 

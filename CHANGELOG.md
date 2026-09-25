@@ -7,6 +7,10 @@
 - `LibPETSc.ISColoringGetIS` with `PETSC_OWN_POINTER` returned the index sets as borrowed, so they and the C array holding them leaked. The index sets are now owned by the caller and the array is freed. `ISColoringRestoreIS` accepts the vector `ISColoringGetIS` returns.
 - `LibPETSc.DMCreateFieldIS` leaked the field names and both C arrays.
 - The TS and SNES manual pages still described the 0.5.0 callback rules (return an error code, exceptions become a `PetscError`).
+- 14 `LibPETSc` functions that return a vector of new handles leaked the C array PETSc allocated for them: `DMCreateDomainDecomposition`, `DMCreateFieldDecomposition`, `DMCreateSuperDM`, `DMCreateSectionSuperDM`, `MatSubdomainsCreateCoalesce`, `PCASMCreateSubdomains`, `PCASMCreateSubdomains2D`, `PCGASMCreateSubdomains`, `PCGASMCreateSubdomains2D`, `PCGASMGetSubdomains`, `PCGetCoarseOperators`, `PCGetInterpolations`, `PetscQuadratureComputePermutations` and `VecConcatenate`. The array is now freed once the handles are copied.
+- `LibPETSc.MatCreateSubMatrices` and `MatCreateSubMatricesMPI` did not work with `MAT_REUSE_MATRIX`, and `MatDestroySubMatrices` could not take their result. Pass the returned vector back to either.
+- `LibPETSc.VecNestRestoreSubVecsRead` accepts the vector `VecNestGetSubVecsRead` returns; before, it only took a raw pointer that no wrapper handed out, so the read lock could not be released.
+- `LibPETSc.PCASMDestroySubdomains` and `PCGASMDestroySubdomains` accept the vectors the subdomain creators return.
 
 ### Added
 
@@ -21,6 +25,7 @@
 ### Changed
 
 - `solution(ksp)`, `solution(ts)`, `local_coordinates(dm)` and the `vatol`/`vrtol` of `tolerances(ts)` return a borrowed `PetscVec`, as `solution(snes)` already did, instead of a `VecPtr`. Both are `AbstractPetscVec`s with the same ownership, so only code that checks for `VecPtr` by type notices.
+- `LibPETSc` release functions that free a C array of handles (`VecDestroyVecs`, `MatDestroyMatrices`, `DMPlexRestoreConeRecursive`, …) no longer accept a Julia array of raw handles, which PETSc would have freed as its own memory. They take the pointer PETSc returned; `MatDestroySubMatrices`, `MatDestroyMatrices`, `VecNestRestoreSubVecsRead` and the two subdomain destroyers also take the vector the matching wrapper returned.
 
 ## v0.5.1
 

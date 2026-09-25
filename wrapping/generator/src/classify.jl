@@ -73,7 +73,8 @@ function init_extract(r::Rules, fn::String, typename::String, name::String, isar
     elseif isarray && !isoutput && stars == 1
         name_ccall = "$(name)_"
         elt = is_handle(r, typename) ? r.handles[typename].c : typename
-        init = "$name_ccall = Ref{Ptr{$elt}}($name isa Ptr ? $name : pointer($name))"   # array or the raw pointer a Get returned
+        init = is_handle(r, typename) ? "$name_ccall = Ref{Ptr{$elt}}($name)" :   # the raw pointer PETSc handed out
+               "$name_ccall = Ref{Ptr{$elt}}($name isa Ptr ? $name : pointer($name))"   # array or the raw pointer a Get returned
     elseif !isarray && isoutput && typename in r.string_types
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{$typename}()"
@@ -176,7 +177,11 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     if isarray
         ccall_str = "Ptr{$ccall_str}"
         if !isoutput
-            typename = typename == "Cchar" ? "String" : (stars == 1 ? "Union{Ptr, AbstractArray{$typename}}" : "Vector{$typename}")
+            # `X *x[]` of handles is an array PETSc allocated and gets back to free or check, so
+            # only the pointer it handed out is valid; a Julia array of wrappers never is
+            typename = typename == "Cchar" ? "String" :
+                       stars == 1 ? (is_handle(r, typename) ? "Ptr" : "Union{Ptr, AbstractArray{$typename}}") :
+                       "Vector{$typename}"
         elseif stars > 0 && !haskey(ov, "size")
             # raw pointer to a PETSc-owned array (C handle type for arrays of PETSc objects)
             typename = "Ptr{"^stars * (is_handle(r, typename) ? r.handles[typename].c : typename) * "}"^stars
@@ -224,6 +229,8 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
             if ishandle                     # array of PETSc handles -> Vector of Julia handles
                 h = r.handles[elt0]
                 body = "$name = $name_ccall[] == C_NULL ? $(h.julia){\$PetscLib}[] : [$(h.julia)(p, petsclib$(own_kwarg(r, fn.name))) for p in $wrap]"
+                # an array of new references is the caller's: free it once the handles are copied
+                borrows(r, fn.name) || (body *= "\n\t$name_ccall[] == C_NULL || PetscFree(petsclib, $name_ccall[])")
                 typename = "Vector{$(h.julia)}"
             elseif elt0 == "Ptr{Cchar}" || (stars == 2 && elt0 == "Cchar")   # char** -> strings
                 wrap = "unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"

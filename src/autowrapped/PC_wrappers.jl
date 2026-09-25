@@ -34,6 +34,7 @@ end
               )
 
 	outis = outis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, outis_[], n; own = false)]
+	outis_[] == C_NULL || PetscFree(petsclib, outis_[])
 
 	return outis
 end 
@@ -84,13 +85,16 @@ end
 
 	Nsub = Nsub_[]
 	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], Nsub; own = false)]
+	is_[] == C_NULL || PetscFree(petsclib, is_[])
 	is_local = is_local_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_local_[], Nsub; own = false)]
+	is_local_[] == C_NULL || PetscFree(petsclib, is_local_[])
 
 	return Nsub,is,is_local
 end 
 
+# override for PCASMDestroySubdomains; C signature: PCASMDestroySubdomains(PetscInt n, IS* is[], IS* is_local[])
 """
-	PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}}) 
+	PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::Union{Ptr, AbstractVector{<:AbstractIS}}, is_local = nothing)
 Destroys the index sets created with
 `PCASMCreateSubdomains()`. Should be called after setting subdomains with `PCASMSetLocalSubdomains()`.
 
@@ -98,8 +102,11 @@ Collective
 
 Input Parameters:
 - `n`        - the number of index sets
-- `is`       - the array of index sets
-- `is_local` - the array of local index sets, can be `NULL`
+- `is`       - the vector of index sets, or the raw pointer to a PETSc array of them
+- `is_local` - the vector of local index sets, or the raw pointer to a PETSc array of them, can be `nothing`
+
+With vectors, each index set is destroyed and left with a null pointer: the creators have already freed PETSc's array.
+With pointers, PETSc destroys the index sets and frees both arrays.
 
 Level: advanced
 
@@ -108,25 +115,29 @@ See also: `PCASM`, `PCASMCreateSubdomains()`, `PCASMSetLocalSubdomains()`
 # External Links
 $(_doc_external("PC/PCASMDestroySubdomains"))
 """
-function PCASMDestroySubdomains(petsclib::PetscLibType, n::Integer, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}})
-    error("PCASMDestroySubdomains: no generated method for these argument types")
-end
+function PCASMDestroySubdomains(petsclib::PetscLibType, n::Integer, is::Union{Ptr, AbstractVector{<:AbstractIS}}, is_local = nothing) end
 
-@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}} )
-	is_ = Ref{Ptr{CIS}}(is isa Ptr ? is : pointer(is))
-	is_local_ = Ref{Ptr{CIS}}(is_local isa Ptr ? is_local : pointer(is_local))
+@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::Union{Ptr, AbstractVector{<:AbstractIS}}, is_local = nothing)
+	if is isa AbstractVector
+		is_local isa Union{Nothing, AbstractVector{<:AbstractIS}} ||
+			throw(ArgumentError("is is a vector, so is_local must be a vector or nothing"))
+		destroy_index_sets(petsclib, n, is)
+		is_local === nothing || isempty(is_local) || destroy_index_sets(petsclib, n, is_local)
+		return nothing
+	end
+	is_local isa Union{Nothing, Ptr} || throw(ArgumentError("is is a pointer, so is_local must be a pointer or nothing"))
+	is_ = Ref{Ptr{CIS}}(is)
+	is_local_ = Ref{Ptr{CIS}}(is_local === nothing ? C_NULL : is_local)
 
-    @chk ccall(
-               (:PCASMDestroySubdomains, $petsc_library),
-               PetscErrorCode,
-               ($PetscInt, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
-               n, is_, is_local_,
-              )
-
+	@chk ccall(
+		(:PCASMDestroySubdomains, $petsc_library),
+		PetscErrorCode,
+		($PetscInt, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
+		n, is_, is_local_,
+	)
 
 	return nothing
-end 
-
+end
 """
 	flg::PetscBool = PCASMGetDMSubdomains(petsclib::PetscLibType, pc::AbstractPC) 
 Returns flag indicating whether to use `DMCreateDomainDecomposition()` to define the subdomains, whenever possible.
@@ -6593,6 +6604,7 @@ end
 
 	M_n = M_n_[]
 	iis = iis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iis_[], M_n; own = false)]
+	iis_[] == C_NULL || PetscFree(petsclib, iis_[])
 
 	return M_n,iis
 end 
@@ -6644,13 +6656,16 @@ end
 
 	nsub = nsub_[]
 	iis = iis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iis_[], nsub; own = false)]
+	iis_[] == C_NULL || PetscFree(petsclib, iis_[])
 	ois = ois_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, ois_[], nsub; own = false)]
+	ois_[] == C_NULL || PetscFree(petsclib, ois_[])
 
 	return nsub,iis,ois
 end 
 
+# override for PCGASMDestroySubdomains; C signature: PCGASMDestroySubdomains(PetscInt n, IS* iis[], IS* ois[])
 """
-	PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}}) 
+	PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::Union{Ptr, AbstractVector{<:AbstractIS}}, ois = nothing)
 Destroys the index sets created with
 `PCGASMCreateSubdomains()` or `PCGASMCreateSubdomains2D()`. Should be
 called after setting subdomains with `PCGASMSetSubdomains()`.
@@ -6659,8 +6674,11 @@ Collective
 
 Input Parameters:
 - `n`   - the number of index sets
-- `iis` - the array of inner subdomains
-- `ois` - the array of outer subdomains, can be `NULL`
+- `iis` - the vector of inner subdomains, or the raw pointer to a PETSc array of them
+- `ois` - the vector of outer subdomains, or the raw pointer to a PETSc array of them, can be `nothing`
+
+With vectors, each index set is destroyed and left with a null pointer: the creators have already freed PETSc's array.
+With pointers, PETSc destroys the index sets and frees both arrays.
 
 Level: intermediate
 
@@ -6669,25 +6687,29 @@ See also: `PCGASM`, `PCGASMCreateSubdomains()`, `PCGASMSetSubdomains()`
 # External Links
 $(_doc_external("PC/PCGASMDestroySubdomains"))
 """
-function PCGASMDestroySubdomains(petsclib::PetscLibType, n::Integer, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}})
-    error("PCGASMDestroySubdomains: no generated method for these argument types")
-end
+function PCGASMDestroySubdomains(petsclib::PetscLibType, n::Integer, iis::Union{Ptr, AbstractVector{<:AbstractIS}}, ois = nothing) end
 
-@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}} )
-	iis_ = Ref{Ptr{CIS}}(iis isa Ptr ? iis : pointer(iis))
-	ois_ = Ref{Ptr{CIS}}(ois isa Ptr ? ois : pointer(ois))
+@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::Union{Ptr, AbstractVector{<:AbstractIS}}, ois = nothing)
+	if iis isa AbstractVector
+		ois isa Union{Nothing, AbstractVector{<:AbstractIS}} ||
+			throw(ArgumentError("iis is a vector, so ois must be a vector or nothing"))
+		destroy_index_sets(petsclib, n, iis)
+		ois === nothing || isempty(ois) || destroy_index_sets(petsclib, n, ois)
+		return nothing
+	end
+	ois isa Union{Nothing, Ptr} || throw(ArgumentError("iis is a pointer, so ois must be a pointer or nothing"))
+	iis_ = Ref{Ptr{CIS}}(iis)
+	ois_ = Ref{Ptr{CIS}}(ois === nothing ? C_NULL : ois)
 
-    @chk ccall(
-               (:PCGASMDestroySubdomains, $petsc_library),
-               PetscErrorCode,
-               ($PetscInt, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
-               n, iis_, ois_,
-              )
-
+	@chk ccall(
+		(:PCGASMDestroySubdomains, $petsc_library),
+		PetscErrorCode,
+		($PetscInt, Ptr{Ptr{CIS}}, Ptr{Ptr{CIS}}),
+		n, iis_, ois_,
+	)
 
 	return nothing
-end 
-
+end
 """
 	n_local::PetscInt,first_local::PetscInt,ksp::Vector{KSP} = PCGASMGetSubKSP(petsclib::PetscLibType, pc::AbstractPC) 
 Gets the local `KSP` contexts for all subdomains on this MPI process.
@@ -6774,7 +6796,9 @@ end
 
 	n = n_[]
 	iis = iis_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, iis_[], n; own = false)]
+	iis_[] == C_NULL || PetscFree(petsclib, iis_[])
 	ois = ois_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, ois_[], n; own = false)]
+	ois_[] == C_NULL || PetscFree(petsclib, ois_[])
 
 	return n,iis,ois
 end 
@@ -7323,6 +7347,7 @@ end
 
 	num_levels = num_levels_[]
 	coarseOperators = coarseOperators_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, coarseOperators_[], num_levels - 1; own = false)]
+	coarseOperators_[] == C_NULL || PetscFree(petsclib, coarseOperators_[])
 
 	return num_levels,coarseOperators
 end 
@@ -7479,6 +7504,7 @@ end
 
 	num_levels = num_levels_[]
 	interpolations = interpolations_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, interpolations_[], num_levels - 1; own = false)]
+	interpolations_[] == C_NULL || PetscFree(petsclib, interpolations_[])
 
 	return num_levels,interpolations
 end 

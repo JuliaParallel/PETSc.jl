@@ -2651,6 +2651,7 @@ end
 
 	Np = Np_[]
 	perm = perm_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, perm_[], Np; own = false)]
+	perm_[] == C_NULL || PetscFree(petsclib, perm_[])
 
 	return Np,perm
 end 

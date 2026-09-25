@@ -37,6 +37,7 @@ include("snes_helpers.jl")  # small helper tests for SNES return-style wrappers
 include("bang_returns.jl")   # ! functions return the object they mutate
 include("solver_api.jl")     # KSP/SNES/TS/PC readers, operators, prefixes, set_from_options!
 include("ts.jl")            # high-level TS interface
+include("ts_long_runs.jl")  # equation type, step number, pre/post-step hooks, failure limits
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
 include("dmplex.jl")        # DMPlex tests

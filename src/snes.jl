@@ -491,6 +491,23 @@ solution(snes::AbstractSNES{PetscLib}) where {PetscLib} =
     LibPETSc.SNESGetSolution(getlib(PetscLib), snes)
 
 """
+    set_solution!(snes::AbstractSNES, x::AbstractPetscVec)
+
+Set the vector `snes` solves for, which [`solution`](@ref) then returns.
+[`solve!`](@ref)`(x, snes)` sets it too. Returns `snes`.
+
+# External Links
+$(doc_external("SNES/SNESSetSolution"))
+"""
+function set_solution!(
+    snes::AbstractSNES{PetscLib},
+    x::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    LibPETSc.SNESSetSolution(getlib(PetscLib), snes, x)
+    return snes
+end
+
+"""
     iteration_number(snes::AbstractSNES)
 
 The number of nonlinear iterations the last [`solve!`](@ref) took.

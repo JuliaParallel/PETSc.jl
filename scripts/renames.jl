@@ -395,6 +395,7 @@ const INTERNAL = Set{Symbol}([
     # the underscore stays: inner worker beside a wrapper of the same name
     :_mul!,
     :_zero_rows_vecs,
+    :TSStepHookFn,
     :_unsafe_local_array,
     :_local_arrays,
     :_restore_local_arrays!,
@@ -555,6 +556,14 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_dm_active!,         # new in v0.5.1
     :set_options_prefix!,    # new in v0.5.1
     :options_prefix,         # new in v0.5.1
+    :equation_type,          # new in v0.5.2
+    :set_equation_type!,     # new in v0.5.2
+    :set_step_number!,       # new in v0.5.2
+    :set_max_snes_failures!, # new in v0.5.2
+    :set_max_step_rejections!,  # new in v0.5.2
+    :set_error_if_step_fails!,  # new in v0.5.2
+    :set_pre_step!,          # new in v0.5.2
+    :set_post_step!,         # new in v0.5.2
     :TSSetRHSFunctionFn,
     :TSSetRHSJacobianFn,
     :TSSetIFunctionFn,

@@ -45,7 +45,6 @@ PETSc.set_rhs_function!(ts) do F, ts, t, u
     PETSc.with_local_array!((u, F); read = (true, false), write = (false, true)) do ua, Fa
         Fa[1] = -ua[1]
     end
-    return 0
 end
 
 PETSc.set_time!(ts, 0.0)
@@ -75,13 +74,11 @@ PETSc.set_ifunction!(ts) do F, ts, t, u, u_t
     ) do ua, uta, Fa
         Fa[1] = uta[1] + ua[1]
     end
-    return 0
 end
 
 PETSc.set_ijacobian!(ts, J) do A, P, ts, t, u, u_t, shift
     A[1, 1] = shift + 1
     PETSc.assemble!(A)
-    return 0
 end
 ```
 
@@ -96,10 +93,12 @@ A Jacobian callback is always handed both the Jacobian `A` and the preconditioni
 | [`PETSc.set_ifunction!`](@ref) | `f!(F, ts, t, u, u_t)` |
 | [`PETSc.set_ijacobian!`](@ref) | `updateJ!(A, P, ts, t, u, u_t, shift)` |
 | [`PETSc.set_monitor!`](@ref) | `f(ts, step, t, u)` |
+| [`PETSc.set_pre_step!`](@ref) | `f!(ts)` |
+| [`PETSc.set_post_step!`](@ref) | `f!(ts)` |
 
-Each may return a PETSc error code; any other return value counts as success.
+A callback's return value is ignored; it reports a failure by throwing. Until v0.6, a nonzero `Integer` returned by one of the first five still fails the call, with a warning.
 
-A callback that raises a Julia exception is reported and turned into a PETSc failure rather than being allowed to escape into C, where it would take the process down with it. The error is logged with its backtrace and [`PETSc.solve!`](@ref) then raises a `PetscError`.
+An exception thrown in a callback never crosses into PETSc's C code. PETSc is told the callback failed, unwinds, and [`PETSc.solve!`](@ref) or [`PETSc.step!`](@ref) then rethrows the original exception.
 
 ### Precompilation
 
@@ -122,7 +121,6 @@ PETSc.set_user_ctx!(ts, (; viscosity = 1e-3))
 
 PETSc.set_rhs_function!(ts) do F, ts, t, u, ctx
     # ctx.viscosity is available here
-    return 0
 end
 ```
 
@@ -133,12 +131,43 @@ The object is held on the Julia side by `ts`, so it stays alive without any pinn
 ```julia
 PETSc.set_monitor!(ts) do ts, step, t, u
     @printf("step %3d  t = %.4f\n", step, t)
-    return 0
 end
 ```
 
 The monitor runs once before the first step and once after each accepted one.
 It does not replace the monitors PETSc installs from the options database, such as `-ts_monitor`.
+
+## Long runs
+
+A monitor only observes. To change the run between steps, for example to update a history variable once a step is accepted, use a post-step hook; a pre-step hook runs before each step is attempted:
+
+```julia
+PETSc.set_post_step!(ts) do ts
+    u = PETSc.solution(ts)       # the accepted solution, which may be changed here
+    # ...
+end
+```
+
+Both run inside [`PETSc.solve!`](@ref), not [`PETSc.step!`](@ref).
+
+What stops a run early, and how:
+
+```julia
+PETSc.set_max_snes_failures!(ts, 5)       # failed nonlinear solves over the run (default 1)
+PETSc.set_max_step_rejections!(ts, 20)    # rejected attempts at one step (default 10)
+PETSc.set_error_if_step_fails!(ts, false) # return instead of throwing; then read converged_reason
+```
+
+`LibPETSc.PETSC_UNLIMITED` removes either limit. A domain error reported with [`PETSc.set_function_domain_error!`](@ref) rejects the step rather than counting as a failed solve.
+
+To continue from a checkpoint, set the clock and the step count before solving:
+
+```julia
+PETSc.set_time!(ts, t_checkpoint)
+PETSc.set_step_number!(ts, step_checkpoint)
+```
+
+For a DAE, [`PETSc.set_equation_type!`](@ref) tells the integrator the form of the equations, for example `LibPETSc.TS_EQ_DAE_IMPLICIT_INDEX1`.
 
 ## Solving, and reading the result
 

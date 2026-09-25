@@ -33,6 +33,8 @@ const PetscObject = Ptr{Cvoid}
 
 const PETSC_DECIDE = -1
 const PETSC_DETERMINE = PETSC_DECIDE
+const PETSC_CURRENT = -2     # keep the value already set
+const PETSC_UNLIMITED = -3   # no limit, where a function takes a count or a tolerance
 const PETSC_COMM_SELF = MPI.COMM_SELF
 
 PetscInt = Int64

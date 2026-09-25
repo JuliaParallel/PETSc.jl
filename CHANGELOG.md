@@ -6,6 +6,7 @@
 
 - `LibPETSc.ISColoringGetIS` with `PETSC_OWN_POINTER` returned the index sets as borrowed, so they and the C array holding them leaked. The index sets are now owned by the caller and the array is freed. `ISColoringRestoreIS` accepts the vector `ISColoringGetIS` returns.
 - `LibPETSc.DMCreateFieldIS` leaked the field names and both C arrays.
+- The TS and SNES manual pages still described the 0.5.0 callback rules (return an error code, exceptions become a `PetscError`).
 
 ### Added
 
@@ -13,6 +14,9 @@
 - Matrix methods: `fill!(A, 0)`, `zero_rows!` and `zero_rows_local!` for Dirichlet rows, `set_option!`, `diagonal!(d, A)` and `isassembled`.
 - `destroy!` on `IS`, `AO`, `PF` and `Tao` handles.
 - `LibPETSc.PetscFree`, for memory PETSc hands to the caller.
+- Long `TS` runs: `set_pre_step!(f!, ts)` and `set_post_step!(f!, ts)` hooks that may change the run, `set_max_snes_failures!`, `set_max_step_rejections!`, `set_error_if_step_fails!`, `set_step_number!` for restarts, and `equation_type`/`set_equation_type!`.
+- `set_solution!(snes, x)`, as on `TS`.
+- `LibPETSc.PETSC_UNLIMITED` and `LibPETSc.PETSC_CURRENT`, which PETSc's manual pages ask for.
 
 ### Changed
 

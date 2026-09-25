@@ -176,6 +176,8 @@ mutable struct TSState <: ObjectState
     ifunction!::Any
     ijacobian!::Any
     monitor::Any
+    pre_step!::Any
+    post_step!::Any
     user_ctx::Any
     opts::Any
     alive::Bool
@@ -186,6 +188,8 @@ TSState() = TSState(
     _ -> error("ifunction! not defined"),
     _ -> error("ijacobian! not defined"),
     _ -> error("monitor not defined"),
+    _ -> error("pre_step! not defined"),
+    _ -> error("post_step! not defined"),
     nothing,
     nothing,
     true,
@@ -424,6 +428,37 @@ function set_problem_type!(
 end
 
 """
+    equation_type(ts::AbstractTS)
+
+The form of the equations `ts` integrates, a `LibPETSc.TSEquationType`
+(`TS_EQ_UNSPECIFIED` until [`set_equation_type!`](@ref) is called).
+
+# External Links
+$(doc_external("TS/TSGetEquationType"))
+"""
+equation_type(ts::AbstractTS{PetscLib}) where {PetscLib} =
+    LibPETSc.TSGetEquationType(getlib(PetscLib), ts)
+
+"""
+    set_equation_type!(ts::AbstractTS, type)
+
+Declare the form of the equations, for example
+`LibPETSc.TS_EQ_DAE_IMPLICIT_INDEX1` for an index-1 DAE written as
+``F(t, u, du/dt) = 0``. Some integrators read it to treat the algebraic
+components correctly. Returns `ts`.
+
+# External Links
+$(doc_external("TS/TSSetEquationType"))
+"""
+function set_equation_type!(
+    ts::AbstractTS{PetscLib},
+    type::LibPETSc.TSEquationType,
+) where {PetscLib}
+    LibPETSc.TSSetEquationType(getlib(PetscLib), ts, type)
+    return ts
+end
+
+"""
     dm(ts::AbstractTS)
 
 The DM attached to `ts`, [`narrow`](@ref)ed to its flavour.
@@ -592,6 +627,56 @@ function set_max_steps!(ts::AbstractTS{PetscLib}, n) where {PetscLib}
 end
 
 """
+    set_max_snes_failures!(ts::AbstractTS, n)
+
+Allow `n` failed nonlinear solves over the whole run before [`solve!`](@ref)
+stops with `TS_DIVERGED_NONLINEAR_SOLVE` in [`converged_reason`](@ref). A failed
+solve makes the adaptor retry the step with a smaller time step. The default
+is 1; `LibPETSc.PETSC_UNLIMITED` removes the limit. Returns `ts`.
+
+A solve stopped by [`set_function_domain_error!`](@ref) does not count here:
+it rejects the step, which [`set_max_step_rejections!`](@ref) limits.
+
+# External Links
+$(doc_external("TS/TSSetMaxSNESFailures"))
+"""
+function set_max_snes_failures!(ts::AbstractTS{PetscLib}, n::Integer) where {PetscLib}
+    LibPETSc.TSSetMaxSNESFailures(getlib(PetscLib), ts, PetscLib.PetscInt(n))
+    return ts
+end
+
+"""
+    set_max_step_rejections!(ts::AbstractTS, n)
+
+Allow the adaptor to reject `n` attempts at a single step before
+[`solve!`](@ref) stops with `TS_DIVERGED_STEP_REJECTED`. The default is 10;
+`LibPETSc.PETSC_UNLIMITED` removes the limit. Returns `ts`.
+
+# External Links
+$(doc_external("TS/TSSetMaxStepRejections"))
+"""
+function set_max_step_rejections!(ts::AbstractTS{PetscLib}, n::Integer) where {PetscLib}
+    LibPETSc.TSSetMaxStepRejections(getlib(PetscLib), ts, PetscLib.PetscInt(n))
+    return ts
+end
+
+"""
+    set_error_if_step_fails!(ts::AbstractTS, flag::Bool)
+
+With `flag = true`, PETSc's default, a step that fails for good makes
+[`solve!`](@ref) and [`step!`](@ref) throw a `PetscError`. With `false` they
+return normally and [`converged_reason`](@ref) says why the run stopped, so
+check it. Returns `ts`.
+
+# External Links
+$(doc_external("TS/TSSetErrorIfStepFails"))
+"""
+function set_error_if_step_fails!(ts::AbstractTS{PetscLib}, flag::Bool) where {PetscLib}
+    LibPETSc.TSSetErrorIfStepFails(getlib(PetscLib), ts, LibPETSc.PetscBool(flag))
+    return ts
+end
+
+"""
     step_number(ts::AbstractTS)
 
 The number of steps taken so far.
@@ -601,6 +686,21 @@ $(doc_external("TS/TSGetStepNumber"))
 """
 step_number(ts::AbstractTS{PetscLib}) where {PetscLib} =
     LibPETSc.TSGetStepNumber(getlib(PetscLib), ts)
+
+"""
+    set_step_number!(ts::AbstractTS, n)
+
+Set the number of steps taken so far, for example to continue a run from a
+checkpoint so that monitors and [`set_max_steps!`](@ref) count on from there.
+Set the time with [`set_time!`](@ref) alongside it. Returns `ts`.
+
+# External Links
+$(doc_external("TS/TSSetStepNumber"))
+"""
+function set_step_number!(ts::AbstractTS{PetscLib}, n::Integer) where {PetscLib}
+    LibPETSc.TSSetStepNumber(getlib(PetscLib), ts, PetscLib.PetscInt(n))
+    return ts
+end
 
 """
     tolerances(ts::AbstractTS)
@@ -1248,5 +1348,72 @@ LibPETSc.@for_petsc function set_monitor!(f, ts::AbstractTS{$PetscLib})
     )
     ts.monitor = f
     LibPETSc.TSMonitorSet($PetscLib, ts, fptr, state_pointer(ts))
+    return ts
+end
+
+"""
+    set_pre_step!(f!, ts::AbstractTS)
+
+Call `f!(ts)` at the start of every step [`solve!`](@ref) takes, before the
+step is attempted; `f!(ts, user_ctx)` is used instead when `ts.user_ctx` is set
+and that method exists. Unlike a monitor, `f!` may change the state of the run,
+for example the time step. [`step!`](@ref) does not call it.
+
+A second call replaces the first. Returns `ts`.
+
+$(doc_callback())
+
+# External Links
+$(doc_external("TS/TSSetPreStep"))
+"""
+function set_pre_step! end
+
+"""
+    set_post_step!(f!, ts::AbstractTS)
+
+Call `f!(ts)` after every step [`solve!`](@ref) accepts; `f!(ts, user_ctx)` is
+used instead when `ts.user_ctx` is set and that method exists. Unlike a
+monitor, `f!` may change the state of the run: the solution from
+[`solution`](@ref), auxiliary fields, the time step. [`step!`](@ref) does not
+call it.
+
+A second call replaces the first. Returns `ts`.
+
+$(doc_callback())
+
+# External Links
+$(doc_external("TS/TSSetPostStep"))
+"""
+function set_post_step! end
+
+# PETSc passes the pre- and post-step hooks no context, only the TS: the state
+# is found from the TS pointer
+mutable struct TSStepHookFn{PetscLib, Hook} end
+function (::TSStepHookFn{PetscLib, Hook})(ts_ptr::CTS) where {PetscLib, Hook}
+    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+    state = object_state(actual_ts)::TSState
+    f! = getfield(state, Hook)
+    # the return value is ignored: these hooks never took an error code
+    run_callback(String(Hook)) do
+        if Base.applicable(f!, actual_ts, state.user_ctx)
+            f!(actual_ts, state.user_ctx)
+        else
+            f!(actual_ts)
+        end
+        return nothing
+    end
+end
+
+LibPETSc.@for_petsc function set_pre_step!(f!, ts::AbstractTS{$PetscLib})
+    fptr = @cfunction(TSStepHookFn{$PetscLib, :pre_step!}(), LibPETSc.PetscErrorCode, (CTS,))
+    ts.pre_step! = f!
+    LibPETSc.TSSetPreStep($PetscLib, ts, fptr)
+    return ts
+end
+
+LibPETSc.@for_petsc function set_post_step!(f!, ts::AbstractTS{$PetscLib})
+    fptr = @cfunction(TSStepHookFn{$PetscLib, :post_step!}(), LibPETSc.PetscErrorCode, (CTS,))
+    ts.post_step! = f!
+    LibPETSc.TSSetPostStep($PetscLib, ts, fptr)
     return ts
 end

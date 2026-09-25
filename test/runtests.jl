@@ -19,12 +19,13 @@ else
 end
 
 # Do the MPI tests first so we do not have mpi running inside MPI
-mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")
+mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl", "mpi_blas_threads.jl")
 
 # PETSc_jll >= 3.25.4 has MPI-enabled Windows binaries (MicrosoftMPI), so the MPI tests run everywhere
 do_mpi = true
 
 include("init.jl")
+include("blas_threads.jl")   # -blas_num_threads sizes the BLAS pool PETSc runs in
 include("lib.jl")
 include("vec.jl")           # autowrapped
 include("mat.jl")           # autowrapped

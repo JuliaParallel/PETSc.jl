@@ -402,6 +402,7 @@ const INTERNAL = Set{Symbol}([
     :call_with_views,
     :field_views,
     :TSStepHookFn,
+    :apply_blas_num_threads,
     :_unsafe_local_array,
     :_local_arrays,
     :_restore_local_arrays!,

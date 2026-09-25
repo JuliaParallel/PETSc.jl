@@ -70,10 +70,15 @@ Additionally:
 PETSc's BLAS calls run in Julia's OpenBLAS thread pool, the one
 `LinearAlgebra.BLAS.set_num_threads` sizes, for every library in `petsclibs`.
 `-blas_num_threads n`, given in `options`, in `PETSC_OPTIONS` or on the command
-line, sets that pool to `n` threads. Under MPI, several ranks on one node each
-own such a pool, and its busy-waiting threads compete with the ranks for cores:
-a solve can run many times slower with the right answer. Pass
-`-blas_num_threads 1` there, or set `OPENBLAS_NUM_THREADS=1`.
+line, sets that pool to `n` threads.
+
+Without that option, when several MPI ranks share a node, `initialize` sets the
+pool to one thread. Each rank owns a pool, and its busy-waiting threads would
+otherwise compete with the ranks for cores: a solve can run many times slower
+with the right answer. A set `OPENBLAS_NUM_THREADS` or `OMP_NUM_THREADS` also
+leaves the pool as it is. Serial runs, and runs with one rank per node, are
+unaffected. This changes Julia's process-wide BLAS setting, which `finalize`
+does not restore.
 
 # Examples
 ```julia
@@ -223,15 +228,34 @@ end
 # Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs
 # in Julia's own OpenBLAS thread pool. PETSc cannot size that pool: it was built
 # against a generic BLAS, so `PetscBLASSetNumThreads` only records the number.
-# `-blas_num_threads` is therefore forwarded here. The pool is process-wide and
-# is left as it is at `finalize`: it serves all Julia code, not PETSc objects.
+# `-blas_num_threads` is therefore forwarded here. Without it, ranks sharing a
+# node get one thread each, unless the environment already sizes the pool. The
+# pool is process-wide and is left as it is at `finalize`: it serves all Julia
+# code, not PETSc objects.
 function apply_blas_num_threads(petsclib)
     global_options = LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
     n, set = LibPETSc.PetscOptionsGetInt(petsclib, global_options, "", "-blas_num_threads")
-    Bool(set) || return nothing
-    n >= 1 || throw(ArgumentError("-blas_num_threads must be at least 1, got $n"))
-    LinearAlgebra.BLAS.set_num_threads(Int(n))
+    if Bool(set)
+        n >= 1 || throw(ArgumentError("-blas_num_threads must be at least 1, got $n"))
+        LinearAlgebra.BLAS.set_num_threads(Int(n))
+    elseif !any(v -> haskey(ENV, v), BLAS_THREAD_VARIABLES) && ranks_on_node() > 1
+        LinearAlgebra.BLAS.set_num_threads(1)
+        LibPETSc.PetscBLASSetNumThreads(petsclib, petsclib.PetscInt(1))
+    end
     return nothing
+end
+
+# The variables OpenBLAS and PETSc read for a thread count
+const BLAS_THREAD_VARIABLES = ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS")
+
+# How many ranks of MPI.COMM_WORLD share this rank's node. Collective.
+function ranks_on_node()
+    world = MPI.COMM_WORLD
+    MPI.Comm_size(world) == 1 && return 1
+    node = MPI.Comm_split_type(world, MPI.COMM_TYPE_SHARED, MPI.Comm_rank(world))
+    n = MPI.Comm_size(node)
+    MPI.free(node)
+    return n
 end
 
 # PETSc 3.25.x: `TaoFinalizePackage` destroys the `TaoTerm` type list but never resets

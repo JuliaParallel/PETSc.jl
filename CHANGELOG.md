@@ -7,7 +7,7 @@
 - `LibPETSc.ISColoringGetIS` with `PETSC_OWN_POINTER` returned the index sets as borrowed, so they and the C array holding them leaked. The index sets are now owned by the caller and the array is freed. `ISColoringRestoreIS` accepts the vector `ISColoringGetIS` returns.
 - `LibPETSc.DMCreateFieldIS` leaked the field names and both C arrays.
 - The TS and SNES manual pages still described the 0.5.0 callback rules (return an error code, exceptions become a `PetscError`).
-- `-blas_num_threads` had no effect. Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs in Julia's OpenBLAS pool, which PETSc cannot size. `initialize` now forwards the option to `LinearAlgebra.BLAS.set_num_threads`. Under MPI, pass `-blas_num_threads 1` (or set `OPENBLAS_NUM_THREADS=1`): several ranks on a node otherwise each run a pool of busy-waiting threads, which made a 4-rank DMStag Stokes solve 25× slower.
+- `-blas_num_threads` had no effect. Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs in Julia's OpenBLAS pool, which PETSc cannot size. `initialize` now forwards the option to `LinearAlgebra.BLAS.set_num_threads`.
 - `initialize(petsclib; options)` appended `-no_signal_handler` to the caller's `options` vector.
 
 ### Added
@@ -22,6 +22,7 @@
 
 ### Changed
 
+- When several MPI ranks share a node, `initialize` sets Julia's BLAS pool to one thread, unless `-blas_num_threads`, `OPENBLAS_NUM_THREADS` or `OMP_NUM_THREADS` says otherwise. Each rank otherwise ran a pool of busy-waiting threads, which made a 4-rank DMStag Stokes solve 25× slower. Serial runs and one rank per node are unaffected.
 - `solution(ksp)`, `solution(ts)`, `local_coordinates(dm)` and the `vatol`/`vrtol` of `tolerances(ts)` return a borrowed `PetscVec`, as `solution(snes)` already did, instead of a `VecPtr`. Both are `AbstractPetscVec`s with the same ownership, so only code that checks for `VecPtr` by type notices.
 
 ## v0.5.1

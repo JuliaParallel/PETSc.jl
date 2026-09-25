@@ -7,6 +7,8 @@
 - `LibPETSc.ISColoringGetIS` with `PETSC_OWN_POINTER` returned the index sets as borrowed, so they and the C array holding them leaked. The index sets are now owned by the caller and the array is freed. `ISColoringRestoreIS` accepts the vector `ISColoringGetIS` returns.
 - `LibPETSc.DMCreateFieldIS` leaked the field names and both C arrays.
 - The TS and SNES manual pages still described the 0.5.0 callback rules (return an error code, exceptions become a `PetscError`).
+- `-blas_num_threads` had no effect. Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs in Julia's OpenBLAS pool, which PETSc cannot size. `initialize` now forwards the option to `LinearAlgebra.BLAS.set_num_threads`. Under MPI, pass `-blas_num_threads 1` (or set `OPENBLAS_NUM_THREADS=1`): several ranks on a node otherwise each run a pool of busy-waiting threads, which made a 4-rank DMStag Stokes solve 25× slower.
+- `initialize(petsclib; options)` appended `-no_signal_handler` to the caller's `options` vector.
 
 ### Added
 

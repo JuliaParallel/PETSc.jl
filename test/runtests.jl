@@ -25,6 +25,7 @@ mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")
 do_mpi = true
 
 include("init.jl")
+include("blas_threads.jl")   # -blas_num_threads sizes the BLAS pool PETSc runs in
 include("lib.jl")
 include("vec.jl")           # autowrapped
 include("mat.jl")           # autowrapped

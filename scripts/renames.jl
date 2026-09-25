@@ -396,6 +396,7 @@ const INTERNAL = Set{Symbol}([
     :_mul!,
     :_zero_rows_vecs,
     :TSStepHookFn,
+    :apply_blas_num_threads,
     :_unsafe_local_array,
     :_local_arrays,
     :_restore_local_arrays!,

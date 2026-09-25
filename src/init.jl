@@ -66,6 +66,15 @@ Additionally:
 - `options::Vector{String} = String[]`: Additional PETSc command-line options.
   These are passed via the `PETSC_OPTIONS` environment variable.
 
+# BLAS threads
+PETSc's BLAS calls run in Julia's OpenBLAS thread pool, the one
+`LinearAlgebra.BLAS.set_num_threads` sizes, for every library in `petsclibs`.
+`-blas_num_threads n`, given in `options`, in `PETSC_OPTIONS` or on the command
+line, sets that pool to `n` threads. Under MPI, several ranks on one node each
+own such a pool, and its busy-waiting threads compete with the ranks for cores:
+a solve can run many times slower with the right answer. Pass
+`-blas_num_threads 1` there, or set `OPENBLAS_NUM_THREADS=1`.
+
 # Examples
 ```julia
 # Basic initialization
@@ -82,6 +91,9 @@ PETSc.initialize(petsclib; log_view = true, options = [":logfile.txt", "-log_vie
 
 # Pass custom PETSc options without logging
 PETSc.initialize(petsclib; options = ["-malloc_debug", "-on_error_abort"])
+
+# One BLAS thread per rank under MPI
+PETSc.initialize(petsclib; options = ["-blas_num_threads", "1"])
 ```
 
 # External Links
@@ -94,31 +106,23 @@ end
 
 function initialize(petsclib; log_view::Bool = false, options = String[])
     if !isinitialized(petsclib)
-
-        # deactivate the signal handler to avoid conflicts with Julia's own handlers when using multithreading
-        push!(options, " -no_signal_handler ")
-
-        if log_view || !isempty(options)
-            cli_opts = build_petsc_options(log_view, options)
-            prev_opts = get(ENV, "PETSC_OPTIONS", "")
-            ENV["PETSC_OPTIONS"] = isempty(prev_opts) ? cli_opts : "$prev_opts $cli_opts"
-            try
-                ensure_mpi_initialized()
-                petsclib.age += 1
-                LibPETSc.PetscInitializeNoArguments(petsclib)
-                post_initialize(petsclib)
-            finally
-                if isempty(prev_opts)
-                    delete!(ENV, "PETSC_OPTIONS")
-                else
-                    ENV["PETSC_OPTIONS"] = prev_opts
-                end
-            end
-        else
+        # PETSc's signal handler conflicts with Julia's own handlers when using multithreading
+        # Appended to a copy: the caller's vector stays as it was.
+        options = [String.(options); "-no_signal_handler"]
+        cli_opts = build_petsc_options(log_view, options)
+        prev_opts = get(ENV, "PETSC_OPTIONS", "")
+        ENV["PETSC_OPTIONS"] = isempty(prev_opts) ? cli_opts : "$prev_opts $cli_opts"
+        try
             ensure_mpi_initialized()
             petsclib.age += 1
             LibPETSc.PetscInitializeNoArguments(petsclib)
             post_initialize(petsclib)
+        finally
+            if isempty(prev_opts)
+                delete!(ENV, "PETSC_OPTIONS")
+            else
+                ENV["PETSC_OPTIONS"] = prev_opts
+            end
         end
     end
     return nothing
@@ -212,6 +216,21 @@ function post_initialize(petsclib)
     LibPETSc.PetscPopSignalHandler(petsclib)
     _reset_stale_register_flags(petsclib)
     atexit(() -> finalize(petsclib))
+    apply_blas_num_threads(petsclib)
+    return nothing
+end
+
+# Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs
+# in Julia's own OpenBLAS thread pool. PETSc cannot size that pool: it was built
+# against a generic BLAS, so `PetscBLASSetNumThreads` only records the number.
+# `-blas_num_threads` is therefore forwarded here. The pool is process-wide and
+# is left as it is at `finalize`: it serves all Julia code, not PETSc objects.
+function apply_blas_num_threads(petsclib)
+    global_options = LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
+    n, set = LibPETSc.PetscOptionsGetInt(petsclib, global_options, "", "-blas_num_threads")
+    Bool(set) || return nothing
+    n >= 1 || throw(ArgumentError("-blas_num_threads must be at least 1, got $n"))
+    LinearAlgebra.BLAS.set_num_threads(Int(n))
     return nothing
 end
 

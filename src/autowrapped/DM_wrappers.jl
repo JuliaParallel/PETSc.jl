@@ -2146,8 +2146,11 @@ end
 	n = n_[]
 	namelist = namelist_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, namelist_[], n; own = false)]
 	innerislist = innerislist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, innerislist_[], n; own = false)]
+	innerislist_[] == C_NULL || PetscFree(petsclib, innerislist_[])
 	outerislist = outerislist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, outerislist_[], n; own = false)]
+	outerislist_[] == C_NULL || PetscFree(petsclib, outerislist_[])
 	dmlist = dmlist_[] == C_NULL ? PetscDM{$PetscLib}[] : [PetscDM(p, petsclib) for p in unsafe_wrap(Array, dmlist_[], n; own = false)]
+	dmlist_[] == C_NULL || PetscFree(petsclib, dmlist_[])
 
 	return n,namelist,innerislist,outerislist,dmlist
 end 
@@ -2283,7 +2286,9 @@ end
 	len = len_[]
 	namelist = namelist_[] == C_NULL ? "" : unsafe_string(namelist_[])
 	islist = islist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, islist_[], len; own = false)]
+	islist_[] == C_NULL || PetscFree(petsclib, islist_[])
 	dmlist = dmlist_[] == C_NULL ? PetscDM{$PetscLib}[] : [PetscDM(p, petsclib) for p in unsafe_wrap(Array, dmlist_[], len; own = false)]
+	dmlist_[] == C_NULL || PetscFree(petsclib, dmlist_[])
 
 	return len,namelist,islist,dmlist
 end 
@@ -2982,6 +2987,7 @@ end
 
 	superdm = PetscDM(superdm_[], petsclib)
 	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], len; own = false)]
+	is_[] == C_NULL || PetscFree(petsclib, is_[])
 
 	return is,superdm
 end 
@@ -3068,6 +3074,7 @@ end
 
 	superdm = PetscDM(superdm_[], petsclib)
 	is = is_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, is_[], n; own = false)]
+	is_[] == C_NULL || PetscFree(petsclib, is_[])
 
 	return is,superdm
 end 
@@ -32917,7 +32924,7 @@ end
 end 
 
 """
-	DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}}) 
+	DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::Ptr, sections::Union{Ptr, AbstractArray{PetscSection}}) 
 Deallocates arrays created by `DMPlexGetConeRecursive()`
 
 Not Collective
@@ -32939,13 +32946,13 @@ See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `DMPlexGetCone()`, `DMPlexGetConeTup
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreConeRecursive"))
 """
-function DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::Integer, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}})
+function DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::Integer, expandedPoints::Ptr, sections::Union{Ptr, AbstractArray{PetscSection}})
     error("DMPlexRestoreConeRecursive: no generated method for these argument types")
 end
 
-@for_petsc function DMPlexRestoreConeRecursive(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS, depth::$PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}} )
+@for_petsc function DMPlexRestoreConeRecursive(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS, depth::$PetscInt, expandedPoints::Ptr, sections::Union{Ptr, AbstractArray{PetscSection}} )
 	depth_ = Ref{$PetscInt}(depth)
-	expandedPoints_ = Ref{Ptr{CIS}}(expandedPoints isa Ptr ? expandedPoints : pointer(expandedPoints))
+	expandedPoints_ = Ref{Ptr{CIS}}(expandedPoints)
 	sections_ = Ref{Ptr{PetscSection}}(sections isa Ptr ? sections : pointer(sections))
 
     @chk ccall(

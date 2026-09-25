@@ -383,6 +383,41 @@ end
     PETSC_MEMTYPE_SYCL = 5
 end
 
+# ------------------------------------------------------
+# C arrays of handles that PETSc allocated and needs back to release (`MatDestroySubMatrices`,
+# `VecNestRestoreSubVecsRead`), recorded against the Julia vector a wrapper returned with the
+# same handles. Keyed by identity: the entry holds a weak reference to the vector, so a vector
+# the garbage collector took is never matched, and its entry is dropped on the next record.
+const handle_arrays = Dict{UInt, Tuple{WeakRef, Ptr{Cvoid}}}()
+const handle_arrays_lock = ReentrantLock()
+
+function record_handle_array!(v::AbstractVector, ptr::Ptr)
+    lock(handle_arrays_lock) do
+        filter!(kv -> kv.second[1].value !== nothing, handle_arrays)
+        handle_arrays[objectid(v)] = (WeakRef(v), Ptr{Cvoid}(ptr))
+    end
+    return v
+end
+
+# The C array recorded for `v`, which stays recorded unless `take` is set
+function handle_array(v::AbstractVector, name::AbstractString; take::Bool = false)
+    lock(handle_arrays_lock) do
+        entry = get(handle_arrays, objectid(v), nothing)
+        (entry === nothing || entry[1].value !== v) &&
+            throw(ArgumentError("$name takes the vector a PETSc function returned, not a vector built in Julia"))
+        take && delete!(handle_arrays, objectid(v))
+        return entry[2]
+    end
+end
+
+# Destroys the index sets of a vector a subdomain creator returned (`PCASMDestroySubdomains`)
+function destroy_index_sets(petsclib, n::Integer, is::AbstractVector)
+    n == length(is) || throw(DimensionMismatch("n = $n, but the vector holds $(length(is)) index sets"))
+    foreach(x -> x.ptr == C_NULL || ISDestroy(petsclib, x), is)
+    return nothing
+end
+# ------------------------------------------------------
+
 # needed for Mat ---
 #
 # END OF PROLOGUE

@@ -82,6 +82,9 @@ lvec = PETSc.local_vec(dm)
 # The written vector comes first, the DM follows it (naming.md §8)
 PETSc.global_to_local!(lvec, dm, gvec, PETSc.INSERT_VALUES)
 PETSc.local_to_global!(gvec, dm, lvec, PETSc.ADD_VALUES)
+
+# Refresh the ghost points of a local vector from its neighbours, in place
+PETSc.local_to_local!(lvec, dm)
 ```
 
 ### Getting Location Indices
@@ -95,6 +98,23 @@ indices = PETSc.local_indices(dm)
 # Get indices (no ghosts) for accessing specific DOF locations in a global array
 indices = PETSc.global_indices(dm)
 ```
+
+### Views by field
+
+[`with_field_views!`](@ref) checks out local vectors and hands the block one view per field. Views are indexed by the element index, ghosts included, like `stencil`, and their types are concrete, so a loop over them compiles to plain array code:
+
+```julia
+flow = (PETSc.face_location(dm, 1) => 0, PETSc.face_location(dm, 2) => 0,
+        PETSc.element_location(dm) => 0)
+c = PETSc.corners(dm)
+PETSc.with_field_views!(dm, x_local, r_local; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
+    for I in c.lower:c.upper
+        Rp[I] = Vx[I + CartesianIndex(1, 0)] - Vx[I] + Vy[I + CartesianIndex(0, 1)] - Vy[I]
+    end
+end
+```
+
+Without `fields`, the block gets each whole array, indexed `[I..., slot]` with `slot` from `dof_slot`. `write = false` checks out read-only.
 
 ### Locations and stencils
 
@@ -150,6 +170,11 @@ PETSc.set_uniform_coordinates!(dm, xmin, xmax, ymin, ymax, zmin, zmax)   # 3D
 
 # Get local coordinate array
 coords = PETSc.local_coordinate_array(dm)
+
+# Read the per-axis coordinates: x[i, 1] is the lower face of element i, x[i, 2] its centre
+PETSc.with_product_coordinates(dm) do x, y
+    x[i, 2], y[j, 2]
+end
 ```
 
 ## Stencil Types
@@ -176,8 +201,10 @@ PETSc.set_uniform_coordinates!(dm, 0.0, 1.0, 0.0, 1.0)
 # Create vectors and matrix
 x = PETSc.global_vec(dm)
 b = PETSc.global_vec(dm)
-A = LibPETSc.DMCreateMatrix(petsclib, dm)
+A = PETSc.PetscMat(dm)
 ```
+
+`PetscMat(dm)` stores every coupling the stencil allows, as explicit zeros. To let the first assembly define the pattern instead, call `PETSc.set_matrix_preallocate_only!(dm, true)` before creating the matrix.
 
 ## Functions
 

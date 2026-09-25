@@ -669,3 +669,132 @@ value_vector(::Type{PetscLib}, v::Vector) where {PetscLib} =
     eltype(v) === scalartype(PetscLib) ? v : Vector{scalartype(PetscLib)}(v)
 value_vector(::Type{PetscLib}, v::AbstractVector) where {PetscLib} =
     Vector{scalartype(PetscLib)}(v)
+
+# ============================================================================
+#   Coordinates
+# ============================================================================
+
+"""
+    with_product_coordinates(f, dm::DMStag)
+
+Call `f(x)`, `f(x, y)` or `f(x, y, z)` with the local coordinate arrays of `dm`,
+one per axis, and return what `f` returns. It needs product coordinates, which
+[`set_uniform_coordinates!`](@ref) sets. The arrays are PETSc's own and are read
+only: they are handed back when `f` returns or throws, and writing to them, or
+using them after `f`, is undefined.
+
+Each array is indexed `[i, slot]`: `i` is the 1-based element index, ghost
+elements included, as [`ghost_corners`](@ref) gives it, and `slot` is 1 for the
+coordinate of the element's lower face and 2 for its centre.
+
+```julia
+with_product_coordinates(dm) do x, y
+    x[i, 1], x[i, 2]   # x of the lower face and of the centre of element i
+end
+```
+
+# External Links
+$(doc_external("DMStag/DMStagGetProductCoordinateArraysRead"))
+$(doc_external("DMStag/DMStagRestoreProductCoordinateArraysRead"))
+"""
+function with_product_coordinates(f, dm::DMStag{PetscLib, N}) where {PetscLib, N}
+    lib = getlib(PetscLib)
+    x, y, z = LibPETSc.DMStagGetProductCoordinateArraysRead(lib, dm)
+    try
+        N == 1 && return f(x)
+        N == 2 && return f(x, y)
+        return f(x, y, z)
+    finally
+        LibPETSc.DMStagRestoreProductCoordinateArraysRead(lib, dm, x, y, z)
+    end
+end
+
+# ============================================================================
+#   Views of a local vector by field
+# ============================================================================
+
+"""
+    with_field_views!(f, dm::DMStag, vecs::AbstractPetscVec...; fields = nothing, read = true, write = true)
+
+Check out the local vectors `vecs` of `dm`, call `f` with one argument per vector,
+hand the vectors back when `f` returns or throws, and return what `f` returns.
+
+`fields` is a tuple of `location => dof` pairs, as [`IS`](@ref LibPETSc.IS) takes
+them, with the 0-based component of [`stencil`](@ref). For each vector `f` gets a
+tuple of views, one per field and in that order. Without `fields`, `f` gets the
+whole array per vector, indexed `[I..., slot]` with `slot` from [`dof_slot`](@ref).
+Either way the element index `I` is 1-based and covers the ghost elements, as in
+[`ghost_corners`](@ref), so a view and [`stencil`](@ref) address the same point.
+
+`read` and `write` work as in [`with_local_array!`](@ref): a `Bool`, or one per
+vector. `write = false` checks out read-only; the views have the same types either
+way. The vectors must be local vectors of `dm` ([`local_vec`](@ref)); anything else
+throws an `ArgumentError` before any vector is checked out.
+
+```julia
+flow = (face_location(dm, 1) => 0, face_location(dm, 2) => 0, element_location(dm) => 0)
+c = corners(dm)
+with_field_views!(dm, x, r; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
+    for I in c.lower:c.upper      # the owned elements
+        Rp[I] = Vx[I + CartesianIndex(1, 0)] - Vx[I] + Vy[I + CartesianIndex(0, 1)] - Vy[I]
+    end
+end
+```
+
+# External Links
+$(doc_external("DMStag/DMStagVecGetArray"))
+$(doc_external("DMStag/DMStagGetLocationSlot"))
+"""
+function with_field_views!(
+    f,
+    dm::DMStag{PetscLib, N},
+    vecs::Vararg{AbstractPetscVec{PetscLib}, M};
+    fields = nothing,
+    read::Union{Bool, NTuple{M, Bool}} = true,
+    write::Union{Bool, NTuple{M, Bool}} = true,
+) where {PetscLib, N, M}
+    read  isa Bool && (read  = ntuple(_ -> read,  Val(M)))
+    write isa Bool && (write = ntuple(_ -> write, Val(M)))
+    lib = getlib(PetscLib)
+    gc = ghost_corners(dm)
+    q = Int(LibPETSc.DMStagGetEntriesPerElement(lib, dm))
+    dims = (q, gc.size...)
+    offsets = ntuple(d -> gc.lower[d] - 1, Val(N))
+    slots = field_slots(dm, fields)
+    for v in vecs
+        LibPETSc.VecGetLocalSize(lib, v) == prod(dims) || throw(
+            ArgumentError("with_field_views! takes local vectors of the DMStag (local_vec(dm))"),
+        )
+    end
+    acquired = map(vecs, read, write) do v, r, w
+        acquire_local_array(v; read = r, write = w)
+    end
+    try
+        return call_with_views(f, map(first, acquired), dims, offsets, slots)
+    finally
+        foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
+            release_local_array(cpu_arr, backend, v; read = r, write = w)
+        end
+    end
+end
+
+# The 1-based slot of each field, or `nothing` for the whole array
+field_slots(dm, ::Nothing) = nothing
+field_slots(dm::DMStag{PetscLib}, fields::Tuple) where {PetscLib} = map(fields) do (loc, dof)
+    dof_slot(dm, loc, Int(dof))
+end
+
+# A function barrier: the array types come from a runtime memory type, and
+# everything below, `f` included, compiles for the concrete ones
+function call_with_views(f, arrays, dims, offsets, slots)
+    return f(map(a -> field_views(reshape(a, dims), offsets, slots), arrays)...)
+end
+
+# The array is stored with the component first; the views put it last, or drop it
+function field_views(A::AbstractArray{T, D}, offsets::NTuple{N, Int}, ::Nothing) where {T, D, N}
+    whole = PermutedDimsArray(A, (ntuple(d -> d + 1, Val(N))..., 1))
+    return OffsetArray(whole, offsets..., 0)
+end
+
+field_views(A::AbstractArray{T, D}, offsets::NTuple{N, Int}, slots::Tuple) where {T, D, N} =
+    map(slot -> OffsetArray(view(A, slot, ntuple(_ -> Colon(), Val(N))...), offsets...), slots)

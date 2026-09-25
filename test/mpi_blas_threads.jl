@@ -19,6 +19,9 @@ using LinearAlgebra: BLAS
     BLAS.set_num_threads(4)
     PETSc.initialize(petsclib)
     @test BLAS.get_num_threads() == (shared && !environment_sets_it ? 1 : 4)
+    # the user can still resize the pool after initialize
+    BLAS.set_num_threads(3)
+    @test BLAS.get_num_threads() == 3
     PETSc.finalize(petsclib)
 
     # the option wins over the default

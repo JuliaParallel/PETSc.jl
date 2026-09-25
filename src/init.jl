@@ -79,7 +79,8 @@ otherwise compete with the ranks for cores: a solve can run many times slower
 with the right answer. A set `OPENBLAS_NUM_THREADS` or `OMP_NUM_THREADS` also
 leaves the pool as it is. Serial runs, and runs with one rank per node, are
 unaffected. This changes Julia's process-wide BLAS setting, which `finalize`
-does not restore.
+does not restore. `initialize` sets the pool only once, so a later
+`BLAS.set_num_threads(n)` takes effect as usual.
 
 # Examples
 ```julia
@@ -99,8 +100,8 @@ PETSc.initialize(petsclib; log_view = true, options = [":logfile.txt", "-log_vie
 # Pass custom PETSc options without logging
 PETSc.initialize(petsclib; options = ["-malloc_debug", "-on_error_abort"])
 
-# One BLAS thread per rank under MPI
-PETSc.initialize(petsclib; options = ["-blas_num_threads", "1"])
+# Four BLAS threads per rank, overriding the one-thread default for ranks sharing a node
+PETSc.initialize(petsclib; options = ["-blas_num_threads", "4"])
 ```
 
 # External Links

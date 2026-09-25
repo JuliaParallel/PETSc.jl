@@ -394,6 +394,7 @@ const INTERNAL = Set{Symbol}([
     :with_options,
     # the underscore stays: inner worker beside a wrapper of the same name
     :_mul!,
+    :_zero_rows_vecs,
     :_unsafe_local_array,
     :_local_arrays,
     :_restore_local_arrays!,
@@ -496,6 +497,11 @@ const UNCHANGED_PUBLIC = Symbol[
     :memtype_backend,
     :owns,
     :AbstractPetscMemBackend,
+    :isassembled,            # new in v0.5.2
+    :zero_rows!,             # new in v0.5.2
+    :zero_rows_local!,       # new in v0.5.2
+    :set_option!,            # new in v0.5.2
+    :diagonal!,              # new in v0.5.2
     # ksp.jl / snes.jl / ts.jl
     :KSP,
     :SNES,

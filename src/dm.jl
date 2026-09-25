@@ -468,19 +468,15 @@ end
 """
     local_coordinates(dm::AbstractDM)
 
-Gets a local vector with the coordinates associated with `dm`.
+The coordinates of `dm`, ghost points included, as a local `PetscVec`.
 
 $(doc_borrowed())
 
 # External Links
 $(doc_external("DM/DMGetCoordinatesLocal"))
 """
-function local_coordinates(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    coord_vec = LibPETSc.DMGetCoordinatesLocal(petsclib, dm)
-    # borrowed from the DM: `destroy!` on the returned handle is a no-op
-    return VecPtr(petsclib, coord_vec.ptr, false)
-end
+local_coordinates(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
+    LibPETSc.DMGetCoordinatesLocal(getlib(PetscLib), dm)
 
 """
     local_coordinate_array(da::Union{DMDA, DMStag})

@@ -1,6 +1,6 @@
 # override for DMCreateFieldIS; C signature: DMCreateFieldIS(DM dm, PetscInt* numFields, char** fieldNames, IS* fields[])
 """
-	numFields::PetscInt,fieldNames::Cchar,fields::Vector{IS} = DMCreateFieldIS(petsclib::PetscLibType,dm::AbstractPetscDM) 
+	numFields::PetscInt,fieldNames::Vector{String},fields::Vector{IS} = DMCreateFieldIS(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Creates a set of `IS` objects with the global indices of dofs for each field defined with `DMAddField()`
 
 Not Collective; No Fortran Support
@@ -16,9 +16,8 @@ Output Parameters:
 Level: intermediate
 
 Note:
-The user is responsible for freeing all requested arrays. In particular, every entry of `fieldNames` should be freed with
-`PetscFree()`, every entry of `fields` should be destroyed with `ISDestroy()`, and both arrays should be freed with
-`PetscFree()`.
+The names come back as Julia `String`s and the C arrays are freed here. Every entry of `fields` is owned by the caller
+and should be destroyed with `ISDestroy()` (or `PETSc.destroy!`).
 
 Developer Note:
 It is not clear why both this function and `DMCreateFieldDecomposition()` exist. Having two seems redundant and confusing. This function should
@@ -45,17 +44,22 @@ function DMCreateFieldIS(petsclib::PetscLibType, dm::AbstractPetscDM) end
                dm, numFields_, fieldNames_, fields_,
               )
 	numFields = numFields_[]
+	# the caller owns the names, both arrays and every IS: copy the names, free the C memory
 	fieldNames = String[]
 	if fieldNames_[] != C_NULL
 		for i in 1:numFields
-			push!(fieldNames, unsafe_string(unsafe_load(fieldNames_[], i)))
+			name_ = unsafe_load(fieldNames_[], i)
+			push!(fieldNames, unsafe_string(name_))
+			PetscFree(petsclib, name_)
 		end
+		PetscFree(petsclib, fieldNames_[])
 	end
 	fields = IS{$PetscLib}[]
 	if fields_[] != C_NULL
 		for i in 1:numFields
 			push!(fields, IS(unsafe_load(fields_[], i), petsclib))
 		end
+		PetscFree(petsclib, fields_[])
 	end
 	return numFields,fieldNames,fields
 end

@@ -470,6 +470,132 @@ function assemble!(A::AbstractPetscMat{PetscLib}) where {PetscLib}
     return A
 end
 
+"""
+    isassembled(A::AbstractPetscMat)
+
+Whether `A` has been assembled with [`assemble!`](@ref) since its last change.
+
+# External Links
+$(doc_external("Mat/MatAssembled"))
+"""
+isassembled(A::AbstractPetscMat{PetscLib}) where {PetscLib} =
+    Bool(LibPETSc.MatAssembled(PetscLib, A))
+
+"""
+    fill!(A::AbstractPetscMat, 0)
+
+Set every stored entry of `A` to zero and return `A`. The nonzero pattern
+stays, so the matrix can be refilled without a new allocation. Only zero is
+accepted: PETSc has no operation that sets every entry to another value, and
+any other `x` throws an `ArgumentError`.
+
+# External Links
+$(doc_external("Mat/MatZeroEntries"))
+"""
+function Base.fill!(A::AbstractPetscMat{PetscLib}, x) where {PetscLib}
+    iszero(x) || throw(ArgumentError("fill! on a PETSc matrix accepts only zero, got $x"))
+    LibPETSc.MatZeroEntries(PetscLib, A)
+    return A
+end
+
+"""
+    zero_rows!(A::AbstractPetscMat, rows_0b, diag = 1; x = nothing, b = nothing)
+
+Zero the rows `rows_0b` of the assembled matrix `A`, put `diag` on their
+diagonal entries and return `A`. With `x` and `b` given, also set
+`b[i] = diag * x[i]` for each zeroed row `i`, so that a solve keeps the values
+of `x` there: the usual way to impose a Dirichlet condition.
+
+`rows_0b` are 0-based global row numbers, as PETSc takes them (docs/src/man/naming.md
+§12.1). Collective: every process calls it, each with its own rows, possibly none.
+[`zero_rows_local!`](@ref) takes local numbers instead.
+
+# External Links
+$(doc_external("Mat/MatZeroRows"))
+"""
+function zero_rows!(
+    A::AbstractPetscMat{PetscLib},
+    rows_0b::AbstractVector{<:Integer},
+    diag = 1;
+    x = nothing,
+    b = nothing,
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    xv, bv = _zero_rows_vecs(PetscLib, x, b)
+    LibPETSc.MatZeroRows(PetscLib, A, PetscInt(length(rows_0b)), Vector{PetscInt}(rows_0b),
+        PetscLib.PetscScalar(diag), xv, bv)
+    return A
+end
+
+"""
+    zero_rows_local!(A::AbstractPetscMat, rows_0b, diag = 1; x = nothing, b = nothing)
+
+[`zero_rows!`](@ref) with 0-based local row numbers, translated through the
+local-to-global mapping of `A`. A matrix from `DMCreateMatrix` has that mapping;
+one built without it throws a `PetscError`.
+
+# External Links
+$(doc_external("Mat/MatZeroRowsLocal"))
+"""
+function zero_rows_local!(
+    A::AbstractPetscMat{PetscLib},
+    rows_0b::AbstractVector{<:Integer},
+    diag = 1;
+    x = nothing,
+    b = nothing,
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    xv, bv = _zero_rows_vecs(PetscLib, x, b)
+    LibPETSc.MatZeroRowsLocal(PetscLib, A, PetscInt(length(rows_0b)), Vector{PetscInt}(rows_0b),
+        PetscLib.PetscScalar(diag), xv, bv)
+    return A
+end
+
+# `x` and `b` of MatZeroRows go together; a missing one is passed as NULL
+function _zero_rows_vecs(::Type{PetscLib}, x, b) where {PetscLib}
+    isnothing(x) == isnothing(b) ||
+        throw(ArgumentError("zero_rows! takes both x and b, or neither"))
+    null_vec = LibPETSc.PetscVec{PetscLib}(C_NULL, 0; own = false)
+    return something(x, null_vec), something(b, null_vec)
+end
+
+"""
+    set_option!(A::AbstractPetscMat, option::LibPETSc.MatOption, flag::Bool)
+
+Turn the matrix option `option` on or off and return `A`, e.g.
+`set_option!(A, LibPETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)` to allow
+insertions outside the preallocated pattern.
+
+# External Links
+$(doc_external("Mat/MatSetOption"))
+"""
+function set_option!(
+    A::AbstractPetscMat{PetscLib},
+    option::LibPETSc.MatOption,
+    flag::Bool,
+) where {PetscLib}
+    LibPETSc.MatSetOption(PetscLib, A, option, LibPETSc.PetscBool(flag))
+    return A
+end
+
+"""
+    diagonal!(d::AbstractPetscVec, A::AbstractPetscMat)
+
+Write the diagonal of `A` into `d` and return `d`. `d` needs the row layout of
+`A`, as the left vector from `MatCreateVecs` has. `LinearAlgebra.diag` is not
+extended, because it returns a new vector.
+
+# External Links
+$(doc_external("Mat/MatGetDiagonal"))
+"""
+function diagonal!(
+    d::AbstractPetscVec{PetscLib},
+    A::AbstractPetscMat{PetscLib},
+) where {PetscLib}
+    LibPETSc.MatGetDiagonal(PetscLib, A, d)
+    return d
+end
+
 
 LinearAlgebra.norm(M::PetscMat{PetscLib}, normtype::NormType = NORM_FROBENIUS) where {PetscLib} = LibPETSc.MatNorm(PetscLib, M, normtype)
 

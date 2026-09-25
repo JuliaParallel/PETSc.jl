@@ -480,7 +480,7 @@ ksp(snes::AbstractSNES{PetscLib}) where {PetscLib} =
 """
     solution(snes::AbstractSNES)
 
-The vector `snes` solves for.
+The vector `snes` solves for, as a `PetscVec`.
 
 $(doc_borrowed())
 

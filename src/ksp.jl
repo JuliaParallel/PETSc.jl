@@ -391,20 +391,17 @@ LibPETSc.@for_petsc function set_compute_operators!(ops!, ksp::AbstractKSP{$Pets
 end
 
 """
-    sol = solution(ksp::AbstractKSP)
+    solution(ksp::AbstractKSP)
 
-Returns the solution vector associated with the KSP object.
+The solution vector of `ksp`, as a `PetscVec`.
 
 $(doc_borrowed())
 
 # External Links
 $(doc_external("KSP/KSPGetSolution"))
 """
-function solution(ksp::AbstractKSP{PetscLib}) where PetscLib
-    petsclib = getlib(PetscLib)
-    sol = LibPETSc.KSPGetSolution(petsclib, ksp)
-    return VecPtr(petsclib, sol.ptr, false)   # owned by the KSP
-end
+solution(ksp::AbstractKSP{PetscLib}) where {PetscLib} =
+    LibPETSc.KSPGetSolution(getlib(PetscLib), ksp)
 
 
 """

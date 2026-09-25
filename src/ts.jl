@@ -455,18 +455,15 @@ end
 """
     solution(ts::AbstractTS)
 
-The solution vector held by `ts`.
+The solution vector held by `ts`, as a `PetscVec`.
 
 $(doc_borrowed())
 
 # External Links
 $(doc_external("TS/TSGetSolution"))
 """
-function solution(ts::AbstractTS{PetscLib}) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    u = LibPETSc.TSGetSolution(petsclib, ts)
-    return VecPtr(petsclib, u.ptr, false)   # owned by the TS
-end
+solution(ts::AbstractTS{PetscLib}) where {PetscLib} =
+    LibPETSc.TSGetSolution(getlib(PetscLib), ts)
 
 """
     set_solution!(ts::AbstractTS, u::AbstractPetscVec)
@@ -610,11 +607,8 @@ step_number(ts::AbstractTS{PetscLib}) where {PetscLib} =
 
 Local truncation error tolerances, as `(; atol, rtol, vatol, vrtol)`.
 
-`vatol` and `vrtol` hold per-component tolerances and carry a null pointer when
-only the scalar tolerances are set. Both are owned by `ts`.
-
-`vatol` and `vrtol` are the per-component tolerance vectors, or null handles
-when only the scalar tolerances were set.
+`vatol` and `vrtol` are the per-component tolerance vectors, as `PetscVec`s
+holding a null pointer when only the scalar tolerances were set.
 
 $(doc_borrowed())
 
@@ -624,9 +618,6 @@ $(doc_external("TS/TSGetTolerances"))
 function tolerances(ts::AbstractTS{PetscLib}) where {PetscLib}
     petsclib = getlib(PetscLib)
     atol, vatol, rtol, vrtol = LibPETSc.TSGetTolerances(petsclib, ts)
-    # The two vectors belong to `ts`: hand them back as borrowed handles.
-    vatol = VecPtr(petsclib, vatol.ptr, false)
-    vrtol = VecPtr(petsclib, vrtol.ptr, false)
     return (; atol, rtol, vatol, vrtol)
 end
 

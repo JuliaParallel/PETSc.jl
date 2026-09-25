@@ -233,6 +233,27 @@ function Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib}
     return v
 end
 
+"""
+    copyto!(dst::AbstractPetscVec, src::AbstractPetscVec)
+
+Copy the entries of `src` into `dst` and return `dst`. The two vectors must
+have the same global length, which throws a `DimensionMismatch` otherwise, and
+the same parallel layout, which PETSc checks.
+
+# External Links
+$(doc_external("Vec/VecCopy"))
+"""
+function Base.copyto!(
+    dst::AbstractPetscVec{PetscLib},
+    src::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    length(dst) == length(src) || throw(
+        DimensionMismatch("destination has length $(length(dst)), source has length $(length(src))"),
+    )
+    LibPETSc.VecCopy(PetscLib, src, dst)
+    return dst
+end
+
 # Broadcasting assignment support (dest is not an AbstractArray)
 function Base.copyto!(dest::AbstractPetscVec{PetscLib}, bc::Base.Broadcast.Broadcasted) where {PetscLib}
     # Evaluate the broadcasted RHS

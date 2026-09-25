@@ -48,6 +48,7 @@ include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl")
 include("dmstag_stencils.jl")  # DMStag locations by axis, stencils, stencil assembly
 include("dmstag_halos.jl")     # local_to_local!, with_product_coordinates, preallocate only
+include("dmstag_views.jl")     # with_field_views!: types, allocations, hand-back
 include("dm_dimension.jl")  # dimension-correct DM returns: shape, inference, allocations
 include("test_snes.jl")
 include("test_audit.jl")    # leak auditor

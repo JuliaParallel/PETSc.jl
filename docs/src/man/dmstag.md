@@ -99,6 +99,23 @@ indices = PETSc.local_indices(dm)
 indices = PETSc.global_indices(dm)
 ```
 
+### Views by field
+
+[`with_field_views!`](@ref) checks out local vectors and hands the block one view per field. Views are indexed by the element index, ghosts included, like `stencil`, and their types are concrete, so a loop over them compiles to plain array code:
+
+```julia
+flow = (PETSc.face_location(dm, 1) => 0, PETSc.face_location(dm, 2) => 0,
+        PETSc.element_location(dm) => 0)
+c = PETSc.corners(dm)
+PETSc.with_field_views!(dm, x_local, r_local; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
+    for I in c.lower:c.upper
+        Rp[I] = Vx[I + CartesianIndex(1, 0)] - Vx[I] + Vy[I + CartesianIndex(0, 1)] - Vy[I]
+    end
+end
+```
+
+Without `fields`, the block gets each whole array, indexed `[I..., slot]` with `slot` from `dof_slot`. `write = false` checks out read-only.
+
 ### Locations and stencils
 
 DMStag names a point by where it sits on an element: `DMSTAG_LEFT`, `DMSTAG_DOWN`, `DMSTAG_BACK_DOWN_LEFT`, and so on. Those names shift meaning between dimensions (`DOWN` is the second axis, whatever it's called in your model), so the location functions count axes instead:

@@ -31,6 +31,7 @@
 - `local_to_local!(dst, dm, src)` and the in-place `local_to_local!(v, dm)`, to refresh ghost points.
 - `with_product_coordinates(f, dm)`: read-only access to a DMStag's per-axis coordinates, handed back when `f` returns.
 - `set_matrix_preallocate_only!(dm, flag)`, so a matrix from `dm` gets its nonzero pattern from the first assembly.
+- `with_field_views!(f, dm, vecs...; fields, read, write)`: concretely typed views of DMStag local vectors by `location => dof`, indexed like `stencil`, handed back when `f` returns. About 9 allocations per vector, whatever the grid size.
 
 ### Changed
 

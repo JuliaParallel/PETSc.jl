@@ -63,14 +63,15 @@ Additionally:
 # Arguments
 - `log_view::Bool = false`: Enable PETSc's `-log_view` performance logging.
   When enabled, PETSc will output performance statistics at finalization.
-- `options::Vector{String} = String[]`: Additional PETSc command-line options.
-  These are passed via the `PETSC_OPTIONS` environment variable.
+- `options::Vector{String} = String[]`: Additional PETSc command-line options,
+  handed to `PetscInitialize` as its command line. They override the
+  `PETSC_OPTIONS` environment variable.
 
 # BLAS threads
 PETSc's BLAS calls run in Julia's OpenBLAS thread pool, the one
 `LinearAlgebra.BLAS.set_num_threads` sizes, for every library in `petsclibs`.
-`-blas_num_threads n`, given in `options`, in `PETSC_OPTIONS` or on the command
-line, sets that pool to `n` threads.
+`-blas_num_threads n`, given in `options` or in `PETSC_OPTIONS`, sets that pool
+to `n` threads.
 
 Without that option, when several MPI ranks share a node, `initialize` sets the
 pool to one thread. Each rank owns a pool, and its busy-waiting threads would
@@ -102,7 +103,7 @@ PETSc.initialize(petsclib; options = ["-blas_num_threads", "1"])
 ```
 
 # External Links
-$(doc_external("Sys/PetscInitializeNoArguments"))
+$(doc_external("Sys/PetscInitialize"))
 """
 function initialize(; log_view::Bool = false, options = String[])
     map(petsclib -> initialize(petsclib; log_view, options), petsclibs)
@@ -111,24 +112,10 @@ end
 
 function initialize(petsclib; log_view::Bool = false, options = String[])
     if !isinitialized(petsclib)
-        # PETSc's signal handler conflicts with Julia's own handlers when using multithreading
-        # Appended to a copy: the caller's vector stays as it was.
-        options = [String.(options); "-no_signal_handler"]
-        cli_opts = build_petsc_options(log_view, options)
-        prev_opts = get(ENV, "PETSC_OPTIONS", "")
-        ENV["PETSC_OPTIONS"] = isempty(prev_opts) ? cli_opts : "$prev_opts $cli_opts"
-        try
-            ensure_mpi_initialized()
-            petsclib.age += 1
-            LibPETSc.PetscInitializeNoArguments(petsclib)
-            post_initialize(petsclib)
-        finally
-            if isempty(prev_opts)
-                delete!(ENV, "PETSC_OPTIONS")
-            else
-                ENV["PETSC_OPTIONS"] = prev_opts
-            end
-        end
+        ensure_mpi_initialized()
+        petsclib.age += 1
+        LibPETSc.PetscInitialize(petsclib, build_petsc_options(log_view, options))
+        post_initialize(petsclib)
     end
     return nothing
 end
@@ -202,13 +189,18 @@ the caller destroys the result), and the objects a callback receives.
 """
 owns(obj) = obj.own
 
+# The command line PETSc is initialized with: the options go in as arguments,
+# not through `PETSC_OPTIONS`, which PETSc on Windows cannot see once set from
+# Julia. An entry holding several words, such as "-ksp_type cg", is split.
+# PETSc's signal handler conflicts with Julia's own, notably under multithreading.
 function build_petsc_options(log_view::Bool, options)
-    opts = String[]
-    if log_view
-        push!(opts, "-log_view")
+    args = [petsc_program_name]
+    log_view && push!(args, "-log_view")
+    for opt in options
+        append!(args, split(String(opt)))
     end
-    append!(opts, [String(opt) for opt in options])
-    return join(opts, " ")
+    push!(args, "-no_signal_handler")
+    return args
 end
 
 function ensure_mpi_initialized()

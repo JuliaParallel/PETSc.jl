@@ -9,6 +9,7 @@
 - The TS and SNES manual pages still described the 0.5.0 callback rules (return an error code, exceptions become a `PetscError`).
 - `-blas_num_threads` had no effect. Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs in Julia's OpenBLAS pool, which PETSc cannot size. `initialize` now forwards the option to `LinearAlgebra.BLAS.set_num_threads`.
 - `initialize(petsclib; options)` appended `-no_signal_handler` to the caller's `options` vector.
+- On Windows, the `options` and `log_view` given to `initialize` never reached PETSc: they went through `ENV["PETSC_OPTIONS"]`, which PETSc there reads from its own copy of the environment. They are now PETSc's command line (`LibPETSc.PetscInitialize` takes a `Vector{String}`), and still override a `PETSC_OPTIONS` set before Julia starts.
 
 ### Added
 

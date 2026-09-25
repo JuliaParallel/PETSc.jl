@@ -218,6 +218,21 @@ using PETSc
         end
     end
 
+    # `options` reach PETSc on every platform: they are handed to PetscInitialize
+    # as its command line, where PETSC_OPTIONS set from Julia is invisible on Windows
+    @testset "options reach PETSc" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.isinitialized(petsclib) && PETSc.finalize(petsclib)
+        options = ["-petscjl_test_int", "7", "-petscjl_test_pair 8"]
+        PETSc.initialize(petsclib; options)
+        global_options = PETSc.LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
+        value(name) = PETSc.LibPETSc.PetscOptionsGetInt(petsclib, global_options, "", name)
+        @test value("-petscjl_test_int") == (7, PETSc.LibPETSc.PETSC_TRUE)
+        @test value("-petscjl_test_pair") == (8, PETSc.LibPETSc.PETSC_TRUE)   # one entry, two words
+        @test options == ["-petscjl_test_int", "7", "-petscjl_test_pair 8"]  # left as given
+        PETSc.finalize(petsclib)
+    end
+
     # naming.md §14: user input raises `ArgumentError`, not a bare `error`.
     @testset "ArgumentError on user input" begin
         @test_throws ArgumentError PETSc.set_library!(

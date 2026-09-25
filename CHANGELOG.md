@@ -14,7 +14,7 @@
 - On an Int32 PETSc build (the `PetscInt = "Int32"` preference), `LibPETSc.DMStagStencil`, `MatStencil` and the other C structs had `Int64` fields, so PETSc read them wrong. They now take the integer width of the loaded library, and the two stencil constructors convert their indices to it.
 - `LibPETSc.DMStagRestoreProductCoordinateArraysRead` restored the arrays through the writable restore, which does not match the read-only get.
 - The `KSP` and `SNES` docstrings did not say when the options given to the constructor are applied: once at construction for `KSP`, at every `solve!` for `SNES` (and `TS`).
-- `-blas_num_threads` had no effect. Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs in Julia's OpenBLAS pool, which PETSc cannot size. `initialize` now forwards the option to `LinearAlgebra.BLAS.set_num_threads`. Under MPI, pass `-blas_num_threads 1` (or set `OPENBLAS_NUM_THREADS=1`): several ranks on a node otherwise each run a pool of busy-waiting threads, which made a 4-rank DMStag Stokes solve 25× slower.
+- `-blas_num_threads` had no effect. Every PETSc_jll build calls BLAS through libblastrampoline, so PETSc's BLAS runs in Julia's OpenBLAS pool, which PETSc cannot size. `initialize` now forwards the option to `LinearAlgebra.BLAS.set_num_threads`.
 - `initialize(petsclib; options)` appended `-no_signal_handler` to the caller's `options` vector.
 
 ### Added
@@ -37,6 +37,7 @@
 
 ### Changed
 
+- When several MPI ranks share a node, `initialize` sets Julia's BLAS pool to one thread, unless `-blas_num_threads`, `OPENBLAS_NUM_THREADS` or `OMP_NUM_THREADS` says otherwise. Each rank otherwise ran a pool of busy-waiting threads, which made a 4-rank DMStag Stokes solve 25× slower. Serial runs and one rank per node are unaffected.
 - `solution(ksp)`, `solution(ts)`, `local_coordinates(dm)` and the `vatol`/`vrtol` of `tolerances(ts)` return a borrowed `PetscVec`, as `solution(snes)` already did, instead of a `VecPtr`. Both are `AbstractPetscVec`s with the same ownership, so only code that checks for `VecPtr` by type notices.
 - `LibPETSc` release functions that free a C array of handles (`VecDestroyVecs`, `MatDestroyMatrices`, `DMPlexRestoreConeRecursive`, …) no longer accept a Julia array of raw handles, which PETSc would have freed as its own memory. They take the pointer PETSc returned; `MatDestroySubMatrices`, `MatDestroyMatrices`, `VecNestRestoreSubVecsRead` and the two subdomain destroyers also take the vector the matching wrapper returned.
 

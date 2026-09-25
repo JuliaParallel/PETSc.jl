@@ -73,7 +73,8 @@ struct DMStagStencil
 
     DMStagStencil() = new()
 
-    DMStagStencil(loc,i,j,k,c) = new(loc::DMStagStencilLocation,i::PetscInt ,    j::PetscInt ,    k::PetscInt ,    c::PetscInt)
+    # `new` converts the indices to the PetscInt width this process loads
+    DMStagStencil(loc,i,j,k,c) = new(loc::DMStagStencilLocation, i, j, k, c)
 
 end 
 
@@ -87,7 +88,8 @@ struct MatStencil
     MatStencil() = new()
         
     # Convenience constructor accepting integers in i,j,k,c order
-    MatStencil(i,j,k,c) = new(i::PetscInt, j::PetscInt, k::PetscInt, c::PetscInt)
+    # `new` converts the indices to the PetscInt width this process loads
+    MatStencil(i,j,k,c) = new(i, j, k, c)
 end 
 
 struct MatInfo

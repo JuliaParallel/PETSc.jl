@@ -96,6 +96,50 @@ indices = PETSc.local_indices(dm)
 indices = PETSc.global_indices(dm)
 ```
 
+### Locations and stencils
+
+DMStag names a point by where it sits on an element: `DMSTAG_LEFT`, `DMSTAG_DOWN`, `DMSTAG_BACK_DOWN_LEFT`, and so on. Those names shift meaning between dimensions (`DOWN` is the second axis, whatever it's called in your model), so the location functions count axes instead:
+
+```julia
+PETSc.vertex_location(dm)        # the element's lower corner
+PETSc.face_location(dm, axis)    # the face normal to `axis`, on the lower side
+PETSc.edge_location(dm, a, b)    # the edge touching the lower faces of `a` and `b` (3D; the vertex in 2D)
+PETSc.element_location(dm)       # the element interior
+```
+
+`face_location(dm, ndims(dm))` is the last axis in any dimension. An axis outside `1:ndims(dm)` throws an `ArgumentError`.
+
+A stencil addresses one unknown: a location, the element index and a component. [`stencil`](@ref) takes the 1-based element index that `corners` and `ghost_corners` use, and PETSc's 0-based component, as [`dof_slot`](@ref) does. Indices are not bounds-checked, so ghost elements work, and the call allocates nothing:
+
+```julia
+I = corners(dm).lower
+row  = PETSc.stencil(dm, PETSc.face_location(dm, 1), I)
+cols = [PETSc.stencil(dm, PETSc.element_location(dm), I),
+        PETSc.stencil(dm, PETSc.element_location(dm), I + CartesianIndex(1, 0))]
+```
+
+### Assembling with stencils
+
+```julia
+J = PETSc.PetscMat(dm)
+PETSc.set_values!(J, dm, [row], cols, [-1.0, 1.0], PETSc.ADD_VALUES)   # row-major block
+PETSc.assemble!(J)
+
+PETSc.zero_rows_local!(J, dm, wall_rows, 1.0)   # Dirichlet rows, given as stencils
+PETSc.set_values!(b, dm, wall_rows, wall_values)
+```
+
+Under `ADD_VALUES`, repeated (row, column) entries in one call are summed. `zero_rows_local!` is collective: a rank that owns no wall passes an empty vector.
+
+An index set of whole fields, for a field split, takes (location, component) pairs:
+
+```julia
+flow = LibPETSc.IS(dm, PETSc.face_location(dm, 1) => 0,
+                       PETSc.face_location(dm, 2) => 0,
+                       PETSc.element_location(dm) => 0)
+PETSc.set_fieldsplit_is!(PETSc.pc(ksp), "flow", flow)
+```
+
 ## Setting Coordinates
 
 ```julia

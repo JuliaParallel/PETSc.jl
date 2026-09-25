@@ -669,3 +669,42 @@ value_vector(::Type{PetscLib}, v::Vector) where {PetscLib} =
     eltype(v) === scalartype(PetscLib) ? v : Vector{scalartype(PetscLib)}(v)
 value_vector(::Type{PetscLib}, v::AbstractVector) where {PetscLib} =
     Vector{scalartype(PetscLib)}(v)
+
+# ============================================================================
+#   Coordinates
+# ============================================================================
+
+"""
+    with_product_coordinates(f, dm::DMStag)
+
+Call `f(x)`, `f(x, y)` or `f(x, y, z)` with the local coordinate arrays of `dm`,
+one per axis, and return what `f` returns. It needs product coordinates, which
+[`set_uniform_coordinates!`](@ref) sets. The arrays are PETSc's own and are read
+only: they are handed back when `f` returns or throws, and writing to them, or
+using them after `f`, is undefined.
+
+Each array is indexed `[i, slot]`: `i` is the 1-based element index, ghost
+elements included, as [`ghost_corners`](@ref) gives it, and `slot` is 1 for the
+coordinate of the element's lower face and 2 for its centre.
+
+```julia
+with_product_coordinates(dm) do x, y
+    x[i, 1], x[i, 2]   # x of the lower face and of the centre of element i
+end
+```
+
+# External Links
+$(doc_external("DMStag/DMStagGetProductCoordinateArraysRead"))
+$(doc_external("DMStag/DMStagRestoreProductCoordinateArraysRead"))
+"""
+function with_product_coordinates(f, dm::DMStag{PetscLib, N}) where {PetscLib, N}
+    lib = getlib(PetscLib)
+    x, y, z = LibPETSc.DMStagGetProductCoordinateArraysRead(lib, dm)
+    try
+        N == 1 && return f(x)
+        N == 2 && return f(x, y)
+        return f(x, y, z)
+    finally
+        LibPETSc.DMStagRestoreProductCoordinateArraysRead(lib, dm, x, y, z)
+    end
+end

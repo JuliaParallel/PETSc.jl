@@ -19,7 +19,7 @@ else
 end
 
 # Do the MPI tests first so we do not have mpi running inside MPI
-mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")
+mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl", "mpi_dmstag_halos.jl")
 
 # PETSc_jll >= 3.25.4 has MPI-enabled Windows binaries (MicrosoftMPI), so the MPI tests run everywhere
 do_mpi = true
@@ -47,6 +47,7 @@ include("dmproduct.jl")     # test for DMProduct example
 include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl")
 include("dmstag_stencils.jl")  # DMStag locations by axis, stencils, stencil assembly
+include("dmstag_halos.jl")     # local_to_local!, with_product_coordinates, preallocate only
 include("dm_dimension.jl")  # dimension-correct DM returns: shape, inference, allocations
 include("test_snes.jl")
 include("test_audit.jl")    # leak auditor

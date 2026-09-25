@@ -43681,7 +43681,7 @@ function DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType, dm::Ab
     refZ = arrZ === nothing ? C_NULL : Ref(arrZ.ptr)
 
     @chk ccall(
-               (:DMStagRestoreProductCoordinateArrays, $petsc_library),
+               (:DMStagRestoreProductCoordinateArraysRead, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Ptr{Ptr{$PetscScalar}}}, Ptr{Ptr{Ptr{$PetscScalar}}}, Ptr{Ptr{Ptr{$PetscScalar}}}),
                dm, refX, refY, refZ,

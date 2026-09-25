@@ -412,9 +412,260 @@ end
     slot::Int = dof_slot(dm::DMStag, loc::LibPETSc.DMStagStencilLocation, dof::Int) 
 
 Returns the location `slot` for a degree of freedom `dof` at a given stencil location `loc` in the DMStag `dm`.
-Note that the returned `slot` is 1-based for Julia compatibility.    
+Note that the returned `slot` is 1-based for Julia compatibility.
+`dof` is PETSc's 0-based component number at that location, as in [`stencil`](@ref).
 """
 function dof_slot(dm::DMStag{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Int) where {PetscLib} 
     slot = LibPETSc.DMStagGetLocationSlot(getlib(PetscLib), dm, loc, PetscLib.PetscInt(dof))
     return slot+1
 end
+
+
+# ============================================================================
+#   Locations and stencils
+# ============================================================================
+
+"""
+    vertex_location(dm::DMStag)
+
+The location of the vertex DMStag stores with each element, its lower corner:
+`DMSTAG_LEFT` in 1D, `DMSTAG_DOWN_LEFT` in 2D and `DMSTAG_BACK_DOWN_LEFT` in 3D.
+
+See also [`face_location`](@ref), [`edge_location`](@ref), [`element_location`](@ref)
+and [`stencil`](@ref).
+
+# External Links
+$(doc_external("DMStag/DMStagStencilLocation"))
+"""
+vertex_location(::DMStag{PetscLib, 1}) where {PetscLib} = LibPETSc.DMSTAG_LEFT
+vertex_location(::DMStag{PetscLib, 2}) where {PetscLib} = LibPETSc.DMSTAG_DOWN_LEFT
+vertex_location(::DMStag{PetscLib, 3}) where {PetscLib} = LibPETSc.DMSTAG_BACK_DOWN_LEFT
+
+"""
+    edge_location(dm::DMStag, a::Integer, b::Integer)
+
+The location of the edge touching the lower faces of axes `a` and `b`, in either
+order: the edge a shear component τ_ab lives on. In 3D, `(1, 2)` is
+`DMSTAG_DOWN_LEFT`, `(1, 3)` is `DMSTAG_BACK_LEFT` and `(2, 3)` is
+`DMSTAG_BACK_DOWN`. In 2D the vertex plays that role, so `(1, 2)` returns
+`DMSTAG_DOWN_LEFT`. A 1D DM has no edges, and an axis outside `1:ndims(dm)`, or
+`a == b`, throws an `ArgumentError`.
+
+See also [`vertex_location`](@ref), [`face_location`](@ref).
+
+# External Links
+$(doc_external("DMStag/DMStagStencilLocation"))
+"""
+function edge_location(dm::DMStag{PetscLib, N}, a::Integer, b::Integer) where {PetscLib, N}
+    N == 1 && throw(ArgumentError("a 1D DMStag has no edges"))
+    check_axis(dm, a)
+    check_axis(dm, b)
+    a == b && throw(ArgumentError("an edge needs two different axes, got ($a, $b)"))
+    lo, hi = minmax(a, b)
+    lo == 1 && hi == 2 && return LibPETSc.DMSTAG_DOWN_LEFT
+    lo == 1 && return LibPETSc.DMSTAG_BACK_LEFT
+    return LibPETSc.DMSTAG_BACK_DOWN
+end
+
+"""
+    face_location(dm::DMStag, axis::Integer)
+
+The location of the face normal to `axis` on the lower side of each element:
+`DMSTAG_LEFT` for axis 1, `DMSTAG_DOWN` for axis 2 and `DMSTAG_BACK` for axis 3.
+Axes count the DM's own axes, so `face_location(dm, ndims(dm))` is the last axis in
+any dimension. An axis outside `1:ndims(dm)` throws an `ArgumentError`.
+
+See also [`vertex_location`](@ref), [`edge_location`](@ref), [`element_location`](@ref).
+
+# External Links
+$(doc_external("DMStag/DMStagStencilLocation"))
+"""
+function face_location(dm::DMStag, axis::Integer)
+    check_axis(dm, axis)
+    axis == 1 && return LibPETSc.DMSTAG_LEFT
+    axis == 2 && return LibPETSc.DMSTAG_DOWN
+    return LibPETSc.DMSTAG_BACK
+end
+
+"""
+    element_location(dm::DMStag)
+
+The location of the element interior, `DMSTAG_ELEMENT` in every dimension.
+
+See also [`vertex_location`](@ref), [`face_location`](@ref), [`edge_location`](@ref).
+
+# External Links
+$(doc_external("DMStag/DMStagStencilLocation"))
+"""
+element_location(::DMStag) = LibPETSc.DMSTAG_ELEMENT
+
+function check_axis(::DMStag{PetscLib, N}, axis::Integer) where {PetscLib, N}
+    1 <= axis <= N || throw(ArgumentError("axis $axis is not an axis of a $(N)D DMStag"))
+    return nothing
+end
+
+"""
+    stencil(dm::DMStag, loc::LibPETSc.DMStagStencilLocation, I; dof = 0)
+
+The `LibPETSc.DMStagStencil` addressing component `dof` at location `loc` of
+element `I`. `I` is a `CartesianIndex{N}` or an `NTuple{N, Integer}` with the
+1-based element indices [`corners`](@ref) and [`ghost_corners`](@ref) use, and the
+stencil holds them 0-based, as PETSc reads them. Indices are not checked, so a ghost
+element (0 or `N + 1` on a periodic axis) is valid. `dof` is PETSc's 0-based
+component number, as in [`dof_slot`](@ref).
+
+Allocation free, for use inside assembly loops.
+
+```julia
+lower = corners(dm).lower
+row = stencil(dm, face_location(dm, 1), lower)             # the first owned x face
+col = stencil(dm, element_location(dm), lower; dof = 1)    # second element component
+```
+
+See also [`set_values!`](@ref), [`zero_rows_local!`](@ref).
+
+# External Links
+$(doc_external("DMStag/DMStagStencil"))
+"""
+@inline function stencil(
+    dm::DMStag{PetscLib, N},
+    loc::LibPETSc.DMStagStencilLocation,
+    I::NTuple{N, Integer};
+    dof::Integer = 0,
+) where {PetscLib, N}
+    T = inttype(PetscLib)
+    i = ntuple(d -> d <= N ? T(I[d] - 1) : zero(T), Val(3))
+    return LibPETSc.DMStagStencil(loc, i[1], i[2], i[3], T(dof))
+end
+
+@inline stencil(
+    dm::DMStag{PetscLib, N},
+    loc::LibPETSc.DMStagStencilLocation,
+    I::CartesianIndex{N};
+    dof::Integer = 0,
+) where {PetscLib, N} = stencil(dm, loc, Tuple(I); dof)
+
+# ============================================================================
+#   Operations on stencils
+# ============================================================================
+
+"""
+    set_values!(J::AbstractPetscMat, dm::DMStag, rows, cols, vals, mode = INSERT_VALUES)
+
+Write the dense block `vals` into `J` at the stencils `rows` × `cols` and return
+`J`. `vals` is row-major, with `length(rows) * length(cols)` entries. Under
+`ADD_VALUES`, entries whose row and column repeat are summed. `rows`, `cols` and
+`vals` can be any `AbstractVector`; one that is not a `Vector` is copied first.
+
+# External Links
+$(doc_external("DMStag/DMStagMatSetValuesStencil"))
+"""
+function set_values!(
+    J::AbstractPetscMat{PetscLib},
+    dm::DMStag{PetscLib},
+    rows::AbstractVector{LibPETSc.DMStagStencil},
+    cols::AbstractVector{LibPETSc.DMStagStencil},
+    vals::AbstractVector,
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
+    length(vals) == length(rows) * length(cols) || throw(
+        DimensionMismatch(
+            "a $(length(rows))x$(length(cols)) block needs " *
+            "$(length(rows) * length(cols)) values, got $(length(vals))",
+        ),
+    )
+    T = inttype(PetscLib)
+    LibPETSc.DMStagMatSetValuesStencil(
+        getlib(PetscLib), dm, J,
+        T(length(rows)), stencil_vector(rows),
+        T(length(cols)), stencil_vector(cols),
+        value_vector(PetscLib, vals), mode,
+    )
+    return J
+end
+
+"""
+    set_values!(v::AbstractPetscVec, dm::DMStag, positions, vals, mode = INSERT_VALUES)
+
+Write `vals` into `v` at the stencils `positions` and return `v`. Both can be any
+`AbstractVector` of the same length; one that is not a `Vector` is copied first.
+
+# External Links
+$(doc_external("DMStag/DMStagVecSetValuesStencil"))
+"""
+function set_values!(
+    v::AbstractPetscVec{PetscLib},
+    dm::DMStag{PetscLib},
+    positions::AbstractVector{LibPETSc.DMStagStencil},
+    vals::AbstractVector,
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
+    length(vals) == length(positions) || throw(
+        DimensionMismatch("$(length(positions)) positions, but $(length(vals)) values"),
+    )
+    LibPETSc.DMStagVecSetValuesStencil(
+        getlib(PetscLib), dm, v, inttype(PetscLib)(length(positions)),
+        stencil_vector(positions), value_vector(PetscLib, vals), mode,
+    )
+    return v
+end
+
+"""
+    zero_rows_local!(J::AbstractPetscMat, dm::DMStag, rows, diag = 1; x = nothing, b = nothing)
+
+[`zero_rows_local!`](@ref) with the rows given as stencils of `dm`, which `J` was
+created from. Collective: a rank that owns none of the rows passes an empty vector.
+
+# External Links
+$(doc_external("DMStag/DMStagStencilToIndexLocal"))
+"""
+function zero_rows_local!(
+    J::AbstractPetscMat{PetscLib},
+    dm::DMStag{PetscLib, N},
+    rows::AbstractVector{LibPETSc.DMStagStencil},
+    diag = 1;
+    x = nothing,
+    b = nothing,
+) where {PetscLib, N}
+    T = inttype(PetscLib)
+    rows_0b = LibPETSc.DMStagStencilToIndexLocal(
+        getlib(PetscLib), dm, T(N), T(length(rows)), stencil_vector(rows),
+    )
+    return zero_rows_local!(J, rows_0b, diag; x, b)
+end
+
+"""
+    LibPETSc.IS(dm::DMStag, loc => dof, ...)
+    LibPETSc.IS(dm::DMStag, pairs::AbstractVector{<:Pair})
+
+The index set, in the global numbering, of every point of `dm` at the given
+locations and components: each pair is a `LibPETSc.DMStagStencilLocation` and a
+0-based component, as [`stencil`](@ref) takes them. The caller owns the result. It
+suits [`set_fieldsplit_is!`](@ref):
+
+```julia
+flow = LibPETSc.IS(dm, face_location(dm, 1) => 0, face_location(dm, 2) => 0,
+                   element_location(dm) => 0)
+set_fieldsplit_is!(pc(ksp), "flow", flow)
+```
+
+# External Links
+$(doc_external("DMStag/DMStagCreateISFromStencils"))
+"""
+LibPETSc.IS(dm::DMStag, first::Pair, rest::Pair...) = LibPETSc.IS(dm, [first, rest...])
+
+function LibPETSc.IS(dm::DMStag{PetscLib}, pairs::AbstractVector{<:Pair}) where {PetscLib}
+    T = inttype(PetscLib)
+    stencils = LibPETSc.DMStagStencil[
+        LibPETSc.DMStagStencil(loc, zero(T), zero(T), zero(T), T(dof)) for (loc, dof) in pairs
+    ]
+    return LibPETSc.DMStagCreateISFromStencils(getlib(PetscLib), dm, T(length(stencils)), stencils)
+end
+
+# The C calls take a `Vector`; any other vector is copied into one
+stencil_vector(v::Vector{LibPETSc.DMStagStencil}) = v
+stencil_vector(v::AbstractVector{LibPETSc.DMStagStencil}) = collect(v)
+value_vector(::Type{PetscLib}, v::Vector) where {PetscLib} =
+    eltype(v) === scalartype(PetscLib) ? v : Vector{scalartype(PetscLib)}(v)
+value_vector(::Type{PetscLib}, v::AbstractVector) where {PetscLib} =
+    Vector{scalartype(PetscLib)}(v)

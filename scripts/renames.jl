@@ -395,6 +395,9 @@ const INTERNAL = Set{Symbol}([
     # the underscore stays: inner worker beside a wrapper of the same name
     :_mul!,
     :_zero_rows_vecs,
+    :check_axis,
+    :stencil_vector,
+    :value_vector,
     :TSStepHookFn,
     :_unsafe_local_array,
     :_local_arrays,
@@ -476,6 +479,11 @@ const UNCHANGED_PUBLIC = Symbol[
     :DMPlex,
     :narrow,
     :ndofs,
+    :vertex_location,        # new in v0.5.2
+    :edge_location,          # new in v0.5.2
+    :face_location,          # new in v0.5.2
+    :element_location,       # new in v0.5.2
+    :stencil,                # new in v0.5.2
     :PetscDS,
     :AbstractPetscDS,
     :add_boundary!,

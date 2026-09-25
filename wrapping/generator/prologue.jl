@@ -37,7 +37,9 @@ const PETSC_CURRENT = -2     # keep the value already set
 const PETSC_UNLIMITED = -3   # no limit, where a function takes a count or a tolerance
 const PETSC_COMM_SELF = MPI.COMM_SELF
 
-PetscInt = Int64
+# The one integer width this process loads (LibPETSc_startup.jl): 
+# C structs such as DMStagStencil and MatStencil take their field types from it
+PetscInt = libs[1][3]
 PetscInt64 = Int64
 PetscInt32 = Int32
 PetscScalar = Float64

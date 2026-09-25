@@ -46,6 +46,7 @@ include("dmshell.jl")       # new test for DMShell example
 include("dmproduct.jl")     # test for DMProduct example
 include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl")
+include("dmstag_stencils.jl")  # DMStag locations by axis, stencils, stencil assembly
 include("dm_dimension.jl")  # dimension-correct DM returns: shape, inference, allocations
 include("test_snes.jl")
 include("test_audit.jl")    # leak auditor

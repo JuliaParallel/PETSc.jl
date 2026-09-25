@@ -11,6 +11,7 @@
 - `LibPETSc.MatCreateSubMatrices` and `MatCreateSubMatricesMPI` did not work with `MAT_REUSE_MATRIX`, and `MatDestroySubMatrices` could not take their result. Pass the returned vector back to either.
 - `LibPETSc.VecNestRestoreSubVecsRead` accepts the vector `VecNestGetSubVecsRead` returns; before, it only took a raw pointer that no wrapper handed out, so the read lock could not be released.
 - `LibPETSc.PCASMDestroySubdomains` and `PCGASMDestroySubdomains` accept the vectors the subdomain creators return.
+- On an Int32 PETSc build (the `PetscInt = "Int32"` preference), `LibPETSc.DMStagStencil`, `MatStencil` and the other C structs had `Int64` fields, so PETSc read them wrong. They now take the integer width of the loaded library, and the two stencil constructors convert their indices to it.
 
 ### Added
 
@@ -21,6 +22,10 @@
 - Long `TS` runs: `set_pre_step!(f!, ts)` and `set_post_step!(f!, ts)` hooks that may change the run, `set_max_snes_failures!`, `set_max_step_rejections!`, `set_error_if_step_fails!`, `set_step_number!` for restarts, and `equation_type`/`set_equation_type!`.
 - `set_solution!(snes, x)`, as on `TS`.
 - `LibPETSc.PETSC_UNLIMITED` and `LibPETSc.PETSC_CURRENT`, which PETSc's manual pages ask for.
+- DMStag locations by axis: `vertex_location(dm)`, `edge_location(dm, a, b)`, `face_location(dm, axis)` and `element_location(dm)`, which mean the same in 2D and 3D, unlike `DMSTAG_DOWN`.
+- `stencil(dm, loc, I; dof = 0)` builds a `DMStagStencil` from a 1-based element index, allocation free.
+- Assembly with DMStag stencils: `set_values!(J, dm, rows, cols, vals, mode)`, `set_values!(v, dm, positions, vals, mode)` and `zero_rows_local!(J, dm, rows, diag)`. They take any `AbstractVector`.
+- `LibPETSc.IS(dm, loc => dof, ...)`, the index set of whole DMStag fields, for `set_fieldsplit_is!`.
 
 ### Changed
 

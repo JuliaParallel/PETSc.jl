@@ -37,7 +37,6 @@ function residual!(fx, snes, x)
     # Compute F(x) and store in fx
     fx[1] = x[1]^2 + x[2] - 1
     fx[2] = x[1] + x[2]^2 - 1
-    return 0
 end
 
 PETSc.set_function!(residual!, snes, f_vec)
@@ -57,7 +56,6 @@ function jacobian!(J, snes, x)
     J[2, 1] = 1.0
     J[2, 2] = 2*x[2]
     PETSc.assemble!(J)
-    return 0
 end
 
 PETSc.set_snes_jacobian!(jacobian!, snes, J, J)  # (J, P), P the preconditioner matrix

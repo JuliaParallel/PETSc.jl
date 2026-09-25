@@ -60,7 +60,7 @@ MPI.Initialized() || MPI.Init()
         PETSc.solve!(x, ksp, b)
 
         snes = PETSc.SNES(petsclib, comm)
-        LibPETSc.SNESSetSolution(petsclib, snes, x)
+        @test PETSc.set_solution!(snes, x) === snes
 
         ts = PETSc.TS(petsclib, comm)
         PETSc.set_solution!(ts, x)

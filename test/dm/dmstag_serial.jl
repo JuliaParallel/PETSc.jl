@@ -1,10 +1,14 @@
+# test/dm/dmstag_serial.jl
+# DMStag on one rank, where sizes, entries, slots and vector positions have exact
+# values: the LibPETSc getters, stencil get/set, array checkout, coordinates and
+# matrices. Serial only; the checks that hold on any number of ranks are in dmstag.jl.
+
 using Test
 using PETSc, MPI, OffsetArrays
-#using SparseArrays
 MPI.Initialized() || MPI.Init()
 
 
-@testset "DMStag All" begin
+@testset "DMStag getters on one rank" begin
 
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -316,7 +320,7 @@ MPI.Initialized() || MPI.Init()
     end
 end
 
-@testset "DMStagCreate1d" begin
+@testset "DMStag 1D: boundary types, keywords, local indices" begin
 
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -435,7 +439,7 @@ end
     end
 end
 
-@testset "DMStagCreate2d" begin
+@testset "DMStag 2D: corners on one rank" begin
 
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)

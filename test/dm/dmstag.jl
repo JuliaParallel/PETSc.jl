@@ -1,3 +1,8 @@
+# test/dm/dmstag.jl
+# Creating 1D, 2D and 3D DMStags for every boundary combination, with the checks
+# that hold on any number of ranks: runs serially and on 4 ranks. The exact values
+# a single rank sees are in dmstag_serial.jl.
+
 using Test
 using PETSc, MPI
 MPI.Initialized() || MPI.Init()

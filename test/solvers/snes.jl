@@ -384,3 +384,53 @@ MPI.Initialized() || MPI.Init()
         
     end
 end
+
+# The same 2x2 system with a Jacobian, set in the two ways a user writes it:
+# named functions, and do-blocks. The callbacks return nothing; since 0.5.1 a
+# callback's return value is ignored and it fails by throwing.
+@testset "SNES with a Jacobian: named functions and do-blocks" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscScalar = petsclib.PetscScalar
+    PetscInt = petsclib.PetscInt
+    comm = MPI.COMM_SELF
+
+    function residual!(fx, snes, x)
+        fx[1] = x[1]^2 + x[1] * x[2] - 3
+        fx[2] = x[1] * x[2] + x[2]^2 - 6
+        return nothing
+    end
+    function jacobian!(J, snes, x)
+        J[1, 1] = 2x[1] + x[2]
+        J[1, 2] = x[1]
+        J[2, 1] = x[2]
+        J[2, 2] = x[1] + 2x[2]
+        PETSc.assemble!(J)
+        return nothing
+    end
+
+    J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+    r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
+
+    snes = PETSc.SNES(petsclib, comm; ksp_rtol = 1e-4, pc_type = "none")
+    snes.user_ctx = (label = "anything",)   # a user context survives the solve
+    PETSc.set_function!(residual!, snes, r)
+    PETSc.set_snes_jacobian!(jacobian!, snes, J, J)
+    x = PETSc.PetscVec(petsclib, PetscScalar[2, 3])
+    PETSc.solve!(x, snes)
+    @test x[:] ≈ [1.0, 2.0] rtol = 1e-4
+    @test snes.user_ctx.label == "anything"
+
+    PETSc.set_function!(snes, r) do fx, snes, x
+        residual!(fx, snes, x)
+    end
+    PETSc.set_snes_jacobian!(snes, J) do J, snes, x
+        jacobian!(J, snes, x)
+    end
+    y = PETSc.PetscVec(petsclib, PetscScalar[2, 3])
+    PETSc.solve!(y, snes)
+    @test y[:] ≈ [1.0, 2.0] rtol = 1e-4
+
+    foreach(PETSc.destroy!, (snes, y, x, r, J))
+    PETSc.finalize(petsclib)
+end

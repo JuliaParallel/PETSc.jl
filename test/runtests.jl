@@ -68,7 +68,6 @@ if selected("solvers")
     include("solvers/ksp.jl")
     include("solvers/pc.jl")              # high-level PC
     include("solvers/snes.jl")
-    include("solvers/snes_callbacks.jl")
     include("solvers/solver_api.jl")      # KSP/SNES/TS/PC readers, operators, prefixes, set_from_options!
     include("solvers/ts.jl")              # high-level TS interface
     include("solvers/ts_long_runs.jl")    # equation type, step number, pre/post-step hooks, failure limits
@@ -90,7 +89,7 @@ if selected("dm")
 end
 
 if selected("lowlevel")
-    include("lowlevel/snes_helpers.jl")        # SNES return-style wrappers
+    include("lowlevel/readers.jl")             # LibPETSc readers return plain values
     include("lowlevel/wrapper_signatures.jl")  # wrapper arguments take the abstract types
     include("lowlevel/wrapper_quality.jl")     # every generated method infers a concrete return type; no allocations
     include("lowlevel/wrapper_leaks.jl")       # repeated create/destroy and Get/Restore pairs do not grow memory
@@ -100,7 +99,6 @@ if selected("lowlevel")
     include("lowlevel/petscsection.jl")
     include("lowlevel/petscsf.jl")             # graph and communication functions
     include("lowlevel/tao.jl")
-    include("lowlevel/tao_helpers.jl")
 end
 
 if selected("regression")

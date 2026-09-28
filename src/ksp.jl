@@ -61,6 +61,9 @@ end
 Create a `KSP` using the matrix `A` and preconditioner construction matrix `P`
 with optional `prefix` and `options`.
 
+The options are applied here, once, through `KSPSetFromOptions`. 
+A setting made in code afterwards, such as [`set_tolerances!`](@ref), overrides them.
+
 The communicator is obtained from `A` and if it has size `1` then the garbage
 collector is set, otherwise the user is responsible for calling
 [`destroy!`](@ref).
@@ -109,6 +112,9 @@ end
     KSP(dm::AbstractPetscDM; prefix="", options...)
 
 Create a `KSP` associated with the `dm` with optional `prefix` and `options`.
+
+The options are applied here, once, through `KSPSetFromOptions`.
+A setting made in code afterwards overrides them.
 
 The communicator is obtained from `dm`. The KSP can be used with geometric
 multigrid when the DM provides grid hierarchy information.

@@ -398,6 +398,9 @@ const INTERNAL = Set{Symbol}([
     :check_axis,
     :stencil_vector,
     :value_vector,
+    :field_slots,
+    :call_with_views,
+    :field_views,
     :TSStepHookFn,
     :_unsafe_local_array,
     :_local_arrays,
@@ -484,6 +487,10 @@ const UNCHANGED_PUBLIC = Symbol[
     :face_location,          # new in v0.5.2
     :element_location,       # new in v0.5.2
     :stencil,                # new in v0.5.2
+    :local_to_local!,        # new in v0.5.2
+    :set_matrix_preallocate_only!,  # new in v0.5.2
+    :with_product_coordinates,      # new in v0.5.2
+    :with_field_views!,             # new in v0.5.2
     :PetscDS,
     :AbstractPetscDS,
     :add_boundary!,

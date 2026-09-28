@@ -67,6 +67,11 @@ end
 
 Create a PETSc nonlinear solver (SNES) context on the communicator `comm`.
 
+The options are stored and applied at the start of every [`solve!`](@ref), so that a
+DM and callbacks attached after construction are visible to `SNESSetFromOptions`.
+Because they are applied on every solve, they override a setting made in code for
+the same option.
+
 # Arguments
 - `petsclib`: The PETSc library instance
 - `comm::MPI.Comm`: MPI communicator

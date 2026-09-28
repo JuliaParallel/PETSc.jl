@@ -12,6 +12,8 @@
 - `LibPETSc.VecNestRestoreSubVecsRead` accepts the vector `VecNestGetSubVecsRead` returns; before, it only took a raw pointer that no wrapper handed out, so the read lock could not be released.
 - `LibPETSc.PCASMDestroySubdomains` and `PCGASMDestroySubdomains` accept the vectors the subdomain creators return.
 - On an Int32 PETSc build (the `PetscInt = "Int32"` preference), `LibPETSc.DMStagStencil`, `MatStencil` and the other C structs had `Int64` fields, so PETSc read them wrong. They now take the integer width of the loaded library, and the two stencil constructors convert their indices to it.
+- `LibPETSc.DMStagRestoreProductCoordinateArraysRead` restored the arrays through the writable restore, which does not match the read-only get.
+- The `KSP` and `SNES` docstrings did not say when the options given to the constructor are applied: once at construction for `KSP`, at every `solve!` for `SNES` (and `TS`).
 
 ### Added
 
@@ -26,6 +28,10 @@
 - `stencil(dm, loc, I; dof = 0)` builds a `DMStagStencil` from a 1-based element index, allocation free.
 - Assembly with DMStag stencils: `set_values!(J, dm, rows, cols, vals, mode)`, `set_values!(v, dm, positions, vals, mode)` and `zero_rows_local!(J, dm, rows, diag)`. They take any `AbstractVector`.
 - `LibPETSc.IS(dm, loc => dof, ...)`, the index set of whole DMStag fields, for `set_fieldsplit_is!`.
+- `local_to_local!(dst, dm, src)` and the in-place `local_to_local!(v, dm)`, to refresh ghost points.
+- `with_product_coordinates(f, dm)`: read-only access to a DMStag's per-axis coordinates, handed back when `f` returns.
+- `set_matrix_preallocate_only!(dm, flag)`, so a matrix from `dm` gets its nonzero pattern from the first assembly.
+- `with_field_views!(f, dm, vecs...; fields, read, write)`: concretely typed views of DMStag local vectors by `location => dof`, indexed like `stencil`, handed back when `f` returns. About 9 allocations per vector, whatever the grid size.
 
 ### Changed
 

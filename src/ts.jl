@@ -248,6 +248,8 @@ Create a PETSc time stepper on the communicator `comm`.
 
 Options are stored and applied in [`solve!`](@ref) rather than here, so that a
 DM and callbacks attached after construction are visible to `TSSetFromOptions`.
+They are applied on every `solve!`, and override a setting made in code for the
+same option. [`step!`](@ref) does not apply them.
 
 `exact_final_time` defaults to `TS_EXACTFINALTIME_MATCHSTEP`, so the last step
 lands on the time set by [`set_max_time!`](@ref). 

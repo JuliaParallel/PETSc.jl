@@ -408,6 +408,35 @@ function global_to_local!(
     return lvec
 end
 
+"""
+    local_to_local!(dst::AbstractPetscVec, dm::AbstractPetscDM, src::AbstractPetscVec, mode = INSERT_VALUES)
+    local_to_local!(v::AbstractPetscVec, dm::AbstractPetscDM, mode = INSERT_VALUES)
+
+Fill the ghost points of the local vector `dst` from the owned values of the local
+vector `src` on the neighbouring ranks, and return `dst`. `dst` may be `src`: the
+second form refreshes the ghost points of `v` in place.
+
+# External Links
+$(doc_external("DM/DMLocalToLocalBegin"))
+$(doc_external("DM/DMLocalToLocalEnd"))
+"""
+function local_to_local!(
+    dst::AbstractPetscVec{PetscLib},
+    dm::AbstractPetscDM{PetscLib},
+    src::AbstractPetscVec{PetscLib},
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
+    LibPETSc.DMLocalToLocalBegin(getlib(PetscLib), dm, src, mode, dst)
+    LibPETSc.DMLocalToLocalEnd(getlib(PetscLib), dm, src, mode, dst)
+    return dst
+end
+
+local_to_local!(
+    v::AbstractPetscVec{PetscLib},
+    dm::AbstractPetscDM{PetscLib},
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib} = local_to_local!(v, dm, v, mode)
+
 
 """
     set_uniform_coordinates!(
@@ -592,5 +621,24 @@ $(doc_external("DM/DMCreateMatrix"))
 function LibPETSc.PetscMat(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)
     return J
+end
+
+"""
+    set_matrix_preallocate_only!(dm::AbstractPetscDM, flag::Bool)
+
+With `flag` set, a matrix made from `dm` by [`PetscMat`](@ref) is preallocated but
+its nonzero pattern is not inserted, so the first assembly defines the pattern
+instead of every coupling the stencil allows being stored as an explicit zero.
+The setting stays on `dm` for every later matrix. Returns `dm`.
+
+# External Links
+$(doc_external("DM/DMSetMatrixPreallocateOnly"))
+"""
+function set_matrix_preallocate_only!(
+    dm::AbstractPetscDM{PetscLib},
+    flag::Bool,
+) where {PetscLib}
+    LibPETSc.DMSetMatrixPreallocateOnly(getlib(PetscLib), dm, LibPETSc.PetscBool(flag))
+    return dm
 end
 

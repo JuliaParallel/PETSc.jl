@@ -499,6 +499,38 @@ $(doc_external("DMStag/DMStagStencilLocation"))
 """
 element_location(::DMStag) = LibPETSc.DMSTAG_ELEMENT
 
+"""
+    on_lower_side(loc::LibPETSc.DMStagStencilLocation, axis::Integer)
+
+Whether `loc` sits on the lower side of its element along `axis`: `true` for
+`DMSTAG_LEFT`, `DMSTAG_DOWN_LEFT` and every other location with `LEFT` along axis
+1, `DOWN` along axis 2 or `BACK` along axis 3; `false` for `DMSTAG_ELEMENT` and for
+the upper and centre sides. Points on the lower side of `axis` have one more index
+along it than there are elements, since the upper boundary is stored as the lower
+side of element `n + 1`.
+
+It takes no DM, so it cannot check `axis` against the dimension: any `axis` in
+`1:3` is accepted, and a 2D location such as `DMSTAG_LEFT` is not on the lower side
+along axis 3.
+
+```julia
+PETSc.on_lower_side(face_location(dm, 1), 1)   # true
+PETSc.on_lower_side(face_location(dm, 1), 2)   # false
+```
+
+See also [`face_location`](@ref), [`stencil`](@ref).
+
+# External Links
+$(doc_external("DMStag/DMStagStencilLocation"))
+"""
+function on_lower_side(loc::LibPETSc.DMStagStencilLocation, axis::Integer)
+    1 <= axis <= 3 || throw(ArgumentError("axis $axis is not an axis of a DMStag"))
+    loc == LibPETSc.DMSTAG_NULL_LOCATION &&
+        throw(ArgumentError("DMSTAG_NULL_LOCATION is on no side"))
+    # the locations count up in base 3, axis 1 fastest: 0 lower, 1 centre, 2 upper
+    return div(Int(loc) - 1, 3^(axis - 1)) % 3 == 0
+end
+
 function check_axis(::DMStag{PetscLib, N}, axis::Integer) where {PetscLib, N}
     1 <= axis <= N || throw(ArgumentError("axis $axis is not an axis of a $(N)D DMStag"))
     return nothing
@@ -555,7 +587,9 @@ end
 Write the dense block `vals` into `J` at the stencils `rows` × `cols` and return
 `J`. `vals` is row-major, with `length(rows) * length(cols)` entries. Under
 `ADD_VALUES`, entries whose row and column repeat are summed. `rows`, `cols` and
-`vals` can be any `AbstractVector`; one that is not a `Vector` is copied first.
+`vals` can be any `AbstractVector`. A `Vector` or a prefix view of one,
+`view(buf, 1:n)`, is passed without a copy, so a scratch buffer can be reused for
+blocks of any size; any other vector is copied first.
 
 # External Links
 $(doc_external("DMStag/DMStagMatSetValuesStencil"))
@@ -588,7 +622,8 @@ end
     set_values!(v::AbstractPetscVec, dm::DMStag, positions, vals, mode = INSERT_VALUES)
 
 Write `vals` into `v` at the stencils `positions` and return `v`. Both can be any
-`AbstractVector` of the same length; one that is not a `Vector` is copied first.
+`AbstractVector` of the same length. A `Vector` or a prefix view of one,
+`view(buf, 1:n)`, is passed without a copy; any other vector is copied first.
 
 # External Links
 $(doc_external("DMStag/DMStagVecSetValuesStencil"))
@@ -662,11 +697,21 @@ function LibPETSc.IS(dm::DMStag{PetscLib}, pairs::AbstractVector{<:Pair}) where 
     return LibPETSc.DMStagCreateISFromStencils(getlib(PetscLib), dm, T(length(stencils)), stencils)
 end
 
-# The C calls take a `Vector`; any other vector is copied into one
+# The C calls take a `Vector` and a count, so a `Vector` passes as it is, and so does
+# the parent of a prefix view `view(buf, 1:n)`, the count being `n`. Any other vector
+# is copied into one.
+const PrefixView{T} = SubArray{T, 1, Vector{T}, Tuple{UnitRange{Int}}, true}
+
 stencil_vector(v::Vector{LibPETSc.DMStagStencil}) = v
+stencil_vector(v::PrefixView{LibPETSc.DMStagStencil}) =
+    first(parentindices(v)[1]) == 1 ? parent(v) : collect(v)
 stencil_vector(v::AbstractVector{LibPETSc.DMStagStencil}) = collect(v)
+
 value_vector(::Type{PetscLib}, v::Vector) where {PetscLib} =
     eltype(v) === scalartype(PetscLib) ? v : Vector{scalartype(PetscLib)}(v)
+value_vector(::Type{PetscLib}, v::PrefixView) where {PetscLib} =
+    eltype(v) === scalartype(PetscLib) && first(parentindices(v)[1]) == 1 ? parent(v) :
+    Vector{scalartype(PetscLib)}(v)
 value_vector(::Type{PetscLib}, v::AbstractVector) where {PetscLib} =
     Vector{scalartype(PetscLib)}(v)
 
@@ -737,6 +782,28 @@ c = corners(dm)
 with_field_views!(dm, x, r; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
     for I in c.lower:c.upper      # the owned elements
         Rp[I] = Vx[I + CartesianIndex(1, 0)] - Vx[I] + Vy[I + CartesianIndex(0, 1)] - Vy[I]
+    end
+end
+```
+
+Vectors of two DMs are checked out by nesting, and a vector is handed back early by
+closing its block. Here the stress `τ`, on a second DM `dm_τ` with the same elements,
+is computed, handed back for [`local_to_local!`](@ref) to fill its ghosts, then read
+by the momentum equation, all inside one checkout of the flow:
+
+```julia
+xx = (element_location(dm_τ) => 0,)
+with_field_views!(dm, x, r; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
+    with_field_views!(dm_τ, τ; fields = xx) do (Txx,)
+        for I in c.lower:c.upper
+            Txx[I] = 2η * (Vx[I + CartesianIndex(1, 0)] - Vx[I]) / h
+        end
+    end
+    local_to_local!(τ, dm_τ)
+    with_field_views!(dm_τ, τ; fields = xx, write = false) do (Txx,)
+        for I in c.lower:c.upper
+            Rx[I] = (Txx[I] - Txx[I - CartesianIndex(1, 0)] - P[I] + P[I - CartesianIndex(1, 0)]) / h
+        end
     end
 end
 ```

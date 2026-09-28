@@ -37,6 +37,21 @@ MPI.Initialized() || MPI.Init()
         @test_throws ArgumentError PETSc.edge_location(dm1, 1, 1)
         @test_throws ArgumentError PETSc.edge_location(dm3, 2, 2)
         @test_throws ArgumentError PETSc.edge_location(dm2, 1, 3)
+
+        # on_lower_side against the names: LEFT, DOWN and BACK are the lower sides
+        lower = ("LEFT", "DOWN", "BACK")
+        for loc in instances(LibPETSc.DMStagStencilLocation)
+            loc == LibPETSc.DMSTAG_NULL_LOCATION && continue
+            name = string(loc)
+            for axis in 1:3
+                @test PETSc.on_lower_side(loc, axis) == occursin(lower[axis], name)
+            end
+        end
+        @test PETSc.on_lower_side(PETSc.face_location(dm2, 2), 2)
+        @test !any(a -> PETSc.on_lower_side(PETSc.element_location(dm3), a), 1:3)
+        @test all(a -> PETSc.on_lower_side(PETSc.vertex_location(dm3), a), 1:3)
+        @test_throws ArgumentError PETSc.on_lower_side(LibPETSc.DMSTAG_LEFT, 4)
+        @test_throws ArgumentError PETSc.on_lower_side(LibPETSc.DMSTAG_NULL_LOCATION, 1)
     end
 
     @testset "stencil" begin
@@ -86,13 +101,47 @@ MPI.Initialized() || MPI.Init()
 
         is = LibPETSc.IS(dm, e => 0)
         @test PETSc.owns(is)
-        @test LibPETSc.ISGetSize(petsclib, is) == 6
+        @test length(is) == 6
+        @test length(is) isa Int
         foreach(PETSc.destroy!, (is, v, A, dm))
 
         # a split of several locations and components
         is = LibPETSc.IS(dm2, PETSc.face_location(dm2, 1) => 0, PETSc.face_location(dm2, 2) => 0)
-        @test LibPETSc.ISGetSize(petsclib, is) == 4 * 2 + 3 * 3
+        @test length(is) == 4 * 2 + 3 * 3
         PETSc.destroy!(is)
+    end
+
+    @testset "set_values! from reused buffers" begin
+        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (0, 0, 1), 1)
+        e = PETSc.element_location(dm)
+        at(I...) = PETSc.stencil(dm, e, I)
+        rows = [at(1, 1), at(2, 1), at(3, 2)]
+        vals = [1.0, 2.0, 3.0, 4.0, 5.0]
+
+        # a prefix view writes the same block as the Vector it stands for
+        A = PETSc.PetscMat(dm)
+        B = PETSc.PetscMat(dm)
+        PETSc.set_values!(A, dm, view(rows, 1:2), view(rows, 1:2), view(vals, 1:4))
+        PETSc.set_values!(B, dm, rows[1:2], rows[1:2], vals[1:4])
+        PETSc.assemble!(A)
+        PETSc.assemble!(B)
+        @test [A[i, j] for i in 1:2, j in 1:2] == [B[i, j] for i in 1:2, j in 1:2] == [1.0 2.0; 3.0 4.0]
+
+        # and passes the buffer without a copy; a view that is not a prefix is copied
+        set!(M, n) = PETSc.set_values!(M, dm, view(rows, 1:n), view(rows, 1:n),
+            view(vals, 1:(n * n)), LibPETSc.ADD_VALUES)
+        set!(A, 1)
+        @test @allocated(set!(A, 2)) == 0
+        w = PETSc.global_vec(dm)
+        setv!(x) = PETSc.set_values!(x, dm, view(rows, 1:2), view(vals, 1:2))
+        setv!(w)
+        @test @allocated(setv!(w)) == 0
+        PETSc.set_values!(w, dm, view(rows, 2:3), view(vals, 4:5))
+        PETSc.assemble!(w)
+        @test w[1] == 1.0
+        @test w[2] == 4.0
+        @test w[6] == 5.0
+        foreach(PETSc.destroy!, (w, B, A, dm))
     end
 
     foreach(PETSc.destroy!, (dm3, dm2, dm1))

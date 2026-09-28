@@ -129,6 +129,8 @@ PETSc.element_location(dm)       # the element interior
 
 `face_location(dm, ndims(dm))` is the last axis in any dimension. An axis outside `1:ndims(dm)` throws an `ArgumentError`.
 
+[`on_lower_side`](@ref)`(loc, axis)` says whether a location sits on the lower side of its element along `axis` (`LEFT`, `DOWN`, `BACK`). Such points have one more index along that axis than there are elements, which is what an "is this column inside the domain" check needs. It takes no DM, so it can't check `axis` against the dimension.
+
 A stencil addresses one unknown: a location, the element index and a component. [`stencil`](@ref) takes the 1-based element index that `corners` and `ghost_corners` use, and PETSc's 0-based component, as [`dof_slot`](@ref) does. Indices are not bounds-checked, so ghost elements work, and the call allocates nothing:
 
 ```julia
@@ -151,6 +153,8 @@ PETSc.set_values!(b, dm, wall_rows, wall_values)
 
 Under `ADD_VALUES`, repeated (row, column) entries in one call are summed. `zero_rows_local!` is collective: a rank that owns no wall passes an empty vector.
 
+A `Vector`, or a prefix view `view(buf, 1:n)` of one, is passed to PETSc without a copy, so one scratch buffer per kind can serve blocks of every size. Any other vector is copied first.
+
 An index set of whole fields, for a field split, takes (location, component) pairs:
 
 ```julia
@@ -158,6 +162,7 @@ flow = LibPETSc.IS(dm, PETSc.face_location(dm, 1) => 0,
                        PETSc.face_location(dm, 2) => 0,
                        PETSc.element_location(dm) => 0)
 PETSc.set_fieldsplit_is!(PETSc.pc(ksp), "flow", flow)
+length(flow)    # the global number of indices
 ```
 
 ## Setting Coordinates

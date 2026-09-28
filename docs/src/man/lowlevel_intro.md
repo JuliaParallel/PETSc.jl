@@ -163,7 +163,7 @@ LibPETSc.MatDestroy(petsclib, mat)
 
 For serial (single-process) objects, the high-level interface handles this automatically via finalizers.
 
-`PETSc.destroy!` works on every handle, including the ones with no high-level layer (`IS`, `AO`, `PF`, `Tao`). Unlike the raw `Destroy` call, it does nothing on a borrowed handle (see `PETSc.owns`), and it is safe to call twice or after a `finalize`/`initialize` cycle.
+`PETSc.destroy!` works on every handle, including the ones with no high-level layer (`IS`, `AO`, `PF`, `Tao`). Unlike the raw `Destroy` call, it does nothing on a borrowed handle (see `PETSc.owns`), and it is safe to call twice or after a `finalize`/`initialize` cycle. `length(is)` is an index set's global size.
 
 Some functions hand back memory PETSc allocated and say the caller frees it with `PetscFree()`. `PetscFree` is a C macro; `LibPETSc.PetscFree(petsclib, ptr)` does the same from Julia. `DMCreateFieldIS` and `ISColoringGetIS` (with `PETSC_OWN_POINTER`) copy what they return into Julia `Vector`s and free the C arrays themselves.
 
@@ -172,6 +172,7 @@ PETSc.destroy!(::PETSc.LibPETSc.AbstractIS)
 PETSc.destroy!(::PETSc.LibPETSc.AbstractAO)
 PETSc.destroy!(::PETSc.LibPETSc.AbstractPF)
 PETSc.destroy!(::PETSc.LibPETSc.AbstractTao)
+Base.length(::PETSc.LibPETSc.AbstractIS)
 PETSc.LibPETSc.PetscFree
 ```
 

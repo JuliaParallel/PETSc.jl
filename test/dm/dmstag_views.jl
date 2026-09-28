@@ -80,6 +80,46 @@ MPI.Initialized() || MPI.Init()
         end
     end
 
+    @testset "two DMs, one handed back mid-scope" begin
+        # the flow DM, and a stress DM with the same elements and one element dof
+        n = (4, 3)
+        dm = stag(n, (1, 1, 1))
+        dm_τ = stag(n, (0, 0, 1))
+        flow = (PETSc.face_location(dm, 1) => 0, PETSc.face_location(dm, 2) => 0,
+                PETSc.element_location(dm) => 0)
+        xx = (PETSc.element_location(dm_τ) => 0,)
+        x = PETSc.local_vec(dm)
+        r = PETSc.local_vec(dm)
+        τ = PETSc.local_vec(dm_τ)
+        c = PETSc.corners(dm)
+        PETSc.with_field_views!(dm, x; fields = flow[1:1]) do (Vx,)
+            for I in CartesianIndices(Vx)
+                Vx[I] = I[1]^2
+            end
+        end
+
+        PETSc.with_field_views!(dm, x, r; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
+            PETSc.with_field_views!(dm_τ, τ; fields = xx) do (Txx,)
+                for I in c.lower:c.upper
+                    Txx[I] = Vx[I + CartesianIndex(1, 0)] - Vx[I]
+                end
+            end
+            PETSc.local_to_local!(τ, dm_τ)
+            PETSc.with_field_views!(dm_τ, τ; fields = xx, write = false) do (Txx,)
+                for I in c.lower:c.upper
+                    Rx[I] = Txx[I]
+                end
+            end
+        end
+
+        # Rx holds Vx[i + 1] - Vx[i] = 2i + 1 on every owned element
+        got = PETSc.with_field_views!(dm, r; fields = flow[1:1], write = false) do (Rx,)
+            [Rx[I] for I in c.lower:c.upper]
+        end
+        @test got == [2I[1] + 1 for I in c.lower:c.upper]
+        foreach(PETSc.destroy!, (τ, r, x, dm_τ, dm))
+    end
+
     @testset "errors hand the vectors back" begin
         dm = stag((3, 2), (0, 0, 1))
         l = PETSc.local_vec(dm)

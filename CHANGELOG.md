@@ -29,12 +29,14 @@
 - `LibPETSc.PETSC_UNLIMITED` and `LibPETSc.PETSC_CURRENT`, which PETSc's manual pages ask for.
 - DMStag locations by axis: `vertex_location(dm)`, `edge_location(dm, a, b)`, `face_location(dm, axis)` and `element_location(dm)`, which mean the same in 2D and 3D, unlike `DMSTAG_DOWN`.
 - `stencil(dm, loc, I; dof = 0)` builds a `DMStagStencil` from a 1-based element index, allocation free.
-- Assembly with DMStag stencils: `set_values!(J, dm, rows, cols, vals, mode)`, `set_values!(v, dm, positions, vals, mode)` and `zero_rows_local!(J, dm, rows, diag)`. They take any `AbstractVector`.
+- Assembly with DMStag stencils: `set_values!(J, dm, rows, cols, vals, mode)`, `set_values!(v, dm, positions, vals, mode)` and `zero_rows_local!(J, dm, rows, diag)`. They take any `AbstractVector`, and pass a `Vector` or a prefix view `view(buf, 1:n)` of one without a copy.
 - `LibPETSc.IS(dm, loc => dof, ...)`, the index set of whole DMStag fields, for `set_fieldsplit_is!`.
+- `length(is)` on an `IS`: its global size, as `length` of a `PetscVec`.
+- `on_lower_side(loc, axis)`: whether a DMStag location sits on the lower side of its element along `axis`, so on the axes where it has one more index than there are elements.
 - `local_to_local!(dst, dm, src)` and the in-place `local_to_local!(v, dm)`, to refresh ghost points.
 - `with_product_coordinates(f, dm)`: read-only access to a DMStag's per-axis coordinates, handed back when `f` returns.
 - `set_matrix_preallocate_only!(dm, flag)`, so a matrix from `dm` gets its nonzero pattern from the first assembly.
-- `with_field_views!(f, dm, vecs...; fields, read, write)`: concretely typed views of DMStag local vectors by `location => dof`, indexed like `stencil`, handed back when `f` returns. About 9 allocations per vector, whatever the grid size.
+- `with_field_views!(f, dm, vecs...; fields, read, write)`: concretely typed views of DMStag local vectors by `location => dof`, indexed like `stencil`, handed back when `f` returns. About 9 allocations per vector, whatever the grid size. The docstring shows two DMs checked out by nesting, with one vector handed back mid-scope for a halo exchange.
 
 ### Changed
 

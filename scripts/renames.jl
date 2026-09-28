@@ -6,7 +6,7 @@
 #   src/deprecations.jl      the forwarding shims (§17)
 #   src/public_names.jl      the `public` declaration (§13.1)
 #   src/audit_names.jl       the creator/destroyer name sets used by src/audit.jl
-#   test/test_deprecations.jl  one test per shim (§17.3)
+#   test/core/deprecations.jl  one test per shim (§17.3)
 #   (the rename table at the end of docs/src/man/naming.md)
 #
 # Run `julia --project=. scripts/generate_renames.jl` after editing.
@@ -273,7 +273,7 @@ const CUSTOM_SHIMS = Dict{Symbol, String}(
 # These keep an argument the v0.5 signature no longer takes and warn when it is
 # passed, so they cannot be expressed as `old => new`. They are emitted verbatim
 # into src/deprecations.jl and removed with it in v0.6. `test` is a test body
-# appended to test/test_deprecations.jl.
+# appended to test/core/deprecations.jl.
 # ---------------------------------------------------------------------------
 
 const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, String}}[

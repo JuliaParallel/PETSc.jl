@@ -93,6 +93,8 @@ Available through `TaoSetType`:
   - `TAOBNTL`: Bound-constrained Newton trust-region
   - `TAOTRON`: Trust-region Newton method
 
+The types built on an LMVM matrix (`lmvm`, `blmvm`, `bncg`, `bqnls`, `bqnkls`, `bntl` and `bntr`) fail after a `PETSc.finalize`/`PETSc.initialize` cycle in which a `KSP` was created: PETSc 3.25 forgets the LMVM matrix types at `PetscFinalize` and has no public way to register them again, so `TaoSetType` throws with "Unknown Mat type given: lmvmbfgs". Initialize once per Julia session, or restart Julia. `cg`, `nm`, `nls`, `ntr`, `ntl` and `tron` are not affected.
+
 - **Constrained**:
   - `TAOALMM`: Augmented Lagrangian multiplier method
   - `TAOIPM`: Interior point method

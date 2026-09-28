@@ -1,9 +1,9 @@
 # MPI subprocess tests for examples/ex17.jl.
-# Picked up by test/examples.jl (plain Julia); each test internally spawns mpiexec.
+# Picked up by test/examples/examples.jl (plain Julia); each test internally spawns mpiexec.
 #
 # Run via:
 #   julia --project examples/ex17_mpi_test.jl
-# or through the project test suite (picked up by test/examples.jl).
+# or through the project test suite (picked up by test/examples/examples.jl).
 
 using Test
 using MPI

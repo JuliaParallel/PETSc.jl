@@ -6,7 +6,7 @@
 #
 # Run via:
 #   julia --project examples/ex69_mpi_test.jl
-# or through the project test suite (picked up by test/examples.jl).
+# or through the project test suite (picked up by test/examples/examples.jl).
 
 using Test
 using MPI

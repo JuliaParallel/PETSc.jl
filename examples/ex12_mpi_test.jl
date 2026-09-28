@@ -1,10 +1,10 @@
 # MPI subprocess tests for examples/ex12.jl.
-# Picked up by test/examples.jl (plain Julia); each test internally spawns mpiexec.
+# Picked up by test/examples/examples.jl (plain Julia); each test internally spawns mpiexec.
 # Each test launches ex12.jl as an MPI subprocess and checks L² error.
 #
 # Run via:
 #   julia --project examples/ex12_mpi_test.jl
-# or through the project test suite (picked up by test/examples.jl).
+# or through the project test suite (picked up by test/examples/examples.jl).
 
 using Test
 using MPI

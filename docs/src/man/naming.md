@@ -150,7 +150,7 @@ The names stay short, and the package pays for it with a convention rather than 
 
 ```julia
 d = dm(ksp)            # not dm = dm(ksp)
-s = snes(ts)           # as test/ts.jl already writes it
+s = snes(ts)           # as test/solvers/ts.jl already writes it
 k = ksp(ts)
 ```
 
@@ -649,7 +649,7 @@ Argument problems raise standard Julia exceptions. `@assert` is reserved for inv
 | Library not initialized | `PetscNotInitialized` |
 | Error returned by PETSc itself | `PetscError` (existing) |
 
-Every high-level constructor that creates a PETSc object (`PetscVec`, `PetscMat`, `PetscOptions`, `KSP`, `SNES`, `TS` and the DM types) checks that its library is initialized before calling PETSc, so a missing `initialize` is reported as `PetscNotInitialized` and not as the `PetscError` PETSc would raise. `test/test_errors.jl` checks each of them. `PetscOptions` is included although PETSc's `PetscOptionsCreate` works before `PetscInitialize`: the object records the library's current `age`, `initialize` advances it, so an options database created first would already be stale and `destroy!` would skip it.
+Every high-level constructor that creates a PETSc object (`PetscVec`, `PetscMat`, `PetscOptions`, `KSP`, `SNES`, `TS` and the DM types) checks that its library is initialized before calling PETSc, so a missing `initialize` is reported as `PetscNotInitialized` and not as the `PetscError` PETSc would raise. `test/core/errors.jl` checks each of them. `PetscOptions` is included although PETSc's `PetscOptionsCreate` works before `PetscInitialize`: the object records the library's current `age`, `initialize` advances it, so an options database created first would already be stale and `destroy!` would skip it.
 
 ```julia
 length(A) == prod(sz) ||
@@ -765,7 +765,7 @@ The last row is policy with no instances, and that is the point of writing it do
 ### 17.3 Test coverage
 
 The main test suite is converted to the new names, so CI exercises the API that ships.
-`test/test_deprecations.jl` calls every shim and asserts the warning is emitted, and asserts a throw for any entry marked as an erroring stub. It is generated from `scripts/renames.jl` too, so a rename cannot land without its shim being covered.
+`test/core/deprecations.jl` calls every shim and asserts the warning is emitted, and asserts a throw for any entry marked as an erroring stub. It is generated from `scripts/renames.jl` too, so a rename cannot land without its shim being covered.
 
 ### Rename table
 

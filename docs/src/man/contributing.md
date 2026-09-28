@@ -20,6 +20,16 @@ Since there are usually only a limited number of new or updated functions betwee
 
 Make sure that the tests work!
 
+#### Running the tests
+The tests live in `test/`, one folder per group: `core` (initialization, handles, lifetimes, the API register), `vecmat`, `solvers`, `dm`, `lowlevel` (the generated `LibPETSc` wrappers), `regression`, `examples` (the scripts in `examples/` and the manual's examples) and `mpi` (files run on 4 ranks). A new test file goes in its group's folder and is listed in that group's block in `test/runtests.jl`.
+
+The whole suite takes about 15 minutes. To run only some groups:
+
+```julia
+using Pkg
+Pkg.test("PETSc"; test_args = ["dm", "mpi"])
+```
+
 #### Adding new functionality
 Please open a pull request to add any of the above contributions.
 

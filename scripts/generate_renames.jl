@@ -7,7 +7,7 @@
 #   src/deprecations.jl        forwarding shims (§17)
 #   src/public_names.jl        the `public` declaration (§13.1)
 #   src/audit_names.jl         the name sets src/audit.jl matches against
-#   test/test_deprecations.jl  one test per shim (§17.3)
+#   test/core/deprecations.jl  one test per shim (§17.3)
 #
 # None of those four files is edited by hand.
 
@@ -263,7 +263,7 @@ the garbage collector rather than performing it, but the object is accounted for
 end
 
 # ---------------------------------------------------------------------------
-# test/test_deprecations.jl
+# test/core/deprecations.jl
 # ---------------------------------------------------------------------------
 
 function write_tests(path)
@@ -403,5 +403,5 @@ check_register()
 write_deprecations(joinpath(ROOT, "src", "deprecations.jl"))
 write_public(joinpath(ROOT, "src", "public_names.jl"))
 write_audit_names(joinpath(ROOT, "src", "audit_names.jl"))
-write_tests(joinpath(ROOT, "test", "test_deprecations.jl"))
-println("wrote src/deprecations.jl, src/public_names.jl, src/audit_names.jl, test/test_deprecations.jl")
+write_tests(joinpath(ROOT, "test", "core", "deprecations.jl"))
+println("wrote src/deprecations.jl, src/public_names.jl, src/audit_names.jl, test/core/deprecations.jl")

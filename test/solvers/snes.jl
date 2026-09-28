@@ -2,6 +2,8 @@ using Test
 using PETSc
 using MPI
 MPI.Initialized() || MPI.Init()
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
 
 @testset "SNES" begin
     comm = MPI.COMM_WORLD
@@ -323,14 +325,14 @@ MPI.Initialized() || MPI.Init()
             throw(DomainError(-1.0, "residual failed on purpose"))
         end
         x7 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
-        @test_throws DomainError PETSc.solve!(x7, snes7)
+        @test_throws DomainError without_petsc_traceback(() -> PETSc.solve!(x7, snes7), petsclib)
 
         # a nonzero Integer return still fails the call, and warns
         PETSc.set_function!(snes7, r7) do fx, snes, x
             return 3
         end
         @test_logs (:warn, r"returned 3") match_mode = :any begin
-            @test_throws LibPETSc.PetscError PETSc.solve!(x7, snes7)
+            @test_throws LibPETSc.PetscError without_petsc_traceback(() -> PETSc.solve!(x7, snes7), petsclib)
         end
 
         # user_ctx is kept with the PETSc object, and snes.user_ctx forwards to its

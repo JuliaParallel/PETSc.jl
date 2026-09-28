@@ -18,6 +18,8 @@ else
     @info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform
 end
 
+include("testutils.jl")     # helpers the test files share; each includes it when run alone
+
 # The test groups, one folder each, in the order they run. `Pkg.test(test_args = ["dm"])`
 # runs only the named groups; without arguments every group runs.
 const GROUPS = ("core", "vecmat", "solvers", "dm", "lowlevel", "regression", "examples", "mpi")
@@ -117,7 +119,6 @@ if selected("examples")
     include("examples/manual_ts.jl")      # the TS examples in the manual
     include("examples/manual_viewer.jl")  # the PetscViewer examples in the manual
 
-    include("testutils.jl")
     include("examples/examples.jl")       # every script in examples/
     include("examples/mpi_examples.jl")   # the examples marked `# INCLUDE IN MPI TEST`
 end

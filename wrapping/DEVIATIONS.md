@@ -33,7 +33,7 @@ formatting or still to be reviewed. Counts are from the run of 2026-09-15 (6086 
 Other differences from the baseline that are not per-function:
 
 - the docstring stub `function X(petsclib::PetscLibType, ...)` has loosened scalar types and throws
-  instead of silently returning `nothing` (this surfaced two test bugs in `test/test_dmstag.jl`);
+  instead of silently returning `nothing` (this surfaced two test bugs in `test/dm/dmstag_serial.jl`);
 - `PetscObject` arguments are untyped, so any handle (including `VecPtr`, `MatPtr`) is accepted;
 - `MPI_Comm` outputs are read through the C handle and wrapped in `MPI.Comm`;
 - `*Restore*` functions accept the array a `Get` returned, or the raw pointer if the size was unknown;
@@ -68,7 +68,7 @@ Other differences from the baseline that are not per-function:
 - `petsc_wrappers_version.jl` no longer records a machine path;
 - `PC_wrappers.jl` is generated and included (the baseline excluded it).
 
-Tests adapted: `test/dmplex.jl`, `test/mat.jl`, `test/snes.jl`, `test/test_dmstag.jl`; example
+Tests adapted: `test/dm/dmplex.jl`, `test/vecmat/mat.jl`, `test/solvers/snes.jl`, `test/dm/dmstag_serial.jl`; example
 `examples/ex62b.jl`. Also `src/mat.jl` (`MatShellGetContext`), `src/ksp.jl`/`src/ts.jl`/`src/dm.jl`
 (solution and coordinate accessors return borrowed `VecPtr` handles, `destroy!` is a no-op on them),
 `src/options.jl` (NULL viewer for `PetscOptionsView`).

@@ -8,7 +8,7 @@
 using Test
 using PETSc
 
-include(joinpath(@__DIR__, "..", "scripts", "api_surface.jl"))
+include(joinpath(pkgdir(PETSc), "scripts", "api_surface.jl"))
 
 @testset "api_surface --check" begin
     absent = APISurface.unregistered()

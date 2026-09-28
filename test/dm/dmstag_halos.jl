@@ -1,4 +1,4 @@
-# test/dmstag_halos.jl
+# test/dm/dmstag_halos.jl
 # local_to_local! (in place and into another vector), the product coordinate
 # do-block, and matrices preallocated without their nonzero pattern.
 

@@ -1,7 +1,7 @@
 using Test
 using PETSc
 
-include(joinpath(dirname(@__DIR__), "examples", "ex51.jl"))
+include(joinpath(pkgdir(PETSc), "examples", "ex51.jl"))
 
 @testset "TS ex51 example" begin
     petsclib = PETSc.getlib(PetscScalar = Float64)

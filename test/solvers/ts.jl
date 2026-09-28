@@ -493,7 +493,7 @@ MPI.Initialized() || MPI.Init()
             @test ts.ptr == C_NULL
 
             # A TS that never solved is destroyable too. (The v0.4 `destroy`
-            # spelling is covered by test/test_deprecations.jl.)
+            # spelling is covered by test/core/deprecations.jl.)
             ts2 = PETSc.TS(petsclib, comm)
             PETSc.destroy!(ts2)
             @test ts2.ptr == C_NULL

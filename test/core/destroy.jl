@@ -1,4 +1,4 @@
-# test/test_destroy.jl
+# test/core/destroy.jl
 # Destroying PETSc objects must stay safe in the awkward cases: a second
 # explicit destroy!, and an object left over from an earlier
 # initialize/finalize cycle.

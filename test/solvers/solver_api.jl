@@ -1,4 +1,4 @@
-# test/solver_api.jl
+# test/solvers/solver_api.jl
 # Readers and setters on KSP, SNES, TS and PC that a nested or logged solve
 # needs: iteration counts, reasons, operators, options prefixes and
 # set_from_options!.

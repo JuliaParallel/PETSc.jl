@@ -1,4 +1,4 @@
-# test/blas_threads.jl
+# test/core/blas_threads.jl
 # PETSc's BLAS runs in Julia's OpenBLAS pool, so `-blas_num_threads` has to size
 # that pool: PETSc's own setter cannot reach it.
 

@@ -1,4 +1,4 @@
-# test/dmstag_stencils.jl
+# test/dm/dmstag_stencils.jl
 # DMStag locations keyed by axis, stencils from 1-based indices, and the
 # operations that take stencils: set_values!, zero_rows_local! and IS.
 

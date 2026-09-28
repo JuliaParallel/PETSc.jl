@@ -1,4 +1,4 @@
-# test/lifetimes.jl
+# test/core/lifetimes.jl
 # A Vec or Mat built on Julia arrays uses their memory without copying it, so the
 # arrays must live as long as the PETSc object. Each test drops every Julia
 # reference to the arrays, forces a collection and reuses the memory, then reads

@@ -1,4 +1,4 @@
-# test/ts_long_runs.jl
+# test/solvers/ts_long_runs.jl
 # What a long TS run needs: the equation type, restarting the step count,
 # pre- and post-step hooks that may change the run, and the limits on failed
 # nonlinear solves and rejected steps.

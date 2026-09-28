@@ -1,8 +1,8 @@
 using Test
 using PETSc
 
-const LEAKY = joinpath(@__DIR__, "fixtures", "leaky.jl")
-const CONSTRUCTS = joinpath(@__DIR__, "fixtures", "constructs.jl")
+const LEAKY = joinpath(dirname(@__DIR__), "fixtures", "leaky.jl")
+const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
 
 @testset "audit_file" begin
     report = PETSc.audit_file(LEAKY; verbose = false)

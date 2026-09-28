@@ -1,4 +1,4 @@
-# test/mpi_blas_threads.jl
+# test/mpi/blas_threads.jl
 # Run on several ranks of one node: `initialize` gives each rank one BLAS
 # thread, unless `-blas_num_threads` or the environment sizes the pool.
 

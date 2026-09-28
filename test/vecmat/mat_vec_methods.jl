@@ -1,4 +1,4 @@
-# test/mat_vec_methods.jl
+# test/vecmat/mat_vec_methods.jl
 # Base and Mat methods: copyto! between vectors, fill! on a matrix, row zeroing
 # for Dirichlet conditions, matrix options, the diagonal and isassembled.
 

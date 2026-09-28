@@ -8,12 +8,12 @@ using MPI
 # bindings, and checks the two agree to the last digit. The second is shaped
 # the way the low-level layer makes awkward.
 #
-# `examples/ex16.jl` is loaded into its own module because `test/ts_ex16.jl`
+# `examples/ex16.jl` is loaded into its own module because `test/regression/ts_ex16.jl`
 # also includes it, and its `@cfunction` pointers are `const`: a second
 # include into the same namespace would be a redefinition error, and the order
 # the two test files run in should not matter.
 module Ex16Reference
-include(joinpath(dirname(dirname(@__FILE__)), "examples", "ex16.jl"))
+include(joinpath(@__DIR__, "..", "..", "examples", "ex16.jl"))
 end
 
 @testset "High-level TS scenarios" begin

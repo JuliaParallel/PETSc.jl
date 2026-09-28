@@ -131,7 +131,7 @@ which hid e.g. `Float64` literals passed to a `Float32` library in the tests).
 
 Input handle arguments always take the abstract type (`AbstractPetscVec`), so `VecPtr`, `MatShell`
 and the typed DM hierarchy pass; return positions use the concrete type (`PetscVec`).
-`test/wrapper_signatures.jl` enforces this.
+`test/lowlevel/wrapper_signatures.jl` enforces this.
 
 ### Rules (`generator/rules/`)
 
@@ -191,7 +191,7 @@ override only when no rule can express the wrapper
 
 `.github/workflows/wrappers.yml` regenerates from the PETSc tarball on every change to
 `src/autowrapped` or `wrapping/generator` and fails if the committed files differ.
-`test/wrapper_quality.jl` infers the return type of every generated method (must be concrete)
+`test/lowlevel/wrapper_quality.jl` infers the return type of every generated method (must be concrete)
 and checks representatives of each argument kind with `@inferred` and `@allocated`.
 
 ## Checking a regeneration
@@ -213,7 +213,7 @@ After regenerating, always run
 ```sh
 grep -rn "isa Ref ?" src/autowrapped/                    # must be empty (Ptr{T} <: Ref{T})
 grep -rn "VecGetLocalSize(petsclib, x)" src/autowrapped/ # placeholder sizes: must be empty
-julia --project=. -e 'using Pkg; Pkg.test()'             # includes test/wrapper_signatures.jl
+julia --project=. -e 'using Pkg; Pkg.test()'             # includes test/lowlevel/wrapper_signatures.jl
 ```
 
 ## Moving to a new PETSc release (what happened for 3.24 -> 3.25)

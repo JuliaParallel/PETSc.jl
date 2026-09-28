@@ -1,4 +1,4 @@
-# test/handle_arrays.jl
+# test/core/handle_arrays.jl
 # C arrays of handles: the vector a wrapper returns goes back to the matching
 # release function, and a vector built in Julia is refused.
 

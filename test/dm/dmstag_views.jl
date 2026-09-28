@@ -1,4 +1,4 @@
-# test/dmstag_views.jl
+# test/dm/dmstag_views.jl
 # with_field_views!: views of DMStag local vectors by field, their types and
 # allocations, and that every vector is handed back.
 

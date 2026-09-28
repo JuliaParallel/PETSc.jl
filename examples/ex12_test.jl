@@ -4,7 +4,7 @@
 #
 # Run via:
 #   julia --project examples/ex12_test.jl
-# or through the project test suite (picked up automatically by test/examples.jl).
+# or through the project test suite (picked up automatically by test/examples/examples.jl).
 
 using Test
 

@@ -1,4 +1,4 @@
-# test/mpi_dmstag_halos.jl
+# test/mpi/dmstag_halos.jl
 # Run on several ranks: local_to_local! in place fills each rank's ghost
 # points from the owned values its neighbours changed in their local vectors.
 

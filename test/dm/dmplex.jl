@@ -1,4 +1,4 @@
-# test/dmplex.jl
+# test/dm/dmplex.jl
 # Tests for DMPlex (unstructured mesh) functionality.
 # Covers both high-level PETSc.* wrappers and low-level LibPETSc.* calls.
 # Runs across all available petsclibs (different PetscScalar/PetscInt combos).

@@ -1,4 +1,4 @@
-# test/handles.jl
+# test/core/handles.jl
 # destroy! on the handles with no high-level layer (IS, AO, PF, Tao), and the
 # ownership of the index sets ISColoringGetIS hands out.
 

@@ -4,6 +4,8 @@ using MPI
 using SparseArrays
 using LinearAlgebra
 MPI.Initialized() || MPI.Init()
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
 
 @testset "PC" begin
     comm = MPI.COMM_SELF
@@ -112,12 +114,14 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_shell_apply!(PETSc.pc(ksp)) do y, p, x
                 throw(DomainError(-1.0, "shell apply! failed on purpose"))
             end
-            @test_throws DomainError ksp \ b
+            @test_throws DomainError without_petsc_traceback(() -> ksp \ b, petsclib)
             # started through LibPETSc there is no high-level call to rethrow it
             petsc_b = LibPETSc.VecCreateSeqWithArray(petsclib, comm, 1, n, b)
             petsc_x = similar(petsc_b)
             @test_logs (:error, r"shell apply!") match_mode = :any begin
-                @test_throws LibPETSc.PetscError LibPETSc.KSPSolve(petsclib, ksp, petsc_b, petsc_x)
+                @test_throws LibPETSc.PetscError without_petsc_traceback(petsclib) do
+                    LibPETSc.KSPSolve(petsclib, ksp, petsc_b, petsc_x)
+                end
             end
             PETSc.destroy!(petsc_b)
             PETSc.destroy!(petsc_x)

@@ -74,6 +74,15 @@ include("low_level_petscsection.jl")  # Low-level PetscSection functions
 include("low_level_petscsf.jl")      # Low-level PetscSF graph and communication functions
 include("petscbool.jl")              # PetscBool is one byte (PETSc >= 3.24)
 include("low_level_tao.jl")     # Low-level Tao functions
+include("doc_examples_is.jl")      # the IS examples in the manual
+# The lmvm Tao types work only in the first PETSc cycle of a process (see
+# _reset_stale_register_flags in src/init.jl), so the Tao manual examples run in a fresh one
+@testset "Tao manual examples, fresh process" begin
+    cmd = `$(Base.julia_cmd()) --project=. $(joinpath(@__DIR__, "doc_examples_tao.jl"))`
+    @test success(pipeline(cmd, stderr = stderr))
+end
+include("doc_examples_ts.jl")      # the TS examples in the manual
+include("doc_examples_viewer.jl")  # the PetscViewer examples in the manual
 include("test_destroy.jl")      # destroy! guards: stale cycle, double destroy
 include("handles.jl")           # destroy! on IS, AO, PF, Tao; ISColoringGetIS ownership
 include("handle_arrays.jl")     # C arrays of handles go back to their release function
@@ -83,8 +92,7 @@ include("test_api_surface.jl")  # scripts/api_surface.jl --check: the register c
 
 include("testutils.jl")
 
-# Run helper tests for SNES and TAO
-include("snes_helpers.jl")
+# Run helper tests for TAO (the SNES ones ran above)
 include("tao_helpers.jl")
 
 # Run the examples to make sure they all work

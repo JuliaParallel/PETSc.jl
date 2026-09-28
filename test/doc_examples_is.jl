@@ -61,10 +61,24 @@ using MPI
         PETSc.LibPETSc.ISDestroy(petsclib, is_block)
     end
     
-    @testset "Set Operations - skipped due to complex API" begin
-        # Note: IS set operations (ISSum, ISDifference, ISExpand) have complex
-        # usage patterns that require careful setup. Skip for now.
-        @test_skip true
+    @testset "Set Operations" begin
+        is1 = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 3, PetscInt[0, 2, 4],
+                                             PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is2 = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 3, PetscInt[2, 3, 4],
+                                             PETSc.LibPETSc.PETSC_COPY_VALUES)
+        function indices(is)
+            idx = PETSc.LibPETSc.ISGetIndices(petsclib, is)
+            out = copy(idx)
+            PETSc.LibPETSc.ISRestoreIndices(petsclib, is, idx)
+            PETSc.LibPETSc.ISDestroy(petsclib, is)
+            return out
+        end
+        @test indices(PETSc.LibPETSc.ISSum(petsclib, is1, is2)) == [0, 2, 3, 4]
+        @test indices(PETSc.LibPETSc.ISDifference(petsclib, is1, is2)) == [0]
+        @test indices(PETSc.LibPETSc.ISIntersect(petsclib, is1, is2)) == [2, 4]
+        @test indices(PETSc.LibPETSc.ISComplement(petsclib, is1, 0, 6)) == [1, 3, 5]
+        PETSc.LibPETSc.ISDestroy(petsclib, is1)
+        PETSc.LibPETSc.ISDestroy(petsclib, is2)
     end
     
     @testset "Querying Properties" begin

@@ -40,18 +40,30 @@ using MPI
         @test viewer_stderr_world != C_NULL
     end
     
-    @testset "ASCII File Output - skipped due to wrapper API issues" begin
-        # Note: PetscViewerASCIIOpen and PetscViewerBinaryOpen have wrapper signatures
-        # that don't match Julia's calling convention. They expect viewer::PetscViewer
-        # but need to accept Ref{PetscViewer} to work properly.
-        # Skip these tests for now.
-        @test_skip true
-    end
-    
-    @testset "Binary File I/O - skipped due to wrapper API issues" begin
-        # Note: PetscViewerBinaryOpen has wrapper signature issues
-        # Skip this test for now
-        @test_skip true
+    @testset "ASCII and binary file I/O" begin
+        x = PETSc.PetscVec(petsclib, [1.0, 2.0, 3.0])
+        cd(mktempdir()) do
+            viewer = PETSc.LibPETSc.PetscViewerASCIIOpen(petsclib, test_comm, "output.txt")
+            PETSc.LibPETSc.PetscViewerPushFormat(petsclib, viewer, PETSc.LibPETSc.PETSC_VIEWER_ASCII_MATLAB)
+            PETSc.LibPETSc.VecView(petsclib, x, viewer)
+            PETSc.LibPETSc.PetscViewerPopFormat(petsclib, viewer)
+            PETSc.LibPETSc.PetscViewerDestroy(petsclib, viewer)
+            @test occursin("2.", read("output.txt", String))
+
+            # a vector saved in binary loads back unchanged
+            viewer = PETSc.LibPETSc.PetscViewerBinaryOpen(petsclib, test_comm, "checkpoint.dat",
+                                                          PETSc.LibPETSc.FILE_MODE_WRITE)
+            PETSc.LibPETSc.VecView(petsclib, x, viewer)
+            PETSc.LibPETSc.PetscViewerDestroy(petsclib, viewer)
+            viewer = PETSc.LibPETSc.PetscViewerBinaryOpen(petsclib, test_comm, "checkpoint.dat",
+                                                          PETSc.LibPETSc.FILE_MODE_READ)
+            y = PETSc.LibPETSc.VecCreate(petsclib, test_comm)
+            PETSc.LibPETSc.VecLoad(petsclib, y, viewer)
+            PETSc.LibPETSc.PetscViewerDestroy(petsclib, viewer)
+            @test y[:] == [1.0, 2.0, 3.0]
+            PETSc.destroy!(y)
+        end
+        PETSc.destroy!(x)
     end
     
     PETSc.finalize(petsclib)

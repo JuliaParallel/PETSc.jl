@@ -489,6 +489,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :edge_location,          # new in v0.5.2
     :face_location,          # new in v0.5.2
     :element_location,       # new in v0.5.2
+    :on_lower_side,          # new in v0.5.2
     :stencil,                # new in v0.5.2
     :local_to_local!,        # new in v0.5.2
     :set_matrix_preallocate_only!,  # new in v0.5.2

@@ -1,7 +1,7 @@
 # src/handles.jl
 # Release for the handles that have no high-level layer of their own: IS, AO, PF
 # and Tao. They carry `own` like every handle, so `destroy!` behaves as it does
-# on a Vec or a KSP.
+# on a Vec or a KSP. An IS also has a `length`.
 
 import .LibPETSc: AbstractIS, AbstractAO, AbstractPF, AbstractTao
 
@@ -23,6 +23,18 @@ function destroy!(is::AbstractIS{PetscLib}) where {PetscLib}
     is.ptr = C_NULL
     return nothing
 end
+
+"""
+    length(is::LibPETSc.AbstractIS)
+
+The global number of indices in `is`, summed over its ranks, as `length` of a
+`PetscVec` is its global length.
+
+# External Links
+$(doc_external("IS/ISGetSize"))
+"""
+Base.length(is::AbstractIS{PetscLib}) where {PetscLib} =
+    Int(LibPETSc.ISGetSize(getlib(PetscLib), is))
 
 """
     destroy!(ao::LibPETSc.AbstractAO)

@@ -8,7 +8,7 @@ if !MPI.Initialized()
     mpi_started = true
 end
 try
-    local petsclib = PETSc.getlib()
+    local petsclib = PETSc.petsclibs[1]
     petsc_started = false
     if !PETSc.isinitialized(petsclib)
         PETSc.initialize(petsclib)

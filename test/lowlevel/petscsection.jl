@@ -3,7 +3,7 @@ using PETSc
 using MPI
 
 # Initialize PETSc
-petsclib = PETSc.getlib()
+petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 test_comm = MPI.COMM_SELF
 

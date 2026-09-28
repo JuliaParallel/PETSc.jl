@@ -11,7 +11,7 @@ MPI.Initialized() || MPI.Init()
     @test Bool(LibPETSc.PETSC_FALSE) === false && Bool(LibPETSc.PETSC_TRUE) === true
     @test LibPETSc.PetscBool(false) == LibPETSc.PETSC_FALSE
 
-    petsclib = PETSc.getlib()
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     # false answers must read as false, many times over (fresh Refs each call)
     opts = LibPETSc.PetscOptions{typeof(petsclib)}()
@@ -36,7 +36,7 @@ end
 # A sentinel goes into the byte after each flag, and is restored afterwards. 
 # The flags are not exported on Windows, so there is nothing to check there.
 @testset "RegisterAllCalled reset writes one byte" begin
-    petsclib = PETSc.getlib()
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     handle, _ = PETSc.ensure_library_handle(petsclib)
     lib = PETSc.library_ptr(handle)

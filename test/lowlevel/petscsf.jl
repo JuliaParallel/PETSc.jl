@@ -7,7 +7,7 @@ using PETSc: LibPETSc
 MPI.Initialized() || MPI.Init()
 
 @testset "Low-level PetscSF communication" begin
-    petsclib = PETSc.getlib()
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     PetscInt = petsclib.PetscInt
 

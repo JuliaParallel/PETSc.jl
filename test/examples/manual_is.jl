@@ -3,7 +3,7 @@ using PETSc
 using MPI
 
 @testset "Documentation examples for IS" begin
-    petsclib = PETSc.getlib(PetscScalar=Float64)
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
         test_comm = MPI.COMM_SELF
     PetscInt = PETSc.LibPETSc.PetscInt

@@ -6,7 +6,7 @@ if !PETSc.tao_usable_after_reinitialize()
     @info "Skipping Tao tests: PETSc 3.25.x loses the TaoTerm types at PetscFinalize and the workaround is not possible with these binaries (Windows)"
 else
 @testset "Low-level Tao (optimization) functions" begin
-    petsclib = PETSc.getlib(PetscScalar=Float64)
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
         test_comm = MPI.COMM_SELF
     

@@ -3,7 +3,7 @@ using PETSc
 using MPI
 
 @testset "Low-level IS (Index Set) functions" begin
-    petsclib = PETSc.getlib(PetscScalar=Float64)
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     PetscInt = PETSc.LibPETSc.PetscInt
     test_comm = MPI.COMM_SELF

@@ -16,7 +16,7 @@ MPI.Initialized() || MPI.Init()
 # time, so they MUST be module-level names before the macros are invoked.
 # We define them once for the Float64/Int64 lib that owns the FEM callbacks.
 
-const _dmplex_petsclib = PETSc.getlib(PetscScalar = Float64)
+const _dmplex_petsclib = PETSc.petsclibs[1]
 PETSc.initialize(_dmplex_petsclib)
 
 const PetscInt    = _dmplex_petsclib.PetscInt

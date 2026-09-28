@@ -4,7 +4,7 @@ using PETSc
 include(joinpath(pkgdir(PETSc), "examples", "ex51.jl"))
 
 @testset "TS ex51 example" begin
-    petsclib = PETSc.getlib(PetscScalar = Float64)
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     try
         # `examples.jl` covers the default `save_trajectory = true` path in a

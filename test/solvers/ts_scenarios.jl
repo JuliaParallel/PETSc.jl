@@ -17,7 +17,7 @@ include(joinpath(@__DIR__, "..", "..", "examples", "ex16.jl"))
 end
 
 @testset "High-level TS scenarios" begin
-    petsclib = PETSc.getlib(PetscScalar = Float64)
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     PetscScalar = petsclib.PetscScalar
     PetscInt = petsclib.PetscInt

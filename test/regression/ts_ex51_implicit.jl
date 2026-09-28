@@ -4,7 +4,7 @@ using PETSc
 include(joinpath(pkgdir(PETSc), "examples", "ex51_implicit.jl"))
 
 @testset "TS ex51 implicit example" begin
-    petsclib = PETSc.getlib(PetscScalar = Float64)
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     try
         result_stage_1 = solve_ex51_implicit(;

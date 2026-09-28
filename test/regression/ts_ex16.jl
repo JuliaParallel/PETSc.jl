@@ -19,7 +19,7 @@ function capture_stdout_to_string(f::Function)
 end
 
 @testset "TS ex16 example" begin
-    petsclib = PETSc.getlib(PetscScalar = Float64)
+    petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     try
         function solve_arkimex(method::String)

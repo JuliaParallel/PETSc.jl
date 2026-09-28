@@ -37,9 +37,10 @@ using PETSc
         # Store original PETSC_OPTIONS if it exists
         original_opts = get(ENV, "PETSC_OPTIONS", nothing)
         
-        # Initialize with log view and a test file
-        # Use current directory to avoid Windows temp directory issues with short paths
-        test_log_file = joinpath(pwd(), "test_log_$(hash(petsclib)).txt")
+        # Initialize with log view and a test file. The name is relative, so the
+        # file lands in the current directory: PETSc reads `-log_view :file:format`,
+        # and would split an absolute Windows path at its drive letter.
+        test_log_file = "test_log_$(hash(petsclib)).txt"
         
         try
             PETSc.initialize(petsclib; log_view = true, options = [":$test_log_file"])
@@ -57,15 +58,9 @@ using PETSc
             @test !(PETSc.isinitialized(petsclib))
             @test PETSc.isfinalized(petsclib)
             
-            # Check that log file was created
-            # Note: On some platforms/configurations, PETSc may not create the log file
-            if isfile(test_log_file)
-                # Verify log file contains expected content
-                log_content = read(test_log_file, String)
-                @test occursin("PETSc Performance Summary", log_content)
-            else
-                @warn "Log file not created on this platform: $test_log_file"
-            end
+            # The options reached PETSc, so the log file exists
+            @test isfile(test_log_file)
+            @test occursin("PETSc Performance Summary", read(test_log_file, String))
         finally
             # Clean up test log file even if tests fail
             rm(test_log_file; force = true)
@@ -106,7 +101,7 @@ using PETSc
         
         # Initialize with multiple options
         # Use current directory to avoid Windows temp directory issues
-        test_log_file = joinpath(pwd(), "test_log_multi_$(hash(petsclib)).txt")
+        test_log_file = "test_log_multi_$(hash(petsclib)).txt"
         
         try
             PETSc.initialize(petsclib; log_view = true, options = [":$test_log_file", "-log_view_memory"])
@@ -115,15 +110,10 @@ using PETSc
             
             PETSc.finalize(petsclib)
             
-            # Check log file was created and contains memory info
-            # Note: On some platforms/configurations, PETSc may not create the log file
-            if isfile(test_log_file)
-                log_content = read(test_log_file, String)
-                @test occursin("PETSc Performance Summary", log_content)
-                # Memory summary may not always be present depending on PETSc build
-            else
-                @warn "Log file not created on this platform: $test_log_file"
-            end
+            # The options reached PETSc, so the log file exists. The memory summary
+            # depends on the PETSc build, so only the performance summary is checked.
+            @test isfile(test_log_file)
+            @test occursin("PETSc Performance Summary", read(test_log_file, String))
         finally
             # Clean up even if tests fail
             rm(test_log_file; force = true)
@@ -138,7 +128,7 @@ using PETSc
         ENV["PETSC_OPTIONS"] = "-malloc_debug 0"
         
         # Use current directory to avoid Windows temp directory issues
-        test_log_file = joinpath(pwd(), "test_log_preserved_$(hash(petsclib)).txt")
+        test_log_file = "test_log_preserved_$(hash(petsclib)).txt"
         
         try
             PETSc.initialize(petsclib; log_view = true, options = [":$test_log_file"])
@@ -216,6 +206,21 @@ using PETSc
         else
             @test occursin("PETSc_jll", report)
         end
+    end
+
+    # `options` reach PETSc on every platform: they are handed to PetscInitialize
+    # as its command line, where PETSC_OPTIONS set from Julia is invisible on Windows
+    @testset "options reach PETSc" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.isinitialized(petsclib) && PETSc.finalize(petsclib)
+        options = ["-petscjl_test_int", "7", "-petscjl_test_pair 8"]
+        PETSc.initialize(petsclib; options)
+        global_options = PETSc.LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
+        value(name) = PETSc.LibPETSc.PetscOptionsGetInt(petsclib, global_options, "", name)
+        @test value("-petscjl_test_int") == (7, PETSc.LibPETSc.PETSC_TRUE)
+        @test value("-petscjl_test_pair") == (8, PETSc.LibPETSc.PETSC_TRUE)   # one entry, two words
+        @test options == ["-petscjl_test_int", "7", "-petscjl_test_pair 8"]  # left as given
+        PETSc.finalize(petsclib)
     end
 
     # naming.md §14: user input raises `ArgumentError`, not a bare `error`.

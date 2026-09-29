@@ -1,6 +1,6 @@
 using Test
 using PETSc, MPI
-using LinearAlgebra: norm
+using LinearAlgebra: norm, mul!
 
 MPI.Initialized() || MPI.Init()
 comm = LibPETSc.PETSC_COMM_SELF
@@ -361,4 +361,51 @@ end
         PETSc.destroy!(petsc_y)
         PETSc.finalize(petsclib)
     end
+end
+@testset "broadcasting into a PetscVec" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscScalar = petsclib.PetscScalar
+    RealT = real(PetscScalar)
+
+    function vecs(n)
+        xv, yv = rand(RealT, n), rand(RealT, n)
+        x = PETSc.PetscVec(petsclib, comm, PetscScalar.(xv))
+        y = PETSc.PetscVec(petsclib, comm, PetscScalar.(yv))
+        return x, y, similar(x), xv, yv
+    end
+
+    n = 50
+    x, y, z, xv, yv = vecs(n)
+    z .= 2 .* x .+ sin.(y)
+    @test z[:] ≈ 2 .* xv .+ sin.(yv)
+    z .= 3
+    @test all(==(3), z[:])
+    z .= y .* (1:n)                   # a Julia array of the same length
+    @test z[:] ≈ yv .* (1:n)
+    x .= x .+ y                       # the destination read on the right
+    @test x[:] ≈ xv .+ yv
+    @test_throws DimensionMismatch z .= y .* ones(n + 1)
+    foreach(PETSc.destroy!, (x, y, z))
+
+    # the Vecs take part as arrays, so the cost does not grow with the length
+    function allocations(n)
+        x, y, z = vecs(n)
+        f!(z, x, y) = (z .= 2 .* x .+ y; nothing)
+        f!(z, x, y)
+        a = @allocations f!(z, x, y)
+        foreach(PETSc.destroy!, (x, y, z))
+        return a
+    end
+    small, large = allocations(100), allocations(10_000)
+    @test small == large
+    @test small <= 16
+
+    # a MatShell body written as a broadcast
+    x, y, z, _, yv = vecs(n)
+    shell = PETSc.MatShell(petsclib, (b, a) -> (b .= 2 .* a), comm, n, n)
+    mul!(z, shell, y)
+    @test z[:] ≈ 2 .* yv
+    foreach(PETSc.destroy!, (shell, x, y, z))
+    PETSc.finalize(petsclib)
 end

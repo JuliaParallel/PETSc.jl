@@ -458,6 +458,7 @@ const INTERNAL = Set{Symbol}([
     :stencil_type_enum,
     :petsclib_of,
     :make_local_array,
+    :with_broadcast_arrays,
     :to_petscint_tuple,
     :audit_walk,
     :audit_targets,

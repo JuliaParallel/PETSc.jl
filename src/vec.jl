@@ -157,6 +157,9 @@ Base.ndims(::Type{<:AbstractPetscVec}) = 1
 Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
 Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
 Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = Broadcast.DefaultArrayStyle{1}()
+# A Vec takes part in a broadcast as itself; the default would `collect` it
+# entry by entry, since it iterates but is not an AbstractArray
+Base.Broadcast.broadcastable(v::AbstractPetscVec) = v
 
 # The library a wrapper carries in its type parameter, as a value. Used where a
 # call has to recover `petsclib` from an object rather than take it as an
@@ -254,21 +257,38 @@ function Base.copyto!(
     return dst
 end
 
-# Broadcasting assignment support (dest is not an AbstractArray)
-function Base.copyto!(dest::AbstractPetscVec{PetscLib}, bc::Base.Broadcast.Broadcasted) where {PetscLib}
-    # Evaluate the broadcasted RHS
-    rhs = Base.materialize(bc)
-    if rhs isa Number
-        # Fast path for scalar RHS
-        Base.fill!(dest, rhs)
-        return dest
-    end
-    # Array-like RHS: shape must match
-    axes(dest) == axes(rhs) || throw(DimensionMismatch("broadcast axes $(axes(rhs)) do not match destination axes $(axes(dest))"))
-    @inbounds for i in eachindex(rhs)
-        dest[i] = rhs[i]
+# In-place broadcasting, `dest .= f.(args...)`, runs on the local arrays:
+# `dest` and every `PetscVec` among the arguments are checked out, the broadcast runs
+# over the arrays, and all are handed back. So it is elementwise over the entries
+# this rank owns, which on one rank is every entry.
+# Other array arguments must have the local length.
+function Base.copyto!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted)
+    flat = Base.Broadcast.flatten(bc)
+    arr, raw, backend = acquire_local_array(dest; read = true, write = true)
+    try
+        with_broadcast_arrays(dest, arr, flat.args) do args
+            copyto!(arr, Base.Broadcast.instantiate(Base.Broadcast.Broadcasted(flat.f, args)))
+        end
+    finally
+        release_local_array(raw, backend, dest; read = true, write = true)
     end
     return dest
+end
+
+# Calls `f` with `args`, each `PetscVec` replaced by its local array:
+# `dest_arr` for `dest` itself, a read-only checkout for any other
+with_broadcast_arrays(f, dest, dest_arr, ::Tuple{}) = f(())
+function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
+    a = first(args)
+    rest = Base.tail(args)
+    a isa AbstractPetscVec || return with_broadcast_arrays(r -> f((a, r...)), dest, dest_arr, rest)
+    a.ptr == dest.ptr && return with_broadcast_arrays(r -> f((dest_arr, r...)), dest, dest_arr, rest)
+    arr, raw, backend = acquire_local_array(a; read = true, write = false)
+    try
+        return with_broadcast_arrays(r -> f((arr, r...)), dest, dest_arr, rest)
+    finally
+        release_local_array(raw, backend, a; read = true, write = false)
+    end
 end
 
 Base.materialize!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted) = (Base.copyto!(dest, bc); dest)

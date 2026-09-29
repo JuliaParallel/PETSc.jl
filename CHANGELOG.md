@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Broadcasting into a `PetscVec` (`y .= 2 .* x`, a typical `MatShell` body) read and wrote the vectors one entry at a time, through `VecGetValues` and `VecSetValues`: at 10 000 entries a `MatShell` product took 139 000 allocations and was 500× slower than the same loop on the local arrays. The vectors now take part as their local arrays, at a fixed cost of about 10 allocations. On several ranks the broadcast runs over the entries each rank owns.
 - `LibPETSc.ISColoringGetIS` with `PETSC_OWN_POINTER` returned the index sets as borrowed, so they and the C array holding them leaked. The index sets are now owned by the caller and the array is freed. `ISColoringRestoreIS` accepts the vector `ISColoringGetIS` returns.
 - `LibPETSc.DMCreateFieldIS` leaked the field names and both C arrays.
 - The TS and SNES manual pages still described the 0.5.0 callback rules (return an error code, exceptions become a `PetscError`).

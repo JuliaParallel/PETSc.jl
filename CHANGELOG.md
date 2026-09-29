@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## v0.5.2
+
+0.5.2 is what a staggered-grid solver needs from PETSc.jl: DMStag gets locations keyed by axis, stencils built from 1-based indices, assembly and halo exchange, and field views that hand a callback concretely typed arrays. TS gets what a long run needs, and Vec and Mat get the Base verbs that were missing. The rest is leaks closed in the generated layer and two performance traps, one of which made a 4-rank DMStag solve 25 times slower. Working code is most likely to notice the three behaviour changes below; the rest is additive.
+
+### Behaviour changes
+
+- When several MPI ranks share a node, `initialize` sets Julia's BLAS pool to one thread, unless `-blas_num_threads`, `OPENBLAS_NUM_THREADS` or `OMP_NUM_THREADS` says otherwise. Each rank otherwise ran a pool of busy-waiting threads, which made a 4-rank DMStag Stokes solve 25× slower. Serial runs and one rank per node are unaffected.
+- `solution(ksp)`, `solution(ts)`, `local_coordinates(dm)` and the `vatol`/`vrtol` of `tolerances(ts)` return a borrowed `PetscVec`, as `solution(snes)` already did, instead of a `VecPtr`. Both are `AbstractPetscVec`s with the same ownership, so only code that checks for `VecPtr` by type notices.
+- `LibPETSc` release functions that free a C array of handles (`VecDestroyVecs`, `MatDestroyMatrices`, `DMPlexRestoreConeRecursive`, …) no longer accept a Julia array of raw handles, which PETSc would have freed as its own memory. They take the pointer PETSc returned; `MatDestroySubMatrices`, `MatDestroyMatrices`, `VecNestRestoreSubVecsRead` and the two subdomain destroyers also take the vector the matching wrapper returned.
 
 ### Fixed
 
@@ -42,12 +50,6 @@
 - `with_product_coordinates(f, dm)`: read-only access to a DMStag's per-axis coordinates, handed back when `f` returns.
 - `set_matrix_preallocate_only!(dm, flag)`, so a matrix from `dm` gets its nonzero pattern from the first assembly.
 - `with_field_views!(f, dm, vecs...; fields, read, write)`: concretely typed views of DMStag local vectors by `location => dof`, indexed like `stencil`, handed back when `f` returns. About 9 allocations per vector, whatever the grid size. The docstring shows two DMs checked out by nesting, with one vector handed back mid-scope for a halo exchange.
-
-### Changed
-
-- When several MPI ranks share a node, `initialize` sets Julia's BLAS pool to one thread, unless `-blas_num_threads`, `OPENBLAS_NUM_THREADS` or `OMP_NUM_THREADS` says otherwise. Each rank otherwise ran a pool of busy-waiting threads, which made a 4-rank DMStag Stokes solve 25× slower. Serial runs and one rank per node are unaffected.
-- `solution(ksp)`, `solution(ts)`, `local_coordinates(dm)` and the `vatol`/`vrtol` of `tolerances(ts)` return a borrowed `PetscVec`, as `solution(snes)` already did, instead of a `VecPtr`. Both are `AbstractPetscVec`s with the same ownership, so only code that checks for `VecPtr` by type notices.
-- `LibPETSc` release functions that free a C array of handles (`VecDestroyVecs`, `MatDestroyMatrices`, `DMPlexRestoreConeRecursive`, …) no longer accept a Julia array of raw handles, which PETSc would have freed as its own memory. They take the pointer PETSc returned; `MatDestroySubMatrices`, `MatDestroyMatrices`, `VecNestRestoreSubVecsRead` and the two subdomain destroyers also take the vector the matching wrapper returned.
 
 ## v0.5.1
 

@@ -156,10 +156,21 @@ end
 Base.ndims(::Type{<:AbstractPetscVec}) = 1
 Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
 Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
-Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = Broadcast.DefaultArrayStyle{1}()
 # A Vec takes part in a broadcast as itself; the default would `collect` it
 # entry by entry, since it iterates but is not an AbstractArray
 Base.Broadcast.broadcastable(v::AbstractPetscVec) = v
+
+"""
+    PetscVecStyle
+
+The broadcast style of a `PetscVec`: an expression with one in it runs on the
+local arrays rather than entry by entry. It wins over an ordinary `Vector`, so
+`x .+ v` uses it too.
+"""
+struct PetscVecStyle <: Broadcast.AbstractArrayStyle{1} end
+Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = PetscVecStyle()
+PetscVecStyle(::Val{1}) = PetscVecStyle()
+PetscVecStyle(::Val{N}) where {N} = Broadcast.DefaultArrayStyle{N}()
 
 # The library a wrapper carries in its type parameter, as a value. Used where a
 # call has to recover `petsclib` from an object rather than take it as an
@@ -277,14 +288,38 @@ function Base.copyto!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted)
     return dest
 end
 
-# Calls `f` with `args`, each `PetscVec` replaced by its local array:
-# `dest_arr` for `dest` itself, a read-only checkout for any other
+# Out-of-place broadcasting, `w = f.(args...)`, runs on the local arrays too and
+# gives a `Vector`, so `2 .* x` is what it was before, without the one C call per
+# entry. A `Vector` of the whole vector only means something where one rank holds
+# all of it, so a distributed vector throws instead.
+function Base.copy(bc::Broadcast.Broadcasted{PetscVecStyle})
+    flat = Broadcast.flatten(bc)
+    foreach(check_undistributed, flat.args)
+    return with_broadcast_arrays(nothing, nothing, flat.args) do args
+        copy(Broadcast.instantiate(Broadcast.Broadcasted(flat.f, args)))
+    end
+end
+
+check_undistributed(_) = nothing
+function check_undistributed(v::AbstractPetscVec{PetscLib}) where {PetscLib}
+    lib = getlib(PetscLib)
+    LibPETSc.VecGetLocalSize(lib, v) == LibPETSc.VecGetSize(lib, v) || throw(ArgumentError(
+        "a broadcast of a distributed Vec cannot give a Vector of the whole vector. " *
+        "Broadcast into a Vec of the same layout, or use with_local_array! for the " *
+        "entries this rank owns."
+    ))
+    return nothing
+end
+
+# Calls `f` with `args`, each `PetscVec` replaced by its local array: `dest_arr`
+# for `dest` itself, a read-only checkout for any other. `dest` is `nothing` when
+# the broadcast is out of place and nothing can alias.
 with_broadcast_arrays(f, dest, dest_arr, ::Tuple{}) = f(())
 function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
     a = first(args)
     rest = Base.tail(args)
     a isa AbstractPetscVec || return with_broadcast_arrays(r -> f((a, r...)), dest, dest_arr, rest)
-    a.ptr == dest.ptr && return with_broadcast_arrays(r -> f((dest_arr, r...)), dest, dest_arr, rest)
+    aliases_dest(a, dest) && return with_broadcast_arrays(r -> f((dest_arr, r...)), dest, dest_arr, rest)
     arr, raw, backend = acquire_local_array(a; read = true, write = false)
     try
         return with_broadcast_arrays(r -> f((arr, r...)), dest, dest_arr, rest)
@@ -292,6 +327,9 @@ function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
         release_local_array(raw, backend, a; read = true, write = false)
     end
 end
+
+aliases_dest(::AbstractPetscVec, ::Nothing) = false
+aliases_dest(a::AbstractPetscVec, dest::AbstractPetscVec) = a.ptr == dest.ptr
 
 Base.materialize!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted) = (Base.copyto!(dest, bc); dest)
 

@@ -79,6 +79,8 @@ using LinearAlgebra: norm
                 @test y == 2 .* julia_x .+ 1
             end
             @test norm(petsc_y) ≈ norm(2 .* (0:ne) .+ 1)
+            # out of place would have to give a Vector of the whole vector
+            @test_throws ArgumentError 2 .* petsc_x
             PETSc.destroy!(petsc_y)
 
             @test :mpi === PETSc.type_name(petsc_x)

@@ -20,7 +20,7 @@ for i in 1:length(x)
 end
 ```
 
-Broadcasting into a `PetscVec` (`x .= 2 .* y`) does the checkout for you and is as fast as the block above. Broadcasting *out of* one (`w = 2 .* x`) is not: it builds a plain `Vector` one entry at a time.
+Broadcasting does the checkout for you, in both directions. `x .= 2 .* y` writes the entries this rank owns. `w = 2 .* x` gives a plain `Vector`, and since that only means something where one rank holds the whole vector, it throws on a distributed one: broadcast into a `PetscVec` of the same layout instead.
 
 Every view a block hands you is indexed the way the DM numbers its points, so a view and [`stencil`](@ref) address the same entry, and the arrays stay concretely typed inside the block.
 

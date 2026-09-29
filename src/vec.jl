@@ -197,16 +197,16 @@ function set_type!(v::AbstractPetscVec{PetscLib}, type::Symbol) where {PetscLib}
     return v
 end
 
-function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib} 
+function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    val = LibPETSc.VecGetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]))
+    val = LibPETSc.VecGetValues(PetscLib, v, PetscInt(1), PetscInt[i - 1])
     return val[1]
 end
 
 # Range indexing
 function Base.getindex(v::AbstractPetscVec{PetscLib}, r::AbstractRange) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    val = LibPETSc.VecGetValues(PetscLib,v, PetscInt(length(r)), PetscInt.(Vector(r) .- 1))
+    val = LibPETSc.VecGetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r])
     return val
 end
 
@@ -218,16 +218,18 @@ end
 
 Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib} = all(v[:] .≈ w[:]; kwargs...)
 
-function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib} 
-     PetscInt = inttype(PetscLib)
-     PetscScalar = PETSc.scalartype(PetscLib)
-     LibPETSc.VecSetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]), [PetscScalar(val)], PETSc.INSERT_VALUES)
-     return v
+function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib}
+    PetscInt = inttype(PetscLib)
+    PetscScalar = scalartype(PetscLib)
+    LibPETSc.VecSetValues(PetscLib, v, PetscInt(1), PetscInt[i - 1],
+                          PetscScalar[val], PETSc.INSERT_VALUES)
+    return v
 end
 
-function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib} 
+function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    LibPETSc.VecSetValues(PetscLib,v, PetscInt(length(r)), PetscInt.(Vector(r) .- 1), vals, PETSc.INSERT_VALUES)
+    LibPETSc.VecSetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r],
+                          vals, PETSc.INSERT_VALUES)
     return v
 end
 
@@ -413,7 +415,11 @@ GPU extensions return their own singleton for device memory.
 memtype_backend(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = nothing
 memtype_backend(::Val{MT}) where {MT} =
     error("No GPU backend loaded for PetscMemType $MT — load CUDA.jl, AMDGPU.jl, …")
-memtype_backend(mt::LibPETSc.PetscMemType) = memtype_backend(Val(mt))
+# `Val(mt)` on a value PETSc returned at run time is a dynamic dispatch, so host
+# memory, the common case, answers before it: that keeps a checkout inferable and
+# allocation free. A device goes on dispatching, so extensions are unaffected.
+memtype_backend(mt::LibPETSc.PetscMemType) =
+    mt === LibPETSc.PETSC_MEMTYPE_HOST ? nothing : memtype_backend(Val(mt))
 
 # ── Device-aware local array access ───────────────────────────────────────────
 #
@@ -603,10 +609,10 @@ end
 function with_local_array!(
     f!,
     vecs::NTuple{N, AbstractPetscVec};
-    kwargs...,
+    read::Union{Bool, NTuple{N, Bool}} = true,
+    write::Union{Bool, NTuple{N, Bool}} = true,
 ) where {N}
-    A = memtype(vecs...)
-    return with_local_array!(f!, A, vecs; kwargs...)
+    return checkout_arrays(f!, nothing, vecs, flags(read, Val(N)), flags(write, Val(N)))
 end
 with_local_array!(f!, vecs...; kwargs...) = with_local_array!(f!, vecs; kwargs...)
 
@@ -617,32 +623,40 @@ function with_local_array!(
     read::Union{Bool, NTuple{N, Bool}} = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
 ) where {A <: AbstractArray, N}
-    read isa NTuple{N, Bool} || (read = ntuple(_ -> read, N))
-    write isa NTuple{N, Bool} || (write = ntuple(_ -> write, N))
-    # Acquire all arrays first (no finalizers), then use try/finally for release.
-    # This avoids the Julia pitfall where Base.finalize + GC can both run the
-    # finalizer if the object becomes unreachable again (double-restore → crash).
-    acquired = map(vecs, read, write) do v, r, w
-        acquire_local_array(v; read=r, write=w)
-    end
-    try
-        # Type check inside try so finally still releases on mismatch.
-        arrays = map(acquired) do (arr, cpu_arr, backend)
-            arr isa A || throw(ArgumentError(
-                "expected array of type $A but Vec returned $(typeof(arr)). " *
-                "Check that the Vec lives on the expected device."
-            ))
-            arr
-        end
-        return f!(arrays...)
-    finally
-        foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
-            release_local_array(cpu_arr, backend, v; read=r, write=w)
-        end
-    end
+    return checkout_arrays(f!, A, vecs, flags(read, Val(N)), flags(write, Val(N)))
 end
 with_local_array!(f!, ::Type{A}, vecs...; kwargs...) where {A <: AbstractArray} =
     with_local_array!(f!, A, vecs; kwargs...)
+
+flags(b::Bool, ::Val{N}) where {N} = ntuple(_ -> b, Val(N))
+flags(b::NTuple{N, Bool}, ::Val{N}) where {N} = b
+
+# Check out every vector, call `f!` with the arrays, and hand them all back, 
+# also when `f!` throws. `A` is the array type the caller asked for, or `nothing` to
+# take whatever the vectors are on. The arrays are acquired without a finalizer,
+# because after `Base.finalize` the GC may run the finalizer a second time once
+# the array becomes unreachable, and restoring twice crashes PETSc.
+function checkout_arrays(f!, A, vecs::NTuple{N, AbstractPetscVec}, read, write) where {N}
+    acquired = map(vecs, read, write) do v, r, w
+        acquire_local_array(v; read = r, write = w)
+    end
+    try
+        # inside the try, so an array of the wrong type is still handed back
+        arrays = map(a -> checked_array(a[1], A), acquired)
+        return f!(arrays...)
+    finally
+        foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
+            release_local_array(cpu_arr, backend, v; read = r, write = w)
+        end
+    end
+end
+
+checked_array(arr, ::Nothing) = arr
+checked_array(arr, ::Type{A}) where {A} =
+    arr isa A ? arr : throw(ArgumentError(
+        "expected array of type $A but Vec returned $(typeof(arr)). " *
+        "Check that the Vec lives on the expected device."
+    ))
 
 
 """

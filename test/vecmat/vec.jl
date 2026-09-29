@@ -399,7 +399,7 @@ end
     end
     small, large = allocations(100), allocations(10_000)
     @test small == large
-    @test small <= 16
+    @test small <= 8
 
     # a MatShell body written as a broadcast
     x, y, z, _, yv = vecs(n)

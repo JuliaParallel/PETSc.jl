@@ -72,6 +72,15 @@ using LinearAlgebra: norm
                 @test x == julia_x
             end
 
+            # broadcasting works on the entries each rank owns
+            petsc_y = similar(petsc_x)
+            petsc_y .= 2 .* petsc_x .+ 1
+            PETSc.with_local_array!(petsc_y) do y
+                @test y == 2 .* julia_x .+ 1
+            end
+            @test norm(petsc_y) ≈ norm(2 .* (0:ne) .+ 1)
+            PETSc.destroy!(petsc_y)
+
             @test :mpi === PETSc.type_name(petsc_x)
             PETSc.destroy!(petsc_x)
 

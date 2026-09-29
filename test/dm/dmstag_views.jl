@@ -67,7 +67,7 @@ MPI.Initialized() || MPI.Init()
         large, _ = checkout(64)
         @test concrete
         @test small == large          # independent of the grid size
-        @test small <= 4 * 20         # the budget: about 20 per vector
+        @test small <= 4 * 8          # the budget: about 8 per vector
 
         for (n, dofs) in (((4,), (1, 1)), ((2, 2, 2), (1, 1, 1, 1)))
             dm = stag(n, dofs)

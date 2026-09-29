@@ -51,6 +51,7 @@ if selected("core")
     include("core/handle_arrays.jl")    # C arrays of handles go back to their release function
     include("core/lifetimes.jl")        # arrays a Vec or Mat wraps live as long as it does
     include("core/deprecations.jl")     # the v0.4 names still work and warn (the only file calling them)
+    include("core/performance.jl")      # allocations per call, flat in the problem size
     include("core/api_surface.jl")      # scripts/api_surface.jl --check: the register covers the surface
     @testset "method ambiguities do not grow" begin
         # 130 with the regenerated wrappers (all in the high-level layer); regenerate or rename

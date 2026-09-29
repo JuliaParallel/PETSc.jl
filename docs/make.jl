@@ -82,6 +82,7 @@ makedocs(;
         ],
         "C to Julia name index" => "man/api_index.md",
         "Utilities" => "man/utilities.md",
+        "Performance" => "man/performance.md",
         "Running on HPC Systems" => "man/hpc.md",
         "GPU Support (CUDA)" => "man/gpu.md",
         "FAQ"  => "man/FAQ.md",

@@ -156,10 +156,21 @@ end
 Base.ndims(::Type{<:AbstractPetscVec}) = 1
 Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
 Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
-Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = Broadcast.DefaultArrayStyle{1}()
 # A Vec takes part in a broadcast as itself; the default would `collect` it
 # entry by entry, since it iterates but is not an AbstractArray
 Base.Broadcast.broadcastable(v::AbstractPetscVec) = v
+
+"""
+    PetscVecStyle
+
+The broadcast style of a `PetscVec`: an expression with one in it runs on the
+local arrays rather than entry by entry. It wins over an ordinary `Vector`, so
+`x .+ v` uses it too.
+"""
+struct PetscVecStyle <: Broadcast.AbstractArrayStyle{1} end
+Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = PetscVecStyle()
+PetscVecStyle(::Val{1}) = PetscVecStyle()
+PetscVecStyle(::Val{N}) where {N} = Broadcast.DefaultArrayStyle{N}()
 
 # The library a wrapper carries in its type parameter, as a value. Used where a
 # call has to recover `petsclib` from an object rather than take it as an
@@ -197,16 +208,16 @@ function set_type!(v::AbstractPetscVec{PetscLib}, type::Symbol) where {PetscLib}
     return v
 end
 
-function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib} 
+function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    val = LibPETSc.VecGetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]))
+    val = LibPETSc.VecGetValues(PetscLib, v, PetscInt(1), PetscInt[i - 1])
     return val[1]
 end
 
 # Range indexing
 function Base.getindex(v::AbstractPetscVec{PetscLib}, r::AbstractRange) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    val = LibPETSc.VecGetValues(PetscLib,v, PetscInt(length(r)), PetscInt.(Vector(r) .- 1))
+    val = LibPETSc.VecGetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r])
     return val
 end
 
@@ -218,16 +229,18 @@ end
 
 Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib} = all(v[:] .≈ w[:]; kwargs...)
 
-function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib} 
-     PetscInt = inttype(PetscLib)
-     PetscScalar = PETSc.scalartype(PetscLib)
-     LibPETSc.VecSetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]), [PetscScalar(val)], PETSc.INSERT_VALUES)
-     return v
+function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib}
+    PetscInt = inttype(PetscLib)
+    PetscScalar = scalartype(PetscLib)
+    LibPETSc.VecSetValues(PetscLib, v, PetscInt(1), PetscInt[i - 1],
+                          PetscScalar[val], PETSc.INSERT_VALUES)
+    return v
 end
 
-function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib} 
+function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    LibPETSc.VecSetValues(PetscLib,v, PetscInt(length(r)), PetscInt.(Vector(r) .- 1), vals, PETSc.INSERT_VALUES)
+    LibPETSc.VecSetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r],
+                          vals, PETSc.INSERT_VALUES)
     return v
 end
 
@@ -275,14 +288,38 @@ function Base.copyto!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted)
     return dest
 end
 
-# Calls `f` with `args`, each `PetscVec` replaced by its local array:
-# `dest_arr` for `dest` itself, a read-only checkout for any other
+# Out-of-place broadcasting, `w = f.(args...)`, runs on the local arrays too and
+# gives a `Vector`, so `2 .* x` is what it was before, without the one C call per
+# entry. A `Vector` of the whole vector only means something where one rank holds
+# all of it, so a distributed vector throws instead.
+function Base.copy(bc::Broadcast.Broadcasted{PetscVecStyle})
+    flat = Broadcast.flatten(bc)
+    foreach(check_undistributed, flat.args)
+    return with_broadcast_arrays(nothing, nothing, flat.args) do args
+        copy(Broadcast.instantiate(Broadcast.Broadcasted(flat.f, args)))
+    end
+end
+
+check_undistributed(_) = nothing
+function check_undistributed(v::AbstractPetscVec{PetscLib}) where {PetscLib}
+    lib = getlib(PetscLib)
+    LibPETSc.VecGetLocalSize(lib, v) == LibPETSc.VecGetSize(lib, v) || throw(ArgumentError(
+        "a broadcast of a distributed Vec cannot give a Vector of the whole vector. " *
+        "Broadcast into a Vec of the same layout, or use with_local_array! for the " *
+        "entries this rank owns."
+    ))
+    return nothing
+end
+
+# Calls `f` with `args`, each `PetscVec` replaced by its local array: `dest_arr`
+# for `dest` itself, a read-only checkout for any other. `dest` is `nothing` when
+# the broadcast is out of place and nothing can alias.
 with_broadcast_arrays(f, dest, dest_arr, ::Tuple{}) = f(())
 function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
     a = first(args)
     rest = Base.tail(args)
     a isa AbstractPetscVec || return with_broadcast_arrays(r -> f((a, r...)), dest, dest_arr, rest)
-    a.ptr == dest.ptr && return with_broadcast_arrays(r -> f((dest_arr, r...)), dest, dest_arr, rest)
+    aliases_dest(a, dest) && return with_broadcast_arrays(r -> f((dest_arr, r...)), dest, dest_arr, rest)
     arr, raw, backend = acquire_local_array(a; read = true, write = false)
     try
         return with_broadcast_arrays(r -> f((arr, r...)), dest, dest_arr, rest)
@@ -290,6 +327,9 @@ function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
         release_local_array(raw, backend, a; read = true, write = false)
     end
 end
+
+aliases_dest(::AbstractPetscVec, ::Nothing) = false
+aliases_dest(a::AbstractPetscVec, dest::AbstractPetscVec) = a.ptr == dest.ptr
 
 Base.materialize!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted) = (Base.copyto!(dest, bc); dest)
 
@@ -413,7 +453,11 @@ GPU extensions return their own singleton for device memory.
 memtype_backend(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = nothing
 memtype_backend(::Val{MT}) where {MT} =
     error("No GPU backend loaded for PetscMemType $MT — load CUDA.jl, AMDGPU.jl, …")
-memtype_backend(mt::LibPETSc.PetscMemType) = memtype_backend(Val(mt))
+# `Val(mt)` on a value PETSc returned at run time is a dynamic dispatch, so host
+# memory, the common case, answers before it: that keeps a checkout inferable and
+# allocation free. A device goes on dispatching, so extensions are unaffected.
+memtype_backend(mt::LibPETSc.PetscMemType) =
+    mt === LibPETSc.PETSC_MEMTYPE_HOST ? nothing : memtype_backend(Val(mt))
 
 # ── Device-aware local array access ───────────────────────────────────────────
 #
@@ -603,10 +647,10 @@ end
 function with_local_array!(
     f!,
     vecs::NTuple{N, AbstractPetscVec};
-    kwargs...,
+    read::Union{Bool, NTuple{N, Bool}} = true,
+    write::Union{Bool, NTuple{N, Bool}} = true,
 ) where {N}
-    A = memtype(vecs...)
-    return with_local_array!(f!, A, vecs; kwargs...)
+    return checkout_arrays(f!, nothing, vecs, flags(read, Val(N)), flags(write, Val(N)))
 end
 with_local_array!(f!, vecs...; kwargs...) = with_local_array!(f!, vecs; kwargs...)
 
@@ -617,32 +661,40 @@ function with_local_array!(
     read::Union{Bool, NTuple{N, Bool}} = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
 ) where {A <: AbstractArray, N}
-    read isa NTuple{N, Bool} || (read = ntuple(_ -> read, N))
-    write isa NTuple{N, Bool} || (write = ntuple(_ -> write, N))
-    # Acquire all arrays first (no finalizers), then use try/finally for release.
-    # This avoids the Julia pitfall where Base.finalize + GC can both run the
-    # finalizer if the object becomes unreachable again (double-restore → crash).
-    acquired = map(vecs, read, write) do v, r, w
-        acquire_local_array(v; read=r, write=w)
-    end
-    try
-        # Type check inside try so finally still releases on mismatch.
-        arrays = map(acquired) do (arr, cpu_arr, backend)
-            arr isa A || throw(ArgumentError(
-                "expected array of type $A but Vec returned $(typeof(arr)). " *
-                "Check that the Vec lives on the expected device."
-            ))
-            arr
-        end
-        return f!(arrays...)
-    finally
-        foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
-            release_local_array(cpu_arr, backend, v; read=r, write=w)
-        end
-    end
+    return checkout_arrays(f!, A, vecs, flags(read, Val(N)), flags(write, Val(N)))
 end
 with_local_array!(f!, ::Type{A}, vecs...; kwargs...) where {A <: AbstractArray} =
     with_local_array!(f!, A, vecs; kwargs...)
+
+flags(b::Bool, ::Val{N}) where {N} = ntuple(_ -> b, Val(N))
+flags(b::NTuple{N, Bool}, ::Val{N}) where {N} = b
+
+# Check out every vector, call `f!` with the arrays, and hand them all back, 
+# also when `f!` throws. `A` is the array type the caller asked for, or `nothing` to
+# take whatever the vectors are on. The arrays are acquired without a finalizer,
+# because after `Base.finalize` the GC may run the finalizer a second time once
+# the array becomes unreachable, and restoring twice crashes PETSc.
+function checkout_arrays(f!, A, vecs::NTuple{N, AbstractPetscVec}, read, write) where {N}
+    acquired = map(vecs, read, write) do v, r, w
+        acquire_local_array(v; read = r, write = w)
+    end
+    try
+        # inside the try, so an array of the wrong type is still handed back
+        arrays = map(a -> checked_array(a[1], A), acquired)
+        return f!(arrays...)
+    finally
+        foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
+            release_local_array(cpu_arr, backend, v; read = r, write = w)
+        end
+    end
+end
+
+checked_array(arr, ::Nothing) = arr
+checked_array(arr, ::Type{A}) where {A} =
+    arr isa A ? arr : throw(ArgumentError(
+        "expected array of type $A but Vec returned $(typeof(arr)). " *
+        "Check that the Vec lives on the expected device."
+    ))
 
 
 """

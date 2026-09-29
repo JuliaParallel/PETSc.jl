@@ -820,8 +820,17 @@ function with_field_views!(
     read::Union{Bool, NTuple{M, Bool}} = true,
     write::Union{Bool, NTuple{M, Bool}} = true,
 ) where {PetscLib, N, M}
-    read  isa Bool && (read  = ntuple(_ -> read,  Val(M)))
-    write isa Bool && (write = ntuple(_ -> write, Val(M)))
+    return with_field_views!(f, dm, vecs, fields, flags(read, Val(M)), flags(write, Val(M)))
+end
+
+function with_field_views!(
+    f,
+    dm::DMStag{PetscLib, N},
+    vecs::NTuple{M, AbstractPetscVec{PetscLib}},
+    fields,
+    read::NTuple{M, Bool},
+    write::NTuple{M, Bool},
+) where {PetscLib, N, M}
     lib = getlib(PetscLib)
     gc = ghost_corners(dm)
     q = Int(LibPETSc.DMStagGetEntriesPerElement(lib, dm))

@@ -399,7 +399,22 @@ end
     end
     small, large = allocations(100), allocations(10_000)
     @test small == large
-    @test small <= 16
+    @test small <= 8
+
+    # out of place gives a Vector, from the local array rather than entry by entry
+    x, y, z, xv, yv = vecs(n)
+    @test 2 .* x == 2 .* xv
+    @test (2 .* x) isa Vector{PetscScalar}
+    @test x .+ y == xv .+ yv
+    @test x .* (1:n) == xv .* (1:n)
+    @test (real.(x) .> 0.5) == (real.(xv) .> 0.5)
+    out(v) = 2 .* v
+    out(x)
+    @test @allocations(out(x)) <= 8
+    big = PETSc.PetscVec(petsclib, comm, rand(RealT, 10_000))
+    out(big)
+    @test @allocations(out(big)) <= 8     # the entries cost nothing per call
+    foreach(PETSc.destroy!, (big, x, y, z))
 
     # a MatShell body written as a broadcast
     x, y, z, _, yv = vecs(n)

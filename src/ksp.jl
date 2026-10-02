@@ -166,8 +166,10 @@ end
 """
     KSP(petsclib, comm::MPI.Comm, A::SparseMatrixCSC; options...)
 
-Create a [`KSP`](@ref) with the sparse matrix `A` using the `petsclib`. If
-`petsclib` is not given, the default library will be used`.
+Create a [`KSP`](@ref) for the sparse matrix `A`, on `comm`, using the library
+`petsclib`. `A` is copied into a new PETSc matrix that the solver owns, so changing
+`A` afterwards does not change the solver. The keyword arguments are PETSc options,
+as for `KSP(A::AbstractPetscMat; options...)`.
 """
 KSP(petsclib, comm, S::SparseMatrixCSC; kwargs...) 
 
@@ -241,7 +243,7 @@ function Base.:\(
     # PETSc works on this copy of `b` in place, so it must outlive the solve
     b_copy = PetscScalar.(b)
     x = GC.@preserve b_copy begin
-        petsc_b = LibPETSc.VecCreateSeqWithArray(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), b_copy)
+        petsc_b = seq_vec_with_array(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), b_copy)
         petsc_x = ksp \ petsc_b
         x = petsc_x[:]
         destroy!(petsc_b)

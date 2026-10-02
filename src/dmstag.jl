@@ -63,6 +63,7 @@ function DMStag(
     options...,
 ) where {PetscLib, N, N1}
     check_initialized(getlib(PetscLib))
+    1 <= N <= 3 || throw(ArgumentError("a DMStag has 1, 2 or 3 dimensions, got $N"))
     N1 == N + 1 || throw(
         DimensionMismatch(
             "dof_per_node has length $N1, " *

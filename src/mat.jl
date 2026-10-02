@@ -51,7 +51,16 @@ MatPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} =
 
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
-Base.ndims(m::AbstractPetscMat{PetscLib}) where {PetscLib} = length(LibPETSc.MatGetSize(PetscLib,m))
+Base.ndims(::Type{<:AbstractPetscMat}) = 2
+Base.ndims(m::AbstractPetscMat) = ndims(typeof(m))
+
+# As for any matrix: the global size along dimensions 1 and 2, and 1 beyond them
+function Base.size(m::AbstractPetscMat, d::Integer)
+    d >= 1 || throw(ArgumentError("dimension must be ≥ 1, got $d"))
+    return d <= 2 ? Int(size(m)[d]) : 1
+end
+Base.axes(m::AbstractPetscMat) = map(Base.OneTo, size(m))
+Base.axes(m::AbstractPetscMat, d::Integer) = Base.OneTo(size(m, d))
 """
     type_name(A::AbstractPetscMat)
 
@@ -78,7 +87,6 @@ function set_type!(m::AbstractPetscMat{PetscLib}, type::Symbol) where {PetscLib}
     LibPETSc.MatSetType(getlib(PetscLib), m, String(type))
     return m
 end
-Base.axes(m::PetscMat{PetscLib}, i::Integer) where {PetscLib} = Base.OneTo(Base.size(m)[i])
 
 """
     M::PetscMat = PetscMat(petsclib, S::SparseMatrixCSC; with_arrays = false)
@@ -597,8 +605,6 @@ function diagonal!(
 end
 
 
-LinearAlgebra.norm(M::PetscMat{PetscLib}, normtype::NormType = NORM_FROBENIUS) where {PetscLib} = LibPETSc.MatNorm(PetscLib, M, normtype)
-
 """
     mul!(y::PetscVec{PetscLib}, M::AbstractPetscMat{PetscLib}, x::PetscVec{PetscLib})
 
@@ -620,30 +626,52 @@ function Base.:*(
     return y
 end
 
+# `A'` and `transpose(A)` are lazy wrappers, so `A' * x` and `mul!(y, A', x)` reach
+# MatMultHermitianTranspose and MatMultTranspose without forming the transpose.
+LinearAlgebra.adjoint(A::AbstractPetscMat) = Adjoint(A)
+LinearAlgebra.transpose(A::AbstractPetscMat) = Transpose(A)
+
+const TransposedPetscMat{PetscLib} = Union{
+    Adjoint{<:Any, <:AbstractPetscMat{PetscLib}},
+    Transpose{<:Any, <:AbstractPetscMat{PetscLib}},
+}
+
+"""
+    mul!(y::PetscVec, A', x::PetscVec)
+    mul!(y::PetscVec, transpose(A), x::PetscVec)
+
+Compute `y = Aᴴx` or `y = Aᵀx` without forming the transpose, and return `y`.
+
+# External Links
+$(doc_external("Mat/MatMultHermitianTranspose"))
+$(doc_external("Mat/MatMultTranspose"))
+"""
 function LinearAlgebra.mul!(
     y::PetscVec{PetscLib},
-    M::Adjoint{AM},
+    M::TransposedPetscMat{PetscLib},
     x::PetscVec{PetscLib},
-) where {PetscLib, AM <: PetscMat{PetscLib}}
-    LibPETSc.MatMultHermitianTranspose(PetscLib, parent(M), x, y)
+) where {PetscLib}
+    multiply = M isa Adjoint ? LibPETSc.MatMultHermitianTranspose : LibPETSc.MatMultTranspose
+    capture_callback_errors(() -> multiply(PetscLib, parent(M), x, y))
     return y
 end
 
-function LinearAlgebra.mul!(
-    y::PetscVec{PetscLib},
-    M::Transpose{AM},
-    x::PetscVec{PetscLib},
-) where {PetscLib, AM <: PetscMat{PetscLib}}
-    LibPETSc.MatMultTranspose(PetscLib, parent(M), x, y)
+# The result has the layout of the columns of `A`, which MatCreateVecs returns first
+function Base.:*(
+    M::TransposedPetscMat{PetscLib},
+    x::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    y, _ = LibPETSc.MatCreateVecs(getlib(PetscLib), parent(M))
+    mul!(y, M, x)
     return y
 end
 
-function LinearAlgebra.issymmetric(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib} 
-    PetscReal = real(scalartype(PetscLib))        
+function LinearAlgebra.issymmetric(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib}
+    PetscReal = real(scalartype(PetscLib))
     return LibPETSc.MatIsSymmetric(PetscLib, A, PetscReal(tol))
 end
-function LinearAlgebra.ishermitian(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib} 
-    PetscReal = scalartype(PetscLib)
+function LinearAlgebra.ishermitian(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib}
+    PetscReal = real(scalartype(PetscLib))
     return LibPETSc.MatIsHermitian(PetscLib, A, PetscReal(tol))
 end
 
@@ -803,15 +831,17 @@ function destroy!(m::AbstractPetscMat{PetscLib}) where {PetscLib}
     return nothing
 end
 
-function LinearAlgebra.mul!(
-    y::PetscVec{PetscLib},
-    M::Transpose{PetscScalar, AM},
-    x::PetscVec{PetscLib},
-) where {PetscLib, PetscScalar, AM <: AbstractPetscMat{PetscLib}}
-    LibPETSc.MatMultTranspose(PetscLib, parent(M), x, y)
-    return y
-end
+"""
+    copyto!(M::AbstractPetscMat, S::SparseMatrixCSC)
 
+Write the nonzeros of `S` into `M` and return `M`. Call [`assemble!`](@ref) afterwards.
+
+`S` is indexed from the first row this rank owns: entry `S[i, j]` goes to global row
+`r + i` and global column `r + j`, where `r` is the number of rows before this rank's.
+In serial `r = 0`, so `S` is copied as it stands. In parallel `S` is the rank's diagonal
+block, and couplings to other ranks' unknowns are not written. Throws a
+`DimensionMismatch` when `S` reaches past this rank's rows or past the last column.
+"""
 function Base.copyto!(
     M::AbstractPetscMat{PetscLib},
     S::SparseMatrixCSC,
@@ -820,7 +850,13 @@ function Base.copyto!(
     PetscInt = PetscLib.PetscInt
     PetscScalar = PetscLib.PetscScalar
     row_start = row_rng[1]
-    _, n = size(S)
+    m, n = size(S)
+    m <= row_rng[2] - row_start && row_start + n <= size(M, 2) || throw(
+        DimensionMismatch(
+            "a $(m)x$(n) block starting at row $(row_start + 1) does not fit the " *
+            "$(row_rng[2] - row_start) rows this rank owns of a matrix with $(size(M, 2)) columns",
+        ),
+    )
     for j in 1:n
         for ii in S.colptr[j]:(S.colptr[j + 1] - 1)
             i = S.rowval[ii]
@@ -1110,7 +1146,7 @@ function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
     # PETSc works on this copy of `x` in place, so it must outlive the product
     x_copy = PetscScalar.(x)
     return GC.@preserve x_copy begin
-        petsc_x = LibPETSc.VecCreateSeqWithArray(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy)
+        petsc_x = seq_vec_with_array(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy)
         petsc_y = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m))
         mul!(petsc_y, M, petsc_x)
         result = petsc_y[:]
@@ -1210,14 +1246,54 @@ function set_values!(
     return M
 end
 
+"""
+    norm(A::AbstractPetscMat, p::Real = 2)
+    norm(A::AbstractPetscMat, normtype::NormType)
+
+The norm of the entries of `A` taken as one vector, as `norm` means for a Julia matrix.
+Only `p = 2`, the Frobenius norm, is available: PETSc computes no other entrywise norm.
+For the norms induced by a vector norm use [`opnorm`](@ref). The second form passes a
+PETSc `NormType` straight to `MatNorm`, where `NORM_1` and `NORM_INFINITY` are the
+induced norms.
+
+# External Links
+$(doc_external("Mat/MatNorm"))
+"""
 function LinearAlgebra.norm(
     M::AbstractPetscMat{PetscLib},
     normtype::NormType = NORM_FROBENIUS,
 ) where {PetscLib}
-    PetscReal = PetscLib.PetscReal
-    #r_val = Ref{PetscReal}()
-    r_val = LibPETSc.MatNorm(PetscLib, M, normtype)
-    return r_val
+    return LibPETSc.MatNorm(PetscLib, M, normtype)
+end
+
+function LinearAlgebra.norm(M::AbstractPetscMat, p::Real)
+    p == 2 || throw(
+        ArgumentError(
+            "PETSc computes only the p = 2 (Frobenius) entrywise norm of a matrix, " *
+            "got p = $p; use opnorm(A, 1) or opnorm(A, Inf) for the induced norms",
+        ),
+    )
+    return norm(M, NORM_FROBENIUS)
+end
+
+"""
+    opnorm(A::AbstractPetscMat, p::Real = 2)
+
+The operator norm of `A` induced by the vector `p`-norm: the largest column sum of
+`|A|` for `p = 1`, the largest row sum for `p = Inf`. PETSc does not compute the
+induced 2-norm, so `p = 2` throws an `ArgumentError`, as does any other `p`.
+
+# External Links
+$(doc_external("Mat/MatNorm"))
+"""
+function LinearAlgebra.opnorm(M::AbstractPetscMat, p::Real = 2)
+    p == 1 && return norm(M, NORM_1)
+    p == Inf && return norm(M, NORM_INFINITY)
+    throw(
+        ArgumentError(
+            "PETSc computes the induced matrix norm only for p = 1 and p = Inf, got p = $p",
+        ),
+    )
 end
 
 # ====

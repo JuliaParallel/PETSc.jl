@@ -462,6 +462,8 @@ const INTERNAL = Set{Symbol}([
     :aliases_dest,
     :check_undistributed,
     :PetscVecStyle,
+    :TransposedPetscMat,
+    :seq_vec_with_array,
     :checkout_arrays,
     :checked_array,
     :flags,

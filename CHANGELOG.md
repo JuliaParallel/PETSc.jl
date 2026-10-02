@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- An MPI run started against a stale precompile cache (after an update, or a change to a `dev`ed PETSc.jl) could hang for good at 0% CPU. The rank that precompiled PETSc called `MPI.Init` inside the precompile process, which then waited for peers that never came. PETSc no longer initializes MPI while it loads; `initialize` does it, as before.
+- `A' * x`, `transpose(A) * x` and `mul!(y, A', x)` on a PETSc matrix threw a `MethodError`: the transposed products existed but could not be reached. They now run `MatMultHermitianTranspose` and `MatMultTranspose`, without forming the transpose.
+- On a `PetscVec` made on a Julia array (`PetscVec(petsclib, x)`), every norm type after the first came back as 0: `norm(v)` followed by `norm(v, LibPETSc.NORM_1)` gave 5 and then 0. PETSc saw the other norms as already cached, because such a vector starts in the same object state as PETSc's empty norm cache. The vector is now moved past that state when it is created.
+- `isapprox(v, w; rtol = 1e-8)` on two `PetscVec`s threw a `MethodError`; `atol`, `rtol` and `nans` now apply to each entry.
+- `DMDA` and `DMStag` with more than three dimensions failed with an `UndefVarError`; they throw an `ArgumentError` saying a DM has 1 to 3 dimensions.
+- `PetscVec(petsclib, comm, x)` with an `x` of the wrong element type throws an `ArgumentError` naming both types, as `PetscVec(petsclib, x)` does, instead of a `MethodError` from the generated layer.
+- `copyto!(A, S::SparseMatrixCSC)` has a docstring saying how `S` is placed (from the first row the rank owns; in parallel, the rank's diagonal block), and throws a `DimensionMismatch` when `S` does not fit.
+
+### Added
+
+- `norm(v, p)` for `p` = 1, 2 and `Inf`, and `norm(A, 2)` (Frobenius), beside the `NormType` methods; `opnorm(A, 1)` and `opnorm(A, Inf)` for the induced matrix norms.
+- `size(v, d)`, `size(A, d)`, `axes(A)` and `axes(A, d)` for any PETSc vector or matrix, with `size(_, d) == 1` beyond the last dimension as for a Julia array; `ndims` on a matrix no longer calls into PETSc.
+
 ## v0.5.2
 
 0.5.2 is what a staggered-grid solver needs from PETSc.jl: DMStag gets locations keyed by axis, stencils built from 1-based indices, assembly and halo exchange, and field views that hand a callback concretely typed arrays. TS gets what a long run needs, and Vec and Mat get the Base verbs that were missing. The rest is leaks closed in the generated layer and two performance traps, one of which made a 4-rank DMStag solve 25 times slower. Working code is most likely to notice the three behaviour changes below; the rest is additive.

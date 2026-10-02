@@ -221,16 +221,9 @@ function Base.:\(ksp::KSP, b::PetscVec{PetscLib}) where {PetscLib}
     return x
 end
 
-function Base.:\(
-    ksp::KSP{PetscLib},
-    b::Vector{PetscScalar},
-) where {PetscLib, PetscScalar}
-    PetscScalar === PetscLib.PetscScalar || throw(
-        ArgumentError(
-            "right-hand side has element type $PetscScalar, " *
-            "but the library uses $(PetscLib.PetscScalar)",
-        ),
-    )
+# Solves into a copy of `b` in the library's scalar type, so any vector works, 
+# and returns `x` with the axes of `b`
+function Base.:\(ksp::KSP{PetscLib}, b::AbstractVector) where {PetscLib}
     c = comm(ksp)
     MPI.Comm_size(c) == 1 || throw(
         ArgumentError(
@@ -239,13 +232,14 @@ function Base.:\(
         ),
     )
     PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
 
     # PETSc works on this copy of `b` in place, so it must outlive the solve
-    b_copy = PetscScalar.(b)
+    b_copy = copyto!(Vector{PetscScalar}(undef, length(b)), b)
     x = GC.@preserve b_copy begin
         petsc_b = seq_vec_with_array(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), b_copy)
         petsc_x = ksp \ petsc_b
-        x = petsc_x[:]
+        x = copyto!(similar(b, PetscScalar), petsc_x[:])
         destroy!(petsc_b)
         destroy!(petsc_x)
         x

@@ -14,6 +14,7 @@
 
 ### Added
 
+- `set_values!` (both 0-based forms), `ksp \ b`, the CSR `PetscMat(petsclib, rowptr, colval, nzval)` constructor and `dof_slot` accept any vector or integer type: other element types, views, ranges and offset arrays. Arrays already of the library's types still go to PETSc without a copy; anything else is copied once. `ksp \ b` returns `x` with the axes of `b`.
 - `norm(v, p)` for `p` = 1, 2 and `Inf`, and `norm(A, 2)` (Frobenius), beside the `NormType` methods; `opnorm(A, 1)` and `opnorm(A, Inf)` for the induced matrix norms.
 - `size(v, d)`, `size(A, d)`, `axes(A)` and `axes(A, d)` for any PETSc vector or matrix, with `size(_, d) == 1` beyond the last dimension as for a Julia array; `ndims` on a matrix no longer calls into PETSc.
 

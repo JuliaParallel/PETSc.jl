@@ -209,6 +209,10 @@ end
 
 PETSc dense array. This wraps a Julia `Matrix{PetscScalar}` object.
 
+PETSc uses the memory of `A` as its storage, so `A` must be a `Matrix` of exactly the
+library's scalar type; anything else throws an `ArgumentError`. To start from another
+array, convert it first: `PetscMat(petsclib, Matrix{PetscScalar}(B))`.
+
 Replaces v0.4's `MatSeqDense`: construction goes through the type
 (docs/src/man/naming.md §5.1).
 
@@ -742,8 +746,10 @@ end
 """
     B = PetscMat(petsclib, rowptr, colval, nzval; comm = MPI.COMM_SELF, ncols = …)
 
-Create a PETSc SeqAIJ matrix directly on the CSR arrays `rowptr`, `colval` and
-`nzval`, which PETSc borrows rather than copies.
+Create a PETSc SeqAIJ matrix on the CSR arrays `rowptr`, `colval` and `nzval`.
+Arrays that are already `Vector`s of the library's integer and scalar types are
+borrowed rather than copied; 
+any other vector (another element type, a view, an offset array) is copied once.
 
 `rowptr` and `colval` are 0-based, PETSc's own base for bulk index arrays
 (docs/src/man/naming.md §12.1). The number of rows is `length(rowptr) - 1`;
@@ -760,9 +766,9 @@ $(doc_external("Mat/MatCreateSeqAIJWithArrays"))
 """
 function LibPETSc.PetscMat(
     petsclib::PetscLibType,
-    rowptr::Vector{<:Integer},
-    colval::Vector{<:Integer},
-    nzval::Vector;
+    rowptr::AbstractVector{<:Integer},
+    colval::AbstractVector{<:Integer},
+    nzval::AbstractVector;
     comm = MPI.COMM_SELF,
     ncols::Integer = isempty(colval) ? 0 : (maximum(colval) + 1),
 )
@@ -770,9 +776,9 @@ function LibPETSc.PetscMat(
     PetscInt = inttype(petsclib)
     PetscScalar = scalartype(petsclib)
 
-    row_ptr = convert(Vector{PetscInt}, rowptr)
-    col_idx = convert(Vector{PetscInt}, colval)
-    values = convert(Vector{PetscScalar}, nzval)
+    row_ptr = c_vector(PetscInt, rowptr)
+    col_idx = c_vector(PetscInt, colval)
+    values = c_vector(PetscScalar, nzval)
 
     mat = LibPETSc.MatCreateSeqAIJWithArrays(
         petsclib,
@@ -868,17 +874,19 @@ end
 
 """
     set_values!(
-        M::AbstractPetscMat{PetscLib},
-        rows_0b::Vector{MatStencil},
-        cols_0b::Vector{MatStencil},
-        rowvals::Array{PetscScalar},
+        M::AbstractPetscMat,
+        rows_0b::AbstractVector{MatStencil},
+        cols_0b::AbstractVector{MatStencil},
+        rowvals::AbstractArray,
         insertmode::InsertMode = INSERT_VALUES;
         num_rows = length(rows_0b),
         num_cols = length(cols_0b)
     )
 
 Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
-`cols_0b`, inserting the values `rowvals`.
+`cols_0b`, inserting the values `rowvals`, read row by row in linear order.
+A `Vector{MatStencil}` and a `Vector` (or `Array`) of the library's scalar type 
+go to PETSc as they are; anything else is copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
@@ -892,36 +900,50 @@ $(doc_external("Mat/MatSetValuesStencil"))
 """
 function set_values!(
     M::AbstractPetscMat{PetscLib},
-    rows_0b::Vector{MatStencil},
-    cols_0b::Vector{MatStencil},
-    rowvals::Array{PetscScalar},
+    rows_0b::AbstractVector{MatStencil},
+    cols_0b::AbstractVector{MatStencil},
+    rowvals::AbstractArray,
     insertmode::InsertMode = INSERT_VALUES;
     num_rows = length(rows_0b),
     num_cols = length(cols_0b),
-) where {PetscLib, PetscScalar}
-    PetscScalar === PetscLib.PetscScalar || throw(
-        ArgumentError(
-            "values have element type $PetscScalar, but the library uses " *
-            "$(PetscLib.PetscScalar)",
-        ),
-    )
-    num_rows * num_cols <= length(rowvals) || throw(
-        DimensionMismatch(
-            "a $(num_rows)x$(num_cols) block needs $(num_rows * num_cols) values, " *
-            "got $(length(rowvals))",
-        ),
-    )
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
     LibPETSc.MatSetValuesStencil(
         PetscLib,
         M,
-        num_rows,
-        rows_0b,
-        num_cols,
-        cols_0b,
-        rowvals,
+        PetscInt(num_rows),
+        c_vector(MatStencil, rows_0b),
+        PetscInt(num_cols),
+        c_vector(MatStencil, cols_0b),
+        c_vector(PetscLib.PetscScalar, rowvals),
         insertmode,
     )
     return M
+end
+
+# The array PETSc reads, of element type `T`: a `Vector{T}` as it is, any other
+# `Array{T}` reshaped without a copy, anything else copied in linear order, so
+# views, ranges and offset arrays all work.
+c_vector(::Type{T}, v::Vector{T}) where {T} = v
+c_vector(::Type{T}, v::Array{T}) where {T} = vec(v)
+c_vector(::Type{T}, v::AbstractArray) where {T} = copyto!(Vector{T}(undef, length(v)), v)
+
+# A num_rows x num_cols block needs that many indices and values
+function check_block(num_rows, num_cols, nrows, ncols, nvals)
+    num_rows <= nrows && num_cols <= ncols || throw(
+        DimensionMismatch(
+            "a $(num_rows)x$(num_cols) block needs $num_rows row and $num_cols column " *
+            "indices, got $nrows and $ncols",
+        ),
+    )
+    num_rows * num_cols <= nvals || throw(
+        DimensionMismatch(
+            "a $(num_rows)x$(num_cols) block needs $(num_rows * num_cols) values, " *
+            "got $nvals",
+        ),
+    )
+    return nothing
 end
 
 
@@ -1184,17 +1206,20 @@ end
 
 """
     set_values!(
-        M::AbstractMat{PetscLib},
-        rows_0b::Vector{PetscInt},
-        cols_0b::Vector{PetscInt},
-        rowvals::Array{PetscScalar},
+        M::AbstractPetscMat,
+        rows_0b::AbstractVector{<:Integer},
+        cols_0b::AbstractVector{<:Integer},
+        rowvals::AbstractArray,
         insertmode::InsertMode = INSERT_VALUES;
         num_rows = length(rows_0b),
         num_cols = length(cols_0b)
     )
 
 Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
-`cols_0b`, inserting the values `rowvals`.
+`cols_0b`, inserting the values `rowvals`, read row by row in linear order.
+A `Vector` of the library's integer type for the indices, and a `Vector` (or `Array`)
+of its scalar type for the values, go to PETSc as they are; anything else is
+copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
@@ -1208,39 +1233,23 @@ $(doc_external("Mat/MatSetValues"))
 """
 function set_values!(
     M::AbstractPetscMat{PetscLib},
-    rows_0b::Vector{PetscInt},
-    cols_0b::Vector{PetscInt},
-    rowvals::Array{PetscScalar},
+    rows_0b::AbstractVector{<:Integer},
+    cols_0b::AbstractVector{<:Integer},
+    rowvals::AbstractArray,
     insertmode::InsertMode = INSERT_VALUES;
     num_rows = length(rows_0b),
     num_cols = length(cols_0b),
-) where {PetscLib, PetscScalar, PetscInt}
-    PetscScalar === PetscLib.PetscScalar || throw(
-        ArgumentError(
-            "values have element type $PetscScalar, " *
-            "but the library uses $(PetscLib.PetscScalar)",
-        ),
-    )
-    PetscInt === PetscLib.PetscInt || throw(
-        ArgumentError(
-            "indices have element type $PetscInt, " *
-            "but the library uses $(PetscLib.PetscInt)",
-        ),
-    )
-    num_rows * num_cols <= length(rowvals) || throw(
-        DimensionMismatch(
-            "a $(num_rows)x$(num_cols) block needs $(num_rows * num_cols) values, " *
-            "got $(length(rowvals))",
-        ),
-    )
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
     LibPETSc.MatSetValues(
         PetscLib,
         M,
         PetscInt(num_rows),
-        PetscInt.(rows_0b),
+        c_vector(PetscInt, rows_0b),
         PetscInt(num_cols),
-        PetscInt.(cols_0b),
-        rowvals,
+        c_vector(PetscInt, cols_0b),
+        c_vector(PetscLib.PetscScalar, rowvals),
         insertmode,
     )
     return M

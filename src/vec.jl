@@ -111,7 +111,9 @@ A standard, sequentially-stored serial PETSc vector, wrapping the Julia vector
 `v`.
 
 This reuses the array `v` as storage, and so `v` should not be `resize!`-ed or
-otherwise have its length modified while the PETSc object exists.
+otherwise have its length modified while the PETSc object exists. For the same
+reason `v` must be a `Vector` of exactly the library's scalar type; anything else
+throws an `ArgumentError`. Convert other arrays first: `PetscVec(petsclib, Vector{PetscScalar}(w))`.
 The vector keeps `v` alive, so `PetscVec(petsclib, [1.0, 2.0])` is safe.
 
 This should only be need to be called for more advanced uses, for most simple

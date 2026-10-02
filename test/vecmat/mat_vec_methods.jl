@@ -2,13 +2,14 @@
 # Base and Mat methods: copyto! between vectors, fill! on a matrix, row zeroing
 # for Dirichlet conditions, matrix options, the diagonal and isassembled; the
 # LinearAlgebra and array-interface contracts (transposed products, norms,
-# isapprox, size and axes).
+# isapprox, size and axes); arguments of any vector type, offset arrays included.
 
 using Test
 using PETSc
 using MPI
 using LinearAlgebra: norm, opnorm, mul!, issymmetric, ishermitian
 using SparseArrays: sparse
+using OffsetArrays: OffsetVector
 
 MPI.Initialized() || MPI.Init()
 
@@ -173,6 +174,73 @@ MPI.Initialized() || MPI.Init()
         @test M[:, :] == Matrix(S)
         @test_throws "does not fit" copyto!(M, sparse(PetscScalar[1 2 3 4; 5 6 7 8]))
         PETSc.destroy!(M)
+    end
+
+    @testset "set_values! takes any vector" begin
+        PetscInt = petsclib.PetscInt
+        reference = PetscScalar[1 2; 3 4]
+
+        A = PETSc.PetscMat(petsclib, 2, 2, 2)
+        PETSc.set_values!(A, PetscInt[0, 1], PetscInt[0, 1], PetscScalar[1, 2, 3, 4])
+        PETSc.assemble!(A)
+        @test A[:, :] == reference
+
+        # other integer and scalar types, a view and offset vectors give the same matrix
+        B = PETSc.PetscMat(petsclib, 2, 2, 2)
+        rows = OffsetVector(Int32[0, 1], -1:0)
+        cols = view([0, 1, 7], 1:2)
+        vals = OffsetVector(Float32[1, 2, 3, 4], 0:3)
+        @test PETSc.set_values!(B, rows, cols, vals) === B
+        PETSc.assemble!(B)
+        @test B[:, :] == reference
+
+        @test_throws "needs 3 row and 2 column indices" PETSc.set_values!(
+            B, PetscInt[0, 1], PetscInt[0, 1], PetscScalar[1, 2, 3, 4, 5, 6]; num_rows = 3,
+        )
+        @test_throws "needs 4 values" PETSc.set_values!(B, PetscInt[0, 1], PetscInt[0, 1], PetscScalar[1, 2, 3])
+
+        # the MatStencil form, on a 1D DMDA: the x index is the third field
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (3,), 1, 1)
+        S = PETSc.PetscMat(da)
+        stencils = OffsetVector([LibPETSc.MatStencil(0, 0, i, 0) for i in 0:1], 0:1)
+        PETSc.set_values!(S, stencils, stencils, OffsetVector(PetscScalar[1, 2, 3, 4], 0:3))
+        PETSc.assemble!(S)
+        @test S[1:2, 1:2] == reference
+        foreach(PETSc.destroy!, (S, da, B, A))
+    end
+
+    @testset "PetscMat from CSR arrays of any vector type" begin
+        expected = PetscScalar[5 0; 0 6]
+        A = PETSc.PetscMat(petsclib, [0, 1, 2], [0, 1], PetscScalar[5, 6])
+        B = PETSc.PetscMat(
+            petsclib,
+            OffsetVector(Int32[0, 1, 2], 0:2),
+            view([0, 1], :),
+            Float32[5, 6],
+        )
+        @test A[:, :] == expected
+        @test B[:, :] == expected
+        foreach(PETSc.destroy!, (B, A))
+    end
+
+    @testset "ksp \\ b for any vector" begin
+        L = laplacian()
+        ksp = PETSc.KSP(L; ksp_type = "preonly", pc_type = "lu")
+        x = ksp \ PetscScalar[1, 2, 3]
+        b = OffsetVector(PetscScalar[1, 2, 3], 0:2)
+        y = ksp \ b
+        @test axes(y) == axes(b)
+        @test parent(y) ≈ x
+        @test ksp \ Float32[1, 2, 3] ≈ x
+        PETSc.destroy!(ksp)
+        PETSc.destroy!(L)
+    end
+
+    @testset "dof_slot takes any integer" begin
+        dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (3,), (1, 1), 1)
+        loc = PETSc.element_location(dm)
+        @test PETSc.dof_slot(dm, loc, Int32(0)) == PETSc.dof_slot(dm, loc, 0)
+        PETSc.destroy!(dm)
     end
 
     PETSc.finalize(petsclib)

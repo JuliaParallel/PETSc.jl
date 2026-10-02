@@ -410,13 +410,13 @@ function global_indices(dm::DMStag{PetscLib, N}) where {PetscLib, N}
 end
 
 """
-    slot::Int = dof_slot(dm::DMStag, loc::LibPETSc.DMStagStencilLocation, dof::Int) 
+    slot::Int = dof_slot(dm::DMStag, loc::LibPETSc.DMStagStencilLocation, dof::Integer)
 
 Returns the location `slot` for a degree of freedom `dof` at a given stencil location `loc` in the DMStag `dm`.
 Note that the returned `slot` is 1-based for Julia compatibility.
 `dof` is PETSc's 0-based component number at that location, as in [`stencil`](@ref).
 """
-function dof_slot(dm::DMStag{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Int) where {PetscLib} 
+function dof_slot(dm::DMStag{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Integer) where {PetscLib}
     slot = LibPETSc.DMStagGetLocationSlot(getlib(PetscLib), dm, loc, PetscLib.PetscInt(dof))
     return slot+1
 end

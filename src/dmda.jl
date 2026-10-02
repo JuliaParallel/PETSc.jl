@@ -75,6 +75,7 @@ function DMDA(
     options...,
 ) where {PetscLib, N}
     check_initialized(getlib(PetscLib))
+    1 <= N <= 3 || throw(ArgumentError("a DMDA has 1, 2 or 3 dimensions, got $N"))
     PetscInt = inttype(PetscLib)
     stencil_type = stencil_type_enum(DMDAStencilType, stencil_type)
 

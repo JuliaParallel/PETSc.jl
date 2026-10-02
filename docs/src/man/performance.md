@@ -61,7 +61,7 @@ julia --project=. -e 'using PETSc'
 mpiexec -n 4 julia --project=. run.jl
 ```
 
-Ranks that start against a stale cache all try to precompile at once and wait on each other's lock. The run then sits at 0% CPU with no error.
+Ranks that start against a stale cache take turns: one precompiles while the others wait on its lock, so every rank pays for the compile before the run starts.
 
 ## Profiling a solve
 

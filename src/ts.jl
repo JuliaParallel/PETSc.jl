@@ -374,9 +374,9 @@ for the argument of the matching setter and would be shadowed by it, and because
 comes back is the name of a PETSc implementation rather than a Julia type
 (docs/src/man/naming.md §3).
 
-Declared here, with methods on `TS`, `KSP`, `PetscVec`, `PetscMat` and `AbstractPetscDM`.
-On a `TS` the answer is a `Symbol` (or `nothing` before a type is set); the other
-methods still answer with a `String`.
+Declared here, with methods on `TS`, `KSP`, `SNES`, `PC`, `PetscVec`, `PetscMat` and
+`AbstractPetscDM`.
+Every method answers with a `Symbol`, or `nothing` while no type has been set.
 
 # External Links
 $(doc_external("TS/TSGetType"))

@@ -93,6 +93,7 @@ include("sys.jl")
 include("dmda.jl")
 include("dmstag.jl")
 include("dmplex.jl")
+include("with_destroy.jl")    # with_destroy, track!, untrack!
 
 include("audit_names.jl")   # generated from scripts/renames.jl
 include("audit.jl")

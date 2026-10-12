@@ -919,8 +919,8 @@ function with_options(f, ts::AbstractTS{PetscLib}) where {PetscLib}
 end
 
 """
-    solve!(u::AbstractPetscVec, ts::AbstractTS)
-    solve!(ts::AbstractTS)
+    solve!(u::AbstractPetscVec, ts::AbstractTS; check = nothing)
+    solve!(ts::AbstractTS; check = nothing)
 
 Integrate `ts`, starting from `u` and returning it. 
 The second form uses the solution vector already set on `ts` and returns `ts`.
@@ -932,39 +932,58 @@ which the implicit methods see as an initial condition of zero.
 Options passed to the [`TS`](@ref) constructor are applied here, 
 once the DM and the callbacks are attached.
 
+A failed step stops the run. With `errorifstepfailed` set, PETSc's default (see
+[`set_error_if_step_fails!`](@ref)), the failure is thrown as a `PetscError`, or as a
+[`ConvergenceError`](@ref) with `check = true`. Without it the run returns and
+[`converged_reason`](@ref) says why it stopped; `check` decides what happens then:
+
+- `check = true` throws a [`ConvergenceError`](@ref).
+- `check = false` returns normally, and the caller reads `converged_reason`.
+- Not passed, it returns normally and warns once per call site that from v0.6 a
+  failed run throws.
+
 # External Links
 $(doc_external("TS/TSSolve"))
 $(doc_external("TS/TSSetSolution"))
 """
 function solve!(
     u::AbstractPetscVec{PetscLib},
-    ts::AbstractTS{PetscLib},
+    ts::AbstractTS{PetscLib};
+    check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
     LibPETSc.TSSetSolution(PetscLib, ts, u)
     with_options(ts) do
-        capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, u))
+        with_convergence_check(ts, check) do
+            capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, u))
+        end
     end
     return u
 end
 
-function solve!(ts::AbstractTS{PetscLib}) where {PetscLib}
+function solve!(ts::AbstractTS{PetscLib}; check::Union{Nothing, Bool} = nothing) where {PetscLib}
     with_options(ts) do
-        capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, nothing))
+        with_convergence_check(ts, check) do
+            capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, nothing))
+        end
     end
     return ts
 end
 
 """
-    step!(ts::AbstractTS)
+    step!(ts::AbstractTS; check = nothing)
 
 Take a single step. Unlike [`solve!`](@ref) this does not apply the options
 given to the constructor, and it ignores the time set by [`set_max_time!`](@ref).
 
+`check` treats a failed step as [`solve!`](@ref) treats a failed run.
+
 # External Links
 $(doc_external("TS/TSStep"))
 """
-function step!(ts::AbstractTS{PetscLib}) where {PetscLib}
-    capture_callback_errors(() -> LibPETSc.TSStep(getlib(PetscLib), ts))
+function step!(ts::AbstractTS{PetscLib}; check::Union{Nothing, Bool} = nothing) where {PetscLib}
+    with_convergence_check(ts, check) do
+        capture_callback_errors(() -> LibPETSc.TSStep(getlib(PetscLib), ts))
+    end
     return ts
 end
 

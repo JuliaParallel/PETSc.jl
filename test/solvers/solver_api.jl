@@ -107,7 +107,7 @@ MPI.Initialized() || MPI.Init()
         J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
         PETSc.set_snes_jacobian!(jacobian!, snes, J)
         x2 = PETSc.PetscVec(petsclib, PetscScalar[2, 3])
-        PETSc.solve!(x2, snes)
+        PETSc.solve!(x2, snes; check = false)
         @test PETSc.converged_reason(snes) == LibPETSc.SNES_DIVERGED_FUNCTION_DOMAIN
         foreach(PETSc.destroy!, (snes, J, r, x2, x))
     end

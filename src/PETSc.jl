@@ -87,6 +87,7 @@ include("ksp.jl")
 include("pc.jl")
 include("handles.jl")
 include("snes.jl")
+include("convergence.jl")    # ConvergenceError and the `check` keyword of solve!
 include("dm.jl")          
 include("sys.jl")
 include("dmda.jl")

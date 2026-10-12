@@ -183,16 +183,40 @@ function KSP(petsclib, comm, S::SparseMatrixCSC; kwargs...)
 end
 
 
+"""
+    solve!(x::PetscVec, ksp::KSP, b::PetscVec; check = nothing)
+    solve!(ksp::KSP; check = nothing)
+
+Solve the linear system of `ksp` for the right-hand side `b` into `x`, and return
+`x`. The second form uses the vectors set on `ksp` (for example by
+[`set_compute_rhs!`](@ref)) and returns `ksp`. 
+The initial guess is zero unless `-ksp_initial_guess_nonzero` is set.
+
+PETSc does not report a failed solve: `x` holds the last iterate and
+[`converged_reason`](@ref) says why it stopped. `check` decides what happens then:
+
+- `check = true` throws a [`ConvergenceError`](@ref).
+- `check = false` returns normally, and the caller reads `converged_reason`.
+- Not passed, it returns normally and warns once per call site that from v0.6 a
+  failed solve throws.
+
+# External Links
+$(doc_external("KSP/KSPSolve"))
+$(doc_external("KSP/KSPGetConvergedReason"))
+"""
 function solve!(
     x::PetscVec{PetscLib},
     ksp::KSP{PetscLib},
-    b::PetscVec{PetscLib},
+    b::PetscVec{PetscLib};
+    check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
     has_opts = !isnothing(ksp.opts)
     has_opts && push!(ksp.opts)
     try
-        capture_callback_errors() do
-            LibPETSc.KSPSolve(PetscLib, ksp, b, x)
+        with_convergence_check(ksp, check) do
+            capture_callback_errors() do
+                LibPETSc.KSPSolve(PetscLib, ksp, b, x)
+            end
         end
     finally
         has_opts && pop!(ksp.opts)
@@ -201,13 +225,16 @@ function solve!(
 end
 
 function solve!(
-    ksp::AbstractKSP{PetscLib},
+    ksp::AbstractKSP{PetscLib};
+    check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
     has_opts = hasproperty(ksp, :opts) && !isnothing(ksp.opts)
     has_opts && push!(ksp.opts)
     try
-        capture_callback_errors() do
-            LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
+        with_convergence_check(ksp, check) do
+            capture_callback_errors() do
+                LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
+            end
         end
     finally
         has_opts && pop!(ksp.opts)

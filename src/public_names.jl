@@ -5,10 +5,10 @@
 # Julia 1.12 is the minimum supported version, so this is unconditional.
 
 public @bd_fn, @jacobian_fn, @residual_fn, @simple_fn, AbstractPetscDS,
-       AbstractPetscMemBackend, KSPComputeOperatorsFn, KSPComputeRHSFn, MatOp, MatPtr,
-       MatShell, PetscDS, PetscLibType, PetscNotInitialized, SNESSetConvergenceTestFn,
-       SNESSetFunctionFn, SNESSetJacobianFn, TSMonitorSetFn, TSSetIFunctionFn,
-       TSSetIJacobianFn, TSSetRHSFunctionFn, TSSetRHSJacobianFn, VecPtr,
+       AbstractPetscMemBackend, ConvergenceError, KSPComputeOperatorsFn, KSPComputeRHSFn,
+       MatOp, MatPtr, MatShell, PetscDS, PetscLibType, PetscNotInitialized,
+       SNESSetConvergenceTestFn, SNESSetFunctionFn, SNESSetJacobianFn, TSMonitorSetFn,
+       TSSetIFunctionFn, TSSetIJacobianFn, TSSetRHSFunctionFn, TSSetRHSJacobianFn, VecPtr,
        acquire_local_array, add_boundary!, add_coarsen_hook!, add_index!,
        add_natural_boundary!, array_type, assemble!, audit_file, check_wrappers_version,
        clone, coarse_dm, comm, compose_constant_nullspace!, converged_reason, copy_disc!,

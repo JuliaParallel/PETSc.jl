@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Behaviour changes
+
+- A KSP, SNES or TS solve that stops without converging now prints a warning, once per call site, instead of returning in silence: PETSc leaves the last iterate in the solution vector, and nothing else said the solve had failed. From v0.6 such a solve should throw a `ConvergenceError`. Pass `check = false` to `solve!` to keep handling `converged_reason` yourself and silence the warning, or `check = true` to throw now.
+
 ### Fixed
 
 - An MPI run started against a stale precompile cache (after an update, or a change to a `dev`ed PETSc.jl) could hang for good at 0% CPU. The rank that precompiled PETSc called `MPI.Init` inside the precompile process, which then waited for peers that never came. PETSc no longer initializes MPI while it loads; `initialize` does it, as before.
@@ -16,6 +20,7 @@
 ### Added
 
 - `set_post_setup!(f!, pc)` runs `f!(pc)` at the end of every preconditioner setup. It is the place to configure the solvers of a `:fieldsplit`'s splits, which exist only once the preconditioner is set up, for example a multigrid on one split with interpolation operators built in Julia. `set_pre_solve!(f!, ksp)` runs `f!(ksp, b, x)` at the start of every solve. Both keep the closure with the PETSc object, and an exception thrown inside comes out of the `solve!` that ran it.
+- `ConvergenceError` and a `check` keyword on `solve!` (KSP, SNES, TS) and `step!`: with `check = true` a solve that stops without converging throws a `ConvergenceError` carrying the solver, its converged reason, the iteration count and, for a SNES, the last residual norm. Its message says in words why the solver stopped and which options show more. A TS step that fails while `errorifstepfailed` is set (the default) throws a `ConvergenceError` with `check = true`, and the `PetscError` it threw before otherwise.
 - `set_values!` (both 0-based forms), `ksp \ b`, the CSR `PetscMat(petsclib, rowptr, colval, nzval)` constructor and `dof_slot` accept any vector or integer type: other element types, views, ranges and offset arrays. Arrays already of the library's types still go to PETSc without a copy; anything else is copied once. `ksp \ b` returns `x` with the axes of `b`.
 - `norm(v, p)` for `p` = 1, 2 and `Inf`, and `norm(A, 2)` (Frobenius), beside the `NormType` methods; `opnorm(A, 1)` and `opnorm(A, Inf)` for the induced matrix norms.
 - `size(v, d)`, `size(A, d)`, `axes(A)` and `axes(A, d)` for any PETSc vector or matrix, with `size(_, d) == 1` beyond the last dimension as for a Julia array; `ndims` on a matrix no longer calls into PETSc.

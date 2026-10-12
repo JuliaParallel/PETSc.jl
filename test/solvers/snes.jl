@@ -270,7 +270,7 @@ using .PETScTestUtils: without_petsc_traceback
         end
         x5 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
         b5 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([0, 0]))
-        PETSc.solve!(x5, snes5, b5)
+        PETSc.solve!(x5, snes5, b5; check = false)
         @test LibPETSc.SNESGetConvergedReason(petsclib, snes5) == LibPETSc.SNES_DIVERGED_LOCAL_MIN
 
         # set_convergence_test! leaves user_ctx alone, so the residual and Jacobian

@@ -121,7 +121,7 @@ MPI.Initialized() || MPI.Init()
         ts, J = implicit_ts(no_root!, exp; snes_max_it = 3)
         @test PETSc.set_error_if_step_fails!(ts, false) === ts
         @test PETSc.set_max_snes_failures!(ts, 3) === ts
-        PETSc.solve!(u, ts)
+        PETSc.solve!(u, ts; check = false)
         @test PETSc.converged_reason(ts) == LibPETSc.TS_DIVERGED_NONLINEAR_SOLVE
         @test PETSc.snes_failures(ts) == 3
 
@@ -142,7 +142,7 @@ MPI.Initialized() || MPI.Init()
         ts, J = implicit_ts(domain_error!, x -> one(x))
         PETSc.set_error_if_step_fails!(ts, false)
         @test PETSc.set_max_step_rejections!(ts, 2) === ts
-        PETSc.solve!(u, ts)
+        PETSc.solve!(u, ts; check = false)
         @test PETSc.converged_reason(ts) == LibPETSc.TS_DIVERGED_STEP_REJECTED
         @test PETSc.snes_failures(ts) == 0
         @test PETSc.step_rejections(ts) > 2

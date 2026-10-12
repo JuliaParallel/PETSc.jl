@@ -385,10 +385,31 @@ function set_user_ctx!(snes::AbstractSNES, ctx)
     return snes
 end
 
+"""
+    solve!(x::AbstractPetscVec, snes::SNES, b = nothing; check = nothing)
+
+Solve the nonlinear system of `snes` starting from `x`, which holds the solution on
+return, and return `x`. `b` is an optional right-hand side: the system solved is
+F(x) = b. Options passed to the [`SNES`](@ref) constructor are applied here, once
+the DM and the callbacks are attached.
+
+PETSc does not report a failed solve: `x` holds the last iterate and
+[`converged_reason`](@ref) says why it stopped. `check` decides what happens then:
+
+- `check = true` throws a [`ConvergenceError`](@ref).
+- `check = false` returns normally, and the caller reads `converged_reason`.
+- Not passed, it returns normally and warns once per call site that from v0.6 a
+  failed solve throws.
+
+# External Links
+$(doc_external("SNES/SNESSolve"))
+$(doc_external("SNES/SNESGetConvergedReason"))
+"""
 function solve!(
     x::AbstractPetscVec{PetscLib},
     snes::AbstractSNES{PetscLib},
-    b::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing,
+    b::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing;
+    check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
     has_opts = !isnothing(snes.opts)
     if has_opts
@@ -400,8 +421,10 @@ function solve!(
         LibPETSc.SNESSetFromOptions(PetscLib, snes)
     end
     try
-        capture_callback_errors() do
-            LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
+        with_convergence_check(snes, check) do
+            capture_callback_errors() do
+                LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
+            end
         end
     finally
         has_opts && pop!(snes.opts)

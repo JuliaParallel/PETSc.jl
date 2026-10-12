@@ -391,7 +391,6 @@ const INTERNAL = Set{Symbol}([
     :petsc_program_name,
     :errorcode,
     :run_callback,
-    :with_options,
     # the underscore stays: inner worker beside a wrapper of the same name
     :_mul!,
     :_zero_rows_vecs,
@@ -473,6 +472,14 @@ const INTERNAL = Set{Symbol}([
     :caller_location,
     :warn_divergence,
     :SOURCE_DIR,
+    :options_stacks,
+    :options_stack,
+    :apply_options!,
+    :OPTIONS_AT,
+    :check_options_at,
+    :options_due,
+    :with_solver_options,
+    :store_options!,
     :KSP_REASON_TEXT,
     :SNES_REASON_TEXT,
     :TS_REASON_TEXT,
@@ -616,6 +623,7 @@ const UNCHANGED_PUBLIC = Symbol[
     # init.jl / options.jl
     :PetscNotInitialized,
     :ConvergenceError,       # new in v0.5.3
+    :with_options,           # new in v0.5.3
     :initialize,
     :finalize,
     :scalartype,

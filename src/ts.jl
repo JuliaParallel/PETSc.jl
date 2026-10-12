@@ -180,6 +180,8 @@ mutable struct TSState <: ObjectState
     post_step!::Any
     user_ctx::Any
     opts::Any
+    options_at::Symbol
+    options_applied::Bool
     alive::Bool
 end
 TSState() = TSState(
@@ -192,6 +194,8 @@ TSState() = TSState(
     _ -> error("post_step! not defined"),
     nothing,
     nothing,
+    :each_solve,
+    false,
     true,
 )
 state_type(::Type{<:TS}) = TSState
@@ -242,14 +246,23 @@ function Base.show(io::IO, ts::AbstractTS{PetscLib}) where {PetscLib}
 end
 
 """
-    TS(petsclib, comm::MPI.Comm; prefix = "", options...)
+    TS(petsclib, comm::MPI.Comm; prefix = "", options_at = :each_solve, options...)
 
 Create a PETSc time stepper on the communicator `comm`.
 
-Options are stored and applied in [`solve!`](@ref) rather than here, so that a
-DM and callbacks attached after construction are visible to `TSSetFromOptions`.
-They are applied on every `solve!`, and override a setting made in code for the
-same option. [`step!`](@ref) does not apply them.
+`options_at` decides when the options are applied, through `TSSetFromOptions`:
+
+- `:each_solve` (the default): at the start of every [`solve!`](@ref), once the DM
+  and the callbacks are attached. They override a setting made in code for the
+  same option.
+- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!` or [`step!`](@ref). A setting
+  made in code after that overrides them.
+- `:construction`: here, once. A DM or callback attached afterwards is not
+  visible to them.
+
+The options stay pushed during `solve!`, and during `setup!` and `step!` too unless
+`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
+them (see [`with_options`](@ref)).
 
 `exact_final_time` defaults to `TS_EXACTFINALTIME_MATCHSTEP`, so the last step
 lands on the time set by [`set_max_time!`](@ref). 
@@ -268,6 +281,7 @@ function TS(
     comm::MPI.Comm;
     prefix::String = "",
     exact_final_time::LibPETSc.TSExactFinalTimeOption = LibPETSc.TS_EXACTFINALTIME_MATCHSTEP,
+    options_at::Symbol = :each_solve,
     options...,
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -281,9 +295,7 @@ function TS(
 
     LibPETSc.TSSetExactFinalTime(petsclib, ts, exact_final_time)
 
-    if !isempty(options)
-        ts.opts = PetscOptions(petsclib; options...)
-    end
+    store_options!(ts, petsclib, options_at, options)
 
     if MPI.Comm_size(comm) == 1
         finalizer(destroy!, ts)
@@ -863,13 +875,16 @@ ksp(ts::AbstractTS{PetscLib}) where {PetscLib} =
     setup!(ts::AbstractTS)
 
 Complete the setup of `ts`. [`solve!`](@ref) calls this, so it is only needed
-when the setup must happen at a controlled point.
+when the setup must happen at a controlled point. Applies the constructor options
+first under `options_at = :first_solve` (see [`TS`](@ref)).
 
 # External Links
 $(doc_external("TS/TSSetUp"))
 """
 function setup!(ts::AbstractTS{PetscLib}) where {PetscLib}
-    capture_callback_errors(() -> LibPETSc.TSSetUp(getlib(PetscLib), ts))
+    with_solver_options(ts; solving = false) do
+        capture_callback_errors(() -> LibPETSc.TSSetUp(getlib(PetscLib), ts))
+    end
     return ts
 end
 
@@ -905,19 +920,6 @@ LibPETSc.@for_petsc function LibPETSc.TSSolve(
     return nothing
 end
 
-# Options given to the constructor are applied here rather than there, so that
-# a DM and callbacks attached in between are visible to `TSSetFromOptions`.
-function with_options(f, ts::AbstractTS{PetscLib}) where {PetscLib}
-    isnothing(ts.opts) && return f()
-    push!(ts.opts)
-    try
-        LibPETSc.TSSetFromOptions(PetscLib, ts)
-        return f()
-    finally
-        pop!(ts.opts)
-    end
-end
-
 """
     solve!(u::AbstractPetscVec, ts::AbstractTS; check = nothing)
     solve!(ts::AbstractTS; check = nothing)
@@ -929,8 +931,8 @@ The second form uses the solution vector already set on `ts` and returns `ts`.
 Passing it to `TSSolve` alone leaves the stepper reading an uninitialized solution vector,
 which the implicit methods see as an initial condition of zero.
 
-Options passed to the [`TS`](@ref) constructor are applied here, 
-once the DM and the callbacks are attached.
+The options passed to the [`TS`](@ref) constructor are applied here by default;
+its `options_at` keyword says when.
 
 A failed step stops the run. With `errorifstepfailed` set, PETSc's default (see
 [`set_error_if_step_fails!`](@ref)), the failure is thrown as a `PetscError`, or as a
@@ -952,7 +954,7 @@ function solve!(
     check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
     LibPETSc.TSSetSolution(PetscLib, ts, u)
-    with_options(ts) do
+    with_solver_options(ts; solving = true) do
         with_convergence_check(ts, check) do
             capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, u))
         end
@@ -961,7 +963,7 @@ function solve!(
 end
 
 function solve!(ts::AbstractTS{PetscLib}; check::Union{Nothing, Bool} = nothing) where {PetscLib}
-    with_options(ts) do
+    with_solver_options(ts; solving = true) do
         with_convergence_check(ts, check) do
             capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, nothing))
         end
@@ -972,8 +974,9 @@ end
 """
     step!(ts::AbstractTS; check = nothing)
 
-Take a single step. Unlike [`solve!`](@ref) this does not apply the options
-given to the constructor, and it ignores the time set by [`set_max_time!`](@ref).
+Take a single step. It ignores the time set by [`set_max_time!`](@ref), and
+applies the options given to the constructor only under `options_at = :first_solve`,
+when it is the first call to do so (see [`TS`](@ref)).
 
 `check` treats a failed step as [`solve!`](@ref) treats a failed run.
 
@@ -981,8 +984,10 @@ given to the constructor, and it ignores the time set by [`set_max_time!`](@ref)
 $(doc_external("TS/TSStep"))
 """
 function step!(ts::AbstractTS{PetscLib}; check::Union{Nothing, Bool} = nothing) where {PetscLib}
-    with_convergence_check(ts, check) do
-        capture_callback_errors(() -> LibPETSc.TSStep(getlib(PetscLib), ts))
+    with_solver_options(ts; solving = false) do
+        with_convergence_check(ts, check) do
+            capture_callback_errors(() -> LibPETSc.TSStep(getlib(PetscLib), ts))
+        end
     end
     return ts
 end

@@ -25,7 +25,7 @@ ts = PETSc.TS(petsclib, MPI.COMM_WORLD;
 )
 ```
 
-Options given here are held and applied inside [`PETSc.solve!`](@ref) rather than at construction, so a DM and the callbacks attached afterwards are in place before PETSc reads them. Until then the object has no type, and [`PETSc.type_name`](@ref) answers `nothing`.
+Options given here are held and applied inside [`PETSc.solve!`](@ref) rather than at construction, so a DM and the callbacks attached afterwards are in place before PETSc reads them. Until then the object has no type, and [`PETSc.type_name`](@ref) answers `nothing`. They are applied again on every `solve!`; `options_at = :first_solve` applies them once, and `:construction` in the constructor (see [When the options apply](@ref) in the KSP page).
 
 On a communicator of size 1 the garbage collector calls [`PETSc.destroy!`](@ref). On a larger one, destruction is yours to do, since collection is asynchronous and the call is collective.
 

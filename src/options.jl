@@ -171,14 +171,50 @@ function parse_options(args::Vector{String})
     return NamedTuple(opts)
 end
 
+# PETSc's options stack is a linked list through the pushed objects, so pushing
+# one that is already on it breaks the chain: the next pops fail and the global
+# database is lost. These mirror the stack per library to refuse that.
+const options_stacks = IdDict{Any, Vector{Ptr{Cvoid}}}()
+options_stack(::Type{PetscLib}) where {PetscLib} =
+    get!(() -> Ptr{Cvoid}[], options_stacks, PetscLib)
+
 function Base.push!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
+    stack = options_stack(PetscLib)
+    opts.ptr in stack && throw(ArgumentError(
+        "these options are already pushed; PETSc's options stack can hold an " *
+        "options database only once. Use `with_options`, which skips the push " *
+        "when the options are already on top."))
     LibPETSc.PetscOptionsPush(PetscLib, opts)
+    push!(stack, opts.ptr)
     return nothing
 end
 
 function Base.pop!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     LibPETSc.PetscOptionsPop(PetscLib)
+    stack = options_stack(PetscLib)
+    isempty(stack) || pop!(stack)
     return nothing
+end
+
+"""
+    with_options(f, opts::PetscOptions)
+
+Run `f()` with `opts` pushed onto PETSc's options stack, so that PETSc reads its
+options from `opts`, and pop it again even if `f` throws. Returns the result of
+`f`. If `opts` is already on top of the stack, `f` runs without a second push.
+
+# External Links
+$(doc_external("Sys/PetscOptionsPush"))
+"""
+function with_options(f, opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
+    stack = options_stack(PetscLib)
+    !isempty(stack) && last(stack) == opts.ptr && return f()
+    push!(opts)
+    try
+        return f()
+    finally
+        pop!(opts)
+    end
 end
 
 """
@@ -259,31 +295,91 @@ Apply PETSc's options to the `KSP`, `SNES` or `TS` `obj`: those given to its
 constructor, then the global database, so a command-line option given for the
 object's prefix (see [`set_options_prefix!`](@ref)) is read too. Returns `obj`.
 
-`solve!` does this itself; call it to configure `obj` earlier, for example a
-nested solver before its first use.
+The constructor's `options_at` keyword decides when the solver does this itself;
+call it to configure `obj` at another point, for example a nested solver before
+its first use. With `options_at = :first_solve`, a call here counts as that first
+application.
 
 # External Links
 $(doc_external("KSP/KSPSetFromOptions"))
 $(doc_external("SNES/SNESSetFromOptions"))
 $(doc_external("TS/TSSetFromOptions"))
 """
-function set_from_options! end
+function set_from_options!(obj::Union{LibPETSc.AbstractKSP, LibPETSc.AbstractSNES, LibPETSc.AbstractTS})
+    with_options(() -> apply_options!(obj), obj)
+    return obj
+end
 
 for (T, setfromoptions) in (
     (:AbstractKSP, :KSPSetFromOptions),
     (:AbstractSNES, :SNESSetFromOptions),
     (:AbstractTS, :TSSetFromOptions),
 )
-    @eval function set_from_options!(obj::LibPETSc.$T{PetscLib}) where {PetscLib}
-        opts = obj.opts
-        isnothing(opts) || push!(opts)
-        try
-            LibPETSc.$setfromoptions(getlib(PetscLib), obj)
-        finally
-            isnothing(opts) || pop!(opts)
-        end
+    @eval function apply_options!(obj::LibPETSc.$T{PetscLib}) where {PetscLib}
+        LibPETSc.$setfromoptions(getlib(PetscLib), obj)
+        obj.options_applied = true
         return obj
     end
+end
+
+"""
+    with_options(f, obj)
+
+Run `f()` with the options given to the constructor of `obj`, a `KSP`, `SNES` or
+`TS`, pushed onto PETSc's options stack, and return the result of `f`. 
+Nothing is pushed when the constructor got no options.
+
+PETSc reads some options only when it creates a sub-object, such as the solvers
+of a fieldsplit preconditioner during setup. A call that triggers that outside
+`solve!`, for example `KSPSetUp` through `LibPETSc`, sees the constructor options
+only inside this block.
+"""
+function with_options(f, obj::Union{LibPETSc.AbstractKSP, LibPETSc.AbstractSNES, LibPETSc.AbstractTS})
+    opts = obj.opts
+    isnothing(opts) && return f()
+    return with_options(f, opts)
+end
+
+# When the constructor options of a KSP, SNES or TS are applied
+# ----------------------------------------------------------------------------
+
+const OPTIONS_AT = (:construction, :each_solve, :first_solve)
+
+function check_options_at(options_at::Symbol)
+    options_at in OPTIONS_AT || throw(ArgumentError(
+        "options_at must be :construction, :each_solve or :first_solve, got :$options_at"))
+    return options_at
+end
+
+# Whether `XSetFromOptions` runs now. `solving` is true in `solve!` and false in
+# `setup!` and `step!`, which apply the options only under `:first_solve`.
+function options_due(obj, solving::Bool)
+    isnothing(obj.opts) && return false
+    obj.options_at === :each_solve  && return solving
+    obj.options_at === :first_solve && return !obj.options_applied
+    return false
+end
+
+# Run `f()` with the constructor options pushed, applying them first when due.
+# Under `:each_solve` the options belong to `solve!` alone: `setup!` and `step!`
+# neither push nor apply them.
+function with_solver_options(f, obj; solving::Bool)
+    !solving && obj.options_at === :each_solve && return f()
+    return with_options(obj) do
+        options_due(obj, solving) && apply_options!(obj)
+        f()
+    end
+end
+
+# Apply the options of a freshly built solver if `options_at = :construction`,
+# and record the choice for later solves.
+function store_options!(obj, petsclib, options_at::Symbol, options)
+    check_options_at(options_at)
+    isempty(options) && return obj
+    obj.options_at = options_at
+    obj.opts = PetscOptions(petsclib; options...)
+    options_at === :construction && set_from_options!(obj)
+    return obj
 end
 
 """

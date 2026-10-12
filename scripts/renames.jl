@@ -472,6 +472,7 @@ const INTERNAL = Set{Symbol}([
     :caller_location,
     :warn_divergence,
     :SOURCE_DIR,
+    :DestroyList,
     :options_stacks,
     :options_stack,
     :apply_options!,
@@ -624,6 +625,9 @@ const UNCHANGED_PUBLIC = Symbol[
     :PetscNotInitialized,
     :ConvergenceError,       # new in v0.5.3
     :with_options,           # new in v0.5.3
+    :with_destroy,           # new in v0.5.3
+    :track!,                 # new in v0.5.3
+    :untrack!,               # new in v0.5.3
     :initialize,
     :finalize,
     :scalartype,

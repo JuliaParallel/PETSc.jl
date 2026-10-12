@@ -401,7 +401,8 @@ The exceptions:
 
 - A function that releases what it is given returns `nothing`, like `close`: `destroy!`, `restore_local_arrays!`.
 - A function that mutates package state only returns `nothing`: `set_library!`, and `push!`/`pop!` on a `PetscOptions`, which change PETSc's global options stack.
-- A function whose first argument is a `do` block returns the block's result, like `open(f, file)` and `lock(f, l)`: `with_local_array!`.
+- A function whose first argument is a `do` block returns the block's result, like `open(f, file)` and `lock(f, l)`: `with_local_array!`, `with_destroy`.
+- A function that files an object away for later returns that object, like `get!`, so it can wrap a constructor: `track!(list, obj)` and `untrack!(list, obj)` return `obj`, not `list`.
 
 A function that writes a file and mutates no argument takes no `!`, like `write`, `serialize` and FileIO's `save`: `save_vtk`, `vtk_merge_tensor`. From 0.5.1; before it, most setters returned `nothing`.
 
@@ -943,6 +944,7 @@ They are listed because the rename table is the register of what is public, not 
 | `check_initialized` | unchanged (internal, see [§14](#14.-Errors)) |
 | `tao_usable_after_reinitialize` | unchanged (a platform predicate, not a PETSc accessor) |
 | `isdestroyable` | unchanged (internal) |
+| — | `with_destroy(f)`, `track!`, `untrack!`, new in 0.5.3: destroy a group of objects together, in reverse order, when a block ends ([§18.2](#18.2-Ownership)) |
 
 #### Internals
 
@@ -1053,7 +1055,7 @@ Everything else Julia keeps about an object (its callbacks, the user context, th
 
 ### 18.2 Ownership
 
-Every constructor returns `own = true` and, on a one-process communicator, attaches a finalizer, so the object is freed when it is collected. On more than one process `XDestroy` is collective and a finalizer runs at a different moment on each rank, so there the caller calls `destroy!`. Readers return `own = false` and attach nothing, and `destroy!` on what they return does nothing. `owns(obj)` answers the field.
+Every constructor returns `own = true` and, on a one-process communicator, attaches a finalizer, so the object is freed when it is collected. On more than one process `XDestroy` is collective and a finalizer runs at a different moment on each rank, so there the caller calls `destroy!`. Readers return `own = false` and attach nothing, and `destroy!` on what they return does nothing. `owns(obj)` answers the field. `with_destroy` keeps that bookkeeping for a group of objects: it destroys every object `track!` registered, in reverse order, when its block ends.
 
 This is [§3.3](#3.3-What-an-accessor-hands-back) enforced by the value for every handle. 0.5.0 enforced it for `VecPtr`, `MatPtr` and the DM types; `snes(ts)` and `ksp(ts)` were borrowed in their docstrings only, and `destroy!` on them destroyed the solver the `TS` still used.
 

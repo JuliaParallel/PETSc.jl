@@ -50,6 +50,7 @@ if selected("core")
     include("core/handles.jl")          # destroy! on IS, AO, PF, Tao; ISColoringGetIS ownership
     include("core/handle_arrays.jl")    # C arrays of handles go back to their release function
     include("core/lifetimes.jl")        # arrays a Vec or Mat wraps live as long as it does
+    include("core/with_destroy.jl")      # with_destroy destroys what it tracks, also after an exception
     include("core/deprecations.jl")     # the v0.4 names still work and warn (the only file calling them)
     include("core/performance.jl")      # allocations per call, flat in the problem size
     include("core/api_surface.jl")      # scripts/api_surface.jl --check: the register covers the surface
@@ -130,7 +131,8 @@ end
 if selected("mpi")
     @testset "MPI Tests" begin
         for file in ("mpi/vec.jl", "mpi/mat.jl", "solvers/ksp.jl", "dm/dmstag.jl",
-                     "mpi/dmstag_halos.jl", "mpi/blas_threads.jl")
+                     "mpi/dmstag_halos.jl", "mpi/blas_threads.jl",
+                     "core/with_destroy.jl")
             @test run_separately(file; nranks = 4)
         end
     end

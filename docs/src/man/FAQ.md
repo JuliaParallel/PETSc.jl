@@ -29,8 +29,17 @@ That is very possible. If you provide a *short* minimum working example (MWE), f
 
 ## 3. What about the garbage collector in Julia?
 Using the GC in combination with MPI code is a tricky business. The users are therefore responsible to free PETSc objects in the code, as shown in the various examples. We have some help for that:
-1. The julia function `PETSc.audit_file("path/to/your/file.jl")` which scans your julia file and tries to guess whether objects are destroyed.
-2. You can initialize the PETSc library with `log_view=true`. At the end of the code, it will give an  
+1. `PETSc.with_destroy` destroys a group of objects when a block ends, also when it throws, in reverse order, so every rank does it the same way:
+   ```julia
+   PETSc.with_destroy() do list
+       dm  = PETSc.track!(list, PETSc.DMStag(petsclib, comm, ...))
+       ksp = PETSc.track!(list, PETSc.KSP(dm))
+       ...
+   end
+   ```
+   An object that should outlive the block is taken out with `PETSc.untrack!(list, obj)`.
+2. The julia function `PETSc.audit_file("path/to/your/file.jl")` which scans your julia file and tries to guess whether objects are destroyed.
+3. You can initialize the PETSc library with `log_view=true`. At the end of the code, it will give an  
 
 ## 4. Is it compatible with GPUs?
 The precompiled `PETSc_jll` binaries are currently not compatible with GPUs. You can, however, use your own PETSc compilation and things should be fine. 

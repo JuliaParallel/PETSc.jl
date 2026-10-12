@@ -11,6 +11,15 @@ Modules = [PETSc]
 Pages   = ["init.jl"]
 ```
 
+## Destroying objects together
+
+On more than one process nothing frees a PETSc object but `destroy!`, called on every rank in the same order. `with_destroy` does that for every object registered with `track!` when its block ends.
+
+```@autodocs
+Modules = [PETSc]
+Pages   = ["with_destroy.jl"]
+```
+
 ## Options
 
 PETSc uses an options database to configure solvers and other objects at runtime. These functions provide access to the options system.

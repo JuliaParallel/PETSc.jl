@@ -320,6 +320,29 @@ MPI.Initialized() || MPI.Init()
     end
 end
 
+@testset "DMStag field decomposition" begin
+    comm = MPI.COMM_SELF
+    for petsclib in PETSc.petsclibs[1:min(4, length(PETSc.petsclibs))]
+        PETSc.initialize(petsclib)
+        # staggered Stokes layout: velocities on faces, pressure in cells
+        for (bnd, n, dofs) in (((PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE), (4, 3), (0, 1, 1)),
+                               (ntuple(_ -> PETSc.DM_BOUNDARY_NONE, 3), (3, 3, 2), (0, 0, 1, 1)))
+            dm = PETSc.DMStag(petsclib, comm, bnd, n, dofs, 1, PETSc.DMSTAG_STENCIL_BOX)
+            len, names, iss, dms = LibPETSc.DMCreateFieldDecomposition(petsclib, dm)
+            @test len == 2
+            @test names == ["face", "element"]
+            @test length(iss) == length(dms) == 2
+            nfaces = sum(prod(n .+ (1:length(n) .== d)) for d in 1:length(n))
+            @test LibPETSc.ISGetSize(petsclib, iss[1]) == nfaces
+            @test LibPETSc.ISGetSize(petsclib, iss[2]) == prod(n)
+            foreach(PETSc.destroy!, iss)
+            foreach(PETSc.destroy!, dms)
+            PETSc.destroy!(dm)
+        end
+        PETSc.finalize(petsclib)
+    end
+end
+
 @testset "DMStag 1D: boundary types, keywords, local indices" begin
 
     comm = MPI.COMM_WORLD

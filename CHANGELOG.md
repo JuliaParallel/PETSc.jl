@@ -11,9 +11,11 @@
 - `DMDA` and `DMStag` with more than three dimensions failed with an `UndefVarError`; they throw an `ArgumentError` saying a DM has 1 to 3 dimensions.
 - `PetscVec(petsclib, comm, x)` with an `x` of the wrong element type throws an `ArgumentError` naming both types, as `PetscVec(petsclib, x)` does, instead of a `MethodError` from the generated layer.
 - `copyto!(A, S::SparseMatrixCSC)` has a docstring saying how `S` is placed (from the first row the rank owns; in parallel, the rank's diagonal block), and throws a `DimensionMismatch` when `S` does not fit.
+- `LibPETSc.DMCreateFieldDecomposition` returned the field names as one garbled string: it passed PETSc's `char ***` as a `char **`. It now returns a `Vector{String}` (for a DMStag Stokes layout `["face", "element"]`, the names PCFIELDSPLIT uses as option prefixes) and frees the names and the array. `LibPETSc.DMCreateDomainDecomposition` leaked its subdomain names; they are freed too.
 
 ### Added
 
+- `set_post_setup!(f!, pc)` runs `f!(pc)` at the end of every preconditioner setup. It is the place to configure the solvers of a `:fieldsplit`'s splits, which exist only once the preconditioner is set up, for example a multigrid on one split with interpolation operators built in Julia. `set_pre_solve!(f!, ksp)` runs `f!(ksp, b, x)` at the start of every solve. Both keep the closure with the PETSc object, and an exception thrown inside comes out of the `solve!` that ran it.
 - `set_values!` (both 0-based forms), `ksp \ b`, the CSR `PetscMat(petsclib, rowptr, colval, nzval)` constructor and `dof_slot` accept any vector or integer type: other element types, views, ranges and offset arrays. Arrays already of the library's types still go to PETSc without a copy; anything else is copied once. `ksp \ b` returns `x` with the axes of `b`.
 - `norm(v, p)` for `p` = 1, 2 and `Inf`, and `norm(A, 2)` (Frobenius), beside the `NormType` methods; `opnorm(A, 1)` and `opnorm(A, Inf)` for the induced matrix norms.
 - `size(v, d)`, `size(A, d)`, `axes(A)` and `axes(A, d)` for any PETSc vector or matrix, with `size(_, d) == 1` beyond the last dimension as for a Julia array; `ndims` on a matrix no longer calls into PETSc.

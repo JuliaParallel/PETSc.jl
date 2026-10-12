@@ -4,12 +4,14 @@ import .LibPETSc: AbstractKSP, CKSP, KSP, AbstractPetscDM   # KSP methods below 
 mutable struct KSPState <: ObjectState
     computerhs!::Any
     computeops!::Any
+    pre_solve!::Any
     opts::Any
     alive::Bool
 end
 KSPState() = KSPState(
     x -> error("computerhs! not defined"),
     x -> error("computeops! not defined"),
+    nothing,
     nothing,
     true,
 )
@@ -214,6 +216,55 @@ function solve!(
 end
 
 LinearAlgebra.ldiv!(x::PetscVec{PetscLib}, ksp::KSP{PetscLib}, b::PetscVec{PetscLib}) where {PetscLib} = solve!(x, ksp, b)
+
+"""
+    set_pre_solve!(pre_solve!, ksp::AbstractKSP)
+
+Call `pre_solve!(ksp, b, x)` at the start of every solve of `ksp`, before the
+first iteration. `b` is the right-hand side and `x` the initial guess, both
+borrowed. Returns `ksp`. A second call replaces the first callback.
+
+It runs before the preconditioner is set up for that solve, so the parts of a
+composite preconditioner aren't configured yet. To change those, use
+[`set_post_setup!`](@ref) on the preconditioner.
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax works.
+
+$(doc_callback())
+
+# External Links
+$(doc_external("KSP/KSPSetPreSolve"))
+"""
+function set_pre_solve! end
+
+struct KSPSetPreSolveFn{PetscLib} end
+function (::KSPSetPreSolveFn{PetscLib})(
+    ksp_ptr::CKSP,
+    b_ptr::CVec,
+    x_ptr::CVec,
+    state_ptr::Ptr{Cvoid},
+) where {PetscLib}
+    return run_callback("pre solve!") do
+        age = getlib(PetscLib).age
+        state = unsafe_pointer_to_objref(state_ptr)::KSPState
+        state.pre_solve!(
+            KSP{PetscLib}(ksp_ptr, age; own = false),
+            PetscVec{PetscLib}(b_ptr, age; own = false),
+            PetscVec{PetscLib}(x_ptr, age; own = false),
+        )
+    end
+end
+
+LibPETSc.@for_petsc function set_pre_solve!(pre_solve!, ksp::AbstractKSP{$PetscLib})
+    object_state!(ksp).pre_solve! = pre_solve!
+    fptr = @cfunction(
+        KSPSetPreSolveFn{$PetscLib}(),
+        LibPETSc.PetscErrorCode,
+        (CKSP, CVec, CVec, Ptr{Cvoid})
+    )
+    LibPETSc.KSPSetPreSolve($PetscLib, ksp, fptr, state_pointer(ksp))
+    return ksp
+end
 
 function Base.:\(ksp::KSP, b::PetscVec{PetscLib}) where {PetscLib}
     x = similar(b)

@@ -439,6 +439,8 @@ const INTERNAL = Set{Symbol}([
     :DM_ACTIVE_PARTS,
     :PCShellSetApplyFn,      # a trampoline type (§18.6)
     :PCShellSetSetUpFn,
+    :PCSetPostSetUpFn,
+    :KSPSetPreSolveFn,
     :_taoterm_resettable,
     :_reset_stale_register_flags,
     :_PETSC_ERR_LIB,
@@ -578,6 +580,8 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_fieldsplit_is!,     # new in v0.5.1
     :set_shell_apply!,       # new in v0.5.1
     :set_shell_setup!,       # new in v0.5.1
+    :set_post_setup!,        # new in v0.5.3
+    :set_pre_solve!,         # new in v0.5.3
     :iteration_number,       # new in v0.5.1
     :function_norm,          # new in v0.5.1
     :set_function_domain_error!,  # new in v0.5.1

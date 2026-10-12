@@ -4,8 +4,6 @@ module PETSc
 
 using MPI, LinearAlgebra, SparseArrays, OffsetArrays, Preferences
 
-MPI.Initialized() || MPI.Init()
-
 function petsc_link(fname)
 """
 [`$fname`](https://petsc.org/release/docs/manualpages/$fname.html)

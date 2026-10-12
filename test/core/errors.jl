@@ -66,6 +66,18 @@ MPI.Initialized() || MPI.Init()
             wrong = PetscScalar === Float64 ? Float32 : Float64
             @test_throws ArgumentError PETSc.PetscVec(petsclib, wrong[1, 2, 3])
             @test_throws ArgumentError PETSc.PetscMat(petsclib, wrong[1 2; 3 4])
+            @test_throws "array has element type" PETSc.PetscVec(petsclib, MPI.COMM_SELF, wrong[1, 2, 3])
+            @test_throws ArgumentError PETSc.PetscVec(petsclib, MPI.COMM_SELF, wrong[1, 2, 3])
+        end
+
+        @testset "DMs have 1 to 3 dimensions ($PetscScalar)" begin
+            none = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, 4)
+            @test_throws "a DMDA has 1, 2 or 3 dimensions, got 4" PETSc.DMDA(
+                petsclib, MPI.COMM_SELF, none, (3, 3, 3, 3), 1, 1,
+            )
+            @test_throws "a DMStag has 1, 2 or 3 dimensions, got 4" PETSc.DMStag(
+                petsclib, MPI.COMM_SELF, none, (3, 3, 3, 3), (1, 0, 0, 0, 0), 1,
+            )
         end
 
         @testset "size mismatch ($PetscScalar)" begin

@@ -111,7 +111,9 @@ A standard, sequentially-stored serial PETSc vector, wrapping the Julia vector
 `v`.
 
 This reuses the array `v` as storage, and so `v` should not be `resize!`-ed or
-otherwise have its length modified while the PETSc object exists.
+otherwise have its length modified while the PETSc object exists. For the same
+reason `v` must be a `Vector` of exactly the library's scalar type; anything else
+throws an `ArgumentError`. Convert other arrays first: `PetscVec(petsclib, Vector{PetscScalar}(w))`.
 The vector keeps `v` alive, so `PetscVec(petsclib, [1.0, 2.0])` is safe.
 
 This should only be need to be called for more advanced uses, for most simple
@@ -135,18 +137,23 @@ function LibPETSc.PetscVec(
         ),
     )
     PetscInt = petsclib.PetscInt
-    v = LibPETSc.VecCreateSeqWithArray(
-        petsclib,
-        comm,
-        PetscInt(blocksize),
-        PetscInt(length(array)),
-        array,
-    )
+    v = seq_vec_with_array(petsclib, comm, PetscInt(blocksize), PetscInt(length(array)), array)
     keep_alive!(v, array)
     finalizer(destroy!, v)
     return v
 end
 
+
+# A sequential Vec on the Julia array `array`, without a copy. PETSc starts it at
+# object state 0, which is also the state the norm cache slots get when PETSc first
+# allocates them, so after one norm every other norm type would read as cached and
+# zero. Assembling once moves the Vec past that state; on one process it costs nothing.
+function seq_vec_with_array(petsclib, comm, bs, n, array)
+    v = LibPETSc.VecCreateSeqWithArray(petsclib, comm, bs, n, array)
+    LibPETSc.VecAssemblyBegin(petsclib, v)
+    LibPETSc.VecAssemblyEnd(petsclib, v)
+    return v
+end
 
 # =============================================================================
 # Multiple dispatch to make PetscVec behave like Julia Vector
@@ -154,6 +161,7 @@ end
 
 # Treat PETSc vectors as 1-D array-like objects for broadcasting/indexing
 Base.ndims(::Type{<:AbstractPetscVec}) = 1
+Base.ndims(v::AbstractPetscVec) = ndims(typeof(v))
 Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
 Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
 # A Vec takes part in a broadcast as itself; the default would `collect` it
@@ -181,6 +189,23 @@ petsclib_of(::AbstractPetscVec{PetscLib}) where {PetscLib} = getlib(PetscLib)
 Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(PetscLib,v)
 Base.length(v::AbstractPetscVec{PetscLib}) where {PetscLib} = prod(size(v))
 Base.lastindex(v::AbstractPetscVec{PetscLib}) where {PetscLib} = length(v)
+
+# As for any vector: the global length along dimension 1, and 1 beyond it
+function Base.size(v::AbstractPetscVec, d::Integer)
+    d >= 1 || throw(ArgumentError("dimension must be ≥ 1, got $d"))
+    return d == 1 ? Int(length(v)) : 1
+end
+
+"""
+    similar(v::AbstractPetscVec)
+
+A new vector with the same layout as `v` (size, parallel distribution, type), its
+entries not set. There is no `similar(v, T)` or `similar(v, dims)`: every vector of a
+library holds that library's scalar type, and a different size has no layout to copy.
+
+# External Links
+$(doc_external("Vec/VecDuplicate"))
+"""
 Base.similar(v::AbstractPetscVec{PetscLib}) where {PetscLib} =  LibPETSc.VecDuplicate(getlib(PetscLib), v)
 """
     type_name(v::AbstractPetscVec)
@@ -227,7 +252,15 @@ function Base.getindex(v::AbstractPetscVec{PetscLib}, ::Colon) where {PetscLib}
     return getindex(v, 1:n)
 end
 
-Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib} = all(v[:] .≈ w[:]; kwargs...)
+"""
+    isapprox(v::AbstractPetscVec, w::AbstractPetscVec; atol, rtol, nans)
+
+Whether every entry of `v` is approximately equal to the matching entry of `w`, with
+the keywords of `isapprox` for numbers applied entry by entry. Unlike `isapprox` on two
+Julia arrays, this does not compare the norm of the difference.
+"""
+Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib} =
+    all(isapprox.(v[:], w[:]; kwargs...))
 
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)
@@ -762,20 +795,25 @@ function ghost_update!(
 end
 
 """
-    v = PetscVec(petsclib, comm, array)
+    v = PetscVec(petsclib, comm, array::Vector)
 
-Creates a sequential PETSc vector of length `n` given a julia array `array`,
-on the communicator `comm`.
-The vector uses `array` as its storage and keeps it alive.
+Creates a sequential PETSc vector on the communicator `comm` that uses `array` as its
+storage and keeps it alive. The element type of `array` must be the library's scalar
+type, which throws an `ArgumentError` otherwise: PETSc reads the memory as it is.
 
 # External Links
 $(doc_external("Vec/VecCreateSeqWithArray"))
 """
 function LibPETSc.PetscVec(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLibType}
     check_initialized(petsclib)
+    eltype(x) === petsclib.PetscScalar || throw(
+        ArgumentError(
+            "array has element type $(eltype(x)), but the library uses $(petsclib.PetscScalar)",
+        ),
+    )
     PetscInt = petsclib.PetscInt
 
-    v = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)
+    v = seq_vec_with_array(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)
     keep_alive!(v, x)
     finalizer(destroy!, v)
 
@@ -811,14 +849,28 @@ function ownership_range(vec::AbstractPetscVec{PetscLib}) where {PetscLib}
     return (r_lo + PetscInt(1)):r_hi
 end
 
-# Overload norm function
+"""
+    norm(v::AbstractPetscVec, p::Real = 2)
+    norm(v::AbstractPetscVec, normtype::NormType)
+
+The `p`-norm of `v`, for `p` = 1, 2 or `Inf`; other values throw an `ArgumentError`.
+The second form passes a PETSc `NormType` straight to `VecNorm`.
+
+# External Links
+$(doc_external("Vec/VecNorm"))
+"""
 function LinearAlgebra.norm(
     v::AbstractPetscVec{PetscLib},
     normtype::LibPETSc.NormType = LibPETSc.NORM_2,
 ) where {PetscLib}
-    PetscReal = PetscLib.PetscReal
-    r_val = LibPETSc.VecNorm(PetscLib, v, normtype)
-    return r_val
+    return LibPETSc.VecNorm(PetscLib, v, normtype)
+end
+
+function LinearAlgebra.norm(v::AbstractPetscVec, p::Real)
+    p == 1 && return norm(v, LibPETSc.NORM_1)
+    p == 2 && return norm(v, LibPETSc.NORM_2)
+    p == Inf && return norm(v, LibPETSc.NORM_INFINITY)
+    throw(ArgumentError("PETSc computes the vector norm only for p = 1, 2 and Inf, got p = $p"))
 end
 
 # ── GPU-aware array access helpers ────────────────────────────────────────────

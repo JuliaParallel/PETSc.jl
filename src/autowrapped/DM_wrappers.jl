@@ -2100,6 +2100,7 @@ end
 	return nothing
 end 
 
+# override for DMCreateDomainDecomposition; C signature: DMCreateDomainDecomposition(DM dm, PetscInt* n, char*** namelist, IS* innerislist[], IS* outerislist[], DM* dmlist[])
 """
 	n::PetscInt,namelist::Vector{String},innerislist::Vector{IS},outerislist::Vector{IS},dmlist::Vector{PetscDM} = DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns lists of `IS` objects defining a decomposition of a
@@ -2119,19 +2120,21 @@ Output Parameters:
 
 Level: intermediate
 
+Note:
+The names come back as Julia `String`s and the C arrays are freed here. Every entry of `innerislist`, `outerislist`
+and `dmlist` is owned by the caller and should be destroyed with `ISDestroy()` and `DMDestroy()` (or `PETSc.destroy!`).
+
 See also: `DM`, `DMCreateFieldDecomposition()`, `DMDestroy()`, `DMCreateDomainDecompositionScatters()`, `DMView()`, `DMCreateInterpolation()`,
 `DMSubDomainHookAdd()`, `DMSubDomainHookRemove()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`
 
 # External Links
 $(_doc_external("DM/DMCreateDomainDecomposition"))
 """
-function DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM)
-    error("DMCreateDomainDecomposition: no generated method for these argument types")
-end
+function DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) end
 
 @for_petsc function DMCreateDomainDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	n_ = Ref{$PetscInt}()
-	namelist_ = Ref{Ptr{Ptr{Cchar}}}()
+	namelist_ = Ref{Ptr{Ptr{Cchar}}}(C_NULL)
 	innerislist_ = Ref{Ptr{CIS}}()
 	outerislist_ = Ref{Ptr{CIS}}()
 	dmlist_ = Ref{Ptr{CDM}}()
@@ -2144,7 +2147,16 @@ end
               )
 
 	n = n_[]
-	namelist = namelist_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, namelist_[], n; own = false)]
+	# the caller owns the names and the name array: copy the names, free the C memory
+	namelist = String[]
+	if namelist_[] != C_NULL
+		for i in 1:n
+			name_ = unsafe_load(namelist_[], i)
+			push!(namelist, unsafe_string(name_))
+			PetscFree(petsclib, name_)
+		end
+		PetscFree(petsclib, namelist_[])
+	end
 	innerislist = innerislist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, innerislist_[], n; own = false)]
 	innerislist_[] == C_NULL || PetscFree(petsclib, innerislist_[])
 	outerislist = outerislist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, outerislist_[], n; own = false)]
@@ -2153,8 +2165,7 @@ end
 	dmlist_[] == C_NULL || PetscFree(petsclib, dmlist_[])
 
 	return n,namelist,innerislist,outerislist,dmlist
-end 
-
+end
 """
 	iscat::Vector{VecScatter},oscat::Vector{VecScatter},gscat::Vector{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, subdms::Vector{<:AbstractPetscDM}) 
 Returns scatters to the subdomain vectors from the global vector for subdomains created with
@@ -2243,8 +2254,9 @@ end
 	return fem
 end 
 
+# override for DMCreateFieldDecomposition; C signature: DMCreateFieldDecomposition(DM dm, PetscInt* len, char*** namelist, IS* islist[], DM* dmlist[])
 """
-	len::PetscInt,namelist::String,islist::Vector{IS},dmlist::Vector{PetscDM} = DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
+	len::PetscInt,namelist::Vector{String},islist::Vector{IS},dmlist::Vector{PetscDM} = DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Returns a list of `IS` objects defining a decomposition of a problem into subproblems
 corresponding to different fields.
 
@@ -2261,39 +2273,46 @@ Output Parameters:
 
 Level: intermediate
 
+Note:
+The names come back as Julia `String`s and the C arrays are freed here. Every entry of `islist` and `dmlist` is owned
+by the caller and should be destroyed with `ISDestroy()` and `DMDestroy()` (or `PETSc.destroy!`).
+
 See also: `DM`, `DMAddField()`, `DMCreateFieldIS()`, `DMCreateSubDM()`, `DMCreateDomainDecomposition()`, `DMDestroy()`, `DMView()`, `DMCreateInterpolation()`, `DMCreateColoring()`, `DMCreateMatrix()`, `DMCreateMassMatrix()`, `DMRefine()`, `DMCoarsen()`
 
 # External Links
 $(_doc_external("DM/DMCreateFieldDecomposition"))
 """
-function DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM)
-    error("DMCreateFieldDecomposition: no generated method for these argument types")
-end
+function DMCreateFieldDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM) end
 
 @for_petsc function DMCreateFieldDecomposition(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
 	len_ = Ref{$PetscInt}()
-	namelist_ = Ref{Ptr{Cchar}}()
-	islist_ = Ref{Ptr{CIS}}()
-	dmlist_ = Ref{Ptr{CDM}}()
-
+	namelist_ = Ref{Ptr{Ptr{Cchar}}}(C_NULL)
+	islist_ = Ref{Ptr{CIS}}(C_NULL)
+	dmlist_ = Ref{Ptr{CDM}}(C_NULL)
     @chk ccall(
                (:DMCreateFieldDecomposition, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{$PetscInt}, Ptr{Ptr{Cchar}}, Ptr{Ptr{CIS}}, Ptr{Ptr{CDM}}),
+               (CDM, Ptr{$PetscInt}, Ptr{Ptr{Ptr{Cchar}}}, Ptr{Ptr{CIS}}, Ptr{Ptr{CDM}}),
                dm, len_, namelist_, islist_, dmlist_,
               )
-
 	len = len_[]
-	namelist = namelist_[] == C_NULL ? "" : unsafe_string(namelist_[])
+	# the caller owns the names, the three arrays, every IS and every DM: copy the names, free the C memory
+	namelist = String[]
+	if namelist_[] != C_NULL
+		for i in 1:len
+			name_ = unsafe_load(namelist_[], i)
+			push!(namelist, unsafe_string(name_))
+			PetscFree(petsclib, name_)
+		end
+		PetscFree(petsclib, namelist_[])
+	end
 	islist = islist_[] == C_NULL ? IS{$PetscLib}[] : [IS(p, petsclib) for p in unsafe_wrap(Array, islist_[], len; own = false)]
 	islist_[] == C_NULL || PetscFree(petsclib, islist_[])
 	dmlist = dmlist_[] == C_NULL ? PetscDM{$PetscLib}[] : [PetscDM(p, petsclib) for p in unsafe_wrap(Array, dmlist_[], len; own = false)]
 	dmlist_[] == C_NULL || PetscFree(petsclib, dmlist_[])
-
 	return len,namelist,islist,dmlist
-end 
-
-# override for DMCreateFieldIS; C signature: DMCreateFieldIS(DM dm, PetscInt* numFields, char** fieldNames, IS* fields[])
+end
+# override for DMCreateFieldIS; C signature: DMCreateFieldIS(DM dm, PetscInt* numFields, char*** fieldNames, IS* fields[])
 """
 	numFields::PetscInt,fieldNames::Vector{String},fields::Vector{IS} = DMCreateFieldIS(petsclib::PetscLibType, dm::AbstractPetscDM) 
 Creates a set of `IS` objects with the global indices of dofs for each field defined with `DMAddField()`

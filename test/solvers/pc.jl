@@ -136,6 +136,78 @@ using .PETScTestUtils: without_petsc_traceback
             PETSc.initialize(petsclib)
         end
 
+        @testset "set_post_setup! ($PetscScalar)" begin
+            ksp = PETSc.KSP(petsclib, comm, S)
+            p = PETSc.pc(ksp)
+            PETSc.set_type!(p, :fieldsplit)
+            is_a = LibPETSc.ISCreateStride(petsclib, comm, 3, 0, 1)
+            is_b = LibPETSc.ISCreateStride(petsclib, comm, 3, 3, 1)
+            PETSc.set_fieldsplit_is!(p, "a", is_a)
+            PETSc.set_fieldsplit_is!(p, "b", is_b)
+
+            # the splits' solvers exist only after setup: configure one from the hook,
+            # registered through a handle that is dropped at once
+            ncalls = Ref(0)
+            q = PETSc.set_post_setup!(PETSc.pc(ksp)) do p
+                @test p isa LibPETSc.PC
+                ncalls[] += 1
+                _, subksps = LibPETSc.PCFieldSplitGetSubKSP(petsclib, p)
+                PETSc.set_type!(PETSc.pc(subksps[1]), :lu)
+                return nothing
+            end
+            @test q isa LibPETSc.PC && q.ptr == p.ptr
+            GC.gc()
+            @test ksp \ b ≈ Matrix(S) \ b
+            @test ncalls[] == 1
+            _, subksps = LibPETSc.PCFieldSplitGetSubKSP(petsclib, p)
+            @test PETSc.type_name(PETSc.pc(subksps[1])) === :lu
+
+            # the same operator needs no new setup; a new one runs the hook again
+            @test ksp \ b ≈ Matrix(S) \ b
+            @test ncalls[] == 1
+            M = LibPETSc.PetscMat(petsclib, comm, 2S)
+            PETSc.set_operators!(ksp, M)
+            @test ksp \ b ≈ Matrix(2S) \ b
+            @test ncalls[] == 2
+
+            # an exception in the hook comes out of the solve as itself
+            PETSc.set_post_setup!(p) do p
+                throw(DomainError(-1.0, "post setup! failed on purpose"))
+            end
+            M3 = LibPETSc.PetscMat(petsclib, comm, 3S)
+            PETSc.set_operators!(ksp, M3)   # a new operator, so a new setup
+            @test_throws DomainError without_petsc_traceback(() -> ksp \ b, petsclib)
+
+            PETSc.destroy!(M3)
+            PETSc.destroy!(M)
+            LibPETSc.ISDestroy(petsclib, is_a)
+            LibPETSc.ISDestroy(petsclib, is_b)
+            PETSc.destroy!(ksp)
+        end
+
+        @testset "set_pre_solve! ($PetscScalar)" begin
+            ksp = PETSc.KSP(petsclib, comm, S)
+            PETSc.set_type!(PETSc.pc(ksp), :jacobi)
+            seen = Ref{Any}(nothing)
+            k = PETSc.set_pre_solve!(ksp) do ksp, rhs, x
+                @test ksp isa LibPETSc.KSP
+                seen[] = PETSc.with_local_array!(copy, rhs; read = true, write = false)
+                return nothing
+            end
+            @test k === ksp
+            GC.gc()
+            @test ksp \ b ≈ Matrix(S) \ b
+            @test seen[] == b
+            @test ksp \ 2b ≈ Matrix(S) \ 2b
+            @test seen[] == 2b
+
+            PETSc.set_pre_solve!(ksp) do ksp, rhs, x
+                throw(DomainError(-1.0, "pre solve! failed on purpose"))
+            end
+            @test_throws DomainError without_petsc_traceback(() -> ksp \ b, petsclib)
+            PETSc.destroy!(ksp)
+        end
+
         @testset "ownership ($PetscScalar)" begin
             # made through LibPETSc, the PC is owned and destroy! frees it
             p = LibPETSc.PCCreate(petsclib, comm)

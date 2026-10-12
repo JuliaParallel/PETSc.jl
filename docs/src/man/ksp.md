@@ -156,6 +156,17 @@ end
 
 The closures are kept with the PETSc preconditioner, not with the wrapper `p`, so `p` can be dropped. An exception thrown inside either one comes out of the solve that ran it, as itself: a `DomainError` in `apply!` makes `ksp \ b` throw that `DomainError` ([naming conventions](naming.md), §18.4).
 
+The solvers of a `:fieldsplit`'s splits exist only once the preconditioner has been set up, inside the first solve. [`set_post_setup!`](@ref PETSc.set_post_setup!) runs a closure at the end of every setup, which is where to configure them:
+
+```julia
+PETSc.set_post_setup!(p) do p
+    _, subksps = LibPETSc.PCFieldSplitGetSubKSP(petsclib, p)
+    PETSc.set_type!(PETSc.pc(subksps[1]), :lu)
+end
+```
+
+It runs again whenever the operator changes, and the options given to a `SNES` are applied again on every `solve!`, so write it so that a second run is harmless. With a Schur split, set the factorization type in code (`LibPETSc.PCFieldSplitSetType`) before `LibPETSc.PCFieldSplitSetSchurPre` with a user matrix: when the type comes only from the options, PETSc drops the user matrix without saying so. [`set_pre_solve!`](@ref PETSc.set_pre_solve!) is the matching hook on the `KSP`; it runs at the start of every solve, before the preconditioner is set up.
+
 A `LibPETSc.PC` is also what every low-level `PC*` function takes, so anything without a high-level verb is one call away: `LibPETSc.PCFieldSplitSetType(petsclib, p, LibPETSc.PC_COMPOSITE_SCHUR)`.
 
 ## Functions

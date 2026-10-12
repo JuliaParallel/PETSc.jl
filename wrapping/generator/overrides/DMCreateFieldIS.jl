@@ -1,4 +1,4 @@
-# override for DMCreateFieldIS; C signature: DMCreateFieldIS(DM dm, PetscInt* numFields, char** fieldNames, IS* fields[])
+# override for DMCreateFieldIS; C signature: DMCreateFieldIS(DM dm, PetscInt* numFields, char*** fieldNames, IS* fields[])
 """
 	numFields::PetscInt,fieldNames::Vector{String},fields::Vector{IS} = DMCreateFieldIS(petsclib::PetscLibType,dm::AbstractPetscDM) 
 Creates a set of `IS` objects with the global indices of dofs for each field defined with `DMAddField()`

@@ -105,9 +105,10 @@ end
 mutable struct PCState <: ObjectState
     apply!::Any
     setup!::Any
+    post_setup!::Any
     alive::Bool
 end
-PCState() = PCState(nothing, nothing, true)
+PCState() = PCState(nothing, nothing, nothing, true)
 state_type(::Type{<:PC}) = PCState
 
 # The state of the `:shell` PC `p`, registered as its shell context
@@ -198,5 +199,50 @@ LibPETSc.@for_petsc function set_shell_setup!(setup!, p::AbstractPC{$PetscLib})
     state.setup! = setup!
     fptr = @cfunction(PCShellSetSetUpFn{$PetscLib}(), LibPETSc.PetscErrorCode, (CPC,))
     LibPETSc.PCShellSetSetUp($PetscLib, p, fptr)
+    return p
+end
+
+# ============================================================================
+#   Post-setup hook
+# ============================================================================
+
+"""
+    set_post_setup!(post_setup!, p::AbstractPC)
+
+Call `post_setup!(p)` at the end of every `PCSetUp` of `p`, that is whenever PETSc
+sets the preconditioner up, for example after the operator changes. Returns `p`.
+
+This is where to configure the parts of a composite preconditioner that only exist
+once it has been set up, such as the solvers of a `:fieldsplit`'s splits
+(`LibPETSc.PCFieldSplitGetSubKSP`). The options are applied again on every
+`solve!`, so the callback can run more than once on the same objects: write it so
+that a second run is harmless.
+
+A second call replaces the first callback. Any PC type works, unlike
+[`set_shell_setup!`](@ref), which is the setup of a `:shell` preconditioner itself.
+
+The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax works.
+
+$(doc_callback())
+
+# External Links
+$(doc_external("PC/PCSetPostSetUp"))
+"""
+function set_post_setup! end
+
+# PETSc passes no context to this callback, so the state is found from the PC itself
+struct PCSetPostSetUpFn{PetscLib} end
+function (::PCSetPostSetUpFn{PetscLib})(pc_ptr::CPC) where {PetscLib}
+    return run_callback("post setup!") do
+        p = PC{PetscLib}(pc_ptr, getlib(PetscLib).age; own = false)
+        state = object_state(p)::PCState
+        state.post_setup!(p)
+    end
+end
+
+LibPETSc.@for_petsc function set_post_setup!(post_setup!, p::AbstractPC{$PetscLib})
+    object_state!(p).post_setup! = post_setup!
+    fptr = @cfunction(PCSetPostSetUpFn{$PetscLib}(), LibPETSc.PetscErrorCode, (CPC,))
+    LibPETSc.PCSetPostSetUp($PetscLib, p, fptr)
     return p
 end

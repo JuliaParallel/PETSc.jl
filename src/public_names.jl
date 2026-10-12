@@ -41,5 +41,5 @@ public @bd_fn, @jacobian_fn, @residual_fn, @simple_fn, AbstractPetscDS,
        solve_time, star_fd_coloring, stencil, step!, step_number, step_rejections,
        tao_usable_after_reinitialize, timestep, tolerances, type_name, unsafe_local_array,
        unset_library!, user_ctx, vertex_location, vtk_merge_tensor, with_field_views!,
-       with_local_array!, with_product_coordinates, wrap_local_array, zero_rows!,
-       zero_rows_local!
+       with_local_array!, with_options, with_product_coordinates, wrap_local_array,
+       zero_rows!, zero_rows_local!

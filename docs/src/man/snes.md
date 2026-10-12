@@ -25,6 +25,8 @@ snes = SNES(petsclib, MPI.COMM_WORLD;
 )
 ```
 
+The options are applied at the start of every `solve!`, after the DM and the callbacks are attached, and override a setting made in code for the same option. The `options_at` keyword changes that; see [When the options apply](@ref) in the KSP page.
+
 ## Setting the Nonlinear Function
 
 Define the residual function `F(x)`. The callback comes first in the argument

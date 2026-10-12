@@ -961,7 +961,8 @@ They drop the `_` prefix, which was standing in for "internal" and is not how Ju
 | `_post_initialize` | `post_initialize` |
 | `_release_library_handle` | `release_library_handle` |
 | `_doc_external`, `_lib_handles`, `_petsc_program_name` | prefix dropped likewise. `_doc_external` also stays as a `const` alias, because `src/autowrapped/` interpolates that spelling into several thousand docstrings |
-| `_errorcode`, `_run_callback`, `_with_options` (`ts.jl`) | prefix dropped likewise |
+| `_errorcode`, `_run_callback` | prefix dropped likewise |
+| `_with_options` (`ts.jl`) | `with_options`, public from 0.5.3 (see the `options.jl` table) |
 
 The exceptions keep their underscore, because there it separates an inner worker from the wrapper of the same name rather than marking visibility:
 
@@ -994,6 +995,8 @@ The exceptions keep their underscore, because there it separates an inner worker
 | `getcomm` | `comm` |
 | `typedget` | `parse_option` |
 | `parse_options` | unchanged |
+| — | `with_options(f, obj)` and `with_options(f, opts)`, new in 0.5.3: run `f` with options pushed, callback first ([§8.1](#8.1-Callbacks-come-first)), returning the block's result ([§7](#7.-Mutation)) |
+| — | `options_at = :construction \| :each_solve \| :first_solve` on the `KSP`, `SNES` and `TS` constructors, new in 0.5.3: a `Symbol` keyword ([§3.1](#3.1-What-accessors-return-and-setters-take), [§9](#9.-Keyword-versus-positional)) |
 
 `typedget` operates on a plain `NamedTuple`, not on `PetscOptions`, and coerces the looked-up value to the type of the supplied default.
 `parse_option` names that, and pairs with `parse_options(args)` in the same file.

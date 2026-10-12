@@ -7,6 +7,8 @@ mutable struct SNESState <: ObjectState
     convergence_test!::Any
     user_ctx::Any
     opts::Any
+    options_at::Symbol
+    options_applied::Bool
     alive::Bool
 end
 SNESState() = SNESState(
@@ -15,6 +17,8 @@ SNESState() = SNESState(
     nothing,
     nothing,
     nothing,
+    :each_solve,
+    false,
     true,
 )
 state_type(::Type{<:SNES}) = SNESState
@@ -63,19 +67,29 @@ function Base.show(io::IO, v::AbstractSNES{PetscLib}) where {PetscLib}
 end
 
 """
-    SNES(petsclib, comm::MPI.Comm; prefix="", options...)
+    SNES(petsclib, comm::MPI.Comm; prefix = "", options_at = :each_solve, options...)
 
 Create a PETSc nonlinear solver (SNES) context on the communicator `comm`.
 
-The options are stored and applied at the start of every [`solve!`](@ref), so that a
-DM and callbacks attached after construction are visible to `SNESSetFromOptions`.
-Because they are applied on every solve, they override a setting made in code for
-the same option.
+`options_at` decides when the options are applied, through `SNESSetFromOptions`:
+
+- `:each_solve` (the default): at the start of every [`solve!`](@ref), once the DM
+  and the callbacks are attached. They override a setting made in code for the
+  same option.
+- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!`. A setting
+  made in code after that overrides them.
+- `:construction`: here, once. A DM or callback attached afterwards is not
+  visible to them.
+
+The options stay pushed during `solve!`, and during `setup!` too unless
+`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
+them (see [`with_options`](@ref)).
 
 # Arguments
 - `petsclib`: The PETSc library instance
 - `comm::MPI.Comm`: MPI communicator
 - `prefix::String`: Optional prefix for command-line options
+- `options_at::Symbol`: When the options are applied, see above
 - `options...`: Additional PETSc options as keyword arguments
 
 If `comm` has size 1, the garbage collector will handle cleanup automatically.
@@ -89,6 +103,7 @@ function SNES(
     petsclib::PetscLib,
     comm::MPI.Comm;
     prefix="",
+    options_at::Symbol = :each_solve,
     options...,
 ) where {PetscLib <: LibPETSc.PetscLibType}
     check_initialized(getlib(PetscLib))
@@ -100,13 +115,7 @@ function SNES(
         LibPETSc.SNESSetOptionsPrefix(petsclib, snes, prefix)
     end
     
-    # Store options for deferred SNESSetFromOptions in solve!.
-    # We do NOT call SetFromOptions here because the DM is typically
-    # set after construction (via set_dm!), and PCs like MG need the
-    # DM hierarchy to be available during SetFromOptions/SetUp.
-    if !isempty(options)
-        snes.opts = PetscOptions(petsclib; options...)
-    end
+    store_options!(snes, petsclib, options_at, options)
 
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
@@ -390,8 +399,8 @@ end
 
 Solve the nonlinear system of `snes` starting from `x`, which holds the solution on
 return, and return `x`. `b` is an optional right-hand side: the system solved is
-F(x) = b. Options passed to the [`SNES`](@ref) constructor are applied here, once
-the DM and the callbacks are attached.
+F(x) = b. The options passed to the [`SNES`](@ref) constructor are applied here
+by default; its `options_at` keyword says when.
 
 PETSc does not report a failed solve: `x` holds the last iterate and
 [`converged_reason`](@ref) says why it stopped. `check` decides what happens then:
@@ -411,25 +420,35 @@ function solve!(
     b::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing;
     check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
-    has_opts = !isnothing(snes.opts)
-    if has_opts
-        push!(snes.opts)
-        # Call SetFromOptions here (rather than in the constructor) so that
-        # the DM and callbacks are already attached. This is critical for
-        # PCs like MG that need a DM hierarchy, and for FieldSplit sub-KSPs
-        # that are created lazily during KSPSetUp/KSPSolve.
-        LibPETSc.SNESSetFromOptions(PetscLib, snes)
-    end
-    try
+    # Under the default `options_at = :each_solve`, SNESSetFromOptions runs here
+    # rather than in the constructor, so that it sees the DM hierarchy that
+    # multigrid needs and the callbacks.
+    with_solver_options(snes; solving = true) do
         with_convergence_check(snes, check) do
             capture_callback_errors() do
                 LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
             end
         end
-    finally
-        has_opts && pop!(snes.opts)
     end
     return x
+end
+
+"""
+    setup!(snes::AbstractSNES)
+
+Set up `snes`, as [`solve!`](@ref) does before its first solve, and return
+`snes`. Under `options_at = :first_solve` or `:construction` the constructor
+options are pushed meanwhile, and under `:first_solve` applied first (see
+[`SNES`](@ref)).
+
+# External Links
+$(doc_external("SNES/SNESSetUp"))
+"""
+function setup!(snes::AbstractSNES{PetscLib}) where {PetscLib}
+    with_solver_options(snes; solving = false) do
+        capture_callback_errors(() -> LibPETSc.SNESSetUp(PetscLib, snes))
+    end
+    return snes
 end
 
 

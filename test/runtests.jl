@@ -73,6 +73,7 @@ if selected("solvers")
     include("solvers/snes.jl")
     include("solvers/solver_api.jl")      # KSP/SNES/TS/PC readers, operators, prefixes, set_from_options!
     include("solvers/convergence.jl")     # ConvergenceError, solve!(…; check), the divergence warning
+    include("solvers/options_timing.jl")  # options_at: when constructor options apply; with_options
     include("solvers/ts.jl")              # high-level TS interface
     include("solvers/ts_long_runs.jl")    # equation type, step number, pre/post-step hooks, failure limits
     include("solvers/ts_scenarios.jl")    # ex16 equivalence and a damping sweep

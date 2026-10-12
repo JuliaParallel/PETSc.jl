@@ -6,6 +6,8 @@ mutable struct KSPState <: ObjectState
     computeops!::Any
     pre_solve!::Any
     opts::Any
+    options_at::Symbol
+    options_applied::Bool
     alive::Bool
 end
 KSPState() = KSPState(
@@ -13,6 +15,8 @@ KSPState() = KSPState(
     x -> error("computeops! not defined"),
     nothing,
     nothing,
+    :construction,
+    false,
     true,
 )
 state_type(::Type{<:KSP}) = KSPState
@@ -58,13 +62,23 @@ end
 
 
 """
-    KSP(comm::MPI.Comm, A::AbstractPetscMat, P::AbstractPetscMat{PetscLib} = A; prefix="", options...)
+    KSP(A::AbstractPetscMat, P::AbstractPetscMat = A; prefix = "", options_at = :construction, options...)
 
 Create a `KSP` using the matrix `A` and preconditioner construction matrix `P`
 with optional `prefix` and `options`.
 
-The options are applied here, once, through `KSPSetFromOptions`. 
-A setting made in code afterwards, such as [`set_tolerances!`](@ref), overrides them.
+`options_at` decides when the options are applied, through `KSPSetFromOptions`:
+
+- `:construction` (the default): here, once. A setting made in code afterwards,
+  such as [`set_tolerances!`](@ref), overrides them.
+- `:each_solve`: at the start of every [`solve!`](@ref), so they override a
+  setting made in code for the same option.
+- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!`, after the DM
+  and callbacks are attached.
+
+The options stay pushed during `solve!`, and during `setup!` too unless
+`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
+them (see [`with_options`](@ref)).
 
 The communicator is obtained from `A` and if it has size `1` then the garbage
 collector is set, otherwise the user is responsible for calling
@@ -79,6 +93,7 @@ function KSP(
     A::AbstractPetscMat{PetscLib},
     P::AbstractPetscMat{PetscLib} = A;
     prefix::String="",
+    options_at::Symbol = :construction,
     options...
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -93,14 +108,7 @@ function KSP(
         LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, prefix)
     end
     
-    # Push options to PETSc options database
-    if !isempty(options)
-        opts = PetscOptions(petsclib; options...);
-        push!(opts)
-        LibPETSc.KSPSetFromOptions(petsclib, ksp)
-        pop!(opts)
-        ksp.opts = opts
-    end
+    store_options!(ksp, petsclib, options_at, options)
 
     # The garbage collector can only destroy it when no other rank takes part
     if MPI.Comm_size(c) == 1
@@ -111,12 +119,22 @@ function KSP(
 end
 
 """
-    KSP(dm::AbstractPetscDM; prefix="", options...)
+    KSP(dm::AbstractPetscDM; prefix = "", options_at = :construction, options...)
 
 Create a `KSP` associated with the `dm` with optional `prefix` and `options`.
 
-The options are applied here, once, through `KSPSetFromOptions`.
-A setting made in code afterwards overrides them.
+`options_at` decides when the options are applied, through `KSPSetFromOptions`:
+
+- `:construction` (the default): here, once. A setting made in code afterwards,
+  such as [`set_tolerances!`](@ref), overrides them.
+- `:each_solve`: at the start of every [`solve!`](@ref), so they override a
+  setting made in code for the same option.
+- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!`, after the DM
+  and callbacks are attached.
+
+The options stay pushed during `solve!`, and during `setup!` too unless
+`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
+them (see [`with_options`](@ref)).
 
 The communicator is obtained from `dm`. The KSP can be used with geometric
 multigrid when the DM provides grid hierarchy information.
@@ -124,6 +142,7 @@ multigrid when the DM provides grid hierarchy information.
 # Arguments
 - `dm::AbstractPetscDM`: The DM object to associate with the KSP
 - `prefix::String`: Optional prefix for command-line options
+- `options_at::Symbol`: When the options are applied, see above
 - `options...`: Additional PETSc options as keyword arguments
 
 # External Links
@@ -133,6 +152,7 @@ $(doc_external("KSP/KSPSetFromOptions"))
 """
 function KSP(dm::AbstractPetscDM{PetscLib};
     prefix::String="",
+    options_at::Symbol = :construction,
     options...
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -146,14 +166,7 @@ function KSP(dm::AbstractPetscDM{PetscLib};
     
     LibPETSc.KSPSetDM(petsclib, ksp, dm)
 
-    # Push options to PETSc options database
-    if !isempty(options)
-        opts = PetscOptions(petsclib; options...);
-        push!(opts)
-        LibPETSc.KSPSetFromOptions(petsclib, ksp)
-        pop!(opts)
-        ksp.opts = opts
-    end
+    store_options!(ksp, petsclib, options_at, options)
 
     # The garbage collector can only destroy it when no other rank takes part
     if MPI.Comm_size(c) == 1
@@ -210,16 +223,12 @@ function solve!(
     b::PetscVec{PetscLib};
     check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
-    has_opts = !isnothing(ksp.opts)
-    has_opts && push!(ksp.opts)
-    try
+    with_solver_options(ksp; solving = true) do
         with_convergence_check(ksp, check) do
             capture_callback_errors() do
                 LibPETSc.KSPSolve(PetscLib, ksp, b, x)
             end
         end
-    finally
-        has_opts && pop!(ksp.opts)
     end
     return x
 end
@@ -228,21 +237,36 @@ function solve!(
     ksp::AbstractKSP{PetscLib};
     check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
-    has_opts = hasproperty(ksp, :opts) && !isnothing(ksp.opts)
-    has_opts && push!(ksp.opts)
-    try
+    with_solver_options(ksp; solving = true) do
         with_convergence_check(ksp, check) do
             capture_callback_errors() do
                 LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
             end
         end
-    finally
-        has_opts && pop!(ksp.opts)
     end
     return ksp
 end
 
 LinearAlgebra.ldiv!(x::PetscVec{PetscLib}, ksp::KSP{PetscLib}, b::PetscVec{PetscLib}) where {PetscLib} = solve!(x, ksp, b)
+
+"""
+    setup!(ksp::AbstractKSP)
+
+Set up `ksp` and its preconditioner, as [`solve!`](@ref) does before its first
+solve, and return `ksp`. Call it to build the preconditioner at a controlled
+point, for example to time it, or to reach the sub-solvers of a fieldsplit
+before the first solve. Unless `options_at = :each_solve`, the constructor options
+are pushed meanwhile, and under `:first_solve` applied first (see [`KSP`](@ref)).
+
+# External Links
+$(doc_external("KSP/KSPSetUp"))
+"""
+function setup!(ksp::AbstractKSP{PetscLib}) where {PetscLib}
+    with_solver_options(ksp; solving = false) do
+        capture_callback_errors(() -> LibPETSc.KSPSetUp(PetscLib, ksp))
+    end
+    return ksp
+end
 
 """
     set_pre_solve!(pre_solve!, ksp::AbstractKSP)

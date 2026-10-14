@@ -278,8 +278,12 @@
     - PETSc 3.23  src/snes/tutorials/ex62.c
 =#
 
-# When included from the REPL with the main project active, Gmsh lives in the
-# examples sub-environment.  Activate it automatically so `import Gmsh` works.
+# Gmsh is not in the examples environment: no Gmsh.jl release installs beside
+# PETSc_jll 3.25, because their HDF5_jll requirements conflict. 
+# Add it to an environment of your own once they do.
+#
+# When included from the REPL with the main project active, activate the examples
+# sub-environment.
 if isinteractive()
     import Pkg
     Pkg.activate(joinpath(@__DIR__))

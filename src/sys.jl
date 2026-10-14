@@ -1,18 +1,11 @@
-
-
 """
-    comm = function comm(
-                            obj::Union{
-                                PetscVec{PetscLib},
-                                PetscMat{PetscLib},
-                                KSP{PetscLib},
-                                #SNES{PetscLib},
-                                #PetscDM{PetscLib},
-                            },
-                        ) where {PetscLib}
+    comm(obj)
 
-Gets the MPI communicator for any of the objects above                         
+The MPI communicator `obj` lives on: a vector, matrix, DM, `KSP`, `SNES`, `PC` or
+index set (`TS` has a method of its own).
 
+# External Links
+$(doc_external("Sys/PetscObjectGetComm"))
 """
 function comm(
     obj::Union{
@@ -21,6 +14,8 @@ function comm(
         AbstractKSP{PetscLib},
         AbstractSNES{PetscLib},
         AbstractPetscDM{PetscLib},
+        LibPETSc.AbstractPC{PetscLib},
+        LibPETSc.AbstractIS{PetscLib},
     },
 ) where {PetscLib}
     comm = LibPETSc.PetscObjectGetComm(PetscLib, obj)

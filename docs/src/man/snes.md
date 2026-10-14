@@ -111,7 +111,10 @@ An iterate the residual cannot be evaluated at (a negative density, say) is repo
 - `snes_atol` - Absolute tolerance
 - `snes_stol` - Step tolerance
 - `snes_max_it` - Maximum iterations
+- `snes_max_funcs` - Maximum residual evaluations
 - `snes_monitor` - Print residual each iteration
+
+In code, `PETSc.tolerances(snes)` returns `(; atol, rtol, stol, max_it, max_funcs)` and `PETSc.set_tolerances!(snes; rtol = 1e-10)` changes the ones given. Options passed to the constructor are applied again at every `solve!` and win over a value set this way.
 
 ### Line Search Options
 - `snes_linesearch_type` - `bt` (backtracking), `basic`, `l2`, `cp`

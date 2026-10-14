@@ -601,6 +601,55 @@ converged_reason(snes::AbstractSNES{PetscLib}) where {PetscLib} =
     LibPETSc.SNESGetConvergedReason(getlib(PetscLib), snes)
 
 """
+    tolerances(snes::AbstractSNES)
+
+The convergence tolerances of `snes`, as `(; atol, rtol, stol, max_it, max_funcs)`:
+the absolute and relative residual tolerances, the step tolerance (relative to the
+iterate), the iteration limit and the limit on residual evaluations.
+
+# External Links
+$(doc_external("SNES/SNESGetTolerances"))
+"""
+function tolerances(snes::AbstractSNES{PetscLib}) where {PetscLib}
+    atol, rtol, stol, max_it, max_funcs = LibPETSc.SNESGetTolerances(getlib(PetscLib), snes)
+    return (; atol, rtol, stol, max_it = Int(max_it), max_funcs = Int(max_funcs))
+end
+
+"""
+    set_tolerances!(snes::AbstractSNES; atol, rtol, stol, max_it, max_funcs)
+
+Set the convergence tolerances of `snes`, named as [`tolerances`](@ref) returns them.
+A keyword left at `nothing` keeps the value `snes` has. Returns `snes`.
+
+Options given to the constructor are applied at every `solve!` by default
+(`options_at = :each_solve`), so `snes_rtol = …` there overrides `rtol` set here.
+
+# External Links
+$(doc_external("SNES/SNESSetTolerances"))
+"""
+function set_tolerances!(
+    snes::AbstractSNES{PetscLib};
+    atol = nothing,
+    rtol = nothing,
+    stol = nothing,
+    max_it = nothing,
+    max_funcs = nothing,
+) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    cur = tolerances(snes)
+    LibPETSc.SNESSetTolerances(
+        petsclib,
+        snes,
+        PetscLib.PetscReal(something(atol, cur.atol)),
+        PetscLib.PetscReal(something(rtol, cur.rtol)),
+        PetscLib.PetscReal(something(stol, cur.stol)),
+        PetscLib.PetscInt(something(max_it, cur.max_it)),
+        PetscLib.PetscInt(something(max_funcs, cur.max_funcs)),
+    )
+    return snes
+end
+
+"""
     set_function_domain_error!(snes::AbstractSNES)
 
 Tell `snes`, from inside the residual callback, that the iterate it was given

@@ -1030,6 +1030,17 @@ function interpolate!(
 end
 
 """
+    interpolate(ts::AbstractTS, t)
+
+The solution interpolated to time `t`, in a new vector the caller owns. The
+out-of-place [`interpolate!`](@ref), with the same limits.
+
+# External Links
+$(doc_external("TS/TSInterpolate"))
+"""
+interpolate(ts::AbstractTS, t) = interpolate!(similar(solution(ts)), ts, t)
+
+"""
     user_ctx(ts::AbstractTS)
 
 Whatever was stored with [`set_user_ctx!`](@ref), or `nothing`.

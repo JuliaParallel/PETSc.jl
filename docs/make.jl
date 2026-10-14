@@ -48,6 +48,7 @@ makedocs(;
             "KSP" =>  "man/ksp.md",
             "SNES" =>  "man/snes.md",
             "TS" =>  "man/ts.md",
+            "Direct solvers" =>  "man/direct_solvers.md",
         ],
         "Low-level interface (LibPETSc)" => Any[
             "Introduction" =>  "man/lowlevel_intro.md",

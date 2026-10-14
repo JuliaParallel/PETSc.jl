@@ -84,7 +84,7 @@ The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are
 
 ## Example
 
-[`examples/ex19.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex19.jl) is a full 2D driven-cavity example (velocity–vorticity–temperature) that demonstrates:
+[`examples/dmda/ex19.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex19.jl) is a full 2D driven-cavity example (velocity–vorticity–temperature) that demonstrates:
 
 - Switching between CPU and GPU with a single `useCUDA` flag.
 - FD coloring-based Jacobian assembly running entirely on-device.
@@ -124,7 +124,7 @@ This records a trace compatible with NSight Systems (`nsys profile`) and NVTX. F
 
 ## Performance 
 
-We have checked the performance of `examples/ex19.jl` by running it on GPU and on 1 or 32 CPU's of a Grace-Hopper 200 machine, using the following options:
+We have checked the performance of `examples/dmda/ex19.jl` by running it on GPU and on 1 or 32 CPU's of a Grace-Hopper 200 machine, using the following options:
 
 ```bash
 $mpiexec -n 1 julia --project ex19.jl -snes_monitor -snes_converged_reason -snes_monitor   -pc_type mg  -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi -ksp_monitor -log_view  -mg_levels_esteig_ksp_max_it 20  -mg_levels_esteig_ksp_max_it 20 -mg_levels_ksp_chebyshev_esteig 0,0.1,0,1.1 -mg_levels_ksp_max_it 3  -da_grid_x 513 -da_grid_y 513 -pc_mg_levels 6 

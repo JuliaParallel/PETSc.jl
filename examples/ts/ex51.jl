@@ -101,7 +101,7 @@ Keyword arguments:
   reliably.
 - `options`: additional PETSc command-line options for this solve. By default
   the script uses `ARGS`, so invocations like
-  `julia --project=. examples/ex51.jl -ts_type rk -ts_rk_type 5dp` work, and
+  `julia --project=. examples/ts/ex51.jl -ts_type rk -ts_rk_type 5dp` work, and
   programmatic calls can use values such as
   `options = ["-ts_type", "rk", "-ts_rk_type", "3bs"]`.
 - `verbose`: print a short run summary.

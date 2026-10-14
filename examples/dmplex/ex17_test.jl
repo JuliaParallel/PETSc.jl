@@ -1,8 +1,8 @@
-# Serial tests for examples/ex17.jl.
+# Serial tests for examples/dmplex/ex17.jl.
 # Covers all 7 solution types, 2D and 3D, and key solver variants.
 #
 # Run via:
-#   julia --project examples/ex17_test.jl
+#   julia --project examples/dmplex/ex17_test.jl
 # or through the project test suite (picked up by test/examples/examples.jl).
 
 using Test

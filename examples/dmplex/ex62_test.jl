@@ -1,9 +1,9 @@
-# Serial tests for examples/ex62.jl.
+# Serial tests for examples/dmplex/ex62.jl.
 # Covers 2D and 3D, Q2/Q1 and P2/P1, both quadratic and trig MMS,
 # block preconditioners, Vanka, and multigrid.
 #
 # Run via:
-#   julia --project examples/ex62_test.jl
+#   julia --project examples/dmplex/ex62_test.jl
 # or through the project test suite (picked up by test/examples/examples.jl).
 
 using Test

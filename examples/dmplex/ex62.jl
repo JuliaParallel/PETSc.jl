@@ -40,24 +40,24 @@
   boundary — do NOT pass -dm_plex_separate_marker.
 
   2D P2/P1 simplex, quadratic MMS (L² ≈ machine eps — exact for P2):
-    julia --project examples/ex62.jl -sol quadratic \
+    julia --project examples/dmplex/ex62.jl -sol quadratic \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           $SOLVER
 
   2D Q2/Q1 quad, trig MMS (L² ≈ 0.65 on default 2×2 mesh):
-    julia --project examples/ex62.jl -sol trig \
+    julia --project examples/dmplex/ex62.jl -sol trig \
           -dm_plex_simplex 0 \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           $SOLVER
 
   3D Q2/Q1 hex, quadratic MMS (L² ≈ machine eps):
-    julia --project examples/ex62.jl -sol quadratic \
+    julia --project examples/dmplex/ex62.jl -sol quadratic \
           -dm_plex_dim 3 -dm_plex_simplex 0 -dm_plex_box_faces 3,3,3 \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           $SOLVER
 
   Refinement convergence study — trig MMS, Q2/Q1, dm_refine N:
-    julia --project examples/ex62.jl -sol trig \
+    julia --project examples/dmplex/ex62.jl -sol trig \
           -dm_plex_simplex 0 -dm_refine 2 \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           $SOLVER
@@ -65,7 +65,7 @@
   ── C-code test equivalents (from PETSc src/snes/tutorials/ex62.c) ──────────
 
   2d_q2_q1_conv  (L₂ convergence study, 2 uniform refinements, Q2/Q1 quad):
-    julia --project examples/ex62.jl -sol trig \
+    julia --project examples/dmplex/ex62.jl -sol trig \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           -snes_convergence_estimate -convest_num_refine 2 \
@@ -77,7 +77,7 @@
           -fieldsplit_pressure_ksp_rtol 1e-10 -fieldsplit_pressure_pc_type lu
 
   2d_q2_q1_check  (Jacobian/residual check with quadratic MMS):
-    julia --project examples/ex62.jl -sol quadratic \
+    julia --project examples/dmplex/ex62.jl -sol quadratic \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           -dmsnes_check 0.0001 \

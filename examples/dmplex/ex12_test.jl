@@ -1,9 +1,9 @@
-# Serial tests for examples/ex12.jl.
+# Serial tests for examples/dmplex/ex12.jl.
 # Each test launches ex12.jl as a subprocess with specific options and checks
 # that the solver converges and the L² error is below a tolerance.
 #
 # Run via:
-#   julia --project examples/ex12_test.jl
+#   julia --project examples/dmplex/ex12_test.jl
 # or through the project test suite (picked up automatically by test/examples/examples.jl).
 
 using Test

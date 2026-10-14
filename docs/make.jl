@@ -43,6 +43,7 @@ makedocs(;
             "DM" =>  "man/dm.md",
             "DMDA" =>  "man/dmda.md",
             "DMStag" =>  "man/dmstag.md",
+            "Stokes flow on a DMStag" =>  "man/dmstag_stokes.md",
             "DMPlex" =>  "man/dmplex.md",
             "KSP" =>  "man/ksp.md",
             "SNES" =>  "man/snes.md",

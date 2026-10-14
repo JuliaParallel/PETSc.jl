@@ -594,7 +594,7 @@ The shim keeps the positional form, because that is the form v0.4 has. A keyword
 
 Two things forced this rather than a flip to 1-based everywhere. `set_values!`'s second overload takes `MatStencil` structs whose layout must match PETSc's C struct field for field, and reinterpreting the contents of a C-layout struct would mean rebuilding the user's vector on a hot path, or leaving the two overloads on different bases. And the 1-based route already exists: `Base.setindex!` converts, including the `CartesianIndex` form that builds `MatStencil` for the user, which leaves `set_values!` as the explicit bulk route for code already holding PETSc indices.
 
-`star_fd_coloring` returns both kinds at once, its `row_coo_local` going straight to `LibPETSc.MatSetPreallocationCOOLocal` while `perturb_cols` and `local_rows` index Julia arrays. `examples/ex19.jl` already renames the latter to `_1b` on receipt, by hand, which is this convention arriving on its own.
+`star_fd_coloring` returns both kinds at once, its `row_coo_local` going straight to `LibPETSc.MatSetPreallocationCOOLocal` while `perturb_cols` and `local_rows` index Julia arrays. `examples/dmda/ex19.jl` already renames the latter to `_1b` on receipt, by hand, which is this convention arriving on its own.
 
 So nothing here is a semantic break, and `setvalues!` to `set_values!` is a plain rename with a forwarding shim. A name carrying `_0b` cannot quietly mislead anyone.
 

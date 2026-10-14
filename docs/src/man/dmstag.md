@@ -189,6 +189,8 @@ end
 
 ## Example: 2D Stokes Flow Setup
 
+[Stokes flow on a DMStag](dmstag_stokes.md) walks through a complete solve: residual, Jacobian, free-slip walls and a Schur fieldsplit with a velocity multigrid. The setup alone looks like this.
+
 ```julia
 # Create staggered grid for Stokes: velocity on edges, pressure in cells
 dm = DMStag(

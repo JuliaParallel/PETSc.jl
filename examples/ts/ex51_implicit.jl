@@ -30,7 +30,7 @@ using PETSc, MPI, Printf
 # The number of Gauss stages is controlled by PETSc option
 # `-ts_irk_nstages <s>`. For example:
 #
-#     julia --project=. examples/ex51_implicit.jl -ts_irk_nstages 2
+#     julia --project=. examples/ts/ex51_implicit.jl -ts_irk_nstages 2
 #
 # or programmatically
 #

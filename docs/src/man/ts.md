@@ -110,7 +110,7 @@ It is worth knowing where the hazard is, though, because the low-level examples 
 const MY_RHS_PTR = @cfunction(my_rhs!, PetscErrorCode, (CTS, PetscReal, CVec, CVec, Ptr{Cvoid}))
 ```
 
-captures a pointer during precompilation and hands PETSc a stale one in every later session. In a script such as `examples/ex16.jl` it is fine, since the file is evaluated afresh each run. Inside a package it is not: build the pointer inside the function that registers it, or assign it from `__init__`.
+captures a pointer during precompilation and hands PETSc a stale one in every later session. In a script such as `examples/ts/ex16.jl` it is fine, since the file is evaluated afresh each run. Inside a package it is not: build the pointer inside the function that registers it, or assign it from `__init__`.
 
 ## Passing your own data
 

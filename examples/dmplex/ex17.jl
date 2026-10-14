@@ -29,39 +29,39 @@
   ── Basic usage ────────────────────────────────────────────────────────────────
 
   2D Q1 elasticity, quadratic exact solution:
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_simplex 0 -dm_plex_box_faces 4,4 \
           -sol_type elas_quad -displacement_petscspace_degree 1
 
   Check convergence (compares FEM solution to exact solution):
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_simplex 0 -sol_type elas_quad \
           -displacement_petscspace_degree 2 -dmsnes_check .0001
 
   2D P1 triangle mesh (requires the default triangle mesher in PETSc_jll):
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -sol_type vlap_quad -displacement_petscspace_degree 1 \
           -dm_refine 2
 
   3D Q1 hex mesh:
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_dim 3 -dm_plex_simplex 0 -dm_plex_box_faces 3,3,3 \
           -sol_type elas_quad -displacement_petscspace_degree 1
 
   ── Solver variants ────────────────────────────────────────────────────────────
 
   Direct solver (exact):
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_simplex 0 -dm_plex_box_faces 4,4 \
           -sol_type elas_quad -pc_type lu
 
   GAMG (algebraic multigrid) with rigid-body near-null space:
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_simplex 0 -dm_plex_box_faces 8,8 \
           -sol_type elas_quad -pc_type gamg -ksp_type cg
 
   Geometric multigrid (3 refinement levels):
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_dim 3 -dm_plex_simplex 0 -dm_plex_box_faces 2,2,2 \
           -dm_refine_hierarchy 3 -sol_type elas_quad \
           -pc_type mg -pc_mg_type full \
@@ -71,25 +71,25 @@
   ── Specific solution types ─────────────────────────────────────────────────────
 
   Axial displacement (tension on right wall):
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_simplex 0 -dm_plex_box_faces 4,4 \
           -sol_type elas_axial_disp -dm_plex_separate_marker \
           -displacement_petscspace_degree 1 -pc_type lu
 
   Uniform strain:
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_simplex 0 -dm_plex_box_faces 4,4 \
           -sol_type elas_uniform_strain -pc_type lu
 
   Geological engineering (slab with imposed right-wall displacement):
-    julia --project examples/ex17.jl \
+    julia --project examples/dmplex/ex17.jl \
           -dm_plex_simplex 0 -dm_plex_box_faces 4,4 \
           -sol_type elas_ge -dm_plex_separate_marker -pc_type gamg -ksp_type cg
 
   ── MPI ────────────────────────────────────────────────────────────────────────
 
   4 ranks, 3D elasticity with GAMG:
-    mpiexec -n 4 julia --project examples/ex17.jl \
+    mpiexec -n 4 julia --project examples/dmplex/ex17.jl \
             -dm_plex_dim 3 -dm_plex_simplex 0 -dm_plex_box_faces 4,4,4 \
             -sol_type elas_quad -pc_type gamg -ksp_type cg
 

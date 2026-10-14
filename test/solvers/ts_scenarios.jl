@@ -8,12 +8,12 @@ using MPI
 # bindings, and checks the two agree to the last digit. The second is shaped
 # the way the low-level layer makes awkward.
 #
-# `examples/ex16.jl` is loaded into its own module because `test/regression/ts_ex16.jl`
+# `examples/ts/ex16.jl` is loaded into its own module because `test/regression/ts_ex16.jl`
 # also includes it, and its `@cfunction` pointers are `const`: a second
 # include into the same namespace would be a redefinition error, and the order
 # the two test files run in should not matter.
 module Ex16Reference
-include(joinpath(@__DIR__, "..", "..", "examples", "ex16.jl"))
+include(joinpath(@__DIR__, "..", "..", "examples", "ts", "ex16.jl"))
 end
 
 @testset "High-level TS scenarios" begin
@@ -24,7 +24,7 @@ end
     comm = MPI.COMM_SELF
 
     @testset "van der Pol: same answer as the low-level ex16" begin
-        # `examples/ex16.jl` is PETSc's TS tutorial ex16 written against the
+        # `examples/ts/ex16.jl` is PETSc's TS tutorial ex16 written against the
         # low-level bindings: four `@cfunction` blocks, a mutable context
         # struct, `pointer_from_objref`, and a `GC.@preserve` region wrapped
         # around every registration. 

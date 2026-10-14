@@ -1,7 +1,7 @@
 using Test
 using PETSc
 
-include(joinpath(pkgdir(PETSc), "examples", "ex16.jl"))
+include(joinpath(pkgdir(PETSc), "examples", "ts", "ex16.jl"))
 
 function capture_stdout_to_string(f::Function)
     path, io = mktemp()

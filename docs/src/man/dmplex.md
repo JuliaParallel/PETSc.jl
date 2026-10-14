@@ -16,7 +16,7 @@ The typical workflow is:
 5. **Configure SNES** — attach the FEM assembly and null spaces to solve nonlinear problems.
 6. **Time loop** — solve, update history fields, write VTK.
 
-A complete, worked example is in [`examples/ex62b.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex62b.jl)
+A complete, worked example is in [`examples/dmplex/ex62b.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmplex/ex62b.jl)
 (2D/3D Stokes with Maxwell viscoelasticity, power-law rheology, and Lagrangian
 advection).
 
@@ -150,7 +150,7 @@ const g1_pu_ptr = PETSc.@jacobian_fn(g1_pu, dim_*dim_)
         deviatoric_stress_tangent!(g3, dim_, u_x, ...)  # uses ForwardDiff internally
     end
     ```
-    See `examples/ex62b.jl` for a complete example.
+    See `examples/dmplex/ex62b.jl` for a complete example.
 
 ---
 
@@ -336,7 +336,7 @@ LibPETSc.VecAXPY(petsclib, coords, PetscScalar(dt), vel_p1)
 
 ### ex17.jl — Linear Elasticity
 
-[`examples/ex17.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex17.jl)
+[`examples/dmplex/ex17.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmplex/ex17.jl)
 is a Julia port of PETSc's `snes/tutorials/ex17.c`.  It solves linear isotropic elasticity −∇·σ(u) = f on (0,1)^dim with manufactured exact solutions, demonstrating:
 
 - 2D/3D box meshes (simplex triangles/tetrahedra or quad/hex elements)
@@ -346,24 +346,24 @@ is a Julia port of PETSc's `snes/tutorials/ex17.c`.  It solves linear isotropic 
 
 ```bash
 # 2D Q1 quad mesh, quadratic MMS, direct solver
-julia --project examples/ex17.jl \
+julia --project examples/dmplex/ex17.jl \
   -dm_plex_simplex 0 -dm_plex_box_faces 4,4 \
   -sol_type elas_quad -displacement_petscspace_degree 1 -pc_type lu
 
 # GAMG with rigid-body near-null space (recommended for large problems)
-julia --project examples/ex17.jl \
+julia --project examples/dmplex/ex17.jl \
   -dm_plex_simplex 0 -dm_plex_box_faces 8,8 \
   -sol_type elas_quad -pc_type gamg -ksp_type cg
 
 # Geometric multigrid — 3 refinement levels, 3D
-julia --project examples/ex17.jl \
+julia --project examples/dmplex/ex17.jl \
   -dm_plex_dim 3 -dm_plex_simplex 0 -dm_plex_box_faces 2,2,2 \
   -dm_refine_hierarchy 3 -sol_type elas_quad \
   -pc_type mg -pc_mg_type full \
   -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi -ksp_type cg
 
 # MPI — 4 ranks
-mpiexec -n 4 julia --project examples/ex17.jl \
+mpiexec -n 4 julia --project examples/dmplex/ex17.jl \
   -dm_plex_simplex 0 -dm_plex_box_faces 8,8 \
   -sol_type elas_quad -pc_type gamg -ksp_type cg
 ```
@@ -372,12 +372,12 @@ mpiexec -n 4 julia --project examples/ex17.jl \
 
 ### ex62.jl — Isoviscous Stokes (MMS verification)
 
-[`examples/ex62.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex62.jl)
+[`examples/dmplex/ex62.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmplex/ex62.jl)
 is a Julia port of PETSc's `snes/tutorials/ex62.c`.  It solves constant-viscosity Stokes on the unit square/cube with polynomial or trigonometric manufactured exact solutions, used for convergence verification of the P2/P1 and Q2/Q1 element pairs.
 
 ```bash
 # 2D P2/P1 simplex, quadratic MMS — L² ≈ machine precision (exact for P2)
-julia --project examples/ex62.jl -sol quadratic \
+julia --project examples/dmplex/ex62.jl -sol quadratic \
   -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
   -pc_fieldsplit_schur_factorization_type full -pc_fieldsplit_schur_precondition a11 \
@@ -385,7 +385,7 @@ julia --project examples/ex62.jl -sol quadratic \
   -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu -ksp_rtol 1e-9
 
 # 2D Q2/Q1 quad, trig MMS, refinement convergence study
-julia --project examples/ex62.jl -sol trig \
+julia --project examples/dmplex/ex62.jl -sol trig \
   -dm_plex_simplex 0 -dm_refine 2 \
   -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -394,7 +394,7 @@ julia --project examples/ex62.jl -sol trig \
   -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu -ksp_rtol 1e-9
 
 # 3D Q2/Q1 hex, quadratic MMS
-julia --project examples/ex62.jl -sol quadratic \
+julia --project examples/dmplex/ex62.jl -sol quadratic \
   -dm_plex_dim 3 -dm_plex_simplex 0 -dm_plex_box_faces 3,3,3 \
   -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -411,12 +411,12 @@ julia --project examples/ex62.jl -sol quadratic \
 
 ### ex69.jl — Variable-Viscosity Stokes
 
-[`examples/ex69.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex69.jl)
+[`examples/dmplex/ex69.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmplex/ex69.jl)
 is a Julia port of PETSc's `snes/tutorials/ex69.c`.  It solves variable-viscosity Stokes on (0,1)² with free-slip walls, using analytical benchmark solutions (`solkx` with exponential viscosity variation, `solcx` with a piecewise-constant jump), for convergence rate verification.
 
 ```bash
 # Q2/Q1 quad, SolKx (exponential viscosity)
-julia --project examples/ex69.jl \
+julia --project examples/dmplex/ex69.jl \
   -dm_plex_simplex 0 -dm_plex_separate_marker \
   -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -425,7 +425,7 @@ julia --project examples/ex69.jl \
   -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu -ksp_rtol 1e-9
 
 # SolCx with viscosity jump etaB=1000
-julia --project examples/ex69.jl \
+julia --project examples/dmplex/ex69.jl \
   -dm_plex_simplex 0 -dm_plex_separate_marker \
   -sol_type solcx -etaB 1e3 \
   -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
@@ -435,7 +435,7 @@ julia --project examples/ex69.jl \
   -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu -ksp_rtol 1e-9
 
 # Refinement study — 2 uniform refinements, Q2/Q1
-julia --project examples/ex69.jl \
+julia --project examples/dmplex/ex69.jl \
   -dm_plex_simplex 0 -dm_plex_separate_marker -dm_refine 2 \
   -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -444,7 +444,7 @@ julia --project examples/ex69.jl \
   -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu -ksp_rtol 1e-9
 
 # MPI — 4 ranks, SolCx, viscosity jump 1000
-mpiexec -n 4 julia --project examples/ex69.jl \
+mpiexec -n 4 julia --project examples/dmplex/ex69.jl \
   -dm_plex_simplex 0 -dm_plex_separate_marker -dm_refine 1 \
   -sol_type solcx -etaB 1e3 \
   -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
@@ -462,7 +462,7 @@ Expected convergence rates (L² velocity+pressure combined):
 
 ## Examples: Stokes Flow (ex62b.jl)
 
-[`examples/ex62b.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex62b.jl) solves the incompressible Stokes equations on a square/cube domain containing a circular/spherical inclusion meshed with Gmsh.  It supports four solution types (`-sol quadratic|trig|bg|grav`), power-law and Maxwell viscoelastic rheology, time stepping, and VTK/PVD output.
+[`examples/dmplex/ex62b.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmplex/ex62b.jl) solves the incompressible Stokes equations on a square/cube domain containing a circular/spherical inclusion meshed with Gmsh.  It supports four solution types (`-sol quadratic|trig|bg|grav`), power-law and Maxwell viscoelastic rheology, time stepping, and VTK/PVD output.
 
 ### Solver options
 
@@ -485,7 +485,7 @@ All three use a Schur-complement fieldsplit preconditioner:
 
 **Pure shear, direct solver** (quick test, serial):
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -sol bg -exx_bg 1.0 -eyy_bg -1.0 -mu_inclusion 0.1 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
   -pc_fieldsplit_schur_factorization_type full -pc_fieldsplit_schur_precondition a11 \
@@ -496,7 +496,7 @@ julia --project=examples examples/ex62b.jl \
 
 **Gravity-driven sinking cylinder, viscous, direct solver** (20 time steps):
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -sol grav -mesh_h 0.05 -mesh_h_inclusion 0.02 \
   -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 -mu_inclusion 0.1 \
   -dt 0.02 -nsteps 20 \
@@ -509,7 +509,7 @@ julia --project=examples examples/ex62b.jl \
 
 **Gravity-driven sinking cylinder, Maxwell viscoelastic** (τ_rel = η/G = 0.2):
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -sol grav -mesh_h 0.05 -mesh_h_inclusion 0.02 \
   -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 -mu_inclusion 0.1 \
   -G_bg 5.0 -G_inclusion 0.5 -dt 0.01 -nsteps 50 \
@@ -522,7 +522,7 @@ julia --project=examples examples/ex62b.jl \
 
 **Pure shear, power-law inclusion (n=3), viscoelastic matrix** (100 steps, GAMG):
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -sol bg -exx_bg 1.0 -eyy_bg -1.0 \
   -mesh_h 0.04 -mesh_h_inclusion 0.015 \
   -mu_inclusion 0.1 -n_inclusion 3.0 -eps0_inclusion 0.5 \
@@ -537,7 +537,7 @@ julia --project=examples examples/ex62b.jl \
 
 **Analytical viscoelastic verification** — Maxwell stress build-up, τ_rel = η/G = 1:
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -sol bg -exx_bg 0.1 -eyy_bg -0.1 \
   -mesh_h 0.5 -mu_inclusion 1.0 -G_bg 1.0 -G_inclusion 1.0 \
   -dt 0.1 -nsteps 30 \
@@ -556,7 +556,7 @@ rate (`ezz`) is set automatically to `-(exx+eyy)` to enforce incompressibility.
 
 **3D pure shear, algebraic multigrid (GAMG)**:
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -dm_plex_dim 3 -sol bg -exx_bg 1.0 -eyy_bg -0.5 -mu_inclusion 0.01 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
   -pc_fieldsplit_schur_factorization_type full -pc_fieldsplit_schur_precondition a11 \
@@ -567,7 +567,7 @@ julia --project=examples examples/ex62b.jl \
 
 **3D pure shear, geometric multigrid** (coarse mesh h=0.4, 2 uniform refinements → 3 MG levels):
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -dm_plex_dim 3 -sol bg -exx_bg 1.0 -eyy_bg -0.5 -mu_inclusion 0.01 \
   -mesh_h 0.4 -dm_refine 2 \
   -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -586,7 +586,7 @@ julia --project=examples examples/ex62b.jl \
 
 **3D gravity-driven sinking sphere, viscoelastic, GAMG** (30 time steps):
 ```bash
-julia --project=examples examples/ex62b.jl \
+julia --project=examples examples/dmplex/ex62b.jl \
   -dm_plex_dim 3 -sol grav \
   -mesh_h 0.3 -mesh_h_inclusion 0.12 \
   -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 -mu_inclusion 0.1 \
@@ -604,7 +604,7 @@ Every example above runs in parallel without code changes — just prepend
 `mpiexec -n N`:
 
 ```bash
-mpiexec -n 4 julia --project=examples examples/ex62b.jl \
+mpiexec -n 4 julia --project=examples examples/dmplex/ex62b.jl \
   -dm_plex_dim 3 -sol grav \
   -mesh_h 0.2 -mesh_h_inclusion 0.08 \
   -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 -mu_inclusion 0.1 \

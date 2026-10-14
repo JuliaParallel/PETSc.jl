@@ -8,8 +8,8 @@
 # The sinker is a disc in the middle, ρ = 1 and η = 10⁴ inside, ρ = 0 and η = 1 outside. 
 # Walkthrough: docs/src/man/dmstag_stokes.md.
 #
-#   julia --project=examples examples/dmstag_stokes.jl
-#   mpiexec -n 4 julia --project=examples examples/dmstag_stokes.jl -ksp_monitor
+#   julia --project=examples examples/dmstag/dmstag_stokes.jl
+#   mpiexec -n 4 julia --project=examples examples/dmstag/dmstag_stokes.jl -ksp_monitor
 
 using PETSc, MPI, ForwardDiff
 using PETSc: LibPETSc

@@ -1,7 +1,7 @@
-# Checks examples/dmstag_stokes.jl: the iterative solve matches a direct one at 16², and
+# Checks examples/dmstag/dmstag_stokes.jl: the iterative solve matches a direct one at 16², and
 # the iteration count stays flat under refinement.
 #
-#   julia --project examples/dmstag_stokes_test.jl
+#   julia --project examples/dmstag/dmstag_stokes_test.jl
 
 using Test
 

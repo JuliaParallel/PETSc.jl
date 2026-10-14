@@ -1,10 +1,10 @@
 # Stokes flow on a DMStag
 
-[`examples/dmstag_stokes.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmstag_stokes.jl) solves 2D incompressible Stokes flow around a dense, stiff sinker: a staggered grid, the equations written as residuals and turned into matrix rows by ForwardDiff, free-slip walls, and a Schur-complement fieldsplit with a geometric multigrid V-cycle on the velocity. This page walks through it. The functions it uses are documented on the [DMStag](dmstag.md) and [KSP](ksp.md) pages.
+[`examples/dmstag/dmstag_stokes.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmstag/dmstag_stokes.jl) solves 2D incompressible Stokes flow around a dense, stiff sinker: a staggered grid, the equations written as residuals and turned into matrix rows by ForwardDiff, free-slip walls, and a Schur-complement fieldsplit with a geometric multigrid V-cycle on the velocity. This page walks through it. The functions it uses are documented on the [DMStag](dmstag.md) and [KSP](ksp.md) pages.
 
 ```
-julia --project=examples examples/dmstag_stokes.jl
-mpiexec -n 4 julia --project=examples examples/dmstag_stokes.jl -ksp_monitor
+julia --project=examples examples/dmstag/dmstag_stokes.jl
+mpiexec -n 4 julia --project=examples examples/dmstag/dmstag_stokes.jl -ksp_monitor
 ```
 
 ## The problem
@@ -166,7 +166,7 @@ FGMRES iterations to a relative residual of 10⁻⁸, serial, three multigrid le
 
 The count is flat in h. At 32² the sinker's outline is only a few cells wide, which is why that count is lower. On 2 and 4 ranks the 32² sinker takes 27 and 29 iterations, since SOR is applied per rank.
 
-`examples/dmstag_stokes_test.jl` checks the 16² solution against LU to 10⁻⁷, and that the count stays flat from 64² to 128². LU needs a nonsingular matrix, so the test fixes the pressure of one cell at zero. It factors A itself: `ksp_type = "preonly"` with `pc_type = "lu"` factors the matrix the preconditioner is built from, which in the example is P.
+`examples/dmstag/dmstag_stokes_test.jl` checks the 16² solution against LU to 10⁻⁷, and that the count stays flat from 64² to 128². LU needs a nonsingular matrix, so the test fixes the pressure of one cell at zero. It factors A itself: `ksp_type = "preonly"` with `pc_type = "lu"` factors the matrix the preconditioner is built from, which in the example is P.
 
 ## Taking it further
 

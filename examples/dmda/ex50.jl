@@ -13,22 +13,22 @@
 # ## Usage Examples:
 #
 # 1. Run with default settings (100×100 grid, LU direct solver):
-#    julia --project=. examples/ex50.jl
+#    julia --project=. examples/dmda/ex50.jl
 #
 # 2. Set grid size with -N option (creates N×N grid):
-#    julia --project=. examples/ex50.jl -N 50 -ksp_monitor
+#    julia --project=. examples/dmda/ex50.jl -N 50 -ksp_monitor
 #
 # 3. Monitor convergence with custom grid:
-#    julia --project=. examples/ex50.jl -da_grid_x 50 -da_grid_y 50 -ksp_monitor
+#    julia --project=. examples/dmda/ex50.jl -da_grid_x 50 -da_grid_y 50 -ksp_monitor
 #
 # 4. Use direct LU solver:
-#    julia --project=. examples/ex50.jl -pc_type lu -ksp_monitor -ksp_converged_reason
+#    julia --project=. examples/dmda/ex50.jl -pc_type lu -ksp_monitor -ksp_converged_reason
 #
 # 5. Multigrid with refinement:
-#    julia --project=. examples/ex50.jl -da_grid_x 3 -da_grid_y 3 -da_refine 5 -pc_type mg -ksp_monitor
+#    julia --project=. examples/dmda/ex50.jl -da_grid_x 3 -da_grid_y 3 -da_refine 5 -pc_type mg -ksp_monitor
 #
 # 6. Programmatic usage with custom solver options:
-#    julia -e "include(\"examples/ex50.jl\"); solve_poisson(50, 0; pc_mg_levels=3, ksp_monitor=true)"
+#    julia -e "include(\"examples/dmda/ex50.jl\"); solve_poisson(50, 0; pc_mg_levels=3, ksp_monitor=true)"
 
 using PETSc, MPI, Printf
 
@@ -81,7 +81,7 @@ time, iters, grid = solve_poisson()
 time, iters, grid = solve_poisson(50, 0; pc_mg_levels=3, ksp_monitor=true)
 
 # Command-line usage
-# julia examples/ex50.jl -N 50 -pc_mg_levels 3
+# julia examples/dmda/ex50.jl -N 50 -pc_mg_levels 3
 ```
 """
 function solve_poisson(N=100, da_refine=0; solver_opts...)

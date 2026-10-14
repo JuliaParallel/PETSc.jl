@@ -37,45 +37,45 @@
             -ksp_rtol 1e-9"
 
   Q2/Q1 quad, SolKx (L² ≈ 0.014 on default 2×2 mesh):
-    julia --project examples/ex69.jl \
+    julia --project examples/dmplex/ex69.jl \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           $SOLVER
 
   Q1/P0 quad, SolKx (L² ≈ 0.062 on default 2×2 mesh):
-    julia --project examples/ex69.jl \
+    julia --project examples/dmplex/ex69.jl \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -vel_petscspace_degree 1 -pres_petscspace_degree 0 \
           $SOLVER
 
   SolCx with viscosity jump etaB=1000 (L² ≈ 0.039 on 2×2 mesh):
-    julia --project examples/ex69.jl \
+    julia --project examples/dmplex/ex69.jl \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -sol_type solcx -etaB 1e3 \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           $SOLVER
 
   Refinement convergence study — Q2/Q1, -dm_refine N gives 2^N × 2^N cells:
-    julia --project examples/ex69.jl \
+    julia --project examples/dmplex/ex69.jl \
           -dm_plex_simplex 0 -dm_plex_separate_marker -dm_refine 2 \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           $SOLVER
 
   MPI (2 ranks, Q2/Q1, L² ≈ 0.0029 after 1 uniform refinement):
-    mpiexec -n 2 julia --project examples/ex69.jl \
+    mpiexec -n 2 julia --project examples/dmplex/ex69.jl \
             -dm_plex_simplex 0 -dm_plex_separate_marker -dm_refine 1 \
             -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
             $SOLVER
 
   MPI (4 ranks, Q2/Q1, SolCx etaB=1000):
-    mpiexec -n 4 julia --project examples/ex69.jl \
+    mpiexec -n 4 julia --project examples/dmplex/ex69.jl \
             -dm_plex_simplex 0 -dm_plex_separate_marker -dm_refine 1 \
             -sol_type solcx -etaB 1e3 \
             -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
             $SOLVER
 
   P2/P1 simplex, direct fieldsplit (requires triangle mesher in PETSc_jll):
-    julia --project examples/ex69.jl -dm_plex_separate_marker \
+    julia --project examples/dmplex/ex69.jl -dm_plex_separate_marker \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
           -pc_fieldsplit_schur_factorization_type full \
@@ -87,7 +87,7 @@
   ── C-code test equivalents (from PETSc src/snes/tutorials/ex69.c) ──────────
 
   q2q1_conv  (L² convergence study, 2 uniform refinements, Q2/Q1 quad):
-    julia --project examples/ex69.jl \
+    julia --project examples/dmplex/ex69.jl \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           -snes_convergence_estimate -convest_num_refine 2 \
@@ -99,7 +99,7 @@
           -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu
 
   q1p0_conv  (L² convergence study, 2 uniform refinements, Q1/P0 quad):
-    julia --project examples/ex69.jl \
+    julia --project examples/dmplex/ex69.jl \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -vel_petscspace_degree 1 -pres_petscspace_degree 0 \
           -snes_convergence_estimate -convest_num_refine 2 \
@@ -111,7 +111,7 @@
           -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu
 
   q2p1_conv  (Q2 velocity, discontinuous P1 pressure, 2 uniform refinements):
-    julia --project examples/ex69.jl \
+    julia --project examples/dmplex/ex69.jl \
           -dm_plex_simplex 0 -dm_plex_separate_marker \
           -vel_petscspace_degree 2 -pres_petscspace_degree 1 \
           -pres_petscspace_poly_tensor 0 \

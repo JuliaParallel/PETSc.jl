@@ -7,14 +7,14 @@ using PETSc, MPI, Printf
 #
 # Run convergence tests for `ex45` (3D) or `ex50` (2D) from the repository root.
 # - Direct (LU) baseline for ex45 (3D):
-#     julia --project=. examples/convergence_test.jl -Ns="65,129,257" -levels="1,1,1" -ksp_type preonly -pc_type lu -example ex45
+#     julia --project=. examples/dmda/convergence_test.jl -Ns="65,129,257" -levels="1,1,1" -ksp_type preonly -pc_type lu -example ex45
 # - Geometric multigrid for ex45:
-#     julia --project=. examples/convergence_test.jl -Ns="65,129,257,513" -levels="3,4,5,6" -ksp_type cg -pc_type mg -example ex45
+#     julia --project=. examples/dmda/convergence_test.jl -Ns="65,129,257,513" -levels="3,4,5,6" -ksp_type cg -pc_type mg -example ex45
 #
 # - Direct (LU) baseline for ex50 (2D):
-#     julia --project=. examples/convergence_test.jl -Ns="65,129,257" -levels="1,1,1" -ksp_type preonly -pc_type lu -example ex50
+#     julia --project=. examples/dmda/convergence_test.jl -Ns="65,129,257" -levels="1,1,1" -ksp_type preonly -pc_type lu -example ex50
 # - Geometric multigrid for ex50:
-#     julia --project=. examples/convergence_test.jl -Ns="65,129,257,513" -levels="3,4,5,6" -ksp_type cg -pc_type mg -example ex50
+#     julia --project=. examples/dmda/convergence_test.jl -Ns="65,129,257,513" -levels="3,4,5,6" -ksp_type cg -pc_type mg -example ex50
 #
 # Notes:
 # - `-levels` maps one MG level per entry in `-Ns` (comma-separated).

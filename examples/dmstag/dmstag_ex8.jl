@@ -11,9 +11,9 @@
 #   (u[i-1] - 2*u[i] + u[i+1]) = h² * f(x_i)
 #
 # Usage:
-#   julia --project=. examples/dmstag_ex8.jl
-#   julia --project=. examples/dmstag_ex8.jl -pc_type mg -pc_mg_galerkin -pc_mg_levels 4
-#   mpiexec -n 2 julia --project=. examples/dmstag_ex8.jl -pc_type mg -pc_mg_galerkin -pc_mg_levels 7 -stag_grid_x 512 -ksp_converged_reason
+#   julia --project=. examples/dmstag/dmstag_ex8.jl
+#   julia --project=. examples/dmstag/dmstag_ex8.jl -pc_type mg -pc_mg_galerkin -pc_mg_levels 4
+#   mpiexec -n 2 julia --project=. examples/dmstag/dmstag_ex8.jl -pc_type mg -pc_mg_galerkin -pc_mg_levels 7 -stag_grid_x 512 -ksp_converged_reason
 
 using PETSc, MPI
 

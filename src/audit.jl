@@ -202,7 +202,7 @@ whose result is not assigned cannot be matched against a release.
 # Examples
 
 ```julia
-julia> report = audit_file("examples/ex1.jl");
+julia> report = audit_file("examples/dmstag/dmstag_ex1.jl");
 
 julia> isempty(report.leaked)
 true

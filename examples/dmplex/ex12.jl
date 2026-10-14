@@ -29,45 +29,45 @@
   ── Basic usage ──────────────────────────────────────────────────────────────
 
   Serial, 2-D, linear coefficient (triangles):
-    julia --project examples/ex12.jl -dim 2 -coeff field
+    julia --project examples/dmplex/ex12.jl -dim 2 -coeff field
 
   Serial, 3-D, default 8³ hex mesh:
-    julia --project examples/ex12.jl
+    julia --project examples/dmplex/ex12.jl
 
   Finer mesh with refinement:
-    julia --project examples/ex12.jl -dim 2 -dm_plex_box_faces 16,16 -dm_refine 1
+    julia --project examples/dmplex/ex12.jl -dim 2 -dm_plex_box_faces 16,16 -dm_refine 1
 
   ── MPI ──────────────────────────────────────────────────────────────────────
 
   4 ranks, 3-D, field coefficient:
-    mpiexec -n 4 julia --project examples/ex12.jl -dim 3 -dm_plex_box_faces 8,8,8
+    mpiexec -n 4 julia --project examples/dmplex/ex12.jl -dim 3 -dm_plex_box_faces 8,8,8
 
   4 ranks, nonlinear coefficient:
-    mpiexec -n 4 julia --project examples/ex12.jl -dim 2 -coeff nonlinear \
+    mpiexec -n 4 julia --project examples/dmplex/ex12.jl -dim 2 -coeff nonlinear \
             -dm_plex_box_faces 32,32
 
   ── Boundary conditions ───────────────────────────────────────────────────────
 
   Dirichlet (default):
-    julia --project examples/ex12.jl -dim 2 -bc dirichlet
+    julia --project examples/dmplex/ex12.jl -dim 2 -bc dirichlet
 
   Pure Neumann (singular system, solution unique up to a constant):
-    julia --project examples/ex12.jl -dim 2 -coeff field -bc neumann
+    julia --project examples/dmplex/ex12.jl -dim 2 -coeff field -bc neumann
 
   ── Solver variants (all pass through as PETSc options) ─────────────────────
 
   GAMG algebraic multigrid (good general choice):
-    julia --project examples/ex12.jl -dim 2 -dm_plex_box_faces 32,32 \
+    julia --project examples/dmplex/ex12.jl -dim 2 -dm_plex_box_faces 32,32 \
           -pc_type gamg -ksp_type cg
 
   Matrix-free Jacobian (no matrix assembled):
-    julia --project examples/ex12.jl -dim 2 -coeff nonlinear -snes_mf
+    julia --project examples/dmplex/ex12.jl -dim 2 -coeff nonlinear -snes_mf
 
   Matrix-free preconditioner (matrix used only for PC, not for matvec):
-    julia --project examples/ex12.jl -dim 2 -coeff nonlinear -snes_mf_operator
+    julia --project examples/dmplex/ex12.jl -dim 2 -coeff nonlinear -snes_mf_operator
 
   FAS nonlinear multigrid, 2 levels:
-    julia --project examples/ex12.jl -dim 2 -coeff nonlinear \
+    julia --project examples/dmplex/ex12.jl -dim 2 -coeff nonlinear \
           -dm_plex_box_faces 4,4 -dm_refine_hierarchy 1 \
           -snes_type fas -snes_fas_levels 2 \
           -fas_coarse_snes_type newtonls -fas_coarse_pc_type lu \
@@ -76,16 +76,16 @@
           -fas_levels_1_ksp_rtol 1e-8
 
   Periodic mesh (no Dirichlet, singular — add null space or use neumann mode):
-    julia --project examples/ex12.jl -dim 2 -dm_plex_box_bd periodic,periodic \
+    julia --project examples/dmplex/ex12.jl -dim 2 -dm_plex_box_bd periodic,periodic \
           -bc neumann
 
   BDDC domain decomposition (4 ranks):
-    mpiexec -n 4 julia --project examples/ex12.jl -dim 2 \
+    mpiexec -n 4 julia --project examples/dmplex/ex12.jl -dim 2 \
             -dm_plex_box_faces 6,6 -dm_refine 2 \
             -dm_mat_type is -pc_type bddc -ksp_type gmres
 
   ASM with ILU subsolvers:
-    julia --project examples/ex12.jl -dim 2 -dm_plex_box_faces 16,16 \
+    julia --project examples/dmplex/ex12.jl -dim 2 -dm_plex_box_faces 16,16 \
           -pc_type asm -pc_asm_blocks 4 -sub_pc_type ilu -ksp_type gmres
 
   ── What requires an external (non-jll) PETSc build ─────────────────────────

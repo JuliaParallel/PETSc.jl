@@ -131,7 +131,7 @@
   ── Run examples ─────────────────────────────────────────────────────────────
 
   2D background shear, direct solver:
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -sol bg -exx_bg 1.0 -eyy_bg -1.0 -mu_inclusion 0.1 \
           -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
           -pc_fieldsplit_schur_factorization_type full \
@@ -141,7 +141,7 @@
           -ksp_rtol 1e-9 -snes_rtol 1e-9 -vtk_output out.vtu
 
   3D background shear, GAMG iterative solver (ezz = -(exx+eyy) automatically):
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -dm_plex_dim 3 -sol bg -exx_bg 1.0 -eyy_bg -0.5 -mu_inclusion 0.01 \
           -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
           -pc_fieldsplit_schur_factorization_type full \
@@ -151,7 +151,7 @@
           -ksp_type fgmres -ksp_rtol 1e-6 -snes_rtol 1e-6 -vtk_output out3d.vtu
 
   3D background shear, geometric multigrid (coarse mesh → 2 refinements):
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -dm_plex_dim 3 -sol bg -exx_bg 1.0 -eyy_bg -0.5 -mu_inclusion 0.01 \
           -mesh_h 0.4 -dm_refine 2 \
           -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -181,7 +181,7 @@
     For nonlinear rheology (n > 1) use -snes_rtol 1e-6 -snes_max_it 20.
 
   2D gravity-driven sinking, viscous (baseline), direct solver:
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -sol grav \
           -mesh_h 0.05 -mesh_h_inclusion 0.02 \
           -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 \
@@ -196,7 +196,7 @@
           -vtk_output grav_viscous.vtu
 
   2D gravity-driven sinking, Maxwell viscoelastic (τ_rel = η/G = 0.2), direct solver:
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -sol grav \
           -mesh_h 0.05 -mesh_h_inclusion 0.02 \
           -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 \
@@ -212,7 +212,7 @@
           -vtk_output grav_viscoelastic.vtu
 
   2D pure shear, power-law inclusion (n=3), viscoelastic matrix, direct solver:
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -sol bg -exx_bg 1.0 -eyy_bg -1.0 \
           -mesh_h 0.04 -mesh_h_inclusion 0.015 \
           -mu_inclusion 0.1 \
@@ -228,7 +228,7 @@
           -vtk_output shear_powerlaw.vtu
 
   2D large problem, iterative GAMG solver:
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -sol grav \
           -mesh_h 0.02 -mesh_h_inclusion 0.008 \
           -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 \
@@ -244,7 +244,7 @@
           -vtk_output grav_gamg.vtu
 
   3D gravity-driven sinking (sphere), viscoelastic, GAMG solver:
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -dm_plex_dim 3 \
           -sol grav \
           -mesh_h 0.3 -mesh_h_inclusion 0.12 \
@@ -262,7 +262,7 @@
 
   Analytical viscoelastic verification — Maxwell stress build-up under pure shear
   (homogeneous linear rheology, τ_rel = η/G = 1):
-    julia --project=examples examples/ex62b.jl \
+    julia --project=examples examples/dmplex/ex62b.jl \
           -sol bg -exx_bg 0.1 -eyy_bg -0.1 \
           -mesh_h 0.5 -mu_inclusion 1.0 \
           -G_bg 1.0 -G_inclusion 1.0 \
@@ -286,7 +286,7 @@
 # sub-environment.
 if isinteractive()
     import Pkg
-    Pkg.activate(joinpath(@__DIR__))
+    Pkg.activate(joinpath(@__DIR__, ".."))
 end
 
 using MPI

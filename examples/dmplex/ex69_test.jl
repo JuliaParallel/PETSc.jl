@@ -1,9 +1,9 @@
-# Serial tests for examples/ex69.jl.
+# Serial tests for examples/dmplex/ex69.jl.
 # Covers Q2/Q1 and Q1/P0 quad elements, SolKx and SolCx solution types,
 # and a multi-refinement convergence check.
 #
 # Run via:
-#   julia --project examples/ex69_test.jl
+#   julia --project examples/dmplex/ex69_test.jl
 # or through the project test suite (picked up by test/examples/examples.jl).
 
 using Test

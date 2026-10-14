@@ -123,7 +123,7 @@ A `KSP` built on a DM computes its operator, right-hand side and initial guess f
 ### Preconditioners (`pc_type`)
 - `jacobi` - Diagonal scaling
 - `ilu` - Incomplete LU factorization
-- `lu` - Direct LU factorization
+- `lu` - Direct LU factorization; see [Direct solvers](direct_solvers.md) for which package to pick
 - `mg` - Geometric multigrid
 - `gamg` - Algebraic multigrid
 - `none` - No preconditioning

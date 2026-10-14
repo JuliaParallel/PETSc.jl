@@ -383,32 +383,66 @@ function store_options!(obj, petsclib, options_at::Symbol, options)
 end
 
 """
+    set_from_options!(obj::Union{AbstractPC, AbstractPetscMat, AbstractPetscVec})
+
+Apply PETSc's global options database to the preconditioner, matrix or vector
+`obj`, read under its prefix (see [`set_options_prefix!`](@ref)): `-pc_type`,
+`-mat_type`, `-vec_type` and the options of the chosen type. Returns `obj`.
+
+A matrix or vector reads its type here, so call it before the object is
+preallocated or filled.
+
+# External Links
+$(doc_external("PC/PCSetFromOptions"))
+$(doc_external("Mat/MatSetFromOptions"))
+$(doc_external("Vec/VecSetFromOptions"))
+"""
+function set_from_options!(obj::Union{LibPETSc.AbstractPC, LibPETSc.AbstractPetscMat, LibPETSc.AbstractPetscVec})
+    apply_global_options!(obj)
+    return obj
+end
+
+apply_global_options!(p::LibPETSc.AbstractPC{PetscLib}) where {PetscLib} =
+    LibPETSc.PCSetFromOptions(getlib(PetscLib), p)
+apply_global_options!(A::LibPETSc.AbstractPetscMat{PetscLib}) where {PetscLib} =
+    LibPETSc.MatSetFromOptions(getlib(PetscLib), A)
+apply_global_options!(v::LibPETSc.AbstractPetscVec{PetscLib}) where {PetscLib} =
+    LibPETSc.VecSetFromOptions(getlib(PetscLib), v)
+
+"""
     set_options_prefix!(obj, prefix::AbstractString)
 
-Make `obj`, a `KSP`, `SNES`, `TS` or `PC`, read its options under `prefix`:
-with `"inner_"`, a `KSP` reads `-inner_ksp_type`. This is how two solvers in one
-program are configured apart. Returns `obj`.
+Make `obj`, a `KSP`, `SNES`, `TS`, `PC`, DM, matrix or vector, read its options
+under `prefix`: with `"inner_"`, a `KSP` reads `-inner_ksp_type`. This is how two
+objects of one kind in one program are configured apart. Returns `obj`.
 
 # External Links
 $(doc_external("KSP/KSPSetOptionsPrefix"))
 $(doc_external("SNES/SNESSetOptionsPrefix"))
 $(doc_external("TS/TSSetOptionsPrefix"))
 $(doc_external("PC/PCSetOptionsPrefix"))
+$(doc_external("DM/DMSetOptionsPrefix"))
+$(doc_external("Mat/MatSetOptionsPrefix"))
+$(doc_external("Vec/VecSetOptionsPrefix"))
 """
 function set_options_prefix! end
 
 """
     options_prefix(obj)
 
-The prefix `obj`, a `KSP`, `SNES`, `TS` or `PC`, reads its options under, or
-`""` when it has none. A solver PETSc builds inside another inherits the outer
-prefix: the `KSP` of a `SNES` prefixed `"outer_"` reads `-outer_ksp_type`.
+The prefix `obj`, a `KSP`, `SNES`, `TS`, `PC`, DM, matrix or vector, reads its
+options under, or `""` when it has none. A solver PETSc builds inside another
+inherits the outer prefix: the `KSP` of a `SNES` prefixed `"outer_"` reads
+`-outer_ksp_type`.
 
 # External Links
 $(doc_external("KSP/KSPGetOptionsPrefix"))
 $(doc_external("SNES/SNESGetOptionsPrefix"))
 $(doc_external("TS/TSGetOptionsPrefix"))
 $(doc_external("PC/PCGetOptionsPrefix"))
+$(doc_external("DM/DMGetOptionsPrefix"))
+$(doc_external("Mat/MatGetOptionsPrefix"))
+$(doc_external("Vec/VecGetOptionsPrefix"))
 """
 function options_prefix end
 
@@ -417,6 +451,9 @@ for (T, setprefix, getprefix) in (
     (:AbstractSNES, :SNESSetOptionsPrefix, :SNESGetOptionsPrefix),
     (:AbstractTS, :TSSetOptionsPrefix, :TSGetOptionsPrefix),
     (:AbstractPC, :PCSetOptionsPrefix, :PCGetOptionsPrefix),
+    (:AbstractPetscDM, :DMSetOptionsPrefix, :DMGetOptionsPrefix),
+    (:AbstractPetscMat, :MatSetOptionsPrefix, :MatGetOptionsPrefix),
+    (:AbstractPetscVec, :VecSetOptionsPrefix, :VecGetOptionsPrefix),
 )
     @eval begin
         function set_options_prefix!(obj::LibPETSc.$T{PetscLib}, prefix::AbstractString) where {PetscLib}

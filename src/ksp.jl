@@ -558,6 +558,54 @@ converged_reason(ksp::AbstractKSP{PetscLib}) where {PetscLib} =
     LibPETSc.KSPGetConvergedReason(getlib(PetscLib), ksp)
 
 """
+    tolerances(ksp::AbstractKSP)
+
+The convergence tolerances of `ksp`, as `(; rtol, atol, divtol, max_it)`: the relative
+and absolute residual tolerances, the divergence tolerance (relative to the initial
+residual) and the iteration limit.
+
+# External Links
+$(doc_external("KSP/KSPGetTolerances"))
+"""
+function tolerances(ksp::AbstractKSP{PetscLib}) where {PetscLib}
+    rtol, atol, divtol, max_it = LibPETSc.KSPGetTolerances(getlib(PetscLib), ksp)
+    return (; rtol, atol, divtol, max_it = Int(max_it))
+end
+
+"""
+    set_tolerances!(ksp::AbstractKSP; rtol, atol, divtol, max_it)
+
+Set the convergence tolerances of `ksp`, named as [`tolerances`](@ref) returns them.
+A keyword left at `nothing` keeps the value `ksp` has. Returns `ksp`.
+
+An option for the same tolerance (`ksp_rtol = 1e-8` to the constructor, or
+`-ksp_rtol` on the command line) is applied when the constructor's `options_at`
+says, and overrides this setting if that comes later.
+
+# External Links
+$(doc_external("KSP/KSPSetTolerances"))
+"""
+function set_tolerances!(
+    ksp::AbstractKSP{PetscLib};
+    rtol = nothing,
+    atol = nothing,
+    divtol = nothing,
+    max_it = nothing,
+) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    cur = tolerances(ksp)
+    LibPETSc.KSPSetTolerances(
+        petsclib,
+        ksp,
+        PetscLib.PetscReal(something(rtol, cur.rtol)),
+        PetscLib.PetscReal(something(atol, cur.atol)),
+        PetscLib.PetscReal(something(divtol, cur.divtol)),
+        PetscLib.PetscInt(something(max_it, cur.max_it)),
+    )
+    return ksp
+end
+
+"""
     set_operators!(ksp::AbstractKSP, A::AbstractPetscMat, P::AbstractPetscMat = A)
 
 Solve with the operator `A`, building the preconditioner from `P`. Returns `ksp`.

@@ -134,6 +134,13 @@ A `KSP` built on a DM computes its operator, right-hand side and initial guess f
 - `ksp_max_it` - Maximum iterations
 - `ksp_monitor` - Print residual each iteration
 
+The same tolerances can be read and set in code, under the option names without the `ksp_` prefix:
+
+```julia
+PETSc.tolerances(ksp)                           # (; rtol, atol, divtol, max_it)
+PETSc.set_tolerances!(ksp; rtol = 1e-8, max_it = 200)   # the others keep their values
+```
+
 ## Example: Multigrid Solver
 
 ```julia

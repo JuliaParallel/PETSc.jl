@@ -54,6 +54,33 @@ end
         PETSc.destroy!(ksp)
     end
 
+    @testset "dense PetscMat on a Julia array, outliving its handle inside a KSP" begin
+        # 2I on 3×3, stored in a Julia array the PETSc Mat uses as is
+        function dense_solver()
+            A = PETSc.PetscMat(petsclib, PetscScalar[2 0 0; 0 2 0; 0 0 2])
+            ksp = PETSc.KSP(A)
+            PETSc.destroy!(A)      # the KSP still holds the matrix
+            return ksp
+        end
+        function empty_dense_solver()
+            A = PETSc.PetscMat(petsclib, 3, 3; type = :dense)
+            for i in 1:3
+                A[i, i] = 2
+            end
+            PETSc.assemble!(A)
+            ksp = PETSc.KSP(A)
+            PETSc.destroy!(A)
+            return ksp
+        end
+        for make_solver in (dense_solver, empty_dense_solver)
+            ksp = make_solver()
+            scrub!()
+            x = ksp \ PetscScalar[2, 4, 6]
+            @test x ≈ PetscScalar[1, 2, 3]
+            PETSc.destroy!(ksp)
+        end
+    end
+
     @testset "temporaries survive a collection during the operation" begin
         S = PETSc.PetscMat(petsclib, PetscScalar[2 0 0; 0 2 0; 0 0 2])
         ksp = PETSc.KSP(S)

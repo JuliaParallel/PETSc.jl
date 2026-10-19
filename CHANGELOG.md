@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- A dense matrix made with `PetscMat(petsclib, A::Matrix)` or `PetscMat(petsclib, m, n; type = :dense)` could lose its storage while a KSP still used it: once the Julia handle was collected, the array went with it, and the next solve read freed memory (a wrong answer or a PETSc zero-pivot error). The array now lives as long as the PETSc matrix, as it already did for CSR matrices and vectors on Julia arrays. `type = :dense` lets PETSc allocate the storage.
+
 ## v0.5.3
 
 ### Behaviour changes

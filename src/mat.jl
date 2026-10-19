@@ -233,14 +233,13 @@ function LibPETSc.PetscMat(
     )
     
     PetscInt = petsclib.PetscInt
-    # PETSc stores the data pointer directly without copying, so we must keep the
-    # backing array alive for the entire lifetime of the PETSc Mat.  The finalizer
-    # closure captures `data`, making it reachable (and therefore uncollectable) for
-    # as long as `mat` is alive.
+    # PETSc uses `A`'s memory without copying it, and a KSP can hold the Mat
+    # after this handle is gone, so the array lives with the PETSc object
     data = vec(A)
     mat = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(size(A, 1)), PetscInt(size(A, 2)), data)
+    keep_alive!(mat, data)
 
-    finalizer(m -> (destroy!(m); data), mat)
+    finalizer(destroy!, mat)
     return mat
 end
 
@@ -268,17 +267,16 @@ function LibPETSc.PetscMat(
     comm = MPI.COMM_SELF
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
-    PetscScalar = petsclib.PetscScalar
     if type === :dense || type === :seqdense
-        data = zeros(PetscScalar, Int(num_rows) * Int(num_cols))
+        # Null data: PETSc allocates zeroed storage and frees it with the Mat
         mat = LibPETSc.MatCreateSeqDense(
             petsclib,
             comm,
             PetscInt(num_rows),
             PetscInt(num_cols),
-            data,
+            C_NULL,
         )
-        finalizer(m -> (destroy!(m); data), mat)
+        finalizer(destroy!, mat)
         return mat
     elseif type === :seqaij || type === :aij
         return LibPETSc.PetscMat(petsclib, num_rows, num_cols, 0)

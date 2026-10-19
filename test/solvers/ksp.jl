@@ -4,6 +4,7 @@ MPI.Initialized() || MPI.Init()
 using PETSc
 using LinearAlgebra: mul!
 using SparseArrays: spdiagm
+using Logging: Error
 
 
 @testset "KSP" begin
@@ -81,13 +82,13 @@ using SparseArrays: spdiagm
         @test y[1:10] ≈ x[1:10]
         PETSc.destroy!(x)
 
-        # do the same with backslash
-        x1 = ksp \ b
+        # do the same with backslash; at rtol = 1e-16 GMRES stops on a breakdown, which `\` warns about
+        x1 = @test_logs min_level = Error ksp \ b
         @test y ≈ x1
         #PETSc.destroy!(x)
 
         # Create a KSP solver in a simpler way --
-        ksp1 = PETSc.KSP(A; ksp_rtol = 1e-16, pc_type = "jacobi", ksp_monitor=false)
+        ksp1 = PETSc.KSP(A; ksp_rtol = 1e-12, pc_type = "jacobi", ksp_monitor=false)
         x2 = ksp1 \ b
         @test y ≈ x2
         #PETSc.destroy!(ksp1)

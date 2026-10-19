@@ -11,6 +11,15 @@ Modules = [PETSc]
 Pages   = ["init.jl"]
 ```
 
+## Handle types
+
+Every PETSc object is held by a handle type with an abstract supertype, such as `PetscVec <: AbstractPetscVec`. Annotate with the abstract type to accept any handle of that kind. The handles below have no high-level layer of their own, apart from `destroy!`.
+
+```@autodocs
+Modules = [PETSc]
+Pages   = ["handles.jl"]
+```
+
 ## Destroying objects together
 
 On more than one process nothing frees a PETSc object but `destroy!`, called on every rank in the same order. `with_destroy` does that for every object registered with `track!` when its block ends.

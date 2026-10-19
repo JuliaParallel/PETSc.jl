@@ -330,26 +330,8 @@ function release_library_handle(petsclib)
 end
 
 
-"""
-    scalartype(petsclib::PetscLibType)
-
-return the scalar type for the associated `petsclib`
-"""
-scalartype(::LibPETSc.PetscLibType{ST}) where {ST} = ST
-scalartype(
-    ::Type{PetscLib},
-) where {PetscLib <: PetscLibType{ST}} where {ST} = ST
-
-
-"""
-    inttype(petsclib::PetscLibType)
-
-return the int type for the associated `petsclib`
-"""
-inttype(::LibPETSc.PetscLibType{ST, IT}) where {ST, IT} = IT
-inttype(
-    ::Type{PetscLib},
-) where {PetscLib <: PetscLibType{ST, IT}} where {ST, IT} = IT
+# PETSc and LibPETSc share these functions: there is one of each
+import .LibPETSc: scalartype, inttype, realtype
 
 """
     PetscLibType(library_path::String; PetscScalar=Float64, PetscInt=Int64)

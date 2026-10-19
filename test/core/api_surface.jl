@@ -21,3 +21,24 @@ include(joinpath(pkgdir(PETSc), "scripts", "api_surface.jl"))
     # by finding nothing at all.
     @test length(APISurface.surface()) > 100
 end
+
+@testset "handle types and type accessors are public" begin
+    handles = (
+        :AbstractPetscVec, :AbstractPetscMat, :AbstractPetscDM, :AbstractKSP,
+        :AbstractPC, :AbstractSNES, :AbstractTS, :AbstractPetscOptions, :AbstractIS,
+        :AbstractAO, :AbstractPF, :AbstractTao, :PetscDM, :PC, :IS, :AO, :PF, :Tao,
+    )
+    for name in handles
+        @test Base.ispublic(PETSc, name)
+        @test getfield(PETSc, name) === getfield(PETSc.LibPETSc, name)
+        @test Docs.hasdoc(PETSc.LibPETSc, name)
+    end
+    # One function each, shared with LibPETSc
+    for name in (:scalartype, :inttype, :realtype)
+        @test Base.ispublic(PETSc, name)
+        @test getfield(PETSc, name) === getfield(PETSc.LibPETSc, name)
+    end
+    petsclib = PETSc.petsclibs[1]
+    @test PETSc.realtype(petsclib) === real(PETSc.scalartype(petsclib))
+    @test PETSc.inttype(typeof(petsclib)) === petsclib.PetscInt
+end

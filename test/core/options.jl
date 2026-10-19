@@ -123,3 +123,32 @@ end
     @test_throws ArgumentError PETSc.parse_options(["-a=b=c"])
     @test PETSc.parse_options(["-pc_type", "mg"]) === (pc_type = "mg",)
 end
+
+@testset "a DM constructor that throws leaves the options stack as it was" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    comm = PETSc.MPI.COMM_SELF
+    PetscLib = typeof(petsclib)
+    nb = PETSc.DM_BOUNDARY_NONE
+    # With nothing pushed, PETSc reads the global database
+    global_opts = PETSc.LibPETSc.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
+    visible(key) = PETSc.LibPETSc.PetscOptionsHasName(petsclib, global_opts, "", key)
+
+    base = PETSc.DMStag(petsclib, comm, (nb,), (10,), (1, 1), 1)
+    # Each call fails inside PETSc, on an option value that isn't an integer
+    cases = [
+        "-da_refine" => () -> PETSc.DMDA(petsclib, comm, (nb,), (10,), 1, 1; da_refine = "abc"),
+        "-stag_grid_x" => () -> PETSc.DMStag(petsclib, comm, (nb,), (10,), (1, 1), 1; stag_grid_x = "abc"),
+        "-stag_grid_x" => () -> PETSc.DMStag(base, (1, 1); stag_grid_x = "abc"),
+        "-dm_refine" => () -> PETSc.DMPlex(petsclib, comm; dm_refine = "abc"),
+        "-dm_refine" => () -> PETSc.DMPlex(petsclib, comm, 2, false, [2, 2]; dm_refine = "abc"),
+        "-petscspace_degree" => () -> PETSc.fe_create_default(petsclib, comm, 2, 1, false; degree = -3),
+    ]
+    for (key, construct) in cases
+        @test_throws PETSc.LibPETSc.PetscError construct()
+        @test isempty(PETSc.options_stack(PetscLib))
+        @test !visible(key)
+    end
+    PETSc.destroy!(base)
+    PETSc.finalize(petsclib)
+end

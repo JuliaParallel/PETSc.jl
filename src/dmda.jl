@@ -153,9 +153,9 @@ function DMDA(
     if setfromoptions
         # set options (if any)
         opts = PetscOptions(petsclib; options...)
-        push!(opts)
-        LibPETSc.DMSetFromOptions(PetscLib, da)
-        pop!(opts)
+        with_options(opts) do
+            LibPETSc.DMSetFromOptions(PetscLib, da)
+        end
     end
     
     if dmsetup

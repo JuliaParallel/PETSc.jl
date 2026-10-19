@@ -298,9 +298,9 @@ function DMPlex(
 
     if setfromoptions
         opts = PetscOptions(petsclib; options...)
-        push!(opts)
-        LibPETSc.DMSetFromOptions(petsclib, dm)
-        pop!(opts)
+        with_options(opts) do
+            LibPETSc.DMSetFromOptions(petsclib, dm)
+        end
     end
 
     if dmsetup
@@ -387,9 +387,9 @@ function DMPlex(
 
     if setfromoptions
         opts = PetscOptions(petsclib; options...)
-        push!(opts)
-        LibPETSc.DMSetFromOptions(petsclib, dm)
-        pop!(opts)
+        with_options(opts) do
+            LibPETSc.DMSetFromOptions(petsclib, dm)
+        end
     end
 
     if dmsetup
@@ -537,16 +537,15 @@ function fe_create_default(
     # picks up the correct space even when no command-line option is given.
     opt_key = isempty(prefix) ? "petscspace_degree" : "$(prefix)petscspace_degree"
     opts = PetscOptions(petsclib; Symbol(opt_key) => degree)
-    push!(opts)
-    fe = LibPETSc.PetscFECreateDefault(
-        petsclib, comm,
-        PetscInt(dim), PetscInt(Nc),
-        LibPETSc.PetscBool(simplex),
-        String(prefix),
-        PetscInt(qorder),
-    )
-    pop!(opts)
-    return fe
+    return with_options(opts) do
+        LibPETSc.PetscFECreateDefault(
+            petsclib, comm,
+            PetscInt(dim), PetscInt(Nc),
+            LibPETSc.PetscBool(simplex),
+            String(prefix),
+            PetscInt(qorder),
+        )
+    end
 end
 
 """

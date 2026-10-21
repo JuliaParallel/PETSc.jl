@@ -221,4 +221,68 @@ const SHIMS = [
         end
     end
 
+    @testset "positional insert mode, scatter mode and diag" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        comm = PETSc.MPI.COMM_SELF
+        LibPETSc = PETSc.LibPETSc
+        PetscInt = petsclib.PetscInt
+        B = PETSc.DM_BOUNDARY_NONE
+
+        # A serial ghosted vector with no ghosts: the updates have nothing to move
+        gv = LibPETSc.VecCreateGhost(petsclib, comm, PetscInt(3), PetscInt(LibPETSc.PETSC_DECIDE),
+                                     PetscInt(0), PetscInt[])
+        for f in (PETSc.ghost_update!, PETSc.ghost_update_begin!, PETSc.ghost_update_end!)
+            @test (warns() do
+                f(gv, PETSc.INSERT_VALUES, PETSc.SCATTER_FORWARD)
+            end) === gv
+        end
+
+        da = PETSc.DMDA(petsclib, comm, (B,), (4,), 1, 1)
+        g = PETSc.global_vec(da)
+        l = PETSc.local_vec(da)
+        fill!(g, 1)
+        warns(() -> PETSc.global_to_local!(l, da, g, PETSc.INSERT_VALUES))
+        warns(() -> PETSc.local_to_local!(l, da, l, PETSc.INSERT_VALUES))
+        warns(() -> PETSc.local_to_local!(l, da, PETSc.INSERT_VALUES))
+        warns(() -> PETSc.local_to_global!(g, da, l, PETSc.ADD_VALUES))
+        @test g[:] == fill(2, 4)
+
+        A = PETSc.PetscMat(petsclib, 2, 2; type = :dense)
+        warns(() -> PETSc.set_values!(A, [0], [0], [3.0], PETSc.INSERT_VALUES))
+        PETSc.assemble!(A)
+        @test A[1, 1] == 3
+        warns(() -> PETSc.zero_rows!(A, [0], 5))
+        @test A[1, 1] == 5
+
+        J = PETSc.PetscMat(da)
+        PETSc.assemble!(J)
+        warns(() -> PETSc.zero_rows_local!(J, [0], 7))
+        @test J[1, 1] == 7
+
+        dm = PETSc.DMStag(petsclib, comm, (B,), (3,), (1, 1), 1)
+        loc = PETSc.element_location(dm)
+        at = PETSc.stencil(dm, loc, (1,))
+        K = PETSc.PetscMat(dm)
+        warns(() -> PETSc.set_values!(K, dm, [at], [at], [2.0], PETSc.ADD_VALUES))
+        PETSc.assemble!(K)
+        warns(() -> PETSc.zero_rows_local!(K, dm, [at], 4))
+        v = PETSc.global_vec(dm)
+        warns(() -> PETSc.set_values!(v, dm, [at], [6.0], PETSc.INSERT_VALUES))
+
+        # The projections need a DMPlex with a finite-element setup; the probe
+        # reaches the warning and then fails in the forwarded call
+        for call in (() -> PETSc.project_function!(ntuple(_ -> DeprecationProbe(), 6)...),
+                     () -> PETSc.project_field!(ntuple(_ -> DeprecationProbe(), 6)...))
+            warns() do
+                try
+                    call()
+                catch
+                end
+            end
+        end
+
+        foreach(PETSc.destroy!, (v, K, dm, J, A, l, g, da, gv))
+    end
+
 end

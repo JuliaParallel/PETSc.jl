@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Deprecated
+
+- Insert modes, scatter modes and `diag` are keywords, `mode`, `scatter` and `diag`: `set_values!(A, rows, cols, vals; mode = ADD_VALUES)`, `ghost_update!(v; mode = ADD_VALUES, scatter = SCATTER_REVERSE)`, `global_to_local!(l, dm, g; mode)`, `zero_rows!(A, rows; diag = 2)`. This covers `ghost_update!`, `ghost_update_begin!`, `ghost_update_end!`, `local_to_global!`, `global_to_local!`, `local_to_local!`, `set_values!`, `project_function!`, `project_field!`, `zero_rows!` and `zero_rows_local!`. The positional forms still work and warn once; they go in v0.6. `project_function!` also takes `ctxs` as a keyword, and both projections default to `mode = INSERT_VALUES`.
+
 ### Behaviour changes
 
 - A `LibPETSc` call whose arguments match no generated method, such as an `Int` where the library takes its scalar type, throws a `MethodError` naming the argument types, instead of an `ErrorException` with the text "no generated method for these argument types".

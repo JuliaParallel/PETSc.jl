@@ -230,10 +230,10 @@ LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
 
 ```julia
 # Project exact functions onto a DM vector (initialisation / BCs)
-PETSc.project_function!(u, dm, 0.0, [vel_fn_ptr, pres_fn_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_function!(u, dm, 0.0, [vel_fn_ptr, pres_fn_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 
 # Project residual-style callbacks onto a DM vector (post-processing)
-PETSc.project_field!(out_vec, dm_out, t, u, [copy_vel_ptr, copy_pres_ptr, compute_tau_3x3_ptr], LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_field!(out_vec, dm_out, t, u, [copy_vel_ptr, copy_pres_ptr, compute_tau_3x3_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 
 # L² error vs. exact solution
 err = PETSc.l2diff(dm, t, [exact_vel_ptr, exact_pres_ptr], nothing, u)
@@ -249,7 +249,7 @@ PETSc.set_snes_local_fem!(dm)
 
 # Constant-pressure null space (for incompressible flow)
 null_vec = PETSc.global_vec(dm)
-PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 PETSc.set_jacobian_nullspace!(snes, nullspace)
@@ -320,7 +320,7 @@ dm_p1 = PETSc.clone(dm)
 PETSc.set_field!(dm_p1, 0, PETSc.fe_create_lagrange(petsclib, MPI.COMM_SELF, dim, dim, simplex, 1))
 PETSc.create_ds!(dm_p1)
 vel_p1 = PETSc.global_vec(dm_p1)
-PETSc.project_field!(vel_p1, dm_p1, 0.0, u, [copy_vel_ptr], LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_field!(vel_p1, dm_p1, 0.0, u, [copy_vel_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 
 # Move each mesh node by dt * v (the coordinate vector is owned by the DM)
 coords = LibPETSc.DMGetCoordinates(petsclib, dm)

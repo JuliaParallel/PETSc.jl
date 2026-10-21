@@ -79,8 +79,8 @@ MPI.Initialized() || MPI.Init()
         A = PETSc.PetscMat(dm)
 
         # duplicate columns sum under ADD_VALUES; values need not be a Vector
-        PETSc.set_values!(A, dm, [at(1, 1), at(2, 1)], [at(1, 1), at(1, 1), at(2, 1)],
-            1.0:6.0, LibPETSc.ADD_VALUES)
+        PETSc.set_values!(A, dm, [at(1, 1), at(2, 1)], [at(1, 1), at(1, 1), at(2, 1)], 1.0:6.0;
+                          mode = LibPETSc.ADD_VALUES)
         PETSc.assemble!(A)
         @test A[1, 1] == 3.0
         @test A[1, 2] == 3.0
@@ -88,7 +88,7 @@ MPI.Initialized() || MPI.Init()
         @test A[2, 2] == 6.0
         @test_throws DimensionMismatch PETSc.set_values!(A, dm, [at(1, 1)], [at(1, 1)], [1.0, 2.0])
 
-        @test PETSc.zero_rows_local!(A, dm, view([at(2, 1), at(1, 1)], 1:1), 5) === A
+        @test PETSc.zero_rows_local!(A, dm, view([at(2, 1), at(1, 1)], 1:1); diag = 5) === A
         @test A[2, 1] == 0.0
         @test A[2, 2] == 5.0
         @test PETSc.zero_rows_local!(A, dm, LibPETSc.DMStagStencil[]) === A
@@ -128,8 +128,8 @@ MPI.Initialized() || MPI.Init()
         @test [A[i, j] for i in 1:2, j in 1:2] == [B[i, j] for i in 1:2, j in 1:2] == [1.0 2.0; 3.0 4.0]
 
         # and passes the buffer without a copy; a view that is not a prefix is copied
-        set!(M, n) = PETSc.set_values!(M, dm, view(rows, 1:n), view(rows, 1:n),
-            view(vals, 1:(n * n)), LibPETSc.ADD_VALUES)
+        set!(M, n) = PETSc.set_values!(M, dm, view(rows, 1:n), view(rows, 1:n), view(vals, 1:(n * n));
+                                       mode = PETSc.ADD_VALUES)
         set!(A, 1)
         @test @allocated(set!(A, 2)) == 0
         w = PETSc.global_vec(dm)

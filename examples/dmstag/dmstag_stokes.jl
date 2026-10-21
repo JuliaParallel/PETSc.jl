@@ -240,7 +240,7 @@ end
 # The owned Vx, Vy and P of the global vector x, as matrices
 function owned_fields(dm, x)
     xl = PETSc.local_vec(dm)
-    PETSc.global_to_local!(xl, dm, x, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(xl, dm, x; mode = PETSc.INSERT_VALUES)
     o = owned(dm)
     fields = PETSc.with_field_views!(dm, xl; fields = (VX => 0, VY => 0, PC => 0), write = false) do (Vx, Vy, P)
         (Vx = [Vx[i, j] for i in o.faces_i, j in o.cells_j],

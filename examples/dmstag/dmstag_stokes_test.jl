@@ -22,7 +22,7 @@ end
 # so the pressure in the first cell is fixed at zero.
 function direct(n)
     dm, A, P, b = stokes_system(petsclib, comm, n, 1e4)
-    PETSc.zero_rows_local!(A, dm, [PETSc.stencil(dm, PC, (1, 1))], 1.0)
+    PETSc.zero_rows_local!(A, dm, [PETSc.stencil(dm, PC, (1, 1))]; diag = 1.0)
     ksp = PETSc.KSP(A; ksp_type = "preonly", pc_type = "lu", pc_factor_mat_solver_type = "umfpack")
     x = PETSc.global_vec(dm)
     PETSc.solve!(x, ksp, b; check = true)

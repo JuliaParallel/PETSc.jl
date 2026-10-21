@@ -660,9 +660,7 @@ for petsclib in PETSc.petsclibs
         PETSc.create_ds!(dm)
 
         u = PETSc.global_vec(dm)
-        PETSc.project_function!(u, dm, 0.0,
-                                [_dm_exact_ptr], nothing,
-                                LibPETSc.INSERT_ALL_VALUES)
+        PETSc.project_function!(u, dm, 0.0, [_dm_exact_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 
         l2err = PETSc.l2diff(dm, 0.0, [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
@@ -681,9 +679,7 @@ for petsclib in PETSc.petsclibs
         PETSc.create_ds!(dm)
 
         u = PETSc.global_vec(dm)
-        PETSc.project_function!(u, dm, 0.0,
-                                [_dm_exact_ptr], nothing,
-                                LibPETSc.INSERT_ALL_VALUES)
+        PETSc.project_function!(u, dm, 0.0, [_dm_exact_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 
         l2err = PETSc.l2diff(dm, 0.0, [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
@@ -703,9 +699,7 @@ for petsclib in PETSc.petsclibs
 
         # _dm_exact sums all coordinate components, works in any dimension.
         u = PETSc.global_vec(dm)
-        PETSc.project_function!(u, dm, 0.0,
-                                [_dm_exact_ptr], nothing,
-                                LibPETSc.INSERT_ALL_VALUES)
+        PETSc.project_function!(u, dm, 0.0, [_dm_exact_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
         l2err = PETSc.l2diff(dm, 0.0, [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
 

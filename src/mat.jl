@@ -509,7 +509,7 @@ function Base.fill!(A::AbstractPetscMat{PetscLib}, x) where {PetscLib}
 end
 
 """
-    zero_rows!(A::AbstractPetscMat, rows_0b, diag = 1; x = nothing, b = nothing)
+    zero_rows!(A::AbstractPetscMat, rows_0b; diag = 1, x = nothing, b = nothing)
 
 Zero the rows `rows_0b` of the assembled matrix `A`, put `diag` on their
 diagonal entries and return `A`. With `x` and `b` given, also set
@@ -525,8 +525,8 @@ $(doc_external("Mat/MatZeroRows"))
 """
 function zero_rows!(
     A::AbstractPetscMat{PetscLib},
-    rows_0b::AbstractVector{<:Integer},
-    diag = 1;
+    rows_0b::AbstractVector{<:Integer};
+    diag = 1,
     x = nothing,
     b = nothing,
 ) where {PetscLib}
@@ -538,7 +538,7 @@ function zero_rows!(
 end
 
 """
-    zero_rows_local!(A::AbstractPetscMat, rows_0b, diag = 1; x = nothing, b = nothing)
+    zero_rows_local!(A::AbstractPetscMat, rows_0b; diag = 1, x = nothing, b = nothing)
 
 [`zero_rows!`](@ref) with 0-based local row numbers, translated through the
 local-to-global mapping of `A`. A matrix from `DMCreateMatrix` has that mapping;
@@ -549,8 +549,8 @@ $(doc_external("Mat/MatZeroRowsLocal"))
 """
 function zero_rows_local!(
     A::AbstractPetscMat{PetscLib},
-    rows_0b::AbstractVector{<:Integer},
-    diag = 1;
+    rows_0b::AbstractVector{<:Integer};
+    diag = 1,
     x = nothing,
     b = nothing,
 ) where {PetscLib}
@@ -869,10 +869,10 @@ end
         M::AbstractPetscMat,
         rows_0b::AbstractVector{MatStencil},
         cols_0b::AbstractVector{MatStencil},
-        rowvals::AbstractArray,
-        insertmode::InsertMode = INSERT_VALUES;
+        rowvals::AbstractArray;
+        mode::InsertMode = INSERT_VALUES,
         num_rows = length(rows_0b),
-        num_cols = length(cols_0b)
+        num_cols = length(cols_0b),
     )
 
 Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
@@ -884,8 +884,9 @@ The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
 §12.1). `A[i, j] = v` is the 1-based route.
 
-If the keyword arguments `num_rows` or `num_cols` is specified then only the
-first `num_rows * num_cols` values of `rowvals` will be used.
+`mode` is `INSERT_VALUES` or `ADD_VALUES`. If the keyword arguments `num_rows` or
+`num_cols` is specified then only the first `num_rows * num_cols` values of
+`rowvals` will be used.
 
 # External Links
 $(doc_external("Mat/MatSetValuesStencil"))
@@ -894,8 +895,8 @@ function set_values!(
     M::AbstractPetscMat{PetscLib},
     rows_0b::AbstractVector{MatStencil},
     cols_0b::AbstractVector{MatStencil},
-    rowvals::AbstractArray,
-    insertmode::InsertMode = INSERT_VALUES;
+    rowvals::AbstractArray;
+    mode::InsertMode = INSERT_VALUES,
     num_rows = length(rows_0b),
     num_cols = length(cols_0b),
 ) where {PetscLib}
@@ -909,7 +910,7 @@ function set_values!(
         PetscInt(num_cols),
         c_vector(MatStencil, cols_0b),
         c_vector(PetscLib.PetscScalar, rowvals),
-        insertmode,
+        mode,
     )
     return M
 end
@@ -959,7 +960,7 @@ function Base.setindex!(
         PetscInt(j[1] - 1),
         N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
     )
-    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)], INSERT_VALUES)
+    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)]; mode = INSERT_VALUES)
     return M
 end
 
@@ -983,7 +984,7 @@ function add_index!(
         PetscInt(j[1] - 1),
         N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
     )
-    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)], ADD_VALUES)
+    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)]; mode = ADD_VALUES)
     return M
 end
 
@@ -1201,10 +1202,10 @@ end
         M::AbstractPetscMat,
         rows_0b::AbstractVector{<:Integer},
         cols_0b::AbstractVector{<:Integer},
-        rowvals::AbstractArray,
-        insertmode::InsertMode = INSERT_VALUES;
+        rowvals::AbstractArray;
+        mode::InsertMode = INSERT_VALUES,
         num_rows = length(rows_0b),
-        num_cols = length(cols_0b)
+        num_cols = length(cols_0b),
     )
 
 Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
@@ -1217,8 +1218,9 @@ The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
 §12.1). `A[i, j] = v` is the 1-based route.
 
-If the keyword arguments `num_rows` or `num_cols` is specified then only the
-first `num_rows * num_cols` values of `rowvals` will be used.
+`mode` is `INSERT_VALUES` or `ADD_VALUES`. If the keyword arguments `num_rows` or
+`num_cols` is specified then only the first `num_rows * num_cols` values of
+`rowvals` will be used.
 
 # External Links
 $(doc_external("Mat/MatSetValues"))
@@ -1227,8 +1229,8 @@ function set_values!(
     M::AbstractPetscMat{PetscLib},
     rows_0b::AbstractVector{<:Integer},
     cols_0b::AbstractVector{<:Integer},
-    rowvals::AbstractArray,
-    insertmode::InsertMode = INSERT_VALUES;
+    rowvals::AbstractArray;
+    mode::InsertMode = INSERT_VALUES,
     num_rows = length(rows_0b),
     num_cols = length(cols_0b),
 ) where {PetscLib}
@@ -1242,7 +1244,7 @@ function set_values!(
         PetscInt(num_cols),
         c_vector(PetscInt, cols_0b),
         c_vector(PetscLib.PetscScalar, rowvals),
-        insertmode,
+        mode,
     )
     return M
 end

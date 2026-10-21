@@ -769,57 +769,41 @@ end
 # ── DMProjectFunction / DMComputeL2Diff ─────────────────────────────────────
 
 """
-    project_function!(X, dm, time, funcs, ctxs, mode)
+    project_function!(X, dm, time, funcs; ctxs = nothing, mode = INSERT_VALUES)
 
-Project a collection of pointwise functions into the global vector `X`.
+Project a collection of pointwise functions into the global vector `X` and
+return `X`.
 
 The written vector comes first and `petsclib` is gone (§8); v0.4 took `X` last
 and `petsclib` first. A shim forwards the v0.4 name `dm_project_function!`
 from the old order (§17.2).
-`funcs` is a vector of `@cfunction` pointers (one per field) matching
-PETSc's `PetscSimplePointFn` signature.  `ctxs` is a matching vector of
-context pointers, or `nothing` to use `C_NULL` for every field.
+`funcs` holds one `@cfunction` pointer per field, matching PETSc's
+`PetscSimplePointFn` signature. `ctxs` is a matching vector of context pointers,
+or `nothing` to use `C_NULL` for every field.
 
-`mode` is an `InsertMode` enum value, typically `INSERT_ALL_VALUES` (sets
-constrained DOFs too) or `INSERT_VALUES` (free DOFs only).
+`mode` is an `InsertMode`: `INSERT_VALUES` sets the free DOFs only,
+`INSERT_ALL_VALUES` the constrained ones too.
 
 # External Links
 $(doc_external("DM/DMProjectFunction"))
 """
-function project_function! end
-
-LibPETSc.@for_petsc function project_function!(
-    X::AbstractPetscVec{$PetscLib},
-    dm::AbstractPetscDM{$PetscLib},
-    time::Real,
-    funcs::AbstractVector{Ptr{Cvoid}},
-    ctxs::AbstractVector{Ptr{Cvoid}},
-    mode::LibPETSc.InsertMode,
-)
-    petsclib = getlib($PetscLib)
-    n = length(funcs)
-    length(ctxs) == n || throw(
-        DimensionMismatch("got $n funcs but $(length(ctxs)) ctxs"),
-    )
-    funcs_v = collect(funcs)
-    ctxs_v  = collect(ctxs)
-    LibPETSc.DMProjectFunction(petsclib, dm, time, funcs_v, ctxs_v, mode, X)
-    return X
-end
-
 function project_function!(
-    X::AbstractPetscVec,
-    dm::AbstractPetscDM,
+    X::AbstractPetscVec{PetscLib},
+    dm::AbstractPetscDM{PetscLib},
     time::Real,
-    funcs::AbstractVector,
-    ctxs::Union{AbstractVector, Nothing},
-    mode::LibPETSc.InsertMode,
-)
+    funcs::AbstractVector;
+    ctxs::Union{AbstractVector, Nothing} = nothing,
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
     cptrs = ctxs === nothing ?
         fill(C_NULL, length(fptrs)) :
         Ptr{Cvoid}[Ptr{Cvoid}(c) for c in ctxs]
-    project_function!(X, dm, time, fptrs, cptrs, mode)
+    length(cptrs) == length(fptrs) || throw(
+        DimensionMismatch("got $(length(fptrs)) funcs but $(length(cptrs)) ctxs"),
+    )
+    LibPETSc.DMProjectFunction(getlib(PetscLib), dm, time, fptrs, cptrs, mode, X)
+    return X
 end
 
 """
@@ -891,7 +875,7 @@ end
 # `global_vec`/`local_vec`, defined once in src/dm.jl.
 
 # `global_to_local!(dm, gvec, lvec; mode)` lived here as a second shape of the
-# same call. §8 collapses both onto `global_to_local!(lvec, dm, gvec, mode)`,
+# same call. §8 collapses both onto `global_to_local!(lvec, dm, gvec; mode)`,
 # defined once in src/dm.jl.
 
 """
@@ -1107,10 +1091,10 @@ LibPETSc.@for_petsc function save_vtk(
 end
 
 """
-    project_field!(X, dm, time, U, funcs, mode)
+    project_field!(X, dm, time, U, funcs; mode = INSERT_VALUES)
 
 Project a function of the fields in the input vector `U` into the FE space of `dm`,
-writing the result into `X`.
+writing the result into `X`, and return `X`.
 
 The written vector comes first and `petsclib` is gone (§8); v0.4 took `X` last
 and `petsclib` first. A shim forwards the v0.4 name `dm_project_field!` from
@@ -1120,37 +1104,25 @@ the old order (§17.2).  `funcs` is a vector of `Ptr{Cvoid}` function pointers
 [`clone`](@ref)).
 
 Use this to compute derived quantities (e.g. stress from displacement gradient) and
-project them onto a new FE field for visualisation.
+project them onto a new FE field for visualisation. `mode` is an `InsertMode`, as
+for [`project_function!`](@ref).
 
 # External Links
 $(doc_external("DM/DMProjectField"))
 """
-function project_field! end
-
-LibPETSc.@for_petsc function project_field!(
-    X::AbstractPetscVec{$PetscLib},
-    dm::AbstractPetscDM{$PetscLib},
-    time::Real,
-    U::AbstractPetscVec{$PetscLib},
-    funcs::AbstractVector{Ptr{Cvoid}},
-    mode::LibPETSc.InsertMode,
-)
-    petsclib = getlib($PetscLib)
-    funcs_v = collect(Ptr{Cvoid}, funcs)
-    GC.@preserve funcs_v LibPETSc.DMProjectField(petsclib, dm, $PetscReal(time), U, pointer(funcs_v), mode, X)
-    return X
-end
-
 function project_field!(
-    X::AbstractPetscVec,
-    dm::AbstractPetscDM,
+    X::AbstractPetscVec{PetscLib},
+    dm::AbstractPetscDM{PetscLib},
     time::Real,
-    U::AbstractPetscVec,
-    funcs,
-    mode,
-)
+    U::AbstractPetscVec{PetscLib},
+    funcs;
+    mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
-    project_field!(X, dm, time, U, fptrs, mode)
+    GC.@preserve fptrs LibPETSc.DMProjectField(
+        getlib(PetscLib), dm, PetscLib.PetscReal(time), U, pointer(fptrs), mode, X,
+    )
+    return X
 end
 
 # The multi-field method of `save_vtk`, documented with the single-vector one

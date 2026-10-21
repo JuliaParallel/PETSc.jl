@@ -64,7 +64,7 @@ MPI.Initialized() || MPI.Init()
             ("ghost_corners",          0, () -> PETSc.ghost_corners(dm)),
             ("stencil",                0, () -> PETSc.stencil(dm, e, I)),
             ("dof_slot",               0, () -> PETSc.dof_slot(dm, e, 0)),
-            ("set_values! a Mat",      0, () -> PETSc.set_values!(J, dm, rows, rows, vals, LibPETSc.ADD_VALUES)),
+            ("set_values! a Mat",      0, () -> PETSc.set_values!(J, dm, rows, rows, vals; mode = PETSc.ADD_VALUES)),
             ("set_values! a Vec",      0, () -> PETSc.set_values!(gl, dm, rows, view(vals, 1:2))),
             ("global_to_local!",       0, () -> PETSc.global_to_local!(lo, dm, gl)),
             ("local_to_local!",        0, () -> PETSc.local_to_local!(lo, dm)),

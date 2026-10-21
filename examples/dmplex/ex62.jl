@@ -279,7 +279,7 @@ function pressure_nsp_constructor(
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     nvec = PETSc.global_vec(dm_w)
-    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
     LibPETSc.VecNormalize(petsclib, nvec)
     GC.@preserve nvec begin
         nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))
@@ -353,7 +353,7 @@ PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ───────────────────
 null_vec = PETSc.global_vec(dm)
-PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 

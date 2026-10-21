@@ -66,12 +66,12 @@ For vectors with ghost points (from DMDA/DMStag):
 
 ```julia
 # Update ghost values from neighboring processes
-PETSc.ghost_update!(vec, PETSc.INSERT_VALUES, PETSc.SCATTER_FORWARD)
+PETSc.ghost_update!(vec; mode = PETSc.INSERT_VALUES, scatter = PETSc.SCATTER_FORWARD)
 
 # Or use begin/end for non-blocking:
-PETSc.ghost_update_begin!(vec, PETSc.INSERT_VALUES, PETSc.SCATTER_FORWARD)
+PETSc.ghost_update_begin!(vec; mode = PETSc.INSERT_VALUES, scatter = PETSc.SCATTER_FORWARD)
 # ... do other work ...
-PETSc.ghost_update_end!(vec, PETSc.INSERT_VALUES, PETSc.SCATTER_FORWARD)
+PETSc.ghost_update_end!(vec; mode = PETSc.INSERT_VALUES, scatter = PETSc.SCATTER_FORWARD)
 ```
 
 ## Functions

@@ -468,6 +468,10 @@ PetscMat(petsclib, m, n, nnz)             # required
 PetscMat(petsclib, m, n; type = :dense)   # optional, defaults to :seqaij
 
 distribute!(dm; overlap = 0)
+
+set_values!(A, rows_0b, cols_0b, vals; mode = ADD_VALUES)   # InsertMode and ScatterMode
+ghost_update!(v; mode = ADD_VALUES, scatter = SCATTER_REVERSE)
+zero_rows!(A, rows_0b; diag = 1)
 ```
 
 Never take a keyword argument that changes the return type. `type = :dense` is acceptable because every variant returns `PetscMat`; a keyword selecting a DM flavour would not be, which is why flavour is a type parameter there ([§5.3](#5.3-DM-flavour-is-a-type,-not-a-string)).

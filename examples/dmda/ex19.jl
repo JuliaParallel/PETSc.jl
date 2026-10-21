@@ -338,7 +338,7 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
     da = PETSc.dm(snes)
 
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x; mode = PETSc.INSERT_VALUES)
 
     corners       = PETSc.corners(da)
     ghost_corners = PETSc.ghost_corners(da)

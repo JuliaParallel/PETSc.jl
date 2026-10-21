@@ -65,7 +65,7 @@ MPI.Initialized() || MPI.Init()
 
     @testset "zero_rows!" begin
         A = laplacian()
-        @test PETSc.zero_rows!(A, [0], 3) === A
+        @test PETSc.zero_rows!(A, [0]; diag = 3) === A
         @test A[1, :] == PetscScalar[3, 0, 0]
         @test A[2, :] == PetscScalar[-1, 2, -1]
 
@@ -87,7 +87,7 @@ MPI.Initialized() || MPI.Init()
             A[i, i] = 2
         end
         PETSc.assemble!(A)
-        @test PETSc.zero_rows_local!(A, [1], 5) === A
+        @test PETSc.zero_rows_local!(A, [1]; diag = 5) === A
         @test A[2, 2] == 5
         @test A[3, 3] == 2
         PETSc.destroy!(A)

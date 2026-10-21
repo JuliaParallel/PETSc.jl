@@ -352,9 +352,9 @@ end
 # Neumann:   no constrained DOFs exist, so start directly from the L²-projected
 # exact solution.  The solution is unique only up to a constant; starting near
 # the answer avoids the singular-system pitfall of a pure-zero initial guess.
-PETSc.project_function!(u, dm, 0.0, [quadratic_u_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_function!(u, dm, 0.0, [quadratic_u_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 if bc == "dirichlet"
-    PETSc.project_function!(u, dm, 0.0, [zero_u_ptr], nothing, LibPETSc.INSERT_VALUES)
+    PETSc.project_function!(u, dm, 0.0, [zero_u_ptr]; mode = LibPETSc.INSERT_VALUES)
 end
 
 # ── Solve ─────────────────────────────────────────────────────────────────────

@@ -462,7 +462,7 @@ end
 
         # add the local values to the global values
         #PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
-        PETSc.local_to_global!(global_vec, da, local_vec, PETSc.ADD_VALUES)
+        PETSc.local_to_global!(global_vec, da, local_vec; mode = PETSc.ADD_VALUES)
 
         # end points added with neighbor due to ghost of size 1
         bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
@@ -477,7 +477,7 @@ end
 
         # reset the local values with the global values
         #PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
-        PETSc.global_to_local!(local_vec, da, global_vec, PETSc.INSERT_VALUES)
+        PETSc.global_to_local!(local_vec, da, global_vec; mode = PETSc.INSERT_VALUES)
 
         # My first value and my ghost should be the bot/top values
         @test local_vec[1] == bot_val
@@ -560,7 +560,7 @@ end
             Array_2 = @view x[2, :, :]
             Array_2 .= 22.2
         end
-        PETSc.local_to_global!(x_g, da_2D, x_l, PETSc.INSERT_VALUES)
+        PETSc.local_to_global!(x_g, da_2D, x_l; mode = PETSc.INSERT_VALUES)
 
         sum_val = PETSc.LibPETSc.VecSum(petsclib, x_g)
         @test sum_val ≈ PetscScalar(3996)            # check sum of global vector

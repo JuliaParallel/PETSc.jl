@@ -80,8 +80,8 @@ lvec = PETSc.local_vec(dm)
 
 # Transfer data between global and local
 # The written vector comes first, the DM follows it (naming.md §8)
-PETSc.global_to_local!(lvec, dm, gvec, PETSc.INSERT_VALUES)
-PETSc.local_to_global!(gvec, dm, lvec, PETSc.ADD_VALUES)
+PETSc.global_to_local!(lvec, dm, gvec; mode = PETSc.INSERT_VALUES)
+PETSc.local_to_global!(gvec, dm, lvec; mode = PETSc.ADD_VALUES)
 
 # Refresh the ghost points of a local vector from its neighbours, in place
 PETSc.local_to_local!(lvec, dm)
@@ -144,10 +144,10 @@ cols = [PETSc.stencil(dm, PETSc.element_location(dm), I),
 
 ```julia
 J = PETSc.PetscMat(dm)
-PETSc.set_values!(J, dm, [row], cols, [-1.0, 1.0], PETSc.ADD_VALUES)   # row-major block
+PETSc.set_values!(J, dm, [row], cols, [-1.0, 1.0]; mode = PETSc.ADD_VALUES)   # row-major block
 PETSc.assemble!(J)
 
-PETSc.zero_rows_local!(J, dm, wall_rows, 1.0)   # Dirichlet rows, given as stencils
+PETSc.zero_rows_local!(J, dm, wall_rows; diag = 1.0)   # Dirichlet rows, given as stencils
 PETSc.set_values!(b, dm, wall_rows, wall_values)
 ```
 

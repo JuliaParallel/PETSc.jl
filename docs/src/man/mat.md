@@ -63,10 +63,10 @@ A[i, j] = value
 
 # `set_values!` is the bulk route, and it keeps PETSc's 0-based indices: the
 # `_0b` in the parameter names says so (naming conventions, §12.1)
-PETSc.set_values!(A, rows_0b, cols_0b, values, PETSc.INSERT_VALUES)
+PETSc.set_values!(A, rows_0b, cols_0b, values; mode = PETSc.INSERT_VALUES)
 
 # The same call with `MatStencil` rows and columns, for stencil-based assembly
-PETSc.set_values!(A, stencils_0b, stencils_0b, values, PETSc.INSERT_VALUES)
+PETSc.set_values!(A, stencils_0b, stencils_0b, values; mode = PETSc.INSERT_VALUES)
 ```
 
 ## Assembly

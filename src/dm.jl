@@ -340,7 +340,7 @@ Returns a global vector `v` from the `dm` object.
 global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
 
 """
-    local_to_global!(gvec, dm, lvec, mode = INSERT_VALUES)
+    local_to_global!(gvec, dm, lvec; mode = INSERT_VALUES)
 
 Transfer values from the local vector `lvec` to the global vector `gvec`
 associated with the `dm` object.
@@ -353,7 +353,7 @@ last. A shim forwards the v0.4 name `dm_local_to_global!` from the old order
 - `gvec::AbstractPetscVec`: Global vector (destination, written)
 - `dm::AbstractPetscDM`: DM object
 - `lvec::AbstractPetscVec`: Local vector (source)
-- `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+- `mode::InsertMode` (keyword): `INSERT_VALUES` or `ADD_VALUES`
 
 # External Links
 $(doc_external("DM/DMLocalToGlobal"))
@@ -361,7 +361,7 @@ $(doc_external("DM/DMLocalToGlobal"))
 function local_to_global!(
     gvec::AbstractPetscVec{PetscLib},
     dm::AbstractPetscDM{PetscLib},
-    lvec::AbstractPetscVec{PetscLib},
+    lvec::AbstractPetscVec{PetscLib};
     mode::InsertMode = INSERT_VALUES,
 ) where {PetscLib}
     LibPETSc.DMLocalToGlobalBegin(PetscLib, dm, lvec, mode, gvec)
@@ -371,7 +371,7 @@ end
 
 
 """
-    global_to_local!(lvec, dm, gvec, mode = INSERT_VALUES)
+    global_to_local!(lvec, dm, gvec; mode = INSERT_VALUES)
 
 Transfer values from the global vector `gvec` to the local vector `lvec`
 associated with the `dm` object, including ghost point values from neighboring
@@ -386,7 +386,7 @@ they collapse onto this one. A shim forwards the v0.4 name
 - `lvec::AbstractPetscVec`: Local vector (destination, written)
 - `dm::AbstractPetscDM`: DM object
 - `gvec::AbstractPetscVec`: Global vector (source)
-- `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+- `mode::InsertMode` (keyword): `INSERT_VALUES` or `ADD_VALUES`
 
 # External Links
 $(doc_external("DM/DMGlobalToLocal"))
@@ -394,7 +394,7 @@ $(doc_external("DM/DMGlobalToLocal"))
 function global_to_local!(
     lvec::AbstractPetscVec{PetscLib},
     dm::AbstractPetscDM{PetscLib},
-    gvec::AbstractPetscVec{PetscLib},
+    gvec::AbstractPetscVec{PetscLib};
     mode::InsertMode = INSERT_VALUES,
 ) where {PetscLib}
     LibPETSc.DMGlobalToLocalBegin(getlib(PetscLib), dm, gvec, mode, lvec)
@@ -403,8 +403,8 @@ function global_to_local!(
 end
 
 """
-    local_to_local!(dst::AbstractPetscVec, dm::AbstractPetscDM, src::AbstractPetscVec, mode = INSERT_VALUES)
-    local_to_local!(v::AbstractPetscVec, dm::AbstractPetscDM, mode = INSERT_VALUES)
+    local_to_local!(dst::AbstractPetscVec, dm::AbstractPetscDM, src::AbstractPetscVec; mode = INSERT_VALUES)
+    local_to_local!(v::AbstractPetscVec, dm::AbstractPetscDM; mode = INSERT_VALUES)
 
 Fill the ghost points of the local vector `dst` from the owned values of the local
 vector `src` on the neighbouring ranks, and return `dst`. `dst` may be `src`: the
@@ -417,7 +417,7 @@ $(doc_external("DM/DMLocalToLocalEnd"))
 function local_to_local!(
     dst::AbstractPetscVec{PetscLib},
     dm::AbstractPetscDM{PetscLib},
-    src::AbstractPetscVec{PetscLib},
+    src::AbstractPetscVec{PetscLib};
     mode::InsertMode = INSERT_VALUES,
 ) where {PetscLib}
     LibPETSc.DMLocalToLocalBegin(getlib(PetscLib), dm, src, mode, dst)
@@ -427,9 +427,9 @@ end
 
 local_to_local!(
     v::AbstractPetscVec{PetscLib},
-    dm::AbstractPetscDM{PetscLib},
+    dm::AbstractPetscDM{PetscLib};
     mode::InsertMode = INSERT_VALUES,
-) where {PetscLib} = local_to_local!(v, dm, v, mode)
+) where {PetscLib} = local_to_local!(v, dm, v; mode)
 
 
 """

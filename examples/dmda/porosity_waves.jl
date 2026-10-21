@@ -178,7 +178,7 @@ end
 LibPETSc.VecCopy(petsclib,g_x,g_xold)       # initialize Pe and Phi of last timestep
 
 l_xold = PETSc.local_vec(da)
-PETSc.global_to_local!(l_xold, da, g_xold, PETSc.INSERT_VALUES)
+PETSc.global_to_local!(l_xold, da, g_xold; mode = PETSc.INSERT_VALUES)
 
 # Keep `x_old` as a plain Julia vector (avoid `unsafe_local_array` finalizers
 # interacting with PETSc object lifetimes).
@@ -324,7 +324,7 @@ function FormResidual!(f,snes, g_x)
 
     # Get a local vector and transfer the data from the global->local vector
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x; mode = PETSc.INSERT_VALUES)
 
     # Get local arrays
     PETSc.with_local_array!(
@@ -369,7 +369,7 @@ function FormJacobian!(J, snes, g_x)
 
     # Get a local vector and transfer the data from the global->local vector
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x; mode = PETSc.INSERT_VALUES)
 
     # Get a local array of the solution vector and form a Jacobian for the
     # interior (non-ghost) unknowns.
@@ -424,7 +424,7 @@ while (it < max_it && time < max_time)
     it += 1
 
     # Update the x_old values (Phi_old, Pe_old) on every processor
-    PETSc.global_to_local!(l_xold, da, g_x, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_xold, da, g_x; mode = PETSc.INSERT_VALUES)
     PETSc.with_local_array!(l_xold; read = true, write = false) do x_arr
         copyto!(x_old, x_arr)
     end

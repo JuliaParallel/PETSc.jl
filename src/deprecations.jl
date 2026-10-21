@@ -38,13 +38,15 @@ end
 function dm_local_to_global!(args...; kwargs...)
     @warn "dm_local_to_global! is deprecated, use local_to_global!" maxlog = 1
     lvec, gvec, dm, rest... = args
-    return local_to_global!(gvec, dm, lvec, rest...; kwargs...)
+    mode = isempty(rest) ? INSERT_VALUES : only(rest)
+    return local_to_global!(gvec, dm, lvec; mode, kwargs...)
 end
 
 function dm_global_to_local!(args...; kwargs...)
     @warn "dm_global_to_local! is deprecated, use global_to_local!" maxlog = 1
     gvec, lvec, dm, rest... = args
-    return global_to_local!(lvec, dm, gvec, rest...; kwargs...)
+    mode = isempty(rest) ? INSERT_VALUES : only(rest)
+    return global_to_local!(lvec, dm, gvec; mode, kwargs...)
 end
 
 @renamed setuniformcoordinates_dmda! set_uniform_coordinates!
@@ -77,13 +79,13 @@ end
 function dm_project_function!(args...; kwargs...)
     @warn "dm_project_function! is deprecated, use project_function!" maxlog = 1
     petsclib, dm, time, funcs, ctxs, mode, X = args
-    return project_function!(X, dm, time, funcs, ctxs, mode; kwargs...)
+    return project_function!(X, dm, time, funcs; ctxs, mode, kwargs...)
 end
 
 function dm_project_field!(args...; kwargs...)
     @warn "dm_project_field! is deprecated, use project_field!" maxlog = 1
     petsclib, dm, time, U, funcs, mode, X = args
-    return project_field!(X, dm, time, U, funcs, mode; kwargs...)
+    return project_field!(X, dm, time, U, funcs; mode, kwargs...)
 end
 
 function dm_compute_l2diff(args...; kwargs...)
@@ -236,6 +238,93 @@ function add_natural_boundary!(petsclib::LibPETSc.PetscLibType, dm, args...; kwa
     @warn "add_natural_boundary!(petsclib, dm, ...) is deprecated, use " *
           "add_natural_boundary!(dm, ...)" maxlog = 1
     return add_natural_boundary!(dm, args...; kwargs...)
+end
+
+# positional insert mode, scatter mode and diag
+# §9: an argument with a sensible default is a keyword. The insert mode,
+# scatter mode and `diag` of these calls were positional; those forms
+# warn for one release (§17.2, "argument dropped").
+for f in (:ghost_update!, :ghost_update_begin!, :ghost_update_end!)
+    @eval function $f(
+        vec::LibPETSc.AbstractPetscVec,
+        mode::InsertMode,
+        scatter::LibPETSc.ScatterMode = SCATTER_FORWARD,
+    )
+        @warn string($(string(f)), "(v, mode, scatter) is deprecated, use ",
+                     $(string(f)), "(v; mode, scatter)") maxlog = 1
+        return $f(vec; mode, scatter)
+    end
+end
+
+for f in (:local_to_global!, :global_to_local!, :local_to_local!)
+    @eval function $f(
+        dst::LibPETSc.AbstractPetscVec,
+        dm::LibPETSc.AbstractPetscDM,
+        src::LibPETSc.AbstractPetscVec,
+        mode::InsertMode,
+    )
+        @warn string($(string(f)), "(dst, dm, src, mode) is deprecated, use ",
+                     $(string(f)), "(dst, dm, src; mode)") maxlog = 1
+        return $f(dst, dm, src; mode)
+    end
+end
+
+function local_to_local!(v::LibPETSc.AbstractPetscVec, dm::LibPETSc.AbstractPetscDM, mode::InsertMode)
+    @warn "local_to_local!(v, dm, mode) is deprecated, use local_to_local!(v, dm; mode)" maxlog = 1
+    return local_to_local!(v, dm; mode)
+end
+
+function set_values!(
+    M::LibPETSc.AbstractPetscMat,
+    rows_0b::AbstractVector,
+    cols_0b::AbstractVector,
+    rowvals::AbstractArray,
+    mode::InsertMode;
+    kwargs...,
+)
+    @warn "set_values!(M, rows, cols, vals, mode) is deprecated, use " *
+          "set_values!(M, rows, cols, vals; mode)" maxlog = 1
+    return set_values!(M, rows_0b, cols_0b, rowvals; mode, kwargs...)
+end
+
+function set_values!(J::LibPETSc.AbstractPetscMat, dm::DMStag, rows, cols, vals, mode::InsertMode)
+    @warn "set_values!(J, dm, rows, cols, vals, mode) is deprecated, use " *
+          "set_values!(J, dm, rows, cols, vals; mode)" maxlog = 1
+    return set_values!(J, dm, rows, cols, vals; mode)
+end
+
+function set_values!(v::LibPETSc.AbstractPetscVec, dm::DMStag, positions, vals, mode::InsertMode)
+    @warn "set_values!(v, dm, positions, vals, mode) is deprecated, use " *
+          "set_values!(v, dm, positions, vals; mode)" maxlog = 1
+    return set_values!(v, dm, positions, vals; mode)
+end
+
+function zero_rows!(A::LibPETSc.AbstractPetscMat, rows_0b::AbstractVector{<:Integer}, diag; kwargs...)
+    @warn "zero_rows!(A, rows, diag) is deprecated, use zero_rows!(A, rows; diag)" maxlog = 1
+    return zero_rows!(A, rows_0b; diag, kwargs...)
+end
+
+function zero_rows_local!(A::LibPETSc.AbstractPetscMat, rows_0b::AbstractVector{<:Integer}, diag; kwargs...)
+    @warn "zero_rows_local!(A, rows, diag) is deprecated, use zero_rows_local!(A, rows; diag)" maxlog = 1
+    return zero_rows_local!(A, rows_0b; diag, kwargs...)
+end
+
+function zero_rows_local!(J::LibPETSc.AbstractPetscMat, dm::DMStag, rows, diag; kwargs...)
+    @warn "zero_rows_local!(J, dm, rows, diag) is deprecated, use " *
+          "zero_rows_local!(J, dm, rows; diag)" maxlog = 1
+    return zero_rows_local!(J, dm, rows; diag, kwargs...)
+end
+
+function project_function!(X, dm, time, funcs, ctxs, mode)
+    @warn "project_function!(X, dm, time, funcs, ctxs, mode) is deprecated, use " *
+          "project_function!(X, dm, time, funcs; ctxs, mode)" maxlog = 1
+    return project_function!(X, dm, time, funcs; ctxs, mode)
+end
+
+function project_field!(X, dm, time, U, funcs, mode)
+    @warn "project_field!(X, dm, time, U, funcs, mode) is deprecated, use " *
+          "project_field!(X, dm, time, U, funcs; mode)" maxlog = 1
+    return project_field!(X, dm, time, U, funcs; mode)
 end
 
 

@@ -32,7 +32,7 @@ MPI.Initialized() || MPI.Init()
         @test l[6] == 10.0
 
         dst = PETSc.local_vec(dm)
-        @test PETSc.local_to_local!(dst, dm, l, PETSc.INSERT_VALUES) === dst
+        @test PETSc.local_to_local!(dst, dm, l; mode = PETSc.INSERT_VALUES) === dst
         @test dst[1] == 4.0
         @test dst[6] == 10.0
         foreach(PETSc.destroy!, (dst, l, g, dm))

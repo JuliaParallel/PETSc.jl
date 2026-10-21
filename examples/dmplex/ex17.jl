@@ -470,9 +470,9 @@ LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 
 # ── Initial guess ───────────────────────────────────────────────────────────────
 # Seed constrained DOFs with the exact solution (or zero for elas_ge).
-PETSc.project_function!(u, dm, 0.0, [exact_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_function!(u, dm, 0.0, [exact_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 # Reset free DOFs to zero so SNES has a well-posed starting point.
-PETSc.project_function!(u, dm, 0.0, [zero_u_ptr], nothing, LibPETSc.INSERT_VALUES)
+PETSc.project_function!(u, dm, 0.0, [zero_u_ptr]; mode = LibPETSc.INSERT_VALUES)
 
 # ── Solve ───────────────────────────────────────────────────────────────────────
 PETSc.solve!(u, snes)
@@ -523,7 +523,7 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         # DMProjectField projects functions of the displacement solution (u, 1 field)
         # into both output fields simultaneously.
-        PETSc.project_field!(out_vec, dm_out, 0.0, u, [copy_displacement_3_ptr, compute_stress_3x3_ptr], LibPETSc.INSERT_ALL_VALUES)
+        PETSc.project_field!(out_vec, dm_out, 0.0, u, [copy_displacement_3_ptr, compute_stress_3x3_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 
         PETSc.save_vtk(out_vec, fname)
 

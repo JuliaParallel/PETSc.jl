@@ -326,7 +326,7 @@ function pressure_nsp_constructor(
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     # Project constant pressure = 1 onto the DM's global vector
     nvec = PETSc.global_vec(dm_w)
-    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
     LibPETSc.VecNormalize(petsclib, nvec)
     # Build MatNullSpace from the normalized vector
     GC.@preserve nvec begin
@@ -422,7 +422,7 @@ PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ──────────────────
 null_vec = PETSc.global_vec(dm)
-PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES)
+PETSc.project_function!(null_vec, dm, 0.0, [zero_vel_ptr, one_pres_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
 LibPETSc.VecNormalize(petsclib, null_vec)
 
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
@@ -438,7 +438,7 @@ u = PETSc.global_vec(dm)
 PETSc.set_snes_local_fem!(dm)
 
 # ── Initial guess: zero ───────────────────────────────────────────────────────
-PETSc.project_function!(u, dm, 0.0, [zero_vel_ptr, zero_vel_ptr], nothing, LibPETSc.INSERT_VALUES)
+PETSc.project_function!(u, dm, 0.0, [zero_vel_ptr, zero_vel_ptr]; mode = LibPETSc.INSERT_VALUES)
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
 # The Stokes system has a constant-pressure null space.  We must attach it to

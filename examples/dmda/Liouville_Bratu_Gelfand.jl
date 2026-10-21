@@ -113,7 +113,7 @@ PETSc.with_local_array!(xl; read = false) do l_x
             sqrt(minimum(ntuple(j -> 1 - abs(coords[j][i[j]]), dim)))
     end
 end
-PETSc.local_to_global!(x, da, xl, PETSc.INSERT_VALUES)
+PETSc.local_to_global!(x, da, xl; mode = PETSc.INSERT_VALUES)
 
 # Set up the nonlinear function
 r = similar(x)
@@ -123,7 +123,7 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
 
     # Get a local vector and transfer the data from the global vector into it
     l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(l_x, da, g_x, PETSc.INSERT_VALUES)
+    PETSc.global_to_local!(l_x, da, g_x; mode = PETSc.INSERT_VALUES)
 
     ghostcorners = PETSc.ghost_corners(da)
     corners = PETSc.corners(da)
